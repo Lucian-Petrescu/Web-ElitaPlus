@@ -21,7 +21,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblNewSCError As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblNewSCError As Label
 
         '''<summary>
         '''moProtectionEvtDtl control.
@@ -30,7 +30,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moProtectionEvtDtl As Global.Assurant.ElitaPlus.ElitaPlusWebApp.ProtectionAndEventDetails
+        Protected WithEvents moProtectionEvtDtl As ProtectionAndEventDetails
 
         '''<summary>
         '''ucSelectServiceCenter control.
@@ -39,7 +39,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents ucSelectServiceCenter As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlServiceCenterSelection
+        Protected WithEvents ucSelectServiceCenter As UserControlServiceCenterSelection
 
         '''<summary>
         '''btnBack control.
@@ -48,7 +48,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents btnBack As Button
 
         '''<summary>
         '''btnSend control.
@@ -57,6 +57,6 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnSend As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents btnSend As Button
     End Class
 End Namespace

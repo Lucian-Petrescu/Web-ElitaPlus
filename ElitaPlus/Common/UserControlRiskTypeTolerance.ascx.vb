@@ -10,7 +10,7 @@ Partial Class UserControlRiskTypeTolerance
 
     End Class
 
-    Public Delegate Sub RequestData(ByVal sender As Object, ByRef e As RequestDataEventArgs)
+    Public Delegate Sub RequestData(sender As Object, ByRef e As RequestDataEventArgs)
 
     Public Event RequestRiskTypeToleranceData As RequestData
     Public Event PropertyChanged As PropertyChangedEventHandler
@@ -47,19 +47,19 @@ Partial Class UserControlRiskTypeTolerance
 
     Public Property DealerId As Nullable(Of Guid)
         Get
-            Return Me.TheState.dealerId
+            Return TheState.dealerId
         End Get
-        Set(ByVal value As Nullable(Of Guid))
-            Me.TheState.dealerId = CType(value, Guid)
+        Set(value As Nullable(Of Guid))
+            TheState.dealerId = CType(value, Guid)
             RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs("DealerId"))
         End Set
     End Property
     Public Property Dealer As String
          Get
-             Return Me.TheState.dealer
+             Return TheState.dealer
          End Get
-         Set(ByVal value As String)
-             Me.TheState.dealer = value
+         Set(value As String)
+             TheState.dealer = value
          End Set
      End Property
 
@@ -90,10 +90,10 @@ Partial Class UserControlRiskTypeTolerance
     Protected ReadOnly Property TheState() As MyState
         Get
             Try
-                If Me.ThePage.StateSession.Item(Me.UniqueID) Is Nothing Then
-                    Me.ThePage.StateSession.Item(Me.UniqueID) = New MyState
+                If ThePage.StateSession.Item(UniqueID) Is Nothing Then
+                    ThePage.StateSession.Item(UniqueID) = New MyState
                 End If
-                Return CType(Me.ThePage.StateSession.Item(Me.UniqueID), MyState)
+                Return CType(ThePage.StateSession.Item(UniqueID), MyState)
 
             Catch ex As Exception
                 Return Nothing
@@ -109,55 +109,55 @@ Partial Class UserControlRiskTypeTolerance
 
     Public ReadOnly Property IsGridInEditMode() As Boolean
         Get
-            Return Me.RiskTypeToleranceGrid.EditIndex > Me.ThePage.NO_ITEM_SELECTED_INDEX
+            Return RiskTypeToleranceGrid.EditIndex > ThePage.NO_ITEM_SELECTED_INDEX
         End Get
     End Property
 
     Public Property SortDirection() As String
         Get
-            If Not ViewState("SortDirection") Is Nothing Then
+            If ViewState("SortDirection") IsNot Nothing Then
                 Return ViewState("SortDirection").ToString
             Else
                 Return RiskTypeTolerance.COL_NAME_RISK_TYPE
             End If
 
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             ViewState("SortDirection") = value
         End Set
     End Property
 
 #End Region
     
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
        Try
            If Page.IsPostBack Then
-               Dim confResponse As String = Me.HiddenDIDeletePromptResponse.Value
-               Dim confResponseDel As String = Me.HiddenDIDeletePromptResponse.Value
+               Dim confResponse As String = HiddenDIDeletePromptResponse.Value
+               Dim confResponseDel As String = HiddenDIDeletePromptResponse.Value
              
-               If Not confResponseDel Is Nothing AndAlso confResponseDel = Me.ThePage.MSG_VALUE_YES Then
-                   If Me.TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete Then
-                       Me.TheState.DefaultRiskTypeToleranceID = GuidControl.ByteArrayToGuid(RiskTypeToleranceGrid.DataKeys(Me.TheState.deleteRowIndex).Values(0))
-                       Me.ThePage.MasterPage.MessageController.AddSuccess(Me.MSG_RECORD_DELETED_OK, True)
-                       Me.TheState.PageIndex = RiskTypeToleranceGrid.PageIndex
-                       Me.TheState.IsAfterSave = True
-                       Me.TheState.RiskTypeToleranceDV = Nothing
+               If confResponseDel IsNot Nothing AndAlso confResponseDel = ThePage.MSG_VALUE_YES Then
+                   If TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete Then
+                       TheState.DefaultRiskTypeToleranceID = GuidControl.ByteArrayToGuid(RiskTypeToleranceGrid.DataKeys(TheState.deleteRowIndex).Values(0))
+                       ThePage.MasterPage.MessageController.AddSuccess(MSG_RECORD_DELETED_OK, True)
+                       TheState.PageIndex = RiskTypeToleranceGrid.PageIndex
+                       TheState.IsAfterSave = True
+                       TheState.RiskTypeToleranceDV = Nothing
                        PopulateGrid()
-                       Me.TheState.PageIndex = RiskTypeToleranceGrid.PageIndex
-                       Me.TheState.IsEditMode = False
+                       TheState.PageIndex = RiskTypeToleranceGrid.PageIndex
+                       TheState.IsEditMode = False
                        SetControlState()
-                       Me.TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                       Me.HiddenDIDeletePromptResponse.Value = ""
+                       TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                       HiddenDIDeletePromptResponse.Value = ""
                    End If
-               ElseIf Not confResponseDel Is Nothing AndAlso confResponseDel = Me.ThePage.MSG_VALUE_NO Then
-                   Me.TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                   Me.HiddenDIDeletePromptResponse.Value = ""
+               ElseIf confResponseDel IsNot Nothing AndAlso confResponseDel = ThePage.MSG_VALUE_NO Then
+                   TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                   HiddenDIDeletePromptResponse.Value = ""
                End If
            Else     
                SortDirection = RiskTypeTolerance.COL_NAME_RISK_TYPE
            End If
        Catch ex As Exception
-           Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+           ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
        End Try
         
     End Sub
@@ -168,24 +168,24 @@ Partial Class UserControlRiskTypeTolerance
     Public Sub Populate()
 
         Dim e As New RequestDataEventArgs
-        If (Me.TheState.dealerId.Equals(Guid.Empty)) Then
+        If (TheState.dealerId.Equals(Guid.Empty)) Then
             Throw New GUIException("You must select a dealer first", Assurant.ElitaPlus.Common.ErrorCodes.GUI_DEALER_MUST_BE_SELECTED_ERR)
         end if
 
         RaiseEvent RequestRiskTypeToleranceData(Me, e)
-        Me.TheState.RiskTypeToleranceDV = e.Data
-        Me.PopulateGrid()
+        TheState.RiskTypeToleranceDV = e.Data
+        PopulateGrid()
 
     End Sub
 
     Public Sub PopulateGrid()
         
         If (Not Page.IsPostBack) Then
-            Me.ThePage.TranslateGridHeader(RiskTypeToleranceGrid)
+            ThePage.TranslateGridHeader(RiskTypeToleranceGrid)
         End If
        
         Dim blnNewSearch As Boolean = False
-        cboDiPageSize.SelectedValue = CType(Me.TheState.PageSize, String)
+        cboDiPageSize.SelectedValue = CType(TheState.PageSize, String)
         Dim objRiskTypeTolerance As New RiskTypeTolerance
 
         
@@ -193,31 +193,31 @@ Partial Class UserControlRiskTypeTolerance
         Try
             With TheState
                 If (.RiskTypeToleranceDV Is Nothing) Then
-                    objRiskTypeTolerance.DealerId = Me.TheState.dealerId
+                    objRiskTypeTolerance.DealerId = TheState.dealerId
                     .RiskTypeToleranceDV = objRiskTypeTolerance.GetRiskTypeTolerance()
                     blnNewSearch = True
                 End If
             End With
 
-            If Not TheState.RiskTypeToleranceDV Is Nothing AndAlso  Not TheState.IsGridAddNew = True Then
+            If TheState.RiskTypeToleranceDV IsNot Nothing AndAlso  Not TheState.IsGridAddNew = True Then
                 TheState.RiskTypeToleranceDV.Sort = SortDirection
             End If
             
-            If (Me.TheState.IsAfterSave) Then
-                Me.TheState.IsAfterSave = False
-                Me.ThePage.SetPageAndSelectedIndexFromGuid(Me.TheState.RiskTypeToleranceDV, Me.TheState.DefaultRiskTypeToleranceID, Me.RiskTypeToleranceGrid, Me.TheState.PageIndex)
-            ElseIf (Me.TheState.IsEditMode) Then
-                Me.ThePage.SetPageAndSelectedIndexFromGuid(Me.TheState.RiskTypeToleranceDV, Me.TheState.DefaultRiskTypeToleranceID, Me.RiskTypeToleranceGrid, Me.TheState.PageIndex, Me.TheState.IsEditMode)
+            If (TheState.IsAfterSave) Then
+                TheState.IsAfterSave = False
+                ThePage.SetPageAndSelectedIndexFromGuid(TheState.RiskTypeToleranceDV, TheState.DefaultRiskTypeToleranceID, RiskTypeToleranceGrid, TheState.PageIndex)
+            ElseIf (TheState.IsEditMode) Then
+                ThePage.SetPageAndSelectedIndexFromGuid(TheState.RiskTypeToleranceDV, TheState.DefaultRiskTypeToleranceID, RiskTypeToleranceGrid, TheState.PageIndex, TheState.IsEditMode)
             Else
-                If Not TheState.RiskTypeToleranceDV Is Nothing
-                    Me.ThePage.SetPageAndSelectedIndexFromGuid(Me.TheState.RiskTypeToleranceDV, Guid.Empty, Me.RiskTypeToleranceGrid, Me.TheState.PageIndex)
+                If TheState.RiskTypeToleranceDV IsNot Nothing
+                    ThePage.SetPageAndSelectedIndexFromGuid(TheState.RiskTypeToleranceDV, Guid.Empty, RiskTypeToleranceGrid, TheState.PageIndex)
                 End if
             End If
 
             RiskTypeToleranceGrid.Columns(GRID_COL_RISK_TYPE).SortExpression = RiskTypeTolerance.COL_NAME_RISK_TYPE
             RiskTypeToleranceGrid.Columns(GRID_COL_TOLERANCE_PCT).SortExpression = RiskTypeTolerance.COL_NAME_TOLERANCE_PCT
 
-            If Not TheState.RiskTypeToleranceDV is Nothing AndAlso Me.TheState.RiskTypeToleranceDV.Count = 0 Then
+            If TheState.RiskTypeToleranceDV IsNot Nothing AndAlso TheState.RiskTypeToleranceDV.Count = 0 Then
                 For Each gvRow As GridViewRow In RiskTypeToleranceGrid.Rows
                     gvRow.Visible = False
                     gvRow.Controls.Clear()
@@ -230,96 +230,96 @@ Partial Class UserControlRiskTypeTolerance
                 cboDiPageSize.Visible = True
                 colonSepertor.Visible = True
             End If
-            Me.RiskTypeToleranceGrid.AutoGenerateColumns = False
+            RiskTypeToleranceGrid.AutoGenerateColumns = False
             SortAndBindGrid(blnNewSearch)
 
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles RiskTypeToleranceGrid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles RiskTypeToleranceGrid.RowDataBound
         Try
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim strID As String
 
-            If Not dvRow Is Nothing And Not Me.TheState.bnoRow Then
-                strID = Me.ThePage.GetGuidStringFromByteArray(CType(dvRow(RiskTypeTolerance.RiskTypeToleranceDV.COL_DLR_RK_TYP_TOLERANCE_ID), Byte()))
+            If dvRow IsNot Nothing AndAlso Not TheState.bnoRow Then
+                strID = ThePage.GetGuidStringFromByteArray(CType(dvRow(RiskTypeTolerance.RiskTypeToleranceDV.COL_DLR_RK_TYP_TOLERANCE_ID), Byte()))
 
-                If (Me.TheState.IsEditMode = True AndAlso Me.TheState.DefaultRiskTypeToleranceID.ToString.Equals(strID)) Then
+                If (TheState.IsEditMode = True AndAlso TheState.DefaultRiskTypeToleranceID.ToString.Equals(strID)) Then
 
-                    CType(e.Row.Cells(Me.GRID_COL_DEALER).FindControl(Me.GRID_CTRL_NAME_LABLE_DEALER), Label).Text =  Me.TheState.dealer
+                    CType(e.Row.Cells(GRID_COL_DEALER).FindControl(GRID_CTRL_NAME_LABLE_DEALER), Label).Text =  TheState.dealer
 
-                    Dim moRiskTypeDropDown As DropDownList = CType(e.Row.Cells(Me.GRID_COL_RISK_TYPE).FindControl(Me.GRID_CTRL_NAME_EDIT_RISK_TYPE), DropDownList)
+                    Dim moRiskTypeDropDown As DropDownList = CType(e.Row.Cells(GRID_COL_RISK_TYPE).FindControl(GRID_CTRL_NAME_EDIT_RISK_TYPE), DropDownList)
                     ElitaPlusPage.BindListControlToDataView(moRiskTypeDropDown, LookupListNew.GetRiskTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id),"DESCRIPTION",,false)
                     If (Not String.IsNullOrWhiteSpace(dvRow(RiskTypeTolerance.RiskTypeToleranceDV.COL_RISK_TYPE).ToString())) Then
-                        Me.ThePage.SetSelectedItemByText(moRiskTypeDropDown, RiskTypeToleranceGrid.DataKeys(e.Row.RowIndex).Values(GRID_COL_RISK_TYPE))
+                        ThePage.SetSelectedItemByText(moRiskTypeDropDown, RiskTypeToleranceGrid.DataKeys(e.Row.RowIndex).Values(GRID_COL_RISK_TYPE))
                     End If
 
                    If TheState.IsGridAddNew = True Then
-                       ControlMgr.SetEnableControl(Me.ThePage, moRiskTypeDropDown, true)
+                       ControlMgr.SetEnableControl(ThePage, moRiskTypeDropDown, true)
                    Else 
-                      ControlMgr.SetEnableControl(Me.ThePage, moRiskTypeDropDown, false)
+                      ControlMgr.SetEnableControl(ThePage, moRiskTypeDropDown, false)
                    End If
 
-                    CType(e.Row.Cells(Me.GRID_COL_TOLERANCE_PCT).FindControl(Me.GRID_CTRL_NAME_EDIT_TOLERANCE_PCT), TextBox).Text = dvRow(RiskTypeTolerance.RiskTypeToleranceDV.COL_TOLERANCE_PCT).ToString
+                    CType(e.Row.Cells(GRID_COL_TOLERANCE_PCT).FindControl(GRID_CTRL_NAME_EDIT_TOLERANCE_PCT), TextBox).Text = dvRow(RiskTypeTolerance.RiskTypeToleranceDV.COL_TOLERANCE_PCT).ToString
                     
                 Else
-                    CType(e.Row.Cells(Me.GRID_COL_DEALER).FindControl(Me.GRID_CTRL_NAME_LABLE_DEALER), Label).Text = dvRow(RiskTypeTolerance.RiskTypeToleranceDV.COL_DEALER).ToString
-                    CType(e.Row.Cells(Me.GRID_COL_RISK_TYPE).FindControl(Me.GRID_CTRL_NAME_LABEL_RISK_TYPE), Label).Text = dvRow(RiskTypeTolerance.RiskTypeToleranceDV.COL_RISK_TYPE).ToString
-                    CType(e.Row.Cells(Me.GRID_COL_TOLERANCE_PCT).FindControl(Me.GRID_CTRL_NAME_LABEL_TOLERANCE_PCT), Label).Text = dvRow(RiskTypeTolerance.RiskTypeToleranceDV.COL_TOLERANCE_PCT).ToString
+                    CType(e.Row.Cells(GRID_COL_DEALER).FindControl(GRID_CTRL_NAME_LABLE_DEALER), Label).Text = dvRow(RiskTypeTolerance.RiskTypeToleranceDV.COL_DEALER).ToString
+                    CType(e.Row.Cells(GRID_COL_RISK_TYPE).FindControl(GRID_CTRL_NAME_LABEL_RISK_TYPE), Label).Text = dvRow(RiskTypeTolerance.RiskTypeToleranceDV.COL_RISK_TYPE).ToString
+                    CType(e.Row.Cells(GRID_COL_TOLERANCE_PCT).FindControl(GRID_CTRL_NAME_LABEL_TOLERANCE_PCT), Label).Text = dvRow(RiskTypeTolerance.RiskTypeToleranceDV.COL_TOLERANCE_PCT).ToString
                    
            
                 End If
             End If
 
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Public Sub RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles RiskTypeToleranceGrid.RowCommand
+    Public Sub RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles RiskTypeToleranceGrid.RowCommand
 
         Try
             Dim index As Integer
-            If (e.CommandName = Me.EDIT_COMMAND) Then
+            If (e.CommandName = EDIT_COMMAND) Then
                 index = CInt(e.CommandArgument)
-                Me.TheState.IsEditMode = True
-                Me.TheState.DefaultRiskTypeToleranceID = GuidControl.ByteArrayToGuid(RiskTypeToleranceGrid.DataKeys(index).Values(0))
-                Me.TheState.MyBO = New RiskTypeTolerance(Me.TheState.dealerId,Me.TheState.DefaultRiskTypeToleranceID)
-                Me.Populate()
-                Me.TheState.PageIndex = RiskTypeToleranceGrid.PageIndex
-                Me.SetControlState()
+                TheState.IsEditMode = True
+                TheState.DefaultRiskTypeToleranceID = GuidControl.ByteArrayToGuid(RiskTypeToleranceGrid.DataKeys(index).Values(0))
+                TheState.MyBO = New RiskTypeTolerance(TheState.dealerId,TheState.DefaultRiskTypeToleranceID)
+                Populate()
+                TheState.PageIndex = RiskTypeToleranceGrid.PageIndex
+                SetControlState()
 
                 Try
-                    Me.RiskTypeToleranceGrid.Rows(index).Focus()
+                    RiskTypeToleranceGrid.Rows(index).Focus()
                 Catch ex As Exception
-                    Me.RiskTypeToleranceGrid.Focus()
+                    RiskTypeToleranceGrid.Focus()
                 End Try
 
-            ElseIf (e.CommandName = Me.DELETE_COMMAND) Then
+            ElseIf (e.CommandName = DELETE_COMMAND) Then
                
                 Try
                     index = CInt(e.CommandArgument)
-                    Me.TheState.DefaultRiskTypeToleranceID = GuidControl.ByteArrayToGuid(RiskTypeToleranceGrid.DataKeys(index).Values(0))
-                    Me.TheState.MyBO = New RiskTypeTolerance(Me.TheState.dealerId, Me.TheState.DefaultRiskTypeToleranceID)
-                    Me.TheState.MyBO.Delete()
-                    Me.TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
-                    Me.TheState.MyBO.Save()
-                    Me.TheState.IsAfterSave = True
+                    TheState.DefaultRiskTypeToleranceID = GuidControl.ByteArrayToGuid(RiskTypeToleranceGrid.DataKeys(index).Values(0))
+                    TheState.MyBO = New RiskTypeTolerance(TheState.dealerId, TheState.DefaultRiskTypeToleranceID)
+                    TheState.MyBO.Delete()
+                    TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+                    TheState.MyBO.Save()
+                    TheState.IsAfterSave = True
                     Populate()
-                    Me.ThePage.MasterPage.MessageController.AddSuccess(Assurant.ElitaPlus.Common.ErrorCodes.MSG_RECORD_DELETED_OK, True)
+                    ThePage.MasterPage.MessageController.AddSuccess(Assurant.ElitaPlus.Common.ErrorCodes.MSG_RECORD_DELETED_OK, True)
                 Catch ex As Exception
-                    Me.TheState.MyBO.RejectChanges()
+                    TheState.MyBO.RejectChanges()
                     Throw ex
                 End Try
 
             End If
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
 
     End Sub
@@ -327,85 +327,85 @@ Partial Class UserControlRiskTypeTolerance
     Private Sub SortAndBindGrid(Optional ByVal blnShowErr As Boolean = True)
        
         Dim objRiskTypeTolerance As New RiskTypeTolerance
-        Me.TheState.PageIndex = Me.RiskTypeToleranceGrid.PageIndex
+        TheState.PageIndex = RiskTypeToleranceGrid.PageIndex
 
-        If (Not Me.TheState.RiskTypeToleranceDV is Nothing AndAlso  Me.TheState.RiskTypeToleranceDV.Count = 0) Then
+        If (TheState.RiskTypeToleranceDV IsNot Nothing AndAlso  TheState.RiskTypeToleranceDV.Count = 0) Then
             Dim dv As DataView = objRiskTypeTolerance.GetRiskTypeTolerance()
-            Me.TheState.bnoRow = True
-            if not dv is Nothing Then
+            TheState.bnoRow = True
+            if dv IsNot Nothing Then
                 objRiskTypeTolerance.GetEmptyList(dv)
             End If
-            Me.TheState.RiskTypeToleranceDV = Nothing
-            Me.TheState.MyBO = New RiskTypeTolerance
-            TheState.MyBO.AddNewRowToSearchDV(Me.TheState.RiskTypeToleranceDV, Me.TheState.MyBO)
-            Me.RiskTypeToleranceGrid.DataSource = Me.TheState.RiskTypeToleranceDV
-            Me.ThePage.HighLightSortColumn(RiskTypeToleranceGrid, Me.SortDirection, True)
-            Me.RiskTypeToleranceGrid.DataBind()
+            TheState.RiskTypeToleranceDV = Nothing
+            TheState.MyBO = New RiskTypeTolerance
+            TheState.MyBO.AddNewRowToSearchDV(TheState.RiskTypeToleranceDV, TheState.MyBO)
+            RiskTypeToleranceGrid.DataSource = TheState.RiskTypeToleranceDV
+            ThePage.HighLightSortColumn(RiskTypeToleranceGrid, SortDirection, True)
+            RiskTypeToleranceGrid.DataBind()
             If Not RiskTypeToleranceGrid.BottomPagerRow.Visible Then RiskTypeToleranceGrid.BottomPagerRow.Visible = True
-            Me.RiskTypeToleranceGrid.Rows(0).Visible = False
-            Me.TheState.IsGridAddNew = True
-            Me.TheState.IsGridVisible = False
-            Me.lblRecordCount.Text = "0 " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            RiskTypeToleranceGrid.Rows(0).Visible = False
+            TheState.IsGridAddNew = True
+            TheState.IsGridVisible = False
+            lblRecordCount.Text = "0 " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             If blnShowErr Then
-                Me.ThePage.MasterPage.MessageController.AddInformation(ElitaPlus.ElitaPlusWebApp.Message.MSG_NO_RECORDS_FOUND, True)
+                ThePage.MasterPage.MessageController.AddInformation(ElitaPlus.ElitaPlusWebApp.Message.MSG_NO_RECORDS_FOUND, True)
             End If
         Else
-            Me.TheState.bnoRow = False
-            Me.RiskTypeToleranceGrid.Enabled = True
-            Me.RiskTypeToleranceGrid.PageSize = Me.TheState.PageSize
-            Me.RiskTypeToleranceGrid.DataSource = Me.TheState.RiskTypeToleranceDV
-            Me.TheState.IsGridVisible = True
-            Me.ThePage.HighLightSortColumn(RiskTypeToleranceGrid, Me.SortDirection, True)
-            Me.RiskTypeToleranceGrid.DataBind()
+            TheState.bnoRow = False
+            RiskTypeToleranceGrid.Enabled = True
+            RiskTypeToleranceGrid.PageSize = TheState.PageSize
+            RiskTypeToleranceGrid.DataSource = TheState.RiskTypeToleranceDV
+            TheState.IsGridVisible = True
+            ThePage.HighLightSortColumn(RiskTypeToleranceGrid, SortDirection, True)
+            RiskTypeToleranceGrid.DataBind()
             If Not RiskTypeToleranceGrid.BottomPagerRow.Visible Then RiskTypeToleranceGrid.BottomPagerRow.Visible = True
         End If
 
-        ControlMgr.SetVisibleControl(Me.ThePage, RiskTypeToleranceGrid, Me.TheState.IsGridVisible)
+        ControlMgr.SetVisibleControl(ThePage, RiskTypeToleranceGrid, TheState.IsGridVisible)
 
-        If Me.RiskTypeToleranceGrid.Visible AndAlso  Not Me.TheState.RiskTypeToleranceDV Is Nothing Then
+        If RiskTypeToleranceGrid.Visible AndAlso  TheState.RiskTypeToleranceDV IsNot Nothing Then
 
-            Session("recCount") = Me.TheState.RiskTypeToleranceDV.Count
+            Session("recCount") = TheState.RiskTypeToleranceDV.Count
             If Not RiskTypeToleranceGrid.BottomPagerRow.Visible Then RiskTypeToleranceGrid.BottomPagerRow.Visible = True
-            If (Me.TheState.IsGridAddNew ) Then
-                Me.lblRecordCount.Text = String.Format("{0} {1}", (Me.TheState.RiskTypeToleranceDV.Count - 1), TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND))
+            If (TheState.IsGridAddNew ) Then
+                lblRecordCount.Text = String.Format("{0} {1}", (TheState.RiskTypeToleranceDV.Count - 1), TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND))
             Else
-                Me.lblRecordCount.Text = String.Format("{0} {1}", Me.TheState.RiskTypeToleranceDV.Count, TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND))
+                lblRecordCount.Text = String.Format("{0} {1}", TheState.RiskTypeToleranceDV.Count, TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND))
             End If
         End If
-        ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me.ThePage, RiskTypeToleranceGrid)
+        ControlMgr.DisableEditDeleteGridIfNotEditAuth(ThePage, RiskTypeToleranceGrid)
 
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles RiskTypeToleranceGrid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles RiskTypeToleranceGrid.PageIndexChanged
         Try
-            If (Not (Me.TheState.IsEditMode)) Then
-                Me.TheState.PageIndex = RiskTypeToleranceGrid.PageIndex
-                Me.TheState.DefaultRiskTypeToleranceID = Guid.Empty
-                Me.PopulateGrid()
+            If (Not (TheState.IsEditMode)) Then
+                TheState.PageIndex = RiskTypeToleranceGrid.PageIndex
+                TheState.DefaultRiskTypeToleranceID = Guid.Empty
+                PopulateGrid()
             End If
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles RiskTypeToleranceGrid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles RiskTypeToleranceGrid.PageIndexChanging
         Try
             RiskTypeToleranceGrid.PageIndex = e.NewPageIndex
             TheState.PageIndex = RiskTypeToleranceGrid.PageIndex
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
     End Sub
 
-    Public Sub RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles RiskTypeToleranceGrid.RowCreated
+    Public Sub RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles RiskTypeToleranceGrid.RowCreated
         Try
             ThePage.BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As GridViewSortEventArgs) Handles RiskTypeToleranceGrid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As GridViewSortEventArgs) Handles RiskTypeToleranceGrid.Sorting
         Try
             Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ", StringComparison.Ordinal)
 
@@ -420,10 +420,10 @@ Partial Class UserControlRiskTypeTolerance
                 SortDirection = e.SortExpression + " ASC"
             End If
 
-            Me.TheState.PageIndex = 0
+            TheState.PageIndex = 0
             PopulateGrid()
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
     End Sub
 
@@ -433,16 +433,16 @@ Partial Class UserControlRiskTypeTolerance
     #Region "Helper functions"
 
     Private Sub SetControlState()
-        If (Me.TheState.IsEditMode) Then
-            ControlMgr.SetVisibleControl(Me.ThePage, NewButton_WRITE, False)
-            If (Me.cboDiPageSize.Enabled) Then
-                ControlMgr.SetEnableControl(Me.ThePage, cboDiPageSize, False)
+        If (TheState.IsEditMode) Then
+            ControlMgr.SetVisibleControl(ThePage, NewButton_WRITE, False)
+            If (cboDiPageSize.Enabled) Then
+                ControlMgr.SetEnableControl(ThePage, cboDiPageSize, False)
             End If
 
         Else
-            ControlMgr.SetVisibleControl(Me.ThePage, NewButton_WRITE, True)
-            If Not (Me.cboDiPageSize.Enabled) Then
-                ControlMgr.SetEnableControl(Me.ThePage, Me.cboDiPageSize, True)
+            ControlMgr.SetVisibleControl(ThePage, NewButton_WRITE, True)
+            If Not (cboDiPageSize.Enabled) Then
+                ControlMgr.SetEnableControl(ThePage, cboDiPageSize, True)
             End If
         End If
     End Sub
@@ -451,46 +451,46 @@ Partial Class UserControlRiskTypeTolerance
 
         RiskTypeToleranceGrid.EditIndex = NO_ROW_SELECTED_INDEX
 
-        If (Me.RiskTypeToleranceGrid.PageCount = 0) Then
-            ControlMgr.SetVisibleControl(Me.ThePage, RiskTypeToleranceGrid, False)
+        If (RiskTypeToleranceGrid.PageCount = 0) Then
+            ControlMgr.SetVisibleControl(ThePage, RiskTypeToleranceGrid, False)
         Else
-            ControlMgr.SetVisibleControl(Me.ThePage, RiskTypeToleranceGrid, True)
+            ControlMgr.SetVisibleControl(ThePage, RiskTypeToleranceGrid, True)
         End If
 
-        Me.TheState.IsEditMode = False
-        Me.PopulateGrid()
-        Me.TheState.PageIndex = RiskTypeToleranceGrid.PageIndex
+        TheState.IsEditMode = False
+        PopulateGrid()
+        TheState.PageIndex = RiskTypeToleranceGrid.PageIndex
         SetControlState()
     End Sub
 
     Private Sub RemoveNewRowFromSearchDV()
-        Dim rowind As Integer = Me.ThePage.NO_ITEM_SELECTED_INDEX
+        Dim rowind As Integer = ThePage.NO_ITEM_SELECTED_INDEX
         With TheState
-            If Not .RiskTypeToleranceDV Is Nothing Then
-                rowind = Me.ThePage.FindSelectedRowIndexFromGuid(.RiskTypeToleranceDV, .DefaultRiskTypeToleranceID)
+            If .RiskTypeToleranceDV IsNot Nothing Then
+                rowind = ThePage.FindSelectedRowIndexFromGuid(.RiskTypeToleranceDV, .DefaultRiskTypeToleranceID)
             End If
         End With
-        If rowind <> Me.ThePage.NO_ITEM_SELECTED_INDEX Then TheState.RiskTypeToleranceDV.Delete(rowind)
+        If rowind <> ThePage.NO_ITEM_SELECTED_INDEX Then TheState.RiskTypeToleranceDV.Delete(rowind)
     End Sub
 
     Private Sub AddNew()
-        If TheState.MyBO Is Nothing OrElse Me.TheState.MyBO.IsNew = False Then
+        If TheState.MyBO Is Nothing OrElse TheState.MyBO.IsNew = False Then
             TheState.MyBO = New RiskTypeTolerance
-            TheState.MyBO.AddNewRowToSearchDV(Me.TheState.RiskTypeToleranceDV, Me.TheState.MyBO)
+            TheState.MyBO.AddNewRowToSearchDV(TheState.RiskTypeToleranceDV, TheState.MyBO)
         End If
-        TheState.DefaultRiskTypeToleranceID = Me.TheState.MyBO.Id
+        TheState.DefaultRiskTypeToleranceID = TheState.MyBO.Id
         TheState.IsGridAddNew = True
         PopulateGrid()
         'Set focus on the Code TextBox for the EditItemIndex row
-        ThePage.SetPageAndSelectedIndexFromGuid(Me.TheState.RiskTypeToleranceDV, Me.TheState.DefaultRiskTypeToleranceID, Me.RiskTypeToleranceGrid, _
-                                                TheState.PageIndex, Me.TheState.IsEditMode)
-        ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me.ThePage, RiskTypeToleranceGrid)
-        ThePage.SetGridControls(Me.RiskTypeToleranceGrid, False)
+        ThePage.SetPageAndSelectedIndexFromGuid(TheState.RiskTypeToleranceDV, TheState.DefaultRiskTypeToleranceID, RiskTypeToleranceGrid, _
+                                                TheState.PageIndex, TheState.IsEditMode)
+        ControlMgr.DisableEditDeleteGridIfNotEditAuth(ThePage, RiskTypeToleranceGrid)
+        ThePage.SetGridControls(RiskTypeToleranceGrid, False)
 
         Try
-            Me.RiskTypeToleranceGrid.Rows(Me.RiskTypeToleranceGrid.SelectedIndex).Focus()
+            RiskTypeToleranceGrid.Rows(RiskTypeToleranceGrid.SelectedIndex).Focus()
         Catch ex As Exception
-            Me.RiskTypeToleranceGrid.Focus()
+            RiskTypeToleranceGrid.Focus()
         End Try
 
     End Sub
@@ -498,28 +498,28 @@ Partial Class UserControlRiskTypeTolerance
         Dim objDropDownList As DropDownList
         Dim RiskTypeTolerancePct As TextBox
        
-        With Me.TheState.MyBO
+        With TheState.MyBO
 
-            RiskTypeTolerancePct = CType(RiskTypeToleranceGrid.Rows(Me.RiskTypeToleranceGrid.EditIndex).Cells(GRID_COL_TOLERANCE_PCT).FindControl(GRID_CTRL_NAME_EDIT_TOLERANCE_PCT), TextBox)
+            RiskTypeTolerancePct = CType(RiskTypeToleranceGrid.Rows(RiskTypeToleranceGrid.EditIndex).Cells(GRID_COL_TOLERANCE_PCT).FindControl(GRID_CTRL_NAME_EDIT_TOLERANCE_PCT), TextBox)
            
-            If (Me.TheState.IsEditMode = True AndAlso Me.TheState.IsGridAddNew = False) Then
+            If (TheState.IsEditMode = True AndAlso TheState.IsGridAddNew = False) Then
 
-                Me.ThePage.PopulateBOProperty(TheState.MyBO, "RiskTypeToleranceId", New Guid(CType(RiskTypeToleranceGrid.DataKeys(RiskTypeToleranceGrid.EditIndex).Values(GRID_COL_DLR_RK_TYP_TOLERANCE_ID), Byte())))
-            Elseif  Me.TheState.IsGridAddNew = true
-                Me.ThePage.PopulateBOProperty(TheState.MyBO, "RiskTypeToleranceId", Guid.NewGuid())
+                ThePage.PopulateBOProperty(TheState.MyBO, "RiskTypeToleranceId", New Guid(CType(RiskTypeToleranceGrid.DataKeys(RiskTypeToleranceGrid.EditIndex).Values(GRID_COL_DLR_RK_TYP_TOLERANCE_ID), Byte())))
+            Elseif  TheState.IsGridAddNew = true
+                ThePage.PopulateBOProperty(TheState.MyBO, "RiskTypeToleranceId", Guid.NewGuid())
             End If
            
-            Me.ThePage.PopulateBOProperty(TheState.MyBO, "DealerId", Me.TheState.dealerId)
+            ThePage.PopulateBOProperty(TheState.MyBO, "DealerId", TheState.dealerId)
            
-            objDropDownList = CType(RiskTypeToleranceGrid.Rows((Me.RiskTypeToleranceGrid.EditIndex)).Cells(GRID_COL_RISK_TYPE).FindControl(GRID_CTRL_NAME_EDIT_RISK_TYPE), DropDownList)
-            Me.ThePage.PopulateBOProperty(TheState.MyBO, "RiskType", objDropDownList,false)
-            Me.ThePage.PopulateBOProperty(TheState.MyBO, "RiskTypeId", objDropDownList,true)
+            objDropDownList = CType(RiskTypeToleranceGrid.Rows((RiskTypeToleranceGrid.EditIndex)).Cells(GRID_COL_RISK_TYPE).FindControl(GRID_CTRL_NAME_EDIT_RISK_TYPE), DropDownList)
+            ThePage.PopulateBOProperty(TheState.MyBO, "RiskType", objDropDownList,false)
+            ThePage.PopulateBOProperty(TheState.MyBO, "RiskTypeId", objDropDownList,true)
 
-            Me.ThePage.PopulateBOProperty(TheState.MyBO, "TolerancePct", RiskTypeTolerancePct) 
+            ThePage.PopulateBOProperty(TheState.MyBO, "TolerancePct", RiskTypeTolerancePct) 
 
             
         End With
-        If Me.ThePage.ErrCollection.Count > 0 Then
+        If ThePage.ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Function
@@ -532,52 +532,52 @@ Partial Class UserControlRiskTypeTolerance
             TheState.IsGridVisible = True
             TheState.IsGridAddNew = True
             AddNew()
-            Me.SetControlState()
+            SetControlState()
 
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub btnSave_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Protected Sub btnSave_Click(sender As Object, e As EventArgs)
 
         Try
             PopulateBOFromForm()
            
-            If Me.TheState.IsGridAddNew AndAlso TheState.MyBO.ValidateNewRiskTypeTolerance(Me.TheState.RiskTypeToleranceDV) Then
-                Me.ThePage.MasterPage.MessageController.AddWarning(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_RISK_TYPE_TOLERANCE, True)
+            If TheState.IsGridAddNew AndAlso TheState.MyBO.ValidateNewRiskTypeTolerance(TheState.RiskTypeToleranceDV) Then
+                ThePage.MasterPage.MessageController.AddWarning(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_RISK_TYPE_TOLERANCE, True)
                 Return
             End If
             If  TheState.MyBO.DealerId = Guid.Empty  Then
-                Me.ThePage.MasterPage.MessageController.AddWarning(Assurant.ElitaPlus.Common.ErrorCodes.DEALER_IS_REQUIRED, True)
+                ThePage.MasterPage.MessageController.AddWarning(Assurant.ElitaPlus.Common.ErrorCodes.DEALER_IS_REQUIRED, True)
                 Return
             End If
 
 
-            If (Me.TheState.MyBO.IsDirty) Then
+            If (TheState.MyBO.IsDirty) Then
                 Try
-                    Me.TheState.MyBO.Save()
+                    TheState.MyBO.Save()
                 Catch ex As DataBaseUniqueKeyConstraintViolationException
                     Throw New GUIException("Unique constraint violation", Assurant.ElitaPlus.Common.ErrorCodes.DUPLICATE_KEY_CONSTRAINT_VIOLATED)
                 End Try
 
-                Me.TheState.IsAfterSave = True
-                Me.TheState.IsGridAddNew = False
-                Me.ThePage.MasterPage.MessageController.AddSuccess(Me.MSG_RECORD_SAVED_OK, True)
-                Me.TheState.RiskTypeToleranceDV = Nothing
-                Me.TheState.MyBO = Nothing
-                Me.ReturnFromEditing()
+                TheState.IsAfterSave = True
+                TheState.IsGridAddNew = False
+                ThePage.MasterPage.MessageController.AddSuccess(MSG_RECORD_SAVED_OK, True)
+                TheState.RiskTypeToleranceDV = Nothing
+                TheState.MyBO = Nothing
+                ReturnFromEditing()
             Else
-                Me.ThePage.MasterPage.MessageController.AddWarning(Me.MSG_RECORD_NOT_SAVED, True)
-                Me.ReturnFromEditing()
+                ThePage.MasterPage.MessageController.AddWarning(MSG_RECORD_NOT_SAVED, True)
+                ReturnFromEditing()
             End If
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Protected Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Protected Sub btnCancel_Click(sender As Object, e As EventArgs)
         Try
             With TheState
                 If .IsGridAddNew Then
@@ -586,16 +586,16 @@ Partial Class UserControlRiskTypeTolerance
                     RiskTypeToleranceGrid.PageIndex = .PageIndex
                 End If
                 .DefaultRiskTypeToleranceID = Guid.Empty
-                Me.TheState.MyBO = Nothing
+                TheState.MyBO = Nothing
                 .IsEditMode = False
             End With
-            RiskTypeToleranceGrid.EditIndex = Me.ThePage.NO_ITEM_SELECTED_INDEX
+            RiskTypeToleranceGrid.EditIndex = ThePage.NO_ITEM_SELECTED_INDEX
 
             PopulateGrid()
             SetControlState()
-            Me.RiskTypeToleranceGrid.Focus()
+            RiskTypeToleranceGrid.Focus()
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
     End Sub
 #End Region

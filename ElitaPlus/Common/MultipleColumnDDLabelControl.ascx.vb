@@ -14,7 +14,7 @@ Namespace Common
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -46,7 +46,7 @@ Namespace Common
         Private mbAddNothingSelected As Boolean = False
         Private mnCodeFieldLength As Integer = 10
         Private mnStartDropIndex As Integer = 0
-        Public Event SelectedDropChanged(ByVal aSrc As MultipleColumnDDLabelControl)
+        Public Event SelectedDropChanged(aSrc As MultipleColumnDDLabelControl)
         Private moAdditionalOnClickJavaScript As String = ""
         Private moCodeControlID As String = "multipleDropControl_moMultipleColumnDrop"
         Private moDescriptionControlID As String = "multipleDropControl_moMultipleColumnDropDesc"
@@ -61,7 +61,7 @@ Namespace Common
             Get
                 Return msCaption
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 msCaption = Value
             End Set
         End Property
@@ -69,7 +69,7 @@ Namespace Common
             Get
                 Return msCodeColumnName
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 msCodeColumnName = Value
             End Set
         End Property
@@ -78,7 +78,7 @@ Namespace Common
             Get
                 Return msTextColumnName
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 msTextColumnName = Value
             End Set
         End Property
@@ -87,7 +87,7 @@ Namespace Common
             Get
                 Return msGuidValueColumnName
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 msGuidValueColumnName = Value
             End Set
         End Property
@@ -96,7 +96,7 @@ Namespace Common
             Get
                 Return mbAddNothingSelected
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 mbAddNothingSelected = Value
             End Set
         End Property
@@ -105,7 +105,7 @@ Namespace Common
             Get
                 Return mnCodeFieldLength
             End Get
-            Set(ByVal Value As Integer)
+            Set(Value As Integer)
                 mnCodeFieldLength = Value
             End Set
         End Property
@@ -122,7 +122,7 @@ Namespace Common
             Get
                 Return mnStartDropIndex
             End Get
-            Set(ByVal Value As Integer)
+            Set(Value As Integer)
                 mnStartDropIndex = Value
             End Set
         End Property
@@ -132,7 +132,7 @@ Namespace Common
                 Dim oGuid As Guid = ElitaPlusPage.GetSelectedItem(moMultipleColumnDrop)
                 Return oGuid
             End Get
-            Set(ByVal Value As Guid)
+            Set(Value As Guid)
                 ElitaPlusPage.BindSelectItem(Value.ToString, moMultipleColumnDrop)
                 ElitaPlusPage.BindSelectItem(Value.ToString, moMultipleColumnDropDesc)
             End Set
@@ -170,7 +170,7 @@ Namespace Common
             Get
                 Return moMultipleColumnDrop.SelectedIndex
             End Get
-            Set(ByVal Value As Integer)
+            Set(Value As Integer)
                 moMultipleColumnDrop.SelectedIndex = Value
                 moMultipleColumnDropDesc.SelectedIndex = Value
             End Set
@@ -179,7 +179,7 @@ Namespace Common
             Get
                 Return moAdditionalOnClickJavaScript
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 moAdditionalOnClickJavaScript = Value
             End Set
         End Property
@@ -188,7 +188,7 @@ Namespace Common
             Get
                 Return moDescriptionControlID
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 moDescriptionControlID = Value
             End Set
         End Property
@@ -197,7 +197,7 @@ Namespace Common
             Get
                 Return moCodeControlID
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 moCodeControlID = Value
             End Set
         End Property
@@ -206,7 +206,7 @@ Namespace Common
             Get
                 Return moCaptionControlID
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 moCaptionControlID = Value
             End Set
         End Property
@@ -215,14 +215,14 @@ Namespace Common
             Get
                 Return moMultipleColumnDrop.AutoPostBack
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 moMultipleColumnDrop.AutoPostBack = Value
                 moMultipleColumnDropDesc.AutoPostBack = Value
                 If Not Value Then
-                    moMultipleColumnDrop.Attributes.Add("onchange", Me.AdditionalOnClickJavaScript & "ToggleSelection('" & Me.moMultipleColumnDrop.ClientID & "', '" & Me.moMultipleColumnDropDesc.ClientID & "', 'D', '" & Me.lb_DropDown.ClientID & "')")
-                    moMultipleColumnDropDesc.Attributes.Add("onchange", Me.AdditionalOnClickJavaScript & "ToggleSelection('" & Me.moMultipleColumnDrop.ClientID & "', '" & Me.moMultipleColumnDropDesc.ClientID & "', 'C', '" & Me.lb_DropDown.ClientID & "')")
-                    If Not Me.moOmitRegisteringJavaScriptCode Then
-                        Me.RegisterJavaScriptCode()
+                    moMultipleColumnDrop.Attributes.Add("onchange", AdditionalOnClickJavaScript & "ToggleSelection('" & moMultipleColumnDrop.ClientID & "', '" & moMultipleColumnDropDesc.ClientID & "', 'D', '" & lb_DropDown.ClientID & "')")
+                    moMultipleColumnDropDesc.Attributes.Add("onchange", AdditionalOnClickJavaScript & "ToggleSelection('" & moMultipleColumnDrop.ClientID & "', '" & moMultipleColumnDropDesc.ClientID & "', 'C', '" & lb_DropDown.ClientID & "')")
+                    If Not moOmitRegisteringJavaScriptCode Then
+                        RegisterJavaScriptCode()
                     End If
 
                 End If
@@ -233,25 +233,25 @@ Namespace Common
             Get
                 Return mMode
             End Get
-            Set(ByVal Value As Integer)
+            Set(Value As Integer)
                 mMode = Value
                 Select Case Value
                     Case Me.MODES.EDIT_MODE
-                        Me.moMultipleColumnDrop.Visible = False
-                        Me.moMultipleColumnDropDesc.Visible = False
-                        Me.moMultipleColumnTextBoxCode.Visible = True
-                        Me.moMultipleColumnTextBoxDesc.Visible = True
-                        Me.lb_DropDown.Enabled = False
-                        Me.lblCode.Enabled = False
-                        Me.lblDescription.Enabled = False
+                        moMultipleColumnDrop.Visible = False
+                        moMultipleColumnDropDesc.Visible = False
+                        moMultipleColumnTextBoxCode.Visible = True
+                        moMultipleColumnTextBoxDesc.Visible = True
+                        lb_DropDown.Enabled = False
+                        lblCode.Enabled = False
+                        lblDescription.Enabled = False
                     Case Me.MODES.NEW_MODE
-                        Me.moMultipleColumnDrop.Visible = True
-                        Me.moMultipleColumnDropDesc.Visible = True
-                        Me.moMultipleColumnTextBoxCode.Visible = False
-                        Me.moMultipleColumnTextBoxDesc.Visible = False
-                        Me.lb_DropDown.Enabled = True
-                        Me.lblCode.Enabled = True
-                        Me.lblDescription.Enabled = True
+                        moMultipleColumnDrop.Visible = True
+                        moMultipleColumnDropDesc.Visible = True
+                        moMultipleColumnTextBoxCode.Visible = False
+                        moMultipleColumnTextBoxDesc.Visible = False
+                        lb_DropDown.Enabled = True
+                        lblCode.Enabled = True
+                        lblDescription.Enabled = True
                 End Select
 
             End Set
@@ -261,7 +261,7 @@ Namespace Common
             Get
                 Return moMultipleColumnDrop.Visible
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 moMultipleColumnDrop.Visible = Value
                 moMultipleColumnDropDesc.Visible = Value
             End Set
@@ -271,7 +271,7 @@ Namespace Common
             Get
                 Return moMultipleColumnDrop.Width
             End Get
-            Set(ByVal Value As Unit)
+            Set(Value As Unit)
                 moMultipleColumnDrop.Width = Value
             End Set
         End Property
@@ -331,19 +331,19 @@ Namespace Common
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             If Not Page.IsPostBack Then
-                If Not Me.Caption.Equals(String.Empty) Then
-                    Me.lb_DropDown.Text = Me.Caption.Replace(":", "") + ":"
+                If Not Caption.Equals(String.Empty) Then
+                    lb_DropDown.Text = Caption.Replace(":", "") + ":"
                 End If
-                If Not Me.moMultipleColumnDrop.SelectedValue.Equals(Nothing) Then
-                    Me.moMultipleColumnDropDesc.SelectedIndex = -1
-                    If Not Me.moMultipleColumnDropDesc.Items.Count.Equals(0) Then
-                        Me.moMultipleColumnDropDesc.Items.FindByValue(Me.moMultipleColumnDrop.SelectedValue).Selected = True
+                If Not moMultipleColumnDrop.SelectedValue.Equals(Nothing) Then
+                    moMultipleColumnDropDesc.SelectedIndex = -1
+                    If Not moMultipleColumnDropDesc.Items.Count.Equals(0) Then
+                        moMultipleColumnDropDesc.Items.FindByValue(moMultipleColumnDrop.SelectedValue).Selected = True
                     End If
                 End If
             ElseIf Not moMultipleColumnDrop.AutoPostBack Then
-                Me.RegisterJavaScriptCode()
+                RegisterJavaScriptCode()
             End If
         End Sub
 
@@ -351,15 +351,15 @@ Namespace Common
 
 #Region "Handlers-DropDown"
 
-        Private Sub moMultipleColumnDrop_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moMultipleColumnDrop.SelectedIndexChanged
-            Me.moMultipleColumnDropDesc.SelectedIndex = -1
-            Me.moMultipleColumnDropDesc.Items.FindByValue(moMultipleColumnDrop.SelectedValue).Selected = True
+        Private Sub moMultipleColumnDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moMultipleColumnDrop.SelectedIndexChanged
+            moMultipleColumnDropDesc.SelectedIndex = -1
+            moMultipleColumnDropDesc.Items.FindByValue(moMultipleColumnDrop.SelectedValue).Selected = True
             RaiseEvent SelectedDropChanged(Me)
         End Sub
 
-        Private Sub moMultipleColumnDropDesc_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moMultipleColumnDropDesc.SelectedIndexChanged
-            Me.moMultipleColumnDrop.SelectedIndex = -1
-            Me.moMultipleColumnDrop.Items.FindByValue(moMultipleColumnDropDesc.SelectedValue).Selected = True
+        Private Sub moMultipleColumnDropDesc_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moMultipleColumnDropDesc.SelectedIndexChanged
+            moMultipleColumnDrop.SelectedIndex = -1
+            moMultipleColumnDrop.Items.FindByValue(moMultipleColumnDropDesc.SelectedValue).Selected = True
             RaiseEvent SelectedDropChanged(Me)
         End Sub
 #End Region
@@ -368,7 +368,7 @@ Namespace Common
 
 #Region "Utilities"
 
-        Private Function setSpace(ByVal numberOfSpaces As Integer) As String
+        Private Function setSpace(numberOfSpaces As Integer) As String
 
             Dim Spaces As String
             Dim i As Integer
@@ -388,7 +388,7 @@ Namespace Common
 
 #Region "Creates a Multiple Column DropDown Based on DataView"
 
-        Private Sub BindCodeDescToList(ByVal lstControl As ListControl, ByVal Data As DataView, ByVal ColumnName As String)
+        Private Sub BindCodeDescToList(lstControl As ListControl, Data As DataView, ColumnName As String)
             Dim i As Integer
             Dim sCode, sDesc, sGuid, sListText As String
             Dim cFiller As Char = "_".Chars(0)
@@ -399,7 +399,7 @@ Namespace Common
             If NothingSelected Then
                 lstControl.Items.Add(New ListItem("", Guid.Empty.ToString))
             End If
-            If Not Data Is Nothing Then
+            If Data IsNot Nothing Then
                 For i = StartDropIndex To Data.Count - 1
 
                     sCode = Data(i)(CodeColumnName).ToString
@@ -415,7 +415,7 @@ Namespace Common
 
         End Sub
 
-        Public Sub BindData(ByVal oDataView As DataView)
+        Public Sub BindData(oDataView As DataView)
 
             oDataView.Sort = CodeColumnName
             ElitaPlusPage.BindListControlToDataView(moMultipleColumnDrop, oDataView, CodeColumnName, , mbAddNothingSelected)
@@ -423,14 +423,14 @@ Namespace Common
             ElitaPlusPage.BindListControlToDataView(moMultipleColumnDropDesc, oDataView, TextColumnName, , mbAddNothingSelected)
 
         End Sub
-        Public Sub ChangeEnabledControlProperty(ByVal blnEnabledState As Boolean)
-            Page.ChangeEnabledControlProperty(Me.moMultipleColumnDrop, blnEnabledState)
-            Page.ChangeEnabledControlProperty(Me.moMultipleColumnDropDesc, blnEnabledState)
+        Public Sub ChangeEnabledControlProperty(blnEnabledState As Boolean)
+            Page.ChangeEnabledControlProperty(moMultipleColumnDrop, blnEnabledState)
+            Page.ChangeEnabledControlProperty(moMultipleColumnDropDesc, blnEnabledState)
         End Sub
 
-        Public Sub SetControl(ByVal AutoPostBack As Boolean, _
-                              ByVal Mode As Integer, _
-                              ByVal NothingSelected As Boolean, _
+        Public Sub SetControl(AutoPostBack As Boolean, _
+                              Mode As Integer, _
+                              NothingSelected As Boolean, _
                               Optional ByVal dv As DataView = Nothing, _
                               Optional ByVal Caption As String = "", _
                               Optional ByVal overRideSingularity As Boolean = False, _
@@ -442,38 +442,38 @@ Namespace Common
                               Optional ByVal OmitRegisteringJavaScriptCode As Boolean = False, _
                               Optional ByVal TabIndexStartingNumber As Int16 = 0)
 
-            If Not Code_HTML_ID = "" Then Me.CodeControlHTMLID = Code_HTML_ID
-            If Not Description_HTML_ID = "" Then Me.DescriptionHTMLID = Description_HTML_ID
-            If Not Caption_HTML_ID = "" Then Me.CaptionHTMLID = Caption_HTML_ID
+            If Not Code_HTML_ID = "" Then CodeControlHTMLID = Code_HTML_ID
+            If Not Description_HTML_ID = "" Then DescriptionHTMLID = Description_HTML_ID
+            If Not Caption_HTML_ID = "" Then CaptionHTMLID = Caption_HTML_ID
 
             Me.AdditionalOnClickJavaScript = additionalOnClickJavaScript
-            Me.moOmitRegisteringJavaScriptCode = OmitRegisteringJavaScriptCode
-            Me.AutoPostBackDD = AutoPostBack
+            moOmitRegisteringJavaScriptCode = OmitRegisteringJavaScriptCode
+            AutoPostBackDD = AutoPostBack
 
             If Caption = "" Then
                 Me.Caption = TranslationBase.TranslateLabelOrMessage("COMPANY")
-            ElseIf Not Caption.Equals(Me.NO_CAPTION) Then
+            ElseIf Not Caption.Equals(NO_CAPTION) Then
                 Me.Caption = Caption
-                Me.lb_DropDown.Text = Me.Caption
-                If addColonToCaption AndAlso Me.lb_DropDown.Text.IndexOf(":") < 0 Then Me.lb_DropDown.Text &= ":"
+                lb_DropDown.Text = Me.Caption
+                If addColonToCaption AndAlso lb_DropDown.Text.IndexOf(":") < 0 Then lb_DropDown.Text &= ":"
             End If
 
             Me.NothingSelected = NothingSelected
 
             If dv Is Nothing Then dv = LookupListNew.GetUserCompaniesLookupList()
-            Me.BindData(dv)
+            BindData(dv)
 
             If Not overRideSingularity Then
-                overRideSingularity = dv.Count > Me.SINGLE_ITEM
+                overRideSingularity = dv.Count > SINGLE_ITEM
             End If
 
-            If Mode = Me.MODES.NEW_MODE And overRideSingularity Then
+            If Mode = Me.MODES.NEW_MODE AndAlso overRideSingularity Then
                 Me.Mode = Me.MODES.NEW_MODE
             Else
                 Me.NothingSelected = False
                 Me.Mode = Me.MODES.EDIT_MODE
-                Me.moMultipleColumnTextBoxCode.Text = LookupListNew.GetCodeFromId(dv, Me.Page.GetSelectedItem(Me.moMultipleColumnDrop)) 'CType(dv.Item(0).Item(0), String)
-                Me.moMultipleColumnTextBoxDesc.Text = LookupListNew.GetDescriptionFromId(dv, Me.Page.GetSelectedItem(Me.moMultipleColumnDropDesc))
+                moMultipleColumnTextBoxCode.Text = LookupListNew.GetCodeFromId(dv, Page.GetSelectedItem(moMultipleColumnDrop)) 'CType(dv.Item(0).Item(0), String)
+                moMultipleColumnTextBoxDesc.Text = LookupListNew.GetDescriptionFromId(dv, Page.GetSelectedItem(moMultipleColumnDropDesc))
             End If
 
             If TabIndexStartingNumber > 0 Then
@@ -493,7 +493,7 @@ Namespace Common
             sJavaScript &= "else { objDescDropDown.value = objCodeDropDown.options[objCodeDropDown.selectedIndex].value;}" & Environment.NewLine
             sJavaScript &= "if (lblCaption != '') {document.all.item(lblCaption).style.color = '';}}" & Environment.NewLine
             sJavaScript &= "</SCRIPT>" & Environment.NewLine
-            Me.Page.RegisterStartupScript("ToggleDropDown", sJavaScript)
+            Page.RegisterStartupScript("ToggleDropDown", sJavaScript)
         End Sub
 
 

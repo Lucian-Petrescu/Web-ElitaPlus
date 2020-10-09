@@ -13,7 +13,7 @@ Public Class GetVSCModels
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetVSCModelsDs)
+    Public Sub New(ds As GetVSCModelsDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -26,7 +26,7 @@ Public Class GetVSCModels
 #Region "Private Members"
 
 
-    Private Sub MapDataSet(ByVal ds As GetVSCModelsDs)
+    Private Sub MapDataSet(ds As GetVSCModelsDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -39,8 +39,8 @@ Public Class GetVSCModels
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -48,13 +48,13 @@ Public Class GetVSCModels
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetVSCModelsDs)
+    Private Sub Load(ds As GetVSCModelsDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -67,11 +67,11 @@ Public Class GetVSCModels
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetVSCModelsDs)
+    Private Sub PopulateBOFromWebService(ds As GetVSCModelsDs)
         Try
             If ds.GetVSCModels.Count = 0 Then Exit Sub
             With ds.GetVSCModels.Item(0)
-                Me.Make = .Make
+                Make = .Make
             End With
 
         Catch ex As BOValidationException
@@ -88,32 +88,32 @@ Public Class GetVSCModels
 
 #Region "Properties"
 
-    Public Property CompanyGroupCode() As String
+    Public Property CompanyGroupCode As String
         Get
-            If Row(Me.DATA_COL_NAME_COMPANY_GROUP_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_COMPANY_GROUP_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_COMPANY_GROUP_CODE), String))
+                Return (CType(Row(DATA_COL_NAME_COMPANY_GROUP_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_COMPANY_GROUP_CODE, Value)
+            SetValue(DATA_COL_NAME_COMPANY_GROUP_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property Make() As String
+    Public Property Make As String
         Get
-            If Row(Me.DATA_COL_NAME_MAKE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_MAKE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_MAKE), String))
+                Return (CType(Row(DATA_COL_NAME_MAKE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_MAKE, Value)
+            SetValue(DATA_COL_NAME_MAKE, Value)
         End Set
     End Property
 #End Region
@@ -122,7 +122,7 @@ Public Class GetVSCModels
 
     Public Overrides Function ProcessWSRequest() As String
         Try
-            Me.Validate()
+            Validate()
             Dim objCompanyGroup As CompanyGroup = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup
             Dim companyGroupID As Guid = objCompanyGroup.Id
 

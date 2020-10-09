@@ -77,21 +77,21 @@ Public Class AcctAmtSrcMappingDetailForm
 
 #Region "Page Events"
     Private Sub UpdateBreadCrum()
-        Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
-        Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-        Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-        Me.MasterPage.UsePageTabTitleInBreadCrum = False
+        MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
+        MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+        MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+        MasterPage.UsePageTabTitleInBreadCrum = False
     End Sub
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.MasterPage.MessageController.Clear()
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        MasterPage.MessageController.Clear()
         Try
             UpdateBreadCrum()
-            If (Not Me.IsPostBack) Then
+            If (Not IsPostBack) Then
                 PopulateDropdowns()
                 ' Translate Grid Headers
-                Me.TranslateGridHeader(Me.gridMapping)
-                Me.TranslateGridHeader(Me.gridEditFormular)
+                TranslateGridHeader(gridMapping)
+                TranslateGridHeader(gridEditFormular)
                 ' Populate the page
                 PopulatePage()
             Else
@@ -100,27 +100,27 @@ Public Class AcctAmtSrcMappingDetailForm
 
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
         'Me.ShowMissingTranslations(Me.MasterPage.MessageController)
     End Sub
 
-    Private Sub AcctAmtSrcMappingDetailForm_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles Me.PageCall
+    Private Sub AcctAmtSrcMappingDetailForm_PageCall(CallFromUrl As String, CallingPar As Object) Handles Me.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 Dim objParm As PageCallType = CType(CallingPar, PageCallType)
                 If objParm.ActionType = PageCallActionType.EditExistingMapping Then
-                    Me.State.MyParentBO = New AfaAcctAmtSrc(objParm.ID)
+                    State.MyParentBO = New AfaAcctAmtSrc(objParm.ID)
                 Else 'new mapping, create a new object
-                    Me.State.MyParentBO = New AfaAcctAmtSrc()
-                    Me.State.MyParentBO.DealerId = objParm.DealerID
-                    Me.State.MyParentBO.AcctAmtSrcFieldTypeId = objParm.ID
-                    Me.State.MyParentBO.EntityByRegion = "N"
+                    State.MyParentBO = New AfaAcctAmtSrc()
+                    State.MyParentBO.DealerId = objParm.DealerID
+                    State.MyParentBO.AcctAmtSrcFieldTypeId = objParm.ID
+                    State.MyParentBO.EntityByRegion = "N"
                     NewMappings()
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
@@ -162,10 +162,10 @@ Public Class AcctAmtSrcMappingDetailForm
         PopulateMappingGrid(Guid.Empty, String.Empty, String.Empty)
     End Sub
 
-    Private Sub PopulateMappingGrid(ByVal prodID As Guid, ByVal LossType As String, ByVal CntToUse As String, Optional ByVal blnGetMatchedOnly As Boolean = False)
+    Private Sub PopulateMappingGrid(prodID As Guid, LossType As String, CntToUse As String, Optional ByVal blnGetMatchedOnly As Boolean = False)
         Try
 
-            If Me.State.dvMappingList Is Nothing Then
+            If State.dvMappingList Is Nothing Then
                 State.dvMappingList = AfaAcctAmtSrcMapping.getFormularByProdLossType(State.MyParentBO.Id, prodID, LossType, CntToUse, blnGetMatchedOnly)
             End If
 
@@ -179,21 +179,21 @@ Public Class AcctAmtSrcMappingDetailForm
                 'CreateHeaderForEmptyGrid(gridMapping, "")
                 ShowHeaderForEmptyGrid(gridMapping, State.dvMappingList)
             Else
-                Me.gridMapping.DataSource = State.dvMappingList
-                Me.gridMapping.DataBind()
+                gridMapping.DataSource = State.dvMappingList
+                gridMapping.DataBind()
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub PopulateFormularGrid(ByVal prodID As Guid, ByVal LossType As String, ByVal CntToUse As String)
+    Private Sub PopulateFormularGrid(prodID As Guid, LossType As String, CntToUse As String)
         Try
             If State.CurrentAction = EditingAction.AddNew Then ' New formular, no need to check the existings
                 State.listFormular = New Collections.Generic.List(Of AfaAcctAmtSrcMapping)
             Else
-                If Me.State.listFormular Is Nothing Then
+                If State.listFormular Is Nothing Then
                     State.listFormular = AfaAcctAmtSrcMapping.getList(State.MyParentBO.Id, prodID, LossType, CntToUse, True)
                 End If
             End If
@@ -214,17 +214,17 @@ Public Class AcctAmtSrcMappingDetailForm
                 State.listFormular.Add(obj)
             Next
 
-            Me.gridEditFormular.DataSource = State.listFormular
-            Me.gridEditFormular.DataBind()
+            gridEditFormular.DataSource = State.listFormular
+            gridEditFormular.DataBind()
             gridEditFormular.Visible = True
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
 
-    Private Sub ShowHeaderForEmptyGrid(ByVal objGrid As GridView, ByRef dv As DataView)
+    Private Sub ShowHeaderForEmptyGrid(objGrid As GridView, ByRef dv As DataView)
 
         dv.Table.Rows.Add(dv.Table.NewRow())
 
@@ -317,7 +317,7 @@ Public Class AcctAmtSrcMappingDetailForm
     Private Function ValidateChangesBeforeSave() As Boolean
         Dim blnResult As Boolean = True
         '1 validate a formular is not empty
-        If Not listFormularToSave.Exists(Function(r) (Not r.Operation Is Nothing) AndAlso (r.Operation <> String.Empty) AndAlso (r.InvRateBucketId <> Guid.Empty)) Then
+        If Not listFormularToSave.Exists(Function(r) (r.Operation IsNot Nothing) AndAlso (r.Operation <> String.Empty) AndAlso (r.InvRateBucketId <> Guid.Empty)) Then
             blnResult = False
             MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage("FORMULAR") + ":" + TranslationBase.TranslateLabelOrMessage("EMPTY_FORMULAR"), False)
             Return blnResult
@@ -325,7 +325,7 @@ Public Class AcctAmtSrcMappingDetailForm
 
 
         '2. validate there is no duplicate (same product/coverage value)
-        Dim obj As AfaAcctAmtSrcMapping = listFormularToSave.Find(Function(r) (Not r.Operation Is Nothing) AndAlso (r.Operation <> String.Empty) AndAlso (r.InvRateBucketId <> Guid.Empty))
+        Dim obj As AfaAcctAmtSrcMapping = listFormularToSave.Find(Function(r) (r.Operation IsNot Nothing) AndAlso (r.Operation <> String.Empty) AndAlso (r.InvRateBucketId <> Guid.Empty))
 
         If obj.LossType Is Nothing Then
             obj.LossType = String.Empty
@@ -362,9 +362,9 @@ Public Class AcctAmtSrcMappingDetailForm
         Next
 
         '3. validate operation and bucket, if one has value, another also need to have value
-        For Each objTest As AfaAcctAmtSrcMapping In listFormularToSave.FindAll(Function(r) ((Not r.Operation Is Nothing) AndAlso (r.Operation <> String.Empty)) OrElse (r.InvRateBucketId <> Guid.Empty))
+        For Each objTest As AfaAcctAmtSrcMapping In listFormularToSave.FindAll(Function(r) ((r.Operation IsNot Nothing) AndAlso (r.Operation <> String.Empty)) OrElse (r.InvRateBucketId <> Guid.Empty))
             If (objTest.InvRateBucketId <> Guid.Empty AndAlso (objTest.Operation Is Nothing OrElse objTest.Operation = String.Empty)) _
-                OrElse (objTest.InvRateBucketId = Guid.Empty AndAlso ((Not objTest.Operation Is Nothing) AndAlso objTest.Operation <> String.Empty)) Then
+                OrElse (objTest.InvRateBucketId = Guid.Empty AndAlso ((objTest.Operation IsNot Nothing) AndAlso objTest.Operation <> String.Empty)) Then
                 blnResult = False
                 MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage("FORMULAR:") + ": " + TranslationBase.TranslateLabelOrMessage("MUST_SELECT_BOTH_OPERATION_AND_BUCKET"), False)
                 Exit For
@@ -406,7 +406,7 @@ Public Class AcctAmtSrcMappingDetailForm
                     End If
                 Next
 
-                Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
                 'Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
             End If
 
@@ -421,7 +421,7 @@ Public Class AcctAmtSrcMappingDetailForm
             PopulateMappingGrid(Guid.Empty, String.Empty, String.Empty)
             EnableDisablePageControls()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -468,7 +468,7 @@ Public Class AcctAmtSrcMappingDetailForm
             populateEditingGrids()
             EnableDisablePageControls()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -504,13 +504,13 @@ Public Class AcctAmtSrcMappingDetailForm
                 State.HasDataChanged = True
             Next
 
-            Me.MasterPage.MessageController.AddSuccess(Message.DELETE_RECORD_CONFIRMATION, True)
+            MasterPage.MessageController.AddSuccess(Message.DELETE_RECORD_CONFIRMATION, True)
 
             ClearStateParams()
             PopulateMappingGrid(Guid.Empty, String.Empty, String.Empty)
             EnableDisablePageControls()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -522,7 +522,7 @@ Public Class AcctAmtSrcMappingDetailForm
             AddNewFormulars()
             EnableDisablePageControls()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
@@ -531,24 +531,24 @@ Public Class AcctAmtSrcMappingDetailForm
 #Region "Button event handlers"
     Protected Sub CheckIfComingFromSaveConfirm()
 
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
         Try
-            If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
-                Select Case Me.State.ActionInProgress
+            If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
                         'SaveFormular()
                         State.MyParentBO.Save()
                         State.HasDataChanged = True
-                        Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                        MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
                     Case ElitaPlusPage.DetailPageCommand.Delete
                         DeleteFormulars()
                         State.CurrentAction = EditingAction.None
                 End Select
 
-            ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-                Select Case Me.State.ActionInProgress
+            ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        Me.ReturnToCallingPage(Me.State.HasDataChanged)
+                        ReturnToCallingPage(State.HasDataChanged)
                     Case ElitaPlusPage.DetailPageCommand.Delete
                         State.CurrentAction = EditingAction.None
                 End Select
@@ -557,12 +557,12 @@ Public Class AcctAmtSrcMappingDetailForm
             Throw ex
         Finally
             'Clean after consuming the action
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-            Me.HiddenSaveChangesPromptResponse.Value = ""
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            HiddenSaveChangesPromptResponse.Value = ""
         End Try
     End Sub
 
-    Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
         Try
             With State.MyParentBO
                 .EntityByRegion = ddlEntityByRegion.SelectedValue
@@ -570,22 +570,22 @@ Public Class AcctAmtSrcMappingDetailForm
                 .ReconcilWithInvoice = ddlReconWithInvoice.SelectedValue
                 .UseFormulaForClip = ddlUseFormulaForClip.SelectedValue
                 If .IsDirty AndAlso State.CurrentAction <> EditingAction.AddFirst Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
-                    Me.ReturnToCallingPage(Me.State.HasDataChanged)
+                    ReturnToCallingPage(State.HasDataChanged)
                 End If
             End With
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-            Me.State.LastErrMsg = Me.MasterPage.MessageController.Text
+            HandleErrors(ex, MasterPage.MessageController)
+            DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+            State.LastErrMsg = MasterPage.MessageController.Text
         End Try
     End Sub
 
-    Private Sub btnSave_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnSave_WRITE.Click
         Try
             With State.MyParentBO
                 .EntityByRegion = ddlEntityByRegion.SelectedValue
@@ -595,20 +595,20 @@ Public Class AcctAmtSrcMappingDetailForm
                 If .IsDirty Then
                     .Save()
                     State.HasDataChanged = True
-                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
                 End If
             End With
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Save
-            Me.State.LastErrMsg = Me.MasterPage.MessageController.Text
+            HandleErrors(ex, MasterPage.MessageController)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Save
+            State.LastErrMsg = MasterPage.MessageController.Text
         End Try
     End Sub
 #End Region
 
 #Region "Handle Grids"
-    Private Sub gridMapping_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles gridMapping.RowCommand
+    Private Sub gridMapping_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles gridMapping.RowCommand
         Try
             Select Case e.CommandName.ToString()
                 Case "EditRecord"
@@ -633,36 +633,36 @@ Public Class AcctAmtSrcMappingDetailForm
                 Case "DeleteRecord"
                     State.EditingDetailID = Integer.Parse(e.CommandArgument.ToString)
                     State.CurrentAction = EditingAction.Delete
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
                     'DeleteFormulars()
-                    Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
+                    DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
             End Select
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub gridMapping_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gridMapping.RowCreated
+    Private Sub gridMapping_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gridMapping.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
 
-    Private Sub gridMapping_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gridMapping.RowDataBound
+    Private Sub gridMapping_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gridMapping.RowDataBound
         Try
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim objDDL As DropDownList, dv As DataView
 
-            If (itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
+            If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
                 With e.Row
 
                     If .RowIndex = gridMapping.EditIndex Then
                         objDDL = CType(e.Row.FindControl(GRID_CTRL_NAME_PRODUCT), DropDownList)
-                        If Not objDDL Is Nothing Then
+                        If objDDL IsNot Nothing Then
                             Try
                                 dv = AfaAcctAmtSrcMapping.getProductByDealer(State.MyParentBO.DealerId, String.Empty)
                                 dv.Sort = "code ASC"
@@ -671,7 +671,7 @@ Public Class AcctAmtSrcMappingDetailForm
                                     objDDL.Items.Add(New ListItem(dv(i)("code").ToString & " - " & dv(i)("description").ToString, New Guid(CType(dv(i)("afa_product_id"), Byte())).ToString))
                                 Next
                                 objDDL.Items.Insert(0, New ListItem("", Guid.Empty.ToString))
-                                Me.SetSelectedItem(objDDL, New Guid(CType(dvRow("afa_product_id"), Byte())))
+                                SetSelectedItem(objDDL, New Guid(CType(dvRow("afa_product_id"), Byte())))
                             Catch ex As Exception
                             End Try
                         End If
@@ -679,7 +679,7 @@ Public Class AcctAmtSrcMappingDetailForm
                         dv = Nothing
 
                         objDDL = CType(e.Row.FindControl(GRID_CTRL_NAME_LOSSTYPE), DropDownList)
-                        If Not objDDL Is Nothing Then
+                        If objDDL IsNot Nothing Then
                             Try
                                 dv = ReppolicyClaimCount.GetCoverageTypeListByDealer(State.MyParentBO.DealerId)
                                 dv.Sort = "description ASC"
@@ -688,7 +688,7 @@ Public Class AcctAmtSrcMappingDetailForm
                                     objDDL.Items.Add(New ListItem(dv(i)("description").ToString, dv(i)("code").ToString))
                                 Next
                                 objDDL.Items.Insert(0, New ListItem("", ""))
-                                Me.SetSelectedItem(objDDL, dvRow("Loss_type").ToString)
+                                SetSelectedItem(objDDL, dvRow("Loss_type").ToString)
                             Catch ex As Exception
                             End Try
                         End If
@@ -696,7 +696,7 @@ Public Class AcctAmtSrcMappingDetailForm
                         dv = Nothing
 
                         objDDL = CType(e.Row.FindControl(GRID_CTRL_NAME_COUNTFIELD), DropDownList)
-                        If Not objDDL Is Nothing Then
+                        If objDDL IsNot Nothing Then
                             Try
                                 dv = LookupListNew.DropdownLookupList("CNTFIELDEPRISM", ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                                 dv.Sort = "description ASC"
@@ -704,7 +704,7 @@ Public Class AcctAmtSrcMappingDetailForm
                                 For i As Integer = 0 To dv.Count - 1
                                     objDDL.Items.Add(New ListItem(dv(i)("description").ToString, dv(i)("code").ToString))
                                 Next
-                                Me.SetSelectedItem(objDDL, dvRow("count_field_to_use").ToString)
+                                SetSelectedItem(objDDL, dvRow("count_field_to_use").ToString)
                             Catch ex As Exception
                             End Try
                         End If
@@ -722,25 +722,25 @@ Public Class AcctAmtSrcMappingDetailForm
             End If
             BaseItemBound(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub gridEditFormular_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gridEditFormular.RowCreated
+    Private Sub gridEditFormular_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gridEditFormular.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub gridEditFormular_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gridEditFormular.RowDataBound
+    Private Sub gridEditFormular_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gridEditFormular.RowDataBound
         Try
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As AfaAcctAmtSrcMapping
 
 
-            If Not e.Row.DataItem Is Nothing Then
+            If e.Row.DataItem IsNot Nothing Then
                 'If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem OrElse itemType = ListItemType.EditItem Then
                 dvRow = CType(e.Row.DataItem, AfaAcctAmtSrcMapping)
                 'edit item, populate dropdown and set value
@@ -749,7 +749,7 @@ Public Class AcctAmtSrcMappingDetailForm
                 'set selected opration value 
                 objDDL = CType(e.Row.FindControl(GRID_CTRL_NAME_OPERATION), DropDownList)
                 If dvRow.Operation <> String.Empty Then
-                    Me.SetSelectedItem(objDDL, dvRow.Operation)
+                    SetSelectedItem(objDDL, dvRow.Operation)
                 End If
                 objDDL = Nothing
 
@@ -773,13 +773,13 @@ Public Class AcctAmtSrcMappingDetailForm
 
 
                 If dvRow.InvRateBucketId <> Guid.Empty Then
-                    Me.SetSelectedItem(objDDL, dvRow.InvRateBucketId.ToString)
+                    SetSelectedItem(objDDL, dvRow.InvRateBucketId.ToString)
                 End If
                 objDDL = Nothing
                 'End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region

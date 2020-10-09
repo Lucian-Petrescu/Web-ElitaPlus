@@ -6,48 +6,48 @@ Public Class CompanyGroup
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New CompanyGroupDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class CompanyGroup
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CompanyGroupDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -90,7 +90,7 @@ Public Class CompanyGroup
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(CompanyGroupDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class CompanyGroup
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If row(CompanyGroupDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -110,15 +110,15 @@ Public Class CompanyGroup
                 Return CType(row(CompanyGroupDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CompanyGroupDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(CompanyGroupDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=5)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If row(CompanyGroupDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -127,18 +127,18 @@ Public Class CompanyGroup
                 Return CType(row(CompanyGroupDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CompanyGroupDAL.COL_NAME_CODE, Value)
+            SetValue(CompanyGroupDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
     Public Sub InitCompanyGroupTable()
-        Me.Dataset.Tables(CompanyGroupDAL.TABLE_NAME).Rows.Clear()
+        Dataset.Tables(CompanyGroupDAL.TABLE_NAME).Rows.Clear()
     End Sub
 
     <ValueMandatory("")> _
-    Public Property ClaimNumberingById() As Guid
+    Public Property ClaimNumberingById As Guid
         Get
             CheckDeleted()
             If Row(CompanyGroupDAL.COL_NAME_CLAIM_NUMBERING_BY_ID) Is DBNull.Value Then
@@ -147,14 +147,14 @@ Public Class CompanyGroup
                 Return New Guid(CType(Row(CompanyGroupDAL.COL_NAME_CLAIM_NUMBERING_BY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CompanyGroupDAL.COL_NAME_CLAIM_NUMBERING_BY_ID, Value)
+            SetValue(CompanyGroupDAL.COL_NAME_CLAIM_NUMBERING_BY_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1)> _
-Public Property AccountingByCompany() As String
+Public Property AccountingByCompany As String
         Get
             CheckDeleted()
             If Row(CompanyGroupDAL.COL_NAME_ACCT_BY_COMPANY) Is DBNull.Value Then
@@ -163,14 +163,14 @@ Public Property AccountingByCompany() As String
                 Return CType(Row(CompanyGroupDAL.COL_NAME_ACCT_BY_COMPANY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CompanyGroupDAL.COL_NAME_ACCT_BY_COMPANY, Value)
+            SetValue(CompanyGroupDAL.COL_NAME_ACCT_BY_COMPANY, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property InvoiceNumberingById() As Guid
+    Public Property InvoiceNumberingById As Guid
         Get
             CheckDeleted()
             If Row(CompanyGroupDAL.COL_NAME_INVOICE_NUMBERING_BY_ID) Is DBNull.Value Then
@@ -179,13 +179,13 @@ Public Property AccountingByCompany() As String
                 Return New Guid(CType(Row(CompanyGroupDAL.COL_NAME_INVOICE_NUMBERING_BY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CompanyGroupDAL.COL_NAME_INVOICE_NUMBERING_BY_ID, Value)
+            SetValue(CompanyGroupDAL.COL_NAME_INVOICE_NUMBERING_BY_ID, Value)
         End Set
     End Property
 
-    Public Property FtpSiteId() As Guid
+    Public Property FtpSiteId As Guid
         Get
             CheckDeleted()
             If Row(CompanyGroupDAL.COL_NAME_FTP_SITE_ID) Is DBNull.Value Then
@@ -194,15 +194,15 @@ Public Property AccountingByCompany() As String
                 Return New Guid(CType(Row(CompanyGroupDAL.COL_NAME_FTP_SITE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CompanyGroupDAL.COL_NAME_FTP_SITE_ID, Value)
+            SetValue(CompanyGroupDAL.COL_NAME_FTP_SITE_ID, Value)
         End Set
     End Property
 
     'REQ-1142
     <ValidNumericRange("", Max:=999, Min:=1)> _
-    Public Property InactiveUsedVehiclesOlderThan() As LongType
+    Public Property InactiveUsedVehiclesOlderThan As LongType
         Get
             CheckDeleted()
             If Row(CompanyGroupDAL.COL_NAME_INACTIVE_USED_VEHICLES_Older_THAN) Is DBNull.Value Then
@@ -211,13 +211,13 @@ Public Property AccountingByCompany() As String
                 Return New LongType(CType(Row(CompanyGroupDAL.COL_NAME_INACTIVE_USED_VEHICLES_Older_THAN), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(CompanyGroupDAL.COL_NAME_INACTIVE_USED_VEHICLES_Older_THAN, Value)
+            SetValue(CompanyGroupDAL.COL_NAME_INACTIVE_USED_VEHICLES_Older_THAN, Value)
         End Set
     End Property
 
-    Public Property InactiveNewVehiclesBasedOn() As Guid
+    Public Property InactiveNewVehiclesBasedOn As Guid
         Get
             CheckDeleted()
             If Row(CompanyGroupDAL.COL_NAME_INACTIVE_NEW_VEHICLES_BASED_ON) Is DBNull.Value Then
@@ -226,15 +226,15 @@ Public Property AccountingByCompany() As String
                 Return New Guid(CType(Row(CompanyGroupDAL.COL_NAME_INACTIVE_NEW_VEHICLES_BASED_ON), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CompanyGroupDAL.COL_NAME_INACTIVE_NEW_VEHICLES_BASED_ON, Value)
+            SetValue(CompanyGroupDAL.COL_NAME_INACTIVE_NEW_VEHICLES_BASED_ON, Value)
         End Set
     End Property
     'REQ-1142 end
     'REQ-863 
     <ValueMandatory("")> _
-    Public Property InvoiceGrpNumberingById() As Guid
+    Public Property InvoiceGrpNumberingById As Guid
         Get
             CheckDeleted()
             If Row(CompanyGroupDAL.COL_NAME_INVOICE_GROUP_NUMBERING_BY_ID) Is DBNull.Value Then
@@ -243,13 +243,13 @@ Public Property AccountingByCompany() As String
                 Return New Guid(CType(Row(CompanyGroupDAL.COL_NAME_INVOICE_GROUP_NUMBERING_BY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CompanyGroupDAL.COL_NAME_INVOICE_GROUP_NUMBERING_BY_ID, Value)
+            SetValue(CompanyGroupDAL.COL_NAME_INVOICE_GROUP_NUMBERING_BY_ID, Value)
         End Set
     End Property
     <ValueMandatory("")> _
-    Public Property AuthorizationNumberingById() As Guid
+    Public Property AuthorizationNumberingById As Guid
         Get
             CheckDeleted()
             If Row(CompanyGroupDAL.COL_NAME_AUTHORIZATION_NUMBERING_BY_ID) Is DBNull.Value Then
@@ -258,13 +258,13 @@ Public Property AccountingByCompany() As String
                 Return New Guid(CType(Row(CompanyGroupDAL.COL_NAME_AUTHORIZATION_NUMBERING_BY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CompanyGroupDAL.COL_NAME_AUTHORIZATION_NUMBERING_BY_ID, Value)
+            SetValue(CompanyGroupDAL.COL_NAME_AUTHORIZATION_NUMBERING_BY_ID, Value)
         End Set
     End Property
     <ValueMandatory("")> _
-    Public Property PaymentGrpNumberingById() As Guid
+    Public Property PaymentGrpNumberingById As Guid
         Get
             CheckDeleted()
             If Row(CompanyGroupDAL.COL_NAME_PAYMENT_GROUP_NUMBERING_BY_ID) Is DBNull.Value Then
@@ -273,16 +273,16 @@ Public Property AccountingByCompany() As String
                 Return New Guid(CType(Row(CompanyGroupDAL.COL_NAME_PAYMENT_GROUP_NUMBERING_BY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CompanyGroupDAL.COL_NAME_PAYMENT_GROUP_NUMBERING_BY_ID, Value)
+            SetValue(CompanyGroupDAL.COL_NAME_PAYMENT_GROUP_NUMBERING_BY_ID, Value)
         End Set
     End Property
     'end Req-863
 
     'req 5547
     <ValueMandatory("")> _
-    Public Property ClaimFastApprovalId() As Guid
+    Public Property ClaimFastApprovalId As Guid
         Get
             CheckDeleted()
             If Row(CompanyGroupDAL.COL_NAME_CLAIM_FAST_APPROVAL_ID) Is DBNull.Value Then
@@ -291,15 +291,15 @@ Public Property AccountingByCompany() As String
                 Return New Guid(CType(Row(CompanyGroupDAL.COL_NAME_CLAIM_FAST_APPROVAL_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CompanyGroupDAL.COL_NAME_CLAIM_FAST_APPROVAL_ID, Value)
+            SetValue(CompanyGroupDAL.COL_NAME_CLAIM_FAST_APPROVAL_ID, Value)
         End Set
     End Property
     'end req 5547
 
     'REQ-5773 Start
-    Public Property UseCommEntityTypeId() As Guid
+    Public Property UseCommEntityTypeId As Guid
         Get
             CheckDeleted()
             If Row(CompanyGroupDAL.COL_NAME_USE_COMM_ENTITY_TYPE_ID) Is DBNull.Value Then
@@ -308,28 +308,28 @@ Public Property AccountingByCompany() As String
                 Return New Guid(CType(Row(CompanyGroupDAL.COL_NAME_USE_COMM_ENTITY_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CompanyGroupDAL.COL_NAME_USE_COMM_ENTITY_TYPE_ID, Value)
+            SetValue(CompanyGroupDAL.COL_NAME_USE_COMM_ENTITY_TYPE_ID, Value)
         End Set
     End Property
     'REQ-5773 End
 
-    Public ReadOnly Property AssociatedCoveragesType() As CoverageByCompanyGroup.CovCompGrpList
+    Public ReadOnly Property AssociatedCoveragesType As CoverageByCompanyGroup.CovCompGrpList
         Get
             Return New CoverageByCompanyGroup.CovCompGrpList(Me)
         End Get
     End Property
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
-            Return MyBase.IsDirty OrElse Me.IsChildrenDirty
+            Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get
     End Property
 
 
     <ValueMandatory("")>
-    Public Property CaseNumberingByXcd() As String
+    Public Property CaseNumberingByXcd As String
         Get
             CheckDeleted()
             If Row(CompanyGroupDAL.COL_NAME_CASE_NUMBERING_BY_XCD) Is DBNull.Value Then
@@ -338,16 +338,16 @@ Public Property AccountingByCompany() As String
                 Return CType(Row(CompanyGroupDAL.COL_NAME_CASE_NUMBERING_BY_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CompanyGroupDAL.COL_NAME_CASE_NUMBERING_BY_XCD, Value)
+            SetValue(CompanyGroupDAL.COL_NAME_CASE_NUMBERING_BY_XCD, Value)
         End Set
     End Property
 
 
 
     <ValueMandatory("")>
-    Public Property InteractionNumberingByXcd() As String
+    Public Property InteractionNumberingByXcd As String
         Get
             CheckDeleted()
             If Row(CompanyGroupDAL.COL_NAME_INTERACTION_NUMBERING_BY_XCD) Is DBNull.Value Then
@@ -356,9 +356,9 @@ Public Property AccountingByCompany() As String
                 Return CType(Row(CompanyGroupDAL.COL_NAME_INTERACTION_NUMBERING_BY_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CompanyGroupDAL.COL_NAME_INTERACTION_NUMBERING_BY_XCD, Value)
+            SetValue(CompanyGroupDAL.COL_NAME_INTERACTION_NUMBERING_BY_XCD, Value)
         End Set
     End Property
 
@@ -370,16 +370,16 @@ Public Property AccountingByCompany() As String
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CompanyGroupDAL
-                dal.UpdateFamily(Me.Dataset) 'New Code Added Manually
+                dal.UpdateFamily(Dataset) 'New Code Added Manually
                 'dal.Update(Me.Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -392,7 +392,7 @@ Public Property AccountingByCompany() As String
 
     'METHODS ADDED MANUALLY. BEGIN
 #Region "CoverageType"
-    Public Shared Function GetAvailableCoverageType(ByVal companyGroupId As Guid) As DataView
+    Public Shared Function GetAvailableCoverageType(companyGroupId As Guid) As DataView
         Dim dal As New CoverageByCompanyGroupDAL
         Dim ds As DataSet
 
@@ -402,7 +402,7 @@ Public Property AccountingByCompany() As String
         Return ds.Tables(dal.TABLE_NAME).DefaultView
     End Function
 
-    Public Shared Function GetSelectedCoverageType(ByVal companyGroupId As Guid) As DataView
+    Public Shared Function GetSelectedCoverageType(companyGroupId As Guid) As DataView
         Dim dal As New CoverageByCompanyGroupDAL
         Dim ds As DataSet
         Dim oLanguageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
@@ -412,20 +412,20 @@ Public Property AccountingByCompany() As String
     End Function
 
 
-    Public Sub AttachCoverageType(ByVal selectedCoverageCompGrpGuidStrCollection As ArrayList)
+    Public Sub AttachCoverageType(selectedCoverageCompGrpGuidStrCollection As ArrayList)
         Dim covTypeIdStr As String
         For Each covTypeIdStr In selectedCoverageCompGrpGuidStrCollection
-            Dim ctCompGrp As CoverageByCompanyGroup = Me.AssociatedCoveragesType.GetNewChild
+            Dim ctCompGrp As CoverageByCompanyGroup = AssociatedCoveragesType.GetNewChild
             ctCompGrp.CoverageTypeId = New Guid(covTypeIdStr)
-            ctCompGrp.CompanyGroupId = Me.Id
+            ctCompGrp.CompanyGroupId = Id
             ctCompGrp.Save()
         Next
     End Sub
 
-    Public Sub DetachCoverageType(ByVal selectedCoverageCompGrpGuidStrCollection As ArrayList)
+    Public Sub DetachCoverageType(selectedCoverageCompGrpGuidStrCollection As ArrayList)
         Dim ctCovTypeIdStr As String
         For Each ctCovTypeIdStr In selectedCoverageCompGrpGuidStrCollection
-            Dim ctCovCompGrp As CoverageByCompanyGroup = Me.AssociatedCoveragesType.FindById(New Guid(ctCovTypeIdStr))
+            Dim ctCovCompGrp As CoverageByCompanyGroup = AssociatedCoveragesType.FindById(New Guid(ctCovTypeIdStr))
             ctCovCompGrp.Delete()
             ctCovCompGrp.Save()
         Next
@@ -435,38 +435,38 @@ Public Property AccountingByCompany() As String
 
 #Region "RiskType"
 
-    Public Sub AttachCompanyes(ByVal selectedCompanyGuidStrCollection As ArrayList)
+    Public Sub AttachCompanyes(selectedCompanyGuidStrCollection As ArrayList)
         Dim companyID As String
         For Each companyID In selectedCompanyGuidStrCollection
             'update to new soft question GUID
-            Dim newBO As Company = New Company(New Guid(companyID), Me.Dataset)
-            If Not newBO Is Nothing Then
-                newBO.CompanyGroupId = Me.Id
+            Dim newBO As Company = New Company(New Guid(companyID), Dataset)
+            If newBO IsNot Nothing Then
+                newBO.CompanyGroupId = Id
                 newBO.Save()
             End If
         Next
     End Sub
 
-    Public Sub DetachRiskTypes(ByVal selectedCompanyGuidStrCollection As ArrayList)
+    Public Sub DetachRiskTypes(selectedCompanyGuidStrCollection As ArrayList)
         Dim companyID As String
         For Each companyID In selectedCompanyGuidStrCollection
             'update to new soft question GUID
-            Dim newBO As Company = New Company(New Guid(companyID), Me.Dataset)
-            If Not newBO Is Nothing Then
+            Dim newBO As Company = New Company(New Guid(companyID), Dataset)
+            If newBO IsNot Nothing Then
                 newBO.CompanyGroupId = Guid.Empty
                 newBO.Save()
             End If
         Next
     End Sub
 
-    Public Shared Function GetAvailableCompanies(ByVal CountryId As Guid) As DataSet
+    Public Shared Function GetAvailableCompanies(CountryId As Guid) As DataSet
         Dim ds As DataSet = New DataSet
         Dim oDAL As CompanyDAL = New CompanyDAL
         'oDAL.LoadAvailableCompanyForCountry(ds, CountryId)
         Return ds
     End Function
 
-    Public Shared Function GetSelectedCompanies(ByVal companyGrpID As Guid, Optional ByVal ds As DataSet = Nothing) As DataSet
+    Public Shared Function GetSelectedCompanies(companyGrpID As Guid, Optional ByVal ds As DataSet = Nothing) As DataSet
         If ds Is Nothing Then
             ds = New DataSet
         End If
@@ -494,12 +494,12 @@ Public Property AccountingByCompany() As String
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function LoadList(ByVal descriptionMask As String, ByVal codeMask As String, Optional ByVal getCovTypeChidrens As Boolean = False, Optional ByVal btnsearchclick As Boolean = False) As DataView
+    Public Shared Function LoadList(descriptionMask As String, codeMask As String, Optional ByVal getCovTypeChidrens As Boolean = False, Optional ByVal btnsearchclick As Boolean = False) As DataView
         Try
             Dim dal As New CompanyGroupDAL
             Dim ds As DataSet
             'REQ-863
-            Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(CompanyGroup), Nothing, "Search", Nothing)}
+            Dim errors() As ValidationError = {New ValidationError(Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(CompanyGroup), Nothing, "Search", Nothing)}
             If btnsearchclick AndAlso (descriptionMask.Equals(String.Empty) AndAlso codeMask.Equals(String.Empty)) Then
                 Throw New BOValidationException(errors, GetType(CompanyGroup).FullName)
             Else
@@ -512,7 +512,7 @@ Public Property AccountingByCompany() As String
         End Try
 
     End Function
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid, ByVal bo As CompanyGroup) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid, bo As CompanyGroup) As DataView
 
         Dim dt As DataTable
         dt = dv.Table
@@ -532,7 +532,7 @@ Public Property AccountingByCompany() As String
     End Function
 
 
-    Public ReadOnly Property GetCompanyGroupDescription(ByVal companyGroID As Guid) As String
+    Public ReadOnly Property GetCompanyGroupDescription(companyGroID As Guid) As String
         Get
             'Dim moCoverage As New CertItemCoverage
             Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
@@ -565,7 +565,7 @@ Public Property AccountingByCompany() As String
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

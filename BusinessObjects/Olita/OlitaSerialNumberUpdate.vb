@@ -27,7 +27,7 @@ Public Class OlitaSerialNumberUpdate
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As OlitaSerialNumberUpdateDs)
+    Public Sub New(ds As OlitaSerialNumberUpdateDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -42,7 +42,7 @@ Public Class OlitaSerialNumberUpdate
     Private _regionId As Guid = Guid.Empty
 
 
-    Private Sub MapDataSet(ByVal ds As OlitaSerialNumberUpdateDs)
+    Private Sub MapDataSet(ds As OlitaSerialNumberUpdateDs)
 
         Dim schema As String = ds.GetXmlSchema '.Replace(SOURCE_COL_MAKE, DATA_COL_NAME_MANUFACTURER).Replace(SOURCE_COL_MILEAGE, DATA_COL_NAME_ODOMETER).Replace(SOURCE_COL_NEWUSED, DATA_COL_NAME_CONDITION)
 
@@ -55,8 +55,8 @@ Public Class OlitaSerialNumberUpdate
             Next
         Next
 
-        Me.Dataset = New Dataset
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New Dataset
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -64,13 +64,13 @@ Public Class OlitaSerialNumberUpdate
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As OlitaSerialNumberUpdateDs)
+    Private Sub Load(ds As OlitaSerialNumberUpdateDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -83,13 +83,13 @@ Public Class OlitaSerialNumberUpdate
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As OlitaSerialNumberUpdateDs)
+    Private Sub PopulateBOFromWebService(ds As OlitaSerialNumberUpdateDs)
         Try
             If ds.OlitaSerialNumberUpdate.Count = 0 Then Exit Sub
             With ds.OlitaSerialNumberUpdate.Item(0)
-                Me.DealerCode = .dealer_code
-                Me.CertNumber = .cert_number
-                Me.SerialNumber = .serial_number
+                DealerCode = .dealer_code
+                CertNumber = .cert_number
+                SerialNumber = .serial_number
             End With
 
         Catch ex As BOValidationException
@@ -106,47 +106,47 @@ Public Class OlitaSerialNumberUpdate
 #Region "Properties"
 
     <ValueMandatory("")> _
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
-            If Row(Me.DATA_COL_NAME_DEALER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_DEALER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_DEALER), String))
+                Return (CType(Row(DATA_COL_NAME_DEALER), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_DEALER, Value)
+            SetValue(DATA_COL_NAME_DEALER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CertNumber() As String
+    Public Property CertNumber As String
         Get
-            If Row(Me.DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CERT_NUMBER), String)
+                Return CType(Row(DATA_COL_NAME_CERT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CERT_NUMBER, Value)
+            SetValue(DATA_COL_NAME_CERT_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property SerialNumber() As String
+    Public Property SerialNumber As String
         Get
-            If Row(Me.DATA_COL_NAME_PRODUCT_SERIAL_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_PRODUCT_SERIAL_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_PRODUCT_SERIAL_NUMBER), String)
+                Return CType(Row(DATA_COL_NAME_PRODUCT_SERIAL_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_PRODUCT_SERIAL_NUMBER, Value)
+            SetValue(DATA_COL_NAME_PRODUCT_SERIAL_NUMBER, Value)
         End Set
     End Property
 
@@ -158,34 +158,34 @@ Public Class OlitaSerialNumberUpdate
 
     Public Overrides Function ProcessWSRequest() As String
         Try
-            Me.Validate()
+            Validate()
 
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
 
             'find dealer
             Dim dvDealrs As DataView = LookupListNew.GetDealerLookupList(compIds)
             Dim dealerId As Guid = Guid.Empty
-            If Not dvDealrs Is Nothing AndAlso dvDealrs.Count > 0 Then
-                dealerId = LookupListNew.GetIdFromCode(dvDealrs, Me.DealerCode)
+            If dvDealrs IsNot Nothing AndAlso dvDealrs.Count > 0 Then
+                dealerId = LookupListNew.GetIdFromCode(dvDealrs, DealerCode)
                 If dealerId.Equals(Guid.Empty) Then
-                    Throw New BOValidationException("OlitaSerialNumberUpdate Error: ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_CODE)
+                    Throw New BOValidationException("OlitaSerialNumberUpdate Error: ", Common.ErrorCodes.INVALID_DEALER_CODE)
                 End If
             End If
 
-            If Dealer.GetOlitaSearchType(compIds, Me.DealerCode).Equals(Codes.OLITA_SEARCH_GENERIC) Then
-                Me.CertNumber += "*"
+            If Dealer.GetOlitaSearchType(compIds, DealerCode).Equals(Codes.OLITA_SEARCH_GENERIC) Then
+                CertNumber += "*"
             End If
-            Dim _CertListDataSet As DataSet = Certificate.GetCertificatesList(Me.CertNumber, "", "", "", "", Me.DealerCode).Table.DataSet
-            If Not _CertListDataSet Is Nothing AndAlso _CertListDataSet.Tables.Count > 0 AndAlso _CertListDataSet.Tables(0).Rows.Count > 0 Then
-                If _CertListDataSet.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID) Is DBNull.Value Then
+            Dim _CertListDataSet As DataSet = Certificate.GetCertificatesList(CertNumber, "", "", "", "", DealerCode).Table.DataSet
+            If _CertListDataSet IsNot Nothing AndAlso _CertListDataSet.Tables.Count > 0 AndAlso _CertListDataSet.Tables(0).Rows.Count > 0 Then
+                If _CertListDataSet.Tables(0).Rows(0).Item(DATA_COL_NAME_CERT_ID) Is DBNull.Value Then
                     Throw New BOValidationException("OlitaSerialNumberUpdate Error: ", CERTIFICATE_NOT_FOUND)
                 Else
                     Try
                         If _CertListDataSet.Tables.Count > 1 Then
                             Throw New BOValidationException("OlitaSerialNumberUpdate Error: ", CERTIFICATE_NOT_FOUND)
                         End If
-                        Dim cert_id As New Guid(CType(_CertListDataSet.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID), Byte()))
-                        Me.BuildCertItemAndSave(cert_id)
+                        Dim cert_id As New Guid(CType(_CertListDataSet.Tables(0).Rows(0).Item(DATA_COL_NAME_CERT_ID), Byte()))
+                        BuildCertItemAndSave(cert_id)
                     Catch ex As Exception
                         Throw New BOValidationException("OlitaSerialNumberUpdate Error: ", UPDATE_FAILED)
                     End Try
@@ -198,7 +198,7 @@ Public Class OlitaSerialNumberUpdate
 
             ElseIf _CertListDataSet Is Nothing Then
                 Throw New BOValidationException("OlitaSerialNumberUpdate Error: ", ERROR_ACCESSING_DATABASE)
-            ElseIf Not _CertListDataSet Is Nothing AndAlso _CertListDataSet.Tables.Count > 0 AndAlso _CertListDataSet.Tables(0).Rows.Count = 0 Then
+            ElseIf _CertListDataSet IsNot Nothing AndAlso _CertListDataSet.Tables.Count > 0 AndAlso _CertListDataSet.Tables(0).Rows.Count = 0 Then
                 Throw New BOValidationException("OlitaSerialNumberUpdate Error: ", CERTIFICATE_NOT_FOUND)
             End If
 
@@ -213,11 +213,11 @@ Public Class OlitaSerialNumberUpdate
         End Try
 
     End Function
-    Private Sub BuildCertItemAndSave(ByVal certID As Guid)
+    Private Sub BuildCertItemAndSave(certID As Guid)
         'Get the cert_item
         Dim certItemDV As CertItem.CertItemSearchDV = CertItem.GetItems(certID)
-        Dim certItemBO As CertItem = New CertItem(New Guid(CType(certItemDV.Table.Rows(0).Item(Me.DATA_COL_NAME_CERT_ITEM_ID), Byte())))
-        certItemBO.SerialNumber = Me.SerialNumber
+        Dim certItemBO As CertItem = New CertItem(New Guid(CType(certItemDV.Table.Rows(0).Item(DATA_COL_NAME_CERT_ITEM_ID), Byte())))
+        certItemBO.SerialNumber = SerialNumber
         certItemBO.Save()
     End Sub
 

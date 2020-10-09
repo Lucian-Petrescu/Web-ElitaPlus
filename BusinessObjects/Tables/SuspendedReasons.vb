@@ -19,23 +19,23 @@ Public Class SuspendedReasons
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
-    Public Sub New(ByVal id As Guid, ByVal inDv As DataSet)
+    Public Sub New(id As Guid, inDv As DataSet)
         MyBase.New(False)
-        Me.Dataset = New DataSet
-        Me.Load(id, inDv)
+        Dataset = New DataSet
+        Load(id, inDv)
     End Sub
 
     'Exiting BO attaching to a BO family
@@ -54,9 +54,9 @@ Public Class SuspendedReasons
 
 
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
   
@@ -78,27 +78,27 @@ Public Class SuspendedReasons
     '    Next
 
     'End Sub
-    Protected Sub Load(ByVal Id As System.Guid, ByVal inDv As DataSet)
+    Protected Sub Load(Id As System.Guid, inDv As DataSet)
 
-        If Me.Dataset Is Nothing OrElse Me.Dataset.Tables.Count() = 0 Then
+        If Dataset Is Nothing OrElse Dataset.Tables.Count() = 0 Then
             Dim dal As New SuspendedReasonsDAL
-            dal.LoadSchema(Me.Dataset)
+            dal.LoadSchema(Dataset)
         End If
 
-        Dim newRow As DataRow = Me.Dataset.Tables(0).NewRow
+        Dim newRow As DataRow = Dataset.Tables(0).NewRow
 
         For Each drv As DataRow In inDv.Tables(0).Rows
-            Dim cguid As Guid = New Guid(CType(drv.Item(SuspendedReasons.COL_NAME_ID), Byte()))
+            Dim cguid As Guid = New Guid(CType(drv.Item(COL_NAME_ID), Byte()))
 
             If cguid = Id Then
-                Me.Dataset.Tables(0).Rows.Add(newRow)
-                Me.Row = newRow
+                Dataset.Tables(0).Rows.Add(newRow)
+                Row = newRow
 
                 For Each col As DataColumn In drv.Table.Columns
                     newRow(col.ColumnName) = drv(col.ColumnName)
                 Next
 
-                Me.Row.AcceptChanges()  '** Remove the isNew from the BO Row
+                Row.AcceptChanges()  '** Remove the isNew from the BO Row
 
                 Exit For
             End If
@@ -108,14 +108,14 @@ Public Class SuspendedReasons
         Try
             Dim dal As New SuspendedReasonsDAL
 
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
 
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
 
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
 
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
 
@@ -125,28 +125,28 @@ Public Class SuspendedReasons
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New SuspendedReasonsDAL
 
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
 
-            Me.Row = Nothing
+            Row = Nothing
 
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
 
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
 
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -165,7 +165,7 @@ Public Class SuspendedReasons
 #Region "Properties"
 
     'Key Property
-    Public Property Suspended_Reasons_Id() As Guid
+    Public Property Suspended_Reasons_Id As Guid
         Get
             If Row(SuspendedReasonsDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -173,14 +173,14 @@ Public Class SuspendedReasons
                 Return New Guid(CType(Row(SuspendedReasonsDAL.COL_NAME_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(SuspendedReasonsDAL.COL_NAME_ID, Value)
+            SetValue(SuspendedReasonsDAL.COL_NAME_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If row(SuspendedReasonsDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -189,12 +189,12 @@ Public Class SuspendedReasons
                 Return New Guid(CType(row(SuspendedReasonsDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(SuspendedReasonsDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(SuspendedReasonsDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
-    Public Property Dealer_Name() As String
+    Public Property Dealer_Name As String
         Get
             CheckDeleted()
             If Row(SuspendedReasonsDAL.COL_NAME_DEALER_NAME) Is DBNull.Value Then
@@ -203,13 +203,13 @@ Public Class SuspendedReasons
                 Return CType(Row(SuspendedReasonsDAL.COL_NAME_DEALER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(SuspendedReasonsDAL.COL_NAME_DEALER_NAME, Value)
+            SetValue(SuspendedReasonsDAL.COL_NAME_DEALER_NAME, Value)
         End Set
     End Property
 
-    Public Property Claim_Allowed_Str() As String
+    Public Property Claim_Allowed_Str As String
         Get
             CheckDeleted()
             If Row(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED_STR) Is DBNull.Value Then
@@ -218,14 +218,14 @@ Public Class SuspendedReasons
                 Return CType(Row(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED_STR), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED_STR, Value)
+            SetValue(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED_STR, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property Claim_Allowed() As String
+    Public Property Claim_Allowed As String
         Get
             CheckDeleted()
             If Row(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED) Is DBNull.Value Then
@@ -234,15 +234,15 @@ Public Class SuspendedReasons
                 Return CType(Row(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
 
-            Me.SetValue(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED, Value.Replace("0", ""))
+            SetValue(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED, Value.Replace("0", ""))
         End Set
 
     End Property
 
-    Public ReadOnly Property Claim_Allowed_True() As Boolean
+    Public ReadOnly Property Claim_Allowed_True As Boolean
         Get
             CheckDeleted()
             If Not (Row(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED) Is DBNull.Value) Then
@@ -256,7 +256,7 @@ Public Class SuspendedReasons
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=20)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(SuspendedReasonsDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -265,15 +265,15 @@ Public Class SuspendedReasons
                 Return CType(Row(SuspendedReasonsDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(SuspendedReasonsDAL.COL_NAME_CODE, Value)
+            SetValue(SuspendedReasonsDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=250)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(SuspendedReasonsDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -282,9 +282,9 @@ Public Class SuspendedReasons
                 Return CType(Row(SuspendedReasonsDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(SuspendedReasonsDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(SuspendedReasonsDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -292,22 +292,22 @@ Public Class SuspendedReasons
 #End Region
 
 #Region "Public Members"
-    Public Sub Save(ByVal LanguageId As Guid, ByVal NewRec As Boolean)
+    Public Sub Save(LanguageId As Guid, NewRec As Boolean)
         Try
             MyBase.Save()
 
-            If (Me._isDSCreator OrElse Me.IsDirty) AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If (_isDSCreator OrElse IsDirty) AndAlso Row.RowState <> DataRowState.Detached Then
 
                 Dim dal As New SuspendedReasonsDAL
                 Dim RowId As Guid
 
                 If NewRec Then
-                    dal.InserRow(Me.Row, ElitaPlusIdentity.Current.ActiveUser.NetworkId, RowId)
+                    dal.InserRow(Row, ElitaPlusIdentity.Current.ActiveUser.NetworkId, RowId)
                 Else
-                    dal.UpdateRow(Me.Row, RowId)
+                    dal.UpdateRow(Row, RowId)
                 End If
 
-                Me.Row.AcceptChanges()
+                Row.AcceptChanges()
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
@@ -318,7 +318,7 @@ Public Class SuspendedReasons
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Sub AddNewRowToSearchDV(ByRef inDV As SuspendedReasons.SearchDV, ByVal NewBO As SuspendedReasons)
+    Public Shared Sub AddNewRowToSearchDV(ByRef inDV As SuspendedReasons.SearchDV, NewBO As SuspendedReasons)
         Dim newDS As DataSet, dt As DataTable, blnEmptyTbl As Boolean = False
 
         If NewBO.IsNew Then
@@ -349,7 +349,7 @@ Public Class SuspendedReasons
         End If
     End Sub
 
-    Public Shared Function LoadSearchData(ByVal SearchValues As SuspendedReasons.SearchDV.Values) As SuspendedReasons.SearchDV
+    Public Shared Function LoadSearchData(SearchValues As SuspendedReasons.SearchDV.Values) As SuspendedReasons.SearchDV
 
         Dim dal As New SuspendedReasonsDAL
         Try
@@ -386,49 +386,49 @@ Public Class SuspendedReasons
         End Structure
 
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
-        Public Shared ReadOnly Property Suspended_reason_Id(ByVal row) As Guid
+        Public Shared ReadOnly Property Suspended_reason_Id(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Dealer_Id(ByVal row) As Guid
+        Public Shared ReadOnly Property Dealer_Id(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_DEALER_ID), Byte()))
             End Get
         End Property
-        Public Shared ReadOnly Property Dealer_Name(ByVal row) As String
+        Public Shared ReadOnly Property Dealer_Name(row) As String
             Get
                 Return row(COL_NAME_DEALER_NAME).ToString
             End Get
         End Property
-        Public Shared ReadOnly Property routeId(ByVal row) As Guid
+        Public Shared ReadOnly Property routeId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_ID), Byte()))
             End Get
         End Property
-        Public Shared ReadOnly Property Description(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Description(row As DataRow) As String
             Get
                 Return row(COL_NAME_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Code(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Code(row As DataRow) As String
             Get
                 Return row(COL_NAME_CODE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property CLAIM_ALLOWED(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property CLAIM_ALLOWED(row As DataRow) As String
             Get
                 Return row(COL_NAME_CLAIM_ALLOWED).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property CLAIM_ALLOWED_STR(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property CLAIM_ALLOWED_STR(row As DataRow) As String
             Get
                 Return row(COL_NAME_CLAIM_ALLOWED_STR).ToString
             End Get

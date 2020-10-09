@@ -22,7 +22,7 @@ Public Class GetProductCodes
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetProductCodesDs)
+    Public Sub New(ds As GetProductCodesDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -35,7 +35,7 @@ Public Class GetProductCodes
 #Region "Private Members"
 
 
-    Private Sub MapDataSet(ByVal ds As GetProductCodesDs)
+    Private Sub MapDataSet(ds As GetProductCodesDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -48,8 +48,8 @@ Public Class GetProductCodes
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -57,13 +57,13 @@ Public Class GetProductCodes
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetProductCodesDs)
+    Private Sub Load(ds As GetProductCodesDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -76,15 +76,15 @@ Public Class GetProductCodes
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetProductCodesDs)
+    Private Sub PopulateBOFromWebService(ds As GetProductCodesDs)
         Try
             If ds.GetProductCodes.Count = 0 Then Exit Sub
             With ds.GetProductCodes.Item(0)
-                Me.DealerCode = .Dealer_Code
-                Me.WarrantySalesDate = .Warr_Sales_Date
-                Me.SortBy = .Sort_By
-                Me.AscDescOrder = .Asc_Desc_Order
-                If Not .IsProduct_Class_CodeNull Then Me.ProductClassCode = .Product_Class_Code
+                DealerCode = .Dealer_Code
+                WarrantySalesDate = .Warr_Sales_Date
+                SortBy = .Sort_By
+                AscDescOrder = .Asc_Desc_Order
+                If Not .IsProduct_Class_CodeNull Then ProductClassCode = .Product_Class_Code
             End With
 
         Catch ex As BOValidationException
@@ -101,73 +101,73 @@ Public Class GetProductCodes
 
 #Region "Properties"
 
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
-            If Row(Me.DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_DEALER_CODE), String))
+                Return (CType(Row(DATA_COL_NAME_DEALER_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_DEALER_CODE, Value)
+            SetValue(DATA_COL_NAME_DEALER_CODE, Value)
         End Set
     End Property
 
-    Public Property WarrantySalesDate() As DateTime
+    Public Property WarrantySalesDate As DateTime
         Get
-            If Row(Me.DATA_COL_NAME_WARRANTY_SALES_DATE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_WARRANTY_SALES_DATE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_WARRANTY_SALES_DATE), String)
+                Return CType(Row(DATA_COL_NAME_WARRANTY_SALES_DATE), String)
             End If
         End Get
-        Set(ByVal Value As Date)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_WARRANTY_SALES_DATE, Value)
+            SetValue(DATA_COL_NAME_WARRANTY_SALES_DATE, Value)
         End Set
     End Property
 
-    Public Property SortBy() As String
+    Public Property SortBy As String
         Get
-            If Row(Me.DATA_COL_NAME_SORT_BY) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_SORT_BY) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_SORT_BY), String)
+                Return CType(Row(DATA_COL_NAME_SORT_BY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_SORT_BY, Value)
+            SetValue(DATA_COL_NAME_SORT_BY, Value)
         End Set
     End Property
 
-    Public Property AscDescOrder() As String
+    Public Property AscDescOrder As String
         Get
-            If Row(Me.DATA_COL_NAME_ASC_DESC_ORDER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_ASC_DESC_ORDER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_ASC_DESC_ORDER), String)
+                Return CType(Row(DATA_COL_NAME_ASC_DESC_ORDER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_ASC_DESC_ORDER, Value)
+            SetValue(DATA_COL_NAME_ASC_DESC_ORDER, Value)
         End Set
     End Property
 
-    Public Property ProductClassCode() As String
+    Public Property ProductClassCode As String
         Get
-            If Row(Me.DATA_COL_NAME_PRODUCT_CLASS_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_PRODUCT_CLASS_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_PRODUCT_CLASS_CODE), String))
+                Return (CType(Row(DATA_COL_NAME_PRODUCT_CLASS_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_PRODUCT_CLASS_CODE, Value)
+            SetValue(DATA_COL_NAME_PRODUCT_CLASS_CODE, Value)
         End Set
     End Property
 #End Region
@@ -179,21 +179,21 @@ Public Class GetProductCodes
         Dim productCodesList As ProductCode.ProductCodeSearchByDealerDVForWS
 
         Try
-            Me.Validate()
+            Validate()
 
             Dim dvDealrs As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
-            If Not dvDealrs Is Nothing AndAlso dvDealrs.Count > 0 Then
-                dealerId = LookupListNew.GetIdFromCode(dvDealrs, Me.DealerCode)
+            If dvDealrs IsNot Nothing AndAlso dvDealrs.Count > 0 Then
+                dealerId = LookupListNew.GetIdFromCode(dvDealrs, DealerCode)
                 If dealerId.Equals(Guid.Empty) Then
-                    Throw New BOValidationException("GetProductCodes Error: ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_CODE)
+                    Throw New BOValidationException("GetProductCodes Error: ", Common.ErrorCodes.INVALID_DEALER_CODE)
                 End If
             End If
 
-            productCodesList = ProductCode.getListByDealerForWS(dealerId, Me.WarrantySalesDate, _
-                                    Me.SortBy, Me.AscDescOrder, Me.ProductClassCode)
+            productCodesList = ProductCode.getListByDealerForWS(dealerId, WarrantySalesDate, _
+                                    SortBy, AscDescOrder, ProductClassCode)
 
             If productCodesList Is Nothing OrElse productCodesList.Count <= 0 Then
-                Throw New BOValidationException("GetProductCodes Error: ", Assurant.ElitaPlus.Common.ErrorCodes.NO_PRODUCTCODES_FOUND_ERR)
+                Throw New BOValidationException("GetProductCodes Error: ", Common.ErrorCodes.NO_PRODUCTCODES_FOUND_ERR)
             End If
           
             Dim ds As New DataSet("GetProductCodes")

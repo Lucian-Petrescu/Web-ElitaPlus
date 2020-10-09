@@ -70,7 +70,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -80,42 +80,42 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                 Else
-                    Me.ClearLabelsErrSign()
+                    ClearLabelsErrSign()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
         Public Sub ClearLabelsErrSign()
             Try
-                Me.ClearLabelErrSign(moYearLabel)
-                Me.ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
-                Me.ClearLabelErrSign(moDealerGroupLabel)
-                If Me.rdealer.Checked Then DealerMultipleDrop.SelectedIndex = -1
+                ClearLabelErrSign(moYearLabel)
+                ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
+                ClearLabelErrSign(moDealerGroupLabel)
+                If rdealer.Checked Then DealerMultipleDrop.SelectedIndex = -1
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 #End Region
@@ -133,7 +133,7 @@ Namespace Reports
                                                                 {
                                                                   .CompanyId = ElitaPlusIdentity.Current.ActiveUser.CompanyId
                                                                 })
-            Me.moYearDrop.Populate(YearList.ToArray(), New PopulateOptions() With
+            moYearDrop.Populate(YearList.ToArray(), New PopulateOptions() With
                                    {
                                    .ValueFunc = AddressOf .GetCode
                                    })
@@ -174,7 +174,7 @@ Namespace Reports
                                                                   .CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
                                                                 })
 
-            Me.cboDealerGroup.Populate(DealerGroups.ToArray(),
+            cboDealerGroup.Populate(DealerGroups.ToArray(),
                                         New PopulateOptions() With
                                         {
                                          .AddBlankItem = True
@@ -186,7 +186,7 @@ Namespace Reports
             PopulateYear()
             PopulateDealerGroupDropDown()
             PopulateDealerDropDown()
-            Me.RadiobuttonTotalsOnly.Checked = True
+            RadiobuttonTotalsOnly.Checked = True
             TheRptCeInputControl.ExcludeExport()
         End Sub
 
@@ -195,7 +195,7 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal data As ParameterData) As ReportCeBaseForm.Params
+        Function SetParameters(data As ParameterData) As ReportCeBaseForm.Params
             Dim reportFormat As ReportCeBaseForm.RptFormat
             Dim reportName As String = RPT_FILENAME
             Dim params As New ReportCeBaseForm.Params
@@ -232,7 +232,7 @@ Namespace Reports
             Dim dealerGroupId As Guid
             Dim dtSelectedDate, dtLatestCloseDate As Date
             Dim selectByGroup As String
-            Dim selectedGroupId As Guid = Me.GetSelectedItem(Me.cboDealerGroup)
+            Dim selectedGroupId As Guid = GetSelectedItem(cboDealerGroup)
 
             Dim selectedDealerId As Guid = DealerMultipleDrop.SelectedGuid 'Me.GetSelectedItem(Me.cboDealerCode)
             'Dim dvDealer As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies, False, "CODE")
@@ -246,15 +246,15 @@ Namespace Reports
 
             With data
                 .userId = UserId
-                .year = Me.GetSelectedDescription(Me.moYearDrop)
+                .year = GetSelectedDescription(moYearDrop)
                 .selectedGroupId = NO
                 .currency = strCurrency
-                If Me.rdealer.Checked Then
+                If rdealer.Checked Then
                     .dealerCode = ALL
-                ElseIf Me.rGroup.Checked Then
+                ElseIf rGroup.Checked Then
                     .selectedGroupId = ALL
                     .dealerGroupCode = ALL
-                ElseIf selectedDealerId.Equals(Guid.Empty) And selectedGroupId.Equals(Guid.Empty) Then
+                ElseIf selectedDealerId.Equals(Guid.Empty) AndAlso selectedGroupId.Equals(Guid.Empty) Then
                     ElitaPlusPage.SetLabelError(DealerMultipleDrop.CaptionLabel)
                     Throw New GUIException(Message.MSG_INVALID_DEALER, Assurant.ElitaPlus.Common.ErrorCodes.GUI_DEALER_MUST_BE_SELECTED_ERR)
                 End If
@@ -275,7 +275,7 @@ Namespace Reports
                 dtLatestCloseDate = AccountingCloseInfo.GetAccountingCloseDate(ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID, dtSelectedDate)
                 .highDate = dtLatestCloseDate.ToString(System.Globalization.CultureInfo.InvariantCulture)
 
-                If Me.RadiobuttonTotalsOnly.Checked Then
+                If RadiobuttonTotalsOnly.Checked Then
                     .summarize = YES
                 Else
                     .summarize = NO

@@ -17,7 +17,7 @@ Public Class GetCoverageInfo
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetCoverageInfoDS)
+    Public Sub New(ds As GetCoverageInfoDS)
         MyBase.New()
 
         MapDataSet(ds)
@@ -30,7 +30,7 @@ Public Class GetCoverageInfo
 #Region "Private Members"
     Private _dealerId As Guid = Guid.Empty
 
-    Private Sub MapDataSet(ByVal ds As GetCoverageInfoDS)
+    Private Sub MapDataSet(ds As GetCoverageInfoDS)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -43,8 +43,8 @@ Public Class GetCoverageInfo
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -52,13 +52,13 @@ Public Class GetCoverageInfo
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetCoverageInfoDS)
+    Private Sub Load(ds As GetCoverageInfoDS)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw ex
         Catch ex As BOValidationException
@@ -70,13 +70,13 @@ Public Class GetCoverageInfo
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetCoverageInfoDS)
+    Private Sub PopulateBOFromWebService(ds As GetCoverageInfoDS)
         Try
             If ds.GetCoverageInfo.Count = 0 Then Exit Sub
             With ds.GetCoverageInfo.Item(0)
-                If Not .IsCarrierIDNull Then Me.DealerCode = .CarrierID
-                Me.CustomerIdentifier = .CustomerIdentifier
-                Me.IdentifierType = .IdentifierType
+                If Not .IsCarrierIDNull Then DealerCode = .CarrierID
+                CustomerIdentifier = .CustomerIdentifier
+                IdentifierType = .IdentifierType
 
             End With
         Catch ex As BOValidationException
@@ -92,8 +92,8 @@ Public Class GetCoverageInfo
     End Sub
 
     Private Function IsDealerWebEnabled() As Boolean
-        Dim objDealer As New Dealer(Me._dealerId)
-        If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, objDealer.DealerSupportWebClaimsId) = "Y" Then
+        Dim objDealer As New Dealer(_dealerId)
+        If LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, objDealer.DealerSupportWebClaimsId) = "Y" Then
             Return True
         Else
             Return False
@@ -133,22 +133,22 @@ Public Class GetCoverageInfo
     'End Function
 
     Private Function FindDealer() As String
-        If Me._dealerId.Equals(Guid.Empty) AndAlso (Not Me.DealerCode Is Nothing AndAlso Me.DealerCode.Trim <> String.Empty) Then
+        If _dealerId.Equals(Guid.Empty) AndAlso (DealerCode IsNot Nothing AndAlso DealerCode.Trim <> String.Empty) Then
             Dim list As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
             If list Is Nothing Then
-                Dim ResponseStatus As DataTable = Me.BuildWSResponseStatus(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.WS_ERROR_ACCESSING_DATABASE), _
+                Dim ResponseStatus As DataTable = BuildWSResponseStatus(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.WS_ERROR_ACCESSING_DATABASE), _
                                                                            Common.ErrorCodes.WS_ERROR_ACCESSING_DATABASE, _
                                                                            Codes.WEB_EXPERIENCE__FATAL_ERROR)
-                Dim _errorDataSet As New DataSet(Me.DATASET_NAME__CLAIM_CHECK_RESPONSE)
+                Dim _errorDataSet As New DataSet(DATASET_NAME__CLAIM_CHECK_RESPONSE)
                 _errorDataSet.Tables.Add(ResponseStatus)
                 Return (XMLHelper.FromDatasetToXML(_errorDataSet, Nothing, True, True, True, False, True))
             End If
-            Me._dealerId = LookupListNew.GetIdFromCode(list, Me.DealerCode)
+            _dealerId = LookupListNew.GetIdFromCode(list, DealerCode)
             If _dealerId.Equals(Guid.Empty) Then
-                Dim ResponseStatus As DataTable = Me.BuildWSResponseStatus(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.WS_DEALER_NOT_FOUND), _
+                Dim ResponseStatus As DataTable = BuildWSResponseStatus(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.WS_DEALER_NOT_FOUND), _
                                                            Common.ErrorCodes.WS_DEALER_NOT_FOUND, _
                                                            Codes.WEB_EXPERIENCE__LOOKUP_ERROR)
-                Dim _errorDataSet As New DataSet(Me.DATASET_NAME__CLAIM_CHECK_RESPONSE)
+                Dim _errorDataSet As New DataSet(DATASET_NAME__CLAIM_CHECK_RESPONSE)
                 _errorDataSet.Tables.Add(ResponseStatus)
                 Return (XMLHelper.FromDatasetToXML(_errorDataSet, Nothing, True, True, True, False, True))
             End If
@@ -161,47 +161,47 @@ Public Class GetCoverageInfo
 
 #Region "Properties"
 
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
-            If Row(Me.DATA_COL_NAME_DEALER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_DEALER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_DEALER), String)
+                Return CType(Row(DATA_COL_NAME_DEALER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_DEALER, Value)
+            SetValue(DATA_COL_NAME_DEALER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CustomerIdentifier() As String
+    Public Property CustomerIdentifier As String
         Get
-            If Row(Me.DATA_COL_NAME_CUSTOMER_IDENTIFIER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CUSTOMER_IDENTIFIER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CUSTOMER_IDENTIFIER), String)
+                Return CType(Row(DATA_COL_NAME_CUSTOMER_IDENTIFIER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CUSTOMER_IDENTIFIER, Value)
+            SetValue(DATA_COL_NAME_CUSTOMER_IDENTIFIER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property IdentifierType() As String
+    Public Property IdentifierType As String
         Get
-            If Row(Me.DATA_COL_NAME_IDENTIFIER_TYPE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_IDENTIFIER_TYPE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_IDENTIFIER_TYPE), String)
+                Return CType(Row(DATA_COL_NAME_IDENTIFIER_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_IDENTIFIER_TYPE, Value)
+            SetValue(DATA_COL_NAME_IDENTIFIER_TYPE, Value)
         End Set
     End Property
 
@@ -212,16 +212,16 @@ Public Class GetCoverageInfo
 
     Public Overrides Function ProcessWSRequest() As String
         Try
-            Me.Validate()
+            Validate()
             'Not IdentifierType Is Nothing AndAlso IdentifierType.Trim <> String.Empty
-            If Not Me.DealerCode Is Nothing AndAlso DealerCode.Trim <> String.Empty Then
-                Dim strErrorFindingDealer As String = Me.FindDealer
+            If DealerCode IsNot Nothing AndAlso DealerCode.Trim <> String.Empty Then
+                Dim strErrorFindingDealer As String = FindDealer
                 If strErrorFindingDealer <> String.Empty Then
                     Return strErrorFindingDealer
                 End If
             End If
 
-            Dim _coverageInfoDataSet As DataSet = Certificate.WS_GetCoverageInfo(Me.CustomerIdentifier, Me.IdentifierType, Me._dealerId)
+            Dim _coverageInfoDataSet As DataSet = Certificate.WS_GetCoverageInfo(CustomerIdentifier, IdentifierType, _dealerId)
 
             Return (XMLHelper.FromDatasetToXML(_coverageInfoDataSet, Nothing, True, True, True, False, True))
 

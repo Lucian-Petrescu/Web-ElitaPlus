@@ -41,85 +41,85 @@ Public Class InvoiceGroupDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("invoice_group_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal Invgrpnum As String, ByVal claimnumber As String, _
-                                    ByVal oCountryId As Guid, ByVal groupnofrom As String, ByVal mobilenum As String, _
-                                   ByVal duedate As String, ByVal svcname As String, ByVal groupnoto As String, _
-                                  ByVal invoicenum As String, ByVal Invstatusid As Guid, ByVal Membershipnumber As String, ByVal Certificate As String) As DataSet
+    Public Function LoadList(Invgrpnum As String, claimnumber As String, _
+                                    oCountryId As Guid, groupnofrom As String, mobilenum As String, _
+                                   duedate As String, svcname As String, groupnoto As String, _
+                                  invoicenum As String, Invstatusid As Guid, Membershipnumber As String, Certificate As String) As DataSet
         Try
-            Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+            Dim selectStmt As String = Config("/SQL/LOAD_LIST")
 
 
             Dim whereClauseConditions As String = ""
 
             If Not (oCountryId = Guid.Empty) Then
-                whereClauseConditions &= " AND " & Environment.NewLine & "sc." & Me.COL_NAME_COUNTRY_ID & "= " & MiscUtil.GetDbStringFromGuid(oCountryId)
+                whereClauseConditions &= " AND " & Environment.NewLine & "sc." & COL_NAME_COUNTRY_ID & "= " & MiscUtil.GetDbStringFromGuid(oCountryId)
             End If
             'whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("sc." & Me.COL_NAME_COUNTRY_ID, oCountryIds, False)
-            If Me.FormatSearchMask(Invgrpnum) Then
-                whereClauseConditions &= " AND " & Environment.NewLine & "Invgrp." & Me.COL_NAME_INVOICE_GROUP_NUMBER & Invgrpnum
+            If FormatSearchMask(Invgrpnum) Then
+                whereClauseConditions &= " AND " & Environment.NewLine & "Invgrp." & COL_NAME_INVOICE_GROUP_NUMBER & Invgrpnum
             End If
-            If Me.FormatSearchMask(claimnumber) Then
-                whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(cl." & Me.COL_NAME_CLAIM_NUMBER & ") " & claimnumber.ToUpper
+            If FormatSearchMask(claimnumber) Then
+                whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(cl." & COL_NAME_CLAIM_NUMBER & ") " & claimnumber.ToUpper
             End If
-            If Me.FormatSearchMask(mobilenum) Then
-                whereClauseConditions &= " AND " & Environment.NewLine & "NVL(UPPER(C." & Me.COL_NAME_MOBILE_NUMBER & "),' ') " & mobilenum.ToUpper
+            If FormatSearchMask(mobilenum) Then
+                whereClauseConditions &= " AND " & Environment.NewLine & "NVL(UPPER(C." & COL_NAME_MOBILE_NUMBER & "),' ') " & mobilenum.ToUpper
             End If
-            If Me.FormatSearchMask(svcname) Then
-                whereClauseConditions &= " AND " & Environment.NewLine & "NVL(UPPER(sc." & Me.COL_NAME_SERVICE_CENTER_NAME & "),' ') " & svcname.ToUpper
+            If FormatSearchMask(svcname) Then
+                whereClauseConditions &= " AND " & Environment.NewLine & "NVL(UPPER(sc." & COL_NAME_SERVICE_CENTER_NAME & "),' ') " & svcname.ToUpper
             End If
-            If Me.FormatSearchMask(Membershipnumber) Then
-                whereClauseConditions &= " AND " & Environment.NewLine & "NVL(UPPER(C." & Me.COL_NAME_MEMBERSHIP_NUMBER & "),' ') " & Membershipnumber.ToUpper
-            End If
-
-            If Me.FormatSearchMask(invoicenum) Then
-                whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(INV." & Me.COL_NAME_INVOICE_NUMBER & ") " & invoicenum.ToUpper
+            If FormatSearchMask(Membershipnumber) Then
+                whereClauseConditions &= " AND " & Environment.NewLine & "NVL(UPPER(C." & COL_NAME_MEMBERSHIP_NUMBER & "),' ') " & Membershipnumber.ToUpper
             End If
 
-            If Me.FormatSearchMask(Certificate) Then
-                whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(C." & Me.COL_NAME_CERTIFICATE & ") " & Certificate.ToUpper
+            If FormatSearchMask(invoicenum) Then
+                whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(INV." & COL_NAME_INVOICE_NUMBER & ") " & invoicenum.ToUpper
+            End If
+
+            If FormatSearchMask(Certificate) Then
+                whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(C." & COL_NAME_CERTIFICATE & ") " & Certificate.ToUpper
             End If
 
             If Not (groupnofrom = Nothing) Then
 
-                whereClauseConditions &= " AND " & Environment.NewLine & "trunc(Invgrp." & Me.COL_NAME_CREATED_DATE & ") >= '" & groupnofrom & " '"
+                whereClauseConditions &= " AND " & Environment.NewLine & "trunc(Invgrp." & COL_NAME_CREATED_DATE & ") >= '" & groupnofrom & " '"
             End If
 
             If (Not (groupnoto = Nothing)) Then
-                whereClauseConditions &= " AND " & Environment.NewLine & "trunc(Invgrp." & Me.COL_NAME_CREATED_DATE & ") <= '" & groupnoto & " '"
+                whereClauseConditions &= " AND " & Environment.NewLine & "trunc(Invgrp." & COL_NAME_CREATED_DATE & ") <= '" & groupnoto & " '"
             End If
 
             If Not (duedate = Nothing) Then
-                whereClauseConditions &= " AND " & Environment.NewLine & "trunc(INV." & Me.COL_NAME_DUE_DATE & ") = '" & duedate & "'"
+                whereClauseConditions &= " AND " & Environment.NewLine & "trunc(INV." & COL_NAME_DUE_DATE & ") = '" & duedate & "'"
             End If
             'whereClauseConditions &= " AND " & Environment.NewLine & "ROWNUM < " & ROW_MAX
             If Not (Invstatusid = Guid.Empty) Then
-                whereClauseConditions &= " AND " & Environment.NewLine & "INV." & Me.COL_NAME_INVOICE_STATUS_ID & "=" & MiscUtil.GetDbStringFromGuid(Invstatusid)
+                whereClauseConditions &= " AND " & Environment.NewLine & "INV." & COL_NAME_INVOICE_STATUS_ID & "=" & MiscUtil.GetDbStringFromGuid(Invstatusid)
 
             End If
 
             If Not whereClauseConditions = "" Then
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
             Else
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
             End If
 
 
             Dim ds As New DataSet
-            ds = DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+            ds = DBHelper.Fetch(selectStmt, TABLE_NAME)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -132,12 +132,12 @@ Public Class InvoiceGroupDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

@@ -1,5 +1,8 @@
 <%@ Page Language="vb" AutoEventWireup="false" CodeBehind="PayClaimForm.aspx.vb"
     Theme="Default" MasterPageFile="../Navigation/masters/ElitaBase.Master" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.PayClaimForm" %>
+<%@ Import Namespace="System.Globalization" %>
+<%@ Import Namespace="Assurant.ElitaPlus.BusinessObjectsNew" %>
+<%@ Import Namespace="Assurant.ElitaPlus.Common" %>
 
 <%@ Register TagPrefix="uc1" TagName="UserControlAddress" Src="../Common/UserControlAddress_New.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="UserControlBankInfo" Src="../Common/UserControlBankInfo_New.ascx" %>
@@ -734,8 +737,8 @@
 
         function doAmtCalc(obj) {
             //debugger;
-            var decSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
-            var groupSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
+            var decSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
+            var groupSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
             var AuthDetailReq = '<%=AuthDetailRequired%>';
 
             //obj.value = setCultureFormat(setJsFormat(obj.value, decSep));
@@ -1273,7 +1276,7 @@
                     if (obj.id == "ctl00_SummaryPlaceHolder_txtSalvageAmt") {
                         assurantAmt = parseFloat(setJsFormat(document.getElementById("ctl00_SummaryPlaceHolder_hdAssurantPays").value, decSep)) + parseFloat(setJsFormat(hdSalvageAmt.value, decSep)) - parseFloat(setJsFormat(obj.value, decSep));
                         if (assurantAmt < 0) {
-                            alert('<%=Assurant.ElitaPlus.BusinessObjectsNew.TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>');
+                            alert('<%=TranslationBase.TranslateLabelOrMessage(ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>');
                              obj.value = convertNumberToCulture(FormatToDecimal(round_num(hdSalvageAmt.value, 2).toString()), decSep, groupSep);
                              doAmtCalc(obj);
                              return false;
@@ -1431,7 +1434,7 @@
                      if (obj.id == "ctl00_SummaryPlaceHolder_txtSalvageAmt") {
                          assurantAmt = parseFloat(setJsFormat(document.getElementById("ctl00_SummaryPlaceHolder_hdAssurantPays").value, decSep)) + parseFloat(setJsFormat(document.getElementById("hdSalvageAmt").value, decSep)) - parseFloat(setJsFormat(obj.value, decSep));
                          if (assurantAmt < 0) {
-                             alert('<%=Assurant.ElitaPlus.BusinessObjectsNew.TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>');
+                             alert('<%=TranslationBase.TranslateLabelOrMessage(ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>');
                             obj.value = convertNumberToCulture(FormatToDecimal(round_num(hdSalvageAmt.value, 2).toString()), decSep, groupSep);
                             doAmtCalc(obj);
                             return false;
@@ -1508,7 +1511,7 @@
                 }
             }
             else {
-                alert(obj.name + obj.value + '<%=Assurant.ElitaPlus.BusinessObjectsNew.TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>');
+                alert(obj.name + obj.value + '<%=TranslationBase.TranslateLabelOrMessage(ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>');
                 obj.value = convertNumberToCulture(FormatToDecimal(round_num(0, 2).toString()), decSep, groupSep);
                 doAmtCalc(obj);
 
@@ -1536,8 +1539,8 @@
 
         function rcDDOnChange(dropdown) {
 
-            var decSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
-            var groupSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
+            var decSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
+            var groupSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
 
             var hdDeductibleAmt = parseFloat(setJsFormat(document.getElementById("hdDeductibleAmt").value, decSep))
             var consumerPays = parseFloat(setJsFormat(document.getElementById("txtConsumerPays").value, decSep))
@@ -1572,8 +1575,8 @@
         }
 
         function UpdateGrandTotalAmount() {
-            var decSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
-            var groupSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
+            var decSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
+            var groupSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
 
             var obj = document.getElementById("ctl00_SummaryPlaceHolder_txtPaymenttoCustomer");
             var paymentToCustomer = obj.value;
@@ -1581,7 +1584,7 @@
             hdpaymenttocustomer.value = paymentToCustomer;
 
             if (paymentToCustomer < 0) {
-                alert(obj.name + obj.value + '<%=Assurant.ElitaPlus.BusinessObjectsNew.TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>');
+                alert(obj.name + obj.value + '<%=TranslationBase.TranslateLabelOrMessage(ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>');
                 return false;
             }
 

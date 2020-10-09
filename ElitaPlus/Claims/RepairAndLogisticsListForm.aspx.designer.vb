@@ -10,6 +10,7 @@
 Option Strict On
 Option Explicit On
 
+Imports AjaxControlToolkit
 
 Partial Public Class RepairAndLogisticsListForm
 
@@ -20,7 +21,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ScriptManager1 As Global.System.Web.UI.ScriptManager
+    Protected WithEvents ScriptManager1 As ScriptManager
 
     '''<summary>
     '''searchTable control.
@@ -29,7 +30,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents searchTable As Global.System.Web.UI.HtmlControls.HtmlTable
+    Protected WithEvents searchTable As HtmlTable
 
     '''<summary>
     '''LabelSearchClaimNumber control.
@@ -38,7 +39,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSearchClaimNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSearchClaimNumber As Label
 
     '''<summary>
     '''LabelSerialNumber control.
@@ -47,7 +48,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSerialNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSerialNumber As Label
 
     '''<summary>
     '''LabelSearchCustomerName control.
@@ -56,7 +57,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSearchCustomerName As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSearchCustomerName As Label
 
     '''<summary>
     '''TextBoxSearchClaimNumber control.
@@ -65,7 +66,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxSearchClaimNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxSearchClaimNumber As TextBox
 
     '''<summary>
     '''TextBoxSerialNumber control.
@@ -74,7 +75,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxSerialNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxSerialNumber As TextBox
 
     '''<summary>
     '''TextBoxSearchCustomerName control.
@@ -83,7 +84,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxSearchCustomerName As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxSearchCustomerName As TextBox
 
     '''<summary>
     '''LabelSearchTaxID control.
@@ -92,7 +93,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSearchTaxID As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSearchTaxID As Label
 
     '''<summary>
     '''LabelSearchVerificationNumber control.
@@ -101,7 +102,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSearchVerificationNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSearchVerificationNumber As Label
 
     '''<summary>
     '''LabelSearchCellPhone control.
@@ -110,7 +111,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSearchCellPhone As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSearchCellPhone As Label
 
     '''<summary>
     '''TextBoxTaxId control.
@@ -119,7 +120,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxTaxId As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxTaxId As TextBox
 
     '''<summary>
     '''TextBoxSearchVerificationNumber control.
@@ -128,7 +129,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxSearchVerificationNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxSearchVerificationNumber As TextBox
 
     '''<summary>
     '''TextBoxSearchCellPhone control.
@@ -137,7 +138,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxSearchCellPhone As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxSearchCellPhone As TextBox
 
     '''<summary>
     '''LabelAuthorizatioNumber control.
@@ -146,7 +147,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelAuthorizatioNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelAuthorizatioNumber As Label
 
     '''<summary>
     '''LabelServiceCenter control.
@@ -155,7 +156,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelServiceCenter As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelServiceCenter As Label
 
     '''<summary>
     '''TextBoxSearchAuthNumber control.
@@ -164,7 +165,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxSearchAuthNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxSearchAuthNumber As TextBox
 
     '''<summary>
     '''TextBoxServiceCenter control.
@@ -173,7 +174,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxServiceCenter As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxServiceCenter As TextBox
 
     '''<summary>
     '''inpServiceCenterId control.
@@ -182,7 +183,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents inpServiceCenterId As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents inpServiceCenterId As HtmlInputHidden
 
     '''<summary>
     '''inpServiceCenterDesc control.
@@ -191,7 +192,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents inpServiceCenterDesc As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents inpServiceCenterDesc As HtmlInputHidden
 
     '''<summary>
     '''aCompServiceCenter control.
@@ -200,7 +201,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents aCompServiceCenter As Global.AjaxControlToolkit.AutoCompleteExtender
+    Protected WithEvents aCompServiceCenter As AutoCompleteExtender
 
     '''<summary>
     '''lblSortBy control.
@@ -209,7 +210,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblSortBy As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblSortBy As Label
 
     '''<summary>
     '''cboSortBy control.
@@ -218,7 +219,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboSortBy As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboSortBy As DropDownList
 
     '''<summary>
     '''btnClearSearch control.
@@ -227,7 +228,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnClearSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnClearSearch As Button
 
     '''<summary>
     '''btnSearch control.
@@ -236,7 +237,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSearch As Button
 
     '''<summary>
     '''trPageSize control.
@@ -245,7 +246,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trPageSize As HtmlTableRow
 
     '''<summary>
     '''lblPageSize control.
@@ -254,7 +255,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPageSize As Label
 
     '''<summary>
     '''colonSepertor control.
@@ -263,7 +264,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents colonSepertor As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents colonSepertor As Label
 
     '''<summary>
     '''cboPageSize control.
@@ -272,7 +273,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboPageSize As DropDownList
 
     '''<summary>
     '''lblRecordCount control.
@@ -281,7 +282,7 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblRecordCount As Label
 
     '''<summary>
     '''Grid control.
@@ -290,5 +291,5 @@ Partial Public Class RepairAndLogisticsListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Grid As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents Grid As GridView
 End Class

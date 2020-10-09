@@ -1,6 +1,10 @@
 Option Strict On
 Option Explicit On
+
+Imports System.Diagnostics
+Imports System.Threading
 Imports Assurant.Elita.CommonConfiguration
+Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
 
 Partial Class ShippingInfoForm
@@ -9,21 +13,21 @@ Partial Class ShippingInfoForm
     Protected WithEvents ErrController As ErrorController
 
 #Region "Member Variables"
-    Protected WithEvents SearchDescriptionLabel As System.Web.UI.WebControls.Label
+    Protected WithEvents SearchDescriptionLabel As Label
 #End Region
 
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -44,9 +48,9 @@ Partial Class ShippingInfoForm
     Public Class ReturnType
         Public LastOperation As DetailPageCommand
         Public EditingBo As Claim
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As Claim)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(LastOp As DetailPageCommand, curEditingBo As Claim)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
         End Sub
     End Class
 #End Region
@@ -55,7 +59,7 @@ Partial Class ShippingInfoForm
     Public Class Parameters
         Public ShippingInfoId As Guid
 
-        Public Sub New(ByVal ShippingInfoId As Guid)
+        Public Sub New(ShippingInfoId As Guid)
             Me.ShippingInfoId = ShippingInfoId
         End Sub
     End Class
@@ -87,77 +91,77 @@ Partial Class ShippingInfoForm
     Protected Shadows ReadOnly Property State() As MyState
         Get
             'Return CType(MyBase.State, MyState)
-            If Me.NavController.State Is Nothing Then
-                Me.NavController.State = New MyState
+            If NavController.State Is Nothing Then
+                NavController.State = New MyState
                 InitializeFromFlowSession()
             End If
-            Return CType(Me.NavController.State, MyState)
+            Return CType(NavController.State, MyState)
 
         End Get
     End Property
 
     Protected Sub InitializeFromFlowSession()
         Try
-            Dim objServiceCenter As ServiceCenter = CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_SERVICE_CENTER), ServiceCenter)
-            Dim objCertItemCoverage As CertItemCoverage = CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_COVERAGE), CertItemCoverage)
-            If Not objServiceCenter Is Nothing AndAlso Not objCertItemCoverage Is Nothing Then
-                Me.State.MyBO = New ShippingInfo
-                Me.State.MyBO.PrePopulate(objCertItemCoverage, objServiceCenter)
-                Me.State.CertItemCoverageBO = objCertItemCoverage
-                Me.State.IsComingFromClaimDetail = False
+            Dim objServiceCenter As ServiceCenter = CType(NavController.FlowSession(FlowSessionKeys.SESSION_SERVICE_CENTER), ServiceCenter)
+            Dim objCertItemCoverage As CertItemCoverage = CType(NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_COVERAGE), CertItemCoverage)
+            If objServiceCenter IsNot Nothing AndAlso objCertItemCoverage IsNot Nothing Then
+                State.MyBO = New ShippingInfo
+                State.MyBO.PrePopulate(objCertItemCoverage, objServiceCenter)
+                State.CertItemCoverageBO = objCertItemCoverage
+                State.IsComingFromClaimDetail = False
             Else
-                Me.State.InputParameters = CType(Me.NavController.ParametersPassed, Parameters)
-                Me.State.MyBO = New ShippingInfo(State.InputParameters.ShippingInfoId)
-                Me.State.IsComingFromClaimDetail = True
+                State.InputParameters = CType(NavController.ParametersPassed, Parameters)
+                State.MyBO = New ShippingInfo(State.InputParameters.ShippingInfoId)
+                State.IsComingFromClaimDetail = True
             End If
 
-            Me.State.ScreenSnapShotBO = New ShippingInfo
-            Me.State.ScreenSnapShotBO.Clone(Me.State.MyBO)
+            State.ScreenSnapShotBO = New ShippingInfo
+            State.ScreenSnapShotBO.Clone(State.MyBO)
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
     End Sub
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
 
-            If Not Me.CallingParameters Is Nothing Then
-                If CType(Me.CallingParameters, Guid).Equals(Guid.Empty) Then
-                    Me.State.MyBO = New ShippingInfo(CType(Me.CallingParameters, Guid))
-                    Me.State.IsComingFromClaimDetail = True
+            If CallingParameters IsNot Nothing Then
+                If CType(CallingParameters, Guid).Equals(Guid.Empty) Then
+                    State.MyBO = New ShippingInfo(CType(CallingParameters, Guid))
+                    State.IsComingFromClaimDetail = True
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
 
     End Sub
 #End Region
 
 #Region "Page Events"
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         'Put user code to initialize the page here
         ErrController.Clear_Hide()
         Try
             If Not Page.IsPostBack Then
-                Trace(Me, "Shp_Id=" & GuidControl.GuidToHexString(Me.State.MyBO.Id))
-                Me.MenuEnabled = False
-                Me.ShowMissingTranslations(ErrController)
+                Trace(Me, "Shp_Id=" & GuidControl.GuidToHexString(State.MyBO.Id))
+                MenuEnabled = False
+                ShowMissingTranslations(ErrController)
                 SetButtonsState()
                 PopulateDropdowns()
-                Me.PopulateFormFromBOs()
-                Me.SetButtonsState()
-                Me.InitialEnableDisableFields()
+                PopulateFormFromBOs()
+                SetButtonsState()
+                InitialEnableDisableFields()
             End If
             BindBoPropertiesToLabels()
             CheckIfComingFromSaveConfirm()
-            If Not Me.IsPostBack Then
-                Me.AddLabelDecorations(Me.State.MyBO)
+            If Not IsPostBack Then
+                AddLabelDecorations(State.MyBO)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
     End Sub
 
@@ -166,25 +170,25 @@ Partial Class ShippingInfoForm
 #Region "Controlling Logic"
 
     Protected Sub BindBoPropertiesToLabels()
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "CountryId", Me.moCountryLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "RegionId", Me.moRegionLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Address1", Me.moAddress1Label)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Address2", Me.moAddress2Label)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "City", Me.moCityLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "PostalCode", Me.moPostalLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "CreditCardNumber", Me.LabelCredit_Card_Number)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "AuthorizationNumber", Me.LabelAuthorization_Number)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "ProcessingFee", Me.LabelPROCESSING_FEE)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "TotalCharge", Me.LabelTOTAL_CHARGE)
+        BindBOPropertyToLabel(State.MyBO, "CountryId", moCountryLabel)
+        BindBOPropertyToLabel(State.MyBO, "RegionId", moRegionLabel)
+        BindBOPropertyToLabel(State.MyBO, "Address1", moAddress1Label)
+        BindBOPropertyToLabel(State.MyBO, "Address2", moAddress2Label)
+        BindBOPropertyToLabel(State.MyBO, "City", moCityLabel)
+        BindBOPropertyToLabel(State.MyBO, "PostalCode", moPostalLabel)
+        BindBOPropertyToLabel(State.MyBO, "CreditCardNumber", LabelCredit_Card_Number)
+        BindBOPropertyToLabel(State.MyBO, "AuthorizationNumber", LabelAuthorization_Number)
+        BindBOPropertyToLabel(State.MyBO, "ProcessingFee", LabelPROCESSING_FEE)
+        BindBOPropertyToLabel(State.MyBO, "TotalCharge", LabelTOTAL_CHARGE)
 
-        Me.ClearGridHeadersAndLabelsErrSign()
+        ClearGridHeadersAndLabelsErrSign()
     End Sub
 
     Protected Sub PopulateDropdowns(Optional ByVal blnRegionListOnly As Boolean = False)
 
-        Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
-        oListContext.CountryId = Me.State.MyBO.CountryId
-        Dim oRegionList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RegionsByCountry", context:=oListContext)
+        Dim oListContext As New ListContext
+        oListContext.CountryId = State.MyBO.CountryId
+        Dim oRegionList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RegionsByCountry", context:=oListContext)
         moRegionDrop_WRITE.Populate(oRegionList, New PopulateOptions() With
                                            {
                                            .AddBlankItem = True
@@ -192,7 +196,7 @@ Partial Class ShippingInfoForm
 
         If Not blnRegionListOnly Then
 
-            Dim oCountryList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="Country")
+            Dim oCountryList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="Country")
             moCountryDrop_WRITE.Populate(oCountryList, New PopulateOptions() With
                                             {
                                             .AddBlankItem = True
@@ -203,56 +207,56 @@ Partial Class ShippingInfoForm
 
 
     Protected Sub PopulateFormFromBOs()
-        With Me.State.MyBO
-            Me.SetSelectedItem(Me.moCountryDrop_WRITE, .CountryId)
-            Me.PopulateDropdowns(True)
-            Me.SetSelectedItem(Me.moRegionDrop_WRITE, .RegionId)
-            Me.PopulateControlFromBOProperty(Me.moAddress1Text, .Address1)
-            Me.PopulateControlFromBOProperty(Me.moAddress2Text, .Address2)
-            Me.PopulateControlFromBOProperty(Me.moCityText, .City)
-            Me.PopulateControlFromBOProperty(Me.moPostalText, .PostalCode)
-            Me.PopulateControlFromBOProperty(Me.TextboxCredit_Card_Number, .CreditCardNumber)
-            Me.PopulateControlFromBOProperty(Me.TextboxAuthorization_Number, .AuthorizationNumber)
-            Me.PopulateControlFromBOProperty(Me.TextboxPROCESSING_FEE, .ProcessingFee)
-            Me.PopulateControlFromBOProperty(Me.TextboxTOTAL_CHARGE, .TotalCharge)
+        With State.MyBO
+            SetSelectedItem(moCountryDrop_WRITE, .CountryId)
+            PopulateDropdowns(True)
+            SetSelectedItem(moRegionDrop_WRITE, .RegionId)
+            PopulateControlFromBOProperty(moAddress1Text, .Address1)
+            PopulateControlFromBOProperty(moAddress2Text, .Address2)
+            PopulateControlFromBOProperty(moCityText, .City)
+            PopulateControlFromBOProperty(moPostalText, .PostalCode)
+            PopulateControlFromBOProperty(TextboxCredit_Card_Number, .CreditCardNumber)
+            PopulateControlFromBOProperty(TextboxAuthorization_Number, .AuthorizationNumber)
+            PopulateControlFromBOProperty(TextboxPROCESSING_FEE, .ProcessingFee)
+            PopulateControlFromBOProperty(TextboxTOTAL_CHARGE, .TotalCharge)
         End With
     End Sub
 
     Protected Sub PopulateBOFormFrom()
-        With Me.State.MyBO
-            Me.PopulateBOProperty(Me.State.MyBO, "CountryId", Me.moCountryDrop_WRITE)
-            Me.PopulateBOProperty(Me.State.MyBO, "RegionId", Me.moRegionDrop_WRITE)
-            Me.PopulateBOProperty(Me.State.MyBO, "Address1", Me.moAddress1Text)
-            Me.PopulateBOProperty(Me.State.MyBO, "Address2", Me.moAddress2Text)
-            Me.PopulateBOProperty(Me.State.MyBO, "City", Me.moCityText)
-            Me.PopulateBOProperty(Me.State.MyBO, "PostalCode", Me.moPostalText)
-            Me.PopulateBOProperty(Me.State.MyBO, "CreditCardNumber", Me.TextboxCredit_Card_Number)
-            Me.PopulateBOProperty(Me.State.MyBO, "AuthorizationNumber", Me.TextboxAuthorization_Number)
-            Me.PopulateBOProperty(Me.State.MyBO, "ProcessingFee", Me.TextboxPROCESSING_FEE)
-            Me.PopulateBOProperty(Me.State.MyBO, "TotalCharge", Me.TextboxTOTAL_CHARGE)
+        With State.MyBO
+            PopulateBOProperty(State.MyBO, "CountryId", moCountryDrop_WRITE)
+            PopulateBOProperty(State.MyBO, "RegionId", moRegionDrop_WRITE)
+            PopulateBOProperty(State.MyBO, "Address1", moAddress1Text)
+            PopulateBOProperty(State.MyBO, "Address2", moAddress2Text)
+            PopulateBOProperty(State.MyBO, "City", moCityText)
+            PopulateBOProperty(State.MyBO, "PostalCode", moPostalText)
+            PopulateBOProperty(State.MyBO, "CreditCardNumber", TextboxCredit_Card_Number)
+            PopulateBOProperty(State.MyBO, "AuthorizationNumber", TextboxAuthorization_Number)
+            PopulateBOProperty(State.MyBO, "ProcessingFee", TextboxPROCESSING_FEE)
+            PopulateBOProperty(State.MyBO, "TotalCharge", TextboxTOTAL_CHARGE)
         End With
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Sub
 
 
     Protected Sub CheckIfComingFromSaveConfirm()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-        If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
-            If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso Me.State.IsComingFromClaimDetail Then
-                Me.State.MyBO.Save()
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+        If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
+            If State.ActionInProgress <> DetailPageCommand.BackOnErr AndAlso State.IsComingFromClaimDetail Then
+                State.MyBO.Save()
             End If
-            Me.NavController.Navigate(Me, "back")
-        ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-            If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso Me.State.IsComingFromClaimDetail Then
-                Me.NavController.Navigate(Me, "back")
+            NavController.Navigate(Me, "back")
+        ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+            If State.ActionInProgress <> DetailPageCommand.BackOnErr AndAlso State.IsComingFromClaimDetail Then
+                NavController.Navigate(Me, "back")
             End If
         End If
 
         'Clean after consuming the action
-        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-        Me.HiddenSaveChangesPromptResponse.Value = ""
+        State.ActionInProgress = DetailPageCommand.Nothing_
+        HiddenSaveChangesPromptResponse.Value = ""
 
     End Sub
 
@@ -261,75 +265,75 @@ Partial Class ShippingInfoForm
 
 #Region "Button Clicks"
 
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         Try
-            Me.PopulateBOFormFrom()
-            If (Me.State.IsComingFromClaimDetail) Then    'Button is Save
-                If (Me.State.MyBO.IsDirty) Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+            PopulateBOFormFrom()
+            If (State.IsComingFromClaimDetail) Then    'Button is Save
+                If (State.MyBO.IsDirty) Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = DetailPageCommand.Back
                 Else
-                    Me.NavController.Navigate(Me, "back")
+                    NavController.Navigate(Me, "back")
                 End If
             Else    'Button is Next
-                If (Me.State.MyBO.IsDirty) Then
-                    Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_CHANGES, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                If (State.MyBO.IsDirty) Then
+                    DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_CHANGES, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = DetailPageCommand.Back
                 Else
-                    Me.NavController.Navigate(Me, "back")
+                    NavController.Navigate(Me, "back")
                 End If
             End If
 
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
-            Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.LastState = InternalStates.ConfirmBackOnError
-            Me.State.LastErrMsg = Me.ErrController.Text
+            HandleErrors(ex, ErrController)
+            DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.LastState = InternalStates.ConfirmBackOnError
+            State.LastErrMsg = ErrController.Text
         End Try
     End Sub
 
-    Private Sub SaveButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SaveButton_WRITE.Click
+    Private Sub SaveButton_WRITE_Click(sender As Object, e As EventArgs) Handles SaveButton_WRITE.Click
 
         Try
-            Me.PopulateBOFormFrom()
-            If (Me.State.IsComingFromClaimDetail) Then    'Button is Save
-                If (Me.State.MyBO.IsDirty) Then
-                    Me.State.MyBO.Save()
-                    Me.NavController.Navigate(Me, FlowEvents.EVENT_SHIPPING_UPDATED, Message.MSG_SHIPPING_INFO_UPDATED)
+            PopulateBOFormFrom()
+            If (State.IsComingFromClaimDetail) Then    'Button is Save
+                If (State.MyBO.IsDirty) Then
+                    State.MyBO.Save()
+                    NavController.Navigate(Me, FlowEvents.EVENT_SHIPPING_UPDATED, Message.MSG_SHIPPING_INFO_UPDATED)
                 Else
-                    Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 End If
             Else    'Button is Next
-                If (Me.State.MyBO.IsDirty) Then Me.State.MyBO.Validate()
-                Me.NavController.FlowSession(FlowSessionKeys.SESSION_SHIPPING_INFO) = Me.State.MyBO
-                Me.NavController.Navigate(Me, "create_new_claim")
+                If (State.MyBO.IsDirty) Then State.MyBO.Validate()
+                NavController.FlowSession(FlowSessionKeys.SESSION_SHIPPING_INFO) = State.MyBO
+                NavController.Navigate(Me, "create_new_claim")
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
 
     End Sub
 
-    Private Sub btnUndo_Write_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_Write.Click
+    Private Sub btnUndo_Write_Click(sender As Object, e As EventArgs) Handles btnUndo_Write.Click
         Try
-            If Not Me.State.MyBO.IsNew AndAlso Not Me.State.ScreenSnapShotBO Is Nothing Then
-                Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+            If Not State.MyBO.IsNew AndAlso State.ScreenSnapShotBO IsNot Nothing Then
+                State.MyBO.Clone(State.ScreenSnapShotBO)
             End If
-            Me.PopulateFormFromBOs()
+            PopulateFormFromBOs()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
     End Sub
 
 
-    Private Sub moCountryDrop_WRITE_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles moCountryDrop_WRITE.SelectedIndexChanged
+    Private Sub moCountryDrop_WRITE_SelectedIndexChanged(sender As Object, e As EventArgs) Handles moCountryDrop_WRITE.SelectedIndexChanged
 
-        Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
+        Dim oListContext As New ListContext
         oListContext.CountryId = GetSelectedItem(moCountryDrop_WRITE)
-        Dim oRegionList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RegionsByCountry", context:=oListContext)
+        Dim oRegionList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RegionsByCountry", context:=oListContext)
         moRegionDrop_WRITE.Populate(oRegionList, New PopulateOptions() With
                                            {
                                            .AddBlankItem = True
@@ -342,19 +346,19 @@ Partial Class ShippingInfoForm
 #Region "Page Control Events"
     Private Sub SetButtonsState()
 
-        If (Me.State.IsComingFromClaimDetail) Then
-            Me.SaveButton_WRITE.Text = TranslationBase.TranslateLabelOrMessage("Save")
+        If (State.IsComingFromClaimDetail) Then
+            SaveButton_WRITE.Text = TranslationBase.TranslateLabelOrMessage("Save")
         Else
-            Me.SaveButton_WRITE.Text = TranslationBase.TranslateLabelOrMessage("Next")
+            SaveButton_WRITE.Text = TranslationBase.TranslateLabelOrMessage("Next")
         End If
 
     End Sub
     Protected Sub InitialEnableDisableFields()
         'read only fields
-        Me.ChangeEnabledProperty(Me.LabelPROCESSING_FEE, False)
-        Me.ChangeEnabledProperty(Me.LabelTOTAL_CHARGE, False)
-        Me.ChangeEnabledProperty(Me.TextboxPROCESSING_FEE, False)
-        Me.ChangeEnabledProperty(Me.TextboxTOTAL_CHARGE, False)
+        ChangeEnabledProperty(LabelPROCESSING_FEE, False)
+        ChangeEnabledProperty(LabelTOTAL_CHARGE, False)
+        ChangeEnabledProperty(TextboxPROCESSING_FEE, False)
+        ChangeEnabledProperty(TextboxTOTAL_CHARGE, False)
     End Sub
 #End Region
 

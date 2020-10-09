@@ -69,7 +69,7 @@
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -84,35 +84,35 @@
             TheReportCeInputControl.populateReportLanguages(RPT_FILENAME)
         End Sub
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load, Me.Load
-            Me.ErrControllerMaster.Clear_Hide()
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load, Me.Load
+            ErrControllerMaster.Clear_Hide()
             ClearErrLabels()
-            Me.Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
+            Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
 
             Try
-                If Not Me.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
+                If Not IsPostBack Then
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
                     InitializeForm()
-                    Me.AddCalendar(Me.btnBeginDate, Me.moBeginDateText)
-                    Me.AddCalendar(Me.btnEndDate, Me.moEndDateText)
+                    AddCalendar(btnBeginDate, moBeginDateText)
+                    AddCalendar(btnEndDate, moEndDateText)
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
 #End Region
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -126,8 +126,8 @@
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(moBeginDateLabel)
-            Me.ClearLabelErrSign(moEndDateLabel)
+            ClearLabelErrSign(moBeginDateLabel)
+            ClearLabelErrSign(moEndDateLabel)
         End Sub
 
 #End Region
@@ -137,9 +137,9 @@
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal userId As String, ByVal rptBasedOnDate As String,
-                               ByVal beginDate As String, ByVal endDate As String,
-                               ByVal rptType As String, ByVal sortOrder As String, ByVal suspOp As String) As ReportCeBaseForm.Params
+        Function SetParameters(userId As String, rptBasedOnDate As String,
+                               beginDate As String, endDate As String,
+                               rptType As String, sortOrder As String, suspOp As String) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim culturevalue As String = TheReportCeInputControl.getCultureValue(False)
@@ -176,9 +176,9 @@
             End With
             Return params
         End Function
-        Function SetExpParameters(ByVal userId As String, ByVal rptBasedOnDate As String,
-                                ByVal beginDate As String, ByVal endDate As String,
-                                ByVal rptType As String, ByVal sortOrder As String, ByVal suspOp As String) As ReportCeBaseForm.Params
+        Function SetExpParameters(userId As String, rptBasedOnDate As String,
+                                beginDate As String, endDate As String,
+                                rptType As String, sortOrder As String, suspOp As String) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim culturevalue As String = TheReportCeInputControl.getCultureValue(True)
@@ -234,19 +234,19 @@
                 rptType = RPT_TYPE_ALL
             End If
 
-            If chkPepReport.Checked And chkTerrReport.Checked Then
+            If chkPepReport.Checked AndAlso chkTerrReport.Checked Then
                 rptType = RPT_TYPE_PNT
             End If
 
-            If chkPepReport.Checked And Not chkTerrReport.Checked Then
+            If chkPepReport.Checked AndAlso Not chkTerrReport.Checked Then
                 rptType = RPT_TYPE_PEP
             End If
 
-            If Not chkPepReport.Checked And chkTerrReport.Checked Then
+            If Not chkPepReport.Checked AndAlso chkTerrReport.Checked Then
                 rptType = RPT_TYPE_TER
             End If
 
-            If Not chkAllCerts.Checked And Not chkPepReport.Checked And Not chkTerrReport.Checked Then
+            If Not chkAllCerts.Checked AndAlso Not chkPepReport.Checked AndAlso Not chkTerrReport.Checked Then
                 rptType = RPT_TYPE_ALL
             End If
 
@@ -256,8 +256,8 @@
                 suspOp = Codes.YESNO_N
             End If
 
-            rptBasedOnDate = Me.rdPeriod.SelectedValue()
-            sortOrder = Me.rdReportSortOrder.SelectedValue()
+            rptBasedOnDate = rdPeriod.SelectedValue()
+            sortOrder = rdReportSortOrder.SelectedValue()
             ReportCeBase.EnableReportCe(Me, TheReportCeInputControl)
 
             moReportFormat = ReportCeBase.GetReportFormat(Me)

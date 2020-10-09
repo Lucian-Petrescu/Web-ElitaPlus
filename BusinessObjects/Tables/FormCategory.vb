@@ -6,48 +6,48 @@ Public Class FormCategory
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New FormCategoryDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class FormCategory
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New FormCategoryDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -96,7 +96,7 @@ Public Class FormCategory
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(FormCategoryDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -107,7 +107,7 @@ Public Class FormCategory
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=255), ValidUniqueCode("")> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(FormCategoryDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -116,13 +116,13 @@ Public Class FormCategory
                 Return CType(Row(FormCategoryDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(FormCategoryDAL.COL_NAME_CODE, Value)
+            SetValue(FormCategoryDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
-    Public Property ParentCategoryId() As Guid
+    Public Property ParentCategoryId As Guid
         Get
             CheckDeleted()
             If row(FormCategoryDAL.COL_NAME_PARENT_CATEGORY_ID) Is DBNull.Value Then
@@ -131,13 +131,13 @@ Public Class FormCategory
                 Return New Guid(CType(row(FormCategoryDAL.COL_NAME_PARENT_CATEGORY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(FormCategoryDAL.COL_NAME_PARENT_CATEGORY_ID, Value)
+            SetValue(FormCategoryDAL.COL_NAME_PARENT_CATEGORY_ID, Value)
         End Set
     End Property
 
-    Public Property TabId() As Guid
+    Public Property TabId As Guid
         Get
             CheckDeleted()
             If Row(FormCategoryDAL.COL_NAME_TAB_ID) Is DBNull.Value Then
@@ -146,14 +146,14 @@ Public Class FormCategory
                 Return New Guid(CType(Row(FormCategoryDAL.COL_NAME_TAB_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(FormCategoryDAL.COL_NAME_TAB_ID, Value)
+            SetValue(FormCategoryDAL.COL_NAME_TAB_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property DictItemId() As Guid
+    Public Property DictItemId As Guid
         Get
             CheckDeleted()
             If row(FormCategoryDAL.COL_NAME_DICT_ITEM_ID) Is DBNull.Value Then
@@ -162,17 +162,17 @@ Public Class FormCategory
                 Return New Guid(CType(row(FormCategoryDAL.COL_NAME_DICT_ITEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(FormCategoryDAL.COL_NAME_DICT_ITEM_ID, Value)
+            SetValue(FormCategoryDAL.COL_NAME_DICT_ITEM_ID, Value)
         End Set
     End Property
     <ValueMandatoryWhenAddNew("")> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             Return _Description
         End Get
-        Set(ByVal value As String)
+        Set
             If _Description <> String.Empty AndAlso _Description <> value Then
                 _IsDescriptionChanged = True
             End If
@@ -180,7 +180,7 @@ Public Class FormCategory
         End Set
     End Property
 
-    Public ReadOnly Property IsDescriptionChanged() As Boolean
+    Public ReadOnly Property IsDescriptionChanged As Boolean
         Get
             Return _IsDescriptionChanged
         End Get
@@ -197,19 +197,19 @@ Public Class FormCategory
                 dal.UpdateDescriptionOnly(IsDescriptionChanged, DictItemId, Description)
                 dal = Nothing
             End If
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New FormCategoryDAL
-                If Me.IsNew Then
-                    dal.AddNew(Me.Row, DictItemId, Description)
+                If IsNew Then
+                    dal.AddNew(Row, DictItemId, Description)
                 Else
-                    dal.UpdateExisting(Me.Row, IsDescriptionChanged, DictItemId, Description)
+                    dal.UpdateExisting(Row, IsDescriptionChanged, DictItemId, Description)
                 End If
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -217,20 +217,20 @@ Public Class FormCategory
         End Try
     End Sub
 
-    Public Sub SaveDelete(ByVal guidDictItemID As Guid)
+    Public Sub SaveDelete(guidDictItemID As Guid)
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New FormCategoryDAL
-                If Me.IsDeleted Then
-                    dal.Delete(Me.Row, guidDictItemID)
+                If IsDeleted Then
+                    dal.Delete(Row, guidDictItemID)
                 End If
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -238,7 +238,7 @@ Public Class FormCategory
         End Try
     End Sub
 
-    Public Shared Sub AssignFormCategory(ByVal FormID As Guid, ByVal FormCategoryID As Guid)
+    Public Shared Sub AssignFormCategory(FormID As Guid, FormCategoryID As Guid)
         Dim dal As New FormCategoryDAL
         dal.UpdateForm_FormCategory(FormID, FormCategoryID)
     End Sub
@@ -259,19 +259,19 @@ Public Class FormCategory
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
         Public Function AddNewRowToEmptyDV() As FormCategorySearchDV
-            Dim dt As DataTable = Me.Table.Clone()
+            Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(FormCategorySearchDV.COL_FORM_CATEGORY_ID) = (New Guid()).ToByteArray
-            row(FormCategorySearchDV.COL_CODE) = ""
-            row(FormCategorySearchDV.COL_DESCRIPTION) = ""
-            row(FormCategorySearchDV.COL_TAB_ID) = Guid.Empty.ToByteArray
-            row(FormCategorySearchDV.COL_TAB_DESC) = ""
-            row(FormCategorySearchDV.COL_FORM_COUNT) = 0
+            row(COL_FORM_CATEGORY_ID) = (New Guid()).ToByteArray
+            row(COL_CODE) = ""
+            row(COL_DESCRIPTION) = ""
+            row(COL_TAB_ID) = Guid.Empty.ToByteArray
+            row(COL_TAB_DESC) = ""
+            row(COL_FORM_COUNT) = 0
             dt.Rows.Add(row)
             Return New FormCategorySearchDV(dt)
         End Function
@@ -289,24 +289,24 @@ Public Class FormCategory
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
         Public Function AddNewRowToEmptyDV() As FormSearchDV
-            Dim dt As DataTable = Me.Table.Clone()
+            Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(FormSearchDV.COL_FORM_ID) = (New Guid()).ToByteArray
-            row(FormSearchDV.COL_FORM_NAME) = ""
-            row(FormSearchDV.COL_TAB_NAME) = ""
-            row(FormSearchDV.COL_FORM_CATEGORY_ID) = Guid.Empty.ToByteArray
-            row(FormSearchDV.COL_FORM_CATEGORY_NAME) = ""
+            row(COL_FORM_ID) = (New Guid()).ToByteArray
+            row(COL_FORM_NAME) = ""
+            row(COL_TAB_NAME) = ""
+            row(COL_FORM_CATEGORY_ID) = Guid.Empty.ToByteArray
+            row(COL_FORM_CATEGORY_NAME) = ""
             dt.Rows.Add(row)
             Return New FormSearchDV(dt)
         End Function
     End Class
 
-    Public Shared Sub AddNewRowToSearchDV(ByRef dv As FormCategorySearchDV, ByVal NewFormCategoryBO As FormCategory)
+    Public Shared Sub AddNewRowToSearchDV(ByRef dv As FormCategorySearchDV, NewFormCategoryBO As FormCategory)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         dv.Sort = ""
@@ -337,7 +337,7 @@ Public Class FormCategory
         End If
     End Sub
 
-    Public Shared Function getList(ByVal guidTab As Guid, ByVal strCode As String, ByVal strDescription As String) As FormCategorySearchDV
+    Public Shared Function getList(guidTab As Guid, strCode As String, strDescription As String) As FormCategorySearchDV
         Try
             Dim dal As New FormCategoryDAL
             Return New FormCategorySearchDV(dal.LoadList(Authentication.CurrentUser.LanguageId, guidTab, strCode, strDescription).Tables(0))
@@ -364,7 +364,7 @@ Public Class FormCategory
         End Try
     End Function
 
-    Public Shared Function getFormList(ByVal guidTab As Guid, ByVal guidCategory As Guid, ByVal strFormDesc As String) As FormSearchDV
+    Public Shared Function getFormList(guidTab As Guid, guidCategory As Guid, strFormDesc As String) As FormSearchDV
         Try
             Dim dal As New FormCategoryDAL
             Return New FormSearchDV(dal.LoadFormList(Authentication.CurrentUser.LanguageId, guidTab, guidCategory, strFormDesc).Tables(0))
@@ -373,7 +373,7 @@ Public Class FormCategory
         End Try
     End Function
 
-    Public Shared Function IsCodeInUse(ByVal strCode As String, Optional ByVal IsNew As Boolean = True) As Boolean
+    Public Shared Function IsCodeInUse(strCode As String, Optional ByVal IsNew As Boolean = True) As Boolean
         Dim blnInUse As Boolean = True
         Try
             Dim dal As New FormCategoryDAL
@@ -398,11 +398,11 @@ Public Class FormCategory
     Public NotInheritable Class ValidUniqueCode
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, CODE_MUST_UNIQUE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As FormCategory = CType(objectToValidate, FormCategory)
             If Not obj.IsDeleted Then 'when not deleting, New or save existing
                 If IsCodeInUse(obj.Code, obj.IsNew) Then
@@ -417,11 +417,11 @@ Public Class FormCategory
     Public NotInheritable Class ValueMandatoryWhenAddNew
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As FormCategory = CType(objectToValidate, FormCategory)
             If obj.IsNew Then
                 If obj.Description.Trim = String.Empty Then

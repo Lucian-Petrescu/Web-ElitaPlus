@@ -8,48 +8,48 @@ Public Class Issue
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New IssueDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             SetValue(dal.COL_NAME_EFFECTIVE, EquipmentListDetail.GetCurrentDateTime())
             SetValue(dal.COL_NAME_EXPIRATION, ISSUE_EXPIRATION_DEFAULT)
@@ -59,23 +59,23 @@ Public Class Issue
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New IssueDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -107,7 +107,7 @@ Public Class Issue
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(IssueDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -118,7 +118,7 @@ Public Class Issue
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1020)>
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(IssueDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -127,32 +127,32 @@ Public Class Issue
                 Return CType(Row(IssueDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(IssueDAL.COL_NAME_CODE, Value)
+            SetValue(IssueDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=2000)>
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
-            If Row(IssueDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
+            If Row(DALBase.COL_NAME_DESCRIPTION) Is DBNull.Value Then
                 Return Nothing
             Else
                 Dim desc As String = LookupListNew.GetDescriptionFromId(ISSUE_DESCRIPTION, LookupListNew.GetIdFromCode(ISSUE_DESCRIPTION, Code), ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-                If String.IsNullOrEmpty(desc) Then desc = CType(Row(IssueDAL.COL_NAME_DESCRIPTION), String)
+                If String.IsNullOrEmpty(desc) Then desc = CType(Row(DALBase.COL_NAME_DESCRIPTION), String)
                 Return desc
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(IssueDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(DALBase.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property IssueTypeId() As Guid
+    Public Property IssueTypeId As Guid
         Get
             CheckDeleted()
             If Row(IssueDAL.COL_NAME_ISSUE_TYPE_ID) Is DBNull.Value Then
@@ -161,15 +161,15 @@ Public Class Issue
                 Return New Guid(CType(Row(IssueDAL.COL_NAME_ISSUE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(IssueDAL.COL_NAME_ISSUE_TYPE_ID, Value)
+            SetValue(IssueDAL.COL_NAME_ISSUE_TYPE_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")>
-    Public Property Effective() As DateType
+    Public Property Effective As DateType
         Get
             CheckDeleted()
             If Row(IssueDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -178,15 +178,15 @@ Public Class Issue
                 Return New DateType(DateHelper.GetDateValue(Row(IssueDAL.COL_NAME_EFFECTIVE).ToString()))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(IssueDAL.COL_NAME_EFFECTIVE, Value)
+            SetValue(IssueDAL.COL_NAME_EFFECTIVE, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")>
-    Public Property Expiration() As DateType
+    Public Property Expiration As DateType
         Get
             CheckDeleted()
             If Row(IssueDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
@@ -195,12 +195,12 @@ Public Class Issue
                 Return New DateType(DateHelper.GetDateValue(Row(IssueDAL.COL_NAME_EXPIRATION).ToString()))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(IssueDAL.COL_NAME_EXPIRATION, Value)
+            SetValue(IssueDAL.COL_NAME_EXPIRATION, Value)
         End Set
     End Property
-    Public Property IssueProcessor() As String
+    Public Property IssueProcessor As String
         Get
             CheckDeleted()
             If Row(IssueDAL.COL_NAME_ISSUE_PROCESSOR) Is DBNull.Value Then
@@ -209,13 +209,13 @@ Public Class Issue
                 Return CType(Row(IssueDAL.COL_NAME_ISSUE_PROCESSOR), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(IssueDAL.COL_NAME_ISSUE_PROCESSOR, Value)
+            SetValue(IssueDAL.COL_NAME_ISSUE_PROCESSOR, Value)
         End Set
     End Property
 
-    Public Property DeniedReason() As String
+    Public Property DeniedReason As String
         Get
             CheckDeleted()
             If Row(IssueDAL.COL_NAME_DENIED_REASON) Is DBNull.Value Then
@@ -224,12 +224,12 @@ Public Class Issue
                 Return CType(Row(IssueDAL.COL_NAME_DENIED_REASON), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(IssueDAL.COL_NAME_DENIED_REASON, Value)
+            SetValue(IssueDAL.COL_NAME_DENIED_REASON, Value)
         End Set
     End Property
-    Public Property SPClaimType() As String
+    Public Property SPClaimType As String
         Get
             CheckDeleted()
             If Row(IssueDAL.COL_NAME_SP_CLAIM_TYPE) Is DBNull.Value Then
@@ -238,13 +238,13 @@ Public Class Issue
                 Return CType(Row(IssueDAL.COL_NAME_SP_CLAIM_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(IssueDAL.COL_NAME_SP_CLAIM_TYPE, Value)
+            SetValue(IssueDAL.COL_NAME_SP_CLAIM_TYPE, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=500)>
-    Public Property SPClaimValue() As String
+    Public Property SPClaimValue As String
         Get
             CheckDeleted()
             If Row(IssueDAL.COL_NAME_SP_CLAIM_VALUE) Is DBNull.Value Then
@@ -253,14 +253,14 @@ Public Class Issue
                 Return CType(Row(IssueDAL.COL_NAME_SP_CLAIM_VALUE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(IssueDAL.COL_NAME_SP_CLAIM_VALUE, Value)
+            SetValue(IssueDAL.COL_NAME_SP_CLAIM_VALUE, Value)
         End Set
     End Property
     '''TODO: Add RegEx Validations
     <ValidStringLength("", Max:=2000)>
-    Public Property PreConditions() As String
+    Public Property PreConditions As String
         Get
             CheckDeleted()
             If Row(IssueDAL.COL_NAME_PRE_CONDITIONS) Is DBNull.Value Then
@@ -269,9 +269,9 @@ Public Class Issue
                 Return CType(Row(IssueDAL.COL_NAME_PRE_CONDITIONS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(IssueDAL.COL_NAME_PRE_CONDITIONS, Value)
+            SetValue(IssueDAL.COL_NAME_PRE_CONDITIONS, Value)
         End Set
     End Property
 
@@ -281,8 +281,8 @@ Public Class Issue
             If (m_preConditionsList Is Nothing) Then
                 m_preConditionsList = New List(Of String)()
 
-                If (Not String.IsNullOrWhiteSpace(Me.PreConditions)) Then
-                    m_preConditionsList.AddRange(Me.PreConditions.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries))
+                If (Not String.IsNullOrWhiteSpace(PreConditions)) Then
+                    m_preConditionsList.AddRange(PreConditions.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries))
                 End If
             End If
 
@@ -291,18 +291,18 @@ Public Class Issue
     End Property
 
 
-    Public Property ActiveOn() As DateType
+    Public Property ActiveOn As DateType
         Get
             Return _ActiveOn
         End Get
-        Set(ByVal Value As DateType)
+        Set
             _ActiveOn = Value
         End Set
     End Property
 
-    Public ReadOnly Property MyDataset() As DataSet
+    Public ReadOnly Property MyDataset As DataSet
         Get
-            Return Me.Dataset
+            Return Dataset
         End Get
     End Property
 
@@ -312,15 +312,15 @@ Public Class Issue
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New IssueDAL
-                Me.UpdateTranslation()
-                dal.UpdateFamily(Me.Dataset)
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                UpdateTranslation()
+                dal.UpdateFamily(Dataset)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -340,26 +340,26 @@ Public Class Issue
 
         DropdownId = QuestionList.GetDropdownId(ISSUE_DESCRIPTION)
         If Not DropdownId = Guid.Empty Then
-            listItemId = (New IssueDAL).GetListItembyCode(Me.Code.ToUpper, DropdownId)
+            listItemId = (New IssueDAL).GetListItembyCode(Code.ToUpper, DropdownId)
             If listItemId = Guid.Empty Then
-                retVal = dropdownBO.AddDropdownItem(Me.Code.ToUpper, Codes.YESNO_Y, Codes.YESNO_Y, DropdownId, Me.Description, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
+                retVal = dropdownBO.AddDropdownItem(Code.ToUpper, Codes.YESNO_Y, Codes.YESNO_Y, DropdownId, Description, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
             Else
-                retVal = dropdownBO.UpdateDropdownItem(listItemId, Me.Code.ToUpper,
-                         Codes.YESNO_Y, Codes.YESNO_Y, Me.Description, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
+                retVal = dropdownBO.UpdateDropdownItem(listItemId, Code.ToUpper,
+                         Codes.YESNO_Y, Codes.YESNO_Y, Description, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
             End If
         End If
         'DEF-2855
 
         DropdownId = QuestionList.GetDropdownId(ICTYP)
         If Not DropdownId = Guid.Empty Then
-            If Me.MyDataset.Tables(TABLE_ISSUE_COMMENT).Rows.Count > 0 Then
-                If Not Me.MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Added) Is Nothing Then
-                    For Each TECrow As DataRow In Me.MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Added).Rows
+            If MyDataset.Tables(TABLE_ISSUE_COMMENT).Rows.Count > 0 Then
+                If MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Added) IsNot Nothing Then
+                    For Each TECrow As DataRow In MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Added).Rows
                         retVal = dropdownBO.AddDropdownItem(TECrow(_CODE).ToString, Codes.YESNO_Y, Codes.YESNO_Y, DropdownId, TECrow(_TEXT).ToString, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
                     Next
                 End If
-                If Not Me.MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Modified) Is Nothing Then
-                    For Each TECrow As DataRow In Me.MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Modified).Rows
+                If MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Modified) IsNot Nothing Then
+                    For Each TECrow As DataRow In MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Modified).Rows
                         If Not GetDropdownCodeToUpdate(TECrow(ISSUE_COMMENT_ID)) = String.Empty Then
                             retVal = dropdownBO.UpdateDropdownItem(QuestionList.GetDropdownItemId(DropdownId,
                                      GetDropdownCodeToUpdate(TECrow(ISSUE_COMMENT_ID))), TECrow(_CODE).ToString,
@@ -367,8 +367,8 @@ Public Class Issue
                         End If
                     Next
                 End If
-                If Not Me.MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Deleted) Is Nothing Then
-                    For Each TECrow As DataRow In Me.MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Deleted).Rows
+                If MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Deleted) IsNot Nothing Then
+                    For Each TECrow As DataRow In MyDataset.Tables(TABLE_ISSUE_COMMENT).GetChanges(DataRowState.Deleted).Rows
                         'If Not QuestionList.GetDropdownItemId(DropdownId, TECrow(_CODE).ToString) = Guid.Empty Then
                         '    retVal = dropdownBO.DeleteDropdownItem(QuestionList.GetDropdownItemId(DropdownId, TECrow(_CODE).ToString))
                         'End If
@@ -383,8 +383,8 @@ Public Class Issue
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function GetList(ByVal code As String,
-                                    ByVal description As String, ByVal issueType As Guid, ByVal activeOn As String) As Issue.IssueSearchDV
+    Public Shared Function GetList(code As String,
+                                    description As String, issueType As Guid, activeOn As String) As Issue.IssueSearchDV
         Try
             Dim dal As New IssueDAL
             Dim oCompanyGroupIds As ArrayList
@@ -407,8 +407,8 @@ Public Class Issue
         End Try
     End Function
 
-    Public Shared Function GetList(ByVal code As String,
-                                    ByVal description As String, ByVal activeOn As String) As Issue.IssueSearchDV
+    Public Shared Function GetList(code As String,
+                                    description As String, activeOn As String) As Issue.IssueSearchDV
         Try
             Dim dal As New IssueDAL
             Dim oCompanyGroupIds As ArrayList
@@ -431,7 +431,7 @@ Public Class Issue
         End Try
     End Function
 
-    Public Shared Function GetQuestionExpiration(ByVal IssueId As Guid, ByVal IssueQuestionId As Guid) As DateTime
+    Public Shared Function GetQuestionExpiration(IssueId As Guid, IssueQuestionId As Guid) As DateTime
 
         Try
             Dim dal As New IssueDAL
@@ -441,7 +441,7 @@ Public Class Issue
             oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
             Dim ds As DataSet = dal.GetQuestionExpiration(IssueId, IssueQuestionId, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            If Not ds Is Nothing Then
+            If ds IsNot Nothing Then
                 If ds.Tables(0).Rows.Count > 0 Then
                     Return ds.Tables(0).Rows(0)("EXPIRATION")
                 Else
@@ -453,7 +453,7 @@ Public Class Issue
         End Try
     End Function
 
-    Public Shared Function GetRuleExpiration(ByVal IssueId As Guid, ByVal RuleId As Guid) As DateTime
+    Public Shared Function GetRuleExpiration(IssueId As Guid, RuleId As Guid) As DateTime
 
         Try
             Dim dal As New IssueDAL
@@ -462,7 +462,7 @@ Public Class Issue
             oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
             Dim ds As DataSet = dal.GetRuleExpiration(IssueId, RuleId, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            If Not ds Is Nothing Then
+            If ds IsNot Nothing Then
                 If ds.Tables(0).Rows.Count > 0 Then
                     Return ds.Tables(0).Rows(0)("EXPIRATION")
                 Else
@@ -474,7 +474,7 @@ Public Class Issue
         End Try
     End Function
 
-    Public Shared Function GetSoftQuestionID(ByVal IssueId As Guid, ByVal IssueQuestionId As Guid) As Byte()
+    Public Shared Function GetSoftQuestionID(IssueId As Guid, IssueQuestionId As Guid) As Byte()
 
         Try
             Dim dal As New IssueDAL
@@ -484,7 +484,7 @@ Public Class Issue
             oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
             Dim ds As DataSet = dal.GetSoftQuestionID(IssueId, IssueQuestionId, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            If Not ds Is Nothing Then
+            If ds IsNot Nothing Then
                 If ds.Tables(0).Rows.Count > 0 Then
                     Return ds.Tables(0).Rows(0)(0)
                 Else
@@ -496,7 +496,7 @@ Public Class Issue
         End Try
     End Function
 
-    Public Shared Function GetRuleID(ByVal IssueId As Guid, ByVal RuleIssueId As Guid) As Guid
+    Public Shared Function GetRuleID(IssueId As Guid, RuleIssueId As Guid) As Guid
 
         Try
             Dim dal As New IssueDAL
@@ -506,7 +506,7 @@ Public Class Issue
             oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
             Dim ds As DataSet = dal.GetRuleID(IssueId, RuleIssueId, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            If Not ds Is Nothing Then
+            If ds IsNot Nothing Then
                 If ds.Tables(0).Rows.Count > 0 Then
                     Return New Guid(CType(ds.Tables(0).Rows(0)(0), Byte()))
                 Else
@@ -523,42 +523,42 @@ Public Class Issue
 
 #Region "Constants"
         Public Const COL_NAME_ISSUE_ID As String = IssueDAL.COL_NAME_ISSUE_ID
-        Public Const COL_NAME_DESCRIPTION As String = IssueDAL.COL_NAME_DESCRIPTION
+        Public Const COL_NAME_DESCRIPTION As String = DALBase.COL_NAME_DESCRIPTION
         Public Const COL_NAME_ISSUE_TYPE As String = IssueDAL.COL_NAME_ISSUE_TYPE
         Public Const COL_NAME_CODE As String = IssueDAL.COL_NAME_CODE
         Public Const COL_NAME_EFFECTIVE As String = IssueDAL.COL_NAME_EFFECTIVE
         Public Const COL_NAME_EXPIRATION As String = IssueDAL.COL_NAME_EXPIRATION
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property IssueId(ByVal row) As Guid
+        Public Shared ReadOnly Property IssueId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_ISSUE_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Code(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Code(row As DataRow) As String
             Get
                 Return row(COL_NAME_CODE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Description(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Description(row As DataRow) As String
             Get
                 Return row(COL_NAME_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Effective(ByVal row) As Guid
+        Public Shared ReadOnly Property Effective(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_EFFECTIVE), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Expiration(ByVal row) As Guid
+        Public Shared ReadOnly Property Expiration(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_EXPIRATION), Byte()))
             End Get
@@ -566,7 +566,7 @@ Public Class Issue
 
     End Class
 
-    Public Shared Function GetIssuesListByDealer(ByVal dealerId As Guid) As DataView
+    Public Shared Function GetIssuesListByDealer(dealerId As Guid) As DataView
         Try
             Dim dal As New IssueDAL
             Return dal.LoadIssuesByDealer(dealerId)
@@ -587,39 +587,39 @@ Public Class Issue
 #Region "Children Related"
 
     '' ---
-    Public ReadOnly Property IssueNotesChildren() As IssueNotesChildrenList
+    Public ReadOnly Property IssueNotesChildren As IssueNotesChildrenList
         Get
             Return New IssueNotesChildrenList(Me)
         End Get
     End Property
 
-    Public ReadOnly Property IssueQuestionsChildren() As IssueQuestionsChildrenList
+    Public ReadOnly Property IssueQuestionsChildren As IssueQuestionsChildrenList
         Get
             Return New IssueQuestionsChildrenList(Me)
         End Get
     End Property
-    Public ReadOnly Property IssueQuestionsChildrenByIssueDealer(ByVal issueId, ByVal dealerId) As IssueQuestionsChildrenList
+    Public ReadOnly Property IssueQuestionsChildrenByIssueDealer(issueId, dealerId) As IssueQuestionsChildrenList
         Get
             Return New IssueQuestionsChildrenList(Me, issueId, dealerId)
         End Get
     End Property
 
-    Public ReadOnly Property IssueRulesChildren() As IssueRulesChildrenList
+    Public ReadOnly Property IssueRulesChildren As IssueRulesChildrenList
         Get
             Return New IssueRulesChildrenList(Me)
         End Get
     End Property
 
     '' ---
-    Public Function GetNotesChild(ByVal childId As Guid) As IssueComment
-        Return CType(Me.IssueNotesChildren.GetChild(childId), IssueComment)
+    Public Function GetNotesChild(childId As Guid) As IssueComment
+        Return CType(IssueNotesChildren.GetChild(childId), IssueComment)
     End Function
 
 
     Public Function GetNotesSelectionView() As NotesSelectionView
         Dim t As DataTable = NotesSelectionView.CreateTable
         Dim detail As IssueComment
-        For Each detail In Me.IssueNotesChildren
+        For Each detail In IssueNotesChildren
             Dim row As DataRow = t.NewRow
             row(NotesSelectionView.COL_NAME_ISSUE_COMMENT_ID) = detail.Id.ToByteArray
             row(NotesSelectionView.COL_NAME_NAME_ISSUE_COMMENT_TYPE_ID) = detail.IssueCommentTypeId.ToByteArray
@@ -637,7 +637,7 @@ Public Class Issue
         Public Const COL_NAME_CODE As String = IssueCommentDAL.COL_NAME_CODE
         Public Const COL_NAME_TEXT As String = IssueCommentDAL.COL_NAME_TEXT
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -651,48 +651,48 @@ Public Class Issue
         End Function
     End Class
 
-    Public Function GetQuestionsChild(ByVal childId As Guid) As IssueQuestion
-        Return CType(Me.IssueQuestionsChildren.GetChild(childId), IssueQuestion)
+    Public Function GetQuestionsChild(childId As Guid) As IssueQuestion
+        Return CType(IssueQuestionsChildren.GetChild(childId), IssueQuestion)
     End Function
 
-    Public Function GetRulesChild(ByVal childId As Guid) As RuleIssue
-        Return CType(Me.IssueRulesChildren.GetChild(childId), RuleIssue)
+    Public Function GetRulesChild(childId As Guid) As RuleIssue
+        Return CType(IssueRulesChildren.GetChild(childId), RuleIssue)
     End Function
 
     '' ---
     Public Function GetNewNotesChild() As IssueComment
-        Dim NewNotesList As IssueComment = CType(Me.IssueNotesChildren.GetNewChild, IssueComment)
-        NewNotesList.IssueId = Me.Id
+        Dim NewNotesList As IssueComment = CType(IssueNotesChildren.GetNewChild, IssueComment)
+        NewNotesList.IssueId = Id
         Return NewNotesList
     End Function
 
     Public Function GetNewQuestionsChild() As IssueQuestion
-        Dim NewQuestionsList As IssueQuestion = CType(Me.IssueQuestionsChildren.GetNewChild, IssueQuestion)
-        NewQuestionsList.IssueId = Me.Id
-        NewQuestionsList.Effective = Me.Effective
-        NewQuestionsList.Expiration = Me.Expiration
+        Dim NewQuestionsList As IssueQuestion = CType(IssueQuestionsChildren.GetNewChild, IssueQuestion)
+        NewQuestionsList.IssueId = Id
+        NewQuestionsList.Effective = Effective
+        NewQuestionsList.Expiration = Expiration
         Return NewQuestionsList
     End Function
 
     Public Function GetNewRulesChild() As RuleIssue
-        Dim NewRulesList As RuleIssue = CType(Me.IssueRulesChildren.GetNewChild, RuleIssue)
-        NewRulesList.IssueId = Me.Id
-        NewRulesList.Effective = Me.Effective.Value
-        NewRulesList.Expiration = Me.Expiration.Value
+        Dim NewRulesList As RuleIssue = CType(IssueRulesChildren.GetNewChild, RuleIssue)
+        NewRulesList.IssueId = Id
+        NewRulesList.Effective = Effective.Value
+        NewRulesList.Expiration = Expiration.Value
         Return NewRulesList
     End Function
 
     '' -----------------
 
-    Public ReadOnly Property CompanyWorkQueueIssueChildren() As CompanyWorkQueueIssue.CompanyWorkqueueIssueList
+    Public ReadOnly Property CompanyWorkQueueIssueChildren As CompanyWorkQueueIssue.CompanyWorkqueueIssueList
         Get
             Return New CompanyWorkQueueIssue.CompanyWorkqueueIssueList(Me)
         End Get
     End Property
 
     Public Function GetNewCompanyWorkQueueIssueChild() As CompanyWorkQueueIssue
-        Dim NewNotesList As CompanyWorkQueueIssue = CType(Me.CompanyWorkQueueIssueChildren.GetNewChild, CompanyWorkQueueIssue)
-        NewNotesList.IssueId = Me.Id
+        Dim NewNotesList As CompanyWorkQueueIssue = CType(CompanyWorkQueueIssueChildren.GetNewChild, CompanyWorkQueueIssue)
+        NewNotesList.IssueId = Id
         Return NewNotesList
     End Function
 
@@ -702,7 +702,7 @@ Public Class Issue
 
         Dim WQ_List As WrkQueue.WorkQueue() = WorkQueue.GetList("*", "", "CLM", Nothing, False)
 
-        For Each detail In Me.CompanyWorkQueueIssueChildren
+        For Each detail In CompanyWorkQueueIssueChildren
             Dim row As DataRow = t.NewRow
             row(WorkQyueueSelectionView.COL_NAME_COMPANY_WRKQUEUE_ID) = detail.Id.ToByteArray
             row(WorkQyueueSelectionView.COL_NAME_NAME_WORKQUEUE_ID) = detail.WorkqueueId.ToByteArray
@@ -725,7 +725,7 @@ Public Class Issue
         Public Const COL_NAME_COMPANY_ID As String = CompanyWorkQueueIssueDAL.COL_NAME_COMPANY_ID
         Public Const COL_NAME_ISSUE_ID As String = CompanyWorkQueueIssueDAL.COL_NAME_ISSUE_ID
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -761,7 +761,7 @@ Public Class Issue
         Try
             'compare with what we have and what is there in the user control
             'user control will always have the final selection so remove from our list what we don't find
-            For Each WQ_Issue As CompanyWorkQueueIssue In Me.CompanyWorkQueueIssueChildren
+            For Each WQ_Issue As CompanyWorkQueueIssue In CompanyWorkQueueIssueChildren
                 Dim dFound As Boolean = False
                 For Each Str As String In SelectedQueue
                     Dim WorkQueue_id As Guid = New Guid(Str)
@@ -779,14 +779,14 @@ Public Class Issue
             'next now add those items which are there in user control but we don't have it
             For Each Str As String In SelectedQueue
                 Dim dFound As Boolean = False
-                For Each WQ_Issue As CompanyWorkQueueIssue In Me.CompanyWorkQueueIssueChildren
+                For Each WQ_Issue As CompanyWorkQueueIssue In CompanyWorkQueueIssueChildren
                     Dim WorkQueue_id As Guid = New Guid(Str)
                     If WQ_Issue.WorkqueueId = WorkQueue_id Then
                         dFound = True : Exit For
                     End If
                 Next
                 If Not dFound Then
-                    Dim CompWQ As CompanyWorkQueueIssue = Me.GetNewCompanyWorkQueueIssueChild()
+                    Dim CompWQ As CompanyWorkQueueIssue = GetNewCompanyWorkQueueIssueChild()
                     CompWQ.BeginEdit()
                     CompWQ.WorkqueueId = New Guid(Str)
                     CompWQ.CompanyId = GetcompanyIdfromWorkQueue(CompWQ.WorkqueueId)
@@ -806,8 +806,8 @@ Public Class Issue
                                    Where wq.Id = WorkqueueId
                                    Select wq.CompanyCode).First
 
-        If Not Comp_Code Is Nothing And Comp_Code <> "" Then
-            Return LookupListNew.GetIdFromCode(LookupListNew.LK_COMPANY, Comp_Code)
+        If Comp_Code IsNot Nothing And Comp_Code <> "" Then
+            Return LookupListNew.GetIdFromCode(LookupListCache.LK_COMPANY, Comp_Code)
         End If
     End Function
 
@@ -817,47 +817,47 @@ Public Class Issue
 #Region "Custom Validations"
 
     'Added manually to the code
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
-            Return MyBase.IsDirty OrElse Me.IsChildrenDirty
+            Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get
     End Property
 
-    Public Sub Copy(ByVal original As Issue)
-        If Not Me.IsNew Then
+    Public Sub Copy(original As Issue)
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Detail List")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
         'copy the childrens        
         Dim ChildIssueComment As IssueComment
         For Each ChildIssueComment In original.IssueNotesChildren
-            Dim newDetail As IssueComment = Me.IssueNotesChildren.GetNewChild
+            Dim newDetail As IssueComment = IssueNotesChildren.GetNewChild
             newDetail.Copy(ChildIssueComment)
-            newDetail.IssueId = Me.Id
+            newDetail.IssueId = Id
             newDetail.Save()
         Next
 
         Dim ChildIssueQuestion As IssueQuestion
         For Each ChildIssueQuestion In original.IssueQuestionsChildren
-            Dim newDetail As IssueQuestion = Me.IssueQuestionsChildren.GetNewChild
+            Dim newDetail As IssueQuestion = IssueQuestionsChildren.GetNewChild
             newDetail.Copy(ChildIssueQuestion)
-            newDetail.IssueId = Me.Id
+            newDetail.IssueId = Id
             newDetail.Save()
         Next
 
         Dim ChildRuleIssue As RuleIssue
         For Each ChildRuleIssue In original.IssueRulesChildren
-            Dim newDetail As RuleIssue = Me.IssueRulesChildren.GetNewChild
+            Dim newDetail As RuleIssue = IssueRulesChildren.GetNewChild
             newDetail.Copy(ChildRuleIssue)
-            newDetail.IssueId = Me.Id
+            newDetail.IssueId = Id
             newDetail.Save()
         Next
 
         Dim ChildCompanyWorkQueueIssue As CompanyWorkQueueIssue
         For Each ChildRuleIssue In original.CompanyWorkQueueIssueChildren
-            Dim newDetail As CompanyWorkQueueIssue = Me.CompanyWorkQueueIssueChildren.GetNewChild
+            Dim newDetail As CompanyWorkQueueIssue = CompanyWorkQueueIssueChildren.GetNewChild
             newDetail.Copy(ChildRuleIssue)
-            newDetail.IssueId = Me.Id
+            newDetail.IssueId = Id
             newDetail.Save()
         Next
 
@@ -873,11 +873,11 @@ Public Class Issue
     Public NotInheritable Class CheckDuplicate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, EQUIPMENT_FORM004)
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Issue = CType(objectToValidate, Issue)
             If (obj.CheckDuplicateIssueListCode()) Then
                 Return False
@@ -891,11 +891,11 @@ Public Class Issue
     Public NotInheritable Class CheckListCodeDatesOverlaped
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, EQUIPMENT_FORM005)
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Issue = CType(objectToValidate, Issue)
             If (obj.CheckListCodeDatesForOverlap()) Then
                 Return False
@@ -911,15 +911,15 @@ Public Class Issue
         oCompanyGroupIds = New ArrayList
         oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
-        If Not Code Is String.Empty And Not Effective Is Nothing Then
+        If Code IsNot String.Empty And Effective IsNot Nothing Then
             Dim dv As Issue.IssueSearchDV = New Issue.IssueSearchDV(EquipDal.LoadList(Code, String.Empty,
                    ActiveOn, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
 
-            If Not Me.Code Is Nothing And Not Me.Effective Is Nothing Then
+            If Code IsNot Nothing And Effective IsNot Nothing Then
                 For Each dr As DataRow In dv.Table.Rows
-                    If ((dr(IssueDAL.COL_NAME_CODE).ToString.ToUpper = Me.Code.ToUpper) And
-                        (dr(IssueDAL.COL_NAME_EFFECTIVE) = Date.Parse(Me.Effective).ToString("dd-MMM-yyyy")) And
-                        Not DirectCast(dr(IssueDAL.COL_NAME_ISSUE_ID), Byte()).SequenceEqual(Me.Id.ToByteArray)) Then
+                    If ((dr(IssueDAL.COL_NAME_CODE).ToString.ToUpper = Code.ToUpper) And
+                        (dr(IssueDAL.COL_NAME_EFFECTIVE) = Date.Parse(Effective).ToString("dd-MMM-yyyy")) And
+                        Not DirectCast(dr(IssueDAL.COL_NAME_ISSUE_ID), Byte()).SequenceEqual(Id.ToByteArray)) Then
                         Return True
                     End If
                 Next
@@ -934,14 +934,14 @@ Public Class Issue
         oCompanyGroupIds = New ArrayList
         oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
-        If Not Code Is String.Empty And Not Description Is String.Empty And Not Effective Is Nothing And Nothing And Not Expiration Is Nothing Then
+        If Code IsNot String.Empty And Description IsNot String.Empty And Effective IsNot Nothing And Nothing And Expiration IsNot Nothing Then
             Dim dv As Issue.IssueSearchDV = New Issue.IssueSearchDV(IssueDal.LoadList(Code, String.Empty,
                    ActiveOn, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
 
             For Each dr As DataRow In dv.Table.Rows
-                If ((Not dr(EquipmentDAL.COL_NAME_CODE) = Me.Code) And
-                    (Not dr(EquipmentDAL.COL_NAME_EFFECTIVE) >= Equals(Me.Effective)) And
-                    (Not dr(EquipmentDAL.COL_NAME_EXPIRATION) <= Equals(Me.Expiration))) Then
+                If ((Not dr(DALBase.COL_NAME_CODE) = Code) And
+                    (Not dr(EquipmentDAL.COL_NAME_EFFECTIVE) >= Equals(Effective)) And
+                    (Not dr(EquipmentDAL.COL_NAME_EXPIRATION) <= Equals(Expiration))) Then
                     Return True
                 End If
             Next
@@ -949,17 +949,17 @@ Public Class Issue
         Return False
     End Function
 
-    Public Shared Function CheckDuplicateEquipmentListCode(ByVal vCode As String, ByVal vEffective As String, ByVal vId As Guid) As Boolean
+    Public Shared Function CheckDuplicateEquipmentListCode(vCode As String, vEffective As String, vId As Guid) As Boolean
         Dim IssueDal As New IssueDAL
         Dim oCompanyGroupIds As ArrayList
         oCompanyGroupIds = New ArrayList
         oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
-        If Not vCode Is String.Empty And Not vEffective Is Nothing Then
+        If vCode IsNot String.Empty And vEffective IsNot Nothing Then
             Dim dv As Issue.IssueSearchDV = New Issue.IssueSearchDV(IssueDal.LoadList(vCode, String.Empty,
                    String.Empty, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
 
-            If Not vCode Is Nothing And Not vEffective Is Nothing Then
+            If vCode IsNot Nothing And vEffective IsNot Nothing Then
                 For Each dr As DataRow In dv.Table.Rows
                     If ((dr(IssueDAL.COL_NAME_CODE).ToString.ToUpper = vCode.ToUpper) And
                         (dr(IssueDAL.COL_NAME_EFFECTIVE) = vEffective) And
@@ -979,8 +979,8 @@ Public Class Issue
     Public Function IsDuplicaetNoteType() As Boolean
         Dim notesTypeList As System.Collections.Generic.List(Of Guid) = New System.Collections.Generic.List(Of Guid)()
         Dim temp As Byte()
-        If Me.MyDataset.Tables(TABLE_ISSUE_COMMENT).Rows.Count > 0 Then
-            For Each Row As DataRow In Me.MyDataset.Tables(TABLE_ISSUE_COMMENT).Rows
+        If MyDataset.Tables(TABLE_ISSUE_COMMENT).Rows.Count > 0 Then
+            For Each Row As DataRow In MyDataset.Tables(TABLE_ISSUE_COMMENT).Rows
                 temp = Row(ISSUE_COMMENT_TYPE_ID)
                 If notesTypeList.Contains(New Guid(temp)) Then
                     Continue For
@@ -989,15 +989,15 @@ Public Class Issue
                 End If
             Next
         End If
-        If notesTypeList.Count < Me.MyDataset.Tables(TABLE_ISSUE_COMMENT).Rows.Count Then
+        If notesTypeList.Count < MyDataset.Tables(TABLE_ISSUE_COMMENT).Rows.Count Then
             Return False
         Else
             Return True
         End If
     End Function
 
-    Public Shared Function CheckListCodeForOverlap(ByVal code As String, ByVal effective As DateType, _
-                                        ByVal expiration As DateType, ByVal listId As Guid) As Boolean
+    Public Shared Function CheckListCodeForOverlap(code As String, effective As DateType, _
+                                        expiration As DateType, listId As Guid) As Boolean
 
         Try
             Dim dal As New IssueDAL
@@ -1006,7 +1006,7 @@ Public Class Issue
             oCompanyGroupIds = New ArrayList
             oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
-            If Not code Is String.Empty Then
+            If code IsNot String.Empty Then
                 Dim ds As DataSet = dal.CheckOverlap(code, effective, _
                     expiration, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId, listId)
 
@@ -1023,8 +1023,8 @@ Public Class Issue
     End Function
 
 
-    Public Shared Function CheckListCodeDurationOverlap(ByVal code As String, ByVal effective As DateType, _
-                                        ByVal expiration As DateType, ByVal listId As Guid) As Boolean
+    Public Shared Function CheckListCodeDurationOverlap(code As String, effective As DateType, _
+                                        expiration As DateType, listId As Guid) As Boolean
 
         Try
             Dim dal As New IssueDAL
@@ -1033,7 +1033,7 @@ Public Class Issue
             oCompanyGroupIds = New ArrayList
             oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
-            If Not code Is String.Empty Then
+            If code IsNot String.Empty Then
                 Dim ds As DataSet = dal.CheckDurationOverlap(code, effective, _
                     expiration, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId, listId)
 
@@ -1050,8 +1050,8 @@ Public Class Issue
     End Function
 
 
-    Public Shared Function ExpirePreviousList(ByVal code As String, ByVal effective As DateType, _
-                                        ByVal expiration As DateType, ByVal listId As Guid) As Boolean
+    Public Shared Function ExpirePreviousList(code As String, effective As DateType, _
+                                        expiration As DateType, listId As Guid) As Boolean
 
         Try
             Dim dal As New IssueDAL
@@ -1071,7 +1071,7 @@ Public Class Issue
     End Function
 
 
-    Public Shared Function CheckIfIssueIsAssignedToQuestionNoteOrRule(ByVal vId As Guid) As Boolean
+    Public Shared Function CheckIfIssueIsAssignedToQuestionNoteOrRule(vId As Guid) As Boolean
         Dim IssueDAL As New IssueDAL
         Dim oCompanyGroupIds As ArrayList
         oCompanyGroupIds = New ArrayList
@@ -1082,32 +1082,32 @@ Public Class Issue
         Return False
     End Function
 
-    Public Shared Function GetSelectedIssueList(ByVal IssueID As Guid) As DataView
+    Public Shared Function GetSelectedIssueList(IssueID As Guid) As DataView
         Dim eqListDal As New IssueDAL
         Return eqListDal.GetSelectedIssuesList(IssueID).Tables(0).DefaultView
     End Function
 
-    Public Shared Function GetSelectedQuestionsList(ByVal IssueID As Guid) As DataView
+    Public Shared Function GetSelectedQuestionsList(IssueID As Guid) As DataView
         Dim issueDal As New IssueDAL
         Return issueDal.GetSelectedQuestionsList(IssueID).Tables(0).DefaultView
     End Function
 
-    Public Shared Function GetSelectedRulesList(ByVal IssueID As Guid) As DataView
+    Public Shared Function GetSelectedRulesList(IssueID As Guid) As DataView
         Dim issueDal As New IssueDAL
         Return issueDal.GetSelectedRulesList(IssueID).Tables(0).DefaultView
     End Function
 
-    Public Function ExecuteQuestionsListFilter(ByVal Issue As Guid, ByVal QuestionList As String, ByVal SearchTags As String, ByVal ActiveOn As String) As DataView
+    Public Function ExecuteQuestionsListFilter(Issue As Guid, QuestionList As String, SearchTags As String, ActiveOn As String) As DataView
         Dim issueDal As New IssueQuestionDAL
         Return issueDal.AvailableQuestionListFilter(Issue, QuestionList, SearchTags, ActiveOn, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0).DefaultView
     End Function
 
-    Public Function ExecuteRulesListFilter(ByVal Issue As Guid) As DataView
+    Public Function ExecuteRulesListFilter(Issue As Guid) As DataView
         Dim issueDal As New IssueDAL
         Return issueDal.ExecuteRulesFilter(Issue).Tables(0).DefaultView
     End Function
 
-    Public Shared Function GetDropdownCodeToUpdate(ByVal IssueCommentId As Byte()) As String
+    Public Shared Function GetDropdownCodeToUpdate(IssueCommentId As Byte()) As String
         Dim IssueCommentDal As New IssueCommentDAL
         Dim oCompanyGroupIds As ArrayList
         oCompanyGroupIds = New ArrayList

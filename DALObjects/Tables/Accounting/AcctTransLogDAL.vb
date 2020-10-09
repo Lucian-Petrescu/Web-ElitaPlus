@@ -121,34 +121,34 @@ Public Class AcctTransLogDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("acct_trans_log_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function GetJournalEntries(ByVal CompanyId As Guid,
-                                        ByVal AccountingEventId As Guid,
-                                        ByVal BusinessUnitId As Guid,
-                                        ByVal EventName As String,
-                                        ByVal NetworkId As String,
-                                        ByVal BatchNumber As String,
+    Public Function GetJournalEntries(CompanyId As Guid,
+                                        AccountingEventId As Guid,
+                                        BusinessUnitId As Guid,
+                                        EventName As String,
+                                        NetworkId As String,
+                                        BatchNumber As String,
                                         Optional ByVal IncludeProcessed As Boolean = False) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/GET_JOURNAL_ENTRIES")
+        Dim selectStmt As String = Config("/SQL/GET_JOURNAL_ENTRIES")
         Dim IncludeProcessedStr As String
         Dim inputParameters() As DBHelper.DBHelperParameter
         Dim outputParameter() As DBHelper.DBHelperParameter
@@ -182,12 +182,12 @@ Public Class AcctTransLogDAL
         End Try
     End Function
 
-    Public Function GetJournalEntriesAP(ByVal CompanyId As Guid, _
-                                            ByVal AccountingEventId As Guid, _
-                                            ByVal BusinessUnitId As Guid, _
-                                            ByVal EventName As String) As DataSet
+    Public Function GetJournalEntriesAP(CompanyId As Guid, _
+                                            AccountingEventId As Guid, _
+                                            BusinessUnitId As Guid, _
+                                            EventName As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/JOURNAL_" + EventName + "_AP")
+        Dim selectStmt As String = Config("/SQL/JOURNAL_" + EventName + "_AP")
         Dim parameters(2) As DBHelper.DBHelperParameter
 
         parameters(0) = New DBHelper.DBHelperParameter(PARAM_ACCOUNTING_EVENT_ID, AccountingEventId.ToByteArray)
@@ -197,7 +197,7 @@ Public Class AcctTransLogDAL
         Dim ds As New DataSet(DatasetName)
 
         'Add Dynamic Query parameter
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, " AND ELP_ACCT_TRANS_LOG.PROCESS_DATE Is  null")
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, " AND ELP_ACCT_TRANS_LOG.PROCESS_DATE Is  null")
 
         Try
             ds = (DBHelper.Fetch(ds, selectStmt, Table_AP_LINEITEM, parameters))
@@ -207,12 +207,12 @@ Public Class AcctTransLogDAL
         End Try
     End Function
 
-    Public Function GetPurgeTable(ByVal CompanyId As Guid, _
-                                            ByVal AccountingEventId As Guid, _
-                                            ByVal BusinessUnitId As Guid, _
-                                            ByVal EventName As String) As DataSet
+    Public Function GetPurgeTable(CompanyId As Guid, _
+                                            AccountingEventId As Guid, _
+                                            BusinessUnitId As Guid, _
+                                            EventName As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/JOURNAL_AP_PURGE")
+        Dim selectStmt As String = Config("/SQL/JOURNAL_AP_PURGE")
         Dim parameters(2) As DBHelper.DBHelperParameter
 
         parameters(0) = New DBHelper.DBHelperParameter(PARAM_ACCOUNTING_EVENT_ID, AccountingEventId.ToByteArray)
@@ -229,9 +229,9 @@ Public Class AcctTransLogDAL
         End Try
     End Function
 
-    Public Function GetVendorFiles(ByVal CompanyId As Guid, ByVal CurrentDataSet As DataSet) As DataSet
+    Public Function GetVendorFiles(CompanyId As Guid, CurrentDataSet As DataSet) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/VENDOR")
+        Dim selectStmt As String = Config("/SQL/VENDOR")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                             {New DBHelper.DBHelperParameter(PARAM_COMPANY_ID, CompanyId.ToByteArray), _
@@ -252,9 +252,9 @@ Public Class AcctTransLogDAL
         End Try
     End Function
 
-    Public Function GetJournalPostingParams(ByVal AccountingCompanyId As Guid, ByVal AccountingEventId As Guid, ByVal AccountingBusinessUnitId As Guid) As DataSet
+    Public Function GetJournalPostingParams(AccountingCompanyId As Guid, AccountingEventId As Guid, AccountingBusinessUnitId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/JOURNAL_POSTING_PARAMETERS")
+        Dim selectStmt As String = Config("/SQL/JOURNAL_POSTING_PARAMETERS")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                              {New DBHelper.DBHelperParameter(PARAM_ACCOUNTING_COMPANY_ID, AccountingCompanyId.ToByteArray), _
@@ -265,15 +265,15 @@ Public Class AcctTransLogDAL
         Dim ds As New DataSet
 
         Try
-            Return (DBHelper.Fetch(ds, selectStmt, Me.TABLE_POSTINGPARAMETERS, parameters))
+            Return (DBHelper.Fetch(ds, selectStmt, TABLE_POSTINGPARAMETERS, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetJournalHeader(ByVal AccountingCompanyId As Guid, ByVal BusinessUnit As String) As DataSet
+    Public Function GetJournalHeader(AccountingCompanyId As Guid, BusinessUnit As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/HEADER")
+        Dim selectStmt As String = Config("/SQL/HEADER")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                             {New DBHelper.DBHelperParameter(PARAM_ACCOUNTING_COMPANY_ID, AccountingCompanyId.ToByteArray), _
@@ -282,30 +282,15 @@ Public Class AcctTransLogDAL
         Dim ds As New DataSet
 
         Try
-            Return (DBHelper.Fetch(ds, selectStmt, Me.Table_HEADER, parameters))
+            Return (DBHelper.Fetch(ds, selectStmt, Table_HEADER, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Sub PurgeTransLog(ByVal AcctTransLogIds As ArrayList)
+    Public Sub PurgeTransLog(AcctTransLogIds As ArrayList)
 
-        Dim selectStmt As String = Me.Config("/SQL/DELETE")
-
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                            {New DBHelper.DBHelperParameter(COL_NAME_ACCT_TRANS_LOG_ID, AcctTransLogIds.ToArray(GetType(Byte())), GetType(Byte()))}
-
-        Try
-            DBHelper.ExecuteWithParam(selectStmt, parameters, , , AcctTransLogIds.Count)
-        Catch ex As Exception
-            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
-        End Try
-
-    End Sub
-
-    Public Sub PurgeTransLogStaging(ByVal AcctTransLogIds As ArrayList)
-
-        Dim selectStmt As String = Me.Config("/SQL/DELETE_STAGING")
+        Dim selectStmt As String = Config("/SQL/DELETE")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                             {New DBHelper.DBHelperParameter(COL_NAME_ACCT_TRANS_LOG_ID, AcctTransLogIds.ToArray(GetType(Byte())), GetType(Byte()))}
@@ -318,13 +303,28 @@ Public Class AcctTransLogDAL
 
     End Sub
 
-    Public Sub PopulateAccountingEvents(ByVal AcctEvent As String, ByVal CompanyCode As String)
+    Public Sub PurgeTransLogStaging(AcctTransLogIds As ArrayList)
 
-        Dim selectStmt As String = Me.Config("/SQL/EVENT_" & AcctEvent)
+        Dim selectStmt As String = Config("/SQL/DELETE_STAGING")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                            {New DBHelper.DBHelperParameter(Me.PARAM_COMPANY_KEY, CompanyCode), _
-                            New DBHelper.DBHelperParameter(Me.PARAM_INPUT_DATE, DBNull.Value)}
+                            {New DBHelper.DBHelperParameter(COL_NAME_ACCT_TRANS_LOG_ID, AcctTransLogIds.ToArray(GetType(Byte())), GetType(Byte()))}
+
+        Try
+            DBHelper.ExecuteWithParam(selectStmt, parameters, , , AcctTransLogIds.Count)
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+
+    End Sub
+
+    Public Sub PopulateAccountingEvents(AcctEvent As String, CompanyCode As String)
+
+        Dim selectStmt As String = Config("/SQL/EVENT_" & AcctEvent)
+
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                            {New DBHelper.DBHelperParameter(PARAM_COMPANY_KEY, CompanyCode), _
+                            New DBHelper.DBHelperParameter(PARAM_INPUT_DATE, DBNull.Value)}
         Try
             If Not selectStmt.Trim.Length = 0 Then
                 DBHelper.ExecuteSpParamBindByName(selectStmt, parameters, Nothing)
@@ -339,12 +339,12 @@ Public Class AcctTransLogDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

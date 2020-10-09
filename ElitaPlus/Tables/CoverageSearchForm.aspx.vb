@@ -105,7 +105,7 @@ Namespace Tables
                 Get
                     Return mnPageIndex
                 End Get
-                Set(ByVal Value As Integer)
+                Set(Value As Integer)
                     mnPageIndex = Value
                 End Set
             End Property
@@ -114,7 +114,7 @@ Namespace Tables
                 Get
                     Return mnPageSize
                 End Get
-                Set(ByVal Value As Integer)
+                Set(Value As Integer)
                     mnPageSize = Value
                 End Set
             End Property
@@ -123,7 +123,7 @@ Namespace Tables
                 Get
                     Return msPageSort
                 End Get
-                Set(ByVal Value As String)
+                Set(Value As String)
                     msPageSort = Value
                 End Set
             End Property
@@ -132,7 +132,7 @@ Namespace Tables
                 Get
                     Return moSearchDataView
                 End Get
-                Set(ByVal Value As DataView)
+                Set(Value As DataView)
                     moSearchDataView = Value
                 End Set
             End Property
@@ -167,10 +167,10 @@ Namespace Tables
                     Dim s As String
                     Dim i As Integer
                     Dim sortExp As String = ""
-                    For i = 0 To Me.SortColumns.Length - 1
-                        If Not Me.SortColumns(i) Is Nothing Then
-                            sortExp &= Me.SortColumns(i)
-                            If Me.IsSortDesc(i) Then sortExp &= " DESC"
+                    For i = 0 To SortColumns.Length - 1
+                        If SortColumns(i) IsNot Nothing Then
+                            sortExp &= SortColumns(i)
+                            If IsSortDesc(i) Then sortExp &= " DESC"
                             sortExp &= ","
                         End If
                     Next
@@ -178,7 +178,7 @@ Namespace Tables
                 End Get
             End Property
 
-            Public Sub ToggleSort1(ByVal gridColIndex As Integer)
+            Public Sub ToggleSort1(gridColIndex As Integer)
                 IsSortDesc(gridColIndex) = Not IsSortDesc(gridColIndex)
             End Sub
 
@@ -199,31 +199,31 @@ Namespace Tables
 
         Private IsReturningFromChild As Boolean = False
 
-        Public Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Public Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.IsReturningFromChild = True
-                If Me.State.searchDV Is Nothing Then
-                    Me.State.IsGridVisible = False
+                IsReturningFromChild = True
+                If State.searchDV Is Nothing Then
+                    State.IsGridVisible = False
                 Else
-                    Me.State.IsGridVisible = True
+                    State.IsGridVisible = True
                 End If
                 Dim retObj As ReturnType = CType(ReturnPar, ReturnType)
-                If Not retObj Is Nothing AndAlso retObj.BoChanged Then
-                    Me.State.searchDV = Nothing
+                If retObj IsNot Nothing AndAlso retObj.BoChanged Then
+                    State.searchDV = Nothing
                 End If
-                If Not retObj Is Nothing Then
+                If retObj IsNot Nothing Then
 
                     Select Case retObj.LastOperation
                         Case ElitaPlusPage.DetailPageCommand.Back
-                            Me.State.moCoverageId = retObj.moCoverageId
+                            State.moCoverageId = retObj.moCoverageId
                         Case Else
-                            Me.State.moCoverageId = Guid.Empty
+                            State.moCoverageId = Guid.Empty
                     End Select
-                    If Me.State.IsGridVisible Then
-                        moDataGrid.CurrentPageIndex = Me.State.PageIndex
-                        moDataGrid.PageSize = Me.State.PageSize
-                        cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
-                        moDataGrid.PageSize = Me.State.PageSize
+                    If State.IsGridVisible Then
+                        moDataGrid.CurrentPageIndex = State.PageIndex
+                        moDataGrid.PageSize = State.PageSize
+                        cboPageSize.SelectedValue = CType(State.PageSize, String)
+                        moDataGrid.PageSize = State.PageSize
                         ControlMgr.SetVisibleControl(Me, trPageSize, moDataGrid.Visible)
                     End If
 
@@ -231,7 +231,7 @@ Namespace Tables
 
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -240,9 +240,9 @@ Namespace Tables
             Public moCoverageId As Guid
             Public BoChanged As Boolean = False
 
-            Public Sub New(ByVal LastOp As ElitaPlusPage.DetailPageCommand, ByVal oCoverageId As Guid, Optional ByVal boChanged As Boolean = False)
-                Me.LastOperation = LastOp
-                Me.moCoverageId = oCoverageId
+            Public Sub New(LastOp As ElitaPlusPage.DetailPageCommand, oCoverageId As Guid, Optional ByVal boChanged As Boolean = False)
+                LastOperation = LastOp
+                moCoverageId = oCoverageId
                 Me.BoChanged = boChanged
             End Sub
 
@@ -314,7 +314,7 @@ Namespace Tables
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -322,24 +322,24 @@ Namespace Tables
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
                 'moErrorController.Clear_Hide() ' REQ-1295
-                Me.MasterPage.MessageController.Clear_Hide() ' REQ-1295
+                MasterPage.MessageController.Clear_Hide() ' REQ-1295
 
                 If Not Page.IsPostBack Then
 
                     'REQ-1295
-                    Me.MasterPage.MessageController.Clear()
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
+                    MasterPage.MessageController.Clear()
+                    MasterPage.UsePageTabTitleInBreadCrum = False
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
                     UpdateBreadCrum()
                     'REQ-1295 : Changes Completed 
 
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                    Me.SetGridItemStyleColor(moDataGrid)
-                    If Not Me.IsReturningFromChild Then
+                    SetGridItemStyleColor(moDataGrid)
+                    If Not IsReturningFromChild Then
                         ' It is The First Time
                         ' It is not Returning from Detail
                         ControlMgr.SetVisibleControl(Me, trPageSize, False)
@@ -347,27 +347,27 @@ Namespace Tables
                         EnableDropDowns(False)
                     Else
                         ' It is returning from detail
-                        ControlMgr.SetVisibleControl(Me, moDataGrid, Me.State.IsGridVisible)
-                        ControlMgr.SetVisibleControl(Me, trPageSize, Me.State.IsGridVisible)
-                        If Me.State.IsGridVisible Then
+                        ControlMgr.SetVisibleControl(Me, moDataGrid, State.IsGridVisible)
+                        ControlMgr.SetVisibleControl(Me, trPageSize, State.IsGridVisible)
+                        If State.IsGridVisible Then
                             PopulateProductCode()
-                            Me.PopulateGrid(Me.POPULATE_ACTION_SAVE)
+                            PopulateGrid(POPULATE_ACTION_SAVE)
                         End If
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
 
         'REQ-1295
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                If (Not Me.State Is Nothing) Then
-                    Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("COVERAGE")
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("COVERAGE")
+            If (State IsNot Nothing) Then
+                If (State IsNot Nothing) Then
+                    MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("COVERAGE")
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("COVERAGE")
                 End If
             End If
         End Sub
@@ -390,48 +390,48 @@ Namespace Tables
         '    End Try
         'End Sub
 
-        Private Sub moProductDrop_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moProductDrop.SelectedIndexChanged
+        Private Sub moProductDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moProductDrop.SelectedIndexChanged
             Try
                 ClearForProduct()
                 If moProductDrop.SelectedIndex > 0 Then
                     PopulateRiskType()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub moRiskDrop_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moRiskDrop.SelectedIndexChanged
+        Private Sub moRiskDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moRiskDrop.SelectedIndexChanged
             Try
                 ClearForRisk()
                 If moRiskDrop.SelectedIndex > 0 Then
                     PopulateCoverageType()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub moCoverageTypeDrop_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moCoverageTypeDrop.SelectedIndexChanged
+        Private Sub moCoverageTypeDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moCoverageTypeDrop.SelectedIndexChanged
             Try
                 ClearForCoverageType()
                 If moCoverageTypeDrop.SelectedIndex > 0 Then
                     PopulateCertificateDuration()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
 
-        Private Sub moCertificateDurationDrop_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moCertificateDurationDrop.SelectedIndexChanged
+        Private Sub moCertificateDurationDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moCertificateDurationDrop.SelectedIndexChanged
             Try
                 ClearForCertificateDuration()
                 If moCertificateDurationDrop.SelectedIndex > 0 Then
                     PopulateCoverageDuration()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -439,39 +439,39 @@ Namespace Tables
 
 #Region "Handlers-Buttons"
 
-        Private Sub moBtnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moBtnSearch.Click
+        Private Sub moBtnSearch_Click(sender As System.Object, e As System.EventArgs) Handles moBtnSearch.Click
             Try
-                If TheDealerControl.SelectedIndex > Me.NO_ITEM_SELECTED_INDEX Then
-                    moDataGrid.CurrentPageIndex = Me.NO_PAGE_INDEX
-                    Me.State.SortExpression = Coverage.COL_DEALER
+                If TheDealerControl.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+                    moDataGrid.CurrentPageIndex = NO_PAGE_INDEX
+                    State.SortExpression = Coverage.COL_DEALER
                     moDataGrid.DataMember = Nothing
-                    Me.State.searchDV = Nothing
-                    Me.State.searchBtnClicked = True
+                    State.searchDV = Nothing
+                    State.searchBtnClicked = True
                     PopulateGrid()
-                    Me.State.searchBtnClicked = False
+                    State.searchBtnClicked = False
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub moBtnClear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moBtnClear.Click
+        Private Sub moBtnClear_Click(sender As System.Object, e As System.EventArgs) Handles moBtnClear.Click
             Try
                 ClearSearch()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub BtnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnNew_WRITE.Click
+        Private Sub BtnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnNew_WRITE.Click
             Try
                 'SetSession()
                 'Response.Redirect(COVERAGE_DETAIL_PAGE)
-                Me.State.moCoverageId = Guid.Empty
+                State.moCoverageId = Guid.Empty
                 SetSession()
-                Me.callPage(CoverageForm.CoverageFormUrl, Me.State.moCoverageId)
+                callPage(CoverageForm.CoverageFormUrl, State.moCoverageId)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -479,32 +479,32 @@ Namespace Tables
 
 #Region "Handlers-Grid"
 
-        Private Sub moDataGrid_PageIndexChanged(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moDataGrid.PageIndexChanged
+        Private Sub moDataGrid_PageIndexChanged(source As System.Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moDataGrid.PageIndexChanged
             Try
                 moDataGrid.CurrentPageIndex = e.NewPageIndex
                 PopulateGrid(POPULATE_ACTION_NO_EDIT)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Public Sub ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs)
+        Public Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+        Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
             Dim sCoverageId As String
             Try
                 If e.CommandSource.GetType.Equals(GetType(ImageButton)) Then
                     'this only runs when they click the pencil button for editing.
                     sCoverageId = CType(e.Item.FindControl("moCoverageId"), Label).Text
-                    Me.State.moCoverageId = Me.GetGuidFromString(sCoverageId)
+                    State.moCoverageId = GetGuidFromString(sCoverageId)
                     SetSession()
-                    Me.callPage(CoverageForm.CoverageFormUrl, Me.State.moCoverageId)
+                    callPage(CoverageForm.CoverageFormUrl, State.moCoverageId)
                 Else
                     '  If e.CommandName = Me.SORT_COMMAND_NAME Then
                     '        moDataGrid.DataMember = e.CommandArgument.ToString
@@ -512,27 +512,27 @@ Namespace Tables
                     '    End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub moDataGrid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles moDataGrid.SortCommand
+        Private Sub moDataGrid_SortCommand(source As Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles moDataGrid.SortCommand
             Try
 
-                If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                    If Me.State.SortExpression.EndsWith(" DESC") Then
-                        Me.State.SortExpression = e.SortExpression
+                If State.SortExpression.StartsWith(e.SortExpression) Then
+                    If State.SortExpression.EndsWith(" DESC") Then
+                        State.SortExpression = e.SortExpression
                     Else
-                        Me.State.SortExpression &= " DESC"
+                        State.SortExpression &= " DESC"
                     End If
                 Else
-                    Me.State.SortExpression = e.SortExpression
+                    State.SortExpression = e.SortExpression
                 End If
-                Me.moDataGrid.CurrentPageIndex = 0
-                Me.moDataGrid.SelectedIndex = -1
-                Me.PopulateGrid()
+                moDataGrid.CurrentPageIndex = 0
+                moDataGrid.SelectedIndex = -1
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -562,7 +562,7 @@ Namespace Tables
             TheDealerControl.Caption = TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_DEALERCODE)
             TheDealerControl.NothingSelected = True
             TheDealerControl.BindData(oDataView)
-            TheDealerControl.SelectedGuid = Me.State.DealerId
+            TheDealerControl.SelectedGuid = State.DealerId
             TheDealerControl.AutoPostBackDD = True
         End Sub
         'Try
@@ -588,11 +588,11 @@ Namespace Tables
                          .TextFunc = AddressOf .GetCode,
                          .SortFunc = AddressOf .GetCode
                     })
-                BindSelectItem(Me.State.ProductCodeId.ToString, moProductDrop)
+                BindSelectItem(State.ProductCodeId.ToString, moProductDrop)
                 ControlMgr.SetEnableControl(Me, moProductDrop, True)
-                If Me.State.IsGridVisible Then
+                If State.IsGridVisible Then
                     ClearForRisk()
-                    Me.PopulateRiskType()
+                    PopulateRiskType()
                 End If
                 'moProductDrop.Enabled = True
             Catch ex As Exception
@@ -603,7 +603,7 @@ Namespace Tables
         End Sub
 
         Private Sub PopulateRiskType()
-            Dim oProductId As Guid = Me.GetSelectedItem(moProductDrop)
+            Dim oProductId As Guid = GetSelectedItem(moProductDrop)
             Try
                 'Me.BindListControlToDataView(moRiskDrop, LookupListNew.GetItemRiskTypeLookupList(oProductId), , , True)
                 Dim listcontext As ListContext = New ListContext()
@@ -613,11 +613,11 @@ Namespace Tables
                      {
                          .AddBlankItem = True
                     })
-                BindSelectItem(Me.State.ItemRiskTypeId.ToString, moRiskDrop)
+                BindSelectItem(State.ItemRiskTypeId.ToString, moRiskDrop)
                 ControlMgr.SetEnableControl(Me, moRiskDrop, True)
-                If Me.State.IsGridVisible AndAlso moRiskDrop.SelectedIndex > 0 Then
+                If State.IsGridVisible AndAlso moRiskDrop.SelectedIndex > 0 Then
                     ClearForCoverageType()
-                    Me.PopulateCoverageType()
+                    PopulateCoverageType()
                 End If
                 'moRiskDrop.Enabled = True
             Catch ex As Exception
@@ -628,7 +628,7 @@ Namespace Tables
         End Sub
 
         Private Sub PopulateCoverageType()
-            Dim oItemId As Guid = Me.GetSelectedItem(moRiskDrop)
+            Dim oItemId As Guid = GetSelectedItem(moRiskDrop)
             Try
                 'Dim oLanguageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
                 'Me.BindListControlToDataView(moCoverageTypeDrop, LookupListNew.GetCoverageTypeLookupList(oItemId, oLanguageId), , , True) 'coveragetypebyitem
@@ -642,9 +642,9 @@ Namespace Tables
                     })
                 'BindSelectItem(Me.State.CoverageTypeId.ToString, moCoverageTypeDrop)
                 ControlMgr.SetEnableControl(Me, moCoverageTypeDrop, True)
-                If Me.State.IsGridVisible AndAlso moCoverageTypeDrop.SelectedIndex > 0 Then
+                If State.IsGridVisible AndAlso moCoverageTypeDrop.SelectedIndex > 0 Then
                     ClearForCertificateDuration()
-                    Me.PopulateCertificateDuration()
+                    PopulateCertificateDuration()
                 End If
                 'moCoverageTypeDrop.Enabled = True
             Catch ex As Exception
@@ -655,8 +655,8 @@ Namespace Tables
         End Sub
 
         Private Sub PopulateCertificateDuration()
-            Dim oItemId As Guid = Me.GetSelectedItem(moRiskDrop)
-            Dim oCoverageTypeId As Guid = Me.GetSelectedItem(moCoverageTypeDrop)
+            Dim oItemId As Guid = GetSelectedItem(moRiskDrop)
+            Dim oCoverageTypeId As Guid = GetSelectedItem(moCoverageTypeDrop)
             Dim sCertificateDuration As String = Nothing
             Try
                 'Me.BindListControlToDataView(moCertificateDurationDrop,
@@ -670,14 +670,14 @@ Namespace Tables
                   {
                       .AddBlankItem = True
                   })
-                If Not Me.State.CertificateDuration Is Nothing Then
-                    sCertificateDuration = Me.State.CertificateDuration.ToString
+                If State.CertificateDuration IsNot Nothing Then
+                    sCertificateDuration = State.CertificateDuration.ToString
                 End If
-                BindSelectItem(Me.State.CertificateDurationId.ToString, moCertificateDurationDrop)
+                BindSelectItem(State.CertificateDurationId.ToString, moCertificateDurationDrop)
                 ControlMgr.SetEnableControl(Me, moCertificateDurationDrop, True)
-                If Me.State.IsGridVisible AndAlso moCertificateDurationDrop.SelectedIndex > 0 Then
+                If State.IsGridVisible AndAlso moCertificateDurationDrop.SelectedIndex > 0 Then
                     'ClearForCertificateDuration()
-                    Me.PopulateCoverageDuration()
+                    PopulateCoverageDuration()
                 End If
                 'moCertificateDurationDrop.Enabled = True
             Catch ex As Exception
@@ -690,8 +690,8 @@ Namespace Tables
         End Sub
 
         Private Sub PopulateCoverageDuration()
-            Dim oItemId As Guid = Me.GetSelectedItem(moRiskDrop)
-            Dim oCoverageTypeId As Guid = Me.GetSelectedItem(moCoverageTypeDrop)
+            Dim oItemId As Guid = GetSelectedItem(moRiskDrop)
+            Dim oCoverageTypeId As Guid = GetSelectedItem(moCoverageTypeDrop)
             Dim sCertificateDuration As String = moCertificateDurationDrop.SelectedItem.Text
             Dim sCoverageDuration As String = Nothing
             Try
@@ -707,10 +707,10 @@ Namespace Tables
                   {
                      .AddBlankItem = True
                   })
-                If Not Me.State.CoverageDuration Is Nothing Then
-                    sCoverageDuration = Me.State.CoverageDuration.ToString
+                If State.CoverageDuration IsNot Nothing Then
+                    sCoverageDuration = State.CoverageDuration.ToString
                 End If
-                BindSelectItem(Me.State.CoverageDurationDurationId.ToString, moCoverageDurationDrop)
+                BindSelectItem(State.CoverageDurationDurationId.ToString, moCoverageDurationDrop)
                 ControlMgr.SetEnableControl(Me, moCoverageDurationDrop, True)
                 'moCoverageDurationDrop.Enabled = True
             Catch ex As Exception
@@ -720,7 +720,7 @@ Namespace Tables
             End Try
         End Sub
 
-        Private Sub BindDataGrid(ByVal oDataView As DataView)
+        Private Sub BindDataGrid(oDataView As DataView)
             moDataGrid.DataSource = oDataView
             moDataGrid.DataBind()
         End Sub
@@ -729,8 +729,8 @@ Namespace Tables
             Dim oDataView As DataView
 
             Try
-                If (Me.State.searchDV Is Nothing) Then
-                    Me.State.searchDV = GetDataView()
+                If (State.searchDV Is Nothing) Then
+                    State.searchDV = GetDataView()
                     ControlMgr.SetVisibleControl(Me, moDataGrid, True)
                     'Ticket # 748479 - Search grids in Tables tab should not show pop-up message when number of retrieved record is over 1,000
                     'If Me.State.searchBtnClicked Then
@@ -738,35 +738,35 @@ Namespace Tables
                     'End If
                 End If
 
-                Me.State.searchDV.Sort = Me.State.SortExpression
+                State.searchDV.Sort = State.SortExpression
                 moDataGrid.AutoGenerateColumns = False
-                moDataGrid.Columns(Me.GRID_COL_DEALER_NAME).SortExpression = Coverage.COL_DEALER
-                moDataGrid.Columns(Me.GRID_COL_PRODUCT_CODE).SortExpression = Coverage.COL_PRODUCT_CODE
-                moDataGrid.Columns(Me.GRID_COL_RISK_TYPE).SortExpression = Coverage.COL_RISK_TYPE
-                moDataGrid.Columns(Me.GRID_COL_ITEM_NUMBER).SortExpression = Coverage.COL_ITEM_NUMBER
-                moDataGrid.Columns(Me.GRID_COL_COVERAGE_TYPE).SortExpression = Coverage.COL_COVERAGE_TYPE
-                moDataGrid.Columns(Me.GRID_COL_CERTIFICATE_DURATION).SortExpression = Coverage.COL_CERTIFICATE_DURATION
-                moDataGrid.Columns(Me.GRID_COL_COVERAGE_DURATION).SortExpression = Coverage.COL_COVERAGE_DURATION
-                moDataGrid.Columns(Me.GRID_COL_EFFECTIVE).SortExpression = Coverage.COL_EFFECTIVE_DATE_FORMAT
-                moDataGrid.Columns(Me.GRID_COL_EXPIRATION).SortExpression = Coverage.COL_EXPIRATION_DATE_FORMAT
-                HighLightSortColumn(moDataGrid, Me.State.SortExpression)
-                BasePopulateGrid(moDataGrid, Me.State.searchDV, Me.State.moCoverageId, oAction)
+                moDataGrid.Columns(GRID_COL_DEALER_NAME).SortExpression = Coverage.COL_DEALER
+                moDataGrid.Columns(GRID_COL_PRODUCT_CODE).SortExpression = Coverage.COL_PRODUCT_CODE
+                moDataGrid.Columns(GRID_COL_RISK_TYPE).SortExpression = Coverage.COL_RISK_TYPE
+                moDataGrid.Columns(GRID_COL_ITEM_NUMBER).SortExpression = Coverage.COL_ITEM_NUMBER
+                moDataGrid.Columns(GRID_COL_COVERAGE_TYPE).SortExpression = Coverage.COL_COVERAGE_TYPE
+                moDataGrid.Columns(GRID_COL_CERTIFICATE_DURATION).SortExpression = Coverage.COL_CERTIFICATE_DURATION
+                moDataGrid.Columns(GRID_COL_COVERAGE_DURATION).SortExpression = Coverage.COL_COVERAGE_DURATION
+                moDataGrid.Columns(GRID_COL_EFFECTIVE).SortExpression = Coverage.COL_EFFECTIVE_DATE_FORMAT
+                moDataGrid.Columns(GRID_COL_EXPIRATION).SortExpression = Coverage.COL_EXPIRATION_DATE_FORMAT
+                HighLightSortColumn(moDataGrid, State.SortExpression)
+                BasePopulateGrid(moDataGrid, State.searchDV, State.moCoverageId, oAction)
 
 
                 ControlMgr.SetVisibleControl(Me, trPageSize, moDataGrid.Visible)
 
-                Session("recCount") = Me.State.searchDV.Count
+                Session("recCount") = State.searchDV.Count
 
-                If Me.moDataGrid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If moDataGrid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub EnableDropDowns(ByVal bIsEnable As Boolean)
+        Private Sub EnableDropDowns(bIsEnable As Boolean)
             ControlMgr.SetEnableControl(Me, moProductDrop, bIsEnable)
             ControlMgr.SetEnableControl(Me, moRiskDrop, bIsEnable)
             ControlMgr.SetEnableControl(Me, moCoverageTypeDrop, bIsEnable)
@@ -780,12 +780,12 @@ Namespace Tables
             'moCoverageDurationDrop.Enabled = bIsEnable
         End Sub
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
-                Me.moDataGrid.CurrentPageIndex = NewCurrentPageIndex(moDataGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.PopulateGrid()
+                moDataGrid.CurrentPageIndex = NewCurrentPageIndex(moDataGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
@@ -804,7 +804,7 @@ Namespace Tables
         'End Sub
 
         Private Sub ClearForCertificateDuration()
-            Me.ClearList(moCoverageDurationDrop)
+            ClearList(moCoverageDurationDrop)
             ControlMgr.SetEnableControl(Me, moCoverageDurationDrop, False)
             'moCoverageDurationDrop.Enabled = False
             'moDataGrid.CurrentPageIndex = 0
@@ -812,7 +812,7 @@ Namespace Tables
 
         Private Sub ClearForCoverageType()
             ClearForCertificateDuration()
-            Me.ClearList(moCertificateDurationDrop)
+            ClearList(moCertificateDurationDrop)
             ControlMgr.SetEnableControl(Me, moCertificateDurationDrop, False)
             'moCertificateDurationDrop.Enabled = False
             'moDataGrid.DataSource = Nothing
@@ -822,21 +822,21 @@ Namespace Tables
 
         Private Sub ClearForRisk()
             ClearForCoverageType()
-            Me.ClearList(moCoverageTypeDrop)
+            ClearList(moCoverageTypeDrop)
             ControlMgr.SetEnableControl(Me, moCoverageTypeDrop, False)
             'moCoverageTypeDrop.Enabled = False
         End Sub
 
         Private Sub ClearForProduct()
             ClearForRisk()
-            Me.ClearList(moRiskDrop)
+            ClearList(moRiskDrop)
             ControlMgr.SetEnableControl(Me, moRiskDrop, False)
             'moRiskDrop.Enabled = False
         End Sub
 
         Private Sub ClearForDealer()
             ClearForProduct()
-            Me.ClearList(moProductDrop)
+            ClearList(moProductDrop)
             ControlMgr.SetEnableControl(Me, moProductDrop, False)
             'moProductDrop.Enabled = False
         End Sub
@@ -845,7 +845,7 @@ Namespace Tables
             TheDealerControl.SelectedIndex = 0
             '     moBtnSearch.Enabled = False
             ClearForDealer()
-            Me.State.moCoverageId = Guid.Empty
+            State.moCoverageId = Guid.Empty
         End Sub
 
 #End Region
@@ -853,44 +853,44 @@ Namespace Tables
 #Region "State-Management"
 
         Private Sub SetSession()
-            With Me.State
+            With State
                 If TheDealerControl.SelectedIndex > 0 Then
                     .DealerId = TheDealerControl.SelectedGuid
                 Else
                     .DealerId = Guid.Empty
                 End If
                 If moProductDrop.SelectedIndex > 0 Then
-                    .ProductCodeId = Me.GetSelectedItem(moProductDrop)
+                    .ProductCodeId = GetSelectedItem(moProductDrop)
                 Else
                     .ProductCodeId = Guid.Empty
                 End If
                 If moRiskDrop.SelectedIndex > 0 Then
-                    .ItemRiskTypeId = Me.GetSelectedItem(moRiskDrop)
+                    .ItemRiskTypeId = GetSelectedItem(moRiskDrop)
                 Else
                     .ItemRiskTypeId = Guid.Empty
                 End If
                 If moCoverageTypeDrop.SelectedIndex > 0 Then
-                    .CoverageTypeId = Me.GetSelectedItem(moCoverageTypeDrop)
+                    .CoverageTypeId = GetSelectedItem(moCoverageTypeDrop)
                 Else
                     .CoverageTypeId = Guid.Empty
                 End If
                 If moCertificateDurationDrop.SelectedIndex > 0 Then
                     .CertificateDuration = New Assurant.Common.Types.LongType(CType(moCertificateDurationDrop.SelectedItem.Text, Long))
-                    .CertificateDurationId = Me.GetSelectedItem(moCertificateDurationDrop)
+                    .CertificateDurationId = GetSelectedItem(moCertificateDurationDrop)
                 Else
                     .CertificateDuration = New Assurant.Common.Types.LongType(0)
                 End If
                 If moCoverageDurationDrop.SelectedIndex > 0 Then
                     .CoverageDuration = New Assurant.Common.Types.LongType(CType(moCoverageDurationDrop.SelectedItem.Text, Long))
-                    .CoverageDurationDurationId = Me.GetSelectedItem(moCoverageDurationDrop)
+                    .CoverageDurationDurationId = GetSelectedItem(moCoverageDurationDrop)
                 Else
                     .CoverageDuration = New Assurant.Common.Types.LongType(0)
                 End If
 
                 .PageIndex = moDataGrid.CurrentPageIndex
-                .PageSort = Me.State.SortExpression
+                .PageSort = State.SortExpression
                 .PageSize = moDataGrid.PageSize
-                .SearchDataView = Me.State.searchDV
+                .SearchDataView = State.searchDV
             End With
         End Sub
 
@@ -907,16 +907,16 @@ Namespace Tables
             With oCoverage
                 CompanyIdList = ElitaPlusIdentity.Current.ActiveUser.Companies
                 If TheDealerControl.SelectedIndex > 0 Then
-                    Me.PopulateBOProperty(oCoverage, "DealerId", TheDealerControl.SelectedGuid)
+                    PopulateBOProperty(oCoverage, "DealerId", TheDealerControl.SelectedGuid)
                 End If
                 If moProductDrop.SelectedIndex > 0 Then
-                    Me.PopulateBOProperty(oCoverage, "ProductCodeId", moProductDrop)
+                    PopulateBOProperty(oCoverage, "ProductCodeId", moProductDrop)
                 End If
                 If moRiskDrop.SelectedIndex > 0 Then
-                    Me.PopulateBOProperty(oCoverage, "ItemId", moRiskDrop)
+                    PopulateBOProperty(oCoverage, "ItemId", moRiskDrop)
                 End If
                 If moCoverageTypeDrop.SelectedIndex > 0 Then
-                    Me.PopulateBOProperty(oCoverage, "CoverageTypeId", moCoverageTypeDrop)
+                    PopulateBOProperty(oCoverage, "CoverageTypeId", moCoverageTypeDrop)
                 End If
                 If moCertificateDurationDrop.SelectedIndex > 0 Then
                     .CertificateDuration = New Assurant.Common.Types.LongType(CType(moCertificateDurationDrop.SelectedItem.Text, Long))
@@ -931,16 +931,16 @@ Namespace Tables
 
 #End Region
 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
           Handles multipleDropControl.SelectedDropChanged
             Try
-                Me.State.DealerId = TheDealerControl.SelectedGuid
+                State.DealerId = TheDealerControl.SelectedGuid
                 PopulateDealer()
                 If TheDealerControl.SelectedIndex > 0 Then
                     PopulateProductCode()
                 End If
             Catch ex As Exception
-                HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 

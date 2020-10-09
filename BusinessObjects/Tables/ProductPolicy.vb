@@ -6,48 +6,48 @@ Public Class ProductPolicy
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ProductPolicyDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class ProductPolicy
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ProductPolicyDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -81,15 +81,15 @@ Public Class ProductPolicy
 
 
     Public Sub InitTable()
-        Me.Dataset.Tables(ProductPolicyDAL.TABLE_NAME).Rows.Clear()
+        Dataset.Tables(ProductPolicyDAL.TABLE_NAME).Rows.Clear()
     End Sub
 
-    Public Sub AddRowsToTable(ByVal rowval As DataRow, Optional ByVal updateRowVal As Boolean = False)
+    Public Sub AddRowsToTable(rowval As DataRow, Optional ByVal updateRowVal As Boolean = False)
         Dim dal As New ProductPolicyDAL
-        Me.Row = Me.FindRow(Id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
-        Me.Row(1) = rowval(1)
-        Me.Row(2) = rowval(2)
-        Me.Row(3) = rowval(3)
+        Row = FindRow(Id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
+        Row(1) = rowval(1)
+        Row(2) = rowval(2)
+        Row(3) = rowval(3)
 
     End Sub
 
@@ -105,7 +105,7 @@ Public Class ProductPolicy
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ProductPolicyDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -116,7 +116,7 @@ Public Class ProductPolicy
     End Property
 
     <ValueMandatory("")> _
-    Public Property ProductCodeId() As Guid
+    Public Property ProductCodeId As Guid
         Get
             CheckDeleted()
             If Row(ProductPolicyDAL.COL_NAME_PRODUCT_CODE_ID) Is DBNull.Value Then
@@ -125,15 +125,15 @@ Public Class ProductPolicy
                 Return New Guid(CType(Row(ProductPolicyDAL.COL_NAME_PRODUCT_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductPolicyDAL.COL_NAME_PRODUCT_CODE_ID, Value)
+            SetValue(ProductPolicyDAL.COL_NAME_PRODUCT_CODE_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property TypeOfEquipmentId() As Guid
+    Public Property TypeOfEquipmentId As Guid
         Get
             CheckDeleted()
             If Row(ProductPolicyDAL.COL_NAME_TYPE_OF_EQUIPMENT_ID) Is DBNull.Value Then
@@ -142,15 +142,15 @@ Public Class ProductPolicy
                 Return New Guid(CType(Row(ProductPolicyDAL.COL_NAME_TYPE_OF_EQUIPMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductPolicyDAL.COL_NAME_TYPE_OF_EQUIPMENT_ID, Value)
+            SetValue(ProductPolicyDAL.COL_NAME_TYPE_OF_EQUIPMENT_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property ExternalProdCodeId() As Guid
+    Public Property ExternalProdCodeId As Guid
         Get
             CheckDeleted()
             If Row(ProductPolicyDAL.COL_NAME_EXTERNAL_PROD_CODE_ID) Is DBNull.Value Then
@@ -159,14 +159,14 @@ Public Class ProductPolicy
                 Return New Guid(CType(Row(ProductPolicyDAL.COL_NAME_EXTERNAL_PROD_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductPolicyDAL.COL_NAME_EXTERNAL_PROD_CODE_ID, Value)
+            SetValue(ProductPolicyDAL.COL_NAME_EXTERNAL_PROD_CODE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property Policy() As LongType
+    Public Property Policy As LongType
         Get
             CheckDeleted()
             If Row(ProductPolicyDAL.COL_NAME_POLICY_NUM) Is DBNull.Value Then
@@ -175,28 +175,28 @@ Public Class ProductPolicy
                 Return New LongType(CType(Row(ProductPolicyDAL.COL_NAME_POLICY_NUM), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductPolicyDAL.COL_NAME_POLICY_NUM, Value)
+            SetValue(ProductPolicyDAL.COL_NAME_POLICY_NUM, Value)
         End Set
     End Property
 
     Public TypeOfEqup As String
     Public ExtProdCode As String
-    Public Property TypeOfEquipment() As String
+    Public Property TypeOfEquipment As String
         Get            
             Return TypeOfEqup
         End Get
-        Set(ByVal Value As String)
+        Set
             TypeOfEqup = Value
         End Set
     End Property
 
-    Public Property ExternalProdCode() As String
+    Public Property ExternalProdCode As String
         Get
             Return ExtProdCode
         End Get
-        Set(ByVal Value As String)
+        Set
             ExtProdCode = Value
         End Set
     End Property
@@ -264,53 +264,53 @@ Public Class ProductPolicy
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property ProductPolicyId(ByVal row As DataRow) As Guid
+        Public Shared ReadOnly Property ProductPolicyId(row As DataRow) As Guid
             Get
                 If row(ProductPolicyDAL.COL_NAME_PRODUCT_POLICY_ID) Is DBNull.Value Then Return Nothing
                 Return New Guid(CType(row(ProductPolicyDAL.COL_NAME_PRODUCT_POLICY_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property ProductCodeId(ByVal row As DataRow) As Guid
+        Public Shared ReadOnly Property ProductCodeId(row As DataRow) As Guid
             Get
                 If row(ProductPolicyDAL.COL_NAME_PRODUCT_CODE_ID) Is DBNull.Value Then Return Nothing
                 Return New Guid(CType(row(ProductPolicyDAL.COL_NAME_PRODUCT_CODE_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property TypeOfEquipmentId(ByVal row As DataRow) As Guid
+        Public Shared ReadOnly Property TypeOfEquipmentId(row As DataRow) As Guid
             Get
                 If row(ProductPolicyDAL.COL_NAME_PRODUCT_POLICY_ID) Is DBNull.Value Then Return Nothing
                 Return New Guid(CType(row(ProductPolicyDAL.COL_NAME_TYPE_OF_EQUIPMENT_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property ExternalProdCodId(ByVal row As DataRow) As Guid
+        Public Shared ReadOnly Property ExternalProdCodId(row As DataRow) As Guid
             Get
                 If row(ProductPolicyDAL.COL_NAME_PRODUCT_POLICY_ID) Is DBNull.Value Then Return Nothing
                 Return New Guid(CType(row(ProductPolicyDAL.COL_NAME_EXTERNAL_PROD_CODE_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Policy(ByVal row As DataRow) As Long
+        Public Shared ReadOnly Property Policy(row As DataRow) As Long
             Get
                 If row(ProductPolicyDAL.COL_NAME_PRODUCT_POLICY_ID) Is DBNull.Value Then Return Nothing
                 Return CType(row(ProductPolicyDAL.COL_NAME_POLICY_NUM), Long)
             End Get
         End Property
 
-        Public Shared ReadOnly Property ExternalProdCod(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property ExternalProdCod(row As DataRow) As String
             Get
                 If row(ProductPolicyDAL.COL_NAME_EXTERNAL_PROD_CODE) Is DBNull.Value Then Return Nothing
                 Return CType(row(ProductPolicyDAL.COL_NAME_EXTERNAL_PROD_CODE), String)
             End Get
         End Property
 
-        Public Shared ReadOnly Property TypeOfEquipment(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property TypeOfEquipment(row As DataRow) As String
             Get
                 If row(ProductPolicyDAL.COL_NAME_TYPE_OF_EQUIPMENT) Is DBNull.Value Then Return Nothing
                 Return CType(row(ProductPolicyDAL.COL_NAME_TYPE_OF_EQUIPMENT), String)
@@ -318,14 +318,14 @@ Public Class ProductPolicy
         End Property
 
         Public Function AddNewRowToEmptyDV() As ProductPolicySearchDV
-            Dim dt As DataTable = Me.Table.Clone()
+            Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(ProductPolicySearchDV.COL_PRODUCT_POLICY_ID) = (New Guid()).ToByteArray
-            row(ProductPolicySearchDV.COL_TYPE_OF_EQUIPMENT_ID) = Guid.Empty.ToByteArray
-            row(ProductPolicySearchDV.COL_TYPE_OF_EQUIPMENT) = DBNull.Value
-            row(ProductPolicySearchDV.COL_EXTERNAL_PROD_CODE_ID) = Guid.Empty.ToByteArray
-            row(ProductPolicySearchDV.COL_EXTERNAL_PROD_CODE) = DBNull.Value
-            row(ProductPolicySearchDV.COL_POLICY_NUM) = DBNull.Value
+            row(COL_PRODUCT_POLICY_ID) = (New Guid()).ToByteArray
+            row(COL_TYPE_OF_EQUIPMENT_ID) = Guid.Empty.ToByteArray
+            row(COL_TYPE_OF_EQUIPMENT) = DBNull.Value
+            row(COL_EXTERNAL_PROD_CODE_ID) = Guid.Empty.ToByteArray
+            row(COL_EXTERNAL_PROD_CODE) = DBNull.Value
+            row(COL_POLICY_NUM) = DBNull.Value
             dt.Rows.Add(row)
             Return New ProductPolicySearchDV(dt)
         End Function
@@ -337,15 +337,15 @@ Public Class ProductPolicy
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ProductPolicyDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -355,7 +355,7 @@ Public Class ProductPolicy
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function LoadList(ByVal ProductCodeId As Guid) As ProductPolicySearchDV
+    Public Shared Function LoadList(ProductCodeId As Guid) As ProductPolicySearchDV
         Try
             Dim dal As New ProductPolicyDAL
             Dim BOProd As ProductCode
@@ -367,7 +367,7 @@ Public Class ProductPolicy
     End Function
 
   
-    Public Shared Sub AddNewRowToSearchDV(ByRef dv As ProductPolicySearchDV, ByVal NewProductPolicyBO As ProductPolicy)
+    Public Shared Sub AddNewRowToSearchDV(ByRef dv As ProductPolicySearchDV, NewProductPolicyBO As ProductPolicy)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         dv.Sort = ""
@@ -396,7 +396,7 @@ Public Class ProductPolicy
         End If
     End Sub
 
-    Public Shared Sub AddRowToSearchDV(ByRef dv As ProductPolicySearchDV, ByVal ProductPolicyBO As ProductPolicy)
+    Public Shared Sub AddRowToSearchDV(ByRef dv As ProductPolicySearchDV, ProductPolicyBO As ProductPolicy)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
 
@@ -413,7 +413,7 @@ Public Class ProductPolicy
         dv = New ProductPolicySearchDV(dt)
     End Sub
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid, ByVal bo As ProductPolicy) As ProductPolicySearchDV
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid, bo As ProductPolicy) As ProductPolicySearchDV
 
         Dim dt As DataTable
         dt = dv.Table
@@ -434,35 +434,35 @@ Public Class ProductPolicy
     Public Class ProductPolicyAssignedDV
         Inherits DataView
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property PRODUCTPOLICYID(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property PRODUCTPOLICYID(row As DataRow) As String
             Get
                 Return row(ProductPolicySearchDV.COL_PRODUCT_POLICY_ID).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property PRODUCTCODEID(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property PRODUCTCODEID(row As DataRow) As String
             Get
                 Return row(ProductPolicySearchDV.COL_PRODUCT_CODE_ID).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property TYPEOFEQUIPMENTID(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property TYPEOFEQUIPMENTID(row As DataRow) As String
             Get
                 Return row(ProductPolicySearchDV.COL_TYPE_OF_EQUIPMENT_ID).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property EXTERNALPRODCODEID(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property EXTERNALPRODCODEID(row As DataRow) As String
             Get
                 Return row(ProductPolicySearchDV.COL_EXTERNAL_PROD_CODE_ID).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property POLICYNUM(ByVal row As DataRow) As Long
+        Public Shared ReadOnly Property POLICYNUM(row As DataRow) As Long
             Get
                 Return row(ProductPolicySearchDV.COL_POLICY_NUM).ToString
             End Get
@@ -475,15 +475,15 @@ Public Class ProductPolicy
     Public Class ProductPolicyDetailList
         Inherits BusinessObjectListBase
 
-        Public Sub New(ByVal parent As ProductCode)
+        Public Sub New(parent As ProductCode)
             MyBase.New(LoadTable(parent), GetType(ProductPolicy), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return CType(bo, ProductPolicy).ProductCodeId.Equals(CType(Parent, ProductCode).Id)
         End Function
 
-        Public Function Find(ByVal ProductPolicyId As Guid) As ProductPolicy
+        Public Function Find(ProductPolicyId As Guid) As ProductPolicy
             Dim bo As ProductPolicy
             For Each bo In Me
                 If bo.Id.Equals(ProductPolicyId) Then Return bo
@@ -491,7 +491,7 @@ Public Class ProductPolicy
             Return Nothing
         End Function
 
-        Public Function Delete(ByVal ProductPolicyId As Guid)
+        Public Function Delete(ProductPolicyId As Guid)
             Dim bo As ProductPolicy
             Dim dr As DataRow
 
@@ -504,7 +504,7 @@ Public Class ProductPolicy
 
         End Function
 
-        Private Shared Function LoadTable(ByVal parent As ProductCode) As DataTable
+        Private Shared Function LoadTable(parent As ProductCode) As DataTable
             Try
                 If Not parent.IsChildrenCollectionLoaded(GetType(ProductPolicyDetailList)) Then
                     Dim dal As New ProductPolicyDAL

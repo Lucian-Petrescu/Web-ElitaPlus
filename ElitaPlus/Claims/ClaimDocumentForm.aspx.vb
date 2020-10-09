@@ -27,13 +27,13 @@ Public Class ClaimDocumentForm
         Public LastOperation As DetailPageCommand
         Public EditingBo As ClaimImage
         Public BoChanged As Boolean = False
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As ClaimImage, Optional ByVal boChanged As Boolean = False)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(LastOp As DetailPageCommand, curEditingBo As ClaimImage, Optional ByVal boChanged As Boolean = False)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
             Me.BoChanged = boChanged
         End Sub
-        Public Sub New(ByVal LastOp As DetailPageCommand)
-            Me.LastOperation = LastOp
+        Public Sub New(LastOp As DetailPageCommand)
+            LastOperation = LastOp
         End Sub
     End Class
 #End Region
@@ -44,12 +44,12 @@ Public Class ClaimDocumentForm
     Class MyState
         Public ClaimBO As ClaimBase
         Public PageIndex As Integer = 0
-        Public SortExpression As String = Claim.ClaimImagesView.COL_IMAGE_ID
+        Public SortExpression As String = ClaimBase.ClaimImagesView.COL_IMAGE_ID
         Public selectedImageId As Guid = Guid.Empty
         Public selectedSortById As Guid = Guid.Empty
         Public PageSize As Integer = DEFAULT_PAGE_SIZE
         Public IsGridVisible As Boolean = True
-        Public ClaimImagesView As Claim.ClaimImagesView
+        Public ClaimImagesView As ClaimBase.ClaimImagesView
         Public AllowDeleteOfImage As Boolean = True
     End Class
 
@@ -63,17 +63,17 @@ Public Class ClaimDocumentForm
         End Get
     End Property
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
 
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
 
                 'If CallingPar(0).GetType Is GetType(Claim) Then
-                Me.State.ClaimBO = ClaimFacade.Instance.GetClaim(Of ClaimBase)(CType(CType(Me.CallingParameters, ArrayList)(0), ClaimBase).Id)
+                State.ClaimBO = ClaimFacade.Instance.GetClaim(Of ClaimBase)(CType(CType(CallingParameters, ArrayList)(0), ClaimBase).Id)
                 'End if
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -82,43 +82,43 @@ Public Class ClaimDocumentForm
 #Region "Page Events"
 
     Private Sub UpdateBreadCrum()
-        If (Not Me.State Is Nothing) Then
-            Me.MasterPage.BreadCrum = Me.MasterPage.BreadCrum & TranslationBase.TranslateLabelOrMessage("CLAIM") & ElitaBase.Sperator & Me.MasterPage.PageTab
+        If (State IsNot Nothing) Then
+            MasterPage.BreadCrum = MasterPage.BreadCrum & TranslationBase.TranslateLabelOrMessage("CLAIM") & ElitaBase.Sperator & MasterPage.PageTab
         End If
     End Sub
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
 
         Try
-            Me.MasterPage.UsePageTabTitleInBreadCrum = False
-            Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("CLAIM_IMAGES")
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("CLAIM_SUMMARY")
+            MasterPage.UsePageTabTitleInBreadCrum = False
+            MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("CLAIM_IMAGES")
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("CLAIM_SUMMARY")
 
             UpdateBreadCrum()
-            Me.MasterPage.MessageController.Clear()
+            MasterPage.MessageController.Clear()
 
             lblGrdHdr.Text = TranslationBase.TranslateLabelOrMessage("CLAIM_IMAGES")
 
-            If Not Me.IsPostBack Then
-                Me.TranslateGridHeader(Me.ClaimDocumentsGridView)
+            If Not IsPostBack Then
+                TranslateGridHeader(ClaimDocumentsGridView)
                 PopulateFormFromBO()
                 'check if the user has access to delete the images 
-                Me.State.AllowDeleteOfImage = Me.CanSetControlEnabled(HiddenIsDeleteImagesAllowed.ID)
-                Me.PopulateGrid()
+                State.AllowDeleteOfImage = CanSetControlEnabled(HiddenIsDeleteImagesAllowed.ID)
+                PopulateGrid()
 
                 Dim oDocumentTypeDropDown As ListItem() = CommonConfigManager.Current.ListManager.GetList("DTYP", Thread.CurrentPrincipal.GetLanguageCode())
                 DocumentTypeDropDown.Populate(oDocumentTypeDropDown, New PopulateOptions() With
                                           {
                                             .AddBlankItem = False
                                            })
-                Me.ClearForm()
+                ClearForm()
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
 #End Region
@@ -128,17 +128,17 @@ Public Class ClaimDocumentForm
     Private Sub PopulateFormFromBO()
         Dim cssClassName As String
         Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
-        With Me.State.ClaimBO
-            Me.PopulateControlFromBOProperty(Me.lblCustomerNameValue, .CustomerName)
-            Me.PopulateControlFromBOProperty(Me.lblClaimNumberValue, .ClaimNumber)
-            Me.PopulateControlFromBOProperty(Me.lblDealerNameValue, .DealerName)
-            Me.PopulateControlFromBOProperty(Me.lblCertificateNumberValue, .CertificateNumber)
-            Me.PopulateControlFromBOProperty(Me.lblClaimStatusValue, LookupListNew.GetClaimStatusFromCode(langId, .StatusCode))
-            Me.PopulateControlFromBOProperty(Me.lblDateOfLossValue, GetDateFormattedStringNullable(.LossDate.Value))
-            Me.PopulateControlFromBOProperty(Me.lblSerialNumberImeiValue, .SerialNumber)
-            Me.PopulateControlFromBOProperty(Me.lblWorkPhoneNumberValue, .MobileNumber)
+        With State.ClaimBO
+            PopulateControlFromBOProperty(lblCustomerNameValue, .CustomerName)
+            PopulateControlFromBOProperty(lblClaimNumberValue, .ClaimNumber)
+            PopulateControlFromBOProperty(lblDealerNameValue, .DealerName)
+            PopulateControlFromBOProperty(lblCertificateNumberValue, .CertificateNumber)
+            PopulateControlFromBOProperty(lblClaimStatusValue, LookupListNew.GetClaimStatusFromCode(langId, .StatusCode))
+            PopulateControlFromBOProperty(lblDateOfLossValue, GetDateFormattedStringNullable(.LossDate.Value))
+            PopulateControlFromBOProperty(lblSerialNumberImeiValue, .SerialNumber)
+            PopulateControlFromBOProperty(lblWorkPhoneNumberValue, .MobileNumber)
 
-            If (Me.State.ClaimBO.StatusCode = Codes.CLAIM_STATUS__ACTIVE) Then
+            If (State.ClaimBO.StatusCode = Codes.CLAIM_STATUS__ACTIVE) Then
                 cssClassName = "StatActive"
             Else
                 cssClassName = "StatClosed"
@@ -146,11 +146,11 @@ Public Class ClaimDocumentForm
             ClaimStatusTD.Attributes.Item("Class") = cssClassName
         End With
 
-        Dim oCertificate As Certificate = New Certificate(Me.State.ClaimBO.CertificateId)
-        Dim oDealer As New Dealer(Me.State.ClaimBO.CompanyId, Me.State.ClaimBO.DealerCode)
+        Dim oCertificate As Certificate = New Certificate(State.ClaimBO.CertificateId)
+        Dim oDealer As New Dealer(State.ClaimBO.CompanyId, State.ClaimBO.DealerCode)
 
-        Me.PopulateControlFromBOProperty(Me.lblDealerGroupValue, oDealer.DealerGroupName)
-        Me.PopulateControlFromBOProperty(Me.lblSubscriberStatusValue, LookupListNew.GetClaimStatusFromCode(langId, oCertificate.StatusCode))
+        PopulateControlFromBOProperty(lblDealerGroupValue, oDealer.DealerGroupName)
+        PopulateControlFromBOProperty(lblSubscriberStatusValue, LookupListNew.GetClaimStatusFromCode(langId, oCertificate.StatusCode))
         If (oCertificate.StatusCode = Codes.CLAIM_STATUS__ACTIVE) Then
             cssClassName = "StatActive"
         Else
@@ -167,64 +167,64 @@ Public Class ClaimDocumentForm
     Public Sub PopulateGrid()
 
         Try
-            If (Me.State.ClaimImagesView Is Nothing) Then
-                Me.State.ClaimImagesView = Me.State.ClaimBO.GetClaimImagesView(Me.State.AllowDeleteOfImage)
+            If (State.ClaimImagesView Is Nothing) Then
+                State.ClaimImagesView = State.ClaimBO.GetClaimImagesView(State.AllowDeleteOfImage)
             End If
 
 
-            Me.ClaimDocumentsGridView.AutoGenerateColumns = False
-            Me.ClaimDocumentsGridView.PageSize = Me.State.PageSize
-            Me.ValidSearchResultCountNew(Me.State.claimImagesView.Count, True)
-            Me.HighLightSortColumn(Me.ClaimDocumentsGridView, Me.State.SortExpression, Me.IsNewUI)
-            Me.SetPageAndSelectedIndexFromGuid(Me.State.claimImagesView, Me.State.selectedImageId, Me.ClaimDocumentsGridView, Me.State.PageIndex)
-            Me.ClaimDocumentsGridView.DataSource = Me.State.claimImagesView
-            Me.ClaimDocumentsGridView.DataBind()
+            ClaimDocumentsGridView.AutoGenerateColumns = False
+            ClaimDocumentsGridView.PageSize = State.PageSize
+            ValidSearchResultCountNew(State.claimImagesView.Count, True)
+            HighLightSortColumn(ClaimDocumentsGridView, State.SortExpression, IsNewUI)
+            SetPageAndSelectedIndexFromGuid(State.claimImagesView, State.selectedImageId, ClaimDocumentsGridView, State.PageIndex)
+            ClaimDocumentsGridView.DataSource = State.claimImagesView
+            ClaimDocumentsGridView.DataBind()
 
-            If (Me.State.claimImagesView.Count > 0) Then
-                Me.State.IsGridVisible = True
+            If (State.claimImagesView.Count > 0) Then
+                State.IsGridVisible = True
                 dvGridPager.Visible = True
             Else
-                Me.State.IsGridVisible = False
+                State.IsGridVisible = False
                 dvGridPager.Visible = False
             End If
-            ControlMgr.SetVisibleControl(Me, ClaimDocumentsGridView, Me.State.IsGridVisible)
-            If Me.ClaimDocumentsGridView.Visible Then
-                Me.lblRecordCount.Text = Me.State.claimImagesView.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
-                If Me.State.AllowDeleteOfImage Then
-                    Me.ClaimDocumentsGridView.Columns(GRID_COL_DELETE_ACTION_IDX).Visible = True
+            ControlMgr.SetVisibleControl(Me, ClaimDocumentsGridView, State.IsGridVisible)
+            If ClaimDocumentsGridView.Visible Then
+                lblRecordCount.Text = State.claimImagesView.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If State.AllowDeleteOfImage Then
+                    ClaimDocumentsGridView.Columns(GRID_COL_DELETE_ACTION_IDX).Visible = True
                 Else
-                    Me.ClaimDocumentsGridView.Columns(GRID_COL_DELETE_ACTION_IDX).Visible = False
+                    ClaimDocumentsGridView.Columns(GRID_COL_DELETE_ACTION_IDX).Visible = False
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub ClaimDocumentsGridView_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles ClaimDocumentsGridView.RowCreated
+    Private Sub ClaimDocumentsGridView_RowCreated(sender As Object, e As GridViewRowEventArgs) Handles ClaimDocumentsGridView.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub ClaimDocumentsGridView_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles ClaimDocumentsGridView.RowDataBound
+    Private Sub ClaimDocumentsGridView_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles ClaimDocumentsGridView.RowDataBound
         Try
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim btnLinkImage As LinkButton
             Dim btnAddRemoveImage As LinkButton
             If (e.Row.RowType = DataControlRowType.DataRow) OrElse (e.Row.RowType = DataControlRowType.Separator) Then
                 'Link to the image 
-                If (Not e.Row.Cells(GRID_COL_IMAGE_ID_IDX).FindControl("btnImageLink") Is Nothing) Then
+                If (e.Row.Cells(GRID_COL_IMAGE_ID_IDX).FindControl("btnImageLink") IsNot Nothing) Then
                     btnLinkImage = CType(e.Row.Cells(0).FindControl("btnImageLink"), LinkButton)
-                    btnLinkImage.Text = CType(dvRow(Claim.ClaimImagesView.COL_FILE_NAME), String)
-                    btnLinkImage.CommandArgument = String.Format("{0};{1};{2}", GetGuidStringFromByteArray(CType(dvRow(Claim.ClaimImagesView.COL_IMAGE_ID), Byte())), Me.State.ClaimBO.Id, CType(dvRow(Claim.ClaimImagesView.COL_IS_LOCAL_REPOSITORY), String))
+                    btnLinkImage.Text = CType(dvRow(ClaimBase.ClaimImagesView.COL_FILE_NAME), String)
+                    btnLinkImage.CommandArgument = String.Format("{0};{1};{2}", GetGuidStringFromByteArray(CType(dvRow(ClaimBase.ClaimImagesView.COL_IMAGE_ID), Byte())), State.ClaimBO.Id, CType(dvRow(ClaimBase.ClaimImagesView.COL_IS_LOCAL_REPOSITORY), String))
                 End If
 
-                If (Not e.Row.Cells(GRID_COL_FILE_SIZE_IDX).FindControl("btnImageLink") Is Nothing) AndAlso _
-                    (Not dvRow(Claim.ClaimImagesView.COL_FILE_SIZE_BYTES) Is Nothing) Then
-                    Dim fileSize As Long = CType(dvRow(Claim.ClaimImagesView.COL_FILE_SIZE_BYTES), Long)
+                If (e.Row.Cells(GRID_COL_FILE_SIZE_IDX).FindControl("btnImageLink") IsNot Nothing) AndAlso _
+                    (dvRow(ClaimBase.ClaimImagesView.COL_FILE_SIZE_BYTES) IsNot Nothing) Then
+                    Dim fileSize As Long = CType(dvRow(ClaimBase.ClaimImagesView.COL_FILE_SIZE_BYTES), Long)
                     Dim fileSizeLabel As Label = CType(e.Row.Cells(GRID_COL_FILE_SIZE_IDX).FindControl("FileSizeLabel"), Label)
                     If (fileSize > 1048576) Then
                         ' Display in MB
@@ -238,15 +238,15 @@ Public Class ClaimDocumentForm
                     End If
                 End If
 
-                If (Not e.Row.Cells(GRID_COL_SCAN_DATE_IDX).Text Is Nothing) Then
+                If (e.Row.Cells(GRID_COL_SCAN_DATE_IDX).Text IsNot Nothing) Then
                     e.Row.Cells(GRID_COL_SCAN_DATE_IDX).Text = GetLongDate12FormattedString(e.Row.Cells(GRID_COL_SCAN_DATE_IDX).Text)
                 End If
 
                 btnAddRemoveImage = CType(e.Row.Cells(0).FindControl("btnAddRemoveImage"), LinkButton)
 
-                If Me.State.AllowDeleteOfImage Then
-                    btnAddRemoveImage.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(Claim.ClaimImagesView.COL_CLAIM_IMAGE_ID), Byte()))
-                    If CType(dvRow(Claim.ClaimImagesView.COL_DELETE_FLAG), String) = "Y" Then
+                If State.AllowDeleteOfImage Then
+                    btnAddRemoveImage.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(ClaimBase.ClaimImagesView.COL_CLAIM_IMAGE_ID), Byte()))
+                    If CType(dvRow(ClaimBase.ClaimImagesView.COL_DELETE_FLAG), String) = "Y" Then
                         btnAddRemoveImage.Text = TranslationBase.TranslateLabelOrMessage("UNDO_DELETE_IMAGE")
                         btnAddRemoveImage.CommandName = UNDO_DELETE_IMAGE
                     Else
@@ -257,18 +257,18 @@ Public Class ClaimDocumentForm
                     btnAddRemoveImage.Visible = False
                 End If
 
-                If (dvRow(Claim.ClaimImagesView.COL_STATUS_CODE).ToString = Codes.CLAIM_IMAGE_PROCESSED) Then
+                If (dvRow(ClaimBase.ClaimImagesView.COL_STATUS_CODE).ToString = Codes.CLAIM_IMAGE_PROCESSED) Then
                         e.Row.Cells(GRID_COL_IMAGE_STATUS_IDX).CssClass = "StatActive"
                     Else
                         e.Row.Cells(GRID_COL_IMAGE_STATUS_IDX).CssClass = "StatInactive"
                     End If
                 End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub ClaimDocumentsGridView_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles ClaimDocumentsGridView.RowCommand
+    Protected Sub ClaimDocumentsGridView_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles ClaimDocumentsGridView.RowCommand
         If (e.CommandName = SELECT_ACTION_IMAGE) Then
             If Not e.CommandArgument.ToString().Equals(String.Empty) Then
                 Dim args() As String = CType(e.CommandArgument, String).Split(";".ToCharArray())
@@ -284,13 +284,13 @@ Public Class ClaimDocumentForm
                 End If
 
                 Dim x As String = "<script language='JavaScript'> revealModal('modalClaimImages') </script>"
-                Me.RegisterStartupScript("Startup", x)
+                RegisterStartupScript("Startup", x)
             End If
         ElseIf (e.CommandName = DELETE_IMAGE OrElse e.CommandName = UNDO_DELETE_IMAGE) Then
             If Not e.CommandArgument.ToString().Equals(String.Empty) Then
                 Dim claimImageIdString As String = CType(e.CommandArgument, String)
                 Dim claimImageID As Guid = GetGuidFromString(claimImageIdString)
-                Dim oClaimImage As ClaimImage =  DirectCast(Me.State.ClaimBO.ClaimImagesList.GetChild(claimImageID), ClaimImage)  
+                Dim oClaimImage As ClaimImage =  DirectCast(State.ClaimBO.ClaimImagesList.GetChild(claimImageID), ClaimImage)  
 
                 ' delete the document or reactivate the document
                 If e.CommandName = DELETE_IMAGE Then
@@ -299,61 +299,61 @@ Public Class ClaimDocumentForm
                     oClaimImage.DeleteFlag = "N" 
                 End If  
                 oClaimImage.UpdateDocumentDeleteFlag(ElitaPlusIdentity.Current.ActiveUser.NetworkId)  
-                Me.State.ClaimImagesView = Nothing
-                Me.ClearForm()
-                Me.PopulateGrid()
-                Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                State.ClaimImagesView = Nothing
+                ClearForm()
+                PopulateGrid()
+                MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
             End If
         End If
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles ClaimDocumentsGridView.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As GridViewSortEventArgs) Handles ClaimDocumentsGridView.Sorting
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
-            Me.State.PageIndex = 0
-            Me.State.claimImagesView.Sort = Me.State.SortExpression
-            Me.PopulateGrid()
-        Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
-        End Try
-
-    End Sub
-
-    Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ClaimDocumentsGridView.PageIndexChanged
-        Try
-            Me.State.PageIndex = ClaimDocumentsGridView.PageIndex
-            Me.State.selectedImageId = Guid.Empty
+            State.PageIndex = 0
+            State.claimImagesView.Sort = State.SortExpression
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
+
+    End Sub
+
+    Private Sub Grid_PageIndexChanged(sender As Object, e As EventArgs) Handles ClaimDocumentsGridView.PageIndexChanged
+        Try
+            State.PageIndex = ClaimDocumentsGridView.PageIndex
+            State.selectedImageId = Guid.Empty
+            PopulateGrid()
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles ClaimDocumentsGridView.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles ClaimDocumentsGridView.PageIndexChanging
         Try
             ClaimDocumentsGridView.PageIndex = e.NewPageIndex
             State.PageIndex = ClaimDocumentsGridView.PageIndex
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub cboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
-            Me.State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.State.PageIndex = NewCurrentPageIndex(ClaimDocumentsGridView, State.claimImagesView.Count, State.PageSize)
-            Me.ClaimDocumentsGridView.PageIndex = Me.State.PageIndex
-            Me.PopulateGrid()
+            State.PageSize = CType(cboPageSize.SelectedValue, Integer)
+            State.PageIndex = NewCurrentPageIndex(ClaimDocumentsGridView, State.claimImagesView.Count, State.PageSize)
+            ClaimDocumentsGridView.PageIndex = State.PageIndex
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -361,46 +361,46 @@ Public Class ClaimDocumentForm
 
 #Region "Button Click"
 
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         Try
-            Me.Back(ElitaPlusPage.DetailPageCommand.Back)
-        Catch ex As Threading.ThreadAbortException
+            Back(DetailPageCommand.Back)
+        Catch ex As ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub Back(ByVal cmd As ElitaPlusPage.DetailPageCommand)
+    Protected Sub Back(cmd As DetailPageCommand)
         Dim retType As New ClaimForm.ReturnType(cmd)
-        Me.ReturnToCallingPage(retType)
+        ReturnToCallingPage(retType)
     End Sub
 
     Private Sub ClearForm()
-        Me.PopulateControlFromBOProperty(Me.DocumentTypeDropDown, LookupListNew.GetIdFromCode(LookupListNew.LK_DOCUMENT_TYPES, Codes.DOCUMENT_TYPE__OTHER))
-        Me.PopulateControlFromBOProperty(Me.ScanDateTextBox, GetLongDateFormattedString(DateTime.Now))
-        Me.CommentTextBox.Text = String.Empty
+        PopulateControlFromBOProperty(DocumentTypeDropDown, LookupListNew.GetIdFromCode(LookupListNew.LK_DOCUMENT_TYPES, Codes.DOCUMENT_TYPE__OTHER))
+        PopulateControlFromBOProperty(ScanDateTextBox, GetLongDateFormattedString(DateTime.Now))
+        CommentTextBox.Text = String.Empty
     End Sub
 
-    Protected Sub ClearButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ClearButton.Click
+    Protected Sub ClearButton_Click(sender As Object, e As EventArgs) Handles ClearButton.Click
         Try
-            Me.ClearForm()
-        Catch ex As Threading.ThreadAbortException
+            ClearForm()
+        Catch ex As ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub AddImageButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles AddImageButton.Click
+    Protected Sub AddImageButton_Click(sender As Object, e As EventArgs) Handles AddImageButton.Click
         Try
             Dim valid As Boolean = True
-            If (Me.DocumentTypeDropDown.SelectedIndex = -1) Then
-                Me.MasterPage.MessageController.AddError("DOCUMENT_TYPE_IS_REQUIRED")
+            If (DocumentTypeDropDown.SelectedIndex = -1) Then
+                MasterPage.MessageController.AddError("DOCUMENT_TYPE_IS_REQUIRED")
                 valid = False
             End If
 
-            If (Me.ImageFileUpload.Value Is Nothing) OrElse _
-               (Me.ImageFileUpload.PostedFile.ContentLength = 0) Then
-                Me.MasterPage.MessageController.AddError("INVALID_FILE_OR_FILE_NOT_ACCESSABLE")
+            If (ImageFileUpload.Value Is Nothing) OrElse _
+               (ImageFileUpload.PostedFile.ContentLength = 0) Then
+                MasterPage.MessageController.AddError("INVALID_FILE_OR_FILE_NOT_ACCESSABLE")
                 valid = False
             End If
 
@@ -409,37 +409,37 @@ Public Class ClaimDocumentForm
             Dim fileName As String
 
             Try
-                Dim file As System.IO.FileInfo = New System.IO.FileInfo(Me.ImageFileUpload.PostedFile.FileName)
+                Dim file As FileInfo = New FileInfo(ImageFileUpload.PostedFile.FileName)
                 fileName = file.Name
             Catch ex As Exception
                 fileName = String.Empty
             End Try
 
-            Me.State.ClaimBO.AttachImage( _
-                New Guid(Me.DocumentTypeDropDown.SelectedValue), _
+            State.ClaimBO.AttachImage( _
+                New Guid(DocumentTypeDropDown.SelectedValue), _
                 Nothing, _
                 DateTime.Now, _
                 fileName, _
-                Me.CommentTextBox.Text, _
+                CommentTextBox.Text, _
                 ElitaPlusIdentity.Current.ActiveUser.UserName, _
                 fileData)
 
-            Me.State.ClaimBO.Save()
-            Me.State.ClaimImagesView = Nothing
-            Me.ClearForm()
-            Me.PopulateGrid()
-        Catch ex As Threading.ThreadAbortException
+            State.ClaimBO.Save()
+            State.ClaimImagesView = Nothing
+            ClearForm()
+            PopulateGrid()
+        Catch ex As ThreadAbortException
         Catch ex As BOValidationException
             ' Remove Mandatory Fields Validations for Hash, File Type and File Name
             Dim removeProperties As String() = New String() {"FileType", "FileName", "HashValue"}
             Dim newException As BOValidationException = _
                 New BOValidationException( _
-                    ex.ValidationErrorList().Where(Function(ve) (Not ((ve.Message = Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR) AndAlso (removeProperties.Contains(ve.PropertyName))))).ToArray(), _
+                    ex.ValidationErrorList().Where(Function(ve) (Not ((ve.Message = Messages.VALUE_MANDATORY_ERR) AndAlso (removeProperties.Contains(ve.PropertyName))))).ToArray(), _
                     ex.BusinessObjectName,
                     ex.UniqueId)
-            Me.HandleErrors(newException, Me.MasterPage.MessageController)
+            HandleErrors(newException, MasterPage.MessageController)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub

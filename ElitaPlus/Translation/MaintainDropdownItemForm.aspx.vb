@@ -14,7 +14,7 @@ Namespace Translation
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -40,7 +40,7 @@ Namespace Translation
             Public moLookupId As Guid
             Public moCompanyId As Guid
 
-            Public Sub New(ByVal oLookupId As Guid, ByVal oCompanyId As Guid)
+            Public Sub New(oLookupId As Guid, oCompanyId As Guid)
                 moCompanyId = oCompanyId
                 moLookupId = oLookupId
             End Sub
@@ -70,40 +70,40 @@ Namespace Translation
 #End Region
 
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     'Disable the Menu Navigation on this page to force the exit only by Cancel
-                    Me.MenuEnabled = False
-                    Me.LoadData()
-                    Me.PopulateGrid()
+                    MenuEnabled = False
+                    LoadData()
+                    PopulateGrid()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorControl)
+                HandleErrors(ex, ErrorControl)
             End Try
         End Sub
 
         Protected Sub LoadData()
             'Me.State.DropdownParentId = CType(Me.CallingParameters, Guid)
-            Me.State.moParms = CType(Me.CallingParameters, Parameters)
+            State.moParms = CType(CallingParameters, Parameters)
             'Me.State.UserCompanyLanguageId = ElitaPlusIdentity.Current.ActiveUser.LanguageId
             'Me.State.UserCompanyLanguageId = ElitaPlusIdentity.Current.ActiveUser.Company.LanguageId
-            Me.State.DropdownParentId = CType(Me.State.moParms.moLookupId, Guid)
-            Me.State.UserCompanyLanguageId = CType(Me.State.moParms.moCompanyId, Guid)
+            State.DropdownParentId = CType(State.moParms.moLookupId, Guid)
+            State.UserCompanyLanguageId = CType(State.moParms.moCompanyId, Guid)
         End Sub
 
         Protected Sub PopulateGrid()
-            Me.State.searchDV = DropdownItem.AdminLoadListItems(Me.State.UserCompanyLanguageId, Me.State.DropdownParentId)
-            If Not Me.State.DropdownParentId.Equals(Guid.Empty) Then
-                Dim dropdownBO As New Dropdown(Me.State.DropdownParentId)
-                Me.DropdownName.Text = dropdownBO.GetTranslation(Me.State.UserCompanyLanguageId, dropdownBO.DictItemId)
+            State.searchDV = DropdownItem.AdminLoadListItems(State.UserCompanyLanguageId, State.DropdownParentId)
+            If Not State.DropdownParentId.Equals(Guid.Empty) Then
+                Dim dropdownBO As New Dropdown(State.DropdownParentId)
+                DropdownName.Text = dropdownBO.GetTranslation(State.UserCompanyLanguageId, dropdownBO.DictItemId)
             End If
-            Me.State.searchDV.RowFilter = "MAINTAINABLE_BY_USER='Y'"
-            Me.DataGridDropdownItems.DataSource = Me.State.searchDV
-            Me.DataGridDropdownItems.AutoGenerateColumns = False
-            Me.DataGridDropdownItems.Columns(2).HeaderText = LookupListNew.GetDescriptionFromId(LookupListNew.LK_LANGUAGES, Me.State.UserCompanyLanguageId)
-            Me.DataGridDropdownItems.DataBind()
+            State.searchDV.RowFilter = "MAINTAINABLE_BY_USER='Y'"
+            DataGridDropdownItems.DataSource = State.searchDV
+            DataGridDropdownItems.AutoGenerateColumns = False
+            DataGridDropdownItems.Columns(2).HeaderText = LookupListNew.GetDescriptionFromId(LookupListNew.LK_LANGUAGES, State.UserCompanyLanguageId)
+            DataGridDropdownItems.DataBind()
             ControlMgr.DisableAllGridControlsIfNotEditAuth(Me, DataGridDropdownItems)
         End Sub
 
@@ -112,52 +112,52 @@ Namespace Translation
             Dim i As Integer
             Dim dropdownBO As New Dropdown
             Dim retVal As Integer
-            For i = 0 To Me.DataGridDropdownItems.Items.Count - 1
-                Dim newLangTransValue As String = CType(Me.DataGridDropdownItems.Items(i).Cells(Me.NEW_TRANS_VALUE_CIDX).FindControl("TextBoxLangTrans"), TextBox).Text
+            For i = 0 To DataGridDropdownItems.Items.Count - 1
+                Dim newLangTransValue As String = CType(DataGridDropdownItems.Items(i).Cells(NEW_TRANS_VALUE_CIDX).FindControl("TextBoxLangTrans"), TextBox).Text
                 'comparing to the original values saved in hidden columns
                 Dim isDirty As Boolean = False
-                isDirty = isDirty Or (newLangTransValue.Trim.ToUpper <> Me.DataGridDropdownItems.Items(i).Cells(Me.OLD_TRANS_VALUE_CIDX).Text.Trim.ToUpper)
+                isDirty = isDirty OrElse (newLangTransValue.Trim.ToUpper <> DataGridDropdownItems.Items(i).Cells(OLD_TRANS_VALUE_CIDX).Text.Trim.ToUpper)
                 If isDirty Then
-                    Dim DropdownItemId As New Guid(CType(Me.DataGridDropdownItems.Items(i).Cells(Me.DROPDOWN_ITEM_ID_CIDX).FindControl("lblListItemId"), Label).Text)
-                    Dim nDictItemTranslationID As New Guid(CType(Me.DataGridDropdownItems.Items(i).Cells(Me.DICT_ITEM_GUID_ID_CIDX).FindControl("lblDictItemTransId"), Label).Text)
+                    Dim DropdownItemId As New Guid(CType(DataGridDropdownItems.Items(i).Cells(DROPDOWN_ITEM_ID_CIDX).FindControl("lblListItemId"), Label).Text)
+                    Dim nDictItemTranslationID As New Guid(CType(DataGridDropdownItems.Items(i).Cells(DICT_ITEM_GUID_ID_CIDX).FindControl("lblDictItemTransId"), Label).Text)
                     Try
                         retVal = dropdownBO.UpdateTranslation(nDictItemTranslationID, newLangTransValue.Trim, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
                         If retVal = 0 Then
-                            Me.MenuEnabled = True
+                            MenuEnabled = True
                             DataChanged = True
                         Else
-                            Me.ErrorControl.AddError(Message.ERR_SAVING_DATA)
+                            ErrorControl.AddError(Message.ERR_SAVING_DATA)
                         End If
                     Catch ex As Exception
-                        Me.ErrorControl.AddError(Message.ERR_SAVING_DATA)
+                        ErrorControl.AddError(Message.ERR_SAVING_DATA)
                     End Try
                 End If
             Next
             If DataChanged Then
-                Me.PopulateGrid()
+                PopulateGrid()
             End If
         End Sub
 
-        Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+        Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
             Try
-                Me.ErrorControl.Clear_Hide()
-                Me.SaveChanges()
-                Me.ErrorControl.Show()
+                ErrorControl.Clear_Hide()
+                SaveChanges()
+                ErrorControl.Show()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorControl)
+                HandleErrors(ex, ErrorControl)
             End Try
         End Sub
 
-        Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+        Private Sub btnCancel_Click(sender As System.Object, e As System.EventArgs) Handles btnCancel.Click
             Try
                 NavigationHistory.LastPage()
-                Me.ReturnToCallingPage()
+                ReturnToCallingPage()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorControl)
+                HandleErrors(ex, ErrorControl)
             End Try
         End Sub
 
-        Public Sub ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs)
+        Public Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
             '-------------------------------------
             'Name:ReasorbTranslation
             'Purpose:Translate any message tobe display
@@ -217,12 +217,12 @@ Namespace Translation
             End If
         End Sub
 
-        Private Sub DataGridDropdownItems_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles DataGridDropdownItems.PageIndexChanged
+        Private Sub DataGridDropdownItems_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles DataGridDropdownItems.PageIndexChanged
             Try
-                Me.DataGridDropdownItems.CurrentPageIndex = e.NewPageIndex
-                Me.PopulateGrid()
+                DataGridDropdownItems.CurrentPageIndex = e.NewPageIndex
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorControl)
+                HandleErrors(ex, ErrorControl)
             End Try
         End Sub
     End Class

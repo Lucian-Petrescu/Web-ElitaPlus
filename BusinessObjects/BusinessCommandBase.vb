@@ -14,12 +14,12 @@ Public MustInherit Class BusinessCommandBase(Of TType)
         Get
             Return _businessObject
         End Get
-        Set(ByVal value As TType)
+        Set
             _businessObject = value
         End Set
     End Property
 
-    Protected Friend Sub New(ByVal businessObject As TType)
+    Protected Friend Sub New(businessObject As TType)
         Me.BusinessObject = businessObject
     End Sub
 
@@ -30,7 +30,7 @@ Public MustInherit Class BusinessCommandBase(Of TType)
     End Property
 
     Public Overridable Sub Execute() Implements IBusinessCommand.Execute
-        If (Not Me.CanExecute) Then
+        If (Not CanExecute) Then
             Throw New InvalidOperationException
         End If
     End Sub

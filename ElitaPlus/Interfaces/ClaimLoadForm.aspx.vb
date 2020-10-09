@@ -57,12 +57,12 @@ Partial Public Class ClaimLoadForm
 #End Region
 
 #Region "Page events"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.ErrControllerMaster.Clear_Hide()
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        ErrControllerMaster.Clear_Hide()
         Try
-            If Not Me.IsPostBack Then
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
+            If Not IsPostBack Then
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
                 PopulateDropdowns()
                 TranslateGridHeader(Grid)
                 PopulateGrid()
@@ -73,21 +73,21 @@ Partial Public Class ClaimLoadForm
             End If
             DisplaySearchPanel()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
         InstallDisplayProgressBar()
-        Me.ShowMissingTranslations(Me.ErrControllerMaster)
+        ShowMissingTranslations(ErrControllerMaster)
     End Sub
 
 #Region "Page Return"
     Private IsReturningFromChild As Boolean = False
 
-    Public Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object, Optional ByVal DealerCode As String = "") Handles Me.PageReturn
-        Me.IsReturningFromChild = True
+    Public Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object, Optional ByVal DealerCode As String = "") Handles Me.PageReturn
+        IsReturningFromChild = True
         Dim retObj As ReturnType = CType(ReturnPar, ReturnType)
         Select Case retObj.LastOperation
             Case ElitaPlusPage.DetailPageCommand.Back
-                If Not retObj Is Nothing Then
+                If retObj IsNot Nothing Then
                     Try
                         State.selectedFileID = retObj.SelectedClaimFileID
                         State.selectedFileName = retObj.SelectedClaimFileName
@@ -106,7 +106,7 @@ Partial Public Class ClaimLoadForm
 
                         Grid.PageIndex = State.PageIndex
                     Catch ex As Exception
-                        HandleErrors(ex, Me.ErrControllerMaster)
+                        HandleErrors(ex, ErrControllerMaster)
                     End Try
                 End If
         End Select
@@ -117,16 +117,16 @@ Partial Public Class ClaimLoadForm
         Public SelectedClaimFileName As String
         Public SelectedClaimFileID As Guid
         Public SelectedDealerCode As String = ""
-        Public Sub New(ByVal LastOp As ElitaPlusPage.DetailPageCommand, ByVal selClaimFileName As String)
-            Me.LastOperation = LastOp
-            Me.SelectedClaimFileName = selClaimFileName
-            Me.SelectedClaimFileID = Guid.Empty
+        Public Sub New(LastOp As ElitaPlusPage.DetailPageCommand, selClaimFileName As String)
+            LastOperation = LastOp
+            SelectedClaimFileName = selClaimFileName
+            SelectedClaimFileID = Guid.Empty
         End Sub
 
-        Public Sub New(ByVal LastOp As ElitaPlusPage.DetailPageCommand, ByVal selClaimFileID As Guid)
-            Me.LastOperation = LastOp
-            Me.SelectedClaimFileName = String.Empty
-            Me.SelectedClaimFileID = selClaimFileID
+        Public Sub New(LastOp As ElitaPlusPage.DetailPageCommand, selClaimFileID As Guid)
+            LastOperation = LastOp
+            SelectedClaimFileName = String.Empty
+            SelectedClaimFileID = selClaimFileID
         End Sub
     End Class
 #End Region
@@ -155,7 +155,7 @@ Partial Public Class ClaimLoadForm
 #End Region
 
 #Region "Button event handlers and helper functions"
-    Function SetParameters(ByVal intStatusId As Guid, ByVal baseController As String) As Interfaces.InterfaceBaseForm.Params
+    Function SetParameters(intStatusId As Guid, baseController As String) As Interfaces.InterfaceBaseForm.Params
         Dim params As New Interfaces.InterfaceBaseForm.Params
         With params
             .intStatusId = intStatusId
@@ -169,7 +169,7 @@ Partial Public Class ClaimLoadForm
         DisplayMessage(Message.MSG_INTERFACES_HAS_COMPLETED, "", MSG_BTN_OK, MSG_TYPE_INFO)
     End Sub
 
-    Private Sub ExecuteAndWait(ByVal oSP As Integer)
+    Private Sub ExecuteAndWait(oSP As Integer)
         Dim intStatus As InterfaceStatusWrk
         Dim params As Interfaces.InterfaceBaseForm.Params
 
@@ -180,7 +180,7 @@ Partial Public Class ClaimLoadForm
             TheInterfaceProgress.EnableInterfaceProgress(ProgressBarBaseController)
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
@@ -204,7 +204,7 @@ Partial Public Class ClaimLoadForm
         MiscUtil.CreateFolder(webServerPath)
         System.IO.File.WriteAllBytes(webServerFile, fileBytes)
         '' ''DEF-24620 Start
-        If (AppConfig.HubRegion.ToUpper() = "C1" Or AppConfig.HubRegion.ToUpper() = "C2" Or AppConfig.HubRegion.ToUpper() = "AS") Then
+        If (AppConfig.HubRegion.ToUpper() = "C1" OrElse AppConfig.HubRegion.ToUpper() = "C2" OrElse AppConfig.HubRegion.ToUpper() = "AS") Then
             System.IO.File.WriteAllBytes(layoutFileName, System.Text.Encoding.ASCII.GetBytes("gen_clc"))
         Else
             Dim dv As DataView
@@ -233,21 +233,21 @@ Partial Public Class ClaimLoadForm
             objUnixFTP.UploadFile(webServerFile)
             objUnixFTP.UploadFile(layoutFileName)
         Catch ex As Exception
-            HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         Finally
             '' ''objUnixFTP.CloseConnection()
         End Try
 
     End Sub
 
-    Private Sub ExecuteSp(ByVal oSP As Integer)
+    Private Sub ExecuteSp(oSP As Integer)
         If State.selectedFileName <> String.Empty Then
             If InterfaceStatusWrk.IsfileBeingProcessed(State.selectedFileName) Then
                 Select Case oSP
                     Case SP_VALIDATE
                         State.intStatusId = ClaimloadFileProcessed.ValidateFile(State.selectedFileName)
                     Case SP_PROCESS
-                        Select Case Me.State.selectedFileType
+                        Select Case State.selectedFileType
                             Case Codes.CLAIM_LOAD_FILE_TYPE__VENDOR_INVOICE
                                 Dim viFileLoad As New InvoiceFileLoad()
                                 State.intStatusId = viFileLoad.ProcessAsync(State.selectedFileID)
@@ -275,25 +275,25 @@ Partial Public Class ClaimLoadForm
         End If
     End Sub
 
-    Private Sub btnCopyDealerFile_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCopyDealerFile_WRITE.Click
+    Private Sub btnCopyDealerFile_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnCopyDealerFile_WRITE.Click
         Try
             uploadClaimFile()
             DisplayMessage(Message.MSG_THE_FILE_TRANSFER_HAS_COMPLETED, "", MSG_BTN_OK, MSG_TYPE_INFO)
         Catch ex As Exception
-            HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub BtnDelete_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtnDelete_WRITE.Click
+    Private Sub BtnDelete_WRITE_Click(sender As Object, e As System.EventArgs) Handles BtnDelete_WRITE.Click
         ExecuteAndWait(SP_DELETE)
     End Sub
 
-    Private Sub BtnProcess_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtnProcess_WRITE.Click
+    Private Sub BtnProcess_WRITE_Click(sender As Object, e As System.EventArgs) Handles BtnProcess_WRITE.Click
         ExecuteAndWait(SP_PROCESS)
     End Sub
 
 
-    Private Sub BtnRejectReport_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtnRejectReport.Click
+    Private Sub BtnRejectReport_Click(sender As Object, e As System.EventArgs) Handles BtnRejectReport.Click
         Dim param As New PrintClaimLoadRejectForm.MyState
         param.ClaimfileProcessedId = GetFileIDByFileName(State.selectedFileName)
         If State.selectedFileType = Codes.CLAIM_LOAD_FILE_TYPE__VENDOR_INVOICE Then
@@ -304,17 +304,17 @@ Partial Public Class ClaimLoadForm
         callPage(PrintClaimLoadRejectForm.URL, param)
     End Sub
 
-    Private Sub BtnValidate_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtnValidate_WRITE.Click
+    Private Sub BtnValidate_WRITE_Click(sender As Object, e As System.EventArgs) Handles BtnValidate_WRITE.Click
         ExecuteAndWait(SP_VALIDATE)
     End Sub
 
-    Private Sub btnAfterProgressBar_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnAfterProgressBar.Click
+    Private Sub btnAfterProgressBar_Click(sender As Object, e As System.EventArgs) Handles btnAfterProgressBar.Click
         AfterProgressBar()
     End Sub
 
-    Private Function GetFileIDByFileName(ByVal strFileName As String) As Guid
+    Private Function GetFileIDByFileName(strFileName As String) As Guid
         Dim fileID As Guid = Guid.Empty
-        If (Not State.searchDV Is Nothing) AndAlso (strFileName <> String.Empty) Then
+        If (State.searchDV IsNot Nothing) AndAlso (strFileName <> String.Empty) Then
             For i As Integer = 0 To State.searchDV.Count
                 If State.searchDV.Item(i)(ClaimloadFileProcessed.COL_NAME_FILENAME).ToString = strFileName Then
                     fileID = New Guid(CType(State.searchDV.Item(i)(ClaimloadFileProcessed.COL_NAME_CLAIMLOAD_FILE_PROCESSED_ID), Byte()))
@@ -325,22 +325,22 @@ Partial Public Class ClaimLoadForm
         Return fileID
     End Function
 
-    Private Sub moBtnSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles moBtnSearch.Click
+    Private Sub moBtnSearch_Click(sender As Object, e As System.EventArgs) Handles moBtnSearch.Click
         Try
-            Me.State.PageIndex = 0
-            Me.State.searchDV = Nothing
+            State.PageIndex = 0
+            State.searchDV = Nothing
             SetStateFromControls()
-            Me.PopulateGrid()
+            PopulateGrid()
         Catch ex As Exception
             'Me.HandleErrors(ex, Me.ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub moBtnClearSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles moBtnClearSearch.Click
+    Private Sub moBtnClearSearch_Click(sender As Object, e As System.EventArgs) Handles moBtnClearSearch.Click
         Try
-            Me.ddlCountry.SelectedIndex = Me.BLANK_ITEM_SELECTED
-            Me.ddlFileType.SelectedIndex = Me.BLANK_ITEM_SELECTED
-            Me.FileNameTextBox.Text = String.Empty
+            ddlCountry.SelectedIndex = BLANK_ITEM_SELECTED
+            ddlFileType.SelectedIndex = BLANK_ITEM_SELECTED
+            FileNameTextBox.Text = String.Empty
 
             'BillingPlanTextBox.Text = String.Empty
 
@@ -353,7 +353,7 @@ Partial Public Class ClaimLoadForm
 
 #End Region
 #Region "Helper functions"
-    Public Shared Function AddNewRowToEmptySearchDV(ByVal dv As DataView) As DataView
+    Public Shared Function AddNewRowToEmptySearchDV(dv As DataView) As DataView
         If dv.Count > 0 Then
             AddNewRowToEmptySearchDV = dv
         Else
@@ -404,29 +404,29 @@ Partial Public Class ClaimLoadForm
             If (.searchDV Is Nothing) Then
                 .searchDV = ClaimloadFileProcessed.LoadList(ElitaPlusIdentity.Current.ActiveUser.Id,
                                                             LookupListNew.GetCodeFromId(LookupListNew.GetCountryLookupList(),
-                                                                                        New Guid(Me.ddlCountry.SelectedValue)),
+                                                                                        New Guid(ddlCountry.SelectedValue)),
                                                             LookupListNew.GetCodeFromId(LookupListNew.GetClaimLoadFileTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId),
-                                                                                        New Guid(Me.ddlFileType.SelectedValue)),
-                                                            Me.FileNameTextBox.Text.Trim)
+                                                                                        New Guid(ddlFileType.SelectedValue)),
+                                                            FileNameTextBox.Text.Trim)
             End If
         End With
 
         If State.searchDV.Count = 0 Then
             Dim dt As DataTable = State.searchDV.Table.Clone()
             Dim dv As DataView = AddNewRowToEmptySearchDV(State.searchDV)
-            SetPageAndSelectedIndexFromGuid(dv, Nothing, Me.Grid, Me.State.PageIndex, False)
+            SetPageAndSelectedIndexFromGuid(dv, Nothing, Grid, State.PageIndex, False)
             SortAndBindGrid(dv, True)
         Else
-            SetPageAndSelectedIndexFromGuid(Me.State.searchDV, State.selectedFileID, Me.Grid, Me.State.PageIndex, False)
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.selectedFileID, Grid, State.PageIndex, False)
             SortAndBindGrid(State.searchDV)
             SetGridSeletedIndex()
         End If
         If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
     End Sub
 
-    Private Sub SortAndBindGrid(ByVal dvBinding As DataView, Optional ByVal blnEmptyList As Boolean = False)
-        Me.Grid.DataSource = dvBinding
-        Me.Grid.DataBind()
+    Private Sub SortAndBindGrid(dvBinding As DataView, Optional ByVal blnEmptyList As Boolean = False)
+        Grid.DataSource = dvBinding
+        Grid.DataBind()
         'If Me.State.searchDV.Count > 0 Then
         '    If Me.Grid.Visible Then
         '        Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
@@ -437,9 +437,9 @@ Partial Public Class ClaimLoadForm
         '    End If
         'End If
         If blnEmptyList Then
-            Me.lblRecordCount.Text = "0 " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            lblRecordCount.Text = "0 " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
         Else
-            Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
         End If
 
         If blnEmptyList Then
@@ -456,10 +456,10 @@ Partial Public Class ClaimLoadForm
         State.selectedRow = -1
         State.selectedFileName = String.Empty
         State.searchDV = Nothing
-        Me.PopulateGrid()
+        PopulateGrid()
     End Sub
 
-    Private Sub EnableDisableAllButtons(ByVal blnEnabled As Boolean)
+    Private Sub EnableDisableAllButtons(blnEnabled As Boolean)
         ControlMgr.SetEnableControl(Me, BtnValidate_WRITE, blnEnabled)
         ControlMgr.SetEnableControl(Me, BtnProcess_WRITE, blnEnabled)
         ControlMgr.SetEnableControl(Me, BtnDelete_WRITE, blnEnabled)
@@ -469,7 +469,7 @@ Partial Public Class ClaimLoadForm
     Private Sub EnableDisableButtons()
         Dim drv As DataRowView, blnFound As Boolean = False
         Dim intReceived, intRejected, intValidated, intLoaded, intCounted As Integer
-        If (Not State.selectedFileName = String.Empty) AndAlso (Not State.searchDV Is Nothing) Then
+        If (Not State.selectedFileName = String.Empty) AndAlso (State.searchDV IsNot Nothing) Then
             For i As Integer = 0 To State.searchDV.Count
                 drv = State.searchDV.Item(i)
                 If drv(ClaimloadFileProcessed.COL_NAME_FILENAME).ToString = State.selectedFileName Then
@@ -526,7 +526,7 @@ Partial Public Class ClaimLoadForm
                                                         Where ElitaPlusIdentity.Current.ActiveUser.Countries.Contains(Country.ListItemId)
                                                         Select Country).ToArray()
 
-        Me.ddlCountry.Populate(UserCountries.ToArray(),
+        ddlCountry.Populate(UserCountries.ToArray(),
                         New PopulateOptions() With
                         {
                             .AddBlankItem = True
@@ -536,7 +536,7 @@ Partial Public Class ClaimLoadForm
                 CommonConfigManager.Current.ListManager.GetList(listCode:="CLMLDFTYP",
                                                                 languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
 
-        Me.ddlFileType.Populate(FileType.ToArray(),
+        ddlFileType.Populate(FileType.ToArray(),
                                 New PopulateOptions() With
                                 {
                                     .AddBlankItem = True
@@ -544,66 +544,66 @@ Partial Public Class ClaimLoadForm
     End Sub
 
     Protected Sub SetStateFromControls()
-        If Not Me.GetSelectedItem(Me.ddlCountry).Equals(Guid.Empty) Then
-            Me.State.selectedCountry = Me.GetSelectedItem(Me.ddlCountry)
+        If Not GetSelectedItem(ddlCountry).Equals(Guid.Empty) Then
+            State.selectedCountry = GetSelectedItem(ddlCountry)
         End If
-        If Not Me.GetSelectedItem(Me.ddlFileType).Equals(Guid.Empty) Then
-            Me.State.selectFileType = Me.GetSelectedItem(Me.ddlFileType)
+        If Not GetSelectedItem(ddlFileType).Equals(Guid.Empty) Then
+            State.selectFileType = GetSelectedItem(ddlFileType)
         End If
 
-        Me.State.FilenameSearch = Me.FileNameTextBox.Text
+        State.FilenameSearch = FileNameTextBox.Text
     End Sub
     Protected Sub PopulateControlsFromState()
-        If Not Me.State.selectedCountry.Equals(Guid.Empty) Then
-            Me.SetSelectedItem(Me.ddlCountry, Me.State.selectedCountry)
+        If Not State.selectedCountry.Equals(Guid.Empty) Then
+            SetSelectedItem(ddlCountry, State.selectedCountry)
         End If
-        If Not Me.State.selectFileType.Equals(Guid.Empty) Then
-            Me.SetSelectedItem(Me.ddlFileType, Me.State.selectFileType)
+        If Not State.selectFileType.Equals(Guid.Empty) Then
+            SetSelectedItem(ddlFileType, State.selectFileType)
         End If
 
-        Me.FileNameTextBox.Text = Me.State.FilenameSearch
+        FileNameTextBox.Text = State.FilenameSearch
     End Sub
 #End Region
 
 #Region "Grid related"
-    Private Sub Grid_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Private Sub Grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Protected Sub cboPageSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Protected Sub cboPageSize_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
-            Me.Grid.PageIndex = Me.State.PageIndex
-            Me.PopulateGrid()
+            State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
+            Grid.PageIndex = State.PageIndex
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = Grid.PageIndex
-            Me.PopulateGrid()
+            State.PageIndex = Grid.PageIndex
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+    Private Sub Grid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
         Try
             If e.CommandName = "EditAction" OrElse e.CommandName = "SelectRecord" Then
                 Dim lblCtrl As Label
@@ -622,10 +622,10 @@ Partial Public Class ClaimLoadForm
                             param.selectedFileId = State.selectedFileID
                             param.selectedFileName = State.selectedFileName
 
-                            Me.callPage(InvoiceReconWrkForm.URL, param)
+                            callPage(InvoiceReconWrkForm.URL, param)
                         Else
 
-                            Me.callPage(ClaimLoadReconWrkForm.URL, State.selectedFileName)
+                            callPage(ClaimLoadReconWrkForm.URL, State.selectedFileName)
                         End If
                     End If
 
@@ -635,7 +635,7 @@ Partial Public Class ClaimLoadForm
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 #End Region

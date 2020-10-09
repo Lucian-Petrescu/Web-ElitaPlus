@@ -1,4 +1,4 @@
-<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="CertificateForm.aspx.vb"
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="CertificateForm.aspx.vb"
     Theme="Default" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Certificates.CertificateForm"
     EnableSessionState="True" MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
 
@@ -150,35 +150,35 @@
             <asp:HiddenField ID="hdnInitDisabledTabs" runat="server" Value="NA" />
             <div id="tabs" class="style-tabs" style="display: none;">
                 <ul>
-                    <li><a href="#tabsCertDetail">
+                    <li><a href="#tabsCertDetail" rel="noopener noreferrer">
                         <asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">CERTIFICATE_DETAIL</asp:Label></a></li>
-                    <li><a href="#tabsGeneralInfo">
+                    <li><a href="#tabsGeneralInfo" rel="noopener noreferrer">
                         <asp:Label ID="Label7" runat="server" CssClass="tabHeaderText">General_Information</asp:Label></a></li>
-                    <li><a href="#tabsItemInfo">
+                    <li><a href="#tabsItemInfo" rel="noopener noreferrer">
                         <asp:Label ID="Label8" runat="server" CssClass="tabHeaderText">ITEMS</asp:Label></a></li>
-                    <li><a href="#tabsPremiumInfo">
+                    <li><a href="#tabsPremiumInfo" rel="noopener noreferrer">
                         <asp:Label ID="Label11" runat="server" CssClass="tabHeaderText">Premium_Information</asp:Label></a></li>
-                    <li><a href="#tabsCancelRequest">
+                    <li><a href="#tabsCancelRequest" rel="noopener noreferrer">
                         <asp:Label ID="Label12" runat="server" CssClass="tabHeaderText">REQUEST_CANCELLATION</asp:Label></a></li>
-                    <li><a href="#tabsCancelInfo">
+                    <li><a href="#tabsCancelInfo" rel="noopener noreferrer">
                         <asp:Label ID="Label13" runat="server" CssClass="tabHeaderText">Cancellation_Information</asp:Label></a></li>
-                    <li><a href="#tabsComments">
+                    <li><a href="#tabsComments" rel="noopener noreferrer">
                         <asp:Label ID="lblTabCommentHeader" runat="server" CssClass="tabHeaderText">COMMENTS</asp:Label></a></li>
-                    <li><a href="#tabsEndorsement">
+                    <li><a href="#tabsEndorsement" rel="noopener noreferrer">
                         <asp:Label ID="Label15" runat="server" CssClass="tabHeaderText">ENDORSEMENTS</asp:Label></a></li>
-                    <li><a href="#tabsTaxId">
+                    <li><a href="#tabsTaxId" rel="noopener noreferrer">
                         <asp:Label ID="Label16" runat="server" CssClass="tabHeaderText">Tax ID</asp:Label></a></li>
-                    <li><a href="#tabsCertHistory">
+                    <li><a href="#tabsCertHistory" rel="noopener noreferrer">
                         <asp:Label ID="Label17" runat="server" CssClass="tabHeaderText">CERTIFICATE_HISTORY</asp:Label></a></li>
-                    <li><a href="#tabsCovHistory">
+                    <li><a href="#tabsCovHistory" rel="noopener noreferrer">
                         <asp:Label ID="Label18" runat="server" CssClass="tabHeaderText">Coverage_History</asp:Label></a></li>
-                    <li><a href="#tabsFinanceInfo">
+                    <li><a href="#tabsFinanceInfo" rel="noopener noreferrer">
                         <asp:Label ID="Label19" runat="server" CssClass="tabHeaderText">Finance_Information</asp:Label></a></li>
-                    <li><a href="#tabsReprice">
+                    <li><a href="#tabsReprice" rel="noopener noreferrer">
                         <asp:Label ID="Label20" runat="server" CssClass="tabHeaderText">REPRICE</asp:Label></a></li>
-                    <li><a href="#tabsDataProtection">
+                    <li><a href="#tabsDataProtection" rel="noopener noreferrer">
                         <asp:Label ID="Label22" runat="server" CssClass="tabHeaderText">Data_Protection</asp:Label></a></li>
-                    <li><a href="#tabsMigratedCertificateLink">
+                    <li><a href="#tabsMigratedCertificateLink" rel="noopener noreferrer">
                         <asp:Label ID="Label23" runat="server" CssClass="tabHeaderText">CERTIFICATE_LINKS_TAB</asp:Label></a></li>
                     <li><a href="#tabsCertificateExtendedFields">
                         <asp:Label ID="lblCertificateExtendedFields" runat="server" CssClass="tabHeaderText">CERT_EXT_FIELDS</asp:Label></a></li>
@@ -412,7 +412,7 @@
                                 <tr id="AdditionalCustomer" runat="server">
                                     <td align="left" colspan="4">
                                         <h2 class="dataGridHeader">
-                                            <a id="OthCustExpander" href="#">
+                                            <a id="OthCustExpander" href="#" rel="noopener noreferrer">
                                                 <img src="../App_Themes/Default/Images/sort_indicator_des.png" /></a>
                                             <asp:Label ID="OtherCustomer" runat="server">OTHER_CUSTOMER</asp:Label>
                                             <asp:Label ID="CustomerCount" runat="server"></asp:Label>

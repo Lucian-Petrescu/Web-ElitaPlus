@@ -114,7 +114,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -124,32 +124,32 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load ', Me.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load ', Me.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
 
                     'Date Calendars
-                    Me.AddCalendar(Me.BtnBeginDate, Me.moBeginDateText)
-                    Me.AddCalendar(Me.BtnEndDate, Me.moEndDateText)
+                    AddCalendar(BtnBeginDate, moBeginDateText)
+                    AddCalendar(BtnEndDate, moEndDateText)
                 Else
                     ClearErrLabels()
                 End If
                 CheckQuerystringForWirelessReports()
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 If (queryStringCaller.ToString().ToUpper() = "NCW") Then
                     GenerateReportWireless()
@@ -159,7 +159,7 @@ Namespace Reports
 
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -170,11 +170,11 @@ Namespace Reports
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(moBeginDateLabel)
-            Me.ClearLabelErrSign(moEndDateLabel)
-            Me.ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
-            If Me.rdealer.Checked Then DealerMultipleDrop.SelectedIndex = -1
-            Me.ClearLabelErrSign(moCampaignNumberLabel)
+            ClearLabelErrSign(moBeginDateLabel)
+            ClearLabelErrSign(moEndDateLabel)
+            ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
+            If rdealer.Checked Then DealerMultipleDrop.SelectedIndex = -1
+            ClearLabelErrSign(moCampaignNumberLabel)
         End Sub
 
 #End Region
@@ -196,11 +196,11 @@ Namespace Reports
             Dim dv As DataView
             Dim i As Integer
             dv = LookupListNew.GetCampaignNumberLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
-            Me.cboCampaignNumber.Items.Clear()
-            Me.cboCampaignNumber.Items.Add(New ListItem("", ""))
-            If Not dv Is Nothing Then
+            cboCampaignNumber.Items.Clear()
+            cboCampaignNumber.Items.Add(New ListItem("", ""))
+            If dv IsNot Nothing Then
                 For i = 0 To dv.Count - 1
-                    Me.cboCampaignNumber.Items.Add(New ListItem(dv(i)("campaign_number").ToString, dv(i)("campaign_number").ToString))
+                    cboCampaignNumber.Items.Add(New ListItem(dv(i)("campaign_number").ToString, dv(i)("campaign_number").ToString))
                 Next
             End If
         End Sub
@@ -219,7 +219,7 @@ Namespace Reports
                                                                   .CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
                                                                 })
 
-            Me.moDealerGroupList.Populate(DealerGroups.ToArray(),
+            moDealerGroupList.Populate(DealerGroups.ToArray(),
                                         New PopulateOptions() With
                                         {
                                          .AddBlankItem = True
@@ -230,7 +230,7 @@ Namespace Reports
         Sub populateDealersList()
             Dim dv As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies, False, "CODE")
 
-            Me.UserControlAvailableSelectedDealers.SetAvailableData(dv, LookupListNew.COL_CODE_NAME, LookupListNew.COL_ID_NAME)
+            UserControlAvailableSelectedDealers.SetAvailableData(dv, LookupListNew.COL_CODE_NAME, LookupListNew.COL_ID_NAME)
             ControlMgr.SetVisibleControl(Me, UserControlAvailableSelectedDealers, True)
 
         End Sub
@@ -242,19 +242,19 @@ Namespace Reports
             populateDealersList()
             PopulateCampaignNumbersDropdown()
             Dim t As Date = Date.Now.AddMonths(-1).AddDays(1)
-            Me.moBeginDateText.Text = GetDateFormattedString(t)
-            Me.moEndDateText.Text = GetDateFormattedString(Date.Now)
-            Me.rdealer.Checked = True
-            Me.RadiobuttonTotalsOnly.Checked = True
+            moBeginDateText.Text = GetDateFormattedString(t)
+            moEndDateText.Text = GetDateFormattedString(Date.Now)
+            rdealer.Checked = True
+            RadiobuttonTotalsOnly.Checked = True
         End Sub
 
 #End Region
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal userId As String, ByVal dealerCode As String, ByVal beginDate As String,
-                                  ByVal endDate As String, ByVal isSummary As String, ByVal sCurrency As String, ByVal totalsByCov As String, ByVal campaign As String, ByVal dateAddedSold As String,
-                                  ByVal dealerGroup As Guid, ByVal dealersList As String) As ReportCeBaseForm.Params
+        Function SetParameters(userId As String, dealerCode As String, beginDate As String,
+                                  endDate As String, isSummary As String, sCurrency As String, totalsByCov As String, campaign As String, dateAddedSold As String,
+                                  dealerGroup As Guid, dealersList As String) As ReportCeBaseForm.Params
 
             'Dim reportName As String = RPT_FILENAME
             Dim Params As New ReportCeBaseForm.Params
@@ -282,7 +282,7 @@ Namespace Reports
             SetReportParams(rptParams, repParams, String.Empty, PARAMS_PER_REPORT * 0)     ' Main Report
             rptParams.isSummary = "Y"
 
-            Me.rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
+            rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
 
             With Params
                 .msRptName = reportName
@@ -295,9 +295,9 @@ Namespace Reports
             Return Params
         End Function
 
-        Function SetExpParameters(ByVal userId As String, ByVal dealerCode As String, ByVal beginDate As String,
-                                  ByVal endDate As String, ByVal isSummary As String, ByVal sCurrency As String, ByVal totalsByCov As String, ByVal campaign As String, ByVal dateAddedSold As String,
-                                  ByVal dealerGroup As Guid, ByVal dealersList As String) As ReportCeBaseForm.Params
+        Function SetExpParameters(userId As String, dealerCode As String, beginDate As String,
+                                  endDate As String, isSummary As String, sCurrency As String, totalsByCov As String, campaign As String, dateAddedSold As String,
+                                  dealerGroup As Guid, dealersList As String) As ReportCeBaseForm.Params
 
             'Dim reportName As String = RPT_FILENAME_EXPORT
             Dim Params As New ReportCeBaseForm.Params
@@ -323,7 +323,7 @@ Namespace Reports
             End With
             SetReportParams(rptParams, repParams, String.Empty, PARAMS_PER_REPORT * 0)     ' Main Report
 
-            Me.rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
+            rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
 
             With Params
                 .msRptName = reportName
@@ -336,8 +336,8 @@ Namespace Reports
             Return Params
         End Function
 
-        Sub SetReportParams(ByVal rptParams As ReportParams, ByVal repParams() As ReportCeBaseForm.RptParam,
-                          ByVal reportName As String, ByVal startIndex As Integer)
+        Sub SetReportParams(rptParams As ReportParams, repParams() As ReportCeBaseForm.RptParam,
+                          reportName As String, startIndex As Integer)
             With rptParams
                 repParams(startIndex) = New ReportCeBaseForm.RptParam("V_USER_ID", .userId, reportName)
                 repParams(startIndex + 1) = New ReportCeBaseForm.RptParam("V_DEALER_CODE", .dealerCode, reportName)
@@ -365,7 +365,7 @@ Namespace Reports
             Dim oCountry As New Country(oCountryId)
             Dim params As ReportCeBaseForm.Params
             Dim totalsByCov As String
-            Dim selectedCampaign As String = Me.GetSelectedDescription(Me.cboCampaignNumber)
+            Dim selectedCampaign As String = GetSelectedDescription(cboCampaignNumber)
             Dim dateAddedSold As String
             Dim dealerGroup As Guid = Guid.Empty
             Dim dealersList As String
@@ -379,13 +379,13 @@ Namespace Reports
             endDate = ReportCeBase.FormatDate(moEndDateLabel, moEndDateText.Text)
             beginDate = ReportCeBase.FormatDate(moBeginDateLabel, moBeginDateText.Text)
 
-            If Me.RadiobuttonTotalsOnly.Checked Then
+            If RadiobuttonTotalsOnly.Checked Then
                 isSummary = YES
             Else
                 isSummary = NO
             End If
 
-            If Me.rdealer.Checked Then
+            If rdealer.Checked Then
                 dealerCode = ALL
             End If
             'Else
@@ -396,7 +396,7 @@ Namespace Reports
             'End If
 
             'Dealer Group and individual Dealers list
-            dealerGroup = New Guid(Me.moDealerGroupList.SelectedValue)
+            dealerGroup = New Guid(moDealerGroupList.SelectedValue)
             Dim arrDealerList As ArrayList = UserControlAvailableSelectedDealers.SelectedListCodes()
             Dim tempList As String
             For Each s As String In arrDealerList
@@ -409,7 +409,7 @@ Namespace Reports
                 Throw New GUIException(Message.MSG_INVALID_DEALER, Assurant.ElitaPlus.Common.ErrorCodes.GUI_DEALER_MUST_BE_SELECTED_ERR)
             End If
 
-            If Me.rbCampaignNumber.Checked Then
+            If rbCampaignNumber.Checked Then
                 selectedCampaign = ALL
             Else
                 If selectedCampaign.Equals(String.Empty) Then
@@ -418,7 +418,7 @@ Namespace Reports
                 End If
             End If
 
-            If Me.RadiobuttonSold.Checked Then
+            If RadiobuttonSold.Checked Then
                 dateAddedSold = DATE_SOLD
             Else
                 dateAddedSold = DATE_ADDED
@@ -452,10 +452,10 @@ Namespace Reports
             'ShowHideControls(False)
             'Me.SetFormTitle(PAGETITLE)
 
-            If (Not Request.QueryString("CALLER") Is Nothing) Then
+            If (Request.QueryString("CALLER") IsNot Nothing) Then
                 If (Request.QueryString("CALLER") = "NCW") Then
                     queryStringCaller = Request.QueryString("CALLER")
-                    Me.SetFormTitle(PAGETITLEWITHWIRELESS)
+                    SetFormTitle(PAGETITLEWITHWIRELESS)
                     ShowHideControls(True)
                 End If
             End If
@@ -472,7 +472,7 @@ Namespace Reports
             Dim oCountryId As Guid = ElitaPlusIdentity.Current.ActiveUser.Country(ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID).Id
             Dim oCountry As New Country(oCountryId)
             Dim totalsByCov As String
-            Dim selectedCampaign As String = Me.GetSelectedDescription(Me.cboCampaignNumber)
+            Dim selectedCampaign As String = GetSelectedDescription(cboCampaignNumber)
             Dim dateAddedSold As String
             Dim dealerGroup As Guid = Guid.Empty
             Dim dealersList As String
@@ -489,12 +489,12 @@ Namespace Reports
 
 
 
-            If Me.rdealer.Checked Then
+            If rdealer.Checked Then
                 dealerCode = ALL
             End If
 
             'Dealer Group and individual Dealers list
-            dealerGroup = New Guid(Me.moDealerGroupList.SelectedValue)
+            dealerGroup = New Guid(moDealerGroupList.SelectedValue)
 
             Dim arrDealerList As ArrayList = UserControlAvailableSelectedDealers.SelectedListCodes()
             Dim tempList As String
@@ -509,7 +509,7 @@ Namespace Reports
                 Throw New GUIException(Message.MSG_INVALID_DEALER, Assurant.ElitaPlus.Common.ErrorCodes.GUI_DEALER_MUST_BE_SELECTED_ERR)
             End If
 
-            If Me.rbCampaignNumber.Checked Then
+            If rbCampaignNumber.Checked Then
                 selectedCampaign = ALL
             Else
                 If selectedCampaign.Equals(String.Empty) Then
@@ -518,7 +518,7 @@ Namespace Reports
                 End If
             End If
 
-            If Me.RadiobuttonSold.Checked Then
+            If RadiobuttonSold.Checked Then
                 dateAddedSold = DATE_SOLD
             Else
                 dateAddedSold = DATE_ADDED
@@ -542,12 +542,12 @@ Namespace Reports
             reportParams.AppendFormat("pi_dealer_group => '{0}',", GuidControl.GuidToHexString(dealerGroup))
             reportParams.AppendFormat("pi_dealer_List => '{0}'", dealersList)
 
-            Me.State.MyBO = New ReportRequests
-            Me.State.ForEdit = True
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "NEW_CERTIFICATES_WIRELESS_REPORT")
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "r_newcertificateswireless.Report")
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportParameters", reportParams.ToString())
-            Me.PopulateBOProperty(Me.State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
+            State.MyBO = New ReportRequests
+            State.ForEdit = True
+            PopulateBOProperty(State.MyBO, "ReportType", "NEW_CERTIFICATES_WIRELESS_REPORT")
+            PopulateBOProperty(State.MyBO, "ReportProc", "r_newcertificateswireless.Report")
+            PopulateBOProperty(State.MyBO, "ReportParameters", reportParams.ToString())
+            PopulateBOProperty(State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
 
             ScheduleReport()
 
@@ -572,17 +572,17 @@ Namespace Reports
         Private Sub ScheduleReport()
             Try
                 Dim scheduleDate As DateTime = TheRptCeInputControl.GetSchedDate()
-                If Me.State.MyBO.IsDirty Then
-                    Me.State.MyBO.Save()
+                If State.MyBO.IsDirty Then
+                    State.MyBO.Save()
 
-                    Me.State.IsNew = False
-                    Me.State.HasDataChanged = True
-                    Me.State.MyBO.CreateJob(scheduleDate)
+                    State.IsNew = False
+                    State.HasDataChanged = True
+                    State.MyBO.CreateJob(scheduleDate)
 
                     If String.IsNullOrEmpty(ElitaPlusIdentity.Current.EmailAddress) Then
-                        Me.DisplayMessage(Message.MSG_Email_not_configured, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_Email_not_configured, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     Else
-                        Me.DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     End If
 
                     btnGenRpt.Enabled = False
@@ -591,7 +591,7 @@ Namespace Reports
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
     End Class

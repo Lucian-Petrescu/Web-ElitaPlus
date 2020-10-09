@@ -5,13 +5,13 @@ Partial Public Class Equipment
 
     Public ReadOnly Property EffectiveDate As Date Implements IEffectiveExpiration.EffectiveDate
         Get
-            Return Me.Effective
+            Return Effective
         End Get
     End Property
 
     Public ReadOnly Property ExpirationDate As Date Implements IEffectiveExpiration.ExpirationDate
         Get
-            Return Me.Expiration
+            Return Expiration
         End Get
     End Property
 End Class

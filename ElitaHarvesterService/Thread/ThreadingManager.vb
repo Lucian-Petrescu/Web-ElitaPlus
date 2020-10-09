@@ -89,7 +89,7 @@ Public Class ThreadingManager
         Dim enumerator As IEnumerator(Of ThreadBase) = Threads.GetEnumerator()
 
         While (enumerator.MoveNext())
-            sb.Append(enumerator.Current.Name + ":" + Convert.ToString(enumerator.Current.State + "|"))
+            sb.Append(enumerator.Current.Name & ":" & Convert.ToString(enumerator.Current.State & "|"))
         End While
         Return sb.ToString()
 

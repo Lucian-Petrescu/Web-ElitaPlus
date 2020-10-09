@@ -22,9 +22,9 @@
         Public EditingBo As CaseBase
         Public BoChanged As Boolean = False
         Public IsCallerAuthenticated As Boolean = False
-        Public Sub New(ByVal lastOp As DetailPageCommand, ByVal curEditingBo As CaseBase, Optional ByVal boChanged As Boolean = False,Optional Byval IsCallerAuthenticated As Boolean = False)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(lastOp As DetailPageCommand, curEditingBo As CaseBase, Optional ByVal boChanged As Boolean = False,Optional Byval IsCallerAuthenticated As Boolean = False)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
             Me.BoChanged = boChanged
             Me.IsCallerAuthenticated = IsCallerAuthenticated
         End Sub
@@ -79,7 +79,7 @@
         State.InputParameters = TryCast(NavController.ParametersPassed, Parameters)
 
         Try
-            If Not State.InputParameters Is Nothing Then
+            If State.InputParameters IsNot Nothing Then
                 State.MyBo = CType(NavController.ParametersPassed, Parameters).CaseBo
             End If
 
@@ -94,21 +94,21 @@
         Public caseID As Guid
         Public CaseBo As CaseBase
         Public IsCallerAuthenticated As Boolean = True
-        Public Sub New(ByVal caseBo As CaseBase)
+        Public Sub New(caseBo As CaseBase)
             Me.CaseBo = caseBo
         End Sub
-        Public Sub New(ByVal caseId As Guid,Optional byval IsCallerAuthenticated As boolean = True)
+        Public Sub New(caseId As Guid,Optional byval IsCallerAuthenticated As boolean = True)
             Me.CaseId = caseId
             Me.IsCallerAuthenticated = IsCallerAuthenticated
-            Me.CaseBo = New CaseBase(caseId)
+            CaseBo = New CaseBase(caseId)
         End Sub
     End Class
 #End Region
 #Region "Page Events"
-    Private Sub Page_PageCall(ByVal callFromUrl As String, ByVal callingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(callFromUrl As String, callingPar As Object) Handles MyBase.PageCall
         Try
 
-            If Not CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 StartNavControl()
                 Try
                     State.MyBo = New CaseBase(CType(CallingParameters, Guid))
@@ -125,7 +125,7 @@
         End Try
     End Sub
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         MasterPage.UsePageTabTitleInBreadCrum = False
         MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("Case")
 
@@ -179,13 +179,13 @@
 
     Sub StartNavControl()
         Dim nav As New ElitaPlusNavigation
-        Me.NavController = New NavControllerBase(nav.Flow("CREATE_CASE_DETAIL"))
+        NavController = New NavControllerBase(nav.Flow("CREATE_CASE_DETAIL"))
     End Sub
 #End Region
 #Region "Controlling Logic"
     Private Sub UpdateBreadCrum()
-        If (Not State Is Nothing) Then
-            If (Not State.MyBO Is Nothing) Then
+        If (State IsNot Nothing) Then
+            If (State.MyBO IsNot Nothing) Then
                 MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
                                        TranslationBase.TranslateLabelOrMessage("Case") & " " & State.MyBO.CaseNumber
                 MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(Message.CASE_DETAIL) & " (<strong>" &
@@ -245,14 +245,14 @@
 
         Catch ex As Exception
             Dim getExceptionType As String = ex.GetBaseException.GetType().Name
-            If ((Not getExceptionType.Equals(String.Empty)) And getExceptionType.Equals("BOValidationException")) Then
+            If ((Not getExceptionType.Equals(String.Empty)) AndAlso getExceptionType.Equals("BOValidationException")) Then
                 ControlMgr.SetVisibleControl(Me, CaseInteractionGrid, False)
                 lblInteractionRecordFound.Visible = False
             End If
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub CaseInteractionGrid_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles CaseInteractionGrid.RowDataBound
+    Private Sub CaseInteractionGrid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles CaseInteractionGrid.RowDataBound
         Try
             If (e.Row.RowType = DataControlRowType.DataRow) _
                 OrElse (e.Row.RowType = DataControlRowType.Separator) Then
@@ -292,14 +292,14 @@
 
         Catch ex As Exception
             Dim getExceptionType As String = ex.GetBaseException.GetType().Name
-            If ((Not getExceptionType.Equals(String.Empty)) And getExceptionType.Equals("BOValidationException")) Then
+            If ((Not getExceptionType.Equals(String.Empty)) AndAlso getExceptionType.Equals("BOValidationException")) Then
                 ControlMgr.SetVisibleControl(Me, CaseActionGrid, False)
                 lblActionRecordFound.Visible = False
             End If
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub CaseActionGrid_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles CaseActionGrid.RowDataBound
+    Private Sub CaseActionGrid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles CaseActionGrid.RowDataBound
         Try
             If (e.Row.RowType = DataControlRowType.DataRow) _
                 OrElse (e.Row.RowType = DataControlRowType.Separator) Then
@@ -337,14 +337,14 @@
 
         Catch ex As Exception
             Dim getExceptionType As String = ex.GetBaseException.GetType().Name
-            If ((Not getExceptionType.Equals(String.Empty)) And getExceptionType.Equals("BOValidationException")) Then
+            If ((Not getExceptionType.Equals(String.Empty)) AndAlso getExceptionType.Equals("BOValidationException")) Then
                 ControlMgr.SetVisibleControl(Me, CaseQuestionAnswerGrid, False)
                 lblQuestionRecordFound.Visible = False
             End If
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub CaseQuestionAnswerGrid_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles CaseQuestionAnswerGrid.RowDataBound
+    Private Sub CaseQuestionAnswerGrid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles CaseQuestionAnswerGrid.RowDataBound
         Try
             If (e.Row.RowType = DataControlRowType.DataRow) _
                 OrElse (e.Row.RowType = DataControlRowType.Separator) Then
@@ -389,14 +389,14 @@
 
         Catch ex As Exception
             Dim getExceptionType As String = ex.GetBaseException.GetType().Name
-            If ((Not getExceptionType.Equals(String.Empty)) And getExceptionType.Equals("BOValidationException")) Then
+            If ((Not getExceptionType.Equals(String.Empty)) AndAlso getExceptionType.Equals("BOValidationException")) Then
                 ControlMgr.SetVisibleControl(Me, CaseDeniedReasonsGrid, False)
                 lblQuestionRecordFound.Visible = False
             End If
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub CaseDeniedReasonsGrid_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles CaseDeniedReasonsGrid.RowDataBound
+    Private Sub CaseDeniedReasonsGrid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles CaseDeniedReasonsGrid.RowDataBound
         Try
             If (e.Row.RowType = DataControlRowType.DataRow) _
                 OrElse (e.Row.RowType = DataControlRowType.Separator) Then
@@ -435,14 +435,14 @@
 
         Catch ex As Exception
             Dim getExceptionType As String = ex.GetBaseException.GetType().Name
-            If ((Not getExceptionType.Equals(String.Empty)) And getExceptionType.Equals("BOValidationException")) Then
+            If ((Not getExceptionType.Equals(String.Empty)) AndAlso getExceptionType.Equals("BOValidationException")) Then
                 ControlMgr.SetVisibleControl(Me, GridViewCaseNotes, False)
                 LabelCaseNotesRecordFound.Visible = False
             End If
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub GridViewCaseNotes_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles GridViewCaseNotes.RowDataBound
+    Private Sub GridViewCaseNotes_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles GridViewCaseNotes.RowDataBound
         Try
             If (e.Row.RowType = DataControlRowType.DataRow) _
                 OrElse (e.Row.RowType = DataControlRowType.Separator) Then
@@ -460,7 +460,7 @@
     End Sub
 #End Region
 #Region "Button Click"
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As System.Object, e As EventArgs) Handles btnBack.Click
         Try
 
             Dim myBo As CaseBase = State.MyBO
@@ -494,7 +494,7 @@
 #End Region
 
 #Region "Tab related"
-    Private Sub EnableTab(ByVal tabInd As Integer, ByVal blnFlag As Boolean)
+    Private Sub EnableTab(tabInd As Integer, blnFlag As Boolean)
         If blnFlag = True Then 'enable - remove from disabled list
             If _listDisabledTabs.Contains(tabInd) = True Then
                 _listDisabledTabs.Remove(tabInd)

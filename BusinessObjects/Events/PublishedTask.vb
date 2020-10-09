@@ -8,67 +8,67 @@ Public Class PublishedTask
 
     Public Shared ReadOnly Property TaskStatusFailedId As Guid
         Get
-            LookupListNew.GetIdFromCode(LookupListNew.LK_TASK_STATUS, TASK_STATUS__FAILED)
+            LookupListNew.GetIdFromCode(LookupListCache.LK_TASK_STATUS, TASK_STATUS__FAILED)
         End Get
     End Property
 
     Public Shared ReadOnly Property TaskStatusOpenId As Guid
         Get
-            LookupListNew.GetIdFromCode(LookupListNew.LK_TASK_STATUS, TASK_STATUS__OPEN)
+            LookupListNew.GetIdFromCode(LookupListCache.LK_TASK_STATUS, TASK_STATUS__OPEN)
         End Get
     End Property
 
     Public Shared ReadOnly Property TaskStatusInProgress As Guid
         Get
-            LookupListNew.GetIdFromCode(LookupListNew.LK_TASK_STATUS, TASK_STATUS__IN_PROGRESS)
+            LookupListNew.GetIdFromCode(LookupListCache.LK_TASK_STATUS, TASK_STATUS__IN_PROGRESS)
         End Get
     End Property
 
 
 #Region "Constructors"
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New PublishedTaskDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -76,23 +76,23 @@ Public Class PublishedTask
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New PublishedTaskDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -142,7 +142,7 @@ Public Class PublishedTask
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(PublishedTaskDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -153,7 +153,7 @@ Public Class PublishedTask
     End Property
 
 
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -162,15 +162,15 @@ Public Class PublishedTask
                 Return New Guid(CType(row(PublishedTaskDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(PublishedTaskDAL.COL_NAME_COMPANY_GROUP_ID, Value)
+            SetValue(PublishedTaskDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
     End Property
 
 
 
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -179,15 +179,15 @@ Public Class PublishedTask
                 Return New Guid(CType(row(PublishedTaskDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(PublishedTaskDAL.COL_NAME_COMPANY_ID, Value)
+            SetValue(PublishedTaskDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
 
 
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -196,15 +196,15 @@ Public Class PublishedTask
                 Return New Guid(CType(row(PublishedTaskDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(PublishedTaskDAL.COL_NAME_COUNTRY_ID, Value)
+            SetValue(PublishedTaskDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
 
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -213,13 +213,13 @@ Public Class PublishedTask
                 Return New Guid(CType(row(PublishedTaskDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(PublishedTaskDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(PublishedTaskDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
-    Public Property CoverageTypeId() As Guid
+    Public Property CoverageTypeId As Guid
         Get
             CheckDeleted()
             If Row(PublishedTaskDAL.COL_NAME_COVERAGE_TYPE_ID) Is DBNull.Value Then
@@ -228,14 +228,14 @@ Public Class PublishedTask
                 Return New Guid(CType(Row(PublishedTaskDAL.COL_NAME_COVERAGE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(PublishedTaskDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
+            SetValue(PublishedTaskDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=20)>
-    Public Property ProductCode() As String
+    Public Property ProductCode As String
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_PRODUCT_CODE) Is DBNull.Value Then
@@ -244,15 +244,15 @@ Public Class PublishedTask
                 Return CType(row(PublishedTaskDAL.COL_NAME_PRODUCT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(PublishedTaskDAL.COL_NAME_PRODUCT_CODE, Value)
+            SetValue(PublishedTaskDAL.COL_NAME_PRODUCT_CODE, Value)
         End Set
     End Property
 
 
 
-    Public Property EventTypeId() As Guid
+    Public Property EventTypeId As Guid
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_EVENT_TYPE_ID) Is DBNull.Value Then
@@ -261,15 +261,15 @@ Public Class PublishedTask
                 Return New Guid(CType(row(PublishedTaskDAL.COL_NAME_EVENT_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(PublishedTaskDAL.COL_NAME_EVENT_TYPE_ID, Value)
+            SetValue(PublishedTaskDAL.COL_NAME_EVENT_TYPE_ID, Value)
         End Set
     End Property
 
 
 
-    Public Property EventDate() As DateType
+    Public Property EventDate As DateType
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_EVENT_DATE) Is DBNull.Value Then
@@ -278,15 +278,15 @@ Public Class PublishedTask
                 Return New DateType(CType(row(PublishedTaskDAL.COL_NAME_EVENT_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(PublishedTaskDAL.COL_NAME_EVENT_DATE, Value)
+            SetValue(PublishedTaskDAL.COL_NAME_EVENT_DATE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1020)>
-    Public Property Sender() As String
+    Public Property Sender As String
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_SENDER) Is DBNull.Value Then
@@ -295,15 +295,15 @@ Public Class PublishedTask
                 Return CType(row(PublishedTaskDAL.COL_NAME_SENDER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(PublishedTaskDAL.COL_NAME_SENDER, Value)
+            SetValue(PublishedTaskDAL.COL_NAME_SENDER, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=4000)>
-    Public Property Arguments() As String
+    Public Property Arguments As String
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_ARGUMENTS) Is DBNull.Value Then
@@ -312,19 +312,19 @@ Public Class PublishedTask
                 Return CType(row(PublishedTaskDAL.COL_NAME_ARGUMENTS), String)
             End If
         End Get
-        Private Set(ByVal Value As String)
+        Private Set
             CheckDeleted()
-            Me.SetValue(PublishedTaskDAL.COL_NAME_ARGUMENTS, Value)
+            SetValue(PublishedTaskDAL.COL_NAME_ARGUMENTS, Value)
         End Set
     End Property
 
-    Default Public ReadOnly Property Argument(ByVal key As String) As String
+    Default Public ReadOnly Property Argument(key As String) As String
         Get
             Dim returnValue As String = String.Empty
             If (_arguments Is Nothing) Then
                 SyncLock (_syncRoot)
                     If (_arguments Is Nothing) Then
-                        _arguments = New KeyValueDictionary(Me.Arguments)
+                        _arguments = New KeyValueDictionary(Arguments)
                     End If
                 End SyncLock
             End If
@@ -337,7 +337,7 @@ Public Class PublishedTask
 
 
     <ValueMandatory("")>
-    Public Property TaskId() As Guid
+    Public Property TaskId As Guid
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_TASK_ID) Is DBNull.Value Then
@@ -346,15 +346,15 @@ Public Class PublishedTask
                 Return New Guid(CType(row(PublishedTaskDAL.COL_NAME_TASK_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(PublishedTaskDAL.COL_NAME_TASK_ID, Value)
+            SetValue(PublishedTaskDAL.COL_NAME_TASK_ID, Value)
         End Set
     End Property
 
 
 
-    Public Property LockDate() As DateType
+    Public Property LockDate As DateType
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_LOCK_DATE) Is DBNull.Value Then
@@ -363,15 +363,15 @@ Public Class PublishedTask
                 Return New DateType(CType(row(PublishedTaskDAL.COL_NAME_LOCK_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(PublishedTaskDAL.COL_NAME_LOCK_DATE, Value)
+            SetValue(PublishedTaskDAL.COL_NAME_LOCK_DATE, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")>
-    Public Property TaskStatusId() As Guid
+    Public Property TaskStatusId As Guid
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_TASK_STATUS_ID) Is DBNull.Value Then
@@ -380,15 +380,15 @@ Public Class PublishedTask
                 Return New Guid(CType(row(PublishedTaskDAL.COL_NAME_TASK_STATUS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(PublishedTaskDAL.COL_NAME_TASK_STATUS_ID, Value)
+            SetValue(PublishedTaskDAL.COL_NAME_TASK_STATUS_ID, Value)
         End Set
     End Property
 
 
 
-    Public Property RetryCount() As LongType
+    Public Property RetryCount As LongType
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_RETRY_COUNT) Is DBNull.Value Then
@@ -397,15 +397,15 @@ Public Class PublishedTask
                 Return New LongType(CType(row(PublishedTaskDAL.COL_NAME_RETRY_COUNT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(PublishedTaskDAL.COL_NAME_RETRY_COUNT, Value)
+            SetValue(PublishedTaskDAL.COL_NAME_RETRY_COUNT, Value)
         End Set
     End Property
 
 
 
-    Public Property LastAttemptDate() As DateType
+    Public Property LastAttemptDate As DateType
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_LAST_ATTEMPT_DATE) Is DBNull.Value Then
@@ -414,15 +414,15 @@ Public Class PublishedTask
                 Return New DateType(CType(row(PublishedTaskDAL.COL_NAME_LAST_ATTEMPT_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(PublishedTaskDAL.COL_NAME_LAST_ATTEMPT_DATE, Value)
+            SetValue(PublishedTaskDAL.COL_NAME_LAST_ATTEMPT_DATE, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=200)>
-    Public Property MachineName() As String
+    Public Property MachineName As String
         Get
             CheckDeleted()
             If row(PublishedTaskDAL.COL_NAME_MACHINE_NAME) Is DBNull.Value Then
@@ -431,18 +431,18 @@ Public Class PublishedTask
                 Return CType(row(PublishedTaskDAL.COL_NAME_MACHINE_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(PublishedTaskDAL.COL_NAME_MACHINE_NAME, Value)
+            SetValue(PublishedTaskDAL.COL_NAME_MACHINE_NAME, Value)
         End Set
     End Property
 
     Public ReadOnly Property Task As Task
         Get
-            If (Me.TaskId.Equals(Guid.Empty)) Then
+            If (TaskId.Equals(Guid.Empty)) Then
                 Return Nothing
             Else
-                Return New Task(Me.TaskId, Me.Dataset)
+                Return New Task(TaskId, Dataset)
             End If
         End Get
     End Property
@@ -456,9 +456,9 @@ Public Class PublishedTask
                 Return New Guid(CType(Row(PublishedTaskDAL.COL_NAME_DEALER_GROUP_ID), Byte()))
             End If
         End Get
-        Set(value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(PublishedTaskDAL.COL_NAME_DEALER_GROUP_ID, value)
+            SetValue(PublishedTaskDAL.COL_NAME_DEALER_GROUP_ID, value)
         End Set
     End Property
 #End Region
@@ -467,15 +467,15 @@ Public Class PublishedTask
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New PublishedTaskDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -484,19 +484,19 @@ Public Class PublishedTask
     End Sub
 
     Public Shared Function GetList(
-          ByVal companyId As Guid _
-        , ByVal dealerId As Guid _
-        , ByVal countryId As Guid _
-        , ByVal product As String _
-        , ByVal coverageTypeId As Guid _
-        , ByVal eventTypeId As Guid _
-        , ByVal task As String _
-        , ByVal statusId As Guid _
-        , ByVal sender As String _
-        , ByVal arguments As String _
-        , ByVal machineName As String _
-        , ByVal startDate As String _
-        , ByVal endDate As String _
+          companyId As Guid _
+        , dealerId As Guid _
+        , countryId As Guid _
+        , product As String _
+        , coverageTypeId As Guid _
+        , eventTypeId As Guid _
+        , task As String _
+        , statusId As Guid _
+        , sender As String _
+        , arguments As String _
+        , machineName As String _
+        , startDate As String _
+        , endDate As String _
         , Optional ByVal LimitResultset As Integer = PublishedTaskDAL.MAX_NUMBER_OF_ROWS) As PublishedTask.PublishedTaskSearchDV
 
         Try
@@ -536,17 +536,17 @@ Public Class PublishedTask
 
 #Region "Action Methods"
 
-    Public Shared Sub AddEvent(ByVal companyGroupId As Guid,
-                               ByVal companyId As Guid,
-                               ByVal countryId As Guid,
-                               ByVal dealerId As Guid,
-                               ByVal productCode As String,
-                               ByVal coverageTypeId As Guid,
-                               ByVal sender As String,
-                               ByVal arguments As String,
-                               ByVal eventDate As DateTime,
-                               ByVal eventTypeId As Guid,
-                               ByVal eventArgumentId As Guid,
+    Public Shared Sub AddEvent(companyGroupId As Guid,
+                               companyId As Guid,
+                               countryId As Guid,
+                               dealerId As Guid,
+                               productCode As String,
+                               coverageTypeId As Guid,
+                               sender As String,
+                               arguments As String,
+                               eventDate As DateTime,
+                               eventTypeId As Guid,
+                               eventArgumentId As Guid,
                                Optional ByVal dealergroupId As Guid = Nothing)
         Try
             Dim dal As New PublishedTaskDAL
@@ -568,7 +568,7 @@ Public Class PublishedTask
         End Try
     End Sub
 
-    Public Shared Function GetNextTask(ByVal subscriberId As Guid, ByVal machineName As String, ByVal processThreadName As String) As PublishedTask
+    Public Shared Function GetNextTask(subscriberId As Guid, machineName As String, processThreadName As String) As PublishedTask
 
         Dim p_task_id As Guid
         Dim p_task As PublishedTask
@@ -582,33 +582,33 @@ Public Class PublishedTask
             End If
             Return p_task
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-            Logger.AddError(ex)
+            AddError(ex)
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         Catch ex As Exception
-            Logger.AddError(ex)
+            AddError(ex)
             Throw
         End Try
     End Function
 
-    Public Sub CompleteTask(ByVal machineName As String, ByVal processThreadName As String)
+    Public Sub CompleteTask(machineName As String, processThreadName As String)
         Try
             Dim dal As New PublishedTaskDAL
-            dal.CompleteTask(Me.Id, machineName, processThreadName)
+            dal.CompleteTask(Id, machineName, processThreadName)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Sub
 
-    Public Sub FailedTask(ByVal machineName As String, ByVal processThreadName As String, ByVal failReason As String)
+    Public Sub FailedTask(machineName As String, processThreadName As String, failReason As String)
         Try
             Dim dal As New PublishedTaskDAL
-            dal.FailedTask(Me.Id, machineName, processThreadName, failReason)
+            dal.FailedTask(Id, machineName, processThreadName, failReason)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Sub
 
-    Public Shared Sub ResetTask(ByVal publishedTaskId As Guid)
+    Public Shared Sub ResetTask(publishedTaskId As Guid)
         Try
             Dim dal As New PublishedTaskDAL
             dal.ResetTask(publishedTaskId)
@@ -617,7 +617,7 @@ Public Class PublishedTask
         End Try
     End Sub
 
-    Public Shared Sub DeleteTask(ByVal publishedTaskId As Guid)
+    Public Shared Sub DeleteTask(publishedTaskId As Guid)
         Try
             Dim dal As New PublishedTaskDAL
             dal.DeleteTask(publishedTaskId)
@@ -626,7 +626,7 @@ Public Class PublishedTask
         End Try
     End Sub
 
-    Public Shared Sub GetOutBoundMessageDetails(ByVal publishedTaskId As Guid, ByRef oErrCode As Integer, ByRef oErrMsg As String,
+    Public Shared Sub GetOutBoundMessageDetails(publishedTaskId As Guid, ByRef oErrCode As Integer, ByRef oErrMsg As String,
                                                 ByRef oMessageId As Guid, ByRef oTemplateCode As String, ByRef oWhiteList As String,
                                                 ByRef oTemplateUserName As String, ByRef oTemplatePassword As String,
                                                 ByRef oRecipients As System.Collections.Generic.List(Of String),
@@ -679,59 +679,59 @@ Public Class PublishedTask
         Public Const COL_NAME_TASK_STATUS_CODE As String = "TASK_STATUS_CODE"
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property PublishedTaskId(ByVal row As DataRow) As Guid
+        Public Shared ReadOnly Property PublishedTaskId(row As DataRow) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_PUBLISHED_TASK_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property CompanyGroup(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property CompanyGroup(row As DataRow) As String
             Get
                 Return row(COL_NAME_COMPANY_GROUP).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Company(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Company(row As DataRow) As String
             Get
                 Return row(COL_NAME_COMPANY).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Country(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Country(row As DataRow) As String
             Get
                 Return row(COL_NAME_COUNTRY).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Dealer(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Dealer(row As DataRow) As String
             Get
                 Return row(COL_NAME_DEALER).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property ProductCode(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property ProductCode(row As DataRow) As String
             Get
                 Return row(COL_NAME_PRODUCT_CODE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property CoverageType(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property CoverageType(row As DataRow) As String
             Get
                 Return row(COL_NAME_COVERAGE_TYPE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property EventType(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property EventType(row As DataRow) As String
             Get
                 Return row(COL_NAME_EVENT_TYPE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property EventDate(ByVal row As DataRow) As DateType
+        Public Shared ReadOnly Property EventDate(row As DataRow) As DateType
             Get
                 If row(COL_NAME_EVENT_DATE) Is DBNull.Value Then
                     Return Nothing
@@ -743,31 +743,31 @@ Public Class PublishedTask
             End Get
         End Property
 
-        Public Shared ReadOnly Property Sender(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Sender(row As DataRow) As String
             Get
                 Return row(COL_NAME_SENDER).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property TaskStatus(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property TaskStatus(row As DataRow) As String
             Get
                 Return row(COL_NAME_TASK_STATUS).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Arguments(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Arguments(row As DataRow) As String
             Get
                 Return row(COL_NAME_ARGUMENTS).ToString().Replace(";", "<br />").Replace(":", " = ")
             End Get
         End Property
 
-        Public Shared ReadOnly Property Task(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Task(row As DataRow) As String
             Get
                 Return row(COL_NAME_TASK).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property LockDate(ByVal row As DataRow) As DateType
+        Public Shared ReadOnly Property LockDate(row As DataRow) As DateType
             Get
                 If row(COL_NAME_LOCK_DATE) Is DBNull.Value Then
                     Return Nothing
@@ -777,7 +777,7 @@ Public Class PublishedTask
             End Get
         End Property
 
-        Public Shared ReadOnly Property RetryCount(ByVal row As DataRow) As Nullable(Of Integer)
+        Public Shared ReadOnly Property RetryCount(row As DataRow) As Nullable(Of Integer)
             Get
                 If row(COL_NAME_RETRY_COUNT) Is DBNull.Value Then
                     Return Nothing
@@ -787,7 +787,7 @@ Public Class PublishedTask
             End Get
         End Property
 
-        Public Shared ReadOnly Property LastAttemptDate(ByVal row As DataRow) As Nullable(Of Date)
+        Public Shared ReadOnly Property LastAttemptDate(row As DataRow) As Nullable(Of Date)
             Get
                 If row(COL_NAME_LAST_ATTEMPT_DATE) Is DBNull.Value Then
                     Return Nothing
@@ -797,19 +797,19 @@ Public Class PublishedTask
             End Get
         End Property
 
-        Public Shared ReadOnly Property MachineName(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property MachineName(row As DataRow) As String
             Get
                 Return row(COL_NAME_MACHINE_NAME).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property TaskStatusCode(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property TaskStatusCode(row As DataRow) As String
             Get
                 Return row(COL_NAME_TASK_STATUS_CODE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property FailReason(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property FailReason(row As DataRow) As String
             Get
                 Return row(COL_NAME_FAIL_REASON).ToString
             End Get

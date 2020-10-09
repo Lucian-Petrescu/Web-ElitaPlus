@@ -23,7 +23,7 @@ Public Class GetCountriesRegions
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetCountriesRegionsDs)
+    Public Sub New(ds As GetCountriesRegionsDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -36,7 +36,7 @@ Public Class GetCountriesRegions
 #Region "Private Members"
 
 
-    Private Sub MapDataSet(ByVal ds As GetCountriesRegionsDs)
+    Private Sub MapDataSet(ds As GetCountriesRegionsDs)
 
         Dim schema As String = ds.GetXmlSchema '.Replace(SOURCE_COL_MAKE, DATA_COL_NAME_MANUFACTURER).Replace(SOURCE_COL_MILEAGE, DATA_COL_NAME_ODOMETER).Replace(SOURCE_COL_NEWUSED, DATA_COL_NAME_CONDITION)
 
@@ -49,8 +49,8 @@ Public Class GetCountriesRegions
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -58,13 +58,13 @@ Public Class GetCountriesRegions
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetCountriesRegionsDs)
+    Private Sub Load(ds As GetCountriesRegionsDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -77,7 +77,7 @@ Public Class GetCountriesRegions
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetCountriesRegionsDs)
+    Private Sub PopulateBOFromWebService(ds As GetCountriesRegionsDs)
         Try
             If ds.GetCountriesRegions.Count = 0 Then Exit Sub
             With ds.GetCountriesRegions.Item(0)
@@ -103,30 +103,30 @@ Public Class GetCountriesRegions
 
 #Region "Properties"
 
-    Public Property CountryCodesList() As ArrayList
+    Public Property CountryCodesList As ArrayList
         Get
-            If Not _countryCodesList Is Nothing Then
+            If _countryCodesList IsNot Nothing Then
                 Return _countryCodesList
             Else
                 _countryCodesList = New ArrayList
                 Return _countryCodesList
             End If
         End Get
-        Set(ByVal Value As ArrayList)
+        Set
             _countryCodesList = Value
         End Set
     End Property
 
-    Public Property UserCountriesIDs() As ArrayList
+    Public Property UserCountriesIDs As ArrayList
         Get
-            If Not _userCountriesIDs Is Nothing Then
+            If _userCountriesIDs IsNot Nothing Then
                 Return _userCountriesIDs
             Else
                 _userCountriesIDs = New ArrayList
                 Return _userCountriesIDs
             End If
         End Get
-        Set(ByVal Value As ArrayList)
+        Set
             _userCountriesIDs = Value
         End Set
     End Property
@@ -136,14 +136,14 @@ Public Class GetCountriesRegions
         'if the country code(s) were provided, validate them to be within the countries of the user's companies.
         Dim userCountriesDv As DataView = User.GetUserCountries(ElitaPlusIdentity.Current.ActiveUser.Id)
 
-        If Not Me.CountryCodesList Is Nothing AndAlso Me.CountryCodesList.Count > 0 Then
+        If CountryCodesList IsNot Nothing AndAlso CountryCodesList.Count > 0 Then
 
             Dim i, index, intCodesNotFound As Integer
             Dim blnInTheList As Boolean = False
             For i = 0 To CountryCodesList.Count - 1
                 blnInTheList = False
                 For index = 0 To userCountriesDv.Table.Rows.Count - 1
-                    If Not userCountriesDv.Table.Rows(index)("code") Is System.DBNull.Value Then
+                    If userCountriesDv.Table.Rows(index)("code") IsNot DBNull.Value Then
                         If CountryCodesList.Item(i).ToString.ToUpper.Equals(CType(userCountriesDv.Table.Rows(index)("code"), String).ToUpper) Then
                             blnInTheList = True
                             UserCountriesIDs.Add(New Guid(CType(userCountriesDv.Table.Rows(index)("COUNTRY_ID"), Byte())))
@@ -168,7 +168,7 @@ Public Class GetCountriesRegions
 
         Try
             BuildCountriesIDs()
-            If Me.UserCountriesIDs Is Nothing OrElse UserCountriesIDs.Count = 0 Then
+            If UserCountriesIDs Is Nothing OrElse UserCountriesIDs.Count = 0 Then
                 Throw New BOValidationException("GetCountriesRegions Error: ", COUNTRY_NOT_FOUND)
             Else
 
@@ -188,7 +188,7 @@ Public Class GetCountriesRegions
                     Throw New BOValidationException("GetCountriesRegions Error: ", ERROR_ACCESSING_DATABASE)
                 ElseIf objCountriesRegionsDS.Tables.Count > 0 Then
 
-                    objCountriesRegionsDS.DataSetName = Me.DATASET_NAME
+                    objCountriesRegionsDS.DataSetName = DATASET_NAME
 
                     Dim excludeTags As ArrayList = New ArrayList()
                     excludeTags.Add("/GetCountriesRegions/COUNTRY/COUNTRY_ID")

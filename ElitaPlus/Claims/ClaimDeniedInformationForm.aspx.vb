@@ -1,5 +1,7 @@
-﻿Imports Assurant.ElitaPlus.DALObjects
+﻿Imports System.Diagnostics
+Imports Assurant.ElitaPlus.DALObjects
 Imports System.Globalization
+Imports System.Threading
 
 Namespace Claims
 
@@ -16,7 +18,7 @@ Namespace Claims
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 #End Region
@@ -35,17 +37,17 @@ Namespace Claims
         Protected Shadows ReadOnly Property State() As MyState
             Get
                 'Return CType(MyBase.State, MyState)
-                If Me.NavController.State Is Nothing Then
-                    Me.NavController.State = New MyState
+                If NavController.State Is Nothing Then
+                    NavController.State = New MyState
                 Else
-                    If Me.NavController.IsFlowEnded Then
+                    If NavController.IsFlowEnded Then
                         'restart flow
-                        Dim s As MyState = CType(Me.NavController.State, MyState)
+                        Dim s As MyState = CType(NavController.State, MyState)
                         'Me.StartNavControl()
-                        Me.NavController.State = s
+                        NavController.State = s
                     End If
                 End If
-                Return CType(Me.NavController.State, MyState)
+                Return CType(NavController.State, MyState)
             End Get
         End Property
 
@@ -61,7 +63,7 @@ Namespace Claims
             Public moCertId As Guid
 
 
-            Public Sub New(ByVal oClaimbo As ClaimBase, ByVal oClaimId As Guid, ByVal oCertId As Guid)
+            Public Sub New(oClaimbo As ClaimBase, oClaimId As Guid, oCertId As Guid)
                 moClaimbo = oClaimbo
                 moClaimId = oClaimId
                 moCertId = oCertId
@@ -75,7 +77,7 @@ Namespace Claims
 
         Class MyState
             Public moParams As Parameters
-            Public searchDV As Claims.LetterSearchDV
+            Public searchDV As LetterSearchDV
 
 
             Public Sub New()
@@ -93,13 +95,13 @@ Namespace Claims
         Private Sub SetStateProperties()
             Try
                 'Me.State.moParams = CType(Me.CallingParameters, Parameters)
-                Me.State.moParams = CType(Me.NavController.ParametersPassed, Parameters)
-                If (Me.State.moParams Is Nothing) OrElse (Me.State.moParams.moClaimId.Equals(Guid.Empty)) Then
+                State.moParams = CType(NavController.ParametersPassed, Parameters)
+                If (State.moParams Is Nothing) OrElse (State.moParams.moClaimId.Equals(Guid.Empty)) Then
                     Throw New DataNotFoundException
                 End If
                 PopulateFormFromBo()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -111,13 +113,13 @@ Namespace Claims
             Public LastOperation As DetailPageCommand
             Public EditingBo As Claim
             Public BoChanged As Boolean = False
-            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As Claim, Optional ByVal boChanged As Boolean = False)
-                Me.LastOperation = LastOp
-                Me.EditingBo = curEditingBo
+            Public Sub New(LastOp As DetailPageCommand, curEditingBo As Claim, Optional ByVal boChanged As Boolean = False)
+                LastOperation = LastOp
+                EditingBo = curEditingBo
                 Me.BoChanged = boChanged
             End Sub
-            Public Sub New(ByVal LastOp As DetailPageCommand)
-                Me.LastOperation = LastOp
+            Public Sub New(LastOp As DetailPageCommand)
+                LastOperation = LastOp
             End Sub
         End Class
 #End Region
@@ -134,7 +136,7 @@ Namespace Claims
 #Region " Web Form Designer Generated Code "
 
         'This call is required by the Web Form Designer.
-        <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+        <DebuggerStepThrough()> Private Sub InitializeComponent()
 
         End Sub
         'Protected WithEvents moErrorController As ErrorController
@@ -142,7 +144,7 @@ Namespace Claims
         ''Do not delete or move it.
         'Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -154,18 +156,18 @@ Namespace Claims
 
 
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load, Me.Load
+        Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load, Me.Load
             'Put user code to initialize the page here
-            Me.SetStateProperties()
+            SetStateProperties()
             Try
-                Me.ErrControllerMaster.Clear_Hide()
+                ErrControllerMaster.Clear_Hide()
                 If Not Page.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
-                    Me.ShowMissingTranslations(Me.ErrControllerMaster)
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
+                    ShowMissingTranslations(ErrControllerMaster)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
@@ -176,43 +178,43 @@ Namespace Claims
 
         Private Sub GoBack()
             ' Claim Detail
-            Dim retType As New ClaimForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back)
-            Me.ReturnToCallingPage(retType)
+            Dim retType As New ClaimForm.ReturnType(DetailPageCommand.Back)
+            ReturnToCallingPage(retType)
         End Sub
 
-        Private Sub btnBack_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack_WRITE.Click
+        Private Sub btnBack_WRITE_Click(sender As Object, e As EventArgs) Handles btnBack_WRITE.Click
             Try
                 GoBack()
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
-        Public Shared Function getLetterList(ByVal claimLetterId As Guid) As LetterSearchDV
+        Public Shared Function getLetterList(claimLetterId As Guid) As LetterSearchDV
 
             Try
                 Dim dal As New DeniedClaimsDAL
                 Return New LetterSearchDV(dal.LoadLetterList(claimLetterId, Authentication.LangId).Tables(0))
-            Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Catch ex As DataBaseAccessException
                 Throw New DataBaseAccessException(ex.ErrorType, ex)
             End Try
 
         End Function
-        Private Sub btnNext_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNext_WRITE.Click
+        Private Sub btnNext_WRITE_Click(sender As Object, e As EventArgs) Handles btnNext_WRITE.Click
 
-            Me.State.searchDV = getLetterList(Me.State.moParams.moClaimId)
+            State.searchDV = getLetterList(State.moParams.moClaimId)
             Try
-                With Me.State.moParams
-                    If Me.State.searchDV.Count = 0 Then
-                        Me.NavController.Navigate(Me, "denied_claims_next", New Claims.DeniedClaimsForm.Parameters(.moClaimbo, .moClaimId, moClaimNumberText.Text, moCertificateText.Text, .moClaimbo.Certificate.Id, True, Me.State.searchDV))
+                With State.moParams
+                    If State.searchDV.Count = 0 Then
+                        NavController.Navigate(Me, "denied_claims_next", New DeniedClaimsForm.Parameters(.moClaimbo, .moClaimId, moClaimNumberText.Text, moCertificateText.Text, .moClaimbo.Certificate.Id, True, State.searchDV))
                     Else
-                        Me.NavController.Navigate(Me, "claims_denied_letter_list_next", New ClaimDeniedLetterListForm.Parameters(.moClaimbo, Me.State.searchDV, .moClaimId, moClaimNumberText.Text, moCertificateText.Text, .moClaimbo.Certificate.Id))
+                        NavController.Navigate(Me, "claims_denied_letter_list_next", New ClaimDeniedLetterListForm.Parameters(.moClaimbo, State.searchDV, .moClaimId, moClaimNumberText.Text, moCertificateText.Text, .moClaimbo.Certificate.Id))
                     End If
                 End With
 
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
 
@@ -225,7 +227,7 @@ Namespace Claims
 
         Private Sub PopulateClaimPart()
 
-            With Me.State.moParams.moClaimbo
+            With State.moParams.moClaimbo
                 moClaimNumberText.Text = .ClaimNumber
                 EnableDisableControls(moClaimNumberText, True)
                 moDealerText.Text = .Dealer.DealerName
@@ -281,7 +283,7 @@ Namespace Claims
             Try
                 PopulateClaimPart()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
@@ -292,7 +294,7 @@ Namespace Claims
             MyBase.Finalize()
         End Sub
 
-        Private Sub moClaimNumberText_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles moClaimNumberText.Init
+        Private Sub moClaimNumberText_Init(sender As Object, e As EventArgs) Handles moClaimNumberText.Init
 
         End Sub
     End Class

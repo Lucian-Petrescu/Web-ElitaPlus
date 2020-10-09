@@ -4,7 +4,7 @@ Public Class DepreciationScdDetails
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -18,20 +18,20 @@ Public Class DepreciationScdDetails
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDs As DataSet)
+    Public Sub New(id As Guid, familyDs As DataSet)
         MyBase.New(False)
         Dataset = familyDs
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDs As DataSet)
+    Public Sub New(familyDs As DataSet)
         MyBase.New(False)
         Dataset = familyDs
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -53,10 +53,10 @@ Public Class DepreciationScdDetails
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(DepreciationSchDetailsDal.TableName).Rows.Remove(Row)
                 End If
             End If
@@ -125,7 +125,7 @@ Public Class DepreciationScdDetails
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(DepreciationSchDetailsDal.TableKeyName) Is DBNull.Value Then
                 Return Nothing
@@ -136,7 +136,7 @@ Public Class DepreciationScdDetails
     End Property
 
     <ValueMandatory("")>
-    Public Property DepreciationScheduleId() As Guid
+    Public Property DepreciationScheduleId As Guid
         Get
             CheckDeleted()
             If Row(DepreciationSchDetailsDal.ColNameDepreciationScheduleId) Is DBNull.Value Then
@@ -145,7 +145,7 @@ Public Class DepreciationScdDetails
                 Return New Guid(CType(Row(DepreciationSchDetailsDal.ColNameDepreciationScheduleId), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(DepreciationSchDetailsDal.ColNameDepreciationScheduleId, value)
         End Set
@@ -153,7 +153,7 @@ Public Class DepreciationScdDetails
 
 
     <ValueMandatory(""), ValidNumericRange("LowMonth", Min:=MinMonth, Max:=MaxMonth, Message:=DepreciationScheduleForm001), ValidDepreciationSchedule("")>
-    Public Property LowMonth() As LongType
+    Public Property LowMonth As LongType
         Get
             CheckDeleted()
             If Row(DepreciationSchDetailsDal.ColNameLowMonth) Is DBNull.Value Then
@@ -162,7 +162,7 @@ Public Class DepreciationScdDetails
                 Return New LongType(CType(Row(DepreciationSchDetailsDal.ColNameLowMonth), Long))
             End If
         End Get
-        Set(ByVal value As LongType)
+        Set
             CheckDeleted()
             SetValue(DepreciationSchDetailsDal.ColNameLowMonth, value)
         End Set
@@ -170,7 +170,7 @@ Public Class DepreciationScdDetails
 
 
     <ValueMandatory(""), ValidNumericRange("", Min:=MinMonth, Max:=MaxMonth, Message:=DepreciationScheduleForm002)>
-    Public Property HighMonth() As LongType
+    Public Property HighMonth As LongType
         Get
             CheckDeleted()
             If Row(DepreciationSchDetailsDal.ColNameHighMonth) Is DBNull.Value Then
@@ -179,7 +179,7 @@ Public Class DepreciationScdDetails
                 Return New LongType(CType(Row(DepreciationSchDetailsDal.ColNameHighMonth), Long))
             End If
         End Get
-        Set(ByVal value As LongType)
+        Set
             CheckDeleted()
             SetValue(DepreciationSchDetailsDal.ColNameHighMonth, value)
         End Set
@@ -187,7 +187,7 @@ Public Class DepreciationScdDetails
 
 
     <ValidNumericRange("", Min:=MinPercent, Max:=MaxPercent, Message:=DepreciationScheduleForm003), ValidDepreciationSchedulePercentAmount("")>
-    Public Property Percent() As LongType
+    Public Property Percent As LongType
         Get
             CheckDeleted()
             If Row(DepreciationSchDetailsDal.ColNamePercent) Is DBNull.Value Then
@@ -196,14 +196,14 @@ Public Class DepreciationScdDetails
                 Return New LongType(CType(Row(DepreciationSchDetailsDal.ColNamePercent), Long))
             End If
         End Get
-        Set(ByVal value As LongType)
+        Set
             CheckDeleted()
             SetValue(DepreciationSchDetailsDal.ColNamePercent, value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=MinAmount, Max:=NEW_MAX_LONG, Message:=DepreciationScheduleForm004)>
-    Public Property Amount() As LongType
+    Public Property Amount As LongType
         Get
             CheckDeleted()
             If Row(DepreciationSchDetailsDal.ColNameAmount) Is DBNull.Value Then
@@ -212,7 +212,7 @@ Public Class DepreciationScdDetails
                 Return New LongType(CType(Row(DepreciationSchDetailsDal.ColNameAmount), Long))
             End If
         End Get
-        Set(ByVal value As LongType)
+        Set
             CheckDeleted()
             SetValue(DepreciationSchDetailsDal.ColNameAmount, value)
         End Set
@@ -247,7 +247,7 @@ Public Class DepreciationScdDetails
         Return LoadList(New Guid)
     End Function
 
-    Public Shared Function LoadList(ByVal depreciationScheduleId As Guid) As DataView
+    Public Shared Function LoadList(depreciationScheduleId As Guid) As DataView
         Try
             Dim dal As New DepreciationSchDetailsDal
             Dim ds As DataSet
@@ -261,7 +261,7 @@ Public Class DepreciationScdDetails
 
     End Function
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid, ByVal bo As DepreciationScdDetails) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid, bo As DepreciationScdDetails) As DataView
 
         Dim dt As DataTable
         dt = dv.Table
@@ -311,15 +311,15 @@ Public Class DepreciationScdDetails
     Public NotInheritable Class ValidDepreciationSchedule
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, DepreciationScheduleForm005)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As DepreciationScdDetails = CType(objectToValidate, DepreciationScdDetails)
             Dim bValid As Boolean = True
 
-            If Not obj.LowMonth Is Nothing And Not obj.HighMonth Is Nothing Then
+            If obj.LowMonth IsNot Nothing AndAlso obj.HighMonth IsNot Nothing Then
                 If obj.LowMonth.Value > obj.HighMonth.Value Then
                     Message = DepreciationScheduleForm005
                     bValid = False
@@ -333,7 +333,7 @@ Public Class DepreciationScdDetails
 
         End Function
 
-        Private Function ValidateRange(ByVal sNewLow As LongType, ByVal sNewHigh As LongType, ByVal oDepreciationSchedule As DepreciationScdDetails) As Boolean
+        Private Function ValidateRange(sNewLow As LongType, sNewHigh As LongType, oDepreciationSchedule As DepreciationScdDetails) As Boolean
             Dim bValid As Boolean = False
             Dim oNewLow As Long = sNewLow.Value
             Dim oNewHigh As Long = sNewHigh.Value
@@ -358,19 +358,19 @@ Public Class DepreciationScdDetails
                             ' Updating only one record
                             bValid = True
                             Exit For
-                        ElseIf oRows.Count = oCount And prevHigh + Threshold = oNewLow Then
+                        ElseIf oRows.Count = oCount AndAlso prevHigh + Threshold = oNewLow Then
                             ' Updating the last record
                             bValid = True
                             Exit For
                         End If
                     Else
-                        If prevHigh < MinMonth And oNewHigh + Threshold = oLow Then
+                        If prevHigh < MinMonth AndAlso oNewHigh + Threshold = oLow Then
                             bValid = True
                             Exit For
-                        ElseIf oCount = oRows.Count And oHigh + Threshold = oNewLow Then
+                        ElseIf oCount = oRows.Count AndAlso oHigh + Threshold = oNewLow Then
                             bValid = True
                             Exit For
-                        ElseIf prevHigh + Threshold = oNewLow And oNewHigh + Threshold = oLow Then
+                        ElseIf prevHigh + Threshold = oNewLow AndAlso oNewHigh + Threshold = oLow Then
                             bValid = True
                             Exit For
                         End If
@@ -391,25 +391,25 @@ Public Class DepreciationScdDetails
         Dim _ar As New ArrayList
         Dim _bValidMonth As Boolean = False
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, DepreciationScheduleForm007)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As DepreciationScdDetails = CType(objectToValidate, DepreciationScdDetails)
             Dim bValid As Boolean = True
 
-            If Not obj.LowMonth Is Nothing And Not obj.HighMonth Is Nothing Then
+            If obj.LowMonth IsNot Nothing And obj.HighMonth IsNot Nothing Then
                 If (obj.Percent Is Nothing And obj.Amount Is Nothing) Then
                     Message = DepreciationScheduleForm010
                     bValid = False
-                ElseIf (Not obj.Percent Is Nothing And Not obj.Amount Is Nothing) Then
+                ElseIf (obj.Percent IsNot Nothing And obj.Amount IsNot Nothing) Then
                     Message = DepreciationScheduleForm007
                     bValid = False
                 Else
                     bValid = ValidateRange(obj)
                     If _bValidMonth = True Then
-                        If Not _ar Is Nothing And _ar.Count > 0 Then
+                        If _ar IsNot Nothing And _ar.Count > 0 Then
                             Message = CType(_ar(0), String)
                         End If
                     Else
@@ -422,7 +422,7 @@ Public Class DepreciationScdDetails
 
         End Function
 
-        Private Function ValidateRange(ByVal oDepreciationSchedule As DepreciationScdDetails) As Boolean
+        Private Function ValidateRange(oDepreciationSchedule As DepreciationScdDetails) As Boolean
             Dim bValid As Boolean = False
             Dim oNewLow As Long = oDepreciationSchedule.LowMonth
             Dim oNewHigh As Long = oDepreciationSchedule.HighMonth
@@ -493,10 +493,10 @@ Public Class DepreciationScdDetails
 
         End Function
 
-        Public Function ValidateDepreciationSequence(ByVal oNewPercent As LongType, ByVal oPercent As LongType, ByVal oNewAmount As LongType, ByVal oAmount As LongType) As Boolean
+        Public Function ValidateDepreciationSequence(oNewPercent As LongType, oPercent As LongType, oNewAmount As LongType, oAmount As LongType) As Boolean
             Dim bValid As Boolean = False
 
-            If (Not oNewPercent Is Nothing AndAlso Not oPercent Is Nothing) Then
+            If (oNewPercent IsNot Nothing AndAlso oPercent IsNot Nothing) Then
                 If CType(oNewPercent, Long) > 0 Then
                     If (CType(oNewPercent, Long) > CType(oPercent, Long)) Then
                         bValid = True
@@ -509,7 +509,7 @@ Public Class DepreciationScdDetails
                     bValid = True
                 End If
             Else
-                If (Not oNewAmount Is Nothing AndAlso Not oAmount Is Nothing) Then
+                If (oNewAmount IsNot Nothing AndAlso oAmount IsNot Nothing) Then
                     If CType(oNewAmount, Long) > 0 Then
                         If (CType(oNewAmount, Long) > CType(oAmount, Long)) Then
                             bValid = True
@@ -554,7 +554,7 @@ Public Class DepreciationScdDetails
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

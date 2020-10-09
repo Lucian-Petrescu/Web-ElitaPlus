@@ -6,48 +6,48 @@ Public Class ClaimStatusLetter
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ClaimStatusLetterDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class ClaimStatusLetter
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ClaimStatusLetterDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -79,7 +79,7 @@ Public Class ClaimStatusLetter
         End Try
     End Sub
 
-    Public Shared Function getList(ByVal dealerId As Guid, ByVal claimStatusByGroupId As Guid) As ClaimStatusLetterSearchDV
+    Public Shared Function getList(dealerId As Guid, claimStatusByGroupId As Guid) As ClaimStatusLetterSearchDV
         Try
             Dim dal As New ClaimStatusLetterDAL
             Return New ClaimStatusLetterSearchDV(dal.LoadList(ElitaPlusIdentity.Current.ActiveUser.Companies, _
@@ -104,7 +104,7 @@ Public Class ClaimStatusLetter
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ClaimStatusLetterDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -115,7 +115,7 @@ Public Class ClaimStatusLetter
     End Property
 
     <ValidateClaimStatusByGroup("")> _
-    Public Property ClaimStatusByGroupId() As Guid
+    Public Property ClaimStatusByGroupId As Guid
         Get
             CheckDeleted()
             If Row(ClaimStatusLetterDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID) Is DBNull.Value Then
@@ -124,15 +124,15 @@ Public Class ClaimStatusLetter
                 Return New Guid(CType(Row(ClaimStatusLetterDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimStatusLetterDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID, Value)
+            SetValue(ClaimStatusLetterDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If row(ClaimStatusLetterDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -141,15 +141,15 @@ Public Class ClaimStatusLetter
                 Return New Guid(CType(row(ClaimStatusLetterDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimStatusLetterDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(ClaimStatusLetterDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property LetterType() As String
+    Public Property LetterType As String
         Get
             CheckDeleted()
             If row(ClaimStatusLetterDAL.COL_NAME_LETTER_TYPE) Is DBNull.Value Then
@@ -158,15 +158,15 @@ Public Class ClaimStatusLetter
                 Return CType(row(ClaimStatusLetterDAL.COL_NAME_LETTER_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimStatusLetterDAL.COL_NAME_LETTER_TYPE, Value)
+            SetValue(ClaimStatusLetterDAL.COL_NAME_LETTER_TYPE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidNumericRange("", Max:=999999, Min:=0)> _
-    Public Property NumberOfDays() As LongType
+    Public Property NumberOfDays As LongType
         Get
             CheckDeleted()
             If Row(ClaimStatusLetterDAL.COL_NAME_NUMBER_OF_DAYS) Is DBNull.Value Then
@@ -175,15 +175,15 @@ Public Class ClaimStatusLetter
                 Return New LongType(CType(Row(ClaimStatusLetterDAL.COL_NAME_NUMBER_OF_DAYS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimStatusLetterDAL.COL_NAME_NUMBER_OF_DAYS, Value)
+            SetValue(ClaimStatusLetterDAL.COL_NAME_NUMBER_OF_DAYS, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=400)> _
-    Public Property EmailSubject() As String
+    Public Property EmailSubject As String
         Get
             CheckDeleted()
             If row(ClaimStatusLetterDAL.COL_NAME_EMAIL_SUBJECT) Is DBNull.Value Then
@@ -192,15 +192,15 @@ Public Class ClaimStatusLetter
                 Return CType(row(ClaimStatusLetterDAL.COL_NAME_EMAIL_SUBJECT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimStatusLetterDAL.COL_NAME_EMAIL_SUBJECT, Value)
+            SetValue(ClaimStatusLetterDAL.COL_NAME_EMAIL_SUBJECT, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4000)> _
-    Public Property EmailText() As String
+    Public Property EmailText As String
         Get
             CheckDeleted()
             If row(ClaimStatusLetterDAL.COL_NAME_EMAIL_TEXT) Is DBNull.Value Then
@@ -209,15 +209,15 @@ Public Class ClaimStatusLetter
                 Return CType(row(ClaimStatusLetterDAL.COL_NAME_EMAIL_TEXT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimStatusLetterDAL.COL_NAME_EMAIL_TEXT, Value)
+            SetValue(ClaimStatusLetterDAL.COL_NAME_EMAIL_TEXT, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=100), EmailAddressFrom("")> _
-    Public Property EmailFrom() As String
+    Public Property EmailFrom As String
         Get
             CheckDeleted()
             If Row(ClaimStatusLetterDAL.COL_NAME_EMAIL_FROM) Is DBNull.Value Then
@@ -226,14 +226,14 @@ Public Class ClaimStatusLetter
                 Return CType(Row(ClaimStatusLetterDAL.COL_NAME_EMAIL_FROM), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimStatusLetterDAL.COL_NAME_EMAIL_FROM, Value)
+            SetValue(ClaimStatusLetterDAL.COL_NAME_EMAIL_FROM, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property UseServiceCenterEmail() As Guid
+    Public Property UseServiceCenterEmail As Guid
         Get
             CheckDeleted()
             If Row(ClaimStatusLetterDAL.COL_NAME_USE_SERVICE_CENTER_EMAIL) Is DBNull.Value Then
@@ -242,15 +242,15 @@ Public Class ClaimStatusLetter
                 Return New Guid(CType(Row(ClaimStatusLetterDAL.COL_NAME_USE_SERVICE_CENTER_EMAIL), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimStatusLetterDAL.COL_NAME_USE_SERVICE_CENTER_EMAIL, Value)
+            SetValue(ClaimStatusLetterDAL.COL_NAME_USE_SERVICE_CENTER_EMAIL, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=1000), ValidEmailTo(""), EmailAddressTo("")> _
-    Public Property EmailTo() As String
+    Public Property EmailTo As String
         Get
             CheckDeleted()
             If Row(ClaimStatusLetterDAL.COL_NAME_EMAIL_TO) Is DBNull.Value Then
@@ -259,15 +259,15 @@ Public Class ClaimStatusLetter
                 Return CType(Row(ClaimStatusLetterDAL.COL_NAME_EMAIL_TO), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimStatusLetterDAL.COL_NAME_EMAIL_TO, Value)
+            SetValue(ClaimStatusLetterDAL.COL_NAME_EMAIL_TO, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property IsActive() As Guid
+    Public Property IsActive As Guid
         Get
             CheckDeleted()
             If row(ClaimStatusLetterDAL.COL_NAME_IS_ACTIVE) Is DBNull.Value Then
@@ -276,14 +276,14 @@ Public Class ClaimStatusLetter
                 Return New Guid(CType(row(ClaimStatusLetterDAL.COL_NAME_IS_ACTIVE), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimStatusLetterDAL.COL_NAME_IS_ACTIVE, Value)
+            SetValue(ClaimStatusLetterDAL.COL_NAME_IS_ACTIVE, Value)
         End Set
     End Property
 
     <ValidateNotificationType("")> _
-    Public Property NotificationTypeId() As Guid
+    Public Property NotificationTypeId As Guid
         Get
             CheckDeleted()
             If Row(ClaimStatusLetterDAL.COL_NAME_NOTIFICATION_TYPE_ID) Is DBNull.Value Then
@@ -292,13 +292,13 @@ Public Class ClaimStatusLetter
                 Return New Guid(CType(Row(ClaimStatusLetterDAL.COL_NAME_NOTIFICATION_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimStatusLetterDAL.COL_NAME_NOTIFICATION_TYPE_ID, Value)
+            SetValue(ClaimStatusLetterDAL.COL_NAME_NOTIFICATION_TYPE_ID, Value)
         End Set
     End Property
 
-    Public Property UseClaimStatus() As String
+    Public Property UseClaimStatus As String
         Get
             CheckDeleted()
             If Row(ClaimStatusLetterDAL.COL_NAME_USE_CLAIM_STATUS) Is DBNull.Value Then
@@ -307,14 +307,14 @@ Public Class ClaimStatusLetter
                 Return CType(Row(ClaimStatusLetterDAL.COL_NAME_USE_CLAIM_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimStatusLetterDAL.COL_NAME_USE_CLAIM_STATUS, Value)
+            SetValue(ClaimStatusLetterDAL.COL_NAME_USE_CLAIM_STATUS, Value)
         End Set
 
     End Property
     <ValidateGroupOwner("")> _
-    Public Property GroupOwnerId() As Guid
+    Public Property GroupOwnerId As Guid
         Get
             CheckDeleted()
             If Row(ClaimStatusLetterDAL.COL_NAME_GROUP_OWNER_ID) Is DBNull.Value Then
@@ -323,9 +323,9 @@ Public Class ClaimStatusLetter
                 Return New Guid(CType(Row(ClaimStatusLetterDAL.COL_NAME_GROUP_OWNER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimStatusLetterDAL.COL_NAME_GROUP_OWNER_ID, Value)
+            SetValue(ClaimStatusLetterDAL.COL_NAME_GROUP_OWNER_ID, Value)
         End Set
     End Property
 #End Region
@@ -334,11 +334,11 @@ Public Class ClaimStatusLetter
     Public NotInheritable Class EmailAddressFrom
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_EMAIL_IS_INVALID_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ClaimStatusLetter = CType(objectToValidate, ClaimStatusLetter)
 
             If obj.EmailFrom Is Nothing Then
@@ -355,21 +355,21 @@ Public Class ClaimStatusLetter
     Public NotInheritable Class EmailAddressTo
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_EMAIL_IS_INVALID_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ClaimStatusLetter = CType(objectToValidate, ClaimStatusLetter)
             Dim bValid As Boolean = True
 
-            If obj.EmailTo Is Nothing Or obj.EmailTo = "" Then
+            If obj.EmailTo Is Nothing OrElse obj.EmailTo = "" Then
                 bValid = True
             Else
                 Dim arrEmail As String() = obj.EmailTo.Split(New Char() {","})
                 Dim email As String
                 For Each email In arrEmail
-                    If Not (email Is Nothing Or email = "") Then
+                    If Not (email Is Nothing OrElse email = "") Then
                         bValid = MiscUtil.EmailAddressValidation(email)
                         If bValid = False Then
                             Exit For
@@ -387,23 +387,23 @@ Public Class ClaimStatusLetter
 Public NotInheritable Class ValidEmailTo
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, "RECIPIENT_REQUIRED")
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ClaimStatusLetter = CType(objectToValidate, ClaimStatusLetter)
             Dim yesOrNo As String = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList("YESNO", ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), obj.UseServiceCenterEmail)
             Dim bValid As Boolean = True
 
             If obj.UseServiceCenterEmail.Equals(Guid.Empty) Then
                 bValid = False
-            ElseIf yesOrNo = "N" AndAlso (obj.EmailTo Is Nothing Or obj.EmailTo = "") Then
+            ElseIf yesOrNo = "N" AndAlso (obj.EmailTo Is Nothing OrElse obj.EmailTo = "") Then
                 bValid = False
-                Me.Message = "RECIPIENT_REQUIRED"
-            ElseIf yesOrNo = "Y" AndAlso Not obj.EmailTo Is Nothing And obj.EmailTo <> "" Then
+                Message = "RECIPIENT_REQUIRED"
+            ElseIf yesOrNo = "Y" AndAlso obj.EmailTo IsNot Nothing AndAlso obj.EmailTo <> "" Then
                 bValid = False
-                Me.Message = "RECIPIENT_ONLY_REQUIRED_WHEN_SERVICE_CENTER_RECIPIENT_NO"
+                Message = "RECIPIENT_ONLY_REQUIRED_WHEN_SERVICE_CENTER_RECIPIENT_NO"
             End If
 
             Return bValid
@@ -416,15 +416,15 @@ Public NotInheritable Class ValidEmailTo
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ClaimStatusLetterDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -499,14 +499,14 @@ Public NotInheritable Class ValidEmailTo
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
         Public Function AddNewRowToEmptyDV() As ClaimStatusLetterSearchDV
-            Dim dt As DataTable = Me.Table.Clone()
+            Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(ClaimStatusLetterSearchDV.COL_STATUS_LETTER_ID) = (New Guid()).ToByteArray
+            row(COL_STATUS_LETTER_ID) = (New Guid()).ToByteArray
             dt.Rows.Add(row)
             Return New ClaimStatusLetterSearchDV(dt)
         End Function
@@ -521,15 +521,15 @@ Public NotInheritable Class ValidEmailTo
 Public NotInheritable Class ValidateGroupOwner
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_VALUE_IS_REQUIRED_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ClaimStatusLetter = CType(objectToValidate, ClaimStatusLetter)
 
             If obj.UseClaimStatus = "N" Then
-                Dim mandatAttr As New ValueMandatoryAttribute(Me.DisplayName)
+                Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
                 Return mandatAttr.IsValid(valueToCheck, objectToValidate)
             End If
 
@@ -543,15 +543,15 @@ Public NotInheritable Class ValidateGroupOwner
 Public NotInheritable Class ValidateClaimStatusByGroup
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_VALUE_IS_REQUIRED_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ClaimStatusLetter = CType(objectToValidate, ClaimStatusLetter)
 
             If obj.UseClaimStatus = "Y" Then
-                Dim mandatAttr As New ValueMandatoryAttribute(Me.DisplayName)
+                Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
                 Return mandatAttr.IsValid(valueToCheck, objectToValidate)
             End If
 
@@ -565,15 +565,15 @@ Public NotInheritable Class ValidateClaimStatusByGroup
 Public NotInheritable Class ValidateNotificationType
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_VALUE_IS_REQUIRED_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ClaimStatusLetter = CType(objectToValidate, ClaimStatusLetter)
 
             If obj.UseClaimStatus = "N" Then
-                Dim mandatAttr As New ValueMandatoryAttribute(Me.DisplayName)
+                Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
                 Return mandatAttr.IsValid(valueToCheck, objectToValidate)
             End If
 

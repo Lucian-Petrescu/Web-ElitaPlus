@@ -18,53 +18,53 @@ Public Class EntitySchedule
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid, ByVal entity As IEffecttiveExpiration)
+    Public Sub New(id As Guid, entity As IEffecttiveExpiration)
         MyBase.New()
-        Me.EntityObject = entity
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        EntityObject = entity
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
-    Public Sub New(ByVal entity As IEffecttiveExpiration)
+    Public Sub New(entity As IEffecttiveExpiration)
         MyBase.New()
-        Me.EntityObject = entity
-        Me.Dataset = New DataSet
-        Me.Load()
+        EntityObject = entity
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet, ByVal entity As IEffecttiveExpiration)
+    Public Sub New(id As Guid, familyDS As DataSet, entity As IEffecttiveExpiration)
         MyBase.New(False)
-        Me.EntityObject = entity
-        Me.Dataset = familyDS
-        Me.Load(id)
+        EntityObject = entity
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet, ByVal entity As IEffecttiveExpiration)
+    Public Sub New(familyDS As DataSet, entity As IEffecttiveExpiration)
         MyBase.New(False)
-        Me.EntityObject = entity
-        Me.Dataset = familyDS
-        Me.Load()
+        EntityObject = entity
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow, ByVal entity As IEffecttiveExpiration)
+    Public Sub New(row As DataRow, entity As IEffecttiveExpiration)
         MyBase.New(False)
-        Me.EntityObject = entity
-        Me.Dataset = row.Table.DataSet
+        EntityObject = entity
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New EntityScheduleDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -72,23 +72,23 @@ Public Class EntitySchedule
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New EntityScheduleDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -100,17 +100,17 @@ Public Class EntitySchedule
 #Region "Private Members"
     'Initialization code for new objects
     Private Sub Initialize()
-        If (Me.EntityObject.GetType().Equals(GetType(WorkQueue))) Then
-            Dim workQueue As WorkQueue = DirectCast(Me.EntityObject, WorkQueue)
+        If (EntityObject.GetType().Equals(GetType(WorkQueue))) Then
+            Dim workQueue As WorkQueue = DirectCast(EntityObject, WorkQueue)
             If (workQueue.WorkQueue.ActiveOn > DateTime.UtcNow) Then
-                Me.Effective = workQueue.ConvertTimeFromUtc(workQueue.WorkQueue.ActiveOn)
+                Effective = workQueue.ConvertTimeFromUtc(workQueue.WorkQueue.ActiveOn)
             Else
-                Me.Effective = workQueue.ConvertTimeFromUtc(DateTime.UtcNow)
+                Effective = workQueue.ConvertTimeFromUtc(DateTime.UtcNow)
             End If
-            Me.Expiration = workQueue.ConvertTimeFromUtc(workQueue.DEFAULT_EXPIRATION_DATE)
+            Expiration = workQueue.ConvertTimeFromUtc(workQueue.DEFAULT_EXPIRATION_DATE)
         Else
-            Me.Effective = Now
-            Me.Expiration = WorkQueue.DEFAULT_EXPIRATION_DATE
+            Effective = Now
+            Expiration = WorkQueue.DEFAULT_EXPIRATION_DATE
         End If
 
     End Sub
@@ -125,13 +125,13 @@ Public Class EntitySchedule
         Get
             Return _entityObject
         End Get
-        Private Set(ByVal value As IEffecttiveExpiration)
+        Private Set
             _entityObject = value
         End Set
     End Property
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(EntityScheduleDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -142,7 +142,7 @@ Public Class EntitySchedule
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1020)> _
-    Public Property Entity() As String
+    Public Property Entity As String
         Get
             CheckDeleted()
             If Row(EntityScheduleDAL.COL_NAME_ENTITY) Is DBNull.Value Then
@@ -151,15 +151,15 @@ Public Class EntitySchedule
                 Return CType(Row(EntityScheduleDAL.COL_NAME_ENTITY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(EntityScheduleDAL.COL_NAME_ENTITY, Value)
+            SetValue(EntityScheduleDAL.COL_NAME_ENTITY, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property EntityId() As Guid
+    Public Property EntityId As Guid
         Get
             CheckDeleted()
             If Row(EntityScheduleDAL.COL_NAME_ENTITY_ID) Is DBNull.Value Then
@@ -168,15 +168,15 @@ Public Class EntitySchedule
                 Return New Guid(CType(Row(EntityScheduleDAL.COL_NAME_ENTITY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(EntityScheduleDAL.COL_NAME_ENTITY_ID, Value)
+            SetValue(EntityScheduleDAL.COL_NAME_ENTITY_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property ScheduleId() As Guid
+    Public Property ScheduleId As Guid
         Get
             CheckDeleted()
             If Row(EntityScheduleDAL.COL_NAME_SCHEDULE_ID) Is DBNull.Value Then
@@ -185,9 +185,9 @@ Public Class EntitySchedule
                 Return New Guid(CType(Row(EntityScheduleDAL.COL_NAME_SCHEDULE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(EntityScheduleDAL.COL_NAME_SCHEDULE_ID, Value)
+            SetValue(EntityScheduleDAL.COL_NAME_SCHEDULE_ID, Value)
         End Set
     End Property
 
@@ -202,41 +202,41 @@ Public Class EntitySchedule
         End Get
     End Property
 
-    <ValueMandatory(""), DateCompareValidatorAttribute("", Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_EFFECTIVE_HIGHER_EXPIRATION_DATE, _
+    <ValueMandatory(""), DateCompareValidatorAttribute("", Common.ErrorCodes.GUI_INVALID_EFFECTIVE_HIGHER_EXPIRATION_DATE, _
         "Expiration", DateCompareValidatorAttribute.CompareType.LessThan, DefaultCompareToValue:=DateCompareValidatorAttribute.DefaultType.MaxDate, _
         DefaultCompareValue:=DateCompareValidatorAttribute.DefaultType.MinDate), _
-    DateCompareValidator("", Assurant.ElitaPlus.Common.ErrorCodes.BO_ERROR_WQ_SCHEDULE_EFF_LESSER_THAN_WQ_EFF, _
+    DateCompareValidator("", Common.ErrorCodes.BO_ERROR_WQ_SCHEDULE_EFF_LESSER_THAN_WQ_EFF, _
         "EntityEffective", DateCompareValidatorAttribute.CompareType.GreaterThanOrEqual, DefaultCompareToValue:=DateCompareValidatorAttribute.DefaultType.MinDate, _
         DefaultCompareValue:=DateCompareValidatorAttribute.DefaultType.MinDate)> _
-    Public Property Effective() As DateTimeType
+    Public Property Effective As DateTimeType
         Get
             CheckDeleted()
             If Row(EntityScheduleDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
                 Return Nothing
             Else
-                If (Me.EntityObject.GetType().Equals(GetType(WorkQueue))) Then
-                    Return New DateTimeType(DirectCast(Me.EntityObject, WorkQueue).ConvertTimeFromUtc(CType(Row(EntityScheduleDAL.COL_NAME_EFFECTIVE), Date)))
+                If (EntityObject.GetType().Equals(GetType(WorkQueue))) Then
+                    Return New DateTimeType(DirectCast(EntityObject, WorkQueue).ConvertTimeFromUtc(CType(Row(EntityScheduleDAL.COL_NAME_EFFECTIVE), Date)))
                 Else
                     Return New DateTimeType(CType(Row(EntityScheduleDAL.COL_NAME_EFFECTIVE), Date))
                 End If
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
-            If (Not Value Is Nothing) Then
-                If (Me.EntityObject.GetType().Equals(GetType(WorkQueue))) Then
-                    Value = New DateTimeType(DirectCast(Me.EntityObject, WorkQueue).ConvertTimeToUtc(Value.Value))
+            If (Value IsNot Nothing) Then
+                If (EntityObject.GetType().Equals(GetType(WorkQueue))) Then
+                    Value = New DateTimeType(DirectCast(EntityObject, WorkQueue).ConvertTimeToUtc(Value.Value))
                 End If
                 Value = New DateTimeType(New Date(Value.Value.Year, Value.Value.Month, Value.Value.Day, Value.Value.Hour, Value.Value.Minute, Value.Value.Second))
             End If
-            Me.SetValue(EntityScheduleDAL.COL_NAME_EFFECTIVE, Value)
+            SetValue(EntityScheduleDAL.COL_NAME_EFFECTIVE, Value)
         End Set
     End Property
 
-    <DateCompareValidator("", Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_EFFECTIVE_DATE_SMALLER_THAN_SYSDATE, "", _
+    <DateCompareValidator("", Common.ErrorCodes.GUI_INVALID_EFFECTIVE_DATE_SMALLER_THAN_SYSDATE, "", _
             DateCompareValidatorAttribute.CompareType.GreaterThan, CheckWhenNew:=True, CompareToType:=DateCompareValidatorAttribute.CompareToPropertyType.Nothing, _
             DefaultCompareToValue:=DateCompareValidatorAttribute.DefaultType.UtcToday)> _
-    Public ReadOnly Property EffectiveUtc() As DateTimeType
+    Public ReadOnly Property EffectiveUtc As DateTimeType
         Get
             If Row(EntityScheduleDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
                 Return Nothing
@@ -246,7 +246,7 @@ Public Class EntitySchedule
         End Get
     End Property
 
-    Public ReadOnly Property ExpirationUtc() As DateTimeType
+    Public ReadOnly Property ExpirationUtc As DateTimeType
         Get
             If Row(EntityScheduleDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
                 Return Nothing
@@ -259,7 +259,7 @@ Public Class EntitySchedule
     Public ReadOnly Property EntityEffective As DateTimeType
         Get
             CheckDeleted()
-            Return Me.EntityObject.Effective
+            Return EntityObject.Effective
         End Get
     End Property
 
@@ -274,94 +274,94 @@ Public Class EntitySchedule
         End Get
     End Property
 
-    <DateCompareValidatorAttribute("", Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_EFFECTIVE_HIGHER_EXPIRATION_DATE, _
+    <DateCompareValidatorAttribute("", Common.ErrorCodes.GUI_INVALID_EFFECTIVE_HIGHER_EXPIRATION_DATE, _
         "Effective", DateCompareValidatorAttribute.CompareType.GreaterThan, DefaultCompareToValue:=DateCompareValidatorAttribute.DefaultType.MinDate, _
         DefaultCompareValue:=DateCompareValidatorAttribute.DefaultType.MaxDate), _
     OverlapValidator("", DataRowPropertyName:="DataRow", DataTablePropertyName:="DataTable", EffectiveDateColumnName:=EntityScheduleDAL.COL_NAME_EFFECTIVE, ExpirationDateColumnName:=EntityScheduleDAL.COL_NAME_EXPIRATION), _
-    DateCompareValidatorAttribute("", Assurant.ElitaPlus.Common.ErrorCodes.BO_ERROR_WQ_SCHEDULE_EXP_GREATER_THAN_WQ_EXP, _
+    DateCompareValidatorAttribute("", Common.ErrorCodes.BO_ERROR_WQ_SCHEDULE_EXP_GREATER_THAN_WQ_EXP, _
         "EntityExpiration", DateCompareValidatorAttribute.CompareType.LessThanOrEqual, DefaultCompareToValue:=DateCompareValidatorAttribute.DefaultType.MaxDate, _
         DefaultCompareValue:=DateCompareValidatorAttribute.DefaultType.MaxDate)> _
-    Public Property Expiration() As DateTimeType
+    Public Property Expiration As DateTimeType
         Get
             CheckDeleted()
             If Row(EntityScheduleDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
                 Return Nothing
             Else
-                If (Me.EntityObject.GetType().Equals(GetType(WorkQueue))) Then
-                    Return New DateTimeType(DirectCast(Me.EntityObject, WorkQueue).ConvertTimeFromUtc(CType(Row(EntityScheduleDAL.COL_NAME_EXPIRATION), Date)))
+                If (EntityObject.GetType().Equals(GetType(WorkQueue))) Then
+                    Return New DateTimeType(DirectCast(EntityObject, WorkQueue).ConvertTimeFromUtc(CType(Row(EntityScheduleDAL.COL_NAME_EXPIRATION), Date)))
                 Else
                     Return New DateTimeType(CType(Row(EntityScheduleDAL.COL_NAME_EXPIRATION), Date))
                 End If
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
-            If (Not Value Is Nothing) Then
-                If (Me.EntityObject.GetType().Equals(GetType(WorkQueue))) Then
-                    Value = New DateTimeType(DirectCast(Me.EntityObject, WorkQueue).ConvertTimeToUtc(Value.Value))
+            If (Value IsNot Nothing) Then
+                If (EntityObject.GetType().Equals(GetType(WorkQueue))) Then
+                    Value = New DateTimeType(DirectCast(EntityObject, WorkQueue).ConvertTimeToUtc(Value.Value))
                 End If
                 Value = New DateTimeType(New Date(Value.Value.Year, Value.Value.Month, Value.Value.Day, Value.Value.Hour, Value.Value.Minute, Value.Value.Second))
             End If
-            Me.SetValue(EntityScheduleDAL.COL_NAME_EXPIRATION, Value)
+            SetValue(EntityScheduleDAL.COL_NAME_EXPIRATION, Value)
         End Set
     End Property
 
     Public ReadOnly Property EntityExpiration As DateTimeType
         Get
             CheckDeleted()
-            Return Me.EntityObject.Expiration
+            Return EntityObject.Expiration
         End Get
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property ScheduleCode() As String
+    Public Property ScheduleCode As String
         Get
             CheckDeleted()
             If Row(ScheduleDAL.COL_NAME_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(EntityScheduleDAL.COL_NAME_CODE), String)
+                Return CType(Row(DALBase.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(EntityScheduleDAL.COL_NAME_CODE, Value)
+            SetValue(DALBase.COL_NAME_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ScheduleDescription() As String
+    Public Property ScheduleDescription As String
         Get
             CheckDeleted()
             If Row(ScheduleDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(EntityScheduleDAL.COL_NAME_DESCRIPTION), String)
+                Return CType(Row(DALBase.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(EntityScheduleDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(DALBase.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
     Public ReadOnly Property DataTable As DataTable
         Get
-            Return Me.Row.Table
+            Return Row.Table
         End Get
     End Property
 
     Public ReadOnly Property DataRow As DataRow
         Get
-            Return Me.Row
+            Return Row
         End Get
     End Property
 
 #End Region
 
 #Region "Public Members"
-    Public Shared Function GetList(ByVal scheduleId As Guid, ByVal entityName As String) As DataTable
+    Public Shared Function GetList(scheduleId As Guid, entityName As String) As DataTable
         Try
             Dim dal As New EntityScheduleDAL
             Dim ds As New DataSet
@@ -375,15 +375,15 @@ Public Class EntitySchedule
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New EntityScheduleDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -391,11 +391,11 @@ Public Class EntitySchedule
         End Try
     End Sub
 
-    Public Sub Copy(ByVal original As EntitySchedule)
-        If Not Me.IsNew Then
+    Public Sub Copy(original As EntitySchedule)
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Object.")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 #End Region
 
@@ -413,7 +413,7 @@ Public Class EntitySchedule
         Public Const COL_NAME_SCHEDULE_ID As String = EntityScheduleDAL.COL_NAME_SCHEDULE_ID
         Public Const COL_NAME_IS_NEW As String = "IS_NEW"
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -438,7 +438,7 @@ Public Class EntityScheduleList
     Private parentId As Guid
     Private tableName As String
 
-    Public Sub New(ByVal parent As BusinessObjectBase)
+    Public Sub New(parent As BusinessObjectBase)
         MyBase.New(LoadTable(parent), GetType(EntitySchedule), parent)
         If (parent.GetType().Equals(GetType(WorkQueue))) Then
             tableName = EntitySchedule.TABLE_NAME_WORKQUEUE
@@ -449,22 +449,22 @@ Public Class EntityScheduleList
         End If
     End Sub
 
-    Friend Overrides Function GetChild(ByVal row As DataRow) As BusinessObjectBase
+    Friend Overrides Function GetChild(row As DataRow) As BusinessObjectBase
         Dim bo As BusinessObjectBase = BOType.GetConstructor(New Type() {GetType(DataRow), GetType(IEffecttiveExpiration)}).Invoke(New Object() {row, CType(Parent, IEffecttiveExpiration)})
         Return bo
     End Function
 
     Public Overrides Function GetNewChild() As BusinessObjectBase
-        Dim bo As BusinessObjectBase = BOType.GetConstructor(New Type() {GetType(DataSet), GetType(IEffecttiveExpiration)}).Invoke(New Object() {Me.Table.DataSet, CType(Parent, IEffecttiveExpiration)})
+        Dim bo As BusinessObjectBase = BOType.GetConstructor(New Type() {GetType(DataSet), GetType(IEffecttiveExpiration)}).Invoke(New Object() {Table.DataSet, CType(Parent, IEffecttiveExpiration)})
         Return bo
     End Function
 
-    Public Overrides Function GetChild(ByVal childId As System.Guid) As BusinessObjectBase
+    Public Overrides Function GetChild(childId As System.Guid) As BusinessObjectBase
         Dim bo As BusinessObjectBase
         Try
-            bo = MyBase.BOType.GetConstructor(New Type() {GetType(Guid), GetType(DataSet), GetType(IEffecttiveExpiration)}).Invoke(New Object() {childId, Me.Table.DataSet, CType(Parent, IEffecttiveExpiration)})
+            bo = BOType.GetConstructor(New Type() {GetType(Guid), GetType(DataSet), GetType(IEffecttiveExpiration)}).Invoke(New Object() {childId, Table.DataSet, CType(Parent, IEffecttiveExpiration)})
         Catch ex As Exception
-            If Not ex.InnerException Is Nothing AndAlso ex.InnerException.GetType Is GetType(DataNotFoundException) Then
+            If ex.InnerException IsNot Nothing AndAlso ex.InnerException.GetType Is GetType(DataNotFoundException) Then
                 Throw ex.InnerException
             Else
                 Throw ex
@@ -473,11 +473,11 @@ Public Class EntityScheduleList
         Return bo
     End Function
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, EntitySchedule).EntityId.Equals(parentId)
     End Function
 
-    Private Shared Function LoadTable(ByVal parent As BusinessObjectBase) As DataTable
+    Private Shared Function LoadTable(parent As BusinessObjectBase) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(EntityScheduleList)) Then
                 Dim dal As New EntityScheduleDAL

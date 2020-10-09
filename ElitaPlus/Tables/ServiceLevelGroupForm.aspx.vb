@@ -20,7 +20,7 @@ Partial Class ServiceLevelGroupForm
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -79,72 +79,72 @@ Partial Class ServiceLevelGroupForm
         End Get
     End Property
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.MenuEnabled = True
-            Me.IsReturningFromChild = True
+            MenuEnabled = True
+            IsReturningFromChild = True
             Dim retObj As ServiceLevelDetailForm.ReturnType = CType(ReturnPar, ServiceLevelDetailForm.ReturnType)
-            Me.State.HasDataChanged = retObj.HasDataChanged
+            State.HasDataChanged = retObj.HasDataChanged
             Select Case retObj.LastOperation
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    If Not retObj Is Nothing Then
+                    If retObj IsNot Nothing Then
                         If Not retObj.EditingBo.IsNew Then
-                            Me.State.SelectedSLGId = retObj.EditingBo.Id
+                            State.SelectedSLGId = retObj.EditingBo.Id
                         End If
-                        Me.State.IsGridVisible = True
+                        State.IsGridVisible = True
                     End If
                 Case ElitaPlusPage.DetailPageCommand.Delete
-                    Me.DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
             End Select
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
     Private Sub SaveGuiState()
-        Me.State.SearchCountryId = Me.GetSelectedItem(moCountryDrop)
-        Me.State.SearchDescription = Me.TextBoxSearchDescription.Text
-        Me.State.SearchCode = Me.TextBoxSearchCode.Text
+        State.SearchCountryId = GetSelectedItem(moCountryDrop)
+        State.SearchDescription = TextBoxSearchDescription.Text
+        State.SearchCode = TextBoxSearchCode.Text
     End Sub
 
     Private Sub RestoreGuiState()
-        Me.SetSelectedItem(moCountryDrop, Me.State.SearchCountryId)
-        Me.TextBoxSearchDescription.Text = Me.State.SearchDescription
-        Me.TextBoxSearchCode.Text = Me.State.SearchCode
+        SetSelectedItem(moCountryDrop, State.SearchCountryId)
+        TextBoxSearchDescription.Text = State.SearchDescription
+        TextBoxSearchCode.Text = State.SearchCode
     End Sub
 
 #End Region
 
 #Region "Page_Events"
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Try
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
 
-            If Not Me.IsPostBack Then
-                Me.SetDefaultButton(Me.TextBoxSearchCode, btnSearch)
-                Me.SetDefaultButton(Me.TextBoxSearchDescription, btnSearch)
+            If Not IsPostBack Then
+                SetDefaultButton(TextBoxSearchCode, btnSearch)
+                SetDefaultButton(TextBoxSearchDescription, btnSearch)
                 ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                Me.AddCalendar(Me.btnDateFrom, Me.txtDateFrom)
-                Me.AddCalendar(Me.btnDateTo, Me.txtDateTo)
+                AddCalendar(btnDateFrom, txtDateFrom)
+                AddCalendar(btnDateTo, txtDateTo)
                 SetButtonsState()
                 PopulateCountry()
-                Me.RestoreGuiState()
-                If Me.State.IsGridVisible Then
-                    If Not (Me.State.selectedPageSize = DEFAULT_PAGE_SIZE) Then
-                        cboPageSize.SelectedValue = CType(Me.State.selectedPageSize, String)
-                        Grid.PageSize = Me.State.selectedPageSize
+                RestoreGuiState()
+                If State.IsGridVisible Then
+                    If Not (State.selectedPageSize = DEFAULT_PAGE_SIZE) Then
+                        cboPageSize.SelectedValue = CType(State.selectedPageSize, String)
+                        Grid.PageSize = State.selectedPageSize
                     End If
-                    Me.PopulateGrid()
+                    PopulateGrid()
                 End If
-                Me.SetGridItemStyleColor(Me.Grid)
+                SetGridItemStyleColor(Grid)
             Else
-                Me.SaveGuiState()
+                SaveGuiState()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
-        Me.ShowMissingTranslations(Me.ErrorCtrl)
+        ShowMissingTranslations(ErrorCtrl)
     End Sub
 
 #End Region
@@ -159,7 +159,7 @@ Partial Class ServiceLevelGroupForm
                                                               Where ElitaPlusIdentity.Current.ActiveUser.Countries.Contains(x.ListItemId)
                                                               Select x).ToArray()
 
-        Me.moCountryDrop.Populate(filteredCountryList, New PopulateOptions() With
+        moCountryDrop.Populate(filteredCountryList, New PopulateOptions() With
                                                    {
                                                     .AddBlankItem = True
                                                    })
@@ -172,21 +172,21 @@ Partial Class ServiceLevelGroupForm
 
     Public Sub PopulateGrid()
 
-        If ((Me.State.searchDV Is Nothing) OrElse (Me.State.HasDataChanged)) Then
-            Me.State.searchDV = ServiceLevelGroup.getList(Me.TextBoxSearchCode.Text,
-            Me.TextBoxSearchDescription.Text, Me.State.SearchCountryId, Me.State.FromDateMask, Me.State.ToDateMask)
+        If ((State.searchDV Is Nothing) OrElse (State.HasDataChanged)) Then
+            State.searchDV = ServiceLevelGroup.getList(TextBoxSearchCode.Text,
+            TextBoxSearchDescription.Text, State.SearchCountryId, State.FromDateMask, State.ToDateMask)
 
         End If
 
-        Me.State.searchDV.Sort = Me.State.SortExpression
+        State.searchDV.Sort = State.SortExpression
 
-        Me.Grid.AutoGenerateColumns = False
-        Me.Grid.Columns(Me.GRID_COL_COUNTRY).SortExpression = ServiceLevelGroup.ServiceLevelGroupSearchDV.COL_COUNTRY_DESC
-        Me.Grid.Columns(Me.GRID_COL_CODE).SortExpression = ServiceLevelGroup.ServiceLevelGroupSearchDV.COL_NAME_CODE
-        Me.Grid.Columns(Me.GRID_COL_DESCRIPTION).SortExpression = ServiceLevelGroup.ServiceLevelGroupSearchDV.COL_NAME_DESCRIPTION
+        Grid.AutoGenerateColumns = False
+        Grid.Columns(GRID_COL_COUNTRY).SortExpression = ServiceLevelGroup.ServiceLevelGroupSearchDV.COL_COUNTRY_DESC
+        Grid.Columns(GRID_COL_CODE).SortExpression = ServiceLevelGroup.ServiceLevelGroupSearchDV.COL_NAME_CODE
+        Grid.Columns(GRID_COL_DESCRIPTION).SortExpression = ServiceLevelGroup.ServiceLevelGroupSearchDV.COL_NAME_DESCRIPTION
 
-        SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.SelectedSLGId, Me.Grid, Me.State.PageIndex)
-        Me.SortAndBindGrid()
+        SetPageAndSelectedIndexFromGuid(State.searchDV, State.SelectedSLGId, Grid, State.PageIndex)
+        SortAndBindGrid()
 
     End Sub
 
@@ -200,34 +200,34 @@ Partial Class ServiceLevelGroupForm
 
         'ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
 
-        If (Me.State.searchDV.Count = 0) Then
-            Me.State.bNoRow = True
-            CreateHeaderForEmptyGrid(Grid, Me.State.SortExpression)
-            ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+        If (State.searchDV.Count = 0) Then
+            State.bNoRow = True
+            CreateHeaderForEmptyGrid(Grid, State.SortExpression)
+            ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
             Grid.PagerSettings.Visible = True
             If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
         Else
-            Me.State.bNoRow = False
-            Me.Grid.Enabled = True
-            Me.Grid.DataSource = Me.State.searchDV
-            HighLightSortColumn(Grid, Me.State.SortExpression)
-            Me.Grid.DataBind()
-            ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+            State.bNoRow = False
+            Grid.Enabled = True
+            Grid.DataSource = State.searchDV
+            HighLightSortColumn(Grid, State.SortExpression)
+            Grid.DataBind()
+            ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
             If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
         End If
 
-        Session("recCount") = Me.State.searchDV.Count
+        Session("recCount") = State.searchDV.Count
 
-        If Me.State.searchDV.Count > 0 Then
+        If State.searchDV.Count > 0 Then
 
-            If Me.Grid.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         Else
-            If Me.Grid.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         End If
     End Sub
@@ -239,91 +239,91 @@ Partial Class ServiceLevelGroupForm
 #Region " Datagrid Related "
 
     'The Binding Logic is here  
-    Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Try
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-            If Not dvRow Is Nothing And Not Me.State.bNoRow Then
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                    CType(e.Row.Cells(Me.GRID_COL_SLG_ID).FindControl("SLGIdLabel"), Label).Text = GetGuidStringFromByteArray(CType(dvRow(ServiceLevelGroup.ServiceLevelGroupSearchDV.COL_NAME_SERVICE_LEVEL_GROUP_ID), Byte()))
+            If dvRow IsNot Nothing AndAlso Not State.bNoRow Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
+                    CType(e.Row.Cells(GRID_COL_SLG_ID).FindControl("SLGIdLabel"), Label).Text = GetGuidStringFromByteArray(CType(dvRow(ServiceLevelGroup.ServiceLevelGroupSearchDV.COL_NAME_SERVICE_LEVEL_GROUP_ID), Byte()))
 
-                    If (Me.State.IsEditMode = True AndAlso Me.State.SelectedSLGId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(ServiceLevelGroup.ServiceLevelGroupSearchDV.COL_NAME_SERVICE_LEVEL_GROUP_ID), Byte())))) Then
+                    If (State.IsEditMode = True AndAlso State.SelectedSLGId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(ServiceLevelGroup.ServiceLevelGroupSearchDV.COL_NAME_SERVICE_LEVEL_GROUP_ID), Byte())))) Then
 
-                        CType(e.Row.Cells(Me.GRID_COL_CODE).FindControl("SLGCodeTextBox"), TextBox).Text = dvRow(ServiceLevelGroup.ServiceLevelGroupSearchDV.COL_NAME_CODE).ToString
-                        CType(e.Row.Cells(Me.GRID_COL_DESCRIPTION).FindControl("SLGDescTextBox"), TextBox).Text = dvRow(ServiceLevelGroup.ServiceLevelGroupSearchDV.COL_NAME_DESCRIPTION).ToString
-                        Dim CountryList As DropDownList = CType(e.Row.Cells(Me.GRID_COL_COUNTRY).FindControl("CountryDropdown"), DropDownList)
+                        CType(e.Row.Cells(GRID_COL_CODE).FindControl("SLGCodeTextBox"), TextBox).Text = dvRow(ServiceLevelGroup.ServiceLevelGroupSearchDV.COL_NAME_CODE).ToString
+                        CType(e.Row.Cells(GRID_COL_DESCRIPTION).FindControl("SLGDescTextBox"), TextBox).Text = dvRow(ServiceLevelGroup.ServiceLevelGroupSearchDV.COL_NAME_DESCRIPTION).ToString
+                        Dim CountryList As DropDownList = CType(e.Row.Cells(GRID_COL_COUNTRY).FindControl("CountryDropdown"), DropDownList)
                         PopulateDropdown(CountryList)
 
                     Else
-                        CType(e.Row.Cells(Me.GRID_COL_COUNTRY).FindControl("CountryLabel"), Label).Text = dvRow(ServiceLevelGroup.ServiceLevelGroupSearchDV.COL_COUNTRY_DESC).ToString
-                        CType(e.Row.Cells(Me.GRID_COL_CODE).FindControl("CodeLabel"), Label).Text = dvRow(ServiceLevelGroup.ServiceLevelGroupSearchDV.COL_NAME_CODE).ToString
-                        CType(e.Row.Cells(Me.GRID_COL_DESCRIPTION).FindControl("DescriptionLabel"), Label).Text = dvRow(ServiceLevelGroup.ServiceLevelGroupSearchDV.COL_NAME_DESCRIPTION).ToString
+                        CType(e.Row.Cells(GRID_COL_COUNTRY).FindControl("CountryLabel"), Label).Text = dvRow(ServiceLevelGroup.ServiceLevelGroupSearchDV.COL_COUNTRY_DESC).ToString
+                        CType(e.Row.Cells(GRID_COL_CODE).FindControl("CodeLabel"), Label).Text = dvRow(ServiceLevelGroup.ServiceLevelGroupSearchDV.COL_NAME_CODE).ToString
+                        CType(e.Row.Cells(GRID_COL_DESCRIPTION).FindControl("DescriptionLabel"), Label).Text = dvRow(ServiceLevelGroup.ServiceLevelGroupSearchDV.COL_NAME_DESCRIPTION).ToString
                     End If
                 End If
             End If
 
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-            Me.State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.PopulateGrid()
+            State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Public Sub Grid_RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+    Public Sub Grid_RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
         Try
             Dim index As Integer = -1
             If e.CommandName = "SelectAction" Then
                 index = CInt(e.CommandArgument)
-                Me.State.SelectedSLGId = New Guid(CType(Grid.Rows(index).Cells(GRID_COL_SLG_ID).FindControl("SLGIdLabel"), Label).Text)
-                Me.callPage(ServiceLevelDetailForm.URL, Me.State.SelectedSLGId)
+                State.SelectedSLGId = New Guid(CType(Grid.Rows(index).Cells(GRID_COL_SLG_ID).FindControl("SLGIdLabel"), Label).Text)
+                callPage(ServiceLevelDetailForm.URL, State.SelectedSLGId)
 
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
 
-    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal source As Object, ByVal e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(source As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
-            Me.State.PageIndex = e.NewPageIndex
-            Me.State.SelectedSLGId = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = e.NewPageIndex
+            State.SelectedSLGId = Guid.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
@@ -332,93 +332,93 @@ Partial Class ServiceLevelGroupForm
 
 #Region " Button Clicks "
 
-    Private Sub btnSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As System.EventArgs) Handles btnSearch.Click
         Try
-            Me.State.PageIndex = 0
-            Me.State.SelectedSLGId = Guid.Empty
-            Me.State.IsGridVisible = True
-            Me.State.searchDV = Nothing
-            Me.State.HasDataChanged = False
+            State.PageIndex = 0
+            State.SelectedSLGId = Guid.Empty
+            State.IsGridVisible = True
+            State.searchDV = Nothing
+            State.HasDataChanged = False
             If txtDateFrom.Text <> "" Then
-                Me.State.FromDateMask = DateHelper.GetDateValue(Me.txtDateFrom.Text).ToString("yyyyMMdd")
+                State.FromDateMask = DateHelper.GetDateValue(txtDateFrom.Text).ToString("yyyyMMdd")
             End If
             If txtDateTo.Text <> "" Then
-                Me.State.ToDateMask = DateHelper.GetDateValue(Me.txtDateTo.Text).ToString("yyyyMMdd")
+                State.ToDateMask = DateHelper.GetDateValue(txtDateTo.Text).ToString("yyyyMMdd")
             End If
-            Me.PopulateGrid()
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
 
 
-    Private Sub btnAdd_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd_WRITE.Click
+    Private Sub btnAdd_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnAdd_WRITE.Click
 
         Try
-            Me.State.IsEditMode = True
-            Me.State.IsGridVisible = True
-            Me.State.IsGridAddNew = True
-            Me.State.HasDataChanged = True
-            Me.State.AddingNewRow = True
+            State.IsEditMode = True
+            State.IsGridVisible = True
+            State.IsGridAddNew = True
+            State.HasDataChanged = True
+            State.AddingNewRow = True
             AddNew()
             SetButtonsState()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
 
-    Private Sub btnClearSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
         Try
-            Me.TextBoxSearchCode.Text = ""
-            Me.TextBoxSearchDescription.Text = ""
-            moCountryDrop.SelectedIndex = Me.BLANK_ITEM_SELECTED
+            TextBoxSearchCode.Text = ""
+            TextBoxSearchDescription.Text = ""
+            moCountryDrop.SelectedIndex = BLANK_ITEM_SELECTED
             txtDateFrom.Text = String.Empty
             State.FromDateMask = String.Empty
             txtDateTo.Text = String.Empty
             State.ToDateMask = String.Empty
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub SaveButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SaveButton_WRITE.Click
+    Private Sub SaveButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles SaveButton_WRITE.Click
         Try
             Dim errors() As ValidationError = {New ValidationError("Country is required", GetType(ServiceLevelGroup), Nothing, "country_id", Nothing)}
             PopulateBOFromForm()
             'If ((Me.State.myBO.DealerGroupId.ToString = Guid.Empty.ToString) And (Me.State.myBO.DealerId.ToString = Guid.Empty.ToString)) Then
             '    Throw New BOValidationException(errors, GetType(BillingPlan).FullName)
             'End If
-            If (Me.State.myBO.IsDirty) Then
-                Me.State.myBO.Save()
-                Me.State.IsAfterSave = True
-                Me.State.AddingNewRow = False
-                Me.AddInfoMsg(Me.MSG_RECORD_SAVED_OK)
-                Me.State.searchDV = Nothing
-                Me.ReturnFromEditing()
+            If (State.myBO.IsDirty) Then
+                State.myBO.Save()
+                State.IsAfterSave = True
+                State.AddingNewRow = False
+                AddInfoMsg(MSG_RECORD_SAVED_OK)
+                State.searchDV = Nothing
+                ReturnFromEditing()
             Else
-                Me.AddInfoMsg(Me.MSG_RECORD_NOT_SAVED)
-                Me.ReturnFromEditing()
+                AddInfoMsg(MSG_RECORD_NOT_SAVED)
+                ReturnFromEditing()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
 
-    Private Sub CancelButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CancelButton.Click
+    Private Sub CancelButton_Click(sender As System.Object, e As System.EventArgs) Handles CancelButton.Click
 
         Try
-            Me.Grid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
-            Me.State.Canceling = True
-            If (Me.State.AddingNewRow) Then
-                Me.State.AddingNewRow = False
-                Me.State.searchDV = Nothing
+            Grid.SelectedIndex = NO_ITEM_SELECTED_INDEX
+            State.Canceling = True
+            If (State.AddingNewRow) Then
+                State.AddingNewRow = False
+                State.searchDV = Nothing
             End If
             ReturnFromEditing()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
@@ -427,21 +427,21 @@ Partial Class ServiceLevelGroupForm
 
 #Region "Helper Functions"
     Private Sub AddNew()
-        Me.State.searchDV = GetGridDataView()
+        State.searchDV = GetGridDataView()
 
-        Me.State.myBO = New ServiceLevelGroup
-        Me.State.SelectedSLGId = Me.State.myBO.Id
+        State.myBO = New ServiceLevelGroup
+        State.SelectedSLGId = State.myBO.Id
 
-        Me.State.searchDV = Me.State.myBO.GetNewDataViewRow(Me.State.searchDV, Me.State.myBO)
+        State.searchDV = State.myBO.GetNewDataViewRow(State.searchDV, State.myBO)
 
-        Grid.DataSource = Me.State.searchDV
+        Grid.DataSource = State.searchDV
 
-        Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.SelectedSLGId, Me.Grid, Me.State.PageIndex, Me.State.IsEditMode)
+        SetPageAndSelectedIndexFromGuid(State.searchDV, State.SelectedSLGId, Grid, State.PageIndex, State.IsEditMode)
 
-        Me.Grid.AutoGenerateColumns = False
+        Grid.AutoGenerateColumns = False
 
         SortAndBindGrid()
-        SetGridControls(Me.Grid, False)
+        SetGridControls(Grid, False)
 
 
         PopulateFormFromBO()
@@ -450,22 +450,22 @@ Partial Class ServiceLevelGroupForm
     Private Function GetGridDataView() As ServiceLevelGroup.ServiceLevelGroupSearchDV
 
         With State
-            Return (ServiceLevelGroup.getList(Me.TextBoxSearchCode.Text,
-            Me.TextBoxSearchDescription.Text, Me.State.SearchCountryId, Me.State.FromDateMask, Me.State.ToDateMask))
+            Return (ServiceLevelGroup.getList(TextBoxSearchCode.Text,
+            TextBoxSearchDescription.Text, State.SearchCountryId, State.FromDateMask, State.ToDateMask))
         End With
 
     End Function
 
     Private Sub SetButtonsState()
 
-        If (Me.State.IsEditMode) Then
+        If (State.IsEditMode) Then
             ControlMgr.SetVisibleControl(Me, SaveButton_WRITE, True)
             ControlMgr.SetVisibleControl(Me, CancelButton, True)
             ControlMgr.SetVisibleControl(Me, btnAdd_WRITE, False)
             ControlMgr.SetEnableControl(Me, btnSearch, False)
             ControlMgr.SetEnableControl(Me, btnClearSearch, False)
-            Me.MenuEnabled = False
-            If (Me.cboPageSize.Visible) Then
+            MenuEnabled = False
+            If (cboPageSize.Visible) Then
                 ControlMgr.SetEnableControl(Me, cboPageSize, False)
             End If
         Else
@@ -474,9 +474,9 @@ Partial Class ServiceLevelGroupForm
             ControlMgr.SetVisibleControl(Me, btnAdd_WRITE, True)
             ControlMgr.SetEnableControl(Me, btnSearch, True)
             ControlMgr.SetEnableControl(Me, btnClearSearch, True)
-            Me.MenuEnabled = True
-            If (Me.cboPageSize.Visible) Then
-                ControlMgr.SetEnableControl(Me, Me.cboPageSize, True)
+            MenuEnabled = True
+            If (cboPageSize.Visible) Then
+                ControlMgr.SetEnableControl(Me, cboPageSize, True)
             End If
         End If
 
@@ -487,7 +487,7 @@ Partial Class ServiceLevelGroupForm
 
         Grid.EditIndex = NO_ITEM_SELECTED_INDEX
 
-        If Me.Grid.PageCount = 0 Then
+        If Grid.PageCount = 0 Then
             'if returning to the "1st time in" screen
             ControlMgr.SetVisibleControl(Me, Grid, False)
         Else
@@ -495,13 +495,13 @@ Partial Class ServiceLevelGroupForm
         End If
 
         SetGridControls(Grid, True)
-        Me.State.IsEditMode = False
-        Me.PopulateGrid()
-        Me.State.PageIndex = Grid.PageIndex
+        State.IsEditMode = False
+        PopulateGrid()
+        State.PageIndex = Grid.PageIndex
         SetButtonsState()
 
     End Sub
-    Private Sub PopulateDropdown(ByVal CountryList As DropDownList)
+    Private Sub PopulateDropdown(CountryList As DropDownList)
         Try
             'Me.BindListControlToDataView(CountryList, LookupListNew.GetUserCountriesLookupList())
             Dim allCountries As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="Country")
@@ -515,35 +515,35 @@ Partial Class ServiceLevelGroupForm
                                                     .AddBlankItem = True
                                                    })
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
 
     Private Sub PopulateFormFromBO()
 
-        Dim gridRowIdx As Integer = Me.Grid.EditIndex
+        Dim gridRowIdx As Integer = Grid.EditIndex
         Try
-            With Me.State.myBO
+            With State.myBO
 
 
-                If (Not .Code Is Nothing) Then
-                    CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_CODE).FindControl("SLGCodeTextBox"), TextBox).Text = .Code
+                If (.Code IsNot Nothing) Then
+                    CType(Grid.Rows(gridRowIdx).Cells(GRID_COL_CODE).FindControl("SLGCodeTextBox"), TextBox).Text = .Code
                 End If
-                If (Not .Description Is Nothing) Then
-                    CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_DESCRIPTION).FindControl("SLGDescTextBox"), TextBox).Text = .Description
+                If (.Description IsNot Nothing) Then
+                    CType(Grid.Rows(gridRowIdx).Cells(GRID_COL_DESCRIPTION).FindControl("SLGDescTextBox"), TextBox).Text = .Description
                 End If
 
-                Dim CountryList As DropDownList = CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_COUNTRY).FindControl("CountryDropdown"), DropDownList)
+                Dim CountryList As DropDownList = CType(Grid.Rows(gridRowIdx).Cells(GRID_COL_COUNTRY).FindControl("CountryDropdown"), DropDownList)
 
                 PopulateDropdown(CountryList)
 
-                Me.SetSelectedItem(CountryList, .CountryId)
+                SetSelectedItem(CountryList, .CountryId)
 
 
             End With
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub
@@ -553,14 +553,14 @@ Partial Class ServiceLevelGroupForm
     Private Sub PopulateBOFromForm()
 
         Try
-            With Me.State.myBO
-                .CountryId = New Guid(CType(Me.Grid.Rows(Me.Grid.EditIndex).Cells(Me.GRID_COL_COUNTRY).FindControl("CountryDropdown"), DropDownList).SelectedValue)
-                .Code = CType(Me.Grid.Rows(Me.Grid.EditIndex).Cells(Me.GRID_COL_CODE).FindControl("SLGCodeTextBox"), TextBox).Text
-                .Description = CType(Me.Grid.Rows(Me.Grid.EditIndex).Cells(Me.GRID_COL_DESCRIPTION).FindControl("SLGDescTextBox"), TextBox).Text
+            With State.myBO
+                .CountryId = New Guid(CType(Grid.Rows(Grid.EditIndex).Cells(GRID_COL_COUNTRY).FindControl("CountryDropdown"), DropDownList).SelectedValue)
+                .Code = CType(Grid.Rows(Grid.EditIndex).Cells(GRID_COL_CODE).FindControl("SLGCodeTextBox"), TextBox).Text
+                .Description = CType(Grid.Rows(Grid.EditIndex).Cells(GRID_COL_DESCRIPTION).FindControl("SLGDescTextBox"), TextBox).Text
 
             End With
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub

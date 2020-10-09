@@ -6,44 +6,44 @@ Public Class ServiceGroupRiskType
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
 
     'Exiting or not BO using parent keys attaching to a BO family
-    Public Sub New(ByVal serviceGroupId As Guid, ByVal riskTypeId As Guid, ByVal familyDS As DataSet)
+    Public Sub New(serviceGroupId As Guid, riskTypeId As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(serviceGroupId, riskTypeId)
+        Dataset = familyDS
+        Load(serviceGroupId, riskTypeId)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
@@ -51,12 +51,12 @@ Public Class ServiceGroupRiskType
     Protected Sub Load()
         Try
             Dim dal As New ServiceGroupRiskTypeDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -64,23 +64,23 @@ Public Class ServiceGroupRiskType
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ServiceGroupRiskTypeDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -89,18 +89,18 @@ Public Class ServiceGroupRiskType
     End Sub
 
 
-    Protected Sub Load(ByVal serviceGroupId As Guid, ByVal riskTypeId As Guid)
+    Protected Sub Load(serviceGroupId As Guid, riskTypeId As Guid)
         'try to find it thru a sequential search
         Dim row As DataRow
-        For Each row In Me.Dataset.Tables(ServiceGroupDAL.TABLE_NAME).Rows
+        For Each row In Dataset.Tables(ServiceGroupDAL.TABLE_NAME).Rows
             Dim obj As New ServiceGroupRiskType(row)
             If obj.ServiceGroupId.Equals(serviceGroupId) AndAlso obj.RiskTypeId.Equals(riskTypeId) Then
                 Me.Row = row
             End If
         Next
         If Me.Row Is Nothing Then
-            Me.Row = Me.Dataset.Tables(ServiceGroupDAL.TABLE_NAME).NewRow
-            Me.Dataset.Tables(ServiceGroupDAL.TABLE_NAME).Rows.Add(Me.Row)
+            Me.Row = Dataset.Tables(ServiceGroupDAL.TABLE_NAME).NewRow
+            Dataset.Tables(ServiceGroupDAL.TABLE_NAME).Rows.Add(Me.Row)
         End If
         Dim ht As New Hashtable
     End Sub
@@ -117,7 +117,7 @@ Public Class ServiceGroupRiskType
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ServiceGroupRiskTypeDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -128,7 +128,7 @@ Public Class ServiceGroupRiskType
     End Property
 
     <ValueMandatory("")> _
-    Public Property ServiceGroupId() As Guid
+    Public Property ServiceGroupId As Guid
         Get
             CheckDeleted()
             If Row(ServiceGroupRiskTypeDAL.COL_NAME_SERVICE_GROUP_ID) Is DBNull.Value Then
@@ -137,15 +137,15 @@ Public Class ServiceGroupRiskType
                 Return New Guid(CType(Row(ServiceGroupRiskTypeDAL.COL_NAME_SERVICE_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ServiceGroupRiskTypeDAL.COL_NAME_SERVICE_GROUP_ID, Value)
+            SetValue(ServiceGroupRiskTypeDAL.COL_NAME_SERVICE_GROUP_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property RiskTypeId() As Guid
+    Public Property RiskTypeId As Guid
         Get
             CheckDeleted()
             If Row(ServiceGroupRiskTypeDAL.COL_NAME_RISK_TYPE_ID) Is DBNull.Value Then
@@ -154,18 +154,18 @@ Public Class ServiceGroupRiskType
                 Return New Guid(CType(Row(ServiceGroupRiskTypeDAL.COL_NAME_RISK_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ServiceGroupRiskTypeDAL.COL_NAME_RISK_TYPE_ID, Value)
+            SetValue(ServiceGroupRiskTypeDAL.COL_NAME_RISK_TYPE_ID, Value)
             'Set RiskType Description
             Dim dv As DataView = LookupListNew.GetRiskTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
             Dim riskTypeDesc As String = LookupListNew.GetDescriptionFromId(dv, Value)
-            Me.SetValue(ServiceGroupRiskTypeDAL.COL_NAME_RISK_TYPE_DESCRIPTION, riskTypeDesc)
+            SetValue(ServiceGroupRiskTypeDAL.COL_NAME_RISK_TYPE_DESCRIPTION, riskTypeDesc)
         End Set
     End Property
 
 
-    Public ReadOnly Property RiskTypeDescription() As String
+    Public ReadOnly Property RiskTypeDescription As String
         Get
             CheckDeleted()
             If Row(ServiceGroupRiskTypeDAL.COL_NAME_RISK_TYPE_DESCRIPTION) Is DBNull.Value Then
@@ -185,11 +185,11 @@ Public Class ServiceGroupRiskType
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ServiceGroupRiskTypeDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then Me.Load(Me.Id)
+                If Row.RowState <> DataRowState.Detached Then Load(Id)
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
@@ -197,9 +197,9 @@ Public Class ServiceGroupRiskType
     End Sub
 
     'Added manually to the code
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
-            Return MyBase.IsDirty OrElse Me.IsChildrenDirty
+            Return MyBase.IsDirty OrElse IsChildrenDirty
         End Get
     End Property
 
@@ -209,19 +209,19 @@ Public Class ServiceGroupRiskType
 
 #Region "Children Related"
 
-    Public ReadOnly Property SgRtManufacturerChildren() As sgRtManufacturerList
+    Public ReadOnly Property SgRtManufacturerChildren As sgRtManufacturerList
         Get
             Return New SgRtManufacturerList(Me)
         End Get
     End Property
 
-    Public Sub UpdateManufaturers(ByVal selectedManufacturerGuidStrCollection As Hashtable)
+    Public Sub UpdateManufaturers(selectedManufacturerGuidStrCollection As Hashtable)
         If selectedManufacturerGuidStrCollection.Count = 0 Then
-            If Not Me.IsDeleted Then Me.Delete()
+            If Not IsDeleted Then Delete()
         Else
             'first Pass
             Dim bo As SgRtManufacturer
-            For Each bo In Me.SgRtManufacturerChildren
+            For Each bo In SgRtManufacturerChildren
                 If Not selectedManufacturerGuidStrCollection.Contains(bo.ManufacturerId.ToString) Then
                     'delete
                     bo.Delete()
@@ -231,31 +231,31 @@ Public Class ServiceGroupRiskType
             'Second Pass
             Dim entry As DictionaryEntry
             For Each entry In selectedManufacturerGuidStrCollection
-                If Me.SgRtManufacturerChildren.Find(New Guid(entry.Key.ToString)) Is Nothing Then
+                If SgRtManufacturerChildren.Find(New Guid(entry.Key.ToString)) Is Nothing Then
                     'add
                     Dim sgrtMan As SgRtManufacturer = SgRtManufacturerChildren.GetNewChild()
                     sgrtMan.ManufacturerId = New Guid(entry.Key.ToString)
-                    sgrtMan.ServiceGroupRiskTypeId = Me.Id
+                    sgrtMan.ServiceGroupRiskTypeId = Id
                     sgrtMan.Save()
                 End If
             Next
         End If
     End Sub
 
-    Public Sub AttachManufaturers(ByVal selectedManufacturerGuidStrCollection As ArrayList)
+    Public Sub AttachManufaturers(selectedManufacturerGuidStrCollection As ArrayList)
         Dim sgRtManIdStr As String
         For Each sgRtManIdStr In selectedManufacturerGuidStrCollection
-            Dim sgRtMan As SgRtManufacturer = Me.SgRtManufacturerChildren.GetNewChild
+            Dim sgRtMan As SgRtManufacturer = SgRtManufacturerChildren.GetNewChild
             sgRtMan.ManufacturerId = New Guid(sgRtManIdStr)
-            sgRtMan.ServiceGroupRiskTypeId = Me.Id
+            sgRtMan.ServiceGroupRiskTypeId = Id
             sgRtMan.Save()
         Next
     End Sub
 
-    Public Sub DetachManufaturers(ByVal selectedManufacturerGuidStrCollection As ArrayList)
+    Public Sub DetachManufaturers(selectedManufacturerGuidStrCollection As ArrayList)
         Dim sgRtManIdStr As String
         For Each sgRtManIdStr In selectedManufacturerGuidStrCollection
-            Dim sgRtMan As SgRtManufacturer = Me.SgRtManufacturerChildren.Find(New Guid(sgRtManIdStr))
+            Dim sgRtMan As SgRtManufacturer = SgRtManufacturerChildren.Find(New Guid(sgRtManIdStr))
             sgRtMan.Delete()
             sgRtMan.Save()
         Next
@@ -283,14 +283,14 @@ Public Class ServiceGroupRiskType
         Return dv
     End Function
 
-    Protected Function GetManufacturersLookupListSelectedSequenceFilter(ByVal dv As DataView, ByVal isFilterInclusive As Boolean) As String
+    Protected Function GetManufacturersLookupListSelectedSequenceFilter(dv As DataView, isFilterInclusive As Boolean) As String
         Dim sgRtMan As SgRtManufacturer
         Dim inClause As String = "(-1"
-        For Each sgRtMan In Me.SgRtManufacturerChildren
+        For Each sgRtMan In SgRtManufacturerChildren
             inClause &= "," & LookupListNew.GetSequenceFromId(dv, sgRtMan.ManufacturerId)
         Next
         inClause &= ")"
-        Dim rowFilter As String = BusinessObjectBase.SYSTEM_SEQUENCE_COL_NAME
+        Dim rowFilter As String = SYSTEM_SEQUENCE_COL_NAME
         If isFilterInclusive Then
             rowFilter &= " IN " & inClause
         Else
@@ -300,7 +300,7 @@ Public Class ServiceGroupRiskType
     End Function
 
     Public Function IsAssociatedForAnyManufacturer() As Boolean
-        Return Me.SgRtManufacturerChildren.Count = 0
+        Return SgRtManufacturerChildren.Count = 0
     End Function
 
 #End Region

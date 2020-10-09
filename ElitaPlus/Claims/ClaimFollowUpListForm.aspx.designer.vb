@@ -21,7 +21,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents ScriptManager1 As Global.System.Web.UI.ScriptManager
+        Protected WithEvents ScriptManager1 As ScriptManager
         
         '''<summary>
         '''searchTable control.
@@ -30,7 +30,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents searchTable As Global.System.Web.UI.HtmlControls.HtmlTable
+        Protected WithEvents searchTable As HtmlTable
         
         '''<summary>
         '''LabelSearchClaimNumber control.
@@ -39,7 +39,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents LabelSearchClaimNumber As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents LabelSearchClaimNumber As Label
         
         '''<summary>
         '''LabelSearchCustomerName control.
@@ -48,7 +48,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents LabelSearchCustomerName As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents LabelSearchCustomerName As Label
         
         '''<summary>
         '''LabelSearchClaimExtendedStatus control.
@@ -57,7 +57,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents LabelSearchClaimExtendedStatus As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents LabelSearchClaimExtendedStatus As Label
         
         '''<summary>
         '''TextBoxSearchClaimNumber control.
@@ -66,7 +66,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents TextBoxSearchClaimNumber As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents TextBoxSearchClaimNumber As TextBox
         
         '''<summary>
         '''TextBoxSearchCustomerName control.
@@ -75,7 +75,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents TextBoxSearchCustomerName As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents TextBoxSearchCustomerName As TextBox
         
         '''<summary>
         '''moClaimExtendedStatusDD control.
@@ -84,7 +84,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moClaimExtendedStatusDD As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents moClaimExtendedStatusDD As DropDownList
         
         '''<summary>
         '''LabelSearchServiceCenter control.
@@ -93,7 +93,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents LabelSearchServiceCenter As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents LabelSearchServiceCenter As Label
         
         '''<summary>
         '''LabelSearchClaimAdjuster control.
@@ -102,7 +102,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents LabelSearchClaimAdjuster As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents LabelSearchClaimAdjuster As Label
         
         '''<summary>
         '''lblOwner control.
@@ -111,7 +111,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblOwner As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblOwner As Label
         
         '''<summary>
         '''moServiceCenterText control.
@@ -120,7 +120,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moServiceCenterText As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents moServiceCenterText As TextBox
         
         '''<summary>
         '''TextBoxSearchClaimAdjuster control.
@@ -129,7 +129,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents TextBoxSearchClaimAdjuster As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents TextBoxSearchClaimAdjuster As TextBox
         
         '''<summary>
         '''moOwnerDD control.
@@ -138,7 +138,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moOwnerDD As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents moOwnerDD As DropDownList
         
         '''<summary>
         '''LabelFollowUpDate control.
@@ -147,7 +147,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents LabelFollowUpDate As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents LabelFollowUpDate As Label
         
         '''<summary>
         '''lblClaimStatus control.
@@ -156,7 +156,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblClaimStatus As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblClaimStatus As Label
         
         '''<summary>
         '''LabelSearchClaimTATRange control.
@@ -165,7 +165,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents LabelSearchClaimTATRange As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents LabelSearchClaimTATRange As Label
         
         '''<summary>
         '''TextBoxFollowUpDate control.
@@ -174,7 +174,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents TextBoxFollowUpDate As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents TextBoxFollowUpDate As TextBox
         
         '''<summary>
         '''BtnFollowUpDate control.
@@ -183,7 +183,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents BtnFollowUpDate As Global.System.Web.UI.WebControls.ImageButton
+        Protected WithEvents BtnFollowUpDate As ImageButton
         
         '''<summary>
         '''cboClaimStatus control.
@@ -192,7 +192,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents cboClaimStatus As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents cboClaimStatus As DropDownList
         
         '''<summary>
         '''moClaimTATRangeDD control.
@@ -201,7 +201,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moClaimTATRangeDD As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents moClaimTATRangeDD As DropDownList
         
         '''<summary>
         '''lblSearchSortBy control.
@@ -210,7 +210,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblSearchSortBy As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblSearchSortBy As Label
         
         '''<summary>
         '''LabelSearchDealer control.
@@ -219,7 +219,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents LabelSearchDealer As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents LabelSearchDealer As Label
         
         '''<summary>
         '''LabelSearchLastActivity control.
@@ -228,7 +228,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents LabelSearchLastActivity As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents LabelSearchLastActivity As Label
         
         '''<summary>
         '''cboSortBy control.
@@ -237,7 +237,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents cboSortBy As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents cboSortBy As DropDownList
         
         '''<summary>
         '''moDealerDrop control.
@@ -246,7 +246,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moDealerDrop As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents moDealerDrop As DropDownList
         
         '''<summary>
         '''moLastActivityDD control.
@@ -255,7 +255,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moLastActivityDD As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents moLastActivityDD As DropDownList
         
         '''<summary>
         '''Label control.
@@ -264,7 +264,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents Label As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents Label As Label
         
         '''<summary>
         '''cboNonOperatedClaims control.
@@ -273,7 +273,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents cboNonOperatedClaims As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents cboNonOperatedClaims As DropDownList
         
         '''<summary>
         '''btnClearSearch control.
@@ -282,7 +282,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnClearSearch As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents btnClearSearch As Button
         
         '''<summary>
         '''btnSearch control.
@@ -291,7 +291,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnSearch As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents btnSearch As Button
         
         '''<summary>
         '''trPageSize control.
@@ -300,7 +300,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents trPageSize As HtmlTableRow
         
         '''<summary>
         '''lblPageSize control.
@@ -309,7 +309,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblPageSize As Label
         
         '''<summary>
         '''Label3 control.
@@ -318,7 +318,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents Label3 As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents Label3 As Label
         
         '''<summary>
         '''cboPageSize control.
@@ -327,7 +327,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents cboPageSize As DropDownList
         
         '''<summary>
         '''lblRecordCount control.
@@ -336,7 +336,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblRecordCount As Label
         
         '''<summary>
         '''Grid control.
@@ -345,6 +345,6 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents Grid As Global.System.Web.UI.WebControls.DataGrid
+        Protected WithEvents Grid As DataGrid
     End Class
 End Namespace

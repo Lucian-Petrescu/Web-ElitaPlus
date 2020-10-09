@@ -58,46 +58,46 @@ Partial Public Class CertAddBundleItemForm
 #End Region
 
 #Region "Page events"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
         CheckIfComingFromSaveConfirm()
-        Me.ErrControllerMaster.Clear_Hide()
+        ErrControllerMaster.Clear_Hide()
         Try
-            If Not Me.IsPostBack Then
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
+            If Not IsPostBack Then
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
 
                 PopulateGrid()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
-        Me.ShowMissingTranslations(Me.ErrControllerMaster)
+        ShowMissingTranslations(ErrControllerMaster)
     End Sub
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Dim objBO As CertAddController
         Try
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 'Get the id from the parent
-                objBO = CType(Me.CallingParameters, CertAddController)
-                Me.State.ControllerBO = objBO
+                objBO = CType(CallingParameters, CertAddController)
+                State.ControllerBO = objBO
                 If State.ControllerBO.BundledItems Is Nothing Then
                     State.ControllerBO.InitBundle()
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster, False)
+            HandleErrors(ex, ErrControllerMaster, False)
         End Try
     End Sub
 
-    Private Sub Page_LoadComplete(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.LoadComplete
+    Private Sub Page_LoadComplete(sender As Object, e As System.EventArgs) Handles Me.LoadComplete
         Dim intHight As Integer = 200 + (10 - State.ControllerBO.GetBundledItemCount) * 10
         If ErrControllerMaster.Visible Then
             intHight = 200 + (10 - State.ControllerBO.GetBundledItemCount) * 10
         Else
             intHight = 1
         End If
-        Me.spanFiller.Text = String.Format("<tr><td colspan=""2"" style=""height:{0}px"">&nbsp;</td></tr>", intHight)
+        spanFiller.Text = String.Format("<tr><td colspan=""2"" style=""height:{0}px"">&nbsp;</td></tr>", intHight)
     End Sub
 #End Region
 
@@ -111,29 +111,29 @@ Partial Public Class CertAddBundleItemForm
             Grid.DataSource = State.ControllerBO.BundledItems
             Grid.DataBind()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
         EnableDisablePageControls()
     End Sub
 
     Private Sub EnableDisablePageControls()
         If State.EditMode = EditAction.Add OrElse State.EditMode = EditAction.Edit Then
-            Me.btnNew.Visible = False
-            Me.btnBack.Visible = False
-            Me.btnCancel.Visible = True
-            Me.btnSave.Visible = True
-            SetGridControls(Me.Grid, False)
+            btnNew.Visible = False
+            btnBack.Visible = False
+            btnCancel.Visible = True
+            btnSave.Visible = True
+            SetGridControls(Grid, False)
         Else
             If State.ControllerBO.GetBundledItemCount < CertAddController.MAX_BUNDLED_ITEMS_ALLOWED Then
-                Me.btnNew.Visible = True
+                btnNew.Visible = True
             End If
-            Me.btnBack.Visible = True
-            Me.btnCancel.Visible = False
-            Me.btnSave.Visible = False
+            btnBack.Visible = True
+            btnCancel.Visible = False
+            btnSave.Visible = False
         End If
     End Sub
 
-    Private Sub SetFocusOnEditableFieldInGrid(ByVal grid As DataGrid, ByVal cellPosition As Integer, ByVal controlName As String, ByVal itemIndex As Integer)
+    Private Sub SetFocusOnEditableFieldInGrid(grid As DataGrid, cellPosition As Integer, controlName As String, itemIndex As Integer)
         'Set focus on the Description TextBox for the EditItemIndex row
         Dim desc As WebControl = CType(grid.Items(itemIndex).Cells(cellPosition).FindControl(controlName), WebControl)
         SetFocus(desc)
@@ -141,15 +141,15 @@ Partial Public Class CertAddBundleItemForm
 #End Region
 
 #Region "Button click handlers"
-    Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            Me.ReturnToCallingPage(State.ControllerBO)
+            ReturnToCallingPage(State.ControllerBO)
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
-    Private Sub btnCancel_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+    Private Sub btnCancel_Click(sender As Object, e As System.EventArgs) Handles btnCancel.Click
         Try
             If State.EditMode = EditAction.Add Then
                 State.ControllerBO.DeleteBundledItem(Grid.EditItemIndex + 1)
@@ -158,11 +158,11 @@ Partial Public Class CertAddBundleItemForm
             State.EditMode = EditAction.NoAction
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub btnNew_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNew.Click
+    Private Sub btnNew_Click(sender As Object, e As System.EventArgs) Handles btnNew.Click
         Try
             Dim objItem As CertAddController.BundledItem = New CertAddController.BundledItem
             Dim strErr As String
@@ -171,38 +171,38 @@ Partial Public Class CertAddBundleItemForm
             State.EditMode = EditAction.Add
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub btnSave_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSave.Click
+    Private Sub btnSave_Click(sender As Object, e As System.EventArgs) Handles btnSave.Click
         Dim strMake As String, strModel As String, strSerialNum As String, strDesc As String, strProdCode As String
         Dim strTemp As String, intMfgWarranty As Integer, dblPrice As Double
         Dim errMsg As Collections.Generic.List(Of String) = New Collections.Generic.List(Of String), hasErr As Boolean = False
         Dim idxItem As Integer = Grid.EditItemIndex
 
         Dim txtCtl As TextBox, ddlCtl As DropDownList
-        ddlCtl = CType(Me.Grid.Items(idxItem).Cells(Me.COL_IDX_MAKE).FindControl(Me.GRID_CONTROL_NAME_MAKE), DropDownList)
+        ddlCtl = CType(Grid.Items(idxItem).Cells(COL_IDX_MAKE).FindControl(GRID_CONTROL_NAME_MAKE), DropDownList)
         strMake = ddlCtl.SelectedItem.Text
-        txtCtl = CType(Me.Grid.Items(idxItem).Cells(Me.COL_IDX_MODEL).FindControl(Me.GRID_CONTROL_NAME_MODEL), TextBox)
+        txtCtl = CType(Grid.Items(idxItem).Cells(COL_IDX_MODEL).FindControl(GRID_CONTROL_NAME_MODEL), TextBox)
         strModel = txtCtl.Text.Trim
-        txtCtl = CType(Me.Grid.Items(idxItem).Cells(Me.COL_IDX_SERIAL_NUM).FindControl(Me.GRID_CONTROL_NAME_SERIAL_NUM), TextBox)
+        txtCtl = CType(Grid.Items(idxItem).Cells(COL_IDX_SERIAL_NUM).FindControl(GRID_CONTROL_NAME_SERIAL_NUM), TextBox)
         strSerialNum = txtCtl.Text.Trim
-        txtCtl = CType(Me.Grid.Items(idxItem).Cells(Me.COL_IDX_DESCRIPTION).FindControl(Me.GRID_CONTROL_NAME_DESCRIPTION), TextBox)
+        txtCtl = CType(Grid.Items(idxItem).Cells(COL_IDX_DESCRIPTION).FindControl(GRID_CONTROL_NAME_DESCRIPTION), TextBox)
         strDesc = txtCtl.Text.Trim
-        txtCtl = CType(Me.Grid.Items(idxItem).Cells(Me.COL_IDX_PRODUCT_CODE).FindControl(Me.GRID_CONTROL_NAME_PRODUCT_CODE), TextBox)
+        txtCtl = CType(Grid.Items(idxItem).Cells(COL_IDX_PRODUCT_CODE).FindControl(GRID_CONTROL_NAME_PRODUCT_CODE), TextBox)
         strProdCode = txtCtl.Text.Trim
-        txtCtl = CType(Me.Grid.Items(idxItem).Cells(Me.COL_IDX_PRICE).FindControl(Me.GRID_CONTROL_NAME_PRICE), TextBox)
+        txtCtl = CType(Grid.Items(idxItem).Cells(COL_IDX_PRICE).FindControl(GRID_CONTROL_NAME_PRICE), TextBox)
         strTemp = txtCtl.Text.Trim
         If Not Double.TryParse(strTemp, dblPrice) Then
             hasErr = True
-            errMsg.Add(Grid.Columns(Me.COL_IDX_PRICE).HeaderText & ":" & TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_INVALID_NUMBER))
+            errMsg.Add(Grid.Columns(COL_IDX_PRICE).HeaderText & ":" & TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_INVALID_NUMBER))
         End If
-        txtCtl = CType(Me.Grid.Items(idxItem).Cells(Me.COL_IDX_MFG_WARRANTY).FindControl(Me.GRID_CONTROL_NAME_MFG_WARRANTY), TextBox)
+        txtCtl = CType(Grid.Items(idxItem).Cells(COL_IDX_MFG_WARRANTY).FindControl(GRID_CONTROL_NAME_MFG_WARRANTY), TextBox)
         strTemp = txtCtl.Text.Trim
         If Not Integer.TryParse(strTemp, intMfgWarranty) Then
             hasErr = True
-            errMsg.Add(Grid.Columns(Me.COL_IDX_MFG_WARRANTY).HeaderText & ":" & TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_INVALID_NUMBER))
+            errMsg.Add(Grid.Columns(COL_IDX_MFG_WARRANTY).HeaderText & ":" & TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_INVALID_NUMBER))
         End If
         If Not hasErr Then
             Dim objItem As CertAddController.BundledItem = State.ControllerBO.GetBundledItem(idxItem + 1)
@@ -226,51 +226,51 @@ Partial Public Class CertAddBundleItemForm
 
 #Region "Grid related functions"
 
-    Protected Sub ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+    Protected Sub ItemCommand(source As Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
         Try
             Dim index As Integer = e.Item.ItemIndex
-            If (e.CommandName = Me.EDIT_COMMAND) Then
+            If (e.CommandName = EDIT_COMMAND) Then
                 'Do the Edit here
                 'Set the IsEditMode flag to TRUE
                 State.EditMode = EditAction.Edit
                 Grid.EditItemIndex = index
-                Me.PopulateGrid()
+                PopulateGrid()
                 'Set focus on the Description TextBox for the EditItemIndex row
                 'Me.SetFocusOnEditableFieldInGrid(Me.Grid, Me.COL_IDX_MAKE, Me.GRID_CONTROL_NAME_MAKE, index)
-            ElseIf (e.CommandName = Me.DELETE_COMMAND) Then
+            ElseIf (e.CommandName = DELETE_COMMAND) Then
                 'Do the delete here
-                Grid.SelectedIndex = Me.NO_ROW_SELECTED_INDEX
-                Grid.EditItemIndex = Me.NO_ITEM_SELECTED_INDEX
+                Grid.SelectedIndex = NO_ROW_SELECTED_INDEX
+                Grid.EditItemIndex = NO_ITEM_SELECTED_INDEX
                 State.EditMode = EditAction.NoAction
                 'Delete the item from the list
                 State.ControllerBO.DeleteBundledItem(index + 1)
                 PopulateGrid()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Protected Sub ItemBound(ByVal source As Object, ByVal e As DataGridItemEventArgs) Handles Grid.ItemDataBound
+    Protected Sub ItemBound(source As Object, e As DataGridItemEventArgs) Handles Grid.ItemDataBound
 
         Try
             BaseItemBound(source, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Protected Sub ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs)
+    Protected Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+    Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
         Try
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim ctlddl As DropDownList
             If (itemType = ListItemType.EditItem) Then
                 Dim objItem As CertAddController.BundledItem = CType(e.Item.DataItem, CertAddController.BundledItem)
-                ctlddl = CType(e.Item.Cells(Me.COL_IDX_MAKE).FindControl(Me.GRID_CONTROL_NAME_MAKE), DropDownList)
+                ctlddl = CType(e.Item.Cells(COL_IDX_MAKE).FindControl(GRID_CONTROL_NAME_MAKE), DropDownList)
                 'BindListTextToDataView(ctlddl, LookupListNew.GetManufacturerLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id), "DESCRIPTION", "DESCRIPTION", True)
 
                 Dim Manufacturer As DataElements.ListItem() =
@@ -291,7 +291,7 @@ Partial Public Class CertAddBundleItemForm
                 ctlddl.SelectedValue = objItem.Make
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 #End Region

@@ -15,7 +15,7 @@ Namespace SpecializedServices.Abag
             Get
                 Return _BatchNumber
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 _BatchNumber = value
             End Set
         End Property
@@ -26,7 +26,7 @@ Namespace SpecializedServices.Abag
             Get
                 Return _PreInvoiceDate
             End Get
-            Set(ByVal value As Date)
+            Set(value As Date)
                 _PreInvoiceDate = value
             End Set
         End Property

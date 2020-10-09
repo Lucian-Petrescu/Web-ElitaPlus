@@ -68,17 +68,17 @@ Namespace Certificates
 #End Region
 
 #Region "Page event handlers"
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-            Me.ErrControllerMaster.Clear_Hide()
-            Me.Form.DefaultButton = btnSearch.UniqueID
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+            ErrControllerMaster.Clear_Hide()
+            Form.DefaultButton = btnSearch.UniqueID
             Try
-                If Not Me.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
+                If Not IsPostBack Then
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
                     TranslateGridHeader(Grid)
 
                     GetStateProperties()
-                    If Not Me.IsReturningFromChild Then
+                    If Not IsReturningFromChild Then
                         ControlMgr.SetVisibleControl(Me, trPageSize, False)
                         If ElitaPlusIdentity.Current.ActiveUser.IsDealer Then
                             State.dealerId = ElitaPlusIdentity.Current.ActiveUser.ScDealerId
@@ -88,100 +88,100 @@ Namespace Certificates
 
                     populateSearchControls()
 
-                    If Me.IsReturningFromChild Then
+                    If IsReturningFromChild Then
                         ' It is returning from detail
-                        Me.PopulateGrid()
+                        PopulateGrid()
                     End If
-                    SetFocus(Me.txtPhone)
+                    SetFocus(txtPhone)
                 End If
-                Me.DisplayProgressBarOnClick(Me.btnSearch, "Loading_Certificates")
+                DisplayProgressBarOnClick(btnSearch, "Loading_Certificates")
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
-        Private Sub CertByPhoneNumListForm_LoadComplete(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.LoadComplete
+        Private Sub CertByPhoneNumListForm_LoadComplete(sender As Object, e As System.EventArgs) Handles Me.LoadComplete
             cboPageSize.Visible = Grid.Visible
             lblRecordCount.Visible = Grid.Visible
 
             If ErrControllerMaster.Visible Then
-                If Grid.Visible And Grid.Rows.Count < 10 Then
+                If Grid.Visible AndAlso Grid.Rows.Count < 10 Then
                     Dim fillerHight As Integer = 200
                     fillerHight = fillerHight - Grid.Rows.Count * 20
-                    Me.spanFiller.Text = "<tr><td colspan=""2"" style=""height:" & fillerHight & "px"">&nbsp;</td></tr>"
+                    spanFiller.Text = "<tr><td colspan=""2"" style=""height:" & fillerHight & "px"">&nbsp;</td></tr>"
                 End If
             Else
-                Me.spanFiller.Text = ""
+                spanFiller.Text = ""
             End If
         End Sub
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.MenuEnabled = True
-                Me.IsReturningFromChild = True
+                MenuEnabled = True
+                IsReturningFromChild = True
                 Dim retObj As CertificateForm.ReturnType = CType(ReturnPar, CertificateForm.ReturnType)
-                If Not retObj Is Nothing AndAlso retObj.BoChanged Then
-                    Me.State.searchDV = Nothing
+                If retObj IsNot Nothing AndAlso retObj.BoChanged Then
+                    State.searchDV = Nothing
                 End If
                 Select Case retObj.LastOperation
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        If Not retObj Is Nothing Then
+                        If retObj IsNot Nothing Then
                             If Not retObj.EditingBo.IsNew Then
-                                Me.State.selectedCertificateId = retObj.EditingBo.Id
+                                State.selectedCertificateId = retObj.EditingBo.Id
                             End If
-                            Me.State.IsGridVisible = True
+                            State.IsGridVisible = True
                         End If
                     Case ElitaPlusPage.DetailPageCommand.Delete
-                        Me.AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
+                        AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
                 End Select
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
 #End Region
 
 #Region "Button event handlers"
-        Protected Sub btnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSearch.Click
+        Protected Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
             Try
-                Me.SetStateProperties()
-                Me.State.PageIndex = 0
-                Me.State.selectedCertificateId = Guid.Empty
-                Me.State.IsGridVisible = True
-                Me.State.searchClick = True
-                Me.State.searchDV = Nothing
-                Me.PopulateGrid()
+                SetStateProperties()
+                State.PageIndex = 0
+                State.selectedCertificateId = Guid.Empty
+                State.IsGridVisible = True
+                State.searchClick = True
+                State.searchDV = Nothing
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClearSearch.Click
+        Protected Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
             Try
-                Me.txtCertNum.Text = String.Empty
-                Me.txtCustName.Text = String.Empty
-                Me.txtAddress.Text = String.Empty
-                Me.txtZip.Text = String.Empty
-                Me.txtPhone.Text = String.Empty
-                If Not ElitaPlusIdentity.Current.ActiveUser.IsDealer Then Me.ddlDealer.SelectedIndex = 0
+                txtCertNum.Text = String.Empty
+                txtCustName.Text = String.Empty
+                txtAddress.Text = String.Empty
+                txtZip.Text = String.Empty
+                txtPhone.Text = String.Empty
+                If Not ElitaPlusIdentity.Current.ActiveUser.IsDealer Then ddlDealer.SelectedIndex = 0
 
                 'Added for Req-610
-                Me.ddlPhoneType.SelectedIndex = 0
+                ddlPhoneType.SelectedIndex = 0
 
                 'Update Page State
-                With Me.State
-                    .certificateNumber = Me.txtCertNum.Text
-                    .customerName = Me.txtCustName.Text
-                    .address = Me.txtAddress.Text
-                    .zip = Me.txtZip.Text
-                    .PhoneNum = Me.txtPhone.Text
+                With State
+                    .certificateNumber = txtCertNum.Text
+                    .customerName = txtCustName.Text
+                    .address = txtAddress.Text
+                    .zip = txtZip.Text
+                    .PhoneNum = txtPhone.Text
                     .dealerId = Nothing
                     'Added for Req-610
                     .PhoneTypeId = Nothing
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 #End Region
@@ -204,7 +204,7 @@ Namespace Certificates
                                             .AddBlankItem = True
                                            })
 
-                If Me.State.dealerId <> Guid.Empty Then Me.SetSelectedItem(ddlDealer, Me.State.dealerId)
+                If State.dealerId <> Guid.Empty Then SetSelectedItem(ddlDealer, State.dealerId)
 
                 'populate sort by list
                 'Dim strRowFilter As String = "''IDENTIFICATION_NUMBER''"
@@ -223,7 +223,7 @@ Namespace Certificates
                     State.selectedSortById = LookupListNew.GetIdFromCode(LookupListNew.LK_CERTIFICATE_SEARCH_FIELDS, "CUSTOMER_NAME")
                 End If
 
-                Me.SetSelectedItem(Me.ddlSortBy, Me.State.selectedSortById)
+                SetSelectedItem(ddlSortBy, State.selectedSortById)
 
                 'Added for Req-610
                 Dim phoneType As ListItem() = CommonConfigManager.Current.ListManager.GetList("PHNRTP", Thread.CurrentPrincipal.GetLanguageCode())
@@ -232,9 +232,9 @@ Namespace Certificates
                                                 .AddBlankItem = False,
                                                 .SortFunc = AddressOf PopulateOptions.GetCode
                                                })
-                If Me.State.PhoneTypeId <> Guid.Empty Then Me.SetSelectedItem(ddlPhoneType, Me.State.PhoneTypeId)
+                If State.PhoneTypeId <> Guid.Empty Then SetSelectedItem(ddlPhoneType, State.PhoneTypeId)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -251,7 +251,7 @@ Namespace Certificates
                 oListContext.CompanyId = UserCompanies(Index)
                 Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
                 If oDealerListForCompany.Count > 0 Then
-                    If Not oDealerList Is Nothing Then
+                    If oDealerList IsNot Nothing Then
                         oDealerList.AddRange(oDealerListForCompany)
                     Else
                         oDealerList = oDealerListForCompany.Clone()
@@ -266,20 +266,20 @@ Namespace Certificates
 
         Private Sub GetStateProperties()
             Try
-                Me.txtCertNum.Text = Me.State.certificateNumber
-                Me.txtCustName.Text = Me.State.customerName
-                Me.txtAddress.Text = Me.State.address
-                Me.txtZip.Text = Me.State.zip
-                Me.txtPhone.Text = Me.State.PhoneNum
-                If Me.State.dealerId <> Guid.Empty And ddlDealer.Items.Count > 0 Then Me.SetSelectedItem(ddlDealer, Me.State.dealerId)
-                If State.selectedSortById <> Guid.Empty And ddlSortBy.Items.Count > 0 Then
-                    Me.SetSelectedItem(ddlSortBy, Me.State.selectedSortById)
+                txtCertNum.Text = State.certificateNumber
+                txtCustName.Text = State.customerName
+                txtAddress.Text = State.address
+                txtZip.Text = State.zip
+                txtPhone.Text = State.PhoneNum
+                If State.dealerId <> Guid.Empty AndAlso ddlDealer.Items.Count > 0 Then SetSelectedItem(ddlDealer, State.dealerId)
+                If State.selectedSortById <> Guid.Empty AndAlso ddlSortBy.Items.Count > 0 Then
+                    SetSelectedItem(ddlSortBy, State.selectedSortById)
                 End If
 
                 'Added for Req-610
-                If Me.State.PhoneTypeId <> Guid.Empty And ddlPhoneType.Items.Count > 0 Then Me.SetSelectedItem(ddlPhoneType, Me.State.PhoneTypeId)
+                If State.PhoneTypeId <> Guid.Empty AndAlso ddlPhoneType.Items.Count > 0 Then SetSelectedItem(ddlPhoneType, State.PhoneTypeId)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -287,24 +287,24 @@ Namespace Certificates
             Dim oCompanyId As Guid = ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID
 
             Try
-                If Me.State Is Nothing Then
-                    Me.RestoreState(New MyState)
+                If State Is Nothing Then
+                    RestoreState(New MyState)
                 End If
-                Me.State.certificateNumber = Me.txtCertNum.Text.ToUpper
-                Me.State.customerName = Me.txtCustName.Text.ToUpper
-                Me.State.address = Me.txtAddress.Text.ToUpper
-                Me.State.zip = Me.txtZip.Text.ToUpper
-                Me.State.PhoneNum = Me.txtPhone.Text.ToUpper
-                Me.State.dealerId = Me.GetSelectedItem(ddlDealer)
-                Me.State.dealerName = LookupListNew.GetCodeFromId("DEALERS", Me.State.dealerId)
-                Me.State.selectedSortById = Me.GetSelectedItem(Me.ddlSortBy)
+                State.certificateNumber = txtCertNum.Text.ToUpper
+                State.customerName = txtCustName.Text.ToUpper
+                State.address = txtAddress.Text.ToUpper
+                State.zip = txtZip.Text.ToUpper
+                State.PhoneNum = txtPhone.Text.ToUpper
+                State.dealerId = GetSelectedItem(ddlDealer)
+                State.dealerName = LookupListNew.GetCodeFromId("DEALERS", State.dealerId)
+                State.selectedSortById = GetSelectedItem(ddlSortBy)
 
                 'Added for Req-610
-                Me.State.PhoneTypeId = Me.GetSelectedItem(Me.ddlPhoneType)
-                Me.State.PhoneType = LookupListNew.GetCodeFromId("PHONE_NUMBER_TYPE", Me.State.PhoneTypeId)
-                Me.SetSelectedItem(ddlPhoneType, Me.State.PhoneTypeId)
+                State.PhoneTypeId = GetSelectedItem(ddlPhoneType)
+                State.PhoneType = LookupListNew.GetCodeFromId("PHONE_NUMBER_TYPE", State.PhoneTypeId)
+                SetSelectedItem(ddlPhoneType, State.PhoneTypeId)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -312,33 +312,33 @@ Namespace Certificates
             Try
                 Dim oDataView As DataView
                 Dim sortBy As String = "HOME_PHONE"
-                If (Me.State.searchDV Is Nothing) Then
-                    If (Not (Me.State.selectedSortById.Equals(Guid.Empty))) Then
-                        sortBy = LookupListNew.GetCodeFromId(LookupListNew.LK_CERTIFICATE_SEARCH_FIELDS, Me.State.selectedSortById)
+                If (State.searchDV Is Nothing) Then
+                    If (Not (State.selectedSortById.Equals(Guid.Empty))) Then
+                        sortBy = LookupListNew.GetCodeFromId(LookupListNew.LK_CERTIFICATE_SEARCH_FIELDS, State.selectedSortById)
                     End If
-                    Me.State.searchDV = Certificate.GetCertificatesListByPhoneNum(State.PhoneType, State.PhoneNum, Me.State.certificateNumber,
-                                                                            Me.State.customerName, Me.State.address,
-                                                                            Me.State.zip, Me.State.dealerName, Authentication.CurrentUser.CompanyGroup.Id,
+                    State.searchDV = Certificate.GetCertificatesListByPhoneNum(State.PhoneType, State.PhoneNum, State.certificateNumber,
+                                                                            State.customerName, State.address,
+                                                                            State.zip, State.dealerName, Authentication.CurrentUser.CompanyGroup.Id,
                                                                             Authentication.CurrentUser.NetworkId,
                                                                             sortBy)
-                    If Me.State.searchClick Then
-                        Me.ValidSearchResultCount(Me.State.searchDV.Count, True)
-                        Me.State.searchClick = False
+                    If State.searchClick Then
+                        ValidSearchResultCount(State.searchDV.Count, True)
+                        State.searchClick = False
                     End If
                 End If
 
                 Grid.PageSize = State.PageSize
                 If State.searchDV.Count = 0 Then
                     Dim dv As Certificate.PhoneNumberSearchDV = State.searchDV.AddNewRowToEmptyDV()
-                    SetPageAndSelectedIndexFromGuid(dv, Me.State.selectedCertificateId, Me.Grid, Me.State.PageIndex)
-                    Me.Grid.DataSource = dv
+                    SetPageAndSelectedIndexFromGuid(dv, State.selectedCertificateId, Grid, State.PageIndex)
+                    Grid.DataSource = dv
                 Else
-                    SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.selectedCertificateId, Me.Grid, Me.State.PageIndex)
-                    Me.Grid.DataSource = Me.State.searchDV
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.selectedCertificateId, Grid, State.PageIndex)
+                    Grid.DataSource = State.searchDV
                 End If
 
-                Me.State.PageIndex = Me.Grid.PageIndex
-                Me.Grid.AllowSorting = False
+                State.PageIndex = Grid.PageIndex
+                Grid.AllowSorting = False
 
                 'Added for Req-610
                 If State.PhoneType = "HM" Then
@@ -349,15 +349,15 @@ Namespace Certificates
                     Grid.Columns(GRID_COL_WORK_PHONE_IDX).Visible = True
                 End If
 
-                Me.Grid.DataBind()
+                Grid.DataBind()
 
                 HighLightGridViewSortColumn(Grid, sortBy)
                 ControlMgr.SetVisibleControl(Me, Grid, True)
-                ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
-                Session("recCount") = Me.State.searchDV.Count
+                ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
+                Session("recCount") = State.searchDV.Count
 
-                If Me.Grid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If Grid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
                 If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
 
@@ -369,7 +369,7 @@ Namespace Certificates
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -377,63 +377,63 @@ Namespace Certificates
 
 #Region "Grid related"
 
-        Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+        Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
             Try
-                Me.State.PageIndex = Grid.PageIndex
-                Me.State.selectedCertificateId = Guid.Empty
+                State.PageIndex = Grid.PageIndex
+                State.selectedCertificateId = Guid.Empty
                 PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+        Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
             Try
                 Grid.PageIndex = e.NewPageIndex
                 State.PageIndex = Grid.PageIndex
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
-        Private Sub Grid_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+        Private Sub Grid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
             Try
                 If e.CommandName = "Select" Then
                     Dim lblCtrl As Label
                     Dim row As GridViewRow = CType(CType(e.CommandSource, Control).Parent.Parent, GridViewRow)
                     Dim RowInd As Integer = row.RowIndex
-                    lblCtrl = CType(Grid.Rows(RowInd).Cells(GRID_COL_CERTIFICATE_ID_IDX).FindControl(Me.GRID_CTRL_CERTIFICATE_ID), Label)
-                    Me.State.selectedCertificateId = New Guid(lblCtrl.Text)
-                    Me.callPage(CertificateForm.URL, Me.State.selectedCertificateId)
+                    lblCtrl = CType(Grid.Rows(RowInd).Cells(GRID_COL_CERTIFICATE_ID_IDX).FindControl(GRID_CTRL_CERTIFICATE_ID), Label)
+                    State.selectedCertificateId = New Guid(lblCtrl.Text)
+                    callPage(CertificateForm.URL, State.selectedCertificateId)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub Grid_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+        Private Sub Grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+        Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
             Try
                 BaseItemBound(sender, e)
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub cboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-                Me.State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
-                Me.Grid.PageIndex = Me.State.PageIndex
-                Me.PopulateGrid()
+                State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
+                Grid.PageIndex = State.PageIndex
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 

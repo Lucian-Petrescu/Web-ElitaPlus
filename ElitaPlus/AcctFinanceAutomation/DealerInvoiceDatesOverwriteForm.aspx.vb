@@ -78,19 +78,19 @@ Partial Class DealerInvoiceDatesOverwriteForm
 
 #Region "Page Events"
     Private Sub UpdateBreadCrum()
-        Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
-        Me.MasterPage.UsePageTabTitleInBreadCrum = False
-        Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+        MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
+        MasterPage.UsePageTabTitleInBreadCrum = False
+        MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
     End Sub
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.MasterPage.MessageController.Clear()
-        Me.UpdateBreadCrum()
-        If Not Me.IsPostBack Then
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        MasterPage.MessageController.Clear()
+        UpdateBreadCrum()
+        If Not IsPostBack Then
             PopulateDropdowns()
-            Me.TranslateGridHeader(Me.Grid)            
+            TranslateGridHeader(Grid)            
         End If
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
 #End Region
@@ -137,7 +137,7 @@ Partial Class DealerInvoiceDatesOverwriteForm
             oListContext.CompanyId = UserCompanies(Index)
             Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
             If oDealerListForCompany.Count > 0 Then
-                If Not oDealerList Is Nothing Then
+                If oDealerList IsNot Nothing Then
                     oDealerList.AddRange(oDealerListForCompany)
                 Else
                     oDealerList = oDealerListForCompany.Clone()
@@ -154,25 +154,25 @@ Partial Class DealerInvoiceDatesOverwriteForm
         Dim recCount As Integer
         Try
 
-            If Me.State.SearchDV Is Nothing Then
+            If State.SearchDV Is Nothing Then
                 State.SearchDV = AfaInvoiceManaulData.GetDealerInvoiceDates(State.searchDealerID, State.searchPeriodYear & State.searchPeriodMonth)
             End If
 
             recCount = State.SearchDV.Count
 
-            Me.Grid.DataSource = State.SearchDV
-            Me.Grid.DataBind()
+            Grid.DataSource = State.SearchDV
+            Grid.DataBind()
 
             If State.SearchDV.Count > 0 Then
                 ControlMgr.SetVisibleControl(Me, moSearchResults, True)
             Else
                 If State.gridAction = PageAction.None Then
-                    Me.MasterPage.MessageController.AddInformation(Message.MSG_NO_RECORDS_FOUND, True)
+                    MasterPage.MessageController.AddInformation(Message.MSG_NO_RECORDS_FOUND, True)
                 End If
                 ControlMgr.SetVisibleControl(Me, moSearchResults, False)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -216,7 +216,7 @@ Partial Class DealerInvoiceDatesOverwriteForm
             End If
 
             With State.myBOManualInvoiceDate
-                If .IsDirty AndAlso (Not .DataDate Is Nothing) Then 'value populated, save the change
+                If .IsDirty AndAlso (.DataDate IsNot Nothing) Then 'value populated, save the change
                     .SaveWithoutCheckDSCreator()
                     blnSaved = True
                 ElseIf (Not .IsNew) AndAlso .DataDate Is Nothing Then 'existing record erased, delete the records
@@ -227,7 +227,7 @@ Partial Class DealerInvoiceDatesOverwriteForm
             End With
 
             With State.myBOManualDueDate
-                If .IsDirty AndAlso (Not .DataDate Is Nothing) Then 'value populated, save the change
+                If .IsDirty AndAlso (.DataDate IsNot Nothing) Then 'value populated, save the change
                     .SaveWithoutCheckDSCreator()
                     blnSaved = True
                 ElseIf (Not .IsNew) AndAlso .DataDate Is Nothing Then 'existing record erased, delete the records
@@ -238,21 +238,21 @@ Partial Class DealerInvoiceDatesOverwriteForm
             End With
 
             If blnSaved = True Then
-                Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
             Else
-                Me.MasterPage.MessageController.AddSuccess(Message.MSG_RECORD_NOT_SAVED)
+                MasterPage.MessageController.AddSuccess(Message.MSG_RECORD_NOT_SAVED)
             End If
 
 
             Return True
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Function
 #End Region
 
 #Region "Button events handlers"
-    Protected Sub btnClear_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClear.Click
+    Protected Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
         Try
             'set dropdowns to default values
             ddlDealer.SelectedIndex = -1
@@ -272,21 +272,21 @@ Partial Class DealerInvoiceDatesOverwriteForm
             State.searchPeriodYear = String.Empty
             ControlMgr.SetVisibleControl(Me, moSearchResults, False) ' Hidden the search result grid
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub btnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSearch.Click
+    Protected Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
 
-            Me.State.searchDealerID = New Guid(ddlDealer.SelectedValue)
-            Me.State.searchPeriodYear = ddlAcctPeriodYear.SelectedValue
-            Me.State.searchPeriodMonth = ddlAcctPeriodMonth.SelectedValue
+            State.searchDealerID = New Guid(ddlDealer.SelectedValue)
+            State.searchPeriodYear = ddlAcctPeriodYear.SelectedValue
+            State.searchPeriodMonth = ddlAcctPeriodMonth.SelectedValue
 
-            Me.State.SearchDV = Nothing
+            State.SearchDV = Nothing
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -295,11 +295,11 @@ Partial Class DealerInvoiceDatesOverwriteForm
         If State.gridAction = PageAction.Edit Then
             ControlMgr.SetEnableControl(Me, btnSearch, False)
             ControlMgr.SetEnableControl(Me, btnClear, False)
-            Me.MenuEnabled = False
+            MenuEnabled = False
         Else
             ControlMgr.SetEnableControl(Me, btnSearch, True)
             ControlMgr.SetEnableControl(Me, btnClear, True)
-            Me.MenuEnabled = True
+            MenuEnabled = True
         End If
     End Sub
 
@@ -307,7 +307,7 @@ Partial Class DealerInvoiceDatesOverwriteForm
 
 #Region "Handle grid"
 
-    Private Sub grid_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+    Private Sub grid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
         Try
             Dim index As Integer
 
@@ -360,13 +360,13 @@ Partial Class DealerInvoiceDatesOverwriteForm
                         AfaInvoiceManaulData.UpdateInvoicewithManualDates(State.searchDealerID, State.searchPeriodYear & State.searchPeriodMonth, strResult)
 
                         If strResult.StartsWith("Error") Then
-                            Me.MasterPage.MessageController.AddErrorAndShow(strResult, True)
+                            MasterPage.MessageController.AddErrorAndShow(strResult, True)
                         Else
-                            Me.MasterPage.MessageController.AddSuccess(strResult, True)
+                            MasterPage.MessageController.AddSuccess(strResult, True)
                         End If
 
                     Catch ex As Exception
-                        Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                        HandleErrors(ex, MasterPage.MessageController)
                     End Try
                     State.SearchDV = Nothing
                     PopulateGrid()
@@ -390,77 +390,77 @@ Partial Class DealerInvoiceDatesOverwriteForm
                     End If
             End Select
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub grid_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Private Sub grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Try
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim strTemp As String, dtTemp As Date, objBtn As Button, guidTemp As Guid
 
-            If (itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
+            If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
                 With e.Row
                     If .RowIndex = Grid.EditIndex Then
                         Dim objtxt As TextBox, objImg As ImageButton
                         objtxt = CType(e.Row.FindControl(GRID_CTRL_NAME_MANUAL_INV_DATE), TextBox)
-                        If Not objtxt Is Nothing Then
+                        If objtxt IsNot Nothing Then
                             strTemp = dvRow("ManualInvoiceDate").ToString
                             If strTemp = DATE_NOT_AVAILABLE Then
                                 strTemp = String.Empty
                             Else
                                 If Date.TryParseExact(strTemp, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, dtTemp) Then
-                                    strTemp = Me.GetDateFormattedString(dtTemp)
+                                    strTemp = GetDateFormattedString(dtTemp)
                                 Else
                                     strTemp = String.Empty
                                 End If
                             End If
                             objtxt.Text = strTemp
                         End If
-                        objImg = CType(e.Row.FindControl(Me.GRID_CTRL_NAME_MANUAL_INV_DATE_CALENDAR), ImageButton)
+                        objImg = CType(e.Row.FindControl(GRID_CTRL_NAME_MANUAL_INV_DATE_CALENDAR), ImageButton)
                         objImg.Visible = True
-                        Me.AddCalendar_New(objImg, objtxt)
+                        AddCalendar_New(objImg, objtxt)
                         objImg = Nothing
                         objtxt = Nothing
                         strTemp = String.Empty
 
                         objtxt = CType(e.Row.FindControl(GRID_CTRL_NAME_MANUAL_DUE_DATE), TextBox)
-                        If Not objtxt Is Nothing Then
+                        If objtxt IsNot Nothing Then
                             strTemp = dvRow("ManualDueDate").ToString
                             If strTemp = DATE_NOT_AVAILABLE Then
                                 strTemp = strTemp.Empty
                             Else
                                 If Date.TryParseExact(strTemp, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, dtTemp) Then
-                                    strTemp = Me.GetDateFormattedString(dtTemp)
+                                    strTemp = GetDateFormattedString(dtTemp)
                                 Else
                                     strTemp = String.Empty
                                 End If
                             End If
                             objtxt.Text = strTemp
                         End If
-                        objImg = CType(e.Row.FindControl(Me.GRID_CTRL_NAME_MANUAL_DUE_DATE_CALENDAR), ImageButton)
+                        objImg = CType(e.Row.FindControl(GRID_CTRL_NAME_MANUAL_DUE_DATE_CALENDAR), ImageButton)
                         objImg.Visible = True
-                        Me.AddCalendar_New(objImg, objtxt)
+                        AddCalendar_New(objImg, objtxt)
                         objImg = Nothing
                         objtxt = Nothing
                     Else
 
                         objBtn = CType(e.Row.FindControl(GRID_CTRL_NAME_Button_Dates_Overwrite), Button)
-                        If Not objBtn Is Nothing Then
+                        If objBtn IsNot Nothing Then
                             objBtn.Text = TranslationBase.TranslateLabelOrMessage(objBtn.Text)
                         End If
                         objBtn = CType(e.Row.FindControl(GRID_CTRL_NAME_Button_Invoice_Update), Button)
-                        If Not objBtn Is Nothing Then
+                        If objBtn IsNot Nothing Then
                             objBtn.Visible = False
                             If Not (dvRow("AFA_INVOICE_DATA_ID") Is DBNull.Value) Then 'allow update only when manual dates and inovice are available, and also there are differences 
                                 strTemp = dvRow("ManualInvoiceDate").ToString.Trim
@@ -484,7 +484,7 @@ Partial Class DealerInvoiceDatesOverwriteForm
             End If
             BaseItemBound(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region

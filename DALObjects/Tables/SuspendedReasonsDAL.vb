@@ -29,7 +29,7 @@ Public Class SuspendedReasonsDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Dim dt As DataTable = ds.Tables.Add(TABLE_NAME)
 
         Dim guidTemp As New Guid
@@ -52,16 +52,16 @@ Public Class SuspendedReasonsDAL
 
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid, ByVal Network_Id As String)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid, Network_Id As String)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         '  Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("suspended_reason_id", id.ToByteArray)}
         Dim parameters() As OracleParameter
 
         selectStmt = selectStmt.Replace(":NETWORK_ID", "'" & Network_Id & "'")
-        selectStmt = selectStmt.Replace(":SUSPENDED_REASON_ID", "hextoraw('" & Me.GuidToSQLString(id) & "')")
+        selectStmt = selectStmt.Replace(":SUSPENDED_REASON_ID", "hextoraw('" & GuidToSQLString(id) & "')")
 
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
             '            Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
             'familyDS = DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
             'DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
@@ -70,21 +70,21 @@ Public Class SuspendedReasonsDAL
         End Try
     End Sub
 
-    Public Function LoadList(ByVal CompanyGroupId As Guid, ByVal DealerId As Guid _
-                             , ByVal strCode As String, ByVal strDec As String _
-                             , ByVal Claim_Allowed As String, ByVal Network_Id As String) As DataSet
+    Public Function LoadList(CompanyGroupId As Guid, DealerId As Guid _
+                             , strCode As String, strDec As String _
+                             , Claim_Allowed As String, Network_Id As String) As DataSet
 
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim whereClauseConditions As String = ""
 
         selectStmt = selectStmt.Replace(":NETWORK_ID", "'" & Network_Id & "'")
 
         If DealerId <> Guid.Empty Then
-            whereClauseConditions &= " AND SR.DEALER_ID = " & "hextoraw('" & Me.GuidToSQLString(DealerId) & "')"
+            whereClauseConditions &= " AND SR.DEALER_ID = " & "hextoraw('" & GuidToSQLString(DealerId) & "')"
         End If
 
-        If Me.FormatSearchMask(strCode) Then
+        If FormatSearchMask(strCode) Then
             whereClauseConditions &= " AND sr.code " & strCode.ToUpper
         End If
 
@@ -92,22 +92,22 @@ Public Class SuspendedReasonsDAL
             whereClauseConditions &= " AND sr.Claim_Allowed = '" & Claim_Allowed & "'"
         End If
 
-        If Me.FormatSearchMask(strDec) Then
+        If FormatSearchMask(strDec) Then
             whereClauseConditions &= " AND UPPER(sr.description) " & strDec.ToUpper
         End If
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
         Try
-            Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+            Return DBHelper.Fetch(selectStmt, TABLE_NAME)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Sub InserRow(ByVal row As DataRow, ByVal UserId As String, ByRef RowId As Guid)
+    Public Sub InserRow(row As DataRow, UserId As String, ByRef RowId As Guid)
 
-        Dim selectStmt As String = Me.Config("/SQL/INSERT")
+        Dim selectStmt As String = Config("/SQL/INSERT")
         'Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("suspended_reason_id", id.ToByteArray)}
 
         Dim ParmStr As String = ""
@@ -117,13 +117,13 @@ Public Class SuspendedReasonsDAL
             RowId = New Guid(CType(row(SuspendedReasonsDAL.COL_NAME_ID), Byte()))
 
             tmpDesc = row(SuspendedReasonsDAL.COL_NAME_DESCRIPTION) & ""
-            Me.FormatToSQLString(tmpDesc)
+            FormatToSQLString(tmpDesc)
 
             ' ** Insert statement from XML
             ' ** INSERT INTO elp_suspended_reason (suspended_reason_id, dealer_id,code,description,claim_allowed,created_by)
 
-            ParmStr &= "hextoraw('" & Me.GuidToSQLString(RowId) & "')" _
-                       & ",hextoraw('" & Me.ByteArrayToSQLString(row(SuspendedReasonsDAL.COL_NAME_DEALER_ID)) & "')" _
+            ParmStr &= "hextoraw('" & GuidToSQLString(RowId) & "')" _
+                       & ",hextoraw('" & ByteArrayToSQLString(row(SuspendedReasonsDAL.COL_NAME_DEALER_ID)) & "')" _
                        & ",'" & row(SuspendedReasonsDAL.COL_NAME_CODE) & "'" _
                        & ",'" & tmpDesc & "'" _
                        & ",'" & row(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED) & "'" _
@@ -135,30 +135,30 @@ Public Class SuspendedReasonsDAL
 
             DBHelper.Execute(selectStmt, Nothing, Nothing, Nothing)
 
-            LookupListCache.ClearFromCache(Me.GetType.ToString)
+            LookupListCache.ClearFromCache([GetType].ToString)
 
         Catch ex As Exception
             Throw ex
             '        Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
-    Public Sub UpdateRow(ByVal row As DataRow, ByRef RowId As Guid)
+    Public Sub UpdateRow(row As DataRow, ByRef RowId As Guid)
 
-        Dim selectStmt As String = Me.Config("/SQL/UPDATE")
+        Dim selectStmt As String = Config("/SQL/UPDATE")
         Dim tmpDesc As String = ""
 
         Try
             RowId = New Guid(CType(row(SuspendedReasonsDAL.COL_NAME_ID), Byte()))
 
             tmpDesc = row(SuspendedReasonsDAL.COL_NAME_DESCRIPTION) & ""
-            Me.FormatToSQLString(tmpDesc)
+            FormatToSQLString(tmpDesc)
 
-            selectStmt = selectStmt.Replace(":dealer_id", "hextoraw('" & Me.ByteArrayToSQLString(row(SuspendedReasonsDAL.COL_NAME_DEALER_ID)) & "')")
+            selectStmt = selectStmt.Replace(":dealer_id", "hextoraw('" & ByteArrayToSQLString(row(SuspendedReasonsDAL.COL_NAME_DEALER_ID)) & "')")
             selectStmt = selectStmt.Replace(":description", "'" & tmpDesc & "'")
             '            selectStmt = selectStmt.Replace(":claim_allowed", "GETCODEFROMLISTITEM('" & Me.ByteArrayToSQLString(row(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED_ID)) & "')")
             selectStmt = selectStmt.Replace(":claim_allowed", "'" & row(SuspendedReasonsDAL.COL_NAME_CLAIM_ALLOWED) & "'")
             selectStmt = selectStmt.Replace(":modified_by", "'" & row(SuspendedReasonsDAL.COL_NAME_MODIFIED_BY) & "'")
-            selectStmt = selectStmt.Replace(":SUSPENDED_REASON_ID", "hextoraw('" & Me.GuidToSQLString(RowId) & "')")
+            selectStmt = selectStmt.Replace(":SUSPENDED_REASON_ID", "hextoraw('" & GuidToSQLString(RowId) & "')")
 
             DBHelper.Execute(selectStmt, Nothing, Nothing, Nothing)
 
@@ -167,7 +167,7 @@ Public Class SuspendedReasonsDAL
             '        Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
-    Public Shared Function ByteArrayToSQLString(ByVal byteArray As Byte()) As String
+    Public Shared Function ByteArrayToSQLString(byteArray As Byte()) As String
         Dim i As Integer
         Dim result As New System.Text.StringBuilder
 
@@ -184,12 +184,12 @@ Public Class SuspendedReasonsDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

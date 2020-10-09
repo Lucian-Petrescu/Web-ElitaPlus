@@ -6,48 +6,48 @@ Public Class ClaimPaymentGroup
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ClaimPaymentGroupDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class ClaimPaymentGroup
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ClaimPaymentGroupDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -98,7 +98,7 @@ Public Class ClaimPaymentGroup
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -108,11 +108,11 @@ Public Class ClaimPaymentGroup
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function GetPaymentGroup(ByVal svcCenterId As Guid, ByVal PymntGrpNumber As String, _
-                                           ByVal PymntGrpStatusId As Guid, _
-                                           ByVal PaymentGroupDateRange As SearchCriteriaStructType(Of Date), _
-                                           ByVal InvoiceNumber As String, _
-                                           ByVal InvoiceGrpNumber As String) As PaymentGroupSearchDV
+    Public Shared Function GetPaymentGroup(svcCenterId As Guid, PymntGrpNumber As String, _
+                                           PymntGrpStatusId As Guid, _
+                                           PaymentGroupDateRange As SearchCriteriaStructType(Of Date), _
+                                           InvoiceNumber As String, _
+                                           InvoiceGrpNumber As String) As PaymentGroupSearchDV
         Try
 
             Dim dal As New ClaimPaymentGroupDAL
@@ -137,7 +137,7 @@ Public Class ClaimPaymentGroup
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ClaimPaymentGroupDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -148,7 +148,7 @@ Public Class ClaimPaymentGroup
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=40)> _
-    Public Property PaymentGroupNumber() As String
+    Public Property PaymentGroupNumber As String
         Get
             CheckDeleted()
             If Row(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_NUMBER) Is DBNull.Value Then
@@ -157,15 +157,15 @@ Public Class ClaimPaymentGroup
                 Return CType(Row(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_NUMBER, Value)
+            SetValue(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_NUMBER, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property PaymentGroupStatusId() As Guid
+    Public Property PaymentGroupStatusId As Guid
         Get
             CheckDeleted()
             If Row(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_STATUS_ID) Is DBNull.Value Then
@@ -174,15 +174,15 @@ Public Class ClaimPaymentGroup
                 Return New Guid(CType(Row(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_STATUS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_STATUS_ID, Value)
+            SetValue(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_STATUS_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property PaymentGroupDate() As DateType
+    Public Property PaymentGroupDate As DateType
         Get
             CheckDeleted()
             If Row(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_DATE) Is DBNull.Value Then
@@ -191,15 +191,15 @@ Public Class ClaimPaymentGroup
                 Return New DateType(CType(Row(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_DATE, Value)
+            SetValue(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_DATE, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property PaymentGroupTotal() As DecimalType
+    Public Property PaymentGroupTotal As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_TOTAL) Is DBNull.Value Then
@@ -208,18 +208,18 @@ Public Class ClaimPaymentGroup
                 Return New DecimalType(CType(Row(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_TOTAL), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_TOTAL, Value)
+            SetValue(ClaimPaymentGroupDAL.COL_NAME_PAYMENT_GROUP_TOTAL, Value)
         End Set
     End Property
 
     Dim _companyId As Guid
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             Return _companyId
         End Get
-        Set(ByVal value As Guid)
+        Set
             _companyId = value
         End Set
     End Property
@@ -227,7 +227,7 @@ Public Class ClaimPaymentGroup
 
 #End Region
 
-    Public ReadOnly Property PymntGrpDetailChildren() As ClaimPaymentGroupDetail.PymntGrpDetailList
+    Public ReadOnly Property PymntGrpDetailChildren As ClaimPaymentGroupDetail.PymntGrpDetailList
         Get
             Return New ClaimPaymentGroupDetail.PymntGrpDetailList(Me)
         End Get
@@ -235,30 +235,30 @@ Public Class ClaimPaymentGroup
 
 #Region "Public Members"
 
-    Public Function GetPymntGroupDetailChild(ByVal childId As Guid) As ClaimPaymentGroupDetail
-        Return CType(Me.PymntGrpDetailChildren.GetChild(childId), ClaimPaymentGroupDetail)
+    Public Function GetPymntGroupDetailChild(childId As Guid) As ClaimPaymentGroupDetail
+        Return CType(PymntGrpDetailChildren.GetChild(childId), ClaimPaymentGroupDetail)
     End Function
 
     Public Function GetNewPymntGroupDetailChild() As ClaimPaymentGroupDetail
-        Dim newPymntGrpDetail As ClaimPaymentGroupDetail = CType(Me.PymntGrpDetailChildren.GetNewChild, ClaimPaymentGroupDetail)
-        newPymntGrpDetail.PaymentGroupId = Me.Id
+        Dim newPymntGrpDetail As ClaimPaymentGroupDetail = CType(PymntGrpDetailChildren.GetNewChild, ClaimPaymentGroupDetail)
+        newPymntGrpDetail.PaymentGroupId = Id
         Return newPymntGrpDetail
     End Function
 
     Public Sub Save(Optional ByVal Transaction As IDbTransaction = Nothing)
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
 
                 Dim dal As New ClaimPaymentGroupDAL
-                dal.UpdateFamily(Me.Dataset, Me.CompanyId, Transaction)
+                dal.UpdateFamily(Dataset, CompanyId, Transaction)
 
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
 
                 End If
             End If
@@ -281,7 +281,7 @@ Public Class ClaimPaymentGroup
         Dim Transaction As IDbTransaction = DBHelper.GetNewTransaction
 
         Try
-            createPaymentDV = ClaimPaymentGroupDetail.GetClaimAuthorizationsToBePaid(Me.Id)
+            createPaymentDV = ClaimPaymentGroupDetail.GetClaimAuthorizationsToBePaid(Id)
 
             For Each dr As DataRow In createPaymentDV.Table.Rows
                 claimAuthId = New Guid(CType(dr(ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.COL_NAME_AUTHORIZATION_ID), Byte()))
@@ -290,8 +290,8 @@ Public Class ClaimPaymentGroup
                 invoiceNum = CType(dr(ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.COL_NAME_INVOICE_NUMBER), String)
                 excludeDed = CType(dr(ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.COL_NAME_EXCLUDE_DEDUCTIBLE), Boolean)
 
-                oClaimAuth = New ClaimAuthorization(claimAuthId, Me.Dataset)
-                oInvoice = New Invoice(invoiceId, Me.Dataset)
+                oClaimAuth = New ClaimAuthorization(claimAuthId, Dataset)
+                oInvoice = New Invoice(invoiceId, Dataset)
 
                 'Create claim Invoice and Dibursement entry for the Accounting.
                 CreateAndSavePayment(oClaimAuth, reconciledAmount, oInvoice, invoiceNum, excludeDed, Transaction)
@@ -299,8 +299,8 @@ Public Class ClaimPaymentGroup
                 'Get all the Invoice Recons for the Claim Authorization and Mark them as Selected for Payment
                 For Each ClaimAuthItem As ClaimAuthItem In oClaimAuth.ClaimAuthorizationItemChildren
                     If Not ClaimAuthItem.InvoiceReconciliationId = Guid.Empty Then
-                        oInvRecon = New InvoiceReconciliation(ClaimAuthItem.InvoiceReconciliationId, Me.Dataset)
-                        oInvRecon.ReconciliationStatusId = LookupListNew.GetIdFromCode(LookupListNew.LK_INV_RECON_STAT, _
+                        oInvRecon = New InvoiceReconciliation(ClaimAuthItem.InvoiceReconciliationId, Dataset)
+                        oInvRecon.ReconciliationStatusId = LookupListNew.GetIdFromCode(LookupListCache.LK_INV_RECON_STAT, _
                                                                                        Codes.INVOICE_RECON_STATUS_PAID)
                         oInvRecon.Save()
                     End If
@@ -312,13 +312,13 @@ Public Class ClaimPaymentGroup
             Next
 
             'Change the Status of the Claim Payment Group as Paid and Save
-            Me.PaymentGroupStatusId = LookupListNew.GetIdFromCode(LookupListNew.LK_PAYMENT_GRP_STAT, Codes.PYMNT_GRP_STATUS_APPROVED_FOR_PAYMENT)
+            PaymentGroupStatusId = LookupListNew.GetIdFromCode(LookupListCache.LK_PAYMENT_GRP_STAT, Codes.PYMNT_GRP_STATUS_APPROVED_FOR_PAYMENT)
 
             'Invoice Recon/Claim Auth should Save in the same Transaction as that of Claim and Claim Invoice/Disbursement.
-            Me.Save(Transaction)
+            Save(Transaction)
             'We are the creator of the transaction we should commit it  and close the connection
             DBHelper.Commit(Transaction)
-            Me.Load(Me.Id) 'Reload the Payment Group again after commiting the Batch
+            Load(Id) 'Reload the Payment Group again after commiting the Batch
 
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             DBHelper.RollBack(Transaction)
@@ -326,13 +326,13 @@ Public Class ClaimPaymentGroup
         End Try
     End Sub
 
-    Private Sub CreateAndSavePayment(ByVal oClaimAuth As ClaimAuthorization, ByVal reconciledAmount As DecimalType, _
-                                     ByVal oInvoice As Invoice, ByVal invoiceNumber As String, _
-                                     ByVal excludeDed As Boolean, ByVal Transaction As IDbTransaction)
+    Private Sub CreateAndSavePayment(oClaimAuth As ClaimAuthorization, reconciledAmount As DecimalType, _
+                                     oInvoice As Invoice, invoiceNumber As String, _
+                                     excludeDed As Boolean, Transaction As IDbTransaction)
         ''ByVal invoiceId As Guid, ByVal invoiceNumber As String, _
         Dim ClaimInvoiceBO As ClaimInvoice
         Dim DisbursementBO As Disbursement
-        ClaimInvoiceBO = New ClaimInvoice(Me.Dataset) 'Do Not create Claim Invoice as a Family DataSet but Control the Commit with a Transation.
+        ClaimInvoiceBO = New ClaimInvoice(Dataset) 'Do Not create Claim Invoice as a Family DataSet but Control the Commit with a Transation.
         DisbursementBO = ClaimInvoiceBO.AddNewDisbursement()
 
         ClaimInvoiceBO.excludeDeductible = excludeDed
@@ -361,13 +361,13 @@ Public Class ClaimPaymentGroup
         ClaimInvoiceBO.EndEdit()
     End Sub
 
-    Public Sub CreatePaymentGroupDetail(ByVal claimAuthId As Guid, ByVal excludeDed As String, _
-                                        ByVal claimAuthReconAmount As DecimalType, ByRef paymentAmount As DecimalType)
+    Public Sub CreatePaymentGroupDetail(claimAuthId As Guid, excludeDed As String, _
+                                        claimAuthReconAmount As DecimalType, ByRef paymentAmount As DecimalType)
         Dim MyPymntGrpDetailChildBO As ClaimPaymentGroupDetail
         Dim oClaimAuthBO As ClaimAuthorization
         Dim oInvRecon As InvoiceReconciliation
 
-        MyPymntGrpDetailChildBO = Me.GetNewPymntGroupDetailChild()
+        MyPymntGrpDetailChildBO = GetNewPymntGroupDetailChild()
         MyPymntGrpDetailChildBO.BeginEdit()
 
         MyPymntGrpDetailChildBO.ClaimAuthorizationId = claimAuthId
@@ -375,7 +375,7 @@ Public Class ClaimPaymentGroup
         MyPymntGrpDetailChildBO.ExcludeDeductible = excludeDed
 
         'ClaimAuth saves as a Family
-        oClaimAuthBO = New ClaimAuthorization(claimAuthId, Me.Dataset)
+        oClaimAuthBO = New ClaimAuthorization(claimAuthId, Dataset)
 
         'Add the Reconciled Amount at Claim Auth level to the Payment Group Detail
         paymentAmount = paymentAmount.Value + claimAuthReconAmount.Value
@@ -383,8 +383,8 @@ Public Class ClaimPaymentGroup
         'Get all the Invoice Recons for the Claim Authorization and Mark them as Selected for Payment
         For Each ClaimAuthItem As ClaimAuthItem In oClaimAuthBO.ClaimAuthorizationItemChildren
             If Not ClaimAuthItem.InvoiceReconciliationId = Guid.Empty Then
-                oInvRecon = New InvoiceReconciliation(ClaimAuthItem.InvoiceReconciliationId, Me.Dataset)
-                oInvRecon.ReconciliationStatusId = LookupListNew.GetIdFromCode(LookupListNew.LK_INV_RECON_STAT, _
+                oInvRecon = New InvoiceReconciliation(ClaimAuthItem.InvoiceReconciliationId, Dataset)
+                oInvRecon.ReconciliationStatusId = LookupListNew.GetIdFromCode(LookupListCache.LK_INV_RECON_STAT, _
                                                                                Codes.INVOICE_RECON_STATUS_TO_BE_PAID)
                 oInvRecon.Save()
             End If

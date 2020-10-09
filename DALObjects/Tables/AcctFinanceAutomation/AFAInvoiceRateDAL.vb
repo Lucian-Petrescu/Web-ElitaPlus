@@ -38,34 +38,34 @@ Public Class AFAInvoiceRateDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("afa_invoice_rate_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
 
-    Public Function LoadList(ByVal afaProductId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/INV_LOAD_LIST")
+    Public Function LoadList(afaProductId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/INV_LOAD_LIST")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("afa_product_id", afaProductId.ToByteArray)}
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -76,21 +76,21 @@ Public Class AFAInvoiceRateDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
 
-    Public Function IsRateDefinitionUnique(ByVal afaProductId As Guid, ByVal LossType As String, ByVal InsuranceCode As String,
-                                           ByVal RegulatoryState As String, ByVal Tier As String, ByVal Effective As String,
-                                           ByVal Expiration As String, ByVal afaInvoiceRateId As Guid) As Boolean
+    Public Function IsRateDefinitionUnique(afaProductId As Guid, LossType As String, InsuranceCode As String,
+                                           RegulatoryState As String, Tier As String, Effective As String,
+                                           Expiration As String, afaInvoiceRateId As Guid) As Boolean
 
-        Dim selectStmt As String = Me.Config("/SQL/GET_DUPLIC_RATE_DEFINITN")
+        Dim selectStmt As String = Config("/SQL/GET_DUPLIC_RATE_DEFINITN")
         Dim whereClauseConditions As String = ""
 
         If Not Effective = String.Empty Then
@@ -101,7 +101,7 @@ Public Class AFAInvoiceRateDAL
             whereClauseConditions &= Environment.NewLine & " and trunc(inv.expiration_date) = to_date('" & Expiration & "','mm/dd/yyyy') "
         End If
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
 
         If InsuranceCode Is Nothing Then
@@ -144,8 +144,8 @@ Public Class AFAInvoiceRateDAL
 
     End Function
 
-    Function LoadMinEffectiveMaxExpiration(ByVal afaProductId As Guid, ByVal InsuranceCode As String, ByVal LossType As String, ByVal Tier As String, ByVal RegulatoryState As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_MIN_EFFECTIVE_MAX_EXPIRATION")
+    Function LoadMinEffectiveMaxExpiration(afaProductId As Guid, InsuranceCode As String, LossType As String, Tier As String, RegulatoryState As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_MIN_EFFECTIVE_MAX_EXPIRATION")
 
         If InsuranceCode Is Nothing Then
             InsuranceCode = String.Empty
@@ -169,14 +169,14 @@ Public Class AFAInvoiceRateDAL
                                                                                            }
         Try
             Dim ds As New DataSet
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Function LoadRatesWithSameDefinition(ByVal afaProductId As Guid, ByVal afaInvoiceRateId As Guid, ByVal InsuranceCode As String, ByVal LossType As String, ByVal Tier As String, ByVal RegulatoryState As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_RATES_WITH_SAME_DEFINITION")
+    Function LoadRatesWithSameDefinition(afaProductId As Guid, afaInvoiceRateId As Guid, InsuranceCode As String, LossType As String, Tier As String, RegulatoryState As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_RATES_WITH_SAME_DEFINITION")
 
         If InsuranceCode Is Nothing Then
             InsuranceCode = String.Empty
@@ -201,7 +201,7 @@ Public Class AFAInvoiceRateDAL
                                                                                            }
         Try
             Dim ds As New DataSet
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try

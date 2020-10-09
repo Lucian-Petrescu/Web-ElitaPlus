@@ -13,7 +13,7 @@ Namespace SpecializedServices
             Throw New NotSupportedException()
         End Function
 
-        Public Function GetCertClaimInfo(ByVal request As CertClaimInfoRequestDC) As CertClaimInfoResponseDC _
+        Public Function GetCertClaimInfo(request As CertClaimInfoRequestDC) As CertClaimInfoResponseDC _
                 Implements ICHLMobileSCPortal.GetCertClaimInfo
             Dim response As New CertClaimInfoResponseDC
             Dim ds As DataSet

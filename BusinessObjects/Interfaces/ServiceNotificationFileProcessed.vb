@@ -24,42 +24,42 @@
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ServiceNotificationFileProcessedDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -67,23 +67,23 @@
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ServiceNotificationFileProcessedDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -101,7 +101,7 @@
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ServiceNotificationFileProcessedDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -128,7 +128,7 @@
     '  End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=15)> _
-    Public Property Filename() As String
+    Public Property Filename As String
         Get
             CheckDeleted()
             If Row(ServiceNotificationFileProcessedDAL.COL_NAME_FILENAME) Is DBNull.Value Then
@@ -137,13 +137,13 @@
                 Return CType(Row(ServiceNotificationFileProcessedDAL.COL_NAME_FILENAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ServiceNotificationFileProcessedDAL.COL_NAME_FILENAME, Value)
+            SetValue(ServiceNotificationFileProcessedDAL.COL_NAME_FILENAME, Value)
         End Set
     End Property
 
-    Public Property Received() As LongType
+    Public Property Received As LongType
         Get
             CheckDeleted()
             If Row(ServiceNotificationFileProcessedDAL.COL_NAME_RECEIVED) Is DBNull.Value Then
@@ -152,13 +152,13 @@
                 Return New LongType(CType(Row(ServiceNotificationFileProcessedDAL.COL_NAME_RECEIVED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ServiceNotificationFileProcessedDAL.COL_NAME_RECEIVED, Value)
+            SetValue(ServiceNotificationFileProcessedDAL.COL_NAME_RECEIVED, Value)
         End Set
     End Property
 
-    Public Property Bypassed() As LongType
+    Public Property Bypassed As LongType
         Get
             CheckDeleted()
             If Row(ServiceNotificationFileProcessedDAL.COL_NAME_BYPASSED) Is DBNull.Value Then
@@ -167,14 +167,14 @@
                 Return New LongType(CType(Row(ServiceNotificationFileProcessedDAL.COL_NAME_BYPASSED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ServiceNotificationFileProcessedDAL.COL_NAME_BYPASSED, Value)
+            SetValue(ServiceNotificationFileProcessedDAL.COL_NAME_BYPASSED, Value)
         End Set
     End Property
 
 
-    Public Property Counted() As LongType
+    Public Property Counted As LongType
         Get
             CheckDeleted()
             If Row(ServiceNotificationFileProcessedDAL.COL_NAME_COUNTED) Is DBNull.Value Then
@@ -183,15 +183,15 @@
                 Return New LongType(CType(Row(ServiceNotificationFileProcessedDAL.COL_NAME_COUNTED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ServiceNotificationFileProcessedDAL.COL_NAME_COUNTED, Value)
+            SetValue(ServiceNotificationFileProcessedDAL.COL_NAME_COUNTED, Value)
         End Set
     End Property
 
 
 
-    Public Property Rejected() As LongType
+    Public Property Rejected As LongType
         Get
             CheckDeleted()
             If Row(ServiceNotificationFileProcessedDAL.COL_NAME_REJECTED) Is DBNull.Value Then
@@ -200,15 +200,15 @@
                 Return New LongType(CType(Row(ServiceNotificationFileProcessedDAL.COL_NAME_REJECTED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ServiceNotificationFileProcessedDAL.COL_NAME_REJECTED, Value)
+            SetValue(ServiceNotificationFileProcessedDAL.COL_NAME_REJECTED, Value)
         End Set
     End Property
 
 
 
-    Public Property Validated() As LongType
+    Public Property Validated As LongType
         Get
             CheckDeleted()
             If Row(ServiceNotificationFileProcessedDAL.COL_NAME_VALIDATED) Is DBNull.Value Then
@@ -217,15 +217,15 @@
                 Return New LongType(CType(Row(ServiceNotificationFileProcessedDAL.COL_NAME_VALIDATED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ServiceNotificationFileProcessedDAL.COL_NAME_VALIDATED, Value)
+            SetValue(ServiceNotificationFileProcessedDAL.COL_NAME_VALIDATED, Value)
         End Set
     End Property
 
 
 
-    Public Property Loaded() As LongType
+    Public Property Loaded As LongType
         Get
             CheckDeleted()
             If Row(ServiceNotificationFileProcessedDAL.COL_NAME_LOADED) Is DBNull.Value Then
@@ -234,9 +234,9 @@
                 Return New LongType(CType(Row(ServiceNotificationFileProcessedDAL.COL_NAME_LOADED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ServiceNotificationFileProcessedDAL.COL_NAME_LOADED, Value)
+            SetValue(ServiceNotificationFileProcessedDAL.COL_NAME_LOADED, Value)
         End Set
     End Property
 
@@ -289,15 +289,15 @@
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ServiceNotificationFileProcessedDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -308,7 +308,7 @@
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function LoadList(ByVal oData As Object) As DataView
+    Public Shared Function LoadList(oData As Object) As DataView
 
         Try
             Dim oServiceNotificationFileProcessedData As ServiceNotificationFileProcessedData = CType(oData, ServiceNotificationFileProcessedData)
@@ -337,8 +337,8 @@
         Public dealerName As String
     End Structure
 
-    Public Shared Function GetDealerLayout(ByVal dealerID As Guid, _
-    ByVal oInterfaceTypeCode As ServiceNotificationFileProcessedData.InterfaceTypeCode) As DealerInfo
+    Public Shared Function GetDealerLayout(dealerID As Guid, _
+    oInterfaceTypeCode As ServiceNotificationFileProcessedData.InterfaceTypeCode) As DealerInfo
         Dim retDealerInfo As DealerInfo
         Dim sLayout As String
         Dim oContract As Contract
@@ -380,7 +380,7 @@
 
 #Region "StoreProcedures Control"
 
-    Public Shared Sub ValidateFile(ByVal oData As Object)
+    Public Shared Sub ValidateFile(oData As Object)
         Try
             Dim oServiceNotificationFileProcessedData As ServiceNotificationFileProcessedData = CType(oData, ServiceNotificationFileProcessedData)
             Dim dal As New ServiceNotificationFileProcessedDAL
@@ -393,7 +393,7 @@
         End Try
     End Sub
 
-    Public Shared Sub ProcessFileRecords(ByVal oData As Object)
+    Public Shared Sub ProcessFileRecords(oData As Object)
         Try
             Dim oServiceNotificationFileProcessedData As ServiceNotificationFileProcessedData = CType(oData, ServiceNotificationFileProcessedData)
             Dim dal As New ServiceNotificationFileProcessedDAL
@@ -406,7 +406,7 @@
         End Try
     End Sub
 
-    Public Shared Sub DeleteFile(ByVal oData As Object)
+    Public Shared Sub DeleteFile(oData As Object)
         Try
             Dim oServiceNotificationFileProcessedData As ServiceNotificationFileProcessedData = CType(oData, ServiceNotificationFileProcessedData)
             Dim dal As New ServiceNotificationFileProcessedDAL
@@ -423,7 +423,7 @@
 
 #Region "Validation"
 
-    Public Shared Sub ValidateFileName(ByVal fileLength As Integer)
+    Public Shared Sub ValidateFileName(fileLength As Integer)
         If fileLength = 0 Then
             Dim errors() As ValidationError = {New ValidationError(DEALERLOADFORM_FORM001, GetType(ServiceNotificationFileProcessed), Nothing, Nothing, Nothing)}
             Throw New BOValidationException(errors, GetType(ClaimFileProcessed).FullName)

@@ -57,49 +57,49 @@
 
 #End Region
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
-        Me.MasterPage.MessageController.Clear()
-        Me.Form.DefaultButton = btnSearch.UniqueID
-        Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(ADMIN)
+        MasterPage.MessageController.Clear()
+        Form.DefaultButton = btnSearch.UniqueID
+        MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(ADMIN)
 
         Try
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
                 ControlMgr.SetVisibleControl(Me, trPageSize, False)
                 'RestoreGuiState()
                 SetQuerystringValues()
 
                 ' Populate the header and bredcrumb
-                Me.MasterPage.UsePageTabTitleInBreadCrum = False
+                MasterPage.UsePageTabTitleInBreadCrum = False
                 UpdateBreadCrum()
                 TranslateGridHeader(Grid)
 
-                If Me.State.IsGridVisible Then
-                    Me.PopulateGrid()
+                If State.IsGridVisible Then
+                    PopulateGrid()
                 End If
-                cboPageSize.SelectedValue = Me.State.PageSize.ToString()
+                cboPageSize.SelectedValue = State.PageSize.ToString()
 
                 Dim ddlSearchType As DropDownList = CType(moGenerationDate.FindControl("moSearchType"), DropDownList)
                 ddlSearchType.Enabled = False
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
 
     End Sub
 
     Private Sub SetQuerystringValues()
         Try
-            If Not Request.QueryString("CALLER") Is Nothing Then
-                Me.State.Caller = Request.QueryString("CALLER")
+            If Request.QueryString("CALLER") IsNot Nothing Then
+                State.Caller = Request.QueryString("CALLER")
             End If
         Catch ex As Exception
 
         End Try
     End Sub
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
             'Me.MenuEnabled = True
             'Me.IsReturningFromChild = True
@@ -119,26 +119,26 @@
             '        Me.DisplayMessage(Message.EXPIRE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
             'End Select
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Private Sub UpdateBreadCrum()
-        Me.MasterPage.UsePageTabTitleInBreadCrum = False
-        Me.MasterPage.DisplayRequiredFieldNote = False
+        MasterPage.UsePageTabTitleInBreadCrum = False
+        MasterPage.DisplayRequiredFieldNote = False
 
         Dim strTranslation As String = String.Empty
-        If Me.State.Caller = "APS" Then
+        If State.Caller = "APS" Then
             strTranslation = TranslationBase.TranslateLabelOrMessage(BROWSE_APS_PUBLISHING_LOGS)
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & strTranslation
-            Me.MasterPage.PageTitle = strTranslation
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & strTranslation
+            MasterPage.PageTitle = strTranslation
         Else
             strTranslation = TranslationBase.TranslateLabelOrMessage(BROWSE_ORACLE_ERROR_LOGS)
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & strTranslation
-            Me.MasterPage.PageTitle = strTranslation
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & strTranslation
+            MasterPage.PageTitle = strTranslation
         End If
 
-        Me.MasterPage.MessageController.Clear()
+        MasterPage.MessageController.Clear()
 
     End Sub
 
@@ -168,17 +168,17 @@
     '    End With
     'End Sub
 
-    Private Sub btnSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As System.EventArgs) Handles btnSearch.Click
         Try
             'Add validations to make from and to date mandatory and also check for the 10 days
             Dim fromValue As String = moGenerationDate.FromValue
             Dim toValue As String = moGenerationDate.ToValue
 
             If moGenerationDate.IsEmpty Then
-                Me.MasterPage.MessageController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.MSG_SELECT_FROM_AND_TO_DATE, True)
+                MasterPage.MessageController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.MSG_SELECT_FROM_AND_TO_DATE, True)
                 Exit Sub
             End If
-            If (Not moGenerationDate.IsEmpty) And Not moGenerationDate.Validate() Then
+            If (Not moGenerationDate.IsEmpty) AndAlso Not moGenerationDate.Validate() Then
                 Exit Sub
             End If
 
@@ -188,55 +188,55 @@
                 Throw New BOValidationException(Errs, GetType(ApsPublishingLog).FullName)
             End If
 
-            Me.State.PageIndex = 0
-            Me.State.IsGridVisible = True
-            Me.State.SearchClick = True
-            Me.State.APSOracleLogssearchDV = Nothing
+            State.PageIndex = 0
+            State.IsGridVisible = True
+            State.SearchClick = True
+            State.APSOracleLogssearchDV = Nothing
 
-            Me.PopulateGrid()
+            PopulateGrid()
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
 #Region "Clear Button Related"
-    Private Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As Object, e As System.EventArgs) Handles btnClearSearch.Click
         Try
             ' Clear all search options typed or selected by the user
-            Me.ClearAllSearchOptions()
+            ClearAllSearchOptions()
 
             ' Update the Bo state properties with the new value
-            Me.ClearStateValues()
+            ClearStateValues()
 
             ' Me.SetStateProperties()
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Protected Sub ClearStateValues()
         Try
             'clear State
-            Me.State.Header = String.Empty
-            Me.State.Type = String.Empty
-            Me.State.TypeName = String.Empty
-            Me.State.Code = String.Empty
-            Me.State.MachineName = String.Empty
-            Me.State.UserName = String.Empty
+            State.Header = String.Empty
+            State.Type = String.Empty
+            State.TypeName = String.Empty
+            State.Code = String.Empty
+            State.MachineName = String.Empty
+            State.UserName = String.Empty
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Protected Sub ClearAllSearchOptions()
-        Me.txtHeader.Text = String.Empty
-        Me.txtCode.Text = String.Empty
-        Me.txtMachineName.Text = String.Empty
-        Me.txtUserName.Text = String.Empty
-        Me.moGenerationDate.Clear()
+        txtHeader.Text = String.Empty
+        txtCode.Text = String.Empty
+        txtMachineName.Text = String.Empty
+        txtUserName.Text = String.Empty
+        moGenerationDate.Clear()
 
     End Sub
 #End Region
@@ -244,28 +244,28 @@
 #Region " GridView Related "
     Public Sub PopulateGrid()
         Try
-            If (Me.State.APSOracleLogssearchDV Is Nothing) Then
-                If Me.State.Caller = "APS" Then   'Unexpected_Error Logs
-                    Me.State.APSOracleLogssearchDV = ApsPublishingLog.GetAPSPublishingLogsList(Me.State.Header, Me.State.Code,
-                                                                                                   Me.State.MachineName, Me.State.UserName,
+            If (State.APSOracleLogssearchDV Is Nothing) Then
+                If State.Caller = "APS" Then   'Unexpected_Error Logs
+                    State.APSOracleLogssearchDV = ApsPublishingLog.GetAPSPublishingLogsList(State.Header, State.Code,
+                                                                                                   State.MachineName, State.UserName,
                                                                                                    APS_TYPE_NAME,
                                                                                                    APS_TABLE_NAME,
                                                                                                    DirectCast(moGenerationDate.Value, SearchCriteriaStructType(Of Date)))
                 Else
-                    Me.State.APSOracleLogssearchDV = ApsPublishingLog.GetAPSPublishingLogsList(Me.State.Header, Me.State.Code,
-                                                                                                  Me.State.MachineName, Me.State.UserName,
+                    State.APSOracleLogssearchDV = ApsPublishingLog.GetAPSPublishingLogsList(State.Header, State.Code,
+                                                                                                  State.MachineName, State.UserName,
                                                                                                   ORACLE_TYPE_NAME,
                                                                                                   ORACLE_TABLE_NAME,
                                                                                                   DirectCast(moGenerationDate.Value, SearchCriteriaStructType(Of Date)))
                 End If
             End If
 
-            If Me.State.SearchClick Then
-                Me.ValidSearchResultCountNew(Me.State.APSOracleLogssearchDV.Count, True)
-                Me.State.SearchClick = False
+            If State.SearchClick Then
+                ValidSearchResultCountNew(State.APSOracleLogssearchDV.Count, True)
+                State.SearchClick = False
             End If
-            Me.State.APSOracleLogssearchDV.Sort = Me.State.SortExpression
-            Me.SortAndBindGrid()
+            State.APSOracleLogssearchDV.Sort = State.SortExpression
+            SortAndBindGrid()
 
             'Else 'Oracle Eror Logs
             '    If (Me.State.OracleErrorLogssearchDV Is Nothing) Then
@@ -280,86 +280,86 @@
             'End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Private Sub SortAndBindGrid()
 
-        Me.Grid.AutoGenerateColumns = False
-        Me.Grid.PageSize = Me.State.PageSize
+        Grid.AutoGenerateColumns = False
+        Grid.PageSize = State.PageSize
 
-        Me.State.PageIndex = Me.Grid.PageIndex
-        Me.Grid.DataSource = Me.State.APSOracleLogssearchDV
-        HighLightSortColumn(Grid, Me.State.SortExpression)
-        Me.Grid.DataBind()
+        State.PageIndex = Grid.PageIndex
+        Grid.DataSource = State.APSOracleLogssearchDV
+        HighLightSortColumn(Grid, State.SortExpression)
+        Grid.DataBind()
 
-        ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
-        ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+        ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-        Session("recCount") = Me.State.APSOracleLogssearchDV.Count
-        Me.lblRecordCount.Text = Me.State.APSOracleLogssearchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+        Session("recCount") = State.APSOracleLogssearchDV.Count
+        lblRecordCount.Text = State.APSOracleLogssearchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Private Sub cboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
-            Me.State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.State.SelectedPageSize = Me.State.PageSize
+            State.PageSize = CType(cboPageSize.SelectedValue, Integer)
+            State.SelectedPageSize = State.PageSize
             'Me.State.PageIndex = NewCurrentPageIndex(Grid, State.SearchDV.Count, State.PageSize)
-            Me.Grid.PageIndex = Me.State.PageIndex
-            Me.PopulateGrid()
+            Grid.PageIndex = State.PageIndex
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = Grid.PageIndex
+            State.PageIndex = Grid.PageIndex
 
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Private Sub Grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+    Private Sub Grid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
         Try
             If e.CommandName = SHOW_EXTENDED_CONTENT_COMMAND Then
                 Dim row As GridViewRow = CType(CType(e.CommandSource, Control).Parent.Parent, GridViewRow)
@@ -370,7 +370,7 @@
                 mdlPopup.Show()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -383,11 +383,11 @@
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     ''' 
-    Private Sub btnNewItemCancel_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnExtendedContentPopupCancel.Click
+    Private Sub btnNewItemCancel_Click(sender As Object, e As System.EventArgs) Handles btnExtendedContentPopupCancel.Click
         Try
             mdlPopup.Hide()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 

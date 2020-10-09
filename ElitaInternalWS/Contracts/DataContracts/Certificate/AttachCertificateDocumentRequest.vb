@@ -36,9 +36,9 @@ Public Class AttachCertificateDocumentRequest
         Private ReadOnly _minimumLength As Integer
         Private ReadOnly _maximumLength As Integer
 
-        Public Sub New(ByVal pMinimumLength As Integer, ByVal pMaximumLength As Integer)
-            Me._maximumLength = pMinimumLength
-            Me._maximumLength = pMaximumLength
+        Public Sub New(pMinimumLength As Integer, pMaximumLength As Integer)
+            _maximumLength = pMinimumLength
+            _maximumLength = pMaximumLength
         End Sub
 
         Public ReadOnly Property MinimumLength As Integer
@@ -53,7 +53,7 @@ Public Class AttachCertificateDocumentRequest
             End Get
         End Property
 
-        Public Overrides Function IsValid(ByVal value As Object) As Boolean
+        Public Overrides Function IsValid(value As Object) As Boolean
             If (value Is Nothing) Then Return False
 
             Dim imageData() As Byte
@@ -64,9 +64,9 @@ Public Class AttachCertificateDocumentRequest
                 Return False
             End Try
 
-            If (imageData.Length < Me.MinimumLength) Then Return False
+            If (imageData.Length < MinimumLength) Then Return False
 
-            If (imageData.Length > Me.MaximumLength) Then Return False
+            If (imageData.Length > MaximumLength) Then Return False
 
             Return True
 

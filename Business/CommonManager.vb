@@ -1,4 +1,4 @@
-﻿Imports Assurant.ElitaPlus.Business
+﻿
 Imports Assurant.ElitaPlus.DataEntities
 
 Public Class CommonManager
@@ -6,7 +6,7 @@ Public Class CommonManager
 
     Private ReadOnly m_CacheFacade As ICacheFacade
 
-    Public Sub New(ByVal cacheFacade As ICacheFacade)
+    Public Sub New(cacheFacade As ICacheFacade)
         m_CacheFacade = cacheFacade
     End Sub
 
@@ -16,12 +16,12 @@ Public Class CommonManager
         End Get
     End Property
 
-    Public Function GetListItems(ByVal pCode As String) As ElitaListItem() Implements ICommonManager.GetListItems
+    Public Function GetListItems(pCode As String) As ElitaListItem() Implements ICommonManager.GetListItems
         Return CacheFacade.GetList(pCode.ToUpperInvariant())
 
     End Function
 
-    Public Function GetListItems(ByVal pCode As String, ByVal pLanguageCode As String) As ElitaListItem() Implements ICommonManager.GetListItems
+    Public Function GetListItems(pCode As String, pLanguageCode As String) As ElitaListItem() Implements ICommonManager.GetListItems
         Return CacheFacade.GetList(pCode.ToUpperInvariant(), pLanguageCode.ToUpperInvariant())
 
     End Function
@@ -34,7 +34,7 @@ Public Class CommonManager
         Return CacheFacade.GetLabelTranslation(pUiCode.ToUpperInvariant(), pLanguageCode)
     End Function
 
-    Public Function GetExpression(ByVal pExpressionId As Guid) As Expression Implements ICommonManager.GetExpression
+    Public Function GetExpression(pExpressionId As Guid) As Expression Implements ICommonManager.GetExpression
         Return CacheFacade.GetExpression(pExpressionId)
     End Function
 End Class

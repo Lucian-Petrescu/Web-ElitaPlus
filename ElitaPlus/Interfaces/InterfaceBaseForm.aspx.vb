@@ -49,7 +49,7 @@ Partial Class InterfaceBaseForm
 
 
         Protected Sub SetStateProperties()
-            Me.moState = Nothing
+            moState = Nothing
             TheState.moParams = CType(Session(SESSION_PARAMETERS_KEY), Params)
 
         End Sub
@@ -67,14 +67,14 @@ Partial Class InterfaceBaseForm
         Protected ReadOnly Property TheState() As MyState
             Get
                 Try
-                    If Me.moState Is Nothing Then
-                        Me.moState = CType(Session(SESSION_LOCALSTATE_KEY), MyState)
-                        If Me.moState Is Nothing Then
-                            Me.moState = New MyState
-                            Session(SESSION_LOCALSTATE_KEY) = Me.moState
+                    If moState Is Nothing Then
+                        moState = CType(Session(SESSION_LOCALSTATE_KEY), MyState)
+                        If moState Is Nothing Then
+                            moState = New MyState
+                            Session(SESSION_LOCALSTATE_KEY) = moState
                         End If
                     End If
-                    Return Me.moState
+                    Return moState
                 Catch ex As Exception
                     'When we are in design mode there is no session object
                     Return Nothing
@@ -98,7 +98,7 @@ Partial Class InterfaceBaseForm
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -109,7 +109,7 @@ Partial Class InterfaceBaseForm
 #Region "Handlers-Init"
 
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             If Not Page.IsPostBack Then
                 SetStateProperties()
@@ -122,11 +122,11 @@ Partial Class InterfaceBaseForm
 
 #Region "Handlers-Button"
 
-        Private Sub btnHtmlHidden_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnHtmlHidden.Click
+        Private Sub btnHtmlHidden_Click(sender As System.Object, e As System.EventArgs) Handles btnHtmlHidden.Click
 
         End Sub
 
-        Private Sub btnContinue_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnContinue.Click
+        Private Sub btnContinue_Click(sender As System.Object, e As System.EventArgs) Handles btnContinue.Click
             ContinueWaiting()
         End Sub
 
@@ -167,13 +167,13 @@ Partial Class InterfaceBaseForm
 
 #Region "JavaScripts"
 
-        Public Sub CloseProgressBar(ByVal statusMsg As String, ByVal errorMsg As String)
+        Public Sub CloseProgressBar(statusMsg As String, errorMsg As String)
 
             If errorMsg Is Nothing Then
                 errorMsg = String.Empty
             End If
 
-            If ((TheState Is Nothing) Or (TheState.moParams Is Nothing)) Then
+            If ((TheState Is Nothing) OrElse (TheState.moParams Is Nothing)) Then
                 SetStateProperties()
             End If
 
@@ -199,7 +199,7 @@ Partial Class InterfaceBaseForm
             'sJavaScript &= "parent.parent.document.all('" & TheState.moParams.baseController & "moInterfaceProgressControl_moInterfaceErrorMsg').value = '" & errorMsg & "';" & Environment.NewLine
             'sJavaScript &= "</SCRIPT>" & Environment.NewLine
 
-            Me.RegisterStartupScript("CloseProgressBar", sJavaScript)
+            RegisterStartupScript("CloseProgressBar", sJavaScript)
         End Sub
 
 
@@ -209,7 +209,7 @@ Partial Class InterfaceBaseForm
             sJavaScript = "<SCRIPT>" & Environment.NewLine
             sJavaScript &= "buttonContinueClick();" & Environment.NewLine
             sJavaScript &= "</SCRIPT>" & Environment.NewLine
-            Me.RegisterStartupScript("ContinueWaiting", sJavaScript)
+            RegisterStartupScript("ContinueWaiting", sJavaScript)
         End Sub
 
 #End Region

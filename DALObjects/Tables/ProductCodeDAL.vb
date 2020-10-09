@@ -122,52 +122,52 @@ Public Class ProductCodeDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub LoadByDealerProduct(ByVal familyDS As DataSet, ByVal dealerId As Guid, ByVal productCode As String)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_BY_DEALER_PRODUCT")
+    Public Sub LoadByDealerProduct(familyDS As DataSet, dealerId As Guid, productCode As String)
+        Dim selectStmt As String = Config("/SQL/LOAD_BY_DEALER_PRODUCT")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                                                          {
                                                              New DBHelper.DBHelperParameter("dealer_id", dealerId.ToByteArray),
                                                              New DBHelper.DBHelperParameter("productCode", productCode)
                                                          }
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("product_code_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Private Function IsThereALikeClause(ByVal descriptionMask As String) As Boolean
+    Private Function IsThereALikeClause(descriptionMask As String) As Boolean
         Dim bIsLikeClause As Boolean
 
-        bIsLikeClause = Me.IsLikeClause(descriptionMask)
+        bIsLikeClause = IsLikeClause(descriptionMask)
         Return bIsLikeClause
     End Function
 
-    Public Function LoadList(ByVal compIds As ArrayList, ByVal dealerId As Guid,
-                             ByVal RiskGroupId As Guid, ByVal productCodeMask As String, ByVal LanguageId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(compIds As ArrayList, dealerId As Guid,
+                             RiskGroupId As Guid, productCodeMask As String, LanguageId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As DBHelper.DBHelperParameter
         Dim inClausecondition As String = ""
         Dim whereClauseConditions As String = ""
         Dim bIsLikeClause As Boolean = False
 
-        inClausecondition &= "And edealer." & MiscUtil.BuildListForSql(Me.COL_NAME_COMPANY_ID, compIds, False)
+        inClausecondition &= "And edealer." & MiscUtil.BuildListForSql(COL_NAME_COMPANY_ID, compIds, False)
 
         productCodeMask = productCodeMask.Trim()
-        If (Not productCodeMask.Equals(String.Empty) Or Not productCodeMask = "") AndAlso (Me.FormatSearchMask(productCodeMask)) Then
+        If (Not productCodeMask.Equals(String.Empty) Or Not productCodeMask = "") AndAlso (FormatSearchMask(productCodeMask)) Then
             whereClauseConditions &= Environment.NewLine & "AND " & "Upper(pc.PRODUCT_CODE)" & productCodeMask.ToUpper
         End If
 
@@ -184,20 +184,20 @@ Public Class ProductCodeDAL
 
 
         If Not inClausecondition = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClausecondition)
+            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClausecondition)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, "")
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Dim ds As New DataSet
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -205,8 +205,8 @@ Public Class ProductCodeDAL
 
     End Function
 
-    Public Function LoadProductCodeIDs(ByVal dealerId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_PRODUCT_CODE_IDS")
+    Public Function LoadProductCodeIDs(dealerId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_PRODUCT_CODE_IDS")
         Dim parameters() As DBHelper.DBHelperParameter
 
         parameters = New DBHelper.DBHelperParameter() _
@@ -214,7 +214,7 @@ Public Class ProductCodeDAL
 
         Dim ds As New DataSet
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -222,15 +222,15 @@ Public Class ProductCodeDAL
 
     End Function
 
-    Public Function LoadListByDealer(ByVal dealerId As Guid, ByVal languageId As Guid, ByVal RiskGroupId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_BY_DEALER")
+    Public Function LoadListByDealer(dealerId As Guid, languageId As Guid, RiskGroupId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_BY_DEALER")
         Dim parameters() As DBHelper.DBHelperParameter
         Dim whereClauseConditions As String = ""
 
         If Not RiskGroupId.Equals(Guid.Empty) Then
             whereClauseConditions &= Environment.NewLine & "AND " & "RISK_GROUP_ID = " & MiscUtil.GetDbStringFromGuid(RiskGroupId)
         End If
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
         parameters = New DBHelper.DBHelperParameter() _
                                     {New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray),
@@ -238,15 +238,15 @@ Public Class ProductCodeDAL
 
         Dim ds As New DataSet
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadListByDealer(ByVal dealerId As Guid, ByVal languageId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_BY_DEALER_FILTERING")
+    Public Function LoadListByDealer(dealerId As Guid, languageId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_BY_DEALER_FILTERING")
         Dim parameters() As DBHelper.DBHelperParameter
         Dim whereClauseConditions As String = ""
 
@@ -257,16 +257,16 @@ Public Class ProductCodeDAL
 
         Dim ds As New DataSet
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadListByDealerForWS(ByVal dealerId As Guid, ByVal WarrSalesDate As Date,
-            ByVal sort_by As Integer, ByVal asc_desc_order As String, ByVal productClassCode As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_BY_DEALER_FOR_WS")
+    Public Function LoadListByDealerForWS(dealerId As Guid, WarrSalesDate As Date,
+            sort_by As Integer, asc_desc_order As String, productClassCode As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_BY_DEALER_FOR_WS")
         Dim parameters() As DBHelper.DBHelperParameter
         Dim whereClauseConditions As String = ""
         Dim OrderByClause As String = ""
@@ -276,11 +276,11 @@ Public Class ProductCodeDAL
         If Not productClassCode Is Nothing Then
             whereClauseConditions = "and SUBSTRC(pc.PRODUCT_CODE, 4, 1) = '" & productClassCode & "'"
         End If
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
         Select Case sort_by
             Case 1
-                OrderByClause = "ORDER BY UPPER(" & Me.COL_NAME_DESCRIPTION & ") " & asc_desc_order
+                OrderByClause = "ORDER BY UPPER(" & COL_NAME_DESCRIPTION & ") " & asc_desc_order
                 Exit Select
             Case 2
                 OrderByClause = "ORDER BY " & COL_NAME_PRODUCT_CODE & " " & asc_desc_order
@@ -299,7 +299,7 @@ Public Class ProductCodeDAL
                 Exit Select
         End Select
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, OrderByClause)
+        selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, OrderByClause)
 
         parameters = New DBHelper.DBHelperParameter() _
                     {New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray),
@@ -308,16 +308,16 @@ Public Class ProductCodeDAL
 
         Dim ds As New DataSet
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadListByDealerForWSWithConversion(ByVal dealerId As Guid, ByVal WarrSalesDate As Date,
-                    ByVal sort_by As Integer, ByVal asc_desc_order As String, ByVal productClassCode As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_BY_DEALER_FOR_WS_WITH_CONVERSION")
+    Public Function LoadListByDealerForWSWithConversion(dealerId As Guid, WarrSalesDate As Date,
+                    sort_by As Integer, asc_desc_order As String, productClassCode As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_BY_DEALER_FOR_WS_WITH_CONVERSION")
         Dim parameters() As DBHelper.DBHelperParameter
         Dim whereClauseConditions As String = ""
         Dim OrderByClause As String = ""
@@ -326,11 +326,11 @@ Public Class ProductCodeDAL
         If Not productClassCode Is Nothing Then
             whereClauseConditions = "and SUBSTRC(pc.PRODUCT_CODE, 4, 1) = '" & productClassCode & "'"
         End If
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
         Select Case sort_by
             Case 1
-                OrderByClause = "ORDER BY UPPER(" & Me.COL_NAME_DESCRIPTION & ") " & asc_desc_order
+                OrderByClause = "ORDER BY UPPER(" & COL_NAME_DESCRIPTION & ") " & asc_desc_order
                 Exit Select
             Case 2
                 OrderByClause = "ORDER BY " & COL_NAME_PRODUCT_CODE & " " & asc_desc_order
@@ -352,7 +352,7 @@ Public Class ProductCodeDAL
                 Exit Select
         End Select
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, OrderByClause)
+        selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, OrderByClause)
 
         parameters = New DBHelper.DBHelperParameter() _
                 {New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray),
@@ -361,15 +361,15 @@ Public Class ProductCodeDAL
 
         Dim ds As New DataSet
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadDealerProductsInfo(ByRef ds As DataSet, ByVal dealerId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_DEALER_PRODUCTS_INFO_FOR_WS")
+    Public Function LoadDealerProductsInfo(ByRef ds As DataSet, dealerId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_DEALER_PRODUCTS_INFO_FOR_WS")
         Dim parameters() As DBHelper.DBHelperParameter
         Dim whereClauseConditions As String = ""
         Dim OrderByClause As String = ""
@@ -387,8 +387,8 @@ Public Class ProductCodeDAL
         End Try
     End Function
 
-    Public Function LoadDealerProductsInfoWithConversion(ByRef ds As DataSet, ByVal dealerId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_DEALER_PRODUCTS_INFO_FOR_WS_WITH_CONVERSION")
+    Public Function LoadDealerProductsInfoWithConversion(ByRef ds As DataSet, dealerId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_DEALER_PRODUCTS_INFO_FOR_WS_WITH_CONVERSION")
         Dim parameters() As DBHelper.DBHelperParameter
         Dim whereClauseConditions As String = ""
         Dim OrderByClause As String = ""
@@ -409,8 +409,8 @@ Public Class ProductCodeDAL
         End Try
     End Function
 
-    Public Function GetProductCodeId(ByVal dealerId As Guid, ByVal product_code As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_PRODUCT_CODE_ID")
+    Public Function GetProductCodeId(dealerId As Guid, product_code As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_PRODUCT_CODE_ID")
         Dim parameters() As DBHelper.DBHelperParameter
 
         parameters = New DBHelper.DBHelperParameter() _
@@ -418,7 +418,7 @@ Public Class ProductCodeDAL
                                      New DBHelper.DBHelperParameter(COL_NAME_PRODUCT_CODE, product_code)}
         Dim ds As New DataSet
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -426,8 +426,8 @@ Public Class ProductCodeDAL
 
     End Function
 
-    Public Function MethodOfRepairByPriceRecords(ByVal ProductCodeId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/METHOD_OF_REPAIR_BY_PRICE_RECORDS")
+    Public Function MethodOfRepairByPriceRecords(ProductCodeId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/METHOD_OF_REPAIR_BY_PRICE_RECORDS")
         Dim parameters() As DBHelper.DBHelperParameter
 
         parameters = New DBHelper.DBHelperParameter() _
@@ -436,15 +436,15 @@ Public Class ProductCodeDAL
 
         Dim ds As New DataSet
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Sub UpdateCoverageLiability(ByVal ProductCodeId As Guid)
-        Dim updateStmt As String = Me.Config("/SQL/UPDATE_COVERAGE_LIABILITY")
+    Public Sub UpdateCoverageLiability(ProductCodeId As Guid)
+        Dim updateStmt As String = Config("/SQL/UPDATE_COVERAGE_LIABILITY")
         Dim inputParameters(0) As DBHelperParameter
         Dim outputParameter(0) As DBHelperParameter
 
@@ -461,8 +461,8 @@ Public Class ProductCodeDAL
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
-    Public Function UpdateCoverageReinsurance(ByVal ProductCodeId As Guid, Optional ByVal Mode As String = Nothing) As Integer
-        Dim updateStmt As String = Me.Config("/SQL/GET_COVERAGE_REINSURANCE")
+    Public Function UpdateCoverageReinsurance(ProductCodeId As Guid, Optional ByVal Mode As String = Nothing) As Integer
+        Dim updateStmt As String = Config("/SQL/GET_COVERAGE_REINSURANCE")
         Dim inputParameters(1) As DBHelperParameter
         Dim outputParameter(0) As DBHelperParameter
 
@@ -486,17 +486,17 @@ Public Class ProductCodeDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
 
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim PrdRegionDal As New ProductRegionDAL
         Dim oProdPolicyDAL As New ProductPolicyDAL
         Dim oParentProduct As New ProductCodeParentDAL
@@ -522,12 +522,12 @@ Public Class ProductCodeDAL
             oProdRewardsDAL.Update(familyDataset, tr, DataRowState.Deleted)
             oProdEquipDAL.Update(familyDataset, tr, DataRowState.Deleted)
             oProdDepSchDal.Update(familyDataset, tr, DataRowState.Deleted)
-            MyBase.Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
+            MyBase.Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
 
 
             'Second Pass updates additions and changes   
             oAttributeValueDAL.Update(familyDataset.GetChanges(), tr)
-            Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
 
             PrdRegionDal.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
 

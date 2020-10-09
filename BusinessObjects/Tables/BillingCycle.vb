@@ -6,48 +6,48 @@ Public Class BillingCycle
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New BillingCycleDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class BillingCycle
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New BillingCycleDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -89,7 +89,7 @@ Public Class BillingCycle
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(BillingCycleDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -100,7 +100,7 @@ Public Class BillingCycle
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(BillingCycleDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -109,25 +109,25 @@ Public Class BillingCycle
                 Return New Guid(CType(Row(BillingCycleDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(BillingCycleDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(BillingCycleDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
-    Public ReadOnly Property Dealer() As String
+    Public ReadOnly Property Dealer As String
         Get
             CheckDeleted()
             If Row(BillingCycleDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
                 Return String.Empty
             Else
-                Return LookupListNew.GetCodeFromId(LookupListNew.LK_DEALERS, New Guid(CType(Row(BillingCycleDAL.COL_NAME_DEALER_ID), Byte())))
+                Return LookupListNew.GetCodeFromId(LookupListCache.LK_DEALERS, New Guid(CType(Row(BillingCycleDAL.COL_NAME_DEALER_ID), Byte())))
             End If
         End Get
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=255), CheckDuplicate("")> _
-    Public Property BillingCycleCode() As String
+    Public Property BillingCycleCode As String
         Get
             CheckDeleted()
             If Row(BillingCycleDAL.COL_NAME_BILLING_CYCLE_CODE) Is DBNull.Value Then
@@ -136,14 +136,14 @@ Public Class BillingCycle
                 Return CType(Row(BillingCycleDAL.COL_NAME_BILLING_CYCLE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(BillingCycleDAL.COL_NAME_BILLING_CYCLE_CODE, Value)
+            SetValue(BillingCycleDAL.COL_NAME_BILLING_CYCLE_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Max:=31, Min:=1)> _
-    Public Property StartDay() As LongType
+    Public Property StartDay As LongType
         Get
             CheckDeleted()
             If Row(BillingCycleDAL.COL_NAME_START_DAY) Is DBNull.Value Then
@@ -152,14 +152,14 @@ Public Class BillingCycle
                 Return New LongType(CType(Row(BillingCycleDAL.COL_NAME_START_DAY), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(BillingCycleDAL.COL_NAME_START_DAY, Value)
+            SetValue(BillingCycleDAL.COL_NAME_START_DAY, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Max:=31, Min:=1)> _
-    Public Property EndDay() As LongType
+    Public Property EndDay As LongType
         Get
             CheckDeleted()
             If Row(BillingCycleDAL.COL_NAME_END_DAY) Is DBNull.Value Then
@@ -168,14 +168,14 @@ Public Class BillingCycle
                 Return New LongType(CType(Row(BillingCycleDAL.COL_NAME_END_DAY), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(BillingCycleDAL.COL_NAME_END_DAY, Value)
+            SetValue(BillingCycleDAL.COL_NAME_END_DAY, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Max:=99, Min:=-99)> _
-     Public Property BillingRunDateOffsetDays() As LongType
+     Public Property BillingRunDateOffsetDays As LongType
         Get
             CheckDeleted()
             If Row(BillingCycleDAL.COL_NAME_BILLING_RUN_DATE_OFFSET_DAYS) Is DBNull.Value Then
@@ -184,13 +184,13 @@ Public Class BillingCycle
                 Return New LongType(CType(Row(BillingCycleDAL.COL_NAME_BILLING_RUN_DATE_OFFSET_DAYS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(BillingCycleDAL.COL_NAME_BILLING_RUN_DATE_OFFSET_DAYS, Value)
+            SetValue(BillingCycleDAL.COL_NAME_BILLING_RUN_DATE_OFFSET_DAYS, Value)
         End Set
     End Property
 
-    Public Property DateOfPaymentOptionId() As Guid
+    Public Property DateOfPaymentOptionId As Guid
         Get
             CheckDeleted()
             If Row(BillingCycleDAL.COL_NAME_DATE_OF_PAYMENT_OPTION_ID) Is DBNull.Value Then
@@ -199,14 +199,14 @@ Public Class BillingCycle
                 Return New Guid(CType(Row(BillingCycleDAL.COL_NAME_DATE_OF_PAYMENT_OPTION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(BillingCycleDAL.COL_NAME_DATE_OF_PAYMENT_OPTION_ID, Value)
+            SetValue(BillingCycleDAL.COL_NAME_DATE_OF_PAYMENT_OPTION_ID, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Max:=99, Min:=-99)>
-    Public Property DateOfPaymentOffsetDays() As LongType
+    Public Property DateOfPaymentOffsetDays As LongType
         Get
             CheckDeleted()
             If Row(BillingCycleDAL.COL_NAME_DATE_OF_PAYMENT_OFFSET_DAYS) Is DBNull.Value Then
@@ -215,13 +215,13 @@ Public Class BillingCycle
                 Return New LongType(CType(Row(BillingCycleDAL.COL_NAME_DATE_OF_PAYMENT_OFFSET_DAYS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(BillingCycleDAL.COL_NAME_DATE_OF_PAYMENT_OFFSET_DAYS, Value)
+            SetValue(BillingCycleDAL.COL_NAME_DATE_OF_PAYMENT_OFFSET_DAYS, Value)
         End Set
     End Property
 
-    Public Property NumberOfDigitsRoundOffId() As Guid
+    Public Property NumberOfDigitsRoundOffId As Guid
         Get
             CheckDeleted()
             If Row(BillingCycleDAL.COL_NAME_NUMBER_OF_DIGITS_ROUNDOFF_ID) Is DBNull.Value Then
@@ -230,15 +230,15 @@ Public Class BillingCycle
                 Return New Guid(CType(Row(BillingCycleDAL.COL_NAME_NUMBER_OF_DIGITS_ROUNDOFF_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(BillingCycleDAL.COL_NAME_NUMBER_OF_DIGITS_ROUNDOFF_ID, Value)
+            SetValue(BillingCycleDAL.COL_NAME_NUMBER_OF_DIGITS_ROUNDOFF_ID, Value)
         End Set
     End Property
 #End Region
 
 #Region "Public Members"
-    Public Shared Sub DeleteBillingCycle(ByVal billingCycleId As Guid)
+    Public Shared Sub DeleteBillingCycle(billingCycleId As Guid)
         Dim dal As New BillingCycleDAL
         dal.Delete(billingCycleId)
     End Sub
@@ -246,15 +246,15 @@ Public Class BillingCycle
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New BillingCycleDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -262,22 +262,22 @@ Public Class BillingCycle
         End Try
     End Sub
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Dim bDirty As Boolean
 
-            bDirty = MyBase.IsDirty OrElse Me.IsChildrenDirty
+            bDirty = MyBase.IsDirty OrElse IsChildrenDirty
 
             Return bDirty
         End Get
     End Property
 
-    Public Sub Copy(ByVal original As BillingCycle)
-        If Not Me.IsNew Then
+    Public Sub Copy(original As BillingCycle)
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Billing Cycle")
         End If
         'Copy myself
-        Me.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 #End Region
 
@@ -287,11 +287,11 @@ Public Class BillingCycle
         Dim dal As New BillingCycleDAL
         Dim companyIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
         Dim companyGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-        Dim dv As BillingCycle.BillingCycleSearchDV = GetList(Me.DealerId, Me.BillingCycleCode)
+        Dim dv As BillingCycle.BillingCycleSearchDV = GetList(DealerId, BillingCycleCode)
 
         For Each dr As DataRow In dv.Table.Rows
-            If (dr(BillingCycleDAL.COL_NAME_BILLING_CYCLE_CODE).ToString().ToUpper() = Me.BillingCycleCode.ToUpper()) Then
-                If (Not New Guid(CType(dr(BillingCycleDAL.COL_NAME_BILLING_CYCLE_ID), Byte())).Equals(Me.Id)) Then
+            If (dr(BillingCycleDAL.COL_NAME_BILLING_CYCLE_CODE).ToString().ToUpper() = BillingCycleCode.ToUpper()) Then
+                If (Not New Guid(CType(dr(BillingCycleDAL.COL_NAME_BILLING_CYCLE_ID), Byte())).Equals(Id)) Then
                     Return True
                 End If
             End If
@@ -313,42 +313,42 @@ Public Class BillingCycle
         Public Const COL_NAME_BILLING_RUN_DATE_OFFSET_DAYS As String = BillingCycleDAL.COL_NAME_BILLING_RUN_DATE_OFFSET_DAYS
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property BillingCycleId(ByVal row) As Guid
+        Public Shared ReadOnly Property BillingCycleId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_BILLING_CYCLE_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Dealer(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Dealer(row As DataRow) As String
             Get
                 Return row(COL_NAME_DEALER_NAME).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property BillingCycleCode(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property BillingCycleCode(row As DataRow) As String
             Get
                 Return row(COL_NAME_BILLING_CYCLE_CODE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property StartDay(ByVal row) As String
+        Public Shared ReadOnly Property StartDay(row) As String
             Get
                 Return row(COL_NAME_START_DAY).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property EndDay(ByVal row) As String
+        Public Shared ReadOnly Property EndDay(row) As String
             Get
                 Return row(COL_NAME_END_DAY).ToString
             End Get
         End Property
     End Class
 
-    Shared Function GetList(ByVal dealerId As Guid, ByVal billingCycleCode As String) As BillingCycleSearchDV
+    Shared Function GetList(dealerId As Guid, billingCycleCode As String) As BillingCycleSearchDV
         Try
             Dim dal As New BillingCycleDAL
             Dim companyIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -359,7 +359,7 @@ Public Class BillingCycle
         End Try
     End Function
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As BillingCycleSearchDV, ByVal bo As BillingCycle) As BillingCycleSearchDV
+    Public Shared Function GetNewDataViewRow(dv As BillingCycleSearchDV, bo As BillingCycle) As BillingCycleSearchDV
 
         Dim dt As DataTable
         dt = dv.Table
@@ -394,11 +394,11 @@ Public Class BillingCycle
         Inherits ValidBaseAttribute
         Private Const DUPLICATE_BILLING_CYCLE_CODE As String = "DUPLICATE_BILLING_CYCLE_CODE"
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, DUPLICATE_BILLING_CYCLE_CODE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As BillingCycle = CType(objectToValidate, BillingCycle)
             If (obj.CheckDuplicateBillingCycleCode()) Then
                 Return False

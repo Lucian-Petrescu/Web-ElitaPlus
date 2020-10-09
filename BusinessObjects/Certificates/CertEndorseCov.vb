@@ -6,48 +6,48 @@ Public Class CertEndorseCov
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New CertEndorseCovDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class CertEndorseCov
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CertEndorseCovDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -90,7 +90,7 @@ Public Class CertEndorseCov
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(CertEndorseCovDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class CertEndorseCov
     End Property
 
     <ValueMandatory("")> _
-    Public Property CertEndorseId() As Guid
+    Public Property CertEndorseId As Guid
         Get
             CheckDeleted()
             If row(CertEndorseCovDAL.COL_NAME_CERT_ENDORSE_ID) Is DBNull.Value Then
@@ -110,15 +110,15 @@ Public Class CertEndorseCov
                 Return New Guid(CType(row(CertEndorseCovDAL.COL_NAME_CERT_ENDORSE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertEndorseCovDAL.COL_NAME_CERT_ENDORSE_ID, Value)
+            SetValue(CertEndorseCovDAL.COL_NAME_CERT_ENDORSE_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property CoverageTypeId() As Guid
+    Public Property CoverageTypeId As Guid
         Get
             CheckDeleted()
             If row(CertEndorseCovDAL.COL_NAME_COVERAGE_TYPE_ID) Is DBNull.Value Then
@@ -127,15 +127,15 @@ Public Class CertEndorseCov
                 Return New Guid(CType(row(CertEndorseCovDAL.COL_NAME_COVERAGE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertEndorseCovDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
+            SetValue(CertEndorseCovDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property BeginDatePre() As DateType
+    Public Property BeginDatePre As DateType
         Get
             CheckDeleted()
             If row(CertEndorseCovDAL.COL_NAME_BEGIN_DATE_PRE) Is DBNull.Value Then
@@ -144,15 +144,15 @@ Public Class CertEndorseCov
                 Return New DateType(CType(row(CertEndorseCovDAL.COL_NAME_BEGIN_DATE_PRE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertEndorseCovDAL.COL_NAME_BEGIN_DATE_PRE, Value)
+            SetValue(CertEndorseCovDAL.COL_NAME_BEGIN_DATE_PRE, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property BeginDatePost() As DateType
+    Public Property BeginDatePost As DateType
         Get
             CheckDeleted()
             If row(CertEndorseCovDAL.COL_NAME_BEGIN_DATE_POST) Is DBNull.Value Then
@@ -161,15 +161,15 @@ Public Class CertEndorseCov
                 Return New DateType(CType(row(CertEndorseCovDAL.COL_NAME_BEGIN_DATE_POST), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertEndorseCovDAL.COL_NAME_BEGIN_DATE_POST, Value)
+            SetValue(CertEndorseCovDAL.COL_NAME_BEGIN_DATE_POST, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property EndDatePre() As DateType
+    Public Property EndDatePre As DateType
         Get
             CheckDeleted()
             If row(CertEndorseCovDAL.COL_NAME_END_DATE_PRE) Is DBNull.Value Then
@@ -178,15 +178,15 @@ Public Class CertEndorseCov
                 Return New DateType(CType(row(CertEndorseCovDAL.COL_NAME_END_DATE_PRE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertEndorseCovDAL.COL_NAME_END_DATE_PRE, Value)
+            SetValue(CertEndorseCovDAL.COL_NAME_END_DATE_PRE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidTerm("")> _
-    Public Property EndDatePost() As DateType
+    Public Property EndDatePost As DateType
         Get
             CheckDeleted()
             If Row(CertEndorseCovDAL.COL_NAME_END_DATE_POST) Is DBNull.Value Then
@@ -195,9 +195,9 @@ Public Class CertEndorseCov
                 Return New DateType(CType(Row(CertEndorseCovDAL.COL_NAME_END_DATE_POST), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertEndorseCovDAL.COL_NAME_END_DATE_POST, Value)
+            SetValue(CertEndorseCovDAL.COL_NAME_END_DATE_POST, Value)
         End Set
     End Property
 
@@ -210,15 +210,15 @@ Public Class CertEndorseCov
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CertEndorseCovDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -226,7 +226,7 @@ Public Class CertEndorseCov
         End Try
     End Sub
 
-    Public Sub IsCertEndorsable(ByVal ds As DataSet, ByVal certId As Guid, ByVal beginDatePost As Date, ByVal endDatePost As Date)
+    Public Sub IsCertEndorsable(ds As DataSet, certId As Guid, beginDatePost As Date, endDatePost As Date)
         Try
             Dim dal As New CertEndorseCovDAL
             dal.IsCertEndorsable(ds, certId, beginDatePost, endDatePost)
@@ -246,16 +246,16 @@ Public Class CertEndorseCov
     Public Class CertEndorsementCovCollection
         Inherits BusinessObjectListBase
 
-        Public Sub New(ByVal parent As CertEndorse)
+        Public Sub New(parent As CertEndorse)
             MyBase.New(parent.Dataset.Tables(CertEndorseDAL.TABLE_NAME), GetType(CertEndorseCov), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             CType(bo, CertEndorseCov).CertEndorseId = CType(Parent, CertEndorse).CertEndorseId
         End Function
     End Class
 
-    Public Shared Sub LoadListIntoParentFamily(ByVal parent As CertEndorse)
+    Public Shared Sub LoadListIntoParentFamily(parent As CertEndorse)
         Dim dal As New CertEndorseCovDAL
         dal.LoadList(parent.Dataset, parent.CertEndorseId)
     End Sub
@@ -264,15 +264,15 @@ Public Class CertEndorseCov
 #Region "List Methods"
     Public Class EndCovList
         Inherits BusinessObjectListBase
-        Public Sub New(ByVal parent As BusinessObjectBase)
+        Public Sub New(parent As BusinessObjectBase)
             MyBase.New(parent.Dataset.Tables(CertEndorseCovDAL.TABLE_NAME), GetType(CertEndorseCov), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return True
         End Function
     End Class
-    Public Shared Function GetEndorsementCovListForEndorsement(ByVal endoseId As Guid, ByVal parent As BusinessObjectBase) As EndCovList
+    Public Shared Function GetEndorsementCovListForEndorsement(endoseId As Guid, parent As BusinessObjectBase) As EndCovList
         If parent.Dataset.Tables.IndexOf(CertItemCoverageDAL.TABLE_NAME) < 0 Then
             Dim dal As New CertEndorseCovDAL
             dal.LoadList(parent.Dataset, endoseId)
@@ -297,7 +297,7 @@ Public Class CertEndorseCov
     '    End Try
     'End Function
 
-    Public Shared Function GetEndorsementCoverages(ByVal certEndoseId As Guid) As CertEndorsementCoverageSearchDV
+    Public Shared Function GetEndorsementCoverages(certEndoseId As Guid) As CertEndorsementCoverageSearchDV
         Try
             Dim dal As New CertEndorseCovDAL
             Dim ds As Dataset
@@ -330,7 +330,7 @@ Public Class CertEndorseCov
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -342,14 +342,14 @@ Public Class CertEndorseCov
     Public NotInheritable Class ValidTerm
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_WILL_CAURSE_AN_INVALID_ESC_COVERAGE_TERM)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CertEndorseCov = CType(objectToValidate, CertEndorseCov)
 
-            Dim MftCovID As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_COVERAGE_TYPES, Codes.COVERAGE_TYPE__MANUFACTURER)
+            Dim MftCovID As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_COVERAGE_TYPES, Codes.COVERAGE_TYPE__MANUFACTURER)
 
             If MftCovID.Equals(obj.CoverageTypeId) Then 'Only check for non-mft coverage
                 Return True

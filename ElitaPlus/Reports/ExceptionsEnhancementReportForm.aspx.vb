@@ -8,26 +8,26 @@
             SetStateProperties()
         End Sub
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
-            Me.ErrControllerMaster.Clear_Hide()
-            Me.Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
+            ErrControllerMaster.Clear_Hide()
+            Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
 
             Try
-                If Not Me.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
+                If Not IsPostBack Then
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
                     'JavascriptCalls()
                     TheReportCeInputControl.SetExportOnly()
                     TheReportCeInputControl.populateReportLanguages(RPT_FILENAME_EXPORT)
                     InitializeForm()
 
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
 
 
         End Sub
@@ -104,13 +104,13 @@
         Private Sub SetStateProperties()
             Dim oExpState As Assurant.ElitaPlus.ElitaPlusWebApp.TransExceptionManagementForm.MyState
             'DirectCast(DirectCast(Me.CallingParameters, System.Object), Assurant.ElitaPlus.ElitaPlusWebApp.TransExceptionManagementForm.MyState)
-            Me.State.CLAIM_NUMBER = CType(Me.CallingParameters, TransExceptionManagementForm.MyState).searchClaimNumber.ToString
-            Me.State.AUTH_NUMBER = CType(Me.CallingParameters, TransExceptionManagementForm.MyState).searchAuthNumber.ToString
-            Me.State.SVC_CODE = CType(Me.CallingParameters, TransExceptionManagementForm.MyState).searchServiceCenterCode.ToString
-            Me.State.TRANS_DATE_FROM = CType(Me.CallingParameters, TransExceptionManagementForm.MyState).searchFrom.ToString
-            Me.State.TRANS_DATE_TO = CType(Me.CallingParameters, TransExceptionManagementForm.MyState).searchTo.ToString
-            Me.State.ERROR_CODE = CType(Me.CallingParameters, TransExceptionManagementForm.MyState).searchErrorCode.ToString
-            Me.State.Page_Index = CType(Me.CallingParameters, TransExceptionManagementForm.MyState).PageIndex
+            State.CLAIM_NUMBER = CType(CallingParameters, TransExceptionManagementForm.MyState).searchClaimNumber.ToString
+            State.AUTH_NUMBER = CType(CallingParameters, TransExceptionManagementForm.MyState).searchAuthNumber.ToString
+            State.SVC_CODE = CType(CallingParameters, TransExceptionManagementForm.MyState).searchServiceCenterCode.ToString
+            State.TRANS_DATE_FROM = CType(CallingParameters, TransExceptionManagementForm.MyState).searchFrom.ToString
+            State.TRANS_DATE_TO = CType(CallingParameters, TransExceptionManagementForm.MyState).searchTo.ToString
+            State.ERROR_CODE = CType(CallingParameters, TransExceptionManagementForm.MyState).searchErrorCode.ToString
+            State.Page_Index = CType(CallingParameters, TransExceptionManagementForm.MyState).PageIndex
         End Sub
 
 #End Region
@@ -132,7 +132,7 @@
 #End Region
 
 #Region "Crystal Enterprise"
-        Private Sub btnGenRpt_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 Dim oparamdate As ParameterData
                 ReportCeBase.EnableReportCe(Me, TheReportCeInputControl)
@@ -141,7 +141,7 @@
                 Session(ReportCeBaseForm.SESSION_PARAMETERS_KEY) = params
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
         Public Function AssignParamValuesAndRunReport() As ParameterData
@@ -149,12 +149,12 @@
             Dim ParamData As ParameterData
             With ParamData
                 .COMPANY_GROUP_ID = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-                .CLAIM_NUMBER = Me.State.CLAIM_NUMBER
-                .AUTH_NUMBER = Me.State.AUTH_NUMBER
-                .SVC_CODE = Me.State.SVC_CODE
-                .TRANS_DATE_FROM = Me.State.TRANS_DATE_FROM
-                .TRANS_DATE_TO = Me.State.TRANS_DATE_TO
-                .ERROR_CODE = Me.State.ERROR_CODE
+                .CLAIM_NUMBER = State.CLAIM_NUMBER
+                .AUTH_NUMBER = State.AUTH_NUMBER
+                .SVC_CODE = State.SVC_CODE
+                .TRANS_DATE_FROM = State.TRANS_DATE_FROM
+                .TRANS_DATE_TO = State.TRANS_DATE_TO
+                .ERROR_CODE = State.ERROR_CODE
                 .NUM_REC = Max_Records
                 .TRANS_LOG_HEADER_ID = String.Empty
                 .CULTURE_VALUE = TheReportCeInputControl.getCultureValue(True)
@@ -164,7 +164,7 @@
         End Function
 
 
-        Function SetParameters(ByVal data As ParameterData) As ReportCeBaseForm.Params
+        Function SetParameters(data As ParameterData) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim culturevalue As String = TheReportCeInputControl.getCultureValue(True)
@@ -209,10 +209,10 @@
 
 #End Region
 
-        Protected Sub btnBack_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnBack.Click
+        Protected Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             '  Dim otrans As New TransExceptionManagementForm            
-            Dim retType As New TransExceptionManagementForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State)
-            Me.ReturnToCallingPage(retType)
+            Dim retType As New TransExceptionManagementForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State)
+            ReturnToCallingPage(retType)
         End Sub
     End Class
 End Namespace

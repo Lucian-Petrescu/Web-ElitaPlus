@@ -6,48 +6,48 @@ Public MustInherit Class BasePermission(Of TDataAccessType As {BasePermissionDAL
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New TDataAccessType
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public MustInherit Class BasePermission(Of TDataAccessType As {BasePermissionDAL
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New TDataAccessType
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -91,7 +91,7 @@ Public MustInherit Class BasePermission(Of TDataAccessType As {BasePermissionDAL
 
 #Region "Properties"
     <ValueMandatory("")> _
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             CheckDeleted()
             If Row(dataAccessObject.TABLE_KEY_NAME) Is DBNull.Value Then
@@ -103,7 +103,7 @@ Public MustInherit Class BasePermission(Of TDataAccessType As {BasePermissionDAL
     End Property
 
     <ValueMandatory("")> _
-    Public Property PermissionId() As Guid
+    Public Property PermissionId As Guid
         Get
             CheckDeleted()
             If Row(dataAccessObject.COL_NAME_PERMISSION_ID) Is DBNull.Value Then
@@ -112,14 +112,14 @@ Public MustInherit Class BasePermission(Of TDataAccessType As {BasePermissionDAL
                 Return New Guid(CType(Row(dataAccessObject.COL_NAME_PERMISSION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(dataAccessObject.COL_NAME_PERMISSION_ID, Value)
+            SetValue(dataAccessObject.COL_NAME_PERMISSION_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property EntityId() As Guid
+    Public Property EntityId As Guid
         Get
             CheckDeleted()
             If Row(dataAccessObject.COL_NAME_ENTITY_ID) Is DBNull.Value Then
@@ -128,9 +128,9 @@ Public MustInherit Class BasePermission(Of TDataAccessType As {BasePermissionDAL
                 Return New Guid(CType(Row(dataAccessObject.COL_NAME_ENTITY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(dataAccessObject.COL_NAME_ENTITY_ID, Value)
+            SetValue(dataAccessObject.COL_NAME_ENTITY_ID, Value)
         End Set
     End Property
 #End Region
@@ -139,15 +139,15 @@ Public MustInherit Class BasePermission(Of TDataAccessType As {BasePermissionDAL
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New TDataAccessType
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -155,11 +155,11 @@ Public MustInherit Class BasePermission(Of TDataAccessType As {BasePermissionDAL
         End Try
     End Sub
 
-    Public Sub Copy(ByVal original As TPermission)
-        If Not Me.IsNew Then
+    Public Sub Copy(original As TPermission)
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Best Replacement.")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 #End Region
 
@@ -174,30 +174,30 @@ Public MustInherit Class PermissionList(Of _
 
     Private ReadOnly dvPermissions As DataView
 
-    Public Sub New(ByVal parent As TParentType)
+    Public Sub New(parent As TParentType)
         MyBase.New(LoadTable(Of TPermissionList)(parent), parent)
         If (ElitaPlusIdentity.Current Is Nothing) OrElse (ElitaPlusIdentity.Current.ActiveUser Is Nothing) Then
-            dvPermissions = LookupListNew.DropdownLanguageLookupList(LookupListNew.LK_USER_ROLE_PERMISSION, CType(CType(parent, Object), User).LanguageId)
+            dvPermissions = LookupListNew.DropdownLanguageLookupList(LookupListCache.LK_USER_ROLE_PERMISSION, CType(CType(parent, Object), User).LanguageId)
         Else
-            dvPermissions = LookupListNew.DropdownLanguageLookupList(LookupListNew.LK_USER_ROLE_PERMISSION, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+            dvPermissions = LookupListNew.DropdownLanguageLookupList(LookupListCache.LK_USER_ROLE_PERMISSION, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
         End If
 
 
     End Sub
 
-    Public Overrides Function GetChild(ByVal childId As System.Guid) As BusinessObjectBase
+    Public Overrides Function GetChild(childId As System.Guid) As BusinessObjectBase
         Return (From permission As TPermission In Me
                 Where permission.PermissionId = childId
                 Select permission).FirstOrDefault()
     End Function
 
-    Public MustOverride Function GetNewChild(ByVal parentId As System.Guid) As BusinessObjectBase
+    Public MustOverride Function GetNewChild(parentId As System.Guid) As BusinessObjectBase
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, TPermission).EntityId.Equals(CType(Parent, TParentType).Id)
     End Function
 
-    Private Shared Function LoadTable(Of TPermissionList)(ByVal parent As TParentType) As DataTable
+    Private Shared Function LoadTable(Of TPermissionList)(parent As TParentType) As DataTable
         Try
             Dim dal As New TDataAccessType
             If Not parent.IsChildrenCollectionLoaded(GetType(TPermissionList)) Then
@@ -210,13 +210,13 @@ Public MustInherit Class PermissionList(Of _
         End Try
     End Function
 
-    Public Sub Grant(ByVal permissionId As Guid)
-        Dim permission As TPermission = GetNewChild(DirectCast(MyBase.Parent, TParentType).Id)
+    Public Sub Grant(permissionId As Guid)
+        Dim permission As TPermission = GetNewChild(DirectCast(Parent, TParentType).Id)
         permission.PermissionId = permissionId
         permission.Save()
     End Sub
 
-    Public Function HasPermission(ByVal permissionCode As String) As Boolean
+    Public Function HasPermission(permissionCode As String) As Boolean
         Dim result As DataTable = dvPermissions.Table.Copy()
         Dim permissionId As Nullable(Of Guid) = Nothing
         permissionCode = permissionCode.ToUpperInvariant()
@@ -239,7 +239,7 @@ Public MustInherit Class PermissionList(Of _
 
     End Function
 
-    Public Sub Revoke(ByVal permissionId As Guid)
+    Public Sub Revoke(permissionId As Guid)
         Dim permission As TPermission = (From p As TPermission In Me
                                          Where p.PermissionId = permissionId
                                          Select p).FirstOrDefault()
@@ -251,7 +251,7 @@ Public MustInherit Class PermissionList(Of _
     End Sub
 
     Public Sub RevokeAll()
-        For index = Me.Count - 1 To 0 Step -1
+        For index = Count - 1 To 0 Step -1
             Dim p As TPermission = Me(index)
             p.Delete()
             p.Save()

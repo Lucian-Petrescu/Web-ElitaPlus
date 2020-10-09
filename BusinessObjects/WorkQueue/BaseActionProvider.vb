@@ -54,11 +54,11 @@ Public MustInherit Class BaseActionProvider
     Protected MustOverride Sub GenerateDisplayXML()
     Protected MustOverride Sub LoadXSLTPath()
 
-    Private Shared Function CreateActionProvider(ByVal actionCode As String) As BaseActionProvider
+    Private Shared Function CreateActionProvider(actionCode As String) As BaseActionProvider
         Throw New NotImplementedException()
     End Function
 
-    Shared Function CreateActionProvider(ByVal workQueueItem As WorkQueueItem) As BaseActionProvider
+    Shared Function CreateActionProvider(workQueueItem As WorkQueueItem) As BaseActionProvider
 
         Dim actionProv As BaseActionProvider
 
@@ -78,13 +78,13 @@ Public MustInherit Class BaseActionProvider
     Shared Function GetAction() As BaseActionProvider
         Dim wqItem As WorkQueueItem = WorkQueueItem.GetNextValidWorkQueueItem(ElitaPlusIdentity.Current.ActiveUser.NetworkId)
         Dim actionProvider As BaseActionProvider
-        If (Not wqItem Is Nothing) Then
-            actionProvider = BaseActionProvider.CreateActionProvider(wqItem)
+        If (wqItem IsNot Nothing) Then
+            actionProvider = CreateActionProvider(wqItem)
         End If
         Return actionProvider
     End Function
 
-    Friend Shared Function TransformationFileExists(ByVal fileName As String) As Boolean
+    Friend Shared Function TransformationFileExists(fileName As String) As Boolean
         Dim flag As Boolean = False
         Dim xsltPath As New Uri(HttpContext.Current.Server.MapPath(String.Format("{0}{1}", BASEXSLTPATH, fileName)))
         If (File.Exists(xsltPath.AbsolutePath)) Then

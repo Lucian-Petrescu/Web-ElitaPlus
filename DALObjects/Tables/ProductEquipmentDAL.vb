@@ -32,68 +32,68 @@
 #End Region
 
 #Region "Load Methods"
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim inputparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(TABLE_KEY_NAME, id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, inputparameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, inputparameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Public Function LoadList(ByVal ProductCodeId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(ProductCodeId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim ds As New DataSet
-        Dim inputparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_PRODUCT_CODE_ID, ProductCodeId.ToByteArray)}
+        Dim inputparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_PRODUCT_CODE_ID, ProductCodeId.ToByteArray)}
 
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, inputparameters)
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME, inputparameters)
         Return ds
     End Function
-    Public Function LoadBenefitsList(ByVal familyDS As DataSet, ByVal ProductCodeId As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_BENEFITS_LIST")
-        Dim inputparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_PRODUCT_CODE_ID, ProductCodeId.ToByteArray)}
+    Public Function LoadBenefitsList(familyDS As DataSet, ProductCodeId As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_BENEFITS_LIST")
+        Dim inputparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_PRODUCT_CODE_ID, ProductCodeId.ToByteArray)}
 
-        DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME_BENEFITS, inputparameters)
+        DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME_BENEFITS, inputparameters)
 
     End Function
-    Public Function LoadList(ByVal ds As DataSet, ByVal ProductCodeId As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(ds As DataSet, ProductCodeId As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim whereClauseConditions As String = ""
         whereClauseConditions &= Environment.NewLine & " AND trunc(expiration_date_product_equip) > trunc(sysdate) "
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
-        Dim inputparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_PRODUCT_CODE_ID, ProductCodeId.ToByteArray)}
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        Dim inputparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_PRODUCT_CODE_ID, ProductCodeId.ToByteArray)}
 
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, inputparameters)
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME, inputparameters)
 
     End Function
-    Public Function LoadProdManuEquipList(ByVal ProductCodeId As Guid, ByVal ManufacturerId As Guid, ByVal EquipmentId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_PROD_MANU_EQUIP_LIST")
+    Public Function LoadProdManuEquipList(ProductCodeId As Guid, ManufacturerId As Guid, EquipmentId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_PROD_MANU_EQUIP_LIST")
         Dim ds As New DataSet
         Dim inputparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                                                                {New DBHelper.DBHelperParameter(Me.COL_NAME_PRODUCT_CODE_ID, ProductCodeId.ToByteArray),
-                                                                 New DBHelper.DBHelperParameter(Me.COL_NAME_MANUFACTURER_ID, ManufacturerId.ToByteArray),
-                                                                 New DBHelper.DBHelperParameter(Me.COL_NAME_EQUIPMENT_ID, EquipmentId.ToByteArray)
+                                                                {New DBHelper.DBHelperParameter(COL_NAME_PRODUCT_CODE_ID, ProductCodeId.ToByteArray),
+                                                                 New DBHelper.DBHelperParameter(COL_NAME_MANUFACTURER_ID, ManufacturerId.ToByteArray),
+                                                                 New DBHelper.DBHelperParameter(COL_NAME_EQUIPMENT_ID, EquipmentId.ToByteArray)
                                                                 }
 
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, inputparameters)
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME, inputparameters)
         Return ds
     End Function
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
-        If Not ds.Tables(Me.TABLE_NAME_BENEFITS) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME_BENEFITS), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME_BENEFITS) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME_BENEFITS), Transaction, changesFilter)
         End If
     End Sub
 #End Region

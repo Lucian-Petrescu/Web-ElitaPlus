@@ -95,7 +95,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -106,47 +106,47 @@ Namespace Reports
 
         Private Sub InitializeForm()
             Dim t As Date = Date.Now.AddDays(-1)
-            Me.BeginDateText.Text = GetDateFormattedString(t)
-            Me.EndDateText.Text = GetDateFormattedString(Date.Now)
+            BeginDateText.Text = GetDateFormattedString(t)
+            EndDateText.Text = GetDateFormattedString(Date.Now)
             PopulateSvcCtrDropDown()
             PopulateRiskTypeDropDown()
-            Me.rbAllSvcCenters.Checked = True
-            Me.rbAllRisktypes.Checked = True
-            Me.rbAllUsers.Checked = True
+            rbAllSvcCenters.Checked = True
+            rbAllRisktypes.Checked = True
+            rbAllUsers.Checked = True
             TheReportCeInputControl.populateReportLanguages(RPT_FILENAME)
         End Sub
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-            Me.ErrControllerMaster.Clear_Hide()
-            Me.Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+            ErrControllerMaster.Clear_Hide()
+            Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
             Try
-                If Not Me.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
+                If Not IsPostBack Then
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
                     JavascriptCalls()
                     InitializeForm()
-                    Me.AddCalendar(Me.BtnBeginDate, Me.BeginDateText)
-                    Me.AddCalendar(Me.BtnEndDate, Me.EndDateText)
+                    AddCalendar(BtnBeginDate, BeginDateText)
+                    AddCalendar(BtnEndDate, EndDateText)
                 Else
                     ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -160,8 +160,8 @@ Namespace Reports
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(BeginDateLabel)
-            Me.ClearLabelErrSign(EndDateLabel)
+            ClearLabelErrSign(BeginDateLabel)
+            ClearLabelErrSign(EndDateLabel)
         End Sub
 
 #End Region
@@ -180,7 +180,7 @@ Namespace Reports
                 oListContext.CountryId = _country
                 Dim oServiceCenterListForCountry As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ServiceCenterListByCountry", context:=oListContext)
                 If oServiceCenterListForCountry.Count > 0 Then
-                    If Not oServiceCenterList Is Nothing Then
+                    If oServiceCenterList IsNot Nothing Then
                         oServiceCenterList.AddRange(oServiceCenterListForCountry)
                     Else
                         oServiceCenterList = oServiceCenterListForCountry.Clone()
@@ -188,7 +188,7 @@ Namespace Reports
                 End If
             Next
 
-            Me.cboSvcCenter.Populate(oServiceCenterList.ToArray(), New PopulateOptions() With
+            cboSvcCenter.Populate(oServiceCenterList.ToArray(), New PopulateOptions() With
                                                    {
                                                     .AddBlankItem = True
                                                    })
@@ -199,7 +199,7 @@ Namespace Reports
             Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
             oListContext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
             Dim coverageLst As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RiskTypeByCompanyGroup", context:=oListContext)
-            Me.cborisktype.Populate(coverageLst, New PopulateOptions() With
+            cborisktype.Populate(coverageLst, New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
@@ -211,9 +211,9 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal userId As String, ByVal begindate As String, ByVal enddate As String,
-                               ByVal svcCtrCode As String, ByVal riskTypeDescription As String, ByVal modifiedby As String,
-                               ByVal sortBy As String) As ReportCeBaseForm.Params
+        Function SetParameters(userId As String, begindate As String, enddate As String,
+                               svcCtrCode As String, riskTypeDescription As String, modifiedby As String,
+                               sortBy As String) As ReportCeBaseForm.Params
 
 
             Dim params As New ReportCeBaseForm.Params
@@ -257,8 +257,8 @@ Namespace Reports
             Return params
         End Function
 
-        Sub SetReportParams(ByVal rptParams As ReportParams, ByVal repParams() As ReportCeBaseForm.RptParam,
-                          ByVal rptName As String, ByVal startIndex As Integer)
+        Sub SetReportParams(rptParams As ReportParams, repParams() As ReportCeBaseForm.RptParam,
+                          rptName As String, startIndex As Integer)
 
             With rptParams
                 repParams(startIndex) = New ReportCeBaseForm.RptParam("V_USER_KEY", .userid, rptName)
@@ -284,29 +284,29 @@ Namespace Reports
             ReportCeBase.ValidateBeginEndDate(BeginDateLabel, BeginDateText.Text, EndDateLabel, EndDateText.Text)
             endDate = ReportCeBase.FormatDate(EndDateLabel, EndDateText.Text)
             beginDate = ReportCeBase.FormatDate(BeginDateLabel, BeginDateText.Text)
-            Dim sortBy As String = Me.rdReportSortOrder.SelectedValue
+            Dim sortBy As String = rdReportSortOrder.SelectedValue
 
 
             'SvcCenter
-            If Me.rbAllSvcCenters.Checked Then
+            If rbAllSvcCenters.Checked Then
                 svcCtrCode = ALL
             Else
-                Dim selectedSvcCtrId As Guid = Me.GetSelectedItem(Me.cboSvcCenter)
+                Dim selectedSvcCtrId As Guid = GetSelectedItem(cboSvcCenter)
                 Dim dvSvcCtr As DataView = LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Country(ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID).Id)
                 svcCtrCode = LookupListNew.GetCodeFromId(dvSvcCtr, selectedSvcCtrId)
             End If
 
             'Risktype
-            If Me.rbAllRisktypes.Checked Then
+            If rbAllRisktypes.Checked Then
                 riskTypeDesc = ALL
             Else
-                Dim selectedRiskTypeId As Guid = Me.GetSelectedItem(Me.cborisktype)
+                Dim selectedRiskTypeId As Guid = GetSelectedItem(cborisktype)
                 Dim dvRiskType As DataView = LookupListNew.GetRiskTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
                 riskTypeDesc = LookupListNew.GetDescriptionFromId(dvRiskType, selectedRiskTypeId)
             End If
 
             'User
-            If Me.rbAllUsers.Checked Then
+            If rbAllUsers.Checked Then
                 modifiedby = ALL
             Else
                 modifiedby = txtUserId.Text.Trim.ToString()

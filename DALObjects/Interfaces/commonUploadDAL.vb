@@ -16,12 +16,12 @@ Public Class commonUploadDAL
 
 #End Region
 #Region "Delegate Signatures"
-    Public Delegate Sub AsyncCaller(ByVal strUploadType As String, ByVal guidStatusID As Guid, ByVal strCompanyGroupCode As String, ByVal strUserEmailAddress As String, ByVal strUser As String)
+    Public Delegate Sub AsyncCaller(strUploadType As String, guidStatusID As Guid, strCompanyGroupCode As String, strUserEmailAddress As String, strUser As String)
 #End Region
 #Region "Upload File Processing"
 
-    Public Sub InsertUploadFileLines(ByVal strUploadType As String, ByVal FileLines As Generic.List(Of String))
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_FILE_LINE")
+    Public Sub InsertUploadFileLines(strUploadType As String, FileLines As Generic.List(Of String))
+        Dim selectStmt As String = Config("/SQL/LOAD_FILE_LINE")
         Dim intLineNum As Integer
         Dim inClauseCondition As String
 
@@ -48,7 +48,7 @@ Public Class commonUploadDAL
         End Try
     End Sub
 
-    Public Sub InsertUploadFileLinesBulk(ByVal strUploadType As String, ByVal FileLines As Generic.List(Of String), ByVal fileName As String, ByVal userId As String)
+    Public Sub InsertUploadFileLinesBulk(strUploadType As String, FileLines As Generic.List(Of String), fileName As String, userId As String)
         Dim cBatchSize As Integer = 200
         Dim strStmt As String = "INSERT INTO ELP_Upload_File_Lines (file_line, line_number, upload_type) values (:file_line, :line_number, :upload_type)"
         Dim conn As OracleConnection
@@ -130,7 +130,7 @@ Public Class commonUploadDAL
 
             conn.Close()
         Catch ex As Exception
-            Dim selectStmtUpd As String = Me.Config("SQL/UPDATE_FILE_PROCESSED")
+            Dim selectStmtUpd As String = Config("SQL/UPDATE_FILE_PROCESSED")
             Dim parametersUpd() As DBHelper.DBHelperParameter
             Dim processStatus As String = "DONE"
             parametersUpd = New DBHelper.DBHelperParameter() _
@@ -155,7 +155,7 @@ Public Class commonUploadDAL
 
     Public Function getScreenHelpData(FormName As String) As String
         Dim sqlStmt As String
-        sqlStmt = Me.Config("/SQL/PROCESS_SCREEN_HELP")
+        sqlStmt = Config("/SQL/PROCESS_SCREEN_HELP")
 
 
         Try
@@ -183,12 +183,12 @@ Public Class commonUploadDAL
         End Try
     End Function
 
-    Public Sub ExtractReportFile(strUploadType As String, ByVal strUserEmailAddress As String, ByVal strCompanyGroupCode As String, ByVal extractFile As String)
+    Public Sub ExtractReportFile(strUploadType As String, strUserEmailAddress As String, strCompanyGroupCode As String, extractFile As String)
         Dim sqlStmt As String
         Try
             Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
             Dim param As DBHelper.DBHelperParameter
-            sqlStmt = Me.Config("/SQL/PROCESS_EXTRACT_REPORT")
+            sqlStmt = Config("/SQL/PROCESS_EXTRACT_REPORT")
 
             param = New DBHelper.DBHelperParameter("pi_UploadType", strUploadType)
             inParameters.Add(param)
@@ -209,8 +209,8 @@ Public Class commonUploadDAL
 
     End Sub
 
-    Public Sub InsertUploadFileLinesNew(ByVal strUploadType As String, ByVal FileLines As Generic.List(Of String), ByVal fileName As String)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_FILE_LINE")
+    Public Sub InsertUploadFileLinesNew(strUploadType As String, FileLines As Generic.List(Of String), fileName As String)
+        Dim selectStmt As String = Config("/SQL/LOAD_FILE_LINE")
         Dim intLineNum As Integer
 
         Dim parameters() As DBHelper.DBHelperParameter
@@ -232,7 +232,7 @@ Public Class commonUploadDAL
                 intLineNum += 1
             Next
         Catch ex As Exception
-            Dim selectStmtUpd As String = Me.Config("SQL/ UPDATE_FILE_PROCESSED")
+            Dim selectStmtUpd As String = Config("SQL/ UPDATE_FILE_PROCESSED")
             Dim parametersUpd() As DBHelper.DBHelperParameter
             Dim processStatus As String = "DONE"
             parametersUpd = New DBHelper.DBHelperParameter() _
@@ -251,10 +251,10 @@ Public Class commonUploadDAL
         End Try
     End Sub
 
-    Public Sub InitUpload(ByVal strFileName As String, ByVal strUploadType As String,
-                          ByVal strUser As String, ByRef strResult As String, ByRef strErrMsg As String)
+    Public Sub InitUpload(strFileName As String, strUploadType As String,
+                          strUser As String, ByRef strResult As String, ByRef strErrMsg As String)
         Dim sqlStmt As String
-        sqlStmt = Me.Config("/SQL/UPLOAD_INIT")
+        sqlStmt = Config("/SQL/UPLOAD_INIT")
         strResult = String.Empty
         strErrMsg = String.Empty
         Try
@@ -287,13 +287,13 @@ Public Class commonUploadDAL
         End Try
     End Sub
 
-    Public Sub ProcessFile(ByVal strUploadType As String, ByVal guidStatusID As Guid, ByVal strCompanyGroupCode As String, ByVal strUserEmailAddress As String, ByVal strUser As String)
+    Public Sub ProcessFile(strUploadType As String, guidStatusID As Guid, strCompanyGroupCode As String, strUserEmailAddress As String, strUser As String)
         Dim sqlStmt As String
         Try
             Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
             Dim param As DBHelper.DBHelperParameter
             If String.Equals(strUploadType, "REACTIVATE") Then
-                sqlStmt = Me.Config("/SQL/PROCESS_REACTIVATE_FILE")
+                sqlStmt = Config("/SQL/PROCESS_REACTIVATE_FILE")
 
                 param = New DBHelper.DBHelperParameter("p_UploadType", strUploadType)
                 inParameters.Add(param)
@@ -303,7 +303,7 @@ Public Class commonUploadDAL
 
 
             ElseIf String.Equals(strUploadType, "CANCEL") Then
-                sqlStmt = Me.Config("/SQL/PROCESS_CANCEL_FILE")
+                sqlStmt = Config("/SQL/PROCESS_CANCEL_FILE")
 
                 param = New DBHelper.DBHelperParameter("pi_Uploadtype", strUploadType)
                 inParameters.Add(param)
@@ -312,7 +312,7 @@ Public Class commonUploadDAL
                 inParameters.Add(param)
 
             ElseIf String.Equals(strUploadType, "CANCELRENAME") Then
-                sqlStmt = Me.Config("/SQL/PROCESS_CANCEL_AND_RENAME_FILE")
+                sqlStmt = Config("/SQL/PROCESS_CANCEL_AND_RENAME_FILE")
 
 
                 param = New DBHelper.DBHelperParameter("pi_Uploadtype", strUploadType)
@@ -324,7 +324,7 @@ Public Class commonUploadDAL
                 '//Changes Here(Dhruv) 
 
             ElseIf String.Equals(strUploadType, "CLAIMUPDATE") Then
-                sqlStmt = Me.Config("/SQL/PROCESS_UPDATE_CLAIM")
+                sqlStmt = Config("/SQL/PROCESS_UPDATE_CLAIM")
 
 
                 param = New DBHelper.DBHelperParameter("pi_Uploadtype", strUploadType)
@@ -334,7 +334,7 @@ Public Class commonUploadDAL
                 inParameters.Add(param)
 
             Else
-                sqlStmt = Me.Config("/SQL/PROCESS_FILE")
+                sqlStmt = Config("/SQL/PROCESS_FILE")
 
                 param = New DBHelper.DBHelperParameter("p_UploadType", strUploadType)
                 inParameters.Add(param)
@@ -359,13 +359,13 @@ Public Class commonUploadDAL
         End Try
     End Sub
 
-    Public Sub ProcessFileAsync(ByVal strUploadType As String, ByVal guidStatusID As Guid, ByVal strCompanyGroupCode As String, ByVal strUserEmailAddress As String, ByVal strUser As String)
+    Public Sub ProcessFileAsync(strUploadType As String, guidStatusID As Guid, strCompanyGroupCode As String, strUserEmailAddress As String, strUser As String)
         Dim aSyncHandler As New AsyncCaller(AddressOf ProcessFile)
         aSyncHandler.BeginInvoke(strUploadType, guidStatusID, strCompanyGroupCode, strUserEmailAddress, strUser, Nothing, Nothing)
     End Sub
 
-    Public Function LoadProcessingError(ByVal strUploadType As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_PROCESSING_ERR")
+    Public Function LoadProcessingError(strUploadType As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_PROCESSING_ERR")
         selectStmt = selectStmt.Replace(":upload_type", strUploadType)
         Try
             Dim ds As DataSet

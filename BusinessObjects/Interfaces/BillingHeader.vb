@@ -6,48 +6,48 @@ Public Class BillingHeader
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New BillingHeaderDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class BillingHeader
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New BillingHeaderDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -90,7 +90,7 @@ Public Class BillingHeader
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(BillingHeaderDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class BillingHeader
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If row(BillingHeaderDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -110,15 +110,15 @@ Public Class BillingHeader
                 Return New Guid(CType(row(BillingHeaderDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(BillingHeaderDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(BillingHeaderDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property DateFileSent() As DateType
+    Public Property DateFileSent As DateType
         Get
             CheckDeleted()
             If row(BillingHeaderDAL.COL_NAME_DATE_FILE_SENT) Is DBNull.Value Then
@@ -127,15 +127,15 @@ Public Class BillingHeader
                 Return New DateType(CType(row(BillingHeaderDAL.COL_NAME_DATE_FILE_SENT), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(BillingHeaderDAL.COL_NAME_DATE_FILE_SENT, Value)
+            SetValue(BillingHeaderDAL.COL_NAME_DATE_FILE_SENT, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property Filename() As String
+    Public Property Filename As String
         Get
             CheckDeleted()
             If Row(BillingHeaderDAL.COL_NAME_FILENAME) Is DBNull.Value Then
@@ -144,15 +144,15 @@ Public Class BillingHeader
                 Return CType(Row(BillingHeaderDAL.COL_NAME_FILENAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(BillingHeaderDAL.COL_NAME_FILENAME, Value)
+            SetValue(BillingHeaderDAL.COL_NAME_FILENAME, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property TotalBilledAmt() As DecimalType
+    Public Property TotalBilledAmt As DecimalType
         Get
             CheckDeleted()
             If row(BillingHeaderDAL.COL_NAME_TOTAL_BILLED_AMT) Is DBNull.Value Then
@@ -161,15 +161,15 @@ Public Class BillingHeader
                 Return New DecimalType(CType(row(BillingHeaderDAL.COL_NAME_TOTAL_BILLED_AMT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(BillingHeaderDAL.COL_NAME_TOTAL_BILLED_AMT, Value)
+            SetValue(BillingHeaderDAL.COL_NAME_TOTAL_BILLED_AMT, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)> _
-    Public Property Status() As String
+    Public Property Status As String
         Get
             CheckDeleted()
             If row(BillingHeaderDAL.COL_NAME_STATUS) Is DBNull.Value Then
@@ -178,14 +178,14 @@ Public Class BillingHeader
                 Return CType(row(BillingHeaderDAL.COL_NAME_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(BillingHeaderDAL.COL_NAME_STATUS, Value)
+            SetValue(BillingHeaderDAL.COL_NAME_STATUS, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=48)> _
-    Public Property ReferenceNumber() As String
+    Public Property ReferenceNumber As String
         Get
             CheckDeleted()
             If row(BillingHeaderDAL.COL_NAME_REFERENCE_NUMBER) Is DBNull.Value Then
@@ -194,9 +194,9 @@ Public Class BillingHeader
                 Return CType(row(BillingHeaderDAL.COL_NAME_REFERENCE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(BillingHeaderDAL.COL_NAME_REFERENCE_NUMBER, Value)
+            SetValue(BillingHeaderDAL.COL_NAME_REFERENCE_NUMBER, Value)
         End Set
     End Property
 
@@ -205,17 +205,17 @@ Public Class BillingHeader
 
 #Region "Properties External BOs"
 
-    Public ReadOnly Property DealerCode() As String
+    Public ReadOnly Property DealerCode As String
         Get
             If DealerId.Equals(Guid.Empty) Then Return Nothing
-            Return LookupListNew.GetCodeFromId(LookupListNew.LK_DEALERS, DealerId)
+            Return LookupListNew.GetCodeFromId(LookupListCache.LK_DEALERS, DealerId)
         End Get
     End Property
 
-    Public ReadOnly Property DealerNameLoad() As String
+    Public ReadOnly Property DealerNameLoad As String
         Get
             If DealerId.Equals(Guid.Empty) Then Return Nothing
-            Dim dv As DataView = LookupListNew.DataView(LookupListNew.LK_DEALERS)
+            Dim dv As DataView = LookupListNew.DataView(LookupListCache.LK_DEALERS)
             Return LookupListNew.GetDescriptionFromId(dv, DealerId)
         End Get
     End Property
@@ -226,15 +226,15 @@ Public Class BillingHeader
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New BillingHeaderDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -261,20 +261,20 @@ Public Class BillingHeader
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
 #End Region
 
-    Public Shared Function getList(ByVal CompanyIds As ArrayList, ByVal DealerId As Guid, ByVal BeginDate As Date, ByVal EndDate As Date) As DataView
+    Public Shared Function getList(CompanyIds As ArrayList, DealerId As Guid, BeginDate As Date, EndDate As Date) As DataView
         Dim dal As New BillingHeaderDAL
         Dim ds As DataSet
         Try
             ds = dal.LoadList(CompanyIds, DealerId, BeginDate, EndDate)
 
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return ds.Tables(0).DefaultView
             Else
                 Return New DataView
@@ -284,13 +284,13 @@ Public Class BillingHeader
         End Try
     End Function
 
-    Public Shared Function getListByCompany(ByVal CompanyIds As ArrayList, ByVal BeginDate As Date, ByVal EndDate As Date) As DataView
+    Public Shared Function getListByCompany(CompanyIds As ArrayList, BeginDate As Date, EndDate As Date) As DataView
         Dim dal As New BillingHeaderDAL
         Dim ds As DataSet
         Try
             ds = dal.LoadListByCompany(CompanyIds, BeginDate, EndDate)
 
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return ds.Tables(0).DefaultView
             Else
                 Return New DataView

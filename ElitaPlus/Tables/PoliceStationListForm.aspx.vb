@@ -19,7 +19,7 @@ Partial Class PoliceStationListForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -65,7 +65,7 @@ Partial Class PoliceStationListForm
             Get
                 Return mnPageSize
             End Get
-            Set(ByVal Value As Integer)
+            Set(Value As Integer)
                 mnPageSize = Value
             End Set
         End Property
@@ -74,7 +74,7 @@ Partial Class PoliceStationListForm
             Get
                 Return msPageSort
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 msPageSort = Value
             End Set
         End Property
@@ -83,7 +83,7 @@ Partial Class PoliceStationListForm
             Get
                 Return searchDV
             End Get
-            Set(ByVal Value As PoliceStation.PoliceStationSearchDV)
+            Set(Value As PoliceStation.PoliceStationSearchDV)
                 searchDV = Value
             End Set
         End Property
@@ -104,24 +104,24 @@ Partial Class PoliceStationListForm
 #Region "Page Return"
 
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.MenuEnabled = True
-            Me.IsReturningFromChild = True
+            MenuEnabled = True
+            IsReturningFromChild = True
             Dim retObj As PoliceStationForm.ReturnType = CType(ReturnPar, PoliceStationForm.ReturnType)
 
-            Me.State.HasDataChanged = retObj.HasDataChanged
+            State.HasDataChanged = retObj.HasDataChanged
             Select Case retObj.LastOperation
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    If Not retObj Is Nothing Then
-                        Me.State.PoliceStationId = retObj.EditingBo.Id
-                        Me.State.IsGridVisible = True
+                    If retObj IsNot Nothing Then
+                        State.PoliceStationId = retObj.EditingBo.Id
+                        State.IsGridVisible = True
                     End If
                 Case ElitaPlusPage.DetailPageCommand.Delete
-                    Me.AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
+                    AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
             End Select
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
@@ -129,41 +129,41 @@ Partial Class PoliceStationListForm
 #End Region
 
 #Region "Page_Events"
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
-        Me.ErrorCtrl.Clear_Hide()
+        ErrorCtrl.Clear_Hide()
 
         Try
-            If Not Me.IsPostBack Then
-                Me.SetDefaultButton(Me.SearchCodeTextBox, btnSearch)
-                Me.SetDefaultButton(Me.SearchDescriptionTextBox, btnSearch)
-                If Me.IsReturningFromChild = True Then
+            If Not IsPostBack Then
+                SetDefaultButton(SearchCodeTextBox, btnSearch)
+                SetDefaultButton(SearchDescriptionTextBox, btnSearch)
+                If IsReturningFromChild = True Then
                     GetSession()
                 End If
-                Me.PopulateFormFromBOs()
+                PopulateFormFromBOs()
                 ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                If Me.State.IsGridVisible Then
-                    If Not (Me.State.selectedPageSize = DEFAULT_PAGE_SIZE) Then
-                        cboPageSize.SelectedValue = CType(Me.State.selectedPageSize, String)
-                        Grid.PageSize = Me.State.selectedPageSize
+                If State.IsGridVisible Then
+                    If Not (State.selectedPageSize = DEFAULT_PAGE_SIZE) Then
+                        cboPageSize.SelectedValue = CType(State.selectedPageSize, String)
+                        Grid.PageSize = State.selectedPageSize
                     End If
-                    Me.PopulateGrid()
+                    PopulateGrid()
                 End If
-                Me.SetGridItemStyleColor(Me.Grid)
+                SetGridItemStyleColor(Grid)
             End If
 
-            If Me.IsReturningFromChild = True Then
-                Me.IsReturningFromChild = False
+            If IsReturningFromChild = True Then
+                IsReturningFromChild = False
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
-        Me.ShowMissingTranslations(Me.ErrorCtrl)
+        ShowMissingTranslations(ErrorCtrl)
 
     End Sub
 
     Protected Sub PopulateFormFromBOs()
-        With Me.State.MyBO
+        With State.MyBO
             Dim countryList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="Country")
 
             Dim filteredCountryList As DataElements.ListItem() = (From x In countryList
@@ -171,8 +171,8 @@ Partial Class PoliceStationListForm
                                                                   Select x).ToArray()
             '  Me.BindListControlToDataView(moCountryDrop, LookupListNew.GetUserCountriesLookupList(), , , False)
             moCountryDrop.Populate(filteredCountryList, New PopulateOptions())
-            If Me.IsReturningFromChild = True Then
-                Me.SetSelectedItem(moCountryDrop, Me.State.CountryId)
+            If IsReturningFromChild = True Then
+                SetSelectedItem(moCountryDrop, State.CountryId)
             End If
             If moCountryDrop.Items.Count < 2 Then
                 ControlMgr.SetVisibleControl(Me, moCountryLabel, False)
@@ -185,40 +185,40 @@ Partial Class PoliceStationListForm
 #Region "Controlling Logic"
 
     Public Sub PopulateGrid()
-        If ((Me.State.searchDV Is Nothing) OrElse (Me.State.HasDataChanged)) Then
-            Me.State.searchDV = PoliceStation.getList(Me.SearchDescriptionTextBox.Text, Me.SearchCodeTextBox.Text, Me.GetSelectedItem(moCountryDrop))
+        If ((State.searchDV Is Nothing) OrElse (State.HasDataChanged)) Then
+            State.searchDV = PoliceStation.getList(SearchDescriptionTextBox.Text, SearchCodeTextBox.Text, GetSelectedItem(moCountryDrop))
         End If
-        Me.State.searchDV.Sort = Me.State.SortExpression
-        Me.Grid.AutoGenerateColumns = False
-        Me.Grid.Columns(Me.GRID_COL_POLICE_STATION_CODE_IDX).SortExpression = PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_CODE
-        Me.Grid.Columns(Me.GRID_COL_POLICE_STATION_NAME_IDX).SortExpression = PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_NAME
-        Me.Grid.Columns(Me.GRID_COL_POLICE_STATION_DISTRICT_CODE_IDX).SortExpression = PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_DISTRICT_CODE
-        Me.Grid.Columns(Me.GRID_COL_POLICE_STATION_DISTRICT_NAME_IDX).SortExpression = PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_DISTRICT_NAME
+        State.searchDV.Sort = State.SortExpression
+        Grid.AutoGenerateColumns = False
+        Grid.Columns(GRID_COL_POLICE_STATION_CODE_IDX).SortExpression = PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_CODE
+        Grid.Columns(GRID_COL_POLICE_STATION_NAME_IDX).SortExpression = PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_NAME
+        Grid.Columns(GRID_COL_POLICE_STATION_DISTRICT_CODE_IDX).SortExpression = PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_DISTRICT_CODE
+        Grid.Columns(GRID_COL_POLICE_STATION_DISTRICT_NAME_IDX).SortExpression = PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_DISTRICT_NAME
 
-        SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.PoliceStationId, Me.Grid, Me.State.PageIndex)
-        Me.SortAndBindGrid()
+        SetPageAndSelectedIndexFromGuid(State.searchDV, State.PoliceStationId, Grid, State.PageIndex)
+        SortAndBindGrid()
 
     End Sub
     Private Sub SortAndBindGrid()
-        Me.State.PageIndex = Me.Grid.CurrentPageIndex
-        Me.Grid.DataSource = Me.State.searchDV
-        HighLightSortColumn(Grid, Me.State.SortExpression)
-        Me.Grid.DataBind()
+        State.PageIndex = Grid.CurrentPageIndex
+        Grid.DataSource = State.searchDV
+        HighLightSortColumn(Grid, State.SortExpression)
+        Grid.DataBind()
 
-        ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
 
-        ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+        ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-        Session("recCount") = Me.State.searchDV.Count
+        Session("recCount") = State.searchDV.Count
 
-        If Me.State.searchDV.Count > 0 Then
+        If State.searchDV.Count > 0 Then
 
-            If Me.Grid.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         Else
-            If Me.Grid.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         End If
     End Sub
@@ -228,98 +228,98 @@ Partial Class PoliceStationListForm
 #Region " Datagrid Related "
 
     'The Binding Logic is here
-    Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+    Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
         Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
-        If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-            e.Item.Cells(Me.GRID_COL_POLICE_STATION_CODE_IDX).Text = dvRow(PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_CODE).ToString
-            e.Item.Cells(Me.GRID_COL_POLICE_STATION_NAME_IDX).Text = dvRow(PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_NAME).ToString
-            e.Item.Cells(Me.GRID_COL_POLICE_STATION_DISTRICT_CODE_IDX).Text = dvRow(PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_DISTRICT_CODE).ToString
-            e.Item.Cells(Me.GRID_COL_POLICE_STATION_DISTRICT_NAME_IDX).Text = dvRow(PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_DISTRICT_NAME).ToString
-            e.Item.Cells(Me.GRID_COL_POLICE_STATION_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_ID), Byte()))
+        If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
+            e.Item.Cells(GRID_COL_POLICE_STATION_CODE_IDX).Text = dvRow(PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_CODE).ToString
+            e.Item.Cells(GRID_COL_POLICE_STATION_NAME_IDX).Text = dvRow(PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_NAME).ToString
+            e.Item.Cells(GRID_COL_POLICE_STATION_DISTRICT_CODE_IDX).Text = dvRow(PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_DISTRICT_CODE).ToString
+            e.Item.Cells(GRID_COL_POLICE_STATION_DISTRICT_NAME_IDX).Text = dvRow(PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_DISTRICT_NAME).ToString
+            e.Item.Cells(GRID_COL_POLICE_STATION_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_ID), Byte()))
         End If
     End Sub
 
-    Public Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+    Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
         Try
             If e.CommandName = "SelectAction" Then
-                Me.State.PoliceStationId = New Guid(e.Item.Cells(Me.GRID_COL_POLICE_STATION_IDX).Text)
+                State.PoliceStationId = New Guid(e.Item.Cells(GRID_COL_POLICE_STATION_IDX).Text)
                 SetSession()
-                Me.callPage(PoliceStationForm.URL, Me.State.PoliceStationId)
+                callPage(PoliceStationForm.URL, State.PoliceStationId)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
 
-    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs)
+    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.CurrentPageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-            Me.PopulateGrid()
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
+    Private Sub Grid_SortCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = e.NewPageIndex
-            Me.State.PoliceStationId = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = e.NewPageIndex
+            State.PoliceStationId = Guid.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 #End Region
 
 #Region " Button Clicks "
     Private Sub SetStateProperties()
-        Me.State.DescriptionMask = SearchDescriptionTextBox.Text
-        Me.State.CodeMask = SearchCodeTextBox.Text
+        State.DescriptionMask = SearchDescriptionTextBox.Text
+        State.CodeMask = SearchCodeTextBox.Text
     End Sub
 
-    Private Sub btnSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As System.EventArgs) Handles btnSearch.Click
         Try
-            Me.State.PageIndex = 0
-            Me.State.PoliceStationId = Guid.Empty
-            Me.State.IsGridVisible = True
-            Me.State.searchDV = Nothing
-            Me.State.HasDataChanged = False
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            State.PoliceStationId = Guid.Empty
+            State.IsGridVisible = True
+            State.searchDV = Nothing
+            State.HasDataChanged = False
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnAdd_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd_WRITE.Click
+    Private Sub btnAdd_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnAdd_WRITE.Click
         SetSession()
-        Me.callPage(PoliceStationForm.URL)
+        callPage(PoliceStationForm.URL)
     End Sub
-    Private Sub btnClearSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
         ClearSearchCriteria()
     End Sub
 
@@ -330,12 +330,12 @@ Partial Class PoliceStationListForm
             SearchCodeTextBox.Text = String.Empty
 
             'Update Page State
-            With Me.State
+            With State
                 .DescriptionMask = SearchDescriptionTextBox.Text
                 .CodeMask = SearchCodeTextBox.Text
             End With
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
@@ -344,23 +344,23 @@ Partial Class PoliceStationListForm
 #Region "State-Management"
 
     Private Sub SetSession()
-        With Me.State
-            .CodeMask = Me.SearchCodeTextBox.Text
-            .DescriptionMask = Me.SearchDescriptionTextBox.Text
-            .CountryId = Me.GetSelectedItem(moCountryDrop)
+        With State
+            .CodeMask = SearchCodeTextBox.Text
+            .DescriptionMask = SearchDescriptionTextBox.Text
+            .CountryId = GetSelectedItem(moCountryDrop)
             .PageIndex = Grid.CurrentPageIndex
             .PageSize = Grid.PageSize
-            .PageSort = Me.State.SortExpression
-            .SearchDataView = Me.State.searchDV
+            .PageSort = State.SortExpression
+            .SearchDataView = State.searchDV
         End With
     End Sub
 
     Private Sub GetSession()
         'Dim oDataView As DataView
-        With Me.State
-            Me.SearchCodeTextBox.Text = .CodeMask
-            Me.SearchDescriptionTextBox.Text = .DescriptionMask
-            Me.Grid.PageSize = .PageSize
+        With State
+            SearchCodeTextBox.Text = .CodeMask
+            SearchDescriptionTextBox.Text = .DescriptionMask
+            Grid.PageSize = .PageSize
             cboPageSize.SelectedValue = CType(.PageSize, String)
             'oDataView.Sort = .PageSort
         End With

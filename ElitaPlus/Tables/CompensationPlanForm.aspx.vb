@@ -36,7 +36,7 @@ Namespace Tables
                 Get
                     Return mnPageSize
                 End Get
-                Set(ByVal Value As Integer)
+                Set(Value As Integer)
                     mnPageSize = Value
                 End Set
             End Property
@@ -45,7 +45,7 @@ Namespace Tables
                 Get
                     Return msPageSort
                 End Get
-                Set(ByVal Value As String)
+                Set(Value As String)
                     msPageSort = Value
                 End Set
             End Property
@@ -54,7 +54,7 @@ Namespace Tables
                 Get
                     Return searchcpDV
                 End Get
-                Set(ByVal Value As CommPlanExtract.CommPlanExtractSearchDV)
+                Set(Value As CommPlanExtract.CommPlanExtractSearchDV)
                     searchcpDV = Value
                 End Set
             End Property
@@ -78,34 +78,34 @@ Namespace Tables
 
         Private IsReturningFromChild As Boolean = False
 
-        Public Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Public Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.MenuEnabled = True
-                Me.IsReturningFromChild = True
+                MenuEnabled = True
+                IsReturningFromChild = True
                 Dim retObj As CommPlanExtractForm.ReturnType = CType(ReturnPar, CommPlanExtractForm.ReturnType)
-                Me.State.HasDataChanged = retObj.HasDataChanged
+                State.HasDataChanged = retObj.HasDataChanged
                 Select Case retObj.LastOperation
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        If Not retObj Is Nothing Then
+                        If retObj IsNot Nothing Then
                             If Not retObj.moCommissPlanId.Equals(Guid.Empty) Then
-                                Me.State.CommissionPlanId = retObj.moCommissPlanId
+                                State.CommissionPlanId = retObj.moCommissPlanId
                             Else
-                                Me.State.CommissionPlanId = Session(SessionCommPlanId)
+                                State.CommissionPlanId = Session(SessionCommPlanId)
                             End If
-                            Me.State.IsGridVisible = True
+                            State.IsGridVisible = True
                         End If
                     Case ElitaPlusPage.DetailPageCommand.Delete
-                        Me.AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
-                        Me.State.CommissionPlanId = Guid.Empty
+                        AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
+                        State.CommissionPlanId = Guid.Empty
                     Case Else
-                        Me.State.CommissionPlanId = Guid.Empty
+                        State.CommissionPlanId = Guid.Empty
                 End Select
-                moDataGrid.CurrentPageIndex = Me.State.PageIndex
-                cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
-                moDataGrid.PageSize = Me.State.PageSize
+                moDataGrid.CurrentPageIndex = State.PageIndex
+                cboPageSize.SelectedValue = CType(State.PageSize, String)
+                moDataGrid.PageSize = State.PageSize
                 ControlMgr.SetVisibleControl(Me, trPageSize, moDataGrid.Visible)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -113,9 +113,9 @@ Namespace Tables
             Public LastOperation As DetailPageCommand
             Public moComissionPlanId As Guid
             Public BoChanged As Boolean
-            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal oCommiPlanId As Guid, ByVal boChanged As Boolean)
-                Me.LastOperation = LastOp
-                Me.moComissionPlanId = oCommiPlanId
+            Public Sub New(LastOp As DetailPageCommand, oCommiPlanId As Guid, boChanged As Boolean)
+                LastOperation = LastOp
+                moComissionPlanId = oCommiPlanId
                 Me.BoChanged = boChanged
             End Sub
         End Class
@@ -124,19 +124,19 @@ Namespace Tables
 
         Private Sub SetStateProperties()
 
-            If (Me.State.CommissionPlanId.Equals(Guid.Empty)) Then
-                Me.State.CommissionPlanId = CType(Me.CallingParameters, Guid)
-                Session(SessionCommPlanId) = Me.State.CommissionPlanId
+            If (State.CommissionPlanId.Equals(Guid.Empty)) Then
+                State.CommissionPlanId = CType(CallingParameters, Guid)
+                Session(SessionCommPlanId) = State.CommissionPlanId
             End If
 
-            If Me.State.CommissionPlanId.Equals(Guid.Empty) Then
-                Me.State.IsPlanNew = True
+            If State.CommissionPlanId.Equals(Guid.Empty) Then
+                State.IsPlanNew = True
                 ClearPlan()
                 SetPlanButtonsState(True)
                 PopulatePlan()
                 TheDealerControl.ChangeEnabledControlProperty(True)
             Else
-                Me.State.IsPlanNew = False
+                State.IsPlanNew = False
                 SetPlanButtonsState(False)
                 PopulatePlan()
                 TheDealerControl.ChangeEnabledControlProperty(False)
@@ -174,18 +174,18 @@ Namespace Tables
 
         Private ReadOnly Property ThePlan() As CompensationPlan
             Get
-                If Me.State.MyBo Is Nothing Then
-                    If Me.State.IsPlanNew = True Then
+                If State.MyBo Is Nothing Then
+                    If State.IsPlanNew = True Then
                         ' For creating, inserting
-                        Me.State.MyBo = New CompensationPlan
-                        Me.State.CommissionPlanId = Me.State.MyBo.Id
+                        State.MyBo = New CompensationPlan
+                        State.CommissionPlanId = State.MyBo.Id
                     Else
                         ' For updating, deleting
-                        Me.State.MyBo = New CompensationPlan(Me.State.CommissionPlanId)
+                        State.MyBo = New CompensationPlan(State.CommissionPlanId)
                     End If
                 End If
-                BindBoPropertiesToLabels(Me.State.MyBo)
-                Return Me.State.MyBo
+                BindBoPropertiesToLabels(State.MyBo)
+                Return State.MyBo
             End Get
         End Property
 
@@ -239,7 +239,7 @@ Namespace Tables
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -252,29 +252,29 @@ Namespace Tables
 
         Protected WithEvents moErrorController As ErrorController
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
-                Me.MasterPage.MessageController.Clear_Hide()
+                MasterPage.MessageController.Clear_Hide()
                 ClearLabelsErrSign()
 
                 If Not Page.IsPostBack Then
-                    Me.MasterPage.MessageController.Clear()
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
+                    MasterPage.MessageController.Clear()
+                    MasterPage.UsePageTabTitleInBreadCrum = False
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
                     UpdateBreadCrum()
-                    Me.SetStateProperties()
-                    Me.SetGridItemStyleColor(moDataGrid)
-                    Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO,
-                                                                            Me.MSG_TYPE_CONFIRM, True)
-                    Me.AddCalendar(Me.BtnEffectiveDate_WRITE, Me.moEffectiveText_WRITE)
-                    Me.AddCalendar(Me.BtnExpirationDate_WRITE, Me.moExpirationText_WRITE)
+                    SetStateProperties()
+                    SetGridItemStyleColor(moDataGrid)
+                    AddControlMsg(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO,
+                                                                            MSG_TYPE_CONFIRM, True)
+                    AddCalendar(BtnEffectiveDate_WRITE, moEffectiveText_WRITE)
+                    AddCalendar(BtnExpirationDate_WRITE, moExpirationText_WRITE)
 
-                    If Me.IsReturningFromChild Then
-                        ControlMgr.SetVisibleControl(Me, moDataGrid, Me.State.IsGridVisible)
-                        ControlMgr.SetVisibleControl(Me, trPageSize, Me.State.IsGridVisible)
-                        If Me.State.IsGridVisible Then
-                            Me.PopulateGrid(Me.POPULATE_ACTION_SAVE)
+                    If IsReturningFromChild Then
+                        ControlMgr.SetVisibleControl(Me, moDataGrid, State.IsGridVisible)
+                        ControlMgr.SetVisibleControl(Me, trPageSize, State.IsGridVisible)
+                        If State.IsGridVisible Then
+                            PopulateGrid(POPULATE_ACTION_SAVE)
                         End If
                     End If
 
@@ -282,9 +282,9 @@ Namespace Tables
                     CheckIfComingFromConfirm()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
 #End Region
@@ -295,29 +295,29 @@ Namespace Tables
             Get
                 Return ViewState("SortDirection").ToString
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 ViewState("SortDirection") = value
             End Set
         End Property
 
-        Private Sub moDataGrid_PageIndexChanged(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moDataGrid.PageIndexChanged
+        Private Sub moDataGrid_PageIndexChanged(source As System.Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moDataGrid.PageIndexChanged
             Try
                 moDataGrid.CurrentPageIndex = e.NewPageIndex
                 PopulateGrid(POPULATE_ACTION_NO_EDIT)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Public Sub ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs)
+        Public Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+        Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
             Dim sCommPlanExtId As String
             Dim sCommPlanId As String
             Try
@@ -325,33 +325,33 @@ Namespace Tables
                     'this only runs when they click the pencil button for editing.
                     sCommPlanExtId = CType(e.Item.FindControl("comm_plan_extract_id"), Label).Text
                     sCommPlanId = CType(e.Item.FindControl("commission_plan_id"), Label).Text
-                    Me.State.CommPlanExtId = Me.GetGuidFromString(sCommPlanExtId)
-                    Me.State.CommissionPlanId = Me.GetGuidFromString(sCommPlanId)
+                    State.CommPlanExtId = GetGuidFromString(sCommPlanExtId)
+                    State.CommissionPlanId = GetGuidFromString(sCommPlanId)
                     SetSession()
-                    Me.callPage(CommPlanExtractForm.URL, New CommPlanExtractForm.Parameters(Me.State.CommissionPlanId, Me.State.CommPlanExtId))
+                    callPage(CommPlanExtractForm.URL, New CommPlanExtractForm.Parameters(State.CommissionPlanId, State.CommPlanExtId))
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub moDataGrid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles moDataGrid.SortCommand
+        Private Sub moDataGrid_SortCommand(source As Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles moDataGrid.SortCommand
             Try
-                If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                    If Me.State.SortExpression.EndsWith(" DESC") Then
-                        Me.State.SortExpression = e.SortExpression
+                If State.SortExpression.StartsWith(e.SortExpression) Then
+                    If State.SortExpression.EndsWith(" DESC") Then
+                        State.SortExpression = e.SortExpression
                     Else
-                        Me.State.SortExpression &= " DESC"
+                        State.SortExpression &= " DESC"
                     End If
                 Else
-                    Me.State.SortExpression = e.SortExpression
+                    State.SortExpression = e.SortExpression
                 End If
-                Me.moDataGrid.CurrentPageIndex = 0
-                Me.moDataGrid.SelectedIndex = -1
-                Me.PopulateGrid()
+                moDataGrid.CurrentPageIndex = 0
+                moDataGrid.SelectedIndex = -1
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -361,48 +361,48 @@ Namespace Tables
 
         Private Sub GoBack()
             Dim retType As New CompensationPlanSearchForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back,
-                                                                                        Me.State.CommissionPlanId, Me.State.HasDataChanged)
-            Me.ReturnToCallingPage(retType)
+                                                                                        State.CommissionPlanId, State.HasDataChanged)
+            ReturnToCallingPage(retType)
         End Sub
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
                 If IsDirtyPlanBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM,
-                                                                                     Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM,
+                                                                                     HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
                     GoBack()
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub SavePlanChanges()
             If ApplyPlanChanges() = True Then
-                Me.State.HasDataChanged = True
+                State.HasDataChanged = True
                 PopulatePlan()
-                Me.State.IsPlanNew = False
+                State.IsPlanNew = False
                 SetPlanButtonsState(False)
             End If
         End Sub
 
-        Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+        Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
             Try
                 SavePlanChanges()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnUndo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+        Private Sub btnUndo_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
             Try
                 ClearPlan()
                 PopulatePlan()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
 
                 '    If Not Me.State.IsPlanNew Then
                 '        'Reload from the DB
@@ -420,23 +420,23 @@ Namespace Tables
             End Try
         End Sub
 
-        Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+        Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
             Try
                 If DeletePlan() = True Then
-                    Me.State.HasDataChanged = True
+                    State.HasDataChanged = True
                     GoBack()
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub CreateNew()
-            Me.State.MyBo = Nothing
-            Me.State.CommissionPlanId = Guid.Empty
-            Me.State.IsPlanNew = True
+            State.MyBo = Nothing
+            State.CommissionPlanId = Guid.Empty
+            State.IsPlanNew = True
             ClearPlan()
             SetPlanButtonsState(True)
             PopulatePlan()
@@ -444,51 +444,51 @@ Namespace Tables
             'ControlMgr.SetVisibleControl(Me, moPeriodPanel_WRITE, True)
         End Sub
 
-        Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+        Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
             Try
                 If IsDirtyPlanBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
                     CreateNew()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnNew_CommPlanExtract_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddCommiPlanExt.Click
+        Private Sub btnNew_CommPlanExtract_Click(sender As System.Object, e As System.EventArgs) Handles AddCommiPlanExt.Click
             Try
                 SetSession()
-                Me.State.CommPlanExtId = Guid.Empty
-                Me.callPage(CommPlanExtractForm.URL, New CommPlanExtractForm.Parameters(Me.State.CommissionPlanId, Me.State.CommPlanExtId))
+                State.CommPlanExtId = Guid.Empty
+                callPage(CommPlanExtractForm.URL, New CommPlanExtractForm.Parameters(State.CommissionPlanId, State.CommPlanExtId))
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub CreateNewCopy()
             Dim newObj As New CompensationPlan
-            Me.State.MyBo = Nothing
+            State.MyBo = Nothing
             newObj.Copy(ThePlan)
-            Me.State.IsPlanNew = True
-            Me.State.MyBo = newObj
+            State.IsPlanNew = True
+            State.MyBo = newObj
             EnableDateFields()
             SetPlanButtonsState(True)
             SetPlanButtonsState2(True)
 
         End Sub
 
-        Private Sub btnCopy_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+        Private Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
             Try
                 If IsDirtyPlanBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
                 Else
                     CreateNewCopy()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -496,45 +496,45 @@ Namespace Tables
 
 #Region "Handlers-Labels"
 
-        Protected Sub BindBoPropertiesToLabels(ByVal oPlan As CompensationPlan)
-            Me.BindBOPropertyToLabel(oPlan, DEALER_ID_PROPERTY, Me.TheDealerControl.CaptionLabel)
-            Me.BindBOPropertyToLabel(oPlan, EFFECTIVE_DATE_PROPERTY, moEffectiveLabel)
-            Me.BindBOPropertyToLabel(oPlan, CODE_PROPERTY, moCodeLabel)
-            Me.BindBOPropertyToLabel(oPlan, DESCRIPTION_PROPERTY, moDescriptionLabel)
-            Me.BindBOPropertyToLabel(oPlan, EFFECTIVE_DATE_PROPERTY, moEffectiveLabel)
-            Me.BindBOPropertyToLabel(oPlan, EXPIRATION_DATE_PROPERTY, moExpirationLabel)
+        Protected Sub BindBoPropertiesToLabels(oPlan As CompensationPlan)
+            BindBOPropertyToLabel(oPlan, DEALER_ID_PROPERTY, TheDealerControl.CaptionLabel)
+            BindBOPropertyToLabel(oPlan, EFFECTIVE_DATE_PROPERTY, moEffectiveLabel)
+            BindBOPropertyToLabel(oPlan, CODE_PROPERTY, moCodeLabel)
+            BindBOPropertyToLabel(oPlan, DESCRIPTION_PROPERTY, moDescriptionLabel)
+            BindBOPropertyToLabel(oPlan, EFFECTIVE_DATE_PROPERTY, moEffectiveLabel)
+            BindBOPropertyToLabel(oPlan, EXPIRATION_DATE_PROPERTY, moExpirationLabel)
 
         End Sub
 
         Public Sub ClearLabelsErrSign()
-            Me.ClearLabelErrSign(Me.TheDealerControl.CaptionLabel)
-            Me.ClearLabelErrSign(moEffectiveLabel)
-            Me.ClearLabelErrSign(moExpirationLabel)
-            Me.ClearLabelErrSign(moCodeLabel)
-            Me.ClearLabelErrSign(moDescriptionLabel)
+            ClearLabelErrSign(TheDealerControl.CaptionLabel)
+            ClearLabelErrSign(moEffectiveLabel)
+            ClearLabelErrSign(moExpirationLabel)
+            ClearLabelErrSign(moCodeLabel)
+            ClearLabelErrSign(moDescriptionLabel)
 
         End Sub
 #End Region
 
 #Region "Button-Management"
 
-        Private Sub SetPlanButtonsState(ByVal bIsNew As Boolean)
+        Private Sub SetPlanButtonsState(bIsNew As Boolean)
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, Not bIsNew)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, Not bIsNew)
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, Not bIsNew)
             ControlMgr.SetVisibleControl(Me, CommPlanExtPanel, Not bIsNew)
         End Sub
         'This is for cloned data
-        Private Sub SetPlanButtonsState2(ByVal bIsCopy As Boolean)
+        Private Sub SetPlanButtonsState2(bIsCopy As Boolean)
             ControlMgr.SetEnableControl(Me, btnUndo_WRITE, Not bIsCopy)
 
         End Sub
-        Private Sub EnableEffective(ByVal bIsEnable As Boolean)
+        Private Sub EnableEffective(bIsEnable As Boolean)
             ControlMgr.SetEnableControl(Me, moEffectiveText_WRITE, bIsEnable)
             ControlMgr.SetVisibleControl(Me, BtnEffectiveDate_WRITE, bIsEnable)
         End Sub
 
-        Private Sub EnableExpiration(ByVal bIsEnable As Boolean)
+        Private Sub EnableExpiration(bIsEnable As Boolean)
             ControlMgr.SetEnableControl(Me, moExpirationText_WRITE, bIsEnable)
             ControlMgr.SetVisibleControl(Me, BtnExpirationDate_WRITE, bIsEnable)
         End Sub
@@ -548,7 +548,7 @@ Namespace Tables
                     ' Next Year
                     moExpirationText_WRITE.Text = Date.Now().AddYears(1).ToString("dd-MMM-yyyy", CultureInfo.CurrentCulture)
                 Case 1
-                    If Me.State.IsPlanNew = True Then
+                    If State.IsPlanNew = True Then
                         'New Record
                         ' Next Day MaxExpiration
                         moEffectiveText_WRITE.Text = MaxExpiration.AddDays(1).ToString("dd-MMM-yyyy", CultureInfo.CurrentCulture)
@@ -562,7 +562,7 @@ Namespace Tables
                     ControlMgr.SetEnableControl(Me, BtnExpirationDate_WRITE, True)
                 Case Else   ' There is more than one record
                     EnableExpiration(True)
-                    If Me.State.IsPlanNew = True Then
+                    If State.IsPlanNew = True Then
                         'New Record
                         ' Next Day MaxExpiration
                         moEffectiveText_WRITE.Text = MaxExpiration.AddDays(1).ToString("dd-MMM-yyyy", CultureInfo.CurrentCulture)
@@ -589,7 +589,7 @@ Namespace Tables
             Try
                 Dim dv As DataView = LookupListNew.GetDealerLookupList(oCompanyList, True)
                 TheDealerControl.SetControl(True, TheDealerControl.MODES.NEW_MODE, True, dv, "*" + TranslationBase.TranslateLabelOrMessage(LABEL_DEALER), True, True)
-                If Me.State.IsPlanNew = True Then
+                If State.IsPlanNew = True Then
                     TheDealerControl.SelectedGuid = Guid.Empty
                     TheDealerControl.ChangeEnabledControlProperty(True)
                 Else
@@ -599,23 +599,23 @@ Namespace Tables
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(COMPENSATION_FORM001)
-                Me.MasterPage.MessageController.AddError(ex.Message, False)
-                Me.MasterPage.MessageController.Show()
+                MasterPage.MessageController.AddError(COMPENSATION_FORM001)
+                MasterPage.MessageController.AddError(ex.Message, False)
+                MasterPage.MessageController.Show()
             End Try
         End Sub
 
         Private Sub PopulateDates()
-            Me.PopulateControlFromBOProperty(moEffectiveText_WRITE, ThePlan.EffectiveDate)
-            Me.PopulateControlFromBOProperty(moExpirationText_WRITE, ThePlan.ExpirationDate)
+            PopulateControlFromBOProperty(moEffectiveText_WRITE, ThePlan.EffectiveDate)
+            PopulateControlFromBOProperty(moExpirationText_WRITE, ThePlan.ExpirationDate)
         End Sub
 
         Private Sub PopulateCode()
-            Me.PopulateControlFromBOProperty(moCodeText, ThePlan.Code)
+            PopulateControlFromBOProperty(moCodeText, ThePlan.Code)
         End Sub
 
         Private Sub PopulateDescription()
-            Me.PopulateControlFromBOProperty(moDescription, ThePlan.Description)
+            PopulateControlFromBOProperty(moDescription, ThePlan.Description)
         End Sub
 
         Private Sub PopulatePlan()
@@ -627,12 +627,12 @@ Namespace Tables
                 EnableDateFields()
                 PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Private Sub BindDataGrid(ByVal oDataView As DataView)
+        Private Sub BindDataGrid(oDataView As DataView)
             moDataGrid.DataSource = oDataView
             moDataGrid.DataBind()
         End Sub
@@ -640,42 +640,42 @@ Namespace Tables
         Private Sub PopulateGrid(Optional ByVal oAction As String = POPULATE_ACTION_NONE)
 
             Try
-                If (Me.State.CommissionPlanId.Equals(Guid.Empty)) Then
-                    Me.State.CommissionPlanId = CType(Me.CallingParameters, Guid)
+                If (State.CommissionPlanId.Equals(Guid.Empty)) Then
+                    State.CommissionPlanId = CType(CallingParameters, Guid)
                 End If
 
-                If ((Me.State.searchcpDV Is Nothing) OrElse (Me.State.HasDataChanged)) Then
-                    Me.State.searchcpDV = CommPlanExtract.getList(Me.State.CommissionPlanId)
+                If ((State.searchcpDV Is Nothing) OrElse (State.HasDataChanged)) Then
+                    State.searchcpDV = CommPlanExtract.getList(State.CommissionPlanId)
                 End If
-                Me.State.searchcpDV.Sort = Me.State.SortExpression
+                State.searchcpDV.Sort = State.SortExpression
                 moDataGrid.AutoGenerateColumns = False
-                HighLightSortColumn(moDataGrid, Me.State.SortExpression)
+                HighLightSortColumn(moDataGrid, State.SortExpression)
                 'BasePopulateGrid(moDataGrid, Me.State.searchcpDV, Me.State.CommissionPlanId, oAction)
-                If Me.IsReturningFromChild Then
-                    BasePopulateGrid(moDataGrid, Me.State.searchcpDV, Me.State.CommissionPlanId, POPULATE_ACTION_SAVE)
+                If IsReturningFromChild Then
+                    BasePopulateGrid(moDataGrid, State.searchcpDV, State.CommissionPlanId, POPULATE_ACTION_SAVE)
                 Else
-                    BasePopulateGrid(moDataGrid, Me.State.searchcpDV, Me.State.CommissionPlanId, oAction)
+                    BasePopulateGrid(moDataGrid, State.searchcpDV, State.CommissionPlanId, oAction)
                 End If
 
                 ControlMgr.SetVisibleControl(Me, trPageSize, moDataGrid.Visible)
 
-                Session("recCount") = Me.State.searchcpDV.Count
+                Session("recCount") = State.searchcpDV.Count
 
-                If Me.moDataGrid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchcpDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If moDataGrid.Visible Then
+                    lblRecordCount.Text = State.searchcpDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
-                Me.moDataGrid.CurrentPageIndex = NewCurrentPageIndex(moDataGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.PopulateGrid()
+                moDataGrid.CurrentPageIndex = NewCurrentPageIndex(moDataGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
@@ -685,7 +685,7 @@ Namespace Tables
 #Region "Clear"
 
         Private Sub ClearDealer()
-            If Me.State.IsPlanNew = True Then
+            If State.IsPlanNew = True Then
                 TheDealerControl.SelectedIndex = 0
             Else
                 TheDealerControl.SelectedGuid = ThePlan.DealerId
@@ -708,40 +708,40 @@ Namespace Tables
 
 #Region "Business Part"
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                If (Not Me.State Is Nothing) Then
-                    Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("COMPENSATION_PLAN")
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("COMPENSATION_PLAN")
+            If (State IsNot Nothing) Then
+                If (State IsNot Nothing) Then
+                    MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("COMPENSATION_PLAN")
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("COMPENSATION_PLAN")
                 End If
             End If
         End Sub
 
-        Private Sub PopulatePlanBOFromForm(ByVal oPlan As CompensationPlan)
+        Private Sub PopulatePlanBOFromForm(oPlan As CompensationPlan)
             With oPlan
                 ' DropDowns
                 .DealerId = TheDealerControl.SelectedGuid
-                Me.PopulateBOProperty(oPlan, EFFECTIVE_DATE_PROPERTY, moEffectiveText_WRITE)
-                Me.PopulateBOProperty(oPlan, EXPIRATION_DATE_PROPERTY, moExpirationText_WRITE)
-                Me.PopulateBOProperty(oPlan, CODE_PROPERTY, moCodeText)
-                Me.PopulateBOProperty(oPlan, DESCRIPTION_PROPERTY, moDescription)
+                PopulateBOProperty(oPlan, EFFECTIVE_DATE_PROPERTY, moEffectiveText_WRITE)
+                PopulateBOProperty(oPlan, EXPIRATION_DATE_PROPERTY, moExpirationText_WRITE)
+                PopulateBOProperty(oPlan, CODE_PROPERTY, moCodeText)
+                PopulateBOProperty(oPlan, DESCRIPTION_PROPERTY, moDescription)
             End With
 
 
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Sub
 
         Public Sub ValidateDates()
 
-            If moExpirationText_WRITE.Text = Nothing And moEffectiveText_WRITE.Text <> String.Empty Then
+            If moExpirationText_WRITE.Text = Nothing AndAlso moEffectiveText_WRITE.Text <> String.Empty Then
                 ElitaPlusPage.SetLabelError(moExpirationLabel)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.EXPERITAION_DATE_ERR1)
 
-            ElseIf moExpirationText_WRITE.Text <> String.Empty And moEffectiveText_WRITE.Text = Nothing Then
+            ElseIf moExpirationText_WRITE.Text <> String.Empty AndAlso moEffectiveText_WRITE.Text = Nothing Then
                 ElitaPlusPage.SetLabelError(moEffectiveLabel)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.EFFECTIVE_DATE_ERR1)
-            ElseIf moExpirationText_WRITE.Text = Nothing And moEffectiveText_WRITE.Text = Nothing Then
+            ElseIf moExpirationText_WRITE.Text = Nothing AndAlso moEffectiveText_WRITE.Text = Nothing Then
                 ElitaPlusPage.SetLabelError(moEffectiveLabel)
                 ElitaPlusPage.SetLabelError(moExpirationLabel)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.EXPERITAION_DATE_ERR1)
@@ -755,7 +755,7 @@ Namespace Tables
 
             oPlan = ThePlan
             With oPlan
-                PopulatePlanBOFromForm(Me.State.MyBo)
+                PopulatePlanBOFromForm(State.MyBo)
                 bIsDirty = .IsDirty
             End With
             Return bIsDirty
@@ -774,14 +774,14 @@ Namespace Tables
                     'BindBoPropertiesToLabels(Me.State.MyBo)
                     oPlan.Save()
                     'Me.State.MyBo = Nothing
-                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
                 Else
-                    Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
+                    MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
                 End If
-                Me.State.IsPlanNew = False
+                State.IsPlanNew = False
                 SetPlanButtonsState(False)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
                 bIsOk = False
             End Try
             Return bIsOk
@@ -798,14 +798,14 @@ Namespace Tables
                     .Save()
                 End With
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(COMPENSATION_CODE_FORM002)
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                MasterPage.MessageController.AddError(COMPENSATION_CODE_FORM002)
+                HandleErrors(ex, MasterPage.MessageController)
                 bIsOk = False
             End Try
             Return bIsOk
         End Function
 
-        Public Shared Sub SetLabelColor(ByVal lbl As Label)
+        Public Shared Sub SetLabelColor(lbl As Label)
             lbl.ForeColor = Color.Black
         End Sub
 #End Region
@@ -815,30 +815,30 @@ Namespace Tables
 #Region "Period State-Management"
 
         Protected Sub ComingFromBack()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
             Try
                 If Not confResponse = String.Empty Then
                     ' Return from the Back Button
 
                     Select Case confResponse
-                        Case Me.MSG_VALUE_YES
+                        Case MSG_VALUE_YES
                             ' Save and go back to Search Page
                             If ApplyPlanChanges() = True Then
-                                Me.State.HasDataChanged = True
+                                State.HasDataChanged = True
                                 GoBack()
                             End If
-                        Case Me.MSG_VALUE_NO
+                        Case MSG_VALUE_NO
                             ' Go back to Search Page
                             GoBack()
                     End Select
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Protected Sub ComingFromNew()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the New Button
@@ -847,7 +847,7 @@ Namespace Tables
                     Case MSG_VALUE_YES
                         ' Save and create a new BO
                         If ApplyPlanChanges() = True Then
-                            Me.State.HasDataChanged = True
+                            State.HasDataChanged = True
                             CreateNew()
                         End If
                     Case MSG_VALUE_NO
@@ -859,7 +859,7 @@ Namespace Tables
         End Sub
 
         Protected Sub ComingFromNewCopy()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the New Copy Button
@@ -868,7 +868,7 @@ Namespace Tables
                     Case MSG_VALUE_YES
                         ' Save and create a new Copy BO
                         If ApplyPlanChanges() = True Then
-                            Me.State.HasDataChanged = True
+                            State.HasDataChanged = True
                             CreateNewCopy()
                         End If
                     Case MSG_VALUE_NO
@@ -882,7 +882,7 @@ Namespace Tables
 #End Region
         Protected Sub CheckIfComingFromConfirm()
             Try
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     ' Period
                     Case ElitaPlusPage.DetailPageCommand.Back
                         ComingFromBack()
@@ -891,25 +891,25 @@ Namespace Tables
                     Case ElitaPlusPage.DetailPageCommand.NewAndCopy
                         ComingFromNewCopy()
                     Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                        Me.MasterPage.MessageController.AddErrorAndShow(Me.State.LastErrMsg)
+                        MasterPage.MessageController.AddErrorAndShow(State.LastErrMsg)
                 End Select
 
                 'Clean after consuming the action
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                Me.HiddenSaveChangesPromptResponse.Value = String.Empty
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                HiddenSaveChangesPromptResponse.Value = String.Empty
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub SetSession()
-            With Me.State
+            With State
 
-                .CommissionPlanId = Me.State.CommissionPlanId 'Me.GetSelectedItem(moDealerDrop)
+                .CommissionPlanId = State.CommissionPlanId 'Me.GetSelectedItem(moDealerDrop)
                 .PageIndex = moDataGrid.CurrentPageIndex
                 .PageSize = moDataGrid.PageSize
-                .PageSort = Me.State.SortExpression
-                .SearchCommPlanExtDataView = Me.State.searchcpDV
+                .PageSort = State.SortExpression
+                .SearchCommPlanExtDataView = State.searchcpDV
             End With
         End Sub
 

@@ -40,7 +40,7 @@ Public Class ElitaWebService
         Dim token As String
         Dim usernameToken As UsernameToken
 
-        AppConfig.DebugMessage.Trace("ELITAINTERNALWS", "LOGIN", Me.ToString + "_" + Now.ToString)
+        AppConfig.DebugMessage.Trace("ELITAINTERNALWS", "LOGIN", ToString + "_" + Now.ToString)
 
         '    Reject any requests which are not valid SOAP requests
         If RequestSoapContext.Current Is Nothing Then Throw New ApplicationException("Only SOAP requests are permitted.")
@@ -58,10 +58,10 @@ Public Class ElitaWebService
     End Function
 
     <WebMethod()> _
-    Public Function LoginBody(ByVal networkID As String, ByVal password As String, ByVal group As String) As String
+    Public Function LoginBody(networkID As String, password As String, group As String) As String
         Dim token As String
 
-        AppConfig.DebugMessage.Trace("ELITAINTERNALWS", "LOGINBODY", Me.ToString + "_" + Now.ToString)
+        AppConfig.DebugMessage.Trace("ELITAINTERNALWS", "LOGINBODY", ToString + "_" + Now.ToString)
 
         '    Reject any requests which are not valid SOAP requests
         If RequestSoapContext.Current Is Nothing Then Throw New ApplicationException("Only SOAP requests are permitted.")
@@ -76,12 +76,12 @@ Public Class ElitaWebService
 
 
     <WebMethod()> _
-    Public Overridable Function ProcessRequest(ByVal token As String, _
-                                               ByVal functionToProcess As String, _
-                                               ByVal xmlStringDataIn As String) As String
+    Public Overridable Function ProcessRequest(token As String, _
+                                               functionToProcess As String, _
+                                               xmlStringDataIn As String) As String
 
         Return ElitaService.ProcessRequest(False, token, functionToProcess, xmlStringDataIn, _
-                                            Me.GetType.Name().ToUpper)
+                                            [GetType].Name().ToUpper)
     End Function
 
 
@@ -95,7 +95,7 @@ Public Class ElitaWebService
 
    
    
-    Private Function CheckSignature(ByVal context As SoapContext, ByVal signature As MessageSignature) As Boolean
+    Private Function CheckSignature(context As SoapContext, signature As MessageSignature) As Boolean
 
         '
         ' Now verify which parts of the message were actually signed.
@@ -140,7 +140,7 @@ Public Class ElitaWebService
 
     End Function
 
-    Private Function GetSigningToken(ByVal context As SoapContext) As SecurityToken
+    Private Function GetSigningToken(context As SoapContext) As SecurityToken
 
         Dim element As ISecurityElement
         For Each element In context.Security.Elements

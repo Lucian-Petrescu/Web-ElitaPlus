@@ -122,7 +122,7 @@ Namespace SpecializedServices.GW
         Public Property Items As IEnumerable(Of SearchResultCertificateItemInfo)
 
 
-        Public Sub New(ByVal pCertificate As Certificate,
+        Public Sub New(pCertificate As Certificate,
                        ByRef pCertManager As ICertificateManager,
                        ByRef pCompanyGroupManager As ICompanyGroupManager,
                        ByRef pcompanyManager As ICompanyManager,
@@ -212,20 +212,20 @@ Namespace SpecializedServices.GW
                     producerAddress = pAddressManager.GetAddress(contractProducer.AddressId)
                 End If
             End If
-            Me.Contract = New ContractInfo(certContract, pCommonManager, pLanguage, pCountryManager, contractProducer, producerAddress)
+            Contract = New ContractInfo(certContract, pCommonManager, pLanguage, pCountryManager, contractProducer, producerAddress)
 
             Dim dGWP As Decimal, dSalesTax As Decimal
             pCertManager.GetCertificateCoverageRate(pCertificate.CertificateId, Today.Date, dGWP, dSalesTax)
-            Me.CoverageRate = dGWP
-            Me.CoverageRateNetOfTax = dGWP - dSalesTax
-            Me.SalesTax = dSalesTax
+            CoverageRate = dGWP
+            CoverageRateNetOfTax = dGWP - dSalesTax
+            SalesTax = dSalesTax
 
-            Me.Items = New List(Of SearchResultCertificateItemInfo)()
+            Items = New List(Of SearchResultCertificateItemInfo)()
 
             'Dim pProduct As Product = pDealerManager.GetProduct(pDealer.DealerCode, pCertificate.ProductCode)
 
             For Each ci As CertificateItem In pCertificate.Item
-                DirectCast(Me.Items, IList(Of SearchResultCertificateItemInfo)).Add(New SearchResultCertificateItemInfo(ci, pCommonManager, companyGroup, pEquipmentManager, pLanguage))
+                DirectCast(Items, IList(Of SearchResultCertificateItemInfo)).Add(New SearchResultCertificateItemInfo(ci, pCommonManager, companyGroup, pEquipmentManager, pLanguage))
             Next
 
         End Sub

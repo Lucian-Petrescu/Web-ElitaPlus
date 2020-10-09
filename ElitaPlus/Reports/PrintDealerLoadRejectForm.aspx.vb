@@ -104,13 +104,13 @@ Namespace Reports
 
         Private Sub SetStateProperties()
             'Dim oDealerFileProcessed As DealerFileProcessed
-            Me.State.DealerfileProcessedId = CType(CType(Me.CallingParameters, MyState).DealerfileProcessedId, Guid)
-            Me.State.moInterfaceTypeCode = CType(CType(Me.CallingParameters, MyState).moInterfaceTypeCode, DealerFileProcessedData.InterfaceTypeCode)
-            Me.State.reportType = CType(Me.CallingParameters, MyState).reportType
-            Me.State.dealertype = CType(Me.CallingParameters, MyState).dealertype
-            Me.State.SelectionCode = CType(Me.CallingParameters, MyState).SelectionCode
-            Me.State.isParentFile = CType(Me.CallingParameters, MyState).isParentFile
-            Me.State.parentFileName = CType(Me.CallingParameters, MyState).parentFileName
+            State.DealerfileProcessedId = CType(CType(CallingParameters, MyState).DealerfileProcessedId, Guid)
+            State.moInterfaceTypeCode = CType(CType(CallingParameters, MyState).moInterfaceTypeCode, DealerFileProcessedData.InterfaceTypeCode)
+            State.reportType = CType(CallingParameters, MyState).reportType
+            State.dealertype = CType(CallingParameters, MyState).dealertype
+            State.SelectionCode = CType(CallingParameters, MyState).SelectionCode
+            State.isParentFile = CType(CallingParameters, MyState).isParentFile
+            State.parentFileName = CType(CallingParameters, MyState).parentFileName
         End Sub
 
 #End Region
@@ -152,7 +152,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -165,19 +165,19 @@ Namespace Reports
         Private Sub InitializeForm()
 
             SetStateProperties()
-            Dim InterfaceTypeCode As DealerFileProcessedData.InterfaceTypeCode = Me.State.moInterfaceTypeCode
+            Dim InterfaceTypeCode As DealerFileProcessedData.InterfaceTypeCode = State.moInterfaceTypeCode
 
-            Me.lblEntireRecord.Visible = False
-            Me.moEntireRecordCheck.Visible = False
-            Me.lblIncludeBypassedRecords.Visible = False
-            Me.moInclBypassedRecCheck.Visible = False
+            lblEntireRecord.Visible = False
+            moEntireRecordCheck.Visible = False
+            lblIncludeBypassedRecords.Visible = False
+            moInclBypassedRecCheck.Visible = False
             TheReportExtractInputControl.SetExportOnly()
             TheReportExtractInputControl.DestinationVisible = False
-            If Me.State.reportType.Equals(ERROR_EXPORT) Then
+            If State.reportType.Equals(ERROR_EXPORT) Then
 
-                If Me.State.dealertype <> DealerType_VSC Then
-                    Me.lblEntireRecord.Visible = True
-                    Me.moEntireRecordCheck.Visible = True
+                If State.dealertype <> DealerType_VSC Then
+                    lblEntireRecord.Visible = True
+                    moEntireRecordCheck.Visible = True
                     lblIncludeBypassedRecords.Visible = True
                     moInclBypassedRecCheck.Visible = True
                     If (InterfaceTypeCode = DealerFileProcessedData.InterfaceTypeCode.PAYM) Then
@@ -187,7 +187,7 @@ Namespace Reports
                         UpdateBreadCrum(TAB_NAME_ERROR_EXPORT, CERT_PAGETITLE)
                     End If
                 End If
-            ElseIf Me.State.reportType.Equals(PROCESSED_EXPORT) Then
+            ElseIf State.reportType.Equals(PROCESSED_EXPORT) Then
                 Select Case (InterfaceTypeCode)
                     Case DealerFileProcessedData.InterfaceTypeCode.PAYM
                         UpdateBreadCrum(TAB_NAME_PROCESSED_EXPORT, PYMT_PAGETITLE)
@@ -199,69 +199,69 @@ Namespace Reports
                 Select Case InterfaceTypeCode
                     Case DealerFileProcessedData.InterfaceTypeCode.PAYM
                         UpdateBreadCrum(TAB_NAME_REJECT_REPORT, PYMT_PAGETITLE)
-                        If Me.State.dealertype <> DealerType_VSC Then
+                        If State.dealertype <> DealerType_VSC Then
                             lblIncludeBypassedRecords.Visible = True
                             moInclBypassedRecCheck.Visible = True
                         End If
                     Case DealerFileProcessedData.InterfaceTypeCode.CERT
                         UpdateBreadCrum(TAB_NAME_REJECT_REPORT, CERT_PAGETITLE)
-                        If Me.State.dealertype <> DealerType_VSC Then
+                        If State.dealertype <> DealerType_VSC Then
                             lblIncludeBypassedRecords.Visible = True
                             moInclBypassedRecCheck.Visible = True
                             moInclBypassedRecCheck.Checked = True
-                            Me.lblEntireRecord.Visible = True
-                            Me.moEntireRecordCheck.Visible = True
+                            lblEntireRecord.Visible = True
+                            moEntireRecordCheck.Visible = True
                         End If
 
                 End Select
             End If
         End Sub
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             Try
-                Me.MasterPage.MessageController.Clear_Hide()
+                MasterPage.MessageController.Clear_Hide()
                 If Not IsPostBack Then
                     InitializeForm()
                 End If
-                Me.InstallDisplayNewReportProgressBar()
+                InstallDisplayNewReportProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
         Private Sub UpdateBreadCrum(TabName As String, Title As String)
-            Me.MasterPage.PageTab = TabName & ":"
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(Title)
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(Title)
+            MasterPage.PageTab = TabName & ":"
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(Title)
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(Title)
 
         End Sub
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
-            Dim retType As New DealerFileProcessedController_New.ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.DealerfileProcessedId)
-            Me.ReturnToCallingPage(retType)
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
+            Dim retType As New DealerFileProcessedController_New.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.DealerfileProcessedId)
+            ReturnToCallingPage(retType)
         End Sub
 
 #End Region
 
 #Region "Handlers-DroDown"
-        Protected Sub OnFromDrop_Changed(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Protected Sub OnFromDrop_Changed(sender As Object, e As System.EventArgs) _
                      Handles moReportCeInputControl.SelectedDestOptionChanged
 
-            If moReportCeInputControl.DestinationCodeSelected = OPTION_FTP And Me.State.dealertype = DealerType_VSC _
-                And Me.State.reportType.Equals(REJECT_REPORT) And Me.State.moInterfaceTypeCode = DealerFileProcessedData.InterfaceTypeCode.CERT Then
+            If moReportCeInputControl.DestinationCodeSelected = OPTION_FTP AndAlso State.dealertype = DealerType_VSC _
+                AndAlso State.reportType.Equals(REJECT_REPORT) AndAlso Me.State.moInterfaceTypeCode = DealerFileProcessedData.InterfaceTypeCode.CERT Then
                 moReportCeInputControl.UpdateFileNameControlVisible(True)
             Else
                 moReportCeInputControl.UpdateFileNameControlVisible(False)
@@ -274,25 +274,25 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Function GetReportParameters(ByVal DealerfileProcessedId As Guid) As ReportCeBaseForm.Params
+        Function GetReportParameters(DealerfileProcessedId As Guid) As ReportCeBaseForm.Params
             Dim reportFormat As ReportCeBaseForm.RptFormat = ReportCeBase.GetReportFormat(Me)
             Dim reportName As String = GetReportName(reportFormat)
 
             Dim isExportRptFormat As Boolean = (reportFormat = ReportCeBase.RptFormat.TEXT_TAB) OrElse (reportFormat = ReportCeBase.RptFormat.TEXT_CSV)
-            Dim InterfaceTypeCode As DealerFileProcessedData.InterfaceTypeCode = Me.State.moInterfaceTypeCode
+            Dim InterfaceTypeCode As DealerFileProcessedData.InterfaceTypeCode = State.moInterfaceTypeCode
 
             Dim params As New ReportCeBaseForm.Params
             Dim repParams() As ReportCeBaseForm.RptParam
 
-            If reportFormat = ReportCeBase.RptFormat.TEXT_CSV Or reportFormat = ReportCeBase.RptFormat.TEXT_TAB Then
-                Me.culturevalue = MasterPage.ReportCeInputControl.getCultureValue(True)
+            If reportFormat = ReportCeBase.RptFormat.TEXT_CSV OrElse reportFormat = ReportCeBase.RptFormat.TEXT_TAB Then
+                culturevalue = MasterPage.ReportCeInputControl.getCultureValue(True)
             Else
-                Me.culturevalue = MasterPage.ReportCeInputControl.getCultureValue(False)
+                culturevalue = MasterPage.ReportCeInputControl.getCultureValue(False)
             End If
 
             Dim sIncludeByPassRecs As String = "Y"
-            If Me.moInclBypassedRecCheck.Visible Then
-                If Not Me.moInclBypassedRecCheck.Checked Then
+            If moInclBypassedRecCheck.Visible Then
+                If Not moInclBypassedRecCheck.Checked Then
                     sIncludeByPassRecs = "N"
                 End If
             End If
@@ -300,32 +300,32 @@ Namespace Reports
             Select Case InterfaceTypeCode
                 Case DealerFileProcessedData.InterfaceTypeCode.PAYM
                     If isExportRptFormat Then
-                        Select Case Me.State.reportType
+                        Select Case State.reportType
                             Case REJECT_REPORT
                                 'RejectedPayments-Exp_EN
                                 repParams = New ReportCeBaseForm.RptParam() {
                                     New ReportCeBaseForm.RptParam("V_DEALERFILE_PROCESSED_ID", DALBase.GuidToSQLString(DealerfileProcessedId)),
                                     New ReportCeBaseForm.RptParam("V_LANGUAGE_ID", DALBase.GuidToSQLString(Thread.CurrentPrincipal.GetLanguageId())),
-                                    New ReportCeBaseForm.RptParam("LANG_CULTURE_VALUE", Me.culturevalue),
-                                    New ReportCeBaseForm.RptParam("V_PARENT_FILE", Me.State.isParentFile),
-                                    New ReportCeBaseForm.RptParam("V_FILE_NAME", Me.State.parentFileName),
+                                    New ReportCeBaseForm.RptParam("LANG_CULTURE_VALUE", culturevalue),
+                                    New ReportCeBaseForm.RptParam("V_PARENT_FILE", State.isParentFile),
+                                    New ReportCeBaseForm.RptParam("V_FILE_NAME", State.parentFileName),
                                     New ReportCeBaseForm.RptParam("V_INCLUDE_BYPASS", sIncludeByPassRecs)}
                             Case ERROR_EXPORT
                                 'RejectedPayments_ErrorExp                                
                                 repParams = New ReportCeBaseForm.RptParam() {
                                     New ReportCeBaseForm.RptParam("V_DEALERFILE_PROCESSED_ID", DALBase.GuidToSQLString(DealerfileProcessedId)),
                                     New ReportCeBaseForm.RptParam("V_LANGUAGE_ID", DALBase.GuidToSQLString(Thread.CurrentPrincipal.GetLanguageId())),
-                                    New ReportCeBaseForm.RptParam("LANG_CULTURE_VALUE", Me.culturevalue),
-                                    New ReportCeBaseForm.RptParam("V_PARENT_FILE", Me.State.isParentFile),
-                                    New ReportCeBaseForm.RptParam("V_FILE_NAME", Me.State.parentFileName),
+                                    New ReportCeBaseForm.RptParam("LANG_CULTURE_VALUE", culturevalue),
+                                    New ReportCeBaseForm.RptParam("V_PARENT_FILE", State.isParentFile),
+                                    New ReportCeBaseForm.RptParam("V_FILE_NAME", State.parentFileName),
                                     New ReportCeBaseForm.RptParam("V_INCLUDE_BYPASS", sIncludeByPassRecs)}
                             Case PROCESSED_EXPORT
                                 'ProcessedPayments-Exp_EN
                                 repParams = New ReportCeBaseForm.RptParam() {
-                                    New ReportCeBaseForm.RptParam("LANG_CULTURE_VALUE", Me.culturevalue),
+                                    New ReportCeBaseForm.RptParam("LANG_CULTURE_VALUE", culturevalue),
                                     New ReportCeBaseForm.RptParam("V_DEALERFILE_PROCESSED_ID", DALBase.GuidToSQLString(DealerfileProcessedId)),
-                                    New ReportCeBaseForm.RptParam("V_PARENT_FILE", Me.State.isParentFile),
-                                    New ReportCeBaseForm.RptParam("V_FILE_NAME", Me.State.parentFileName)}
+                                    New ReportCeBaseForm.RptParam("V_PARENT_FILE", State.isParentFile),
+                                    New ReportCeBaseForm.RptParam("V_FILE_NAME", State.parentFileName)}
                                 ',New ReportCeBaseForm.RptParam("V_INCLUDE_BYPASS", sIncludeByPassRecs)
                         End Select
                     Else
@@ -333,58 +333,58 @@ Namespace Reports
                         repParams = New ReportCeBaseForm.RptParam() {
                             New ReportCeBaseForm.RptParam("V_DEALERFILE_PROCESSED_ID", DALBase.GuidToSQLString(DealerfileProcessedId)),
                             New ReportCeBaseForm.RptParam("V_LANGUAGE_ID", DALBase.GuidToSQLString(Thread.CurrentPrincipal.GetLanguageId())),
-                            New ReportCeBaseForm.RptParam("LANG_CULTURE_VALUE", Me.culturevalue),
-                            New ReportCeBaseForm.RptParam("V_PARENT_FILE", Me.State.isParentFile),
-                            New ReportCeBaseForm.RptParam("V_FILE_NAME", Me.State.parentFileName),
+                            New ReportCeBaseForm.RptParam("LANG_CULTURE_VALUE", culturevalue),
+                            New ReportCeBaseForm.RptParam("V_PARENT_FILE", State.isParentFile),
+                            New ReportCeBaseForm.RptParam("V_FILE_NAME", State.parentFileName),
                             New ReportCeBaseForm.RptParam("V_INCLUDE_BYPASS", sIncludeByPassRecs)}
                     End If
 
                 Case DealerFileProcessedData.InterfaceTypeCode.CERT
                     If isExportRptFormat Then
-                        Select Case Me.State.reportType
+                        Select Case State.reportType
                             Case REJECT_REPORT
                                 'RejectedCertificates-Exp_EN
                                 repParams = New ReportCeBaseForm.RptParam() {
                                     New ReportCeBaseForm.RptParam("V_DEALERFILE_PROCESSED_ID", DALBase.GuidToSQLString(DealerfileProcessedId)),
-                                    New ReportCeBaseForm.RptParam("V_DEALERTYPE", Me.State.dealertype),
+                                    New ReportCeBaseForm.RptParam("V_DEALERTYPE", State.dealertype),
                                     New ReportCeBaseForm.RptParam("V_LANGUAGE_ID", DALBase.GuidToSQLString(Thread.CurrentPrincipal.GetLanguageId())),
-                                    New ReportCeBaseForm.RptParam("LANG_CULTURE_VALUE", Me.culturevalue),
-                                    New ReportCeBaseForm.RptParam("V_PARENT_FILE", Me.State.isParentFile),
-                                    New ReportCeBaseForm.RptParam("V_FILE_NAME", Me.State.parentFileName),
+                                    New ReportCeBaseForm.RptParam("LANG_CULTURE_VALUE", culturevalue),
+                                    New ReportCeBaseForm.RptParam("V_PARENT_FILE", State.isParentFile),
+                                    New ReportCeBaseForm.RptParam("V_FILE_NAME", State.parentFileName),
                                     New ReportCeBaseForm.RptParam("V_INCLUDE_BYPASS", sIncludeByPassRecs)}
                             Case ERROR_EXPORT
                                 'RejectedCertificates_ErrorExp
                                 Dim sEntireRecordOnly As String = "N"
-                                If Me.moEntireRecordCheck.Visible Then
-                                    If Me.moEntireRecordCheck.Checked Then
+                                If moEntireRecordCheck.Visible Then
+                                    If moEntireRecordCheck.Checked Then
                                         sEntireRecordOnly = "Y"
                                     End If
                                 End If
                                 repParams = New ReportCeBaseForm.RptParam() {
                                     New ReportCeBaseForm.RptParam("V_DEALERFILE_PROCESSED_ID", DALBase.GuidToSQLString(DealerfileProcessedId)),
-                                    New ReportCeBaseForm.RptParam("V_DEALERTYPE", Me.State.dealertype),
+                                    New ReportCeBaseForm.RptParam("V_DEALERTYPE", State.dealertype),
                                     New ReportCeBaseForm.RptParam("V_LANGUAGE_ID", DALBase.GuidToSQLString(Thread.CurrentPrincipal.GetLanguageId())),
                                     New ReportCeBaseForm.RptParam("V_ENTIRE_RECORD_ONLY", sEntireRecordOnly),
-                                    New ReportCeBaseForm.RptParam("V_PARENT_FILE", Me.State.isParentFile),
-                                    New ReportCeBaseForm.RptParam("V_FILE_NAME", Me.State.parentFileName),
+                                    New ReportCeBaseForm.RptParam("V_PARENT_FILE", State.isParentFile),
+                                    New ReportCeBaseForm.RptParam("V_FILE_NAME", State.parentFileName),
                                     New ReportCeBaseForm.RptParam("V_INCLUDE_BYPASS", sIncludeByPassRecs)}
                             Case PROCESSED_EXPORT
                                 'ProcessedCertificates-Exp_EN
                                 repParams = New ReportCeBaseForm.RptParam() {
                                     New ReportCeBaseForm.RptParam("V_DEALERFILE_PROCESSED_ID", DALBase.GuidToSQLString(DealerfileProcessedId)),
-                                    New ReportCeBaseForm.RptParam("LANG_CULTURE_VALUE", Me.culturevalue),
-                                    New ReportCeBaseForm.RptParam("V_PARENT_FILE", Me.State.isParentFile),
-                                    New ReportCeBaseForm.RptParam("V_FILE_NAME", Me.State.parentFileName)}
+                                    New ReportCeBaseForm.RptParam("LANG_CULTURE_VALUE", culturevalue),
+                                    New ReportCeBaseForm.RptParam("V_PARENT_FILE", State.isParentFile),
+                                    New ReportCeBaseForm.RptParam("V_FILE_NAME", State.parentFileName)}
                         End Select
                     Else
                         'RejectedCertificates_EN
                         repParams = New ReportCeBaseForm.RptParam() {
                             New ReportCeBaseForm.RptParam("V_DEALERFILE_PROCESSED_ID", DALBase.GuidToSQLString(DealerfileProcessedId)),
-                            New ReportCeBaseForm.RptParam("V_DEALERTYPE", Me.State.dealertype),
+                            New ReportCeBaseForm.RptParam("V_DEALERTYPE", State.dealertype),
                             New ReportCeBaseForm.RptParam("V_LANGUAGE_ID", DALBase.GuidToSQLString(Thread.CurrentPrincipal.GetLanguageId())),
-                            New ReportCeBaseForm.RptParam("LANG_CULTURE_VALUE", Me.culturevalue),
-                            New ReportCeBaseForm.RptParam("V_PARENT_FILE", Me.State.isParentFile),
-                            New ReportCeBaseForm.RptParam("V_FILE_NAME", Me.State.parentFileName),
+                            New ReportCeBaseForm.RptParam("LANG_CULTURE_VALUE", culturevalue),
+                            New ReportCeBaseForm.RptParam("V_PARENT_FILE", State.isParentFile),
+                            New ReportCeBaseForm.RptParam("V_FILE_NAME", State.parentFileName),
                             New ReportCeBaseForm.RptParam("V_INCLUDE_BYPASS", sIncludeByPassRecs)}
                     End If
             End Select
@@ -395,12 +395,12 @@ Namespace Reports
                 .moAction = ReportCeBaseForm.RptAction.SCHEDULE_VIEW
                 .moRptParams = repParams
 
-                If Me.State.reportType.Equals(ERROR_EXPORT) Or Me.State.reportType.Equals(PROCESSED_EXPORT) Then
+                If State.reportType.Equals(ERROR_EXPORT) OrElse State.reportType.Equals(PROCESSED_EXPORT) Then
                     .msCsvDelimiter = ReportCeBaseForm.CsvDelimiter.CSV_DELIMITER_DQUOTE
                     .msCsvSeparator = ReportCeBaseForm.CsvSeparator.CSV_SEPARATOR_COMMA
                 End If
 
-                If (Me.State.iscultureImplemented) Then
+                If (State.iscultureImplemented) Then
                     .msRptWindowName = reportFileNameWindow
                 Else
                     .msRptWindowName = TranslationBase.TranslateLabelOrMessage(reportFileNameWindow)
@@ -411,30 +411,30 @@ Namespace Reports
 
         End Function
 
-        Function GetReportName(ByVal rptFormat As ReportCeBaseForm.RptFormat) As String
+        Function GetReportName(rptFormat As ReportCeBaseForm.RptFormat) As String
             Dim isExportRptFormat As Boolean = (rptFormat = ReportCeBase.RptFormat.TEXT_TAB) OrElse (rptFormat = ReportCeBase.RptFormat.TEXT_CSV)
-            Dim InterfaceTypeCode As DealerFileProcessedData.InterfaceTypeCode = Me.State.moInterfaceTypeCode
+            Dim InterfaceTypeCode As DealerFileProcessedData.InterfaceTypeCode = State.moInterfaceTypeCode
 
             Select Case InterfaceTypeCode
                 Case DealerFileProcessedData.InterfaceTypeCode.PAYM
                     If isExportRptFormat Then
-                        If Me.State.reportType.Equals(REJECT_REPORT) Then
-                            Me.State.iscultureImplemented = True
+                        If State.reportType.Equals(REJECT_REPORT) Then
+                            State.iscultureImplemented = True
                             'RejectedPayments-Exp_EN
                             reportName = MasterPage.ReportCeInputControl.getReportName(RPT_REJECTED_PAYMENTS_FILENAME_EXP, True)
                             reportFileNameWindow = RPT_FILENAME_WINDOW_PAYMENTS
-                        ElseIf Me.State.reportType.Equals(ERROR_EXPORT) Then
+                        ElseIf State.reportType.Equals(ERROR_EXPORT) Then
                             'RejectedPayments_ErrorExp
                             reportName = RPT_REJECTED_PAYMENTS_ERROR_EXP
                             reportFileNameWindow = RPT_FILENAME_WINDOW_PAYMENTS_ERROR
-                        ElseIf Me.State.reportType.Equals(PROCESSED_EXPORT) Then
-                            Me.State.iscultureImplemented = True
+                        ElseIf State.reportType.Equals(PROCESSED_EXPORT) Then
+                            State.iscultureImplemented = True
                             'ProcessedPayments-Exp_EN
                             reportName = MasterPage.ReportCeInputControl.getReportName(RPT_PROCESSED_PAYMENTS_FILENAME_EXP, True)
                             reportFileNameWindow = RPT_FILENAME_WINDOW_PROCESSED_PAYMENTS
                         End If
                     Else
-                        Me.State.iscultureImplemented = True
+                        State.iscultureImplemented = True
                         'RejectedPayments_EN
                         reportName = MasterPage.ReportCeInputControl.getReportName(RPT_REJECTED_PAYMENTS_FILENAME, False)
                         reportFileNameWindow = RPT_FILENAME_WINDOW_PAYMENTS
@@ -443,26 +443,26 @@ Namespace Reports
                 Case DealerFileProcessedData.InterfaceTypeCode.CERT
                     reportFileNameWindow = RPT_FILENAME_WINDOW_CERTIFICATES
                     If isExportRptFormat Then
-                        If Me.State.reportType.Equals(REJECT_REPORT) Then
-                            Me.State.iscultureImplemented = True
+                        If State.reportType.Equals(REJECT_REPORT) Then
+                            State.iscultureImplemented = True
                             'RejectedCertificates-Exp_EN
                             reportName = MasterPage.ReportCeInputControl.getReportName(RPT_REJECTED_CERTIFICATES_FILENAME_EXP, True)
-                            MasterPage.ReportCeInputControl.SetModifiedFileName = Me.State.SelectionCode
-                        ElseIf Me.State.reportType.Equals(ERROR_EXPORT) Then
+                            MasterPage.ReportCeInputControl.SetModifiedFileName = State.SelectionCode
+                        ElseIf State.reportType.Equals(ERROR_EXPORT) Then
                             'RejectedCertificates_ErrorExp
                             reportName = RPT_REJECTED_CERTIFICATES_ERROR_FILENAME
                             reportFileNameWindow = RPT_FILENAME_WINDOW_CERTIFICATES_ERROR
-                        ElseIf Me.State.reportType.Equals(PROCESSED_EXPORT) Then
-                            Me.State.iscultureImplemented = True
+                        ElseIf State.reportType.Equals(PROCESSED_EXPORT) Then
+                            State.iscultureImplemented = True
                             'ProcessedCertificates-Exp_EN
                             reportName = MasterPage.ReportCeInputControl.getReportName(RPT_PROCESSED_CERTIFICATES_FILENAME_EXP, True)
                             reportFileNameWindow = RPT_FILENAME_WINDOW_PROCESSED_CERTIFICATES
                         End If
                     Else
-                        Me.State.iscultureImplemented = True
+                        State.iscultureImplemented = True
                         'RejectedCertificates_EN
                         reportName = MasterPage.ReportCeInputControl.getReportName(RPT_REJECTED_CERTIFICATES_FILENAME, False)
-                        MasterPage.ReportCeInputControl.SetModifiedFileName = Me.State.SelectionCode
+                        MasterPage.ReportCeInputControl.SetModifiedFileName = State.SelectionCode
                     End If
             End Select
             Return reportName
@@ -470,7 +470,7 @@ Namespace Reports
 
         Private Sub GenerateReport()
 
-            Dim DealerfileProcessedId As Guid = Me.State.DealerfileProcessedId
+            Dim DealerfileProcessedId As Guid = State.DealerfileProcessedId
 
             'If QueryString Is Nothing
             '    ReportCeBase.EnableReportCe(Me, MasterPage.ReportCeInputControl)
@@ -478,19 +478,19 @@ Namespace Reports
             '    Session(ReportCeBaseForm.SESSION_PARAMETERS_KEY) = params
             'Else
 
-            Dim InterfaceTypeCode As DealerFileProcessedData.InterfaceTypeCode = Me.State.moInterfaceTypeCode
+            Dim InterfaceTypeCode As DealerFileProcessedData.InterfaceTypeCode = State.moInterfaceTypeCode
 
             Dim sIncludeByPassRecs As String = "Y"
-            If Me.moInclBypassedRecCheck.Visible Then
-                If Not Me.moInclBypassedRecCheck.Checked Then
+            If moInclBypassedRecCheck.Visible Then
+                If Not moInclBypassedRecCheck.Checked Then
                     sIncludeByPassRecs = "N"
                 End If
             End If
 
             Dim reportParams As New System.Text.StringBuilder
 
-            Me.State.MyBO = New ReportRequests
-            Me.State.ForEdit = True
+            State.MyBO = New ReportRequests
+            State.ForEdit = True
 
             'Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "R_TIM_CERTIFICATE_EXTRACT.Report")
 
@@ -498,49 +498,49 @@ Namespace Reports
                 Case DealerFileProcessedData.InterfaceTypeCode.PAYM
                     reportParams.AppendFormat("V_DEALERFILE_PROCESSED_ID=> '{0}',", DALBase.GuidToSQLString(DealerfileProcessedId))
                     reportParams.AppendFormat("V_LANGUAGE_ID => '{0}',", DALBase.GuidToSQLString(Thread.CurrentPrincipal.GetLanguageId()))
-                    reportParams.AppendFormat("V_PARENT_FILE => '{0}',", Me.State.isParentFile)
-                    reportParams.AppendFormat("V_FILE_NAME => '{0}',", Me.State.parentFileName)
-                    Select Case Me.State.reportType
+                    reportParams.AppendFormat("V_PARENT_FILE => '{0}',", State.isParentFile)
+                    reportParams.AppendFormat("V_FILE_NAME => '{0}',", State.parentFileName)
+                    Select Case State.reportType
                         Case REJECT_REPORT
                             'RejectedPayments-Exp_EN
                             reportParams.AppendFormat("V_INCLUDE_BYPASS => '{0}',", sIncludeByPassRecs)
                             reportParams.AppendFormat("V_REPORT_TYPE => '{0}'", "PAYMENT_REJECT_EXPORT")
-                            Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "PAYMENT_REJECT_EXPORT")
-                            Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "REJECTEDPAYMENTSRPT.Oracle_Export")
+                            PopulateBOProperty(State.MyBO, "ReportType", "PAYMENT_REJECT_EXPORT")
+                            PopulateBOProperty(State.MyBO, "ReportProc", "REJECTEDPAYMENTSRPT.Oracle_Export")
                         Case ERROR_EXPORT
                             'RejectedPayments_ErrorExp  
                             reportParams.AppendFormat("V_INCLUDE_BYPASS => '{0}',", sIncludeByPassRecs)
                             reportParams.AppendFormat("V_REPORT_TYPE => '{0}'", "PAYMENT_ERROR_EXPORT")
-                            Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "PAYMENT_ERROR_EXPORT")
-                            Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "REJECTEDPAYMENTSRPT.Oracle_Export")
+                            PopulateBOProperty(State.MyBO, "ReportType", "PAYMENT_ERROR_EXPORT")
+                            PopulateBOProperty(State.MyBO, "ReportProc", "REJECTEDPAYMENTSRPT.Oracle_Export")
                         Case PROCESSED_EXPORT
                             'ProcessedPayments-Exp_EN
                             reportParams.AppendFormat("V_REPORT_TYPE => '{0}'", "PAYMENT_LOAD_EXPORT")
-                            Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "PAYMENT_LOAD_EXPORT")
-                            Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "R_ProcessedPayments.Oracle_Export")
+                            PopulateBOProperty(State.MyBO, "ReportType", "PAYMENT_LOAD_EXPORT")
+                            PopulateBOProperty(State.MyBO, "ReportProc", "R_ProcessedPayments.Oracle_Export")
                     End Select
 
 
                 Case DealerFileProcessedData.InterfaceTypeCode.CERT
                     Dim sEntireRecordOnly As String = "N"
                     reportParams.AppendFormat("V_DEALERFILE_PROCESSED_ID=> '{0}',", DALBase.GuidToSQLString(DealerfileProcessedId))
-                    reportParams.AppendFormat("V_PARENT_FILE => '{0}',", Me.State.isParentFile)
-                    reportParams.AppendFormat("V_FILE_NAME => '{0}',", Me.State.parentFileName)
-                    reportParams.AppendFormat("V_DEALERTYPE => '{0}',", Me.State.dealertype)
+                    reportParams.AppendFormat("V_PARENT_FILE => '{0}',", State.isParentFile)
+                    reportParams.AppendFormat("V_FILE_NAME => '{0}',", State.parentFileName)
+                    reportParams.AppendFormat("V_DEALERTYPE => '{0}',", State.dealertype)
 
-                    Select Case Me.State.reportType
+                    Select Case State.reportType
                         Case REJECT_REPORT
                             'RejectedCertificates-Exp_EN
                             reportParams.AppendFormat("V_LANGUAGE_ID => '{0}',", DALBase.GuidToSQLString(Thread.CurrentPrincipal.GetLanguageId()))
                             reportParams.AppendFormat("V_INCLUDE_BYPASS => '{0}',", sIncludeByPassRecs)
                             reportParams.AppendFormat("V_ENTIRE_RECORD_ONLY => '{0}',", sEntireRecordOnly)
                             reportParams.AppendFormat("V_REPORT_TYPE => '{0}'", "CERT_REJECT_REPORT")
-                            Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "CERT_REJECT_REPORT")
-                            Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "REJECTEDCERTIFICATESRPT.Oracle_Export")
+                            PopulateBOProperty(State.MyBO, "ReportType", "CERT_REJECT_REPORT")
+                            PopulateBOProperty(State.MyBO, "ReportProc", "REJECTEDCERTIFICATESRPT.Oracle_Export")
                         Case ERROR_EXPORT
                             'RejectedCertificates_ErrorExp
-                            If Me.moEntireRecordCheck.Visible Then
-                                If Me.moEntireRecordCheck.Checked Then
+                            If moEntireRecordCheck.Visible Then
+                                If moEntireRecordCheck.Checked Then
                                     sEntireRecordOnly = "Y"
                                 End If
                             End If
@@ -548,20 +548,20 @@ Namespace Reports
                             reportParams.AppendFormat("V_INCLUDE_BYPASS => '{0}',", sIncludeByPassRecs)
                             reportParams.AppendFormat("V_ENTIRE_RECORD_ONLY => '{0}',", sEntireRecordOnly)
                             reportParams.AppendFormat("V_REPORT_TYPE => '{0}'", "CERT_ERROR_EXPORT")
-                            Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "CERT_ERROR_EXPORT")
-                            Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "REJECTEDCERTIFICATESRPT.Oracle_Export")
+                            PopulateBOProperty(State.MyBO, "ReportType", "CERT_ERROR_EXPORT")
+                            PopulateBOProperty(State.MyBO, "ReportProc", "REJECTEDCERTIFICATESRPT.Oracle_Export")
                         Case PROCESSED_EXPORT
                             'ProcessedCertificates-Exp_EN
                             reportParams.AppendFormat("V_REPORT_TYPE => '{0}'", "CERT_LOAD_EXPORT")
-                            Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "CERT_LOAD_EXPORT")
-                            Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "PROCESSEDCERTIFICATESRPT.Oracle_Export")
+                            PopulateBOProperty(State.MyBO, "ReportType", "CERT_LOAD_EXPORT")
+                            PopulateBOProperty(State.MyBO, "ReportProc", "PROCESSEDCERTIFICATESRPT.Oracle_Export")
                     End Select
 
 
             End Select
 
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportParameters", reportParams.ToString())
-            Me.PopulateBOProperty(Me.State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
+            PopulateBOProperty(State.MyBO, "ReportParameters", reportParams.ToString())
+            PopulateBOProperty(State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
             'End If
 
             ScheduleReport()
@@ -571,17 +571,17 @@ Namespace Reports
         Private Sub ScheduleReport()
             Try
                 Dim scheduleDate As DateTime = TheReportExtractInputControl.GetSchedDate()
-                If Me.State.MyBO.IsDirty Then
-                    Me.State.MyBO.Save()
+                If State.MyBO.IsDirty Then
+                    State.MyBO.Save()
 
-                    Me.State.IsNew = False
-                    Me.State.HasDataChanged = True
-                    Me.State.MyBO.CreateJob(scheduleDate)
+                    State.IsNew = False
+                    State.HasDataChanged = True
+                    State.MyBO.CreateJob(scheduleDate)
 
                     If String.IsNullOrEmpty(ElitaPlusIdentity.Current.EmailAddress) Then
-                        Me.DisplayMessage(Message.MSG_Email_not_configured, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_Email_not_configured, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     Else
-                        Me.DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     End If
 
                     'btnGenRpt.Enabled = False
@@ -589,7 +589,7 @@ Namespace Reports
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 

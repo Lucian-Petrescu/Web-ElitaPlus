@@ -25,7 +25,7 @@ Partial Class PriceGroupForm
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -49,9 +49,9 @@ Partial Class PriceGroupForm
         Public LastOperation As DetailPageCommand
         Public EditingBo As PriceGroup
         Public HasDataChanged As Boolean
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As PriceGroup, ByVal hasDataChanged As Boolean)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(LastOp As DetailPageCommand, curEditingBo As PriceGroup, hasDataChanged As Boolean)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
             Me.HasDataChanged = hasDataChanged
         End Sub
     End Class
@@ -85,14 +85,14 @@ Partial Class PriceGroupForm
         End Get
     End Property
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 'Get the id from the parent
-                Me.State.MyBO = New PriceGroup(CType(Me.CallingParameters, Guid))
+                State.MyBO = New PriceGroup(CType(CallingParameters, Guid))
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
@@ -101,17 +101,17 @@ Partial Class PriceGroupForm
 #End Region
 
 #Region "Page Events"
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Try
-            Me.ErrorCtrl.Clear_Hide()
-            If Not Me.IsPostBack Then
+            ErrorCtrl.Clear_Hide()
+            If Not IsPostBack Then
                 'Date Calendars
                 '  Me.MenuEnabled = False
-                Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, True)
-                Me.AddControlMsg(Me.btnDeleteChild_Write, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, True)
-                If Me.State.MyBO Is Nothing Then
-                    Me.State.MyBO = New PriceGroup
+                AddControlMsg(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, True)
+                AddControlMsg(btnDeleteChild_Write, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, True)
+                If State.MyBO Is Nothing Then
+                    State.MyBO = New PriceGroup
                 End If
                 ' Me.BindListControlToDataView(moCountryDrop, LookupListNew.GetUserCountriesLookupList(), , , False)
                 Dim listcontext As ListContext = New ListContext()
@@ -125,20 +125,20 @@ Partial Class PriceGroupForm
 
                 PopulateCountry()
                 PopulateDropdowns()
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
+                PopulateFormFromBOs()
+                EnableDisableFields()
             End If
             BindBoPropertiesToLabels()
             BindDetailBoPropertiesToLabels()
             CheckIfComingFromSaveConfirm()
-            If Not Me.IsPostBack Then
-                Me.AddLabelDecorations(Me.State.MyBO)
+            If Not IsPostBack Then
+                AddLabelDecorations(State.MyBO)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
-        Me.ShowMissingTranslations(Me.ErrorCtrl)
+        ShowMissingTranslations(ErrorCtrl)
     End Sub
 #End Region
 
@@ -149,11 +149,11 @@ Partial Class PriceGroupForm
         ControlMgr.SetEnableControl(Me, btnAddChildWithCopy_Write, True)
         ControlMgr.SetEnableControl(Me, btnDeleteChild_Write, True)
 
-        If Me.State.IsChildEditing Then
+        If State.IsChildEditing Then
             ControlMgr.SetVisibleControl(Me, PanelAllEditDetail, True)
             EnableDisableParentControls(False)
             'Now disable depebding on the object state
-            If (Me.State.MyChildBO.IsNew) Then
+            If (State.MyChildBO.IsNew) Then
                 ControlMgr.SetEnableControl(Me, btnAddNewChild_Write, False)
                 ControlMgr.SetEnableControl(Me, btnAddChildWithCopy_Write, False)
                 ControlMgr.SetEnableControl(Me, btnDeleteChild_Write, False)
@@ -169,7 +169,7 @@ Partial Class PriceGroupForm
         ControlMgr.SetEnableControl(Me, btnNew_WRITE, True)
         ControlMgr.SetEnableControl(Me, btnCopy_WRITE, True)
         'Now disable depebding on the object state
-        If Me.State.MyBO.IsNew Then
+        If State.MyBO.IsNew Then
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, False)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, False)
@@ -178,7 +178,7 @@ Partial Class PriceGroupForm
         'WRITE YOU OWN CODE HERE
     End Sub
 
-    Sub EnableDisableParentControls(ByVal enableToggle As Boolean)
+    Sub EnableDisableParentControls(enableToggle As Boolean)
         ControlMgr.SetEnableControl(Me, btnBack, enableToggle)
         ControlMgr.SetEnableControl(Me, btnCopy_WRITE, enableToggle)
         ControlMgr.SetEnableControl(Me, btnDelete_WRITE, enableToggle)
@@ -193,28 +193,28 @@ Partial Class PriceGroupForm
 
 
     Protected Sub BindBoPropertiesToLabels()
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "ShortDesc", Me.LabelShortDesc)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Description", Me.LabelDescription)
-        Me.ClearGridHeadersAndLabelsErrSign()
+        BindBOPropertyToLabel(State.MyBO, "ShortDesc", LabelShortDesc)
+        BindBOPropertyToLabel(State.MyBO, "Description", LabelDescription)
+        ClearGridHeadersAndLabelsErrSign()
     End Sub
 
     Private Sub PopulateCountry()
         Dim oCountry As Country
 
-        If Me.State.MyBO.IsNew Then
+        If State.MyBO.IsNew Then
             ' New one
-            If Me.moCountryDrop.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX Then
+            If moCountryDrop.SelectedIndex = NO_ITEM_SELECTED_INDEX Then
                 moCountryDrop.SelectedIndex = 0
             End If
-            Me.PopulateControlFromBOProperty(moCountryText_NO_TRANSLATE, Me.GetSelectedDescription(moCountryDrop))
-            Me.State.MyBO.CountryId = Me.GetSelectedItem(moCountryDrop)
+            PopulateControlFromBOProperty(moCountryText_NO_TRANSLATE, GetSelectedDescription(moCountryDrop))
+            State.MyBO.CountryId = GetSelectedItem(moCountryDrop)
         Else
-            oCountry = New Country(Me.State.MyBO.CountryId)
-            Me.SetSelectedItem(moCountryDrop, Me.State.MyBO.CountryId)
-            Me.PopulateControlFromBOProperty(moCountryText_NO_TRANSLATE, oCountry.Description)
+            oCountry = New Country(State.MyBO.CountryId)
+            SetSelectedItem(moCountryDrop, State.MyBO.CountryId)
+            PopulateControlFromBOProperty(moCountryText_NO_TRANSLATE, oCountry.Description)
         End If
 
-        If ((moCountryDrop.Items.Count > 1) AndAlso Me.State.MyBO.IsNew) Then
+        If ((moCountryDrop.Items.Count > 1) AndAlso State.MyBO.IsNew) Then
             ' Multiple Countries
             ControlMgr.SetVisibleControl(Me, moCountryDrop, True)
             ControlMgr.SetVisibleControl(Me, moCountryText_NO_TRANSLATE, False)
@@ -234,11 +234,11 @@ Partial Class PriceGroupForm
     End Sub
 
     Protected Sub PopulateFormFromBOs()
-        With Me.State.MyBO
+        With State.MyBO
             PopulateDetailGrid()
 
-            Me.PopulateControlFromBOProperty(Me.TextboxShortDesc_WRITE, .ShortDesc)
-            Me.PopulateControlFromBOProperty(Me.TextboxDescription_WRITE, .Description)
+            PopulateControlFromBOProperty(TextboxShortDesc_WRITE, .ShortDesc)
+            PopulateControlFromBOProperty(TextboxDescription_WRITE, .Description)
 
         End With
 
@@ -246,118 +246,118 @@ Partial Class PriceGroupForm
 
     Sub PopulateDetailGrid()
         'This is a temporary Binding Logic. BEGIN        
-        Dim dv As PriceGroup.PriceGroupDetailSelectionView = Me.State.MyBO.GetDetailSelectionView(Authentication.CurrentUser.CompanyGroup.Id)
-        dv.Sort = Me.State.SortExpressionDetailGrid
+        Dim dv As PriceGroup.PriceGroupDetailSelectionView = State.MyBO.GetDetailSelectionView(Authentication.CurrentUser.CompanyGroup.Id)
+        dv.Sort = State.SortExpressionDetailGrid
 
-        Me.DataGridDetail.Columns(Me.GRID_COL_RISK_TYPE).SortExpression = PriceGroup.PriceGroupDetailSelectionView.RISK_TYPE_COL_NAME
-        Me.DataGridDetail.Columns(Me.GRID_COL_EFFECTIVE_DATE).SortExpression = PriceGroup.PriceGroupDetailSelectionView.EFFECTIVE_DATE_COL_NAME
-        Me.DataGridDetail.Columns(Me.GRID_COL_PRICE_BAND_RANGE_FROM).SortExpression = PriceGroup.PriceGroupDetailSelectionView.PRICE_BAND_RANGE_FROM_COL_NAME
-        Me.DataGridDetail.Columns(Me.GRID_COL_PRICE_BAND_RANGE_TO).SortExpression = PriceGroup.PriceGroupDetailSelectionView.PRICE_BAND_RANGE_TO_COL_NAME
-        Me.SetGridItemStyleColor(Me.DataGridDetail)
+        DataGridDetail.Columns(GRID_COL_RISK_TYPE).SortExpression = PriceGroup.PriceGroupDetailSelectionView.RISK_TYPE_COL_NAME
+        DataGridDetail.Columns(GRID_COL_EFFECTIVE_DATE).SortExpression = PriceGroup.PriceGroupDetailSelectionView.EFFECTIVE_DATE_COL_NAME
+        DataGridDetail.Columns(GRID_COL_PRICE_BAND_RANGE_FROM).SortExpression = PriceGroup.PriceGroupDetailSelectionView.PRICE_BAND_RANGE_FROM_COL_NAME
+        DataGridDetail.Columns(GRID_COL_PRICE_BAND_RANGE_TO).SortExpression = PriceGroup.PriceGroupDetailSelectionView.PRICE_BAND_RANGE_TO_COL_NAME
+        SetGridItemStyleColor(DataGridDetail)
 
-        SetPageAndSelectedIndexFromGuid(dv, Me.State.selectedChildId, Me.DataGridDetail, Me.State.DetailPageIndex)
-        Me.State.DetailPageIndex = Me.DataGridDetail.CurrentPageIndex
+        SetPageAndSelectedIndexFromGuid(dv, State.selectedChildId, DataGridDetail, State.DetailPageIndex)
+        State.DetailPageIndex = DataGridDetail.CurrentPageIndex
 
-        Me.DataGridDetail.DataSource = dv
-        Me.DataGridDetail.AutoGenerateColumns = False
-        Me.DataGridDetail.DataBind()
+        DataGridDetail.DataSource = dv
+        DataGridDetail.AutoGenerateColumns = False
+        DataGridDetail.DataBind()
         'This is a temporary Binding Logic. END
     End Sub
 
 
     Protected Sub PopulateBOsFormFrom()
-        With Me.State.MyBO
-            Me.PopulateBOProperty(Me.State.MyBO, "ShortDesc", Me.TextboxShortDesc_WRITE)
-            Me.PopulateBOProperty(Me.State.MyBO, "Description", Me.TextboxDescription_WRITE)
-            Me.PopulateBOProperty(Me.State.MyBO, "CountryId", moCountryDrop)
+        With State.MyBO
+            PopulateBOProperty(State.MyBO, "ShortDesc", TextboxShortDesc_WRITE)
+            PopulateBOProperty(State.MyBO, "Description", TextboxDescription_WRITE)
+            PopulateBOProperty(State.MyBO, "CountryId", moCountryDrop)
         End With
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Sub
 
 
     Protected Sub CreateNew()
-        Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
+        State.ScreenSnapShotBO = Nothing 'Reset the backup copy
 
-        Me.State.MyBO = New PriceGroup
+        State.MyBO = New PriceGroup
         PopulateCountry()
-        Me.PopulateFormFromBOs()
-        Me.EnableDisableFields()
+        PopulateFormFromBOs()
+        EnableDisableFields()
     End Sub
 
     Protected Sub CreateNewWithCopy()
         Dim newObj As New PriceGroup
-        newObj.Copy(Me.State.MyBO)
+        newObj.Copy(State.MyBO)
 
-        Me.State.MyBO = newObj
+        State.MyBO = newObj
         PopulateCountry()
-        Me.PopulateFormFromBOs()
-        Me.EnableDisableFields()
+        PopulateFormFromBOs()
+        EnableDisableFields()
 
         'create the backup copy
-        Me.State.ScreenSnapShotBO = New PriceGroup
-        Me.State.ScreenSnapShotBO.Copy(Me.State.MyBO)
+        State.ScreenSnapShotBO = New PriceGroup
+        State.ScreenSnapShotBO.Copy(State.MyBO)
     End Sub
 
     Protected Sub CheckIfComingFromSaveConfirm()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-        If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
-            If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Accept Then
-                Me.State.MyBO.Save()
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+        If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
+            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Accept Then
+                State.MyBO.Save()
             End If
-            Select Case Me.State.ActionInProgress
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                    Me.CreateNew()
+                    DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                    Me.CreateNewWithCopy()
+                    DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                    CreateNewWithCopy()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.Accept
-                    Me.PopulateChildBOFromDetail()
-                    Me.State.MyChildBO.Save()
-                    Me.State.MyChildBO.EndEdit()
-                    Me.State.MyBO.Save()
+                    PopulateChildBOFromDetail()
+                    State.MyChildBO.Save()
+                    State.MyChildBO.EndEdit()
+                    State.MyBO.Save()
 
-                    Me.State.IsChildEditing = False
-                    Me.EnableDisableFields()
-                    Me.PopulateDetailGrid()
+                    State.IsChildEditing = False
+                    EnableDisableFields()
+                    PopulateDetailGrid()
             End Select
-        ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-            Select Case Me.State.ActionInProgress
+        ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.CreateNew()
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    Me.CreateNewWithCopy()
+                    CreateNewWithCopy()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.ErrorCtrl.AddErrorAndShow(Me.State.LastErrMsg)
+                    ErrorCtrl.AddErrorAndShow(State.LastErrMsg)
                 Case ElitaPlusPage.DetailPageCommand.Accept
-                    Me.State.MyChildBO.cancelEdit()
-                    If Me.State.MyChildBO.IsSaveNew Then
-                        Me.State.MyChildBO.Delete()
-                        Me.State.MyChildBO.Save()
+                    State.MyChildBO.cancelEdit()
+                    If State.MyChildBO.IsSaveNew Then
+                        State.MyChildBO.Delete()
+                        State.MyChildBO.Save()
                     End If
 
-                    Me.State.IsChildEditing = False
-                    Me.EnableDisableFields()
-                    Me.PopulateDetailGrid()
+                    State.IsChildEditing = False
+                    EnableDisableFields()
+                    PopulateDetailGrid()
             End Select
         End If
         'Clean after consuming the action
-        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-        Me.HiddenSaveChangesPromptResponse.Value = ""
+        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        HiddenSaveChangesPromptResponse.Value = ""
     End Sub
 
     Sub BeginChildEdit()
-        Me.State.IsChildEditing = True
-        Me.AddCalendar(Me.ImageButtonEffectiveDate, Me.TextboxEffectiveDate)
-        With Me.State
+        State.IsChildEditing = True
+        AddCalendar(ImageButtonEffectiveDate, TextboxEffectiveDate)
+        With State
             If Not .selectedChildId.Equals(Guid.Empty) Then
                 .MyChildBO = .MyBO.GetChild(.selectedChildId)
             Else
@@ -365,16 +365,16 @@ Partial Class PriceGroupForm
             End If
             .MyChildBO.BeginEdit()
         End With
-        Me.EnableDisableFields()
-        Me.PopulateDetailFromChildBO()
+        EnableDisableFields()
+        PopulateDetailFromChildBO()
     End Sub
 
-    Sub EndChildEdit(ByVal lastop As ElitaPlusPage.DetailPageCommand)
+    Sub EndChildEdit(lastop As ElitaPlusPage.DetailPageCommand)
         Try
-            With Me.State
+            With State
                 Select Case lastop
                     Case ElitaPlusPage.DetailPageCommand.OK
-                        Me.PopulateChildBOFromDetail()
+                        PopulateChildBOFromDetail()
                         .MyChildBO.Save()
                         .MyChildBO.EndEdit()
                         .MyBO.Save()
@@ -397,11 +397,11 @@ Partial Class PriceGroupForm
                         .selectedChildId = Guid.Empty
                 End Select
             End With
-            Me.State.IsChildEditing = False
-            Me.EnableDisableFields()
-            Me.PopulateDetailGrid()
+            State.IsChildEditing = False
+            EnableDisableFields()
+            PopulateDetailGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
@@ -411,7 +411,7 @@ Partial Class PriceGroupForm
         Dim listcontext As ListContext = New ListContext()
         listcontext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
         Dim riskTypeLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("RiskTypeByCompanyGroup", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
-        Me.DropdownlistRiskType.Populate(riskTypeLkl, New PopulateOptions() With
+        DropdownlistRiskType.Populate(riskTypeLkl, New PopulateOptions() With
              {
                .AddBlankItem = True
                 })
@@ -421,70 +421,70 @@ Partial Class PriceGroupForm
         ' Me.BindListControlToDataView(ddlReplTaxType, oTaxTypeList)
         Dim replTaxTypeLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("TTYP", Thread.CurrentPrincipal.GetLanguageCode())
         Dim FilteredRecord As ListItem() = (From x In replTaxTypeLkl
-                                            Where x.Code = "7" Or x.Code = "8"
+                                            Where x.Code = "7" OrElse x.Code = "8"
                                             Select x).ToArray()
         ddlReplTaxType.Populate(FilteredRecord, New PopulateOptions() With
                                   {
                                   .AddBlankItem = True
                                   })
 
-        With Me.State.MyChildBO
-            Me.PopulateControlFromBOProperty(Me.TextboxCarryInPrice, .CarryInPrice)
-            Me.PopulateControlFromBOProperty(Me.TextboxCleaningPrice, .CleaningPrice)
-            Me.PopulateControlFromBOProperty(Me.TextboxEffectiveDate, .EffectiveDate)
-            Me.PopulateControlFromBOProperty(Me.TextboxEstimatePrice, .EstimatePrice)
-            Me.PopulateControlFromBOProperty(Me.TextboxHomePrice, .HomePrice)
-            Me.PopulateControlFromBOProperty(Me.TextboxHourlyRate, .HourlyRate)
-            Me.SetSelectedItem(Me.DropdownlistRiskType, .RiskTypeId)
-            Me.PopulateControlFromBOProperty(Me.moReplacementText, .ReplacementPrice)
-            Me.PopulateControlFromBOProperty(Me.TextboxPriceBandRangeFrom, .PriceBandRangeFrom)
-            Me.PopulateControlFromBOProperty(Me.TextboxPriceBandRangeTo, .PriceBandRangeTo)
-            Me.PopulateControlFromBOProperty(Me.TextboxSendInPrice, .SendInPrice)
-            Me.PopulateControlFromBOProperty(Me.TextboxPickUpPrice, .PickUpPrice)
-            Me.SetSelectedItem(Me.ddlReplTaxType, .ReplacementTaxType)
-            Me.PopulateControlFromBOProperty(Me.TextboxDiscountedPrice, .DiscountedPrice)
+        With State.MyChildBO
+            PopulateControlFromBOProperty(TextboxCarryInPrice, .CarryInPrice)
+            PopulateControlFromBOProperty(TextboxCleaningPrice, .CleaningPrice)
+            PopulateControlFromBOProperty(TextboxEffectiveDate, .EffectiveDate)
+            PopulateControlFromBOProperty(TextboxEstimatePrice, .EstimatePrice)
+            PopulateControlFromBOProperty(TextboxHomePrice, .HomePrice)
+            PopulateControlFromBOProperty(TextboxHourlyRate, .HourlyRate)
+            SetSelectedItem(DropdownlistRiskType, .RiskTypeId)
+            PopulateControlFromBOProperty(moReplacementText, .ReplacementPrice)
+            PopulateControlFromBOProperty(TextboxPriceBandRangeFrom, .PriceBandRangeFrom)
+            PopulateControlFromBOProperty(TextboxPriceBandRangeTo, .PriceBandRangeTo)
+            PopulateControlFromBOProperty(TextboxSendInPrice, .SendInPrice)
+            PopulateControlFromBOProperty(TextboxPickUpPrice, .PickUpPrice)
+            SetSelectedItem(ddlReplTaxType, .ReplacementTaxType)
+            PopulateControlFromBOProperty(TextboxDiscountedPrice, .DiscountedPrice)
         End With
     End Sub
 
     Sub PopulateChildBOFromDetail()
-        With Me.State.MyChildBO
-            Me.PopulateBOProperty(Me.State.MyChildBO, "CarryInPrice", Me.TextboxCarryInPrice)
-            Me.PopulateBOProperty(Me.State.MyChildBO, "CleaningPrice", Me.TextboxCleaningPrice)
-            Me.PopulateBOProperty(Me.State.MyChildBO, "EffectiveDate", Me.TextboxEffectiveDate)
-            Me.PopulateBOProperty(Me.State.MyChildBO, "EstimatePrice", Me.TextboxEstimatePrice)
-            Me.PopulateBOProperty(Me.State.MyChildBO, "HomePrice", Me.TextboxHomePrice)
-            Me.PopulateBOProperty(Me.State.MyChildBO, "HourlyRate", Me.TextboxHourlyRate)
-            Me.PopulateBOProperty(Me.State.MyChildBO, "RiskTypeId", Me.DropdownlistRiskType)
-            Me.PopulateBOProperty(Me.State.MyChildBO, "ReplacementPrice", Me.moReplacementText)
-            Me.PopulateBOProperty(Me.State.MyChildBO, "PriceBandRangeFrom", Me.TextboxPriceBandRangeFrom)
-            Me.PopulateBOProperty(Me.State.MyChildBO, "PriceBandRangeTo", Me.TextboxPriceBandRangeTo)
-            Me.PopulateBOProperty(Me.State.MyChildBO, "SendInPrice", Me.TextboxSendInPrice)
-            Me.PopulateBOProperty(Me.State.MyChildBO, "PickUpPrice", Me.TextboxPickUpPrice)
-            Me.PopulateBOProperty(Me.State.MyChildBO, "ReplacementTaxType", Me.ddlReplTaxType)
-            Me.PopulateBOProperty(Me.State.MyChildBO, "DiscountedPrice", Me.TextboxDiscountedPrice)
+        With State.MyChildBO
+            PopulateBOProperty(State.MyChildBO, "CarryInPrice", TextboxCarryInPrice)
+            PopulateBOProperty(State.MyChildBO, "CleaningPrice", TextboxCleaningPrice)
+            PopulateBOProperty(State.MyChildBO, "EffectiveDate", TextboxEffectiveDate)
+            PopulateBOProperty(State.MyChildBO, "EstimatePrice", TextboxEstimatePrice)
+            PopulateBOProperty(State.MyChildBO, "HomePrice", TextboxHomePrice)
+            PopulateBOProperty(State.MyChildBO, "HourlyRate", TextboxHourlyRate)
+            PopulateBOProperty(State.MyChildBO, "RiskTypeId", DropdownlistRiskType)
+            PopulateBOProperty(State.MyChildBO, "ReplacementPrice", moReplacementText)
+            PopulateBOProperty(State.MyChildBO, "PriceBandRangeFrom", TextboxPriceBandRangeFrom)
+            PopulateBOProperty(State.MyChildBO, "PriceBandRangeTo", TextboxPriceBandRangeTo)
+            PopulateBOProperty(State.MyChildBO, "SendInPrice", TextboxSendInPrice)
+            PopulateBOProperty(State.MyChildBO, "PickUpPrice", TextboxPickUpPrice)
+            PopulateBOProperty(State.MyChildBO, "ReplacementTaxType", ddlReplTaxType)
+            PopulateBOProperty(State.MyChildBO, "DiscountedPrice", TextboxDiscountedPrice)
         End With
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Sub
 
     Protected Sub BindDetailBoPropertiesToLabels()
-        With Me.State
-            Me.BindBOPropertyToLabel(.MyChildBO, "CarryInPrice", Me.LabelCarryInPrice)
-            Me.BindBOPropertyToLabel(.MyChildBO, "CleaningPrice", Me.LabelCleaningPrice)
-            Me.BindBOPropertyToLabel(.MyChildBO, "EffectiveDate", Me.LabelEffectiveDate)
-            Me.BindBOPropertyToLabel(.MyChildBO, "EstimatePrice", Me.LabelEstimatePrice)
-            Me.BindBOPropertyToLabel(.MyChildBO, "HomePrice", Me.LabelHomePrice)
-            Me.BindBOPropertyToLabel(.MyChildBO, "HourlyRate", Me.LabelHourlyRate)
-            Me.BindBOPropertyToLabel(.MyChildBO, "RiskTypeId", Me.LabelRiskType)
-            Me.BindBOPropertyToLabel(.MyChildBO, "ReplacementPrice", Me.moReplacementLabel)
-            Me.BindBOPropertyToLabel(.MyChildBO, "PriceBandRangeFrom", Me.LabelPriceBandRangeFrom)
-            Me.BindBOPropertyToLabel(.MyChildBO, "PriceBandRangeTo", Me.LabelPriceBandRangeTo)
-            Me.BindBOPropertyToLabel(.MyChildBO, "SendInPrice", Me.LabelSendInPrice)
-            Me.BindBOPropertyToLabel(.MyChildBO, "PickUpPrice", Me.LabelPickUpPrice)
-            Me.BindBOPropertyToLabel(.MyChildBO, "DiscountedPrice", Me.LabelDiscountedPrice)
+        With State
+            BindBOPropertyToLabel(.MyChildBO, "CarryInPrice", LabelCarryInPrice)
+            BindBOPropertyToLabel(.MyChildBO, "CleaningPrice", LabelCleaningPrice)
+            BindBOPropertyToLabel(.MyChildBO, "EffectiveDate", LabelEffectiveDate)
+            BindBOPropertyToLabel(.MyChildBO, "EstimatePrice", LabelEstimatePrice)
+            BindBOPropertyToLabel(.MyChildBO, "HomePrice", LabelHomePrice)
+            BindBOPropertyToLabel(.MyChildBO, "HourlyRate", LabelHourlyRate)
+            BindBOPropertyToLabel(.MyChildBO, "RiskTypeId", LabelRiskType)
+            BindBOPropertyToLabel(.MyChildBO, "ReplacementPrice", moReplacementLabel)
+            BindBOPropertyToLabel(.MyChildBO, "PriceBandRangeFrom", LabelPriceBandRangeFrom)
+            BindBOPropertyToLabel(.MyChildBO, "PriceBandRangeTo", LabelPriceBandRangeTo)
+            BindBOPropertyToLabel(.MyChildBO, "SendInPrice", LabelSendInPrice)
+            BindBOPropertyToLabel(.MyChildBO, "PickUpPrice", LabelPickUpPrice)
+            BindBOPropertyToLabel(.MyChildBO, "DiscountedPrice", LabelDiscountedPrice)
         End With
-        Me.ClearGridHeadersAndLabelsErrSign()
+        ClearGridHeadersAndLabelsErrSign()
     End Sub
 
 
@@ -492,14 +492,14 @@ Partial Class PriceGroupForm
 
 #Region "Handle-Drop"
 
-    Private Sub moCountryDrop_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moCountryDrop.SelectedIndexChanged
+    Private Sub moCountryDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moCountryDrop.SelectedIndexChanged
         Try
-            Me.State.MyBO.CountryId = Me.GetSelectedItem(moCountryDrop)
+            State.MyBO.CountryId = GetSelectedItem(moCountryDrop)
             PopulateCountry()
             PopulateDropdowns()
-            Me.PopulateFormFromBOs()
+            PopulateFormFromBOs()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
@@ -510,239 +510,239 @@ Partial Class PriceGroupForm
 
 
 
-    Public Sub DataGridDetail_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles DataGridDetail.ItemDataBound
+    Public Sub DataGridDetail_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles DataGridDetail.ItemDataBound
         Try
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                e.Item.Cells(Me.GRID_COL_PG_DETAIL_ID).Text = New Guid(CType(dvRow(PriceGroup.PriceGroupDetailSelectionView.DETAIL_ID_COL_NAME), Byte())).ToString
-                e.Item.Cells(Me.GRID_COL_RISK_TYPE).Text = dvRow(PriceGroup.PriceGroupDetailSelectionView.RISK_TYPE_COL_NAME).ToString
-                e.Item.Cells(Me.GRID_COL_EFFECTIVE_DATE).Text = Me.GetDateFormattedString(CType(dvRow(PriceGroup.PriceGroupDetailSelectionView.EFFECTIVE_DATE_COL_NAME), Date))
-                e.Item.Cells(Me.GRID_COL_PRICE_BAND_RANGE_FROM).Text = GetAmountFormattedDoubleString(dvRow(PriceGroup.PriceGroupDetailSelectionView.PRICE_BAND_RANGE_FROM_COL_NAME).ToString)
-                e.Item.Cells(Me.GRID_COL_PRICE_BAND_RANGE_TO).Text = GetAmountFormattedDoubleString(dvRow(PriceGroup.PriceGroupDetailSelectionView.PRICE_BAND_RANGE_TO_COL_NAME).ToString)
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
+                e.Item.Cells(GRID_COL_PG_DETAIL_ID).Text = New Guid(CType(dvRow(PriceGroup.PriceGroupDetailSelectionView.DETAIL_ID_COL_NAME), Byte())).ToString
+                e.Item.Cells(GRID_COL_RISK_TYPE).Text = dvRow(PriceGroup.PriceGroupDetailSelectionView.RISK_TYPE_COL_NAME).ToString
+                e.Item.Cells(GRID_COL_EFFECTIVE_DATE).Text = GetDateFormattedString(CType(dvRow(PriceGroup.PriceGroupDetailSelectionView.EFFECTIVE_DATE_COL_NAME), Date))
+                e.Item.Cells(GRID_COL_PRICE_BAND_RANGE_FROM).Text = GetAmountFormattedDoubleString(dvRow(PriceGroup.PriceGroupDetailSelectionView.PRICE_BAND_RANGE_FROM_COL_NAME).ToString)
+                e.Item.Cells(GRID_COL_PRICE_BAND_RANGE_TO).Text = GetAmountFormattedDoubleString(dvRow(PriceGroup.PriceGroupDetailSelectionView.PRICE_BAND_RANGE_TO_COL_NAME).ToString)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
 
-    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs)
+    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
 
-    Private Sub DataGridDetail_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles DataGridDetail.SortCommand
+    Private Sub DataGridDetail_SortCommand(source As Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles DataGridDetail.SortCommand
         Try
-            If Me.State.SortExpressionDetailGrid.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpressionDetailGrid.StartsWith(e.SortExpression & " DESC") Then
-                    Me.State.SortExpressionDetailGrid = e.SortExpression
+            If State.SortExpressionDetailGrid.StartsWith(e.SortExpression) Then
+                If State.SortExpressionDetailGrid.StartsWith(e.SortExpression & " DESC") Then
+                    State.SortExpressionDetailGrid = e.SortExpression
                 Else
-                    Me.State.SortExpressionDetailGrid = e.SortExpression & " DESC"
+                    State.SortExpressionDetailGrid = e.SortExpression & " DESC"
                 End If
             Else
-                Me.State.SortExpressionDetailGrid = e.SortExpression
+                State.SortExpressionDetailGrid = e.SortExpression
             End If
-            If Me.State.SortExpressionDetailGrid.StartsWith(PriceGroup.PriceGroupDetailSelectionView.RISK_TYPE_COL_NAME) Then
-                Me.State.SortExpressionDetailGrid &= ", " & PriceGroup.PriceGroupDetailSelectionView.EFFECTIVE_DATE_COL_NAME & ", " & PriceGroup.PriceGroupDetailSelectionView.PRICE_BAND_RANGE_FROM_COL_NAME
+            If State.SortExpressionDetailGrid.StartsWith(PriceGroup.PriceGroupDetailSelectionView.RISK_TYPE_COL_NAME) Then
+                State.SortExpressionDetailGrid &= ", " & PriceGroup.PriceGroupDetailSelectionView.EFFECTIVE_DATE_COL_NAME & ", " & PriceGroup.PriceGroupDetailSelectionView.PRICE_BAND_RANGE_FROM_COL_NAME
             End If
-            If Me.State.SortExpressionDetailGrid.StartsWith(PriceGroup.PriceGroupDetailSelectionView.EFFECTIVE_DATE_COL_NAME) Then
-                Me.State.SortExpressionDetailGrid &= ", " & PriceGroup.PriceGroupDetailSelectionView.PRICE_BAND_RANGE_FROM_COL_NAME
+            If State.SortExpressionDetailGrid.StartsWith(PriceGroup.PriceGroupDetailSelectionView.EFFECTIVE_DATE_COL_NAME) Then
+                State.SortExpressionDetailGrid &= ", " & PriceGroup.PriceGroupDetailSelectionView.PRICE_BAND_RANGE_FROM_COL_NAME
             End If
-            Me.PopulateDetailGrid()
+            PopulateDetailGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub DataGridDetail_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles DataGridDetail.ItemCommand
+    Private Sub DataGridDetail_ItemCommand(source As Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles DataGridDetail.ItemCommand
         Try
             If e.CommandName = "ViewRecord" Then
-                Me.State.IsChildEditing = True
-                Me.State.selectedChildId = New Guid(e.Item.Cells(Me.GRID_COL_PG_DETAIL_ID).Text)
-                Me.BeginChildEdit()
-                Me.EnableDisableFields()
+                State.IsChildEditing = True
+                State.selectedChildId = New Guid(e.Item.Cells(GRID_COL_PG_DETAIL_ID).Text)
+                BeginChildEdit()
+                EnableDisableFields()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub DataGridDetail_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles DataGridDetail.PageIndexChanged
+    Private Sub DataGridDetail_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles DataGridDetail.PageIndexChanged
         Try
-            Me.State.DetailPageIndex = e.NewPageIndex
-            Me.State.selectedChildId = Guid.Empty
-            Me.PopulateDetailGrid()
+            State.DetailPageIndex = e.NewPageIndex
+            State.selectedChildId = Guid.Empty
+            PopulateDetailGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 #End Region
 
 #Region "Button Clicks"
 
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
             Else
-                Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
-            Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-            Me.State.LastErrMsg = Me.ErrorCtrl.Text
+            HandleErrors(ex, ErrorCtrl)
+            DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+            State.LastErrMsg = ErrorCtrl.Text
         End Try
     End Sub
 
-    Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
-                Me.State.MyBO.Save()
-                Me.State.HasDataChanged = True
-                Me.PopulateCountry()
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
-                Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
+                State.MyBO.Save()
+                State.HasDataChanged = True
+                PopulateCountry()
+                PopulateFormFromBOs()
+                EnableDisableFields()
+                DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
             Else
-                Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnUndo_Write_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_Write.Click
+    Private Sub btnUndo_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_Write.Click
         Try
-            If Not Me.State.MyBO.IsNew Then
+            If Not State.MyBO.IsNew Then
                 'Reload from the DB
-                Me.State.MyBO = New PriceGroup(Me.State.MyBO.Id)
-            ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+                State.MyBO = New PriceGroup(State.MyBO.Id)
+            ElseIf State.ScreenSnapShotBO IsNot Nothing Then
                 'It was a new with copy
-                Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                State.MyBO.Clone(State.ScreenSnapShotBO)
             Else
-                Me.State.MyBO = New PriceGroup
+                State.MyBO = New PriceGroup
             End If
             PopulateCountry()
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
+            PopulateFormFromBOs()
+            EnableDisableFields()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
 
 
-    Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+    Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
         Try
-            Me.State.MyBO.Delete()
-            Me.State.MyBO.Save()
-            Me.State.HasDataChanged = True
-            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.MyBO, Me.State.HasDataChanged))
+            State.MyBO.Delete()
+            State.MyBO.Save()
+            State.HasDataChanged = True
+            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, State.MyBO, State.HasDataChanged))
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
             'undo the delete
-            Me.State.MyBO.RejectChanges()
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            State.MyBO.RejectChanges()
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+    Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
             Else
-                Me.CreateNew()
+                CreateNew()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
 
 
-    Private Sub btnCopy_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+    Private Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
             Else
-                Me.CreateNewWithCopy()
+                CreateNewWithCopy()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
 #Region "Detail Clicks"
 
-    Private Sub btnAddNewChildFromGrid_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnAddNewChildFromGrid_WRITE.Click
+    Private Sub btnAddNewChildFromGrid_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnAddNewChildFromGrid_WRITE.Click
         Try
-            Me.State.selectedChildId = Guid.Empty
-            Me.BeginChildEdit()
+            State.selectedChildId = Guid.Empty
+            BeginChildEdit()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnAddNewChild_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnAddNewChild_Write.Click
+    Private Sub btnAddNewChild_Click(sender As Object, e As System.EventArgs) Handles btnAddNewChild_Write.Click
         Try
-            Me.State.MyChildBO.cancelEdit()
-            If Me.State.MyChildBO.IsSaveNew Then
-                Me.State.MyChildBO.Delete()
+            State.MyChildBO.cancelEdit()
+            If State.MyChildBO.IsSaveNew Then
+                State.MyChildBO.Delete()
             End If
-            Me.State.MyChildBO = Me.State.MyBO.GetNewChild
-            Me.State.MyChildBO.BeginEdit()
-            Me.PopulateDetailFromChildBO()
+            State.MyChildBO = State.MyBO.GetNewChild
+            State.MyChildBO.BeginEdit()
+            PopulateDetailFromChildBO()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnAddChildWithCopy_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnAddChildWithCopy_Write.Click
+    Private Sub btnAddChildWithCopy_Click(sender As Object, e As System.EventArgs) Handles btnAddChildWithCopy_Write.Click
         Try
-            With Me.State
-                Me.State.MyChildBO.cancelEdit()
-                If Me.State.MyChildBO.IsSaveNew Then
-                    Me.State.MyChildBO.Delete()
+            With State
+                State.MyChildBO.cancelEdit()
+                If State.MyChildBO.IsSaveNew Then
+                    State.MyChildBO.Delete()
                 End If
-                Me.State.MyChildBO = .MyBO.GetNewChild
-                Me.State.MyChildBO.BeginEdit()
-                Me.PopulateChildBOFromDetail()
+                State.MyChildBO = .MyBO.GetNewChild
+                State.MyChildBO.BeginEdit()
+                PopulateChildBOFromDetail()
             End With
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnBackChild_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBackChild.Click
+    Private Sub btnBackChild_Click(sender As System.Object, e As System.EventArgs) Handles btnBackChild.Click
         Try
-            Me.PopulateChildBOFromDetail()
-            If Me.State.MyChildBO.IsDirty Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
+            PopulateChildBOFromDetail()
+            If State.MyChildBO.IsDirty Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
             Else
-                Me.EndChildEdit(ElitaPlusPage.DetailPageCommand.Back)
+                EndChildEdit(ElitaPlusPage.DetailPageCommand.Back)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
-            Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-            Me.State.LastErrMsg = Me.ErrorCtrl.Text
+            HandleErrors(ex, ErrorCtrl)
+            DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+            State.LastErrMsg = ErrorCtrl.Text
         End Try
     End Sub
 
@@ -767,19 +767,19 @@ Partial Class PriceGroupForm
 
     'End Sub
 
-    Private Sub btnOkChild_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnOkChild_Write.Click
+    Private Sub btnOkChild_Click(sender As Object, e As System.EventArgs) Handles btnOkChild_Write.Click
         Try
-            Me.EndChildEdit(ElitaPlusPage.DetailPageCommand.OK)
+            EndChildEdit(ElitaPlusPage.DetailPageCommand.OK)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnDeleteChild_Write_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnDeleteChild_Write.Click
+    Private Sub btnDeleteChild_Write_Click(sender As Object, e As System.EventArgs) Handles btnDeleteChild_Write.Click
         Try
-            Me.EndChildEdit(ElitaPlusPage.DetailPageCommand.Delete)
+            EndChildEdit(ElitaPlusPage.DetailPageCommand.Delete)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 

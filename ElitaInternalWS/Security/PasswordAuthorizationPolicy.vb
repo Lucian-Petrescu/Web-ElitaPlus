@@ -30,7 +30,7 @@ Namespace Security
         End Property
 
         Public WriteOnly Property WriteId() As String
-            Set(ByVal value As String)
+            Set(value As String)
                 msId = value
             End Set
         End Property
@@ -45,7 +45,7 @@ Namespace Security
 
         ' Gets a claim set that represents the issuer of the authorization policy.
         Private WriteOnly Property WriteIssuer() As ClaimSet
-            Set(ByVal value As ClaimSet)
+            Set(value As ClaimSet)
                 moIssuer = value
             End Set
         End Property
@@ -56,7 +56,7 @@ Namespace Security
             Get
                 Return msPassword
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 msPassword = value
             End Set
         End Property
@@ -66,14 +66,14 @@ Namespace Security
             Get
                 Return msUserName
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 msUserName = value
             End Set
         End Property
 
 #End Region
 
-        Public Sub New(ByVal oUserName As String, ByVal oPassword As String)
+        Public Sub New(oUserName As String, oPassword As String)
             Const UserNameParameterName As String = "userName"
 
             If (String.IsNullOrEmpty(oUserName)) Then
@@ -86,7 +86,7 @@ Namespace Security
             Password = oPassword
         End Sub
 
-        Private Function IsIdentityMatch(ByVal oIdentity As IIdentity) As Boolean
+        Private Function IsIdentityMatch(oIdentity As IIdentity) As Boolean
             If ((TypeOf (oIdentity) Is GenericIdentity) _
                 AndAlso (String.Equals(oIdentity.Name, UserName, _
                                               StringComparison.OrdinalIgnoreCase))) Then
@@ -99,7 +99,7 @@ Namespace Security
 
 
         ' Evaluates whether a user meets the requirements for this authorization policy.
-        Public Function Evaluate(ByVal evaluationContext As EvaluationContext, ByRef state As Object) _
+        Public Function Evaluate(evaluationContext As EvaluationContext, ByRef state As Object) _
                                             As Boolean Implements IAuthorizationPolicy.Evaluate
             Const IdentitiesKey As String = "Identities"
 

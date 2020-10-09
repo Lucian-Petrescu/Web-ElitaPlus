@@ -6,48 +6,48 @@ Public Class TransDtlNewClaim
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New TransDtlNewClaimDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class TransDtlNewClaim
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New TransDtlNewClaimDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -90,7 +90,7 @@ Public Class TransDtlNewClaim
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(TransDtlNewClaimDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class TransDtlNewClaim
     End Property
 
     <ValueMandatory("")> _
-    Public Property TransactionLogHeaderId() As Guid
+    Public Property TransactionLogHeaderId As Guid
         Get
             CheckDeleted()
             If row(TransDtlNewClaimDAL.COL_NAME_TRANSACTION_LOG_HEADER_ID) Is DBNull.Value Then
@@ -110,15 +110,15 @@ Public Class TransDtlNewClaim
                 Return New Guid(CType(row(TransDtlNewClaimDAL.COL_NAME_TRANSACTION_LOG_HEADER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(TransDtlNewClaimDAL.COL_NAME_TRANSACTION_LOG_HEADER_ID, Value)
+            SetValue(TransDtlNewClaimDAL.COL_NAME_TRANSACTION_LOG_HEADER_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property ItemNumber() As LongType
+    Public Property ItemNumber As LongType
         Get
             CheckDeleted()
             If row(TransDtlNewClaimDAL.COL_NAME_ITEM_NUMBER) Is DBNull.Value Then
@@ -127,15 +127,15 @@ Public Class TransDtlNewClaim
                 Return New LongType(CType(row(TransDtlNewClaimDAL.COL_NAME_ITEM_NUMBER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(TransDtlNewClaimDAL.COL_NAME_ITEM_NUMBER, Value)
+            SetValue(TransDtlNewClaimDAL.COL_NAME_ITEM_NUMBER, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=40)> _
-    Public Property Response() As String
+    Public Property Response As String
         Get
             CheckDeleted()
             If row(TransDtlNewClaimDAL.COL_NAME_RESPONSE) Is DBNull.Value Then
@@ -144,15 +144,15 @@ Public Class TransDtlNewClaim
                 Return CType(row(TransDtlNewClaimDAL.COL_NAME_RESPONSE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransDtlNewClaimDAL.COL_NAME_RESPONSE, Value)
+            SetValue(TransDtlNewClaimDAL.COL_NAME_RESPONSE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=800)> _
-    Public Property ResponseDetail() As String
+    Public Property ResponseDetail As String
         Get
             CheckDeleted()
             If row(TransDtlNewClaimDAL.COL_NAME_RESPONSE_DETAIL) Is DBNull.Value Then
@@ -161,15 +161,15 @@ Public Class TransDtlNewClaim
                 Return CType(row(TransDtlNewClaimDAL.COL_NAME_RESPONSE_DETAIL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransDtlNewClaimDAL.COL_NAME_RESPONSE_DETAIL, Value)
+            SetValue(TransDtlNewClaimDAL.COL_NAME_RESPONSE_DETAIL, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=40)> _
-    Public Property XmlClaimNumber() As String
+    Public Property XmlClaimNumber As String
         Get
             CheckDeleted()
             If row(TransDtlNewClaimDAL.COL_NAME_XML_CLAIM_NUMBER) Is DBNull.Value Then
@@ -178,15 +178,15 @@ Public Class TransDtlNewClaim
                 Return CType(row(TransDtlNewClaimDAL.COL_NAME_XML_CLAIM_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransDtlNewClaimDAL.COL_NAME_XML_CLAIM_NUMBER, Value)
+            SetValue(TransDtlNewClaimDAL.COL_NAME_XML_CLAIM_NUMBER, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property XmlCreatedDate() As DateType
+    Public Property XmlCreatedDate As DateType
         Get
             CheckDeleted()
             If row(TransDtlNewClaimDAL.COL_NAME_XML_CREATED_DATE) Is DBNull.Value Then
@@ -195,15 +195,15 @@ Public Class TransDtlNewClaim
                 Return New DateType(CType(row(TransDtlNewClaimDAL.COL_NAME_XML_CREATED_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(TransDtlNewClaimDAL.COL_NAME_XML_CREATED_DATE, Value)
+            SetValue(TransDtlNewClaimDAL.COL_NAME_XML_CREATED_DATE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=40)> _
-    Public Property XmlServiceCenterCode() As String
+    Public Property XmlServiceCenterCode As String
         Get
             CheckDeleted()
             If row(TransDtlNewClaimDAL.COL_NAME_XML_SERVICE_CENTER_CODE) Is DBNull.Value Then
@@ -212,15 +212,15 @@ Public Class TransDtlNewClaim
                 Return CType(row(TransDtlNewClaimDAL.COL_NAME_XML_SERVICE_CENTER_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransDtlNewClaimDAL.COL_NAME_XML_SERVICE_CENTER_CODE, Value)
+            SetValue(TransDtlNewClaimDAL.COL_NAME_XML_SERVICE_CENTER_CODE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property XmlCustomerName() As String
+    Public Property XmlCustomerName As String
         Get
             CheckDeleted()
             If row(TransDtlNewClaimDAL.COL_NAME_XML_CUSTOMER_NAME) Is DBNull.Value Then
@@ -229,15 +229,15 @@ Public Class TransDtlNewClaim
                 Return CType(row(TransDtlNewClaimDAL.COL_NAME_XML_CUSTOMER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransDtlNewClaimDAL.COL_NAME_XML_CUSTOMER_NAME, Value)
+            SetValue(TransDtlNewClaimDAL.COL_NAME_XML_CUSTOMER_NAME, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=80)> _
-    Public Property XmlIdentificationNumber() As String
+    Public Property XmlIdentificationNumber As String
         Get
             CheckDeleted()
             If row(TransDtlNewClaimDAL.COL_NAME_XML_IDENTIFICATION_NUMBER) Is DBNull.Value Then
@@ -246,15 +246,15 @@ Public Class TransDtlNewClaim
                 Return CType(row(TransDtlNewClaimDAL.COL_NAME_XML_IDENTIFICATION_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransDtlNewClaimDAL.COL_NAME_XML_IDENTIFICATION_NUMBER, Value)
+            SetValue(TransDtlNewClaimDAL.COL_NAME_XML_IDENTIFICATION_NUMBER, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property XmlAddress1() As String
+    Public Property XmlAddress1 As String
         Get
             CheckDeleted()
             If row(TransDtlNewClaimDAL.COL_NAME_XML_ADDRESS1) Is DBNull.Value Then
@@ -263,15 +263,15 @@ Public Class TransDtlNewClaim
                 Return CType(row(TransDtlNewClaimDAL.COL_NAME_XML_ADDRESS1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransDtlNewClaimDAL.COL_NAME_XML_ADDRESS1, Value)
+            SetValue(TransDtlNewClaimDAL.COL_NAME_XML_ADDRESS1, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property XmlAddress2() As String
+    Public Property XmlAddress2 As String
         Get
             CheckDeleted()
             If row(TransDtlNewClaimDAL.COL_NAME_XML_ADDRESS2) Is DBNull.Value Then
@@ -280,15 +280,15 @@ Public Class TransDtlNewClaim
                 Return CType(row(TransDtlNewClaimDAL.COL_NAME_XML_ADDRESS2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransDtlNewClaimDAL.COL_NAME_XML_ADDRESS2, Value)
+            SetValue(TransDtlNewClaimDAL.COL_NAME_XML_ADDRESS2, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property XmlCity() As String
+    Public Property XmlCity As String
         Get
             CheckDeleted()
             If row(TransDtlNewClaimDAL.COL_NAME_XML_CITY) Is DBNull.Value Then
@@ -297,15 +297,15 @@ Public Class TransDtlNewClaim
                 Return CType(row(TransDtlNewClaimDAL.COL_NAME_XML_CITY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransDtlNewClaimDAL.COL_NAME_XML_CITY, Value)
+            SetValue(TransDtlNewClaimDAL.COL_NAME_XML_CITY, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=120)> _
-    Public Property XmlRegion() As String
+    Public Property XmlRegion As String
         Get
             CheckDeleted()
             If row(TransDtlNewClaimDAL.COL_NAME_XML_REGION) Is DBNull.Value Then
@@ -314,15 +314,15 @@ Public Class TransDtlNewClaim
                 Return CType(row(TransDtlNewClaimDAL.COL_NAME_XML_REGION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransDtlNewClaimDAL.COL_NAME_XML_REGION, Value)
+            SetValue(TransDtlNewClaimDAL.COL_NAME_XML_REGION, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=160)> _
-    Public Property XmlPostalCode() As String
+    Public Property XmlPostalCode As String
         Get
             CheckDeleted()
             If row(TransDtlNewClaimDAL.COL_NAME_XML_POSTAL_CODE) Is DBNull.Value Then
@@ -331,15 +331,15 @@ Public Class TransDtlNewClaim
                 Return CType(row(TransDtlNewClaimDAL.COL_NAME_XML_POSTAL_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransDtlNewClaimDAL.COL_NAME_XML_POSTAL_CODE, Value)
+            SetValue(TransDtlNewClaimDAL.COL_NAME_XML_POSTAL_CODE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=320)> _
-    Public Property XmlHomePhone() As String
+    Public Property XmlHomePhone As String
         Get
             CheckDeleted()
             If row(TransDtlNewClaimDAL.COL_NAME_XML_HOME_PHONE) Is DBNull.Value Then
@@ -348,15 +348,15 @@ Public Class TransDtlNewClaim
                 Return CType(row(TransDtlNewClaimDAL.COL_NAME_XML_HOME_PHONE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransDtlNewClaimDAL.COL_NAME_XML_HOME_PHONE, Value)
+            SetValue(TransDtlNewClaimDAL.COL_NAME_XML_HOME_PHONE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=240)> _
-    Public Property XmlWorkPhone() As String
+    Public Property XmlWorkPhone As String
         Get
             CheckDeleted()
             If row(TransDtlNewClaimDAL.COL_NAME_XML_WORK_PHONE) Is DBNull.Value Then
@@ -365,15 +365,15 @@ Public Class TransDtlNewClaim
                 Return CType(row(TransDtlNewClaimDAL.COL_NAME_XML_WORK_PHONE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransDtlNewClaimDAL.COL_NAME_XML_WORK_PHONE, Value)
+            SetValue(TransDtlNewClaimDAL.COL_NAME_XML_WORK_PHONE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=800)> _
-    Public Property XmlEmail() As String
+    Public Property XmlEmail As String
         Get
             CheckDeleted()
             If row(TransDtlNewClaimDAL.COL_NAME_XML_EMAIL) Is DBNull.Value Then
@@ -382,15 +382,15 @@ Public Class TransDtlNewClaim
                 Return CType(row(TransDtlNewClaimDAL.COL_NAME_XML_EMAIL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransDtlNewClaimDAL.COL_NAME_XML_EMAIL, Value)
+            SetValue(TransDtlNewClaimDAL.COL_NAME_XML_EMAIL, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=800)> _
-    Public Property XmlContactName() As String
+    Public Property XmlContactName As String
         Get
             CheckDeleted()
             If row(TransDtlNewClaimDAL.COL_NAME_XML_CONTACT_NAME) Is DBNull.Value Then
@@ -399,15 +399,15 @@ Public Class TransDtlNewClaim
                 Return CType(row(TransDtlNewClaimDAL.COL_NAME_XML_CONTACT_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransDtlNewClaimDAL.COL_NAME_XML_CONTACT_NAME, Value)
+            SetValue(TransDtlNewClaimDAL.COL_NAME_XML_CONTACT_NAME, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=80)> _
-    Public Property XmlProductCode() As String
+    Public Property XmlProductCode As String
         Get
             CheckDeleted()
             If row(TransDtlNewClaimDAL.COL_NAME_XML_PRODUCT_CODE) Is DBNull.Value Then
@@ -416,15 +416,15 @@ Public Class TransDtlNewClaim
                 Return CType(row(TransDtlNewClaimDAL.COL_NAME_XML_PRODUCT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransDtlNewClaimDAL.COL_NAME_XML_PRODUCT_CODE, Value)
+            SetValue(TransDtlNewClaimDAL.COL_NAME_XML_PRODUCT_CODE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4000)> _
-    Public Property XmlDescription() As String
+    Public Property XmlDescription As String
         Get
             CheckDeleted()
             If row(TransDtlNewClaimDAL.COL_NAME_XML_DESCRIPTION) Is DBNull.Value Then
@@ -433,15 +433,15 @@ Public Class TransDtlNewClaim
                 Return CType(row(TransDtlNewClaimDAL.COL_NAME_XML_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransDtlNewClaimDAL.COL_NAME_XML_DESCRIPTION, Value)
+            SetValue(TransDtlNewClaimDAL.COL_NAME_XML_DESCRIPTION, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property XmlItemDescription() As String
+    Public Property XmlItemDescription As String
         Get
             CheckDeleted()
             If row(TransDtlNewClaimDAL.COL_NAME_XML_ITEM_DESCRIPTION) Is DBNull.Value Then
@@ -450,15 +450,15 @@ Public Class TransDtlNewClaim
                 Return CType(row(TransDtlNewClaimDAL.COL_NAME_XML_ITEM_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransDtlNewClaimDAL.COL_NAME_XML_ITEM_DESCRIPTION, Value)
+            SetValue(TransDtlNewClaimDAL.COL_NAME_XML_ITEM_DESCRIPTION, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=120)> _
-    Public Property XmlSerialNumber() As String
+    Public Property XmlSerialNumber As String
         Get
             CheckDeleted()
             If row(TransDtlNewClaimDAL.COL_NAME_XML_SERIAL_NUMBER) Is DBNull.Value Then
@@ -467,15 +467,15 @@ Public Class TransDtlNewClaim
                 Return CType(row(TransDtlNewClaimDAL.COL_NAME_XML_SERIAL_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransDtlNewClaimDAL.COL_NAME_XML_SERIAL_NUMBER, Value)
+            SetValue(TransDtlNewClaimDAL.COL_NAME_XML_SERIAL_NUMBER, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=320)> _
-    Public Property XmlInvoiceNumber() As String
+    Public Property XmlInvoiceNumber As String
         Get
             CheckDeleted()
             If row(TransDtlNewClaimDAL.COL_NAME_XML_INVOICE_NUMBER) Is DBNull.Value Then
@@ -484,15 +484,15 @@ Public Class TransDtlNewClaim
                 Return CType(row(TransDtlNewClaimDAL.COL_NAME_XML_INVOICE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransDtlNewClaimDAL.COL_NAME_XML_INVOICE_NUMBER, Value)
+            SetValue(TransDtlNewClaimDAL.COL_NAME_XML_INVOICE_NUMBER, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4000)> _
-    Public Property XmlProblemDescription() As String
+    Public Property XmlProblemDescription As String
         Get
             CheckDeleted()
             If row(TransDtlNewClaimDAL.COL_NAME_XML_PROBLEM_DESCRIPTION) Is DBNull.Value Then
@@ -501,15 +501,15 @@ Public Class TransDtlNewClaim
                 Return CType(row(TransDtlNewClaimDAL.COL_NAME_XML_PROBLEM_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransDtlNewClaimDAL.COL_NAME_XML_PROBLEM_DESCRIPTION, Value)
+            SetValue(TransDtlNewClaimDAL.COL_NAME_XML_PROBLEM_DESCRIPTION, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property XmlMethodOfRepair() As Guid
+    Public Property XmlMethodOfRepair As Guid
         Get
             CheckDeleted()
             If row(TransDtlNewClaimDAL.COL_NAME_XML_METHOD_OF_REPAIR) Is DBNull.Value Then
@@ -518,9 +518,9 @@ Public Class TransDtlNewClaim
                 Return New Guid(CType(row(TransDtlNewClaimDAL.COL_NAME_XML_METHOD_OF_REPAIR), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(TransDtlNewClaimDAL.COL_NAME_XML_METHOD_OF_REPAIR, Value)
+            SetValue(TransDtlNewClaimDAL.COL_NAME_XML_METHOD_OF_REPAIR, Value)
         End Set
     End Property
 
@@ -533,15 +533,15 @@ Public Class TransDtlNewClaim
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New TransDtlNewClaimDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException

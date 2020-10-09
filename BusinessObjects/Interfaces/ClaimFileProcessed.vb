@@ -29,42 +29,42 @@ Public Class ClaimFileProcessed
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load(id)
+        Dataset = New Dataset
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load()
+        Dataset = New Dataset
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ClaimFileProcessedDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -72,23 +72,23 @@ Public Class ClaimFileProcessed
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ClaimFileProcessedDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -106,7 +106,7 @@ Public Class ClaimFileProcessed
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid Implements IFileLoadHeaderWork.Id
+    Public ReadOnly Property Id As Guid Implements IFileLoadHeaderWork.Id
         Get
             If Row(ClaimFileProcessedDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -117,7 +117,7 @@ Public Class ClaimFileProcessed
     End Property
 
     <ValueMandatory("")> _
-  Public Property SplitSystemId() As Guid
+  Public Property SplitSystemId As Guid
         Get
             CheckDeleted()
             If row(ClaimfileProcessedDAL.COL_NAME_SPLIT_SYSTEM_ID) Is DBNull.Value Then
@@ -126,14 +126,14 @@ Public Class ClaimFileProcessed
                 Return New Guid(CType(row(ClaimfileProcessedDAL.COL_NAME_SPLIT_SYSTEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimfileProcessedDAL.COL_NAME_SPLIT_SYSTEM_ID, Value)
+            SetValue(ClaimfileProcessedDAL.COL_NAME_SPLIT_SYSTEM_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=15)> _
-    Public Property Filename() As String Implements IFileLoadHeaderWork.FileName
+    Public Property Filename As String Implements IFileLoadHeaderWork.FileName
         Get
             CheckDeleted()
             If Row(ClaimFileProcessedDAL.COL_NAME_FILENAME) Is DBNull.Value Then
@@ -142,13 +142,13 @@ Public Class ClaimFileProcessed
                 Return CType(Row(ClaimFileProcessedDAL.COL_NAME_FILENAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimFileProcessedDAL.COL_NAME_FILENAME, Value)
+            SetValue(ClaimFileProcessedDAL.COL_NAME_FILENAME, Value)
         End Set
     End Property
 
-    Public Property Received() As LongType Implements IFileLoadHeaderWork.Received
+    Public Property Received As LongType Implements IFileLoadHeaderWork.Received
         Get
             CheckDeleted()
             If Row(ClaimFileProcessedDAL.COL_NAME_RECEIVED) Is DBNull.Value Then
@@ -157,13 +157,13 @@ Public Class ClaimFileProcessed
                 Return New LongType(CType(Row(ClaimFileProcessedDAL.COL_NAME_RECEIVED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimFileProcessedDAL.COL_NAME_RECEIVED, Value)
+            SetValue(ClaimFileProcessedDAL.COL_NAME_RECEIVED, Value)
         End Set
     End Property
 
-    Public Property Bypassed() As LongType Implements IFileLoadHeaderWork.Bypassed
+    Public Property Bypassed As LongType Implements IFileLoadHeaderWork.Bypassed
         Get
             CheckDeleted()
             If Row(ClaimFileProcessedDAL.COL_NAME_BYPASSED) Is DBNull.Value Then
@@ -172,14 +172,14 @@ Public Class ClaimFileProcessed
                 Return New LongType(CType(Row(ClaimFileProcessedDAL.COL_NAME_BYPASSED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimFileProcessedDAL.COL_NAME_BYPASSED, Value)
+            SetValue(ClaimFileProcessedDAL.COL_NAME_BYPASSED, Value)
         End Set
     End Property
 
 
-    Public Property Counted() As LongType Implements IFileLoadHeaderWork.Counted
+    Public Property Counted As LongType Implements IFileLoadHeaderWork.Counted
         Get
             CheckDeleted()
             If Row(ClaimFileProcessedDAL.COL_NAME_COUNTED) Is DBNull.Value Then
@@ -188,15 +188,15 @@ Public Class ClaimFileProcessed
                 Return New LongType(CType(Row(ClaimFileProcessedDAL.COL_NAME_COUNTED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimFileProcessedDAL.COL_NAME_COUNTED, Value)
+            SetValue(ClaimFileProcessedDAL.COL_NAME_COUNTED, Value)
         End Set
     End Property
 
 
 
-    Public Property Rejected() As LongType Implements IFileLoadHeaderWork.Rejected
+    Public Property Rejected As LongType Implements IFileLoadHeaderWork.Rejected
         Get
             CheckDeleted()
             If Row(ClaimFileProcessedDAL.COL_NAME_REJECTED) Is DBNull.Value Then
@@ -205,15 +205,15 @@ Public Class ClaimFileProcessed
                 Return New LongType(CType(Row(ClaimFileProcessedDAL.COL_NAME_REJECTED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimFileProcessedDAL.COL_NAME_REJECTED, Value)
+            SetValue(ClaimFileProcessedDAL.COL_NAME_REJECTED, Value)
         End Set
     End Property
 
 
 
-    Public Property Validated() As LongType Implements IFileLoadHeaderWork.Validated
+    Public Property Validated As LongType Implements IFileLoadHeaderWork.Validated
         Get
             CheckDeleted()
             If Row(ClaimFileProcessedDAL.COL_NAME_VALIDATED) Is DBNull.Value Then
@@ -222,15 +222,15 @@ Public Class ClaimFileProcessed
                 Return New LongType(CType(Row(ClaimFileProcessedDAL.COL_NAME_VALIDATED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimFileProcessedDAL.COL_NAME_VALIDATED, Value)
+            SetValue(ClaimFileProcessedDAL.COL_NAME_VALIDATED, Value)
         End Set
     End Property
 
 
 
-    Public Property Loaded() As LongType Implements IFileLoadHeaderWork.Loaded
+    Public Property Loaded As LongType Implements IFileLoadHeaderWork.Loaded
         Get
             CheckDeleted()
             If Row(ClaimFileProcessedDAL.COL_NAME_LOADED) Is DBNull.Value Then
@@ -239,13 +239,13 @@ Public Class ClaimFileProcessed
                 Return New LongType(CType(Row(ClaimFileProcessedDAL.COL_NAME_LOADED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimFileProcessedDAL.COL_NAME_LOADED, Value)
+            SetValue(ClaimFileProcessedDAL.COL_NAME_LOADED, Value)
         End Set
     End Property
 
-    Public Property ProcessedAmount() As DecimalType
+    Public Property ProcessedAmount As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimFileProcessedDAL.COL_NAME_PROCESSED_AMOUNT) Is DBNull.Value Then
@@ -254,15 +254,15 @@ Public Class ClaimFileProcessed
                 Return New DecimalType(CType(Row(ClaimFileProcessedDAL.COL_NAME_PROCESSED_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimFileProcessedDAL.COL_NAME_PROCESSED_AMOUNT, Value)
+            SetValue(ClaimFileProcessedDAL.COL_NAME_PROCESSED_AMOUNT, Value)
         End Set
     End Property
 
     Public ReadOnly Property FamilyDataSet As DataSet Implements IFileLoadHeaderWork.FamilyDataSet
         Get
-            Return Me.Dataset
+            Return Dataset
         End Get
     End Property
 
@@ -283,10 +283,10 @@ Public Class ClaimFileProcessed
     '    End Get
     'End Property
 
-    Public ReadOnly Property ClaimNameLoad() As String
+    Public ReadOnly Property ClaimNameLoad As String
         Get
             If SplitSystemId.Equals(Guid.Empty) Then Return Nothing
-            Dim dv As DataView = LookupListNew.DataView(LookupListNew.LK_SPLIT_SYSTEM)
+            Dim dv As DataView = LookupListNew.DataView(LookupListCache.LK_SPLIT_SYSTEM)
             Return LookupListNew.GetDescriptionFromId(dv, SplitSystemId)
         End Get
     End Property
@@ -299,15 +299,15 @@ Public Class ClaimFileProcessed
     Public Overrides Sub Save() Implements IFileLoadHeaderWork.Save
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ClaimFileProcessedDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -318,7 +318,7 @@ Public Class ClaimFileProcessed
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function LoadList(ByVal oData As Object) As DataView
+    Public Shared Function LoadList(oData As Object) As DataView
         Try
             Dim oClaimFileProcessedData As ClaimFileProcessedData = CType(oData, ClaimFileProcessedData)
             Dim dal As New ClaimFileProcessedDAL
@@ -339,7 +339,7 @@ Public Class ClaimFileProcessed
 
     End Function
 
-    Public Shared Function LoadListForADealer(ByVal oData As Object, ByVal dealerCode As String) As DataView
+    Public Shared Function LoadListForADealer(oData As Object, dealerCode As String) As DataView
         Try
             Dim oClaimFileProcessedData As ClaimFileProcessedData = CType(oData, ClaimFileProcessedData)
             Dim dal As New ClaimFileProcessedDAL
@@ -367,8 +367,8 @@ Public Class ClaimFileProcessed
         Public dealerName As String
     End Structure
 
-    Public Shared Function GetDealerLayout(ByVal dealerID As Guid, _
-    ByVal oInterfaceTypeCode As ClaimFileProcessedData.InterfaceTypeCode) As DealerInfo
+    Public Shared Function GetDealerLayout(dealerID As Guid, _
+    oInterfaceTypeCode As ClaimFileProcessedData.InterfaceTypeCode) As DealerInfo
         Dim retDealerInfo As DealerInfo
         Dim sLayout As String
         Dim oContract As Contract
@@ -410,7 +410,7 @@ Public Class ClaimFileProcessed
 
 #Region "StoreProcedures Control"
 
-    Public Shared Sub ValidateFile(ByVal oData As Object)
+    Public Shared Sub ValidateFile(oData As Object)
         Try
             Dim oClaimFileProcessedData As ClaimFileProcessedData = CType(oData, ClaimFileProcessedData)
             Dim dal As New ClaimFileProcessedDAL
@@ -424,7 +424,7 @@ Public Class ClaimFileProcessed
         End Try
     End Sub
 
-    Public Shared Sub ProcessFileRecords(ByVal oData As Object)
+    Public Shared Sub ProcessFileRecords(oData As Object)
         Try
             Dim oClaimFileProcessedData As ClaimFileProcessedData = CType(oData, ClaimFileProcessedData)
             Dim dal As New ClaimFileProcessedDAL
@@ -437,7 +437,7 @@ Public Class ClaimFileProcessed
         End Try
     End Sub
 
-    Public Shared Sub DeleteFile(ByVal oData As Object)
+    Public Shared Sub DeleteFile(oData As Object)
         Try
             Dim oClaimFileProcessedData As ClaimFileProcessedData = CType(oData, ClaimFileProcessedData)
             Dim dal As New ClaimFileProcessedDAL
@@ -453,7 +453,7 @@ Public Class ClaimFileProcessed
 #End Region
 
 #Region "Validation"
-    Public Shared Function IsFileProcessed(ByVal oData As Object) As Boolean
+    Public Shared Function IsFileProcessed(oData As Object) As Boolean
         Try
             Dim oClaimFileProcessedData As ClaimFileProcessedData = CType(oData, ClaimFileProcessedData)
             Dim dal As New ClaimFileProcessedDAL
@@ -465,7 +465,7 @@ Public Class ClaimFileProcessed
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Sub ValidateFileName(ByVal fileLength As Integer)
+    Public Shared Sub ValidateFileName(fileLength As Integer)
         If fileLength = 0 Then
             Dim errors() As ValidationError = {New ValidationError(DEALERLOADFORM_FORM001, GetType(ClaimFileProcessed), Nothing, Nothing, Nothing)}
             Throw New BOValidationException(errors, GetType(ClaimFileProcessed).FullName)
@@ -476,7 +476,7 @@ Public Class ClaimFileProcessed
 #End Region
 
 #Region "Invoice Item Recon Work"
-    Public ReadOnly Property InvoiceReconWrkChildren() As InvoiceReconWrkList
+    Public ReadOnly Property InvoiceReconWrkChildren As InvoiceReconWrkList
         Get
             Return New InvoiceReconWrkList(Me)
         End Get

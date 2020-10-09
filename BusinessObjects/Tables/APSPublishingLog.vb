@@ -6,48 +6,48 @@ Public Class ApsPublishingLog
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
     
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()             
         Try
             Dim dal As New ApsPublishingLogDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize() 
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class ApsPublishingLog
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)               
+    Protected Sub Load(id As Guid)               
         Try
             Dim dal As New ApsPublishingLogDAL            
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -90,7 +90,7 @@ Public Class ApsPublishingLog
 #Region "Properties"
     
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ApsPublishingLogDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class ApsPublishingLog
     End Property
 	
     <ValueMandatory(""),ValidStringLength("", Max:=1200)> _
-    Public Property Header() As String
+    Public Property Header As String
         Get
             CheckDeleted()
             If row(ApsPublishingLogDAL.COL_NAME_HEADER) Is DBNull.Value Then
@@ -110,15 +110,15 @@ Public Class ApsPublishingLog
                 Return CType(row(ApsPublishingLogDAL.COL_NAME_HEADER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ApsPublishingLogDAL.COL_NAME_HEADER, Value)
+            SetValue(ApsPublishingLogDAL.COL_NAME_HEADER, Value)
         End Set
     End Property
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=200)> _
-    Public Property Type() As String
+    Public Property Type As String
         Get
             CheckDeleted()
             If row(ApsPublishingLogDAL.COL_NAME_TYPE) Is DBNull.Value Then
@@ -127,15 +127,15 @@ Public Class ApsPublishingLog
                 Return CType(row(ApsPublishingLogDAL.COL_NAME_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ApsPublishingLogDAL.COL_NAME_TYPE, Value)
+            SetValue(ApsPublishingLogDAL.COL_NAME_TYPE, Value)
         End Set
     End Property
 	
 	
     <ValidStringLength("", Max:=200)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If row(ApsPublishingLogDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -144,15 +144,15 @@ Public Class ApsPublishingLog
                 Return CType(row(ApsPublishingLogDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ApsPublishingLogDAL.COL_NAME_CODE, Value)
+            SetValue(ApsPublishingLogDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=800)> _
-    Public Property MachineName() As String
+    Public Property MachineName As String
         Get
             CheckDeleted()
             If row(ApsPublishingLogDAL.COL_NAME_MACHINE_NAME) Is DBNull.Value Then
@@ -161,15 +161,15 @@ Public Class ApsPublishingLog
                 Return CType(row(ApsPublishingLogDAL.COL_NAME_MACHINE_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ApsPublishingLogDAL.COL_NAME_MACHINE_NAME, Value)
+            SetValue(ApsPublishingLogDAL.COL_NAME_MACHINE_NAME, Value)
         End Set
     End Property
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=800)> _
-    Public Property ApplicationName() As String
+    Public Property ApplicationName As String
         Get
             CheckDeleted()
             If row(ApsPublishingLogDAL.COL_NAME_APPLICATION_NAME) Is DBNull.Value Then
@@ -178,15 +178,15 @@ Public Class ApsPublishingLog
                 Return CType(row(ApsPublishingLogDAL.COL_NAME_APPLICATION_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ApsPublishingLogDAL.COL_NAME_APPLICATION_NAME, Value)
+            SetValue(ApsPublishingLogDAL.COL_NAME_APPLICATION_NAME, Value)
         End Set
     End Property
 	
 	
     <ValidStringLength("", Max:=800)> _
-    Public Property UserName() As String
+    Public Property UserName As String
         Get
             CheckDeleted()
             If row(ApsPublishingLogDAL.COL_NAME_USER_NAME) Is DBNull.Value Then
@@ -195,15 +195,15 @@ Public Class ApsPublishingLog
                 Return CType(row(ApsPublishingLogDAL.COL_NAME_USER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ApsPublishingLogDAL.COL_NAME_USER_NAME, Value)
+            SetValue(ApsPublishingLogDAL.COL_NAME_USER_NAME, Value)
         End Set
     End Property
 	
 	
     <ValidStringLength("", Max:=4000)> _
-    Public Property ExtendedContent() As String
+    Public Property ExtendedContent As String
         Get
             CheckDeleted()
             If row(ApsPublishingLogDAL.COL_NAME_EXTENDED_CONTENT) Is DBNull.Value Then
@@ -212,15 +212,15 @@ Public Class ApsPublishingLog
                 Return CType(row(ApsPublishingLogDAL.COL_NAME_EXTENDED_CONTENT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ApsPublishingLogDAL.COL_NAME_EXTENDED_CONTENT, Value)
+            SetValue(ApsPublishingLogDAL.COL_NAME_EXTENDED_CONTENT, Value)
         End Set
     End Property
 	
 	
     <ValueMandatory(""), NotMoreThan10DaysGenerationDate("")> _
-    Public Property GenerationDateTime() As DateType
+    Public Property GenerationDateTime As DateType
         Get
             CheckDeleted()
             If Row(ApsPublishingLogDAL.COL_NAME_GENERATION_DATE_TIME) Is DBNull.Value Then
@@ -229,15 +229,15 @@ Public Class ApsPublishingLog
                 Return New DateType(CType(Row(ApsPublishingLogDAL.COL_NAME_GENERATION_DATE_TIME), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(ApsPublishingLogDAL.COL_NAME_GENERATION_DATE_TIME, Value)
+            SetValue(ApsPublishingLogDAL.COL_NAME_GENERATION_DATE_TIME, Value)
         End Set
     End Property
 	
 	
     <ValueMandatory("")> _
-    Public Property RecordedDateTime() As DateType
+    Public Property RecordedDateTime As DateType
         Get
             CheckDeleted()
             If row(ApsPublishingLogDAL.COL_NAME_RECORDED_DATE_TIME) Is DBNull.Value Then
@@ -246,15 +246,15 @@ Public Class ApsPublishingLog
                 Return New DateType(CType(row(ApsPublishingLogDAL.COL_NAME_RECORDED_DATE_TIME), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(ApsPublishingLogDAL.COL_NAME_RECORDED_DATE_TIME, Value)
+            SetValue(ApsPublishingLogDAL.COL_NAME_RECORDED_DATE_TIME, Value)
         End Set
     End Property
 	
 	
     <ValidStringLength("", Max:=4000)> _
-    Public Property ExtendedContent2() As String
+    Public Property ExtendedContent2 As String
         Get
             CheckDeleted()
             If row(ApsPublishingLogDAL.COL_NAME_EXTENDED_CONTENT2) Is DBNull.Value Then
@@ -263,9 +263,9 @@ Public Class ApsPublishingLog
                 Return CType(row(ApsPublishingLogDAL.COL_NAME_EXTENDED_CONTENT2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ApsPublishingLogDAL.COL_NAME_EXTENDED_CONTENT2, Value)
+            SetValue(ApsPublishingLogDAL.COL_NAME_EXTENDED_CONTENT2, Value)
         End Set
     End Property
 	
@@ -278,15 +278,15 @@ Public Class ApsPublishingLog
     Public Overrides Sub Save()         
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ApsPublishingLogDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -294,13 +294,13 @@ Public Class ApsPublishingLog
         End Try
     End Sub
 
-    Public Shared Function GetAPSPublishingLogsList(ByVal Header As String, _
-                                  ByVal Code As String, _
-                                  ByVal MachineName As String, _
-                                  ByVal UserName As String, _
-                                  ByVal TypeName As String, _
-                                  ByVal TableName As String, _
-                                  ByVal generationDate As SearchCriteriaStructType(Of Date)) As APSOracleLogsSearchDV
+    Public Shared Function GetAPSPublishingLogsList(Header As String, _
+                                  Code As String, _
+                                  MachineName As String, _
+                                  UserName As String, _
+                                  TypeName As String, _
+                                  TableName As String, _
+                                  generationDate As SearchCriteriaStructType(Of Date)) As APSOracleLogsSearchDV
 
         Try
 
@@ -318,11 +318,11 @@ Public Class ApsPublishingLog
     Public NotInheritable Class NotMoreThan10DaysGenerationDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_GENERATION_DATE_NOT_BEYOND_10_DAYS)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim oApsPublishing As ApsPublishingLog = CType(objectToValidate, ApsPublishingLog)
             Dim ts As TimeSpan = (DateTime.Now - oApsPublishing.GenerationDateTime)
             If ts.Days > 10 Then
@@ -354,56 +354,56 @@ Public Class ApsPublishingLog
         Public Const COL_NAME_EXTENDED_CONTENT2 As String = ApsPublishingLogDAL.COL_NAME_EXTENDED_CONTENT2
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property Header(ByVal row) As Guid
+        Public Shared ReadOnly Property Header(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_HEADER), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Type(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Type(row As DataRow) As String
             Get
                 Return row(COL_NAME_TYPE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property GenerationDateTime(ByVal row As DataRow) As Date
+        Public Shared ReadOnly Property GenerationDateTime(row As DataRow) As Date
             Get
                 Return row(COL_NAME_GENERATION_DATE_TIIME).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property MachineName(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property MachineName(row As DataRow) As String
             Get
                 Return row(COL_NAME_MACHINE_NAME).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property UserName(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property UserName(row As DataRow) As String
             Get
                 Return row(COL_NAME_USER_NAME).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Code(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Code(row As DataRow) As String
             Get
                 Return row(COL_NAME_CODE).ToString
             End Get
         End Property
-        Public Shared ReadOnly Property ApplicationName(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property ApplicationName(row As DataRow) As String
             Get
                 Return row(COL_NAME_APPLICATION_NAME).ToString
             End Get
         End Property
-        Public Shared ReadOnly Property ExendedContent(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property ExendedContent(row As DataRow) As String
             Get
                 Return row(COL_NAME_EXTENDED_CONTENT).ToString
             End Get
         End Property
-        Public Shared ReadOnly Property ExendedContent2(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property ExendedContent2(row As DataRow) As String
             Get
                 Return row(COL_NAME_EXTENDED_CONTENT2).ToString
             End Get

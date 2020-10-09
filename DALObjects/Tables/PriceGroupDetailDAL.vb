@@ -43,48 +43,48 @@ Public Class PriceGroupDetailDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("price_group_detail_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal familyDs As DataSet, ByVal priceGroupId As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Dim priceGroupParam As New DBHelper.DBHelperParameter(Me.COL_NAME_PRICE_GROUP_ID, priceGroupId)
-        DBHelper.Fetch(familyDs, selectStmt, Me.TABLE_NAME, New DBHelper.DBHelperParameter() {priceGroupParam})
+    Public Function LoadList(familyDs As DataSet, priceGroupId As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Dim priceGroupParam As New DBHelper.DBHelperParameter(COL_NAME_PRICE_GROUP_ID, priceGroupId)
+        DBHelper.Fetch(familyDs, selectStmt, TABLE_NAME, New DBHelper.DBHelperParameter() {priceGroupParam})
     End Function
 
-    Public Function LoadList(ByVal familyDs As DataSet, ByVal priceGroupId As Guid, ByVal riskTypeId As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_RISKTYPE_LIST")
+    Public Function LoadList(familyDs As DataSet, priceGroupId As Guid, riskTypeId As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_RISKTYPE_LIST")
         Dim parameters(TOTAL_RISK_PARAM) As DBHelper.DBHelperParameter
 
         parameters(PRICE_GROUP_ID) = New DBHelper.DBHelperParameter(COL_NAME_PRICE_GROUP_ID, priceGroupId.ToByteArray)
         parameters(RISKTYPE_ID) = New DBHelper.DBHelperParameter(COL_NAME_RISK_TYPE_ID, riskTypeId.ToByteArray)
 
-        DBHelper.Fetch(familyDs, selectStmt, Me.TABLE_NAME, parameters)
+        DBHelper.Fetch(familyDs, selectStmt, TABLE_NAME, parameters)
     End Function
 
-    Public Function LoadList(ByVal familyDs As DataSet, ByVal priceGroupId As Guid, ByVal companygroupid As Guid, ByVal flag As Boolean)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_RISKTYPE_COMPANYGROUP_LIST")
+    Public Function LoadList(familyDs As DataSet, priceGroupId As Guid, companygroupid As Guid, flag As Boolean)
+        Dim selectStmt As String = Config("/SQL/LOAD_RISKTYPE_COMPANYGROUP_LIST")
         Dim parameters(TOTAL_RISK_PARAM) As DBHelper.DBHelperParameter
 
         parameters(PRICE_GROUP_ID) = New DBHelper.DBHelperParameter(COL_NAME_PRICE_GROUP_ID, priceGroupId.ToByteArray)
         parameters(COMPANYGROUP_ID) = New DBHelper.DBHelperParameter(COL_NAME_COMPANY_GROUP_ID, companygroupid.ToByteArray)
 
-        DBHelper.Fetch(familyDs, selectStmt, Me.TABLE_NAME, parameters)
+        DBHelper.Fetch(familyDs, selectStmt, TABLE_NAME, parameters)
     End Function
 
-    Public Function GetList(ByVal priceGroupId As Guid, ByVal riskTypeId As Guid, ByVal effectiveDate As Date) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_PRICEBAND_LIST")
+    Public Function GetList(priceGroupId As Guid, riskTypeId As Guid, effectiveDate As Date) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_PRICEBAND_LIST")
         Dim ds As New DataSet
         Dim parameters() As DBHelper.DBHelperParameter
         parameters = New DBHelper.DBHelperParameter() { _
@@ -92,14 +92,14 @@ Public Class PriceGroupDetailDAL
                               New DBHelper.DBHelperParameter(COL_NAME_RISK_TYPE_ID, riskTypeId.ToByteArray), _
                               New DBHelper.DBHelperParameter(COL_NAME_EFFECTIVE_DATE, effectiveDate)}
 
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Function
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

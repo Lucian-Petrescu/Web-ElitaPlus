@@ -6,48 +6,48 @@ Public Class DictItemTranslation
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New DictItemTranslationDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class DictItemTranslation
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New DictItemTranslationDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -90,7 +90,7 @@ Public Class DictItemTranslation
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(DictItemTranslationDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class DictItemTranslation
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1020)> _
-    Public Property Translation() As String
+    Public Property Translation As String
         Get
             CheckDeleted()
             If row(DictItemTranslationDAL.COL_NAME_TRANSLATION) Is DBNull.Value Then
@@ -110,15 +110,15 @@ Public Class DictItemTranslation
                 Return CType(row(DictItemTranslationDAL.COL_NAME_TRANSLATION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DictItemTranslationDAL.COL_NAME_TRANSLATION, Value)
+            SetValue(DictItemTranslationDAL.COL_NAME_TRANSLATION, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property LanguageId() As Guid
+    Public Property LanguageId As Guid
         Get
             CheckDeleted()
             If row(DictItemTranslationDAL.COL_NAME_LANGUAGE_ID) Is DBNull.Value Then
@@ -127,15 +127,15 @@ Public Class DictItemTranslation
                 Return New Guid(CType(row(DictItemTranslationDAL.COL_NAME_LANGUAGE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(DictItemTranslationDAL.COL_NAME_LANGUAGE_ID, Value)
+            SetValue(DictItemTranslationDAL.COL_NAME_LANGUAGE_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property DictItemId() As Guid
+    Public Property DictItemId As Guid
         Get
             CheckDeleted()
             If row(DictItemTranslationDAL.COL_NAME_DICT_ITEM_ID) Is DBNull.Value Then
@@ -144,9 +144,9 @@ Public Class DictItemTranslation
                 Return New Guid(CType(row(DictItemTranslationDAL.COL_NAME_DICT_ITEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(DictItemTranslationDAL.COL_NAME_DICT_ITEM_ID, Value)
+            SetValue(DictItemTranslationDAL.COL_NAME_DICT_ITEM_ID, Value)
         End Set
     End Property
 
@@ -160,19 +160,19 @@ Public Class DictItemTranslation
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsFamilyDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsFamilyDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New DictItemTranslationDAL
-                dal.UpdateFamily(Me.Dataset) 'New Code Added Manually
+                dal.UpdateFamily(Dataset) 'New Code Added Manually
 
                 'ALR- Update Translations in Cache is needed
-                TranslationBase.UpdateTranslationInCache(Me.Dataset, Me.LanguageId.ToString)
+                TranslationBase.UpdateTranslationInCache(Dataset, LanguageId.ToString)
 
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                     'Me._address = Nothing
                 End If
             End If
@@ -188,14 +188,14 @@ Public Class DictItemTranslation
         'End If
         'Dim dal As New DictItemTranslationDAL
         'dal.Load(ds, Id)
-        Return Me.Dataset
+        Return Dataset
     End Function
 
 #End Region
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function GetTranslationList(ByVal Language_Id As Guid, ByVal SearchMask As String, Optional ByVal OrderByTrans As Boolean = False) As TranslationSearchDV
+    Public Shared Function GetTranslationList(Language_Id As Guid, SearchMask As String, Optional ByVal OrderByTrans As Boolean = False) As TranslationSearchDV
         Try
             Dim dal As New DictItemTranslationDAL
             Dim ds As DataView
@@ -210,7 +210,7 @@ Public Class DictItemTranslation
         End Try
     End Function
 
-    Public Shared Function GetTranslationsList(ByVal dictItemId As Guid) As TranslationSearchDV
+    Public Shared Function GetTranslationsList(dictItemId As Guid) As TranslationSearchDV
         Try
             Dim dal As New DictItemTranslationDAL
             'Dim ds As DataSet
@@ -254,7 +254,7 @@ Public Class DictItemTranslation
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
     End Class

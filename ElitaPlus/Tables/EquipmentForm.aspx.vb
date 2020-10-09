@@ -16,7 +16,7 @@ Public Class EquipmentForm
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -71,9 +71,9 @@ Public Class EquipmentForm
         Public LastOperation As DetailPageCommand
         Public EditingBo As Equipment
         Public HasDataChanged As Boolean
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As Equipment, ByVal hasDataChanged As Boolean)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(LastOp As DetailPageCommand, curEditingBo As Equipment, hasDataChanged As Boolean)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
             Me.HasDataChanged = hasDataChanged
         End Sub
     End Class
@@ -126,69 +126,69 @@ Public Class EquipmentForm
         End Get
     End Property
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 'Get the id from the parent
-                Me.State.MyBO = New Equipment(CType(Me.CallingParameters, Guid))
+                State.MyBO = New Equipment(CType(CallingParameters, Guid))
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
 #End Region
 
 #Region "Page Events"
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Try
-            Me.MasterPage.MessageController.Clear_Hide()
+            MasterPage.MessageController.Clear_Hide()
 
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
                 UpdateBreadCrum()
                 'Date Calendars
                 '  Me.MenuEnabled = False
-                Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, True)
-                Me.AddControlMsg(Me.btnCommentDeleteChild_Write, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, True)
+                AddControlMsg(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, True)
+                AddControlMsg(btnCommentDeleteChild_Write, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, True)
                 'Me.AddControlMsg(Me.btnImageDeleteChild_Write, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, True)
-                If Me.State.MyBO Is Nothing Then
-                    Me.State.MyBO = New Equipment
+                If State.MyBO Is Nothing Then
+                    State.MyBO = New Equipment
                 End If
                 PopulateDropdowns()
                 'Def-27047:Added folloiwng code to cast Equipment BO to type IAttributable.
-                AttributeValues.ParentBusinessObject = CType(Me.State.MyBO, IAttributable)
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
+                AttributeValues.ParentBusinessObject = CType(State.MyBO, IAttributable)
+                PopulateFormFromBOs()
+                EnableDisableFields()
                 AttributeValues.TranslateHeaders()
                 ShowUserControl_on_RelatedEquipment(False)
                 UserControlSearchAvailableEquipment.ShowCancelButton = True
             Else
                 'Def-27047:Added folloiwng code to cast Equipment BO to type IAttributable.
-                AttributeValues.ParentBusinessObject = CType(Me.State.MyBO, IAttributable)
+                AttributeValues.ParentBusinessObject = CType(State.MyBO, IAttributable)
                 SelectedTabIndex = hdnSelectedTab.Value
             End If
             BindBoPropertiesToLabels()
             BindCommentsDetailBoPropertiesToLabels()
             BindImagesDetailBoPropertiesToLabels()
             CheckIfComingFromSaveConfirm()
-            If Not Me.IsPostBack Then
-                Me.AddLabelDecorations(Me.State.MyBO)
+            If Not IsPostBack Then
+                AddLabelDecorations(State.MyBO)
             End If
 
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 #End Region
 
     Private Sub UpdateBreadCrum()
-        If (Not Me.State Is Nothing) Then
-            If (Not Me.State Is Nothing) Then
-                Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+        If (State IsNot Nothing) Then
+            If (State IsNot Nothing) Then
+                MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
             End If
         End If
     End Sub
@@ -196,13 +196,13 @@ Public Class EquipmentForm
 #Region "Controlling Logic"
 
     Protected Sub EnableDisableFields()
-        If Me.State.IsCommentEditing Then
+        If State.IsCommentEditing Then
             ControlMgr.SetVisibleControl(Me, PanelCommentEditDetail, True)
             EnableDisableParentControls(False)
-        ElseIf Me.State.IsImageEditing Then
+        ElseIf State.IsImageEditing Then
             ControlMgr.SetVisibleControl(Me, PanelImageEditDetail, True)
             EnableDisableParentControls(False)
-        ElseIf Me.State.IsRelatedEquipmentEditing Then
+        ElseIf State.IsRelatedEquipmentEditing Then
             ControlMgr.SetVisibleControl(Me, RelatedEquipmentScroller, True)
             EnableDisableRelatedEquipmentControl(True)
             EnableDisableParentControls(False)
@@ -219,7 +219,7 @@ Public Class EquipmentForm
         ControlMgr.SetEnableControl(Me, btnNew_WRITE, True)
         ControlMgr.SetEnableControl(Me, btnCopy_WRITE, True)
         'Now disable depebding on the object state
-        If Me.State.MyBO.IsNew Then
+        If State.MyBO.IsNew Then
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, False)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, False)
@@ -228,7 +228,7 @@ Public Class EquipmentForm
         'WRITE YOU OWN CODE HERE
     End Sub
 
-    Sub EnableDisableParentControls(ByVal enableToggle As Boolean)
+    Sub EnableDisableParentControls(enableToggle As Boolean)
         ControlMgr.SetEnableControl(Me, btnBack, enableToggle)
         ControlMgr.SetEnableControl(Me, btnCopy_WRITE, enableToggle)
         ControlMgr.SetEnableControl(Me, btnDelete_WRITE, enableToggle)
@@ -244,12 +244,12 @@ Public Class EquipmentForm
                 isMasterEquipment = False
             End If
         End If
-        ControlMgr.SetEnableControl(Me, moManufacturerDrop, enableToggle And Me.State.MyBO.IsNew)
-        ControlMgr.SetEnableControl(Me, moIsMasterModelDrop, enableToggle And Me.State.MyBO.IsNew)
-        ControlMgr.SetEnableControl(Me, moModelText, enableToggle And ((Not isMasterEquipment And Me.State.MyBO.IsNew) Or (IsMasterEquipment)))
-        ControlMgr.SetEnableControl(Me, moDescriptionText, enableToggle And ((Me.State.MyBO.IsNew And isMasterEquipment) Or (Not isMasterEquipment)))
-        ControlMgr.SetEnableControl(Me, moMasterEquipmentDrop, enableToggle And Not isMasterEquipment)
-        ControlMgr.SetEnableControl(Me, moManufacturerWarrentyText, enableToggle And Not isMasterEquipment)
+        ControlMgr.SetEnableControl(Me, moManufacturerDrop, enableToggle AndAlso State.MyBO.IsNew)
+        ControlMgr.SetEnableControl(Me, moIsMasterModelDrop, enableToggle AndAlso State.MyBO.IsNew)
+        ControlMgr.SetEnableControl(Me, moModelText, enableToggle AndAlso ((Not isMasterEquipment AndAlso State.MyBO.IsNew) OrElse (IsMasterEquipment)))
+        ControlMgr.SetEnableControl(Me, moDescriptionText, enableToggle AndAlso ((State.MyBO.IsNew AndAlso isMasterEquipment) OrElse (Not isMasterEquipment)))
+        ControlMgr.SetEnableControl(Me, moMasterEquipmentDrop, enableToggle AndAlso Not isMasterEquipment)
+        ControlMgr.SetEnableControl(Me, moManufacturerWarrentyText, enableToggle AndAlso Not isMasterEquipment)
         ControlMgr.SetEnableControl(Me, moEquipmentClassDrop, enableToggle)
         ControlMgr.SetEnableControl(Me, moEquipmentTypeDrop, enableToggle)
         ControlMgr.SetEnableControl(Me, moRepairableDrop, enableToggle)
@@ -265,28 +265,28 @@ Public Class EquipmentForm
 
     End Sub
 
-    Sub EnableDisableRelatedEquipmentControl(ByVal enableToggle As Boolean)
+    Sub EnableDisableRelatedEquipmentControl(enableToggle As Boolean)
         ControlMgr.SetEnableControl(Me, btnRelatedEquipmentCancelChild_Write, enableToggle)
         ControlMgr.SetEnableControl(Me, btnRelatedEquipmentOkChild_Write, enableToggle)
         ControlMgr.SetEnableControl(Me, btnRelatedEquipmentSelectChild_Write, Not enableToggle)
     End Sub
 
     Protected Sub BindBoPropertiesToLabels()
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "ManufacturerId", Me.moManufacturerLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "IsMasterEquipment", Me.moIsMasterModelLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Model", Me.moModelLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Description", Me.moDescriptionLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "MasterEquipmentId", Me.moMasterEquipmentlLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "ManufacturerWarrenty", Me.moManufacturerWarrentyLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "EquipmentClassId", Me.moEquipmentClassLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "EquipmentTypeId", Me.moEquipmentTypeLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "RepairableId", Me.moRepairableLabel)
+        BindBOPropertyToLabel(State.MyBO, "ManufacturerId", moManufacturerLabel)
+        BindBOPropertyToLabel(State.MyBO, "IsMasterEquipment", moIsMasterModelLabel)
+        BindBOPropertyToLabel(State.MyBO, "Model", moModelLabel)
+        BindBOPropertyToLabel(State.MyBO, "Description", moDescriptionLabel)
+        BindBOPropertyToLabel(State.MyBO, "MasterEquipmentId", moMasterEquipmentlLabel)
+        BindBOPropertyToLabel(State.MyBO, "ManufacturerWarrenty", moManufacturerWarrentyLabel)
+        BindBOPropertyToLabel(State.MyBO, "EquipmentClassId", moEquipmentClassLabel)
+        BindBOPropertyToLabel(State.MyBO, "EquipmentTypeId", moEquipmentTypeLabel)
+        BindBOPropertyToLabel(State.MyBO, "RepairableId", moRepairableLabel)
 
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Color", Me.lblColor)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Memory", Me.lblMemory)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Carrier", Me.lblCarrier)
+        BindBOPropertyToLabel(State.MyBO, "Color", lblColor)
+        BindBOPropertyToLabel(State.MyBO, "Memory", lblMemory)
+        BindBOPropertyToLabel(State.MyBO, "Carrier", lblCarrier)
 
-        Me.ClearGridHeadersAndLabelsErrSign()
+        ClearGridHeadersAndLabelsErrSign()
     End Sub
 
     Protected Sub PopulateDropdowns()
@@ -368,30 +368,30 @@ Public Class EquipmentForm
     End Sub
 
     Protected Sub PopulateFormFromBOs()
-        With Me.State.MyBO
+        With State.MyBO
             PopulateCommentDetailGrid()
             PopulateImageDetailGrid()
             ' Populate Attributes
             AttributeValues.DataBind()
 
             'Me.SetGridItemStyleColor(GVRelatedEquipmentDetail)
-            Me.TranslateGridHeader(Me.GVRelatedEquipmentDetail)
+            TranslateGridHeader(GVRelatedEquipmentDetail)
             PopulateRelatedEquipmentDetailGrid()
 
-            Me.PopulateControlFromBOProperty(Me.moManufacturerDrop, .ManufacturerId)
+            PopulateControlFromBOProperty(moManufacturerDrop, .ManufacturerId)
             PopulateMasterModelDropDown()
-            Me.PopulateControlFromBOProperty(Me.moIsMasterModelDrop, .IsMasterEquipment)
-            Me.PopulateControlFromBOProperty(Me.moModelText, .Model)
-            Me.PopulateControlFromBOProperty(Me.moDescriptionText, .Description)
-            Me.PopulateControlFromBOProperty(Me.moMasterEquipmentDrop, .MasterEquipmentId)
-            Me.PopulateControlFromBOProperty(Me.moManufacturerWarrentyText, .ManufacturerWarrenty)
-            Me.PopulateControlFromBOProperty(Me.moEquipmentClassDrop, .EquipmentClassId)
-            Me.PopulateControlFromBOProperty(Me.moEquipmentTypeDrop, .EquipmentTypeId)
-            Me.PopulateControlFromBOProperty(Me.moRepairableDrop, .RepairableId)
+            PopulateControlFromBOProperty(moIsMasterModelDrop, .IsMasterEquipment)
+            PopulateControlFromBOProperty(moModelText, .Model)
+            PopulateControlFromBOProperty(moDescriptionText, .Description)
+            PopulateControlFromBOProperty(moMasterEquipmentDrop, .MasterEquipmentId)
+            PopulateControlFromBOProperty(moManufacturerWarrentyText, .ManufacturerWarrenty)
+            PopulateControlFromBOProperty(moEquipmentClassDrop, .EquipmentClassId)
+            PopulateControlFromBOProperty(moEquipmentTypeDrop, .EquipmentTypeId)
+            PopulateControlFromBOProperty(moRepairableDrop, .RepairableId)
             
-            BindSelectItem(.Color, me.moColor)
-            BindSelectItem(.Memory, me.moMemory)
-            BindSelectItem(.Carrier, me.moCarrier)
+            BindSelectItem(.Color, moColor)
+            BindSelectItem(.Memory, moMemory)
+            BindSelectItem(.Carrier, moCarrier)
 
             'Me.PopulateControlFromBOProperty(Me.moColor, .Color)
             'Me.PopulateControlFromBOProperty(Me.moMemory, .Memory)
@@ -403,65 +403,65 @@ Public Class EquipmentForm
 
     Sub PopulateCommentDetailGrid()
         'This is a temporary Binding Logic. BEGIN        
-        Dim dv As Equipment.EquipmentCommentSelectionView = Me.State.MyBO.GetCommentSelectionView()
-        dv.Sort = Me.State.SortExpressionCommentDetailGrid
+        Dim dv As Equipment.EquipmentCommentSelectionView = State.MyBO.GetCommentSelectionView()
+        dv.Sort = State.SortExpressionCommentDetailGrid
 
-        Me.DataGridCommentDetail.Columns(Me.GRID_COL_COMMENT).SortExpression = Equipment.EquipmentCommentSelectionView.COL_NAME_COMMENT
-        Me.SetGridItemStyleColor(Me.DataGridCommentDetail)
+        DataGridCommentDetail.Columns(GRID_COL_COMMENT).SortExpression = Equipment.EquipmentCommentSelectionView.COL_NAME_COMMENT
+        SetGridItemStyleColor(DataGridCommentDetail)
 
-        SetPageAndSelectedIndexFromGuid(dv, Me.State.CommentSelectedChildId, Me.DataGridCommentDetail, Me.State.CommentDetailPageIndex)
-        Me.State.CommentDetailPageIndex = Me.DataGridCommentDetail.CurrentPageIndex
+        SetPageAndSelectedIndexFromGuid(dv, State.CommentSelectedChildId, DataGridCommentDetail, State.CommentDetailPageIndex)
+        State.CommentDetailPageIndex = DataGridCommentDetail.CurrentPageIndex
 
-        Me.DataGridCommentDetail.DataSource = dv
-        Me.DataGridCommentDetail.AutoGenerateColumns = False
-        Me.DataGridCommentDetail.DataBind()
+        DataGridCommentDetail.DataSource = dv
+        DataGridCommentDetail.AutoGenerateColumns = False
+        DataGridCommentDetail.DataBind()
         'This is a temporary Binding Logic. END
     End Sub
 
     Sub PopulateImageDetailGrid()
         'This is a temporary Binding Logic. BEGIN        
-        Dim dv As Equipment.EquipmentImageSelectionView = Me.State.MyBO.GetImageSelectionView()
-        dv.Sort = Me.State.SortExpressionImageDetailGrid
+        Dim dv As Equipment.EquipmentImageSelectionView = State.MyBO.GetImageSelectionView()
+        dv.Sort = State.SortExpressionImageDetailGrid
 
-        Me.DataGridImageDetail.Columns(Me.GRID_COL_CODE).SortExpression = Equipment.EquipmentImageSelectionView.COL_NAME_CODE
-        Me.DataGridImageDetail.Columns(Me.GRID_COL_DESCRIPTION).SortExpression = Equipment.EquipmentImageSelectionView.COL_NAME_DESCRIPTION
-        Me.DataGridImageDetail.Columns(Me.GRID_COL_IMAGE_TYPE).SortExpression = Equipment.EquipmentImageSelectionView.COL_NAME_IMAGE_TYPE
-        Me.SetGridItemStyleColor(Me.DataGridImageDetail)
+        DataGridImageDetail.Columns(GRID_COL_CODE).SortExpression = Equipment.EquipmentImageSelectionView.COL_NAME_CODE
+        DataGridImageDetail.Columns(GRID_COL_DESCRIPTION).SortExpression = Equipment.EquipmentImageSelectionView.COL_NAME_DESCRIPTION
+        DataGridImageDetail.Columns(GRID_COL_IMAGE_TYPE).SortExpression = Equipment.EquipmentImageSelectionView.COL_NAME_IMAGE_TYPE
+        SetGridItemStyleColor(DataGridImageDetail)
 
-        SetPageAndSelectedIndexFromGuid(dv, Me.State.ImageSelectedChildId, Me.DataGridImageDetail, Me.State.ImageDetailPageIndex)
-        Me.State.ImageDetailPageIndex = Me.DataGridImageDetail.CurrentPageIndex
+        SetPageAndSelectedIndexFromGuid(dv, State.ImageSelectedChildId, DataGridImageDetail, State.ImageDetailPageIndex)
+        State.ImageDetailPageIndex = DataGridImageDetail.CurrentPageIndex
 
-        Me.DataGridImageDetail.DataSource = dv
-        Me.DataGridImageDetail.AutoGenerateColumns = False
-        Me.DataGridImageDetail.DataBind()
+        DataGridImageDetail.DataSource = dv
+        DataGridImageDetail.AutoGenerateColumns = False
+        DataGridImageDetail.DataBind()
         'This is a temporary Binding Logic. END
     End Sub
 
     Sub PopulateRelatedEquipmentDetailGrid()
         'This is a temporary Binding Logic . BEGIN
-        Dim dv As Equipment.RelatedEquipmentSelectionView = Me.State.MyBO.GetEquipmentSelectionView()
-        dv.Sort = Me.State.SortExpressionRelatedEquipmentDetailGrid
+        Dim dv As Equipment.RelatedEquipmentSelectionView = State.MyBO.GetEquipmentSelectionView()
+        dv.Sort = State.SortExpressionRelatedEquipmentDetailGrid
         'also set the related equipment id in the grid
-        Me.GVRelatedEquipmentDetail.Columns(Me.GRID_COL_EQUIPMENT_TYPE).SortExpression = Equipment.RelatedEquipmentSelectionView.COL_NAME_EQUIPMENT_TYPE
-        Me.GVRelatedEquipmentDetail.Columns(Me.GRID_COL_EQUIPMENT_DESCRIPTION).SortExpression = Equipment.RelatedEquipmentSelectionView.COL_NAME_DESCRIPTION
-        Me.GVRelatedEquipmentDetail.Columns(Me.GRID_COL_MANUFACTURER).SortExpression = Equipment.RelatedEquipmentSelectionView.COL_NAME_MANUFACTURER
-        Me.GVRelatedEquipmentDetail.Columns(Me.GRID_COL_MODEL).SortExpression = Equipment.RelatedEquipmentSelectionView.COL_NAME_MODEL
-        Me.GVRelatedEquipmentDetail.Columns(Me.GRID_COL_IN_OEM_BOX).SortExpression = Equipment.RelatedEquipmentSelectionView.COL_NAME_IN_OEM_BOX
-        Me.GVRelatedEquipmentDetail.Columns(Me.GRID_COL_IS_COVERED).SortExpression = Equipment.RelatedEquipmentSelectionView.COL_NAME_IS_COVERED
-        Me.SetGridItemStyleColor(Me.GVRelatedEquipmentDetail)
+        GVRelatedEquipmentDetail.Columns(GRID_COL_EQUIPMENT_TYPE).SortExpression = Equipment.RelatedEquipmentSelectionView.COL_NAME_EQUIPMENT_TYPE
+        GVRelatedEquipmentDetail.Columns(GRID_COL_EQUIPMENT_DESCRIPTION).SortExpression = Equipment.RelatedEquipmentSelectionView.COL_NAME_DESCRIPTION
+        GVRelatedEquipmentDetail.Columns(GRID_COL_MANUFACTURER).SortExpression = Equipment.RelatedEquipmentSelectionView.COL_NAME_MANUFACTURER
+        GVRelatedEquipmentDetail.Columns(GRID_COL_MODEL).SortExpression = Equipment.RelatedEquipmentSelectionView.COL_NAME_MODEL
+        GVRelatedEquipmentDetail.Columns(GRID_COL_IN_OEM_BOX).SortExpression = Equipment.RelatedEquipmentSelectionView.COL_NAME_IN_OEM_BOX
+        GVRelatedEquipmentDetail.Columns(GRID_COL_IS_COVERED).SortExpression = Equipment.RelatedEquipmentSelectionView.COL_NAME_IS_COVERED
+        SetGridItemStyleColor(GVRelatedEquipmentDetail)
 
-        If Me.State.IsRelatedEquipmentEditing Then
-            Me.SetPageAndSelectedIndexFromGuid(dv, Me.State.RelatedEquipmentSelectedChildId, GVRelatedEquipmentDetail,
+        If State.IsRelatedEquipmentEditing Then
+            SetPageAndSelectedIndexFromGuid(dv, State.RelatedEquipmentSelectedChildId, GVRelatedEquipmentDetail,
                                     GVRelatedEquipmentDetail.PageIndex, True)
         Else
-            SetPageAndSelectedIndexFromGuid(dv, Me.State.RelatedEquipmentSelectedChildId, Me.GVRelatedEquipmentDetail, Me.State.RelatedEquipmentDetailPageIndex)
-            Me.State.RelatedEquipmentDetailPageIndex = Me.GVRelatedEquipmentDetail.PageIndex
+            SetPageAndSelectedIndexFromGuid(dv, State.RelatedEquipmentSelectedChildId, GVRelatedEquipmentDetail, State.RelatedEquipmentDetailPageIndex)
+            State.RelatedEquipmentDetailPageIndex = GVRelatedEquipmentDetail.PageIndex
         End If
 
         If dv.Count > 0 Then
-            Me.GVRelatedEquipmentDetail.DataSource = dv
-            Me.GVRelatedEquipmentDetail.AutoGenerateColumns = False
-            Me.GVRelatedEquipmentDetail.DataBind()
+            GVRelatedEquipmentDetail.DataSource = dv
+            GVRelatedEquipmentDetail.AutoGenerateColumns = False
+            GVRelatedEquipmentDetail.DataBind()
         Else
             dv.AddNew()
             dv(0)(Equipment.RelatedEquipmentSelectionView.COL_NAME_RELATED_EQUIPMENT_ID) = Guid.Empty.ToByteArray
@@ -474,136 +474,136 @@ Public Class EquipmentForm
     End Sub
 
     Protected Sub PopulateBOsFormFrom()
-        With Me.State.MyBO
-            Me.PopulateBOProperty(Me.State.MyBO, "ManufacturerId", Me.moManufacturerDrop)
-            Me.PopulateBOProperty(Me.State.MyBO, "IsMasterEquipment", Me.moIsMasterModelDrop)
-            Me.PopulateBOProperty(Me.State.MyBO, "Model", Me.moModelText)
-            Me.PopulateBOProperty(Me.State.MyBO, "Description", Me.moDescriptionText)
-            Me.PopulateBOProperty(Me.State.MyBO, "MasterEquipmentId", Me.moMasterEquipmentDrop)
-            Me.PopulateBOProperty(Me.State.MyBO, "EquipmentClassId", Me.moEquipmentClassDrop)
-            Me.PopulateBOProperty(Me.State.MyBO, "EquipmentTypeId", Me.moEquipmentTypeDrop)
-            Me.PopulateBOProperty(Me.State.MyBO, "RepairableId", Me.moRepairableDrop)
-            Me.PopulateBOProperty(Me.State.MyBO, "ManufacturerWarrenty", Me.moManufacturerWarrentyText)
+        With State.MyBO
+            PopulateBOProperty(State.MyBO, "ManufacturerId", moManufacturerDrop)
+            PopulateBOProperty(State.MyBO, "IsMasterEquipment", moIsMasterModelDrop)
+            PopulateBOProperty(State.MyBO, "Model", moModelText)
+            PopulateBOProperty(State.MyBO, "Description", moDescriptionText)
+            PopulateBOProperty(State.MyBO, "MasterEquipmentId", moMasterEquipmentDrop)
+            PopulateBOProperty(State.MyBO, "EquipmentClassId", moEquipmentClassDrop)
+            PopulateBOProperty(State.MyBO, "EquipmentTypeId", moEquipmentTypeDrop)
+            PopulateBOProperty(State.MyBO, "RepairableId", moRepairableDrop)
+            PopulateBOProperty(State.MyBO, "ManufacturerWarrenty", moManufacturerWarrentyText)
             
-            Me.PopulateBOProperty(Me.State.MyBO, "Color", Me.moColor,False,True)
-            Me.PopulateBOProperty(Me.State.MyBO, "Memory", Me.moMemory,False,True)                
-            Me.PopulateBOProperty(Me.State.MyBO, "Carrier", moCarrier ,False,True)
+            PopulateBOProperty(State.MyBO, "Color", moColor,False,True)
+            PopulateBOProperty(State.MyBO, "Memory", moMemory,False,True)                
+            PopulateBOProperty(State.MyBO, "Carrier", moCarrier ,False,True)
             
         End With
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Sub
 
     Protected Sub CreateNew()
-        Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
-        Me.State.MyBO = New Equipment
-        Me.PopulateFormFromBOs()
-        Me.EnableDisableFields()
+        State.ScreenSnapShotBO = Nothing 'Reset the backup copy
+        State.MyBO = New Equipment
+        PopulateFormFromBOs()
+        EnableDisableFields()
     End Sub
 
     Protected Sub CreateNewWithCopy()
         Dim newObj As New Equipment
-        newObj.Copy(Me.State.MyBO)
+        newObj.Copy(State.MyBO)
 
-        Me.State.MyBO = newObj
-        Me.PopulateFormFromBOs()
-        Me.EnableDisableFields()
+        State.MyBO = newObj
+        PopulateFormFromBOs()
+        EnableDisableFields()
 
         'create the backup copy
-        Me.State.ScreenSnapShotBO = New Equipment
-        Me.State.ScreenSnapShotBO.Copy(Me.State.MyBO)
+        State.ScreenSnapShotBO = New Equipment
+        State.ScreenSnapShotBO.Copy(State.MyBO)
     End Sub
 
     Protected Sub CheckIfComingFromSaveConfirm()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-        If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
-            If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Accept Then
-                Me.State.MyBO.Save()
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+        If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
+            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Accept Then
+                State.MyBO.Save()
             End If
-            Select Case Me.State.ActionInProgress
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                    Me.CreateNew()
+                    DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                    Me.CreateNewWithCopy()
+                    DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                    CreateNewWithCopy()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.Accept
-                    If (Me.State.IsCommentEditing) Then
-                        Me.PopulateCommentChildBOFromDetail()
-                        Me.State.MyCommentChildBO.Save()
-                        Me.State.MyCommentChildBO.EndEdit()
-                        Me.State.IsCommentEditing = False
-                    ElseIf (Me.State.IsImageEditing) Then
-                        Me.PopulateImageChildBOFromDetail()
-                        Me.State.MyImageChildBO.Save()
-                        Me.State.MyImageChildBO.EndEdit()
-                        Me.State.IsImageEditing = False
-                    ElseIf (Me.State.IsRelatedEquipmentEditing) Then
-                        Me.PopulateRelatedEquipmentChildBOFromDetail()
-                        Me.State.MyRelatedEquipmentChildBO.Save()
-                        Me.State.MyRelatedEquipmentChildBO.EndEdit()
+                    If (State.IsCommentEditing) Then
+                        PopulateCommentChildBOFromDetail()
+                        State.MyCommentChildBO.Save()
+                        State.MyCommentChildBO.EndEdit()
+                        State.IsCommentEditing = False
+                    ElseIf (State.IsImageEditing) Then
+                        PopulateImageChildBOFromDetail()
+                        State.MyImageChildBO.Save()
+                        State.MyImageChildBO.EndEdit()
+                        State.IsImageEditing = False
+                    ElseIf (State.IsRelatedEquipmentEditing) Then
+                        PopulateRelatedEquipmentChildBOFromDetail()
+                        State.MyRelatedEquipmentChildBO.Save()
+                        State.MyRelatedEquipmentChildBO.EndEdit()
                     End If
-                    Me.EnableDisableFields()
-                    Me.PopulateCommentDetailGrid()
-                    Me.PopulateImageDetailGrid()
+                    EnableDisableFields()
+                    PopulateCommentDetailGrid()
+                    PopulateImageDetailGrid()
                     AttributeValues.DataBind()
-                    Me.PopulateRelatedEquipmentDetailGrid()
+                    PopulateRelatedEquipmentDetailGrid()
             End Select
-        ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-            Select Case Me.State.ActionInProgress
+        ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.CreateNew()
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    Me.CreateNewWithCopy()
+                    CreateNewWithCopy()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.HandleErrors(New Exception(Me.State.LastErrMsg), Me.MasterPage.MessageController)
+                    HandleErrors(New Exception(State.LastErrMsg), MasterPage.MessageController)
 
                 Case ElitaPlusPage.DetailPageCommand.Accept
-                    If (Me.State.IsCommentEditing) Then
-                        Me.State.MyCommentChildBO.cancelEdit()
-                        If Me.State.MyCommentChildBO.IsSaveNew Then
-                            Me.State.MyCommentChildBO.Delete()
-                            Me.State.MyCommentChildBO.Save()
+                    If (State.IsCommentEditing) Then
+                        State.MyCommentChildBO.cancelEdit()
+                        If State.MyCommentChildBO.IsSaveNew Then
+                            State.MyCommentChildBO.Delete()
+                            State.MyCommentChildBO.Save()
                         End If
-                        Me.State.IsCommentEditing = False
-                    ElseIf (Me.State.IsImageEditing) Then
-                        Me.State.MyImageChildBO.cancelEdit()
-                        If Me.State.MyCommentChildBO.IsSaveNew Then
-                            Me.State.MyImageChildBO.Delete()
-                            Me.State.MyImageChildBO.Save()
+                        State.IsCommentEditing = False
+                    ElseIf (State.IsImageEditing) Then
+                        State.MyImageChildBO.cancelEdit()
+                        If State.MyCommentChildBO.IsSaveNew Then
+                            State.MyImageChildBO.Delete()
+                            State.MyImageChildBO.Save()
                         End If
-                        Me.State.IsImageEditing = False
-                    ElseIf (Me.State.IsRelatedEquipmentEditing) Then
-                        Me.State.MyRelatedEquipmentChildBO.cancelEdit()
-                        If Me.State.MyRelatedEquipmentChildBO.IsSaveNew Then
-                            Me.State.MyRelatedEquipmentChildBO.Delete()
-                            Me.State.MyRelatedEquipmentChildBO.Save()
+                        State.IsImageEditing = False
+                    ElseIf (State.IsRelatedEquipmentEditing) Then
+                        State.MyRelatedEquipmentChildBO.cancelEdit()
+                        If State.MyRelatedEquipmentChildBO.IsSaveNew Then
+                            State.MyRelatedEquipmentChildBO.Delete()
+                            State.MyRelatedEquipmentChildBO.Save()
                         End If
-                        Me.State.IsRelatedEquipmentEditing = False
+                        State.IsRelatedEquipmentEditing = False
                     End If
-                    Me.EnableDisableFields()
-                    Me.PopulateCommentDetailGrid()
-                    Me.PopulateImageDetailGrid()
+                    EnableDisableFields()
+                    PopulateCommentDetailGrid()
+                    PopulateImageDetailGrid()
                     AttributeValues.DataBind()
-                    Me.PopulateRelatedEquipmentDetailGrid()
+                    PopulateRelatedEquipmentDetailGrid()
             End Select
         End If
         'Clean after consuming the action
-        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-        Me.HiddenSaveChangesPromptResponse.Value = ""
+        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        HiddenSaveChangesPromptResponse.Value = ""
     End Sub
 
     Sub BeginCommentChildEdit()
-        Me.State.IsCommentEditing = True
-        Me.EnableDisableFields()
-        With Me.State
+        State.IsCommentEditing = True
+        EnableDisableFields()
+        With State
             If Not .CommentSelectedChildId.Equals(Guid.Empty) Then
                 .MyCommentChildBO = .MyBO.GetCommentChild(.CommentSelectedChildId)
             Else
@@ -611,13 +611,13 @@ Public Class EquipmentForm
             End If
             .MyCommentChildBO.BeginEdit()
         End With
-        Me.PopulateDetailFromCommentChildBO()
+        PopulateDetailFromCommentChildBO()
     End Sub
 
     Sub BeginImageChildEdit()
-        Me.State.IsImageEditing = True
-        Me.EnableDisableFields()
-        With Me.State
+        State.IsImageEditing = True
+        EnableDisableFields()
+        With State
             If Not .ImageSelectedChildId.Equals(Guid.Empty) Then
                 .MyImageChildBO = .MyBO.GetImageChild(.ImageSelectedChildId)
             Else
@@ -625,15 +625,15 @@ Public Class EquipmentForm
             End If
             .MyImageChildBO.BeginEdit()
         End With
-        Me.PopulateDetailFromImageChildBO()
+        PopulateDetailFromImageChildBO()
     End Sub
 
-    Sub EndCommentChildEdit(ByVal lastop As ElitaPlusPage.DetailPageCommand)
+    Sub EndCommentChildEdit(lastop As ElitaPlusPage.DetailPageCommand)
         Try
-            With Me.State
+            With State
                 Select Case lastop
                     Case ElitaPlusPage.DetailPageCommand.OK
-                        Me.PopulateCommentChildBOFromDetail()
+                        PopulateCommentChildBOFromDetail()
                         .MyCommentChildBO.Save()
                         .MyCommentChildBO.EndEdit()
                     Case ElitaPlusPage.DetailPageCommand.Cancel
@@ -655,20 +655,20 @@ Public Class EquipmentForm
                         .CommentSelectedChildId = Guid.Empty
                 End Select
             End With
-            Me.State.IsCommentEditing = False
-            Me.EnableDisableFields()
-            Me.PopulateCommentDetailGrid()
+            State.IsCommentEditing = False
+            EnableDisableFields()
+            PopulateCommentDetailGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Sub EndImageChildEdit(ByVal lastop As ElitaPlusPage.DetailPageCommand)
+    Sub EndImageChildEdit(lastop As ElitaPlusPage.DetailPageCommand)
         Try
-            With Me.State
+            With State
                 Select Case lastop
                     Case ElitaPlusPage.DetailPageCommand.OK
-                        Me.PopulateImageChildBOFromDetail()
+                        PopulateImageChildBOFromDetail()
                         .MyImageChildBO.Save()
                         .MyImageChildBO.EndEdit()
                         .MyBO.Save()
@@ -691,20 +691,20 @@ Public Class EquipmentForm
                         .ImageSelectedChildId = Guid.Empty
                 End Select
             End With
-            Me.State.IsImageEditing = False
-            Me.EnableDisableFields()
-            Me.PopulateImageDetailGrid()
+            State.IsImageEditing = False
+            EnableDisableFields()
+            PopulateImageDetailGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Sub EndRelatedEquipmentChildEdit(ByVal lastop As ElitaPlusPage.DetailPageCommand)
+    Sub EndRelatedEquipmentChildEdit(lastop As ElitaPlusPage.DetailPageCommand)
         Try
-            With Me.State
+            With State
                 Select Case lastop
                     Case ElitaPlusPage.DetailPageCommand.OK
-                        Me.PopulateRelatedEquipmentChildBOFromDetail()
+                        PopulateRelatedEquipmentChildBOFromDetail()
                         .MyRelatedEquipmentChildBO.Save()
                         .MyRelatedEquipmentChildBO.EndEdit()
                     Case ElitaPlusPage.DetailPageCommand.Cancel
@@ -720,70 +720,70 @@ Public Class EquipmentForm
                         .RelatedEquipmentSelectedChildId = Guid.Empty
                 End Select
             End With
-            Me.State.IsRelatedEquipmentEditing = False
-            Me.EnableDisableFields()
-            Me.PopulateRelatedEquipmentDetailGrid()
+            State.IsRelatedEquipmentEditing = False
+            EnableDisableFields()
+            PopulateRelatedEquipmentDetailGrid()
             EnableDisableRelatedEquipmentControl(False)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Sub PopulateDetailFromCommentChildBO()
-        With Me.State.MyCommentChildBO
-            Me.PopulateControlFromBOProperty(Me.moCommentTextBox, .Comment)
+        With State.MyCommentChildBO
+            PopulateControlFromBOProperty(moCommentTextBox, .Comment)
         End With
     End Sub
 
     Sub PopulateDetailFromImageChildBO()
-        With Me.State.MyImageChildBO
+        With State.MyImageChildBO
             'Throw New NotImplementedException()
         End With
     End Sub
 
     Sub PopulateImageChildBOFromDetail()
-        With Me.State.MyImageChildBO
+        With State.MyImageChildBO
             'Throw New NotImplementedException 
         End With
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Sub
 
     Sub PopulateCommentChildBOFromDetail()
-        With Me.State.MyCommentChildBO
-            Me.PopulateBOProperty(Me.State.MyCommentChildBO, "Comment", Me.moCommentTextBox)
+        With State.MyCommentChildBO
+            PopulateBOProperty(State.MyCommentChildBO, "Comment", moCommentTextBox)
         End With
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Sub
 
     Protected Sub BindCommentsDetailBoPropertiesToLabels()
-        With Me.State
-            Me.BindBOPropertyToLabel(.MyCommentChildBO, "Comment", Me.moCommentLabel)
+        With State
+            BindBOPropertyToLabel(.MyCommentChildBO, "Comment", moCommentLabel)
         End With
-        Me.ClearGridHeadersAndLabelsErrSign()
+        ClearGridHeadersAndLabelsErrSign()
     End Sub
 
     Protected Sub BindImagesDetailBoPropertiesToLabels()
-        With Me.State
+        With State
             'Throw New NotImplementedException 
         End With
-        Me.ClearGridHeadersAndLabelsErrSign()
+        ClearGridHeadersAndLabelsErrSign()
     End Sub
 
     Protected Sub BindRelatedEquipmentDetailBoPropertiesToLabels()
-        With Me.State
+        With State
             'Throw New NotImplementedException 
         End With
-        Me.ClearGridHeadersAndLabelsErrSign()
+        ClearGridHeadersAndLabelsErrSign()
     End Sub
 
     Sub BeginRelatedEquipmentChildEdit()
-        Me.State.IsRelatedEquipmentEditing = True
+        State.IsRelatedEquipmentEditing = True
         ''Me.EnableDisableFields()
-        With Me.State
+        With State
             If Not .RelatedEquipmentSelectedChildId.Equals(Guid.Empty) Then
                 .MyRelatedEquipmentChildBO = .MyBO.GetRelatedEquipmentChild(.RelatedEquipmentSelectedChildId)
             Else
@@ -793,35 +793,35 @@ Public Class EquipmentForm
         End With
     End Sub
 
-    Sub PopulateDetailFromRelatedEquipmentChildBO(ByVal gRow As GridViewRow)
+    Sub PopulateDetailFromRelatedEquipmentChildBO(gRow As GridViewRow)
 
         'fill the drop downs
-        Dim moInOemBoxDrop As DropDownList = CType(gRow.Cells(Me.GRID_COL_IN_OEM_BOX).FindControl(Me.GRID_CONTROL_IS_IN_OEM_BOX), DropDownList)
-        Dim moIsCoveredDrop As DropDownList = CType(gRow.Cells(Me.GRID_COL_IS_COVERED).FindControl(Me.GRID_CONTROL_IS_COVERED), DropDownList)
+        Dim moInOemBoxDrop As DropDownList = CType(gRow.Cells(GRID_COL_IN_OEM_BOX).FindControl(GRID_CONTROL_IS_IN_OEM_BOX), DropDownList)
+        Dim moIsCoveredDrop As DropDownList = CType(gRow.Cells(GRID_COL_IS_COVERED).FindControl(GRID_CONTROL_IS_COVERED), DropDownList)
         Dim languageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
 
-        With Me.State.MyRelatedEquipmentChildBO
-            If Not moInOemBoxDrop Is Nothing Then
-                Me.PopulateControlFromBOProperty(moInOemBoxDrop, .IsInOemBoxId)
+        With State.MyRelatedEquipmentChildBO
+            If moInOemBoxDrop IsNot Nothing Then
+                PopulateControlFromBOProperty(moInOemBoxDrop, .IsInOemBoxId)
             End If
-            If Not moIsCoveredDrop Is Nothing Then
-                Me.PopulateControlFromBOProperty(moIsCoveredDrop, .IsCoveredId)
+            If moIsCoveredDrop IsNot Nothing Then
+                PopulateControlFromBOProperty(moIsCoveredDrop, .IsCoveredId)
             End If
         End With
     End Sub
 
     Sub PopulateRelatedEquipmentChildBOFromDetail()
-        With Me.State.MyRelatedEquipmentChildBO
-            Dim moInOemBoxDrop As DropDownList = CType(Me.GVRelatedEquipmentDetail.Rows(Me.GVRelatedEquipmentDetail.EditIndex).Cells(Me.GRID_COL_IN_OEM_BOX).FindControl(Me.GRID_CONTROL_IS_IN_OEM_BOX), DropDownList)
-            If Not moInOemBoxDrop Is Nothing Then
-                Me.PopulateBOProperty(Me.State.MyRelatedEquipmentChildBO, "IsInOemBoxId", New Guid(moInOemBoxDrop.SelectedValue))
+        With State.MyRelatedEquipmentChildBO
+            Dim moInOemBoxDrop As DropDownList = CType(GVRelatedEquipmentDetail.Rows(GVRelatedEquipmentDetail.EditIndex).Cells(GRID_COL_IN_OEM_BOX).FindControl(GRID_CONTROL_IS_IN_OEM_BOX), DropDownList)
+            If moInOemBoxDrop IsNot Nothing Then
+                PopulateBOProperty(State.MyRelatedEquipmentChildBO, "IsInOemBoxId", New Guid(moInOemBoxDrop.SelectedValue))
             End If
-            Dim moIsCoveredDrop As DropDownList = CType(Me.GVRelatedEquipmentDetail.Rows(Me.GVRelatedEquipmentDetail.EditIndex).Cells(Me.GRID_COL_IS_COVERED).FindControl(Me.GRID_CONTROL_IS_COVERED), DropDownList)
-            If Not moIsCoveredDrop Is Nothing Then
-                Me.PopulateBOProperty(Me.State.MyRelatedEquipmentChildBO, "IsCoveredId", New Guid(moIsCoveredDrop.SelectedValue))
+            Dim moIsCoveredDrop As DropDownList = CType(GVRelatedEquipmentDetail.Rows(GVRelatedEquipmentDetail.EditIndex).Cells(GRID_COL_IS_COVERED).FindControl(GRID_CONTROL_IS_COVERED), DropDownList)
+            If moIsCoveredDrop IsNot Nothing Then
+                PopulateBOProperty(State.MyRelatedEquipmentChildBO, "IsCoveredId", New Guid(moIsCoveredDrop.SelectedValue))
             End If
         End With
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Sub
@@ -830,110 +830,110 @@ Public Class EquipmentForm
 
 #Region "Button Clicks"
 
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
             Else
-                Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+            HandleErrors(ex, MasterPage.MessageController)
+            DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
         End Try
     End Sub
 
-    Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty OrElse Me.State.MyBO.IsFamilyDirty Then
-                Me.State.MyBO.Save()
-                Me.State.HasDataChanged = True
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
-                Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty OrElse State.MyBO.IsFamilyDirty Then
+                State.MyBO.Save()
+                State.HasDataChanged = True
+                PopulateFormFromBOs()
+                EnableDisableFields()
+                DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
             Else
-                Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnUndo_Write_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_Write.Click
+    Private Sub btnUndo_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_Write.Click
         Try
-            If Not Me.State.MyBO.IsNew Then
+            If Not State.MyBO.IsNew Then
                 'Reload from the DB
-                Me.State.MyBO = New Equipment(Me.State.MyBO.Id)
-            ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+                State.MyBO = New Equipment(State.MyBO.Id)
+            ElseIf State.ScreenSnapShotBO IsNot Nothing Then
                 'It was a new with copy
-                Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                State.MyBO.Clone(State.ScreenSnapShotBO)
             Else
-                Me.State.MyBO = New Equipment
+                State.MyBO = New Equipment
             End If
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
+            PopulateFormFromBOs()
+            EnableDisableFields()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+    Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
         Try
-            Me.State.MyBO.Delete()
-            Me.State.MyBO.Save()
-            Me.State.HasDataChanged = True
-            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.MyBO, Me.State.HasDataChanged))
+            State.MyBO.Delete()
+            State.MyBO.Save()
+            State.HasDataChanged = True
+            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, State.MyBO, State.HasDataChanged))
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
             'undo the delete
-            Me.State.MyBO.RejectChanges()
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            State.MyBO.RejectChanges()
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+    Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
             Else
-                Me.CreateNew()
+                CreateNew()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnCopy_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+    Private Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
             Else
-                Me.CreateNewWithCopy()
+                CreateNewWithCopy()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnRelatedEquipmentSelectChild_Write_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRelatedEquipmentSelectChild_Write.Click
+    Private Sub btnRelatedEquipmentSelectChild_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnRelatedEquipmentSelectChild_Write.Click
         Try
             ShowUserControl_on_RelatedEquipment(True)
             With UserControlSearchAvailableEquipment
-                .dvSelectedEquipment = Me.State.MyBO.GetRelatedEquipmentDV()
+                .dvSelectedEquipment = State.MyBO.GetRelatedEquipmentDV()
                 .BindSelected(.dvSelectedEquipment)
             End With
             EnableDisableParentControls(False)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -942,155 +942,155 @@ Public Class EquipmentForm
 
 #Region "Detail Grid Events"
 
-    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As DataGridItemEventArgs)
+    Public Sub ItemCreated(sender As System.Object, e As DataGridItemEventArgs)
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
 
 #Region "Images Grid"
-    Private Sub DataGridImageDetail_ItemCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles DataGridImageDetail.ItemCreated
+    Private Sub DataGridImageDetail_ItemCreated(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles DataGridImageDetail.ItemCreated
         Try
             MyBase.BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
 
 #Region "Comment Grid"
 
-    Private Sub DataGridCommentDetail_ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs) Handles DataGridCommentDetail.ItemCreated
+    Private Sub DataGridCommentDetail_ItemCreated(sender As Object, e As DataGridItemEventArgs) Handles DataGridCommentDetail.ItemCreated
         Try
             MyBase.BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Public Sub DataGridCommentDetail_ItemDataBound(ByVal sender As Object, ByVal e As DataGridItemEventArgs) Handles DataGridCommentDetail.ItemDataBound
+    Public Sub DataGridCommentDetail_ItemDataBound(sender As Object, e As DataGridItemEventArgs) Handles DataGridCommentDetail.ItemDataBound
         Try
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                e.Item.Cells(Me.GRID_COL_EQUIPMENT_COMMENT_ID).Text = New Guid(CType(dvRow(Equipment.EquipmentCommentSelectionView.COL_NAME_EQUIPMENT_COMMENT_ID), Byte())).ToString
-                e.Item.Cells(Me.GRID_COL_COMMENT).Text = dvRow(Equipment.EquipmentCommentSelectionView.COL_NAME_COMMENT).ToString
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
+                e.Item.Cells(GRID_COL_EQUIPMENT_COMMENT_ID).Text = New Guid(CType(dvRow(Equipment.EquipmentCommentSelectionView.COL_NAME_EQUIPMENT_COMMENT_ID), Byte())).ToString
+                e.Item.Cells(GRID_COL_COMMENT).Text = dvRow(Equipment.EquipmentCommentSelectionView.COL_NAME_COMMENT).ToString
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub DataGridCommentDetail_SortCommand(ByVal source As Object, ByVal e As DataGridSortCommandEventArgs) Handles DataGridCommentDetail.SortCommand
+    Private Sub DataGridCommentDetail_SortCommand(source As Object, e As DataGridSortCommandEventArgs) Handles DataGridCommentDetail.SortCommand
         Try
-            If Me.State.SortExpressionCommentDetailGrid.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpressionCommentDetailGrid.StartsWith(e.SortExpression & " DESC") Then
-                    Me.State.SortExpressionCommentDetailGrid = e.SortExpression
+            If State.SortExpressionCommentDetailGrid.StartsWith(e.SortExpression) Then
+                If State.SortExpressionCommentDetailGrid.StartsWith(e.SortExpression & " DESC") Then
+                    State.SortExpressionCommentDetailGrid = e.SortExpression
                 Else
-                    Me.State.SortExpressionCommentDetailGrid = e.SortExpression & " DESC"
+                    State.SortExpressionCommentDetailGrid = e.SortExpression & " DESC"
                 End If
             Else
-                Me.State.SortExpressionCommentDetailGrid = e.SortExpression
+                State.SortExpressionCommentDetailGrid = e.SortExpression
             End If
-            Me.PopulateCommentDetailGrid()
+            PopulateCommentDetailGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub DataGridCommentDetail_ItemCommand(ByVal source As Object, ByVal e As DataGridCommandEventArgs) Handles DataGridCommentDetail.ItemCommand
+    Private Sub DataGridCommentDetail_ItemCommand(source As Object, e As DataGridCommandEventArgs) Handles DataGridCommentDetail.ItemCommand
         Try
             If e.CommandName = "ViewRecord" Then
-                Me.State.IsCommentEditing = True
-                Me.State.CommentSelectedChildId = New Guid(e.Item.Cells(Me.GRID_COL_EQUIPMENT_COMMENT_ID).Text)
-                Me.BeginCommentChildEdit()
-                Me.EnableDisableFields()
+                State.IsCommentEditing = True
+                State.CommentSelectedChildId = New Guid(e.Item.Cells(GRID_COL_EQUIPMENT_COMMENT_ID).Text)
+                BeginCommentChildEdit()
+                EnableDisableFields()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub DataGridCommentDetail_PageIndexChanged(ByVal source As Object, ByVal e As DataGridPageChangedEventArgs) Handles DataGridCommentDetail.PageIndexChanged
+    Private Sub DataGridCommentDetail_PageIndexChanged(source As Object, e As DataGridPageChangedEventArgs) Handles DataGridCommentDetail.PageIndexChanged
         Try
-            Me.State.CommentDetailPageIndex = e.NewPageIndex
-            Me.State.CommentSelectedChildId = Guid.Empty
-            Me.PopulateCommentDetailGrid()
+            State.CommentDetailPageIndex = e.NewPageIndex
+            State.CommentSelectedChildId = Guid.Empty
+            PopulateCommentDetailGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
 #End Region
 
 #Region "Related Equipment"
-    Protected Sub GVRelatedEquipmentDetail_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GVRelatedEquipmentDetail.PageIndexChanging
+    Protected Sub GVRelatedEquipmentDetail_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GVRelatedEquipmentDetail.PageIndexChanging
         Try
-            Me.State.RelatedEquipmentDetailPageIndex = e.NewPageIndex
-            Me.State.RelatedEquipmentSelectedChildId = Guid.Empty
-            Me.PopulateRelatedEquipmentDetailGrid()
+            State.RelatedEquipmentDetailPageIndex = e.NewPageIndex
+            State.RelatedEquipmentSelectedChildId = Guid.Empty
+            PopulateRelatedEquipmentDetailGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub GVRelatedEquipmentDetail_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+    Protected Sub GVRelatedEquipmentDetail_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
         Try
             Dim nIndex As Integer
             If e.CommandName = EDIT_COMMAND_NAME Then
                 nIndex = CInt(e.CommandArgument)
-                Me.State.RelatedEquipmentSelectedChildId = New Guid(CType(Me.GVRelatedEquipmentDetail.Rows(nIndex).Cells(Me.GRID_COL_RELATED_EQUIPMENT_ID).Controls(1), Label).Text)
-                Me.State.IsRelatedEquipmentEditing = True
-                Me.BeginRelatedEquipmentChildEdit()
+                State.RelatedEquipmentSelectedChildId = New Guid(CType(GVRelatedEquipmentDetail.Rows(nIndex).Cells(GRID_COL_RELATED_EQUIPMENT_ID).Controls(1), Label).Text)
+                State.IsRelatedEquipmentEditing = True
+                BeginRelatedEquipmentChildEdit()
                 PopulateRelatedEquipmentDetailGrid()
-                Me.FillDropdownList(GVRelatedEquipmentDetail.Rows(nIndex))
-                Me.PopulateDetailFromRelatedEquipmentChildBO(GVRelatedEquipmentDetail.Rows(nIndex))
-                Me.SetGridControls(GVRelatedEquipmentDetail, False)
-                Me.EnableDisableFields()
+                FillDropdownList(GVRelatedEquipmentDetail.Rows(nIndex))
+                PopulateDetailFromRelatedEquipmentChildBO(GVRelatedEquipmentDetail.Rows(nIndex))
+                SetGridControls(GVRelatedEquipmentDetail, False)
+                EnableDisableFields()
             ElseIf e.CommandName = DELETE_COMMAND_NAME Then
                 nIndex = CInt(e.CommandArgument)
-                Me.State.RelatedEquipmentSelectedChildId = New Guid(CType(Me.GVRelatedEquipmentDetail.Rows(nIndex).Cells(Me.GRID_COL_RELATED_EQUIPMENT_ID).Controls(1), Label).Text)
-                Me.State.IsRelatedEquipmentEditing = True
+                State.RelatedEquipmentSelectedChildId = New Guid(CType(GVRelatedEquipmentDetail.Rows(nIndex).Cells(GRID_COL_RELATED_EQUIPMENT_ID).Controls(1), Label).Text)
+                State.IsRelatedEquipmentEditing = True
                 BeginRelatedEquipmentChildEdit()
                 EndRelatedEquipmentChildEdit(ElitaPlusPage.DetailPageCommand.Delete)
                 PopulateRelatedEquipmentDetailGrid()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
 
-    Protected Sub GVRelatedEquipmentDetail_ItemCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+    Protected Sub GVRelatedEquipmentDetail_ItemCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
         Try
             MyBase.BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub GVRelatedEquipmentDetail_Sorting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles GVRelatedEquipmentDetail.Sorting
+    Private Sub GVRelatedEquipmentDetail_Sorting(sender As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles GVRelatedEquipmentDetail.Sorting
         Try
-            If Me.State.SortExpressionRelatedEquipmentDetailGrid.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpressionRelatedEquipmentDetailGrid.StartsWith(e.SortExpression & " DESC") Then
-                    Me.State.SortExpressionRelatedEquipmentDetailGrid = e.SortExpression
+            If State.SortExpressionRelatedEquipmentDetailGrid.StartsWith(e.SortExpression) Then
+                If State.SortExpressionRelatedEquipmentDetailGrid.StartsWith(e.SortExpression & " DESC") Then
+                    State.SortExpressionRelatedEquipmentDetailGrid = e.SortExpression
                 Else
-                    Me.State.SortExpressionRelatedEquipmentDetailGrid = e.SortExpression & " DESC"
+                    State.SortExpressionRelatedEquipmentDetailGrid = e.SortExpression & " DESC"
                 End If
             Else
-                Me.State.SortExpressionRelatedEquipmentDetailGrid = e.SortExpression
+                State.SortExpressionRelatedEquipmentDetailGrid = e.SortExpression
             End If
-            Me.PopulateRelatedEquipmentDetailGrid()
+            PopulateRelatedEquipmentDetailGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub ShowUserControl_on_RelatedEquipment(ByVal attrVisible As Boolean)
+    Private Sub ShowUserControl_on_RelatedEquipment(attrVisible As Boolean)
         'show the user control
         RelatedEquipmentScroller.Visible = Not attrVisible
 
@@ -1099,19 +1099,19 @@ Public Class EquipmentForm
 
     End Sub
 
-    Private Sub FillDropdownList(ByVal gRow As GridViewRow)
+    Private Sub FillDropdownList(gRow As GridViewRow)
 
         'fill the drop downs
-        Dim moInOemBoxDrop As DropDownList = DirectCast(gRow.Cells(Me.GRID_COL_IN_OEM_BOX).FindControl(Me.GRID_CONTROL_IS_IN_OEM_BOX), DropDownList)
-        Dim moIsCoveredDrop As DropDownList = DirectCast(gRow.Cells(Me.GRID_COL_IS_COVERED).FindControl(Me.GRID_CONTROL_IS_COVERED), DropDownList)
+        Dim moInOemBoxDrop As DropDownList = DirectCast(gRow.Cells(GRID_COL_IN_OEM_BOX).FindControl(GRID_CONTROL_IS_IN_OEM_BOX), DropDownList)
+        Dim moIsCoveredDrop As DropDownList = DirectCast(gRow.Cells(GRID_COL_IS_COVERED).FindControl(GRID_CONTROL_IS_COVERED), DropDownList)
         Dim languageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
 
-        With Me.State.MyRelatedEquipmentChildBO
-            If Not moInOemBoxDrop Is Nothing Then
+        With State.MyRelatedEquipmentChildBO
+            If moInOemBoxDrop IsNot Nothing Then
                 '  Me.BindListControlToDataView(moInOemBoxDrop, LookupListNew.GetYesNoLookupList(languageId), , , False)
                 moInOemBoxDrop.Populate(CommonConfigManager.Current.ListManager.GetList("YESNO", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions())
             End If
-            If Not moIsCoveredDrop Is Nothing Then
+            If moIsCoveredDrop IsNot Nothing Then
                 'Me.BindListControlToDataView(moIsCoveredDrop, LookupListNew.GetYesNoLookupList(languageId), , , False)
                 moIsCoveredDrop.Populate(CommonConfigManager.Current.ListManager.GetList("YESNO", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions())
             End If
@@ -1126,86 +1126,86 @@ Public Class EquipmentForm
 
 #Region "Comments"
 
-    Private Sub btnAddNewCommentFromGrid_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnAddNewCommentFromGrid_WRITE.Click
+    Private Sub btnAddNewCommentFromGrid_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnAddNewCommentFromGrid_WRITE.Click
         Try
-            Me.State.CommentSelectedChildId = Guid.Empty
-            Me.BeginCommentChildEdit()
+            State.CommentSelectedChildId = Guid.Empty
+            BeginCommentChildEdit()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnCommentBackChild_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCommentBackChild.Click
+    Private Sub btnCommentBackChild_Click(sender As System.Object, e As System.EventArgs) Handles btnCommentBackChild.Click
         Try
-            Me.PopulateCommentChildBOFromDetail()
-            If Me.State.MyCommentChildBO.IsDirty Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
+            PopulateCommentChildBOFromDetail()
+            If State.MyCommentChildBO.IsDirty Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
             Else
-                Me.EndCommentChildEdit(ElitaPlusPage.DetailPageCommand.Back)
+                EndCommentChildEdit(ElitaPlusPage.DetailPageCommand.Back)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+            HandleErrors(ex, MasterPage.MessageController)
+            DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
         End Try
     End Sub
 
-    Private Sub btnCommentCancelChild_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCommentCancelChild.Click
+    Private Sub btnCommentCancelChild_Click(sender As Object, e As System.EventArgs) Handles btnCommentCancelChild.Click
         Try
-            Me.EndCommentChildEdit(ElitaPlusPage.DetailPageCommand.Cancel)
+            EndCommentChildEdit(ElitaPlusPage.DetailPageCommand.Cancel)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Private Sub btnCommentOkChild_Write_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCommentOkChild_Write.Click
+    Private Sub btnCommentOkChild_Write_Click(sender As Object, e As System.EventArgs) Handles btnCommentOkChild_Write.Click
         Try
-            Me.EndCommentChildEdit(ElitaPlusPage.DetailPageCommand.OK)
+            EndCommentChildEdit(ElitaPlusPage.DetailPageCommand.OK)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnCommentDeleteChild_Write_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCommentDeleteChild_Write.Click
+    Private Sub btnCommentDeleteChild_Write_Click(sender As Object, e As System.EventArgs) Handles btnCommentDeleteChild_Write.Click
         Try
-            Me.EndCommentChildEdit(ElitaPlusPage.DetailPageCommand.Delete)
+            EndCommentChildEdit(ElitaPlusPage.DetailPageCommand.Delete)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
 #End Region
 
 #Region "Related Equipment"
-    Private Sub btnRelatedEquipmentCancelChild_Write_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnRelatedEquipmentCancelChild_Write.Click
+    Private Sub btnRelatedEquipmentCancelChild_Write_Click(sender As Object, e As System.EventArgs) Handles btnRelatedEquipmentCancelChild_Write.Click
 
         Try
-            Me.SetGridControls(GVRelatedEquipmentDetail, False)
-            Me.EndRelatedEquipmentChildEdit(ElitaPlusPage.DetailPageCommand.Cancel)
+            SetGridControls(GVRelatedEquipmentDetail, False)
+            EndRelatedEquipmentChildEdit(ElitaPlusPage.DetailPageCommand.Cancel)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Private Sub btnRelatedEquipmentOkChild_Write_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnRelatedEquipmentOkChild_Write.Click
+    Private Sub btnRelatedEquipmentOkChild_Write_Click(sender As Object, e As System.EventArgs) Handles btnRelatedEquipmentOkChild_Write.Click
         Try
-            Me.EndRelatedEquipmentChildEdit(ElitaPlusPage.DetailPageCommand.OK)
+            EndRelatedEquipmentChildEdit(ElitaPlusPage.DetailPageCommand.OK)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnSaveRelatedEquipmentChild_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+    Private Sub btnSaveRelatedEquipmentChild_Click(sender As Object, e As System.EventArgs)
         Try
-            Me.State.RelatedEquipmentSelectedChildId = Guid.Empty
-            Me.BeginRelatedEquipmentChildEdit()
-            Me.SetGridControls(GVRelatedEquipmentDetail, False)
+            State.RelatedEquipmentSelectedChildId = Guid.Empty
+            BeginRelatedEquipmentChildEdit()
+            SetGridControls(GVRelatedEquipmentDetail, False)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -1215,63 +1215,63 @@ Public Class EquipmentForm
 
 #Region "Handle-Drop"
 
-    Private Sub moIsMasterModelDrop_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moIsMasterModelDrop.SelectedIndexChanged
+    Private Sub moIsMasterModelDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moIsMasterModelDrop.SelectedIndexChanged
         Try
             EnableDisableParentControls(True)
             PopulateMasterModelDropDown()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
 #End Region
 
-    Private Sub moManufacturerDrop_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles moManufacturerDrop.SelectedIndexChanged
+    Private Sub moManufacturerDrop_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles moManufacturerDrop.SelectedIndexChanged
         Try
             PopulateMasterModelDropDown()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
 #Region "User Control Event Handler"
-    Protected Sub ExecuteSearchFilter(ByVal sender As Object, ByVal args As SearchAvailableSelectedEventArgs) Handles UserControlSearchAvailableEquipment.ExecuteSearchFilter
+    Protected Sub ExecuteSearchFilter(sender As Object, args As SearchAvailableSelectedEventArgs) Handles UserControlSearchAvailableEquipment.ExecuteSearchFilter
         Dim equip As New Equipment
         Try
-            args.dvAvailableEquipment = equip.ExecuteEquipmentListFilter(args.ManufactorerID, args.EquipmentClass, args.EquipmentType, args.Model, args.Description, Me.State.MyBO.EquipmentTypeId)
+            args.dvAvailableEquipment = equip.ExecuteEquipmentListFilter(args.ManufactorerID, args.EquipmentClass, args.EquipmentType, args.Model, args.Description, State.MyBO.EquipmentTypeId)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub SaveClicked(ByVal sender As Object, ByVal args As SearchAvailableSelectedEventArgs) Handles UserControlSearchAvailableEquipment.EventSaveEquipmentListDetail
+    Protected Sub SaveClicked(sender As Object, args As SearchAvailableSelectedEventArgs) Handles UserControlSearchAvailableEquipment.EventSaveEquipmentListDetail
         Try
             ShowUserControl_on_RelatedEquipment(False)
             EnableDisableParentControls(True)
             RefreshEquipmentSelection(args.listSelectedEquipment)
             PopulateRelatedEquipmentDetailGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub CancelButtonClicked(ByVal sender As Object, ByVal args As SearchAvailableSelectedEventArgs) Handles UserControlSearchAvailableEquipment.EventCancelButtonClicked
+    Protected Sub CancelButtonClicked(sender As Object, args As SearchAvailableSelectedEventArgs) Handles UserControlSearchAvailableEquipment.EventCancelButtonClicked
         Try
             ShowUserControl_on_RelatedEquipment(False)
             EnableDisableParentControls(True)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub CustomPopulateDropDown(ByVal sender As Object, ByVal args As SearchAvailableSelectedEventArgs) Handles UserControlSearchAvailableEquipment.EventCustomPopulateDropDown
+    Protected Sub CustomPopulateDropDown(sender As Object, args As SearchAvailableSelectedEventArgs) Handles UserControlSearchAvailableEquipment.EventCustomPopulateDropDown
         Try
-            If Not sender Is Nothing Then
+            If sender IsNot Nothing Then
                 Dim cboEquipmenttype As DropDownList = CType(sender, DropDownList)
-                args.dvmakeList = RelatedEquipment.GetEquipmentType(Me.State.MyBO.EquipmentTypeId)
+                args.dvmakeList = RelatedEquipment.GetEquipmentType(State.MyBO.EquipmentTypeId)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -1282,21 +1282,21 @@ Public Class EquipmentForm
         Throw New NotImplementedException
     End Function
 
-    Private Sub RefreshEquipmentSelection(ByVal listSelectedEquipment As ArrayList)
+    Private Sub RefreshEquipmentSelection(listSelectedEquipment As ArrayList)
         Dim NoId As Guid = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "N")
         'add newly added equipment children
         For Each obj As Object In listSelectedEquipment
             Dim childEquipmentId As String = DirectCast(obj, String)
             Dim Childfound As Boolean = False
-            For Each REChild As RelatedEquipment In Me.State.MyBO.RelatedEquipmentChildren
+            For Each REChild As RelatedEquipment In State.MyBO.RelatedEquipmentChildren
                 If REChild.ChildEquipmentId = New Guid(childEquipmentId) Then
                     Childfound = True
                 End If
             Next
             If Not Childfound Then
-                Me.State.RelatedEquipmentSelectedChildId = Guid.Empty
+                State.RelatedEquipmentSelectedChildId = Guid.Empty
                 BeginRelatedEquipmentChildEdit()
-                With Me.State.MyRelatedEquipmentChildBO
+                With State.MyRelatedEquipmentChildBO
                     .ChildEquipmentId = New Guid(childEquipmentId)
                     .IsInOemBoxId = NoId
                     .IsCoveredId = NoId
@@ -1306,7 +1306,7 @@ Public Class EquipmentForm
             End If
         Next
         'remove that got deselected 
-        For Each REChild As RelatedEquipment In Me.State.MyBO.RelatedEquipmentChildren
+        For Each REChild As RelatedEquipment In State.MyBO.RelatedEquipmentChildren
             Dim Childfound As Boolean = False
             For Each obj As Object In listSelectedEquipment
                 Dim childEquipmentId As String = DirectCast(obj, String)
@@ -1315,12 +1315,12 @@ Public Class EquipmentForm
                 End If
             Next
             If Not Childfound Then
-                Me.State.RelatedEquipmentSelectedChildId = REChild.Id
+                State.RelatedEquipmentSelectedChildId = REChild.Id
                 BeginRelatedEquipmentChildEdit()
                 EndRelatedEquipmentChildEdit(ElitaPlusPage.DetailPageCommand.Delete)
             End If
         Next
-        Me.State.IsRelatedEquipmentEditing = False
+        State.IsRelatedEquipmentEditing = False
     End Sub
 
     Private Sub EquipmentForm_PreRender(sender As Object, e As EventArgs) Handles Me.PreRender
@@ -1339,7 +1339,7 @@ Public Class EquipmentForm
         End If
 
     End Sub
-    Private Sub EnableTab(ByVal blnFlag As Boolean)
+    Private Sub EnableTab(blnFlag As Boolean)
         Dim cnt As Integer
         If blnFlag = True Then 'enable - remove from disabled list
             listDisabledTabs.Clear()

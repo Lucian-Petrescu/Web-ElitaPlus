@@ -23,7 +23,7 @@ Partial Class ZipDistrictForm
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -42,9 +42,9 @@ Partial Class ZipDistrictForm
         Public LastOperation As DetailPageCommand
         Public EditingBo As ZipDistrict
         Public HasDataChanged As Boolean
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As ZipDistrict, ByVal hasDataChanged As Boolean)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(LastOp As DetailPageCommand, curEditingBo As ZipDistrict, hasDataChanged As Boolean)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
             Me.HasDataChanged = hasDataChanged
         End Sub
     End Class
@@ -75,14 +75,14 @@ Partial Class ZipDistrictForm
         End Get
     End Property
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 'Get the id from the parent
-                Me.State.MyBO = New ZipDistrict(CType(Me.CallingParameters, Guid))
+                State.MyBO = New ZipDistrict(CType(CallingParameters, Guid))
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
@@ -90,35 +90,35 @@ Partial Class ZipDistrictForm
 #End Region
 
 #Region "Page Events"
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
-        Me.ErrorCtrl.Clear_Hide()
+        ErrorCtrl.Clear_Hide()
         Try
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
                 'Date Calendars
-                Me.MenuEnabled = False
-                Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, True)
-                If Me.State.MyBO Is Nothing Then
-                    Me.State.MyBO = New ZipDistrict
-                    Me.State.IsNewBO = True
+                MenuEnabled = False
+                AddControlMsg(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, True)
+                If State.MyBO Is Nothing Then
+                    State.MyBO = New ZipDistrict
+                    State.IsNewBO = True
                 End If
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
-                Me.AdjustAddButtonWidthBasedOnTranslationWidth()
+                PopulateFormFromBOs()
+                EnableDisableFields()
+                AdjustAddButtonWidthBasedOnTranslationWidth()
             End If
-            Me.DisplayProgressBarOnClick(Me.btnSave_WRITE, Message.MSG_PERFORMING_REQUEST)
-            Me.DisplayProgressBarOnClick(Me.ButtonAddZipCode, Message.MSG_PERFORMING_REQUEST)
+            DisplayProgressBarOnClick(btnSave_WRITE, Message.MSG_PERFORMING_REQUEST)
+            DisplayProgressBarOnClick(ButtonAddZipCode, Message.MSG_PERFORMING_REQUEST)
             'Me.DisplayProgressBarOnClick(Me.btnDelete_WRITE, Message.MSG_PERFORMING_REQUEST)
             BindBoPropertiesToLabels()
             CheckIfComingFromSaveConfirm()
-            If Not Me.IsPostBack Then
-                Me.AddLabelDecorations(Me.State.MyBO)
+            If Not IsPostBack Then
+                AddLabelDecorations(State.MyBO)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
-        Me.ShowMissingTranslations(Me.ErrorCtrl)
+        ShowMissingTranslations(ErrorCtrl)
     End Sub
 #End Region
 
@@ -130,7 +130,7 @@ Partial Class ZipDistrictForm
         ControlMgr.SetVisibleControl(Me, btnNew_WRITE, True)
         ControlMgr.SetVisibleControl(Me, RadioButtonListSingleOrRange, True)
         'Now disable depebding on the object state
-        If Me.State.MyBO.IsNew Then
+        If State.MyBO.IsNew Then
             ControlMgr.SetVisibleControl(Me, btnDelete_WRITE, False)
             ControlMgr.SetVisibleControl(Me, btnNew_WRITE, False)
             'ControlMgr.SetEnableControl(Me, Me.mpHoriz, False)
@@ -140,7 +140,7 @@ Partial Class ZipDistrictForm
         ControlMgr.SetVisibleControl(Me, TextboxFrom, False)
         ControlMgr.SetVisibleControl(Me, LabelSeparator, False)
         ControlMgr.SetVisibleControl(Me, TextboxTo, False)
-        Select Case Me.RadioButtonListSingleOrRange.SelectedValue
+        Select Case RadioButtonListSingleOrRange.SelectedValue
             Case "Single"
                 ControlMgr.SetVisibleControl(Me, TextboxFrom, True)
                 ControlMgr.SetVisibleControl(Me, LabelSeparator, False)
@@ -159,7 +159,7 @@ Partial Class ZipDistrictForm
                 AddAnyZipCode()
         End Select
 
-        If Me.State.IsAny Then
+        If State.IsAny Then
             ControlMgr.SetVisibleControl(Me, TextboxFrom, False)
             ControlMgr.SetVisibleControl(Me, LabelSeparator, False)
             ControlMgr.SetVisibleControl(Me, TextboxTo, False)
@@ -170,51 +170,51 @@ Partial Class ZipDistrictForm
     End Sub
 
     Private Sub AddAnyZipCode()
-        If Me.State.IsAnyAdded = False Then
-            SetSelectedAll(Me.ListBoxZipCodes)
-            Me.State.MyBO.DeleteZipCodes(Me.GetSelectedList(Me.ListBoxZipCodes))
-            Me.State.MyBO.AddZipCode("*")
-            Me.State.IsAnyAdded = True
+        If State.IsAnyAdded = False Then
+            SetSelectedAll(ListBoxZipCodes)
+            State.MyBO.DeleteZipCodes(GetSelectedList(ListBoxZipCodes))
+            State.MyBO.AddZipCode("*")
+            State.IsAnyAdded = True
             PopulateZipCodes()
 
         End If
     End Sub
 
     Protected Sub BindBoPropertiesToLabels()
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "ShortDesc", Me.LabelShortDesc)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Description", Me.LabelDescription)
-        Me.ClearGridHeadersAndLabelsErrSign()
+        BindBOPropertyToLabel(State.MyBO, "ShortDesc", LabelShortDesc)
+        BindBOPropertyToLabel(State.MyBO, "Description", LabelDescription)
+        ClearGridHeadersAndLabelsErrSign()
     End Sub
 
     Protected Sub PopulateZipCodes()
         'Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
         'Dim compId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyId
-        Dim dv As ZipDistrict.ZipCodeSelectionView = Me.State.MyBO.GetZipCodeSelectionView
-        Me.BindListControlToDataView(Me.ListBoxZipCodes, dv, ZipDistrict.ZipCodeSelectionView.COL_NAME_ZIP_CODE, ZipDistrict.ZipCodeSelectionView.COL_NAME_DETAIL_ID, False)
-        Me.State.IsAny = isAnyFound()
+        Dim dv As ZipDistrict.ZipCodeSelectionView = State.MyBO.GetZipCodeSelectionView
+        BindListControlToDataView(ListBoxZipCodes, dv, ZipDistrict.ZipCodeSelectionView.COL_NAME_ZIP_CODE, ZipDistrict.ZipCodeSelectionView.COL_NAME_DETAIL_ID, False)
+        State.IsAny = isAnyFound()
     End Sub
 
     Protected Sub PopulateFormFromBOs()
         Dim oCountry As Country
-        With Me.State.MyBO
+        With State.MyBO
 
-            Me.PopulateControlFromBOProperty(Me.TextboxShortDesc, .ShortDesc)
-            Me.PopulateControlFromBOProperty(Me.TextboxDescription, .Description)
+            PopulateControlFromBOProperty(TextboxShortDesc, .ShortDesc)
+            PopulateControlFromBOProperty(TextboxDescription, .Description)
             'Me.BindListControlToDataView(moCountryDrop, LookupListNew.GetUserCountriesLookupList(), , , False)
             Dim usercountryLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList(ListCodes.Country, Thread.CurrentPrincipal.GetLanguageCode())
             Dim FilteredRecord As ListItem() = (From x In usercountryLkl
                                                 Where (ElitaPlusIdentity.Current.ActiveUser.Countries).Contains(x.ListItemId)
                                                 Select x).ToArray()
             moCountryDrop.Populate(FilteredRecord, New PopulateOptions())
-            If Me.State.IsNewBO Then
+            If State.IsNewBO Then
                 ' New one
                 moCountryDrop.SelectedIndex = 0
-                Me.PopulateControlFromBOProperty(moCountryLabel_NO_TRANSLATE, Me.GetSelectedDescription(moCountryDrop))
-                Me.PopulateBOProperty(Me.State.MyBO, "CountryId", moCountryDrop)
+                PopulateControlFromBOProperty(moCountryLabel_NO_TRANSLATE, GetSelectedDescription(moCountryDrop))
+                PopulateBOProperty(State.MyBO, "CountryId", moCountryDrop)
             Else
                 oCountry = New Country(.CountryId)
-                Me.SetSelectedItem(moCountryDrop, .CountryId)
-                Me.PopulateControlFromBOProperty(moCountryLabel_NO_TRANSLATE, oCountry.Description)
+                SetSelectedItem(moCountryDrop, .CountryId)
+                PopulateControlFromBOProperty(moCountryLabel_NO_TRANSLATE, oCountry.Description)
             End If
 
             If moCountryDrop.Items.Count > 1 Then
@@ -224,73 +224,73 @@ Partial Class ZipDistrictForm
                 ControlMgr.SetVisibleControl(Me, moCountryDrop, False)
             End If
             ControlMgr.SetVisibleControl(Me, btnDelete_WRITE, True)
-            Me.PopulateZipCodes()
+            PopulateZipCodes()
 
         End With
 
-        If Not Me.IsPostBack Then
-            Me.LabelZipCodes.Text &= ":"
+        If Not IsPostBack Then
+            LabelZipCodes.Text &= ":"
         End If
 
     End Sub
 
     Protected Sub PopulateBOsFormFrom()
-        With Me.State.MyBO
-            Me.PopulateBOProperty(Me.State.MyBO, "ShortDesc", Me.TextboxShortDesc)
-            Me.PopulateBOProperty(Me.State.MyBO, "Description", Me.TextboxDescription)
-            Me.PopulateBOProperty(Me.State.MyBO, "CountryId", moCountryDrop)
+        With State.MyBO
+            PopulateBOProperty(State.MyBO, "ShortDesc", TextboxShortDesc)
+            PopulateBOProperty(State.MyBO, "Description", TextboxDescription)
+            PopulateBOProperty(State.MyBO, "CountryId", moCountryDrop)
         End With
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Sub
 
 
     Protected Sub CreateNew()
-        Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
+        State.ScreenSnapShotBO = Nothing 'Reset the backup copy
 
-        Me.State.MyBO = New ZipDistrict
-        Me.State.IsNewBO = True
-        Me.PopulateFormFromBOs()
-        Me.EnableDisableFields()
+        State.MyBO = New ZipDistrict
+        State.IsNewBO = True
+        PopulateFormFromBOs()
+        EnableDisableFields()
 
     End Sub
 
     Protected Sub CheckIfComingFromSaveConfirm()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-        If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
-            If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
-                Me.State.MyBO.Save()
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+        If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
+            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
+                State.MyBO.Save()
             End If
-            Select Case Me.State.ActionInProgress
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                    Me.CreateNew()
+                    DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
             End Select
-        ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-            Select Case Me.State.ActionInProgress
+        ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.CreateNew()
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.ErrorCtrl.AddErrorAndShow(Me.State.LastErrMsg)
+                    ErrorCtrl.AddErrorAndShow(State.LastErrMsg)
             End Select
         End If
         'Clean after consuming the action
-        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-        Me.HiddenSaveChangesPromptResponse.Value = ""
+        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        HiddenSaveChangesPromptResponse.Value = ""
     End Sub
 
     Private Sub AdjustAddButtonWidthBasedOnTranslationWidth()
-        Me.ButtonAddZipCode.Width = New Unit(Me.BASE_WIDTH + (ButtonAddZipCode.Text.Length * Me.MULTIPLIER))
+        ButtonAddZipCode.Width = New Unit(BASE_WIDTH + (ButtonAddZipCode.Text.Length * MULTIPLIER))
     End Sub
 
-    Private Function SetSelectedAll(ByVal oListControl As ListControl) As Integer
+    Private Function SetSelectedAll(oListControl As ListControl) As Integer
         Dim oItem As System.Web.UI.WebControls.ListItem
 
         For Each oItem In oListControl.Items
@@ -301,7 +301,7 @@ Partial Class ZipDistrictForm
     Private Function isAnyFound() As Boolean
         Dim oItem As System.Web.UI.WebControls.ListItem
 
-        oItem = Me.ListBoxZipCodes.Items.FindByText("*")
+        oItem = ListBoxZipCodes.Items.FindByText("*")
 
         If oItem Is Nothing Then
             Return False
@@ -316,37 +316,37 @@ Partial Class ZipDistrictForm
 
 #Region "Button Clicks"
 
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
             Else
-                Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
-            Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-            Me.State.LastErrMsg = Me.ErrorCtrl.Text
+            HandleErrors(ex, ErrorCtrl)
+            DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+            State.LastErrMsg = ErrorCtrl.Text
         End Try
     End Sub
 
-    Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
                 'If Me.RadioButtonListSingleOrRange.SelectedValue <> "Any" Then
                 'If Me.RadioButtonListSingleOrRange.SelectedValue = "Single" Or Not Me.State.MyBO.IsNew Then
                 'If Me.State.MyBO.IsNew Then
-                Me.State.MyBO.Save()
-                Me.State.IsNewBO = False
-                Me.State.HasDataChanged = True
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
-                Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                State.MyBO.Save()
+                State.IsNewBO = False
+                State.HasDataChanged = True
+                PopulateFormFromBOs()
+                EnableDisableFields()
+                DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 'ElseIf Me.RadioButtonListSingleOrRange.SelectedValue <> "Any" Then
                 '    Dim intResult As Integer = Me.State.MyBO.ZDAndDetail_Batch_Insert()
                 '    If intResult = Me.State.MyBO.NO_ERROR Then
@@ -368,74 +368,74 @@ Partial Class ZipDistrictForm
                 '    End If
                 'End If
             Else
-                Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnUndo_Write_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_Write.Click
+    Private Sub btnUndo_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_Write.Click
         Try
-            If Not Me.State.MyBO.IsNew Then
+            If Not State.MyBO.IsNew Then
                 'Reload from the DB
-                Me.State.MyBO = New ZipDistrict(Me.State.MyBO.Id)
-            ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+                State.MyBO = New ZipDistrict(State.MyBO.Id)
+            ElseIf State.ScreenSnapShotBO IsNot Nothing Then
                 'It was a new with copy
-                Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                State.MyBO.Clone(State.ScreenSnapShotBO)
             Else
-                Me.State.MyBO = New ZipDistrict
+                State.MyBO = New ZipDistrict
             End If
-            Me.State.IsAnyAdded = False
-            Me.RadioButtonListSingleOrRange.SelectedValue = "Single"
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
+            State.IsAnyAdded = False
+            RadioButtonListSingleOrRange.SelectedValue = "Single"
+            PopulateFormFromBOs()
+            EnableDisableFields()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
 
 
-    Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+    Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
         Try
             'Me.State.MyBO.Delete()
             'Me.State.MyBO.Save()
-            Me.State.MyBO.ZDAndDetail_Batch_Delete()
-            Me.State.HasDataChanged = True
-            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.MyBO, Me.State.HasDataChanged))
+            State.MyBO.ZDAndDetail_Batch_Delete()
+            State.HasDataChanged = True
+            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, State.MyBO, State.HasDataChanged))
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
             'undo the delete
-            Me.State.MyBO.RejectChanges()
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            State.MyBO.RejectChanges()
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+    Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
             Else
-                Me.CreateNew()
+                CreateNew()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
 #Region "Detail Clicks"
-    Private Sub RadioButtonListSingleOrRange_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles RadioButtonListSingleOrRange.SelectedIndexChanged
+    Private Sub RadioButtonListSingleOrRange_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles RadioButtonListSingleOrRange.SelectedIndexChanged
         Try
-            Me.EnableDisableFields()
+            EnableDisableFields()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub ButtonAddZipCode_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ButtonAddZipCode.Click
+    Private Sub ButtonAddZipCode_Click(sender As Object, e As System.EventArgs) Handles ButtonAddZipCode.Click
         Try
 
             'If Me.State.IsNewBO Then
@@ -443,35 +443,35 @@ Partial Class ZipDistrictForm
             '    Me.PopulateControlFromBOProperty(moCountryLabel_NO_TRANSLATE, Me.GetSelectedDescription(moCountryDrop))
             'End If
 
-            If Me.RadioButtonListSingleOrRange.SelectedValue = "Single" Then
-                Me.State.MyBO.AddZipCode(Me.TextboxFrom.Text)
-            ElseIf Me.RadioButtonListSingleOrRange.SelectedValue = "Range" Then
-                If Me.State.IsNewBO Then
-                    Me.State.MyBO.AddZipCodeRangeNew(Me.TextboxFrom.Text, Me.TextboxTo.Text)
+            If RadioButtonListSingleOrRange.SelectedValue = "Single" Then
+                State.MyBO.AddZipCode(TextboxFrom.Text)
+            ElseIf RadioButtonListSingleOrRange.SelectedValue = "Range" Then
+                If State.IsNewBO Then
+                    State.MyBO.AddZipCodeRangeNew(TextboxFrom.Text, TextboxTo.Text)
                 Else
-                    Me.State.MyBO.AddZipCodeRange(Me.TextboxFrom.Text, Me.TextboxTo.Text)
+                    State.MyBO.AddZipCodeRange(TextboxFrom.Text, TextboxTo.Text)
                 End If
 
             End If
-            Me.PopulateZipCodes()
+            PopulateZipCodes()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnDeleteZipCode_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnDeleteZipCode.Click
+    Private Sub btnDeleteZipCode_Click(sender As Object, e As System.EventArgs) Handles btnDeleteZipCode.Click
         Try
-            If Not Me.GetSelectedList(Me.ListBoxZipCodes) Is Nothing Then
-                Me.State.MyBO.DeleteZipCodes(Me.GetSelectedList(Me.ListBoxZipCodes))
-                Me.State.IsAnyAdded = False
-                Me.RadioButtonListSingleOrRange.SelectedValue = "Single"
-                Me.PopulateZipCodes()
+            If GetSelectedList(ListBoxZipCodes) IsNot Nothing Then
+                State.MyBO.DeleteZipCodes(GetSelectedList(ListBoxZipCodes))
+                State.IsAnyAdded = False
+                RadioButtonListSingleOrRange.SelectedValue = "Single"
+                PopulateZipCodes()
                 EnableDisableFields()
             Else
-                Me.DisplayMessage(Message.MSG_NOTHING_SELECTED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                DisplayMessage(Message.MSG_NOTHING_SELECTED, "", MSG_BTN_OK, MSG_TYPE_INFO)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 #End Region

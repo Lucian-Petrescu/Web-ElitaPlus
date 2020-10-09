@@ -45,7 +45,7 @@ Namespace Certificates
             Public EditingBo As CertRegisteredItem
             Public HasDataChanged As Boolean
             Public CallingObjName As String
-            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As CertRegisteredItem, ByVal hasDataChanged As Boolean)
+            Public Sub New(LastOp As DetailPageCommand, curEditingBo As CertRegisteredItem, hasDataChanged As Boolean)
                 LastOperation = LastOp
                 EditingBo = curEditingBo
                 hasDataChanged = hasDataChanged
@@ -54,7 +54,7 @@ Namespace Certificates
 #End Region
 
 #Region "Page Events"
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
             MasterPage.UsePageTabTitleInBreadCrum = False
             MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("BankInformation")
@@ -63,7 +63,7 @@ Namespace Certificates
                 MasterPage.MessageController.Clear_Hide()
                 MenuEnabled = False
 
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     PopulateFormFromBOs()
 
 
@@ -71,30 +71,30 @@ Namespace Certificates
                 End If
             Catch ex As Exception
                 CleanPopupInput()
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
             ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Try
-                If Not Me.CallingParameters Is Nothing Then
+                If CallingParameters IsNot Nothing Then
 
                     'Get the id from the parent
-                    Me.State.CertificateId = CType(Me.CallingParameters, Guid)
-                    Me.State.MyCertificate = Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE)
-                    Me.State.MyCertInstallment = Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_INSTALLMENT)
-                    Me.State.MyBankInfo = Me.NavController.FlowSession(FlowSessionKeys.SESSION_BANK_INFO)
-                    Me.State.MyCompany = New Company(Me.State.MyCertificate.CompanyId)
-                    If Not Me.State.MyCompany Is Nothing Then
-                        Me.State.MyCountry = New Country(Me.State.MyCompany.CountryId)
+                    State.CertificateId = CType(CallingParameters, Guid)
+                    State.MyCertificate = NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE)
+                    State.MyCertInstallment = NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_INSTALLMENT)
+                    State.MyBankInfo = NavController.FlowSession(FlowSessionKeys.SESSION_BANK_INFO)
+                    State.MyCompany = New Company(State.MyCertificate.CompanyId)
+                    If State.MyCompany IsNot Nothing Then
+                        State.MyCountry = New Country(State.MyCompany.CountryId)
                     End If
 
 
 
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster, False)
+                HandleErrors(ex, ErrControllerMaster, False)
             End Try
         End Sub
 
@@ -102,8 +102,8 @@ Namespace Certificates
 
 #Region "Controlling Logic"
         Private Sub UpdateBreadCrum()
-            If (Not State Is Nothing) Then
-                If (Not Me.State.MyBO Is Nothing) Then
+            If (State IsNot Nothing) Then
+                If (State.MyBO IsNot Nothing) Then
                     MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
                     TranslationBase.TranslateLabelOrMessage("Bank_Information")
                     MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Bank_Information") & " " & "Register Bank Information"
@@ -113,8 +113,8 @@ Namespace Certificates
 
         Private Sub CleanPopupInput()
             Try
-                If Not State Is Nothing Then
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                If State IsNot Nothing Then
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
                     HiddenSaveChangesPromptResponse.Value = ""
                 End If
             Catch ex As Exception
@@ -125,52 +125,52 @@ Namespace Certificates
 
         Protected Sub PopulateFormFromBOs()
             Try
-                Me.moCertificateInfoController.InitController(Me.State.CertificateId, , Me.State.MyCompany.Code)
+                moCertificateInfoController.InitController(State.CertificateId, , State.MyCompany.Code)
 
-                Me.State.MyBankInfoEditable = New BankInfo()
+                State.MyBankInfoEditable = New BankInfo()
 
-                If Not Me.State.MyBankInfo Is Nothing Then
+                If State.MyBankInfo IsNot Nothing Then
 
-                    With Me.State.MyBankInfoEditable
+                    With State.MyBankInfoEditable
                         '.Id = Me.State.MyBankInfo.Id
-                        .CountryID = Me.State.MyBankInfo.CountryID
-                        .Account_Name = Me.State.MyBankInfo.Account_Name
-                        .Bank_Id = Me.State.MyBankInfo.Bank_Id
-                        .Account_Number = Me.State.MyBankInfo.Account_Number
-                        .SwiftCode = Me.State.MyBankInfo.SwiftCode
-                        .IbanNumber = Me.State.MyBankInfo.IbanNumber
-                        .AccountTypeId = Me.State.MyBankInfo.AccountTypeId
-                        .PaymentReasonID = Me.State.MyBankInfo.PaymentReasonID
-                        .BranchName = Me.State.MyBankInfo.BranchName
-                        .BankName = Me.State.MyBankInfo.BankName
-                        .BankSortCode = Me.State.MyBankInfo.BankSortCode
-                        .BankSubCode = Me.State.MyBankInfo.BankSubCode
-                        .TransactionLimit = Me.State.MyBankInfo.TransactionLimit
-                        .BankLookupCode = Me.State.MyBankInfo.BankLookupCode
-                        .SourceCountryID = Me.State.MyBankInfo.SourceCountryID
-                        .ValidateFieldsforBR = Me.State.MyBankInfo.ValidateFieldsforBR
-                        .DomesticTransfer = Me.State.MyBankInfo.DomesticTransfer
-                        .InternationalTransfer = Me.State.MyBankInfo.InternationalTransfer
-                        .InternationalEUTransfer = Me.State.MyBankInfo.InternationalEUTransfer
-                        .BranchDigit = Me.State.MyBankInfo.BranchDigit
-                        .AccountDigit = Me.State.MyBankInfo.AccountDigit
-                        .BranchNumber = Me.State.MyBankInfo.BranchNumber
-                        .PaymentMethodId = Me.State.MyBankInfo.PaymentMethodId
-                        .PayeeId = Me.State.MyBankInfo.PayeeId
-                        .TaxId = Me.State.MyBankInfo.TaxId
+                        .CountryID = State.MyBankInfo.CountryID
+                        .Account_Name = State.MyBankInfo.Account_Name
+                        .Bank_Id = State.MyBankInfo.Bank_Id
+                        .Account_Number = State.MyBankInfo.Account_Number
+                        .SwiftCode = State.MyBankInfo.SwiftCode
+                        .IbanNumber = State.MyBankInfo.IbanNumber
+                        .AccountTypeId = State.MyBankInfo.AccountTypeId
+                        .PaymentReasonID = State.MyBankInfo.PaymentReasonID
+                        .BranchName = State.MyBankInfo.BranchName
+                        .BankName = State.MyBankInfo.BankName
+                        .BankSortCode = State.MyBankInfo.BankSortCode
+                        .BankSubCode = State.MyBankInfo.BankSubCode
+                        .TransactionLimit = State.MyBankInfo.TransactionLimit
+                        .BankLookupCode = State.MyBankInfo.BankLookupCode
+                        .SourceCountryID = State.MyBankInfo.SourceCountryID
+                        .ValidateFieldsforBR = State.MyBankInfo.ValidateFieldsforBR
+                        .DomesticTransfer = State.MyBankInfo.DomesticTransfer
+                        .InternationalTransfer = State.MyBankInfo.InternationalTransfer
+                        .InternationalEUTransfer = State.MyBankInfo.InternationalEUTransfer
+                        .BranchDigit = State.MyBankInfo.BranchDigit
+                        .AccountDigit = State.MyBankInfo.AccountDigit
+                        .BranchNumber = State.MyBankInfo.BranchNumber
+                        .PaymentMethodId = State.MyBankInfo.PaymentMethodId
+                        .PayeeId = State.MyBankInfo.PayeeId
+                        .TaxId = State.MyBankInfo.TaxId
                     End With
 
                 End If
 
 
-                Me.moPremiumBankInfoController.Bind(Me.State.MyBankInfo)
+                moPremiumBankInfoController.Bind(State.MyBankInfo)
 
-                Me.moPremiumBankInfoController.DisableAllFields()
-                If String.IsNullOrEmpty(Me.State.MyBankInfo.BankLookupCode) AndAlso String.IsNullOrEmpty(Me.State.MyBankInfo.IbanNumber) Then
-                    Me.moPremiumBankInfoController.SwitchToEditView()
+                moPremiumBankInfoController.DisableAllFields()
+                If String.IsNullOrEmpty(State.MyBankInfo.BankLookupCode) AndAlso String.IsNullOrEmpty(State.MyBankInfo.IbanNumber) Then
+                    moPremiumBankInfoController.SwitchToEditView()
                 End If
 
-                Me.moPremiumBankInfoController.Visible = True
+                moPremiumBankInfoController.Visible = True
 
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
@@ -180,48 +180,48 @@ Namespace Certificates
 
 
 #Region "Button Handlers"
-        Protected Sub btnBack_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnBack.Click
+        Protected Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             Try
-                Me.ReturnToCallingPage()
+                ReturnToCallingPage()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnApply_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply_WRITE.Click
+        Private Sub btnApply_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnApply_WRITE.Click
             Try
-                If Not Me.State.MyCertInstallment Is Nothing Then
-                    Me.moPremiumBankInfoController.PopulateBOFromControl()
-                    Me.State.MyBankInfo.Save()
+                If State.MyCertInstallment IsNot Nothing Then
+                    moPremiumBankInfoController.PopulateBOFromControl()
+                    State.MyBankInfo.Save()
 
-                    Me.State.MyCertInstallment.BankInfoId = Me.State.MyBankInfo.Id
-                    Me.State.MyCertInstallment.BillingStatusId = LookupListNew.GetIdFromCode(LookupListNew.LK_BILLING_STATUS, Codes.BILLING_STATUS__ACTIVE)
-                    Me.State.MyCertInstallment.Save()
+                    State.MyCertInstallment.BankInfoId = State.MyBankInfo.Id
+                    State.MyCertInstallment.BillingStatusId = LookupListNew.GetIdFromCode(LookupListNew.LK_BILLING_STATUS, Codes.BILLING_STATUS__ACTIVE)
+                    State.MyCertInstallment.Save()
 
-                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
                     PopulateFormFromBOs()
-                    Me.moPremiumBankInfoController.SwitchToReadOnlyView()
+                    moPremiumBankInfoController.SwitchToReadOnlyView()
                 End If
 
             Catch ex As ApplicationException
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
 
             End Try
         End Sub
-        Private Sub btnEdit_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEdit_WRITE.Click
+        Private Sub btnEdit_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnEdit_WRITE.Click
             Try
-                Me.moPremiumBankInfoController.SwitchToEditView()
+                moPremiumBankInfoController.SwitchToEditView()
 
             Catch ex As ApplicationException
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
 
             End Try
         End Sub
 
         Private Sub btnUndo_WRITE_Click(sender As Object, e As EventArgs) Handles btnUndo_WRITE.Click
             PopulateFormFromBOs()
-            Me.moPremiumBankInfoController.SwitchToReadOnlyView()
+            moPremiumBankInfoController.SwitchToReadOnlyView()
 
         End Sub
 #End Region

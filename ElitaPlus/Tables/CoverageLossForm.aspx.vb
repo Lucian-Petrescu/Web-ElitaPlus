@@ -20,7 +20,7 @@ Partial Class CoverageLossForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -38,9 +38,9 @@ Partial Class CoverageLossForm
         Public LastOperation As DetailPageCommand
         Public EditingBo As CoverageType
         Public HasDataChanged As Boolean
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As CoverageType, ByVal hasDataChanged As Boolean)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(LastOp As DetailPageCommand, curEditingBo As CoverageType, hasDataChanged As Boolean)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
             Me.HasDataChanged = hasDataChanged
         End Sub
     End Class
@@ -71,16 +71,16 @@ Partial Class CoverageLossForm
         End Get
     End Property
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 'Get the id from the parent
-                Me.State.MyBO = New CoverageType(CType(Me.CallingParameters, Guid))
+                State.MyBO = New CoverageType(CType(CallingParameters, Guid))
             Else
-                Me.State.IsNew = True
+                State.IsNew = True
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
@@ -88,32 +88,32 @@ Partial Class CoverageLossForm
 #End Region
 
 #Region "Page Events"
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Try
-            Me.ErrorCtrl.Clear_Hide()
-            If Not Me.IsPostBack Then
-                Me.MenuEnabled = False
-                If Me.State.MyBO Is Nothing Then
-                    Me.State.MyBO = New CoverageType
+            ErrorCtrl.Clear_Hide()
+            If Not IsPostBack Then
+                MenuEnabled = False
+                If State.MyBO Is Nothing Then
+                    State.MyBO = New CoverageType
                     'Me.State.IsNew = True
                 Else
-                    Me.PopulateFormFromBOs()
+                    PopulateFormFromBOs()
                 End If
-                Me.PopulateDropdowns()
+                PopulateDropdowns()
                 ' Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
+                EnableDisableFields()
             End If
             BindBoPropertiesToLabels()
             CheckIfComingFromSaveConfirm()
-            If Not Me.IsPostBack Then
-                Me.AddLabelDecorations(Me.State.MyBO)
+            If Not IsPostBack Then
+                AddLabelDecorations(State.MyBO)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
-        Me.ShowMissingTranslations(Me.ErrorCtrl)
+        ShowMissingTranslations(ErrorCtrl)
     End Sub
 #End Region
 
@@ -128,7 +128,7 @@ Partial Class CoverageLossForm
         ControlMgr.SetEnableControl(Me, btnSave_WRITE, True)
 
         'Now disable depebding on the object state
-        If Me.State.MyBO.IsNew Then
+        If State.MyBO.IsNew Then
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, False)
             ControlMgr.SetVisibleControl(Me, cboCoverageType, True)
             ControlMgr.SetVisibleControl(Me, txtCoverageType, False)
@@ -138,34 +138,34 @@ Partial Class CoverageLossForm
     End Sub
 
     Protected Sub BindBoPropertiesToLabels()
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "CoverageTypeId", Me.LabelCoverageType)
+        BindBOPropertyToLabel(State.MyBO, "CoverageTypeId", LabelCoverageType)
     End Sub
 
 #Region "Detail Grid"
 
     Sub PopulateUserControlAvailableSelectedCauseOfLoss()
-        Me.UserControlAvailableSelectedCauseOfLoss.BackColor = "#d5d6e4"
+        UserControlAvailableSelectedCauseOfLoss.BackColor = "#d5d6e4"
         ControlMgr.SetVisibleControl(Me, UserControlAvailableSelectedCauseOfLoss, False)
 
         Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
         oListContext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-        oListContext.CoverageTypeId = Me.State.MyBO.Id
+        oListContext.CoverageTypeId = State.MyBO.Id
         oListContext.LanguageId = Thread.CurrentPrincipal.GetLanguageId()
 
         Dim availableLst As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="GetAvailableCauseOfLossByCompanyGroup", context:=oListContext)
         Dim selectedLst As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="GetSelectedCauseOfLossByCompanyGroup", context:=oListContext)
 
-        Dim availableDv As DataView = Me.State.MyBO.GetAvailableCausesOfLoss(Me.State.MyBO.Id)
-        Dim selectedDv As DataView = Me.State.MyBO.GetSelectedCausesOfLoss(Me.State.MyBO.Id)
-        Me.UserControlAvailableSelectedCauseOfLoss.SetAvailableData(availableDv, LookupListNew.COL_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME)
-        Me.UserControlAvailableSelectedCauseOfLoss.SetSelectedData(selectedDv, LookupListNew.COL_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME)
+        Dim availableDv As DataView = State.MyBO.GetAvailableCausesOfLoss(State.MyBO.Id)
+        Dim selectedDv As DataView = State.MyBO.GetSelectedCausesOfLoss(State.MyBO.Id)
+        UserControlAvailableSelectedCauseOfLoss.SetAvailableData(availableDv, LookupListNew.COL_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME)
+        UserControlAvailableSelectedCauseOfLoss.SetSelectedData(selectedDv, LookupListNew.COL_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME)
 
         'Me.cboDefaultValue.Populate(selectedLst, New PopulateOptions() With
         '        {
         '            .AddBlankItem = True
         '        })
 
-        Me.BindListControlToDataView(cboDefaultValue, selectedDv, , , True)
+        BindListControlToDataView(cboDefaultValue, selectedDv, , , True)
 
         FindDefaultValue()
         ControlMgr.SetVisibleControl(Me, UserControlAvailableSelectedCauseOfLoss, True)
@@ -177,7 +177,7 @@ Partial Class CoverageLossForm
 #End Region
 
     Protected Sub PopulateFormFromBOs()
-        Me.PopulateControlFromBOProperty(Me.txtCoverageType, Me.State.MyBO.GetCoverageTypeDescription(Me.State.MyBO.Id))
+        PopulateControlFromBOProperty(txtCoverageType, State.MyBO.GetCoverageTypeDescription(State.MyBO.Id))
         PopulateDetailControls()
 
     End Sub
@@ -193,70 +193,70 @@ Partial Class CoverageLossForm
         'oListContext.WithoutLoss = "Y"
 
         Dim coverageLst As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="CoverageTypeByCompanyGroup", context:=oListContext)
-        Me.cboCoverageType.Populate(coverageLst, New PopulateOptions() With
+        cboCoverageType.Populate(coverageLst, New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
 
         'Me.BindListControlToDataView(Me.cboCoverageType, LookupListNew.GetCoverageTypeByCompanyGroupLookupListNotInCovLoss(langId, oCompanyGroupId), , , True)
 
-        Me.SetSelectedItem(Me.cboCoverageType, Me.State.CoverageTypeId)
+        SetSelectedItem(cboCoverageType, State.CoverageTypeId)
     End Sub
 
     Protected Sub PopulateBOsFromForm()
-        If (Me.cboDefaultValue.SelectedIndex >= 0) Then
-            Me.State.MyBO.AvailableDefaultValue = Me.cboDefaultValue.SelectedValue
+        If (cboDefaultValue.SelectedIndex >= 0) Then
+            State.MyBO.AvailableDefaultValue = cboDefaultValue.SelectedValue
         Else
-            Me.State.MyBO.AvailableDefaultValue = Guid.Empty.ToString
+            State.MyBO.AvailableDefaultValue = Guid.Empty.ToString
         End If
 
     End Sub
 
 
     Protected Sub CreateNew()
-        Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
+        State.ScreenSnapShotBO = Nothing 'Reset the backup copy
 
-        Me.State.MyBO = New CoverageType
-        Me.State.IsNew = True
-        Me.PopulateFormFromBOs()
-        Me.EnableDisableFields()
+        State.MyBO = New CoverageType
+        State.IsNew = True
+        PopulateFormFromBOs()
+        EnableDisableFields()
     End Sub
 
     Protected Sub CheckIfComingFromSaveConfirm()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-        If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
-            If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
-                Me.State.MyBO.Save()
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+        If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
+            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
+                State.MyBO.Save()
             End If
-            Select Case Me.State.ActionInProgress
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                    Me.CreateNew()
+                    DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
             End Select
-        ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-            Select Case Me.State.ActionInProgress
+        ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.CreateNew()
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.ErrorCtrl.AddErrorAndShow(Me.State.LastErrMsg)
+                    ErrorCtrl.AddErrorAndShow(State.LastErrMsg)
             End Select
         End If
         'Clean after consuming the action
-        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-        Me.HiddenSaveChangesPromptResponse.Value = ""
+        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        HiddenSaveChangesPromptResponse.Value = ""
     End Sub
 
     Private Sub FindDefaultValue()
 
-        Me.State.CoverageLoss = Me.State.MyBO.AssociatedCoveragesLoss.FindDefault
-        If Not Me.State.CoverageLoss Is Nothing Then
-            Me.SetSelectedItem(Me.cboDefaultValue, Me.State.CoverageLoss.CauseOfLossId)
+        State.CoverageLoss = State.MyBO.AssociatedCoveragesLoss.FindDefault
+        If State.CoverageLoss IsNot Nothing Then
+            SetSelectedItem(cboDefaultValue, State.CoverageLoss.CauseOfLossId)
         End If
 
     End Sub
@@ -265,76 +265,76 @@ Partial Class CoverageLossForm
 
 #Region "Button Clicks"
 
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            Me.PopulateBOsFromForm()
-            If Me.State.MyBO.IsDirty Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+            PopulateBOsFromForm()
+            If State.MyBO.IsDirty Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
             Else
-                Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
-            Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-            Me.State.LastErrMsg = Me.ErrorCtrl.Text
+            HandleErrors(ex, ErrorCtrl)
+            DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+            State.LastErrMsg = ErrorCtrl.Text
         End Try
     End Sub
 
-    Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
         Try
-            Me.PopulateBOsFromForm()
-            If Me.State.MyBO.IsDirty Then
-                Me.State.MyBO.Save()
-                Me.State.IsNew = False
-                Me.State.HasDataChanged = True
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
-                Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                If Me.UserControlAvailableSelectedCauseOfLoss.SelectedList.Count = 0 Then
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+            PopulateBOsFromForm()
+            If State.MyBO.IsDirty Then
+                State.MyBO.Save()
+                State.IsNew = False
+                State.HasDataChanged = True
+                PopulateFormFromBOs()
+                EnableDisableFields()
+                DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                If UserControlAvailableSelectedCauseOfLoss.SelectedList.Count = 0 Then
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 End If
             Else
-                Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnUndo_Write_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_Write.Click
+    Private Sub btnUndo_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_Write.Click
         Try
-            If Not Me.State.MyBO.IsNew Then
+            If Not State.MyBO.IsNew Then
                 'Reload from the DB
-                Me.State.MyBO = New CoverageType(Me.State.MyBO.Id)
-            ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+                State.MyBO = New CoverageType(State.MyBO.Id)
+            ElseIf State.ScreenSnapShotBO IsNot Nothing Then
                 'It was a new with copy
-                Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                State.MyBO.Clone(State.ScreenSnapShotBO)
             Else
-                Me.State.MyBO = New CoverageType
+                State.MyBO = New CoverageType
             End If
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
+            PopulateFormFromBOs()
+            EnableDisableFields()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
 
-    Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+    Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
         Try
-            Me.PopulateBOsFromForm()
-            If Me.State.MyBO.IsDirty Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
+            PopulateBOsFromForm()
+            If State.MyBO.IsDirty Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                 'Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
             Else
-                Me.CreateNew()
+                CreateNew()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
@@ -343,22 +343,22 @@ Partial Class CoverageLossForm
 
 #Region "Page Control Events"
 
-    Private Sub cboCoverageType_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboCoverageType.SelectedIndexChanged
+    Private Sub cboCoverageType_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboCoverageType.SelectedIndexChanged
         'Me.State.MyBO = Nothing
-        Me.State.MyBO = New CoverageType(Me.GetSelectedItem(Me.cboCoverageType))
-        Me.State.IsNew = False
-        Me.PopulateFormFromBOs()
+        State.MyBO = New CoverageType(GetSelectedItem(cboCoverageType))
+        State.IsNew = False
+        PopulateFormFromBOs()
     End Sub
 
-    Private Sub cboDefaultValue_SelectedIndexChanged1(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboDefaultValue.SelectedIndexChanged
-        Me.State.CoverageLoss = Me.State.MyBO.AssociatedCoveragesLoss.FindDefault
-        If Not Me.State.CoverageLoss Is Nothing Then
-            Me.State.CoverageLoss.DefaultFlag = "N"
+    Private Sub cboDefaultValue_SelectedIndexChanged1(sender As Object, e As System.EventArgs) Handles cboDefaultValue.SelectedIndexChanged
+        State.CoverageLoss = State.MyBO.AssociatedCoveragesLoss.FindDefault
+        If State.CoverageLoss IsNot Nothing Then
+            State.CoverageLoss.DefaultFlag = "N"
         End If
         'Dim causeOfLossId As Guid = Me.GetSelectedItem(Me.cboDefaultValue)
-        Me.State.CoverageLoss = Me.State.MyBO.AssociatedCoveragesLoss.FindById(Me.GetSelectedItem(Me.cboDefaultValue))
-        If Not Me.State.CoverageLoss Is Nothing Then
-            Me.State.CoverageLoss.DefaultFlag = "Y"
+        State.CoverageLoss = State.MyBO.AssociatedCoveragesLoss.FindById(GetSelectedItem(cboDefaultValue))
+        If State.CoverageLoss IsNot Nothing Then
+            State.CoverageLoss.DefaultFlag = "Y"
         End If
     End Sub
 #End Region
@@ -370,10 +370,10 @@ Partial Class CoverageLossForm
 
 #Region "Attach - Detach Event Handlers"
 
-    Private Sub UserControlAvailableSelectedCauseOfLoss_Attach(ByVal aSrc As Generic.UserControlAvailableSelected, ByVal attachedList As System.Collections.ArrayList) Handles UserControlAvailableSelectedCauseOfLoss.Attach
+    Private Sub UserControlAvailableSelectedCauseOfLoss_Attach(aSrc As Generic.UserControlAvailableSelected, attachedList As System.Collections.ArrayList) Handles UserControlAvailableSelectedCauseOfLoss.Attach
         Try
             If attachedList.Count > 0 Then
-                Me.State.MyBO.AttachCoverageLoss(attachedList)
+                State.MyBO.AttachCoverageLoss(attachedList)
                 Dim oItem As ListItem
                 cboDefaultValue.Items.Clear()
                 cboDefaultValue.Items.Add(New ListItem("", Guid.Empty.ToString))
@@ -384,32 +384,32 @@ Partial Class CoverageLossForm
                 ControlMgr.SetEnableControl(Me, btnSave_WRITE, True)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub UserControlAvailableSelectedCauseOfLoss_Detach(ByVal aSrc As Generic.UserControlAvailableSelected, ByVal detachedList As System.Collections.ArrayList) Handles UserControlAvailableSelectedCauseOfLoss.Detach
+    Private Sub UserControlAvailableSelectedCauseOfLoss_Detach(aSrc As Generic.UserControlAvailableSelected, detachedList As System.Collections.ArrayList) Handles UserControlAvailableSelectedCauseOfLoss.Detach
 
         Dim bo As New CoverageLoss
 
         Try
             If detachedList.Count > 0 Then
-                Me.State.CoverageLoss = Me.State.MyBO.AssociatedCoveragesLoss.FindDefault
+                State.CoverageLoss = State.MyBO.AssociatedCoveragesLoss.FindDefault
                 Dim oItem As String
                 For Each oItem In detachedList
-                    If Not Me.State.CoverageLoss Is Nothing AndAlso Me.State.CoverageLoss.CauseOfLossId = New Guid(oItem) Then
-                        Me.SetSelectedItem(Me.cboDefaultValue, Guid.Empty)
-                        Me.State.CoverageLoss.DefaultFlag = "N"
+                    If State.CoverageLoss IsNot Nothing AndAlso State.CoverageLoss.CauseOfLossId = New Guid(oItem) Then
+                        SetSelectedItem(cboDefaultValue, Guid.Empty)
+                        State.CoverageLoss.DefaultFlag = "N"
                     End If
-                    Me.cboDefaultValue.Items.Remove(oItem)
+                    cboDefaultValue.Items.Remove(oItem)
                 Next
             End If
-            Me.State.MyBO.DetachCoverageLoss(detachedList)
-            If Me.State.IsNew AndAlso Me.UserControlAvailableSelectedCauseOfLoss.SelectedList.Count = 0 Then
+            State.MyBO.DetachCoverageLoss(detachedList)
+            If State.IsNew AndAlso UserControlAvailableSelectedCauseOfLoss.SelectedList.Count = 0 Then
                 ControlMgr.SetEnableControl(Me, btnSave_WRITE, False)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 #End Region

@@ -6,26 +6,26 @@ Friend Class ListCacheManager
     Implements ICacheManager
 
     Private Property CommonRepository As ICommonRepository(Of List)
-    Friend Sub New(ByVal commonRepository As ICommonRepository(Of List))
+    Friend Sub New(commonRepository As ICommonRepository(Of List))
         Me.CommonRepository = commonRepository
     End Sub
 
     Private Const CacheKeyValue As String = "List"
 
-    Friend Function CacheKey(ByVal listCode As String, ByVal languageCode As String) As String
+    Friend Function CacheKey(listCode As String, languageCode As String) As String
         Return String.Format("{0}#{1}#{2}", CacheKeyValue, listCode.ToUpperInvariant(), languageCode.ToUpperInvariant())
     End Function
 
-    Friend Function BuildCache(ByVal listCode As String, ByVal languageCode As String) As ElitaListItem()
+    Friend Function BuildCache(listCode As String, languageCode As String) As ElitaListItem()
         Return CommonRepository.GetList(listCode, languageCode)
     End Function
 
 
-    Friend Function CacheKeyForLabelTranslations(ByVal uiCode As String, ByVal languageCode As String) As String
+    Friend Function CacheKeyForLabelTranslations(uiCode As String, languageCode As String) As String
         Return String.Format("{0}#{1}#{2}", CacheKeyValue, uiCode.ToUpperInvariant(), languageCode.ToUpperInvariant())
     End Function
 
-    Friend Function BuildCacheForLabelTranslations(ByVal uiCode As String, ByVal languageCode As String) As IEnumerable(Of LabelTranslation)
+    Friend Function BuildCacheForLabelTranslations(uiCode As String, languageCode As String) As IEnumerable(Of LabelTranslation)
         Return CommonRepository.GetLableTranslation(uiCode, languageCode)
     End Function
 

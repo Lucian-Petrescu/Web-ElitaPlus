@@ -7,7 +7,7 @@ Partial Public Class Claim
 
 
     Public Sub AddIssue(pIssue As Issue, ByVal pRule As Rule) Implements ISupportsIssues.AddIssue
-        Me.EntityIssues.Add(New EntityIssue() With
+        EntityIssues.Add(New EntityIssue() With
                             {
                                 .EntityIssueId = Guid.NewGuid(),
                                 .IssueId = pIssue.IssueId,
@@ -17,7 +17,7 @@ Partial Public Class Claim
     End Sub
 
     Public Sub AddEquipment(pCertificateItem As CertificateItem, ClaimedEquipmentTypeId As Guid) Implements ISupportsEquipment.AddEquipment
-        Me.ClaimEquipments.Add(New ClaimEquipment() With {
+        ClaimEquipments.Add(New ClaimEquipment() With {
                         .ClaimEquipmentDate = pCertificateItem.CreatedDate,
                         .ManufacturerId = pCertificateItem.ManufacturerId,
                         .Model = pCertificateItem.Model,
@@ -29,11 +29,11 @@ Partial Public Class Claim
     End Sub
 
     Public Function Clone() As Object Implements ICloneable.Clone
-        Dim returnClaim As Claim = DirectCast(Me.ShalowClone(), Claim)
+        Dim returnClaim As Claim = DirectCast(ShalowClone(), Claim)
 
         With returnClaim
             .ClaimEquipments =
-                Me.ClaimEquipments.Select(Function(ce)
+                ClaimEquipments.Select(Function(ce)
                                               Dim cce As ClaimEquipment = ce.ShalowClone()
                                               cce.Claim = returnClaim
                                               cce.ClaimId = returnClaim.ClaimId
@@ -43,14 +43,14 @@ Partial Public Class Claim
             .ClaimStatuses = New List(Of ClaimStatus)
 
             .Comments =
-                Me.Comments.Select(Function(com)
+                Comments.Select(Function(com)
                                        Dim ccom As Comment = com.ShalowClone()
                                        ccom.Claim = returnClaim
                                        ccom.ClaimId = returnClaim.ClaimId
                                        Return ccom
                                    End Function).ToList()
 
-            .EntityIssues = Me.EntityIssues.Select(Function(ei)
+            .EntityIssues = EntityIssues.Select(Function(ei)
                                                        Dim cei As EntityIssue = ei.ShalowClone()
                                                        cei.Claim = returnClaim
                                                        cei.EntityId = returnClaim.ClaimId

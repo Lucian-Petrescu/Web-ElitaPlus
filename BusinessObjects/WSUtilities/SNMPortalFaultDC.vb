@@ -7,11 +7,11 @@ Public Class SNMPortalFaultDC
 
     Private _FaultReason As String
     <DataMember(Name:="FaultReason")> _
-    Public Property FaultReason() As String
+    Public Property FaultReason As String
         Get
             Return _FaultReason
         End Get
-        Set(ByVal value As String)
+        Set
             _FaultReason = value
         End Set
     End Property

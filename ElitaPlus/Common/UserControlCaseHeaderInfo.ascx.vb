@@ -4,7 +4,7 @@
     Public Const NoData As String = " - "
 
 #End Region
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
 
     End Sub
     Private Sub ResetAllValue()
@@ -25,7 +25,7 @@
         Get
             Return LabelCustomerNameValue.Text.ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             If value <> String.Empty Then
                 LabelCustomerNameValue.Text = value
             Else
@@ -37,7 +37,7 @@
         Get
             Return LabelCallerNameValue.Text.ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             If value <> String.Empty Then
                 LabelCallerNameValue.Text = value
             Else
@@ -49,7 +49,7 @@
         Get
             Return LabelCompanyValue.Text.ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             If value <> String.Empty Then
                 LabelCompanyValue.Text = value
             Else
@@ -62,7 +62,7 @@
         Get
             Return LabelDealerNameValue.Text.ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             If value <> String.Empty Then
                 LabelDealerNameValue.Text = value
             Else
@@ -75,7 +75,7 @@
         Get
             Return LabelCaseNumberValue.Text.ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             If value <> String.Empty Then
                 LabelCaseNumberValue.Text = value
             Else
@@ -87,7 +87,7 @@
         Get
             Return LabelCaseOpenDateValue.Text.ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             If value <> String.Empty Then
                 LabelCaseOpenDateValue.Text = value
             Else
@@ -99,7 +99,7 @@
         Get
             Return LabelCasePurposeValue.Text.ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             If value <> String.Empty Then
                 LabelCasePurposeValue.Text = value
             Else
@@ -112,7 +112,7 @@
         Get
             Return LabelCaseStatusValue.Text.ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             If value <> String.Empty Then
                 LabelCaseStatusValue.Text = value
             Else
@@ -121,7 +121,7 @@
         End Set
     End Property
     Public WriteOnly Property SetCaseStatusCssClass() As String
-        Set(ByVal value As String)
+        Set(value As String)
             If value <> String.Empty Then
                 CaseStatusTD.Attributes.Item("Class") = value
             End If
@@ -131,7 +131,7 @@
         Get
             Return LabelCaseCloseDateValue.Text.ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             If value <> String.Empty Then
                 LabelCaseCloseDateValue.Text = value
             Else
@@ -143,7 +143,7 @@
         Get
             Return LabelCaseCloseValue.Text.ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             If value <> String.Empty Then
                 LabelCaseCloseValue.Text = value
             Else
@@ -156,7 +156,7 @@
         Get
             Return LabelCertificateNumberValue.Text.ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             If value <> String.Empty Then
                 LabelCertificateNumberValue.Text = value
             Else
@@ -168,7 +168,7 @@
         Get
             Return LabelClaimNumberValue.Text.ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             If value <> String.Empty Then
                 LabelClaimNumberValue.Text = value
             Else

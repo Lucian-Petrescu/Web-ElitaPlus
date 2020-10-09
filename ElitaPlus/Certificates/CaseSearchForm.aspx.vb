@@ -61,7 +61,7 @@ Namespace Certificates
 #Region "Handlers-Init, page events"
 
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
 
             Try
                 MasterPage.MessageController.Clear()
@@ -98,17 +98,17 @@ Namespace Certificates
 
         End Sub
 
-        Private Sub Page_PageReturn(ByVal returnFromUrl As String, ByVal returnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(returnFromUrl As String, returnPar As Object) Handles MyBase.PageReturn
             Try
                 MenuEnabled = True
                 _isReturningFromChild = True
                 Dim retObj As CaseDetailsForm.ReturnType = CType(ReturnPar, CaseDetailsForm.ReturnType)
-                If Not retObj Is Nothing AndAlso retObj.BoChanged Then
+                If retObj IsNot Nothing AndAlso retObj.BoChanged Then
                     State.searchDV = Nothing
                 End If
                 Select Case retObj.LastOperation
                     Case DetailPageCommand.Back
-                        If Not retObj Is Nothing Then
+                        If retObj IsNot Nothing Then
                             If Not retObj.EditingBo.IsNew Then
                                 State.selectedCaseId = retObj.EditingBo.Id
                             End If
@@ -122,7 +122,7 @@ Namespace Certificates
 #End Region
 
 #Region "Handlers-DropDown"
-        Private Sub cboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 State.PageSize = CType(cboPageSize.SelectedValue, Integer)
                 State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
@@ -150,7 +150,7 @@ Namespace Certificates
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Protected Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClearSearch.Click
+        Protected Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
             Try
 
                 ' Clear all search options typed or selected by the user
@@ -240,7 +240,7 @@ Namespace Certificates
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Private Sub PopulateSortByDropDown(ByVal sortByDropDownList As DropDownList)
+        Private Sub PopulateSortByDropDown(sortByDropDownList As DropDownList)
             Try
 
                 Dim caseSearchField As ListItem() =
@@ -328,7 +328,7 @@ Namespace Certificates
 
             Catch ex As Exception
                 Dim getExceptionType As String = ex.GetBaseException.GetType().Name
-                If ((Not GetExceptionType.Equals(String.Empty)) And GetExceptionType.Equals("BOValidationException")) Then
+                If ((Not GetExceptionType.Equals(String.Empty)) AndAlso GetExceptionType.Equals("BOValidationException")) Then
                     ControlMgr.SetVisibleControl(Me, Grid, False)
                     lblPageSize.Visible = False
                     lblRecordCount.Visible = False
@@ -342,7 +342,7 @@ Namespace Certificates
 #End Region
 #Region "Other"
         Private Sub UpdateBreadCrum()
-            If (Not State Is Nothing) Then
+            If (State IsNot Nothing) Then
                 MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
                     TranslationBase.TranslateLabelOrMessage("CASE_SEARCH")
                 MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("CASE_SEARCH")
@@ -389,7 +389,7 @@ Namespace Certificates
 
         Private Sub GetStateProperties()
             Try
-                If State.CompanyId <> Guid.Empty And ddlCompanyName.Items.Count > 0 Then SetSelectedItem(ddlCompanyName, State.CompanyId)
+                If State.CompanyId <> Guid.Empty AndAlso ddlCompanyName.Items.Count > 0 Then SetSelectedItem(ddlCompanyName, State.CompanyId)
 
                 TextBoxCaseNumber.Text = State.CaseNumber
                 If State.CaseStatus <> String.Empty And ddlCaseStatus.Items.Count > 0 Then SetSelectedItem(ddlCaseStatus, State.CaseStatus)
@@ -400,7 +400,7 @@ Namespace Certificates
                 TextBoxCallerLastName.Text = State.CallerLastName
                 TextBoxCertificateNumber.Text = State.CertificateNumber
                 If State.CaseClosedReason <> String.Empty And ddlCaseClosedReason.Items.Count > 0 Then SetSelectedItem(ddlCaseClosedReason, State.CaseClosedReason)
-                If State.selectedSortById <> Guid.Empty And cboSortBy.Items.Count > 0 Then SetSelectedItem(cboSortBy, State.selectedSortById)
+                If State.selectedSortById <> Guid.Empty AndAlso cboSortBy.Items.Count > 0 Then SetSelectedItem(cboSortBy, State.selectedSortById)
 
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
@@ -433,13 +433,13 @@ Namespace Certificates
         End Sub
 #End Region
 #Region "Grid Action"
-        Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles Grid.RowDataBound
+        Private Sub Grid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
             Try
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
                 Dim btnEditItem As LinkButton
                 If (e.Row.RowType = DataControlRowType.DataRow) _
                 OrElse (e.Row.RowType = DataControlRowType.Separator) Then
-                    If (Not e.Row.Cells(GridColCaseIdIdx).FindControl(GridColCaseNumberCtrl) Is Nothing) Then
+                    If (e.Row.Cells(GridColCaseIdIdx).FindControl(GridColCaseNumberCtrl) IsNot Nothing) Then
                         btnEditItem = CType(e.Row.Cells(GridColCaseIdIdx).FindControl(GridColCaseNumberCtrl), LinkButton)
                         btnEditItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(CaseBase.CaseSearchDv.ColCaseId), Byte()))
                         btnEditItem.CommandName = SelectActionCommand
@@ -472,7 +472,7 @@ Namespace Certificates
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Private Sub Grid_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles Grid.RowCommand
+        Private Sub Grid_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles Grid.RowCommand
             Try
                 If e.CommandName = SelectActionCommand Then
                     If Not e.CommandArgument.ToString().Equals(String.Empty) Then
@@ -487,7 +487,7 @@ Namespace Certificates
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles Grid.PageIndexChanged
+        Private Sub Grid_PageIndexChanged(sender As Object, e As EventArgs) Handles Grid.PageIndexChanged
             Try
                 State.PageIndex = Grid.PageIndex
                 State.selectedCaseId = Guid.Empty
@@ -496,7 +496,7 @@ Namespace Certificates
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
+        Private Sub Grid_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
             Try
                 Grid.PageIndex = e.NewPageIndex
                 State.PageIndex = Grid.PageIndex
@@ -504,7 +504,7 @@ Namespace Certificates
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As GridViewSortEventArgs) Handles Grid.Sorting
+        Private Sub Grid_SortCommand(source As Object, e As GridViewSortEventArgs) Handles Grid.Sorting
             Try
                 If State.SortExpression.StartsWith(e.SortExpression) Then
                     If State.SortExpression.EndsWith(" DESC") Then
@@ -522,7 +522,7 @@ Namespace Certificates
             End Try
 
         End Sub
-        Private Sub Grid_RowCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles Grid.RowCreated
+        Private Sub Grid_RowCreated(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowCreated
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception

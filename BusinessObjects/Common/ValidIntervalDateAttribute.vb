@@ -15,8 +15,8 @@
     '    MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_EFFECTIVE_EXPIRATION_ERR)
     'End Sub
 
-    Public Sub New(ByVal fieldDisplayName As String, ByVal oErrEffective As String, ByVal oErrMax As String, _
-    ByVal oErrDelete As String)
+    Public Sub New(fieldDisplayName As String, oErrEffective As String, oErrMax As String, _
+    oErrDelete As String)
         MyBase.New(fieldDisplayName, oErrEffective)
         moErrMax = oErrMax
         moErrDelete = oErrDelete
@@ -25,7 +25,7 @@
 #Region "Validate"
 
 #End Region
-    Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal oIntervalObject As Object) _
+    Public Overrides Function IsValid(valueToCheck As Object, oIntervalObject As Object) _
                                                                                                     As Boolean
         Dim bValid As Boolean = True
         Dim oIntervalDate As IValidateIntervalDate = CType(oIntervalObject, IValidateIntervalDate)
@@ -38,13 +38,13 @@
                 Dim dtMaxExpiration As Date = .IMaxExpiration.Value
                 If (dtMaxExpiration <> GenericConstants.INFINITE_DATE) AndAlso _
                                                 (.IEffective.Value <> dtMaxExpiration.AddDays(1)) Then
-                    MyBase.Message = moErrMax
+                    Message = moErrMax
                     bValid = False
                 End If
             ElseIf (.IIsDeleted = True) Then
                 ' For  deleting
                 If .IExpiration.Value <> .IMaxExpiration.Value Then
-                    MyBase.Message = moErrDelete
+                    Message = moErrDelete
                     bValid = False
                 End If
             End If

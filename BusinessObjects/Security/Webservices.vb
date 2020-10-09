@@ -11,36 +11,36 @@ Public Class Webservices
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
@@ -48,12 +48,12 @@ Public Class Webservices
         Try
             Dim dal As New WebservicesDAL
 
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -61,23 +61,23 @@ Public Class Webservices
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New WebservicesDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -96,7 +96,7 @@ Public Class Webservices
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(WebservicesDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -107,7 +107,7 @@ Public Class Webservices
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=120)> _
-    Public Property WebServiceName() As String
+    Public Property WebServiceName As String
         Get
             CheckDeleted()
             If row(WebservicesDAL.COL_NAME_WEB_SERVICE_NAME) Is DBNull.Value Then
@@ -116,15 +116,15 @@ Public Class Webservices
                 Return CType(row(WebservicesDAL.COL_NAME_WEB_SERVICE_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(WebservicesDAL.COL_NAME_WEB_SERVICE_NAME, Value)
+            SetValue(WebservicesDAL.COL_NAME_WEB_SERVICE_NAME, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property OnLineId() As Guid
+    Public Property OnLineId As Guid
         Get
             CheckDeleted()
             If row(WebservicesDAL.COL_NAME_ON_LINE_ID) Is DBNull.Value Then
@@ -133,15 +133,15 @@ Public Class Webservices
                 Return New Guid(CType(row(WebservicesDAL.COL_NAME_ON_LINE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(WebservicesDAL.COL_NAME_ON_LINE_ID, Value)
+            SetValue(WebservicesDAL.COL_NAME_ON_LINE_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=800)> _
-    Public Property OffLineMessage() As String
+    Public Property OffLineMessage As String
         Get
             CheckDeleted()
             If row(WebservicesDAL.COL_NAME_OFF_LINE_MESSAGE) Is DBNull.Value Then
@@ -150,13 +150,13 @@ Public Class Webservices
                 Return CType(row(WebservicesDAL.COL_NAME_OFF_LINE_MESSAGE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(WebservicesDAL.COL_NAME_OFF_LINE_MESSAGE, Value)
+            SetValue(WebservicesDAL.COL_NAME_OFF_LINE_MESSAGE, Value)
         End Set
     End Property
 
-    Public Property LastOperationDate() As DateType
+    Public Property LastOperationDate As DateType
         Get
             CheckDeleted()
             If Row(WebServicesDAL.COL_NAME_LAST_OPERATION_DATE) Is DBNull.Value Then
@@ -165,9 +165,9 @@ Public Class Webservices
                 Return New DateType(CType(Row(WebServicesDAL.COL_NAME_LAST_OPERATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(WebServicesDAL.COL_NAME_LAST_OPERATION_DATE, Value)
+            SetValue(WebServicesDAL.COL_NAME_LAST_OPERATION_DATE, Value)
         End Set
     End Property
 
@@ -178,15 +178,15 @@ Public Class Webservices
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New WebservicesDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -194,7 +194,7 @@ Public Class Webservices
         End Try
     End Sub
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid) As DataView
 
         Dim dt As DataTable
         dt = dv.Table
@@ -214,7 +214,7 @@ Public Class Webservices
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetWebServices(ByVal web_service_name As String, ByVal on_line_id As Guid) As WebServicesSearchDV
+    Public Shared Function GetWebServices(web_service_name As String, on_line_id As Guid) As WebServicesSearchDV
 
         Try
             Dim dal As New WebservicesDAL
@@ -227,9 +227,9 @@ Public Class Webservices
     End Function
 
 
-    Public Shared Sub WebUserLog(ByVal Web_UserLog_id As Guid, ByVal Url As String, ByVal functionToProcess As String,
-                                          ByVal networkId As String, ByVal Environment As String, ByVal Hub As String,
-                                          ByVal _xml As String, ByVal Created_date As Date)
+    Public Shared Sub WebUserLog(Web_UserLog_id As Guid, Url As String, functionToProcess As String,
+                                          networkId As String, Environment As String, Hub As String,
+                                          _xml As String, Created_date As Date)
         Try
             Dim Dal As New WebServicesDAL
             Dal.WebUserLog(Web_UserLog_id, Url, functionToProcess, networkId, Environment, Hub, _xml, Created_date)
@@ -258,7 +258,7 @@ Public Class Webservices
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

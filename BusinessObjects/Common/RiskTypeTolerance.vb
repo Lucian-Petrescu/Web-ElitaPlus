@@ -8,7 +8,7 @@
 #End Region
 
 #Region "Properties"
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(RiskTypeToleranceDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -18,7 +18,7 @@
         End Get
     End Property
 
-    Public Property RiskTypeToleranceId() As Guid
+    Public Property RiskTypeToleranceId As Guid
         Get
             CheckDeleted()
             If Row(RiskTypeToleranceDAL.COL_NAME_DLR_RK_TYP_TOLERANCE_ID) Is DBNull.Value Then
@@ -27,13 +27,13 @@
                 Return New Guid(CType(Row(RiskTypeToleranceDAL.COL_NAME_DLR_RK_TYP_TOLERANCE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(RiskTypeToleranceDAL.COL_NAME_DLR_RK_TYP_TOLERANCE_ID, Value)
+            SetValue(RiskTypeToleranceDAL.COL_NAME_DLR_RK_TYP_TOLERANCE_ID, Value)
         End Set
     End Property
 
-    Public Property RiskTypeId() As Guid
+    Public Property RiskTypeId As Guid
         Get
             CheckDeleted()
             If Row(RiskTypeToleranceDAL.COL_NAME_RISK_TYPE_ID) Is DBNull.Value Then
@@ -42,13 +42,13 @@
                 Return New Guid(CType(Row(RiskTypeToleranceDAL.COL_NAME_RISK_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(RiskTypeToleranceDAL.COL_NAME_RISK_TYPE_ID, Value)
+            SetValue(RiskTypeToleranceDAL.COL_NAME_RISK_TYPE_ID, Value)
         End Set
     End Property
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(RiskTypeToleranceDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -57,13 +57,13 @@
                 Return New Guid(CType(Row(RiskTypeToleranceDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(RiskTypeToleranceDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(RiskTypeToleranceDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
-    Public Property Dealer() As String
+    Public Property Dealer As String
         Get
             CheckDeleted()
             If Row(RiskTypeToleranceDAL.COL_NAME_DEALER) Is DBNull.Value Then
@@ -72,14 +72,14 @@
                 Return CType(Row(RiskTypeToleranceDAL.COL_NAME_DEALER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(RiskTypeToleranceDAL.COL_NAME_DEALER, Value)
+            SetValue(RiskTypeToleranceDAL.COL_NAME_DEALER, Value)
         End Set
     End Property
     
     <ValueMandatory("")>
-    Public Property RiskType() As String
+    Public Property RiskType As String
         Get
             CheckDeleted()
             If Row(RiskTypeToleranceDAL.COL_NAME_RISK_TYPE) Is DBNull.Value Then
@@ -88,14 +88,14 @@
                 Return CType(Row(RiskTypeToleranceDAL.COL_NAME_RISK_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(RiskTypeToleranceDAL.COL_NAME_RISK_TYPE, Value)
+            SetValue(RiskTypeToleranceDAL.COL_NAME_RISK_TYPE, Value)
         End Set
     End Property
 
   <ValueMandatoryRiskTypeTolerance(""),ValidNumericRange("", Min:=0, Max:=9999.99)>
-    Public Property TolerancePct() As DecimalType
+    Public Property TolerancePct As DecimalType
         Get
             CheckDeleted()
             If Row(RiskTypeToleranceDAL.COL_NAME_TOLERANCE_PCT) Is DBNull.Value Then
@@ -104,9 +104,9 @@
                 Return New DecimalType(CType(Row(RiskTypeToleranceDAL.COL_NAME_TOLERANCE_PCT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(RiskTypeToleranceDAL.COL_NAME_TOLERANCE_PCT, Value)
+            SetValue(RiskTypeToleranceDAL.COL_NAME_TOLERANCE_PCT, Value)
         End Set
     End Property
 
@@ -116,31 +116,31 @@
 
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
-    public Sub New (ByVal id As Guid, ByVal key As Guid)
+    public Sub New (id As Guid, key As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id,key)
+        Dataset = New DataSet
+        Load(id,key)
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New RiskTypeToleranceDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
            
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -148,46 +148,46 @@
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New RiskTypeToleranceDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then '
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then '
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Protected Sub Load(ByVal searchid As Guid,ByVal key As Guid)
+    Protected Sub Load(searchid As Guid,key As Guid)
         Try
             Dim dal As New RiskTypeToleranceDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(key, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(key, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 
-                dal.Load(Me.Dataset, searchid)
-                Me.Row = Me.FindRow(key, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 
+                dal.Load(Dataset, searchid)
+                Row = FindRow(key, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -202,16 +202,16 @@
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New RiskTypeToleranceDAL
-                dal.SaveRiskTypeTolerance(Me.Row)
+                dal.SaveRiskTypeTolerance(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim searchid As Guid = Me.DealerId
-                    Dim lookupkey As Guid = Me.RiskTypeToleranceId
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing 
-                    Me.Load( searchid,lookupkey)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim searchid As Guid = DealerId
+                    Dim lookupkey As Guid = RiskTypeToleranceId
+                    Dataset = New DataSet
+                    Row = Nothing 
+                    Load( searchid,lookupkey)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -222,15 +222,15 @@
     Public Function GetRiskTypeTolerance() As RiskTypeToleranceDV
         Dim RiskTypeToleranceDAL As New RiskTypeToleranceDAL
 
-        If Not (Me.DealerId.Equals(Guid.Empty)) Then
-            Return New RiskTypeToleranceDV(RiskTypeToleranceDAL.LoadRiskTypeTolerance(Me.DealerId).Tables(0))
+        If Not (DealerId.Equals(Guid.Empty)) Then
+            Return New RiskTypeToleranceDV(RiskTypeToleranceDAL.LoadRiskTypeTolerance(DealerId).Tables(0))
         End If
 
     End Function
 
-    Public Function ValidateNewRiskTypeTolerance(ByVal DealerInflations As RiskTypeToleranceDV) As Boolean
+    Public Function ValidateNewRiskTypeTolerance(DealerInflations As RiskTypeToleranceDV) As Boolean
 
-        Dim dealerInflation() = DealerInflations.ToTable().Select(COL_NAME_RISK_TYPE & "=" & "'" & Me.RiskType & "'")
+        Dim dealerInflation() = DealerInflations.ToTable().Select(COL_NAME_RISK_TYPE & "=" & "'" & RiskType & "'")
                                
         If dealerInflation.Length >0 Then
             Return true
@@ -256,7 +256,7 @@
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -264,7 +264,7 @@
 #End Region
 
 #Region "Grid Data Related"
-    Public Shared Function GetEmptyList(ByVal dv As DataView) As System.Data.DataView
+    Public Shared Function GetEmptyList(dv As DataView) As System.Data.DataView
         Try
 
             Dim dsv As DataSet
@@ -283,7 +283,7 @@
         End Try
     End Function
 
-    Public Shared Sub AddNewRowToSearchDV(ByRef dv As RiskTypeToleranceDV, ByVal NewBO As RiskTypeTolerance)
+    Public Shared Sub AddNewRowToSearchDV(ByRef dv As RiskTypeToleranceDV, NewBO As RiskTypeTolerance)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         If NewBO.IsNew Then
@@ -319,11 +319,11 @@
     Public NotInheritable Class ValueMandatoryRiskTypeTolerance
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.VALUE_REQUIRED_RISK_TOLERANCE_PERCENTAGE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As RiskTypeTolerance = CType(objectToValidate, RiskTypeTolerance)
             If obj.IsNew AndAlso valueToCheck Is Nothing Then
                 Return False

@@ -43,7 +43,7 @@ Partial Class RegionTaxes
     Public Const PAGETITLE As String = "RegionTax"
     Public Const PAGETAB As String = "TABLES"
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -102,9 +102,9 @@ Partial Class RegionTaxes
         Public EditingBo As CountryTax
         Public BoChanged As Boolean = False
 
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As CountryTax, Optional ByVal boChanged As Boolean = False)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(LastOp As DetailPageCommand, curEditingBo As CountryTax, Optional ByVal boChanged As Boolean = False)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
             Me.BoChanged = boChanged
         End Sub
     End Class
@@ -124,13 +124,13 @@ Partial Class RegionTaxes
         Public CompanyTypeId As Guid
         Public CompanyType As String
 
-        Public Sub New(ByVal countryTaxBO As CountryTax, ByVal regionTaxID As Guid, ByVal taxTypeDesc As String,
-                       ByVal sProductTaxTypeDesc As String, ByVal regionID As Guid, ByVal regionDesc As String,
-                       ByVal dealerID As Guid, ByVal dealerDesc As String, ByVal dealer As String, ByVal CompanyTypeId As Guid, ByVal CompanyType As String)
+        Public Sub New(countryTaxBO As CountryTax, regionTaxID As Guid, taxTypeDesc As String,
+                       sProductTaxTypeDesc As String, regionID As Guid, regionDesc As String,
+                       dealerID As Guid, dealerDesc As String, dealer As String, CompanyTypeId As Guid, CompanyType As String)
             Me.CountryTaxBO = countryTaxBO
             Me.RegionTaxID = regionTaxID
             Me.TaxTypeDesc = taxTypeDesc
-            Me.msProductTaxTypeDesc = sProductTaxTypeDesc
+            msProductTaxTypeDesc = sProductTaxTypeDesc
             Me.RegionID = regionID
             Me.RegionDesc = regionDesc
             Me.DealerID = dealerID
@@ -145,100 +145,100 @@ Partial Class RegionTaxes
 #Region "PAGE EVENTS"
 
     Private Sub UpdateBreadCrum()
-        If (Not Me.State Is Nothing) Then
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(Me.PAGETITLE)
+        If (State IsNot Nothing) Then
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
         End If
     End Sub
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         txtEffectiveDate.Attributes.Add("readonly", "readonly")
         txtExpirationDate.Attributes.Add("readonly", "readonly")
 
         Try
-            Me.MasterPage.MessageController.Clear()
-            Me.MasterPage.UsePageTabTitleInBreadCrum = False
-            Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(Me.PAGETAB)
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(Me.PAGETITLE)
-            Me.UpdateBreadCrum()
+            MasterPage.MessageController.Clear()
+            MasterPage.UsePageTabTitleInBreadCrum = False
+            MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            UpdateBreadCrum()
 
             If Not IsPostBack Then
                 'Me.AddConfirmation(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT)
-                Me.AddCalendar(Me.btnEffectiveDate, Me.txtEffectiveDate)
-                Me.AddCalendar(Me.btnExpirationDate, Me.txtExpirationDate)
+                AddCalendar(btnEffectiveDate, txtEffectiveDate)
+                AddCalendar(btnExpirationDate, txtExpirationDate)
 
-                If Me.State.MyBO Is Nothing Then
-                    Me.State.MyBO = New RegionTax()
+                If State.MyBO Is Nothing Then
+                    State.MyBO = New RegionTax()
                 End If
 
-                Me.txtTaxType.Text = Me.State.TaxTypeDesc
-                Me.txtProductTaxType.Text = Me.State.msProductTaxTypeDesc
-                Me.lblRegion.Text = Me.State.RegionDesc
+                txtTaxType.Text = State.TaxTypeDesc
+                txtProductTaxType.Text = State.msProductTaxTypeDesc
+                lblRegion.Text = State.RegionDesc
 
-                Me.PopulateFormFromBOs()
+                PopulateFormFromBOs()
             End If
-            Me.BindBOPropertyToLabel(Me.State.MyBO, DEALER_ID_PROPERTY, Me.lblDealer)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, COMPANY_TYPE_ID_PROPERTY, Me.lblCompanyType)
+            BindBOPropertyToLabel(State.MyBO, DEALER_ID_PROPERTY, lblDealer)
+            BindBOPropertyToLabel(State.MyBO, COMPANY_TYPE_ID_PROPERTY, lblCompanyType)
             CheckIfComingFromSaveConfirm()
 
-            If Not Me.IsPostBack Then
-                Me.AddLabelDecorations(Me.State.MyBO)
+            If Not IsPostBack Then
+                AddLabelDecorations(State.MyBO)
             End If
 
-            If Not Me.State.DealerDesc.IsNullOrEmpty(Me.State.DealerDesc) And Not Me.State.Dealer.IsNullOrEmpty(Me.State.Dealer) Then
-                Me.Label10.Visible = True
-                Me.Label11.Visible = True
-                Me.lblDealer.Visible = True
-                Me.Label12.Visible = True
-                Me.lblDealerDesc.Visible = True
-                Me.lblDealer.Text = Me.State.Dealer
-                Me.lblDealerDesc.Text = Me.State.DealerDesc
+            If Not State.DealerDesc.IsNullOrEmpty(State.DealerDesc) AndAlso Not State.Dealer.IsNullOrEmpty(State.Dealer) Then
+                Label10.Visible = True
+                Label11.Visible = True
+                lblDealer.Visible = True
+                Label12.Visible = True
+                lblDealerDesc.Visible = True
+                lblDealer.Text = State.Dealer
+                lblDealerDesc.Text = State.DealerDesc
             Else
-                Me.Label10.Visible = False
-                Me.Label11.Visible = False
-                Me.lblDealer.Visible = False
-                Me.Label12.Visible = False
-                Me.lblDealerDesc.Visible = False
+                Label10.Visible = False
+                Label11.Visible = False
+                lblDealer.Visible = False
+                Label12.Visible = False
+                lblDealerDesc.Visible = False
             End If
 
-            If Not Me.State.CompanyType.IsNullOrEmpty(Me.State.CompanyType) Then
-                Me.Label66.Visible = True
+            If Not State.CompanyType.IsNullOrEmpty(State.CompanyType) Then
+                Label66.Visible = True
                 lblCompanyType.Visible = True
-                lblCompanyType.Text = Me.State.CompanyType
+                lblCompanyType.Text = State.CompanyType
 
             Else
-                Me.Label66.Visible = False
+                Label66.Visible = False
                 lblCompanyType.Visible = False
             End If
 
 
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
-    Private Sub Page_LoadComplete(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.LoadComplete
+    Private Sub Page_LoadComplete(sender As System.Object, e As System.EventArgs) Handles MyBase.LoadComplete
         EnableDisableFields()
     End Sub
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Dim objParam As Parameters
         Try
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 'Get the id from the parent
-                objParam = CType(Me.CallingParameters, Parameters)
-                Me.State.MyCountryBO = objParam.CountryTaxBO
-                Me.State.RegionID = objParam.RegionID
-                Me.State.TaxTypeDesc = objParam.TaxTypeDesc
-                Me.State.msProductTaxTypeDesc = objParam.msProductTaxTypeDesc
-                Me.State.RegionDesc = objParam.RegionDesc
+                objParam = CType(CallingParameters, Parameters)
+                State.MyCountryBO = objParam.CountryTaxBO
+                State.RegionID = objParam.RegionID
+                State.TaxTypeDesc = objParam.TaxTypeDesc
+                State.msProductTaxTypeDesc = objParam.msProductTaxTypeDesc
+                State.RegionDesc = objParam.RegionDesc
                 'REQ-1150
-                Me.State.DealerID = objParam.DealerID
-                Me.State.DealerDesc = objParam.DealerDesc
-                Me.State.Dealer = objParam.Dealer
-                Me.State.CompanyType = objParam.CompanyType
+                State.DealerID = objParam.DealerID
+                State.DealerDesc = objParam.DealerDesc
+                State.Dealer = objParam.Dealer
+                State.CompanyType = objParam.CompanyType
 
                 ' getting Contry Type extnded code from  Country type GUID
                 Dim listcontext As ListContext = New ListContext()
@@ -248,30 +248,30 @@ Partial Class RegionTaxes
                                                                  Where x.ListItemId = objParam.CompanyTypeId
                                                                  Select x).ToArray()
                 If filteredExtendedCountryType.Any Then
-                    Me.State.CompanyTypeXCD = filteredExtendedCountryType(0).ExtendedCode
+                    State.CompanyTypeXCD = filteredExtendedCountryType(0).ExtendedCode
                 End If
 
-                If objParam.RegionTaxID = Nothing Or objParam.RegionTaxID = Guid.Empty Then
+                If objParam.RegionTaxID = Nothing OrElse objParam.RegionTaxID = Guid.Empty Then
                     'new region tax, with regionid and taxtype id from countrytax form
-                    Me.State.MyBO = New RegionTax()
-                    Me.State.MyBO.RegionId = objParam.RegionID
-                    Me.State.MyBO.TaxTypeId = objParam.CountryTaxBO.TaxTypeId
-                    Me.State.MyBO.ProductTaxTypeId = objParam.CountryTaxBO.ProductTaxTypeId
+                    State.MyBO = New RegionTax()
+                    State.MyBO.RegionId = objParam.RegionID
+                    State.MyBO.TaxTypeId = objParam.CountryTaxBO.TaxTypeId
+                    State.MyBO.ProductTaxTypeId = objParam.CountryTaxBO.ProductTaxTypeId
                     Dim strTemp As String = objParam.RegionDesc & " " & objParam.TaxTypeDesc
-                    Me.State.MyBO.Description = strTemp.Substring(0, Math.Min(strTemp.Length, 30))
-                    Me.State.MyBO.DealerId = objParam.DealerID
-                    Me.State.MyBO.SetEffectiveExpirationDates()
-                    Me.State.MyBO.CompanyTypeXCD = Me.State.CompanyTypeXCD
+                    State.MyBO.Description = strTemp.Substring(0, Math.Min(strTemp.Length, 30))
+                    State.MyBO.DealerId = objParam.DealerID
+                    State.MyBO.SetEffectiveExpirationDates()
+                    State.MyBO.CompanyTypeXCD = State.CompanyTypeXCD
                 Else
                     'existing region tax
-                    Me.State.MyBO = New RegionTax(objParam.RegionTaxID)
+                    State.MyBO = New RegionTax(objParam.RegionTaxID)
                 End If
 
 
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -279,54 +279,54 @@ Partial Class RegionTaxes
 
 #Region "Control EVENTS"
 
-    Private Sub btnDelete_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+    Private Sub btnDelete_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
         Try
-            Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+            DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            Me.PopulateBOsFromForm()
-            If Me.State.MyBO.IsDirty Then
+            PopulateBOsFromForm()
+            If State.MyBO.IsDirty Then
                 'Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
             Else
-                Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyCountryBO, Me.State.HasDataChanged))
+                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyCountryBO, State.HasDataChanged))
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
             'Me.AddConfirmMsg(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, Me.HiddenSaveChangesPromptResponse)
-            Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-            Me.State.LastErrMsg = Me.MasterPage.MessageController.Text
+            DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+            State.LastErrMsg = MasterPage.MessageController.Text
         End Try
     End Sub
 
-    Private Sub btnUndo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+    Private Sub btnUndo_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
         Try
-            If Not Me.State.MyBO.IsNew Then
+            If Not State.MyBO.IsNew Then
                 'Reload from the DB
-                Me.State.MyBO = New RegionTax(Me.State.MyBO.Id)
-            ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+                State.MyBO = New RegionTax(State.MyBO.Id)
+            ElseIf State.ScreenSnapShotBO IsNot Nothing Then
                 'It was a new with copy
-                Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                State.MyBO.Clone(State.ScreenSnapShotBO)
             Else
-                Me.State.MyBO = New RegionTax
+                State.MyBO = New RegionTax
             End If
-            Me.PopulateFormFromBOs()
+            PopulateFormFromBOs()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnSave_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnSave_WRITE.Click
         Try
 
             'ALR - DEF-560 - Commenting out as the clone is duplicating the child objects.  Not needed.
@@ -334,10 +334,10 @@ Partial Class RegionTaxes
             'If Me.State.ScreenSnapShotBO Is Nothing Then Me.State.ScreenSnapShotBO = New RegionTax
             'Me.State.ScreenSnapShotBO.Clone(Me.State.MyBO)
 
-            Me.PopulateBOsFromForm()
-            If Me.State.MyBO.IsDirty Then
+            PopulateBOsFromForm()
+            If State.MyBO.IsDirty Then
                 Try
-                    Me.State.MyBO.Save()
+                    State.MyBO.Save()
                 Catch ex As Exception
                     'ALR - DEF-560 - Commenting out as the clone is duplicating the child objects.  Not needed.
                     ''restore the original BO
@@ -345,46 +345,46 @@ Partial Class RegionTaxes
                     'Me.State.ScreenSnapShotBO = Nothing
                     Throw ex
                 End Try
-                Me.State.HasDataChanged = True
-                Me.PopulateFormFromBOs()
-                Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                State.HasDataChanged = True
+                PopulateFormFromBOs()
+                MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
                 'Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
             Else
-                Me.MasterPage.MessageController.AddWarning(Message.MSG_RECORD_NOT_SAVED)
+                MasterPage.MessageController.AddWarning(Message.MSG_RECORD_NOT_SAVED)
                 'Me.AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnNew_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+    Private Sub btnNew_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnNew_WRITE.Click
         Try
-            Me.PopulateBOsFromForm()
-            If Me.State.MyBO.IsDirty Then
+            PopulateBOsFromForm()
+            If State.MyBO.IsDirty Then
                 'Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
             Else
-                Me.CreateNew()
+                CreateNew()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnCopy_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+    Private Sub btnCopy_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
         Try
-            Me.PopulateBOsFromForm()
-            If Me.State.MyBO.IsDirty Then
+            PopulateBOsFromForm()
+            If State.MyBO.IsDirty Then
                 'Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
             Else
-                Me.CreateNewWithCopy()
+                CreateNewWithCopy()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -393,41 +393,41 @@ Partial Class RegionTaxes
 #Region "Controlling Logic"
 
     Private Sub CreateNew()
-        Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
+        State.ScreenSnapShotBO = Nothing 'Reset the backup copy
 
-        Me.State.MyBO = New RegionTax
+        State.MyBO = New RegionTax
         State.MyBO.RegionId = State.RegionID
         State.MyBO.TaxTypeId = State.MyCountryBO.TaxTypeId
         State.MyBO.ProductTaxTypeId = State.MyCountryBO.ProductTaxTypeId
-        Me.State.MyBO.SetEffectiveExpirationDates()
-        Me.PopulateFormFromBOs()
+        State.MyBO.SetEffectiveExpirationDates()
+        PopulateFormFromBOs()
     End Sub
 
     Private Sub CreateNewWithCopy()
-        Me.State.IsACopy = True
-        Me.PopulateBOsFromForm()
+        State.IsACopy = True
+        PopulateBOsFromForm()
 
         Dim newObj As New RegionTax
-        newObj.Copy(Me.State.MyBO)
+        newObj.Copy(State.MyBO)
 
-        Me.State.MyBO = newObj
-        Me.State.MyBO.SetEffectiveExpirationDates()
+        State.MyBO = newObj
+        State.MyBO.SetEffectiveExpirationDates()
 
-        Me.PopulateFormFromBOs()
+        PopulateFormFromBOs()
 
         'create the backup copy
-        Me.State.ScreenSnapShotBO = New RegionTax
-        Me.State.ScreenSnapShotBO.Clone(Me.State.MyBO)
-        Me.State.IsACopy = False
+        State.ScreenSnapShotBO = New RegionTax
+        State.ScreenSnapShotBO.Clone(State.MyBO)
+        State.IsACopy = False
     End Sub
 
     Protected Sub PopulateFormFromBOs()
 
-        Dim oRegionTax As RegionTax = Me.State.MyBO
+        Dim oRegionTax As RegionTax = State.MyBO
 
-        With Me.State.MyBO
-            Me.PopulateControlFromBOProperty(Me.txtEffectiveDate, .EffectiveDate)
-            Me.PopulateControlFromBOProperty(Me.txtExpirationDate, .ExpirationDate)
+        With State.MyBO
+            PopulateControlFromBOProperty(txtEffectiveDate, .EffectiveDate)
+            PopulateControlFromBOProperty(txtExpirationDate, .ExpirationDate)
             'Me.txtEffectiveDate.Text = .EffectiveDate.Value.ToString(DATE_FORMAT, CultureInfo.CurrentCulture)
             'Me.txtExpirationDate.Text = .ExpirationDate.Value.ToString(DATE_FORMAT, CultureInfo.CurrentCulture)
         End With
@@ -436,11 +436,11 @@ Partial Class RegionTaxes
     End Sub
 
     Protected Sub PopulateBOsFromForm()
-        Dim objBO As RegionTax = Me.State.MyBO
-        Me.PopulateBOProperty(objBO, "EffectiveDate", Me.txtEffectiveDate)
-        Me.PopulateBOProperty(objBO, "ExpirationDate", Me.txtExpirationDate)
-        Me.PopulateBOProperty(objBO, "DealerId", Me.State.DealerID)
-        Me.PopulateBOProperty(objBO, COMPANY_TYPE_ID_PROPERTY, Me.State.CompanyTypeXCD)
+        Dim objBO As RegionTax = State.MyBO
+        PopulateBOProperty(objBO, "EffectiveDate", txtEffectiveDate)
+        PopulateBOProperty(objBO, "ExpirationDate", txtExpirationDate)
+        PopulateBOProperty(objBO, "DealerId", State.DealerID)
+        PopulateBOProperty(objBO, COMPANY_TYPE_ID_PROPERTY, State.CompanyTypeXCD)
 
         LoadTaxDetailUserControls(False)
 
@@ -452,10 +452,10 @@ Partial Class RegionTaxes
             oUserControl = mUserControlArray(intTaxGroup - 1)
             If oUserControl.IsEnabledForEditing Then
                 If oUserControl.VerifyInput(errMsg) Then
-                    Me.PopulateBOProperty(objBO.RegionTaxDetail(intTaxGroup), "Percent", oUserControl.Percent)
-                    Me.PopulateBOProperty(objBO.RegionTaxDetail(intTaxGroup), "NonTaxable", oUserControl.Nontaxable)
-                    Me.PopulateBOProperty(objBO.RegionTaxDetail(intTaxGroup), "MinimumTax", oUserControl.MinimumTax)
-                    Me.PopulateBOProperty(objBO.RegionTaxDetail(intTaxGroup), "GlAccountNumber", oUserControl.GLAccount)
+                    PopulateBOProperty(objBO.RegionTaxDetail(intTaxGroup), "Percent", oUserControl.Percent)
+                    PopulateBOProperty(objBO.RegionTaxDetail(intTaxGroup), "NonTaxable", oUserControl.Nontaxable)
+                    PopulateBOProperty(objBO.RegionTaxDetail(intTaxGroup), "MinimumTax", oUserControl.MinimumTax)
+                    PopulateBOProperty(objBO.RegionTaxDetail(intTaxGroup), "GlAccountNumber", oUserControl.GLAccount)
                 Else
                     hasErr = True
                 End If
@@ -463,24 +463,24 @@ Partial Class RegionTaxes
         Next
 
         If hasErr Then 'user control GUI error
-            Me.MasterPage.MessageController.AddErrorAndShow(errMsg)
+            MasterPage.MessageController.AddErrorAndShow(errMsg)
             Throw New GUIException("", "")
         End If
 
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Sub
 
-    Private Sub LoadTaxDetailUserControls(ByVal setCtlProperties As Boolean)
+    Private Sub LoadTaxDetailUserControls(setCtlProperties As Boolean)
 
         mUserControlArray.Clear()
-        mUserControlArray.Add(Me.RegionTaxUserControl1)
-        mUserControlArray.Add(Me.RegionTaxUserControl2)
-        mUserControlArray.Add(Me.RegionTaxUserControl3)
-        mUserControlArray.Add(Me.RegionTaxUserControl4)
-        mUserControlArray.Add(Me.RegionTaxUserControl5)
-        mUserControlArray.Add(Me.RegionTaxUserControl6)
+        mUserControlArray.Add(RegionTaxUserControl1)
+        mUserControlArray.Add(RegionTaxUserControl2)
+        mUserControlArray.Add(RegionTaxUserControl3)
+        mUserControlArray.Add(RegionTaxUserControl4)
+        mUserControlArray.Add(RegionTaxUserControl5)
+        mUserControlArray.Add(RegionTaxUserControl6)
 
         If setCtlProperties Then SetTaxDetailCtlProperties()
 
@@ -494,7 +494,7 @@ Partial Class RegionTaxes
                 LookupListNew.DropdownLookupList(CountryTax.TAX_PERCENT_FLAG, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True) _
                 , CountryTax.TAX_STATE_CODE)
 
-        With Me.State.MyCountryBO
+        With State.MyCountryBO
             For i = 1 To CountryTax.NumberOfTaxGroups
                 objTG = .TaxGroup(i)
                 objRTD = State.MyBO.RegionTaxDetail(i)
@@ -508,60 +508,60 @@ Partial Class RegionTaxes
                     objRTD.Description = objTG.Description
                     mUserControlArray(i - 1).LoadText(objRTD, True)
                 Else 'not region tax, display the existing entry but disable the editing
-                    If Not objRTD Is Nothing Then mUserControlArray(i - 1).LoadText(objRTD, False)
+                    If objRTD IsNot Nothing Then mUserControlArray(i - 1).LoadText(objRTD, False)
                 End If
             Next
         End With
     End Sub
 
     Private Sub ShowEditingIncompleteMessage()
-        Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
+        DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
         'Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
     End Sub
 
     Protected Sub CheckIfComingFromSaveConfirm()
 
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
-        If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
-            If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
-                Me.State.MyBO.Save()
+        If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
+            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
+                State.MyBO.Save()
             End If
-            Select Case Me.State.ActionInProgress
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyCountryBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyCountryBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
                     'Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                    Me.CreateNew()
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
                     'Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                    Me.CreateNewWithCopy()
+                    CreateNewWithCopy()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyCountryBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.MyCountryBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.Delete
-                    Me.State.MyBO.DeleteAndSave()
-                    Me.State.HasDataChanged = True
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyCountryBO, Me.State.HasDataChanged))
+                    State.MyBO.DeleteAndSave()
+                    State.HasDataChanged = True
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyCountryBO, State.HasDataChanged))
             End Select
-        ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-            Select Case Me.State.ActionInProgress
+        ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyCountryBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyCountryBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.CreateNew()
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    Me.CreateNewWithCopy()
+                    CreateNewWithCopy()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.MasterPage.MessageController.AddErrorAndShow(Me.State.LastErrMsg)
+                    MasterPage.MessageController.AddErrorAndShow(State.LastErrMsg)
                 Case ElitaPlusPage.DetailPageCommand.Delete
             End Select
         End If
 
         'Clean after consuming the action
-        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-        Me.HiddenSaveChangesPromptResponse.Value = ""
+        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        HiddenSaveChangesPromptResponse.Value = ""
     End Sub
 
 #End Region
@@ -579,7 +579,7 @@ Partial Class RegionTaxes
         EnableDisableExpDate(False)
 
         'Now we check which control should be enabled
-        Dim theBO As RegionTax = Me.State.MyBO
+        Dim theBO As RegionTax = State.MyBO
         Dim existingRecCnt As Integer, minEffDate As Date, maxExpDate As Date
         theBO.GetMinEffDateAndMaxExpDate(minEffDate, maxExpDate, existingRecCnt)
 
@@ -602,32 +602,32 @@ Partial Class RegionTaxes
                 EnableDisableExpDate(True)
                 'allow modify effective date if the record is the only record with future effective date
                 If theBO.EffectiveDate.Value = minEffDate AndAlso minEffDate > Date.Now Then
-                    Me.EnableDisableEffDate(True)
+                    EnableDisableEffDate(True)
                 End If
             End If
         End If
 
     End Sub
 
-    Private Sub EnableDisableEffDate(ByVal enabled As Boolean)
+    Private Sub EnableDisableEffDate(enabled As Boolean)
 
         If enabled Then
             ControlMgr.SetVisibleControl(Me, btnEffectiveDate, True)
-            Me.txtEffectiveDate.Style.Add("background-color", "")
+            txtEffectiveDate.Style.Add("background-color", "")
         Else
             ControlMgr.SetVisibleControl(Me, btnEffectiveDate, False)
-            Me.txtEffectiveDate.Style.Add("background-color", "Gray")
+            txtEffectiveDate.Style.Add("background-color", "Gray")
         End If
 
     End Sub
 
-    Private Sub EnableDisableExpDate(ByVal enabled As Boolean)
+    Private Sub EnableDisableExpDate(enabled As Boolean)
         If enabled Then
             ControlMgr.SetVisibleControl(Me, btnExpirationDate, True)
-            Me.txtExpirationDate.Style.Add("background-color", "")
+            txtExpirationDate.Style.Add("background-color", "")
         Else
             ControlMgr.SetVisibleControl(Me, btnExpirationDate, False)
-            Me.txtExpirationDate.Style.Add("background-color", "Gray")
+            txtExpirationDate.Style.Add("background-color", "Gray")
         End If
     End Sub
 

@@ -4,11 +4,11 @@ Public Class ServiceOrderReportHandler
 #Region "Constructors"
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal oClaim As ClaimBase, Optional claimAuthId As Guid = Nothing)
+    Public Sub New(oClaim As ClaimBase, Optional claimAuthId As Guid = Nothing)
         soDS = New ServiceOrderReport
-        Me.ClaimBO = oClaim
-        Me.ClaimAuthorizationId = claimAuthId
-        Me.Load()
+        ClaimBO = oClaim
+        ClaimAuthorizationId = claimAuthId
+        Load()
     End Sub
 
     Protected Sub Load()
@@ -111,7 +111,7 @@ Public Class ServiceOrderReportHandler
             soRow.SHIPPING_CELLPHONE = ContactInfo.CellPhone
             soRow.SHIPPING_EMAIL = ContactInfo.Email
 
-            If Not ContactInfo Is Nothing Then
+            If ContactInfo IsNot Nothing Then
                 Dim Address As Address = New Address(ContactInfo.AddressId)
                 soRow.SHIPPING_ADDRESS1 = Address.Address1
                 soRow.SHIPPING_ADDRESS2 = Address.Address2
@@ -152,9 +152,9 @@ Public Class ServiceOrderReportHandler
         taxRateData.dealerID = oDealer.Id
         taxRateData.salesDate = cert.ProductSalesDate
 
-        taxRateData.taxtypeID = LookupListNew.GetIdFromCode(LookupListNew.LK_TAX_TYPES, "7")
+        taxRateData.taxtypeID = LookupListNew.GetIdFromCode(LookupListCache.LK_TAX_TYPES, "7")
 
-        If oDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.FULL_INVOICE_Y) Then
+        If oDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_PAY_DEDUCTIBLE, Codes.FULL_INVOICE_Y) Then
             claimTaxRateData = claimInvoice.GetTaxRate(taxRateData)
         Else
             claimTaxRateData.taxRate = 0
@@ -332,11 +332,11 @@ Public Class ServiceOrderReportHandler
 
         Dim yesValueId As Guid = LookupListNew.GetIdFromCode("YES_NO", "Y")
 
-        soRow.IMAGE_PATH = ElitaPlusIdentity.CurrentParameters.ServiceOrderImageHostName
+        soRow.IMAGE_PATH = ElitaPlusParameters.CurrentParameters.ServiceOrderImageHostName
 
-        If oCompany.ServiceOrdersByDealerId.Equals(yesValueId) AndAlso Not oDealer.SvcOrdersAddress Is Nothing Then
+        If oCompany.ServiceOrdersByDealerId.Equals(yesValueId) AndAlso oDealer.SvcOrdersAddress IsNot Nothing Then
             Try
-                If Not oDealer.SvcOrdersAddress.Address Is Nothing Then
+                If oDealer.SvcOrdersAddress.Address IsNot Nothing Then
                     soRow.RPC_ADDRESS1 = oDealer.SvcOrdersAddress.Address.Address1
                     soRow.RPC_ADDRESS2 = oDealer.SvcOrdersAddress.Address.Address2
                     soRow.RPC_CITY = oDealer.SvcOrdersAddress.Address.City
@@ -349,7 +349,7 @@ Public Class ServiceOrderReportHandler
                     End If
                 End If
             Catch ex As DataNotFoundException
-                Throw New StoredProcedureGeneratedException("ServiceOrderReportHandler", Assurant.ElitaPlus.Common.ErrorCodes.NO_SVC_ORDER_ADDRESS_FOR_THIS_DEALER_ERR)
+                Throw New StoredProcedureGeneratedException("ServiceOrderReportHandler", Common.ErrorCodes.NO_SVC_ORDER_ADDRESS_FOR_THIS_DEALER_ERR)
             End Try
         End If
 
@@ -370,27 +370,27 @@ Public Class ServiceOrderReportHandler
 
 #Region "Properties"
 
-    Private Property ClaimBO() As ClaimBase
+    Private Property ClaimBO As ClaimBase
     Public ClaimAuthorizationId As Guid
     'Reqs-784
-    Private Property ContactInfoBO() As ContactInfo
+    Private Property ContactInfoBO As ContactInfo
         Get
             Return soContact
         End Get
-        Set(ByVal Value As ContactInfo)
+        Set
             soContact = Value
         End Set
     End Property
     'Reqs-784
-    Private Property AddressBO() As Address
+    Private Property AddressBO As Address
         Get
             Return soAddress
         End Get
-        Set(ByVal Value As Address)
+        Set
             soAddress = Value
         End Set
     End Property
-    Public ReadOnly Property SODataSet() As ServiceOrderReport
+    Public ReadOnly Property SODataSet As ServiceOrderReport
         Get
             Return soDS
         End Get

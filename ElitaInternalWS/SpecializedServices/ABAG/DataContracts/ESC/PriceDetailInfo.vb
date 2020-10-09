@@ -14,7 +14,7 @@ Namespace SpecializedServices.Abag
             Get
                 Return _ServiceCenterCode
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 _ServiceCenterCode = value
             End Set
         End Property
@@ -25,7 +25,7 @@ Namespace SpecializedServices.Abag
             Get
                 Return _RiskTypeCode
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 _RiskTypeCode = value
             End Set
         End Property
@@ -36,7 +36,7 @@ Namespace SpecializedServices.Abag
             Get
                 Return _MethodOfRepairCode
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 _MethodOfRepairCode = value
             End Set
         End Property
@@ -47,7 +47,7 @@ Namespace SpecializedServices.Abag
             Get
                 Return _ServiceClassCode
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 _ServiceClassCode = value
             End Set
         End Property
@@ -58,7 +58,7 @@ Namespace SpecializedServices.Abag
             Get
                 Return _ServiceClassTranslation
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 _ServiceClassTranslation = value
             End Set
         End Property
@@ -69,7 +69,7 @@ Namespace SpecializedServices.Abag
             Get
                 Return _ServiceTypeCode
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 _ServiceTypeCode = value
             End Set
         End Property
@@ -80,7 +80,7 @@ Namespace SpecializedServices.Abag
             Get
                 Return _ServiceTypeTranslation
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 _ServiceTypeTranslation = value
             End Set
         End Property
@@ -91,7 +91,7 @@ Namespace SpecializedServices.Abag
             Get
                 Return _ServiceLevelCode
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 _ServiceLevelCode = value
             End Set
         End Property
@@ -102,7 +102,7 @@ Namespace SpecializedServices.Abag
             Get
                 Return _ServiceLevelTranslation
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 _ServiceLevelTranslation = value
             End Set
         End Property
@@ -113,7 +113,7 @@ Namespace SpecializedServices.Abag
             Get
                 Return _LowPrice
             End Get
-            Set(ByVal value As Decimal)
+            Set(value As Decimal)
                 _LowPrice = value
             End Set
         End Property
@@ -124,7 +124,7 @@ Namespace SpecializedServices.Abag
             Get
                 Return _HighPrice
             End Get
-            Set(ByVal value As Decimal)
+            Set(value As Decimal)
                 _HighPrice = value
             End Set
         End Property
@@ -135,7 +135,7 @@ Namespace SpecializedServices.Abag
             Get
                 Return _Price
             End Get
-            Set(ByVal value As Decimal)
+            Set(value As Decimal)
                 _Price = value
             End Set
         End Property

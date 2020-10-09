@@ -6,16 +6,16 @@ Public Class AcselXToElitaClaimFileLoad
     Inherits FileLoadBase(Of ClaimloadFileProcessed, ClaimloadReconWrk)
 
 #Region "Constructor"
-    Public Sub New(ByVal threadCount As Integer, ByVal transactionSize As Integer)
+    Public Sub New(threadCount As Integer, transactionSize As Integer)
         MyBase.New(True) '' Custom Save Constructor
-        YesId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
-        NoId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
+        YesId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_Y)
+        NoId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_N)
     End Sub
 
     Public Sub New()
         MyBase.New(True) '' Custom Save Constructor
-        YesId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
-        NoId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
+        YesId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_Y)
+        NoId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_N)
     End Sub
 #End Region
 
@@ -62,7 +62,7 @@ Public Class AcselXToElitaClaimFileLoad
         Get
             Return _claimloadFileProcessed
         End Get
-        Set(ByVal value As ClaimloadFileProcessed)
+        Set
             _claimloadFileProcessed = value
         End Set
     End Property
@@ -71,19 +71,19 @@ Public Class AcselXToElitaClaimFileLoad
         Get
             Return _claim
         End Get
-        Set(ByVal value As Claim)
+        Set
             _claim = value
         End Set
     End Property
 #End Region
 
 
-    Protected Overrides Function CreateFileLoadHeader(ByVal fileLoadHeaderId As System.Guid) As ClaimloadFileProcessed
-        Me.ClaimLoadFileProcessed = New ClaimloadFileProcessed(fileLoadHeaderId)
-        Return Me.ClaimLoadFileProcessed
+    Protected Overrides Function CreateFileLoadHeader(fileLoadHeaderId As System.Guid) As ClaimloadFileProcessed
+        ClaimLoadFileProcessed = New ClaimloadFileProcessed(fileLoadHeaderId)
+        Return ClaimLoadFileProcessed
     End Function
 
-    Protected Overrides Function CreateFileLoadDetail(ByVal fileLoadDetailId As System.Guid, ByVal headerRecord As ClaimloadFileProcessed) As ClaimloadReconWrk
+    Protected Overrides Function CreateFileLoadDetail(fileLoadDetailId As System.Guid, headerRecord As ClaimloadFileProcessed) As ClaimloadReconWrk
         Dim returnValue As ClaimloadReconWrk
         returnValue = New ClaimloadReconWrk(fileLoadDetailId, headerRecord.Dataset)
         Return returnValue
@@ -94,7 +94,7 @@ Public Class AcselXToElitaClaimFileLoad
 
     End Sub
 
-    Protected Overrides Function ProcessDetailRecord(ByVal reconRecord As ClaimloadReconWrk, ByVal familyDataSet As System.Data.DataSet) As ProcessResult
+    Protected Overrides Function ProcessDetailRecord(reconRecord As ClaimloadReconWrk, familyDataSet As System.Data.DataSet) As ProcessResult
         Try
             Dim claim As Claim
             Dim gClaimIssueResponseId As Guid = Guid.Empty
@@ -131,7 +131,7 @@ Public Class AcselXToElitaClaimFileLoad
                     For i As Integer = 0 To claimIssue.ClaimIssueResponseList.Table.Rows.Count - 1
                         'DEF-4069
                         If Not (claimIssue.ClaimIssueResponseList.Table.Rows(i).RowState = DataRowState.Deleted) Then
-                            If Not claimIssue.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_ANSWER_ID) Is System.DBNull.Value Then
+                            If claimIssue.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_ANSWER_ID) IsNot DBNull.Value Then
                                 gAnswerId = New Guid(CType(claimIssue.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_ANSWER_ID), Byte()))
                                 Dim oAnswer As New Answer(gAnswerId)
                                 If oAnswer.QuestionId = softQuestionId Then
@@ -145,8 +145,8 @@ Public Class AcselXToElitaClaimFileLoad
                     ''''''''''''''''''''''''''''''''''''''
                     'save data to claim response table
                     Dim oClaimIssueResponse As ClaimIssueResponse
-                    If Not Me.GetClaimIssueResponseId(softQuestionId, claimIssue) = Guid.Empty Then
-                        oClaimIssueResponse = claimIssue.GetClaimIssueResponseChild(Me.GetClaimIssueResponseId(softQuestionId, claimIssue))
+                    If Not GetClaimIssueResponseId(softQuestionId, claimIssue) = Guid.Empty Then
+                        oClaimIssueResponse = claimIssue.GetClaimIssueResponseChild(GetClaimIssueResponseId(softQuestionId, claimIssue))
                     Else
                         oClaimIssueResponse = claimIssue.GetNewClaimIssueResponseChild()
                     End If
@@ -229,7 +229,7 @@ Public Class AcselXToElitaClaimFileLoad
 
             Return (ProcessResult.Loaded)
         Catch ex As DataBaseAccessException
-            Common.AppConfig.Log(DirectCast(ex, Exception))
+            AppConfig.Log(DirectCast(ex, Exception))
             If (ex.ErrorType = DataBaseAccessException.DatabaseAccessErrorType.BusinessErr) Then
                 If (ex.Code Is Nothing OrElse ex.Code.Trim().Length = 0) Then
                     reconRecord.RejectReason = "Rejected During Load process"
@@ -243,26 +243,26 @@ Public Class AcselXToElitaClaimFileLoad
             reconRecord.RejectCode = "000"
             Return ProcessResult.Rejected
         Catch ex As BOValidationException
-            Common.AppConfig.Log(DirectCast(ex, Exception))
+            AppConfig.Log(DirectCast(ex, Exception))
             reconRecord.RejectCode = "000"
             reconRecord.RejectReason = ex.ToRejectReason()
             reconRecord.RejectReason = reconRecord.RejectReason.Substring(0, Math.Min(60, reconRecord.RejectReason.Length))
             Return ProcessResult.Rejected
         Catch ex As Exception
-            Common.AppConfig.Log(ex)
+            AppConfig.Log(ex)
             reconRecord.RejectCode = "000"
             reconRecord.RejectReason = "Rejected During Load process"
             Return ProcessResult.Rejected
         End Try
     End Function
 
-    Private Function GetClaimIssueResponseId(ByVal gSoftQuestionId As Guid, claimissue As ClaimIssue) As Guid
+    Private Function GetClaimIssueResponseId(gSoftQuestionId As Guid, claimissue As ClaimIssue) As Guid
         Dim gClaimIssueResponseId As Guid = Guid.Empty
         Dim gAnswerId As Guid = Guid.Empty
         For i As Integer = 0 To claimissue.ClaimIssueResponseList.Table.Rows.Count - 1
             'DEF-4069
             If Not (claimissue.ClaimIssueResponseList.Table.Rows(i).RowState = DataRowState.Deleted) Then
-                If Not claimissue.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_ANSWER_ID) Is System.DBNull.Value Then
+                If claimissue.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_ANSWER_ID) IsNot DBNull.Value Then
                     gAnswerId = New Guid(CType(claimissue.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_ANSWER_ID), Byte()))
                     Dim oAnswer As New Answer(gAnswerId)
                     If oAnswer.QuestionId = gSoftQuestionId Then
@@ -275,7 +275,7 @@ Public Class AcselXToElitaClaimFileLoad
         Return gClaimIssueResponseId
     End Function
 
-    Private Function SetClaimIssueStatus(ByVal claimIssue As ClaimIssue, claim As Claim, Optional ByVal bWaived As Boolean = False) As String
+    Private Function SetClaimIssueStatus(claimIssue As ClaimIssue, claim As Claim, Optional ByVal bWaived As Boolean = False) As String
         Dim sStatus As String = STATUS_PENDING
         Dim sOutcome As String = ""
         Dim gSupportsClaimId As Guid
@@ -287,7 +287,7 @@ Public Class AcselXToElitaClaimFileLoad
             'DEF-4069
             If Not claimIssue.ClaimIssueResponseList.Table.Rows(i).RowState = DataRowState.Deleted Then
                 If claimIssue.ClaimIssueId.Equals(New Guid(CType(claimIssue.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_CLAIM_ISSUE_ID), Byte()))) Then
-                    If Not claimIssue.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_SUPPORTS_CLAIM_ID) Is System.DBNull.Value Then
+                    If claimIssue.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_SUPPORTS_CLAIM_ID) IsNot DBNull.Value Then
                         iQuestionCount = iQuestionCount + 1
                         gSupportsClaimId = New Guid(CType(claimIssue.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_SUPPORTS_CLAIM_ID), Byte()))
                         sSupportsClaim = LookupListNew.GetCodeFromId(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, gSupportsClaimId).ToString()
@@ -317,7 +317,7 @@ Public Class AcselXToElitaClaimFileLoad
         Return sStatus 'LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_ISSUE_STATUS, sStatus)
     End Function
 
-    Protected Overrides Sub CustomSave(ByVal headerRecord As ClaimloadFileProcessed)
+    Protected Overrides Sub CustomSave(headerRecord As ClaimloadFileProcessed)
         MyBase.CustomSave(headerRecord)
         headerRecord.Save()
     End Sub

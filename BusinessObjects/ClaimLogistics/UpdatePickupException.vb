@@ -22,7 +22,7 @@ Public Class UpdatePickupException
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As UpdatePickupExceptionDs)
+    Public Sub New(ds As UpdatePickupExceptionDs)
         MyBase.New()
         'Me._dsExceptions = ds
         'MapDataSet(ds)
@@ -37,7 +37,7 @@ Public Class UpdatePickupException
     Private _serviceNetworkID As Guid = Guid.Empty
     Private _dsExceptions As DataSet
 
-    Private Sub MapDataSet(ByVal ds As UpdatePickupExceptionDs)
+    Private Sub MapDataSet(ds As UpdatePickupExceptionDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -50,8 +50,8 @@ Public Class UpdatePickupException
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -59,12 +59,12 @@ Public Class UpdatePickupException
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As UpdatePickupExceptionDs)
+    Private Sub Load(ds As UpdatePickupExceptionDs)
         Try
-            Me._dsExceptions = New DataSet
-            Me._dsExceptions.DataSetName = Me.DATASET_NAME
-            Me._dsExceptions.Tables.Add(ds.Tables(Me.SCHEMA_TABLE_NAME).Copy)
-            Me._dsExceptions.Tables(Me.SCHEMA_TABLE_NAME).TableName = Me.TABLE_NAME
+            _dsExceptions = New DataSet
+            _dsExceptions.DataSetName = DATASET_NAME
+            _dsExceptions.Tables.Add(ds.Tables(SCHEMA_TABLE_NAME).Copy)
+            _dsExceptions.Tables(SCHEMA_TABLE_NAME).TableName = TABLE_NAME
             ds.Dispose()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw ex
@@ -93,66 +93,66 @@ Public Class UpdatePickupException
 
 #Region "Properties"
 
-    Public Property ClaimNumber() As String
+    Public Property ClaimNumber As String
         Get
-            If Row(Me.DATA_COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_CLAIM_NUMBER), String))
+                Return (CType(Row(DATA_COL_NAME_CLAIM_NUMBER), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CLAIM_NUMBER, Value)
+            SetValue(DATA_COL_NAME_CLAIM_NUMBER, Value)
         End Set
     End Property
 
-    Public Property UpdatedByName() As String
+    Public Property UpdatedByName As String
         Get
-            If Row(Me.DATA_COL_NAME_UPDATED_BY_NAME) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_UPDATED_BY_NAME) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_UPDATED_BY_NAME), String))
+                Return (CType(Row(DATA_COL_NAME_UPDATED_BY_NAME), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_UPDATED_BY_NAME, Value)
+            SetValue(DATA_COL_NAME_UPDATED_BY_NAME, Value)
         End Set
     End Property
 
-    Public Property ResolutionClaimStatusCode() As String
+    Public Property ResolutionClaimStatusCode As String
         Get
-            If Row(Me.DATA_COL_NAME_URESOLUTION_CLAIM_STATUS_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_URESOLUTION_CLAIM_STATUS_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_URESOLUTION_CLAIM_STATUS_CODE), String))
+                Return (CType(Row(DATA_COL_NAME_URESOLUTION_CLAIM_STATUS_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_URESOLUTION_CLAIM_STATUS_CODE, Value)
+            SetValue(DATA_COL_NAME_URESOLUTION_CLAIM_STATUS_CODE, Value)
         End Set
     End Property
 
-    Public Property StatusComments() As String
+    Public Property StatusComments As String
         Get
-            If Row(Me.DATA_COL_NAME_STATUS_COMMENTS) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_STATUS_COMMENTS) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_STATUS_COMMENTS), String))
+                Return (CType(Row(DATA_COL_NAME_STATUS_COMMENTS), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_STATUS_COMMENTS, Value)
+            SetValue(DATA_COL_NAME_STATUS_COMMENTS, Value)
         End Set
     End Property
 
 
-    Public ReadOnly Property ExceptionDataSet() As DataSet
+    Public ReadOnly Property ExceptionDataSet As DataSet
         Get
-            Return Me._dsExceptions
+            Return _dsExceptions
         End Get
     End Property
 #End Region
@@ -169,7 +169,7 @@ Public Class UpdatePickupException
             'End If
 
 
-            PickupListDetail.UpdatePickupExceptions(Me.ExceptionDataSet)
+            PickupListDetail.UpdatePickupExceptions(ExceptionDataSet)
 
             ' Set the acknoledge OK response
             Return XMLHelper.GetXML_OK_Response

@@ -81,7 +81,7 @@ Namespace Reports
         Private currentAccountingYear As Integer
 
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -91,34 +91,34 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
-                    Me.AddCalendar(Me.BtnBeginDate, Me.moBeginDateText)
-                    Me.AddCalendar(Me.BtnEndDate, Me.moEndDateText)
+                    AddCalendar(BtnBeginDate, moBeginDateText)
+                    AddCalendar(BtnEndDate, moEndDateText)
                 Else
                     ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -134,8 +134,8 @@ Namespace Reports
 
         Private Sub ClearErrLabels()
             ' Me.ClearLabelErrSign(MonthYearLabel)
-            Me.ClearLabelErrSign(moBeginDateLabel)
-            Me.ClearLabelErrSign(moEndDateLabel)
+            ClearLabelErrSign(moBeginDateLabel)
+            ClearLabelErrSign(moEndDateLabel)
         End Sub
 
 #End Region
@@ -150,7 +150,7 @@ Namespace Reports
             UserCompanyMultipleDrop.SetControl(False, UserCompanyMultipleDrop.MODES.NEW_MODE, True, dv, "* " + TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY), True)
             If dv.Count.Equals(ONE_ITEM) Then
                 HideHtmlElement("ddSeparator")
-                UserCompanyMultipleDrop.SelectedIndex = Me.ONE_ITEM
+                UserCompanyMultipleDrop.SelectedIndex = ONE_ITEM
                 UserCompanyMultipleDrop.Visible = False
 
             End If
@@ -162,17 +162,17 @@ Namespace Reports
             Dim listcontext As ListContext = New ListContext()
             listcontext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
             Dim manufactureLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("ManufacturerByCompanyGroup", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
-            Me.cboManufacturer.Populate(manufactureLkl, New PopulateOptions() With
+            cboManufacturer.Populate(manufactureLkl, New PopulateOptions() With
              {
                .AddBlankItem = True
                 })
         End Sub
         Sub PopulateServiceCenters()
             'Dim oCompanyId As Guid = ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID
-            Me.BindListControlToDataView(Me.cboSVC, LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Countries))
+            BindListControlToDataView(cboSVC, LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Countries))
             Dim oSVCList = GetServiceCenter()
 
-            Me.cboSVC.Populate(oSVCList, New PopulateOptions() With
+            cboSVC.Populate(oSVCList, New PopulateOptions() With
                                                    {
                                                     .AddBlankItem = True
                                                    })
@@ -191,7 +191,7 @@ Namespace Reports
                 oListContext.CountryId = UserCountries(Index)
                 Dim oSvcList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ServiceCenterListByCountry", context:=oListContext)
                 If oSvcList.Count > 0 Then
-                    If Not SVCLkl Is Nothing Then
+                    If SVCLkl IsNot Nothing Then
                         SVCLkl.AddRange(oSvcList)
                     Else
                         SVCLkl = oSvcList.Clone()
@@ -208,7 +208,7 @@ Namespace Reports
             'Me.BindListControlToDataView(Me.cboStore, LookupListNew.GetReplacementStoresLookupList(ElitaPlusIdentity.Current.ActiveUser.Countries))
             Dim oStoreList = GetStore()
 
-            Me.cboStore.Populate(oStoreList, New PopulateOptions() With
+            cboStore.Populate(oStoreList, New PopulateOptions() With
                                                    {
                                                     .AddBlankItem = True
                                                    })
@@ -225,7 +225,7 @@ Namespace Reports
                 oListContext.CountryId = UserCountries(Index)
                 Dim oSvcList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="StoresWithMethodOfRepairs", context:=oListContext)
                 If oSvcList.Count > 0 Then
-                    If Not StoreLkl Is Nothing Then
+                    If StoreLkl IsNot Nothing Then
                         StoreLkl.AddRange(oSvcList)
                     Else
                         StoreLkl = oSvcList.Clone()
@@ -243,9 +243,9 @@ Namespace Reports
             PopulateServiceCenters()
             PopulateStores()
             Dim t As Date = Date.Now.AddMonths(-1).AddDays(1)
-            Me.moBeginDateText.Text = GetDateFormattedString(t)
-            Me.moEndDateText.Text = GetDateFormattedString(Date.Now)
-            Me.rAllSVCandStore.Checked = True
+            moBeginDateText.Text = GetDateFormattedString(t)
+            moEndDateText.Text = GetDateFormattedString(Date.Now)
+            rAllSVCandStore.Checked = True
             TheRptCeInputControl.populateReportLanguages(RPT_FILENAME)
             TheRptCeInputControl.ExcludeExport()
         End Sub
@@ -254,8 +254,8 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal CompanyCode As String, ByVal begindate As String, ByVal enddate As String,
-                               ByVal selectiontype As String, ByVal selectioncode As String, ByVal selectiondesc As String, ByVal langcode As String) As ReportCeBaseForm.Params
+        Function SetParameters(CompanyCode As String, begindate As String, enddate As String,
+                               selectiontype As String, selectioncode As String, selectiondesc As String, langcode As String) As ReportCeBaseForm.Params
 
             Dim Params As New ReportCeBaseForm.Params
             Dim repParams(TOTALPARAMS) As ReportCeBaseForm.RptParam
@@ -276,7 +276,7 @@ Namespace Reports
             End With
             SetReportParams(rptParams, repParams, String.Empty, PARAMS_PER_REPORT * 0)     ' Main Report
 
-            Me.rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
+            rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
 
             With Params
                 .msRptName = reportName
@@ -290,8 +290,8 @@ Namespace Reports
 
         End Function
 
-        Sub SetReportParams(ByVal rptParams As ReportParams, ByVal repParams() As ReportCeBaseForm.RptParam,
-                          ByVal reportName As String, ByVal startIndex As Integer)
+        Sub SetReportParams(rptParams As ReportParams, repParams() As ReportCeBaseForm.RptParam,
+                          reportName As String, startIndex As Integer)
 
             With rptParams
                 repParams(startIndex) = New ReportCeBaseForm.RptParam("V_COMPANY", .companycode, reportName)
@@ -315,9 +315,9 @@ Namespace Reports
             Dim selectiontype As String
             Dim selectioncode As String
             Dim selectiondesc As String
-            Dim ManufacturerId As Guid = Me.GetSelectedItem(Me.cboManufacturer)
-            Dim SVCId As Guid = Me.GetSelectedItem(Me.cboSVC)
-            Dim StoreId As Guid = Me.GetSelectedItem(Me.cboStore)
+            Dim ManufacturerId As Guid = GetSelectedItem(cboManufacturer)
+            Dim SVCId As Guid = GetSelectedItem(cboSVC)
+            Dim StoreId As Guid = GetSelectedItem(cboStore)
 
             Dim CompanyId As String = GuidControl.GuidToHexString(UserCompanyMultipleDrop.SelectedGuid)
             Dim CompanyCode As String = UserCompanyMultipleDrop.SelectedCode
@@ -339,23 +339,23 @@ Namespace Reports
 
 
             'Validating the selection
-            If Me.rmanufacturer.Checked Then
+            If rmanufacturer.Checked Then
                 selectiontype = MANUFACTURER
                 selectioncode = ALL
                 selectiondesc = ALL
             ElseIf Not ManufacturerId.Equals(Guid.Empty) Then
                 selectiontype = MANUFACTURER
-                selectioncode = Me.GetSelectedDescription(Me.cboManufacturer)
-                selectiondesc = Me.GetSelectedDescription(Me.cboManufacturer)
-            ElseIf Me.rAllSVCandStore.Checked Then
+                selectioncode = GetSelectedDescription(cboManufacturer)
+                selectiondesc = GetSelectedDescription(cboManufacturer)
+            ElseIf rAllSVCandStore.Checked Then
                 selectiontype = SVCANDSTORE
                 selectioncode = ALL
                 selectiondesc = ALL
-            ElseIf Me.rAllSVC.Checked Then
+            ElseIf rAllSVC.Checked Then
                 selectiontype = SVC
                 selectioncode = ALL
                 selectiondesc = ALL
-            ElseIf Me.rAllStore.Checked Then
+            ElseIf rAllStore.Checked Then
                 selectiontype = STORE
                 selectioncode = ALL
                 selectiondesc = ALL
@@ -363,12 +363,12 @@ Namespace Reports
                 selectiontype = SVC
                 osvcenter = New ServiceCenter(SVCId)
                 selectioncode = osvcenter.Code
-                selectiondesc = Me.GetSelectedDescription(Me.cboSVC)
+                selectiondesc = GetSelectedDescription(cboSVC)
             ElseIf Not StoreId.Equals(Guid.Empty) Then
                 selectiontype = STORE
                 osvcenter = New ServiceCenter(StoreId)
                 selectioncode = osvcenter.Code
-                selectiondesc = Me.GetSelectedDescription(Me.cboStore)
+                selectiondesc = GetSelectedDescription(cboStore)
                 'ElseIf ManufacturerId.Equals(Guid.Empty) And BranchId.Equals(Guid.Empty) Then
                 '    ElitaPlusPage.SetLabelError(cboManufacturerlbl)
                 '   Throw New GUIException(Message.MSG_INVALID_DEALER, Assurant.ElitaPlus.Common.ErrorCodes.GUI_MANUFACTURER_MUST_BE_SELECTED_ERR)

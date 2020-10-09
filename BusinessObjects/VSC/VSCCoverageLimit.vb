@@ -6,48 +6,48 @@ Public Class VSCCoverageLimit
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New VSCCoverageLimitDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class VSCCoverageLimit
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New VSCCoverageLimitDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -96,7 +96,7 @@ Public Class VSCCoverageLimit
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(VSCCoverageLimitDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -107,7 +107,7 @@ Public Class VSCCoverageLimit
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", MIN:=MIN_LONG), ValidateZeros("")> _
-    Public Property CoverageKmMi() As LongType
+    Public Property CoverageKmMi As LongType
         Get
             CheckDeleted()
             If Row(VSCCoverageLimitDAL.COL_NAME_COVERAGE_KM_MI) Is DBNull.Value Then
@@ -116,15 +116,15 @@ Public Class VSCCoverageLimit
                 Return New LongType(CType(Row(VSCCoverageLimitDAL.COL_NAME_COVERAGE_KM_MI), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCCoverageLimitDAL.COL_NAME_COVERAGE_KM_MI, Value)
+            SetValue(VSCCoverageLimitDAL.COL_NAME_COVERAGE_KM_MI, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidNumericRange("", MIN:=MIN_LONG), ValidateZeros("")> _
-    Public Property CoverageMonths() As LongType
+    Public Property CoverageMonths As LongType
         Get
             CheckDeleted()
             If Row(VSCCoverageLimitDAL.COL_NAME_COVERAGE_MONTHS) Is DBNull.Value Then
@@ -133,15 +133,15 @@ Public Class VSCCoverageLimit
                 Return New LongType(CType(Row(VSCCoverageLimitDAL.COL_NAME_COVERAGE_MONTHS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCCoverageLimitDAL.COL_NAME_COVERAGE_MONTHS, Value)
+            SetValue(VSCCoverageLimitDAL.COL_NAME_COVERAGE_MONTHS, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property CoverageTypeId() As Guid
+    Public Property CoverageTypeId As Guid
         Get
             CheckDeleted()
             If Row(VSCCoverageLimitDAL.COL_NAME_COVERAGE_TYPE_ID) Is DBNull.Value Then
@@ -150,15 +150,15 @@ Public Class VSCCoverageLimit
                 Return New Guid(CType(Row(VSCCoverageLimitDAL.COL_NAME_COVERAGE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCCoverageLimitDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
+            SetValue(VSCCoverageLimitDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property CoverageLimitCode() As LongType
+    Public Property CoverageLimitCode As LongType
         Get
             CheckDeleted()
             If Row(VSCCoverageLimitDAL.COL_NAME_COVERAGE_LIMIT_CODE) Is DBNull.Value Then
@@ -167,14 +167,14 @@ Public Class VSCCoverageLimit
                 Return New LongType(CType(Row(VSCCoverageLimitDAL.COL_NAME_COVERAGE_LIMIT_CODE), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCCoverageLimitDAL.COL_NAME_COVERAGE_LIMIT_CODE, Value)
+            SetValue(VSCCoverageLimitDAL.COL_NAME_COVERAGE_LIMIT_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(VSCCoverageLimitDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -183,9 +183,9 @@ Public Class VSCCoverageLimit
                 Return New Guid(CType(Row(VSCCoverageLimitDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCCoverageLimitDAL.COL_NAME_COMPANY_GROUP_ID, Value)
+            SetValue(VSCCoverageLimitDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
     End Property
 
@@ -196,15 +196,15 @@ Public Class VSCCoverageLimit
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New VSCCoverageLimitDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New Dataset
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New Dataset
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -216,12 +216,12 @@ Public Class VSCCoverageLimit
     Public Class isCoverageOptional
         Public isOptional As Boolean = False
 
-        Public Sub New(ByVal id As Guid)
+        Public Sub New(id As Guid)
             Try
                 Dim dal As New VSCCoverageLimitDAL
                 Dim covOptDs As DataSet = dal.GetOptionalCoverage(id, ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
-                If covOptDs.Tables(0).Rows.Count > 0 AndAlso (Not covOptDs.Tables(0).Rows(0)(dal.COL_NAME_COVERAGE_OPT) Is DBNull.Value) Then
+                If covOptDs.Tables(0).Rows.Count > 0 AndAlso (covOptDs.Tables(0).Rows(0)(dal.COL_NAME_COVERAGE_OPT) IsNot DBNull.Value) Then
                     isOptional = (covOptDs.Tables(0).Rows(0)(dal.COL_NAME_COVERAGE_OPT) > 0)
                 End If
             Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -256,14 +256,14 @@ Public Class VSCCoverageLimit
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
 #End Region
 
-    Public Shared Function getList(ByVal LimitCodeMask As String, ByVal CoverageTypeMask As Guid, ByVal MonthMask As String, ByVal KmMask As String) As CoverageLimitSearchDV
+    Public Shared Function getList(LimitCodeMask As String, CoverageTypeMask As Guid, MonthMask As String, KmMask As String) As CoverageLimitSearchDV
 
         Try
             Dim dal As New VSCCoverageLimitDAL
@@ -285,12 +285,12 @@ Public Class VSCCoverageLimit
     Public NotInheritable Class ValidateZeros
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             'fields can not simultaneously be set at zero
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_NOT_ZEROS)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As VSCCoverageLimit = CType(objectToValidate, VSCCoverageLimit)
             Dim covopt As New isCoverageOptional(obj.Id)
 

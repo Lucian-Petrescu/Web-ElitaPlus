@@ -35,13 +35,13 @@ Namespace Interfaces
 #End Region
 
 #Region "Page_Events"
-        Private Sub Page_PageReturn(ByVal returnFromUrl As String, ByVal returnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(returnFromUrl As String, returnPar As Object) Handles MyBase.PageReturn
 
             TheFileController.SetErrorController(UserControlMessageController)
             TheFileController.Page_PageReturn(returnFromUrl, returnPar)
             _mbIsPageReturn = True
         End Sub
-        Private Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             UserControlMessageController.Clear()
             moFileController.SetErrorController(UserControlMessageController)
             MenuEnabled = True
@@ -64,27 +64,27 @@ Namespace Interfaces
 #End Region
 
 #Region "Events-Handlers"
-        Private Sub moFileController_PopulateReferenceDataView(ByVal sender As Object, ByVal e As FileProcessedControllerNew.PopulateReferenceEventArgs) _
+        Private Sub moFileController_PopulateReferenceDataView(sender As Object, e As FileProcessedControllerNew.PopulateReferenceEventArgs) _
             Handles moFileController.PopulateReferenceDataView
             e.ReferenceDv = LookupListNew.GetServiceCenterLookupList(e.CountryId)
         End Sub
 
-        Private Sub moFileController_SetExpectedFileName(ByVal sender As Object, ByVal e As FileProcessedControllerNew.SetExpectedFileNameEventArgs) _
+        Private Sub moFileController_SetExpectedFileName(sender As Object, e As FileProcessedControllerNew.SetExpectedFileNameEventArgs) _
             Handles moFileController.SetExpectedFileName
             e.FileName = e.CompanyGroupCode & "-" & e.ReferenceCode & "-"
         End Sub
 
-        Private Sub moFileController_OnValidate(ByVal sender As Object, ByVal e As FileProcessedControllerNew.ExecuteActionEventArgs) _
+        Private Sub moFileController_OnValidate(sender As Object, e As FileProcessedControllerNew.ExecuteActionEventArgs) _
             Handles moFileController.OnValidate
             e.InterfaceStatusId = VendorloadInvReconWrk.ValidateFile(e.FileProcessedId)
         End Sub
 
-        Private Sub moFileController_OnProcess(ByVal sender As Object, ByVal e As FileProcessedControllerNew.ExecuteActionEventArgs) _
+        Private Sub moFileController_OnProcess(sender As Object, e As FileProcessedControllerNew.ExecuteActionEventArgs) _
             Handles moFileController.OnProcess
             e.InterfaceStatusId = VendorloadInvReconWrk.ProcessFile(e.FileProcessedId)
         End Sub
 
-        Private Sub moFileController_OnDelete(ByVal sender As Object, ByVal e As FileProcessedControllerNew.ExecuteActionEventArgs) _
+        Private Sub moFileController_OnDelete(sender As Object, e As FileProcessedControllerNew.ExecuteActionEventArgs) _
             Handles moFileController.OnDelete
             e.InterfaceStatusId = VendorloadInvReconWrk.DeleteFile(e.FileProcessedId)
         End Sub

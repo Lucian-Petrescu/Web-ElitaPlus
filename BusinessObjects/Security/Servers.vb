@@ -14,57 +14,57 @@ Public Class Servers
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
-    Public Sub New(ByVal sHubRegion As String, ByVal sMachinePrefix As String, Optional ByVal webServiceName As String = Nothing, _
+    Public Sub New(sHubRegion As String, sMachinePrefix As String, Optional ByVal webServiceName As String = Nothing, _
                     Optional ByVal webServiceFunctionName As String = Nothing)
         MyBase.New()
         Dim sEnvironment As String = EnvironmentContext.Current.EnvironmentName
 
-        Me.Dataset = New DataSet
-        Me.Load(sHubRegion, sMachinePrefix, sEnvironment, webServiceName, webServiceFunctionName)
+        Dataset = New DataSet
+        Load(sHubRegion, sMachinePrefix, sEnvironment, webServiceName, webServiceFunctionName)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ServersDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -72,23 +72,23 @@ Public Class Servers
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ServersDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -96,24 +96,24 @@ Public Class Servers
         End Try
     End Sub
 
-    Protected Sub Load(ByVal sHubRegion As String, ByVal sMachinePrefix As String, ByVal sEnvironment As String, _
+    Protected Sub Load(sHubRegion As String, sMachinePrefix As String, sEnvironment As String, _
                        Optional ByVal webServiceName As String = Nothing, Optional ByVal webServiceFunctionName As String = Nothing)
         Try
             Dim dal As New ServersDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(sHubRegion.ToUpper, dal.COL_NAME_HUB_REGION, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(sHubRegion.ToUpper, dal.COL_NAME_HUB_REGION, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, sHubRegion, sMachinePrefix, sEnvironment, webServiceName, webServiceFunctionName)
-                Me.Row = Me.FindRow(sHubRegion.ToUpper, dal.COL_NAME_HUB_REGION, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, sHubRegion, sMachinePrefix, sEnvironment, webServiceName, webServiceFunctionName)
+                Row = FindRow(sHubRegion.ToUpper, dal.COL_NAME_HUB_REGION, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
 
@@ -136,7 +136,7 @@ Public Class Servers
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ServersDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -147,7 +147,7 @@ Public Class Servers
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=30)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(ServersDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -156,15 +156,15 @@ Public Class Servers
                 Return CType(Row(ServersDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ServersDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(ServersDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=2)> _
-    Public Property HubRegion() As String
+    Public Property HubRegion As String
         Get
             CheckDeleted()
             If Row(ServersDAL.COL_NAME_HUB_REGION) Is DBNull.Value Then
@@ -173,15 +173,15 @@ Public Class Servers
                 Return CType(Row(ServersDAL.COL_NAME_HUB_REGION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ServersDAL.COL_NAME_HUB_REGION, Value)
+            SetValue(ServersDAL.COL_NAME_HUB_REGION, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)> _
-    Public Property MachinePrefix() As String
+    Public Property MachinePrefix As String
         Get
             CheckDeleted()
             If Row(ServersDAL.COL_NAME_MACHINE_PREFIX) Is DBNull.Value Then
@@ -190,15 +190,15 @@ Public Class Servers
                 Return CType(Row(ServersDAL.COL_NAME_MACHINE_PREFIX), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ServersDAL.COL_NAME_MACHINE_PREFIX, Value)
+            SetValue(ServersDAL.COL_NAME_MACHINE_PREFIX, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=11)> _
-    Public Property Environment() As String
+    Public Property Environment As String
         Get
             CheckDeleted()
             If Row(ServersDAL.COL_NAME_ENVIRONMENT) Is DBNull.Value Then
@@ -207,15 +207,15 @@ Public Class Servers
                 Return CType(Row(ServersDAL.COL_NAME_ENVIRONMENT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ServersDAL.COL_NAME_ENVIRONMENT, Value)
+            SetValue(ServersDAL.COL_NAME_ENVIRONMENT, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property FtpHostname() As String
+    Public Property FtpHostname As String
         Get
             CheckDeleted()
             If Row(ServersDAL.COL_NAME_FTP_HOSTNAME) Is DBNull.Value Then
@@ -224,14 +224,14 @@ Public Class Servers
                 Return CType(Row(ServersDAL.COL_NAME_FTP_HOSTNAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ServersDAL.COL_NAME_FTP_HOSTNAME, Value)
+            SetValue(ServersDAL.COL_NAME_FTP_HOSTNAME, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)> _
-    Public Property FelitaFtpHostname() As String
+    Public Property FelitaFtpHostname As String
         Get
             CheckDeleted()
             If Row(ServersDAL.COL_NAME_FELITA_FTP_HOSTNAME) Is DBNull.Value Then
@@ -240,14 +240,14 @@ Public Class Servers
                 Return CType(Row(ServersDAL.COL_NAME_FELITA_FTP_HOSTNAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ServersDAL.COL_NAME_FELITA_FTP_HOSTNAME, Value)
+            SetValue(ServersDAL.COL_NAME_FELITA_FTP_HOSTNAME, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=30)> _
-    Public Property LdapIp() As String
+    Public Property LdapIp As String
         Get
             CheckDeleted()
             If Row(ServersDAL.COL_NAME_LDAP_IP) Is DBNull.Value Then
@@ -256,9 +256,9 @@ Public Class Servers
                 Return CType(Row(ServersDAL.COL_NAME_LDAP_IP), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ServersDAL.COL_NAME_LDAP_IP, Value)
+            SetValue(ServersDAL.COL_NAME_LDAP_IP, Value)
         End Set
     End Property
 
@@ -279,7 +279,7 @@ Public Class Servers
     'End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property FtpHostPath() As String
+    Public Property FtpHostPath As String
         Get
             CheckDeleted()
             If Row(ServersDAL.COL_NAME_FTP_HOST_PATH) Is DBNull.Value Then
@@ -288,14 +288,14 @@ Public Class Servers
                 Return CType(Row(ServersDAL.COL_NAME_FTP_HOST_PATH), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ServersDAL.COL_NAME_FTP_HOST_PATH, Value)
+            SetValue(ServersDAL.COL_NAME_FTP_HOST_PATH, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=20)> _
-    Public Property FtpTriggerExtension() As String
+    Public Property FtpTriggerExtension As String
         Get
             CheckDeleted()
             If Row(ServersDAL.COL_NAME_FTP_TRIGGER_EXTENSION) Is DBNull.Value Then
@@ -304,14 +304,14 @@ Public Class Servers
                 Return CType(Row(ServersDAL.COL_NAME_FTP_TRIGGER_EXTENSION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ServersDAL.COL_NAME_FTP_TRIGGER_EXTENSION, Value)
+            SetValue(ServersDAL.COL_NAME_FTP_TRIGGER_EXTENSION, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property FtpSplitPath() As String
+    Public Property FtpSplitPath As String
         Get
             CheckDeleted()
             If Row(ServersDAL.COL_NAME_FTP_SPLIT_PATH) Is DBNull.Value Then
@@ -320,14 +320,14 @@ Public Class Servers
                 Return CType(Row(ServersDAL.COL_NAME_FTP_SPLIT_PATH), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ServersDAL.COL_NAME_FTP_SPLIT_PATH, Value)
+            SetValue(ServersDAL.COL_NAME_FTP_SPLIT_PATH, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=100)> _
-    Public Property SmartStreamHostName() As String
+    Public Property SmartStreamHostName As String
         Get
             CheckDeleted()
             If Row(ServersDAL.COL_NAME_SMARTSTREAM_HOSTNAME) Is DBNull.Value Then
@@ -336,14 +336,14 @@ Public Class Servers
                 Return CType(Row(ServersDAL.COL_NAME_SMARTSTREAM_HOSTNAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ServersDAL.COL_NAME_SMARTSTREAM_HOSTNAME, Value)
+            SetValue(ServersDAL.COL_NAME_SMARTSTREAM_HOSTNAME, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property ServiceOrderImageHost() As String
+    Public Property ServiceOrderImageHost As String
         Get
             CheckDeleted()
             If Row(ServersDAL.COL_NAME_SERVICEORDER_IMAGE_HOSTNAME) Is DBNull.Value Then
@@ -352,14 +352,14 @@ Public Class Servers
                 Return CType(Row(ServersDAL.COL_NAME_SERVICEORDER_IMAGE_HOSTNAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ServersDAL.COL_NAME_SERVICEORDER_IMAGE_HOSTNAME, Value)
+            SetValue(ServersDAL.COL_NAME_SERVICEORDER_IMAGE_HOSTNAME, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)>
-    Public Property PrivacyLevelXCD() As String
+    Public Property PrivacyLevelXCD As String
         Get
             CheckDeleted()
             If Row(ServersDAL.COL_NAME_PRIVACY_LEVEL_XCD) Is DBNull.Value Then
@@ -368,14 +368,14 @@ Public Class Servers
                 Return CType(Row(ServersDAL.COL_NAME_PRIVACY_LEVEL_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ServersDAL.COL_NAME_PRIVACY_LEVEL_XCD, Value.ToUpper)
+            SetValue(ServersDAL.COL_NAME_PRIVACY_LEVEL_XCD, Value.ToUpper)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=10)> _
-    Public Property DatabaseName() As String
+    Public Property DatabaseName As String
         Get
             CheckDeleted()
             If Row(ServersDAL.COL_NAME_DATABASE_NAME) Is DBNull.Value Then
@@ -384,14 +384,14 @@ Public Class Servers
                 Return CType(Row(ServersDAL.COL_NAME_DATABASE_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ServersDAL.COL_NAME_DATABASE_NAME, If(Value Is Nothing, Value, Value.ToUpper))
+            SetValue(ServersDAL.COL_NAME_DATABASE_NAME, If(Value Is Nothing, Value, Value.ToUpper))
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)> _
-    Public Property BatchHostname() As String
+    Public Property BatchHostname As String
         Get
             CheckDeleted()
             If Row(ServersDAL.COL_NAME_BATCH_HOSTNAME) Is DBNull.Value Then
@@ -400,14 +400,14 @@ Public Class Servers
                 Return CType(Row(ServersDAL.COL_NAME_BATCH_HOSTNAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ServersDAL.COL_NAME_BATCH_HOSTNAME, Value)
+            SetValue(ServersDAL.COL_NAME_BATCH_HOSTNAME, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)> _
-    Public Property AcctBalanceHostname() As String
+    Public Property AcctBalanceHostname As String
         Get
             CheckDeleted()
             If Row(ServersDAL.COL_NAME_ACCT_BALANCE_HOSTNAME) Is DBNull.Value Then
@@ -416,13 +416,13 @@ Public Class Servers
                 Return CType(Row(ServersDAL.COL_NAME_ACCT_BALANCE_HOSTNAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ServersDAL.COL_NAME_ACCT_BALANCE_HOSTNAME, Value)
+            SetValue(ServersDAL.COL_NAME_ACCT_BALANCE_HOSTNAME, Value)
         End Set
     End Property
 
-    Public ReadOnly Property WebServiceOffLineMessage() As String
+    Public ReadOnly Property WebServiceOffLineMessage As String
         Get
             CheckDeleted()
             If Row(ServersDAL.COL_NAME_WEB_SERVICE_OFF_LINE_MESSAGE) Is DBNull.Value Then
@@ -433,7 +433,7 @@ Public Class Servers
         End Get
     End Property
 
-    Public ReadOnly Property WebServiceFunctionOffLineMessage() As String
+    Public ReadOnly Property WebServiceFunctionOffLineMessage As String
         Get
             CheckDeleted()
             If Row(ServersDAL.COL_NAME_WEB_SERVICE_FUNCTION_OFF_LINE_MESSAGE) Is DBNull.Value Then
@@ -445,7 +445,7 @@ Public Class Servers
     End Property
 
     <ValidStringLength("", Max:=200)> _
-    Public Property SmartStreamGLStatus() As String
+    Public Property SmartStreamGLStatus As String
         Get
             CheckDeleted()
             If Row(ServersDAL.COL_NAME_SMARTSTREAM_GL_STATUS) Is DBNull.Value Then
@@ -454,14 +454,14 @@ Public Class Servers
                 Return CType(Row(ServersDAL.COL_NAME_SMARTSTREAM_GL_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ServersDAL.COL_NAME_SMARTSTREAM_GL_STATUS, Value)
+            SetValue(ServersDAL.COL_NAME_SMARTSTREAM_GL_STATUS, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)> _
-    Public Property SmartStreamGLUpload() As String
+    Public Property SmartStreamGLUpload As String
         Get
             CheckDeleted()
             If Row(ServersDAL.COL_NAME_SMARTSTREAM_GL_UPLOAD) Is DBNull.Value Then
@@ -470,14 +470,14 @@ Public Class Servers
                 Return CType(Row(ServersDAL.COL_NAME_SMARTSTREAM_GL_UPLOAD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ServersDAL.COL_NAME_SMARTSTREAM_GL_UPLOAD, Value)
+            SetValue(ServersDAL.COL_NAME_SMARTSTREAM_GL_UPLOAD, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)> _
-    Public Property SmartStreamAPUpload() As String
+    Public Property SmartStreamAPUpload As String
         Get
             CheckDeleted()
             If Row(ServersDAL.COL_NAME_SMARTSTREAM_AP_UPLOAD) Is DBNull.Value Then
@@ -486,13 +486,13 @@ Public Class Servers
                 Return CType(Row(ServersDAL.COL_NAME_SMARTSTREAM_AP_UPLOAD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ServersDAL.COL_NAME_SMARTSTREAM_AP_UPLOAD, Value)
+            SetValue(ServersDAL.COL_NAME_SMARTSTREAM_AP_UPLOAD, Value)
         End Set
     End Property
     <ValidNumericRange("", Max:=999)>
-    Public Property NoOfParallelProcesses() As Integer
+    Public Property NoOfParallelProcesses As Integer
         Get
             CheckDeleted()
             If Row(ServersDAL.COL_NAME_NO_OF_PARALLEL_PROCESSES) Is DBNull.Value Then
@@ -501,13 +501,13 @@ Public Class Servers
                 Return CType(Row(ServersDAL.COL_NAME_NO_OF_PARALLEL_PROCESSES), Integer)
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
-            Me.SetValue(ServersDAL.COL_NAME_NO_OF_PARALLEL_PROCESSES, Value)
+            SetValue(ServersDAL.COL_NAME_NO_OF_PARALLEL_PROCESSES, Value)
         End Set
     End Property
     <ValidNumericRange("", Max:=99999)>
-    Public Property CommitFrequency() As Integer
+    Public Property CommitFrequency As Integer
         Get
             CheckDeleted()
             If Row(ServersDAL.COL_NAME_COMMIT_FREQUENCY) Is DBNull.Value Then
@@ -516,13 +516,13 @@ Public Class Servers
                 Return CType(Row(ServersDAL.COL_NAME_COMMIT_FREQUENCY), Integer)
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
-            Me.SetValue(ServersDAL.COL_NAME_COMMIT_FREQUENCY, Value)
+            SetValue(ServersDAL.COL_NAME_COMMIT_FREQUENCY, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=30)>
-    Public Property DBUniqueName() As String
+    Public Property DBUniqueName As String
         Get
             CheckDeleted()
             If Row(ServersDAL.COL_NAME_DB_UNIQUE_NAME) Is DBNull.Value Then
@@ -531,9 +531,9 @@ Public Class Servers
                 Return CType(Row(ServersDAL.COL_NAME_DB_UNIQUE_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ServersDAL.COL_NAME_DB_UNIQUE_NAME, Value)
+            SetValue(ServersDAL.COL_NAME_DB_UNIQUE_NAME, Value)
         End Set
     End Property
 #End Region
@@ -542,15 +542,15 @@ Public Class Servers
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ServersDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -559,29 +559,29 @@ Public Class Servers
     End Sub
 
     Public Sub DeleteAndSave()
-        Me.CheckDeleted()
-        Me.BeginEdit()
+        CheckDeleted()
+        BeginEdit()
         Try
-            Me.Delete()
-            Me.Save()
+            Delete()
+            Save()
         Catch ex As Exception
-            Me.cancelEdit()
+            cancelEdit()
             Throw ex
         End Try
     End Sub
 
-    Public Sub Copy(ByVal original As Servers)
-        If Not Me.IsNew Then
+    Public Sub Copy(original As Servers)
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing server")
         End If
         'Copy myself
-        Me.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetServersList(ByVal environmentMask As String, ByVal descriptionMask As String) As SearchDV
+    Public Shared Function GetServersList(environmentMask As String, descriptionMask As String) As SearchDV
         Try
             Dim dal As New ServersDAL
             Dim ds As DataSet
@@ -607,13 +607,13 @@ Public Class Servers
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
         Public Function AddNewRowToEmptyDV() As SearchDV
-            Dim dt As DataTable = Me.Table.Clone()
+            Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(SearchDV.COL_SERVER_ID) = (New Guid()).ToByteArray
+            row(COL_SERVER_ID) = (New Guid()).ToByteArray
 
             dt.Rows.Add(row)
             Return New SearchDV(dt)
@@ -623,7 +623,7 @@ Public Class Servers
 
 #Region "Additional Logic"
 
-    Public Shared Function TestCurrentBatchService(ByVal UserName As String, ByVal Password As String, ByVal Group As String) As String
+    Public Shared Function TestCurrentBatchService(UserName As String, Password As String, Group As String) As String
 
         Try
             Dim _dal As New DALObjects.ServersDAL
@@ -635,7 +635,7 @@ Public Class Servers
 
     End Function
 
-    Public Shared Function TestBatchService(ByVal UserName As String, ByVal Password As String, ByVal Group As String, ByVal URL As String) As String
+    Public Shared Function TestBatchService(UserName As String, Password As String, Group As String, URL As String) As String
 
         Try
             Dim response As String
@@ -644,7 +644,7 @@ Public Class Servers
             Dim _bind As New BasicHttpBinding
 
             eab = New EndpointAddressBuilder
-            eab.Uri = New Uri(String.Format(Servers.BatchTestURL, URL))
+            eab.Uri = New Uri(String.Format(BatchTestURL, URL))
             ea = eab.ToEndpointAddress
             Dim wc As New TestBatchService.TestServiceClient(_bind, ea)
             response = wc.HealthCheck(UserName, Password, Group)

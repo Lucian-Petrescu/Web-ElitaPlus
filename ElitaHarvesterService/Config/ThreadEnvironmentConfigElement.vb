@@ -12,7 +12,7 @@ Public Class ThreadEnvironmentConfigElement
 
     End Sub
 
-    Public Sub New(ByVal pName As String, ByVal pEnvironment As String, ByVal pHub As String, ByVal pMachineDomain As String)
+    Public Sub New(pName As String, pEnvironment As String, pHub As String, pMachineDomain As String)
         MyBase.New(pName, pEnvironment)
         Hub = pHub
         MachineDomain = MachineDomain
@@ -23,7 +23,7 @@ Public Class ThreadEnvironmentConfigElement
         Get
             Return DirectCast(Me(PROPERTY_NAME_HUB), String)
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Me(PROPERTY_NAME_HUB) = value
         End Set
     End Property
@@ -33,7 +33,7 @@ Public Class ThreadEnvironmentConfigElement
         Get
             Return DirectCast(Me(PROPERTY_NAME_MACHINE_DOMAIN), String)
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Me(PROPERTY_NAME_MACHINE_DOMAIN) = value
         End Set
     End Property

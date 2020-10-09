@@ -70,40 +70,40 @@ Public Class PublishedTaskDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("published_task_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal languageId As Guid _
-                        , ByVal companyGroupId As Guid _
-                        , ByVal companyId As Guid _
-                        , ByVal dealerId As Guid _
-                        , ByVal countryId As Guid _
-                        , ByVal product As String _
-                        , ByVal coverageTypeId As Guid _
-                        , ByVal eventTypeId As Guid _
-                        , ByVal task As String _
-                        , ByVal statusId As Guid _
-                        , ByVal sender As String _
-                        , ByVal arguments As String _
-                        , ByVal machineName As String _
-                        , ByVal startDate As String _
-                        , ByVal endDate As String _
-                        , ByVal LimitResultset As Integer) As DataSet
+    Public Function LoadList(languageId As Guid _
+                        , companyGroupId As Guid _
+                        , companyId As Guid _
+                        , dealerId As Guid _
+                        , countryId As Guid _
+                        , product As String _
+                        , coverageTypeId As Guid _
+                        , eventTypeId As Guid _
+                        , task As String _
+                        , statusId As Guid _
+                        , sender As String _
+                        , arguments As String _
+                        , machineName As String _
+                        , startDate As String _
+                        , endDate As String _
+                        , LimitResultset As Integer) As DataSet
 
 
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim whereClauseConditions As String = ""
         Dim languageId1Param As DBHelper.DBHelperParameter
         Dim languageId2Param As DBHelper.DBHelperParameter
@@ -114,19 +114,19 @@ Public Class PublishedTaskDAL
 
         If companyGroupId <> Guid.Empty Then
             '***** Need to chnage to the code bellow
-            whereClauseConditions &= " AND elp_published_task.company_group_id = " & "hextoraw( '" & Me.GuidToSQLString(companyGroupId) & "')"
+            whereClauseConditions &= " AND elp_published_task.company_group_id = " & "hextoraw( '" & GuidToSQLString(companyGroupId) & "')"
             'whereClauseConditions &= " AND elp_company_group.company_group_id = " & "hextoraw( '" & Me.GuidToSQLString(companyGroupId) & "')"
         End If
 
         If companyId <> Guid.Empty Then
             '***** Need to chnage to the code bellow
-            whereClauseConditions &= " AND elp_published_task.company_id = " & "hextoraw( '" & Me.GuidToSQLString(companyId) & "')"
+            whereClauseConditions &= " AND elp_published_task.company_id = " & "hextoraw( '" & GuidToSQLString(companyId) & "')"
             'whereClauseConditions &= " AND elp_company.company_id = " & "hextoraw( '" & Me.GuidToSQLString(companyId) & "')"
         End If
 
         If dealerId <> Guid.Empty Then
             '***** Need to chnage to the code bellow
-            whereClauseConditions &= " AND elp_published_task.dealer_id = " & "hextoraw( '" & Me.GuidToSQLString(dealerId) & "')"
+            whereClauseConditions &= " AND elp_published_task.dealer_id = " & "hextoraw( '" & GuidToSQLString(dealerId) & "')"
             'whereClauseConditions &= " AND elp_dealer.dealer_id = " & "hextoraw( '" & Me.GuidToSQLString(dealerId) & "')"
         End If
 
@@ -136,15 +136,15 @@ Public Class PublishedTaskDAL
         End If
 
         If coverageTypeId <> Guid.Empty Then
-            whereClauseConditions &= " AND elp_published_task.coverage_type_id = " & "hextoraw( '" & Me.GuidToSQLString(coverageTypeId) & "')"
+            whereClauseConditions &= " AND elp_published_task.coverage_type_id = " & "hextoraw( '" & GuidToSQLString(coverageTypeId) & "')"
         End If
 
         If eventTypeId <> Guid.Empty Then
-            whereClauseConditions &= " AND elp_published_task.event_type_id = " & "hextoraw( '" & Me.GuidToSQLString(eventTypeId) & "')"
+            whereClauseConditions &= " AND elp_published_task.event_type_id = " & "hextoraw( '" & GuidToSQLString(eventTypeId) & "')"
         End If
 
         If statusId <> Guid.Empty Then
-            whereClauseConditions &= " AND elp_published_task.task_status_id = " & "hextoraw( '" & Me.GuidToSQLString(statusId) & "')"
+            whereClauseConditions &= " AND elp_published_task.task_status_id = " & "hextoraw( '" & GuidToSQLString(statusId) & "')"
         End If
 
         '************ Need to chnage to the correct table ********************
@@ -161,19 +161,19 @@ Public Class PublishedTaskDAL
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
-            languageId1Param = New DBHelper.DBHelperParameter(Me.COL_NAME_LANGUAGE_ID, languageId.ToByteArray())
-            languageId2Param = New DBHelper.DBHelperParameter(Me.COL_NAME_LANGUAGE_ID, languageId.ToByteArray())
-            languageId3Param = New DBHelper.DBHelperParameter(Me.COL_NAME_LANGUAGE_ID, languageId.ToByteArray())
+            languageId1Param = New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray())
+            languageId2Param = New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray())
+            languageId3Param = New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray())
 
-            rowNumParam = New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, LimitResultset)
+            rowNumParam = New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, LimitResultset)
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME,
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
                             New DBHelper.DBHelperParameter() {languageId1Param, languageId2Param, languageId3Param, rowNumParam})
             Return ds
         Catch ex As Exception
@@ -190,78 +190,78 @@ Public Class PublishedTaskDAL
 
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
 
 #Region "Stored Procedures Calls"
 
-    Public Sub AddEvent(ByVal companyGroupId As Guid,
-                        ByVal companyId As Guid,
-                        ByVal countryId As Guid,
-                        ByVal dealerId As Guid,
-                        ByVal productCode As String,
-                        ByVal coverageTypeId As Guid,
-                        ByVal sender As String,
-                        ByVal arguments As String,
-                        ByVal eventDate As DateTime,
-                        ByVal eventTypeId As Guid,
-                        ByVal eventArgumentId As Guid,
+    Public Sub AddEvent(companyGroupId As Guid,
+                        companyId As Guid,
+                        countryId As Guid,
+                        dealerId As Guid,
+                        productCode As String,
+                        coverageTypeId As Guid,
+                        sender As String,
+                        arguments As String,
+                        eventDate As DateTime,
+                        eventTypeId As Guid,
+                        eventArgumentId As Guid,
                         Optional ByVal dealergroupId As Guid = Nothing)
 
-        Dim selectStmt As String = Me.Config("/SQL/ADD_EVENT")
+        Dim selectStmt As String = Config("/SQL/ADD_EVENT")
         Dim inputParameters(11) As DBHelperParameter
 
         If (companyGroupId.Equals(Guid.Empty)) Then
-            inputParameters(0) = New DBHelperParameter(Me.PAR_NAME_COMPANY_GROUP_ID, Nothing)
+            inputParameters(0) = New DBHelperParameter(PAR_NAME_COMPANY_GROUP_ID, Nothing)
         Else
-            inputParameters(0) = New DBHelperParameter(Me.PAR_NAME_COMPANY_GROUP_ID, companyGroupId, GetType(Guid))
+            inputParameters(0) = New DBHelperParameter(PAR_NAME_COMPANY_GROUP_ID, companyGroupId, GetType(Guid))
         End If
         If (companyId.Equals(Guid.Empty)) Then
-            inputParameters(1) = New DBHelperParameter(Me.PAR_NAME_COMPANY_ID, Nothing)
+            inputParameters(1) = New DBHelperParameter(PAR_NAME_COMPANY_ID, Nothing)
         Else
-            inputParameters(1) = New DBHelperParameter(Me.PAR_NAME_COMPANY_ID, companyId, GetType(Guid))
+            inputParameters(1) = New DBHelperParameter(PAR_NAME_COMPANY_ID, companyId, GetType(Guid))
         End If
         If (countryId.Equals(Guid.Empty)) Then
-            inputParameters(2) = New DBHelperParameter(Me.PAR_NAME_COUNTRY_ID, Nothing)
+            inputParameters(2) = New DBHelperParameter(PAR_NAME_COUNTRY_ID, Nothing)
         Else
-            inputParameters(2) = New DBHelperParameter(Me.PAR_NAME_COUNTRY_ID, countryId, GetType(Guid))
+            inputParameters(2) = New DBHelperParameter(PAR_NAME_COUNTRY_ID, countryId, GetType(Guid))
         End If
         If (dealerId.Equals(Guid.Empty)) Then
-            inputParameters(3) = New DBHelperParameter(Me.PAR_NAME_DEALER_ID, Nothing)
+            inputParameters(3) = New DBHelperParameter(PAR_NAME_DEALER_ID, Nothing)
         Else
-            inputParameters(3) = New DBHelperParameter(Me.PAR_NAME_DEALER_ID, dealerId, GetType(Guid))
+            inputParameters(3) = New DBHelperParameter(PAR_NAME_DEALER_ID, dealerId, GetType(Guid))
         End If
         If (productCode Is Nothing OrElse Trim(productCode) = String.Empty) Then
-            inputParameters(4) = New DBHelperParameter(Me.PAR_NAME_PRODUCT_CODE, Nothing)
+            inputParameters(4) = New DBHelperParameter(PAR_NAME_PRODUCT_CODE, Nothing)
         Else
-            inputParameters(4) = New DBHelperParameter(Me.PAR_NAME_PRODUCT_CODE, productCode, GetType(String))
+            inputParameters(4) = New DBHelperParameter(PAR_NAME_PRODUCT_CODE, productCode, GetType(String))
         End If
         If (coverageTypeId.Equals(Guid.Empty)) Then
-            inputParameters(5) = New DBHelperParameter(Me.PAR_NAME_COVERAGE_TYPE_ID, Nothing)
+            inputParameters(5) = New DBHelperParameter(PAR_NAME_COVERAGE_TYPE_ID, Nothing)
         Else
-            inputParameters(5) = New DBHelperParameter(Me.PAR_NAME_COVERAGE_TYPE_ID, coverageTypeId, GetType(Guid))
+            inputParameters(5) = New DBHelperParameter(PAR_NAME_COVERAGE_TYPE_ID, coverageTypeId, GetType(Guid))
         End If
-        inputParameters(6) = New DBHelperParameter(Me.PAR_NAME_SENDER, sender, GetType(String))
-        inputParameters(7) = New DBHelperParameter(Me.PAR_NAME_ARGUMENTS, arguments, GetType(String))
-        inputParameters(8) = New DBHelperParameter(Me.PAR_NAME_EVENT_DATE, eventDate, GetType(Date))
-        inputParameters(9) = New DBHelperParameter(Me.PAR_NAME_EVENT_TYPE_ID, eventTypeId, GetType(Guid))
+        inputParameters(6) = New DBHelperParameter(PAR_NAME_SENDER, sender, GetType(String))
+        inputParameters(7) = New DBHelperParameter(PAR_NAME_ARGUMENTS, arguments, GetType(String))
+        inputParameters(8) = New DBHelperParameter(PAR_NAME_EVENT_DATE, eventDate, GetType(Date))
+        inputParameters(9) = New DBHelperParameter(PAR_NAME_EVENT_TYPE_ID, eventTypeId, GetType(Guid))
 
         If (eventArgumentId.Equals(Guid.Empty)) Then
-            inputParameters(10) = New DBHelperParameter(Me.PAR_NAME_EVENT_ARGUMENT_ID, Nothing)
+            inputParameters(10) = New DBHelperParameter(PAR_NAME_EVENT_ARGUMENT_ID, Nothing)
         Else
-            inputParameters(10) = New DBHelperParameter(Me.PAR_NAME_EVENT_ARGUMENT_ID, eventArgumentId, GetType(Guid))
+            inputParameters(10) = New DBHelperParameter(PAR_NAME_EVENT_ARGUMENT_ID, eventArgumentId, GetType(Guid))
         End If
         If (dealergroupId.Equals(Guid.Empty)) Then
-            inputParameters(11) = New DBHelperParameter(Me.PAR_NAME_DEALER_GROUP_ID, Nothing)
+            inputParameters(11) = New DBHelperParameter(PAR_NAME_DEALER_GROUP_ID, Nothing)
         Else
-            inputParameters(11) = New DBHelperParameter(Me.PAR_NAME_DEALER_GROUP_ID, eventArgumentId, GetType(Guid))
+            inputParameters(11) = New DBHelperParameter(PAR_NAME_DEALER_GROUP_ID, eventArgumentId, GetType(Guid))
         End If
         Try
             ' Call DBHelper Store Procedure
@@ -271,17 +271,17 @@ Public Class PublishedTaskDAL
         End Try
     End Sub
 
-    Public Function GetNextTaskId(ByVal subscriberId As Guid, ByVal machineName As String, ByVal processThreadName As String) As Guid
+    Public Function GetNextTaskId(subscriberId As Guid, machineName As String, processThreadName As String) As Guid
 
-        Dim selectStmt As String = Me.Config("/SQL/GET_NEXT_TASK")
+        Dim selectStmt As String = Config("/SQL/GET_NEXT_TASK")
         Dim inputParameters(2) As DBHelperParameter
         Dim outputParameter(0) As DBHelperParameter
         Dim pub_Task_Id As Guid
 
-        inputParameters(0) = New DBHelperParameter(Me.PAR_NAME_SUBSCRIBER_ID, subscriberId, GetType(Guid))
-        inputParameters(1) = New DBHelperParameter(Me.PAR_NAME_MACHINE_NAME, machineName, GetType(String))
-        inputParameters(2) = New DBHelperParameter(Me.PAR_NAME_PROCESS_THREAD_NAME, processThreadName, GetType(String))
-        outputParameter(0) = New DBHelperParameter(Me.PAR_NAME_PUBLISHED_TASK_ID, GetType(String), 32)
+        inputParameters(0) = New DBHelperParameter(PAR_NAME_SUBSCRIBER_ID, subscriberId, GetType(Guid))
+        inputParameters(1) = New DBHelperParameter(PAR_NAME_MACHINE_NAME, machineName, GetType(String))
+        inputParameters(2) = New DBHelperParameter(PAR_NAME_PROCESS_THREAD_NAME, processThreadName, GetType(String))
+        outputParameter(0) = New DBHelperParameter(PAR_NAME_PUBLISHED_TASK_ID, GetType(String), 32)
 
         Try
             ' Call DBHelper Store Procedure
@@ -297,13 +297,13 @@ Public Class PublishedTaskDAL
         End Try
     End Function
 
-    Public Sub CompleteTask(ByVal publishedTaskId As Guid, ByVal machineName As String, ByVal processThreadName As String)
-        Dim selectStmt As String = Me.Config("/SQL/COMPLETE_TASK")
+    Public Sub CompleteTask(publishedTaskId As Guid, machineName As String, processThreadName As String)
+        Dim selectStmt As String = Config("/SQL/COMPLETE_TASK")
         Dim inputParameters(2) As DBHelperParameter
 
-        inputParameters(0) = New DBHelperParameter(Me.PAR_NAME_PUBLISHED_TASK_ID, publishedTaskId, GetType(Guid))
-        inputParameters(1) = New DBHelperParameter(Me.PAR_NAME_MACHINE_NAME, machineName, GetType(String))
-        inputParameters(2) = New DBHelperParameter(Me.PAR_NAME_PROCESS_THREAD_NAME, processThreadName, GetType(String))
+        inputParameters(0) = New DBHelperParameter(PAR_NAME_PUBLISHED_TASK_ID, publishedTaskId, GetType(Guid))
+        inputParameters(1) = New DBHelperParameter(PAR_NAME_MACHINE_NAME, machineName, GetType(String))
+        inputParameters(2) = New DBHelperParameter(PAR_NAME_PROCESS_THREAD_NAME, processThreadName, GetType(String))
 
         Try
             ' Call DBHelper Store Procedure
@@ -313,14 +313,14 @@ Public Class PublishedTaskDAL
         End Try
     End Sub
 
-    Public Sub FailedTask(ByVal publishedTaskId As Guid, ByVal machineName As String, ByVal processThreadName As String, ByVal failReason As String)
-        Dim selectStmt As String = Me.Config("/SQL/FAILED_TASK")
+    Public Sub FailedTask(publishedTaskId As Guid, machineName As String, processThreadName As String, failReason As String)
+        Dim selectStmt As String = Config("/SQL/FAILED_TASK")
         Dim inputParameters(3) As DBHelperParameter
 
-        inputParameters(0) = New DBHelperParameter(Me.PAR_NAME_PUBLISHED_TASK_ID, publishedTaskId, GetType(Guid))
-        inputParameters(1) = New DBHelperParameter(Me.PAR_NAME_MACHINE_NAME, machineName, GetType(String))
-        inputParameters(2) = New DBHelperParameter(Me.PAR_NAME_PROCESS_THREAD_NAME, processThreadName, GetType(String))
-        inputParameters(3) = New DBHelperParameter(Me.PAR_NAME_FAIL_REASON, failReason, GetType(String))
+        inputParameters(0) = New DBHelperParameter(PAR_NAME_PUBLISHED_TASK_ID, publishedTaskId, GetType(Guid))
+        inputParameters(1) = New DBHelperParameter(PAR_NAME_MACHINE_NAME, machineName, GetType(String))
+        inputParameters(2) = New DBHelperParameter(PAR_NAME_PROCESS_THREAD_NAME, processThreadName, GetType(String))
+        inputParameters(3) = New DBHelperParameter(PAR_NAME_FAIL_REASON, failReason, GetType(String))
 
         Try
             ' Call DBHelper Store Procedure
@@ -330,11 +330,11 @@ Public Class PublishedTaskDAL
         End Try
     End Sub
 
-    Public Sub ResetTask(ByVal publishedTaskId As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/RESET_TASK")
+    Public Sub ResetTask(publishedTaskId As Guid)
+        Dim selectStmt As String = Config("/SQL/RESET_TASK")
         Dim inputParameters(0) As DBHelperParameter
 
-        inputParameters(0) = New DBHelperParameter(Me.PAR_NAME_PUBLISHED_TASK_ID, publishedTaskId, GetType(Guid))
+        inputParameters(0) = New DBHelperParameter(PAR_NAME_PUBLISHED_TASK_ID, publishedTaskId, GetType(Guid))
 
         Try
             ' Call DBHelper Store Procedure
@@ -344,11 +344,11 @@ Public Class PublishedTaskDAL
         End Try
     End Sub
 
-    Public Sub DeleteTask(ByVal publishedTaskId As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/DELETE_TASK")
+    Public Sub DeleteTask(publishedTaskId As Guid)
+        Dim selectStmt As String = Config("/SQL/DELETE_TASK")
         Dim inputParameters(0) As DBHelperParameter
 
-        inputParameters(0) = New DBHelperParameter(Me.PAR_NAME_PUBLISHED_TASK_ID, publishedTaskId, GetType(Guid))
+        inputParameters(0) = New DBHelperParameter(PAR_NAME_PUBLISHED_TASK_ID, publishedTaskId, GetType(Guid))
 
         Try
             ' Call DBHelper Store Procedure
@@ -358,12 +358,12 @@ Public Class PublishedTaskDAL
         End Try
     End Sub
 
-    Public SUB GetOutBoundMessageDetails(byval publishedTaskId As Guid, ByRef oErrCode As Integer, ByRef oErrMsg As String,
+    Public SUB GetOutBoundMessageDetails(publishedTaskId As Guid, ByRef oErrCode As Integer, ByRef oErrMsg As String,
                                          ByRef oMessageId As Guid, ByRef oTemplateCode As String, ByRef oWhiteList as string, 
                                          ByRef oTemplateUserName As string, ByRef oTemplatePassword As String,                      
                                          byref oRecipients As System.Collections.Generic.list(Of String),
                                          ByRef oTemplateParams as System.Collections.Generic.Dictionary(Of String, string))
-        Dim selectStmt As String = Me.Config("/SQL/GET_OUTBOUND_EMAIL_DETAILS")
+        Dim selectStmt As String = Config("/SQL/GET_OUTBOUND_EMAIL_DETAILS")
         Dim strTemp as String, strKey as String, strValue as string
         oErrCode = 0
         oErrMsg = string.Empty
@@ -424,7 +424,7 @@ Public Class PublishedTaskDAL
         End Using
     End Sub
     Public Sub CheckSLAClaimStatus(ClaimId As Guid, ByRef oErrCode As Integer, ByRef strErrMsg As String)
-        Dim selectStmt As String = Me.Config("/SQL/CHECK_CLAIM_SLA_STATUS")
+        Dim selectStmt As String = Config("/SQL/CHECK_CLAIM_SLA_STATUS")
         oErrCode = 0
         strErrMsg = String.Empty
         Dim strTemp As String
@@ -450,7 +450,7 @@ Public Class PublishedTaskDAL
     Public SUB UpdateOutBoundMessageStatus(guidMsgId As guid, strRecipient as String, strProcessStatus as string,
                                            strCommReferenceId as String, strErrMsg as String, strProcessComments as String,
                                            ByRef oErrCode As Integer)
-        Dim selectStmt As String = Me.Config("/SQL/UPDATE_OUTBOUND_EMAIL_STATUS")
+        Dim selectStmt As String = Config("/SQL/UPDATE_OUTBOUND_EMAIL_STATUS")
         Dim strTemp as String
         oErrCode = 0
         
@@ -481,7 +481,7 @@ Public Class PublishedTaskDAL
     Public SUB UpdateResendMessageStatus(guidMsgRecipientId As guid, strProcessStatus as string,
                                            strErrMsg as String, strProcessComments as String,
                                            ByRef oErrCode As Integer)
-        Dim selectStmt As String = Me.Config("/SQL/UPDATE_RESEND_STATUS")
+        Dim selectStmt As String = Config("/SQL/UPDATE_RESEND_STATUS")
         Dim strTemp as String
         oErrCode = 0
         
@@ -515,7 +515,7 @@ Public Class PublishedTaskDAL
     Public Sub InsertGiftCardInfo(giftCardNumber As String, serialNumber As String,
                                    securityCode1 As String, securityCode2 As String, expirationDate As Date,
                                    giftCardRequestId As Guid, encryptedGiftCardLink As String)
-        Dim selectStmt As String = Me.Config("/SQL/INSERT_GIFT_CARD_INFO")
+        Dim selectStmt As String = Config("/SQL/INSERT_GIFT_CARD_INFO")
         Dim strTemp As String
 
 
@@ -543,7 +543,7 @@ Public Class PublishedTaskDAL
 
     Public sub UpdateGiftCardStatus(giftCardRequestId As guid, status as string)
 
-        Dim selectStmt As String = Me.Config("/SQL/UPDATE_GIFT_CARD_STATUS")
+        Dim selectStmt As String = Config("/SQL/UPDATE_GIFT_CARD_STATUS")
         Dim strTemp as String
      
         

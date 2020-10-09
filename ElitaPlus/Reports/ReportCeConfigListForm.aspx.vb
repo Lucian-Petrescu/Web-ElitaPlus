@@ -51,28 +51,28 @@
 
 #Region "Page Return"
 
-        Public Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Public Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.IsReturningFromChild = True
+                IsReturningFromChild = True
                 Dim retObj As ReturnType = CType(ReturnPar, ReturnType)
-                If Not retObj Is Nothing AndAlso retObj.BoChanged Then
-                    Me.State.searchDV = Nothing
+                If retObj IsNot Nothing AndAlso retObj.BoChanged Then
+                    State.searchDV = Nothing
                 End If
-                If Not retObj Is Nothing Then
+                If retObj IsNot Nothing Then
                     Select Case retObj.LastOperation
                         Case ElitaPlusPage.DetailPageCommand.Back
-                            Me.State.moReportConfigId = retObj.moReportConfigId
+                            State.moReportConfigId = retObj.moReportConfigId
                         Case Else
-                            Me.State.moReportConfigId = Guid.Empty
+                            State.moReportConfigId = Guid.Empty
                     End Select
-                    Me.Grid.PageIndex = Me.State.PageIndex
-                    Me.Grid.PageSize = Me.State.PageSize
-                    cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
-                    Me.Grid.PageSize = Me.State.PageSize
-                    ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+                    Grid.PageIndex = State.PageIndex
+                    Grid.PageSize = State.PageSize
+                    cboPageSize.SelectedValue = CType(State.PageSize, String)
+                    Grid.PageSize = State.PageSize
+                    ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -81,9 +81,9 @@
             Public moReportConfigId As Guid
             Public BoChanged As Boolean = False
 
-            Public Sub New(ByVal LastOp As ElitaPlusPage.DetailPageCommand, ByVal oReportConfigId As Guid, Optional ByVal boChanged As Boolean = False)
-                Me.LastOperation = LastOp
-                Me.moReportConfigId = oReportConfigId
+            Public Sub New(LastOp As ElitaPlusPage.DetailPageCommand, oReportConfigId As Guid, Optional ByVal boChanged As Boolean = False)
+                LastOperation = LastOp
+                moReportConfigId = oReportConfigId
                 Me.BoChanged = boChanged
             End Sub
         End Class
@@ -96,26 +96,26 @@
 
 #Region "Handler-Init"
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-            Me.ErrControllerMaster.Clear_Hide()
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+            ErrControllerMaster.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
-                    Me.SortDirection = ReportConfig.ReportConfigSearchDV.COL_COMPANY
-                    Me.TranslateGridHeader(Grid)
-                    Me.TranslateGridControls(Grid)
+                If Not IsPostBack Then
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
+                    SortDirection = ReportConfig.ReportConfigSearchDV.COL_COMPANY
+                    TranslateGridHeader(Grid)
+                    TranslateGridControls(Grid)
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
 
-                    Me.SetGridItemStyleColor(Me.Grid)
-                    If Me.IsReturningFromChild Then
+                    SetGridItemStyleColor(Grid)
+                    If IsReturningFromChild Then
                         PopulateAll()
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
 #End Region
@@ -126,58 +126,58 @@
             Get
                 Return ViewState("SortDirection").ToString
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 ViewState("SortDirection") = value
             End Set
         End Property
 
-        Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+        Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
             Try
 
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-                If Not dvRow Is Nothing And Not Me.State.bnoRow Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         '  e.Row.Cells(Me.GRID_COL_REPORT_CONFIG_ID).Text = GetGuidStringFromByteArray(CType(dvRow(Assurant.ElitaPlus.BusinessObjectsNew.User.UserSearchDV.COL_USER_ID), Byte()))
-                        e.Row.Cells(Me.GRID_COL_COMPANY).Text = dvRow(ReportConfig.ReportConfigSearchDV.COL_COMPANY).ToString
-                        e.Row.Cells(Me.GRID_COL_REPORT).Text = dvRow(ReportConfig.ReportConfigSearchDV.COL_REPORT).ToString
-                        e.Row.Cells(Me.GRID_COL_REPORT_CE_NAME).Text = dvRow(ReportConfig.ReportConfigSearchDV.COL_REPORT_CE_NAME).ToString
+                        e.Row.Cells(GRID_COL_COMPANY).Text = dvRow(ReportConfig.ReportConfigSearchDV.COL_COMPANY).ToString
+                        e.Row.Cells(GRID_COL_REPORT).Text = dvRow(ReportConfig.ReportConfigSearchDV.COL_REPORT).ToString
+                        e.Row.Cells(GRID_COL_REPORT_CE_NAME).Text = dvRow(ReportConfig.ReportConfigSearchDV.COL_REPORT_CE_NAME).ToString
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
-                Me.Grid.PageIndex = NewCurrentPageIndex(Me.Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.State.PageSize = Me.Grid.PageSize
+                Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
+                State.PageSize = Grid.PageSize
                 PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+        Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
             Try
-                Me.Grid.PageIndex = e.NewPageIndex
-                Me.State.PageIndex = e.NewPageIndex
+                Grid.PageIndex = e.NewPageIndex
+                State.PageIndex = e.NewPageIndex
                 PopulateGrid(POPULATE_ACTION_NO_EDIT)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub Grid_ItemCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+        Private Sub Grid_ItemCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub Grid_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+        Private Sub Grid_ItemCommand(source As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
 
             Try
                 If e.CommandName = "SelectUser" Then
@@ -185,35 +185,35 @@
                     Dim row As GridViewRow = CType(CType(e.CommandSource, Control).Parent.Parent, GridViewRow)
                     Dim RowInd As Integer = row.RowIndex
                     lblCtrl = CType(Grid.Rows(RowInd).Cells(GRID_COL_REPORT_CONFIG_ID).FindControl("moReportConfigId"), Label)
-                    Me.State.moReportConfigId = New Guid(lblCtrl.Text)
+                    State.moReportConfigId = New Guid(lblCtrl.Text)
                     SetSession()
-                    Me.callPage(ReportCeConfigForm.URL, Me.State.moReportConfigId)
+                    callPage(ReportCeConfigForm.URL, State.moReportConfigId)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
 
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+        Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
             Try
-                Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
+                Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
 
-                If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                    If Me.SortDirection.EndsWith(" ASC") Then
-                        Me.SortDirection = e.SortExpression + " DESC"
+                If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                    If SortDirection.EndsWith(" ASC") Then
+                        SortDirection = e.SortExpression + " DESC"
                     Else
-                        Me.SortDirection = e.SortExpression + " ASC"
+                        SortDirection = e.SortExpression + " ASC"
                     End If
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
 
-                Me.State.PageIndex = 0
-                Me.PopulateGrid()
+                State.PageIndex = 0
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -221,32 +221,32 @@
 
 #Region "Handlers-Buttons"
 
-        Protected Sub moBtnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles moBtnSearch.Click
+        Protected Sub moBtnSearch_Click(sender As Object, e As EventArgs) Handles moBtnSearch.Click
             Try
-                Me.Grid.PageIndex = Me.NO_PAGE_INDEX
-                Me.Grid.DataMember = Nothing
-                Me.State.searchDV = Nothing
-                Me.PopulateGrid()
+                Grid.PageIndex = NO_PAGE_INDEX
+                Grid.DataMember = Nothing
+                State.searchDV = Nothing
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub moBtnClear_Click(ByVal sender As Object, ByVal e As EventArgs) Handles moBtnClear.Click
+        Protected Sub moBtnClear_Click(sender As Object, e As EventArgs) Handles moBtnClear.Click
             Try
                 ClearAll()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub btnNew_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnNew_WRITE.Click
+        Protected Sub btnNew_WRITE_Click(sender As Object, e As EventArgs) Handles btnNew_WRITE.Click
             Try
-                Me.State.moReportConfigId = Guid.Empty
+                State.moReportConfigId = Guid.Empty
                 SetSession()
-                Me.callPage(ReportCeConfigForm.URL)
+                callPage(ReportCeConfigForm.URL)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -266,39 +266,39 @@
 #Region "Populate"
 
         Private Sub PopulateTexts()
-            moReportText.Text = Me.State.moReport
-            moReportCeText.Text = Me.State.moReportCeName
+            moReportText.Text = State.moReport
+            moReportCeText.Text = State.moReportCeName
         End Sub
 
         Private Sub PopulateGrid(Optional ByVal oAction As String = POPULATE_ACTION_NONE)
             Try
                 Dim oDataView As DataView
-               If (Me.State.searchDV Is Nothing) Then
-                    Me.State.searchDV = ReportConfig.getList(moReportText.Text, moReportCeText.Text)
+               If (State.searchDV Is Nothing) Then
+                    State.searchDV = ReportConfig.getList(moReportText.Text, moReportCeText.Text)
                 End If
-                Me.State.searchDV.Sort = Me.SortDirection
+                State.searchDV.Sort = SortDirection
                 Grid.PageSize = State.PageSize
                 If State.searchDV.Count = 0 Then
-                    Me.State.bnoRow = True
+                    State.bnoRow = True
                     Dim dv As ReportConfig.ReportConfigSearchDV = State.searchDV.AddNewRowToEmptyDV
-                    SetPageAndSelectedIndexFromGuid(dv, Me.State.moReportConfigId, Me.Grid, Me.State.PageIndex)
-                    Me.Grid.DataSource = dv
+                    SetPageAndSelectedIndexFromGuid(dv, State.moReportConfigId, Grid, State.PageIndex)
+                    Grid.DataSource = dv
                 Else
-                    Me.State.bnoRow = False
-                    SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.moReportConfigId, Me.Grid, Me.State.PageIndex)
-                    Me.Grid.DataSource = Me.State.searchDV
+                    State.bnoRow = False
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.moReportConfigId, Grid, State.PageIndex)
+                    Grid.DataSource = State.searchDV
                 End If
 
-                Me.State.PageIndex = Me.Grid.PageIndex
-               HighLightSortColumn(Me.Grid, Me.SortDirection)
-                Me.Grid.DataBind()
+                State.PageIndex = Grid.PageIndex
+               HighLightSortColumn(Grid, SortDirection)
+                Grid.DataBind()
 
                 ControlMgr.SetVisibleControl(Me, Grid, True)
-                ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
-                Session("recCount") = Me.State.searchDV.Count
+                ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
+                Session("recCount") = State.searchDV.Count
 
-                If Me.Grid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If Grid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
                 If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
 
@@ -310,7 +310,7 @@
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
@@ -318,7 +318,7 @@
 
         Private Sub PopulateAll()
             PopulateTexts()
-            Me.PopulateGrid(Me.POPULATE_ACTION_SAVE)
+            PopulateGrid(POPULATE_ACTION_SAVE)
         End Sub
 
 #End Region
@@ -326,11 +326,11 @@
 #Region "State-Management"
 
         Private Sub SetSession()
-            With Me.State
+            With State
                 .moReport = moReportText.Text
                 .moReportCeName = moReportCeText.Text
-                .PageIndex = Me.Grid.PageIndex
-                .PageSize = Me.Grid.PageSize
+                .PageIndex = Grid.PageIndex
+                .PageSize = Grid.PageSize
             End With
         End Sub
 

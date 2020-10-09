@@ -49,10 +49,10 @@ Public Class ELPWebConstants
 
 
 
-    Public Shared Sub ShowTranslatedMessageAsPopup(ByVal sUI_Prog_Code As String,
-                                                    ByVal nLanguageID As Guid,
-                                                    ByVal oPage As System.Web.UI.Page,
-                                                    ByVal oUnhandledException As Exception)
+    Public Shared Sub ShowTranslatedMessageAsPopup(sUI_Prog_Code As String,
+                                                    nLanguageID As Guid,
+                                                    oPage As System.Web.UI.Page,
+                                                    oUnhandledException As Exception)
 
         'This function is used when the error is known 
         'but we want to show the original exception message.
@@ -71,9 +71,9 @@ Public Class ELPWebConstants
     End Sub
 
 
-    Public Shared Sub ShowTranslatedMessageAsPopup(ByVal sUI_Prog_Code As String,
-                                                   ByVal nLanguageID As Guid,
-                                                   ByVal oPage As System.Web.UI.Page)
+    Public Shared Sub ShowTranslatedMessageAsPopup(sUI_Prog_Code As String,
+                                                   nLanguageID As Guid,
+                                                   oPage As System.Web.UI.Page)
         'This function is used when the error is known but we 
         ' do NOT want to show the original exception message to the user.
         Try
@@ -96,7 +96,7 @@ Public Class ELPWebConstants
     'Input Values:sMessageContent and the page object that is used to display the popup.
     'Uses:
     '-------------------------------------
-    Public Shared Sub ShowPopup(ByVal messageContent As String, ByVal messageName As String, ByVal page As System.Web.UI.Page)
+    Public Shared Sub ShowPopup(messageContent As String, messageName As String, page As System.Web.UI.Page)
 
         messageContent = ("<script language=JavaScript>alert('" & messageContent & "')</script>")
         If Not page.IsStartupScriptRegistered(messageName) Then
@@ -107,7 +107,7 @@ Public Class ELPWebConstants
 
 
 
-    Public Shared Function GetHashTable(ByVal ds As DataSet, ByVal DescriptionColumn As String, ByVal ValueColumn As String) As Hashtable
+    Public Shared Function GetHashTable(ds As DataSet, DescriptionColumn As String, ValueColumn As String) As Hashtable
 
         Dim oRow As DataRow
         Dim oHash As New Hashtable
@@ -134,7 +134,7 @@ Public Class ELPWebConstants
     Public Shared Function GetMenuState() As enumMenu_State
 
         'load or retrieve the menustate from the session.
-        If Not HttpContext.Current.Session(MENUSTATE) Is Nothing Then
+        If HttpContext.Current.Session(MENUSTATE) IsNot Nothing Then
             'this executes on all runs except the first.
             Return CType(HttpContext.Current.Session(MENUSTATE), enumMenu_State)
         Else
@@ -155,7 +155,7 @@ Public Class ELPWebConstants
     'Input Values:sMessageContent and the page object that is used to display the popup.
     'Uses:
     '-------------------------------------
-    Public Shared Sub ShowPopup(ByVal messageContent As String, ByVal page As System.Web.UI.Page)
+    Public Shared Sub ShowPopup(messageContent As String, page As System.Web.UI.Page)
 
         Dim nRandomNumber As New Random
         Dim sTempName As String = nRandomNumber.Next.ToString
@@ -180,14 +180,14 @@ Public Class ELPWebConstants
     'Input Values:messageContent  and page object.
     'Uses:
     '-------------------------------------
-    Public Shared Sub ExecuteJavascript(ByVal messageContent As String, ByVal page As System.Web.UI.Page)
+    Public Shared Sub ExecuteJavascript(messageContent As String, page As System.Web.UI.Page)
         messageContent = ("<script language=JavaScript>" & messageContent & "</script>")
         page.RegisterStartupScript("somescript", messageContent)
     End Sub
 
 
 
-    Public Shared Sub ExecuteJavascript(ByVal sScriptName As String, ByVal messageContent As String, ByVal page As System.Web.UI.Page)
+    Public Shared Sub ExecuteJavascript(sScriptName As String, messageContent As String, page As System.Web.UI.Page)
         messageContent = ("<script language=JavaScript>" & messageContent & "</script>")
         page.RegisterStartupScript(sScriptName, messageContent)
     End Sub

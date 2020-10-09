@@ -48,41 +48,41 @@ Public Class ClaimEquipmentDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("claim_history_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Sub LoadList(ByVal familyDS As DataSet, ByVal claimId As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Sub LoadList(familyDS As DataSet, claimId As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_CLAIM_ID, claimId.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Sub LoadDeviceInfoList(ByVal familyDS As DataSet, ByVal claimId As Guid, ByVal languageId As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_DEVICE_INFO_LIST")
+    Public Sub LoadDeviceInfoList(familyDS As DataSet, claimId As Guid, languageId As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_DEVICE_INFO_LIST")
         Dim ds As DataSet = New DataSet
         Dim outputParameter(0) As DBHelper.DBHelperParameter
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_CLAIM_ID, claimId.ToByteArray),
-                                                                                           New DBHelper.DBHelperParameter(Me.COL_NAME_LANGUAGE_ID, languageId)}
-        outputParameter(Me.PO_CURSOR_Equipment) = New DBHelper.DBHelperParameter("po_device_info_cursor", GetType(DataSet))
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_CLAIM_ID, claimId.ToByteArray),
+                                                                                           New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId)}
+        outputParameter(PO_CURSOR_Equipment) = New DBHelper.DBHelperParameter("po_device_info_cursor", GetType(DataSet))
 
         Try
 
-            DBHelper.FetchSp(selectStmt, parameters, outputParameter, familyDS, Me.TABLE_NAME)
+            DBHelper.FetchSp(selectStmt, parameters, outputParameter, familyDS, TABLE_NAME)
             'ds.Tables(0).TableName = Me.TABLE_NAME
 
         Catch ex As Exception
@@ -92,37 +92,37 @@ Public Class ClaimEquipmentDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
 
     Public Function GetLatestClaimEquipmentInfo(claimId As Guid, claimEquipmentTypeId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_LATEST_REFURB_REPLACE_EQUIP_INFO")
+        Dim selectStmt As String = Config("/SQL/GET_LATEST_REFURB_REPLACE_EQUIP_INFO")
         Dim ds As New DataSet
             
-        Dim parameters = New OracleParameter() {New OracleParameter(Me.COL_NAME_CLAIM_EQUIPMENT_TYPE_ID, claimEquipmentTypeId.ToByteArray),
-                                                New OracleParameter(Me.COL_NAME_CLAIM_ID, claimId.ToByteArray)}
+        Dim parameters = New OracleParameter() {New OracleParameter(COL_NAME_CLAIM_EQUIPMENT_TYPE_ID, claimEquipmentTypeId.ToByteArray),
+                                                New OracleParameter(COL_NAME_CLAIM_ID, claimId.ToByteArray)}
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Sub UpdateClaimEquipmentInfo(ByVal claimEquipmentId As Guid, ByVal comments As String)
+    Public Sub UpdateClaimEquipmentInfo(claimEquipmentId As Guid, comments As String)
         Dim selectStmt As String
         Dim parameters() As DBHelper.DBHelperParameter
-        selectStmt = Me.Config("/SQL/UPDATE_CLAIM_EQUIPMENT_INFO")
+        selectStmt = Config("/SQL/UPDATE_CLAIM_EQUIPMENT_INFO")
         parameters = New DBHelper.DBHelperParameter() {
-                                                          New DBHelper.DBHelperParameter(Me.COL_NAME_COMMENTS, comments),
-                                                          New DBHelper.DBHelperParameter(Me.COL_NAME_CLAIM_EQUIPMENT_ID, claimEquipmentId.ToByteArray)}
+                                                          New DBHelper.DBHelperParameter(COL_NAME_COMMENTS, comments),
+                                                          New DBHelper.DBHelperParameter(COL_NAME_CLAIM_EQUIPMENT_ID, claimEquipmentId.ToByteArray)}
         Try
             DBHelper.ExecuteWithParam(selectStmt, parameters)
         Catch ex As Exception
@@ -134,11 +134,11 @@ Public Class ClaimEquipmentDAL
 
     Public Function GetReplacementItemInfo(claimId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/REPLACEMENT_ITEM")
+        Dim selectStmt As String = Config("/SQL/REPLACEMENT_ITEM")
         Dim ds As DataSet = New DataSet
         Dim outputParameter(0) As DBHelper.DBHelperParameter
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_claim_id", claimId.ToByteArray)}
-        outputParameter(Me.PO_CURSOR_Equipment) = New DBHelper.DBHelperParameter("po_cursor_result", GetType(DataSet))
+        outputParameter(PO_CURSOR_Equipment) = New DBHelper.DBHelperParameter("po_cursor_result", GetType(DataSet))
 
         Try
 
@@ -156,7 +156,7 @@ Public Class ClaimEquipmentDAL
 
     Public Function GetReplacementItemStatus(claimId As Guid, claimEquipmentId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/REPLACEMENT_ITEM_STATUS")
+        Dim selectStmt As String = Config("/SQL/REPLACEMENT_ITEM_STATUS")
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_cursor_Result", GetType(DataSet))}
         Dim ds As New DataSet
         Dim tbl As String = "ReplacementStatus"

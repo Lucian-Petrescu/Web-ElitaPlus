@@ -6,48 +6,48 @@ Public Class NewDictionaryItem
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New NewDictionaryItemDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class NewDictionaryItem
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New NewDictionaryItemDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -90,7 +90,7 @@ Public Class NewDictionaryItem
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(NewDictionaryItemDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class NewDictionaryItem
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1020)> _
-    Public Property UiProgCode() As String
+    Public Property UiProgCode As String
         Get
             CheckDeleted()
             If row(NewDictionaryItemDAL.COL_NAME_UI_PROG_CODE) Is DBNull.Value Then
@@ -110,15 +110,15 @@ Public Class NewDictionaryItem
                 Return CType(row(NewDictionaryItemDAL.COL_NAME_UI_PROG_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(NewDictionaryItemDAL.COL_NAME_UI_PROG_CODE, Value)
+            SetValue(NewDictionaryItemDAL.COL_NAME_UI_PROG_CODE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1600)> _
-    Public Property EnglishTranslation() As String
+    Public Property EnglishTranslation As String
         Get
             CheckDeleted()
             If row(NewDictionaryItemDAL.COL_NAME_ENGLISH_TRANSLATION) Is DBNull.Value Then
@@ -127,15 +127,15 @@ Public Class NewDictionaryItem
                 Return CType(row(NewDictionaryItemDAL.COL_NAME_ENGLISH_TRANSLATION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(NewDictionaryItemDAL.COL_NAME_ENGLISH_TRANSLATION, Value)
+            SetValue(NewDictionaryItemDAL.COL_NAME_ENGLISH_TRANSLATION, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=4)> _
-    Public Property Approved() As String
+    Public Property Approved As String
         Get
             CheckDeleted()
             If row(NewDictionaryItemDAL.COL_NAME_APPROVED) Is DBNull.Value Then
@@ -144,13 +144,13 @@ Public Class NewDictionaryItem
                 Return CType(row(NewDictionaryItemDAL.COL_NAME_APPROVED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(NewDictionaryItemDAL.COL_NAME_APPROVED, Value)
+            SetValue(NewDictionaryItemDAL.COL_NAME_APPROVED, Value)
         End Set
     End Property
 
-    Public Property DictItemId() As Guid
+    Public Property DictItemId As Guid
         Get
             CheckDeleted()
             If row(NewDictionaryItemDAL.COL_NAME_DICT_ITEM_ID) Is DBNull.Value Then
@@ -159,15 +159,15 @@ Public Class NewDictionaryItem
                 Return New Guid(CType(row(NewDictionaryItemDAL.COL_NAME_DICT_ITEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(NewDictionaryItemDAL.COL_NAME_DICT_ITEM_ID, Value)
+            SetValue(NewDictionaryItemDAL.COL_NAME_DICT_ITEM_ID, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=4)> _
-    Public Property Imported() As String
+    Public Property Imported As String
         Get
             CheckDeleted()
             If row(NewDictionaryItemDAL.COL_NAME_IMPORTED) Is DBNull.Value Then
@@ -176,46 +176,46 @@ Public Class NewDictionaryItem
                 Return CType(row(NewDictionaryItemDAL.COL_NAME_IMPORTED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(NewDictionaryItemDAL.COL_NAME_IMPORTED, Value)
+            SetValue(NewDictionaryItemDAL.COL_NAME_IMPORTED, Value)
         End Set
     End Property
 
 
 
-    Public ReadOnly Property ModifiedDate() As DateType
+    Public ReadOnly Property ModifiedDate As DateType
         Get
-            If Row(NewDictionaryItemDAL.COL_NAME_MODIFIED_DATE) Is DBNull.Value Then Return Nothing
-            Return New DateType(CType(Row(NewDictionaryItemDAL.COL_NAME_MODIFIED_DATE), Date))
+            If Row(DALBase.COL_NAME_MODIFIED_DATE) Is DBNull.Value Then Return Nothing
+            Return New DateType(CType(Row(DALBase.COL_NAME_MODIFIED_DATE), Date))
         End Get
     End Property
 
-    Public ReadOnly Property ModifiedById() As String
+    Public ReadOnly Property ModifiedById As String
         Get
-            If Row(NewDictionaryItemDAL.COL_NAME_MODIFIED_BY) Is DBNull.Value Then Return Nothing
-            Return CType(Row(NewDictionaryItemDAL.COL_NAME_MODIFIED_BY), String)
+            If Row(DALBase.COL_NAME_MODIFIED_BY) Is DBNull.Value Then Return Nothing
+            Return CType(Row(DALBase.COL_NAME_MODIFIED_BY), String)
         End Get
     End Property
 
 
-    Public ReadOnly Property CreatedDate() As DateType
+    Public ReadOnly Property CreatedDate As DateType
         Get
-            If Row(NewDictionaryItemDAL.COL_NAME_CREATED_DATE) Is DBNull.Value Then Return Nothing
-            Return New DateType(CType(Row(NewDictionaryItemDAL.COL_NAME_CREATED_DATE), Date))
+            If Row(DALBase.COL_NAME_CREATED_DATE) Is DBNull.Value Then Return Nothing
+            Return New DateType(CType(Row(DALBase.COL_NAME_CREATED_DATE), Date))
         End Get
     End Property
 
     '<ValueMandatory("")> _
-    Public ReadOnly Property CreatedById() As String
+    Public ReadOnly Property CreatedById As String
         Get
-            If Row(NewDictionaryItemDAL.COL_NAME_CREATED_BY) Is DBNull.Value Then Return Nothing
-            Return CType(Row(NewDictionaryItemDAL.COL_NAME_CREATED_BY), String)
+            If Row(DALBase.COL_NAME_CREATED_BY) Is DBNull.Value Then Return Nothing
+            Return CType(Row(DALBase.COL_NAME_CREATED_BY), String)
         End Get
     End Property
 
     <ValidStringLength("", Max:=20)> _
-    Public Property MsgCode() As String
+    Public Property MsgCode As String
         Get
             CheckDeleted()
             If row(NewDictionaryItemDAL.COL_NAME_MSG_CODE) Is DBNull.Value Then
@@ -224,15 +224,15 @@ Public Class NewDictionaryItem
                 Return CType(row(NewDictionaryItemDAL.COL_NAME_MSG_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(NewDictionaryItemDAL.COL_NAME_MSG_CODE, Value)
+            SetValue(NewDictionaryItemDAL.COL_NAME_MSG_CODE, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=1020)> _
-    Public Property MsgType() As String
+    Public Property MsgType As String
         Get
             CheckDeleted()
             If row(NewDictionaryItemDAL.COL_NAME_MSG_TYPE) Is DBNull.Value Then
@@ -241,15 +241,15 @@ Public Class NewDictionaryItem
                 Return CType(row(NewDictionaryItemDAL.COL_NAME_MSG_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(NewDictionaryItemDAL.COL_NAME_MSG_TYPE, Value)
+            SetValue(NewDictionaryItemDAL.COL_NAME_MSG_TYPE, Value)
         End Set
     End Property
 
 
 
-    Public Property MsgParameterCount() As LongType
+    Public Property MsgParameterCount As LongType
         Get
             CheckDeleted()
             If row(NewDictionaryItemDAL.COL_NAME_MSG_PARAMETER_COUNT) Is DBNull.Value Then
@@ -258,9 +258,9 @@ Public Class NewDictionaryItem
                 Return New LongType(CType(row(NewDictionaryItemDAL.COL_NAME_MSG_PARAMETER_COUNT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(NewDictionaryItemDAL.COL_NAME_MSG_PARAMETER_COUNT, Value)
+            SetValue(NewDictionaryItemDAL.COL_NAME_MSG_PARAMETER_COUNT, Value)
         End Set
     End Property
 #End Region
@@ -269,22 +269,22 @@ Public Class NewDictionaryItem
     Public Sub GenerateNewLabels(ByRef LabelID As Guid)
 
         Dim searchDV As DataView
-        Dim oDictItem As New DictionaryItem(Me.Dataset)
+        Dim oDictItem As New DictionaryItem(Dataset)
         oDictItem.Save()
         Dim oDictItemTrans As DictItemTranslation
         Dim oLabel As Label_Extended
         oLabel = oDictItem.AssociatedLabel(Guid.Empty, , True)
-        oLabel.UiProgCode = Me.UiProgCode
+        oLabel.UiProgCode = UiProgCode
         oLabel.InUse = "Y"
         oLabel.DictItemId = oDictItem.Id
         oLabel.Save()
         searchDV = oDictItem.GetLanguageList()
-        Me.DictItemId = oDictItem.Id
-        Me.Imported = "Y"
+        DictItemId = oDictItem.Id
+        Imported = "Y"
 
         For i As Integer = 0 To searchDV.Count - 1
             oDictItemTrans = oDictItem.AssociatedTranslation(Guid.Empty, True)
-            oDictItemTrans.Translation = Me.EnglishTranslation
+            oDictItemTrans.Translation = EnglishTranslation
             oDictItemTrans.LanguageId = New Guid(CType(searchDV.Table.Rows(i).Item(3), Byte()))
             oDictItemTrans.DictItemId = oDictItem.Id
             oDictItemTrans.Save()
@@ -293,31 +293,31 @@ Public Class NewDictionaryItem
         LabelID = oLabel.Id
     End Sub
 
-    Public Sub ChangeLabels(ByVal Id As Guid)
+    Public Sub ChangeLabels(Id As Guid)
         Dim oDictItemTrans As DictItemTranslation
         Dim oDictItem As DictionaryItem
-        Dim oLabel As Label_Extended = New Label_Extended(Id, Me.Dataset, True)
-        oLabel.UiProgCode = Me.UiProgCode
+        Dim oLabel As Label_Extended = New Label_Extended(Id, Dataset, True)
+        oLabel.UiProgCode = UiProgCode
         oLabel.Save()
         Dim searchDV As DataView = oDictItemTrans.GetTranslationsList(oLabel.DictItemId)
         For i As Integer = 0 To searchDV.Count - 1
-            Dim DictItemTrans As DictItemTranslation = New DictItemTranslation(New Guid(CType(searchDV.Table.Rows(i).Item(0), Byte())), Me.Dataset)
-            DictItemTrans.Translation = Me.EnglishTranslation
+            Dim DictItemTrans As DictItemTranslation = New DictItemTranslation(New Guid(CType(searchDV.Table.Rows(i).Item(0), Byte())), Dataset)
+            DictItemTrans.Translation = EnglishTranslation
             DictItemTrans.Save()
         Next
     End Sub
 
-    Public Sub RemoveLabels(ByVal Id As Guid)
+    Public Sub RemoveLabels(Id As Guid)
         'Dim oDictItemTrans As DictItemTranslation
-        If Me.Imported = "Y" Then
-            Dim oDictItem As DictionaryItem = New DictionaryItem(Id, Me.Dataset)
-            Dim oLabel As Label_Extended = New Label_Extended(Id, Me.Dataset, True)
+        If Imported = "Y" Then
+            Dim oDictItem As DictionaryItem = New DictionaryItem(Id, Dataset)
+            Dim oLabel As Label_Extended = New Label_Extended(Id, Dataset, True)
             Dim searchDV As DataView = DictItemTranslation.GetTranslationsList(Id)
             oLabel.Delete()
             oLabel.Save()
 
             For i As Integer = 0 To searchDV.Count - 1
-                Dim oDictItemTrans As DictItemTranslation = New DictItemTranslation(New Guid(CType(searchDV.Table.Rows(i).Item(0), Byte())), Me.Dataset)
+                Dim oDictItemTrans As DictItemTranslation = New DictItemTranslation(New Guid(CType(searchDV.Table.Rows(i).Item(0), Byte())), Dataset)
                 oDictItemTrans.Delete()
                 oDictItemTrans.Save()
             Next
@@ -333,15 +333,15 @@ Public Class NewDictionaryItem
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsFamilyDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsFamilyDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New NewDictionaryItemDAL
-                dal.UpdateFamily(Me.Dataset) 'New Code Added Manually
+                dal.UpdateFamily(Dataset) 'New Code Added Manually
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -373,7 +373,7 @@ Public Class NewDictionaryItem
         End Try
     End Function
 
-    Public Shared Function LoadList(ByVal scNetworkId As Guid) As DataSet
+    Public Shared Function LoadList(scNetworkId As Guid) As DataSet
         Try
             Dim dal As New RouteDAL
             Return dal.LoadList(scNetworkId)
@@ -384,7 +384,7 @@ Public Class NewDictionaryItem
 
     End Function
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal bo As NewDictionaryItem) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, bo As NewDictionaryItem) As DataView
 
         Dim dt As DataTable
         dt = dv.Table
@@ -397,10 +397,10 @@ Public Class NewDictionaryItem
         row(NewDictionaryItemDAL.COL_NAME_DICT_ITEM_ID) = bo.DictItemId.ToByteArray
         row(NewDictionaryItemDAL.COL_NAME_IMPORTED) = bo.Imported
         row(NewDictionaryItemDAL.COL_NAME_APPROVED) = bo.Approved
-        row(NewDictionaryItemDAL.COL_NAME_CREATED_DATE) = DBNull.Value
-        row(NewDictionaryItemDAL.COL_NAME_MODIFIED_DATE) = DBNull.Value
-        row(NewDictionaryItemDAL.COL_NAME_CREATED_BY) = bo.CreatedById
-        row(NewDictionaryItemDAL.COL_NAME_MODIFIED_BY) = bo.ModifiedById
+        row(DALBase.COL_NAME_CREATED_DATE) = DBNull.Value
+        row(DALBase.COL_NAME_MODIFIED_DATE) = DBNull.Value
+        row(DALBase.COL_NAME_CREATED_BY) = bo.CreatedById
+        row(DALBase.COL_NAME_MODIFIED_BY) = bo.ModifiedById
         row(NewDictionaryItemDAL.COL_NAME_MSG_CODE) = DBNull.Value
         row(NewDictionaryItemDAL.COL_NAME_MSG_TYPE) = DBNull.Value
         row(NewDictionaryItemDAL.COL_NAME_MSG_PARAMETER_COUNT) = 0
@@ -423,81 +423,81 @@ Public Class NewDictionaryItem
         Public Const COL_NAME_IMPORTED As String = NewDictionaryItemDAL.COL_NAME_IMPORTED
         Public Const COL_NAME_DICT_ITEM_ID = NewDictionaryItemDAL.COL_NAME_DICT_ITEM_ID
         Public Const COL_NAME_NEW_DICT_ITEM_ID = NewDictionaryItemDAL.COL_NAME_NEW_DICT_ITEM_ID
-        Public Const COL_NAME_CREATED_DATE = NewDictionaryItemDAL.COL_NAME_CREATED_DATE
-        Public Const COL_NAME_MODIFIED_DATE = NewDictionaryItemDAL.COL_NAME_MODIFIED_DATE
-        Public Const COL_NAME_CREATED_BY = NewDictionaryItemDAL.COL_NAME_CREATED_BY
-        Public Const COL_NAME_MODIFIED_BY = NewDictionaryItemDAL.COL_NAME_MODIFIED_BY
+        Public Const COL_NAME_CREATED_DATE = DALBase.COL_NAME_CREATED_DATE
+        Public Const COL_NAME_MODIFIED_DATE = DALBase.COL_NAME_MODIFIED_DATE
+        Public Const COL_NAME_CREATED_BY = DALBase.COL_NAME_CREATED_BY
+        Public Const COL_NAME_MODIFIED_BY = DALBase.COL_NAME_MODIFIED_BY
         Public Const COL_NAME_MSG_TYPE = NewDictionaryItemDAL.COL_NAME_MSG_TYPE
         Public Const COL_NAME_MSG_CODE = NewDictionaryItemDAL.COL_NAME_MSG_CODE
         Public Const COL_NAME_MSG_PARAM_COUNT = NewDictionaryItemDAL.COL_NAME_MSG_PARAMETER_COUNT
 
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property Id(ByVal row) As Guid
+        Public Shared ReadOnly Property Id(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_NEW_DICT_ITEM_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property UiprogCode(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property UiprogCode(row As DataRow) As String
             Get
                 Return row(COL_NAME_UI_PROG_CODE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property EngTranslation(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property EngTranslation(row As DataRow) As String
             Get
                 Return row(COL_NAME_ENGLISH_TRANSLATION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Approved(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Approved(row As DataRow) As String
             Get
                 Return row(COL_NAME_APPROVED).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Impoted(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Impoted(row As DataRow) As String
             Get
                 Return row(COL_NAME_IMPORTED).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property DictItemId(ByVal row) As Guid
+        Public Shared ReadOnly Property DictItemId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_DICT_ITEM_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property CreatedDate(ByVal row As DataRow) As DateType
+        Public Shared ReadOnly Property CreatedDate(row As DataRow) As DateType
             Get
                 Return row(COL_NAME_CREATED_DATE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property ModifiedDate(ByVal row As DataRow) As DateType
+        Public Shared ReadOnly Property ModifiedDate(row As DataRow) As DateType
             Get
                 Return row(COL_NAME_MODIFIED_DATE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property CreatedBy(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property CreatedBy(row As DataRow) As String
             Get
                 Return row(COL_NAME_CREATED_BY).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property ModifiedBy(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property ModifiedBy(row As DataRow) As String
             Get
                 Return row(COL_NAME_MODIFIED_BY).ToString
             End Get
         End Property
 
-        Public Function Find(ByVal Id As Guid) As NewDictionaryItem
+        Public Function Find(Id As Guid) As NewDictionaryItem
             Dim bo As NewDictionaryItem
             For Each bo In Me
                 If bo.Id.Equals(Id) Then Return bo

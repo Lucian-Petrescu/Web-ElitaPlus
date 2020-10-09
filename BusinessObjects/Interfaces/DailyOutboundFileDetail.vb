@@ -6,48 +6,48 @@ Public Class DailyOutboundFileDetail
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New DailyOutboundFileDetailDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class DailyOutboundFileDetail
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New DailyOutboundFileDetailDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -90,7 +90,7 @@ Public Class DailyOutboundFileDetail
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(DailyOutboundFileDetailDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class DailyOutboundFileDetail
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(DailyOutboundFileDetailDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -110,15 +110,15 @@ Public Class DailyOutboundFileDetail
                 Return New Guid(CType(Row(DailyOutboundFileDetailDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(DailyOutboundFileDetailDAL.COL_NAME_COMPANY_ID, Value)
+            SetValue(DailyOutboundFileDetailDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(DailyOutboundFileDetailDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -127,15 +127,15 @@ Public Class DailyOutboundFileDetail
                 Return New Guid(CType(Row(DailyOutboundFileDetailDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(DailyOutboundFileDetailDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(DailyOutboundFileDetailDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property CertId() As Guid
+    Public Property CertId As Guid
         Get
             CheckDeleted()
             If Row(DailyOutboundFileDetailDAL.COL_NAME_CERT_ID) Is DBNull.Value Then
@@ -144,15 +144,15 @@ Public Class DailyOutboundFileDetail
                 Return New Guid(CType(Row(DailyOutboundFileDetailDAL.COL_NAME_CERT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(DailyOutboundFileDetailDAL.COL_NAME_CERT_ID, Value)
+            SetValue(DailyOutboundFileDetailDAL.COL_NAME_CERT_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=80)> _
-    Public Property CertNumber() As String
+    Public Property CertNumber As String
         Get
             CheckDeleted()
             If Row(DailyOutboundFileDetailDAL.COL_NAME_CERT_NUMBER) Is DBNull.Value Then
@@ -161,15 +161,15 @@ Public Class DailyOutboundFileDetail
                 Return CType(Row(DailyOutboundFileDetailDAL.COL_NAME_CERT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DailyOutboundFileDetailDAL.COL_NAME_CERT_NUMBER, Value)
+            SetValue(DailyOutboundFileDetailDAL.COL_NAME_CERT_NUMBER, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property CertCreatedDate() As DateType
+    Public Property CertCreatedDate As DateType
         Get
             CheckDeleted()
             If Row(DailyOutboundFileDetailDAL.COL_NAME_CERT_CREATED_DATE) Is DBNull.Value Then
@@ -178,15 +178,15 @@ Public Class DailyOutboundFileDetail
                 Return New DateType(CType(Row(DailyOutboundFileDetailDAL.COL_NAME_CERT_CREATED_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(DailyOutboundFileDetailDAL.COL_NAME_CERT_CREATED_DATE, Value)
+            SetValue(DailyOutboundFileDetailDAL.COL_NAME_CERT_CREATED_DATE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=80)> _
-    Public Property RecordType() As String
+    Public Property RecordType As String
         Get
             CheckDeleted()
             If Row(DailyOutboundFileDetailDAL.COL_NAME_RECORD_TYPE) Is DBNull.Value Then
@@ -195,15 +195,15 @@ Public Class DailyOutboundFileDetail
                 Return CType(Row(DailyOutboundFileDetailDAL.COL_NAME_RECORD_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DailyOutboundFileDetailDAL.COL_NAME_RECORD_TYPE, Value)
+            SetValue(DailyOutboundFileDetailDAL.COL_NAME_RECORD_TYPE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)> _
-    Public Property RecCancel() As String
+    Public Property RecCancel As String
         Get
             CheckDeleted()
             If Row(DailyOutboundFileDetailDAL.COL_NAME_REC_CANCEL) Is DBNull.Value Then
@@ -212,15 +212,15 @@ Public Class DailyOutboundFileDetail
                 Return CType(Row(DailyOutboundFileDetailDAL.COL_NAME_REC_CANCEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DailyOutboundFileDetailDAL.COL_NAME_REC_CANCEL, Value)
+            SetValue(DailyOutboundFileDetailDAL.COL_NAME_REC_CANCEL, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)> _
-    Public Property RecNewBusiness() As String
+    Public Property RecNewBusiness As String
         Get
             CheckDeleted()
             If Row(DailyOutboundFileDetailDAL.COL_NAME_REC_NEW_BUSINESS) Is DBNull.Value Then
@@ -229,15 +229,15 @@ Public Class DailyOutboundFileDetail
                 Return CType(Row(DailyOutboundFileDetailDAL.COL_NAME_REC_NEW_BUSINESS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DailyOutboundFileDetailDAL.COL_NAME_REC_NEW_BUSINESS, Value)
+            SetValue(DailyOutboundFileDetailDAL.COL_NAME_REC_NEW_BUSINESS, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)> _
-    Public Property RecBilling() As String
+    Public Property RecBilling As String
         Get
             CheckDeleted()
             If Row(DailyOutboundFileDetailDAL.COL_NAME_REC_BILLING) Is DBNull.Value Then
@@ -246,9 +246,9 @@ Public Class DailyOutboundFileDetail
                 Return CType(Row(DailyOutboundFileDetailDAL.COL_NAME_REC_BILLING), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DailyOutboundFileDetailDAL.COL_NAME_REC_BILLING, Value)
+            SetValue(DailyOutboundFileDetailDAL.COL_NAME_REC_BILLING, Value)
         End Set
     End Property
 
@@ -261,15 +261,15 @@ Public Class DailyOutboundFileDetail
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New DailyOutboundFileDetailDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -305,11 +305,11 @@ Public Class DailyOutboundFileDetail
 
         Private _dataTable As DataTable
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property FileHeaderTempId(ByVal row) As Guid
+        Public Shared ReadOnly Property FileHeaderTempId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_File_Detail_ID), Byte()))
             End Get
@@ -320,9 +320,9 @@ Public Class DailyOutboundFileDetail
 
 #End Region
 #Region "Insert Detail Records"
-    Public Shared Function InsertDetailRecord(ByVal Company_id As Guid, ByVal Dealer_id As Guid, ByVal cert_id As Guid, ByVal certcreatedDate As Date, ByVal CertNumber As String, _
-                                           ByVal selectonNewEnrollment As String, ByVal selectoncancel As String, ByVal selectonbilling As String, _
-                                            ByVal recordType As String, ByVal createdDate As Date, ByVal createdBy As String, ByVal billing_detail_id As Guid, Optional ByVal selectioncertificate As String = "")
+    Public Shared Function InsertDetailRecord(Company_id As Guid, Dealer_id As Guid, cert_id As Guid, certcreatedDate As Date, CertNumber As String, _
+                                           selectonNewEnrollment As String, selectoncancel As String, selectonbilling As String, _
+                                            recordType As String, createdDate As Date, createdBy As String, billing_detail_id As Guid, Optional ByVal selectioncertificate As String = "")
         Try
             Dim dal As New DailyOutboundFileDetailDAL
             dal.insertdetailrecords(Company_id, Dealer_id, cert_id, CertNumber, certcreatedDate, selectonNewEnrollment, selectoncancel, selectonbilling, recordType, createdDate, createdBy, billing_detail_id) ' fromdate, todate, callfrom, processeddate, selectioncertificate)
@@ -333,9 +333,9 @@ Public Class DailyOutboundFileDetail
 
 #End Region
 
-    Public Shared Sub getDetailviewList(ByVal CompanyCode As String, ByVal Dealercode As String, ByVal CertNumber As String, _
-                                           ByVal selectonNewEnrollment As String, ByVal selectoncancel As String, ByVal selectonbilling As String, _
-                                            ByVal fromdate As Date, ByVal todate As Date, ByVal callfrom As String, _
+    Public Shared Sub getDetailviewList(CompanyCode As String, Dealercode As String, CertNumber As String, _
+                                           selectonNewEnrollment As String, selectoncancel As String, selectonbilling As String, _
+                                            fromdate As Date, todate As Date, callfrom As String, _
                                              Optional ByVal processeddate As Date = Nothing, _
                                             Optional ByVal selectioncertificate As String = "")
         Try
@@ -346,7 +346,7 @@ Public Class DailyOutboundFileDetail
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Sub
-    Public Shared Function DeleteDetailRecord(ByVal file_detail_Id As Guid)
+    Public Shared Function DeleteDetailRecord(file_detail_Id As Guid)
         Try
             Dim dal As New DailyOutboundFileDetailDAL
             dal.deletedetailrecord(file_detail_Id)

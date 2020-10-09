@@ -17,27 +17,27 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
 
 #Region "Constructors"
 
-    Friend Sub New(ByVal useCustomSave As Boolean)
+    Friend Sub New(useCustomSave As Boolean)
         Me.New(IIf(useCustomSave, 1, DEFAULT_THREAD_COUNT), IIf(useCustomSave, 1, DEFAULT_TRANSACTION_SIZE), useCustomSave)
     End Sub
 
-    Friend Sub New(ByVal threadCount As Integer, ByVal transactionSize As Integer)
+    Friend Sub New(threadCount As Integer, transactionSize As Integer)
         Me.New(threadCount, transactionSize, False)
     End Sub
 
-    Private Sub New(ByVal threadCount As Integer, ByVal transactionSize As Integer, ByVal useCustomSave As Boolean)
-        Me._threadCount = Math.Min(threadCount, Me.MaximumThreadCount)
+    Private Sub New(threadCount As Integer, transactionSize As Integer, useCustomSave As Boolean)
+        _threadCount = Math.Min(threadCount, MaximumThreadCount)
         If (transactionSize = 0) Then
-            Me._transactionSize = 0
+            _transactionSize = 0
         Else
-            Me._transactionSize = Math.Min(transactionSize, Me.MaximumTransactionSize)
+            _transactionSize = Math.Min(transactionSize, MaximumTransactionSize)
         End If
-        Me._useCustomSave = useCustomSave
-        Me._transactionSize = transactionSize
-        Me._familyDs = New DataSet
-        Me._syncRoot = New Object
-        Me._trace = New StringBuilder()
-        Me._interfaceStatusId = Nothing
+        _useCustomSave = useCustomSave
+        _transactionSize = transactionSize
+        _familyDs = New DataSet
+        _syncRoot = New Object
+        _trace = New StringBuilder()
+        _interfaceStatusId = Nothing
     End Sub
 
     Friend Sub New()
@@ -46,7 +46,7 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
 #End Region
 
 #Region "Delegate"
-    Private Delegate Sub ProcessDelegate(ByVal id As Guid)
+    Private Delegate Sub ProcessDelegate(id As Guid)
 #End Region
 
 #Region "Fields"
@@ -96,7 +96,7 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
         Get
             Return _header
         End Get
-        Private Set(ByVal value As THeader)
+        Private Set
             _header = value
         End Set
     End Property
@@ -105,7 +105,7 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
         Get
             Return _recordsProcessed
         End Get
-        Private Set(ByVal value As Long)
+        Private Set
             _recordsProcessed = value
         End Set
     End Property
@@ -114,15 +114,15 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
         Get
             Return _interfaceStatusId
         End Get
-        Set(ByVal value As Nullable(Of Guid))
+        Set
             _interfaceStatusId = value
         End Set
     End Property
 
     Private ReadOnly Property InterfaceStatus As InterfaceStatusWrk
         Get
-            If (Me.InterfaceStatusId.HasValue) Then
-                Return New InterfaceStatusWrk(Me.InterfaceStatusId.Value)
+            If (InterfaceStatusId.HasValue) Then
+                Return New InterfaceStatusWrk(InterfaceStatusId.Value)
             Else
                 Return Nothing
             End If
@@ -131,15 +131,15 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
 #End Region
 
 #Region "Methods"
-    Protected Sub AppendTrace(ByVal trace As String)
+    Protected Sub AppendTrace(trace As String)
         _trace.Append(trace)
     End Sub
 
-    Protected Sub AppendTraceLine(ByVal trace As String)
+    Protected Sub AppendTraceLine(trace As String)
         _trace.AppendLine(trace)
     End Sub
 
-    Protected Function DecimalTypeToString(ByVal decimalType As Nullable(Of Decimal)) As String
+    Protected Function DecimalTypeToString(decimalType As Nullable(Of Decimal)) As String
         If (decimalType Is Nothing) Then
             Return "N/A"
         Else
@@ -147,48 +147,48 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
         End If
     End Function
 
-    Public Function ProcessAsync(ByVal id As Guid) As Guid
-        Dim oProcessDelegate As New ProcessDelegate(AddressOf Me.Process)
-        Me.InterfaceStatusId = InterfaceStatusWrk.CreateInterfaceStatus(InterfaceStatusWrkDAL.DESC_PROCESS)
+    Public Function ProcessAsync(id As Guid) As Guid
+        Dim oProcessDelegate As New ProcessDelegate(AddressOf Process)
+        InterfaceStatusId = InterfaceStatusWrk.CreateInterfaceStatus(InterfaceStatusWrkDAL.DESC_PROCESS)
         oProcessDelegate.BeginInvoke(id, Nothing, Nothing)
-        Return Me.InterfaceStatusId.Value
+        Return InterfaceStatusId.Value
     End Function
 
-    Public Sub Process(ByVal id As Guid)
+    Public Sub Process(id As Guid)
         Try
             Dim beforeRecord As TRecon = Nothing
             Dim keyChangedResult As KeyChangeReturnType
             ' Update Interface Status to Running
-            If (Me.InterfaceStatusId.HasValue) Then
-                With Me.InterfaceStatus
+            If (InterfaceStatusId.HasValue) Then
+                With InterfaceStatus
                     .Status = InterfaceStatusWrkDAL.STATUS_RUNNING
                     .Save()
                 End With
             End If
 
             BeforeCreateFileLoadHeader()
-            Me.Header = CreateFileLoadHeader(id)
+            Header = CreateFileLoadHeader(id)
             AfterCreateFileLoadHeader()
 
             ' Update Interface Status Active File Name
-            If (Me.InterfaceStatusId.HasValue) Then
-                With Me.InterfaceStatus
-                    .Active_Filename = Me.Header.FileName.Trim().PadRight(50).Substring(0, 50)
+            If (InterfaceStatusId.HasValue) Then
+                With InterfaceStatus
+                    .Active_Filename = Header.FileName.Trim().PadRight(50).Substring(0, 50)
                     .Save()
                 End With
             End If
 
             _recordsProcessed = 0
             ' Read Recon Records
-            For Each item As IFileLoadReconWork In Me.Header.Children
+            For Each item As IFileLoadReconWork In Header.Children
                 Dim reconRecord As IFileLoadReconWork
                 Dim response As ProcessResult
                 Dim familyDataSet As DataSet
                 Try
-                    reconRecord = CreateFileLoadDetail(item.Id, Me.Header)
+                    reconRecord = CreateFileLoadDetail(item.Id, Header)
 
                     If (reconRecord.Loaded = "V") Then
-                        If (Me._useCustomSave) Then
+                        If (_useCustomSave) Then
                             familyDataSet = Nothing
                         Else
                             familyDataSet = reconRecord.FamilyDataSet
@@ -204,7 +204,7 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
                         response = ProcessResult.NotProcessed
                     End If
                 Catch ex As Exception
-                    Common.AppConfig.Log(ex)
+                    AppConfig.Log(ex)
                     RaiseEvent LogException(ex)
                     response = ProcessResult.None
                 Finally
@@ -233,28 +233,28 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
                 End Select
 
 
-                If ((Me._useCustomSave) OrElse (Me.TransactionSize <> 0 AndAlso Me.RecordsProcessed >= Me.TransactionSize)) Then
-                    Me.Save(familyDataSet, reconRecord)
-                    Me.RecordsProcessed = 0
+                If ((_useCustomSave) OrElse (TransactionSize <> 0 AndAlso RecordsProcessed >= TransactionSize)) Then
+                    Save(familyDataSet, reconRecord)
+                    RecordsProcessed = 0
                 End If
             Next
-            If (Me.RecordsProcessed > 0) Then
+            If (RecordsProcessed > 0) Then
                 '' The FamilyDataSet argumnet will always be Header because if the code is running with UseCustomSave = True then RecordsProcessed will always be 0
-                Me.Save(Me.Header.FamilyDataSet, Nothing)
+                Save(Header.FamilyDataSet, Nothing)
             End If
 
             ' Update Interface Status to Success
-            If (Me.InterfaceStatusId.HasValue) Then
-                With Me.InterfaceStatus
+            If (InterfaceStatusId.HasValue) Then
+                With InterfaceStatus
                     .Status = InterfaceStatusWrkDAL.STATUS_SUCCESS
                     .Save()
                 End With
             End If
         Catch ex As Exception
-            Common.AppConfig.Log(ex)
+            AppConfig.Log(ex)
             ' Update Interface Status to Failed
-            If (Me.InterfaceStatusId.HasValue) Then
-                With Me.InterfaceStatus
+            If (InterfaceStatusId.HasValue) Then
+                With InterfaceStatus
                     .Status = InterfaceStatusWrkDAL.STATUS_FAILURE
                     .Save()
                 End With
@@ -263,34 +263,34 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
         End Try
     End Sub
 
-    Protected Sub Save(ByVal familyDataSet As DataSet, ByVal reconRecord As TRecon)
+    Protected Sub Save(familyDataSet As DataSet, reconRecord As TRecon)
         Dim argument As Object
         argument = BeforeSave(familyDataSet)
-        If (Me._useCustomSave) Then
+        If (_useCustomSave) Then
             If (reconRecord.Loaded = "L") Then
-                Me.CustomSave(Me.Header)
+                CustomSave(Header)
             Else
-                Me.Header.Save()
+                Header.Save()
             End If
         Else
-            Me.Header.Save()
+            Header.Save()
         End If
             AfterSave(argument, familyDataSet)
     End Sub
 
     Private Sub IncrementRejected()
         SyncLock (_syncRoot)
-            Me.Header.Rejected = Me.Header.Rejected.Value + 1
-            Me.Header.Validated = Me.Header.Validated.Value - 1
-            Me.RecordsProcessed = Me.RecordsProcessed + 1
+            Header.Rejected = Header.Rejected.Value + 1
+            Header.Validated = Header.Validated.Value - 1
+            RecordsProcessed = RecordsProcessed + 1
         End SyncLock
     End Sub
 
     Private Sub IncrementLoaded()
         SyncLock (_syncRoot)
-            Me.Header.Loaded = Me.Header.Loaded.Value + 1
-            Me.Header.Validated = Me.Header.Validated.Value - 1
-            Me.RecordsProcessed = Me.RecordsProcessed + 1
+            Header.Loaded = Header.Loaded.Value + 1
+            Header.Validated = Header.Validated.Value - 1
+            RecordsProcessed = RecordsProcessed + 1
         End SyncLock
     End Sub
 
@@ -298,36 +298,36 @@ Public MustInherit Class FileLoadBase(Of THeader As IFileLoadHeaderWork, TRecon 
 
     End Sub
 
-    Protected MustOverride Function CreateFileLoadHeader(ByVal fileLoadHeaderId As Guid) As THeader
+    Protected MustOverride Function CreateFileLoadHeader(fileLoadHeaderId As Guid) As THeader
 
-    Protected MustOverride Function CreateFileLoadDetail(ByVal fileLoadDetailId As Guid, ByVal headerRecord As THeader) As TRecon
+    Protected MustOverride Function CreateFileLoadDetail(fileLoadDetailId As Guid, headerRecord As THeader) As TRecon
 
 
     Public Overridable Sub AfterCreateFileLoadHeader()
 
     End Sub
 
-    Protected MustOverride Function ProcessDetailRecord(ByVal reconRecord As TRecon, ByVal familyDataSet As DataSet) As ProcessResult
+    Protected MustOverride Function ProcessDetailRecord(reconRecord As TRecon, familyDataSet As DataSet) As ProcessResult
 
-    Public Overridable Function BeforeSave(ByVal familyDataSet As DataSet) As Object
+    Public Overridable Function BeforeSave(familyDataSet As DataSet) As Object
         Return Nothing
     End Function
 
-    Public Overridable Sub AfterSave(ByVal argument As Object, ByVal familyDataSet As DataSet)
+    Public Overridable Sub AfterSave(argument As Object, familyDataSet As DataSet)
 
     End Sub
 
-    Protected Overridable Function IsKeyChanged(ByVal beforeReconRecord As TRecon, ByVal afterReconRecord As TRecon, ByVal familyDataSet As DataSet) As KeyChangeReturnType
+    Protected Overridable Function IsKeyChanged(beforeReconRecord As TRecon, afterReconRecord As TRecon, familyDataSet As DataSet) As KeyChangeReturnType
         Dim returnValue As KeyChangeReturnType
         returnValue.IsChanged = False
         Return returnValue
     End Function
 
-    Protected Overridable Sub KeyChanged(ByVal key As String, ByVal beforeReconRecord As TRecon, ByVal afterReconRecord As TRecon, ByVal familyDataSet As DataSet)
+    Protected Overridable Sub KeyChanged(key As String, beforeReconRecord As TRecon, afterReconRecord As TRecon, familyDataSet As DataSet)
 
     End Sub
 
-    Protected Overridable Sub CustomSave(ByVal headerRecord As THeader)
+    Protected Overridable Sub CustomSave(headerRecord As THeader)
 
     End Sub
 

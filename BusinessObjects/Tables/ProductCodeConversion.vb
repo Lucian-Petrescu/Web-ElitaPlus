@@ -6,42 +6,42 @@ Public Class ProductCodeConversion
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ProductCodeConversionDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -49,23 +49,23 @@ Public Class ProductCodeConversion
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ProductCodeConversionDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -90,7 +90,7 @@ Public Class ProductCodeConversion
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ProductCodeConversionDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class ProductCodeConversion
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeConversionDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -110,15 +110,15 @@ Public Class ProductCodeConversion
                 Return New Guid(CType(Row(ProductCodeConversionDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductCodeConversionDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(ProductCodeConversionDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)>
-    Public Property ExternalProdCode() As String
+    Public Property ExternalProdCode As String
         Get
             CheckDeleted()
             If Row(ProductCodeConversionDAL.COL_NAME_EXTERNAL_PROD_CODE) Is DBNull.Value Then
@@ -127,15 +127,15 @@ Public Class ProductCodeConversion
                 Return CType(Row(ProductCodeConversionDAL.COL_NAME_EXTERNAL_PROD_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductCodeConversionDAL.COL_NAME_EXTERNAL_PROD_CODE, If(Value Is Nothing, Value, Value.ToUpper()))
+            SetValue(ProductCodeConversionDAL.COL_NAME_EXTERNAL_PROD_CODE, If(Value Is Nothing, Value, Value.ToUpper()))
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property ProductCodeId() As Guid
+    Public Property ProductCodeId As Guid
         Get
             CheckDeleted()
             If Row(ProductCodeConversionDAL.COL_NAME_PRODUCT_CODE_ID) Is DBNull.Value Then
@@ -144,9 +144,9 @@ Public Class ProductCodeConversion
                 Return New Guid(CType(Row(ProductCodeConversionDAL.COL_NAME_PRODUCT_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductCodeConversionDAL.COL_NAME_PRODUCT_CODE_ID, Value)
+            SetValue(ProductCodeConversionDAL.COL_NAME_PRODUCT_CODE_ID, Value)
         End Set
     End Property
 
@@ -159,14 +159,14 @@ Public Class ProductCodeConversion
     '    End Get
     'End Property
 
-    Public Shared ReadOnly Property TheProductConversionData() As ProductConversionData
+    Public Shared ReadOnly Property TheProductConversionData As ProductConversionData
         Get
             Return New ProductConversionData
         End Get
     End Property
 
     <ValidNumericRange("", MAX:=999)> _
-    Public Property CertificateDuration() As Short
+    Public Property CertificateDuration As Short
         Get
             CheckDeleted()
             If Row(ProductCodeConversionDAL.COL_NAME_CERTIFICATE_DURATION) Is DBNull.Value Then
@@ -175,14 +175,14 @@ Public Class ProductCodeConversion
                 Return CType(Row(ProductCodeConversionDAL.COL_NAME_CERTIFICATE_DURATION), Short)
             End If
         End Get
-        Set(ByVal Value As Short)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductCodeConversionDAL.COL_NAME_CERTIFICATE_DURATION, Value)
+            SetValue(ProductCodeConversionDAL.COL_NAME_CERTIFICATE_DURATION, Value)
         End Set
     End Property
 
     <ValidNumericRange("", MAX:=99)> _
-    Public Property ManufacturerWarranty() As Short
+    Public Property ManufacturerWarranty As Short
         Get
             CheckDeleted()
             If Row(ProductCodeConversionDAL.COL_NAME_MANUFACTURER_WARRANTY) Is DBNull.Value Then
@@ -191,14 +191,14 @@ Public Class ProductCodeConversion
                 Return CType(Row(ProductCodeConversionDAL.COL_NAME_MANUFACTURER_WARRANTY), Short)
             End If
         End Get
-        Set(ByVal Value As Short)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductCodeConversionDAL.COL_NAME_MANUFACTURER_WARRANTY, Value)
+            SetValue(ProductCodeConversionDAL.COL_NAME_MANUFACTURER_WARRANTY, Value)
         End Set
     End Property
 
     <ValidNumericRange("", MAX:=NEW_MAX_DOUBLE)> _
-   Public Property GrossAmount() As Double
+   Public Property GrossAmount As Double
         Get
             CheckDeleted()
             If Row(ProductCodeConversionDAL.COL_NAME_GROSS_AMOUNT) Is DBNull.Value Then
@@ -207,14 +207,14 @@ Public Class ProductCodeConversion
                 Return CType(Row(ProductCodeConversionDAL.COL_NAME_GROSS_AMOUNT), Double)
             End If
         End Get
-        Set(ByVal Value As Double)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductCodeConversionDAL.COL_NAME_GROSS_AMOUNT, Value)
+            SetValue(ProductCodeConversionDAL.COL_NAME_GROSS_AMOUNT, Value)
         End Set
     End Property
 
     <ValidStringLength("", MAX:=255), Valid_DealerProdCodeMfgCombination(""), Valid_DealerProdCodeCombination("")> _
-    Public Property Manufacturer() As String
+    Public Property Manufacturer As String
         Get
             CheckDeleted()
             If Row(ProductCodeConversionDAL.COL_NAME_MANUFACTURER) Is DBNull.Value Then
@@ -223,14 +223,14 @@ Public Class ProductCodeConversion
                 Return CType(Row(ProductCodeConversionDAL.COL_NAME_MANUFACTURER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductCodeConversionDAL.COL_NAME_MANUFACTURER, Value)
+            SetValue(ProductCodeConversionDAL.COL_NAME_MANUFACTURER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=100)>
-    Public Property Model() As String
+    Public Property Model As String
         Get
             CheckDeleted()
             If Row(ProductCodeConversionDAL.COL_NAME_MODEL) Is DBNull.Value Then
@@ -239,14 +239,14 @@ Public Class ProductCodeConversion
                 Return CType(Row(ProductCodeConversionDAL.COL_NAME_MODEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductCodeConversionDAL.COL_NAME_MODEL, Value)
+            SetValue(ProductCodeConversionDAL.COL_NAME_MODEL, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Max:=NEW_MAX_DOUBLE)>
-    Public Property SalesPrice() As Double
+    Public Property SalesPrice As Double
         Get
             CheckDeleted()
             If Row(ProductCodeConversionDAL.COL_NAME_SALES_PRICE) Is DBNull.Value Then
@@ -255,13 +255,13 @@ Public Class ProductCodeConversion
                 Return CType(Row(ProductCodeConversionDAL.COL_NAME_SALES_PRICE), Double)
             End If
         End Get
-        Set(ByVal Value As Double)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductCodeConversionDAL.COL_NAME_SALES_PRICE, Value)
+            SetValue(ProductCodeConversionDAL.COL_NAME_SALES_PRICE, Value)
         End Set
     End Property
     <ValueMandatory(""),NonOverlappingProductCodeConversion("")> 
-    Public Property EffectiveDate() As DateType
+    Public Property EffectiveDate As DateType
         Get
             CheckDeleted()
             If Row(ProductCodeConversionDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -270,12 +270,12 @@ Public Class ProductCodeConversion
                 Return New DateType(CType(Row(ProductCodeConversionDAL.COL_NAME_EFFECTIVE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductCodeConversionDAL.COL_NAME_EFFECTIVE_DATE, Value)
+            SetValue(ProductCodeConversionDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
     End Property
-   Public Property ExpirationDate() As DateType
+   Public Property ExpirationDate As DateType
         Get
             CheckDeleted()
             If Row(ProductCodeConversionDAL.COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
@@ -284,9 +284,9 @@ Public Class ProductCodeConversion
                 Return New DateType(CType(Row(ProductCodeConversionDAL.COL_NAME_EXPIRATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductCodeConversionDAL.COL_NAME_EXPIRATION_DATE, Value)
+            SetValue(ProductCodeConversionDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set
     End Property
 
@@ -296,31 +296,31 @@ Public Class ProductCodeConversion
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ProductCodeConversionDAL
                 'dal.Update(Me.Row)
-                dal.SaveProductCodeConversion(Me.Row)
+                dal.SaveProductCodeConversion(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then Me.Load(Me.Id)
+                If Row.RowState <> DataRowState.Detached Then Load(Id)
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
 
-    Public Sub Copy(ByVal original As ProductCodeConversion)
-        If Not Me.IsNew Then
+    Public Sub Copy(original As ProductCodeConversion)
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Product")
         End If
         'Copy myself
-        Me.CopyFrom(original)
+        CopyFrom(original)
 
     End Sub
 #End Region
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function ProductConversionList(ByVal oData As Object) As DataView
+    Public Shared Function ProductConversionList(oData As Object) As DataView
         Try
             Dim oProductConversionData As ProductConversionData = CType(oData, ProductConversionData)
             Dim dal As New ProductCodeConversionDAL
@@ -335,7 +335,7 @@ Public Class ProductCodeConversion
         End Try
     End Function
 
-    Public Shared Function GetExternalProdCodeListWithDesc(ByVal DealerID As Guid) As ExternalProdCodeWithDescDV
+    Public Shared Function GetExternalProdCodeListWithDesc(DealerID As Guid) As ExternalProdCodeWithDescDV
         Try
             Dim dal As New ProductCodeConversionDAL
             Dim ds As DataSet
@@ -365,7 +365,7 @@ Public Class ProductCodeConversion
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
     End Class
@@ -377,11 +377,11 @@ Public Class ProductCodeConversion
     Public NotInheritable Class Valid_DealerProdCodeMfgCombination
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.ERR_BO_INVALID_MFG_DEALER_EXTPRODCODE_COMBINATION_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductCodeConversion = CType(objectToValidate, ProductCodeConversion)
 
             Dim dal As New ProductCodeConversionDAL
@@ -405,18 +405,17 @@ Public Class ProductCodeConversion
     Public NotInheritable Class Valid_DealerProdCodeCombination
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.ERR_BO_INVALID_DEALER_EXTPRODCODE_COMBINATION_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductCodeConversion = CType(objectToValidate, ProductCodeConversion)
 
             Dim dal As New ProductCodeConversionDAL
             Dim odealer As New Dealer(obj.DealerId)
 
-            If (LookupListNew.GetCodeFromId(LookupListNew.DropdownLanguageLookupList(LookupListCache.LK_PROD_CONV_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId), odealer.ConvertProductCodeId) = "EXT") Or
-                LookupListNew.GetCodeFromId(LookupListNew.DropdownLanguageLookupList(LookupListCache.LK_PROD_CONV_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId), odealer.ConvertProductCodeId) <> "EXT" Then
+            If (LookupListNew.GetCodeFromId(LookupListNew.DropdownLanguageLookupList(LookupListCache.LK_PROD_CONV_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId), odealer.ConvertProductCodeId) = "EXT") OrElse LookupListNew.GetCodeFromId(LookupListNew.DropdownLanguageLookupList(LookupListCache.LK_PROD_CONV_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId), odealer.ConvertProductCodeId) <> "EXT" Then
 
                 'If LookupListNew.GetCodeFromId(LookupListNew.LK_USE_FULLFILE_PROCESS, odealer.UseFullFileProcessId) <> Codes.FULLFILE_NONE Then
 
@@ -435,7 +434,7 @@ Public Class ProductCodeConversion
     public NotInheritable Class NonOverlappingProductCodeConversion 
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.ERR_BO_OVERLAPPING_PRODUCT_CODE_CONVERSION)
         End Sub
         Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean

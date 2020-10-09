@@ -18,7 +18,7 @@ Partial Class CountryForm
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -56,9 +56,9 @@ Partial Class CountryForm
         Public LastOperation As DetailPageCommand
         Public EditingBo As Country
         Public HasDataChanged As Boolean
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As Country, ByVal hasDataChanged As Boolean)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(LastOp As DetailPageCommand, curEditingBo As Country, hasDataChanged As Boolean)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
             Me.HasDataChanged = hasDataChanged
         End Sub
     End Class
@@ -99,16 +99,16 @@ Partial Class CountryForm
         End Get
     End Property
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 'Get the id from the parent
-                Me.State.MyBO = New Country(CType(Me.CallingParameters, Guid))
+                State.MyBO = New Country(CType(CallingParameters, Guid))
             Else
-                Me.State.IsNew = True
+                State.IsNew = True
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
@@ -116,7 +116,7 @@ Partial Class CountryForm
 #End Region
 
 #Region "Page Events"
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         If mbIsFirstPass = True Then
             mbIsFirstPass = False
@@ -125,37 +125,37 @@ Partial Class CountryForm
             Return
         End If
 
-        Me.MasterPage.MessageController.Clear_Hide()
+        MasterPage.MessageController.Clear_Hide()
         'Individual Policy'
 
         ErrorControllerDS.Clear_Hide()
 
         Try
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
 
-                Me.MasterPage.MessageController.Clear()
-                Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
+                MasterPage.MessageController.Clear()
+                MasterPage.UsePageTabTitleInBreadCrum = False
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
 
-                Me.TranslateGridHeader(moLineOfBusinessGridView)
+                TranslateGridHeader(moLineOfBusinessGridView)
 
                 UpdateBreadCrum()
 
-                Me.MenuEnabled = False
-                Me.AddConfirmation(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT)
+                MenuEnabled = False
+                AddConfirmation(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT)
 
-                If Me.State.MyBO Is Nothing Then
-                    Me.State.MyBO = New Country
+                If State.MyBO Is Nothing Then
+                    State.MyBO = New Country
                 End If
 
                 PopulateDropdowns()
 
-                If Me.State.IsNew = True Then
+                If State.IsNew = True Then
                     CreateNew()
                 End If
 
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
+                PopulateFormFromBOs()
+                EnableDisableFields()
 
             End If
 
@@ -166,28 +166,28 @@ Partial Class CountryForm
             ClearGridViewHeadersAndLabelsErrorSign()
 
             ' Get all used Line of business once.
-            If Not Me.State.UsedLineOfBusinessInContracts.Any() Then
-                Me.State.UsedLineOfBusinessInContracts = Me.State.LineOfBusinessOrig.GetUsedLineOfBusinessInContracts(Me.State.MyBO.Id)
+            If Not State.UsedLineOfBusinessInContracts.Any() Then
+                State.UsedLineOfBusinessInContracts = State.LineOfBusinessOrig.GetUsedLineOfBusinessInContracts(State.MyBO.Id)
             End If
 
-            If Not Me.IsPostBack Then
-                Me.AddLabelDecorations(Me.State.MyBO)
+            If Not IsPostBack Then
+                AddLabelDecorations(State.MyBO)
             End If
 
-            Me.cboRegulatoryReporting.Attributes.Add("onchange", "ShowHideRegulatoryExtractDate()")
-            Me.cboUseAddressValidation.Attributes.Add("onchange", "ShowHideAllowForceAddressANDAddressConfidenceThreshold()")
-            Me.ShowHideAllowForceAddressANDAddressConfidenceThreshold()
+            cboRegulatoryReporting.Attributes.Add("onchange", "ShowHideRegulatoryExtractDate()")
+            cboUseAddressValidation.Attributes.Add("onchange", "ShowHideAllowForceAddressANDAddressConfidenceThreshold()")
+            ShowHideAllowForceAddressANDAddressConfidenceThreshold()
 
         Catch ex As Threading.ThreadAbortException
 
         Catch ex As Exception
             ' Clean Popup Input
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-            Me.HiddenSaveChangesPromptResponse.Value = ""
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            HiddenSaveChangesPromptResponse.Value = ""
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
 
     End Sub
 
@@ -202,7 +202,7 @@ Partial Class CountryForm
         ControlMgr.SetEnableControl(Me, btnCopy_WRITE, True)
 
         'Now disable depending on the object state
-        If Me.State.MyBO.IsNew Then
+        If State.MyBO.IsNew Then
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, False)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, False)
@@ -212,42 +212,42 @@ Partial Class CountryForm
     End Sub
 
     Protected Sub BindBoPropertiesToLabels()
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Description", Me.LabelDescription)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Code", Me.LabelCode)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "LanguageId", Me.LabelLanguage)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "PrimaryCurrencyId", Me.LabelPrimaryCurrency)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "SecondaryCurrencyId", Me.LabelSecondaryCurrency)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "BankIDLength", Me.LabelBankIDLength)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "BankAcctNoLength", Me.LabelBankAcctNoLength)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "MailAddrFormat", Me.LabelMailAddrFormat)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "ContactInfoReqFields", Me.LabelCONTACT_INFO_REQ_FIELDS)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "AddressInfoReqFields", Me.LabelAddrInfoReqFields)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "EuropeanCountryId", Me.LabelEuropeanCountry)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "ValidateBankInfoId", Me.LabelValidateBankInfo)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "TaxByProductTypeId", Me.LabelTaxByProductType)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "DefaultScForDeniedClaims", Me.lblDefaultSCForDeniedClaims)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "UseBankListId", Me.lblUseBankList)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "RegulatoryReportingId", Me.LabelRegulatoryReporting)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "NotifyGroupEmail", Me.LabelRegulatoryNotifyGroupEmail)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "LastRegulatoryExtractDate", Me.LabelLastRegulatoryExtractDate)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "CreditScoringPct", Me.LabelCreditScoringPct)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "AbnormalCLMFreqNo", Me.LabelAbnormalClmFrqNo)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "CertCountSuspOP", Me.LabelCertCountSuspOp)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "DefaultSSId", Me.lblDefaultSC)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "IsoCode", lblISOCode)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "PriceListApprovalEmail", Me.lblPriceListApprovalEmail)
+        BindBOPropertyToLabel(State.MyBO, "Description", LabelDescription)
+        BindBOPropertyToLabel(State.MyBO, "Code", LabelCode)
+        BindBOPropertyToLabel(State.MyBO, "LanguageId", LabelLanguage)
+        BindBOPropertyToLabel(State.MyBO, "PrimaryCurrencyId", LabelPrimaryCurrency)
+        BindBOPropertyToLabel(State.MyBO, "SecondaryCurrencyId", LabelSecondaryCurrency)
+        BindBOPropertyToLabel(State.MyBO, "BankIDLength", LabelBankIDLength)
+        BindBOPropertyToLabel(State.MyBO, "BankAcctNoLength", LabelBankAcctNoLength)
+        BindBOPropertyToLabel(State.MyBO, "MailAddrFormat", LabelMailAddrFormat)
+        BindBOPropertyToLabel(State.MyBO, "ContactInfoReqFields", LabelCONTACT_INFO_REQ_FIELDS)
+        BindBOPropertyToLabel(State.MyBO, "AddressInfoReqFields", LabelAddrInfoReqFields)
+        BindBOPropertyToLabel(State.MyBO, "EuropeanCountryId", LabelEuropeanCountry)
+        BindBOPropertyToLabel(State.MyBO, "ValidateBankInfoId", LabelValidateBankInfo)
+        BindBOPropertyToLabel(State.MyBO, "TaxByProductTypeId", LabelTaxByProductType)
+        BindBOPropertyToLabel(State.MyBO, "DefaultScForDeniedClaims", lblDefaultSCForDeniedClaims)
+        BindBOPropertyToLabel(State.MyBO, "UseBankListId", lblUseBankList)
+        BindBOPropertyToLabel(State.MyBO, "RegulatoryReportingId", LabelRegulatoryReporting)
+        BindBOPropertyToLabel(State.MyBO, "NotifyGroupEmail", LabelRegulatoryNotifyGroupEmail)
+        BindBOPropertyToLabel(State.MyBO, "LastRegulatoryExtractDate", LabelLastRegulatoryExtractDate)
+        BindBOPropertyToLabel(State.MyBO, "CreditScoringPct", LabelCreditScoringPct)
+        BindBOPropertyToLabel(State.MyBO, "AbnormalCLMFreqNo", LabelAbnormalClmFrqNo)
+        BindBOPropertyToLabel(State.MyBO, "CertCountSuspOP", LabelCertCountSuspOp)
+        BindBOPropertyToLabel(State.MyBO, "DefaultSSId", lblDefaultSC)
+        BindBOPropertyToLabel(State.MyBO, "IsoCode", lblISOCode)
+        BindBOPropertyToLabel(State.MyBO, "PriceListApprovalEmail", lblPriceListApprovalEmail)
 
         'REQ - 6155
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "UseAddressValidationXcd", Me.lblUseAddressValidation)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "AllowForceAddressXcd", Me.lblAllowForceAddress)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "AddressConfidenceThreshold", Me.lblAddressConfidenceThreshold)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "AllowForget", Me.lblAllowForget)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "FullNameFormat", Me.lblFullnameFormat)
+        BindBOPropertyToLabel(State.MyBO, "UseAddressValidationXcd", lblUseAddressValidation)
+        BindBOPropertyToLabel(State.MyBO, "AllowForceAddressXcd", lblAllowForceAddress)
+        BindBOPropertyToLabel(State.MyBO, "AddressConfidenceThreshold", lblAddressConfidenceThreshold)
+        BindBOPropertyToLabel(State.MyBO, "AllowForget", lblAllowForget)
+        BindBOPropertyToLabel(State.MyBO, "FullNameFormat", lblFullnameFormat)
 
         'Me.BindBOPropertyToLabel(Me.State.MyBO, "PriceListApprovalEmail", Me.lblPriceListApprovalEmail)
         'Me.BindBOPropertyToLabel(Me.State.MyBO, "PriceListApprovalNeeded", lblPriceListApprovalNeeded)
 
-        Me.ClearGridHeadersAndLabelsErrSign()
+        ClearGridHeadersAndLabelsErrSign()
     End Sub
 
     Protected Sub PopulateDropdowns()
@@ -305,7 +305,7 @@ Partial Class CountryForm
 
         'REQ - 6155
         'Me.cboUseAddressValidation.PopulateOld("YESNO", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.None, String.Empty, ListValueType.Description)
-        Me.cboUseAddressValidation.Populate(yesNoLkl, New PopulateOptions() With
+        cboUseAddressValidation.Populate(yesNoLkl, New PopulateOptions() With
                                                       {
                                                         .AddBlankItem = False,
                                                         .TextFunc = AddressOf .GetDescription,
@@ -313,7 +313,7 @@ Partial Class CountryForm
                                                        })
 
         'Me.cboAllowForceAddress.PopulateOld("YESNO", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.AddBlankListItem, String.Empty, ListValueType.Description)
-        Me.cboAllowForceAddress.Populate(yesNoLkl, New PopulateOptions() With
+        cboAllowForceAddress.Populate(yesNoLkl, New PopulateOptions() With
                                                       {
                                                         .AddBlankItem = True,
                                                         .BlankItemValue = String.Empty,
@@ -321,14 +321,14 @@ Partial Class CountryForm
                                                         .ValueFunc = AddressOf .GetExtendedCode
                                                        })
 
-        Me.cboAllowForget.Populate(yesNoLkl, New PopulateOptions() With
+        cboAllowForget.Populate(yesNoLkl, New PopulateOptions() With
                                                       {
                                                         .AddBlankItem = False,
                                                         .TextFunc = AddressOf .GetDescription,
                                                         .ValueFunc = AddressOf .GetExtendedCode
                                                        })
 
-        Me.cboPriceListApprovalNeeded.Populate(yesNoLkl, New PopulateOptions() With
+        cboPriceListApprovalNeeded.Populate(yesNoLkl, New PopulateOptions() With
                                                       {
                                                         .AddBlankItem = False,
                                                         .TextFunc = AddressOf .GetDescription,
@@ -345,11 +345,11 @@ Partial Class CountryForm
     End Sub
 
     Protected Sub LoadPostalCodeLists()
-        BindListControlToDataView(SelectedPostalCodeList, Me.State.MyBO.GetSelectedPostalCode(), "DESCRIPTION", "ID", False)
+        BindListControlToDataView(SelectedPostalCodeList, State.MyBO.GetSelectedPostalCode(), "DESCRIPTION", "ID", False)
         If SelectedPostalCodeList.Items.Count > 0 Then
             SelectedPostalCodeList.SelectedIndex = 0
         End If
-        BindListControlToDataView(AvailPostalCodeList, Me.State.MyBO.GetAvailablePostalCode(), "DESCRIPTION", "ID", False)
+        BindListControlToDataView(AvailPostalCodeList, State.MyBO.GetAvailablePostalCode(), "DESCRIPTION", "ID", False)
         If AvailPostalCodeList.Items.Count > 0 Then
             AvailPostalCodeList.SelectedIndex = 0
         End If
@@ -363,49 +363,49 @@ Partial Class CountryForm
         'Me.State.noCode = Codes.YESNO + "-" + Codes.YESNO_N
 
         Dim oYesNoList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="YESNO", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
-        Me.State.yesId = (From lst In oYesNoList
+        State.yesId = (From lst In oYesNoList
                           Where lst.Code = "Y"
                           Select lst.ListItemId).FirstOrDefault()
-        Me.State.noId = (From lst In oYesNoList
+        State.noId = (From lst In oYesNoList
                          Where lst.Code = "N"
                          Select lst.ListItemId).FirstOrDefault()
-        Me.State.yesCode = (From lst In oYesNoList
+        State.yesCode = (From lst In oYesNoList
                             Where lst.Code = "Y"
                             Select lst.ExtendedCode).FirstOrDefault()
-        Me.State.noCode = (From lst In oYesNoList
+        State.noCode = (From lst In oYesNoList
                            Where lst.Code = "N"
                            Select lst.ExtendedCode).FirstOrDefault()
 
         Dim fullnameformat As ListItem() = CommonConfigManager.Current.ListManager.GetList("FULL_NAME_FMT", Thread.CurrentPrincipal.GetLanguageCode())
-        Me.State.fsmslCode = (From lst In fullnameformat
+        State.fsmslCode = (From lst In fullnameformat
                               Where lst.Code = "FSMSL"
                               Select lst.ExtendedCode).FirstOrDefault()
-        With Me.State.MyBO
-            Me.PopulateControlFromBOProperty(Me.TextboxDescription, .Description)
-            Me.PopulateControlFromBOProperty(Me.TextboxCode, .Code)
-            Me.SetSelectedItem(Me.cboLanguageId, .LanguageId)
-            Me.SetSelectedItem(Me.cboPrimaryCurrencyId, .PrimaryCurrencyId)
-            Me.SetSelectedItem(Me.cboSecondaryCurrencyId, .SecondaryCurrencyId)
-            Me.PopulateControlFromBOProperty(Me.TextboxBankIDLength, .BankIDLength)
-            Me.PopulateControlFromBOProperty(Me.TextboxBankAcctNoLength, .BankAcctNoLength)
-            Me.PopulateControlFromBOProperty(Me.TextboxMailAddrFormat, .MailAddrFormat)
-            Me.PopulateControlFromBOProperty(Me.TextboxCONTACT_INFO_REQ_FIELDS, .ContactInfoReqFields)
-            Me.PopulateControlFromBOProperty(Me.TextboxAddrInfoReqFields, .AddressInfoReqFields)
-            Me.SetSelectedItem(Me.cboEuropeanCountry, .EuropeanCountryId)
-            Me.SetSelectedItem(Me.cboValidateBankInfo, .ValidateBankInfoId)
+        With State.MyBO
+            PopulateControlFromBOProperty(TextboxDescription, .Description)
+            PopulateControlFromBOProperty(TextboxCode, .Code)
+            SetSelectedItem(cboLanguageId, .LanguageId)
+            SetSelectedItem(cboPrimaryCurrencyId, .PrimaryCurrencyId)
+            SetSelectedItem(cboSecondaryCurrencyId, .SecondaryCurrencyId)
+            PopulateControlFromBOProperty(TextboxBankIDLength, .BankIDLength)
+            PopulateControlFromBOProperty(TextboxBankAcctNoLength, .BankAcctNoLength)
+            PopulateControlFromBOProperty(TextboxMailAddrFormat, .MailAddrFormat)
+            PopulateControlFromBOProperty(TextboxCONTACT_INFO_REQ_FIELDS, .ContactInfoReqFields)
+            PopulateControlFromBOProperty(TextboxAddrInfoReqFields, .AddressInfoReqFields)
+            SetSelectedItem(cboEuropeanCountry, .EuropeanCountryId)
+            SetSelectedItem(cboValidateBankInfo, .ValidateBankInfoId)
 
             If .TaxByProductTypeId.Equals(System.Guid.Empty) Then
-                Me.SetSelectedItem(cboTaxByProductType, Me.State.noId)
+                SetSelectedItem(cboTaxByProductType, State.noId)
             Else
-                Me.SetSelectedItem(Me.cboTaxByProductType, .TaxByProductTypeId)
+                SetSelectedItem(cboTaxByProductType, .TaxByProductTypeId)
             End If
 
             'DEF-22411-START
             'Me.SetSelectedItem(Me.cboUseBankList, .UseBankListId)
             If .UseBankListId.Equals(System.Guid.Empty) Then
-                Me.SetSelectedItem(cboUseBankList, Me.State.noId)
+                SetSelectedItem(cboUseBankList, State.noId)
             Else
-                Me.SetSelectedItem(Me.cboUseBankList, .UseBankListId)
+                SetSelectedItem(cboUseBankList, .UseBankListId)
             End If
 
             'DEF-22411-END
@@ -421,69 +421,69 @@ Partial Class CountryForm
             LoadPostalCodeLists()
 
             If .RequireByteCheckId.Equals(System.Guid.Empty) Then
-                Me.SetSelectedItem(cboByteCheck, Me.State.noId)
+                SetSelectedItem(cboByteCheck, State.noId)
             Else
-                Me.SetSelectedItem(Me.cboByteCheck, .RequireByteCheckId)
+                SetSelectedItem(cboByteCheck, .RequireByteCheckId)
             End If
 
-            Me.PopulateControlFromBOProperty(Me.TextboxLastRegulatoryExtractDate, .LastRegulatoryExtractDate)
-            Me.PopulateControlFromBOProperty(Me.TextboxRegulatoryNotifyGroupEmail, .NotifyGroupEmail)
-            Me.SetSelectedItem(Me.cboRegulatoryReporting, .RegulatoryReportingId)
+            PopulateControlFromBOProperty(TextboxLastRegulatoryExtractDate, .LastRegulatoryExtractDate)
+            PopulateControlFromBOProperty(TextboxRegulatoryNotifyGroupEmail, .NotifyGroupEmail)
+            SetSelectedItem(cboRegulatoryReporting, .RegulatoryReportingId)
 
-            Me.PopulateControlFromBOProperty(Me.TextboxCreditScoringPct, .CreditScoringPct)
-            Me.PopulateControlFromBOProperty(Me.TextboxAbnormalClmFrqNo, .AbnormalCLMFreqNo)
-            Me.PopulateControlFromBOProperty(Me.TextboxCertCountSuspOp, .CertCountSuspOP)
+            PopulateControlFromBOProperty(TextboxCreditScoringPct, .CreditScoringPct)
+            PopulateControlFromBOProperty(TextboxAbnormalClmFrqNo, .AbnormalCLMFreqNo)
+            PopulateControlFromBOProperty(TextboxCertCountSuspOp, .CertCountSuspOP)
 
-            If Not .RegulatoryReportingId.Equals(System.Guid.Empty) AndAlso .RegulatoryReportingId.Equals(Me.State.yesId) Then
+            If Not .RegulatoryReportingId.Equals(System.Guid.Empty) AndAlso .RegulatoryReportingId.Equals(State.yesId) Then
                 ControlMgr.SetEnableControl(Me, TextboxLastRegulatoryExtractDate, False)
-                Me.LabelLastRegulatoryExtractDate.Attributes("style") = ""
-                Me.TextboxLastRegulatoryExtractDate.Attributes("style") = ""
+                LabelLastRegulatoryExtractDate.Attributes("style") = ""
+                TextboxLastRegulatoryExtractDate.Attributes("style") = ""
             Else
                 ControlMgr.SetEnableControl(Me, TextboxLastRegulatoryExtractDate, False)
-                Me.LabelLastRegulatoryExtractDate.Attributes("style") = "display: none"
-                Me.TextboxLastRegulatoryExtractDate.Attributes("style") = "display: none"
+                LabelLastRegulatoryExtractDate.Attributes("style") = "display: none"
+                TextboxLastRegulatoryExtractDate.Attributes("style") = "display: none"
             End If
 
             'REQ
             If String.IsNullOrEmpty(.UseAddressValidationXcd) Then
-                Me.SetSelectedItem(cboUseAddressValidation, Me.State.noCode)
+                SetSelectedItem(cboUseAddressValidation, State.noCode)
             Else
-                Me.SetSelectedItem(Me.cboUseAddressValidation, .UseAddressValidationXcd)
+                SetSelectedItem(cboUseAddressValidation, .UseAddressValidationXcd)
             End If
 
             If String.IsNullOrEmpty(.AllowForceAddressXcd) Then
-                Me.SetSelectedItem(cboAllowForceAddress, Me.State.noCode)
+                SetSelectedItem(cboAllowForceAddress, State.noCode)
             Else
-                Me.SetSelectedItem(Me.cboAllowForceAddress, .AllowForceAddressXcd)
+                SetSelectedItem(cboAllowForceAddress, .AllowForceAddressXcd)
             End If
 
             If String.IsNullOrEmpty(.AllowForget) Then
-                Me.SetSelectedItem(cboAllowForget, Me.State.noCode)
+                SetSelectedItem(cboAllowForget, State.noCode)
             Else
-                Me.SetSelectedItem(Me.cboAllowForget, .AllowForget)
+                SetSelectedItem(cboAllowForget, .AllowForget)
             End If
 
             If String.IsNullOrEmpty(.PriceListApprovalNeeded) Then
-                Me.SetSelectedItem(cboPriceListApprovalNeeded, Me.State.noCode)
+                SetSelectedItem(cboPriceListApprovalNeeded, State.noCode)
             Else
-                Me.SetSelectedItem(Me.cboPriceListApprovalNeeded, .PriceListApprovalNeeded)
+                SetSelectedItem(cboPriceListApprovalNeeded, .PriceListApprovalNeeded)
             End If
 
             If String.IsNullOrEmpty(.FullNameFormat) Then
-                Me.SetSelectedItem(cboFullNameFormat, Me.State.fsmslCode)
+                SetSelectedItem(cboFullNameFormat, State.fsmslCode)
             Else
-                Me.SetSelectedItem(Me.cboFullNameFormat, .FullNameFormat)
+                SetSelectedItem(cboFullNameFormat, .FullNameFormat)
             End If
 
 
-            Me.PopulateControlFromBOProperty(Me.TextboxAddressConfidenceThreshold, .AddressConfidenceThreshold)
-            Me.PopulateControlFromBOProperty(Me.txtISOCode, .IsoCode)
+            PopulateControlFromBOProperty(TextboxAddressConfidenceThreshold, .AddressConfidenceThreshold)
+            PopulateControlFromBOProperty(txtISOCode, .IsoCode)
 
             If .PriceListApprovalEmail Is Nothing OrElse .PriceListApprovalEmail.Equals(String.Empty) Then
-                Me.State.PriceListAprrovalEmailIsNull = TranslationBase.TranslateLabelOrMessage("THERE_IS_NO_VALUE")
-                Me.PopulateControlFromBOProperty(Me.txtPriceListApprovalEmail, Me.State.PriceListAprrovalEmailIsNull)
+                State.PriceListAprrovalEmailIsNull = TranslationBase.TranslateLabelOrMessage("THERE_IS_NO_VALUE")
+                PopulateControlFromBOProperty(txtPriceListApprovalEmail, State.PriceListAprrovalEmailIsNull)
             Else
-                Me.PopulateControlFromBOProperty(Me.txtPriceListApprovalEmail, .PriceListApprovalEmail)
+                PopulateControlFromBOProperty(txtPriceListApprovalEmail, .PriceListApprovalEmail)
             End If
 
             'Me.PopulateControlFromBOProperty(Me.txtPriceListApprovalEmail, .PriceListApprovalEmail)
@@ -497,32 +497,32 @@ Partial Class CountryForm
     End Sub
 
     Protected Sub PopulateBOsFormFrom()
-        With Me.State.MyBO
-            Me.PopulateBOProperty(Me.State.MyBO, "Description", Me.TextboxDescription)
-            Me.PopulateBOProperty(Me.State.MyBO, "Code", Me.TextboxCode)
-            Me.PopulateBOProperty(Me.State.MyBO, "LanguageId", Me.cboLanguageId)
-            Me.PopulateBOProperty(Me.State.MyBO, "PrimaryCurrencyId", Me.cboPrimaryCurrencyId)
-            Me.PopulateBOProperty(Me.State.MyBO, "SecondaryCurrencyId", Me.cboSecondaryCurrencyId)
-            Me.PopulateBOProperty(Me.State.MyBO, "BankIDLength", Me.TextboxBankIDLength)
-            Me.PopulateBOProperty(Me.State.MyBO, "BankAcctNoLength", Me.TextboxBankAcctNoLength)
-            Me.PopulateBOProperty(Me.State.MyBO, "MailAddrFormat", Me.TextboxMailAddrFormat)
-            Me.PopulateBOProperty(Me.State.MyBO, "ContactInfoReqFields", Me.TextboxCONTACT_INFO_REQ_FIELDS)
-            Me.PopulateBOProperty(Me.State.MyBO, "AddressInfoReqFields", Me.TextboxAddrInfoReqFields)
-            Me.PopulateBOProperty(Me.State.MyBO, "EuropeanCountryId", Me.cboEuropeanCountry)
-            Me.PopulateBOProperty(Me.State.MyBO, "ValidateBankInfoId", Me.cboValidateBankInfo)
-            Me.PopulateBOProperty(Me.State.MyBO, "TaxByProductTypeId", Me.cboTaxByProductType)
-            Me.PopulateBOProperty(Me.State.MyBO, "UseBankListId", Me.cboUseBankList)
-            Me.PopulateBOProperty(Me.State.MyBO, "RegulatoryReportingId", Me.cboRegulatoryReporting)
-            Me.PopulateBOProperty(Me.State.MyBO, "NotifyGroupEmail", Me.TextboxRegulatoryNotifyGroupEmail)
-            Me.PopulateBOProperty(Me.State.MyBO, "CreditScoringPct", Me.TextboxCreditScoringPct)
-            Me.PopulateBOProperty(Me.State.MyBO, "AbnormalCLMFreqNo", Me.TextboxAbnormalClmFrqNo)
-            Me.PopulateBOProperty(Me.State.MyBO, "CertCountSuspOP", Me.TextboxCertCountSuspOp)
+        With State.MyBO
+            PopulateBOProperty(State.MyBO, "Description", TextboxDescription)
+            PopulateBOProperty(State.MyBO, "Code", TextboxCode)
+            PopulateBOProperty(State.MyBO, "LanguageId", cboLanguageId)
+            PopulateBOProperty(State.MyBO, "PrimaryCurrencyId", cboPrimaryCurrencyId)
+            PopulateBOProperty(State.MyBO, "SecondaryCurrencyId", cboSecondaryCurrencyId)
+            PopulateBOProperty(State.MyBO, "BankIDLength", TextboxBankIDLength)
+            PopulateBOProperty(State.MyBO, "BankAcctNoLength", TextboxBankAcctNoLength)
+            PopulateBOProperty(State.MyBO, "MailAddrFormat", TextboxMailAddrFormat)
+            PopulateBOProperty(State.MyBO, "ContactInfoReqFields", TextboxCONTACT_INFO_REQ_FIELDS)
+            PopulateBOProperty(State.MyBO, "AddressInfoReqFields", TextboxAddrInfoReqFields)
+            PopulateBOProperty(State.MyBO, "EuropeanCountryId", cboEuropeanCountry)
+            PopulateBOProperty(State.MyBO, "ValidateBankInfoId", cboValidateBankInfo)
+            PopulateBOProperty(State.MyBO, "TaxByProductTypeId", cboTaxByProductType)
+            PopulateBOProperty(State.MyBO, "UseBankListId", cboUseBankList)
+            PopulateBOProperty(State.MyBO, "RegulatoryReportingId", cboRegulatoryReporting)
+            PopulateBOProperty(State.MyBO, "NotifyGroupEmail", TextboxRegulatoryNotifyGroupEmail)
+            PopulateBOProperty(State.MyBO, "CreditScoringPct", TextboxCreditScoringPct)
+            PopulateBOProperty(State.MyBO, "AbnormalCLMFreqNo", TextboxAbnormalClmFrqNo)
+            PopulateBOProperty(State.MyBO, "CertCountSuspOP", TextboxCertCountSuspOp)
 
             If txtDefaultSCForDeniedClaims.Text.Trim <> String.Empty AndAlso txtDefaultSCForDeniedClaims.Text.Trim.ToUpper <> inpDefaultSCFDCDesc.Value.Trim.ToUpper Then
                 ErrCollection.Add(New PopulateBOPropException(TranslationBase.TranslateLabelOrMessage("DEFAULT_SC_FOR_DENIED_CLAIMS"), txtDefaultSCForDeniedClaims, lblDefaultSCForDeniedClaims, New Exception("Service Center Not Found")))
             Else
                 AjaxController.PopulateBOAutoComplete(txtDefaultSCForDeniedClaims, inpDefaultSCFDCDesc,
-                            inpDefaultSCFDCId, Me.State.MyBO, "DefaultScForDeniedClaims")
+                            inpDefaultSCFDCId, State.MyBO, "DefaultScForDeniedClaims")
             End If
 
             'REQ-5546
@@ -530,75 +530,75 @@ Partial Class CountryForm
                 ErrCollection.Add(New PopulateBOPropException(TranslationBase.TranslateLabelOrMessage("DEFAULT_SC"), txtDefaultSC, lblDefaultSC, New Exception("Service Center Not Found")))
             Else
                 AjaxController.PopulateBOAutoComplete(txtDefaultSC, inpDefaultSCDesc,
-                            inpDefaultSCId, Me.State.MyBO, "DefaultSCId")
+                            inpDefaultSCId, State.MyBO, "DefaultSCId")
             End If
 
             ' if actual selected rows are not in the selected list, they must have been removed. 
-            Dim selPostalCode As DataView = Me.State.MyBO.GetSelectedPostalCode()
+            Dim selPostalCode As DataView = State.MyBO.GetSelectedPostalCode()
             For iRow As Integer = 0 To selPostalCode.Count - 1
                 Dim postalCodeID As Guid = New Guid(CType(selPostalCode(iRow)("ID"), Byte()))
 
                 If SelectedPostalCodeList.Items.FindByValue(postalCodeID.ToString) Is Nothing Then
-                    Me.State.MyBO.DetachPostalCodeFormat(postalCodeID.ToString)
+                    State.MyBO.DetachPostalCodeFormat(postalCodeID.ToString)
                 End If
             Next
 
             ' if actual available rows are not in the available list, they must have been added . 
-            Dim availPostalCode As DataView = Me.State.MyBO.GetAvailablePostalCode()
+            Dim availPostalCode As DataView = State.MyBO.GetAvailablePostalCode()
             For iRow As Integer = 0 To availPostalCode.Count - 1
                 Dim postalCodeID As Guid = New Guid(CType(availPostalCode(iRow)("ID"), Byte()))
 
                 If AvailPostalCodeList.Items.FindByValue(postalCodeID.ToString) Is Nothing Then
-                    Me.State.MyBO.AttachPostalCodeFormat(postalCodeID.ToString)
+                    State.MyBO.AttachPostalCodeFormat(postalCodeID.ToString)
                 End If
             Next
 
-            Me.PopulateBOProperty(Me.State.MyBO, "RequireByteCheckId", Me.cboByteCheck)
-            Me.PopulateBOProperty(Me.State.MyBO, "RequireByteCheckId", Me.cboByteCheck)
+            PopulateBOProperty(State.MyBO, "RequireByteCheckId", cboByteCheck)
+            PopulateBOProperty(State.MyBO, "RequireByteCheckId", cboByteCheck)
 
             'REQ
-            Me.PopulateBOProperty(Me.State.MyBO, "UseAddressValidationXcd", Me.cboUseAddressValidation, False, True)
-            If Not String.IsNullOrEmpty(Me.cboUseAddressValidation.SelectedValue) AndAlso Me.cboUseAddressValidation.SelectedValue.Equals(Me.State.yesCode) Then
-                Me.PopulateBOProperty(Me.State.MyBO, "AllowForceAddressXcd", Me.cboAllowForceAddress, False, True)
-                Me.PopulateBOProperty(Me.State.MyBO, "AddressConfidenceThreshold", Me.TextboxAddressConfidenceThreshold)
+            PopulateBOProperty(State.MyBO, "UseAddressValidationXcd", cboUseAddressValidation, False, True)
+            If Not String.IsNullOrEmpty(cboUseAddressValidation.SelectedValue) AndAlso cboUseAddressValidation.SelectedValue.Equals(State.yesCode) Then
+                PopulateBOProperty(State.MyBO, "AllowForceAddressXcd", cboAllowForceAddress, False, True)
+                PopulateBOProperty(State.MyBO, "AddressConfidenceThreshold", TextboxAddressConfidenceThreshold)
             Else
-                Me.PopulateBOProperty(Me.State.MyBO, "AllowForceAddressXcd", String.Empty)
-                Me.PopulateBOProperty(Me.State.MyBO, "AddressConfidenceThreshold", String.Empty)
+                PopulateBOProperty(State.MyBO, "AllowForceAddressXcd", String.Empty)
+                PopulateBOProperty(State.MyBO, "AddressConfidenceThreshold", String.Empty)
             End If
 
-            Me.PopulateBOProperty(Me.State.MyBO, "IsoCode", Me.txtISOCode)
+            PopulateBOProperty(State.MyBO, "IsoCode", txtISOCode)
 
-            Me.PopulateBOProperty(Me.State.MyBO, "AllowForget", Me.cboAllowForget, False, True)
+            PopulateBOProperty(State.MyBO, "AllowForget", cboAllowForget, False, True)
 
-            Me.PopulateBOProperty(Me.State.MyBO, "PriceListApprovalNeeded", Me.cboPriceListApprovalNeeded, False, True)
+            PopulateBOProperty(State.MyBO, "PriceListApprovalNeeded", cboPriceListApprovalNeeded, False, True)
 
-            If Me.cboPriceListApprovalNeeded.SelectedValue.Equals(Me.State.noCode) Then
-                Me.State.PriceListAprrovalEmailIsNull = TranslationBase.TranslateLabelOrMessage("THERE_IS_NO_VALUE")
-                Me.PopulateControlFromBOProperty(Me.txtPriceListApprovalEmail, Me.State.PriceListAprrovalEmailIsNull)
+            If cboPriceListApprovalNeeded.SelectedValue.Equals(State.noCode) Then
+                State.PriceListAprrovalEmailIsNull = TranslationBase.TranslateLabelOrMessage("THERE_IS_NO_VALUE")
+                PopulateControlFromBOProperty(txtPriceListApprovalEmail, State.PriceListAprrovalEmailIsNull)
             Else
-                Me.PopulateControlFromBOProperty(Me.txtPriceListApprovalEmail, .PriceListApprovalEmail)
+                PopulateControlFromBOProperty(txtPriceListApprovalEmail, .PriceListApprovalEmail)
             End If
 
-            Me.PopulateBOProperty(Me.State.MyBO, "FullNameFormat", Me.cboFullNameFormat, False, True)
+            PopulateBOProperty(State.MyBO, "FullNameFormat", cboFullNameFormat, False, True)
 
         End With
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Sub
     Protected Sub CreateNew()
-        Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
-        Me.State.MyBO = New Country
-        Me.PopulateFormFromBOs()
-        Me.EnableDisableFields()
+        State.ScreenSnapShotBO = Nothing 'Reset the backup copy
+        State.MyBO = New Country
+        PopulateFormFromBOs()
+        EnableDisableFields()
         'Individual Policy
         ClearLineOfBusinessState()
     End Sub
 
     Protected Sub CreateNewWithCopy()
 
-        Me.TextboxDescription.Text = ""
-        Me.TextboxCode.Text = ""
+        TextboxDescription.Text = ""
+        TextboxCode.Text = ""
 
         inpDefaultSCFDCId.Value = ""
         inpDefaultSCFDCDesc.Value = ""
@@ -608,19 +608,19 @@ Partial Class CountryForm
         inpDefaultSCDesc.Value = ""
         txtDefaultSC.Text = ""
 
-        Me.State.MyBO = New Country
-        Me.PopulateBOsFormFrom()
-        Me.EnableDisableFields()
+        State.MyBO = New Country
+        PopulateBOsFormFrom()
+        EnableDisableFields()
 
         'create the backup copy
-        Me.State.ScreenSnapShotBO = New Country
-        Me.State.ScreenSnapShotBO.Clone(Me.State.MyBO)
+        State.ScreenSnapShotBO = New Country
+        State.ScreenSnapShotBO.Clone(State.MyBO)
 
         'If SelectedPostalCodeList.Items.Count > 0 Then
         '    Me.State.MyBO.AttachPostalCodeFormat(GetListValues(SelectedPostalCodeList))
         'End If
 
-        Me.txtISOCode.Text = ""
+        txtISOCode.Text = ""
 
         LoadPostalCodeLists()
         'Individual Policy
@@ -629,52 +629,52 @@ Partial Class CountryForm
 
     Protected Sub CheckIfComingFromSaveConfirm()
 
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
-        If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
+        If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
 
-            If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
-                Me.State.MyBO.Save()
+            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
+                State.MyBO.Save()
             End If
 
-            Select Case Me.State.ActionInProgress
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                    Me.CreateNew()
+                    AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                    Me.CreateNewWithCopy()
+                    AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                    CreateNewWithCopy()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
             End Select
-        ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-            Select Case Me.State.ActionInProgress
+        ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.CreateNew()
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    Me.CreateNewWithCopy()
+                    CreateNewWithCopy()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.MasterPage.MessageController.AddErrorAndShow(Me.State.LastErrMsg)
+                    MasterPage.MessageController.AddErrorAndShow(State.LastErrMsg)
             End Select
         End If
 
         'Clean after consuming the action
-        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-        Me.HiddenSaveChangesPromptResponse.Value = ""
+        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        HiddenSaveChangesPromptResponse.Value = ""
 
         'Hide Client controls
-        If Not Me.State.MyBO.RegulatoryReportingId.Equals(System.Guid.Empty) AndAlso Me.State.MyBO.RegulatoryReportingId.Equals(Me.State.yesId) Then
+        If Not State.MyBO.RegulatoryReportingId.Equals(System.Guid.Empty) AndAlso State.MyBO.RegulatoryReportingId.Equals(State.yesId) Then
             ControlMgr.SetEnableControl(Me, TextboxLastRegulatoryExtractDate, False)
-            Me.LabelLastRegulatoryExtractDate.Attributes("style") = ""
-            Me.TextboxLastRegulatoryExtractDate.Attributes("style") = ""
+            LabelLastRegulatoryExtractDate.Attributes("style") = ""
+            TextboxLastRegulatoryExtractDate.Attributes("style") = ""
         Else
             ControlMgr.SetEnableControl(Me, TextboxLastRegulatoryExtractDate, False)
-            Me.LabelLastRegulatoryExtractDate.Attributes("style") = "display: none"
-            Me.TextboxLastRegulatoryExtractDate.Attributes("style") = "display: none"
+            LabelLastRegulatoryExtractDate.Attributes("style") = "display: none"
+            TextboxLastRegulatoryExtractDate.Attributes("style") = "display: none"
         End If
 
     End Sub
@@ -684,43 +684,43 @@ Partial Class CountryForm
 
 #Region "Button Clicks"
 
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                 'Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse) 'DEF-21578
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
             Else
-                Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
+            HandleErrors(ex, MasterPage.MessageController)
+            DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
             'Me.AddConfirmMsg(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-            Me.State.LastErrMsg = Me.MasterPage.MessageController.Text
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+            State.LastErrMsg = MasterPage.MessageController.Text
         End Try
     End Sub
 
-    Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
         Try
-            Me.PopulateBOsFormFrom()
+            PopulateBOsFormFrom()
             ' Validate User Selected Required Fields
             ValidateRequiredFields()
-            If Me.State.MyBO.IsDirty Then
-                Me.State.MyBO.Save()
-                Me.State.HasDataChanged = True
-                Me.EnableDisableFields()
+            If State.MyBO.IsDirty Then
+                State.MyBO.Save()
+                State.HasDataChanged = True
+                EnableDisableFields()
                 'Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION) 'DEF-21578
-                Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
             Else
                 'Me.AddInfoMsg(Message.MSG_RECORD_NOT_SAVED) 'DEF-21578
-                Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
+                MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
     Private Sub ValidateRequiredFields()
@@ -730,8 +730,8 @@ Partial Class CountryForm
         If strRequiredFieldSetting.Trim().Length > 0 Then
             ' Validating Email
             If strRequiredFieldSetting.Contains("[EMAIL]") Then
-                If Me.State.MyBO.PriceListApprovalEmail Is Nothing OrElse Me.State.MyBO.PriceListApprovalEmail.Trim() = String.Empty Then
-                    Me.MasterPage.MessageController.AddErrorAndShow("EMAIL_IS_REQUIRED_ERR")
+                If State.MyBO.PriceListApprovalEmail Is Nothing OrElse State.MyBO.PriceListApprovalEmail.Trim() = String.Empty Then
+                    MasterPage.MessageController.AddErrorAndShow("EMAIL_IS_REQUIRED_ERR")
                     requiredFieldsErrorExist = True
                 End If
             End If
@@ -743,69 +743,69 @@ Partial Class CountryForm
         End If
 
     End Sub
-    Private Sub btnUndo_Write_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_Write.Click
+    Private Sub btnUndo_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_Write.Click
         Try
-            If Not Me.State.MyBO.IsNew Then
+            If Not State.MyBO.IsNew Then
                 'Reload from the DB
-                Me.State.MyBO = New Country(Me.State.MyBO.Id)
-            ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+                State.MyBO = New Country(State.MyBO.Id)
+            ElseIf State.ScreenSnapShotBO IsNot Nothing Then
                 'It was a new with copy
-                Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                State.MyBO.Clone(State.ScreenSnapShotBO)
             Else
-                Me.State.MyBO = New Country
+                State.MyBO = New Country
             End If
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
+            PopulateFormFromBOs()
+            EnableDisableFields()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+    Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
         Try
-            Me.State.MyBO.Delete()
-            Me.State.MyBO.Save()
-            Me.State.HasDataChanged = True
-            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.MyBO, Me.State.HasDataChanged))
+            State.MyBO.Delete()
+            State.MyBO.Save()
+            State.HasDataChanged = True
+            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, State.MyBO, State.HasDataChanged))
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
             'undo the delete
-            Me.State.MyBO.RejectChanges()
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            State.MyBO.RejectChanges()
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+    Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                 'Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse) 'DEF-21578
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
             Else
-                Me.CreateNew()
+                CreateNew()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnCopy_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+    Private Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                 'Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse) 'DEF-21578
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
             Else
-                Me.CreateNewWithCopy()
+                CreateNewWithCopy()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub AddFormat_Click(ByVal sender As Object, ByVal e As EventArgs) Handles AddFormat.Click
+    Protected Sub AddFormat_Click(sender As Object, e As EventArgs) Handles AddFormat.Click
         If AvailPostalCodeList.SelectedIndex <> -1 Then
             Dim SelectedItem As System.Web.UI.WebControls.ListItem
             SelectedItem = AvailPostalCodeList.SelectedItem
@@ -816,7 +816,7 @@ Partial Class CountryForm
         End If
     End Sub
 
-    Protected Sub RemoveFormat_Click(ByVal sender As Object, ByVal e As EventArgs) Handles RemoveFormat.Click
+    Protected Sub RemoveFormat_Click(sender As Object, e As EventArgs) Handles RemoveFormat.Click
         If SelectedPostalCodeList.SelectedIndex <> -1 Then
             Dim SelectedItem As System.Web.UI.WebControls.ListItem
             SelectedItem = SelectedPostalCodeList.SelectedItem
@@ -856,38 +856,38 @@ Partial Class CountryForm
 
     <System.Web.Services.WebMethod()>
     <Script.Services.ScriptMethod()>
-    Public Shared Function PopulateServiceCenterDropFDC(ByVal prefixText As String, ByVal count As Integer) As String()
+    Public Shared Function PopulateServiceCenterDropFDC(prefixText As String, count As Integer) As String()
         Dim dv As DataView = LookupListNew.GetServiceCenterLookupList(AjaxState.MyBO.Id)
         Return AjaxController.BindAutoComplete(prefixText, dv)
     End Function
 
     <System.Web.Services.WebMethod()>
     <Script.Services.ScriptMethod()>
-    Public Shared Function PopulateServiceCenterDrop(ByVal prefixText As String, ByVal count As Integer) As String()
+    Public Shared Function PopulateServiceCenterDrop(prefixText As String, count As Integer) As String()
         Dim dv As DataView = LookupListNew.GetServiceCenterLookupList(AjaxState.MyBO.Id)
         Return AjaxController.BindAutoComplete(prefixText, dv)
     End Function
 #End Region
 
     Private Sub UpdateBreadCrum()
-        If (Not Me.State Is Nothing) Then
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("COUNTRY")
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("COUNTRY")
+        If (State IsNot Nothing) Then
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("COUNTRY")
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("COUNTRY")
         End If
     End Sub
     'REQ - 6155
     Private Sub ShowHideAllowForceAddressANDAddressConfidenceThreshold()
         'With Me.State.MyBO
-        If Not String.IsNullOrEmpty(Me.cboUseAddressValidation.SelectedValue) AndAlso Me.cboUseAddressValidation.SelectedValue.Equals(Me.State.yesCode) Then
-            Me.lblAllowForceAddress.Attributes("style") = ""
-            Me.cboAllowForceAddress.Attributes("style") = ""
-            Me.lblAddressConfidenceThreshold.Attributes("style") = ""
-            Me.TextboxAddressConfidenceThreshold.Attributes("style") = ""
+        If Not String.IsNullOrEmpty(cboUseAddressValidation.SelectedValue) AndAlso cboUseAddressValidation.SelectedValue.Equals(State.yesCode) Then
+            lblAllowForceAddress.Attributes("style") = ""
+            cboAllowForceAddress.Attributes("style") = ""
+            lblAddressConfidenceThreshold.Attributes("style") = ""
+            TextboxAddressConfidenceThreshold.Attributes("style") = ""
         Else
-            Me.lblAllowForceAddress.Attributes("style") = "display: none"
-            Me.cboAllowForceAddress.Attributes("style") = "display: none"
-            Me.lblAddressConfidenceThreshold.Attributes("style") = "display: none"
-            Me.TextboxAddressConfidenceThreshold.Attributes("style") = "display: none"
+            lblAllowForceAddress.Attributes("style") = "display: none"
+            cboAllowForceAddress.Attributes("style") = "display: none"
+            lblAddressConfidenceThreshold.Attributes("style") = "display: none"
+            TextboxAddressConfidenceThreshold.Attributes("style") = "display: none"
         End If
         'End With
     End Sub
@@ -929,11 +929,11 @@ Partial Class CountryForm
             Dim dvRow As CountryLineOfBusiness
             Dim isEditRow As Boolean
 
-            If Not Me.State.UsedLineOfBusinessInContracts.Any() Then
-                Me.State.UsedLineOfBusinessInContracts = Me.State.LineOfBusinessOrig.GetUsedLineOfBusinessInContracts(Me.State.MyBO.Id)
+            If Not State.UsedLineOfBusinessInContracts.Any() Then
+                State.UsedLineOfBusinessInContracts = State.LineOfBusinessOrig.GetUsedLineOfBusinessInContracts(State.MyBO.Id)
             End If
 
-            If Not e.Row.DataItem Is Nothing Then
+            If e.Row.DataItem IsNot Nothing Then
 
                 If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem OrElse itemType = ListItemType.EditItem Then
 
@@ -973,16 +973,16 @@ Partial Class CountryForm
                         chkLineBusinessInUse.Checked = True
                         chkLineBusinessInUse.Enabled = True
 
-                        If Not dvRow.Code Is Nothing Then
+                        If dvRow.Code IsNot Nothing Then
                             txtLineBusinessCode.Text = dvRow.Code.ToString
                         End If
 
-                        If Not dvRow.Description Is Nothing Then
+                        If dvRow.Description IsNot Nothing Then
                             txtLineBusinessDescription.Text = dvRow.Description.ToString
                         End If
 
                         ' If LoB is being used in any contract, dont edit code and description.
-                        If Me.State.UsedLineOfBusinessInContracts.Contains(dvRow.Id) Then
+                        If State.UsedLineOfBusinessInContracts.Contains(dvRow.Id) Then
 
                             ControlMgr.SetEnableControl(Me, txtLineBusinessCode, False)
                             ControlMgr.SetEnableControl(Me, txtLineBusinessDescription, False)
@@ -998,14 +998,14 @@ Partial Class CountryForm
                         End If
                     End If
 
-                    If Not dvRow Is Nothing AndAlso Not isEditRow Then
+                    If dvRow IsNot Nothing AndAlso Not isEditRow Then
                         e.Row.Cells(LineOfBusinessGridColBusinessType).Text = LookupListNew.GetDescriptionFromId(LookupListNew.LK_CONTRACT_POLICY_TYPE, dvRow.LineOfBusinessId)
                     End If
 
                     If (State.LineOfBusinessAction = LineOfbusinessNone) Then
                         Dim DeleteButton_WRITE As ImageButton
                         DeleteButton_WRITE = CType(e.Row.Cells(LineOfBusinessGridColColDeleteBtn).FindControl("DeleteButton_WRITE"), ImageButton)
-                        If Me.State.UsedLineOfBusinessInContracts.Contains(dvRow.Id) Then
+                        If State.UsedLineOfBusinessInContracts.Contains(dvRow.Id) Then
                             DeleteButton_WRITE.Visible = False ' Hide delete button if LoB cannot be deleted.
                         End If
                     End If
@@ -1133,7 +1133,7 @@ Partial Class CountryForm
 
             If State.LineOfBusinessAction = LineOfbusinessAdd Then
                 State.LineOfBusinessList.Remove(State.LineOfBusinessWorkingItem)
-            ElseIf State.LineOfBusinessAction = LineOfbusinessEdit AndAlso (Not State.LineOfBusinessOrig Is Nothing) Then ' set the object to original status
+            ElseIf State.LineOfBusinessAction = LineOfbusinessEdit AndAlso (State.LineOfBusinessOrig IsNot Nothing) Then ' set the object to original status
                 CopyLineOfbusinessObject(State.LineOfBusinessOrig, State.LineOfBusinessWorkingItem)
             End If
 
@@ -1147,7 +1147,7 @@ Partial Class CountryForm
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub PopulateLineOfBusinessGrid(ByVal ds As Collections.Generic.List(Of CountryLineOfBusiness))
+    Private Sub PopulateLineOfBusinessGrid(ds As Collections.Generic.List(Of CountryLineOfBusiness))
 
         Dim blnEmptyList As Boolean = False, mySource As Collections.Generic.List(Of CountryLineOfBusiness)
 
@@ -1189,7 +1189,7 @@ Partial Class CountryForm
 
         End If
     End Sub
-    Private Sub CopyLineOfbusinessObject(ByVal objSource As CountryLineOfBusiness, ByVal objCountryLB As CountryLineOfBusiness)
+    Private Sub CopyLineOfbusinessObject(objSource As CountryLineOfBusiness, objCountryLB As CountryLineOfBusiness)
 
         With objSource
             objCountryLB.Code = .Code
@@ -1216,7 +1216,7 @@ Partial Class CountryForm
         moLineOfBusinessGridView.Columns(LineOfBusinessGridColBusinessType).HeaderText = "BUSINESS_TYPE"
         moLineOfBusinessGridView.Columns(LineOfBusinessGridColInUse).HeaderText = "IN_USE"
 
-        Me.TranslateGridHeader(moLineOfBusinessGridView)
+        TranslateGridHeader(moLineOfBusinessGridView)
 
     End Sub
 

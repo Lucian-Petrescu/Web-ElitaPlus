@@ -3,45 +3,45 @@
 
 #Region "Constructors"
 
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet, Optional ByVal useCertId As Boolean = False)
+    Public Sub New(id As Guid, familyDS As DataSet, Optional ByVal useCertId As Boolean = False)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id, useCertId)
+        Dataset = familyDS
+        Load(id, useCertId)
     End Sub
 
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New BillingPayDetailDAL
-            If Me.Dataset.Tables.IndexOf(dal.BILLPAY_TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.BILLPAY_TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.BILLPAY_TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.BILLPAY_TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.BILLPAY_TABLE_NAME).NewRow
+            Dataset.Tables(dal.BILLPAY_TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.BILLPAYTBL_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -49,27 +49,27 @@
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid, Optional ByVal useCertId As Boolean = False)
+    Protected Sub Load(id As Guid, Optional ByVal useCertId As Boolean = False)
         Try
             Dim dal As New BillingPayDetailDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.BILLPAY_TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.BILLPAY_TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.BILLPAY_TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.BILLPAYTBL_KEY_NAME, Me.Dataset.Tables(dal.BILLPAY_TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.BILLPAY_TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.BILLPAYTBL_KEY_NAME, Dataset.Tables(dal.BILLPAY_TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.LoadBillPay(Me.Dataset, id, useCertId)
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.LoadBillPay(Dataset, id, useCertId)
                 If useCertId Then
-                    Me.Row = Me.FindRow(id, dal.COL_NAME_CERT_ID, Me.Dataset.Tables(dal.BILLPAY_TABLE_NAME))
+                    Row = FindRow(id, dal.COL_NAME_CERT_ID, Dataset.Tables(dal.BILLPAY_TABLE_NAME))
                 Else
-                    Me.Row = Me.FindRow(id, dal.BILLPAYTBL_KEY_NAME, Me.Dataset.Tables(dal.BILLPAY_TABLE_NAME))
+                    Row = FindRow(id, dal.BILLPAYTBL_KEY_NAME, Dataset.Tables(dal.BILLPAY_TABLE_NAME))
                 End If
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -88,7 +88,7 @@
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(BillingPayDetailDAL.BILLPAYTBL_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -99,7 +99,7 @@
     End Property
 
     <ValueMandatory("")>
-    Public Property InstallmentNumber() As LongType
+    Public Property InstallmentNumber As LongType
         Get
             CheckDeleted()
             If Row(BillingPayDetailDAL.COL_NAME_INSTALLMENT_NUMBER) Is DBNull.Value Then
@@ -108,13 +108,13 @@
                 Return New LongType(CType(Row(BillingPayDetailDAL.COL_NAME_INSTALLMENT_NUMBER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(BillingPayDetailDAL.COL_NAME_INSTALLMENT_NUMBER, Value)
+            SetValue(BillingPayDetailDAL.COL_NAME_INSTALLMENT_NUMBER, Value)
         End Set
     End Property
 
-    Public Property BilledAmount() As DecimalType
+    Public Property BilledAmount As DecimalType
         Get
             CheckDeleted()
             If Row(BillingPayDetailDAL.COL_NAME_BILLED_AMOUNT) Is DBNull.Value Then
@@ -123,14 +123,14 @@
                 Return New DecimalType(CType(Row(BillingPayDetailDAL.COL_NAME_BILLED_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(BillingPayDetailDAL.COL_NAME_BILLED_AMOUNT, Value)
+            SetValue(BillingPayDetailDAL.COL_NAME_BILLED_AMOUNT, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property CertId() As Guid
+    Public Property CertId As Guid
         Get
             CheckDeleted()
             If Row(BillingPayDetailDAL.COL_NAME_CERT_ID) Is DBNull.Value Then
@@ -139,9 +139,9 @@
                 Return New Guid(CType(Row(BillingPayDetailDAL.COL_NAME_CERT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(BillingPayDetailDAL.COL_NAME_CERT_ID, Value)
+            SetValue(BillingPayDetailDAL.COL_NAME_CERT_ID, Value)
         End Set
     End Property
 
@@ -151,15 +151,15 @@
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New BillingPayDetailDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -168,7 +168,7 @@
     End Sub
 
 
-    Public Shared Function CreateBillPayForRejOrAct(ByVal NewStatusId As Guid, ByVal CertId As Guid, ByVal InstalNo As Integer, ByVal RejectCodeId As Guid, ByVal SelectBillHistId As Guid) As Integer
+    Public Shared Function CreateBillPayForRejOrAct(NewStatusId As Guid, CertId As Guid, InstalNo As Integer, RejectCodeId As Guid, SelectBillHistId As Guid) As Integer
         Dim dal As New BillingPayDetailDAL, RetVal As Integer
 
         RetVal = dal.CreateBillPayForRejOrAct(NewStatusId, CertId, InstalNo, RejectCodeId, SelectBillHistId)
@@ -179,13 +179,13 @@
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getloadBillpayList(ByVal BillingHeaderId As Guid) As DataView
+    Public Shared Function getloadBillpayList(BillingHeaderId As Guid) As DataView
         Dim dal As New BillingPayDetailDAL
         Dim ds As DataSet
         Try
             ds = dal.loadBillpayList(BillingHeaderId)
 
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return ds.Tables(0).DefaultView
             Else
                 Return New DataView
@@ -194,13 +194,13 @@
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function getloadBillpayListForNonBillingDealer(ByVal BillingHeaderId As Guid) As DataView
+    Public Shared Function getloadBillpayListForNonBillingDealer(BillingHeaderId As Guid) As DataView
         Dim dal As New BillingPayDetailDAL
         Dim ds As DataSet
         Try
             ds = dal.loadBillpayListForNonBillingDealer(BillingHeaderId, Authentication.CurrentUser.LanguageId)
 
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return ds.Tables(0).DefaultView
             Else
                 Return New DataView
@@ -211,7 +211,7 @@
     End Function
 
 
-    Public Shared Function getLoadBillHistList(ByVal certId As Guid, ByVal Sortby As String) As BillPayHistorySearchDV
+    Public Shared Function getLoadBillHistList(certId As Guid, Sortby As String) As BillPayHistorySearchDV
         Try
             Dim dal As New BillingPayDetailDAL
             Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
@@ -221,7 +221,7 @@
         End Try
     End Function
 
-    Public Shared Function getBillPayTotals(ByVal certId As Guid) As BillPayTotals
+    Public Shared Function getBillPayTotals(certId As Guid) As BillPayTotals
         Try
             Dim dal As New BillingPayDetailDAL
             Return New BillPayTotals(dal.LoadTotals(certId).Tables(0))
@@ -229,7 +229,7 @@
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function getBillPayTotalsNew(ByVal certId As Guid) As BillPayTotals
+    Public Shared Function getBillPayTotalsNew(certId As Guid) As BillPayTotals
         Try
             Dim dal As New BillingPayDetailDAL
             Return New BillPayTotals(dal.LoadTotalsNew(certId).Tables(0))
@@ -238,7 +238,7 @@
         End Try
     End Function
 
-    Public Shared Function getBillingLaterRow(ByVal certId As Guid) As BillPayLaterRow
+    Public Shared Function getBillingLaterRow(certId As Guid) As BillPayLaterRow
         Dim dv As DataView
         Try
             Dim dal As New BillingPayDetailDAL
@@ -248,7 +248,7 @@
         End Try
     End Function
 
-    Public Shared Function GetMaxActiveInstNoForCert(ByVal CertId As Guid) As Integer
+    Public Shared Function GetMaxActiveInstNoForCert(CertId As Guid) As Integer
         Dim dal As New BillingPayDetailDAL
         Dim dv As New DataView
         Try
@@ -264,7 +264,7 @@
 
     End Function
 
-    Public Shared Function GetLatestRejInstNoForCert(ByVal CertId As Guid) As Integer
+    Public Shared Function GetLatestRejInstNoForCert(CertId As Guid) As Integer
         Dim dal As New BillingPayDetailDAL
         Dim dv As New DataView
         Try
@@ -280,12 +280,12 @@
 
     End Function
 
-    Public Shared Function GetAllRejInstNoForCert(ByVal CertId As Guid) As DataView
+    Public Shared Function GetAllRejInstNoForCert(CertId As Guid) As DataView
         Dim dal As New BillingPayDetailDAL
         Dim ds As DataSet
         Try
             ds = dal.GetAllRejInstNoForCert(CertId)
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return ds.Tables(0).DefaultView
             Else
                 Return New DataView
@@ -326,23 +326,23 @@
 
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property BillingDetailId(ByVal row) As Guid
+        Public Shared ReadOnly Property BillingDetailId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_BILLING_DETAIL_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property InstallmentNumber(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property InstallmentNumber(row As DataRow) As String
             Get
                 Return row(COL_NAME_INSTALLMENT_NUMBER).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property BilledAmount(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property BilledAmount(row As DataRow) As String
             Get
                 Return row(COL_NAME_BILLED_AMOUNT).ToString
             End Get
@@ -354,44 +354,44 @@
         '    End Get
         'End Property
 
-        Public Shared ReadOnly Property CoverageSequence(ByVal row) As Integer
+        Public Shared ReadOnly Property CoverageSequence(row) As Integer
             Get
                 Return row(COL_NAME_COVERAGE_SEQ).ToString()
             End Get
         End Property
 
-        Public Shared ReadOnly Property FromDate(ByVal row) As DateType
+        Public Shared ReadOnly Property FromDate(row) As DateType
             Get
                 Return row(COL_NAME_FROM_DATE).ToString()
             End Get
         End Property
 
 
-        Public Shared ReadOnly Property ToDate(ByVal row) As DateType
+        Public Shared ReadOnly Property ToDate(row) As DateType
             Get
                 Return row(COL_NAME_TO_DATE).ToString()
             End Get
         End Property
 
-        Public Shared ReadOnly Property BillingDatet(ByVal row) As DateType
+        Public Shared ReadOnly Property BillingDatet(row) As DateType
             Get
                 Return row(COL_NAME_BILLING_DATE).ToString()
             End Get
         End Property
 
-        Public Shared ReadOnly Property OpenAmount(ByVal row) As DateType
+        Public Shared ReadOnly Property OpenAmount(row) As DateType
             Get
                 Return row(COL_NAME_OPEN_AMOUNT).ToString()
             End Get
         End Property
 
-        Public Shared ReadOnly Property DateProcessed(ByVal row) As DateType
+        Public Shared ReadOnly Property DateProcessed(row) As DateType
             Get
                 Return row(COL_NAME_DATE_PROCESSED).ToString()
             End Get
         End Property
 
-        Public Shared ReadOnly Property IncomingAmount(ByVal row) As String
+        Public Shared ReadOnly Property IncomingAmount(row) As String
             Get
                 Return row(COL_NAME_INCOMING_AMOUNT).ToString()
             End Get
@@ -413,7 +413,7 @@
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -439,7 +439,7 @@
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
     End Class

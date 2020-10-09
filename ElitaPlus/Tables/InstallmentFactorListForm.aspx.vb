@@ -18,7 +18,7 @@ Partial Class InstallmentFactorListForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -91,48 +91,48 @@ Partial Class InstallmentFactorListForm
 
 #Region "Page_Events"
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
 
-        Page.RegisterHiddenField("__EVENTTARGET", Me.btnSearch.ClientID)
-        Me.ErrorCtrl.Clear_Hide()
+        Page.RegisterHiddenField("__EVENTTARGET", btnSearch.ClientID)
+        ErrorCtrl.Clear_Hide()
         Try
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
                 PopulateDealer()
                 ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                If Me.State.IsGridVisible Then
-                    If Not (Me.State.selectedPageSize = DEFAULT_PAGE_SIZE) Then
-                        cboPageSize.SelectedValue = CType(Me.State.selectedPageSize, String)
-                        Grid.PageSize = Me.State.selectedPageSize
+                If State.IsGridVisible Then
+                    If Not (State.selectedPageSize = DEFAULT_PAGE_SIZE) Then
+                        cboPageSize.SelectedValue = CType(State.selectedPageSize, String)
+                        Grid.PageSize = State.selectedPageSize
                     End If
-                    Me.PopulateGrid()
+                    PopulateGrid()
                 End If
 
-                Me.SetGridItemStyleColor(Me.Grid)
+                SetGridItemStyleColor(Grid)
             End If
             'Me.DisplayProgressBarOnClick(Me.btnSearch, "Loading_Claims")
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
-        Me.ShowMissingTranslations(Me.ErrorCtrl)
+        ShowMissingTranslations(ErrorCtrl)
 
     End Sub
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.MenuEnabled = True
-            Me.IsReturningFromChild = True
-            Me.State.searchDV = Nothing
+            MenuEnabled = True
+            IsReturningFromChild = True
+            State.searchDV = Nothing
             'Dim retObj As ClaimForm.ReturnType = CType(Me.ReturnedValues, ClaimForm.ReturnType)
             'If Not retObj Is Nothing AndAlso retObj.BoChanged Then
             '    Me.State.searchDV = Nothing
             'End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
 
     End Sub
 
@@ -155,7 +155,7 @@ Partial Class InstallmentFactorListForm
                                         "multipleDropControl_lb_DropDown", _
                                         False, _
                                         0)
-            Me.TheDealerControl.SelectedGuid = Me.State.DealerId
+            TheDealerControl.SelectedGuid = State.DealerId
             ' Me.BindListControlToDataView(moDealerDrop, LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies), , , True)
             'BindSelectItem(Me.State.DealerId.ToString, moDealerDrop)
         Catch ex As Exception
@@ -165,7 +165,7 @@ Partial Class InstallmentFactorListForm
         End Try
     End Sub
 
-    Private Sub SortSvc(ByVal oSortDv As DataView)
+    Private Sub SortSvc(oSortDv As DataView)
         Try
             If ElitaPlusIdentity.Current.ActiveUser.IsServiceCenter Then
                 oSortDv.RowFilter = "(LANGUAGE_ID =  '" & _
@@ -173,58 +173,58 @@ Partial Class InstallmentFactorListForm
                   "') AND ((CODE = 'CLNUM') OR (CODE = 'CUSTN'))"
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
     Public Sub PopulateGrid()
 
         Try
-            Me.State.DealerId = TheDealerControl.SelectedGuid
+            State.DealerId = TheDealerControl.SelectedGuid
 
-            If (Me.State.searchDV Is Nothing) Then
-                Me.State.searchDV = InstallmentFactor.GetInstallmentFactorByDealer(Me.State.DealerId, ElitaPlusIdentity.Current.ActiveUser.Companies)
+            If (State.searchDV Is Nothing) Then
+                State.searchDV = InstallmentFactor.GetInstallmentFactorByDealer(State.DealerId, ElitaPlusIdentity.Current.ActiveUser.Companies)
 
-                If (Me.State.SearchClicked) Then
-                    Me.ValidSearchResultCount(Me.State.searchDV.Count, True)
-                    Me.State.SearchClicked = False
+                If (State.SearchClicked) Then
+                    ValidSearchResultCount(State.searchDV.Count, True)
+                    State.SearchClicked = False
                 End If
             End If
 
-            Me.Grid.AutoGenerateColumns = False
+            Grid.AutoGenerateColumns = False
 
-            SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.selectedContractId, Me.Grid, Me.State.PageIndex)
-            Me.State.PageIndex = Me.Grid.CurrentPageIndex
-            Me.Grid.DataSource = Me.State.searchDV
-            Me.Grid.AllowSorting = True
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.selectedContractId, Grid, State.PageIndex)
+            State.PageIndex = Grid.CurrentPageIndex
+            Grid.DataSource = State.searchDV
+            Grid.AllowSorting = True
 
-            Me.State.searchDV.Sort = Me.State.SortExpression
-            Me.Grid.Columns(Me.GRID_COL_DEALER_IDX).SortExpression = InstallmentFactor.InstallmentFactorSearchDV.COL_DEALER_NAME
-            Me.Grid.Columns(Me.GRID_COL_START_DATE_IDX).SortExpression = InstallmentFactor.InstallmentFactorSearchDV.COL_EFFECTIVE_DATE
-            Me.Grid.Columns(Me.GRID_COL_END_DATE_IDX).SortExpression = InstallmentFactor.InstallmentFactorSearchDV.COL_EXPIRATION_DATE
+            State.searchDV.Sort = State.SortExpression
+            Grid.Columns(GRID_COL_DEALER_IDX).SortExpression = InstallmentFactor.InstallmentFactorSearchDV.COL_DEALER_NAME
+            Grid.Columns(GRID_COL_START_DATE_IDX).SortExpression = InstallmentFactor.InstallmentFactorSearchDV.COL_EFFECTIVE_DATE
+            Grid.Columns(GRID_COL_END_DATE_IDX).SortExpression = InstallmentFactor.InstallmentFactorSearchDV.COL_EXPIRATION_DATE
 
-            SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.selectedContractId, Me.Grid, Me.State.PageIndex)
-            HighLightSortColumn(Grid, Me.State.SortExpression)
-            Me.Grid.DataBind()
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.selectedContractId, Grid, State.PageIndex)
+            HighLightSortColumn(Grid, State.SortExpression)
+            Grid.DataBind()
 
-            ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
 
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-            Session("recCount") = Me.State.searchDV.Count
+            Session("recCount") = State.searchDV.Count
 
-            If Me.State.searchDV.Count > 0 Then
+            If State.searchDV.Count > 0 Then
 
-                If Me.Grid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If Grid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             Else
-                If Me.Grid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If Grid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
@@ -234,83 +234,83 @@ Partial Class InstallmentFactorListForm
 #Region " Datagrid Related "
 
     'The Binding LOgic is here
-    Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+    Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
         Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
         Try
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
-                Me.PopulateControlFromBOProperty(e.Item.Cells(Me.GRID_COL_DEALER_IDX), dvRow(InstallmentFactor.InstallmentFactorSearchDV.COL_DEALER_NAME))
-                Me.PopulateControlFromBOProperty(e.Item.Cells(Me.GRID_COL_START_DATE_IDX), dvRow(InstallmentFactor.InstallmentFactorSearchDV.COL_EFFECTIVE_DATE))
-                Me.PopulateControlFromBOProperty(e.Item.Cells(Me.GRID_COL_END_DATE_IDX), dvRow(InstallmentFactor.InstallmentFactorSearchDV.COL_EXPIRATION_DATE))
-                Me.PopulateControlFromBOProperty(e.Item.Cells(Me.GRID_COL_DEALER_ID_IDX), dvRow(InstallmentFactor.InstallmentFactorSearchDV.COL_DEALER_ID))
+                PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_DEALER_IDX), dvRow(InstallmentFactor.InstallmentFactorSearchDV.COL_DEALER_NAME))
+                PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_START_DATE_IDX), dvRow(InstallmentFactor.InstallmentFactorSearchDV.COL_EFFECTIVE_DATE))
+                PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_END_DATE_IDX), dvRow(InstallmentFactor.InstallmentFactorSearchDV.COL_EXPIRATION_DATE))
+                PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_DEALER_ID_IDX), dvRow(InstallmentFactor.InstallmentFactorSearchDV.COL_DEALER_ID))
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.CurrentPageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-            Me.State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.PopulateGrid()
+            State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Public Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+    Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
         Try
             If e.CommandName = "SelectAction" Then
-                Me.State.DealerId = New Guid((e.Item.Cells(Me.GRID_COL_DEALER_ID_IDX).Text))
-                Me.State.Effective = CType((e.Item.Cells(Me.GRID_COL_START_DATE_IDX).Text), Date)
-                Me.State.Expiration = CType((e.Item.Cells(Me.GRID_COL_END_DATE_IDX).Text), Date)
-                params.Add(Me.State.DealerId)
-                params.Add(Me.State.Effective.ToString)
-                params.Add(Me.State.Expiration.ToString)
-                Me.callPage(InstallmentFactorForm.URL, params)
+                State.DealerId = New Guid((e.Item.Cells(GRID_COL_DEALER_ID_IDX).Text))
+                State.Effective = CType((e.Item.Cells(GRID_COL_START_DATE_IDX).Text), Date)
+                State.Expiration = CType((e.Item.Cells(GRID_COL_END_DATE_IDX).Text), Date)
+                params.Add(State.DealerId)
+                params.Add(State.Effective.ToString)
+                params.Add(State.Expiration.ToString)
+                callPage(InstallmentFactorForm.URL, params)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs)
+    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = e.NewPageIndex
-            Me.State.selectedContractId = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = e.NewPageIndex
+            State.selectedContractId = Guid.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
+    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
 
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
 
-            Me.State.PageIndex = 0
+            State.PageIndex = 0
 
-            Me.PopulateGrid()
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
@@ -319,41 +319,41 @@ Partial Class InstallmentFactorListForm
 
 #Region " Button Clicks "
 
-    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
         Try
             'Me.PopulateSearchFieldsFromState()
-            Me.State.SearchClicked = True
-            Me.State.PageIndex = 0
-            Me.State.selectedContractId = Guid.Empty
-            Me.State.IsGridVisible = True
-            Me.State.searchDV = Nothing
-            Me.PopulateGrid()
+            State.SearchClicked = True
+            State.PageIndex = 0
+            State.selectedContractId = Guid.Empty
+            State.IsGridVisible = True
+            State.searchDV = Nothing
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub BtnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnNew_WRITE.Click
+    Private Sub BtnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnNew_WRITE.Click
         Try
             params.Add(Guid.Empty)  ' Dealer_ID
             params.Add("")          ' Effective
             params.Add("")          ' Expiration
-            Me.callPage(InstallmentFactorForm.URL, params)
+            callPage(InstallmentFactorForm.URL, params)
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnClearSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
         Try
             Try
                 TheDealerControl.SelectedIndex = 0
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 

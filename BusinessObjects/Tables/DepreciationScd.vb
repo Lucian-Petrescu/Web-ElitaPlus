@@ -5,7 +5,7 @@ Public Class DepreciationScd
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -19,20 +19,20 @@ Public Class DepreciationScd
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDs As DataSet)
+    Public Sub New(id As Guid, familyDs As DataSet)
         MyBase.New(False)
         Dataset = familyDs
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDs As DataSet)
+    Public Sub New(familyDs As DataSet)
         MyBase.New(False)
         Dataset = familyDs
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,11 +55,11 @@ Public Class DepreciationScd
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
 
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(DepreciationScdDal.TableName).Rows.Remove(Row)
                 End If
             End If
@@ -97,7 +97,7 @@ Public Class DepreciationScd
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(DepreciationScdDal.TableKeyName) Is DBNull.Value Then
                 Return Nothing
@@ -108,7 +108,7 @@ Public Class DepreciationScd
     End Property
 
     <ValueMandatory("")>
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(DepreciationScdDal.ColNameCompanyId) Is DBNull.Value Then
@@ -117,7 +117,7 @@ Public Class DepreciationScd
                 Return New Guid(CType(Row(DepreciationScdDal.ColNameCompanyId), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(DepreciationScdDal.ColNameCompanyId, value)
         End Set
@@ -125,7 +125,7 @@ Public Class DepreciationScd
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1020), ValidateDepreciationCode("")>
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(DepreciationScdDal.ColNameCode) Is DBNull.Value Then
@@ -134,7 +134,7 @@ Public Class DepreciationScd
                 Return CType(Row(DepreciationScdDal.ColNameCode), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(DepreciationScdDal.ColNameCode, value)
         End Set
@@ -142,7 +142,7 @@ Public Class DepreciationScd
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1020)>
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(DepreciationScdDal.ColNameDescription) Is DBNull.Value Then
@@ -151,7 +151,7 @@ Public Class DepreciationScd
                 Return CType(Row(DepreciationScdDal.ColNameDescription), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(DepreciationScdDal.ColNameDescription, value)
         End Set
@@ -159,7 +159,7 @@ Public Class DepreciationScd
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=40)>
-    Public Property ActiveXcd() As String
+    Public Property ActiveXcd As String
         Get
             CheckDeleted()
             If Row(DepreciationScdDal.ColNameActiveXcd) Is DBNull.Value Then
@@ -168,7 +168,7 @@ Public Class DepreciationScd
                 Return CType(Row(DepreciationScdDal.ColNameActiveXcd), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(DepreciationScdDal.ColNameActiveXcd, value)
         End Set
@@ -198,7 +198,7 @@ Public Class DepreciationScd
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Shared Function LoadList(ByVal companyId As Guid) As DataView
+    Shared Function LoadList(companyId As Guid) As DataView
         Try
             Dim dal As New DepreciationScdDal
             Dim ds As DataSet
@@ -210,7 +210,7 @@ Public Class DepreciationScd
         End Try
     End Function
 
-    Public Shared Function CheckIfDepreciationScheduleCodeAlreadyExists(companyId As Guid, ByVal code As String) As Boolean
+    Public Shared Function CheckIfDepreciationScheduleCodeAlreadyExists(companyId As Guid, code As String) As Boolean
         Try
             Dim result As Boolean = False
             Dim dv As DataView
@@ -232,10 +232,10 @@ Public Class DepreciationScd
     Public NotInheritable Class ValidateDepreciationCode
         Inherits ValidBaseAttribute
         Implements IValidatorAttribute
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, DepreciationScheduleCode001)
         End Sub
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             If objectToCheck Is Nothing Then Return True
             Dim obj As DepreciationScd = CType(objectToValidate, DepreciationScd)
             If obj.IsNew AndAlso CheckIfDepreciationScheduleCodeAlreadyExists(obj.CompanyId, obj.Code) Then

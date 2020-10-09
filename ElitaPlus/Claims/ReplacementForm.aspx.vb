@@ -1,3 +1,4 @@
+Imports System.Diagnostics
 Imports Assurant.ElitaPlus.DALObjects
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
 Imports Assurant.ElitaPlus.Security
@@ -22,7 +23,7 @@ Namespace Claims
             Public moClaimId As Guid
             Public mbIsClaimFormCalling As Boolean
 
-            Public Sub New(ByVal bIsClaimFormCalling As Boolean, ByVal oClaimId As Guid)
+            Public Sub New(bIsClaimFormCalling As Boolean, oClaimId As Guid)
                 moClaimId = oClaimId
                 mbIsClaimFormCalling = bIsClaimFormCalling
             End Sub
@@ -36,12 +37,12 @@ Namespace Claims
             Public Claim As ClaimBase
             Public ReadOnly Property ClaimBO As ClaimBase
                 Get
-                    If (Me.Claim Is Nothing) Then
-                        If (Me.moParams.moClaimId <> Guid.Empty) Then
-                            Me.Claim = ClaimFacade.Instance.GetClaim(Of ClaimBase)(Me.moParams.moClaimId)
+                    If (Claim Is Nothing) Then
+                        If (moParams.moClaimId <> Guid.Empty) Then
+                            Claim = ClaimFacade.Instance.GetClaim(Of ClaimBase)(moParams.moClaimId)
                         End If
                     End If
-                    Return Me.Claim
+                    Return Claim
                 End Get
             End Property
             Public moParams As Parameters
@@ -64,27 +65,27 @@ Namespace Claims
 
         Private Sub SetStateProperties()
             Try
-                Me.State.moParams = CType(Me.CallingParameters, Parameters)
+                State.moParams = CType(CallingParameters, Parameters)
                 '    TestClaim()
-                If (Me.State.moParams Is Nothing) OrElse (Me.State.moParams.moClaimId.Equals(Guid.Empty)) Then
+                If (State.moParams Is Nothing) OrElse (State.moParams.moClaimId.Equals(Guid.Empty)) Then
                     Throw New DataNotFoundException
                 End If
-                Dim replacedEquipment As ClaimEquipment = Me.State.ClaimBO.ReplacementEquipment ' Me.State.ClaimBO.ClaimEquipmentChildren.Where(Function(ce) ce.ClaimEquipmentType = Codes.CLAIM_EQUIP_TYPE__REPLACEMENT).FirstOrDefault()
+                Dim replacedEquipment As ClaimEquipment = State.ClaimBO.ReplacementEquipment ' Me.State.ClaimBO.ClaimEquipmentChildren.Where(Function(ce) ce.ClaimEquipmentType = Codes.CLAIM_EQUIP_TYPE__REPLACEMENT).FirstOrDefault()
                 SetDisplayMode(True)
                 If replacedEquipment Is Nothing Then
                     ' New
-                    Me.State.IsReplacementNew = True
+                    State.IsReplacementNew = True
                     ClearAll()
                     SetButtonsState(True)
                 Else
                     ' Existing one
-                    Me.State.IsReplacementNew = False
+                    State.IsReplacementNew = False
                     SetButtonsState(False)
 
                 End If
                 PopulateFormFromBo()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -107,14 +108,14 @@ Namespace Claims
         Private ReadOnly Property ReplacedEquipment() As ClaimEquipment
             Get
                 If moReplacement Is Nothing Then
-                    If Me.State.IsReplacementNew = True Then
+                    If State.IsReplacementNew = True Then
                         ' For creating, inserting
                         moReplacement = New ClaimEquipment()
-                        moReplacement.ClaimId = Me.State.ClaimBO.Id
+                        moReplacement.ClaimId = State.ClaimBO.Id
                         moReplacement.ClaimEquipmentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_EQUIPMENT_TYPE, Codes.CLAIM_EQUIP_TYPE__REPLACEMENT)
                     Else
                         ' For updating, deleting
-                        moReplacement = New ClaimEquipment(Me.State.ClaimBO.ReplacementEquipment.Id)
+                        moReplacement = New ClaimEquipment(State.ClaimBO.ReplacementEquipment.Id)
                     End If
                 End If
 
@@ -130,15 +131,15 @@ Namespace Claims
 #Region " Web Form Designer Generated Code "
 
         'This call is required by the Web Form Designer.
-        <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+        <DebuggerStepThrough()> Private Sub InitializeComponent()
 
         End Sub
 
         'NOTE: The following placeholder declaration is required by the Web Form Designer.
         'Do not delete or move it.
-        Private designerPlaceholderDeclaration As System.Object
+        Private designerPlaceholderDeclaration As Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -148,30 +149,30 @@ Namespace Claims
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.MasterPage.MessageController.Clear()
+            MasterPage.MessageController.Clear()
             Try
                 ClearLabelsErrSign()
 
                 If Not Page.IsPostBack Then
-                    Me.SetStateProperties()
+                    SetStateProperties()
                     UpdateBreadCrum()
-                    Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", ElitaPlusPage.MSG_BTN_YES_NO,
-                                                                        ElitaPlusPage.MSG_TYPE_CONFIRM, True)
+                    AddControlMsg(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO,
+                                                                        MSG_TYPE_CONFIRM, True)
                 Else
                     CheckIfComingFromConfirm()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
         Private Sub UpdateBreadCrum()
-            Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-            Me.MasterPage.UsePageTabTitleInBreadCrum = False
+            MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            MasterPage.UsePageTabTitleInBreadCrum = False
         End Sub
 
 
@@ -181,31 +182,31 @@ Namespace Claims
 
         Private Sub GoBack()
             Try
-                If Me.State.moParams.mbIsClaimFormCalling = True Then
+                If State.moParams.mbIsClaimFormCalling = True Then
                     ' Claim Detail
-                    Dim retType As New ClaimForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back)
-                    Me.ReturnToCallingPage(retType)
+                    Dim retType As New ClaimForm.ReturnType(DetailPageCommand.Back)
+                    ReturnToCallingPage(retType)
                 Else
                     ' Pay Claim
-                    Me.ReturnToCallingPage()
+                    ReturnToCallingPage()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             Try
-                If Me.State.IsDirty = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", ElitaPlusPage.MSG_BTN_YES_NO, ElitaPlusPage.MSG_TYPE_CONFIRM,
-                                            Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                If State.IsDirty = True Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM,
+                                            HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = DetailPageCommand.Back
                 Else
                     GoBack()
                 End If
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -215,86 +216,86 @@ Namespace Claims
                     SetDisplayMode(True)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+        Private Sub btnSave_WRITE_Click(sender As Object, e As EventArgs) Handles btnSave_WRITE.Click
             Try
                 SaveReplacementChanges()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnUndo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+        Private Sub btnUndo_WRITE_Click(sender As Object, e As EventArgs) Handles btnUndo_WRITE.Click
             Try
                 SetDisplayMode(True)
                 ClearAll()
                 PopulateFormFromBo()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+        Private Sub btnDelete_WRITE_Click(sender As Object, e As EventArgs) Handles btnDelete_WRITE.Click
             Try
                 If DeleteReplacement() = True Then
                     GoBack()
                 End If
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub BtnEdit_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnEdit_WRITE.Click
+        Private Sub BtnEdit_WRITE_Click(sender As Object, e As EventArgs) Handles BtnEdit_WRITE.Click
             Try
                 SetDisplayMode(False)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region
 
 #Region "Handlers-Labels"
 
-        Protected Sub BindBoPropertiesToLabels(ByVal pClaimEquipment As ClaimEquipment, ByVal pClaim As ClaimBase)
+        Protected Sub BindBoPropertiesToLabels(pClaimEquipment As ClaimEquipment, pClaim As ClaimBase)
             Try
                 ' TODO: Property Binding
-                Me.BindBOPropertyToLabel(pClaimEquipment, "ManufacturerId", NewManufacturerLabel)
-                Me.BindBOPropertyToLabel(pClaimEquipment, "Model", NewModelLabel)
-                Me.BindBOPropertyToLabel(pClaimEquipment, "SerialNumber", NewSerialNumberLabel)
-                Me.BindBOPropertyToLabel(pClaimEquipment, "IMEINumber", NewImeiNumberLabel)
-                Me.BindBOPropertyToLabel(pClaimEquipment, "DeviceTypeId", DeviceTypeLabel)
+                BindBOPropertyToLabel(pClaimEquipment, "ManufacturerId", NewManufacturerLabel)
+                BindBOPropertyToLabel(pClaimEquipment, "Model", NewModelLabel)
+                BindBOPropertyToLabel(pClaimEquipment, "SerialNumber", NewSerialNumberLabel)
+                BindBOPropertyToLabel(pClaimEquipment, "IMEINumber", NewImeiNumberLabel)
+                BindBOPropertyToLabel(pClaimEquipment, "DeviceTypeId", DeviceTypeLabel)
 
 
-                Me.BindBOPropertyToLabel(pClaim.CertificateItem, "ManufacturerId", OldManufacturerLabel)
-                Me.BindBOPropertyToLabel(pClaim.CertificateItem, "Model", OldModelLabel)
-                Me.BindBOPropertyToLabel(pClaim.CertificateItem, "IMEINumber", OldImeiNumberLabel)
-                Me.BindBOPropertyToLabel(pClaim.CertificateItem, "SerialNumber", OldSerialNumberLabel)
+                BindBOPropertyToLabel(pClaim.CertificateItem, "ManufacturerId", OldManufacturerLabel)
+                BindBOPropertyToLabel(pClaim.CertificateItem, "Model", OldModelLabel)
+                BindBOPropertyToLabel(pClaim.CertificateItem, "IMEINumber", OldImeiNumberLabel)
+                BindBOPropertyToLabel(pClaim.CertificateItem, "SerialNumber", OldSerialNumberLabel)
 
                 Dim dummyCertItem As New CertItem()
-                Me.BindBOPropertyToLabel(dummyCertItem, "RiskTypeId", NewRiskTypeLabel)
-                Me.BindBOPropertyToLabel(pClaim.CertificateItem, "RiskTypeId", OldRiskTypeLabel)
+                BindBOPropertyToLabel(dummyCertItem, "RiskTypeId", NewRiskTypeLabel)
+                BindBOPropertyToLabel(pClaim.CertificateItem, "RiskTypeId", OldRiskTypeLabel)
 
                 AddLabelDecorations(pClaimEquipment)
                 AddLabelDecorations(pClaim.CertificateItem)
                 AddLabelDecorations(dummyCertItem)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Public Sub ClearLabelsErrSign()
             Try
-                Me.ClearLabelErrSign(NewManufacturerLabel)
-                Me.ClearLabelErrSign(NewModelLabel)
-                Me.ClearLabelErrSign(NewSerialNumberLabel)
-                Me.ClearLabelErrSign(NewImeiNumberLabel)
-                Me.ClearLabelErrSign(DeviceTypeLabel)
+                ClearLabelErrSign(NewManufacturerLabel)
+                ClearLabelErrSign(NewModelLabel)
+                ClearLabelErrSign(NewSerialNumberLabel)
+                ClearLabelErrSign(NewImeiNumberLabel)
+                ClearLabelErrSign(DeviceTypeLabel)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region
@@ -303,15 +304,15 @@ Namespace Claims
 
 #Region "Button-Management"
 
-        Private Sub SetButtonsState(ByVal bIsNew As Boolean)
+        Private Sub SetButtonsState(bIsNew As Boolean)
             Try
                 ControlMgr.SetEnableControl(Me, btnDelete_WRITE, Not bIsNew)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub SetDisplayMode(ByVal pIsReadOnly As Boolean)
+        Private Sub SetDisplayMode(pIsReadOnly As Boolean)
             Try
                 NewManufacturerDropDown.Enabled = Not pIsReadOnly
                 DeviceTypeDropDown.Enabled = Not pIsReadOnly
@@ -326,7 +327,7 @@ Namespace Claims
                 ControlMgr.SetVisibleControl(Me, btnBack, pIsReadOnly)
                 ControlMgr.SetVisibleControl(Me, BtnEdit_WRITE, pIsReadOnly)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -338,9 +339,9 @@ Namespace Claims
             Try
 
 
-                moClaimInfoController.InitController(Me.State.ClaimBO)
+                moClaimInfoController.InitController(State.ClaimBO)
 
-                With Me.State.ClaimBO
+                With State.ClaimBO
                     OldManufacturerTextBox.Text = Manufacturer.GetDescription(.CertificateItem.ManufacturerId)
                     EnableDisableControls(OldManufacturerTextBox, True)
                     OldModelTextBox.Text = .CertificateItem.Model
@@ -350,8 +351,8 @@ Namespace Claims
                     EnableDisableControls(OldRiskTypeTextBox, True)
                     OldSerialNumberTextBox.Text = .CertificateItem.SerialNumber
                     EnableDisableControls(OldSerialNumberTextBox, True)
-                    Me.State.supportsImei = (Not Me.State.ClaimBO.Dealer.ImeiUseXcd.Equals("IMEI_USE_LST-NOTINUSE"))
-                    If (Me.State.supportsImei) Then
+                    State.supportsImei = (Not State.ClaimBO.Dealer.ImeiUseXcd.Equals("IMEI_USE_LST-NOTINUSE"))
+                    If (State.supportsImei) Then
                         OldImeiNumberTextBox.Text = .CertificateItem.IMEINumber
                         EnableDisableControls(OldImeiNumberTextBox, True)
 
@@ -362,11 +363,11 @@ Namespace Claims
                         NewSerialNumberLabel.Text = OldSerialNumberLabel.Text
                     End If
 
-                    OldImeiNumberLabel.Visible = Me.State.supportsImei
-                    OldImeiNumberTextBox.Visible = Me.State.supportsImei
+                    OldImeiNumberLabel.Visible = State.supportsImei
+                    OldImeiNumberTextBox.Visible = State.supportsImei
 
-                    NewImeiNumberLabel.Visible = Me.State.supportsImei
-                    NewImeiNumberTextBox.Visible = Me.State.supportsImei
+                    NewImeiNumberLabel.Visible = State.supportsImei
+                    NewImeiNumberTextBox.Visible = State.supportsImei
                 End With
 
                 ' Populate New Item
@@ -380,8 +381,8 @@ Namespace Claims
                                                  {
                                                    .AddBlankItem = False
                                                   })
-                If Me.State.IsReplacementNew = True Then
-                    BindSelectItem(Me.State.ClaimBO.CertificateItem.ManufacturerId.ToString, NewManufacturerDropDown)
+                If State.IsReplacementNew = True Then
+                    BindSelectItem(State.ClaimBO.CertificateItem.ManufacturerId.ToString, NewManufacturerDropDown)
                 Else
                     BindSelectItem(ReplacedEquipment.ManufacturerId.ToString, NewManufacturerDropDown)
                 End If
@@ -393,21 +394,21 @@ Namespace Claims
                                           {
                                             .AddBlankItem = True
                                            })
-                If Me.State.IsReplacementNew = False Then
+                If State.IsReplacementNew = False Then
                     BindSelectItem(ReplacedEquipment.DeviceTypeId.ToString, DeviceTypeDropDown)
                 End If
 
 
                 With ReplacedEquipment
-                    Me.PopulateControlFromBOProperty(NewModelTextBox, .Model)
-                    Me.PopulateControlFromBOProperty(NewSerialNumberTextBox, .SerialNumber)
-                    Me.PopulateControlFromBOProperty(NewImeiNumberTextBox, .IMEINumber)
-                    Me.PopulateControlFromBOProperty(CommentsTextBox, .Comments)
+                    PopulateControlFromBOProperty(NewModelTextBox, .Model)
+                    PopulateControlFromBOProperty(NewSerialNumberTextBox, .SerialNumber)
+                    PopulateControlFromBOProperty(NewImeiNumberTextBox, .IMEINumber)
+                    PopulateControlFromBOProperty(CommentsTextBox, .Comments)
                 End With
 
-                BindBoPropertiesToLabels(ReplacedEquipment, Me.State.ClaimBO)
+                BindBoPropertiesToLabels(ReplacedEquipment, State.ClaimBO)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
@@ -427,31 +428,31 @@ Namespace Claims
 
 #Region "Business Part"
 
-        Private Sub PopulateBOFromForm(ByVal pReplacedEquipment As ClaimEquipment)
+        Private Sub PopulateBOFromForm(pReplacedEquipment As ClaimEquipment)
             Try
                 With pReplacedEquipment
-                    .ClaimId = Me.State.moParams.moClaimId
+                    .ClaimId = State.moParams.moClaimId
                     ' DropDowns
-                    .ManufacturerId = ElitaPlusPage.GetSelectedItem(NewManufacturerDropDown)
-                    .DeviceTypeId = ElitaPlusPage.GetSelectedItem(DeviceTypeDropDown)
+                    .ManufacturerId = GetSelectedItem(NewManufacturerDropDown)
+                    .DeviceTypeId = GetSelectedItem(DeviceTypeDropDown)
                     ' Texts
-                    Me.PopulateBOProperty(pReplacedEquipment, "Model", NewModelTextBox.Text)
-                    Me.PopulateBOProperty(pReplacedEquipment, "SerialNumber", NewSerialNumberTextBox.Text)
-                    Me.PopulateBOProperty(pReplacedEquipment, "IMEINumber", NewImeiNumberTextBox.Text)
-                    Me.PopulateBOProperty(pReplacedEquipment, "Comments", CommentsTextBox.Text)
+                    PopulateBOProperty(pReplacedEquipment, "Model", NewModelTextBox.Text)
+                    PopulateBOProperty(pReplacedEquipment, "SerialNumber", NewSerialNumberTextBox.Text)
+                    PopulateBOProperty(pReplacedEquipment, "IMEINumber", NewImeiNumberTextBox.Text)
+                    PopulateBOProperty(pReplacedEquipment, "Comments", CommentsTextBox.Text)
                 End With
-                If Me.ErrCollection.Count > 0 Then
+                If ErrCollection.Count > 0 Then
                     Throw New PopulateBOErrorException
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
         Private Sub populateCertItemBOFromForm(oCertItem As CertItem)
-            oCertItem.ManufacturerId = ElitaPlusPage.GetSelectedItem(NewManufacturerDropDown)
-            Me.PopulateBOProperty(oCertItem, "SerialNumber", NewSerialNumberTextBox.Text)
-            Me.PopulateBOProperty(oCertItem, "IMEINumber", NewImeiNumberTextBox.Text)
-            Me.PopulateBOProperty(oCertItem, "Model", NewModelTextBox.Text)
+            oCertItem.ManufacturerId = GetSelectedItem(NewManufacturerDropDown)
+            PopulateBOProperty(oCertItem, "SerialNumber", NewSerialNumberTextBox.Text)
+            PopulateBOProperty(oCertItem, "IMEINumber", NewImeiNumberTextBox.Text)
+            PopulateBOProperty(oCertItem, "Model", NewModelTextBox.Text)
         End Sub
 
         Private Function IsDirtyReplacementBO() As Boolean
@@ -462,7 +463,7 @@ Namespace Claims
             With replacedEquipment
                 PopulateBOFromForm(replacedEquipment)
                 bIsDirty = .IsDirty
-                Me.State.IsDirty = bIsDirty
+                State.IsDirty = bIsDirty
             End With
 
             Return bIsDirty
@@ -475,21 +476,21 @@ Namespace Claims
             Try
                 If IsDirtyReplacementBO() = True Then
                     replacedEquipment = Me.ReplacedEquipment
-                    oCertItem = New CertItem(Me.State.ClaimBO.CertificateItem.Id)
+                    oCertItem = New CertItem(State.ClaimBO.CertificateItem.Id)
                     populateCertItemBOFromForm(oCertItem)
-                    BindBoPropertiesToLabels(replacedEquipment, Me.State.ClaimBO)
+                    BindBoPropertiesToLabels(replacedEquipment, State.ClaimBO)
                     HandleChildObj(oCertItem)
                     oCertItem.Save()
                     replacedEquipment.Save()
-                    Me.State.IsDirty = False
-                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                    State.IsDirty = False
+                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
                 Else
-                        Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
+                        MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
                 End If
-                Me.State.IsReplacementNew = False
+                State.IsReplacementNew = False
                 SetButtonsState(False)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
                 bIsOk = False
             End Try
             Return bIsOk
@@ -505,19 +506,18 @@ Namespace Claims
                     '  .Claim.Save()
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
                 bIsOk = False
             End Try
             Return bIsOk
         End Function
 
         Private Sub HandleChildObj(oCertItem As CertItem)
-            If (Me.State.supportsImei AndAlso Not (Me.OldImeiNumberTextBox.Text.Equals(Me.NewImeiNumberTextBox.Text))) Or
-                    (Not Me.State.supportsImei AndAlso Not (Me.OldSerialNumberTextBox.Text.Equals(Me.NewSerialNumberTextBox.Text))) Then
+            If (State.supportsImei AndAlso Not (OldImeiNumberTextBox.Text.Equals(NewImeiNumberTextBox.Text))) OrElse (Not State.supportsImei AndAlso Not (OldSerialNumberTextBox.Text.Equals(NewSerialNumberTextBox.Text))) Then
                 Dim blnCreateExtendedStatus As Boolean = False
                 Dim blnAnyStatusFound As Boolean = False
                 'check if action status "Replacement IMEI Changed" is configured
-                Dim dv As DataView = Assurant.ElitaPlus.BusinessObjectsNew.ClaimStatusAction.LoadList()
+                Dim dv As DataView = ClaimStatusAction.LoadList()
                 If dv.Count > 0 Then
                     Dim dvAction As DataView = LookupListNew.GetClaimStatsActionLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                     Dim actionCode As String
@@ -544,7 +544,7 @@ Namespace Claims
                             If blnAnyStatusFound Then
                                 blnCreateExtendedStatus = True
                             Else
-                                Dim claim_leatest_status As Guid = Me.State.ClaimBO.LatestClaimStatus.ClaimStatusByGroupId
+                                Dim claim_leatest_status As Guid = State.ClaimBO.LatestClaimStatus.ClaimStatusByGroupId
                                 If action_current_status_id.Equals(claim_leatest_status) Then
                                     blnCreateExtendedStatus = True
                                 End If
@@ -554,7 +554,7 @@ Namespace Claims
                     Next
                     If blnCreateExtendedStatus Then
                         Dim newclaimStatus As ClaimStatus = oCertItem.AddClaimExtendedStatus(Guid.Empty)
-                        newclaimStatus.ClaimId = Me.State.ClaimBO.Id
+                        newclaimStatus.ClaimId = State.ClaimBO.Id
                         newclaimStatus.ClaimStatusByGroupId = action_next_status_id
                         newclaimStatus.StatusDate = Date.Now
 
@@ -570,39 +570,39 @@ Namespace Claims
 #Region "State-Management"
 
         Protected Sub ComingFromBack()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
             Try
                 If Not confResponse = String.Empty Then
                     ' Return from the Back Button
 
                     Select Case confResponse
-                        Case ElitaPlusPage.MSG_VALUE_YES
+                        Case MSG_VALUE_YES
                             ' Save and go back to Search Page
                             If ApplyReplacementChanges() = True Then
                                 GoBack()
                             End If
-                        Case ElitaPlusPage.MSG_VALUE_NO
+                        Case MSG_VALUE_NO
                             ' Go back to Search Page
                             GoBack()
                     End Select
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Protected Sub CheckIfComingFromConfirm()
             Try
-                Select Case Me.State.ActionInProgress
-                    Case ElitaPlusPage.DetailPageCommand.Back
+                Select Case State.ActionInProgress
+                    Case DetailPageCommand.Back
                         ComingFromBack()
                 End Select
 
                 'Clean after consuming the action
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                Me.HiddenSaveChangesPromptResponse.Value = String.Empty
+                State.ActionInProgress = DetailPageCommand.Nothing_
+                HiddenSaveChangesPromptResponse.Value = String.Empty
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region

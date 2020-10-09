@@ -244,100 +244,100 @@ Public Class CertCancellationDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("cert_cancellation_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
 
-    Public Function getRefundComputeMethodId(ByVal cancellationID As Guid) As DataSet
+    Public Function getRefundComputeMethodId(cancellationID As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_REFUND_COMPUTE_METHOD_ID")
+        Dim selectStmt As String = Config("/SQL/GET_REFUND_COMPUTE_METHOD_ID")
 
         parameters = New OracleParameter() {New OracleParameter(COL_REFUND_COMPUTE_METHOD_ID, cancellationID.ToByteArray)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_REFUND_COMPUTE_METHOD, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_REFUND_COMPUTE_METHOD, parameters)
 
     End Function
 
-    Public Function getPolicyCost(ByVal certId As Guid) As DataSet
+    Public Function getPolicyCost(certId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_POLICY_COST")
+        Dim selectStmt As String = Config("/SQL/GET_POLICY_COST")
 
         parameters = New OracleParameter() {New OracleParameter(COL_POLICY_COST, certId.ToByteArray)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_POLICY_COST, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_POLICY_COST, parameters)
     End Function
 
-    Public Function getCertCancellationId(ByVal certId As Guid) As DataSet
+    Public Function getCertCancellationId(certId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_CERT_CANCELLATION_ID")
+        Dim selectStmt As String = Config("/SQL/GET_CERT_CANCELLATION_ID")
 
-        parameters = New OracleParameter() {New OracleParameter(Me.COL_NAME_CERT_ID, certId.ToByteArray)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_KEY_NAME, parameters)
+        parameters = New OracleParameter() {New OracleParameter(COL_NAME_CERT_ID, certId.ToByteArray)}
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_KEY_NAME, parameters)
     End Function
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
 
 #Region "StoreProcedures Control"
 
-    Public Function ExecuteSetFutureCancelSP(ByVal oCertCancellationData As CertCancellationData,
+    Public Function ExecuteSetFutureCancelSP(oCertCancellationData As CertCancellationData,
                                    Optional ByVal oBankInfoData As BankInfoData = Nothing,
                                    Optional ByVal oCommentData As CommentData = Nothing,
                                    Optional ByVal cancellationRequestedDate As Date = Nothing) As Boolean
 
-        Dim selectStmt As String = Me.Config("/SQL/SET_FUTURE_CANCELLATION_DATE")
-        Dim inputParameters(Me.TOTAL_INPUT_PARAM_SETFUTURECANCEL) As DBHelperParameter
-        Dim outputParameter(Me.TOTAL_OUTPUT_PARAM_SETFUTURECANCEL) As DBHelperParameter
+        Dim selectStmt As String = Config("/SQL/SET_FUTURE_CANCELLATION_DATE")
+        Dim inputParameters(TOTAL_INPUT_PARAM_SETFUTURECANCEL) As DBHelperParameter
+        Dim outputParameter(TOTAL_OUTPUT_PARAM_SETFUTURECANCEL) As DBHelperParameter
 
         With oCertCancellationData
-            inputParameters(0) = New DBHelperParameter(Me.COL_NAME_P_COMPANY_ID, .companyId.ToByteArray)
-            inputParameters(1) = New DBHelperParameter(Me.COL_NAME_P_DEALER_ID, .dealerId.ToByteArray)
-            inputParameters(2) = New DBHelperParameter(Me.COL_NAME_P_CERTIFICATE, .certificate)
-            inputParameters(3) = New DBHelperParameter(Me.COL_NAME_P_SOURCE, .source)
-            inputParameters(4) = New DBHelperParameter(Me.COL_NAME_P_CANCELLATION_DATE, .cancellationDate)
-            inputParameters(5) = New DBHelperParameter(Me.COL_NAME_P_CANCELLATION_REQUESTED_DATE, cancellationRequestedDate)
-            inputParameters(6) = New DBHelperParameter(Me.COL_NAME_P_CANCELLATION_CODE, .cancellationCode)
+            inputParameters(0) = New DBHelperParameter(COL_NAME_P_COMPANY_ID, .companyId.ToByteArray)
+            inputParameters(1) = New DBHelperParameter(COL_NAME_P_DEALER_ID, .dealerId.ToByteArray)
+            inputParameters(2) = New DBHelperParameter(COL_NAME_P_CERTIFICATE, .certificate)
+            inputParameters(3) = New DBHelperParameter(COL_NAME_P_SOURCE, .source)
+            inputParameters(4) = New DBHelperParameter(COL_NAME_P_CANCELLATION_DATE, .cancellationDate)
+            inputParameters(5) = New DBHelperParameter(COL_NAME_P_CANCELLATION_REQUESTED_DATE, cancellationRequestedDate)
+            inputParameters(6) = New DBHelperParameter(COL_NAME_P_CANCELLATION_CODE, .cancellationCode)
 
             If Not oCommentData Is Nothing Then
                 With oCommentData
-                    inputParameters(7) = New DBHelperParameter(Me.COL_NAME_P_COMMENT_ID, .CommentId.ToByteArray)
-                    inputParameters(8) = New DBHelperParameter(Me.COL_NAME_P_CALLER_NAME, .Callername)
-                    inputParameters(9) = New DBHelperParameter(Me.COL_NAME_P_COMMENT_TYPE_ID, .CommentTypeId.ToByteArray)
-                    inputParameters(10) = New DBHelperParameter(Me.COL_NAME_P_COMMENT, .Comment)
+                    inputParameters(7) = New DBHelperParameter(COL_NAME_P_COMMENT_ID, .CommentId.ToByteArray)
+                    inputParameters(8) = New DBHelperParameter(COL_NAME_P_CALLER_NAME, .Callername)
+                    inputParameters(9) = New DBHelperParameter(COL_NAME_P_COMMENT_TYPE_ID, .CommentTypeId.ToByteArray)
+                    inputParameters(10) = New DBHelperParameter(COL_NAME_P_COMMENT, .Comment)
                 End With
             Else
-                inputParameters(7) = New DBHelperParameter(Me.COL_NAME_P_COMMENT_ID, System.DBNull.Value)
-                inputParameters(8) = New DBHelperParameter(Me.COL_NAME_P_CALLER_NAME, System.DBNull.Value)
-                inputParameters(9) = New DBHelperParameter(Me.COL_NAME_P_COMMENT_TYPE_ID, System.DBNull.Value)
-                inputParameters(10) = New DBHelperParameter(Me.COL_NAME_P_COMMENT, System.DBNull.Value)
+                inputParameters(7) = New DBHelperParameter(COL_NAME_P_COMMENT_ID, System.DBNull.Value)
+                inputParameters(8) = New DBHelperParameter(COL_NAME_P_CALLER_NAME, System.DBNull.Value)
+                inputParameters(9) = New DBHelperParameter(COL_NAME_P_COMMENT_TYPE_ID, System.DBNull.Value)
+                inputParameters(10) = New DBHelperParameter(COL_NAME_P_COMMENT, System.DBNull.Value)
             End If
         End With
 
-        outputParameter(0) = New DBHelperParameter(Me.COL_NAME_P_RETURN, GetType(Integer))
-        outputParameter(1) = New DBHelperParameter(Me.COL_NAME_P_EXCEPTION_MSG, GetType(String), 500)
+        outputParameter(0) = New DBHelperParameter(COL_NAME_P_RETURN, GetType(Integer))
+        outputParameter(1) = New DBHelperParameter(COL_NAME_P_EXCEPTION_MSG, GetType(String), 500)
 
         DBHelper.ExecuteSpParamBindByName(selectStmt, inputParameters, outputParameter)
 
@@ -352,115 +352,115 @@ Public Class CertCancellationDAL
 
 
     ' Execute Store Procedure
-    Public Function ExecuteCancelSP(ByVal oCertCancellationData As CertCancellationData, _
+    Public Function ExecuteCancelSP(oCertCancellationData As CertCancellationData, _
                                     Optional ByVal oBankInfoData As BankInfoData = Nothing, _
                                     Optional ByVal oCommentData As CommentData = Nothing) As CertCancellationData
-        Dim selectStmt As String = Me.Config("/SQL/PROCESS_CANCELLATION")
-        Dim inputParameters(Me.TOTAL_INPUT_PARAM_CANCEL) As DBHelperParameter
-        Dim outputParameter(Me.TOTAL_OUTPUT_PARAM_CANCEL) As DBHelperParameter
+        Dim selectStmt As String = Config("/SQL/PROCESS_CANCELLATION")
+        Dim inputParameters(TOTAL_INPUT_PARAM_CANCEL) As DBHelperParameter
+        Dim outputParameter(TOTAL_OUTPUT_PARAM_CANCEL) As DBHelperParameter
 
         With oCertCancellationData
-            inputParameters(Me.P_COMPANY_ID) = New DBHelperParameter(Me.COL_NAME_P_COMPANY_ID, .companyId.ToByteArray)
-            inputParameters(Me.P_DEALER_ID) = New DBHelperParameter(Me.COL_NAME_P_DEALER_ID, .dealerId.ToByteArray)
-            inputParameters(Me.P_CERTIFICATE) = New DBHelperParameter(Me.COL_NAME_P_CERTIFICATE, .certificate)
-            inputParameters(Me.P_SOURCE) = New DBHelperParameter(Me.COL_NAME_P_SOURCE, .source)
-            inputParameters(Me.P_CANCELLATION_DATE) = New DBHelperParameter(Me.COL_NAME_P_CANCELLATION_DATE, .cancellationDate)
-            inputParameters(Me.P_CANCELLATION_CODE) = New DBHelperParameter(Me.COL_NAME_P_CANCELLATION_CODE, .cancellationCode)
-            inputParameters(Me.P_CUSTOMER_PAID) = New DBHelperParameter(Me.COL_NAME_P_CUSTOMER_PAID, .customerPaid)
-            inputParameters(Me.P_QUOTE) = New DBHelperParameter(Me.COL_NAME_P_QUOTE, .quote)
+            inputParameters(P_COMPANY_ID) = New DBHelperParameter(COL_NAME_P_COMPANY_ID, .companyId.ToByteArray)
+            inputParameters(P_DEALER_ID) = New DBHelperParameter(COL_NAME_P_DEALER_ID, .dealerId.ToByteArray)
+            inputParameters(P_CERTIFICATE) = New DBHelperParameter(COL_NAME_P_CERTIFICATE, .certificate)
+            inputParameters(P_SOURCE) = New DBHelperParameter(COL_NAME_P_SOURCE, .source)
+            inputParameters(P_CANCELLATION_DATE) = New DBHelperParameter(COL_NAME_P_CANCELLATION_DATE, .cancellationDate)
+            inputParameters(P_CANCELLATION_CODE) = New DBHelperParameter(COL_NAME_P_CANCELLATION_CODE, .cancellationCode)
+            inputParameters(P_CUSTOMER_PAID) = New DBHelperParameter(COL_NAME_P_CUSTOMER_PAID, .customerPaid)
+            inputParameters(P_QUOTE) = New DBHelperParameter(COL_NAME_P_QUOTE, .quote)
             If .payment_method_Id.Equals(System.Guid.Empty) Then
-                inputParameters(Me.P_PAYMENT_METHOD_ID) = New DBHelperParameter(Me.COL_NAME_P_PAYMENT_METHOD_ID, System.DBNull.Value)
+                inputParameters(P_PAYMENT_METHOD_ID) = New DBHelperParameter(COL_NAME_P_PAYMENT_METHOD_ID, System.DBNull.Value)
             Else
-                inputParameters(Me.P_PAYMENT_METHOD_ID) = New DBHelperParameter(Me.COL_NAME_P_PAYMENT_METHOD_ID, .payment_method_Id.ToByteArray)
+                inputParameters(P_PAYMENT_METHOD_ID) = New DBHelperParameter(COL_NAME_P_PAYMENT_METHOD_ID, .payment_method_Id.ToByteArray)
             End If
 
             If Not oBankInfoData Is Nothing Then
                 With oBankInfoData
-                    inputParameters(Me.P_BANK_INFO_ID) = New DBHelperParameter(Me.COL_NAME_P_BANK_INFO_ID, .bankinfoId.ToByteArray)
-                    inputParameters(Me.P_BANK_ACCOUNT_NAME) = New DBHelperParameter(Me.COL_NAME_BANK_ACCOUNT_NAME, .AccountName)
-                    inputParameters(Me.P_BANK_ID) = New DBHelperParameter(Me.COL_NAME_P_BANK_ID, .BankID)
-                    inputParameters(Me.P_BANK_ACCOUNT_NUMBER) = New DBHelperParameter(Me.COL_NAME_P_BANK_ACCOUNT_NUMBER, .AccountNumber)
+                    inputParameters(P_BANK_INFO_ID) = New DBHelperParameter(COL_NAME_P_BANK_INFO_ID, .bankinfoId.ToByteArray)
+                    inputParameters(P_BANK_ACCOUNT_NAME) = New DBHelperParameter(COL_NAME_BANK_ACCOUNT_NAME, .AccountName)
+                    inputParameters(P_BANK_ID) = New DBHelperParameter(COL_NAME_P_BANK_ID, .BankID)
+                    inputParameters(P_BANK_ACCOUNT_NUMBER) = New DBHelperParameter(COL_NAME_P_BANK_ACCOUNT_NUMBER, .AccountNumber)
                     If .SwiftCode Is Nothing Then
-                        inputParameters(Me.P_BANK_SWIFT_CODE) = New DBHelperParameter(Me.COL_NAME_P_BANK_SWIFT_CODE, System.DBNull.Value)
+                        inputParameters(P_BANK_SWIFT_CODE) = New DBHelperParameter(COL_NAME_P_BANK_SWIFT_CODE, System.DBNull.Value)
                     Else
-                        inputParameters(Me.P_BANK_SWIFT_CODE) = New DBHelperParameter(Me.COL_NAME_P_BANK_SWIFT_CODE, .SwiftCode)
+                        inputParameters(P_BANK_SWIFT_CODE) = New DBHelperParameter(COL_NAME_P_BANK_SWIFT_CODE, .SwiftCode)
                     End If
                     If .IBAN_Number Is Nothing Then
-                        inputParameters(Me.P_BANK_IBAN_NUMBER) = New DBHelperParameter(Me.COL_NAME_P_BANK_IBAN_NUMBER, System.DBNull.Value)
+                        inputParameters(P_BANK_IBAN_NUMBER) = New DBHelperParameter(COL_NAME_P_BANK_IBAN_NUMBER, System.DBNull.Value)
                     Else
-                        inputParameters(Me.P_BANK_IBAN_NUMBER) = New DBHelperParameter(Me.COL_NAME_P_BANK_IBAN_NUMBER, .IBAN_Number)
+                        inputParameters(P_BANK_IBAN_NUMBER) = New DBHelperParameter(COL_NAME_P_BANK_IBAN_NUMBER, .IBAN_Number)
                     End If
                     If .AccountTypeId.Equals(System.Guid.Empty) Then
-                        inputParameters(Me.P_BANK_ACCOUNT_TYPE_ID) = New DBHelperParameter(Me.COL_NAME_P_BANK_ACCOUNT_TYPE_ID, System.DBNull.Value)
+                        inputParameters(P_BANK_ACCOUNT_TYPE_ID) = New DBHelperParameter(COL_NAME_P_BANK_ACCOUNT_TYPE_ID, System.DBNull.Value)
                     Else
-                        inputParameters(Me.P_BANK_ACCOUNT_TYPE_ID) = New DBHelperParameter(Me.COL_NAME_P_BANK_ACCOUNT_TYPE_ID, .AccountTypeId)
+                        inputParameters(P_BANK_ACCOUNT_TYPE_ID) = New DBHelperParameter(COL_NAME_P_BANK_ACCOUNT_TYPE_ID, .AccountTypeId)
                     End If
-                    inputParameters(Me.P_BANK_COUNTRY_ID) = New DBHelperParameter(Me.COL_NAME_P_BANK_COUNTRY_ID, .CountryId)
+                    inputParameters(P_BANK_COUNTRY_ID) = New DBHelperParameter(COL_NAME_P_BANK_COUNTRY_ID, .CountryId)
                     If .PaymentReasonId.Equals(System.Guid.Empty) Then
-                        inputParameters(Me.P_BANK_PAYMENT_REASON_ID) = New DBHelperParameter(Me.COL_NAME_P_BANK_PAYMENT_REASON_ID, System.DBNull.Value)
+                        inputParameters(P_BANK_PAYMENT_REASON_ID) = New DBHelperParameter(COL_NAME_P_BANK_PAYMENT_REASON_ID, System.DBNull.Value)
                     Else
-                        inputParameters(Me.P_BANK_PAYMENT_REASON_ID) = New DBHelperParameter(Me.COL_NAME_P_BANK_PAYMENT_REASON_ID, .PaymentReasonId.ToByteArray)
+                        inputParameters(P_BANK_PAYMENT_REASON_ID) = New DBHelperParameter(COL_NAME_P_BANK_PAYMENT_REASON_ID, .PaymentReasonId.ToByteArray)
                     End If
                 End With
             Else
                 'With oBankInfoData
-                inputParameters(Me.P_BANK_INFO_ID) = New DBHelperParameter(Me.COL_NAME_P_BANK_INFO_ID, System.DBNull.Value)
-                inputParameters(Me.P_BANK_ACCOUNT_NAME) = New DBHelperParameter(Me.COL_NAME_BANK_ACCOUNT_NAME, System.DBNull.Value)
-                inputParameters(Me.P_BANK_ID) = New DBHelperParameter(Me.COL_NAME_P_BANK_ID, System.DBNull.Value)
-                inputParameters(Me.P_BANK_ACCOUNT_NUMBER) = New DBHelperParameter(Me.COL_NAME_P_BANK_ACCOUNT_NUMBER, System.DBNull.Value)
-                inputParameters(Me.P_BANK_SWIFT_CODE) = New DBHelperParameter(Me.COL_NAME_P_BANK_SWIFT_CODE, System.DBNull.Value)
-                inputParameters(Me.P_BANK_IBAN_NUMBER) = New DBHelperParameter(Me.COL_NAME_P_BANK_IBAN_NUMBER, System.DBNull.Value)
-                inputParameters(Me.P_BANK_ACCOUNT_TYPE_ID) = New DBHelperParameter(Me.COL_NAME_P_BANK_ACCOUNT_TYPE_ID, System.DBNull.Value)
-                inputParameters(Me.P_BANK_COUNTRY_ID) = New DBHelperParameter(Me.COL_NAME_P_BANK_COUNTRY_ID, System.DBNull.Value)
-                inputParameters(Me.P_BANK_PAYMENT_REASON_ID) = New DBHelperParameter(Me.COL_NAME_P_BANK_PAYMENT_REASON_ID, System.DBNull.Value)
+                inputParameters(P_BANK_INFO_ID) = New DBHelperParameter(COL_NAME_P_BANK_INFO_ID, System.DBNull.Value)
+                inputParameters(P_BANK_ACCOUNT_NAME) = New DBHelperParameter(COL_NAME_BANK_ACCOUNT_NAME, System.DBNull.Value)
+                inputParameters(P_BANK_ID) = New DBHelperParameter(COL_NAME_P_BANK_ID, System.DBNull.Value)
+                inputParameters(P_BANK_ACCOUNT_NUMBER) = New DBHelperParameter(COL_NAME_P_BANK_ACCOUNT_NUMBER, System.DBNull.Value)
+                inputParameters(P_BANK_SWIFT_CODE) = New DBHelperParameter(COL_NAME_P_BANK_SWIFT_CODE, System.DBNull.Value)
+                inputParameters(P_BANK_IBAN_NUMBER) = New DBHelperParameter(COL_NAME_P_BANK_IBAN_NUMBER, System.DBNull.Value)
+                inputParameters(P_BANK_ACCOUNT_TYPE_ID) = New DBHelperParameter(COL_NAME_P_BANK_ACCOUNT_TYPE_ID, System.DBNull.Value)
+                inputParameters(P_BANK_COUNTRY_ID) = New DBHelperParameter(COL_NAME_P_BANK_COUNTRY_ID, System.DBNull.Value)
+                inputParameters(P_BANK_PAYMENT_REASON_ID) = New DBHelperParameter(COL_NAME_P_BANK_PAYMENT_REASON_ID, System.DBNull.Value)
                 'End With
             End If
 
-            outputParameter(Me.P_COMPUTED_REFUND) = New DBHelperParameter(Me.COL_NAME_P_COMPUTED_REFUND, GetType(Decimal))
-            outputParameter(Me.P_CREDIT_ISSUED) = New DBHelperParameter(Me.COL_NAME_P_CREDIT_ISSUED, GetType(String), 1)
-            outputParameter(Me.P_PRINCIPAL_PAID) = New DBHelperParameter(Me.COL_NAME_P_PRINCIPAL_PAID, GetType(Decimal))
-            outputParameter(Me.P_REFUND_AMOUNT) = New DBHelperParameter(Me.COL_NAME_P_REFUND_AMOUNT, GetType(Decimal))
-            outputParameter(Me.P_REFUND_AMOUNT_RESET) = New DBHelperParameter(Me.COL_NAME_P_REFUND_AMOUNT_RESET, GetType(String), 1)
-            outputParameter(Me.P_RETURN) = New DBHelperParameter(Me.COL_NAME_P_RETURN, GetType(Integer))
-            outputParameter(Me.P_EXCEPTION_MSG) = New DBHelperParameter(Me.COL_NAME_P_EXCEPTION_MSG, GetType(String), 500)
-            outputParameter(Me.P_INSTALLMENTS_PAID) = New DBHelperParameter(Me.COL_NAME_P_INSTALLMENTS_PAID, GetType(Integer))
-            outputParameter(Me.P_AUTH_NUMBER) = New DBHelperParameter(Me.COL_NAME_P_AUTH_NUMBER, GetType(String))
+            outputParameter(P_COMPUTED_REFUND) = New DBHelperParameter(COL_NAME_P_COMPUTED_REFUND, GetType(Decimal))
+            outputParameter(P_CREDIT_ISSUED) = New DBHelperParameter(COL_NAME_P_CREDIT_ISSUED, GetType(String), 1)
+            outputParameter(P_PRINCIPAL_PAID) = New DBHelperParameter(COL_NAME_P_PRINCIPAL_PAID, GetType(Decimal))
+            outputParameter(P_REFUND_AMOUNT) = New DBHelperParameter(COL_NAME_P_REFUND_AMOUNT, GetType(Decimal))
+            outputParameter(P_REFUND_AMOUNT_RESET) = New DBHelperParameter(COL_NAME_P_REFUND_AMOUNT_RESET, GetType(String), 1)
+            outputParameter(P_RETURN) = New DBHelperParameter(COL_NAME_P_RETURN, GetType(Integer))
+            outputParameter(P_EXCEPTION_MSG) = New DBHelperParameter(COL_NAME_P_EXCEPTION_MSG, GetType(String), 500)
+            outputParameter(P_INSTALLMENTS_PAID) = New DBHelperParameter(COL_NAME_P_INSTALLMENTS_PAID, GetType(Integer))
+            outputParameter(P_AUTH_NUMBER) = New DBHelperParameter(COL_NAME_P_AUTH_NUMBER, GetType(String))
 
             If Not oCommentData Is Nothing Then
                 With oCommentData
-                    inputParameters(Me.P_COMMENT_ID) = New DBHelperParameter(Me.COL_NAME_P_COMMENT_ID, .CommentId.ToByteArray)
-                    inputParameters(Me.P_CALLER_NAME) = New DBHelperParameter(Me.COL_NAME_P_CALLER_NAME, .Callername)
-                    inputParameters(Me.P_COMMENT_TYPE_ID) = New DBHelperParameter(Me.COL_NAME_P_COMMENT_TYPE_ID, .CommentTypeId.ToByteArray)
-                    inputParameters(Me.P_COMMENTS) = New DBHelperParameter(Me.COL_NAME_P_COMMENT, .Comment)
+                    inputParameters(P_COMMENT_ID) = New DBHelperParameter(COL_NAME_P_COMMENT_ID, .CommentId.ToByteArray)
+                    inputParameters(P_CALLER_NAME) = New DBHelperParameter(COL_NAME_P_CALLER_NAME, .Callername)
+                    inputParameters(P_COMMENT_TYPE_ID) = New DBHelperParameter(COL_NAME_P_COMMENT_TYPE_ID, .CommentTypeId.ToByteArray)
+                    inputParameters(P_COMMENTS) = New DBHelperParameter(COL_NAME_P_COMMENT, .Comment)
                 End With
             Else
-                inputParameters(Me.P_COMMENT_ID) = New DBHelperParameter(Me.COL_NAME_P_COMMENT_ID, System.DBNull.Value)
-                inputParameters(Me.P_CALLER_NAME) = New DBHelperParameter(Me.COL_NAME_P_CALLER_NAME, System.DBNull.Value)
-                inputParameters(Me.P_COMMENT_TYPE_ID) = New DBHelperParameter(Me.COL_NAME_P_COMMENT_TYPE_ID, System.DBNull.Value)
-                inputParameters(Me.P_COMMENTS) = New DBHelperParameter(Me.COL_NAME_P_COMMENT, System.DBNull.Value)
+                inputParameters(P_COMMENT_ID) = New DBHelperParameter(COL_NAME_P_COMMENT_ID, System.DBNull.Value)
+                inputParameters(P_CALLER_NAME) = New DBHelperParameter(COL_NAME_P_CALLER_NAME, System.DBNull.Value)
+                inputParameters(P_COMMENT_TYPE_ID) = New DBHelperParameter(COL_NAME_P_COMMENT_TYPE_ID, System.DBNull.Value)
+                inputParameters(P_COMMENTS) = New DBHelperParameter(COL_NAME_P_COMMENT, System.DBNull.Value)
             End If
 
             If Not oBankInfoData Is Nothing Then
                 With oBankInfoData
-                    inputParameters(Me.P_BRANCH_DIGIT) = New DBHelperParameter(Me.COL_NAME_P_BRANCH_DIGIT, .BranchDigit)
-                    inputParameters(Me.P_ACCOUNT_DIGIT) = New DBHelperParameter(Me.COL_NAME_P_ACCOUNT_DIGIT, .AccountDigit)
-                    inputParameters(Me.P_BRANCH_NUMBER) = New DBHelperParameter(Me.COL_NAME_P_BRANCH_NUMBER, .BranchNumber)
+                    inputParameters(P_BRANCH_DIGIT) = New DBHelperParameter(COL_NAME_P_BRANCH_DIGIT, .BranchDigit)
+                    inputParameters(P_ACCOUNT_DIGIT) = New DBHelperParameter(COL_NAME_P_ACCOUNT_DIGIT, .AccountDigit)
+                    inputParameters(P_BRANCH_NUMBER) = New DBHelperParameter(COL_NAME_P_BRANCH_NUMBER, .BranchNumber)
                 End With
             Else
-                inputParameters(Me.P_BRANCH_DIGIT) = New DBHelperParameter(Me.COL_NAME_P_BRANCH_DIGIT, System.DBNull.Value)
-                inputParameters(Me.P_ACCOUNT_DIGIT) = New DBHelperParameter(Me.COL_NAME_P_ACCOUNT_DIGIT, System.DBNull.Value)
-                inputParameters(Me.P_BRANCH_NUMBER) = New DBHelperParameter(Me.COL_NAME_P_BRANCH_NUMBER, System.DBNull.Value)
+                inputParameters(P_BRANCH_DIGIT) = New DBHelperParameter(COL_NAME_P_BRANCH_DIGIT, System.DBNull.Value)
+                inputParameters(P_ACCOUNT_DIGIT) = New DBHelperParameter(COL_NAME_P_ACCOUNT_DIGIT, System.DBNull.Value)
+                inputParameters(P_BRANCH_NUMBER) = New DBHelperParameter(COL_NAME_P_BRANCH_NUMBER, System.DBNull.Value)
             End If
 
-            inputParameters(Me.P_COMPUTED_REFUND_RCVD) = New DBHelperParameter(Me.COL_NAME_P_COMPUTED_REFUND_RCVD, .refundAmountRcvd)
-            inputParameters(Me.P_INSTALLMENTS_PAID_RCVD) = New DBHelperParameter(Me.COL_NAME_P_INSTALLMENTS_PAID_RCVD, .InstallmentsPaid)
+            inputParameters(P_COMPUTED_REFUND_RCVD) = New DBHelperParameter(COL_NAME_P_COMPUTED_REFUND_RCVD, .refundAmountRcvd)
+            inputParameters(P_INSTALLMENTS_PAID_RCVD) = New DBHelperParameter(COL_NAME_P_INSTALLMENTS_PAID_RCVD, .InstallmentsPaid)
 
             If Not oBankInfoData Is Nothing Then
                 With oBankInfoData
-                    inputParameters(Me.P_BANK_NAME) = New DBHelperParameter(Me.COL_NAME_P_BANK_NAME, .BankName)
+                    inputParameters(P_BANK_NAME) = New DBHelperParameter(COL_NAME_P_BANK_NAME, .BankName)
                 End With
             Else
-                inputParameters(Me.P_BANK_NAME) = New DBHelperParameter(Me.COL_NAME_P_BANK_NAME, System.DBNull.Value)
+                inputParameters(P_BANK_NAME) = New DBHelperParameter(COL_NAME_P_BANK_NAME, System.DBNull.Value)
             End If
         End With
 
@@ -468,28 +468,28 @@ Public Class CertCancellationDAL
 
         DBHelper.ExecuteSpParamBindByName(selectStmt, inputParameters, outputParameter)
 
-        If outputParameter(Me.P_RETURN).Value = 0 Then
+        If outputParameter(P_RETURN).Value = 0 Then
             With oCertCancellationData
-                .computedRefund = outputParameter(Me.P_COMPUTED_REFUND).Value
-                .creditIssued = outputParameter(Me.P_CREDIT_ISSUED).Value
-                .principalPaid = outputParameter(Me.P_PRINCIPAL_PAID).Value
-                .refundAmount = outputParameter(Me.P_REFUND_AMOUNT).Value
-                .refund_amt_reset = outputParameter(Me.P_REFUND_AMOUNT_RESET).Value
-                .InstallmentsPaid = outputParameter(Me.P_INSTALLMENTS_PAID).Value
-                .AuthNumber = outputParameter(Me.P_AUTH_NUMBER).Value
-                .errorCode = outputParameter(Me.P_RETURN).Value
-                .ErrorMsg = outputParameter(Me.P_EXCEPTION_MSG).Value
+                .computedRefund = outputParameter(P_COMPUTED_REFUND).Value
+                .creditIssued = outputParameter(P_CREDIT_ISSUED).Value
+                .principalPaid = outputParameter(P_PRINCIPAL_PAID).Value
+                .refundAmount = outputParameter(P_REFUND_AMOUNT).Value
+                .refund_amt_reset = outputParameter(P_REFUND_AMOUNT_RESET).Value
+                .InstallmentsPaid = outputParameter(P_INSTALLMENTS_PAID).Value
+                .AuthNumber = outputParameter(P_AUTH_NUMBER).Value
+                .errorCode = outputParameter(P_RETURN).Value
+                .ErrorMsg = outputParameter(P_EXCEPTION_MSG).Value
             End With
-        ElseIf outputParameter(Me.P_RETURN).Value = 1 Then
+        ElseIf outputParameter(P_RETURN).Value = 1 Then
             With oCertCancellationData
-                .errorCode = outputParameter(Me.P_RETURN).Value
-                .ErrorMsg = outputParameter(Me.P_EXCEPTION_MSG).Value
+                .errorCode = outputParameter(P_RETURN).Value
+                .ErrorMsg = outputParameter(P_EXCEPTION_MSG).Value
             End With
             Throw New StoredProcedureGeneratedException("", outputParameter(P_EXCEPTION_MSG).Value)
         Else
             With oCertCancellationData
-                .errorCode = outputParameter(Me.P_RETURN).Value
-                .ErrorMsg = outputParameter(Me.P_EXCEPTION_MSG).Value
+                .errorCode = outputParameter(P_RETURN).Value
+                .ErrorMsg = outputParameter(P_EXCEPTION_MSG).Value
             End With
             Throw New StoredProcedureGeneratedException("Data Base Generated Error: ", outputParameter(P_EXCEPTION_MSG).Value)
         End If
@@ -497,19 +497,19 @@ Public Class CertCancellationDAL
         Return oCertCancellationData
 
     End Function
-    Public Function ExecuteUpdateBankInfoForRejectsSP(ByVal oUpdateBankInfoForRejectsData As UpdateBankInfoForRejectsData) As UpdateBankInfoForRejectsData
-        Dim selectStmt As String = Me.Config("/SQL/UPDATE_BANK_INFO_FOR_REJECTS")
-        Dim inputParameters(Me.TOTAL_INPUT_PARAM_UPDBANKINFO_CANCEL) As DBHelperParameter
-        Dim outputParameter(Me.TOTAL_OUTPUT_PARAM_UPDBANKINFO_CANCEL) As DBHelperParameter
+    Public Function ExecuteUpdateBankInfoForRejectsSP(oUpdateBankInfoForRejectsData As UpdateBankInfoForRejectsData) As UpdateBankInfoForRejectsData
+        Dim selectStmt As String = Config("/SQL/UPDATE_BANK_INFO_FOR_REJECTS")
+        Dim inputParameters(TOTAL_INPUT_PARAM_UPDBANKINFO_CANCEL) As DBHelperParameter
+        Dim outputParameter(TOTAL_OUTPUT_PARAM_UPDBANKINFO_CANCEL) As DBHelperParameter
 
         With oUpdateBankInfoForRejectsData
-            inputParameters(0) = New DBHelperParameter(Me.COL_NAME_P_CERT_CANCELLATION_ID, .certCancellationId.ToByteArray)
-            inputParameters(1) = New DBHelperParameter(Me.COL_NAME_P_BANK_INFO_ID, .bankInfoId.ToByteArray)
-            inputParameters(2) = New DBHelperParameter(Me.COL_NAME_P_BANK_IBAN_NUMBER, .IBANNumber)
-            inputParameters(3) = New DBHelperParameter(Me.COL_NAME_P_BANK_ACCOUNT_NUMBER, .accountNumber)
+            inputParameters(0) = New DBHelperParameter(COL_NAME_P_CERT_CANCELLATION_ID, .certCancellationId.ToByteArray)
+            inputParameters(1) = New DBHelperParameter(COL_NAME_P_BANK_INFO_ID, .bankInfoId.ToByteArray)
+            inputParameters(2) = New DBHelperParameter(COL_NAME_P_BANK_IBAN_NUMBER, .IBANNumber)
+            inputParameters(3) = New DBHelperParameter(COL_NAME_P_BANK_ACCOUNT_NUMBER, .accountNumber)
 
-            outputParameter(0) = New DBHelperParameter(Me.COL_NAME_P_RETURN, GetType(Integer))
-            outputParameter(1) = New DBHelperParameter(Me.COL_NAME_P_EXCEPTION_MSG, GetType(String))
+            outputParameter(0) = New DBHelperParameter(COL_NAME_P_RETURN, GetType(Integer))
+            outputParameter(1) = New DBHelperParameter(COL_NAME_P_EXCEPTION_MSG, GetType(String))
 
         End With
 
@@ -523,25 +523,25 @@ Public Class CertCancellationDAL
 
         Return oUpdateBankInfoForRejectsData
     End Function
-    Public Function ExecuteReverseCancelSP(ByVal oReverseCancellationData As ReverseCancellationData) As ReverseCancellationData
-        Dim selectStmt As String = Me.Config("/SQL/PROCESS_REVERSE_CANCELLATION")
-        Dim inputParameters(Me.TOTAL_INPUT_PARAM_REVERSE_CANCEL) As DBHelperParameter
-        Dim outputParameter(Me.TOTAL_OUTPUT_PARAM_REVERSE_CANCEL) As DBHelperParameter
+    Public Function ExecuteReverseCancelSP(oReverseCancellationData As ReverseCancellationData) As ReverseCancellationData
+        Dim selectStmt As String = Config("/SQL/PROCESS_REVERSE_CANCELLATION")
+        Dim inputParameters(TOTAL_INPUT_PARAM_REVERSE_CANCEL) As DBHelperParameter
+        Dim outputParameter(TOTAL_OUTPUT_PARAM_REVERSE_CANCEL) As DBHelperParameter
 
         With oReverseCancellationData
-            inputParameters(Me.P_COMPANY_ID) = New DBHelperParameter(Me.COL_NAME_P_COMPANY_ID, .companyId)
-            inputParameters(Me.P_DEALER_ID) = New DBHelperParameter(Me.COL_NAME_P_DEALER_ID, .dealerId)
-            inputParameters(Me.P_CERTIFICATE) = New DBHelperParameter(Me.COL_NAME_P_CERTIFICATE, .certificate)
-            inputParameters(Me.P_SOURCE) = New DBHelperParameter(Me.COL_NAME_P_SOURCE, .source)
-            inputParameters(Me.P_SOURCE_TYPE) = New DBHelperParameter(Me.COL_NAME_P_SOURCE_TYPE, .sourceType)
+            inputParameters(P_COMPANY_ID) = New DBHelperParameter(COL_NAME_P_COMPANY_ID, .companyId)
+            inputParameters(P_DEALER_ID) = New DBHelperParameter(COL_NAME_P_DEALER_ID, .dealerId)
+            inputParameters(P_CERTIFICATE) = New DBHelperParameter(COL_NAME_P_CERTIFICATE, .certificate)
+            inputParameters(P_SOURCE) = New DBHelperParameter(COL_NAME_P_SOURCE, .source)
+            inputParameters(P_SOURCE_TYPE) = New DBHelperParameter(COL_NAME_P_SOURCE_TYPE, .sourceType)
 
-            outputParameter(Me.PR_RETURN) = New DBHelperParameter(Me.COL_NAME_P_RETURN, GetType(Integer))
+            outputParameter(PR_RETURN) = New DBHelperParameter(COL_NAME_P_RETURN, GetType(Integer))
         End With
 
         ' Call DBHelper Store Procedure
         DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameter)
 
-        If outputParameter(Me.PR_RETURN).Value <> 0 Then
+        If outputParameter(PR_RETURN).Value <> 0 Then
             Dim e As New ApplicationException("Return Value = " & outputParameter(0).Value)
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, e)
         End If
@@ -551,52 +551,22 @@ Public Class CertCancellationDAL
     End Function
 
     ' This Method will be used by the cancel cert web service off-line. any errors will be sent by email by store procedure
-    Public Function CancelCertificatesByInvocieNumber(ByVal dealerId As Guid, ByVal companyId As Guid, ByVal certNumber As String, ByVal invoiceNumber As String, ByVal cancellation_code As String, _
-                                                      ByVal Source As String, ByVal CancellationDate As DateType) As Boolean
+    Public Function CancelCertificatesByInvocieNumber(dealerId As Guid, companyId As Guid, certNumber As String, invoiceNumber As String, cancellation_code As String, _
+                                                      Source As String, CancellationDate As DateType) As Boolean
 
-        Dim selectStmt As String = Me.Config("/SQL/CANCEL_CERTIFICATES_BY_INVOCIE_NUMBER")
-        Dim inputParameters(Me.TOTAL_INPUT_PARAM_CANCEL_BY_INVOICE_NUMBER) As DBHelperParameter
-        Dim outputParameter(Me.TOTAL_OUTPUT_PARAM_CANCEL_BY_INVOICE_NUMBER) As DBHelperParameter
+        Dim selectStmt As String = Config("/SQL/CANCEL_CERTIFICATES_BY_INVOCIE_NUMBER")
+        Dim inputParameters(TOTAL_INPUT_PARAM_CANCEL_BY_INVOICE_NUMBER) As DBHelperParameter
+        Dim outputParameter(TOTAL_OUTPUT_PARAM_CANCEL_BY_INVOICE_NUMBER) As DBHelperParameter
 
-        inputParameters(Me.P_COMPANY_ID) = New DBHelperParameter(Me.COL_NAME_P_COMPANY_ID, companyId)
-        inputParameters(Me.P_DEALER_ID) = New DBHelperParameter(Me.COL_NAME_P_DEALER_ID, dealerId)
-        inputParameters(Me.P_CERTIFICATE) = New DBHelperParameter(Me.COL_NAME_P_CERTIFICATE, certNumber)
-        inputParameters(Me.P_INVOICE_NUMBER) = New DBHelperParameter(Me.COL_NAME_P_INVOICE_NUMBER, invoiceNumber)
-        inputParameters(Me.P_CANCELLATION_CODE_BY_INVOICE) = New DBHelperParameter(Me.COL_NAME_P_CANCELLATION_CODE, cancellation_code)
-        inputParameters(Me.P_SOURCE_BY_INVOICE) = New DBHelperParameter(Me.COL_NAME_P_CANCELLATION_DATE, CancellationDate.Value)
-        inputParameters(Me.P_CANCELLATION_DATE_BY_INVOICE) = New DBHelperParameter(Me.COL_NAME_P_SOURCE, Source)
+        inputParameters(P_COMPANY_ID) = New DBHelperParameter(COL_NAME_P_COMPANY_ID, companyId)
+        inputParameters(P_DEALER_ID) = New DBHelperParameter(COL_NAME_P_DEALER_ID, dealerId)
+        inputParameters(P_CERTIFICATE) = New DBHelperParameter(COL_NAME_P_CERTIFICATE, certNumber)
+        inputParameters(P_INVOICE_NUMBER) = New DBHelperParameter(COL_NAME_P_INVOICE_NUMBER, invoiceNumber)
+        inputParameters(P_CANCELLATION_CODE_BY_INVOICE) = New DBHelperParameter(COL_NAME_P_CANCELLATION_CODE, cancellation_code)
+        inputParameters(P_SOURCE_BY_INVOICE) = New DBHelperParameter(COL_NAME_P_CANCELLATION_DATE, CancellationDate.Value)
+        inputParameters(P_CANCELLATION_DATE_BY_INVOICE) = New DBHelperParameter(COL_NAME_P_SOURCE, Source)
 
-        outputParameter(Me.PR_RETURN) = New DBHelperParameter(Me.COL_NAME_P_RETURN, GetType(Integer))
-
-        Try
-            ' Call DBHelper Store Procedure
-            DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameter)
-            Return True
-
-        Catch ex As Exception
-            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
-        Finally
-            '   ds.Dispose()
-        End Try
-
-        Return True
-
-    End Function
-
-
-    Public Function CancelCoverages(ByVal dealerId As Guid, ByVal certNumber As String, ByVal CancellationDate As DateType) As Boolean
-
-        Dim selectStmt As String = Me.Config("/SQL/CANCEL_COVERAGES")
-        Dim inputParameters(Me.TOTAL_INPUT_PARAM_CANCEL_COVERAGES) As DBHelperParameter
-        Dim outputParameter(Me.TOTAL_OUTPUT_PARAM_CANCEL_COVERAGES) As DBHelperParameter
-
-
-        inputParameters(0) = New DBHelperParameter(Me.COL_NAME_P_DEALER_ID, dealerId)
-        inputParameters(1) = New DBHelperParameter(Me.COL_NAME_P_CERTIFICATE, certNumber)
-        inputParameters(2) = New DBHelperParameter(Me.COL_NAME_P_CANCELLATION_DATE, CancellationDate.Value)
-
-
-        outputParameter(Me.PR_RETURN) = New DBHelperParameter(Me.COL_NAME_P_RETURN, GetType(Integer))
+        outputParameter(PR_RETURN) = New DBHelperParameter(COL_NAME_P_RETURN, GetType(Integer))
 
         Try
             ' Call DBHelper Store Procedure
@@ -613,8 +583,38 @@ Public Class CertCancellationDAL
 
     End Function
 
-    Public Function VSC_CancelPolicy(ByVal CertId As Guid, ByVal cancellationReasonCode As String,
-                                     ByVal user_id As Guid, ByVal Source As String, _
+
+    Public Function CancelCoverages(dealerId As Guid, certNumber As String, CancellationDate As DateType) As Boolean
+
+        Dim selectStmt As String = Config("/SQL/CANCEL_COVERAGES")
+        Dim inputParameters(TOTAL_INPUT_PARAM_CANCEL_COVERAGES) As DBHelperParameter
+        Dim outputParameter(TOTAL_OUTPUT_PARAM_CANCEL_COVERAGES) As DBHelperParameter
+
+
+        inputParameters(0) = New DBHelperParameter(COL_NAME_P_DEALER_ID, dealerId)
+        inputParameters(1) = New DBHelperParameter(COL_NAME_P_CERTIFICATE, certNumber)
+        inputParameters(2) = New DBHelperParameter(COL_NAME_P_CANCELLATION_DATE, CancellationDate.Value)
+
+
+        outputParameter(PR_RETURN) = New DBHelperParameter(COL_NAME_P_RETURN, GetType(Integer))
+
+        Try
+            ' Call DBHelper Store Procedure
+            DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameter)
+            Return True
+
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        Finally
+            '   ds.Dispose()
+        End Try
+
+        Return True
+
+    End Function
+
+    Public Function VSC_CancelPolicy(CertId As Guid, cancellationReasonCode As String,
+                                     user_id As Guid, Source As String, _
                                      Optional ByVal CancellationDate As DateType = Nothing, _
                                      Optional ByVal MaxAssurantMileageLimit As Integer = Nothing, _
                                      Optional ByVal CurrentOdometer As Integer = Nothing) As Boolean
@@ -627,20 +627,20 @@ Public Class CertCancellationDAL
             myCancellationDate = CancellationDate.Value
         End If
 
-        Dim selectStmt As String = Me.Config("/SQL/VSC_CANCEL_CERTIFICATE")
-        Dim inputParameters(Me.TOTAL_INPUT_PARAM_CANCEL_VSC_CERT) As DBHelperParameter
-        Dim outputParameter(Me.TOTAL_OUTPUT_PARAM_CANCEL_COVERAGES) As DBHelperParameter
+        Dim selectStmt As String = Config("/SQL/VSC_CANCEL_CERTIFICATE")
+        Dim inputParameters(TOTAL_INPUT_PARAM_CANCEL_VSC_CERT) As DBHelperParameter
+        Dim outputParameter(TOTAL_OUTPUT_PARAM_CANCEL_COVERAGES) As DBHelperParameter
 
 
-        inputParameters(0) = New DBHelperParameter(Me.COL_NAME_P_CERT_ID, CertId)
-        inputParameters(1) = New DBHelperParameter(Me.COL_NAME_P_CANCELLATION_CODE, cancellationReasonCode)
-        inputParameters(2) = New DBHelperParameter(Me.COL_NAME_P_CANCELLATION_DATE, myCancellationDate)
-        inputParameters(3) = New DBHelperParameter(Me.COL_NAME_P_MAX_ASSURANT_MILEAGE_LIMIT, MaxAssurantMileageLimit)
-        inputParameters(4) = New DBHelperParameter(Me.COL_NAME_P_CURRENT_ODOMETER, CurrentOdometer)
-        inputParameters(5) = New DBHelperParameter(Me.COL_NAME_P_SOURCE, Source)
-        inputParameters(6) = New DBHelperParameter(Me.COL_NAME_P_USER_ID, user_id)
+        inputParameters(0) = New DBHelperParameter(COL_NAME_P_CERT_ID, CertId)
+        inputParameters(1) = New DBHelperParameter(COL_NAME_P_CANCELLATION_CODE, cancellationReasonCode)
+        inputParameters(2) = New DBHelperParameter(COL_NAME_P_CANCELLATION_DATE, myCancellationDate)
+        inputParameters(3) = New DBHelperParameter(COL_NAME_P_MAX_ASSURANT_MILEAGE_LIMIT, MaxAssurantMileageLimit)
+        inputParameters(4) = New DBHelperParameter(COL_NAME_P_CURRENT_ODOMETER, CurrentOdometer)
+        inputParameters(5) = New DBHelperParameter(COL_NAME_P_SOURCE, Source)
+        inputParameters(6) = New DBHelperParameter(COL_NAME_P_USER_ID, user_id)
 
-        outputParameter(Me.PR_RETURN) = New DBHelperParameter(Me.COL_NAME_P_RETURN, GetType(Integer))
+        outputParameter(PR_RETURN) = New DBHelperParameter(COL_NAME_P_RETURN, GetType(Integer))
 
         Try
             ' Call DBHelper Store Procedure

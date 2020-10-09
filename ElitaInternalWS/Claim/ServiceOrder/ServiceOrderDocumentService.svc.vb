@@ -24,17 +24,17 @@ Namespace ServiceOrderDocument
             Get
                 Return _company_id
             End Get
-            Set(ByVal Value As Guid)
+            Set(Value As Guid)
                 _company_id = Value
             End Set
         End Property
 
         Private Property ClaimBO() As Claim
             Get
-                Return Me._claimBo
+                Return _claimBo
             End Get
-            Set(ByVal value As Claim)
-                Me._claimBo = value
+            Set(value As Claim)
+                _claimBo = value
             End Set
         End Property
 
@@ -48,7 +48,7 @@ Namespace ServiceOrderDocument
             Get
                 Return _oServiceOrder
             End Get
-            Set(ByVal value As ServiceOrder)
+            Set(value As ServiceOrder)
                 _oServiceOrder = value
             End Set
         End Property

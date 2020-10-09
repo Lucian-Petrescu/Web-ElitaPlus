@@ -17,7 +17,7 @@ Partial Class UserControlBankInfo_New
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -59,10 +59,10 @@ Partial Class UserControlBankInfo_New
 
     Public ReadOnly Property State() As MyState
         Get
-            If Me.Page.StateSession.Item(Me.UniqueID) Is Nothing Then
-                Me.Page.StateSession.Item(Me.UniqueID) = New MyState
+            If Page.StateSession.Item(UniqueID) Is Nothing Then
+                Page.StateSession.Item(UniqueID) = New MyState
             End If
-            Return CType(Me.Page.StateSession.Item(Me.UniqueID), MyState)
+            Return CType(Page.StateSession.Item(UniqueID), MyState)
         End Get
     End Property
 
@@ -71,7 +71,7 @@ Partial Class UserControlBankInfo_New
         Get
             Return _validateBankInfoCountry
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             _validateBankInfoCountry = value
         End Set
     End Property
@@ -87,7 +87,7 @@ Partial Class UserControlBankInfo_New
 #Region "Properties"
 
 #End Region
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load, Me.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load, Me.Load
         'Put user code to initialize the page here
         'If Not IsPostBack Then
 
@@ -121,43 +121,43 @@ Partial Class UserControlBankInfo_New
     End Sub
 
     Public Sub SetTheRequiredFields()
-        If labelNameonAccount.Text.IndexOf("*") <> 0 Then Me.labelNameonAccount.Text = "* " & Me.labelNameonAccount.Text
-        If labelBankID.Text.IndexOf("*") <> 0 Then Me.labelBankID.Text = "* " & Me.labelBankID.Text
-        If labelBankAccountNo.Text.IndexOf("*") <> 0 Then Me.labelBankAccountNo.Text = "* " & Me.labelBankAccountNo.Text
-        If labelCountryOfBank.Text.IndexOf("*") <> 0 Then Me.labelCountryOfBank.Text = "* " & Me.labelCountryOfBank.Text
-        If labelSwiftCode.Text.IndexOf("*") <> 0 Then Me.labelSwiftCode.Text = "* " & Me.labelSwiftCode.Text
-        If labelIBAN_Number.Text.IndexOf("*") <> 0 Then Me.labelIBAN_Number.Text = "* " & Me.labelIBAN_Number.Text
-        If lblBranchDigit.Text.IndexOf("*") <> 0 Then Me.lblBranchDigit.Text = "* " & Me.lblBranchDigit.Text
-        If lblAcctDigit.Text.IndexOf("*") <> 0 Then Me.lblAcctDigit.Text = "* " & Me.lblAcctDigit.Text
-        If lblBranchNumber.Text.IndexOf("*") <> 0 Then Me.lblBranchNumber.Text = "* " & Me.lblBranchNumber.Text
-        If lblBankName.Text.IndexOf("*") <> 0 Then Me.lblBankName.Text = "* " & Me.lblBankName.Text
-        If labelAccountType.Text.IndexOf("*") <> 0 Then Me.labelAccountType.Text = "* " & Me.labelAccountType.Text
+        If labelNameonAccount.Text.IndexOf("*") <> 0 Then labelNameonAccount.Text = "* " & labelNameonAccount.Text
+        If labelBankID.Text.IndexOf("*") <> 0 Then labelBankID.Text = "* " & labelBankID.Text
+        If labelBankAccountNo.Text.IndexOf("*") <> 0 Then labelBankAccountNo.Text = "* " & labelBankAccountNo.Text
+        If labelCountryOfBank.Text.IndexOf("*") <> 0 Then labelCountryOfBank.Text = "* " & labelCountryOfBank.Text
+        If labelSwiftCode.Text.IndexOf("*") <> 0 Then labelSwiftCode.Text = "* " & labelSwiftCode.Text
+        If labelIBAN_Number.Text.IndexOf("*") <> 0 Then labelIBAN_Number.Text = "* " & labelIBAN_Number.Text
+        If lblBranchDigit.Text.IndexOf("*") <> 0 Then lblBranchDigit.Text = "* " & lblBranchDigit.Text
+        If lblAcctDigit.Text.IndexOf("*") <> 0 Then lblAcctDigit.Text = "* " & lblAcctDigit.Text
+        If lblBranchNumber.Text.IndexOf("*") <> 0 Then lblBranchNumber.Text = "* " & lblBranchNumber.Text
+        If lblBankName.Text.IndexOf("*") <> 0 Then lblBankName.Text = "* " & lblBankName.Text
+        If labelAccountType.Text.IndexOf("*") <> 0 Then labelAccountType.Text = "* " & labelAccountType.Text
 
     End Sub
 
 
 
-    Public Sub Bind(ByVal bankinfoBo As BankInfo)
+    Public Sub Bind(bankinfoBo As BankInfo)
         With State
             .myBankInfoBo = bankinfoBo
         End With
-        Me.textboxBankID.Text = String.Empty
-        Me.textboxBankAccountNo.Text = String.Empty
+        textboxBankID.Text = String.Empty
+        textboxBankAccountNo.Text = String.Empty
 
         ' SwitchToLastFourDigitsLabelMode(Me.State.myBankInfoBo.ValidateFieldsforFR)
 
 
-        If Me.State.myBankInfoBo.ValidateFieldsforFR Then
+        If State.myBankInfoBo.ValidateFieldsforFR Then
             EnableDisableRequiredControls()
         Else
 
             'If (Not (Me.State.myBankInfoBo.SourceCountryID.Equals(Guid.Empty))) AndAlso (Not (Me.Page.GetSelectedItem(Me.moCountryDrop_WRITE).Equals(Guid.Empty))) Then --req-5383
-            If (Not (Me.State.myBankInfoBo.SourceCountryID.Equals(Guid.Empty))) AndAlso (Not (Me.State.myBankInfoBo.CountryID.Equals(Guid.Empty))) Then
-                If Me.State.myBankInfoBo.SourceCountryID.Equals(Me.State.myBankInfoBo.CountryID) Then
+            If (Not (State.myBankInfoBo.SourceCountryID.Equals(Guid.Empty))) AndAlso (Not (State.myBankInfoBo.CountryID.Equals(Guid.Empty))) Then
+                If State.myBankInfoBo.SourceCountryID.Equals(State.myBankInfoBo.CountryID) Then
                     'Domestic transfer
                     DomesticTransfer()
                 Else
-                    Dim objCountry As New Country(Me.State.myBankInfoBo.CountryID)
+                    Dim objCountry As New Country(State.myBankInfoBo.CountryID)
                     If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, objCountry.EuropeanCountryId) = Codes.YESNO_Y Then
                         'International transfer & Destination is European country
                         InternationalEUTransfer()
@@ -166,115 +166,115 @@ Partial Class UserControlBankInfo_New
                         InternationalTransfer()
                     End If
                 End If
-                EnableControlsBasedOnCountry(Me.State.myBankInfoBo.CountryID)
+                EnableControlsBasedOnCountry(State.myBankInfoBo.CountryID)
             Else
                 'Domestic transfer
                 DomesticTransfer()
             End If
         End If
-        Me.PopulateControlFromBo()
+        PopulateControlFromBo()
 
     End Sub
 
     Public Sub ReAssignTabIndex(Optional ByVal TabIndexStartingNumber As Int16 = 0)
         If TabIndexStartingNumber > 0 Then
-            Me.textboxNameAccount.TabIndex = TabIndexStartingNumber
-            Me.moCountryDrop_WRITE.TabIndex = CType(TabIndexStartingNumber + 1, Int16)
-            Me.txtBankName.TabIndex = CType(TabIndexStartingNumber + 2, Int16)
-            Me.txtBankBranchName.TabIndex = CType(TabIndexStartingNumber + 3, Int16)
+            textboxNameAccount.TabIndex = TabIndexStartingNumber
+            moCountryDrop_WRITE.TabIndex = CType(TabIndexStartingNumber + 1, Int16)
+            txtBankName.TabIndex = CType(TabIndexStartingNumber + 2, Int16)
+            txtBankBranchName.TabIndex = CType(TabIndexStartingNumber + 3, Int16)
 
-            Me.textboxBankID.TabIndex = CType(TabIndexStartingNumber + 4, Int16)
-            Me.txtBranchNumber.TabIndex = CType(TabIndexStartingNumber + 5, Int16)
-            Me.txtBranchDigit.TabIndex = CType(TabIndexStartingNumber + 6, Int16)
+            textboxBankID.TabIndex = CType(TabIndexStartingNumber + 4, Int16)
+            txtBranchNumber.TabIndex = CType(TabIndexStartingNumber + 5, Int16)
+            txtBranchDigit.TabIndex = CType(TabIndexStartingNumber + 6, Int16)
 
-            Me.textboxBankAccountNo.TabIndex = CType(TabIndexStartingNumber + 7, Int16)
-            Me.moAccountTypeDrop.TabIndex = CType(TabIndexStartingNumber + 8, Int16)
-            Me.txtAcctDigit.TabIndex = CType(TabIndexStartingNumber + 9, Int16)
+            textboxBankAccountNo.TabIndex = CType(TabIndexStartingNumber + 7, Int16)
+            moAccountTypeDrop.TabIndex = CType(TabIndexStartingNumber + 8, Int16)
+            txtAcctDigit.TabIndex = CType(TabIndexStartingNumber + 9, Int16)
 
             ' Me.txtBranchNumber.TabIndex = CType(TabIndexStartingNumber + 8, Int16)
 
-            Me.textboxSwiftCode.TabIndex = CType(TabIndexStartingNumber + 10, Int16)
-            Me.textboxIBAN_Number.TabIndex = CType(TabIndexStartingNumber + 11, Int16)
-            Me.txtBankLookupCode.TabIndex = CType(TabIndexStartingNumber + 12, Int16)
-            Me.txtBankSubcode.TabIndex = CType(TabIndexStartingNumber + 13, Int16)
-            Me.txtBankSortCode.TabIndex = CType(TabIndexStartingNumber + 14, Int16)
-            Me.txtTransLimit.TabIndex = CType(TabIndexStartingNumber + 15, Int16)
-            Me.cboBankSortCodes.TabIndex = CType(TabIndexStartingNumber + 16, Int16)
+            textboxSwiftCode.TabIndex = CType(TabIndexStartingNumber + 10, Int16)
+            textboxIBAN_Number.TabIndex = CType(TabIndexStartingNumber + 11, Int16)
+            txtBankLookupCode.TabIndex = CType(TabIndexStartingNumber + 12, Int16)
+            txtBankSubcode.TabIndex = CType(TabIndexStartingNumber + 13, Int16)
+            txtBankSortCode.TabIndex = CType(TabIndexStartingNumber + 14, Int16)
+            txtTransLimit.TabIndex = CType(TabIndexStartingNumber + 15, Int16)
+            cboBankSortCodes.TabIndex = CType(TabIndexStartingNumber + 16, Int16)
         End If
     End Sub
 
     Protected Sub BindBoPropertiesToLabels()
-        Me.Page.BindBOPropertyToLabel(Me.State.myBankInfoBo, "Account_Name", labelNameonAccount)
-        Me.Page.BindBOPropertyToLabel(Me.State.myBankInfoBo, "Bank_Id", labelBankID)
-        Me.Page.BindBOPropertyToLabel(Me.State.myBankInfoBo, "Account_Number", labelBankAccountNo)
-        Me.Page.BindBOPropertyToLabel(Me.State.myBankInfoBo, "CountryID", labelCountryOfBank)
-        Me.Page.BindBOPropertyToLabel(Me.State.myBankInfoBo, "SwiftCode", labelSwiftCode)
-        Me.Page.BindBOPropertyToLabel(Me.State.myBankInfoBo, "IbanNumber", labelIBAN_Number)
-        Me.Page.BindBOPropertyToLabel(Me.State.myBankInfoBo, "AccountTypeId", labelAccountType)
-        Me.Page.BindBOPropertyToLabel(Me.State.myBankInfoBo, "TransactionLimit", labelTranslimit)
-        Me.Page.BindBOPropertyToLabel(Me.State.myBankInfoBo, "BankLookupCode", labelBanklookup)
-        Me.Page.BindBOPropertyToLabel(Me.State.myBankInfoBo, "BankSubCode", labelbanksubcode)
-        Me.Page.BindBOPropertyToLabel(Me.State.myBankInfoBo, "BankSortCode", labelBankSortCode)
-        Me.Page.BindBOPropertyToLabel(Me.State.myBankInfoBo, "BranchDigit", lblBranchDigit)
-        Me.Page.BindBOPropertyToLabel(Me.State.myBankInfoBo, "AccountDigit", lblAcctDigit)
-        Me.Page.BindBOPropertyToLabel(Me.State.myBankInfoBo, "BranchNumber", lblBranchNumber)
-        Me.Page.BindBOPropertyToLabel(Me.State.myBankInfoBo, "BankName", lblBankName)
-        Me.Page.BindBOPropertyToLabel(Me.State.myBankInfoBo, "TaxId", lblTaxId)
+        Page.BindBOPropertyToLabel(State.myBankInfoBo, "Account_Name", labelNameonAccount)
+        Page.BindBOPropertyToLabel(State.myBankInfoBo, "Bank_Id", labelBankID)
+        Page.BindBOPropertyToLabel(State.myBankInfoBo, "Account_Number", labelBankAccountNo)
+        Page.BindBOPropertyToLabel(State.myBankInfoBo, "CountryID", labelCountryOfBank)
+        Page.BindBOPropertyToLabel(State.myBankInfoBo, "SwiftCode", labelSwiftCode)
+        Page.BindBOPropertyToLabel(State.myBankInfoBo, "IbanNumber", labelIBAN_Number)
+        Page.BindBOPropertyToLabel(State.myBankInfoBo, "AccountTypeId", labelAccountType)
+        Page.BindBOPropertyToLabel(State.myBankInfoBo, "TransactionLimit", labelTranslimit)
+        Page.BindBOPropertyToLabel(State.myBankInfoBo, "BankLookupCode", labelBanklookup)
+        Page.BindBOPropertyToLabel(State.myBankInfoBo, "BankSubCode", labelbanksubcode)
+        Page.BindBOPropertyToLabel(State.myBankInfoBo, "BankSortCode", labelBankSortCode)
+        Page.BindBOPropertyToLabel(State.myBankInfoBo, "BranchDigit", lblBranchDigit)
+        Page.BindBOPropertyToLabel(State.myBankInfoBo, "AccountDigit", lblAcctDigit)
+        Page.BindBOPropertyToLabel(State.myBankInfoBo, "BranchNumber", lblBranchNumber)
+        Page.BindBOPropertyToLabel(State.myBankInfoBo, "BankName", lblBankName)
+        Page.BindBOPropertyToLabel(State.myBankInfoBo, "TaxId", lblTaxId)
 
-        Me.Page.BindBOPropertyToLabel(Me.State.payeeAddress, "Address1", labelAddress1)
-        Me.Page.BindBOPropertyToLabel(Me.State.payeeAddress, "Address2", labelAddress2)
-        Me.Page.BindBOPropertyToLabel(Me.State.payeeAddress, "City", labelCity)
-        Me.Page.BindBOPropertyToLabel(Me.State.payeeAddress, "PostalCode", labelPostalCode)
+        Page.BindBOPropertyToLabel(State.payeeAddress, "Address1", labelAddress1)
+        Page.BindBOPropertyToLabel(State.payeeAddress, "Address2", labelAddress2)
+        Page.BindBOPropertyToLabel(State.payeeAddress, "City", labelCity)
+        Page.BindBOPropertyToLabel(State.payeeAddress, "PostalCode", labelPostalCode)
 
         ' Move to BankInfo BO 02/08/2008
-        Me.Page.ClearGridViewHeadersAndLabelsErrorSign()
+        Page.ClearGridViewHeadersAndLabelsErrorSign()
     End Sub
 
     Public Function PopulateAddressInfo() As Address
-        Me.State.payeeAddress = New Address()
-        Me.BindBoPropertiesToLabels()
-        Me.Page.PopulateBOProperty(Me.State.payeeAddress, "Address1", txtAddress1)
-        Me.Page.PopulateBOProperty(Me.State.payeeAddress, "Address2", txtAddress2)
-        Me.Page.PopulateBOProperty(Me.State.payeeAddress, "City", txtCity)
-        Me.Page.PopulateBOProperty(Me.State.payeeAddress, "PostalCode", txtPostalCode)
-        Me.Page.PopulateBOProperty(Me.State.payeeAddress, "CountryId", Me.State.myBankInfoBo.CountryID)
+        State.payeeAddress = New Address()
+        BindBoPropertiesToLabels()
+        Page.PopulateBOProperty(State.payeeAddress, "Address1", txtAddress1)
+        Page.PopulateBOProperty(State.payeeAddress, "Address2", txtAddress2)
+        Page.PopulateBOProperty(State.payeeAddress, "City", txtCity)
+        Page.PopulateBOProperty(State.payeeAddress, "PostalCode", txtPostalCode)
+        Page.PopulateBOProperty(State.payeeAddress, "CountryId", State.myBankInfoBo.CountryID)
 
-        Return Me.State.payeeAddress
+        Return State.payeeAddress
     End Function
 
     Public Sub PopulateBOFromControl(Optional ByVal blnExcludeSave As Boolean = False, Optional ByVal blnValidate As Boolean = True)
         Dim guidTemp As Guid, dTemp As DecimalType, LTemp As Long
-        If Not Me.State.myBankInfoBo Is Nothing Then
-            With Me.State.myBankInfoBo
-                Me.BindBoPropertiesToLabels()
+        If State.myBankInfoBo IsNot Nothing Then
+            With State.myBankInfoBo
+                BindBoPropertiesToLabels()
 
                 If .IsNew AndAlso .Account_Name <> textboxNameAccount.Text Then State.IsNewObjDirty = True
-                Me.Page.PopulateBOProperty(Me.State.myBankInfoBo, "Account_Name", textboxNameAccount)
+                Page.PopulateBOProperty(State.myBankInfoBo, "Account_Name", textboxNameAccount)
 
                 If .IsNew AndAlso .Bank_Id <> textboxBankID.Text Then State.IsNewObjDirty = True
-                Me.Page.PopulateBOProperty(Me.State.myBankInfoBo, "Bank_Id", textboxBankID)
+                Page.PopulateBOProperty(State.myBankInfoBo, "Bank_Id", textboxBankID)
 
                 If .IsNew AndAlso .Account_Number <> textboxBankAccountNo.Text Then State.IsNewObjDirty = True
 
-                Me.Page.PopulateBOProperty(Me.State.myBankInfoBo, "Account_Number", textboxBankAccountNo)
+                Page.PopulateBOProperty(State.myBankInfoBo, "Account_Number", textboxBankAccountNo)
 
                 guidTemp = .CountryID
-                Me.Page.PopulateBOProperty(Me.State.myBankInfoBo, "CountryID", moCountryDrop_WRITE)
+                Page.PopulateBOProperty(State.myBankInfoBo, "CountryID", moCountryDrop_WRITE)
                 If .IsNew AndAlso .CountryID <> guidTemp Then State.IsNewObjDirty = True
 
                 If .IsNew AndAlso .IbanNumber <> textboxIBAN_Number.Text Then State.IsNewObjDirty = True
 
-                Me.Page.PopulateBOProperty(Me.State.myBankInfoBo, "IbanNumber", textboxIBAN_Number)
+                Page.PopulateBOProperty(State.myBankInfoBo, "IbanNumber", textboxIBAN_Number)
 
                 If .IsNew AndAlso .SwiftCode <> textboxSwiftCode.Text Then State.IsNewObjDirty = True
-                Me.Page.PopulateBOProperty(Me.State.myBankInfoBo, "SwiftCode", textboxSwiftCode)
+                Page.PopulateBOProperty(State.myBankInfoBo, "SwiftCode", textboxSwiftCode)
 
                 guidTemp = .AccountTypeId
-                Me.Page.PopulateBOProperty(Me.State.myBankInfoBo, "AccountTypeId", moAccountTypeDrop)
+                Page.PopulateBOProperty(State.myBankInfoBo, "AccountTypeId", moAccountTypeDrop)
                 If .IsNew AndAlso .AccountTypeId <> guidTemp Then State.IsNewObjDirty = True
 
                 dTemp = .TransactionLimit
-                Me.Page.PopulateBOProperty(Me.State.myBankInfoBo, "TransactionLimit", txtTransLimit)
+                Page.PopulateBOProperty(State.myBankInfoBo, "TransactionLimit", txtTransLimit)
                 If .IsNew Then
                     If (.TransactionLimit Is Nothing) AndAlso (Not (dTemp Is Nothing)) Then
                         State.IsNewObjDirty = True
@@ -286,54 +286,54 @@ Partial Class UserControlBankInfo_New
                 End If
 
                 If .IsNew AndAlso .BankLookupCode <> txtBankLookupCode.Text Then State.IsNewObjDirty = True
-                Me.Page.PopulateBOProperty(Me.State.myBankInfoBo, "BankLookupCode", txtBankLookupCode)
+                Page.PopulateBOProperty(State.myBankInfoBo, "BankLookupCode", txtBankLookupCode)
 
                 If .IsNew AndAlso .BankSubCode <> txtBankSubcode.Text Then State.IsNewObjDirty = True
-                Me.Page.PopulateBOProperty(Me.State.myBankInfoBo, "BankSubCode", txtBankSubcode)
+                Page.PopulateBOProperty(State.myBankInfoBo, "BankSubCode", txtBankSubcode)
 
                 If txtBankName.Visible = True Then
                     If .IsNew AndAlso .BankName <> txtBankName.Text Then State.IsNewObjDirty = True
-                    Me.Page.PopulateBOProperty(Me.State.myBankInfoBo, "BankName", txtBankName)
+                    Page.PopulateBOProperty(State.myBankInfoBo, "BankName", txtBankName)
                 Else
                     'guidTemp = .AccountTypeId
-                    Me.Page.PopulateBOProperty(Me.State.myBankInfoBo, "BankName", moBankName, False)
+                    Page.PopulateBOProperty(State.myBankInfoBo, "BankName", moBankName, False)
                     If .IsNew AndAlso (moBankName.SelectedIndex <> -1 AndAlso .BankName <> moBankName.SelectedItem.Text) Then State.IsNewObjDirty = True
                 End If
 
                 If .IsNew AndAlso .BranchName <> txtBankBranchName.Text Then State.IsNewObjDirty = True
-                Me.Page.PopulateBOProperty(Me.State.myBankInfoBo, "BranchName", txtBankBranchName)
+                Page.PopulateBOProperty(State.myBankInfoBo, "BranchName", txtBankBranchName)
 
                 If .IsNew AndAlso .BankSortCode <> txtBankSortCode.Text Then State.IsNewObjDirty = True
-                Me.Page.PopulateBOProperty(Me.State.myBankInfoBo, "BankSortCode", txtBankSortCode)
+                Page.PopulateBOProperty(State.myBankInfoBo, "BankSortCode", txtBankSortCode)
 
                 If cboBankSortCodes.Visible = True Then
-                    Me.Page.PopulateBOProperty(Me.State.myBankInfoBo, "BankSortCode", cboBankSortCodes, False)
+                    Page.PopulateBOProperty(State.myBankInfoBo, "BankSortCode", cboBankSortCodes, False)
                     If .IsNew AndAlso cboBankSortCodes.SelectedIndex <> -1 Then State.IsNewObjDirty = True
                 End If
 
                 If .IsNew AndAlso .BranchDigit Is Nothing AndAlso .BranchDigit <> LongType.Parse(txtBranchDigit.Text) Then State.IsNewObjDirty = True
-                Me.Page.PopulateBOProperty(Me.State.myBankInfoBo, "BranchDigit", txtBranchDigit)
+                Page.PopulateBOProperty(State.myBankInfoBo, "BranchDigit", txtBranchDigit)
 
                 If .IsNew AndAlso .AccountDigit Is Nothing AndAlso .AccountDigit <> LongType.Parse(txtAcctDigit.Text) Then State.IsNewObjDirty = True
-                Me.Page.PopulateBOProperty(Me.State.myBankInfoBo, "AccountDigit", txtAcctDigit)
+                Page.PopulateBOProperty(State.myBankInfoBo, "AccountDigit", txtAcctDigit)
 
                 If .IsNew AndAlso .BranchNumber Is Nothing AndAlso .BranchNumber <> LongType.Parse(txtBranchNumber.Text) Then State.IsNewObjDirty = True
-                Me.Page.PopulateBOProperty(Me.State.myBankInfoBo, "BranchNumber", txtBranchNumber)
+                Page.PopulateBOProperty(State.myBankInfoBo, "BranchNumber", txtBranchNumber)
 
                 If .IsNew AndAlso .TaxId <> txtTaxId.Text Then State.IsNewObjDirty = True
-                Me.Page.PopulateBOProperty(Me.State.myBankInfoBo, "TaxId", txtTaxId)
+                Page.PopulateBOProperty(State.myBankInfoBo, "TaxId", txtTaxId)
 
                 If .IsNew AndAlso .BankInfoAddress.Address1 <> txtAddress1.Text Then State.IsNewObjDirty = True
-                Me.Page.PopulateBOProperty(Me.State.myBankInfoBo.BankInfoAddress, "Address1", txtAddress1)
+                Page.PopulateBOProperty(State.myBankInfoBo.BankInfoAddress, "Address1", txtAddress1)
 
                 If .IsNew AndAlso .BankInfoAddress.Address2 <> txtAddress2.Text Then State.IsNewObjDirty = True
-                Me.Page.PopulateBOProperty(Me.State.myBankInfoBo.BankInfoAddress, "Address2", txtAddress2)
+                Page.PopulateBOProperty(State.myBankInfoBo.BankInfoAddress, "Address2", txtAddress2)
 
                 If .IsNew AndAlso .BankInfoAddress.City <> txtCity.Text Then State.IsNewObjDirty = True
-                Me.Page.PopulateBOProperty(Me.State.myBankInfoBo.BankInfoAddress, "City", txtCity)
+                Page.PopulateBOProperty(State.myBankInfoBo.BankInfoAddress, "City", txtCity)
 
                 If .IsNew AndAlso .BankInfoAddress.PostalCode <> txtPostalCode.Text Then State.IsNewObjDirty = True
-                Me.Page.PopulateBOProperty(Me.State.myBankInfoBo.BankInfoAddress, "PostalCode", txtPostalCode)
+                Page.PopulateBOProperty(State.myBankInfoBo.BankInfoAddress, "PostalCode", txtPostalCode)
 
                 'If txtAutoBankName.Text.Trim <> String.Empty AndAlso txtAutoBankName.Text.Trim.ToUpper <> inpDefaultBNDesc.Value.Trim.ToUpper Then
                 '   ErrCollection.Add(New PopulateBOPropException(TranslationBase.TranslateLabelOrMessage("DEFAULT_SC_FOR_DENIED_CLAIMS"), txtAutoBankName, lblDefaultSCForDeniedClaims, New Exception("Service Center Not Found")))
@@ -342,7 +342,7 @@ Partial Class UserControlBankInfo_New
                 ' Move to BankInfo BO 02/08/2008
                 If blnValidate AndAlso .IsDirty Then
                     .Validate()
-                    If Me.Page.ErrCollection.Count > 0 Then
+                    If Page.ErrCollection.Count > 0 Then
                         Throw New PopulateBOErrorException
                     End If
                 End If
@@ -353,10 +353,10 @@ Partial Class UserControlBankInfo_New
     End Sub
 
     Private Sub PopulateControlFromBo()
-        If Not Me.State.myBankInfoBo Is Nothing Then
+        If State.myBankInfoBo IsNot Nothing Then
 
             PopulateAccountTypeDropdown()
-            With Me.State.myBankInfoBo
+            With State.myBankInfoBo
                 If Not .CountryID.Equals(Guid.Empty) Then
                     LoadCountryList(False)
                 Else
@@ -364,97 +364,97 @@ Partial Class UserControlBankInfo_New
                 End If
 
                 If .ValidateFieldsforFR Then
-                    Me.Page.PopulateControlFromBOProperty(Me.textboxNameAccount, .Account_Name)
-                    Me.Page.PopulateControlFromBOProperty(Me.textboxBankAccountNo, .Account_Number)
-                    Me.Page.PopulateControlFromBOProperty(Me.textboxIBAN_Number, .IbanNumber)
+                    Page.PopulateControlFromBOProperty(textboxNameAccount, .Account_Name)
+                    Page.PopulateControlFromBOProperty(textboxBankAccountNo, .Account_Number)
+                    Page.PopulateControlFromBOProperty(textboxIBAN_Number, .IbanNumber)
                 Else
-                    Me.Page.PopulateControlFromBOProperty(Me.textboxNameAccount, .Account_Name)
-                    Me.Page.PopulateControlFromBOProperty(Me.textboxBankAccountNo, .Account_Number)
-                    Me.Page.PopulateControlFromBOProperty(Me.textboxIBAN_Number, .IbanNumber)
+                    Page.PopulateControlFromBOProperty(textboxNameAccount, .Account_Name)
+                    Page.PopulateControlFromBOProperty(textboxBankAccountNo, .Account_Number)
+                    Page.PopulateControlFromBOProperty(textboxIBAN_Number, .IbanNumber)
                 End If
 
-                Me.Page.PopulateControlFromBOProperty(Me.textboxBankID, .Bank_Id)
+                Page.PopulateControlFromBOProperty(textboxBankID, .Bank_Id)
 
-                Me.Page.PopulateControlFromBOProperty(Me.textboxSwiftCode, .SwiftCode)
-                Me.Page.SetSelectedItem(moCountryDrop_WRITE, .CountryID)
+                Page.PopulateControlFromBOProperty(textboxSwiftCode, .SwiftCode)
+                Page.SetSelectedItem(moCountryDrop_WRITE, .CountryID)
                 If .AccountTypeId.Equals(System.Guid.Empty) Then
                     moAccountTypeDrop.SelectedIndex = 0
                 Else
-                    Me.Page.SetSelectedItem(moAccountTypeDrop, .AccountTypeId)
+                    Page.SetSelectedItem(moAccountTypeDrop, .AccountTypeId)
                 End If
 
-                If Me.txtBankName.Visible Then
-                    Page.PopulateControlFromBOProperty(Me.txtBankName, .BankName)
+                If txtBankName.Visible Then
+                    Page.PopulateControlFromBOProperty(txtBankName, .BankName)
                 ElseIf moBankName.Visible Then
-                    If Not .BankName Is Nothing Then Me.Page.SetSelectedItemByText(Me.moBankName, .BankName)
+                    If .BankName IsNot Nothing Then Page.SetSelectedItemByText(moBankName, .BankName)
                 Else
-                    If Not .BankName Is Nothing Then
+                    If .BankName IsNot Nothing Then
                         If (moBankName.Items.Count > 0) Then
-                            Me.Page.SetSelectedItemByText(Me.moBankName, .BankName)
+                            Page.SetSelectedItemByText(moBankName, .BankName)
                         Else
-                            Page.PopulateControlFromBOProperty(Me.txtBankName, .BankName)
+                            Page.PopulateControlFromBOProperty(txtBankName, .BankName)
                         End If
                     End If
                 End If
 
-                Page.PopulateControlFromBOProperty(Me.txtTransLimit, .TransactionLimit)
-                Page.PopulateControlFromBOProperty(Me.txtBankLookupCode, .BankLookupCode)
-                Page.PopulateControlFromBOProperty(Me.txtBankSubcode, .BankSubCode)
+                Page.PopulateControlFromBOProperty(txtTransLimit, .TransactionLimit)
+                Page.PopulateControlFromBOProperty(txtBankLookupCode, .BankLookupCode)
+                Page.PopulateControlFromBOProperty(txtBankSubcode, .BankSubCode)
                 'Page.PopulateControlFromBOProperty(Me.txtBankName, .BankName)
-                Page.PopulateControlFromBOProperty(Me.txtBankBranchName, .BranchName)
-                Page.PopulateControlFromBOProperty(Me.txtBankSortCode, .BankSortCode)
+                Page.PopulateControlFromBOProperty(txtBankBranchName, .BranchName)
+                Page.PopulateControlFromBOProperty(txtBankSortCode, .BankSortCode)
 
                 If cboBankSortCodes.Visible Then
-                    If Not .BankSortCode Is Nothing Then
-                        Me.Page.SetSelectedItemByText(Me.cboBankSortCodes, .BankName)
+                    If .BankSortCode IsNot Nothing Then
+                        Page.SetSelectedItemByText(cboBankSortCodes, .BankName)
                     ElseIf (cboBankSortCodes.Items.Count > 0) Then
-                        Me.Page.SetSelectedItemByText(Me.cboBankSortCodes, .BankName)
+                        Page.SetSelectedItemByText(cboBankSortCodes, .BankName)
                     End If
                 End If
 
-                Page.PopulateControlFromBOProperty(Me.txtBranchDigit, .BranchDigit)
-                Page.PopulateControlFromBOProperty(Me.txtAcctDigit, .AccountDigit)
-                Page.PopulateControlFromBOProperty(Me.txtBranchNumber, .BranchNumber)
-                Page.PopulateControlFromBOProperty(Me.txtTaxId, .TaxId)
+                Page.PopulateControlFromBOProperty(txtBranchDigit, .BranchDigit)
+                Page.PopulateControlFromBOProperty(txtAcctDigit, .AccountDigit)
+                Page.PopulateControlFromBOProperty(txtBranchNumber, .BranchNumber)
+                Page.PopulateControlFromBOProperty(txtTaxId, .TaxId)
 
-                Page.PopulateControlFromBOProperty(Me.txtAddress1, .BankInfoAddress.Address1)
-                Page.PopulateControlFromBOProperty(Me.txtAddress2, .BankInfoAddress.Address2)
-                Page.PopulateControlFromBOProperty(Me.txtCity, .BankInfoAddress.City)
-                Page.PopulateControlFromBOProperty(Me.txtPostalCode, .BankInfoAddress.PostalCode)
+                Page.PopulateControlFromBOProperty(txtAddress1, .BankInfoAddress.Address1)
+                Page.PopulateControlFromBOProperty(txtAddress2, .BankInfoAddress.Address2)
+                Page.PopulateControlFromBOProperty(txtCity, .BankInfoAddress.City)
+                Page.PopulateControlFromBOProperty(txtPostalCode, .BankInfoAddress.PostalCode)
 
             End With
         End If
     End Sub
 
-    Public Sub SetCountryValue(ByVal oCountryID As Guid)
-        Me.Page.SetSelectedItem(moCountryDrop_WRITE, oCountryID)
+    Public Sub SetCountryValue(oCountryID As Guid)
+        Page.SetSelectedItem(moCountryDrop_WRITE, oCountryID)
     End Sub
 
-    Public Sub setSwiftCode(ByVal objBankinfo As BankInfo)
+    Public Sub setSwiftCode(objBankinfo As BankInfo)
         textboxSwiftCode.Text = objBankinfo.BankLookupCode
     End Sub
 
-    Public Sub setCustomerName(ByVal customerName As String)
+    Public Sub setCustomerName(customerName As String)
         textboxNameAccount.Text = customerName
     End Sub
 
-    Public Sub ChangeEnabledControlProperty(ByVal blnEnabledState As Boolean)
-        Page.ChangeEnabledControlProperty(Me.textboxNameAccount, blnEnabledState)
-        Page.ChangeEnabledControlProperty(Me.moCountryDrop_WRITE, blnEnabledState)
-        Page.ChangeEnabledControlProperty(Me.textboxBankID, blnEnabledState)
-        Page.ChangeEnabledControlProperty(Me.textboxBankAccountNo, blnEnabledState)
-        Page.ChangeEnabledControlProperty(Me.textboxIBAN_Number, blnEnabledState)
-        Page.ChangeEnabledControlProperty(Me.textboxSwiftCode, blnEnabledState)
-        Page.ChangeEnabledControlProperty(Me.moAccountTypeDrop, blnEnabledState)
-        Page.ChangeEnabledControlProperty(Me.txtBankLookupCode, blnEnabledState)
-        Page.ChangeEnabledControlProperty(Me.txtBankSubcode, blnEnabledState)
-        Page.ChangeEnabledControlProperty(Me.txtTransLimit, blnEnabledState)
-        Page.ChangeEnabledControlProperty(Me.txtBankName, blnEnabledState)
-        Page.ChangeEnabledControlProperty(Me.txtBankBranchName, blnEnabledState)
-        Page.ChangeEnabledControlProperty(Me.txtBankSortCode, blnEnabledState)
-        Page.ChangeEnabledControlProperty(Me.txtBranchDigit, blnEnabledState)
-        Page.ChangeEnabledControlProperty(Me.txtAcctDigit, blnEnabledState)
-        Page.ChangeEnabledControlProperty(Me.txtTaxId, blnEnabledState)
+    Public Sub ChangeEnabledControlProperty(blnEnabledState As Boolean)
+        Page.ChangeEnabledControlProperty(textboxNameAccount, blnEnabledState)
+        Page.ChangeEnabledControlProperty(moCountryDrop_WRITE, blnEnabledState)
+        Page.ChangeEnabledControlProperty(textboxBankID, blnEnabledState)
+        Page.ChangeEnabledControlProperty(textboxBankAccountNo, blnEnabledState)
+        Page.ChangeEnabledControlProperty(textboxIBAN_Number, blnEnabledState)
+        Page.ChangeEnabledControlProperty(textboxSwiftCode, blnEnabledState)
+        Page.ChangeEnabledControlProperty(moAccountTypeDrop, blnEnabledState)
+        Page.ChangeEnabledControlProperty(txtBankLookupCode, blnEnabledState)
+        Page.ChangeEnabledControlProperty(txtBankSubcode, blnEnabledState)
+        Page.ChangeEnabledControlProperty(txtTransLimit, blnEnabledState)
+        Page.ChangeEnabledControlProperty(txtBankName, blnEnabledState)
+        Page.ChangeEnabledControlProperty(txtBankBranchName, blnEnabledState)
+        Page.ChangeEnabledControlProperty(txtBankSortCode, blnEnabledState)
+        Page.ChangeEnabledControlProperty(txtBranchDigit, blnEnabledState)
+        Page.ChangeEnabledControlProperty(txtAcctDigit, blnEnabledState)
+        Page.ChangeEnabledControlProperty(txtTaxId, blnEnabledState)
     End Sub
 
     Private Sub LoadCountryList(Optional ByVal nothingSelcted As Boolean = True)
@@ -466,7 +466,7 @@ Partial Class UserControlBankInfo_New
 
 
     End Sub
-    Public Sub LoadBankSortCodeList(ByVal oCompany As Company, ByVal certTaxIdNumber As String)
+    Public Sub LoadBankSortCodeList(oCompany As Company, certTaxIdNumber As String)
         If oCompany.AttributeValues.Contains(Codes.DEFAULT_CLAIM_BANK_SORT_CODE) Then
             If oCompany.AttributeValues.Value(Codes.DEFAULT_CLAIM_BANK_SORT_CODE) = Codes.YESNO_Y Then
                 DisplayCboBankSortCode()
@@ -484,7 +484,7 @@ Partial Class UserControlBankInfo_New
             txtBankSubcode.Text = oCompany.AttributeValues.Value(Codes.DEFAULT_CLAIM_BANK_SUB_CODE)
         End If
 
-        If (Not String.IsNullOrEmpty(certTaxIdNumber) And oCompany.AttributeValues.Contains(Codes.AUTO_POPULATE_CERT_TAX_ID)) Then
+        If (Not String.IsNullOrEmpty(certTaxIdNumber) AndAlso oCompany.AttributeValues.Contains(Codes.AUTO_POPULATE_CERT_TAX_ID)) Then
             If oCompany.AttributeValues.Value(Codes.AUTO_POPULATE_CERT_TAX_ID) = Codes.YESNO_Y Then
                 txtTaxId.Text = certTaxIdNumber
             End If
@@ -504,15 +504,15 @@ Partial Class UserControlBankInfo_New
                                            })
     End Sub
 
-    Public Sub SetRequiredFieldsForDealerWithGiftCard1(ByVal dealer As Dealer)
+    Public Sub SetRequiredFieldsForDealerWithGiftCard1(dealer As Dealer)
         If (dealer.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = Codes.ATTR_DARTY_GIFT_CARD_TYPE).Count > 0) Then
-            If labelAddress1.Text.IndexOf("*") <> 0 Then Me.labelAddress1.Text = "* " & Me.labelAddress1.Text
-            If labelCity.Text.IndexOf("*") <> 0 Then Me.labelCity.Text = "* " & Me.labelCity.Text
-            If labelPostalCode.Text.IndexOf("*") <> 0 Then Me.labelPostalCode.Text = "* " & Me.labelPostalCode.Text
+            If labelAddress1.Text.IndexOf("*") <> 0 Then labelAddress1.Text = "* " & labelAddress1.Text
+            If labelCity.Text.IndexOf("*") <> 0 Then labelCity.Text = "* " & labelCity.Text
+            If labelPostalCode.Text.IndexOf("*") <> 0 Then labelPostalCode.Text = "* " & labelPostalCode.Text
         End If
     End Sub
 
-    Private Sub PopulateBankNameDropdown(ByVal SelectedCountryID As Guid)
+    Private Sub PopulateBankNameDropdown(SelectedCountryID As Guid)
         '    Dim obank As New BankName
         Dim BankDV As DataView = New DataView(BankName.LoadBankNameByCountry(SelectedCountryID))
         Page.BindListControlToDataView(moBankName, BankDV, "DESCRIPTION", "ID", True)
@@ -520,286 +520,286 @@ Partial Class UserControlBankInfo_New
     End Sub
 
     Private Sub DisplayBankID()
-        ControlMgr.SetVisibleControl(Me.Page, labelBankID, True)
-        ControlMgr.SetVisibleControl(Me.Page, textboxBankID, True)
-        ControlMgr.SetVisibleControl(Me.Page, LabelSpaceBankID, True)
+        ControlMgr.SetVisibleControl(Page, labelBankID, True)
+        ControlMgr.SetVisibleControl(Page, textboxBankID, True)
+        ControlMgr.SetVisibleControl(Page, LabelSpaceBankID, True)
     End Sub
 
     Private Sub HideNameonAccount()
-        ControlMgr.SetVisibleControl(Me.Page, labelNameonAccount, False)
-        ControlMgr.SetVisibleControl(Me.Page, textboxNameAccount, False)
+        ControlMgr.SetVisibleControl(Page, labelNameonAccount, False)
+        ControlMgr.SetVisibleControl(Page, textboxNameAccount, False)
         textboxNameAccount.Text = String.Empty
     End Sub
 
     Private Sub HideCountryOfBank()
-        ControlMgr.SetVisibleControl(Me.Page, labelCountryOfBank, False)
-        ControlMgr.SetVisibleControl(Me.Page, moCountryDrop_WRITE, False)
+        ControlMgr.SetVisibleControl(Page, labelCountryOfBank, False)
+        ControlMgr.SetVisibleControl(Page, moCountryDrop_WRITE, False)
     End Sub
 
     Private Sub HideBankId()
-        ControlMgr.SetVisibleControl(Me.Page, labelBankID, False)
-        ControlMgr.SetVisibleControl(Me.Page, textboxBankID, False)
-        ControlMgr.SetVisibleControl(Me.Page, LabelSpaceBankID, False)
+        ControlMgr.SetVisibleControl(Page, labelBankID, False)
+        ControlMgr.SetVisibleControl(Page, textboxBankID, False)
+        ControlMgr.SetVisibleControl(Page, LabelSpaceBankID, False)
         textboxBankID.Text = String.Empty
     End Sub
 
     Private Sub DisplayBankNameDP()
-        ControlMgr.SetVisibleControl(Me.Page, lblBankName, True)
-        ControlMgr.SetVisibleControl(Me.Page, moBankName, True)
-        ControlMgr.SetVisibleControl(Me.Page, txtBankName, False)
-        ControlMgr.SetVisibleControl(Me.Page, textboxBankID, True)
+        ControlMgr.SetVisibleControl(Page, lblBankName, True)
+        ControlMgr.SetVisibleControl(Page, moBankName, True)
+        ControlMgr.SetVisibleControl(Page, txtBankName, False)
+        ControlMgr.SetVisibleControl(Page, textboxBankID, True)
         textboxBankID.Text = String.Empty
     End Sub
     Private Sub HideBankName()
-        ControlMgr.SetVisibleControl(Me.Page, moBankName, False)
-        ControlMgr.SetVisibleControl(Me.Page, txtBankName, False)
-        ControlMgr.SetVisibleControl(Me.Page, lblBankName, False)
+        ControlMgr.SetVisibleControl(Page, moBankName, False)
+        ControlMgr.SetVisibleControl(Page, txtBankName, False)
+        ControlMgr.SetVisibleControl(Page, lblBankName, False)
 
     End Sub
 
     Private Sub DisplayBankNametxt()
-        ControlMgr.SetVisibleControl(Me.Page, lblBankName, True)
-        ControlMgr.SetVisibleControl(Me.Page, txtBankName, True)
-        ControlMgr.SetVisibleControl(Me.Page, moBankName, False)
+        ControlMgr.SetVisibleControl(Page, lblBankName, True)
+        ControlMgr.SetVisibleControl(Page, txtBankName, True)
+        ControlMgr.SetVisibleControl(Page, moBankName, False)
         moBankName.SelectedIndex = -1
     End Sub
 
     Private Sub DisplayBankAccNo()
-        ControlMgr.SetVisibleControl(Me.Page, labelBankAccountNo, True)
-        ControlMgr.SetVisibleControl(Me.Page, textboxBankAccountNo, True)
-        ControlMgr.SetVisibleControl(Me.Page, LabelSpaceAccNo, True)
+        ControlMgr.SetVisibleControl(Page, labelBankAccountNo, True)
+        ControlMgr.SetVisibleControl(Page, textboxBankAccountNo, True)
+        ControlMgr.SetVisibleControl(Page, LabelSpaceAccNo, True)
     End Sub
 
     Private Sub HideBankAccNo()
-        ControlMgr.SetVisibleControl(Me.Page, labelBankAccountNo, False)
-        ControlMgr.SetVisibleControl(Me.Page, labelBankAccountNo_Last4Digits, False)
-        ControlMgr.SetVisibleControl(Me.Page, textboxBankAccountNo, False)
-        ControlMgr.SetVisibleControl(Me.Page, LabelSpaceAccNo, False)
+        ControlMgr.SetVisibleControl(Page, labelBankAccountNo, False)
+        ControlMgr.SetVisibleControl(Page, labelBankAccountNo_Last4Digits, False)
+        ControlMgr.SetVisibleControl(Page, textboxBankAccountNo, False)
+        ControlMgr.SetVisibleControl(Page, LabelSpaceAccNo, False)
         textboxBankAccountNo.Text = String.Empty
     End Sub
 
     Private Sub DisplaySwiftCode()
-        ControlMgr.SetVisibleControl(Me.Page, labelSwiftCode, True)
-        ControlMgr.SetVisibleControl(Me.Page, textboxSwiftCode, True)
-        ControlMgr.SetVisibleControl(Me.Page, LabelSpaceSwiftCode, True)
+        ControlMgr.SetVisibleControl(Page, labelSwiftCode, True)
+        ControlMgr.SetVisibleControl(Page, textboxSwiftCode, True)
+        ControlMgr.SetVisibleControl(Page, LabelSpaceSwiftCode, True)
     End Sub
 
     Private Sub HideSwiftCode()
-        ControlMgr.SetVisibleControl(Me.Page, labelSwiftCode, False)
-        ControlMgr.SetVisibleControl(Me.Page, textboxSwiftCode, False)
-        ControlMgr.SetVisibleControl(Me.Page, LabelSpaceSwiftCode, False)
+        ControlMgr.SetVisibleControl(Page, labelSwiftCode, False)
+        ControlMgr.SetVisibleControl(Page, textboxSwiftCode, False)
+        ControlMgr.SetVisibleControl(Page, LabelSpaceSwiftCode, False)
         textboxSwiftCode.Text = String.Empty
     End Sub
 
     Private Sub DisplayIBAN_Number()
-        ControlMgr.SetVisibleControl(Me.Page, labelIBAN_Number, True)
-        ControlMgr.SetVisibleControl(Me.Page, textboxIBAN_Number, True)
-        ControlMgr.SetVisibleControl(Me.Page, LabelSpaceIBAN, True)
+        ControlMgr.SetVisibleControl(Page, labelIBAN_Number, True)
+        ControlMgr.SetVisibleControl(Page, textboxIBAN_Number, True)
+        ControlMgr.SetVisibleControl(Page, LabelSpaceIBAN, True)
     End Sub
 
     Private Sub HideIBAN_Number()
-        ControlMgr.SetVisibleControl(Me.Page, labelIBAN_Number, False)
-        ControlMgr.SetVisibleControl(Me.Page, textboxIBAN_Number, False)
-        ControlMgr.SetVisibleControl(Me.Page, LabelSpaceIBAN, False)
+        ControlMgr.SetVisibleControl(Page, labelIBAN_Number, False)
+        ControlMgr.SetVisibleControl(Page, textboxIBAN_Number, False)
+        ControlMgr.SetVisibleControl(Page, LabelSpaceIBAN, False)
         textboxIBAN_Number.Text = String.Empty
     End Sub
     Private Sub DisplayAccountDigit()
-        ControlMgr.SetVisibleControl(Me.Page, lblAcctDigit, True)
-        ControlMgr.SetVisibleControl(Me.Page, txtAcctDigit, True)
-        ControlMgr.SetVisibleControl(Me.Page, lblBankAcctDigit, True)
+        ControlMgr.SetVisibleControl(Page, lblAcctDigit, True)
+        ControlMgr.SetVisibleControl(Page, txtAcctDigit, True)
+        ControlMgr.SetVisibleControl(Page, lblBankAcctDigit, True)
     End Sub
 
     Private Sub HideAccountDigit()
-        ControlMgr.SetVisibleControl(Me.Page, lblAcctDigit, False)
-        ControlMgr.SetVisibleControl(Me.Page, txtAcctDigit, False)
-        ControlMgr.SetVisibleControl(Me.Page, lblBankAcctDigit, False)
+        ControlMgr.SetVisibleControl(Page, lblAcctDigit, False)
+        ControlMgr.SetVisibleControl(Page, txtAcctDigit, False)
+        ControlMgr.SetVisibleControl(Page, lblBankAcctDigit, False)
         txtAcctDigit.Text = String.Empty
     End Sub
 
     Private Sub DisplayBranchDigit()
-        ControlMgr.SetVisibleControl(Me.Page, lblBranchDigit, True)
-        ControlMgr.SetVisibleControl(Me.Page, txtBranchDigit, True)
-        ControlMgr.SetVisibleControl(Me.Page, lblBankBranchDigit, True)
+        ControlMgr.SetVisibleControl(Page, lblBranchDigit, True)
+        ControlMgr.SetVisibleControl(Page, txtBranchDigit, True)
+        ControlMgr.SetVisibleControl(Page, lblBankBranchDigit, True)
     End Sub
 
     Private Sub HideBranchDigit()
-        ControlMgr.SetVisibleControl(Me.Page, lblBranchDigit, False)
-        ControlMgr.SetVisibleControl(Me.Page, txtBranchDigit, False)
-        ControlMgr.SetVisibleControl(Me.Page, lblBankBranchDigit, False)
+        ControlMgr.SetVisibleControl(Page, lblBranchDigit, False)
+        ControlMgr.SetVisibleControl(Page, txtBranchDigit, False)
+        ControlMgr.SetVisibleControl(Page, lblBankBranchDigit, False)
         txtBranchDigit.Text = String.Empty
     End Sub
 
     Private Sub HideTranslimit()
-        ControlMgr.SetVisibleControl(Me.Page, labelTranslimit, False)
-        ControlMgr.SetVisibleControl(Me.Page, txtTransLimit, False)
-        ControlMgr.SetVisibleControl(Me.Page, lblTransLimit, False)
+        ControlMgr.SetVisibleControl(Page, labelTranslimit, False)
+        ControlMgr.SetVisibleControl(Page, txtTransLimit, False)
+        ControlMgr.SetVisibleControl(Page, lblTransLimit, False)
         txtTransLimit.Text = String.Empty
     End Sub
     Private Sub DisplayTranslimit()
-        ControlMgr.SetVisibleControl(Me.Page, labelTranslimit, True)
-        ControlMgr.SetVisibleControl(Me.Page, txtTransLimit, True)
-        ControlMgr.SetVisibleControl(Me.Page, lblTransLimit, True)
+        ControlMgr.SetVisibleControl(Page, labelTranslimit, True)
+        ControlMgr.SetVisibleControl(Page, txtTransLimit, True)
+        ControlMgr.SetVisibleControl(Page, lblTransLimit, True)
     End Sub
     Private Sub HideBankSubCode()
-        ControlMgr.SetVisibleControl(Me.Page, labelbanksubcode, False)
-        ControlMgr.SetVisibleControl(Me.Page, txtBankSubcode, False)
-        ControlMgr.SetVisibleControl(Me.Page, lblBankSubcode, False)
+        ControlMgr.SetVisibleControl(Page, labelbanksubcode, False)
+        ControlMgr.SetVisibleControl(Page, txtBankSubcode, False)
+        ControlMgr.SetVisibleControl(Page, lblBankSubcode, False)
         txtBankSubcode.Text = String.Empty
     End Sub
     Private Sub DisplayBankSubCode()
-        ControlMgr.SetVisibleControl(Me.Page, lblBankSubcode, True)
-        ControlMgr.SetVisibleControl(Me.Page, txtBankSubcode, True)
-        ControlMgr.SetVisibleControl(Me.Page, labelbanksubcode, True)
+        ControlMgr.SetVisibleControl(Page, lblBankSubcode, True)
+        ControlMgr.SetVisibleControl(Page, txtBankSubcode, True)
+        ControlMgr.SetVisibleControl(Page, labelbanksubcode, True)
     End Sub
 
     Private Sub HideBanklookupCode()
-        ControlMgr.SetVisibleControl(Me.Page, labelBanklookup, False)
-        ControlMgr.SetVisibleControl(Me.Page, txtBankLookupCode, False)
-        ControlMgr.SetVisibleControl(Me.Page, lblBankLookupCode, False)
+        ControlMgr.SetVisibleControl(Page, labelBanklookup, False)
+        ControlMgr.SetVisibleControl(Page, txtBankLookupCode, False)
+        ControlMgr.SetVisibleControl(Page, lblBankLookupCode, False)
         txtBankLookupCode.Text = String.Empty
     End Sub
     Private Sub DisplayBankLookupCode()
-        ControlMgr.SetVisibleControl(Me.Page, labelBanklookup, True)
-        ControlMgr.SetVisibleControl(Me.Page, txtBankLookupCode, True)
-        ControlMgr.SetVisibleControl(Me.Page, lblBankLookupCode, True)
+        ControlMgr.SetVisibleControl(Page, labelBanklookup, True)
+        ControlMgr.SetVisibleControl(Page, txtBankLookupCode, True)
+        ControlMgr.SetVisibleControl(Page, lblBankLookupCode, True)
     End Sub
     Private Sub HideBankSortCode()
-        ControlMgr.SetVisibleControl(Me.Page, labelBankSortCode, False)
-        ControlMgr.SetVisibleControl(Me.Page, txtBankSortCode, False)
-        ControlMgr.SetVisibleControl(Me.Page, lblBankSortCode, False)
+        ControlMgr.SetVisibleControl(Page, labelBankSortCode, False)
+        ControlMgr.SetVisibleControl(Page, txtBankSortCode, False)
+        ControlMgr.SetVisibleControl(Page, lblBankSortCode, False)
         txtBankSubcode.Text = String.Empty
     End Sub
     Private Sub DisplayBankSortCode()
-        ControlMgr.SetVisibleControl(Me.Page, labelBankSortCode, True)
-        ControlMgr.SetVisibleControl(Me.Page, txtBankSortCode, True)
-        ControlMgr.SetVisibleControl(Me.Page, lblBankSortCode, True)
-        ControlMgr.SetVisibleControl(Me.Page, cboBankSortCodes, False)
+        ControlMgr.SetVisibleControl(Page, labelBankSortCode, True)
+        ControlMgr.SetVisibleControl(Page, txtBankSortCode, True)
+        ControlMgr.SetVisibleControl(Page, lblBankSortCode, True)
+        ControlMgr.SetVisibleControl(Page, cboBankSortCodes, False)
     End Sub
     Public Sub HideCboBankSortCode()
-        ControlMgr.SetVisibleControl(Me.Page, labelBankSortCode, True)
-        ControlMgr.SetVisibleControl(Me.Page, txtBankSortCode, True)
-        ControlMgr.SetVisibleControl(Me.Page, lblBankSortCode, True)
-        ControlMgr.SetVisibleControl(Me.Page, cboBankSortCodes, False)
+        ControlMgr.SetVisibleControl(Page, labelBankSortCode, True)
+        ControlMgr.SetVisibleControl(Page, txtBankSortCode, True)
+        ControlMgr.SetVisibleControl(Page, lblBankSortCode, True)
+        ControlMgr.SetVisibleControl(Page, cboBankSortCodes, False)
     End Sub
     Private Sub DisplayCboBankSortCode()
-        ControlMgr.SetVisibleControl(Me.Page, labelBankSortCode, True)
-        ControlMgr.SetVisibleControl(Me.Page, cboBankSortCodes, True)
-        ControlMgr.SetVisibleControl(Me.Page, txtBankSortCode, False)
-        ControlMgr.SetVisibleControl(Me.Page, lblBankSortCode, False)
+        ControlMgr.SetVisibleControl(Page, labelBankSortCode, True)
+        ControlMgr.SetVisibleControl(Page, cboBankSortCodes, True)
+        ControlMgr.SetVisibleControl(Page, txtBankSortCode, False)
+        ControlMgr.SetVisibleControl(Page, lblBankSortCode, False)
     End Sub
     Private Sub HideBranchName()
-        ControlMgr.SetVisibleControl(Me.Page, lblBranchName, False)
-        ControlMgr.SetVisibleControl(Me.Page, txtBankBranchName, False)
-        ControlMgr.SetVisibleControl(Me.Page, lblSpaceBranchName, False)
+        ControlMgr.SetVisibleControl(Page, lblBranchName, False)
+        ControlMgr.SetVisibleControl(Page, txtBankBranchName, False)
+        ControlMgr.SetVisibleControl(Page, lblSpaceBranchName, False)
         txtBankBranchName.Text = String.Empty
     End Sub
     Private Sub DisplayBranchName()
-        ControlMgr.SetVisibleControl(Me.Page, lblBranchName, True)
-        ControlMgr.SetVisibleControl(Me.Page, txtBankBranchName, True)
-        ControlMgr.SetVisibleControl(Me.Page, lblSpaceBranchName, True)
+        ControlMgr.SetVisibleControl(Page, lblBranchName, True)
+        ControlMgr.SetVisibleControl(Page, txtBankBranchName, True)
+        ControlMgr.SetVisibleControl(Page, lblSpaceBranchName, True)
     End Sub
 
     Private Sub HideBranchNumber()
-        ControlMgr.SetVisibleControl(Me.Page, lblBranchNumber, False)
-        ControlMgr.SetVisibleControl(Me.Page, txtBranchNumber, False)
-        ControlMgr.SetVisibleControl(Me.Page, lblBankBranchNumber, False)
+        ControlMgr.SetVisibleControl(Page, lblBranchNumber, False)
+        ControlMgr.SetVisibleControl(Page, txtBranchNumber, False)
+        ControlMgr.SetVisibleControl(Page, lblBankBranchNumber, False)
         txtBranchNumber.Text = String.Empty
     End Sub
     Private Sub DisplayBranchNumber()
-        ControlMgr.SetVisibleControl(Me.Page, lblBranchNumber, True)
-        ControlMgr.SetVisibleControl(Me.Page, txtBranchNumber, True)
-        ControlMgr.SetVisibleControl(Me.Page, lblBankBranchNumber, True)
+        ControlMgr.SetVisibleControl(Page, lblBranchNumber, True)
+        ControlMgr.SetVisibleControl(Page, txtBranchNumber, True)
+        ControlMgr.SetVisibleControl(Page, lblBankBranchNumber, True)
     End Sub
     Public Sub HideTaxId()
-        ControlMgr.SetVisibleControl(Me.Page, labelTaxId, False)
-        ControlMgr.SetVisibleControl(Me.Page, txtTaxId, False)
-        ControlMgr.SetVisibleControl(Me.Page, lblTaxId, False)
+        ControlMgr.SetVisibleControl(Page, labelTaxId, False)
+        ControlMgr.SetVisibleControl(Page, txtTaxId, False)
+        ControlMgr.SetVisibleControl(Page, lblTaxId, False)
         txtTaxId.Text = String.Empty
     End Sub
     Public Sub DisplayTaxId()
-        ControlMgr.SetVisibleControl(Me.Page, labelTaxId, True)
-        ControlMgr.SetVisibleControl(Me.Page, txtTaxId, True)
-        ControlMgr.SetVisibleControl(Me.Page, lblTaxId, True)
+        ControlMgr.SetVisibleControl(Page, labelTaxId, True)
+        ControlMgr.SetVisibleControl(Page, txtTaxId, True)
+        ControlMgr.SetVisibleControl(Page, lblTaxId, True)
     End Sub
 
     Private Sub DisplayAccountType()
-        ControlMgr.SetVisibleControl(Me.Page, labelAccountType, True)
-        ControlMgr.SetVisibleControl(Me.Page, moAccountTypeDrop, True)
+        ControlMgr.SetVisibleControl(Page, labelAccountType, True)
+        ControlMgr.SetVisibleControl(Page, moAccountTypeDrop, True)
     End Sub
     Private Sub HideAccountType()
-        ControlMgr.SetVisibleControl(Me.Page, labelAccountType, False)
-        ControlMgr.SetVisibleControl(Me.Page, moAccountTypeDrop, False)
+        ControlMgr.SetVisibleControl(Page, labelAccountType, False)
+        ControlMgr.SetVisibleControl(Page, moAccountTypeDrop, False)
     End Sub
 
     Private Sub DisplayAddressControls()
-        ControlMgr.SetVisibleControl(Me.Page, labelAddress1, True)
-        ControlMgr.SetVisibleControl(Me.Page, lblAddress1, True)
-        ControlMgr.SetVisibleControl(Me.Page, txtAddress1, True)
+        ControlMgr.SetVisibleControl(Page, labelAddress1, True)
+        ControlMgr.SetVisibleControl(Page, lblAddress1, True)
+        ControlMgr.SetVisibleControl(Page, txtAddress1, True)
 
-        ControlMgr.SetVisibleControl(Me.Page, labelAddress2, True)
-        ControlMgr.SetVisibleControl(Me.Page, lblAddress2, True)
-        ControlMgr.SetVisibleControl(Me.Page, txtAddress2, True)
+        ControlMgr.SetVisibleControl(Page, labelAddress2, True)
+        ControlMgr.SetVisibleControl(Page, lblAddress2, True)
+        ControlMgr.SetVisibleControl(Page, txtAddress2, True)
 
-        ControlMgr.SetVisibleControl(Me.Page, labelCity, True)
-        ControlMgr.SetVisibleControl(Me.Page, lblCity, True)
-        ControlMgr.SetVisibleControl(Me.Page, txtCity, True)
+        ControlMgr.SetVisibleControl(Page, labelCity, True)
+        ControlMgr.SetVisibleControl(Page, lblCity, True)
+        ControlMgr.SetVisibleControl(Page, txtCity, True)
 
-        ControlMgr.SetVisibleControl(Me.Page, labelPostalCode, True)
-        ControlMgr.SetVisibleControl(Me.Page, lblPostalCode, True)
-        ControlMgr.SetVisibleControl(Me.Page, txtPostalCode, True)
+        ControlMgr.SetVisibleControl(Page, labelPostalCode, True)
+        ControlMgr.SetVisibleControl(Page, lblPostalCode, True)
+        ControlMgr.SetVisibleControl(Page, txtPostalCode, True)
     End Sub
 
     Private Sub HideAddressControls()
-        ControlMgr.SetVisibleControl(Me.Page, labelAddress1, False)
-        ControlMgr.SetVisibleControl(Me.Page, lblAddress1, False)
-        ControlMgr.SetVisibleControl(Me.Page, txtAddress1, False)
+        ControlMgr.SetVisibleControl(Page, labelAddress1, False)
+        ControlMgr.SetVisibleControl(Page, lblAddress1, False)
+        ControlMgr.SetVisibleControl(Page, txtAddress1, False)
 
-        ControlMgr.SetVisibleControl(Me.Page, labelAddress2, False)
-        ControlMgr.SetVisibleControl(Me.Page, lblAddress2, False)
-        ControlMgr.SetVisibleControl(Me.Page, txtAddress2, False)
+        ControlMgr.SetVisibleControl(Page, labelAddress2, False)
+        ControlMgr.SetVisibleControl(Page, lblAddress2, False)
+        ControlMgr.SetVisibleControl(Page, txtAddress2, False)
 
-        ControlMgr.SetVisibleControl(Me.Page, labelCity, False)
-        ControlMgr.SetVisibleControl(Me.Page, lblCity, False)
-        ControlMgr.SetVisibleControl(Me.Page, txtCity, False)
+        ControlMgr.SetVisibleControl(Page, labelCity, False)
+        ControlMgr.SetVisibleControl(Page, lblCity, False)
+        ControlMgr.SetVisibleControl(Page, txtCity, False)
 
-        ControlMgr.SetVisibleControl(Me.Page, labelPostalCode, False)
-        ControlMgr.SetVisibleControl(Me.Page, lblPostalCode, False)
-        ControlMgr.SetVisibleControl(Me.Page, txtPostalCode, False)
+        ControlMgr.SetVisibleControl(Page, labelPostalCode, False)
+        ControlMgr.SetVisibleControl(Page, lblPostalCode, False)
+        ControlMgr.SetVisibleControl(Page, txtPostalCode, False)
     End Sub
 
     Private Sub DomesticTransfer()
-        If Not Me.State.myBankInfoBo Is Nothing Then
-            Me.State.myBankInfoBo.DomesticTransfer = True
-            Me.State.myBankInfoBo.InternationalEUTransfer = False
-            Me.State.myBankInfoBo.InternationalTransfer = False
+        If State.myBankInfoBo IsNot Nothing Then
+            State.myBankInfoBo.DomesticTransfer = True
+            State.myBankInfoBo.InternationalEUTransfer = False
+            State.myBankInfoBo.InternationalTransfer = False
         End If
         EnableDisableRequiredControls()
     End Sub
     Private Sub InternationalEUTransfer()
-        If Not Me.State.myBankInfoBo Is Nothing Then
-            Me.State.myBankInfoBo.DomesticTransfer = False
-            Me.State.myBankInfoBo.InternationalEUTransfer = True
-            Me.State.myBankInfoBo.InternationalTransfer = False
+        If State.myBankInfoBo IsNot Nothing Then
+            State.myBankInfoBo.DomesticTransfer = False
+            State.myBankInfoBo.InternationalEUTransfer = True
+            State.myBankInfoBo.InternationalTransfer = False
         End If
         EnableDisableRequiredControls()
     End Sub
 
     Private Sub InternationalTransfer()
-        If Not Me.State.myBankInfoBo Is Nothing Then
-            Me.State.myBankInfoBo.DomesticTransfer = False
-            Me.State.myBankInfoBo.InternationalEUTransfer = False
-            Me.State.myBankInfoBo.InternationalTransfer = True
+        If State.myBankInfoBo IsNot Nothing Then
+            State.myBankInfoBo.DomesticTransfer = False
+            State.myBankInfoBo.InternationalEUTransfer = False
+            State.myBankInfoBo.InternationalTransfer = True
         End If
         EnableDisableRequiredControls()
     End Sub
 
-    Private Sub moCountryDrop_WRITE_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moCountryDrop_WRITE.SelectedIndexChanged
-        If (Not (Me.State.myBankInfoBo.SourceCountryID.Equals(Guid.Empty))) And (Not (Me.Page.GetSelectedItem(Me.moCountryDrop_WRITE).Equals(Guid.Empty))) Then
-            If Me.State.myBankInfoBo.SourceCountryID.Equals(Me.Page.GetSelectedItem(Me.moCountryDrop_WRITE)) Then
+    Private Sub moCountryDrop_WRITE_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moCountryDrop_WRITE.SelectedIndexChanged
+        If (Not (State.myBankInfoBo.SourceCountryID.Equals(Guid.Empty))) AndAlso (Not (Page.GetSelectedItem(moCountryDrop_WRITE).Equals(Guid.Empty))) Then
+            If State.myBankInfoBo.SourceCountryID.Equals(Page.GetSelectedItem(moCountryDrop_WRITE)) Then
                 'Domestic transfer
                 DomesticTransfer()
             Else
-                Dim objCountry As New Country(Me.Page.GetSelectedItem(Me.moCountryDrop_WRITE))
+                Dim objCountry As New Country(Page.GetSelectedItem(moCountryDrop_WRITE))
                 If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, objCountry.EuropeanCountryId) = Codes.YESNO_Y Then
                     'International transfer 
                     InternationalEUTransfer()
@@ -810,7 +810,7 @@ Partial Class UserControlBankInfo_New
             End If
 
             ' aDefaultBN.ContextKey = GuidControl.GuidToHexString(Me.Page.GetSelectedItem(Me.moCountryDrop_WRITE))
-            EnableControlsBasedOnCountry(Me.Page.GetSelectedItem(Me.moCountryDrop_WRITE))
+            EnableControlsBasedOnCountry(Page.GetSelectedItem(moCountryDrop_WRITE))
         Else
             'Domestic transfer
             DomesticTransfer()
@@ -838,9 +838,9 @@ Partial Class UserControlBankInfo_New
 
     Public Sub EnableDisableRequiredControls()
 
-        If Not Me.State.myBankInfoBo Is Nothing Then
+        If State.myBankInfoBo IsNot Nothing Then
 
-            If Me.State.myBankInfoBo.ValidateFieldsforFR = True Then
+            If State.myBankInfoBo.ValidateFieldsforFR = True Then
 
                 HideNameonAccount()
                 HideCountryOfBank()
@@ -867,7 +867,7 @@ Partial Class UserControlBankInfo_New
                 HideAccountType()
                 HideAddressControls()
 
-            ElseIf Me.State.myBankInfoBo.SepaEUBankTransfer = True Then
+            ElseIf State.myBankInfoBo.SepaEUBankTransfer = True Then
                 DisplaySwiftCode()
                 DisplayIBAN_Number()
 
@@ -887,7 +887,7 @@ Partial Class UserControlBankInfo_New
                 HideBranchName()
                 HideAccountType()
 
-            ElseIf Me.State.myBankInfoBo.DomesticTransfer = True Then
+            ElseIf State.myBankInfoBo.DomesticTransfer = True Then
 
                 DisplayBankNametxt()
                 DisplayBankID()
@@ -909,7 +909,7 @@ Partial Class UserControlBankInfo_New
                 HideBranchDigit()
                 HideBranchNumber()
 
-            ElseIf Me.State.myBankInfoBo.InternationalTransfer = True Then
+            ElseIf State.myBankInfoBo.InternationalTransfer = True Then
 
                 'International transfer & Destination is not a European country---display bank Id, bank Account #, Swift Code controls 
                 DisplayBankNametxt()
@@ -931,7 +931,7 @@ Partial Class UserControlBankInfo_New
                 HideBranchNumber()
 
 
-            ElseIf Me.State.myBankInfoBo.InternationalEUTransfer = True Then
+            ElseIf State.myBankInfoBo.InternationalEUTransfer = True Then
 
                 'International transfer & Destination is European country---hide bank Id and bank Account # controls 
                 HideBankName()
@@ -966,10 +966,10 @@ Partial Class UserControlBankInfo_New
         End If
     End Sub
 
-    Public Sub GetBankIdForBankName(ByVal sender As Object, ByVal e As System.EventArgs) Handles moBankName.SelectedIndexChanged
-        If Not Me.Page.GetSelectedItem(moBankName).Equals(Guid.Empty) Then
+    Public Sub GetBankIdForBankName(sender As Object, e As System.EventArgs) Handles moBankName.SelectedIndexChanged
+        If Not Page.GetSelectedItem(moBankName).Equals(Guid.Empty) Then
             Dim boBankName As BankName
-            boBankName = New BankName(Me.Page.GetSelectedItem(moBankName))
+            boBankName = New BankName(Page.GetSelectedItem(moBankName))
             textboxBankID.Text = boBankName.Code
         Else
             textboxBankID.Text = String.Empty
@@ -997,7 +997,7 @@ Partial Class UserControlBankInfo_New
 
     '    End Sub
 
-    Public Sub EnableControlsBasedOnCountry(ByVal SelectedCountryId As Guid)
+    Public Sub EnableControlsBasedOnCountry(SelectedCountryId As Guid)
 
         'If Not (Me.Page.GetSelectedItem(Me.moCountryDrop_WRITE).Equals(Guid.Empty)) Then ' req-5383
 
@@ -1007,14 +1007,14 @@ Partial Class UserControlBankInfo_New
                 DisplayBankNameDP()
                 DisplayBankID()
                 PopulateBankNameDropdown(SelectedCountryId)
-                ControlMgr.SetEnableControl(Me.Page, textboxBankID, False)
+                ControlMgr.SetEnableControl(Page, textboxBankID, False)
             Else
                 DisplayBankNametxt()
-                ControlMgr.SetEnableControl(Me.Page, textboxBankID, True)
+                ControlMgr.SetEnableControl(Page, textboxBankID, True)
             End If
             If LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATE_BANK_INFO, ocountry.ValidateBankInfoId) = Codes.Country_Code_Brasil Then
-                Me._validateBankInfoCountry = Codes.Country_Code_Brasil
-                Me.State.myBankInfoBo.ValidateFieldsforBR = True
+                _validateBankInfoCountry = Codes.Country_Code_Brasil
+                State.myBankInfoBo.ValidateFieldsforBR = True
 
                 DisplayBankAccNo()
                 DisplayAccountDigit()
@@ -1034,8 +1034,8 @@ Partial Class UserControlBankInfo_New
 
                 SetTheRequiredFields()
             ElseIf LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATE_BANK_INFO, ocountry.ValidateBankInfoId) = Codes.Country_Code_Argentina Then
-                Me._validateBankInfoCountry = Codes.Country_Code_Argentina
-                Me.State.myBankInfoBo.ValidateFieldsforBR = False
+                _validateBankInfoCountry = Codes.Country_Code_Argentina
+                State.myBankInfoBo.ValidateFieldsforBR = False
                 DisplayAccountType()
                 DisplayAddressControls()
 
@@ -1045,16 +1045,16 @@ Partial Class UserControlBankInfo_New
                 HideAddressControls()
             ElseIf (LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATE_BANK_INFO, ocountry.ValidateBankInfoId) = Codes.Country_Code_France) Then
                 Dim Payee As String
-                If (Not CType(Parent.FindControl("cboPayeeSelector"), DropDownList) Is Nothing) Then
+                If (CType(Parent.FindControl("cboPayeeSelector"), DropDownList) IsNot Nothing) Then
 
-                    If (CType(Parent.FindControl("cboPayeeSelector"), DropDownList).Items.Count > 0 And Not CType(Parent.FindControl("cboPayeeSelector"), DropDownList).SelectedItem Is Nothing) Then
+                    If (CType(Parent.FindControl("cboPayeeSelector"), DropDownList).Items.Count > 0 AndAlso CType(Parent.FindControl("cboPayeeSelector"), DropDownList).SelectedItem IsNot Nothing) Then
                         Payee = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE, ElitaPlusPage.GetSelectedItem(CType(Parent.FindControl("cboPayeeSelector"), DropDownList)))
                     End If
 
                     If (Payee = ClaimInvoice.PAYEE_OPTION_CUSTOMER) Then
-                        Me._validateBankInfoCountry = Codes.Country_Code_France
+                        _validateBankInfoCountry = Codes.Country_Code_France
 
-                        Me.State.myBankInfoBo.ValidateFieldsforBR = False
+                        State.myBankInfoBo.ValidateFieldsforBR = False
                         DisplayIBAN_Number()
                         DisplayAddressControls()
 
@@ -1077,7 +1077,7 @@ Partial Class UserControlBankInfo_New
                 End If
 
             Else
-                Me.State.myBankInfoBo.ValidateFieldsforBR = False
+                State.myBankInfoBo.ValidateFieldsforBR = False
                 HideAccountDigit()
                 HideBranchDigit()
                 HideBranchNumber()
@@ -1088,29 +1088,29 @@ Partial Class UserControlBankInfo_New
     End Sub
 
     Public Sub DisableAllFields()
-        ControlMgr.SetEnableControl(Me.Page, textboxNameAccount, False)
-        ControlMgr.SetEnableControl(Me.Page, moCountryDrop_WRITE, False)
-        ControlMgr.SetEnableControl(Me.Page, txtBankName, False)
-        ControlMgr.SetEnableControl(Me.Page, moBankName, False)
-        ControlMgr.SetEnableControl(Me.Page, txtBankBranchName, False)
-        ControlMgr.SetEnableControl(Me.Page, textboxBankID, False)
-        ControlMgr.SetEnableControl(Me.Page, textboxBankAccountNo, False)
-        ControlMgr.SetEnableControl(Me.Page, txtAcctDigit, False)
-        ControlMgr.SetEnableControl(Me.Page, moAccountTypeDrop, False)
-        ControlMgr.SetEnableControl(Me.Page, txtBranchNumber, False)
-        ControlMgr.SetEnableControl(Me.Page, txtBranchDigit, False)
-        ControlMgr.SetEnableControl(Me.Page, textboxSwiftCode, False)
-        ControlMgr.SetEnableControl(Me.Page, textboxIBAN_Number, False)
-        ControlMgr.SetEnableControl(Me.Page, txtBankLookupCode, False)
-        ControlMgr.SetEnableControl(Me.Page, txtBankSubcode, False)
-        ControlMgr.SetEnableControl(Me.Page, txtBankSortCode, False)
-        ControlMgr.SetEnableControl(Me.Page, txtTransLimit, False)
-        ControlMgr.SetEnableControl(Me.Page, txtTaxId, False)
+        ControlMgr.SetEnableControl(Page, textboxNameAccount, False)
+        ControlMgr.SetEnableControl(Page, moCountryDrop_WRITE, False)
+        ControlMgr.SetEnableControl(Page, txtBankName, False)
+        ControlMgr.SetEnableControl(Page, moBankName, False)
+        ControlMgr.SetEnableControl(Page, txtBankBranchName, False)
+        ControlMgr.SetEnableControl(Page, textboxBankID, False)
+        ControlMgr.SetEnableControl(Page, textboxBankAccountNo, False)
+        ControlMgr.SetEnableControl(Page, txtAcctDigit, False)
+        ControlMgr.SetEnableControl(Page, moAccountTypeDrop, False)
+        ControlMgr.SetEnableControl(Page, txtBranchNumber, False)
+        ControlMgr.SetEnableControl(Page, txtBranchDigit, False)
+        ControlMgr.SetEnableControl(Page, textboxSwiftCode, False)
+        ControlMgr.SetEnableControl(Page, textboxIBAN_Number, False)
+        ControlMgr.SetEnableControl(Page, txtBankLookupCode, False)
+        ControlMgr.SetEnableControl(Page, txtBankSubcode, False)
+        ControlMgr.SetEnableControl(Page, txtBankSortCode, False)
+        ControlMgr.SetEnableControl(Page, txtTransLimit, False)
+        ControlMgr.SetEnableControl(Page, txtTaxId, False)
 
-        ControlMgr.SetEnableControl(Me.Page, txtAddress1, False)
-        ControlMgr.SetEnableControl(Me.Page, txtAddress2, False)
-        ControlMgr.SetEnableControl(Me.Page, txtCity, False)
-        ControlMgr.SetEnableControl(Me.Page, txtPostalCode, False)
+        ControlMgr.SetEnableControl(Page, txtAddress1, False)
+        ControlMgr.SetEnableControl(Page, txtAddress2, False)
+        ControlMgr.SetEnableControl(Page, txtCity, False)
+        ControlMgr.SetEnableControl(Page, txtPostalCode, False)
 
         'SwitchToLastFourDigitsLabelMode(Me.State.myBankInfoBo.ValidateFieldsforFR)
 
@@ -1118,11 +1118,11 @@ Partial Class UserControlBankInfo_New
 
 
 
-    Public Sub SetRequiredFieldsForDealerWithGiftCard(ByVal dealer As Dealer)
+    Public Sub SetRequiredFieldsForDealerWithGiftCard(dealer As Dealer)
         If (dealer.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = Codes.ATTR_DARTY_GIFT_CARD_TYPE).Count > 0) Then
-            If labelAddress1.Text.IndexOf("*") <> 0 Then Me.labelAddress1.Text = "* " & Me.labelAddress1.Text
-            If labelCity.Text.IndexOf("*") <> 0 Then Me.labelCity.Text = "* " & Me.labelCity.Text
-            If labelPostalCode.Text.IndexOf("*") <> 0 Then Me.labelPostalCode.Text = "* " & Me.labelPostalCode.Text
+            If labelAddress1.Text.IndexOf("*") <> 0 Then labelAddress1.Text = "* " & labelAddress1.Text
+            If labelCity.Text.IndexOf("*") <> 0 Then labelCity.Text = "* " & labelCity.Text
+            If labelPostalCode.Text.IndexOf("*") <> 0 Then labelPostalCode.Text = "* " & labelPostalCode.Text
 
         End If
     End Sub
@@ -1136,9 +1136,9 @@ Partial Class UserControlBankInfo_New
     End Sub
 
     Public Sub SwitchToEditView()
-        If Me.State.myBankInfoBo.ValidateFieldsforFR Then
-            ControlMgr.SetEnableControl(Me.Page, textboxIBAN_Number, True)
-            ControlMgr.SetEnableControl(Me.Page, txtBankLookupCode, True)
+        If State.myBankInfoBo.ValidateFieldsforFR Then
+            ControlMgr.SetEnableControl(Page, textboxIBAN_Number, True)
+            ControlMgr.SetEnableControl(Page, txtBankLookupCode, True)
 
             'textboxIBAN_Number.Text = String.Empty
             'txtBankLookupCode.Text = String.Empty
@@ -1148,9 +1148,9 @@ Partial Class UserControlBankInfo_New
         End If
     End Sub
     Public Sub SwitchToReadOnlyView()
-        If Me.State.myBankInfoBo.ValidateFieldsforFR Then
-            ControlMgr.SetEnableControl(Me.Page, textboxIBAN_Number, False)
-            ControlMgr.SetEnableControl(Me.Page, txtBankLookupCode, False)
+        If State.myBankInfoBo.ValidateFieldsforFR Then
+            ControlMgr.SetEnableControl(Page, textboxIBAN_Number, False)
+            ControlMgr.SetEnableControl(Page, txtBankLookupCode, False)
         End If
     End Sub
 

@@ -25,7 +25,7 @@ Namespace Tables
 
         Public ReadOnly Property IsEditing() As Boolean
             Get
-                IsEditing = (Me.grdView.EditIndex > NO_ROW_SELECTED_INDEX)
+                IsEditing = (grdView.EditIndex > NO_ROW_SELECTED_INDEX)
             End Get
         End Property
 
@@ -68,9 +68,9 @@ Namespace Tables
             Public LastOperation As DetailPageCommand
             Public EditingBo As AcctCompany
             Public HasDataChanged As Boolean
-            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As AcctCompany, ByVal hasDataChanged As Boolean)
-                Me.LastOperation = LastOp
-                Me.EditingBo = curEditingBo
+            Public Sub New(LastOp As DetailPageCommand, curEditingBo As AcctCompany, hasDataChanged As Boolean)
+                LastOperation = LastOp
+                EditingBo = curEditingBo
                 Me.HasDataChanged = hasDataChanged
             End Sub
         End Class
@@ -90,7 +90,7 @@ Namespace Tables
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -143,24 +143,24 @@ Namespace Tables
 
 #Region "Button Click Handlers"
 
-        Private Sub SearchButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SearchButton.Click
+        Private Sub SearchButton_Click(sender As System.Object, e As System.EventArgs) Handles SearchButton.Click
             Try
-                Me.State.IsGridVisible = True
-                Me.State.searchDV = Nothing
+                State.IsGridVisible = True
+                State.searchDV = Nothing
                 PopulateGrid()
                 'Me.State.PageIndex = Me.grdView.CurrentPageIndex
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
 
-        Private Sub ClearButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ClearButton.Click
+        Private Sub ClearButton_Click(sender As System.Object, e As System.EventArgs) Handles ClearButton.Click
 
             Try
                 ClearSearchCriteria()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
@@ -171,25 +171,25 @@ Namespace Tables
                 SearchDescriptionTextBox.Text = String.Empty
 
                 'Update Page State
-                With Me.State
+                With State
                     .DescriptionMask = SearchDescriptionTextBox.Text
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
 
-        Private Sub NewButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles NewButton_WRITE.Click
+        Private Sub NewButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles NewButton_WRITE.Click
 
             Try
-                Me.State.IsEditMode = True
-                Me.State.IsGridVisible = True
-                Me.State.AddingNewRow = True
+                State.IsEditMode = True
+                State.IsGridVisible = True
+                State.AddingNewRow = True
                 AddNew()
                 ' SetButtonsState()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
@@ -200,54 +200,54 @@ Namespace Tables
 #Region "Private Methods"
 
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.MenuEnabled = True
-                Me.IsReturningFromChild = True
+                MenuEnabled = True
+                IsReturningFromChild = True
                 Dim retObj As AccountingCompanyForm.ReturnType = CType(ReturnPar, AccountingCompanyForm.ReturnType)
 
-                Me.State.searchDV = Nothing
+                State.searchDV = Nothing
 
                 Select Case retObj.LastOperation
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        If Not retObj Is Nothing AndAlso Not retObj.EditingBo.IsNew Then
-                            Me.State.Id = retObj.EditingBo.Id
+                        If retObj IsNot Nothing AndAlso Not retObj.EditingBo.IsNew Then
+                            State.Id = retObj.EditingBo.Id
                         End If
-                        Me.State.IsGridVisible = True
+                        State.IsGridVisible = True
 
                     Case ElitaPlusPage.DetailPageCommand.Delete
-                        Me.AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
+                        AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
                 End Select
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
 
             'Put user code to initialize the page here
             Try
-                Me.ErrControllerMaster.Clear_Hide()
+                ErrControllerMaster.Clear_Hide()
 
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
 
-                Me.SetStateProperties()
+                SetStateProperties()
                 If Not Page.IsPostBack Then
-                    Me.SortDirection = AcctCompany.AcctCompanyDV.COL_DESCRIPTION
-                    Me.SetDefaultButton(Me.SearchDescriptionTextBox, Me.SearchButton)
+                    SortDirection = AcctCompany.AcctCompanyDV.COL_DESCRIPTION
+                    SetDefaultButton(SearchDescriptionTextBox, SearchButton)
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                    Me.SetGridItemStyleColor(grdView)
-                    Me.State.PageIndex = 0
-                    If Me.State.MyBO Is Nothing Then
-                        Me.State.MyBO = New AcctCompany
+                    SetGridItemStyleColor(grdView)
+                    State.PageIndex = 0
+                    If State.MyBO Is Nothing Then
+                        State.MyBO = New AcctCompany
                     End If
                     '   SetButtonsState()
-                    Me.TranslateGridHeader(Me.grdView)
-                    Me.TranslateGridControls(Me.grdView)
+                    TranslateGridHeader(grdView)
+                    TranslateGridControls(grdView)
                     PopulateAll()
 
-                    If Me.IsReturningFromChild = True Then
+                    If IsReturningFromChild = True Then
                         PopulateGrid()
                     End If
                     'Else
@@ -255,15 +255,15 @@ Namespace Tables
                 End If
                 BindBoPropertiesToGridHeaders()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
 
         Private Sub PopulateAll()
             Dim YESNOdv As DataView = LookupListNew.DropdownLookupList(YESNO, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True)
-            Me.State.YESNOdv = YESNOdv
+            State.YESNOdv = YESNOdv
 
         End Sub
 
@@ -271,28 +271,28 @@ Namespace Tables
 
             Try
 
-                If (Me.State.searchDV Is Nothing) Then
-                    Me.State.searchDV = GetDV()
+                If (State.searchDV Is Nothing) Then
+                    State.searchDV = GetDV()
                 End If
-                Me.State.searchDV.Sort = Me.SortDirection
+                State.searchDV.Sort = SortDirection
 
-                If Me.IsReturningFromChild Then
-                    SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.Id, Me.grdView, Me.State.PageIndex)
+                If IsReturningFromChild Then
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.Id, grdView, State.PageIndex)
                 Else
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Guid.Empty, Me.grdView, Me.State.PageIndex)
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, Guid.Empty, grdView, State.PageIndex)
                 End If
 
-                Me.grdView.AutoGenerateColumns = False
-                Me.grdView.Columns(Me.DESCRIPTION_COL).SortExpression = AcctCompany.AcctCompanyDV.COL_DESCRIPTION
-                Me.grdView.Columns(Me.CODE_COL).SortExpression = AcctCompany.AcctCompanyDV.COL_CODE
-                Me.grdView.Columns(Me.USE_ACCOUNTING_COL).SortExpression = AcctCompany.AcctCompanyDV.COL_USE_ACCOUNTING
-                Me.grdView.Columns(Me.ACCT_SYSTEM_ID_COL).SortExpression = AcctCompany.AcctCompanyDV.COL_ACCT_SYSTEM_ID
+                grdView.AutoGenerateColumns = False
+                grdView.Columns(DESCRIPTION_COL).SortExpression = AcctCompany.AcctCompanyDV.COL_DESCRIPTION
+                grdView.Columns(CODE_COL).SortExpression = AcctCompany.AcctCompanyDV.COL_CODE
+                grdView.Columns(USE_ACCOUNTING_COL).SortExpression = AcctCompany.AcctCompanyDV.COL_USE_ACCOUNTING
+                grdView.Columns(ACCT_SYSTEM_ID_COL).SortExpression = AcctCompany.AcctCompanyDV.COL_ACCT_SYSTEM_ID
 
 
-                Me.SortAndBindGrid()
+                SortAndBindGrid()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
@@ -317,33 +317,33 @@ Namespace Tables
         'End Sub
 
         Private Sub DoDelete()
-            Me.State.MyBO = New AcctCompany(Me.State.Id)
+            State.MyBO = New AcctCompany(State.Id)
 
             Try
-                Me.State.MyBO.Delete()
-                Me.State.MyBO.Save()
+                State.MyBO.Delete()
+                State.MyBO.Save()
             Catch ex As Exception
-                Me.State.MyBO.RejectChanges()
+                State.MyBO.RejectChanges()
                 Throw ex
             End Try
 
-            Me.State.PageIndex = grdView.PageIndex
+            State.PageIndex = grdView.PageIndex
 
             'Set the IsAfterSave flag to TRUE so that the Paging logic gets invoked
-            Me.State.IsAfterSave = True
-            Me.State.searchDV = Nothing
+            State.IsAfterSave = True
+            State.searchDV = Nothing
             PopulateGrid()
-            Me.State.PageIndex = grdView.PageIndex
+            State.PageIndex = grdView.PageIndex
         End Sub
 
         Private Function GetDV() As DataView
 
             Dim dv As DataView
 
-            Me.State.searchDV = GetGridDataView()
-            Me.State.searchDV.Sort = Me.grdView.DataMember()
+            State.searchDV = GetGridDataView()
+            State.searchDV.Sort = grdView.DataMember()
 
-            Return (Me.State.searchDV)
+            Return (State.searchDV)
 
         End Function
 
@@ -357,52 +357,52 @@ Namespace Tables
 
         Private Sub SetStateProperties()
 
-            Me.State.DescriptionMask = SearchDescriptionTextBox.Text
+            State.DescriptionMask = SearchDescriptionTextBox.Text
 
         End Sub
 
         Private Sub AddNew()
 
-            Me.State.MyBO = New AcctCompany
-            Me.State.Id = Me.State.MyBO.Id
+            State.MyBO = New AcctCompany
+            State.Id = State.MyBO.Id
 
             Try
-                Me.callPage(AccountingCompanyDetailForm.URL, New AccountingCompanyDetailForm.ReturnType(Guid.Empty, Me.State.MyBO))
+                callPage(AccountingCompanyDetailForm.URL, New AccountingCompanyDetailForm.ReturnType(Guid.Empty, State.MyBO))
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+                HandleErrors(ex, ErrControllerMaster)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
             End Try
         End Sub
 
         Private Sub SortAndBindGrid()
 
-            Me.State.PageIndex = Me.grdView.PageIndex
-            If (Me.State.searchDV.Count = 0) Then
+            State.PageIndex = grdView.PageIndex
+            If (State.searchDV.Count = 0) Then
 
-                Me.State.bnoRow = True
-                CreateHeaderForEmptyGrid(grdView, Me.SortDirection)
+                State.bnoRow = True
+                CreateHeaderForEmptyGrid(grdView, SortDirection)
             Else
-                Me.State.bnoRow = False
-                Me.grdView.Enabled = True
-                Me.grdView.DataSource = Me.State.searchDV
-                HighLightSortColumn(grdView, Me.SortDirection)
-                Me.grdView.DataBind()
+                State.bnoRow = False
+                grdView.Enabled = True
+                grdView.DataSource = State.searchDV
+                HighLightSortColumn(grdView, SortDirection)
+                grdView.DataBind()
             End If
 
             If Not grdView.BottomPagerRow.Visible Then grdView.BottomPagerRow.Visible = True
 
-            ControlMgr.SetVisibleControl(Me, grdView, Me.State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, grdView, State.IsGridVisible)
 
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.grdView.Visible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, grdView.Visible)
 
-            Session("recCount") = Me.State.searchDV.Count
+            Session("recCount") = State.searchDV.Count
 
-            If Me.grdView.Visible Then
-                If (Me.State.AddingNewRow) Then
-                    Me.lblRecordCount.Text = (Me.State.searchDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If grdView.Visible Then
+                If (State.AddingNewRow) Then
+                    lblRecordCount.Text = (State.searchDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 Else
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             End If
             ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, grdView)
@@ -432,13 +432,13 @@ Namespace Tables
 
         'End Sub
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 grdView.PageIndex = NewCurrentPageIndex(grdView, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
-                Me.PopulateGrid()
+                State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -451,138 +451,138 @@ Namespace Tables
             Get
                 Return ViewState("SortDirection").ToString
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 ViewState("SortDirection") = value
             End Set
         End Property
 
-        Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles grdView.PageIndexChanging
+        Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles grdView.PageIndexChanging
 
             Try
-                Me.State.PageIndex = e.NewPageIndex
-                Me.grdView.PageIndex = Me.State.PageIndex
-                Me.grdView.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
-                Me.State.Id = Guid.Empty
-                Me.PopulateGrid()
+                State.PageIndex = e.NewPageIndex
+                grdView.PageIndex = State.PageIndex
+                grdView.SelectedIndex = NO_ITEM_SELECTED_INDEX
+                State.Id = Guid.Empty
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
 
-        Protected Sub ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+        Protected Sub ItemCommand(source As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
 
             Try
                 Dim index As Integer
 
-                If (e.CommandName = Me.EDIT_COMMAND) Then
+                If (e.CommandName = EDIT_COMMAND) Then
                     index = CInt(e.CommandArgument)
-                    Me.State.Id = New Guid(CType(Me.grdView.Rows(index).Cells(Me.ID_COL).FindControl(Me.ID_CONTROL_NAME), Label).Text)
-                    Me.State.MyBO = New AcctCompany(Me.State.Id)
+                    State.Id = New Guid(CType(grdView.Rows(index).Cells(ID_COL).FindControl(ID_CONTROL_NAME), Label).Text)
+                    State.MyBO = New AcctCompany(State.Id)
 
-                    Me.callPage(AccountingCompanyDetailForm.URL, New AccountingCompanyDetailForm.ReturnType(Me.State.MyBO.Id, Me.State.MyBO))
+                    callPage(AccountingCompanyDetailForm.URL, New AccountingCompanyDetailForm.ReturnType(State.MyBO.Id, State.MyBO))
 
 
-                ElseIf (e.CommandName = Me.DELETE_COMMAND) Then
+                ElseIf (e.CommandName = DELETE_COMMAND) Then
                     index = CInt(e.CommandArgument)
 
                     'Clear the SelectedItemStyle to remove the highlight from the previously saved row
-                    grdView.SelectedIndex = Me.NO_ROW_SELECTED_INDEX
+                    grdView.SelectedIndex = NO_ROW_SELECTED_INDEX
 
-                    Me.State.Id = New Guid(CType(Me.grdView.Rows(index).Cells(Me.ID_COL).FindControl(Me.ID_CONTROL_NAME), Label).Text)
-                    Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenDeletePromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+                    State.Id = New Guid(CType(grdView.Rows(index).Cells(ID_COL).FindControl(ID_CONTROL_NAME), Label).Text)
+                    DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenDeletePromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
                 End If
 
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
 
         'The Binding Logic is here
-        Private Sub ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles grdView.RowDataBound
+        Private Sub ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles grdView.RowDataBound
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-            If Not dvRow Is Nothing And Not Me.State.bnoRow Then
+            If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
 
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
-                    CType(e.Row.Cells(Me.ID_COL).FindControl(Me.ID_CONTROL_NAME), Label).Text = GetGuidStringFromByteArray(CType(dvRow(AcctCompany.AcctCompanyDV.COL_ACCT_COMPANY_ID), Byte()))
+                    CType(e.Row.Cells(ID_COL).FindControl(ID_CONTROL_NAME), Label).Text = GetGuidStringFromByteArray(CType(dvRow(AcctCompany.AcctCompanyDV.COL_ACCT_COMPANY_ID), Byte()))
 
                     Dim dRow() As DataRow
 
-                    CType(e.Row.Cells(Me.DESCRIPTION_COL).FindControl(Me.DESCRIPTION_LABEL_CONTROL_NAME), Label).Text = dvRow(AcctCompany.AcctCompanyDV.COL_DESCRIPTION).ToString
-                    CType(e.Row.Cells(Me.CODE_COL).FindControl(Me.CODE_LABEL_CONTROL_NAME), Label).Text = dvRow(AcctCompany.AcctCompanyDV.COL_CODE).ToString
+                    CType(e.Row.Cells(DESCRIPTION_COL).FindControl(DESCRIPTION_LABEL_CONTROL_NAME), Label).Text = dvRow(AcctCompany.AcctCompanyDV.COL_DESCRIPTION).ToString
+                    CType(e.Row.Cells(CODE_COL).FindControl(CODE_LABEL_CONTROL_NAME), Label).Text = dvRow(AcctCompany.AcctCompanyDV.COL_CODE).ToString
 
                     Dim useAccountingLabel As String = dvRow(AcctCompany.AcctCompanyDV.COL_USE_ACCOUNTING).ToString
-                    dRow = Me.State.YESNOdv.Table.Select("code='" & useAccountingLabel & "' and language_id='" & GuidControl.GuidToHexString(ElitaPlusIdentity.Current.ActiveUser.LanguageId) & "'")
-                    If (Not dRow Is Nothing AndAlso dRow.Length > 0) Then
-                        CType(e.Row.Cells(Me.USE_ACCOUNTING_COL).FindControl(Me.USE_ACCOUNTING_LABEL_CONTROL_NAME), Label).Text = CType(dRow(0).Item("Description"), String)
+                    dRow = State.YESNOdv.Table.Select("code='" & useAccountingLabel & "' and language_id='" & GuidControl.GuidToHexString(ElitaPlusIdentity.Current.ActiveUser.LanguageId) & "'")
+                    If (dRow IsNot Nothing AndAlso dRow.Length > 0) Then
+                        CType(e.Row.Cells(USE_ACCOUNTING_COL).FindControl(USE_ACCOUNTING_LABEL_CONTROL_NAME), Label).Text = CType(dRow(0).Item("Description"), String)
                     End If
 
-                    If (Not e.Row.Cells(Me.ACCT_SYSTEM_ID_COL).FindControl(Me.ACCT_SYSTEM_LIST_LABEL_CONTROL_NAME) Is Nothing) AndAlso (Not dvRow Is Nothing) Then
-                        CType(e.Row.Cells(Me.ACCT_SYSTEM_ID_COL).FindControl(Me.ACCT_SYSTEM_LIST_LABEL_CONTROL_NAME), Label).Text = LookupListNew.GetDescriptionFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), GuidControl.ByteArrayToGuid(dvRow("Acct_system_id")))
+                    If (e.Row.Cells(ACCT_SYSTEM_ID_COL).FindControl(ACCT_SYSTEM_LIST_LABEL_CONTROL_NAME) IsNot Nothing) AndAlso (dvRow IsNot Nothing) Then
+                        CType(e.Row.Cells(ACCT_SYSTEM_ID_COL).FindControl(ACCT_SYSTEM_LIST_LABEL_CONTROL_NAME), Label).Text = LookupListNew.GetDescriptionFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), GuidControl.ByteArrayToGuid(dvRow("Acct_system_id")))
                     End If
 
-                    If (Not e.Row.Cells(Me.PROCESS_METHOD_COL).FindControl(Me.PROCESS_METHOD_LABEL_CONTROL_NAME) Is Nothing) AndAlso (Not dvRow Is Nothing) Then
-                        CType(e.Row.Cells(Me.PROCESS_METHOD_COL).FindControl(Me.PROCESS_METHOD_LABEL_CONTROL_NAME), Label).Text = LookupListNew.GetDescriptionFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_PROCESS_METHOD, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), GuidControl.ByteArrayToGuid(dvRow("process_method_id")))
+                    If (e.Row.Cells(PROCESS_METHOD_COL).FindControl(PROCESS_METHOD_LABEL_CONTROL_NAME) IsNot Nothing) AndAlso (dvRow IsNot Nothing) Then
+                        CType(e.Row.Cells(PROCESS_METHOD_COL).FindControl(PROCESS_METHOD_LABEL_CONTROL_NAME), Label).Text = LookupListNew.GetDescriptionFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_PROCESS_METHOD, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), GuidControl.ByteArrayToGuid(dvRow("process_method_id")))
                     End If
 
                 End If
             End If
         End Sub
 
-        Protected Sub ItemBound(ByVal source As Object, ByVal e As GridViewRowEventArgs) Handles grdView.RowDataBound
+        Protected Sub ItemBound(source As Object, e As GridViewRowEventArgs) Handles grdView.RowDataBound
 
             Try
-                If Not Me.State.bnoRow Then
+                If Not State.bnoRow Then
                     BaseItemBound(source, e)
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub ItemCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+        Protected Sub ItemCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles grdView.Sorting
+        Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles grdView.Sorting
             Try
-                Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
+                Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
-                If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                    If Me.SortDirection.EndsWith(" ASC") Then
-                        Me.SortDirection = e.SortExpression + " DESC"
+                If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                    If SortDirection.EndsWith(" ASC") Then
+                        SortDirection = e.SortExpression + " DESC"
                     Else
-                        Me.SortDirection = e.SortExpression + " ASC"
+                        SortDirection = e.SortExpression + " ASC"
                     End If
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
 
-                Me.State.PageIndex = 0
-                Me.PopulateGrid()
+                State.PageIndex = 0
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
         Protected Sub BindBoPropertiesToGridHeaders()
-            Me.BindBOPropertyToGridHeader(Me.State.MyBO, "Description", Me.grdView.Columns(Me.DESCRIPTION_COL))
-            Me.BindBOPropertyToGridHeader(Me.State.MyBO, "Code", Me.grdView.Columns(Me.CODE_COL))
-            Me.BindBOPropertyToGridHeader(Me.State.MyBO, "UseAccounting", Me.grdView.Columns(Me.USE_ACCOUNTING_COL))
-            Me.BindBOPropertyToGridHeader(Me.State.MyBO, "AcctSystemId", Me.grdView.Columns(Me.ACCT_SYSTEM_ID_COL))
-            Me.BindBOPropertyToGridHeader(Me.State.MyBO, "ProcessMethodId", Me.grdView.Columns(Me.PROCESS_METHOD_COL))
+            BindBOPropertyToGridHeader(State.MyBO, "Description", grdView.Columns(DESCRIPTION_COL))
+            BindBOPropertyToGridHeader(State.MyBO, "Code", grdView.Columns(CODE_COL))
+            BindBOPropertyToGridHeader(State.MyBO, "UseAccounting", grdView.Columns(USE_ACCOUNTING_COL))
+            BindBOPropertyToGridHeader(State.MyBO, "AcctSystemId", grdView.Columns(ACCT_SYSTEM_ID_COL))
+            BindBOPropertyToGridHeader(State.MyBO, "ProcessMethodId", grdView.Columns(PROCESS_METHOD_COL))
 
-            Me.ClearGridViewHeadersAndLabelsErrSign()
+            ClearGridViewHeadersAndLabelsErrSign()
         End Sub
 
-        Private Sub SetFocusOnEditableFieldInGrid(ByVal grid As GridView, ByVal cellPosition As Integer, ByVal controlName As String, ByVal itemIndex As Integer)
+        Private Sub SetFocusOnEditableFieldInGrid(grid As GridView, cellPosition As Integer, controlName As String, itemIndex As Integer)
             'Set focus on the Description TextBox for the EditItemIndex row
             Dim ctl As TextBox = CType(grid.Rows(itemIndex).Cells(cellPosition).FindControl(controlName), TextBox)
             SetFocus(ctl)

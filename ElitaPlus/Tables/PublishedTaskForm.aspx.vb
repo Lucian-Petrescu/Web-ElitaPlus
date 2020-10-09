@@ -23,7 +23,7 @@ Public Class PublishedTaskForm
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -94,26 +94,26 @@ Public Class PublishedTaskForm
 #End Region
 
 #Region "Page_Events"
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Try
-            Me.MasterPage.MessageController.Clear()
+            MasterPage.MessageController.Clear()
 
-            If Not Me.IsPostBack Then
-                If Not (Me.State.SelectedPageSize = DEFAULT_NEW_UI_PAGE_SIZE) Then
-                    Me.State.SelectedPageSize = DEFAULT_NEW_UI_PAGE_SIZE
-                    cboPageSize.SelectedValue = CType(Me.State.SelectedPageSize, String)
-                    grdPublishTask.PageSize = Me.State.SelectedPageSize
+            If Not IsPostBack Then
+                If Not (State.SelectedPageSize = DEFAULT_NEW_UI_PAGE_SIZE) Then
+                    State.SelectedPageSize = DEFAULT_NEW_UI_PAGE_SIZE
+                    cboPageSize.SelectedValue = CType(State.SelectedPageSize, String)
+                    grdPublishTask.PageSize = State.SelectedPageSize
                 End If
 
                 TranslateGridHeader(grdPublishTask)
 
-                Me.UpdateBreadCrum()
+                UpdateBreadCrum()
 
                 PopulateSearchControls()
 
-                Me.AddCalendar(Me.BtnStartDate, Me.txtStartDate)
-                Me.AddCalendar(Me.BtnEndDate, Me.txtEndDate)
+                AddCalendar(BtnStartDate, txtStartDate)
+                AddCalendar(BtnEndDate, txtEndDate)
 
 
                 ' If Me.IsLoadGrid Then
@@ -121,16 +121,16 @@ Public Class PublishedTaskForm
                 'End If
             End If
 
-            Me.DisplayNewProgressBarOnClick(Me.btnSearch, "Loading")
+            DisplayNewProgressBarOnClick(btnSearch, "Loading")
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
     Private Sub UpdateBreadCrum()
 
-        With Me.MasterPage
+        With MasterPage
             .PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
             .PageTitle = TranslationBase.TranslateLabelOrMessage(SUMMARYTITLE)
             .UsePageTabTitleInBreadCrum = False
@@ -141,11 +141,11 @@ Public Class PublishedTaskForm
 #End Region
 
 #Region "Button event handlers"
-    Protected Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClearSearch.Click
+    Protected Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         Try
 
             ' Clear all search options typed or selected by the user
-            Me.ClearAllSearchOptions()
+            ClearAllSearchOptions()
 
             ' Update the Bo state properties with the new value
             '           Me.ClearStateValues()
@@ -154,10 +154,10 @@ Public Class PublishedTaskForm
             ' Me.State.IsGridVisible = 
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub btnSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As System.EventArgs) Handles btnSearch.Click
         Try
             If txtStartDate.Text.Trim() <> String.Empty Then
                 GUIException.ValidateDate(lblDateRange1, txtStartDate.Text)
@@ -172,30 +172,30 @@ Public Class PublishedTaskForm
                 End If
             End If
 
-            Me.lblDateRange1.ForeColor = Me.lblCompany.ForeColor
-            Me.lblDateRange2.ForeColor = Me.lblCompany.ForeColor
+            lblDateRange1.ForeColor = lblCompany.ForeColor
+            lblDateRange2.ForeColor = lblCompany.ForeColor
 
-            Me.SetStateProperties()
-            Me.State.PageIndex = 0
+            SetStateProperties()
+            State.PageIndex = 0
             ' Me.State.IsGridVisible = True
-            Me.State.searchClick = True
-            Me.State.SearchDV = Nothing
+            State.searchClick = True
+            State.SearchDV = Nothing
 
-            Me.PopulateGrid()
+            PopulateGrid()
 
         Catch ex As Exception
-            Me.lblDateRange2.ForeColor = Me.lblDateRange1.ForeColor
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            lblDateRange2.ForeColor = lblDateRange1.ForeColor
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnRefresh_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRefresh.Click
+    Private Sub btnRefresh_Click(sender As Object, e As EventArgs) Handles btnRefresh.Click
         Try
-            Me.State.SearchDV = Nothing
+            State.SearchDV = Nothing
 
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
@@ -209,7 +209,7 @@ Public Class PublishedTaskForm
             .State.dealerId = .GetSelectedItem(.lstDealer)
 
             .State.eventTypeId = .GetSelectedItem(.lstEventType)
-            .State.statusId = .GetSelectedItem(Me.lstStatus)
+            .State.statusId = .GetSelectedItem(lstStatus)
 
             .State.product = .txtProduct.Text
             .State.startDate = .txtStartDate.Text
@@ -256,7 +256,7 @@ Public Class PublishedTaskForm
             'Me.BindListControlToDataView(Me.lstDealer,
             'LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies, False, "Code"), , , True)
             Dim oDealerList = GetDealerListByCompanyForUser()
-            Me.lstDealer.Populate(oDealerList, New PopulateOptions() With
+            lstDealer.Populate(oDealerList, New PopulateOptions() With
                                            {
                                             .AddBlankItem = True
                                            })
@@ -277,7 +277,7 @@ Public Class PublishedTaskForm
 
             ' Me.BindListControlToDataView(lslCountry, LookupListNew.GetUserCountriesLookupList(), )
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
     Private Function GetDealerListByCompanyForUser() As Assurant.Elita.CommonConfiguration.DataElements.ListItem()
@@ -293,7 +293,7 @@ Public Class PublishedTaskForm
             oListContext.CompanyId = UserCompanies(Index)
             Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
             If oDealerListForCompany.Count > 0 Then
-                If Not oDealerList Is Nothing Then
+                If oDealerList IsNot Nothing Then
                     oDealerList.AddRange(oDealerListForCompany)
                 Else
                     oDealerList = oDealerListForCompany.Clone()
@@ -312,7 +312,7 @@ Public Class PublishedTaskForm
 
     Private Sub PopulateGrid()
 
-        With Me.State
+        With State
             If (.SearchDV Is Nothing) Then
                 .SearchDV = PublishedTask.GetList(.companyId _
                                                 , .dealerId _
@@ -328,32 +328,32 @@ Public Class PublishedTaskForm
                                                 , .startDate _
                                                 , .endDate)
 
-                Me.ValidSearchResultCountNew(.SearchDV.Count, True)
+                ValidSearchResultCountNew(.SearchDV.Count, True)
             End If
 
-            SetPageAndSelectedIndexFromGuid(.SearchDV, Guid.Empty, Me.grdPublishTask, .PageIndex)
+            SetPageAndSelectedIndexFromGuid(.SearchDV, Guid.Empty, grdPublishTask, .PageIndex)
         End With
 
-        Me.SortAndBindGrid()
+        SortAndBindGrid()
     End Sub
 
 
 
     Private Sub SortAndBindGrid()
 
-        Me.State.PageIndex = Me.grdPublishTask.PageIndex
-        Me.grdPublishTask.DataSource = Me.State.SearchDV
-        Me.grdPublishTask.DataBind()
+        State.PageIndex = grdPublishTask.PageIndex
+        grdPublishTask.DataSource = State.SearchDV
+        grdPublishTask.DataBind()
 
-        Session("recCount") = Me.State.SearchDV.Count
+        Session("recCount") = State.SearchDV.Count
 
-        If Me.State.SearchDV.Count > 0 Then
-            If Me.grdPublishTask.Visible Then
-                Me.lblRecordCount.Text = Me.State.SearchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+        If State.SearchDV.Count > 0 Then
+            If grdPublishTask.Visible Then
+                lblRecordCount.Text = State.SearchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         Else
-            If Me.grdPublishTask.Visible Then
-                Me.lblRecordCount.Text = Me.State.SearchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If grdPublishTask.Visible Then
+                lblRecordCount.Text = State.SearchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         End If
     End Sub
@@ -364,11 +364,11 @@ Public Class PublishedTaskForm
     '    sb.AppendFormat("<u>{0}</u> : {1}", label, value)
     'End Sub
 
-    Public Function GetOriginInfo(ByVal row As DataRow) As String
+    Public Function GetOriginInfo(row As DataRow) As String
         Dim strTaskStatus As String
         Dim strB As New StringBuilder
 
-        With Me.State
+        With State
             If .LabelOriginInfoA(0) = String.Empty Then
                 .LabelOriginInfoA(0) = "<U>" & TranslationBase.TranslateLabelOrMessage("COMPANY_GROUP") & "</u> : {0}<br/>"
                 .LabelOriginInfoA(1) = "<U>" & TranslationBase.TranslateLabelOrMessage("COMPANY") & "</u> : {0}<br/>"
@@ -433,12 +433,12 @@ Public Class PublishedTaskForm
     '        Return sb.ToString()
     '    End Get
     'End Property
-    Public Function GetExecutionInfo(ByVal row As DataRow) As String
+    Public Function GetExecutionInfo(row As DataRow) As String
 
         Dim strTaskStatus As String
         Dim strB As New StringBuilder
 
-        With Me.State
+        With State
             If .LabelExecutionInfoA(0) = String.Empty Then
                 .LabelExecutionInfoA(0) = "<U>" & TranslationBase.TranslateLabelOrMessage("MACHINE_NAME") & "</u> : {0}<br/>"
                 .LabelExecutionInfoA(1) = "<U>" & TranslationBase.TranslateLabelOrMessage("LOCK_DATE") & "</u> : {0}<br/>"
@@ -499,13 +499,13 @@ Public Class PublishedTaskForm
     '    End Get
     'End Property
 
-    Private Function GetEventTaskInfo(ByVal row As DataRow) As String
+    Private Function GetEventTaskInfo(row As DataRow) As String
 
         Dim valueArray(5) As String
         Dim strTaskStatus As String
 
-        If Me.State.LabelEventTaskInfoStr = String.Empty Then
-            Me.State.LabelEventTaskInfoStr = "<U>" & TranslationBase.TranslateLabelOrMessage("EVENT_TYPE") & "</u> : {0}<br/>" _
+        If State.LabelEventTaskInfoStr = String.Empty Then
+            State.LabelEventTaskInfoStr = "<U>" & TranslationBase.TranslateLabelOrMessage("EVENT_TYPE") & "</u> : {0}<br/>" _
                                         & "<U>" & TranslationBase.TranslateLabelOrMessage("TASK") & "</u> : {1}<br/>" _
                                         & "<U>" & TranslationBase.TranslateLabelOrMessage("SENDER") & "</u> : {2}<br/>" _
                                         & "<U>" & TranslationBase.TranslateLabelOrMessage("ARGUMENTS") & "</u> : {3}<br/>" _
@@ -530,7 +530,7 @@ Public Class PublishedTaskForm
             valueArray(5) = String.Format("<span class=""StatActive"">{0}</span>", PublishedTaskSearchDV.TaskStatus(row))
         End If
 
-        Return String.Format(Me.State.LabelEventTaskInfoStr.ToString, valueArray)
+        Return String.Format(State.LabelEventTaskInfoStr.ToString, valueArray)
     End Function
 
 
@@ -572,74 +572,74 @@ Public Class PublishedTaskForm
 #End Region
 
 #Region "Grid Actions"
-    Public Sub DeleteTask(ByVal taskId As Guid)
+    Public Sub DeleteTask(taskId As Guid)
         Try
             PublishedTask.DeleteTask(taskId)
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Public Sub Reset(ByVal taskId As Guid)
+    Public Sub Reset(taskId As Guid)
         Try
             PublishedTask.ResetTask(taskId)
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
 
 #Region "Grid Events"
 
-    Protected Sub cboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Protected Sub cboPageSize_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         grdPublishTask.PageIndex = NewCurrentPageIndex(grdPublishTask, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
         PopulateGrid()
     End Sub
 
-    Protected Sub grdPublishTask_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles grdPublishTask.PageIndexChanging
-        Me.State.PageIndex = e.NewPageIndex
+    Protected Sub grdPublishTask_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles grdPublishTask.PageIndexChanging
+        State.PageIndex = e.NewPageIndex
         PopulateGrid()
     End Sub
 
-    Protected Sub RowCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles grdPublishTask.RowCreated
+    Protected Sub RowCreated(sender As Object, e As GridViewRowEventArgs) Handles grdPublishTask.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub grdPublishTask_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles grdPublishTask.RowCommand
+    Protected Sub grdPublishTask_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles grdPublishTask.RowCommand
         Try
-            If e.CommandName = Me.GRID_COMMAND_RESET Then
+            If e.CommandName = GRID_COMMAND_RESET Then
                 PublishedTask.ResetTask(New Guid(e.CommandArgument.ToString()))
-            ElseIf e.CommandName = Me.GRID_COMMAND_DELETE Then
+            ElseIf e.CommandName = GRID_COMMAND_DELETE Then
                 PublishedTask.DeleteTask(New Guid(e.CommandArgument.ToString()))
             End If
-            Me.State.SearchDV = Nothing
+            State.SearchDV = Nothing
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub grdPublishTask_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles grdPublishTask.RowDataBound
+    Protected Sub grdPublishTask_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles grdPublishTask.RowDataBound
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
         If e.Row.RowType = DataControlRowType.DataRow Then
             Dim div As HtmlGenericControl
 
             div = CType(e.Row.Cells(0).FindControl("OriginInfoDiv"), HtmlControl)
-            div.InnerHtml = Me.GetOriginInfo(dvRow.Row)
+            div.InnerHtml = GetOriginInfo(dvRow.Row)
 
             div = CType(e.Row.Cells(1).FindControl("EventTaskInfoDiv"), HtmlControl)
             'div.InnerHtml = PublishedTaskForm.EventTaskInfo(dvRow.Row)
-            div.InnerHtml = Me.GetEventTaskInfo(dvRow.Row)
+            div.InnerHtml = GetEventTaskInfo(dvRow.Row)
 
             div = CType(e.Row.Cells(2).FindControl("ExecutionInfoDiv"), HtmlControl)
             'div.InnerHtml = PublishedTaskForm.ExecutionInfo(dvRow.Row)
-            div.InnerHtml = Me.GetExecutionInfo(dvRow.Row)
+            div.InnerHtml = GetExecutionInfo(dvRow.Row)
 
             Dim lb As LinkButton
             lb = CType(e.Row.Cells(1).FindControl("btnDelete"), LinkButton)

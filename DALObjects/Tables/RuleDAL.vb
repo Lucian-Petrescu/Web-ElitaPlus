@@ -37,26 +37,26 @@ Public Class RuleDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("rule_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
 
         Dim Rule_Issue As New RuleIssueDAL
         Dim Rule_Process As New RuleProcessDAL
@@ -70,10 +70,10 @@ Public Class RuleDAL
             Rule_Issue.Update(familyDataset, tr, DataRowState.Deleted)
             Rule_Process.Update(familyDataset, tr, DataRowState.Deleted)
 
-            Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Deleted)
+            Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Deleted)
 
             'Second Pass updates additions and changes
-            Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
             Rule_Issue.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
             Rule_Process.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
 
@@ -91,12 +91,12 @@ Public Class RuleDAL
         End Try
     End Sub
 
-    Public Function LoadRulesByDealerAndCompnay(ByVal dealerId As Guid, ByVal company_id As Guid) As DataView
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_RULES_BY_DEALER_AND_COMPANY")
+    Public Function LoadRulesByDealerAndCompnay(dealerId As Guid, company_id As Guid) As DataView
+        Dim selectStmt As String = Config("/SQL/LOAD_RULES_BY_DEALER_AND_COMPANY")
 
         Dim parameters() As OracleParameter =
-           New OracleParameter() {New OracleParameter(Me.COL_NAME_DEALER_ID, OracleDbType.Raw, 16),
-                                  New OracleParameter(Me.COL_NAME_COMPANY_ID, OracleDbType.Raw, 16)}
+           New OracleParameter() {New OracleParameter(COL_NAME_DEALER_ID, OracleDbType.Raw, 16),
+                                  New OracleParameter(COL_NAME_COMPANY_ID, OracleDbType.Raw, 16)}
 
 
         Dim ds As New DataSet
@@ -106,8 +106,8 @@ Public Class RuleDAL
 
 
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
-            Return New DataView(ds.Tables(Me.TABLE_NAME))
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
+            Return New DataView(ds.Tables(TABLE_NAME))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -116,22 +116,22 @@ Public Class RuleDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
-    Function IsIssueAssignedtoRule(ByVal IssueId As Guid) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/IsIssueAssignedtoRule")
+    Function IsIssueAssignedtoRule(IssueId As Guid) As Boolean
+        Dim selectStmt As String = Config("/SQL/IsIssueAssignedtoRule")
         Dim ds As New DataSet
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("issue_id", IssueId.ToByteArray)}
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
-            If ds.Tables(Me.TABLE_NAME).Rows.Count > 0 Then Return True Else Return False
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
+            If ds.Tables(TABLE_NAME).Rows.Count > 0 Then Return True Else Return False
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -139,11 +139,11 @@ Public Class RuleDAL
 
 #End Region
 
-    Function getList(ByVal Code As String, ByVal Description As String, ByVal ActiveOn As DateTimeType, _
-                     ByVal ruleType As Guid, ByVal ruleCategory As Guid, ByVal lang_id As Guid) As DataTable
+    Function getList(Code As String, Description As String, ActiveOn As DateTimeType, _
+                     ruleType As Guid, ruleCategory As Guid, lang_id As Guid) As DataTable
 
         Dim DS As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_SEARCH_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_SEARCH_LIST")
         Dim parameters() As OracleParameter = _
             New OracleParameter() {New OracleParameter("Code", OracleDbType.Varchar2), _
                                    New OracleParameter("Description", OracleDbType.Varchar2), _

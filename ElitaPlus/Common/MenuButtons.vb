@@ -4,7 +4,7 @@ Public Class ButtonTitle
     Implements IComparer
     Public ButtonText As String
     Public ButtonIndex As Integer
-    Public Sub New(ByVal objButtonText As String, ByVal objButtonIndex As Integer)
+    Public Sub New(objButtonText As String, objButtonIndex As Integer)
         ButtonText = objButtonText
         ButtonIndex = objButtonIndex
     End Sub
@@ -13,7 +13,7 @@ Public Class ButtonTitle
         ByButtonIndex
     End Enum
     Public CompareType As CompareTypes = CompareTypes.ByButtonText
-    Public Function Compare(ByVal x As Object, ByVal y As Object) As Integer Implements System.Collections.IComparer.Compare
+    Public Function Compare(x As Object, y As Object) As Integer Implements System.Collections.IComparer.Compare
         Dim empx As ButtonTitle = DirectCast(x, ButtonTitle)
         Dim empy As ButtonTitle = DirectCast(y, ButtonTitle)
 
@@ -38,7 +38,7 @@ Public Class MenuButtons
         MenuY.Text = "-330px"
 
     End Sub
-    Public Shared Sub MenuButtonsProc(ByVal oPage As ElitaPlusPage, ByRef objPanButtons As Panel, ByRef objPanButtonsHidden As Panel, ByRef objPanButtonsHeading As Panel, ByRef objMenuX As TextBox, ByRef objMenuY As TextBox, ByRef objPanelWiring As Panel, ByRef objcloseIcon As System.Web.UI.WebControls.Image, ByRef objbtnEdit_WRITE As Button, ByRef objbtnSave_WRITE As Button, ByRef objbtnUndo_Write As Button, ByRef objViewPanel_READ As Panel)
+    Public Shared Sub MenuButtonsProc(oPage As ElitaPlusPage, ByRef objPanButtons As Panel, ByRef objPanButtonsHidden As Panel, ByRef objPanButtonsHeading As Panel, ByRef objMenuX As TextBox, ByRef objMenuY As TextBox, ByRef objPanelWiring As Panel, ByRef objcloseIcon As System.Web.UI.WebControls.Image, ByRef objbtnEdit_WRITE As Button, ByRef objbtnSave_WRITE As Button, ByRef objbtnUndo_Write As Button, ByRef objViewPanel_READ As Panel)
 
 
         Dim childControl As Control
@@ -215,7 +215,7 @@ Public Class MenuButtons
 
 
     End Sub
-    Public Shared Sub ChangeAttribute(ByRef myButton As Button, ByVal objMenuX As TextBox, ByRef objMenuY As TextBox, ByRef objPanButtons As Panel, ByRef objPanelWiring As Panel)
+    Public Shared Sub ChangeAttribute(ByRef myButton As Button, objMenuX As TextBox, ByRef objMenuY As TextBox, ByRef objPanButtons As Panel, ByRef objPanelWiring As Panel)
         myButton.Attributes.Add("onmouseover", "document.getElementById( '" + myButton.ID.ToString + "').style.filter='alpha(style=0, opacity=60)';document.getElementById( '" + myButton.ID.ToString + "').style.color = '#000099';")
         myButton.Attributes.Add("onmouseout", "document.getElementById( '" + myButton.ID.ToString + "').style.filter='alpha(style=0, opacity=100)';document.getElementById( '" + myButton.ID.ToString + "').style.color = 'black';")
         Dim myClickingButton As String = myButton.ID.ToString.Replace("Clone", "")

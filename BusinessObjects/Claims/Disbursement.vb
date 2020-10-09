@@ -14,54 +14,54 @@ Public Class Disbursement
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load(id)
+        Dataset = New Dataset
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load()
+        Dataset = New Dataset
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal ClaimInvoiceBO As ClaimInvoice)
+    Public Sub New(ClaimInvoiceBO As ClaimInvoice)
         MyBase.New(False)
-        Me.Dataset = ClaimInvoiceBO.Dataset
-        Me.Load()
+        Dataset = ClaimInvoiceBO.Dataset
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New DisbursementDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -69,23 +69,23 @@ Public Class Disbursement
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New DisbursementDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -105,7 +105,7 @@ Public Class Disbursement
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(DisbursementDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -116,7 +116,7 @@ Public Class Disbursement
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -125,15 +125,15 @@ Public Class Disbursement
                 Return New Guid(CType(Row(DisbursementDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_COMPANY_ID, Value)
+            SetValue(DisbursementDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property ClaimId() As Guid
+    Public Property ClaimId As Guid
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_CLAIM_ID) Is DBNull.Value Then
@@ -142,9 +142,9 @@ Public Class Disbursement
                 Return New Guid(CType(Row(DisbursementDAL.COL_NAME_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_CLAIM_ID, Value)
+            SetValue(DisbursementDAL.COL_NAME_CLAIM_ID, Value)
         End Set
     End Property
     'Commented out by AA for WR761620
@@ -182,7 +182,7 @@ Public Class Disbursement
 
 
     <ValueMandatory("")> _
-    Public Property PayeeOptionId() As Guid
+    Public Property PayeeOptionId As Guid
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_PAYEE_OPTION_ID) Is DBNull.Value Then
@@ -191,14 +191,14 @@ Public Class Disbursement
                 Return New Guid(CType(Row(DisbursementDAL.COL_NAME_PAYEE_OPTION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_PAYEE_OPTION_ID, Value)
+            SetValue(DisbursementDAL.COL_NAME_PAYEE_OPTION_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=20)>
-    Public Property ClaimNumber() As String
+    Public Property ClaimNumber As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
@@ -207,15 +207,15 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_CLAIM_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_CLAIM_NUMBER, Value)
+            SetValue(DisbursementDAL.COL_NAME_CLAIM_NUMBER, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=20)> _
-    Public Property SvcControlNumber() As String
+    Public Property SvcControlNumber As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_SVC_CONTROL_NUMBER) Is DBNull.Value Then
@@ -224,15 +224,15 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_SVC_CONTROL_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_SVC_CONTROL_NUMBER, Value)
+            SetValue(DisbursementDAL.COL_NAME_SVC_CONTROL_NUMBER, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property RecordCount() As LongType
+    Public Property RecordCount As LongType
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_RECORD_COUNT) Is DBNull.Value Then
@@ -241,15 +241,15 @@ Public Class Disbursement
                 Return New LongType(CType(Row(DisbursementDAL.COL_NAME_RECORD_COUNT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_RECORD_COUNT, Value)
+            SetValue(DisbursementDAL.COL_NAME_RECORD_COUNT, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=50)> _
-    Public Property CustomerName() As String
+    Public Property CustomerName As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_CUSTOMER_NAME) Is DBNull.Value Then
@@ -258,15 +258,15 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_CUSTOMER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_CUSTOMER_NAME, Value)
+            SetValue(DisbursementDAL.COL_NAME_CUSTOMER_NAME, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=5)> _
-    Public Property Dealer() As String
+    Public Property Dealer As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_DEALER) Is DBNull.Value Then
@@ -275,15 +275,15 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_DEALER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_DEALER, Value)
+            SetValue(DisbursementDAL.COL_NAME_DEALER, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=20)> _
-    Public Property Certificate() As String
+    Public Property Certificate As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_CERTIFICATE) Is DBNull.Value Then
@@ -292,15 +292,15 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_CERTIFICATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_CERTIFICATE, Value)
+            SetValue(DisbursementDAL.COL_NAME_CERTIFICATE, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=50)> _
-    Public Property ServiceCenterName() As String
+    Public Property ServiceCenterName As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_SERVICE_CENTER_NAME) Is DBNull.Value Then
@@ -309,13 +309,13 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_SERVICE_CENTER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_SERVICE_CENTER_NAME, Value)
+            SetValue(DisbursementDAL.COL_NAME_SERVICE_CENTER_NAME, Value)
         End Set
     End Property
 
-    Public Property CheckNumber() As LongType
+    Public Property CheckNumber As LongType
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_CHECK_NUMBER) Is DBNull.Value Then
@@ -324,14 +324,14 @@ Public Class Disbursement
                 Return New LongType(CType(Row(DisbursementDAL.COL_NAME_CHECK_NUMBER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_CHECK_NUMBER, Value)
+            SetValue(DisbursementDAL.COL_NAME_CHECK_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=20)> _
-    Public Property TrackingNumber() As String
+    Public Property TrackingNumber As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_TRACKING_NUMBER) Is DBNull.Value Then
@@ -340,15 +340,15 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_TRACKING_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_TRACKING_NUMBER, Value)
+            SetValue(DisbursementDAL.COL_NAME_TRACKING_NUMBER, Value)
         End Set
     End Property
 
     'need to be mandatory..............
     <ValueMandatory("")> _
-    Public Property AcctStatus() As String
+    Public Property AcctStatus As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_ACCT_STATUS) Is DBNull.Value Then
@@ -357,15 +357,15 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_ACCT_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_ACCT_STATUS, Value)
+            SetValue(DisbursementDAL.COL_NAME_ACCT_STATUS, Value)
         End Set
     End Property
 
     ' needs to mandatory ................
     <ValueMandatory("")> _
-    Public Property StatusDate() As DateType
+    Public Property StatusDate As DateType
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_STATUS_DATE) Is DBNull.Value Then
@@ -374,13 +374,13 @@ Public Class Disbursement
                 Return New DateType(CType(Row(DisbursementDAL.COL_NAME_STATUS_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_STATUS_DATE, Value)
+            SetValue(DisbursementDAL.COL_NAME_STATUS_DATE, Value)
         End Set
     End Property
 
-    Public Property PaymentDate() As DateType
+    Public Property PaymentDate As DateType
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_PAYMENT_DATE) Is DBNull.Value Then
@@ -389,15 +389,15 @@ Public Class Disbursement
                 Return New DateType(CType(Row(DisbursementDAL.COL_NAME_PAYMENT_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_PAYMENT_DATE, Value)
+            SetValue(DisbursementDAL.COL_NAME_PAYMENT_DATE, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=50)> _
-    Public Property Payee() As String
+    Public Property Payee As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_PAYEE) Is DBNull.Value Then
@@ -406,15 +406,15 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_PAYEE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_PAYEE, Value)
+            SetValue(DisbursementDAL.COL_NAME_PAYEE, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=50)> _
-    Public Property Address1() As String
+    Public Property Address1 As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_ADDRESS1) Is DBNull.Value Then
@@ -423,14 +423,14 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_ADDRESS1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_ADDRESS1, Value)
+            SetValue(DisbursementDAL.COL_NAME_ADDRESS1, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)> _
-    Public Property Address2() As String
+    Public Property Address2 As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_ADDRESS2) Is DBNull.Value Then
@@ -439,15 +439,15 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_ADDRESS2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_ADDRESS2, Value)
+            SetValue(DisbursementDAL.COL_NAME_ADDRESS2, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=50)> _
-    Public Property City() As String
+    Public Property City As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_CITY) Is DBNull.Value Then
@@ -456,15 +456,15 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_CITY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_CITY, Value)
+            SetValue(DisbursementDAL.COL_NAME_CITY, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=30)> _
-    Public Property RegionDesc() As String
+    Public Property RegionDesc As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_REGION_DESC) Is DBNull.Value Then
@@ -473,15 +473,15 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_REGION_DESC), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_REGION_DESC, Value)
+            SetValue(DisbursementDAL.COL_NAME_REGION_DESC, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=25)> _
-    Public Property Zip() As String
+    Public Property Zip As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_ZIP) Is DBNull.Value Then
@@ -490,15 +490,15 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_ZIP), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_ZIP, Value)
+            SetValue(DisbursementDAL.COL_NAME_ZIP, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=255)> _
-    Public Property PayeeMailingLabel() As String
+    Public Property PayeeMailingLabel As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_PAYEE_MAILING_LABEL) Is DBNull.Value Then
@@ -507,14 +507,14 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_PAYEE_MAILING_LABEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_PAYEE_MAILING_LABEL, Value)
+            SetValue(DisbursementDAL.COL_NAME_PAYEE_MAILING_LABEL, Value)
         End Set
     End Property
 
 
-    Public Property DeductibleAmount() As DecimalType
+    Public Property DeductibleAmount As DecimalType
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_DEDUCTIBLE_AMOUNT) Is DBNull.Value Then
@@ -523,14 +523,14 @@ Public Class Disbursement
                 Return New DecimalType(CType(Row(DisbursementDAL.COL_NAME_DEDUCTIBLE_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_DEDUCTIBLE_AMOUNT, Value)
+            SetValue(DisbursementDAL.COL_NAME_DEDUCTIBLE_AMOUNT, Value)
         End Set
     End Property
 
 
-    Public Property DeductibleTaxAmount() As DecimalType
+    Public Property DeductibleTaxAmount As DecimalType
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_DEDUCTIBLE_TAX_AMOUNT) Is DBNull.Value Then
@@ -539,15 +539,15 @@ Public Class Disbursement
                 Return New DecimalType(CType(Row(DisbursementDAL.COL_NAME_DEDUCTIBLE_TAX_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_DEDUCTIBLE_TAX_AMOUNT, Value)
+            SetValue(DisbursementDAL.COL_NAME_DEDUCTIBLE_TAX_AMOUNT, Value)
         End Set
     End Property
 
 
 
-    Public Property TaxAmount() As DecimalType
+    Public Property TaxAmount As DecimalType
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_TAX_AMOUNT) Is DBNull.Value Then
@@ -556,15 +556,15 @@ Public Class Disbursement
                 Return New DecimalType(CType(Row(DisbursementDAL.COL_NAME_TAX_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_TAX_AMOUNT, Value)
+            SetValue(DisbursementDAL.COL_NAME_TAX_AMOUNT, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property PaymentAmount() As DecimalType
+    Public Property PaymentAmount As DecimalType
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_PAYMENT_AMOUNT) Is DBNull.Value Then
@@ -573,15 +573,15 @@ Public Class Disbursement
                 Return New DecimalType(CType(Row(DisbursementDAL.COL_NAME_PAYMENT_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_PAYMENT_AMOUNT, Value)
+            SetValue(DisbursementDAL.COL_NAME_PAYMENT_AMOUNT, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=1)> _
-    Public Property Processed() As String
+    Public Property Processed As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_PROCESSED) Is DBNull.Value Then
@@ -590,15 +590,15 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_PROCESSED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_PROCESSED, Value)
+            SetValue(DisbursementDAL.COL_NAME_PROCESSED, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=10)> _
-    Public Property AuthorizationNumber() As String
+    Public Property AuthorizationNumber As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_AUTHORIZATION_NUMBER) Is DBNull.Value Then
@@ -607,14 +607,14 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_AUTHORIZATION_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_AUTHORIZATION_NUMBER, Value)
+            SetValue(DisbursementDAL.COL_NAME_AUTHORIZATION_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)> _
-    Public Property AccountName() As String
+    Public Property AccountName As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_ACCOUNT_NAME) Is DBNull.Value Then
@@ -623,15 +623,15 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_ACCOUNT_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_ACCOUNT_NAME, Value)
+            SetValue(DisbursementDAL.COL_NAME_ACCOUNT_NAME, Value)
         End Set
     End Property
 
     ' <ValidNumericRange("", Min:=0)> _
     <ValidStringLength("", Min:=0, Max:=10)> _
-    Public Property BankID() As String
+    Public Property BankID As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_BANK_ID) Is DBNull.Value Then
@@ -640,14 +640,14 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_BANK_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_BANK_ID, Value)
+            SetValue(DisbursementDAL.COL_NAME_BANK_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Min:=0, Max:=29)> _
-    Public Property AccountNumber() As String
+    Public Property AccountNumber As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_ACCOUNT_NUMBER) Is DBNull.Value Then
@@ -656,14 +656,14 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_ACCOUNT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_ACCOUNT_NUMBER, Value)
+            SetValue(DisbursementDAL.COL_NAME_ACCOUNT_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=5)> _
-    Public Property PaymentMethod() As String
+    Public Property PaymentMethod As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_PAYMENT_METHOD) Is DBNull.Value Then
@@ -672,13 +672,13 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_PAYMENT_METHOD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_PAYMENT_METHOD, Value)
+            SetValue(DisbursementDAL.COL_NAME_PAYMENT_METHOD, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=40)> _
-    Public Property Manufacturer() As String
+    Public Property Manufacturer As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_MANUFACTURER) Is DBNull.Value Then
@@ -687,13 +687,13 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_MANUFACTURER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_MANUFACTURER, Value)
+            SetValue(DisbursementDAL.COL_NAME_MANUFACTURER, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=100)>
-    Public Property Model() As String
+    Public Property Model As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_MODEL) Is DBNull.Value Then
@@ -702,13 +702,13 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_MODEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_MODEL, Value)
+            SetValue(DisbursementDAL.COL_NAME_MODEL, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=40)> _
-    Public Property DealerName() As String
+    Public Property DealerName As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_DEALER_NAME) Is DBNull.Value Then
@@ -717,13 +717,13 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_DEALER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_DEALER_NAME, Value)
+            SetValue(DisbursementDAL.COL_NAME_DEALER_NAME, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=40)> _
-    Public Property PaymentReason() As String
+    Public Property PaymentReason As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_PAYMENT_REASON) Is DBNull.Value Then
@@ -732,14 +732,14 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_PAYMENT_REASON), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_PAYMENT_REASON, Value)
+            SetValue(DisbursementDAL.COL_NAME_PAYMENT_REASON, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=15)> _
-    Public Property IdentificationNumber() As String
+    Public Property IdentificationNumber As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_IDENTIFICATION_NUMBER) Is DBNull.Value Then
@@ -748,14 +748,14 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_IDENTIFICATION_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_IDENTIFICATION_NUMBER, Value)
+            SetValue(DisbursementDAL.COL_NAME_IDENTIFICATION_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=5)> _
-    Public Property DocumentType() As String
+    Public Property DocumentType As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_DOCUMENT_TYPE) Is DBNull.Value Then
@@ -764,14 +764,14 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_DOCUMENT_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_DOCUMENT_TYPE, Value)
+            SetValue(DisbursementDAL.COL_NAME_DOCUMENT_TYPE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=40)> _
-    Public Property Country() As String
+    Public Property Country As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_COUNTRY) Is DBNull.Value Then
@@ -780,14 +780,14 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_COUNTRY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_COUNTRY, Value)
+            SetValue(DisbursementDAL.COL_NAME_COUNTRY, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=40)> _
-    Public Property IbanNumber() As String
+    Public Property IbanNumber As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_IBAN_NUMBER) Is DBNull.Value Then
@@ -796,14 +796,14 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_IBAN_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_IBAN_NUMBER, Value)
+            SetValue(DisbursementDAL.COL_NAME_IBAN_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=40)> _
-    Public Property SwiftCode() As String
+    Public Property SwiftCode As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_SWIFT_CODE) Is DBNull.Value Then
@@ -812,14 +812,14 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_SWIFT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_SWIFT_CODE, Value)
+            SetValue(DisbursementDAL.COL_NAME_SWIFT_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=60)> _
-    Public Property AccountType() As String
+    Public Property AccountType As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_ACCOUNT_TYPE) Is DBNull.Value Then
@@ -828,13 +828,13 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_ACCOUNT_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_ACCOUNT_TYPE, Value)
+            SetValue(DisbursementDAL.COL_NAME_ACCOUNT_TYPE, Value)
         End Set
     End Property
 
-    Public Property AccountTypeId() As Guid
+    Public Property AccountTypeId As Guid
 
         Get
             CheckDeleted()
@@ -844,13 +844,13 @@ Public Class Disbursement
                 Return New Guid(CType(Row(DisbursementDAL.COL_NAME_ACCOUNT_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_ACCOUNT_TYPE_ID, Value)
+            SetValue(DisbursementDAL.COL_NAME_ACCOUNT_TYPE_ID, Value)
         End Set
     End Property
 
-    Public Property VendorNumAcct() As String
+    Public Property VendorNumAcct As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_VENDOR_NUM_ACCT) Is DBNull.Value Then
@@ -859,13 +859,13 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_VENDOR_NUM_ACCT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_VENDOR_NUM_ACCT, Value)
+            SetValue(DisbursementDAL.COL_NAME_VENDOR_NUM_ACCT, Value)
         End Set
     End Property
     <ValidIIBBProvince("")> _
-    Public Property VendorRegionDesc() As String
+    Public Property VendorRegionDesc As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_VENDOR_REGION_DESC) Is DBNull.Value Then
@@ -874,13 +874,13 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_VENDOR_REGION_DESC), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_VENDOR_REGION_DESC, Value)
+            SetValue(DisbursementDAL.COL_NAME_VENDOR_REGION_DESC, Value)
         End Set
     End Property
 
-    Public Property perceptionIVA() As DecimalType
+    Public Property perceptionIVA As DecimalType
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_PERCEPTION_IVA) Is DBNull.Value Then
@@ -889,14 +889,14 @@ Public Class Disbursement
                 Return New DecimalType(CType(Row(DisbursementDAL.COL_NAME_PERCEPTION_IVA), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_PERCEPTION_IVA, Value)
+            SetValue(DisbursementDAL.COL_NAME_PERCEPTION_IVA, Value)
         End Set
     End Property
 
 
-    Public Property perceptionIIBB() As DecimalType
+    Public Property perceptionIIBB As DecimalType
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_PERCEPTION_IIBB) Is DBNull.Value Then
@@ -905,13 +905,13 @@ Public Class Disbursement
                 Return New DecimalType(CType(Row(DisbursementDAL.COL_NAME_PERCEPTION_IIBB), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_PERCEPTION_IIBB, Value)
+            SetValue(DisbursementDAL.COL_NAME_PERCEPTION_IIBB, Value)
         End Set
     End Property
 
-    Public Property InvoiceDate() As DateType
+    Public Property InvoiceDate As DateType
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_INVOICE_DATE) Is DBNull.Value Then
@@ -920,13 +920,13 @@ Public Class Disbursement
                 Return New DateType(CType(Row(DisbursementDAL.COL_NAME_INVOICE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_INVOICE_DATE, Value)
+            SetValue(DisbursementDAL.COL_NAME_INVOICE_DATE, Value)
         End Set
     End Property
 
-    Public Property BranchName() As String
+    Public Property BranchName As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_BRANCH_NAME) Is DBNull.Value Then
@@ -935,13 +935,13 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_BRANCH_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_BRANCH_NAME, Value)
+            SetValue(DisbursementDAL.COL_NAME_BRANCH_NAME, Value)
         End Set
     End Property
 
-    Public Property BankName() As String
+    Public Property BankName As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_BANK_NAME) Is DBNull.Value Then
@@ -950,13 +950,13 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_BANK_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_BANK_NAME, Value)
+            SetValue(DisbursementDAL.COL_NAME_BANK_NAME, Value)
         End Set
     End Property
 
-    Public Property BankSortCode() As String
+    Public Property BankSortCode As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_BANK_SORT_CODE) Is DBNull.Value Then
@@ -965,13 +965,13 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_BANK_SORT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_BANK_SORT_CODE, Value)
+            SetValue(DisbursementDAL.COL_NAME_BANK_SORT_CODE, Value)
         End Set
     End Property
 
-    Public Property BankLookupCode() As String
+    Public Property BankLookupCode As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_BANK_LOOKUP_CODE) Is DBNull.Value Then
@@ -980,13 +980,13 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_BANK_LOOKUP_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_BANK_LOOKUP_CODE, Value)
+            SetValue(DisbursementDAL.COL_NAME_BANK_LOOKUP_CODE, Value)
         End Set
     End Property
 
-    Public Property BankSubCode() As String
+    Public Property BankSubCode As String
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_BANK_SUB_CODE) Is DBNull.Value Then
@@ -995,13 +995,13 @@ Public Class Disbursement
                 Return CType(Row(DisbursementDAL.COL_NAME_BANK_SUB_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_BANK_SUB_CODE, Value)
+            SetValue(DisbursementDAL.COL_NAME_BANK_SUB_CODE, Value)
         End Set
     End Property
 
-    Public Property ClaimAuthorizationId() As Guid
+    Public Property ClaimAuthorizationId As Guid
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_CLAIM_AUTHORIZATION_ID) Is DBNull.Value Then
@@ -1010,13 +1010,13 @@ Public Class Disbursement
                 Return New Guid(CType(Row(DisbursementDAL.COL_NAME_CLAIM_AUTHORIZATION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_CLAIM_AUTHORIZATION_ID, Value)
+            SetValue(DisbursementDAL.COL_NAME_CLAIM_AUTHORIZATION_ID, Value)
         End Set
     End Property
 
-    Public Property Bonus() As DecimalType
+    Public Property Bonus As DecimalType
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_BONUS) Is DBNull.Value Then
@@ -1025,13 +1025,13 @@ Public Class Disbursement
                 Return New DecimalType(CType(Row(DisbursementDAL.COL_NAME_BONUS), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_BONUS, Value)
+            SetValue(DisbursementDAL.COL_NAME_BONUS, Value)
         End Set
     End Property
 
-    Public Property BonusTax() As DecimalType
+    Public Property BonusTax As DecimalType
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_BONUS_TAX) Is DBNull.Value Then
@@ -1040,15 +1040,15 @@ Public Class Disbursement
                 Return New DecimalType(CType(Row(DisbursementDAL.COL_NAME_BONUS_TAX), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_BONUS_TAX, Value)
+            SetValue(DisbursementDAL.COL_NAME_BONUS_TAX, Value)
         End Set
     End Property
 
 
 
-    Public Property LaborAmount() As DecimalType
+    Public Property LaborAmount As DecimalType
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_LABOR_AMOUNT) Is DBNull.Value Then
@@ -1057,14 +1057,14 @@ Public Class Disbursement
                 Return New DecimalType(CType(Row(DisbursementDAL.COL_NAME_LABOR_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_LABOR_AMOUNT, Value)
+            SetValue(DisbursementDAL.COL_NAME_LABOR_AMOUNT, Value)
         End Set
     End Property
 
 
-    Public Property PartAmount() As DecimalType
+    Public Property PartAmount As DecimalType
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_PART_AMOUNT) Is DBNull.Value Then
@@ -1073,15 +1073,15 @@ Public Class Disbursement
                 Return New DecimalType(CType(Row(DisbursementDAL.COL_NAME_PART_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_PART_AMOUNT, Value)
+            SetValue(DisbursementDAL.COL_NAME_PART_AMOUNT, Value)
         End Set
     End Property
 
 
 
-    Public Property ServiceAmount() As DecimalType
+    Public Property ServiceAmount As DecimalType
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_SERVICE_AMOUNT) Is DBNull.Value Then
@@ -1090,15 +1090,15 @@ Public Class Disbursement
                 Return New DecimalType(CType(Row(DisbursementDAL.COL_NAME_SERVICE_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_SERVICE_AMOUNT, Value)
+            SetValue(DisbursementDAL.COL_NAME_SERVICE_AMOUNT, Value)
         End Set
     End Property
 
 
 
-    Public Property TripAmount() As DecimalType
+    Public Property TripAmount As DecimalType
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_TRIP_AMOUNT) Is DBNull.Value Then
@@ -1107,15 +1107,15 @@ Public Class Disbursement
                 Return New DecimalType(CType(Row(DisbursementDAL.COL_NAME_TRIP_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_TRIP_AMOUNT, Value)
+            SetValue(DisbursementDAL.COL_NAME_TRIP_AMOUNT, Value)
         End Set
     End Property
 
 
 
-    Public Property ShippingAmount() As DecimalType
+    Public Property ShippingAmount As DecimalType
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_SHIPPING_AMOUNT) Is DBNull.Value Then
@@ -1124,15 +1124,15 @@ Public Class Disbursement
                 Return New DecimalType(CType(Row(DisbursementDAL.COL_NAME_SHIPPING_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_SHIPPING_AMOUNT, Value)
+            SetValue(DisbursementDAL.COL_NAME_SHIPPING_AMOUNT, Value)
         End Set
     End Property
 
 
 
-    Public Property DispositionAmount() As DecimalType
+    Public Property DispositionAmount As DecimalType
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_DISPOSITION_AMOUNT) Is DBNull.Value Then
@@ -1141,14 +1141,14 @@ Public Class Disbursement
                 Return New DecimalType(CType(Row(DisbursementDAL.COL_NAME_DISPOSITION_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_DISPOSITION_AMOUNT, Value)
+            SetValue(DisbursementDAL.COL_NAME_DISPOSITION_AMOUNT, Value)
         End Set
     End Property
 
 
-    Public Property OtherAmount() As DecimalType
+    Public Property OtherAmount As DecimalType
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_OTHER_AMOUNT) Is DBNull.Value Then
@@ -1157,15 +1157,15 @@ Public Class Disbursement
                 Return New DecimalType(CType(Row(DisbursementDAL.COL_NAME_OTHER_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_OTHER_AMOUNT, Value)
+            SetValue(DisbursementDAL.COL_NAME_OTHER_AMOUNT, Value)
         End Set
     End Property
 
 
 
-    Public Property DiagnosticsAmount() As DecimalType
+    Public Property DiagnosticsAmount As DecimalType
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_DIAGNOSTICS_AMOUNT) Is DBNull.Value Then
@@ -1174,15 +1174,15 @@ Public Class Disbursement
                 Return New DecimalType(CType(Row(DisbursementDAL.COL_NAME_DIAGNOSTICS_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_DIAGNOSTICS_AMOUNT, Value)
+            SetValue(DisbursementDAL.COL_NAME_DIAGNOSTICS_AMOUNT, Value)
         End Set
     End Property
 
 
 
-    Public Property WithholdingAmount() As DecimalType
+    Public Property WithholdingAmount As DecimalType
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_WITHHOLDING_AMOUNT) Is DBNull.Value Then
@@ -1191,13 +1191,13 @@ Public Class Disbursement
                 Return New DecimalType(CType(Row(DisbursementDAL.COL_NAME_WITHHOLDING_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_WITHHOLDING_AMOUNT, Value)
+            SetValue(DisbursementDAL.COL_NAME_WITHHOLDING_AMOUNT, Value)
         End Set
     End Property
 
-    Public Property PaytocustomerAmount() As DecimalType
+    Public Property PaytocustomerAmount As DecimalType
         Get
             CheckDeleted()
             If Row(DisbursementDAL.COL_NAME_PAY_TO_CUST_AMOUNT) Is DBNull.Value Then
@@ -1206,19 +1206,19 @@ Public Class Disbursement
                 Return New DecimalType(CType(Row(DisbursementDAL.COL_NAME_PAY_TO_CUST_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(DisbursementDAL.COL_NAME_PAY_TO_CUST_AMOUNT, Value)
+            SetValue(DisbursementDAL.COL_NAME_PAY_TO_CUST_AMOUNT, Value)
         End Set
     End Property
 
 #End Region
 
 #Region "Derived Properties"
-    Public ReadOnly Property SecondDisbursement() As Disbursement
+    Public ReadOnly Property SecondDisbursement As Disbursement
         Get
             If _disbursement Is Nothing Then
-                _disbursement = New Disbursement(Me.Dataset)
+                _disbursement = New Disbursement(Dataset)
             End If
             Return _disbursement
         End Get
@@ -1230,15 +1230,15 @@ Public Class Disbursement
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New DisbursementDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New Dataset
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New Dataset
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -1246,7 +1246,7 @@ Public Class Disbursement
         End Try
     End Sub
 
-    Public Shared Function GetList(ByVal svcControlNumber As String, ByVal companyList As ArrayList) As DisbursementSearchDV
+    Public Shared Function GetList(svcControlNumber As String, companyList As ArrayList) As DisbursementSearchDV
 
         Try
             Dim dal As New DisbursementDAL
@@ -1259,7 +1259,7 @@ Public Class Disbursement
 
     End Function
 
-    Public Shared Function GetDisbursement(ByVal id As Guid) As DisbursementSearchDV
+    Public Shared Function GetDisbursement(id As Guid) As DisbursementSearchDV
 
         Try
             Dim dal As New DisbursementDAL
@@ -1272,16 +1272,16 @@ Public Class Disbursement
 
     End Function
 
-    Public Shared Sub DeleteNewChildDisbursement(ByVal parentClaim As Claim)
+    Public Shared Sub DeleteNewChildDisbursement(parentClaim As Claim)
         Dim row As DataRow
         If parentClaim.Dataset.Tables.IndexOf(CommentDAL.TABLE_NAME) >= 0 Then
             Dim rowIndex As Integer
             'For Each row In parentClaim.Dataset.Tables(CommentDAL.TABLE_NAME).Rows
             For rowIndex = 0 To parentClaim.Dataset.Tables(CommentDAL.TABLE_NAME).Rows.Count - 1
                 row = parentClaim.Dataset.Tables(CommentDAL.TABLE_NAME).Rows.Item(rowIndex)
-                If Not (row.RowState = DataRowState.Deleted) Or (row.RowState = DataRowState.Detached) Then
+                If Not (row.RowState = DataRowState.Deleted) OrElse (row.RowState = DataRowState.Detached) Then
                     Dim c As Comment = New Comment(row)
-                    If parentClaim.Id.Equals(c.ClaimId) And c.IsNew Then
+                    If parentClaim.Id.Equals(c.ClaimId) AndAlso c.IsNew Then
                         c.Delete()
                     End If
                 End If
@@ -1290,12 +1290,12 @@ Public Class Disbursement
         End If
     End Sub
 
-    Public Sub PrepopulateFromClaimInvoice(ByVal ClaimInvoiceBO As ClaimInvoice)
-        Me.CompanyId = ClaimInvoiceBO.CompanyId
-        Me.ClaimId = ClaimInvoiceBO.ClaimId
-        Me.ClaimNumber = ClaimInvoiceBO.ClaimNumber
-        Me.SvcControlNumber = ClaimInvoiceBO.SvcControlNumber
-        Me.RecordCount = ClaimInvoiceBO.RecordCount
+    Public Sub PrepopulateFromClaimInvoice(ClaimInvoiceBO As ClaimInvoice)
+        CompanyId = ClaimInvoiceBO.CompanyId
+        ClaimId = ClaimInvoiceBO.ClaimId
+        ClaimNumber = ClaimInvoiceBO.ClaimNumber
+        SvcControlNumber = ClaimInvoiceBO.SvcControlNumber
+        RecordCount = ClaimInvoiceBO.RecordCount
 
         Dim claimBO As ClaimBase
         If Not ClaimInvoiceBO.ClaimId.Equals(Guid.Empty) Then
@@ -1312,18 +1312,18 @@ Public Class Disbursement
             Dim ManufacturerBO As New Manufacturer(CertItemBO.ManufacturerId)
             ManufacturerDescription = ManufacturerBO.Description
         End If
-        If Not CertItemBO.Model Is Nothing Then
+        If CertItemBO.Model IsNot Nothing Then
             If CertItemBO.Model.Trim.Length > 40 Then
-                Me.Model = CertItemBO.Model.Substring(0, 40)
+                Model = CertItemBO.Model.Substring(0, 40)
             Else
-                Me.Model = CertItemBO.Model
+                Model = CertItemBO.Model
             End If
         End If
 
         If ManufacturerDescription.Trim.Length > 40 Then
-            Me.Manufacturer = ManufacturerDescription.Substring(0, 40)
+            Manufacturer = ManufacturerDescription.Substring(0, 40)
         Else
-            Me.Manufacturer = ManufacturerDescription
+            Manufacturer = ManufacturerDescription
         End If
 
         ' ----------
@@ -1334,7 +1334,7 @@ Public Class Disbursement
             Throw New Exception("")
         End If
 
-        Me.CustomerName = certBO.CustomerName
+        CustomerName = certBO.CustomerName
 
         Dim dealerBO As Dealer
         If Not certBO.DealerId.Equals(Guid.Empty) Then
@@ -1343,116 +1343,116 @@ Public Class Disbursement
             Throw New Exception("")
         End If
 
-        Me.Dealer = dealerBO.Dealer
+        Dealer = dealerBO.Dealer
         If dealerBO.DealerName.Trim.Length > 40 Then
-            Me.DealerName = dealerBO.DealerName.Substring(0, 40)
+            DealerName = dealerBO.DealerName.Substring(0, 40)
         Else
-            Me.DealerName = dealerBO.DealerName
+            DealerName = dealerBO.DealerName
         End If
 
-        Me.Certificate = certBO.CertNumber
-        Me.ServiceCenterName = ClaimInvoiceBO.ServiceCenterName
-        Me.CheckNumber = New LongType(0)
-        Me.PaymentDate = New DateType(System.DateTime.Now)
+        Certificate = certBO.CertNumber
+        ServiceCenterName = ClaimInvoiceBO.ServiceCenterName
+        CheckNumber = New LongType(0)
+        PaymentDate = New DateType(System.DateTime.Now)
 
-        Me.CapturePayeeInfo(ClaimInvoiceBO)
+        CapturePayeeInfo(ClaimInvoiceBO)
 
-        Me.PaymentAmount = ClaimInvoiceBO.Amount
+        PaymentAmount = ClaimInvoiceBO.Amount
         If ClaimInvoiceBO.IvaAmount.Value > 0 Then
-            Me.TaxAmount = ClaimInvoiceBO.IvaAmount
+            TaxAmount = ClaimInvoiceBO.IvaAmount
         Else
-            Me.TaxAmount = ClaimInvoiceBO.TotalTaxAmount
+            TaxAmount = ClaimInvoiceBO.TotalTaxAmount
         End If
 
-        Me.DeductibleAmount = ClaimInvoiceBO.DeductibleAmount
-        Me.DeductibleTaxAmount = ClaimInvoiceBO.DeductibleTaxAmount
-        Me.Processed = "N"
-        Me.AuthorizationNumber = ClaimInvoiceBO.AuthorizationNumber
+        DeductibleAmount = ClaimInvoiceBO.DeductibleAmount
+        DeductibleTaxAmount = ClaimInvoiceBO.DeductibleTaxAmount
+        Processed = "N"
+        AuthorizationNumber = ClaimInvoiceBO.AuthorizationNumber
 
         'saving for Felita to elita passback WR
-        Me.AcctStatus = Codes.ACCT_STATUS__REQUESTED
-        Me.StatusDate = New DateType(System.DateTime.Now)
+        AcctStatus = Codes.ACCT_STATUS__REQUESTED
+        StatusDate = New DateType(System.DateTime.Now)
 
-        If Me.PayeeOptionId.Equals(Guid.Empty) AndAlso ClaimInvoiceBO.PayeeOptionCode <> "" Then
-            Me.PayeeOptionId = LookupListNew.GetIdFromCode(LookupListNew.LK_PAYEE, ClaimInvoiceBO.PayeeOptionCode)
+        If PayeeOptionId.Equals(Guid.Empty) AndAlso ClaimInvoiceBO.PayeeOptionCode <> "" Then
+            PayeeOptionId = LookupListNew.GetIdFromCode(LookupListCache.LK_PAYEE, ClaimInvoiceBO.PayeeOptionCode)
         End If
 
         'claim details, withholdings and taxes
-        Me.LaborAmount = ClaimInvoiceBO.LaborAmt
-        Me.PartAmount = ClaimInvoiceBO.PartAmount
-        Me.ServiceAmount = ClaimInvoiceBO.ServiceCharge
-        Me.TripAmount = ClaimInvoiceBO.TripAmount
-        Me.ShippingAmount = ClaimInvoiceBO.ShippingAmount
-        Me.DiagnosticsAmount = ClaimInvoiceBO.DiagnosticsAmount
-        Me.DispositionAmount = ClaimInvoiceBO.DispositionAmount
-        Me.OtherAmount = ClaimInvoiceBO.OtherAmount
-        Me.WithholdingAmount = ClaimInvoiceBO.WithholdingAmount
-        Me.PaytocustomerAmount = ClaimInvoiceBO.PaytocustomerAmount
+        LaborAmount = ClaimInvoiceBO.LaborAmt
+        PartAmount = ClaimInvoiceBO.PartAmount
+        ServiceAmount = ClaimInvoiceBO.ServiceCharge
+        TripAmount = ClaimInvoiceBO.TripAmount
+        ShippingAmount = ClaimInvoiceBO.ShippingAmount
+        DiagnosticsAmount = ClaimInvoiceBO.DiagnosticsAmount
+        DispositionAmount = ClaimInvoiceBO.DispositionAmount
+        OtherAmount = ClaimInvoiceBO.OtherAmount
+        WithholdingAmount = ClaimInvoiceBO.WithholdingAmount
+        PaytocustomerAmount = ClaimInvoiceBO.PaytocustomerAmount
 
     End Sub
 
-    Public Sub PopulateDisbursement(ByVal objOtherDisbursementBO As Disbursement)
+    Public Sub PopulateDisbursement(objOtherDisbursementBO As Disbursement)
         With objOtherDisbursementBO
-            Me.CompanyId = .CompanyId
-            Me.ClaimId = .ClaimId
+            CompanyId = .CompanyId
+            ClaimId = .ClaimId
             'Me.PayeeAddressID = .PayeeAddressID 'Commented out by AA for WR761620
-            Me.ClaimNumber = .ClaimNumber
-            Me.SvcControlNumber = .SvcControlNumber
-            Me.RecordCount = .RecordCount
-            Me.CustomerName = .CustomerName
-            Me.Dealer = .Dealer
-            Me.Certificate = .Certificate
-            Me.ServiceCenterName = .ServiceCenterName
-            Me.CheckNumber = .CheckNumber
-            Me.PaymentDate = .PaymentDate
-            Me.Payee = .Payee
-            Me.Address1 = .Address1
-            Me.Address2 = .Address2
-            Me.City = .City
-            Me.RegionDesc = .RegionDesc
-            Me.Zip = .Zip
-            Me.Country = .Country
-            Me.PayeeMailingLabel = .PayeeMailingLabel
-            Me.TaxAmount = .TaxAmount
-            Me.PaymentAmount = .PaymentAmount
-            Me.Processed = .Processed
-            Me.AuthorizationNumber = .AuthorizationNumber
+            ClaimNumber = .ClaimNumber
+            SvcControlNumber = .SvcControlNumber
+            RecordCount = .RecordCount
+            CustomerName = .CustomerName
+            Dealer = .Dealer
+            Certificate = .Certificate
+            ServiceCenterName = .ServiceCenterName
+            CheckNumber = .CheckNumber
+            PaymentDate = .PaymentDate
+            Payee = .Payee
+            Address1 = .Address1
+            Address2 = .Address2
+            City = .City
+            RegionDesc = .RegionDesc
+            Zip = .Zip
+            Country = .Country
+            PayeeMailingLabel = .PayeeMailingLabel
+            TaxAmount = .TaxAmount
+            PaymentAmount = .PaymentAmount
+            Processed = .Processed
+            AuthorizationNumber = .AuthorizationNumber
             'Me.PayeeOption = .PayeeOption
-            Me.PayeeOptionId = .PayeeOptionId '.CompanyId
-            Me.AccountName = .AccountName
-            Me.BankID = .BankID
-            Me.AccountNumber = .AccountNumber
-            Me.SwiftCode = .SwiftCode
-            Me.IbanNumber = .IbanNumber
-            Me.AccountType = .AccountType
-            Me.PaymentMethod = .PaymentMethod
-            Me.IdentificationNumber = .IdentificationNumber
-            Me.DocumentType = .DocumentType
-            Me.Model = .Model
-            Me.Manufacturer = .Manufacturer
-            Me.PaymentReason = .PaymentReason
-            Me.DealerName = .DealerName
-            Me.AcctStatus = .AcctStatus ' For felita to elita passback
-            Me.StatusDate = .StatusDate ' For felita to elita passback
-            Me.TrackingNumber = .TrackingNumber ' For felita to elita passback
-            Me.VendorNumAcct = .VendorNumAcct
-            Me.VendorRegionDesc = .VendorRegionDesc
-            Me.perceptionIVA = .perceptionIVA
-            Me.perceptionIIBB = .perceptionIIBB
-            Me.BranchName = .BranchName
-            Me.BankName = .BankName
-            Me.BankSortCode = .BankSortCode
-            Me.BankSubCode = .BankSubCode
-            Me.BankLookupCode = .BankLookupCode
+            PayeeOptionId = .PayeeOptionId '.CompanyId
+            AccountName = .AccountName
+            BankID = .BankID
+            AccountNumber = .AccountNumber
+            SwiftCode = .SwiftCode
+            IbanNumber = .IbanNumber
+            AccountType = .AccountType
+            PaymentMethod = .PaymentMethod
+            IdentificationNumber = .IdentificationNumber
+            DocumentType = .DocumentType
+            Model = .Model
+            Manufacturer = .Manufacturer
+            PaymentReason = .PaymentReason
+            DealerName = .DealerName
+            AcctStatus = .AcctStatus ' For felita to elita passback
+            StatusDate = .StatusDate ' For felita to elita passback
+            TrackingNumber = .TrackingNumber ' For felita to elita passback
+            VendorNumAcct = .VendorNumAcct
+            VendorRegionDesc = .VendorRegionDesc
+            perceptionIVA = .perceptionIVA
+            perceptionIIBB = .perceptionIIBB
+            BranchName = .BranchName
+            BankName = .BankName
+            BankSortCode = .BankSortCode
+            BankSubCode = .BankSubCode
+            BankLookupCode = .BankLookupCode
         End With
     End Sub
 
     Public Sub ReverseDisbursement(Optional ByVal blnReverseInvoiceTax As Boolean = False, Optional ByVal InvoiceIVA As Decimal = 0, Optional ByVal InvoiceIIBB As Decimal = 0)
-        Me.TaxAmount = New DecimalType((Me.TaxAmount).Value * REVERSE_MULTIPLIER)
-        Me.PaymentAmount = New DecimalType((Me.PaymentAmount).Value * REVERSE_MULTIPLIER)
+        TaxAmount = New DecimalType((TaxAmount).Value * REVERSE_MULTIPLIER)
+        PaymentAmount = New DecimalType((PaymentAmount).Value * REVERSE_MULTIPLIER)
         If blnReverseInvoiceTax Then
-            Me.perceptionIVA = New DecimalType(InvoiceIVA * REVERSE_MULTIPLIER)
-            Me.perceptionIIBB = New DecimalType(InvoiceIIBB * REVERSE_MULTIPLIER)
+            perceptionIVA = New DecimalType(InvoiceIVA * REVERSE_MULTIPLIER)
+            perceptionIIBB = New DecimalType(InvoiceIIBB * REVERSE_MULTIPLIER)
         Else
             Me.perceptionIVA = 0
             Me.perceptionIIBB = 0
@@ -1460,7 +1460,7 @@ Public Class Disbursement
 
     End Sub
 
-    Public Shared Sub GetRemainingInvoicePaymentAfterReversal(ByVal strSVCControlNumber As String, ByVal OrigDisbID As Guid, ByVal ClaimID As Guid, _
+    Public Shared Sub GetRemainingInvoicePaymentAfterReversal(strSVCControlNumber As String, OrigDisbID As Guid, ClaimID As Guid, _
                                                               ByRef RemainingPayment As Decimal, ByRef InvoiceIVA As Decimal, ByRef InvoiceIIBB As Decimal)
         Try
             Dim dal As New DisbursementDAL
@@ -1473,94 +1473,91 @@ Public Class Disbursement
         End Try
     End Sub
 
-    Public Sub AdjustDisbursementAmounts(ByVal adjustmentPercentage As Decimal)
-        Me.TaxAmount = New DecimalType((Me.TaxAmount).Value * adjustmentPercentage)
-        Me.PaymentAmount = New DecimalType((Me.PaymentAmount).Value * adjustmentPercentage)
+    Public Sub AdjustDisbursementAmounts(adjustmentPercentage As Decimal)
+        TaxAmount = New DecimalType((TaxAmount).Value * adjustmentPercentage)
+        PaymentAmount = New DecimalType((PaymentAmount).Value * adjustmentPercentage)
         Me.perceptionIVA = 0
         Me.perceptionIIBB = 0
     End Sub
 
-    Private Sub CapturePayeeInfo(ByVal ClaimInvoiceBO As ClaimInvoice)
+    Private Sub CapturePayeeInfo(ClaimInvoiceBO As ClaimInvoice)
 
-        If ClaimInvoiceBO.PayeeOptionCode = ClaimInvoiceBO.PAYEE_OPTION_MASTER_CENTER Or _
-           ClaimInvoiceBO.PayeeOptionCode = ClaimInvoiceBO.PAYEE_OPTION_SERVICE_CENTER Or _
-           ClaimInvoiceBO.PayeeOptionCode = ClaimInvoiceBO.PAYEE_OPTION_LOANER_CENTER Then
-            If Not ClaimInvoiceBO.PayeeBankInfo Is Nothing Then
+        If ClaimInvoiceBO.PayeeOptionCode = ClaimInvoiceBO.PAYEE_OPTION_MASTER_CENTER OrElse ClaimInvoiceBO.PayeeOptionCode = ClaimInvoiceBO.PAYEE_OPTION_SERVICE_CENTER OrElse ClaimInvoiceBO.PayeeOptionCode = ClaimInvoiceBO.PAYEE_OPTION_LOANER_CENTER Then
+            If ClaimInvoiceBO.PayeeBankInfo IsNot Nothing Then
                 'bank info:
-                Me.CopyBankInfoData(ClaimInvoiceBO.PayeeBankInfo)
+                CopyBankInfoData(ClaimInvoiceBO.PayeeBankInfo)
             Else
                 'address info:
-                Me.CopyAddressData(ClaimInvoiceBO.PayeeAddress)
+                CopyAddressData(ClaimInvoiceBO.PayeeAddress)
             End If
-            If Not Me.ClaimAuthorizationId.Equals(Guid.Empty) Then
-                Me.PaymentMethod = ClaimInvoiceBO.PaymentMethodCode
+            If Not ClaimAuthorizationId.Equals(Guid.Empty) Then
+                PaymentMethod = ClaimInvoiceBO.PaymentMethodCode
             End If
-        ElseIf ClaimInvoiceBO.PayeeOptionCode = ClaimInvoiceBO.PAYEE_OPTION_CUSTOMER Or _
-               ClaimInvoiceBO.PayeeOptionCode = ClaimInvoiceBO.PAYEE_OPTION_OTHER Then
+        ElseIf ClaimInvoiceBO.PayeeOptionCode = ClaimInvoiceBO.PAYEE_OPTION_CUSTOMER OrElse ClaimInvoiceBO.PayeeOptionCode = ClaimInvoiceBO.PAYEE_OPTION_OTHER Then
             If ClaimInvoiceBO.PaymentMethodCode = Codes.PAYMENT_METHOD__CHECK_TO_CONSUMER Then
                 'address info:
-                Me.CopyAddressData(ClaimInvoiceBO.PayeeAddress)
-                Me.PaymentMethod = Codes.PAYMENT_METHOD__CHECK_TO_CONSUMER
+                CopyAddressData(ClaimInvoiceBO.PayeeAddress)
+                PaymentMethod = Codes.PAYMENT_METHOD__CHECK_TO_CONSUMER
             ElseIf ClaimInvoiceBO.PaymentMethodCode = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
                 'bank info:
-                Me.CopyBankInfoData(ClaimInvoiceBO.PayeeBankInfo)
-                Me.PaymentMethod = Codes.PAYMENT_METHOD__BANK_TRANSFER
+                CopyBankInfoData(ClaimInvoiceBO.PayeeBankInfo)
+                PaymentMethod = Codes.PAYMENT_METHOD__BANK_TRANSFER
             ElseIf ClaimInvoiceBO.PaymentMethodCode = Codes.PAYMENT_METHOD__ADMIN_CHECK Then
                 'Admin-Check:
-                Me.PaymentMethod = Codes.PAYMENT_METHOD__ADMIN_CHECK
+                PaymentMethod = Codes.PAYMENT_METHOD__ADMIN_CHECK
             ElseIf ClaimInvoiceBO.PaymentMethodCode = Codes.PAYMENT_METHOD__DARTY_GIFT_CARD Then
-                Me.PaymentMethod = Codes.PAYMENT_METHOD__DARTY_GIFT_CARD
+                PaymentMethod = Codes.PAYMENT_METHOD__DARTY_GIFT_CARD
             End If
         End If
 
-        If ClaimInvoiceBO.IsInsuranceCompany And (ClaimInvoiceBO.PayeeOptionCode = ClaimInvoiceBO.PAYEE_OPTION_OTHER) Then
-            Me.DocumentType = ClaimInvoiceBO.DocumentType
-            Me.IdentificationNumber = ClaimInvoiceBO.TaxId
+        If ClaimInvoiceBO.IsInsuranceCompany AndAlso (ClaimInvoiceBO.PayeeOptionCode = ClaimInvoiceBO.PAYEE_OPTION_OTHER) Then
+            DocumentType = ClaimInvoiceBO.DocumentType
+            IdentificationNumber = ClaimInvoiceBO.TaxId
         End If
 
     End Sub
-    Private Sub CopyBankInfoData(ByVal objPayeeBankInfo As BankInfo)
-        Me.AccountName = objPayeeBankInfo.Account_Name
-        Me.AccountNumber = objPayeeBankInfo.Account_Number
-        Me.BankID = objPayeeBankInfo.Bank_Id
-        Me.SwiftCode = objPayeeBankInfo.SwiftCode
-        Me.IbanNumber = objPayeeBankInfo.IbanNumber
+    Private Sub CopyBankInfoData(objPayeeBankInfo As BankInfo)
+        AccountName = objPayeeBankInfo.Account_Name
+        AccountNumber = objPayeeBankInfo.Account_Number
+        BankID = objPayeeBankInfo.Bank_Id
+        SwiftCode = objPayeeBankInfo.SwiftCode
+        IbanNumber = objPayeeBankInfo.IbanNumber
         If Not (objPayeeBankInfo.AccountTypeId.Equals(Guid.Empty)) Then
-            Me.AccountType = LookupListNew.GetDescriptionFromId(LookupListNew.LK_ACCOUNT_TYPES, objPayeeBankInfo.AccountTypeId)
+            AccountType = LookupListNew.GetDescriptionFromId(LookupListCache.LK_ACCOUNT_TYPES, objPayeeBankInfo.AccountTypeId)
         End If
-        Me.Country = LookupListNew.GetDescriptionFromId(LookupListNew.LK_COUNTRIES, objPayeeBankInfo.CountryID)
+        Country = LookupListNew.GetDescriptionFromId(LookupListCache.LK_COUNTRIES, objPayeeBankInfo.CountryID)
         Dim objcompany As New Company(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
         Dim dv As DataView = LookupListNew.GetPaymentReasonLookupList(objcompany.LanguageId)
-        Me.PaymentReason = LookupListNew.GetDescriptionFromId(dv, objPayeeBankInfo.PaymentReasonID)
-        If Not Me.PaymentReason Is Nothing AndAlso Me.PaymentReason.Trim.Length > 40 Then
-            Me.PaymentReason = Me.PaymentReason.Substring(0, 40)
+        PaymentReason = LookupListNew.GetDescriptionFromId(dv, objPayeeBankInfo.PaymentReasonID)
+        If PaymentReason IsNot Nothing AndAlso PaymentReason.Trim.Length > 40 Then
+            PaymentReason = PaymentReason.Substring(0, 40)
         End If
 
-        Me.BranchName = objPayeeBankInfo.BranchName
-        Me.BankName = objPayeeBankInfo.BankName
-        Me.BankSortCode = objPayeeBankInfo.BankSortCode
-        Me.BankSubCode = objPayeeBankInfo.BankSubCode
-        Me.BankLookupCode = objPayeeBankInfo.BankLookupCode
+        BranchName = objPayeeBankInfo.BranchName
+        BankName = objPayeeBankInfo.BankName
+        BankSortCode = objPayeeBankInfo.BankSortCode
+        BankSubCode = objPayeeBankInfo.BankSubCode
+        BankLookupCode = objPayeeBankInfo.BankLookupCode
 
-        Me.IdentificationNumber = objPayeeBankInfo.TaxId
+        IdentificationNumber = objPayeeBankInfo.TaxId
 
     End Sub
 
-    Private Sub CopyAddressData(ByVal objPayeeAddress As Address)
-        Me.Address1 = objPayeeAddress.Address1
-        Me.Address2 = objPayeeAddress.Address2
-        Me.City = objPayeeAddress.City
-        Me.Zip = objPayeeAddress.PostalCode
+    Private Sub CopyAddressData(objPayeeAddress As Address)
+        Address1 = objPayeeAddress.Address1
+        Address2 = objPayeeAddress.Address2
+        City = objPayeeAddress.City
+        Zip = objPayeeAddress.PostalCode
         Dim regionBO As Region
         If Not objPayeeAddress.RegionId.Equals(Guid.Empty) Then
             regionBO = New Region(objPayeeAddress.RegionId)
-            Me.RegionDesc = regionBO.Description
+            RegionDesc = regionBO.Description
         End If
-        Me.Country = LookupListNew.GetDescriptionFromId(LookupListNew.LK_COUNTRIES, objPayeeAddress.CountryId)
-        Me.PayeeMailingLabel = objPayeeAddress.MailingAddressLabel
+        Country = LookupListNew.GetDescriptionFromId(LookupListCache.LK_COUNTRIES, objPayeeAddress.CountryId)
+        PayeeMailingLabel = objPayeeAddress.MailingAddressLabel
     End Sub
 
-    Public Shared Function GetDisbursementFromClaim(ByVal claimId As Guid) As DataTable
+    Public Shared Function GetDisbursementFromClaim(claimId As Guid) As DataTable
 
         Try
             Dim dal As New DisbursementDAL
@@ -1613,7 +1610,7 @@ Public Class Disbursement
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -1626,14 +1623,14 @@ Public Class Disbursement
     Public NotInheritable Class ValidIIBBProvince
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.PERCEPTION_REGION_REQUIRED)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Disbursement = CType(objectToValidate, Disbursement)
 
-            If (Not obj.perceptionIIBB Is Nothing AndAlso obj.perceptionIIBB.Value > 0) And obj.VendorRegionDesc = Nothing Then Return False
+            If (obj.perceptionIIBB IsNot Nothing AndAlso obj.perceptionIIBB.Value > 0) And obj.VendorRegionDesc = Nothing Then Return False
 
             Return True
 
@@ -1646,7 +1643,7 @@ Public Class Disbursement
     '    Me.Load()
     'End Sub
     Public Function CreateSecondDisbursement() As Disbursement
-        Return Me.SecondDisbursement
+        Return SecondDisbursement
     End Function
 #End Region
 

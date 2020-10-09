@@ -7,22 +7,22 @@
     Public Sub New()
         MyBase.New()
     End Sub
-    Public Sub New(ByVal oSearch As PriceListSearchDC)
+    Public Sub New(oSearch As PriceListSearchDC)
         MyBase.New()
-        Me.InForceDate = oSearch.In_Force_Date
-        Me.ServiceCenterCode = oSearch.Service_Center_Code
-        Me.EquipmentClassCode = oSearch.Equipment_Class_Code
-        Me.RiskTypeCode = oSearch.Risk_Type_Code
-        Me.DealerCode = oSearch.Dealer_Code
-        Me.CompanyCode = oSearch.Company_Code
-        Me.ServiceClassCode = oSearch.Service_Class_Code
-        Me.ServiceTypeCode = oSearch.Service_Type_Code
-        Me.Make = oSearch.Make
-        Me.Model = oSearch.Model
-        Me.LowPrice = oSearch.Low_Price
-        Me.HighPrice = oSearch.High_Price
-        Me.ServiceLevelCode = oSearch.Service_Level_Code
-        Me.Validate()
+        InForceDate = oSearch.In_Force_Date
+        ServiceCenterCode = oSearch.Service_Center_Code
+        EquipmentClassCode = oSearch.Equipment_Class_Code
+        RiskTypeCode = oSearch.Risk_Type_Code
+        DealerCode = oSearch.Dealer_Code
+        CompanyCode = oSearch.Company_Code
+        ServiceClassCode = oSearch.Service_Class_Code
+        ServiceTypeCode = oSearch.Service_Type_Code
+        Make = oSearch.Make
+        Model = oSearch.Model
+        LowPrice = oSearch.Low_Price
+        HighPrice = oSearch.High_Price
+        ServiceLevelCode = oSearch.Service_Level_Code
+        Validate()
     End Sub
 
 #End Region
@@ -30,28 +30,27 @@
 #Region "Public Members"
 
     Public Sub Validate()
-        If (Me.InForceDate = Nothing Or Me.ServiceCenterCode = Nothing Or Me.CompanyCode = Nothing) And _
-            (Me.RiskTypeCode = Nothing And Me.EquipmentClassCode = Nothing) Then
-            Throw New BOValidationException("GetPriceList Error: Must provide In Force Date, Service Center Code and Company Code along with Risk Type Code or Equipment Class Code", Assurant.ElitaPlus.Common.ErrorCodes.WS_PRICELIST_INVALID_SERVICE_CENTER_DTLS_INPUT)
+        If (InForceDate = Nothing OrElse ServiceCenterCode = Nothing OrElse CompanyCode = Nothing) AndAlso (RiskTypeCode = Nothing AndAlso EquipmentClassCode = Nothing) Then
+            Throw New BOValidationException("GetPriceList Error: Must provide In Force Date, Service Center Code and Company Code along with Risk Type Code or Equipment Class Code", Common.ErrorCodes.WS_PRICELIST_INVALID_SERVICE_CENTER_DTLS_INPUT)
         End If
 
-        Dim oServiceCenter As New ServiceCenter(Me.ServiceCenterCode)
+        Dim oServiceCenter As New ServiceCenter(ServiceCenterCode)
         If oServiceCenter Is Nothing Then
             Throw New BOValidationException("GetPriceList Error: Invalid Service Center Code ", Common.ErrorCodes.INVALID_SERVICE_CENTER_CODE)
         End If
 
-        Dim companyId As Guid = GetCompanyId(Me.CompanyCode)
+        Dim companyId As Guid = GetCompanyId(CompanyCode)
         If companyId.Equals(Guid.Empty) Then
-            Throw New BOValidationException("GetPriceList Error: Invalid Company Code ", Assurant.ElitaPlus.Common.ErrorCodes.WS_INVALID_COMPANY_CODE)
+            Throw New BOValidationException("GetPriceList Error: Invalid Company Code ", Common.ErrorCodes.WS_INVALID_COMPANY_CODE)
         End If
 
-        If (Not Me.DealerCode = Nothing) And (GetDealerID(companyId, Me.DealerCode).Equals(Guid.Empty)) Then
-            Throw New BOValidationException("GetPriceList Error: Invalid Dealer Code ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_CODE)
+        If (Not DealerCode = Nothing) And (GetDealerID(companyId, DealerCode).Equals(Guid.Empty)) Then
+            Throw New BOValidationException("GetPriceList Error: Invalid Dealer Code ", Common.ErrorCodes.INVALID_DEALER_CODE)
         End If
 
     End Sub
 
-    Public Shared Function GetCompanyId(ByVal Companycode As String) As Guid
+    Public Shared Function GetCompanyId(Companycode As String) As Guid
         Dim companyId As System.Guid = Guid.Empty
         Dim oUser As New User(ElitaPlusIdentity.Current.ActiveUser.NetworkId)
         Dim userAssignedCompaniesDv As DataView = oUser.GetSelectedAssignedCompanies(ElitaPlusIdentity.Current.ActiveUser.Id)
@@ -67,7 +66,7 @@
 
     End Function
 
-    Public Shared Function GetDealerID(ByVal companyId As Guid, ByVal dealerCode As String) As Guid
+    Public Shared Function GetDealerID(companyId As Guid, dealerCode As String) As Guid
         Dim dealerId As Guid = Guid.Empty
         Dim ds As DataSet
         
@@ -80,10 +79,10 @@
 
     End Function
 
-    Public Function GetPriceList(ByVal oPriceListSearch As PriceListSearchDC) As DataSet Implements IPriceListSearch.GetPriceList
+    Public Function GetPriceList(oPriceListSearch As PriceListSearchDC) As DataSet Implements IPriceListSearch.GetPriceList
         Try
             Dim dal As New PriceListDetailDAL
-            Return dal.GetPriceList(Me.InForceDate, "", Me.CompanyCode, Me.ServiceCenterCode, Me.RiskTypeCode, Me.EquipmentClassCode, Me.DealerCode, Me.ServiceClassCode, Me.ServiceTypeCode, Make, Model, LowPrice, HighPrice, ServiceLevelCode)
+            Return dal.GetPriceList(InForceDate, "", CompanyCode, ServiceCenterCode, RiskTypeCode, EquipmentClassCode, DealerCode, ServiceClassCode, ServiceTypeCode, Make, Model, LowPrice, HighPrice, ServiceLevelCode)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
@@ -92,134 +91,134 @@
 
 #Region "Properties"
     Private _InForceDate As DateTime
-    Public Property InForceDate() As DateTime
+    Public Property InForceDate As DateTime
         Get
             Return _InForceDate
         End Get
-        Set(ByVal value As DateTime)
+        Set
             _InForceDate = value
         End Set
     End Property
 
     Private _ServiceCenterCode As String
-    Public Property ServiceCenterCode() As String
+    Public Property ServiceCenterCode As String
         Get
             Return _ServiceCenterCode
         End Get
-        Set(ByVal value As String)
+        Set
             _ServiceCenterCode = value
         End Set
     End Property
 
     Private _Risk_Type_Code As String
-    Public Property RiskTypeCode() As String
+    Public Property RiskTypeCode As String
         Get
             Return _Risk_Type_Code
         End Get
-        Set(ByVal value As String)
+        Set
             _Risk_Type_Code = value
         End Set
     End Property
 
 
     Private _Equipment_Class_Code As String
-    Public Property EquipmentClassCode() As String
+    Public Property EquipmentClassCode As String
         Get
             Return _Equipment_Class_Code
         End Get
-        Set(ByVal value As String)
+        Set
             _Equipment_Class_Code = value
         End Set
     End Property
 
     Private _CompanyCode As String
-    Public Property CompanyCode() As String
+    Public Property CompanyCode As String
         Get
             Return _CompanyCode
         End Get
-        Set(ByVal value As String)
+        Set
             _CompanyCode = value
         End Set
     End Property
 
     Private _DealerCode As String
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
             Return _DealerCode
         End Get
-        Set(ByVal value As String)
+        Set
             _DealerCode = value
         End Set
     End Property
 
 
     Private _ServiceClassCode As String
-    Public Property ServiceClassCode() As String
+    Public Property ServiceClassCode As String
         Get
             Return _ServiceClassCode
         End Get
-        Set(ByVal value As String)
+        Set
             _ServiceClassCode = value
         End Set
     End Property
 
     Private _ServiceTypeCode As String
-    Public Property ServiceTypeCode() As String
+    Public Property ServiceTypeCode As String
         Get
             Return _ServiceTypeCode
         End Get
-        Set(ByVal value As String)
+        Set
             _ServiceTypeCode = value
         End Set
     End Property
 
     Private _Make As String
-    Public Property Make() As String
+    Public Property Make As String
         Get
             Return _Make
         End Get
-        Set(ByVal value As String)
+        Set
             _Make = value
         End Set
     End Property
 
     Private _Model As String
-    Public Property Model() As String
+    Public Property Model As String
         Get
             Return _Model
         End Get
-        Set(ByVal value As String)
+        Set
             _Model = value
         End Set
     End Property
 
     Private _LowPrice As String
-    Public Property LowPrice() As String
+    Public Property LowPrice As String
         Get
             Return _LowPrice
         End Get
-        Set(ByVal value As String)
+        Set
             _LowPrice = value
         End Set
     End Property
 
     Private _HighPrice As String
-    Public Property HighPrice() As String
+    Public Property HighPrice As String
         Get
             Return _HighPrice
         End Get
-        Set(ByVal value As String)
+        Set
             _HighPrice = value
         End Set
     End Property
 
     Private _ServiceLevelCode As String
     <ValidStringLength("", Max:=50)> _
-    Public Property ServiceLevelCode() As String
+    Public Property ServiceLevelCode As String
         Get
             Return _ServiceLevelCode
         End Get
-        Set(ByVal value As String)
+        Set
             _ServiceLevelCode = value
         End Set
     End Property

@@ -39,47 +39,47 @@ Partial Public Class AccountingReversalForm
 
 #Region "Page Init"
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
         'Put user code to initialize the page here
-        Me.ErrControllerMaster.Clear_Hide()
+        ErrControllerMaster.Clear_Hide()
 
         Try
 
-            Me.DisplayProgressBarOnClick(Me.btnExecute, ElitaPlusWebApp.Message.MSG_PERFORMING_REQUEST)
+            DisplayProgressBarOnClick(btnExecute, ElitaPlusWebApp.Message.MSG_PERFORMING_REQUEST)
 
-            If Not Me.IsPostBack Then
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
-                Me.AddCalendar(Me.btnDate, Me.txtDate)
+            If Not IsPostBack Then
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
+                AddCalendar(btnDate, txtDate)
 
                 Populate()
 
                 'Add Enable/Disable Code to Radios for the Event and date Lists
-                Me.rdoAllDates.Attributes.Add("onclick", "selectDate();")
-                Me.rdoGreaterDate.Attributes.Add("onclick", "selectDate();")
-                Me.rdoLessDate.Attributes.Add("onclick", "selectDate();")
-                Me.rdoSpecificDate.Attributes.Add("onclick", "selectDate();")
+                rdoAllDates.Attributes.Add("onclick", "selectDate();")
+                rdoGreaterDate.Attributes.Add("onclick", "selectDate();")
+                rdoLessDate.Attributes.Add("onclick", "selectDate();")
+                rdoSpecificDate.Attributes.Add("onclick", "selectDate();")
 
-                Me.rdoEventAll.Attributes.Add("onclick", "selectEvent();")
-                Me.rdoEventSpecific.Attributes.Add("onclick", "selectEvent();")
+                rdoEventAll.Attributes.Add("onclick", "selectEvent();")
+                rdoEventSpecific.Attributes.Add("onclick", "selectEvent();")
 
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not CallingPar Is Nothing Then
+            If CallingPar IsNot Nothing Then
                 'Get the id from the parent
-                Me.State.AcctTransId = CType(Me.CallingParameters, Guid)
+                State.AcctTransId = CType(CallingParameters, Guid)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
@@ -87,11 +87,11 @@ Partial Public Class AccountingReversalForm
 
 #Region "EVENT HANDLERS"
 
-    Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
-        Me.ReturnToCallingPage()
+    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
+        ReturnToCallingPage()
     End Sub
 
-    Private Sub btnExecute_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnExecute.Click
+    Private Sub btnExecute_Click(sender As Object, e As System.EventArgs) Handles btnExecute.Click
 
         Try
             Dim _felitaEngine As New FelitaEngine()
@@ -102,18 +102,18 @@ Partial Public Class AccountingReversalForm
             If rdoEventAll.Checked Then
                 eventCode = String.Empty
             Else
-                If ddlAccountingEvent.SelectedValue = Me.NOTHING_SELECTED Then
+                If ddlAccountingEvent.SelectedValue = NOTHING_SELECTED Then
                     eventCode = String.Empty
                     rdoEventAll.Checked = True
                     rdoEventSpecific.Checked = False
                 Else
-                    eventCode = BusinessObjectsNew.LookupListNew.GetCodeFromId(BusinessObjectsNew.LookupListNew.getAccountingEvents(Me.State.CompanyObj.AcctCompanyId, ElitaPlusIdentity.Current.ActiveUser.LanguageId), New Guid(ddlAccountingEvent.SelectedValue))
+                    eventCode = BusinessObjectsNew.LookupListNew.GetCodeFromId(BusinessObjectsNew.LookupListNew.getAccountingEvents(State.CompanyObj.AcctCompanyId, ElitaPlusIdentity.Current.ActiveUser.LanguageId), New Guid(ddlAccountingEvent.SelectedValue))
                 End If
             End If
 
             If Not rdoAllDates.Checked Then
-                If Not Date.TryParse(Me.txtDate.Text, dt) Then
-                    Me.ErrControllerMaster.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_INVALID_EMPTY_DATE)
+                If Not Date.TryParse(txtDate.Text, dt) Then
+                    ErrControllerMaster.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_INVALID_EMPTY_DATE)
                     Exit Sub
                 End If
             End If
@@ -128,16 +128,16 @@ Partial Public Class AccountingReversalForm
                 dtMove = FelitaEngine.DateFilter.SpecificDate
             End If
 
-            Dim strReturn As String = _felitaEngine.ReverseAccountingEntries(Me.State.AcctTransId, eventCode, dt, dtMove, Me.txtDescription.Text)
+            Dim strReturn As String = _felitaEngine.ReverseAccountingEntries(State.AcctTransId, eventCode, dt, dtMove, txtDescription.Text)
             If strReturn = RETURN_SUCCESS Then
-                Me.AddInfoMsg(ElitaPlusWebApp.Message.MSG_INTERFACES_HAS_COMPLETED)
-                ControlMgr.SetEnableControl(Me, Me.btnExecute, False)
+                AddInfoMsg(ElitaPlusWebApp.Message.MSG_INTERFACES_HAS_COMPLETED)
+                ControlMgr.SetEnableControl(Me, btnExecute, False)
             Else
-                Me.ErrControllerMaster.AddErrorAndShow(strReturn)
+                ErrControllerMaster.AddErrorAndShow(strReturn)
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub
@@ -150,9 +150,9 @@ Partial Public Class AccountingReversalForm
 
         Try
             'Fill AcctTransmission Record
-            Me.State.MyObj = New AcctTransmission(Me.State.AcctTransId, True)
+            State.MyObj = New AcctTransmission(State.AcctTransId, True)
 
-            Me.State.CompanyObj = New Company(Me.State.MyObj.CompanyId)
+            State.CompanyObj = New Company(State.MyObj.CompanyId)
             'BindListControlToDataView(Me.ddlAccountingEvent, BusinessObjectsNew.LookupListNew.getAccountingEvents(Me.State.CompanyObj.AcctCompanyId, ElitaPlusIdentity.Current.ActiveUser.LanguageId))
 
             Dim AccountingEvents As DataElements.ListItem() =
@@ -160,22 +160,22 @@ Partial Public Class AccountingReversalForm
                                                                     languageCode:=Thread.CurrentPrincipal.GetLanguageCode(),
                                                                     context:=New ListContext() With
                                                                     {
-                                                                        .AccountingCompanyId = Me.State.CompanyObj.AcctCompanyId
+                                                                        .AccountingCompanyId = State.CompanyObj.AcctCompanyId
                                                                     })
 
-            Me.ddlAccountingEvent.Populate(AccountingEvents.ToArray(),
+            ddlAccountingEvent.Populate(AccountingEvents.ToArray(),
                                          New PopulateOptions() With
                                          {
                                              .AddBlankItem = True
                                          })
 
-            Me.txtBatchNumber.Text = Me.State.MyObj.FileName.Substring(Me.State.MyObj.FileName.LastIndexOf("-") + 1).Replace(".XML", "")
-            Me.txtCreditAmount.Text = Me.State.MyObj.CreditAmount.ToString
-            Me.txtDebitAmount.Text = Me.State.MyObj.DebitAmount.ToString
-            Me.txtTransDate.Text = Me.State.MyObj.CreatedDate.ToString
+            txtBatchNumber.Text = State.MyObj.FileName.Substring(State.MyObj.FileName.LastIndexOf("-") + 1).Replace(".XML", "")
+            txtCreditAmount.Text = State.MyObj.CreditAmount.ToString
+            txtDebitAmount.Text = State.MyObj.DebitAmount.ToString
+            txtTransDate.Text = State.MyObj.CreatedDate.ToString
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub

@@ -113,7 +113,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -121,22 +121,22 @@ Namespace Reports
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
-            Me.ClearLabelErrSign(UserCompanyMultipleDrop.CaptionLabel)
+            ErrorCtrl.Clear_Hide()
+            ClearLabelErrSign(UserCompanyMultipleDrop.CaptionLabel)
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                 Else
                     ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
                 ' Me.DisplayProgressBarOnClick(Me.btnGenRpt, "LOADING_REPORT")
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
         Private Sub PopulateYearsDropdown()
@@ -147,18 +147,18 @@ Namespace Reports
             Dim listcontext As ListContext = New ListContext()
             listcontext.CompanyId = ElitaPlusIdentity.Current.ActiveUser.CompanyId
             Dim YearListLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("ClosingYearsByCompany", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
-            Me.moYearDropDownList.Populate(YearListLkl, New PopulateOptions() With
+            moYearDropDownList.Populate(YearListLkl, New PopulateOptions() With
              {
             .AddBlankItem = True,
             .ValueFunc = AddressOf PopulateOptions.GetCode,
            .BlankItemValue = "0"
              })
-            Dim oDescrip As String = Me.GetSelectedDescription(Me.moYearDropDownList)
+            Dim oDescrip As String = GetSelectedDescription(moYearDropDownList)
         End Sub
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(moMonthYear)
-            Me.ClearLabelErrSign(UserCompanyMultipleDrop.CaptionLabel)
+            ClearLabelErrSign(moMonthYear)
+            ClearLabelErrSign(UserCompanyMultipleDrop.CaptionLabel)
         End Sub
 
         Private Sub PopulateMonthsDropdown()
@@ -166,7 +166,7 @@ Namespace Reports
             ' dv.Sort = "CODE"
             'Me.BindListControlToDataView(Me.moMonthDropDownList, dv, , , True)
             Dim monthLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("MONTH", ElitaPlusIdentity.Current.ActiveUser.LanguageCode)
-            Me.moMonthDropDownList.Populate(monthLkl, New PopulateOptions() With
+            moMonthDropDownList.Populate(monthLkl, New PopulateOptions() With
            {
               .AddBlankItem = True
            })
@@ -187,7 +187,7 @@ Namespace Reports
             UserCompanyMultipleDrop.SetControl(False, UserCompanyMultipleDrop.MODES.NEW_MODE, True, dv, "* " & TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY), True)
             If dv.Count.Equals(ONE_ITEM) Then
                 HideHtmlElement("ddSeparator")
-                UserCompanyMultipleDrop.SelectedIndex = Me.ONE_ITEM
+                UserCompanyMultipleDrop.SelectedIndex = ONE_ITEM
                 UserCompanyMultipleDrop.Visible = False
             End If
         End Sub
@@ -198,7 +198,7 @@ Namespace Reports
             PopulateCompaniesDropdown()
         End Sub
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 'Dim oCompanyId As Guid = Me.GetApplicationUser.CompanyID
                 'Dim compCode As String = LookupListNew.GetCodeFromId("COMPANIES", oCompanyId)
@@ -206,13 +206,13 @@ Namespace Reports
                 Dim compCode As String = UserCompanyMultipleDrop.SelectedCode
                 Dim compDesc As String = UserCompanyMultipleDrop.SelectedDesc
 
-                Dim selectedYear As String = Me.GetSelectedDescription(Me.moYearDropDownList)
-                Dim selectedMonthID As Guid = Me.GetSelectedItem(Me.moMonthDropDownList)
+                Dim selectedYear As String = GetSelectedDescription(moYearDropDownList)
+                Dim selectedMonthID As Guid = GetSelectedItem(moMonthDropDownList)
                 Dim selectedMonth As String = LookupListNew.GetCodeFromId(LookupListNew.LK_MONTHS, selectedMonthID)
                 Dim selectedYearMonth As String = selectedYear & selectedMonth
 
                 If selectedMonthID.Equals(Guid.Empty) OrElse selectedYear.Equals(String.Empty) Then
-                    ElitaPlusPage.SetLabelError(Me.moMonthYear)
+                    ElitaPlusPage.SetLabelError(moMonthYear)
                     Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_YEARMONTH_MUST_BE_SELECTED_ERR)
                 End If
 
@@ -229,11 +229,11 @@ Namespace Reports
 
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Function SetParameters(ByVal companyCode As String, ByVal companyDesc As String, ByVal selectedYearMonth As String) As ReportCeBaseForm.Params
+        Function SetParameters(companyCode As String, companyDesc As String, selectedYearMonth As String) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim reportName As String = RPT_FILENAME

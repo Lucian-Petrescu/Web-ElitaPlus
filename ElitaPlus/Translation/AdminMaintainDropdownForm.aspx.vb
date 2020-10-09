@@ -15,7 +15,7 @@ Namespace Translation
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -61,48 +61,48 @@ Namespace Translation
 #End Region
 
 #Region "Page Events"
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
-                If Not Me.IsPostBack Then
-                    Me.ShowMissingTranslations(ErrorControl)
-                    Me.MenuEnabled = False
-                    Me.AddConfirmation(btnDelete, Me.CONFIRM_MSG)
-                    Me.PopulateGrid()
+                If Not IsPostBack Then
+                    ShowMissingTranslations(ErrorControl)
+                    MenuEnabled = False
+                    AddConfirmation(btnDelete, CONFIRM_MSG)
+                    PopulateGrid()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorControl)
+                HandleErrors(ex, ErrorControl)
             End Try
         End Sub
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             'Enable the Menu Navigation Back after returning from the child
             Try
-                Me.MenuEnabled = True
+                MenuEnabled = True
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorControl)
+                HandleErrors(ex, ErrorControl)
             End Try
         End Sub
 
 #End Region
 
 #Region "Datagrid Related "
-        Public Sub DataGridDropdowns_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles DataGridDropdowns.ItemCommand
+        Public Sub DataGridDropdowns_ItemCommand(source As Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles DataGridDropdowns.ItemCommand
             Try
                 If e.CommandName = "ItemsCMD" Then
-                    Dim DropdownId As New Guid(CType(Me.DataGridDropdowns.Items(e.Item.ItemIndex).Cells(Me.DROPDOWN_ID_CIDX).FindControl("lblListId"), Label).Text)
-                    Me.callPage(AdminMaintainDropdownItemForm.PAGE_NAME, DropdownId)
+                    Dim DropdownId As New Guid(CType(DataGridDropdowns.Items(e.Item.ItemIndex).Cells(DROPDOWN_ID_CIDX).FindControl("lblListId"), Label).Text)
+                    callPage(AdminMaintainDropdownItemForm.PAGE_NAME, DropdownId)
                 ElseIf e.CommandName = "SelectAction" Then
-                    Dim DropdownId As New Guid(CType(Me.DataGridDropdowns.Items(e.Item.ItemIndex).Cells(Me.DROPDOWN_ID_CIDX).FindControl("lblListId"), Label).Text)
+                    Dim DropdownId As New Guid(CType(DataGridDropdowns.Items(e.Item.ItemIndex).Cells(DROPDOWN_ID_CIDX).FindControl("lblListId"), Label).Text)
                     Session(DROPDOWN_ID) = DropdownId
-                    Me.callPage(AdminDropdownTranslationForm.PAGE_NAME, DropdownId)
+                    callPage(AdminDropdownTranslationForm.PAGE_NAME, DropdownId)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorControl)
+                HandleErrors(ex, ErrorControl)
             End Try
         End Sub
 
-        Public Sub ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs)
+        Public Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
             '-------------------------------------
             'Name:ReasorbTranslation
             'Purpose:Translate any message to be display
@@ -159,10 +159,10 @@ Namespace Translation
                     i += 1
                 Next
             Else
-                If elemType = ListItemType.AlternatingItem Or elemType = ListItemType.Item Then
+                If elemType = ListItemType.AlternatingItem OrElse elemType = ListItemType.Item Then
                     Dim objButton As Button
 
-                    objButton = CType(e.Item.Cells(Me.ITEMS_CIDX).FindControl("btnView"), Button)
+                    objButton = CType(e.Item.Cells(ITEMS_CIDX).FindControl("btnView"), Button)
                     objButton.Style.Add("background-color", "#dee3e7")
                     objButton.Style.Add("cursor", "hand")
                     objButton.CssClass = "FLATBUTTON"
@@ -171,13 +171,13 @@ Namespace Translation
             End If
         End Sub
 
-        Private Sub DataGridDropdowns_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles DataGridDropdowns.PageIndexChanged
+        Private Sub DataGridDropdowns_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles DataGridDropdowns.PageIndexChanged
             Try
-                Me.DataGridDropdowns.CurrentPageIndex = e.NewPageIndex
-                Me.State.PageIndex = Me.DataGridDropdowns.CurrentPageIndex
+                DataGridDropdowns.CurrentPageIndex = e.NewPageIndex
+                State.PageIndex = DataGridDropdowns.CurrentPageIndex
                 PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorControl)
+                HandleErrors(ex, ErrorControl)
             End Try
         End Sub
 
@@ -192,10 +192,10 @@ Namespace Translation
             Dim dropdownBO As New Dropdown
             Dim retVal As Integer
             ErrorControl.Clear_Hide()
-            For i = 0 To Me.DataGridDropdowns.Items.Count - 1
-                Dim strNewProgCodeValue As String = CType(Me.DataGridDropdowns.Items(i).Cells(Me.NEW_PROGCODE_CIDX).FindControl("TextBoxProgCode"), TextBox).Text
-                Dim strnewEngTransValue As String = CType(Me.DataGridDropdowns.Items(i).Cells(Me.NEW_TRANS_VALUE_CIDX).FindControl("TextBoxEngTrans"), TextBox).Text
-                Dim newMaintByUserValue As Boolean = CType(Me.DataGridDropdowns.Items(i).Cells(Me.NEW_MAINT_BY_USER_CIDX).FindControl("CheckBoxMaintainableByUser"), CheckBox).Checked
+            For i = 0 To DataGridDropdowns.Items.Count - 1
+                Dim strNewProgCodeValue As String = CType(DataGridDropdowns.Items(i).Cells(NEW_PROGCODE_CIDX).FindControl("TextBoxProgCode"), TextBox).Text
+                Dim strnewEngTransValue As String = CType(DataGridDropdowns.Items(i).Cells(NEW_TRANS_VALUE_CIDX).FindControl("TextBoxEngTrans"), TextBox).Text
+                Dim newMaintByUserValue As Boolean = CType(DataGridDropdowns.Items(i).Cells(NEW_MAINT_BY_USER_CIDX).FindControl("CheckBoxMaintainableByUser"), CheckBox).Checked
                 If newMaintByUserValue = True Then
                     strNewMaintByUserValue = Codes.YESNO_Y
                 Else
@@ -204,21 +204,21 @@ Namespace Translation
 
                 'comparing to the original values saved in hidden columns
                 Dim isDirty As Boolean = False
-                isDirty = isDirty Or (strNewProgCodeValue.Trim.ToUpper <> Me.DataGridDropdowns.Items(i).Cells(Me.OLD_PROGCODE_CIDX).Text.Trim.ToUpper)
-                isDirty = isDirty Or (strnewEngTransValue.Trim <> Me.DataGridDropdowns.Items(i).Cells(Me.OLD_TRANS_VALUE_CIDX).Text.Trim)
-                isDirty = isDirty Or (strNewMaintByUserValue <> Me.DataGridDropdowns.Items(i).Cells(Me.OLD_MAINT_BY_USER_CIDX).Text.Trim)
+                isDirty = isDirty OrElse (strNewProgCodeValue.Trim.ToUpper <> DataGridDropdowns.Items(i).Cells(OLD_PROGCODE_CIDX).Text.Trim.ToUpper)
+                isDirty = isDirty OrElse (strnewEngTransValue.Trim <> DataGridDropdowns.Items(i).Cells(OLD_TRANS_VALUE_CIDX).Text.Trim)
+                isDirty = isDirty OrElse (strNewMaintByUserValue <> DataGridDropdowns.Items(i).Cells(OLD_MAINT_BY_USER_CIDX).Text.Trim)
                 If isDirty Then
-                    Dim DropdownId As New Guid(CType(Me.DataGridDropdowns.Items(i).Cells(Me.DROPDOWN_ID_CIDX).FindControl("lblListId"), Label).Text)
+                    Dim DropdownId As New Guid(CType(DataGridDropdowns.Items(i).Cells(DROPDOWN_ID_CIDX).FindControl("lblListId"), Label).Text)
                     Try
                         retVal = dropdownBO.UpdateDropdown(DropdownId, strNewProgCodeValue.Trim.ToUpper, strNewMaintByUserValue, strnewEngTransValue.Trim, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
                         If retVal = 0 Then
                             DataChanged = True
                             'Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
                         Else
-                            Me.ErrorControl.AddError(Message.ERR_SAVING_DATA)
+                            ErrorControl.AddError(Message.ERR_SAVING_DATA)
                         End If
                     Catch ex As Exception
-                        Me.ErrorControl.AddError(Message.ERR_SAVING_DATA)
+                        ErrorControl.AddError(Message.ERR_SAVING_DATA)
                     End Try
                 End If
             Next
@@ -227,98 +227,98 @@ Namespace Translation
             End If
         End Sub
 
-        Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
+        Private Sub btnSave_Click(sender As System.Object, e As System.EventArgs) Handles btnSave.Click
             Try
-                Me.ErrorControl.Clear_Hide()
-                Me.SaveChanges()
-                Me.ErrorControl.Show()
+                ErrorControl.Clear_Hide()
+                SaveChanges()
+                ErrorControl.Show()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorControl)
+                HandleErrors(ex, ErrorControl)
             End Try
         End Sub
 
-        Private Sub btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete.Click
-            Me.ErrorControl.Clear_Hide()
+        Private Sub btnDelete_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete.Click
+            ErrorControl.Clear_Hide()
             Try
                 Dim i As Integer
                 Dim deleteCount As Integer = 0
                 Dim TotalChecked As Integer = 0
                 Dim retVal As Integer
                 Dim dropdownBO As New Dropdown
-                For i = 0 To Me.DataGridDropdowns.Items.Count - 1
-                    If CType(Me.DataGridDropdowns.Items(i).Cells(Me.SELECTED_CIDX).FindControl("CheckBoxItemSel"), CheckBox).Checked Then
+                For i = 0 To DataGridDropdowns.Items.Count - 1
+                    If CType(DataGridDropdowns.Items(i).Cells(SELECTED_CIDX).FindControl("CheckBoxItemSel"), CheckBox).Checked Then
                         TotalChecked += 1
-                        Dim DropdownId As New Guid(CType(Me.DataGridDropdowns.Items(i).Cells(Me.DROPDOWN_ID_CIDX).FindControl("lblListId"), Label).Text)
+                        Dim DropdownId As New Guid(CType(DataGridDropdowns.Items(i).Cells(DROPDOWN_ID_CIDX).FindControl("lblListId"), Label).Text)
                         Try
                             retVal = dropdownBO.DeleteDropdown(DropdownId)
                             If retVal = 0 Then
                                 deleteCount += 1
                             Else
-                                Me.ErrorControl.AddError(Message.ERR_DELETING_DATA)
+                                ErrorControl.AddError(Message.ERR_DELETING_DATA)
                             End If
                         Catch ex As Exception
-                            Me.ErrorControl.AddError(Message.ERR_DELETING_DATA)
+                            ErrorControl.AddError(Message.ERR_DELETING_DATA)
                         End Try
                     End If
                 Next
-                Me.PopulateGrid()
+                PopulateGrid()
                 Dim ProcessingResultMsg As String = TranslationBase.TranslateLabelOrMessage(Message.BATCH_DELETE_PROCESS)
                 ProcessingResultMsg = ProcessingResultMsg.Replace("?1", deleteCount.ToString)
                 ProcessingResultMsg = ProcessingResultMsg.Replace("?2", TotalChecked.ToString)
-                Me.AddInfoMsg(ProcessingResultMsg, False)
-                Me.ErrorControl.Show()
+                AddInfoMsg(ProcessingResultMsg, False)
+                ErrorControl.Show()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorControl)
+                HandleErrors(ex, ErrorControl)
             End Try
         End Sub
 
-        Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+        Private Sub btnCancel_Click(sender As System.Object, e As System.EventArgs) Handles btnCancel.Click
             Try
-                Me.Response.Redirect(NavigationHistory.LastPage)
+                Response.Redirect(NavigationHistory.LastPage)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorControl)
+                HandleErrors(ex, ErrorControl)
             End Try
         End Sub
 
-        Private Sub bntAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles bntAdd.Click
+        Private Sub bntAdd_Click(sender As System.Object, e As System.EventArgs) Handles bntAdd.Click
             ErrorControl.Clear_Hide()
             Try
                 Dim dropdownBO As New Dropdown
                 Dim retVal As Integer
-                If Me.TextBoxNewProgCode.Text.Trim = String.Empty Then
+                If TextBoxNewProgCode.Text.Trim = String.Empty Then
                     'display error
-                    ElitaPlusPage.SetLabelError(Me.LabelNewProgCode)
+                    ElitaPlusPage.SetLabelError(LabelNewProgCode)
                     Throw New GUIException(Message.MSG_INVALID_AUTHORIZED_AMOUNT_ERR, Assurant.ElitaPlus.Common.ErrorCodes.GUI_CODE_IS_REQUIED_ERR)
                 End If
 
-                If Me.TextBoxDescription.Text.Trim = String.Empty Then
+                If TextBoxDescription.Text.Trim = String.Empty Then
                     'display error
-                    ElitaPlusPage.SetLabelError(Me.LabelDescription)
+                    ElitaPlusPage.SetLabelError(LabelDescription)
                     Throw New GUIException(Message.MSG_INVALID_AUTHORIZED_AMOUNT_ERR, Assurant.ElitaPlus.Common.ErrorCodes.GUI_DESCRIPTION_IS_REQUIED_ERR)
                 End If
 
-                retVal = dropdownBO.AddDropdown(Me.TextBoxNewProgCode.Text, Codes.YESNO_Y, Me.TextBoxDescription.Text, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
+                retVal = dropdownBO.AddDropdown(TextBoxNewProgCode.Text, Codes.YESNO_Y, TextBoxDescription.Text, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
                 If retVal = 0 Then
-                    Me.AddInfoMsg(Message.RECORD_ADDED_OK)
+                    AddInfoMsg(Message.RECORD_ADDED_OK)
                     PopulateGrid()
-                    Me.TextBoxNewProgCode.Text = String.Empty
-                    Me.TextBoxDescription.Text = String.Empty
+                    TextBoxNewProgCode.Text = String.Empty
+                    TextBoxDescription.Text = String.Empty
                 Else
-                    Me.ErrorControl.AddError(Message.ERR_SAVING_DATA)
+                    ErrorControl.AddError(Message.ERR_SAVING_DATA)
                 End If
-                SetLabelColor(Me.LabelNewProgCode)
-                SetLabelColor(Me.LabelDescription)
-                Me.ErrorControl.Show()
+                SetLabelColor(LabelNewProgCode)
+                SetLabelColor(LabelDescription)
+                ErrorControl.Show()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorControl)
+                HandleErrors(ex, ErrorControl)
             End Try
         End Sub
 
-        Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
             Try
-                Me.ReturnToTabHomePage()
+                ReturnToTabHomePage()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorControl)
+                HandleErrors(ex, ErrorControl)
             End Try
         End Sub
 
@@ -328,16 +328,16 @@ Namespace Translation
 
         Protected Sub PopulateGrid()
             Dim EngLangId As Guid = LookupListNew.GetIdFromCode(LookupListNew.GetLanguageLookupList(), Codes.ENGLISH_LANG_CODE)
-            Me.State.searchDV = Dropdown.AdminLoadList(EngLangId)
-            Me.DataGridDropdowns.AutoGenerateColumns = False
+            State.searchDV = Dropdown.AdminLoadList(EngLangId)
+            DataGridDropdowns.AutoGenerateColumns = False
 
-            SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.ListId, Me.DataGridDropdowns, Me.State.PageIndex)
-            Me.State.PageIndex = Me.DataGridDropdowns.CurrentPageIndex
-            Me.DataGridDropdowns.DataSource = Me.State.searchDV
-            Me.DataGridDropdowns.DataBind()
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.ListId, DataGridDropdowns, State.PageIndex)
+            State.PageIndex = DataGridDropdowns.CurrentPageIndex
+            DataGridDropdowns.DataSource = State.searchDV
+            DataGridDropdowns.DataBind()
         End Sub
 
-        Public Shared Sub SetLabelColor(ByVal lbl As Label)
+        Public Shared Sub SetLabelColor(lbl As Label)
             lbl.ForeColor = Color.Black
         End Sub
 

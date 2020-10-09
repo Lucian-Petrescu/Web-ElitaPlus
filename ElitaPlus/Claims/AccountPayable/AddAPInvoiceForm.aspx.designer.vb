@@ -10,6 +10,8 @@
 Option Strict On
 Option Explicit On
 
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
+
 Namespace Claims.AccountPayable
 
     Partial Public Class AddApInvoiceForm
@@ -21,7 +23,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moInvoiceNumberLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moInvoiceNumberLabel As Label
 
         '''<summary>
         '''moInvoiceNumber control.
@@ -30,7 +32,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moInvoiceNumber As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents moInvoiceNumber As TextBox
 
         '''<summary>
         '''moInvoiceAmountLabel control.
@@ -39,7 +41,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moInvoiceAmountLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moInvoiceAmountLabel As Label
 
         '''<summary>
         '''moInvoiceAmount control.
@@ -48,7 +50,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moInvoiceAmount As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents moInvoiceAmount As TextBox
 
         '''<summary>
         '''moDealerLabel control.
@@ -57,7 +59,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moDealerLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moDealerLabel As Label
 
         '''<summary>
         '''moDealer control.
@@ -66,7 +68,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moDealer As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents moDealer As DropDownList
 
         '''<summary>
         '''moInvoiceDateLabel control.
@@ -75,7 +77,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moInvoiceDateLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moInvoiceDateLabel As Label
 
         '''<summary>
         '''moInvoiceDate control.
@@ -84,7 +86,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moInvoiceDate As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents moInvoiceDate As TextBox
 
         '''<summary>
         '''btnInvoiceDate control.
@@ -93,7 +95,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnInvoiceDate As Global.System.Web.UI.WebControls.ImageButton
+        Protected WithEvents btnInvoiceDate As ImageButton
 
         '''<summary>
         '''moServiceCenterLabel control.
@@ -102,7 +104,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moServiceCenterLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moServiceCenterLabel As Label
 
         '''<summary>
         '''moVendorDropDown control.
@@ -111,7 +113,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moVendorDropDown As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents moVendorDropDown As DropDownList
 
         '''<summary>
         '''moTermLabel control.
@@ -120,7 +122,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moTermLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moTermLabel As Label
 
         '''<summary>
         '''moAPInvoiceTerm control.
@@ -129,7 +131,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moAPInvoiceTerm As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents moAPInvoiceTerm As DropDownList
 
         '''<summary>
         '''ScriptManager1 control.
@@ -138,7 +140,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents ScriptManager1 As Global.System.Web.UI.ScriptManager
+        Protected WithEvents ScriptManager1 As ScriptManager
 
         '''<summary>
         '''HiddenFieldPoLineSearch control.
@@ -147,7 +149,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents HiddenFieldPoLineSearch As Global.System.Web.UI.WebControls.HiddenField
+        Protected WithEvents HiddenFieldPoLineSearch As HiddenField
 
         '''<summary>
         '''lblNewSCError control.
@@ -156,7 +158,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblNewSCError As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblNewSCError As Label
 
         '''<summary>
         '''Label3 control.
@@ -165,7 +167,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents Label3 As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents Label3 As Label
 
         '''<summary>
         '''ucApInvoiceLinesSearch control.
@@ -174,7 +176,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents ucApInvoiceLinesSearch As Global.Assurant.ElitaPlus.ElitaPlusWebApp.Common.UserControlApInvoiceLinesSearch
+        Protected WithEvents ucApInvoiceLinesSearch As UserControlApInvoiceLinesSearch
 
         '''<summary>
         '''btnCancelLineSearch control.
@@ -183,7 +185,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnCancelLineSearch As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents btnCancelLineSearch As Button
 
         '''<summary>
         '''btnAddPoLines control.
@@ -192,7 +194,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnAddPoLines As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents btnAddPoLines As Button
 
         '''<summary>
         '''tr1 control.
@@ -201,7 +203,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents tr1 As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents tr1 As HtmlTableRow
 
         '''<summary>
         '''Label1 control.
@@ -210,7 +212,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents Label1 As Label
 
         '''<summary>
         '''Label2 control.
@@ -219,7 +221,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents Label2 As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents Label2 As Label
 
         '''<summary>
         '''Label4 control.
@@ -228,7 +230,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents Label4 As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents Label4 As Label
 
         '''<summary>
         '''cboPageSize control.
@@ -237,7 +239,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents cboPageSize As DropDownList
 
         '''<summary>
         '''lblRecordCount control.
@@ -246,7 +248,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblRecordCount As Label
 
         '''<summary>
         '''InvoiceLinesGrid control.
@@ -255,7 +257,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents InvoiceLinesGrid As Global.System.Web.UI.WebControls.GridView
+        Protected WithEvents InvoiceLinesGrid As GridView
 
         '''<summary>
         '''BtnNewLine control.
@@ -264,7 +266,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents BtnNewLine As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents BtnNewLine As Button
 
         '''<summary>
         '''BtnSearchLines control.
@@ -273,7 +275,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents BtnSearchLines As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents BtnSearchLines As Button
 
         '''<summary>
         '''BtnSaveLines control.
@@ -282,7 +284,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents BtnSaveLines As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents BtnSaveLines As Button
 
         '''<summary>
         '''BtnCancelLine control.
@@ -291,7 +293,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents BtnCancelLine As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents BtnCancelLine As Button
 
         '''<summary>
         '''btnBack control.
@@ -300,7 +302,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents btnBack As Button
 
         '''<summary>
         '''btnFinalize control.
@@ -309,7 +311,7 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnFinalize As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents btnFinalize As Button
 
         '''<summary>
         '''btnApply_WRITE control.
@@ -318,6 +320,6 @@ Namespace Claims.AccountPayable
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnApply_WRITE As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents btnApply_WRITE As Button
     End Class
 End Namespace

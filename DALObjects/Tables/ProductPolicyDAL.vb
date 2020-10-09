@@ -30,35 +30,35 @@ Public Class ProductPolicyDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("product_policy_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
 
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
@@ -66,9 +66,9 @@ Public Class ProductPolicyDAL
 
 #Region "CRUD Methods"
 
-    Public Function LoadList(ByVal languageId As Guid, ByVal ProductCodeId As Guid, ByVal familyDS As DataSet)
+    Public Function LoadList(languageId As Guid, ProductCodeId As Guid, familyDS As DataSet)
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         ' Dim ds As DataSet
         Dim dcPk As DataColumnCollection
 
@@ -79,7 +79,7 @@ Public Class ProductPolicyDAL
 
         Try
 
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
             '  familyDS.Tables(Me.TABLE_NAME).PrimaryKey = New DataColumn() {familyDS.Tables(Me.TABLE_NAME).Columns("Product_Policy_Id")}
             '   familyDS = DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters)
 
@@ -94,9 +94,9 @@ Public Class ProductPolicyDAL
         End Try
     End Function
 
-    Public Function LoadList(ByVal languageId As Guid, ByVal ProductCodeId As Guid) As DataSet
+    Public Function LoadList(languageId As Guid, ProductCodeId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim ds As New DataSet
         Dim dcPk As DataColumnCollection
 
@@ -106,7 +106,7 @@ Public Class ProductPolicyDAL
                                             New OracleParameter(COL_NAME_PRODUCT_CODE_ID, ProductCodeId.ToByteArray)}
 
         Try
-            ds = DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters)
+            ds = DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters)
 
             ds.Tables(0).PrimaryKey = New DataColumn() {ds.Tables(0).Columns("Product_Policy_Id")}
 

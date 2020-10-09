@@ -8,11 +8,11 @@ Public Class ValidationFault
         Me.New(New Dictionary(Of String, String))
     End Sub
 
-    Public Sub New(ByVal pValidationErrors As Dictionary(Of String, String))
-        Me.ValidationErrors = pValidationErrors
+    Public Sub New(pValidationErrors As Dictionary(Of String, String))
+        ValidationErrors = pValidationErrors
     End Sub
 
-    Friend Shared Sub Validate(ByVal pObject As Object)
+    Friend Shared Sub Validate(pObject As Object)
         ' Scan thru object to check if DataMember attribute is present
 
     End Sub

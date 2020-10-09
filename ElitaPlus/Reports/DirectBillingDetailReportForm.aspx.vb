@@ -8,26 +8,26 @@
             SetStateProperties()
         End Sub
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
-            Me.ErrControllerMaster.Clear_Hide()
-            Me.Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
+            ErrControllerMaster.Clear_Hide()
+            Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
 
             Try
-                If Not Me.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
+                If Not IsPostBack Then
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
                     'Page.RegisterStartupScript("ResizeForm", "<script language='javascript'>resizeForm();</script>")
                     TheReportCeInputControl.SetExportOnly()
                     TheReportCeInputControl.populateReportLanguages(RPT_FILENAME_EXPORT)
                     InitializeForm()
 
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
 
 
         End Sub
@@ -99,13 +99,13 @@
 
         Private Sub SetStateProperties()
             Dim oExpState As Assurant.ElitaPlus.ElitaPlusWebApp.DirectBillingDetailForm.MyState
-            Me.State.BillingHeaderId = CType(Me.CallingParameters, DirectBillingDetailForm.MyState).BillingHeaderId
-            If (CType(Me.CallingParameters, DirectBillingDetailForm.MyState).BillingFileByDealer = True) Then
-                Me.State.ByDealer = "Y"
+            State.BillingHeaderId = CType(CallingParameters, DirectBillingDetailForm.MyState).BillingHeaderId
+            If (CType(CallingParameters, DirectBillingDetailForm.MyState).BillingFileByDealer = True) Then
+                State.ByDealer = "Y"
             Else
-                Me.State.ByDealer = "N"
+                State.ByDealer = "N"
             End If
-            Me.State.Page_Index = CType(Me.CallingParameters, DirectBillingDetailForm.MyState).PageIndex
+            State.Page_Index = CType(CallingParameters, DirectBillingDetailForm.MyState).PageIndex
         End Sub
 
 #End Region
@@ -121,7 +121,7 @@
 #End Region
 
 #Region "Crystal Enterprise"
-        Private Sub btnGenRpt_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 Dim oparamdate As ParameterData
                 ReportCeBase.EnableReportCe(Me, TheReportCeInputControl)
@@ -130,16 +130,16 @@
                 Session(ReportCeBaseForm.SESSION_PARAMETERS_KEY) = params
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
         Public Function AssignParamValuesAndRunReport() As ParameterData
 
             Dim ParamData As ParameterData
             With ParamData
-                .BILLING_HEADER_ID = Me.State.BillingHeaderId
+                .BILLING_HEADER_ID = State.BillingHeaderId
                 .LANGUAGE_ID = ElitaPlusIdentity.Current.ActiveUser.LanguageId
-                .BYDEALER = Me.State.ByDealer
+                .BYDEALER = State.ByDealer
                 .CULTURE_VALUE = TheReportCeInputControl.getCultureValue(True)
             End With
             Return (ParamData)
@@ -147,7 +147,7 @@
         End Function
 
 
-        Function SetParameters(ByVal data As ParameterData) As ReportCeBaseForm.Params
+        Function SetParameters(data As ParameterData) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim culturevalue As String = TheReportCeInputControl.getCultureValue(True)
@@ -179,10 +179,10 @@
 
 #End Region
 
-        Protected Sub btnBack_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnBack.Click
+        Protected Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             '  Dim otrans As New TransExceptionManagementForm            
-            Dim retType As New DirectBillingDetailForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State)
-            Me.ReturnToCallingPage(retType)
+            Dim retType As New DirectBillingDetailForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State)
+            ReturnToCallingPage(retType)
         End Sub
     End Class
 End Namespace

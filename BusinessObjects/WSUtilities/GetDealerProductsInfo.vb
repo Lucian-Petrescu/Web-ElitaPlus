@@ -18,7 +18,7 @@ Public Class GetDealerProductsInfo
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetDealerProductsInfoDs)
+    Public Sub New(ds As GetDealerProductsInfoDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -56,12 +56,16 @@ Public Class GetDealerProductsInfo
 
     'End Sub
 
-    Private Function RemoveExcessData(ByVal xmlStringOutput As String) As String
-        xmlStringOutput = Regex.Replace(xmlStringOutput, "<PRODUCT_CODE_ID>[^>]+</PRODUCT_CODE_ID>|<ITEM_ID>[^>]+</ITEM_ID>|<COVERAGE_ID>[^>]+</COVERAGE_ID>|<COVERAGE_RATE_ID>[^>]+</COVERAGE_RATE_ID>", String.Empty)
+    Private Function RemoveExcessData(xmlStringOutput As String) As String
+        xmlStringOutput = Regex.Replace(xmlStringOutput, 
+                                        "<PRODUCT_CODE_ID>[^>]+</PRODUCT_CODE_ID>|<ITEM_ID>[^>]+</ITEM_ID>|<COVERAGE_ID>[^>]+</COVERAGE_ID>|<COVERAGE_RATE_ID>[^>]+</COVERAGE_RATE_ID>", 
+                                        String.Empty,
+                                        RegexOptions.None, 
+                                        new TimeSpan(0,0,0,0, 100))
         Return xmlStringOutput
     End Function
 
-    Private Sub MapDataSet(ByVal ds As GetDealerProductsInfoDs)
+    Private Sub MapDataSet(ds As GetDealerProductsInfoDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -74,8 +78,8 @@ Public Class GetDealerProductsInfo
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -83,13 +87,13 @@ Public Class GetDealerProductsInfo
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetDealerProductsInfoDs)
+    Private Sub Load(ds As GetDealerProductsInfoDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -102,11 +106,11 @@ Public Class GetDealerProductsInfo
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetDealerProductsInfoDs)
+    Private Sub PopulateBOFromWebService(ds As GetDealerProductsInfoDs)
         Try
             If ds.GetDealerProductsInfo.Count = 0 Then Exit Sub
             With ds.GetDealerProductsInfo.Item(0)
-                Me.DealerCode = .Dealer_Code
+                DealerCode = .Dealer_Code
             End With
 
         Catch ex As BOValidationException
@@ -123,17 +127,17 @@ Public Class GetDealerProductsInfo
 
 #Region "Properties"
 
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
-            If Row(Me.DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_DEALER_CODE), String))
+                Return (CType(Row(DATA_COL_NAME_DEALER_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_DEALER_CODE, Value)
+            SetValue(DATA_COL_NAME_DEALER_CODE, Value)
         End Set
     End Property
 
@@ -146,13 +150,13 @@ Public Class GetDealerProductsInfo
         Dim dealerBO As New Dealer
 
         Try
-            Me.Validate()
+            Validate()
 
             Dim dvDealrs As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
-            If Not dvDealrs Is Nothing AndAlso dvDealrs.Count > 0 Then
-                dealerId = LookupListNew.GetIdFromCode(dvDealrs, Me.DealerCode)
+            If dvDealrs IsNot Nothing AndAlso dvDealrs.Count > 0 Then
+                dealerId = LookupListNew.GetIdFromCode(dvDealrs, DealerCode)
                 If dealerId.Equals(Guid.Empty) Then
-                    Throw New BOValidationException("GetDealerProductsInfo Error: ", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_CODE)
+                    Throw New BOValidationException("GetDealerProductsInfo Error: ", Common.ErrorCodes.INVALID_DEALER_CODE)
                 End If
             End If
 
@@ -161,7 +165,7 @@ Public Class GetDealerProductsInfo
             'Get Products
             ds = ProductCode.getDealerProductsInfo(ds, dealerId)
             If ds.Tables.Count <= 0 OrElse ds.Tables(0).Rows.Count = 0 Then
-                Throw New BOValidationException("GetDealerProductsInfo Error: ", Assurant.ElitaPlus.Common.ErrorCodes.NO_PRODUCTCODES_FOUND_ERR)
+                Throw New BOValidationException("GetDealerProductsInfo Error: ", Common.ErrorCodes.NO_PRODUCTCODES_FOUND_ERR)
             End If
 
             ''get Items :table count should be 2

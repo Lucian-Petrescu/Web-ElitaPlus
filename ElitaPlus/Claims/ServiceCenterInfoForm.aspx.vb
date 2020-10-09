@@ -1,20 +1,23 @@
+Imports System.Diagnostics
+Imports System.Threading
+
 Partial Class ServiceCenterInfoForm
     'Inherits System.Web.UI.Page
     Inherits ElitaPlusPage
 
     Protected WithEvents ErrorCtrl As ErrorController
     Protected WithEvents UserControlServiceCenterInfo As UserControlServiceCenterInfo
-    Protected WithEvents Label40 As System.Web.UI.WebControls.Label
+    Protected WithEvents Label40 As Label
 
 
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -34,7 +37,7 @@ Partial Class ServiceCenterInfoForm
 #Region "Page Parameters"
     Public Class Parameters
         Public SrvCenterId As Guid
-        Public Sub New(ByVal srvCenterId As Guid, Optional ByVal showAcceptButton As Boolean = True)
+        Public Sub New(srvCenterId As Guid, Optional ByVal showAcceptButton As Boolean = True)
             Me.SrvCenterId = srvCenterId
         End Sub
     End Class
@@ -45,9 +48,9 @@ Partial Class ServiceCenterInfoForm
     Public Class ReturnType
         Public LastOperation As DetailPageCommand
         Public EditingBo As ServiceCenter
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As ServiceCenter)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(LastOp As DetailPageCommand, curEditingBo As ServiceCenter)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
         End Sub
     End Class
 
@@ -73,33 +76,33 @@ Partial Class ServiceCenterInfoForm
 
     Protected Shadows ReadOnly Property State() As MyState
         Get
-            If Me.NavController.State Is Nothing Then
-                Me.NavController.State = New MyState
+            If NavController.State Is Nothing Then
+                NavController.State = New MyState
                 InitializeFromFlowSession()
             End If
-            Return CType(Me.NavController.State, MyState)
+            Return CType(NavController.State, MyState)
         End Get
     End Property
 
     Protected Sub InitializeFromFlowSession()
         Try
-            Dim pageParameters As Parameters = CType(Me.NavController.ParametersPassed, Parameters)
-            Me.State.MyBO = New ServiceCenter(pageParameters.SrvCenterId)
+            Dim pageParameters As Parameters = CType(NavController.ParametersPassed, Parameters)
+            State.MyBO = New ServiceCenter(pageParameters.SrvCenterId)
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 'Get the id from the parent
-                Dim pageParameters As Parameters = CType(Me.NavController.ParametersPassed, Parameters)
-                Me.State.MyBO = New ServiceCenter(pageParameters.SrvCenterId)
+                Dim pageParameters As Parameters = CType(NavController.ParametersPassed, Parameters)
+                State.MyBO = New ServiceCenter(pageParameters.SrvCenterId)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
@@ -162,21 +165,21 @@ Partial Class ServiceCenterInfoForm
 
 #Region "Page Events"
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
-        Me.ErrorCtrl.Clear_Hide()
+        ErrorCtrl.Clear_Hide()
         Try
-            If Not Me.IsPostBack Then
-                If Me.State.MyBO Is Nothing Then
-                    Me.State.MyBO = New ServiceCenter
+            If Not IsPostBack Then
+                If State.MyBO Is Nothing Then
+                    State.MyBO = New ServiceCenter
                 End If
-                Me.PopulateFormFromBOs()
+                PopulateFormFromBOs()
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
-        Me.ShowMissingTranslations(Me.ErrorCtrl)
+        ShowMissingTranslations(ErrorCtrl)
     End Sub
 
 
@@ -210,11 +213,11 @@ Partial Class ServiceCenterInfoForm
     Protected Sub PopulateFormFromBOs()
 
         Try
-            With Me.State
-                Me.UserControlServiceCenterInfo.Bind(.MyBO, Me.ErrorCtrl)
+            With State
+                UserControlServiceCenterInfo.Bind(.MyBO, ErrorCtrl)
             End With
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
         'Try
@@ -232,13 +235,13 @@ Partial Class ServiceCenterInfoForm
 
 #Region "Button Clicks"
 
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
 
         Try
-            Me.NavController.Navigate(Me, FlowEvents.EVENT_BACK)
-        Catch ex As Threading.ThreadAbortException
+            NavController.Navigate(Me, FlowEvents.EVENT_BACK)
+        Catch ex As ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 

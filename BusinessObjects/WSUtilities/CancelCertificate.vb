@@ -58,7 +58,7 @@ Public Class CancelCertificate
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As CancelCertificateDs)
+    Public Sub New(ds As CancelCertificateDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -76,7 +76,7 @@ Public Class CancelCertificate
     Private _CommentBO As Comment
     Private _cancellation_code As String = String.Empty
 
-    Private Sub MapDataSet(ByVal ds As CancelCertificateDs)
+    Private Sub MapDataSet(ds As CancelCertificateDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -89,8 +89,8 @@ Public Class CancelCertificate
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -98,13 +98,13 @@ Public Class CancelCertificate
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As CancelCertificateDs)
+    Private Sub Load(ds As CancelCertificateDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -117,31 +117,31 @@ Public Class CancelCertificate
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As CancelCertificateDs)
+    Private Sub PopulateBOFromWebService(ds As CancelCertificateDs)
         Try
             If ds.CancelCertificate.Count = 0 Then Exit Sub
             With ds.CancelCertificate.Item(0)
-                Me.CertNumber = ds.CancelCertificate.Item(0).CERTIFICATE_NO
-                Me.DealerCode = ds.CancelCertificate.Item(0).DEALER_CODE
-                Me.Source = ds.CancelCertificate.Item(0).SOURCE
-                Me.CancellationDate = ds.CancelCertificate.Item(0).CANCELLATION_DATE
+                CertNumber = ds.CancelCertificate.Item(0).CERTIFICATE_NO
+                DealerCode = ds.CancelCertificate.Item(0).DEALER_CODE
+                Source = ds.CancelCertificate.Item(0).SOURCE
+                CancellationDate = ds.CancelCertificate.Item(0).CANCELLATION_DATE
 
 
-                If Not .IsPAYMENT_METHOD_CODENull Then Me.PaymentMethodCode = ds.CancelCertificate.Item(0).PAYMENT_METHOD_CODE
-                If Not .IsACCOUNT_NAMENull Then Me.AccountName = ds.CancelCertificate.Item(0).ACCOUNT_NAME
-                If Not .IsBANK_IDNull Then Me.BankId = ds.CancelCertificate.Item(0).BANK_ID
-                If Not .IsACCOUNT_NUMBERNull Then Me.AccountNumber = ds.CancelCertificate.Item(0).ACCOUNT_NUMBER
-                If Not .IsSWIFT_CODENull Then Me.SwiftCode = ds.CancelCertificate.Item(0).SWIFT_CODE
-                If Not .IsIBAN_NUMBERNull Then Me.IBANNumber = ds.CancelCertificate.Item(0).IBAN_NUMBER
-                If Not .IsACCOUNT_TYPE_CODENull Then Me.AccountTypeCode = ds.CancelCertificate.Item(0).ACCOUNT_TYPE_CODE
-                If Not .IsPAYMENT_REASON_CODENull Then Me.PaymentReasonCode = ds.CancelCertificate.Item(0).PAYMENT_REASON_CODE
+                If Not .IsPAYMENT_METHOD_CODENull Then PaymentMethodCode = ds.CancelCertificate.Item(0).PAYMENT_METHOD_CODE
+                If Not .IsACCOUNT_NAMENull Then AccountName = ds.CancelCertificate.Item(0).ACCOUNT_NAME
+                If Not .IsBANK_IDNull Then BankId = ds.CancelCertificate.Item(0).BANK_ID
+                If Not .IsACCOUNT_NUMBERNull Then AccountNumber = ds.CancelCertificate.Item(0).ACCOUNT_NUMBER
+                If Not .IsSWIFT_CODENull Then SwiftCode = ds.CancelCertificate.Item(0).SWIFT_CODE
+                If Not .IsIBAN_NUMBERNull Then IBANNumber = ds.CancelCertificate.Item(0).IBAN_NUMBER
+                If Not .IsACCOUNT_TYPE_CODENull Then AccountTypeCode = ds.CancelCertificate.Item(0).ACCOUNT_TYPE_CODE
+                If Not .IsPAYMENT_REASON_CODENull Then PaymentReasonCode = ds.CancelCertificate.Item(0).PAYMENT_REASON_CODE
                 If Not .IsPAYMENT_METHOD_CODENull AndAlso Not .IsACCOUNT_NAMENull AndAlso Not .IsBANK_IDNull AndAlso _
                     Not .IsACCOUNT_NUMBERNull AndAlso Not .IsSWIFT_CODENull AndAlso Not .IsIBAN_NUMBERNull AndAlso Not .IsACCOUNT_TYPE_CODENull _
                     AndAlso .IsACCOUNT_DIGITNull AndAlso .IsBRANCH_DIGITNull Then
-                    Me._bankInfoBO = New BankInfo
+                    _bankInfoBO = New BankInfo
                     _bankInfoBO.Account_Name = .ACCOUNT_NAME
                     _bankInfoBO.Account_Number = .ACCOUNT_NUMBER
-                    _bankInfoBO.AccountTypeId = Me.GetAccountTypeID(.ACCOUNT_TYPE_CODE)
+                    _bankInfoBO.AccountTypeId = GetAccountTypeID(.ACCOUNT_TYPE_CODE)
                     _bankInfoBO.Bank_Id = .BANK_ID
                     _bankInfoBO.BankName = .ACCOUNT_NAME
                     _bankInfoBO.SwiftCode = .SWIFT_CODE
@@ -149,28 +149,28 @@ Public Class CancelCertificate
                 ElseIf Not .IsPAYMENT_METHOD_CODENull AndAlso Not .IsACCOUNT_NAMENull AndAlso Not .IsBANK_IDNull AndAlso _
                      Not .IsACCOUNT_NUMBERNull AndAlso Not .IsACCOUNT_TYPE_CODENull AndAlso Not .IsACCOUNT_DIGITNull AndAlso Not .IsBRANCH_DIGITNull _
                      AndAlso Not .IsBRANCH_NUMBERNull AndAlso Not .IsBANK_NAMENull AndAlso .IsSWIFT_CODENull AndAlso .IsIBAN_NUMBERNull Then
-                    Me._bankInfoBO = New BankInfo
+                    _bankInfoBO = New BankInfo
                     _bankInfoBO.Account_Name = .ACCOUNT_NAME
                     _bankInfoBO.Account_Number = .ACCOUNT_NUMBER
-                    _bankInfoBO.AccountTypeId = Me.GetAccountTypeID(.ACCOUNT_TYPE_CODE)
+                    _bankInfoBO.AccountTypeId = GetAccountTypeID(.ACCOUNT_TYPE_CODE)
                     _bankInfoBO.Bank_Id = .BANK_ID
                     _bankInfoBO.BankName = .BANK_NAME
                     _bankInfoBO.AccountDigit = .ACCOUNT_DIGIT
                     _bankInfoBO.BranchDigit = .BRANCH_DIGIT
                     _bankInfoBO.BranchNumber = .BRANCH_NUMBER
                 End If
-                If Not .IsCANCEL_ALL_BY_INVOICENull Then Me.CancelAllByInvoice = (ds.CancelCertificate.Item(0).CANCEL_ALL_BY_INVOICE).ToUpper
-                If Not .IsINVOICE_NUMBERNull Then Me.InvoiceNumber = ds.CancelCertificate.Item(0).INVOICE_NUMBER
-                If Not .IsCANCELLATION_REASON_CODENull Then Me.CancellationReasonCode = ds.CancelCertificate.Item(0).CANCELLATION_REASON_CODE
-                If Not .IsREFUND_AMOUNTNull Then Me.RefundAmount = ds.CancelCertificate.Item(0).REFUND_AMOUNT
-                If Not .IsCOMMENT_TYPE_CODENull Then Me.CommentTypeCode = ds.CancelCertificate.Item(0).COMMENT_TYPE_CODE
-                If Not .IsCOMMENTSNull Then Me.Comments = ds.CancelCertificate.Item(0).COMMENTS
-                If Not .IsACTIONNull Then Me.Action = ds.CancelCertificate.Item(0).ACTION
-                If Not .IsINSTALLMENTS_PAIDNull Then Me.InstallmentsPaid = ds.CancelCertificate.Item(0).INSTALLMENTS_PAID
+                If Not .IsCANCEL_ALL_BY_INVOICENull Then CancelAllByInvoice = (ds.CancelCertificate.Item(0).CANCEL_ALL_BY_INVOICE).ToUpper
+                If Not .IsINVOICE_NUMBERNull Then InvoiceNumber = ds.CancelCertificate.Item(0).INVOICE_NUMBER
+                If Not .IsCANCELLATION_REASON_CODENull Then CancellationReasonCode = ds.CancelCertificate.Item(0).CANCELLATION_REASON_CODE
+                If Not .IsREFUND_AMOUNTNull Then RefundAmount = ds.CancelCertificate.Item(0).REFUND_AMOUNT
+                If Not .IsCOMMENT_TYPE_CODENull Then CommentTypeCode = ds.CancelCertificate.Item(0).COMMENT_TYPE_CODE
+                If Not .IsCOMMENTSNull Then Comments = ds.CancelCertificate.Item(0).COMMENTS
+                If Not .IsACTIONNull Then Action = ds.CancelCertificate.Item(0).ACTION
+                If Not .IsINSTALLMENTS_PAIDNull Then InstallmentsPaid = ds.CancelCertificate.Item(0).INSTALLMENTS_PAID
 
                 If Not .IsCOMMENTSNull AndAlso Not .IsCOMMENT_TYPE_CODENull Then
-                    Me._CommentBO = New Comment
-                    _CommentBO.CommentTypeId = Me.GetCommentTypeID(.COMMENT_TYPE_CODE)
+                    _CommentBO = New Comment
+                    _CommentBO.CommentTypeId = GetCommentTypeID(.COMMENT_TYPE_CODE)
                     _CommentBO.Comments = .COMMENTS
                 End If
             End With
@@ -188,7 +188,7 @@ Public Class CancelCertificate
     Private Sub CancelCertificatesByInvocieNumber()
 
         Dim objCertCancellation As New CertCancellation
-        objCertCancellation.CancelCertificatesByInvocieNumber(Me.DealerId, Me.CompanyId, Me.CertNumber, Me.InvoiceNumber, Me.CancellationCode, Me.Source, Me.CancellationDate.Value)
+        objCertCancellation.CancelCertificatesByInvocieNumber(DealerId, CompanyId, CertNumber, InvoiceNumber, CancellationCode, Source, CancellationDate.Value)
 
     End Sub
 #End Region
@@ -196,37 +196,37 @@ Public Class CancelCertificate
 #Region "Properties"
 
     <ValueMandatory("")> _
-    Public Property CertNumber() As String
+    Public Property CertNumber As String
         Get
-            If Row(Me.DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CERT_NUMBER), String)
+                Return CType(Row(DATA_COL_NAME_CERT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CERT_NUMBER, Value)
+            SetValue(DATA_COL_NAME_CERT_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
-            If Row(Me.DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_DEALER_CODE), String)
+                Return CType(Row(DATA_COL_NAME_DEALER_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_DEALER_CODE, Value)
+            SetValue(DATA_COL_NAME_DEALER_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CancellationDate() As DateType
+    Public Property CancellationDate As DateType
         Get
             CheckDeleted()
             If Row(DATA_COL_NAME_CANCELLATION_DATE) Is DBNull.Value Then
@@ -235,290 +235,290 @@ Public Class CancelCertificate
                 Return CType(Row(DATA_COL_NAME_CANCELLATION_DATE), DateTime)
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(DATA_COL_NAME_CANCELLATION_DATE, Value)
+            SetValue(DATA_COL_NAME_CANCELLATION_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property Source() As String
+    Public Property Source As String
         Get
-            If Row(Me.DATA_COL_NAME_SOURCE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_SOURCE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_SOURCE), String)
+                Return CType(Row(DATA_COL_NAME_SOURCE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_SOURCE, Value)
+            SetValue(DATA_COL_NAME_SOURCE, Value)
         End Set
     End Property
 
-    Public Property PaymentMethodCode() As String
+    Public Property PaymentMethodCode As String
         Get
-            If Row(Me.DATA_COL_PAYMENT_METHOD_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_PAYMENT_METHOD_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_PAYMENT_METHOD_CODE), String)
+                Return CType(Row(DATA_COL_PAYMENT_METHOD_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_PAYMENT_METHOD_CODE, Value)
+            SetValue(DATA_COL_PAYMENT_METHOD_CODE, Value)
         End Set
     End Property
 
-    Public Property AccountName() As String
+    Public Property AccountName As String
         Get
-            If Row(Me.DATA_COL_ACCOUNT_NAME) Is DBNull.Value Then
+            If Row(DATA_COL_ACCOUNT_NAME) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_ACCOUNT_NAME), String)
+                Return CType(Row(DATA_COL_ACCOUNT_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_ACCOUNT_NAME, Value)
+            SetValue(DATA_COL_ACCOUNT_NAME, Value)
         End Set
     End Property
 
-    Public Property BankId() As String
+    Public Property BankId As String
         Get
-            If Row(Me.DATA_COL_BANK_ID) Is DBNull.Value Then
+            If Row(DATA_COL_BANK_ID) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_BANK_ID), String)
+                Return CType(Row(DATA_COL_BANK_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_BANK_ID, Value)
+            SetValue(DATA_COL_BANK_ID, Value)
         End Set
     End Property
 
-    Public Property AccountNumber() As String
+    Public Property AccountNumber As String
         Get
-            If Row(Me.DATA_COL_ACCOUNT_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_ACCOUNT_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_ACCOUNT_NUMBER), String)
+                Return CType(Row(DATA_COL_ACCOUNT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_ACCOUNT_NUMBER, Value)
+            SetValue(DATA_COL_ACCOUNT_NUMBER, Value)
         End Set
     End Property
 
-    Public Property SwiftCode() As String
+    Public Property SwiftCode As String
         Get
-            If Row(Me.DATA_COL_SWIFT_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_SWIFT_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_SWIFT_CODE), String)
+                Return CType(Row(DATA_COL_SWIFT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_SWIFT_CODE, Value)
+            SetValue(DATA_COL_SWIFT_CODE, Value)
         End Set
     End Property
 
-    Public Property IBANNumber() As String
+    Public Property IBANNumber As String
         Get
-            If Row(Me.DATA_COL_IBAN_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_IBAN_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_IBAN_NUMBER), String)
+                Return CType(Row(DATA_COL_IBAN_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_IBAN_NUMBER, Value)
+            SetValue(DATA_COL_IBAN_NUMBER, Value)
         End Set
     End Property
 
-    Public Property AccountTypeCode() As String
+    Public Property AccountTypeCode As String
         Get
-            If Row(Me.DATA_COL_ACCOUNT_TYPE_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_ACCOUNT_TYPE_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_ACCOUNT_TYPE_CODE), String)
+                Return CType(Row(DATA_COL_ACCOUNT_TYPE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_ACCOUNT_TYPE_CODE, Value)
+            SetValue(DATA_COL_ACCOUNT_TYPE_CODE, Value)
         End Set
     End Property
 
-    Public Property PaymentReasonCode() As String
+    Public Property PaymentReasonCode As String
         Get
-            If Row(Me.DATA_COL_PAYMENT_REASON_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_PAYMENT_REASON_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_PAYMENT_REASON_CODE), String)
+                Return CType(Row(DATA_COL_PAYMENT_REASON_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_PAYMENT_REASON_CODE, Value)
+            SetValue(DATA_COL_PAYMENT_REASON_CODE, Value)
         End Set
     End Property
 
-    Public Property InvoiceNumber() As String
+    Public Property InvoiceNumber As String
         Get
-            If Row(Me.DATA_COL_NAME_INVOICE_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_INVOICE_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_INVOICE_NUMBER), String)
+                Return CType(Row(DATA_COL_NAME_INVOICE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_INVOICE_NUMBER, Value)
+            SetValue(DATA_COL_NAME_INVOICE_NUMBER, Value)
         End Set
     End Property
 
-    Public Property CancelAllByInvoice() As String
+    Public Property CancelAllByInvoice As String
         Get
-            If Row(Me.DATA_COL_NAME_CANCEL_ALL_BY_INVOICE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CANCEL_ALL_BY_INVOICE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CANCEL_ALL_BY_INVOICE), String)
+                Return CType(Row(DATA_COL_NAME_CANCEL_ALL_BY_INVOICE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CANCEL_ALL_BY_INVOICE, Value)
-        End Set
-    End Property
-
-
-    Public Property CancellationReasonCode() As String
-        Get
-            If Row(Me.DATA_COL_NAME_CANCELLATION_REASON_CODE) Is DBNull.Value Then
-                Return Nothing
-            Else
-                Return CType(Row(Me.DATA_COL_NAME_CANCELLATION_REASON_CODE), String)
-            End If
-        End Get
-        Set(ByVal Value As String)
-            CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CANCELLATION_REASON_CODE, Value)
-        End Set
-    End Property
-
-    Public Property RefundAmount() As Decimal
-        Get
-            If Row(Me.DATA_COL_NAME_REFUND_AMOUNT) Is DBNull.Value Then
-                Return Nothing
-            Else
-                Return CType(Row(Me.DATA_COL_NAME_REFUND_AMOUNT), Decimal)
-            End If
-        End Get
-        Set(ByVal Value As Decimal)
-            CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_REFUND_AMOUNT, Value)
+            SetValue(DATA_COL_NAME_CANCEL_ALL_BY_INVOICE, Value)
         End Set
     End Property
 
 
-    Public Property CommentTypeCode() As String
+    Public Property CancellationReasonCode As String
         Get
-            If Row(Me.DATA_COL_NAME_COMMENT_TYPE_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CANCELLATION_REASON_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_COMMENT_TYPE_CODE), String)
+                Return CType(Row(DATA_COL_NAME_CANCELLATION_REASON_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_COMMENT_TYPE_CODE, Value)
+            SetValue(DATA_COL_NAME_CANCELLATION_REASON_CODE, Value)
+        End Set
+    End Property
+
+    Public Property RefundAmount As Decimal
+        Get
+            If Row(DATA_COL_NAME_REFUND_AMOUNT) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(DATA_COL_NAME_REFUND_AMOUNT), Decimal)
+            End If
+        End Get
+        Set
+            CheckDeleted()
+            SetValue(DATA_COL_NAME_REFUND_AMOUNT, Value)
         End Set
     End Property
 
 
-    Public Property Comments() As String
+    Public Property CommentTypeCode As String
         Get
-            If Row(Me.DATA_COL_NAME_COMMENTS) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_COMMENT_TYPE_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_COMMENTS), String)
+                Return CType(Row(DATA_COL_NAME_COMMENT_TYPE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_COMMENTS, Value)
-        End Set
-    End Property
-    Public Property Action() As String
-        Get
-            If Row(Me.DATA_COL_NAME_ACTION) Is DBNull.Value Then
-                Return Nothing
-            Else
-                Return CType(Row(Me.DATA_COL_NAME_ACTION), String)
-            End If
-        End Get
-        Set(ByVal Value As String)
-            CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_ACTION, Value)
+            SetValue(DATA_COL_NAME_COMMENT_TYPE_CODE, Value)
         End Set
     End Property
 
-    Public Property ACCOUNT_DIGIT() As Long
+
+    Public Property Comments As String
         Get
-            If Row(Me.DATA_COL_NAME_ACCOUNT_DIGIT) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_COMMENTS) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_ACCOUNT_DIGIT), Long)
+                Return CType(Row(DATA_COL_NAME_COMMENTS), String)
             End If
         End Get
-        Set(ByVal Value As Long)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_ACCOUNT_DIGIT, Value)
+            SetValue(DATA_COL_NAME_COMMENTS, Value)
         End Set
     End Property
-    Public Property BRANCH_DIGIT() As Long
+    Public Property Action As String
         Get
-            If Row(Me.DATA_COL_NAME_BRANCH_DIGIT) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_ACTION) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_BRANCH_DIGIT), Long)
+                Return CType(Row(DATA_COL_NAME_ACTION), String)
             End If
         End Get
-        Set(ByVal value As Long)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_BRANCH_DIGIT, Value)
+            SetValue(DATA_COL_NAME_ACTION, Value)
         End Set
     End Property
 
-    Public Property BRANCH_NUMBER() As Long
+    Public Property ACCOUNT_DIGIT As Long
         Get
-            If Row(Me.DATA_COL_NAME_BRANCH_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_ACCOUNT_DIGIT) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_BRANCH_NUMBER), Long)
+                Return CType(Row(DATA_COL_NAME_ACCOUNT_DIGIT), Long)
             End If
         End Get
-        Set(ByVal Value As Long)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_BRANCH_NUMBER, Value)
+            SetValue(DATA_COL_NAME_ACCOUNT_DIGIT, Value)
+        End Set
+    End Property
+    Public Property BRANCH_DIGIT As Long
+        Get
+            If Row(DATA_COL_NAME_BRANCH_DIGIT) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(DATA_COL_NAME_BRANCH_DIGIT), Long)
+            End If
+        End Get
+        Set
+            CheckDeleted()
+            SetValue(DATA_COL_NAME_BRANCH_DIGIT, Value)
         End Set
     End Property
 
-    Private ReadOnly Property CertID() As Guid
+    Public Property BRANCH_NUMBER As Long
+        Get
+            If Row(DATA_COL_NAME_BRANCH_NUMBER) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(DATA_COL_NAME_BRANCH_NUMBER), Long)
+            End If
+        End Get
+        Set
+            CheckDeleted()
+            SetValue(DATA_COL_NAME_BRANCH_NUMBER, Value)
+        End Set
+    End Property
+
+    Private ReadOnly Property CertID As Guid
         Get
             If _certId.Equals(Guid.Empty) Then
-                Dim dsCert As DataSet = Certificate.ClaimLogisticsGetCert(Me.CertNumber, Me.DealerCode)
+                Dim dsCert As DataSet = Certificate.ClaimLogisticsGetCert(CertNumber, DealerCode)
 
-                If Not dsCert Is Nothing AndAlso dsCert.Tables.Count > 0 AndAlso dsCert.Tables(0).Rows.Count = 1 Then
-                    If dsCert.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID) Is DBNull.Value Then
+                If dsCert IsNot Nothing AndAlso dsCert.Tables.Count > 0 AndAlso dsCert.Tables(0).Rows.Count = 1 Then
+                    If dsCert.Tables(0).Rows(0).Item(DATA_COL_NAME_CERT_ID) Is DBNull.Value Then
                         Throw New BOValidationException("CancelCertificate Error: ", CERTIFICATE_NOT_FOUND)
                     Else
-                        _certId = New Guid(CType(dsCert.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID), Byte()))
+                        _certId = New Guid(CType(dsCert.Tables(0).Rows(0).Item(DATA_COL_NAME_CERT_ID), Byte()))
 
                         If _certId.Equals(Guid.Empty) Then
                             Throw New BOValidationException("CancelCertificate Error: ", CERTIFICATE_NOT_FOUND)
@@ -529,11 +529,11 @@ Public Class CancelCertificate
                 End If
             End If
 
-            Return Me._certId
+            Return _certId
         End Get
     End Property
 
-    Public Function GetAccountTypeID(ByVal AccountType As String) As Guid
+    Public Function GetAccountTypeID(AccountType As String) As Guid
         Dim accountTypeID As Guid = Guid.Empty
         Dim list As DataView = LookupListNew.GetAccountTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 
@@ -542,7 +542,7 @@ Public Class CancelCertificate
         Return accountTypeID
     End Function
 
-    Public Function GetCommentTypeID(ByVal CommentTypeCode As String) As Guid
+    Public Function GetCommentTypeID(CommentTypeCode As String) As Guid
         Dim CommentTypeID As Guid = Guid.Empty
         Dim list As DataView = LookupListNew.GetCommentTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 
@@ -551,17 +551,17 @@ Public Class CancelCertificate
         Return CommentTypeID
     End Function
 
-    Public Property InstallmentsPaid() As Long
+    Public Property InstallmentsPaid As Long
         Get
-            If Row(Me.DATA_COL_NAME_INST_PAID) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_INST_PAID) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_INST_PAID), Long)
+                Return CType(Row(DATA_COL_NAME_INST_PAID), Long)
             End If
         End Get
-        Set(ByVal Value As Long)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_INST_PAID, Value)
+            SetValue(DATA_COL_NAME_INST_PAID, Value)
         End Set
     End Property
 
@@ -573,22 +573,22 @@ Public Class CancelCertificate
     Public Overrides Function ProcessWSRequest() As String
         Try
             _certId = Guid.Empty
-            Me.Validate()
+            Validate()
 
             Dim oCancelCertificateData As New CertCancellationData
             Dim oCancelCertRstData As New CertCancellationData
             Dim oCert As Certificate
             Dim oCertsDataSet As DataSet
 
-            If Not Me.CancelAllByInvoice Is Nothing AndAlso Me.CancelAllByInvoice.Equals("Y") Then
-                If Not Me.InvoiceNumber Is Nothing AndAlso Not Me.InvoiceNumber.Equals(String.Empty) Then
+            If CancelAllByInvoice IsNot Nothing AndAlso CancelAllByInvoice.Equals("Y") Then
+                If InvoiceNumber IsNot Nothing AndAlso Not InvoiceNumber.Equals(String.Empty) Then
                     'List of certificates BY Invocie number
-                    oCertsDataSet = Certificate.GetCertListByInvoiceNumber(Me.InvoiceNumber)
-                    If Not oCertsDataSet Is Nothing AndAlso oCertsDataSet.Tables.Count > 0 AndAlso oCertsDataSet.Tables(0).Rows.Count > 0 Then
-                        If oCertsDataSet.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID) Is DBNull.Value Then
+                    oCertsDataSet = Certificate.GetCertListByInvoiceNumber(InvoiceNumber)
+                    If oCertsDataSet IsNot Nothing AndAlso oCertsDataSet.Tables.Count > 0 AndAlso oCertsDataSet.Tables(0).Rows.Count > 0 Then
+                        If oCertsDataSet.Tables(0).Rows(0).Item(DATA_COL_NAME_CERT_ID) Is DBNull.Value Then
                             Throw New BOValidationException("CancelCertificate Error: ", CERTIFICATE_NOT_FOUND)
                         Else
-                            _certId = New Guid(CType(oCertsDataSet.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID), Byte()))
+                            _certId = New Guid(CType(oCertsDataSet.Tables(0).Rows(0).Item(DATA_COL_NAME_CERT_ID), Byte()))
                             If _certId.Equals(Guid.Empty) Then
                                 Throw New BOValidationException("CancelCertificate Error: ", CERTIFICATE_NOT_FOUND)
                             End If
@@ -600,30 +600,30 @@ Public Class CancelCertificate
 
                 Else
                     'List of certificates BY Certificate number                    
-                    oCert = New Certificate(Me.CertID)
+                    oCert = New Certificate(CertID)
                     If oCert.InvoiceNumber Is Nothing OrElse oCert.InvoiceNumber.Equals(String.Empty) Then
                         Throw New BOValidationException("CancelCertificate Error: ", CERTIFICATE_INVOICE_NUM_NOT_FOUND)
                     End If
                 End If
             Else
 
-                oCert = New Certificate(Me.CertID)
+                oCert = New Certificate(CertID)
             End If
 
-            If Me.CancelAllByInvoice Is Nothing OrElse Me.CancelAllByInvoice.Equals("N") Then
+            If CancelAllByInvoice Is Nothing OrElse CancelAllByInvoice.Equals("N") Then
                 ' Check if the certificate is already closed
                 If oCert.StatusCode = "C" Then
                     Throw New BOValidationException("CancelCertificate Error: ", CERTIFICATE_ALREADY_CLOSED)
                 End If
 
                 ' Check if there is any claims that are not closed
-                If (Dealer.IsSkipActiveClaim(Me.DealerId)) Then
+                If (Dealer.IsSkipActiveClaim(DealerId)) Then
                     ' check if there is any claim in A or P status and Loss Date > cancellation date 
-                    If (oCert.ActiveClaimExist(Me.DealerId, oCert.CertNumber, Me.CancellationDate)) Then
+                    If (oCert.ActiveClaimExist(DealerId, oCert.CertNumber, CancellationDate)) Then
                         Throw New BOValidationException("CancelCertificate Error: ", ACTIVE_CLAIMS_EXIST)
                     End If
                 Else
-                    If oCert.TotalClaimsNotClosedForCert(Me.DealerId, oCert.CertNumber) Then
+                    If oCert.TotalClaimsNotClosedForCert(DealerId, oCert.CertNumber) Then
                         Throw New BOValidationException("CancelCertificate Error: ", ACTIVE_CLAIMS_EXIST)
                     End If
                 End If
@@ -635,9 +635,9 @@ Public Class CancelCertificate
 
             ' Get cancellation reason code from Contract record
             Dim oContract As Contract
-            oContract = Contract.GetContract(Me.DealerId, oCert.WarrantySalesDate.Value)
+            oContract = Contract.GetContract(DealerId, oCert.WarrantySalesDate.Value)
             If oContract Is Nothing Then
-                oContract = Contract.GetMaxExpirationContract(Me.DealerId)
+                oContract = Contract.GetMaxExpirationContract(DealerId)
                 If oContract Is Nothing Then
                     Throw New BOValidationException("CancelCertificate Error: ", Common.ErrorCodes.NO_CONTRACT_FOUND)
                 End If
@@ -649,38 +649,38 @@ Public Class CancelCertificate
             Dim refundMDv As DataView
             refundMDv = LookupListNew.GetRefundComputeMethodLookupList(Authentication.LangId)
 
-            If Me.CancellationReasonCode Is Nothing Then
+            If CancellationReasonCode Is Nothing Then
                 certCancellationBO.CancellationReasonId = oContract.CancellationReasonId
             Else
                 certCancellationBO.CompanyId = oCert.CompanyId
-                certCancellationBO.CancellationReasonId = certCancellationBO.getCancellationReasonId(Me.CancellationReasonCode)
+                certCancellationBO.CancellationReasonId = certCancellationBO.getCancellationReasonId(CancellationReasonCode)
             End If
             If certCancellationBO.CancellationReasonId.Equals(Guid.Empty) Then
                 Throw New BOValidationException("CancelCertificate Error: ", Common.ErrorCodes.MSG_INVALID_CANCELLATION_REASON_FOR_CERTIFICATE)
             End If
             oCancellationReason = New CancellationReason(certCancellationBO.CancellationReasonId)
 
-            certCancellationBO.CancellationDate = Me.CancellationDate
+            certCancellationBO.CancellationDate = CancellationDate
             certCancellationBO.CertId = oCert.Id
             'Call QuoteCancellation
 
             If oCancellationReason.RefundComputeMethodId.Equals(LookupListNew.GetIdFromCode(refundMDv, Codes.REFUND_COMPUTE_METHOD__22)) Then
-                If (Me.Action <> "Q" And Me.Action <> "C") Then
+                If (Action <> "Q" And Action <> "C") Then
                     Throw New BOValidationException("CancelCertificate Error: ", Common.ErrorCodes.ERR_MSG_INVALID_ACTION_REQUESTED)
                 End If
 
-                If (Me.Action = "C" And IsDBNull(Me.RefundAmount)) Then
+                If (Action = "C" And IsDBNull(RefundAmount)) Then
                     Throw New BOValidationException("CancelCertificate Error: ", Common.ErrorCodes.ERR_MSG_REFUND_AMT_REQUIRED)
                 End If
             End If
 
             ' Check if the cancellation date is within the allowed period
             ' If Me.Source.Equals("OLITA") AndAlso Me.CancellationDate > oCert.WarrantySalesDate.Value.AddDays(oContract.FullRefundDays) Then
-            If Me.CancellationDate > oCert.WarrantySalesDate.Value.AddDays(oContract.FullRefundDays) Then
+            If CancellationDate > oCert.WarrantySalesDate.Value.AddDays(oContract.FullRefundDays) Then
                 Throw New BOValidationException("CancelCertificate Error: ", MSG_INVALID_CANCELLATION_DATE)
             End If
 
-            If Me.Action = "Q" Then
+            If Action = "Q" Then
                 oCert.QuoteCancellation(certCancellationBO, oCancelCertificateData, oContract)
                 If Not oCancelCertificateData.errorExist Then
                     If oCancelCertificateData.errorExist2 = False Then
@@ -702,14 +702,14 @@ Public Class CancelCertificate
                 Else
                     Throw New BOValidationException("CancelCertificate Error: ", oCancelCertificateData.errorCode)
                 End If
-            ElseIf Me.Action = "C" Then
+            ElseIf Action = "C" Then
 
-                certCancellationBO.ComputedRefund = Me.RefundAmount
-                certCancellationBO.InstallmentsPaid = Me.InstallmentsPaid
-                If Not _CommentBO Is Nothing Then
+                certCancellationBO.ComputedRefund = RefundAmount
+                certCancellationBO.InstallmentsPaid = InstallmentsPaid
+                If _CommentBO IsNot Nothing Then
                     _CommentBO.CallerName = oCert.CustomerName
                 End If
-                oCert.ProcessCancellation(certCancellationBO, Me._bankInfoBO, oContract, _CommentBO, oCancelCertRstData)
+                oCert.ProcessCancellation(certCancellationBO, _bankInfoBO, oContract, _CommentBO, oCancelCertRstData)
                 ' Set the acknoledge OK response
                 Return GetResponseXML(certCancellationBO.ErrorCode, certCancellationBO.ErrorMsg, certCancellationBO.ComputedRefund, certCancellationBO.InstallmentsPaid, certCancellationBO.CCAuthorizationNumber)
             Else
@@ -717,18 +717,18 @@ Public Class CancelCertificate
 
                 If Not oCancelCertificateData.errorExist Then
                     If oCancelCertificateData.errorExist2 = False Then
-                        If Not Me.CancelAllByInvoice Is Nothing AndAlso Me.CancelAllByInvoice.Equals("Y") Then
+                        If CancelAllByInvoice IsNot Nothing AndAlso CancelAllByInvoice.Equals("Y") Then
                             ' Cancel Certificates by invoice number off-line
                             Dim objCancellationReason = New CancellationReason(oContract.CancellationReasonId)
-                            Me.CancellationCode = objCancellationReason.Code
-                            Dim t As Thread = New Thread(AddressOf Me.CancelCertificatesByInvocieNumber)
+                            CancellationCode = objCancellationReason.Code
+                            Dim t As Thread = New Thread(AddressOf CancelCertificatesByInvocieNumber)
                             t.Start()
 
                             ' Set the acknoledge OK response
                             Return XMLHelper.GetXML_OK_Response
                         Else
                             'Call certificate Cancellation
-                            oCert.ProcessCancellation(certCancellationBO, Me._bankInfoBO, oContract)
+                            oCert.ProcessCancellation(certCancellationBO, _bankInfoBO, oContract)
                             ' Set the acknoledge OK response
                             Return XMLHelper.GetXML_OK_Response
                         End If
@@ -761,50 +761,50 @@ Public Class CancelCertificate
 
 #Region "Extended Properties"
 
-    Private ReadOnly Property DealerId() As Guid
+    Private ReadOnly Property DealerId As Guid
         Get
-            If Me._dealerId.Equals(Guid.Empty) Then
+            If _dealerId.Equals(Guid.Empty) Then
 
                 Dim list As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
                 If list Is Nothing Then
                     Throw New BOValidationException("CancelCertificate Error: ", Common.ErrorCodes.WS_ERROR_ACCESSING_DATABASE)
                 End If
-                Me._dealerId = LookupListNew.GetIdFromCode(list, Me.DealerCode)
+                _dealerId = LookupListNew.GetIdFromCode(list, DealerCode)
                 If _dealerId.Equals(Guid.Empty) Then
                     Throw New BOValidationException("CancelCertificate Error: ", Common.ErrorCodes.WS_DEALER_NOT_FOUND)
                 End If
                 list = Nothing
             End If
 
-            Return Me._dealerId
+            Return _dealerId
         End Get
     End Property
 
-    Private ReadOnly Property CompanyId() As Guid
+    Private ReadOnly Property CompanyId As Guid
         Get
-            If Me._companyId.Equals(Guid.Empty) Then
-                Dim objDealer As New Dealer(Me.DealerId)
-                Me._companyId = objDealer.CompanyId
+            If _companyId.Equals(Guid.Empty) Then
+                Dim objDealer As New Dealer(DealerId)
+                _companyId = objDealer.CompanyId
             End If
 
-            Return Me._companyId
+            Return _companyId
         End Get
     End Property
 
 
-    Private Property CancellationCode() As String
+    Private Property CancellationCode As String
         Get
             Return _cancellation_code
         End Get
-        Set(ByVal value As String)
+        Set
             _cancellation_code = value
         End Set
     End Property
 #End Region
 
 
-    Private Shared Function GetResponseXML(ByVal strcode As String, ByVal strMessage As String, ByVal RefundAmt As Decimal, _
-                                           ByVal InstallmentsPaid As Integer, ByVal AuthNumber As String) As String
+    Private Shared Function GetResponseXML(strcode As String, strMessage As String, RefundAmt As Decimal, _
+                                           InstallmentsPaid As Integer, AuthNumber As String) As String
 
         Dim objDoc As New Xml.XmlDocument
         Dim objRoot As Xml.XmlElement

@@ -21,30 +21,30 @@
 
 #Region "Constructors"
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 #End Region
 #Region "Load"
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New FileProcessedDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -52,7 +52,7 @@
         End Try
     End Sub
 
-    Public Shared Function LoadList(ByVal oFileProcessedData As FileProcessedData) As DataView
+    Public Shared Function LoadList(oFileProcessedData As FileProcessedData) As DataView
         Try
             Dim dal As New FileProcessedDAL
             Dim ds As DataSet
@@ -65,7 +65,7 @@
 #End Region
 #Region "Properties"
     <ValueMandatory("")> _
-    Public Property FileProcessId() As Guid
+    Public Property FileProcessId As Guid
         Get
             CheckDeleted()
             If Row(FileProcessedDAL.COL_NAME_FILE_PROCESSED_ID) Is DBNull.Value Then
@@ -74,13 +74,13 @@
                 Return New Guid(CType(Row(FileProcessedDAL.COL_NAME_FILE_PROCESSED_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(FileProcessedDAL.COL_NAME_FILE_PROCESSED_ID, Value)
+            SetValue(FileProcessedDAL.COL_NAME_FILE_PROCESSED_ID, Value)
         End Set
     End Property
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property FileName() As String
+    Public Property FileName As String
         Get
             CheckDeleted()
             If Row(FileProcessedDAL.COL_NAME_FILE_NAME) Is DBNull.Value Then
@@ -89,13 +89,13 @@
                 Return CType(Row(FileProcessedDAL.COL_NAME_FILE_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(FileProcessedDAL.COL_NAME_FILE_NAME, Value)
+            SetValue(FileProcessedDAL.COL_NAME_FILE_NAME, Value)
         End Set
     End Property
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(FileProcessedDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -104,13 +104,13 @@
                 Return New Guid(CType(Row(FileProcessedDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(FileProcessedDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(FileProcessedDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
     <ValueMandatory("")> _
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(FileProcessedDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -121,13 +121,13 @@
                 Return New Guid(CType(Row(FileProcessedDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(FileProcessedDAL.COL_NAME_COMPANY_GROUP_ID, Value)
+            SetValue(FileProcessedDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
     End Property
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(FileProcessedDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -136,14 +136,14 @@
                 Return New Guid(CType(Row(FileProcessedDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(FileProcessedDAL.COL_NAME_COMPANY_ID, Value)
+            SetValue(FileProcessedDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
 
-    Public Property Received() As LongType
+    Public Property Received As LongType
         Get
             CheckDeleted()
             If Row(FileProcessedDAL.COL_NAME_RECEIVED) Is DBNull.Value Then
@@ -152,15 +152,15 @@
                 Return New LongType(CType(Row(FileProcessedDAL.COL_NAME_RECEIVED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(FileProcessedDAL.COL_NAME_RECEIVED, Value)
+            SetValue(FileProcessedDAL.COL_NAME_RECEIVED, Value)
         End Set
     End Property
 
 
 
-    Public Property Counted() As LongType
+    Public Property Counted As LongType
         Get
             CheckDeleted()
             If Row(FileProcessedDAL.COL_NAME_COUNTED) Is DBNull.Value Then
@@ -169,13 +169,13 @@
                 Return New LongType(CType(Row(FileProcessedDAL.COL_NAME_COUNTED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(FileProcessedDAL.COL_NAME_COUNTED, Value)
+            SetValue(FileProcessedDAL.COL_NAME_COUNTED, Value)
         End Set
     End Property
 
-    Public Property Bypassed() As LongType
+    Public Property Bypassed As LongType
         Get
             CheckDeleted()
             If Row(FileProcessedDAL.COL_NAME_BYPASSED) Is DBNull.Value Then
@@ -184,13 +184,13 @@
                 Return New LongType(CType(Row(FileProcessedDAL.COL_NAME_BYPASSED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(FileProcessedDAL.COL_NAME_BYPASSED, Value)
+            SetValue(FileProcessedDAL.COL_NAME_BYPASSED, Value)
         End Set
     End Property
 
-    Public Property Rejected() As LongType
+    Public Property Rejected As LongType
         Get
             CheckDeleted()
             If Row(FileProcessedDAL.COL_NAME_REJECTED) Is DBNull.Value Then
@@ -199,15 +199,15 @@
                 Return New LongType(CType(Row(FileProcessedDAL.COL_NAME_REJECTED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(FileProcessedDAL.COL_NAME_REJECTED, Value)
+            SetValue(FileProcessedDAL.COL_NAME_REJECTED, Value)
         End Set
     End Property
 
 
 
-    Public Property Validated() As LongType
+    Public Property Validated As LongType
         Get
             CheckDeleted()
             If Row(FileProcessedDAL.COL_NAME_VALIDATED) Is DBNull.Value Then
@@ -216,15 +216,15 @@
                 Return New LongType(CType(Row(FileProcessedDAL.COL_NAME_VALIDATED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(FileProcessedDAL.COL_NAME_VALIDATED, Value)
+            SetValue(FileProcessedDAL.COL_NAME_VALIDATED, Value)
         End Set
     End Property
 
 
 
-    Public Property Loaded() As LongType
+    Public Property Loaded As LongType
         Get
             CheckDeleted()
             If Row(FileProcessedDAL.COL_NAME_LOADED) Is DBNull.Value Then
@@ -233,15 +233,15 @@
                 Return New LongType(CType(Row(FileProcessedDAL.COL_NAME_LOADED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(FileProcessedDAL.COL_NAME_LOADED, Value)
+            SetValue(FileProcessedDAL.COL_NAME_LOADED, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=20)>
-    Public Property Layout() As String
+    Public Property Layout As String
         Get
             CheckDeleted()
             If Row(FileProcessedDAL.COL_NAME_LAYOUT) Is DBNull.Value Then
@@ -250,13 +250,13 @@
                 Return CType(Row(FileProcessedDAL.COL_NAME_LAYOUT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerFileProcessedDAL.COL_NAME_LAYOUT, Value)
+            SetValue(DealerFileProcessedDAL.COL_NAME_LAYOUT, Value)
         End Set
     End Property
 
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             CheckDeleted()
             If Row(FileProcessedDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -265,12 +265,12 @@
                 Return New Guid(CType(Row(FileProcessedDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(FileProcessedDAL.COL_NAME_COUNTRY_ID, Value)
+            SetValue(FileProcessedDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
-    Public ReadOnly Property Status() As String
+    Public ReadOnly Property Status As String
         Get
             CheckDeleted()
             If Row(FileProcessedDAL.COL_NAME_STATUS) Is DBNull.Value Then
@@ -280,7 +280,7 @@
             End If
         End Get
     End Property
-    Public ReadOnly Property StatusDescription() As String
+    Public ReadOnly Property StatusDescription As String
         Get
             CheckDeleted()
             If Row(FileProcessedDAL.COL_NAME_STATUS_DESC) Is DBNull.Value Then
@@ -293,52 +293,52 @@
 #End Region
 #Region "Properties External BOs"
 
-    Public ReadOnly Property DealerCode() As String
+    Public ReadOnly Property DealerCode As String
         Get
             If FileProcessId.Equals(Guid.Empty) Then Return Nothing
-            Return LookupListNew.GetCodeFromId(LookupListNew.LK_DEALERS, DealerId)
+            Return LookupListNew.GetCodeFromId(LookupListCache.LK_DEALERS, DealerId)
         End Get
     End Property
 
-    Public ReadOnly Property DealerNameLoad() As String
+    Public ReadOnly Property DealerNameLoad As String
         Get
             If FileProcessId.Equals(Guid.Empty) Then Return Nothing
-            Dim dv As DataView = LookupListNew.DataView(LookupListNew.LK_DEALERS)
+            Dim dv As DataView = LookupListNew.DataView(LookupListCache.LK_DEALERS)
             Return LookupListNew.GetDescriptionFromId(dv, DealerId)
         End Get
     End Property
-    Public ReadOnly Property CompanyGroupCode() As String
+    Public ReadOnly Property CompanyGroupCode As String
         Get
             If FileProcessId.Equals(Guid.Empty) Then Return Nothing
-            Return LookupListNew.GetCodeFromId(LookupListNew.LK_COMPANY_GROUP, CompanyGroupId)
+            Return LookupListNew.GetCodeFromId(LookupListCache.LK_COMPANY_GROUP, CompanyGroupId)
         End Get
     End Property
 
-    Public ReadOnly Property CompanyGroupLoad() As String
+    Public ReadOnly Property CompanyGroupLoad As String
         Get
             If FileProcessId.Equals(Guid.Empty) Then Return Nothing
-            Dim dv As DataView = LookupListNew.DataView(LookupListNew.LK_COMPANY_GROUP)
+            Dim dv As DataView = LookupListNew.DataView(LookupListCache.LK_COMPANY_GROUP)
             Return LookupListNew.GetDescriptionFromId(dv, CompanyGroupId)
         End Get
     End Property
-    Public ReadOnly Property CompanyCode() As String
+    Public ReadOnly Property CompanyCode As String
         Get
             If FileProcessId.Equals(Guid.Empty) Then Return Nothing
-            Return LookupListNew.GetCodeFromId(LookupListNew.LK_COMPANY, CompanyId)
+            Return LookupListNew.GetCodeFromId(LookupListCache.LK_COMPANY, CompanyId)
         End Get
     End Property
 
-    Public ReadOnly Property CompanyLoad() As String
+    Public ReadOnly Property CompanyLoad As String
         Get
             If FileProcessId.Equals(Guid.Empty) Then Return Nothing
-            Dim dv As DataView = LookupListNew.DataView(LookupListNew.LK_COMPANY)
+            Dim dv As DataView = LookupListNew.DataView(LookupListCache.LK_COMPANY)
             Return LookupListNew.GetDescriptionFromId(dv, CompanyId)
         End Get
     End Property
-    Public ReadOnly Property CountryName() As String
+    Public ReadOnly Property CountryName As String
         Get
             If FileProcessId.Equals(Guid.Empty) OrElse CountryId.Equals(Guid.Empty) Then Return Nothing
-            Dim dv As DataView = LookupListNew.DataView(LookupListNew.LK_COUNTRIES)
+            Dim dv As DataView = LookupListNew.DataView(LookupListCache.LK_COUNTRIES)
             Return LookupListNew.GetDescriptionFromId(dv, CountryId)
         End Get
     End Property

@@ -110,171 +110,171 @@ Namespace Security
 
         Public ReadOnly Property IsEditing() As Boolean
             Get
-                IsEditing = (Me.Grid.EditIndex > NO_ROW_SELECTED_INDEX)
+                IsEditing = (Grid.EditIndex > NO_ROW_SELECTED_INDEX)
             End Get
         End Property
 
 #End Region
 
 #Region "Page event handlers"
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-            Me.ErrControllerMaster.Clear_Hide()
-            Me.Form.DefaultButton = SearchButton.UniqueID
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+            ErrControllerMaster.Clear_Hide()
+            Form.DefaultButton = SearchButton.UniqueID
             Try
-                If Not Me.IsPostBack Then
-                    Me.SortDirection = Me.State.SortExpression
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
+                If Not IsPostBack Then
+                    SortDirection = State.SortExpression
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
                     TranslateGridHeader(Grid)
-                    Me.TranslateStatuses()
-                    Me.SetDefaultButton(Me.txtWebServiceName, SearchButton)
+                    TranslateStatuses()
+                    SetDefaultButton(txtWebServiceName, SearchButton)
                     PopulateDropdowns()
                     GetStateProperties()
                     SetButtonsState()
-                    If Not Me.IsReturningFromChild Then
+                    If Not IsReturningFromChild Then
                         ControlMgr.SetVisibleControl(Me, trPageSize, False)
                     Else
                         ' It is returning from detail
-                        Me.PopulateGrid()
+                        PopulateGrid()
                     End If
-                    SetFocus(Me.txtWebServiceName)
+                    SetFocus(txtWebServiceName)
                 End If
-                Me.DisplayProgressBarOnClick(Me.SearchButton, "Loading_WebServices")
+                DisplayProgressBarOnClick(SearchButton, "Loading_WebServices")
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.MenuEnabled = True
-                Me.IsReturningFromChild = True
+                MenuEnabled = True
+                IsReturningFromChild = True
                 Dim retObj As WebServiceFunctionsListForm.ReturnType = CType(ReturnPar, WebServiceFunctionsListForm.ReturnType)
-                If Not retObj Is Nothing AndAlso retObj.HasDataChanged Then
-                    Me.State.searchDV = Nothing
+                If retObj IsNot Nothing AndAlso retObj.HasDataChanged Then
+                    State.searchDV = Nothing
                 End If
                 Select Case retObj.LastOperation
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        If Not retObj Is Nothing Then
+                        If retObj IsNot Nothing Then
                             If Not retObj.EditingBo.IsNew Then
-                                Me.State.selectedWebServiceId = retObj.EditingBo.Id
+                                State.selectedWebServiceId = retObj.EditingBo.Id
                             End If
-                            Me.State.IsGridVisible = True
+                            State.IsGridVisible = True
                         End If
                     Case ElitaPlusPage.DetailPageCommand.Delete
-                        Me.AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
+                        AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
                 End Select
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
         Private Sub PopulateBOFromForm()
 
             Try
-                Dim txtDefaultOffLineMsg As TextBox = CType(Me.Grid.Rows(Me.Grid.EditIndex).Cells(Me.GRID_COL_DEFAULT_ON_LINE_MESSAGE_IDX).FindControl(Me.GRID_CTRL_OFF_LINE_MESSAGE_NAME), TextBox)
+                Dim txtDefaultOffLineMsg As TextBox = CType(Grid.Rows(Grid.EditIndex).Cells(GRID_COL_DEFAULT_ON_LINE_MESSAGE_IDX).FindControl(GRID_CTRL_OFF_LINE_MESSAGE_NAME), TextBox)
 
-                If Me.State.AddingNewRow Then
-                    Dim cboWebServiceName As DropDownList = CType(Me.Grid.Rows(Me.Grid.EditIndex).Cells(Me.GRID_COL_WEB_SERVICE_NAME_IDX).FindControl(Me.GRID_CTRL_WEB_SERVICE_NAME), DropDownList)
-                    Dim cboOnLineStatus As DropDownList = CType(Me.Grid.Rows(Me.Grid.EditIndex).Cells(Me.GRID_COL_ON_LINE_STATUS_IDX).FindControl(Me.GRID_CTRL_ON_LINE_STATUS_NAME), DropDownList)
-                    Me.State.boWebservice.WebServiceName = cboWebServiceName.SelectedValue
+                If State.AddingNewRow Then
+                    Dim cboWebServiceName As DropDownList = CType(Grid.Rows(Grid.EditIndex).Cells(GRID_COL_WEB_SERVICE_NAME_IDX).FindControl(GRID_CTRL_WEB_SERVICE_NAME), DropDownList)
+                    Dim cboOnLineStatus As DropDownList = CType(Grid.Rows(Grid.EditIndex).Cells(GRID_COL_ON_LINE_STATUS_IDX).FindControl(GRID_CTRL_ON_LINE_STATUS_NAME), DropDownList)
+                    State.boWebservice.WebServiceName = cboWebServiceName.SelectedValue
                     'Me.PopulateBOProperty(Me.State.boWebservice, "WebServiceName", cboWebServiceName)
-                    Me.PopulateBOProperty(Me.State.boWebservice, "OffLineMessage", txtDefaultOffLineMsg)
-                    Me.PopulateBOProperty(Me.State.boWebservice, "OnLineId", cboOnLineStatus)
+                    PopulateBOProperty(State.boWebservice, "OffLineMessage", txtDefaultOffLineMsg)
+                    PopulateBOProperty(State.boWebservice, "OnLineId", cboOnLineStatus)
                     'Me.State.boWebservice.OnLineId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
                 Else
-                    Me.PopulateBOProperty(Me.State.boWebservice, "OffLineMessage", txtDefaultOffLineMsg)
+                    PopulateBOProperty(State.boWebservice, "OffLineMessage", txtDefaultOffLineMsg)
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
         Private Sub TranslateStatuses()
-            Me.State.On_line_Translated = TranslationBase.TranslateLabelOrMessage("ON_LINE")
-            Me.State.Off_line_Translated = TranslationBase.TranslateLabelOrMessage("OFF_LINE")
+            State.On_line_Translated = TranslationBase.TranslateLabelOrMessage("ON_LINE")
+            State.Off_line_Translated = TranslationBase.TranslateLabelOrMessage("OFF_LINE")
         End Sub
 #End Region
 
 #Region "Button event handlers"
-        Protected Sub SearchButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles SearchButton.Click
+        Protected Sub SearchButton_Click(sender As Object, e As EventArgs) Handles SearchButton.Click
             Try
-                Me.SetStateProperties()
-                Me.State.PageIndex = 0
-                Me.State.selectedWebServiceId = Guid.Empty
-                Me.State.IsGridVisible = True
-                Me.State.searchClick = True
-                Me.State.searchDV = Nothing
-                Me.State.moOnLineId = ElitaPlusPage.GetSelectedItem(Me.cboOn_Line_Status)
-                Me.PopulateGrid()
+                SetStateProperties()
+                State.PageIndex = 0
+                State.selectedWebServiceId = Guid.Empty
+                State.IsGridVisible = True
+                State.searchClick = True
+                State.searchDV = Nothing
+                State.moOnLineId = ElitaPlusPage.GetSelectedItem(cboOn_Line_Status)
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub ClearButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ClearButton.Click
+        Protected Sub ClearButton_Click(sender As Object, e As EventArgs) Handles ClearButton.Click
             Try
-                Me.txtWebServiceName.Text = String.Empty
-                Me.cboOn_Line_Status.SelectedIndex = -1
+                txtWebServiceName.Text = String.Empty
+                cboOn_Line_Status.SelectedIndex = -1
 
                 'Update Page State
-                With Me.State
-                    .moWebServiceName = Me.txtWebServiceName.Text
-                    .moOnLineId = GetSelectedItem(Me.cboOn_Line_Status)
+                With State
+                    .moWebServiceName = txtWebServiceName.Text
+                    .moOnLineId = GetSelectedItem(cboOn_Line_Status)
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub NewButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles NewButton_WRITE.Click
+        Private Sub NewButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles NewButton_WRITE.Click
 
             Try
-                Me.State.IsEditMode = True
-                Me.State.IsGridVisible = True
-                Me.State.AddingNewRow = True
+                State.IsEditMode = True
+                State.IsGridVisible = True
+                State.AddingNewRow = True
                 AddNewWebService()
                 SetButtonsState()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
 
-        Private Sub SaveButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SaveButton_WRITE.Click
+        Private Sub SaveButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles SaveButton_WRITE.Click
 
             Try
                 PopulateBOFromForm()
-                If (Me.State.boWebservice.IsDirty) Then
-                    Me.State.boWebservice.Save()
-                    Me.State.IsAfterSave = True
-                    Me.State.AddingNewRow = False
-                    Me.AddInfoMsg(Me.MSG_RECORD_SAVED_OK)
-                    Me.State.searchDV = Nothing
-                    Me.ReturnFromEditing()
+                If (State.boWebservice.IsDirty) Then
+                    State.boWebservice.Save()
+                    State.IsAfterSave = True
+                    State.AddingNewRow = False
+                    AddInfoMsg(MSG_RECORD_SAVED_OK)
+                    State.searchDV = Nothing
+                    ReturnFromEditing()
                 Else
-                    Me.AddInfoMsg(Me.MSG_RECORD_NOT_SAVED)
-                    Me.ReturnFromEditing()
+                    AddInfoMsg(MSG_RECORD_NOT_SAVED)
+                    ReturnFromEditing()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
 
-        Private Sub CancelButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CancelButton.Click
+        Private Sub CancelButton_Click(sender As System.Object, e As System.EventArgs) Handles CancelButton.Click
 
             Try
-                Me.Grid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
-                Me.State.Canceling = True
-                If (Me.State.AddingNewRow) Then
-                    Me.State.AddingNewRow = False
-                    Me.State.searchDV = Nothing
+                Grid.SelectedIndex = NO_ITEM_SELECTED_INDEX
+                State.Canceling = True
+                If (State.AddingNewRow) Then
+                    State.AddingNewRow = False
+                    State.searchDV = Nothing
                 End If
                 ReturnFromEditing()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
@@ -283,14 +283,14 @@ Namespace Security
 #Region "Helper functions"
         Private Sub SetButtonsState()
 
-            If (Me.State.IsEditMode) Then
+            If (State.IsEditMode) Then
                 ControlMgr.SetVisibleControl(Me, SaveButton_WRITE, True)
                 ControlMgr.SetVisibleControl(Me, CancelButton, True)
                 ControlMgr.SetVisibleControl(Me, NewButton_WRITE, False)
                 ControlMgr.SetEnableControl(Me, SearchButton, False)
                 ControlMgr.SetEnableControl(Me, ClearButton, False)
-                Me.MenuEnabled = False
-                If (Me.cboPageSize.Visible) Then
+                MenuEnabled = False
+                If (cboPageSize.Visible) Then
                     ControlMgr.SetEnableControl(Me, cboPageSize, False)
                 End If
                 'Linkbutton_panel.Enabled = False
@@ -300,8 +300,8 @@ Namespace Security
                 ControlMgr.SetVisibleControl(Me, NewButton_WRITE, True)
                 ControlMgr.SetEnableControl(Me, SearchButton, True)
                 ControlMgr.SetEnableControl(Me, ClearButton, True)
-                Me.MenuEnabled = True
-                If (Me.cboPageSize.Visible) Then
+                MenuEnabled = True
+                If (cboPageSize.Visible) Then
                     ControlMgr.SetEnableControl(Me, cboPageSize, True)
                 End If
                 'Linkbutton_panel.Enabled = True
@@ -312,16 +312,16 @@ Namespace Security
 
             Grid.EditIndex = NO_ROW_SELECTED_INDEX
 
-            If Me.Grid.PageCount = 0 Then
+            If Grid.PageCount = 0 Then
                 'if returning to the "1st time in" screen
                 ControlMgr.SetVisibleControl(Me, Grid, False)
             Else
                 ControlMgr.SetVisibleControl(Me, Grid, True)
             End If
 
-            Me.State.IsEditMode = False
-            Me.PopulateGrid()
-            Me.State.PageIndex = Grid.PageIndex
+            State.IsEditMode = False
+            PopulateGrid()
+            State.PageIndex = Grid.PageIndex
             SetButtonsState()
 
         End Sub
@@ -343,11 +343,11 @@ Namespace Security
                                 })
 
 
-            Me.State.Yes_Id = (From YESNO In YESNOList
+            State.Yes_Id = (From YESNO In YESNOList
                                Where YESNO.Code = Codes.YESNO_Y
                                Select YESNO).FirstOrDefault().ListItemId
 
-            Me.State.No_Id = (From YESNO In YESNOList
+            State.No_Id = (From YESNO In YESNOList
                               Where YESNO.Code = Codes.YESNO_N
                               Select YESNO).FirstOrDefault().ListItemId
 
@@ -355,23 +355,23 @@ Namespace Security
 
         Private Sub GetStateProperties()
             Try
-                Me.txtWebServiceName.Text = Me.State.moWebServiceName
+                txtWebServiceName.Text = State.moWebServiceName
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
         Private Sub SetStateProperties()
 
             Try
-                If Me.State Is Nothing Then
-                    Me.RestoreState(New MyState)
+                If State Is Nothing Then
+                    RestoreState(New MyState)
                 End If
-                Me.State.moWebServiceName = Me.txtWebServiceName.Text
+                State.moWebServiceName = txtWebServiceName.Text
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -379,45 +379,45 @@ Namespace Security
             Try
                 Dim oDataView As DataView
                 Dim sortBy As String = "web_service_name"
-                If (Me.State.searchDV Is Nothing) Then
-                    Me.State.searchDV = Webservices.GetWebServices(Me.State.moWebServiceName, Me.State.moOnLineId)
-                    If Me.State.searchClick Then
-                        Me.ValidSearchResultCount(Me.State.searchDV.Count, True)
-                        Me.State.searchClick = False
+                If (State.searchDV Is Nothing) Then
+                    State.searchDV = Webservices.GetWebServices(State.moWebServiceName, State.moOnLineId)
+                    If State.searchClick Then
+                        ValidSearchResultCount(State.searchDV.Count, True)
+                        State.searchClick = False
                     End If
                 End If
 
-                If Not (Me.State.searchDV Is Nothing) Then
-                    Me.State.searchDV.Sort = Me.SortDirection
+                If Not (State.searchDV Is Nothing) Then
+                    State.searchDV.Sort = SortDirection
                 End If
 
-                If (Me.State.IsAfterSave) Then
-                    Me.State.IsAfterSave = False
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.WebserviceId, Me.Grid, Me.State.PageIndex)
-                ElseIf (Me.State.IsEditMode) Then
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.WebserviceId, Me.Grid, Me.State.PageIndex, Me.State.IsEditMode)
-                ElseIf Me.IsReturningFromChild Then
-                    Me.IsReturningFromChild = False
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.WebserviceId, Me.Grid, Me.State.PageIndex)
+                If (State.IsAfterSave) Then
+                    State.IsAfterSave = False
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.WebserviceId, Grid, State.PageIndex)
+                ElseIf (State.IsEditMode) Then
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.WebserviceId, Grid, State.PageIndex, State.IsEditMode)
+                ElseIf IsReturningFromChild Then
+                    IsReturningFromChild = False
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.WebserviceId, Grid, State.PageIndex)
                 Else
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Guid.Empty, Me.Grid, Me.State.PageIndex)
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, Guid.Empty, Grid, State.PageIndex)
                 End If
 
                 Grid.PageSize = State.PageSize
 
-                Me.SortAndBindGrid()
+                SortAndBindGrid()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
 
         Private Function GetGridDataView() As DataView
-            If (Me.State.searchDV Is Nothing) Then
-                Me.State.searchDV = Webservices.GetWebServices(Me.State.moWebServiceName, Me.State.moOnLineId)
+            If (State.searchDV Is Nothing) Then
+                State.searchDV = Webservices.GetWebServices(State.moWebServiceName, State.moOnLineId)
             End If
-            Return Me.State.searchDV
+            Return State.searchDV
         End Function
 
         Private Sub SortAndBindGrid()
@@ -425,33 +425,33 @@ Namespace Security
             'Me.Grid.DataSource = Me.State.searchDV
             'HighLightSortColumn(Grid, Me.State.SortExpression)
 
-            Me.State.PageIndex = Me.Grid.PageIndex
-            If (Me.State.searchDV.Count = 0) Then
+            State.PageIndex = Grid.PageIndex
+            If (State.searchDV.Count = 0) Then
 
-                Me.State.bnoRow = True
+                State.bnoRow = True
                 'Me.Grid.DataSource = Nothing
-                CreateHeaderForEmptyGrid(Grid, Me.SortDirection)
+                CreateHeaderForEmptyGrid(Grid, SortDirection)
             Else
-                Me.State.bnoRow = False
-                Me.Grid.Enabled = True
-                Me.Grid.DataSource = Me.State.searchDV
-                HighLightSortColumn(Grid, Me.SortDirection)
-                Me.Grid.DataBind()
+                State.bnoRow = False
+                Grid.Enabled = True
+                Grid.DataSource = State.searchDV
+                HighLightSortColumn(Grid, SortDirection)
+                Grid.DataBind()
             End If
 
-            If Not Grid.BottomPagerRow Is Nothing AndAlso Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
+            If Grid.BottomPagerRow IsNot Nothing AndAlso Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
 
-            ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
 
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-            Session("recCount") = Me.State.searchDV.Count
+            Session("recCount") = State.searchDV.Count
 
-            If Me.Grid.Visible Then
-                If (Me.State.AddingNewRow) Then
-                    Me.lblRecordCount.Text = (Me.State.searchDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                If (State.AddingNewRow) Then
+                    lblRecordCount.Text = (State.searchDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 Else
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             End If
             ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, Grid)
@@ -461,47 +461,47 @@ Namespace Security
 
             Dim dv As DataView
 
-            Me.State.searchDV = GetGridDataView()
+            State.searchDV = GetGridDataView()
 
-            Me.State.boWebservice = New Assurant.ElitaPlus.BusinessObjectsNew.Webservices
-            Me.State.WebserviceId = Me.State.boWebservice.Id
+            State.boWebservice = New Assurant.ElitaPlus.BusinessObjectsNew.Webservices
+            State.WebserviceId = State.boWebservice.Id
 
-            Me.State.searchDV = Me.State.boWebservice.GetNewDataViewRow(Me.State.searchDV, Me.State.WebserviceId)
+            State.searchDV = State.boWebservice.GetNewDataViewRow(State.searchDV, State.WebserviceId)
 
-            Grid.DataSource = Me.State.searchDV
+            Grid.DataSource = State.searchDV
 
-            Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.WebserviceId, Me.Grid, Me.State.PageIndex, Me.State.IsEditMode)
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.WebserviceId, Grid, State.PageIndex, State.IsEditMode)
 
             Grid.DataBind()
 
-            Me.State.PageIndex = Grid.PageIndex
+            State.PageIndex = Grid.PageIndex
 
-            SetGridControls(Me.Grid, False)
+            SetGridControls(Grid, False)
 
             'Set focus on the Description TextBox for the EditItemIndex row
-            Me.SetFocusOnEditableDropDownFieldInGrid(Me.Grid, Me.GRID_COL_ON_LINE_STATUS_IDX, Me.GRID_CTRL_ON_LINE_STATUS_NAME, Me.Grid.EditIndex)
+            SetFocusOnEditableDropDownFieldInGrid(Grid, GRID_COL_ON_LINE_STATUS_IDX, GRID_CTRL_ON_LINE_STATUS_NAME, Grid.EditIndex)
 
-            Me.PopulateFormFromBO(True)
+            PopulateFormFromBO(True)
 
             'Me.TranslateGridControls(Grid)
-            Me.SetButtonsState()
+            SetButtonsState()
             ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, Grid)
         End Sub
 
         Private Sub PopulateFormFromBO(Optional ByVal blnAddingNew As Boolean = False)
 
-            Dim gridRowIdx As Integer = Me.Grid.EditIndex
+            Dim gridRowIdx As Integer = Grid.EditIndex
 
-            Dim txtOffLineMessage As TextBox = CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_DEFAULT_ON_LINE_MESSAGE_IDX).FindControl(Me.GRID_CTRL_OFF_LINE_MESSAGE_NAME), TextBox)
-            Dim cboOnLineStatus As DropDownList = CType(Me.Grid.Rows(Me.Grid.EditIndex).Cells(Me.GRID_COL_ON_LINE_STATUS_IDX).FindControl(Me.GRID_CTRL_ON_LINE_STATUS_NAME), DropDownList)
+            Dim txtOffLineMessage As TextBox = CType(Grid.Rows(gridRowIdx).Cells(GRID_COL_DEFAULT_ON_LINE_MESSAGE_IDX).FindControl(GRID_CTRL_OFF_LINE_MESSAGE_NAME), TextBox)
+            Dim cboOnLineStatus As DropDownList = CType(Grid.Rows(Grid.EditIndex).Cells(GRID_COL_ON_LINE_STATUS_IDX).FindControl(GRID_CTRL_ON_LINE_STATUS_NAME), DropDownList)
 
-            Dim cboWebServiceNames As DropDownList = CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_WEB_SERVICE_NAME_IDX).FindControl(Me.GRID_CTRL_WEB_SERVICE_NAME), DropDownList)
+            Dim cboWebServiceNames As DropDownList = CType(Grid.Rows(gridRowIdx).Cells(GRID_COL_WEB_SERVICE_NAME_IDX).FindControl(GRID_CTRL_WEB_SERVICE_NAME), DropDownList)
 
 
-            Dim btnActionStart As Button = CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_STOP_START_BUTTON_IDX).FindControl(Me.ACTION_BUTTON_CONTROL_START_NAME), Button)
-            Dim btnActionStop As Button = CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_STOP_START_BUTTON_IDX).FindControl(Me.ACTION_BUTTON_CONTROL_STOP_NAME), Button)
-            Dim imgImageButton As ImageButton = CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_IMAGE_BUTTON_EDIT_IDX).FindControl(Me.ACTION_IMAGE_BUTTON_CONTROL_EDIT_NAME), ImageButton)
-            Dim btnItemsButton As Button = CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_ITEMS_BUTTON_IDX).FindControl(Me.ACTION_BUTTON_CONTROL_ITEMS_NAME), Button)
+            Dim btnActionStart As Button = CType(Grid.Rows(gridRowIdx).Cells(GRID_COL_STOP_START_BUTTON_IDX).FindControl(ACTION_BUTTON_CONTROL_START_NAME), Button)
+            Dim btnActionStop As Button = CType(Grid.Rows(gridRowIdx).Cells(GRID_COL_STOP_START_BUTTON_IDX).FindControl(ACTION_BUTTON_CONTROL_STOP_NAME), Button)
+            Dim imgImageButton As ImageButton = CType(Grid.Rows(gridRowIdx).Cells(GRID_COL_IMAGE_BUTTON_EDIT_IDX).FindControl(ACTION_IMAGE_BUTTON_CONTROL_EDIT_NAME), ImageButton)
+            Dim btnItemsButton As Button = CType(Grid.Rows(gridRowIdx).Cells(GRID_COL_ITEMS_BUTTON_IDX).FindControl(ACTION_BUTTON_CONTROL_ITEMS_NAME), Button)
             btnActionStart.Visible = False
             btnActionStop.Visible = False
             imgImageButton.Visible = False
@@ -521,7 +521,7 @@ Namespace Security
                     cboWebServiceNames.Items.Clear()
                     cboWebServiceNames.Items.Add(New ListItem("", ""))
 
-                    If Not webServiceNames Is Nothing Then
+                    If webServiceNames IsNot Nothing Then
                         For i = 0 To webServiceNames.Count - 1
                             cboWebServiceNames.Items.Add(New ListItem(webServiceNames(i)("DESCRIPTION").ToString, webServiceNames(i)("CODE").ToString))
                         Next
@@ -543,11 +543,11 @@ Namespace Security
                     SetFocus(cboOnLineStatus)
 
                 Else
-                    Dim lblOnLineStatusCtrl As Label = CType(Me.Grid.Rows(gridRowIdx).Cells(GRID_COL_ON_LINE_STATUS_IDX).FindControl(Me.GRID_CTRL_ON_LINE_STATUS_LABEL_EDIT_NAME), Label)
+                    Dim lblOnLineStatusCtrl As Label = CType(Grid.Rows(gridRowIdx).Cells(GRID_COL_ON_LINE_STATUS_IDX).FindControl(GRID_CTRL_ON_LINE_STATUS_LABEL_EDIT_NAME), Label)
                     If lblOnLineStatusCtrl.Text.Equals("Y") Then
-                        lblOnLineStatusCtrl.Text = Me.State.On_line_Translated
+                        lblOnLineStatusCtrl.Text = State.On_line_Translated
                     ElseIf lblOnLineStatusCtrl.Text.Equals("N") Then
-                        lblOnLineStatusCtrl.Text = Me.State.Off_line_Translated
+                        lblOnLineStatusCtrl.Text = State.Off_line_Translated
                     End If
                     cboWebServiceNames.Visible = False
                     cboOnLineStatus.Visible = False
@@ -555,185 +555,185 @@ Namespace Security
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
 
-        Public Sub SaveBo(ByVal strStartOrStopID As Guid)
+        Public Sub SaveBo(strStartOrStopID As Guid)
             Try
-                Me.State.boWebservice.OnLineId = strStartOrStopID
-                Me.State.boWebservice.LastOperationDate = Date.Now
-                If (Me.State.boWebservice.IsDirty) Then
-                    Me.State.boWebservice.Save()
-                    Me.State.IsAfterSave = True
-                    Me.State.AddingNewRow = False
-                    Me.AddInfoMsg(Me.MSG_RECORD_SAVED_OK)
-                    Me.State.searchDV = Nothing
-                    Me.ReturnFromEditing()
+                State.boWebservice.OnLineId = strStartOrStopID
+                State.boWebservice.LastOperationDate = Date.Now
+                If (State.boWebservice.IsDirty) Then
+                    State.boWebservice.Save()
+                    State.IsAfterSave = True
+                    State.AddingNewRow = False
+                    AddInfoMsg(MSG_RECORD_SAVED_OK)
+                    State.searchDV = Nothing
+                    ReturnFromEditing()
                 Else
-                    Me.AddInfoMsg(Me.MSG_RECORD_NOT_SAVED)
-                    Me.ReturnFromEditing()
+                    AddInfoMsg(MSG_RECORD_NOT_SAVED)
+                    ReturnFromEditing()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 #End Region
 
 #Region "Grid related"
 
-        Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+        Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
             Try
-                Me.State.PageIndex = Grid.PageIndex
-                Me.State.selectedWebServiceId = Guid.Empty
+                State.PageIndex = Grid.PageIndex
+                State.selectedWebServiceId = Guid.Empty
                 PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+        Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
             Try
                 Grid.PageIndex = e.NewPageIndex
                 State.PageIndex = Grid.PageIndex
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Public Sub RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+        Public Sub RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
 
             Try
                 Dim index As Integer
 
-                If (e.CommandName = Me.EDIT_COMMAND) Then
+                If (e.CommandName = EDIT_COMMAND) Then
                     index = CInt(e.CommandArgument)
                     'Set the IsEditMode flag to TRUE
-                    Me.State.IsEditMode = True
-                    Me.State.WebserviceId = New Guid(CType(Grid.Rows(index).Cells(GRID_COL_WEB_SERVICE_ID_IDX).FindControl(Me.GRID_CTRL_WEBSERVICE_ID), Label).Text)
-                    Me.State.boWebservice = New Assurant.ElitaPlus.BusinessObjectsNew.Webservices(Me.State.WebserviceId)
-                    Me.PopulateGrid()
-                    Me.State.PageIndex = Grid.PageIndex
+                    State.IsEditMode = True
+                    State.WebserviceId = New Guid(CType(Grid.Rows(index).Cells(GRID_COL_WEB_SERVICE_ID_IDX).FindControl(GRID_CTRL_WEBSERVICE_ID), Label).Text)
+                    State.boWebservice = New Assurant.ElitaPlus.BusinessObjectsNew.Webservices(State.WebserviceId)
+                    PopulateGrid()
+                    State.PageIndex = Grid.PageIndex
                     'Disable all Edit and Delete icon buttons on the Grid
-                    SetGridControls(Me.Grid, False)
+                    SetGridControls(Grid, False)
                     'Set focus on the Description TextBox for the EditItemIndex row
-                    Me.SetFocusOnEditableFieldInGrid(Me.Grid, Me.GRID_COL_DEFAULT_ON_LINE_MESSAGE_IDX, Me.GRID_CTRL_OFF_LINE_MESSAGE_NAME, index)
-                    Me.PopulateFormFromBO()
-                    Me.SetButtonsState()
-                ElseIf e.CommandName = Me.ITEMS_COMMAND Then
+                    SetFocusOnEditableFieldInGrid(Grid, GRID_COL_DEFAULT_ON_LINE_MESSAGE_IDX, GRID_CTRL_OFF_LINE_MESSAGE_NAME, index)
+                    PopulateFormFromBO()
+                    SetButtonsState()
+                ElseIf e.CommandName = ITEMS_COMMAND Then
 
                     index = CInt(e.CommandArgument)
-                    Me.State.selectedWebServiceId = New Guid(CType(Grid.Rows(index).Cells(GRID_COL_WEB_SERVICE_ID_IDX).FindControl(Me.GRID_CTRL_WEBSERVICE_ID), Label).Text)
-                    Me.callPage(WebServiceFunctionsListForm.URL, Me.State.selectedWebServiceId)
+                    State.selectedWebServiceId = New Guid(CType(Grid.Rows(index).Cells(GRID_COL_WEB_SERVICE_ID_IDX).FindControl(GRID_CTRL_WEBSERVICE_ID), Label).Text)
+                    callPage(WebServiceFunctionsListForm.URL, State.selectedWebServiceId)
                     'Me.AddInfoMsg(Me.MSG_OPERATION_NOT_AVAILABLE)
 
-                ElseIf e.CommandName = Me.STOP_COMMAND Then
+                ElseIf e.CommandName = STOP_COMMAND Then
                     index = CInt(e.CommandArgument)
-                    Me.State.IsEditMode = True
-                    Me.State.WebserviceId = New Guid(CType(Grid.Rows(index).Cells(GRID_COL_WEB_SERVICE_ID_IDX).FindControl(Me.GRID_CTRL_WEBSERVICE_ID), Label).Text)
-                    Me.State.boWebservice = New Assurant.ElitaPlus.BusinessObjectsNew.Webservices(Me.State.WebserviceId)
+                    State.IsEditMode = True
+                    State.WebserviceId = New Guid(CType(Grid.Rows(index).Cells(GRID_COL_WEB_SERVICE_ID_IDX).FindControl(GRID_CTRL_WEBSERVICE_ID), Label).Text)
+                    State.boWebservice = New Assurant.ElitaPlus.BusinessObjectsNew.Webservices(State.WebserviceId)
 
-                    Me.State.PageIndex = Grid.PageIndex
-                    Me.SaveBo(Me.State.No_Id)
+                    State.PageIndex = Grid.PageIndex
+                    SaveBo(State.No_Id)
 
-                ElseIf e.CommandName = Me.START_COMMAND Then
+                ElseIf e.CommandName = START_COMMAND Then
                     index = CInt(e.CommandArgument)
-                    Me.State.IsEditMode = True
-                    Me.State.WebserviceId = New Guid(CType(Grid.Rows(index).Cells(GRID_COL_WEB_SERVICE_ID_IDX).FindControl(Me.GRID_CTRL_WEBSERVICE_ID), Label).Text)
-                    Me.State.boWebservice = New Assurant.ElitaPlus.BusinessObjectsNew.Webservices(Me.State.WebserviceId)
-                    Me.State.PageIndex = Grid.PageIndex
-                    Me.SaveBo(Me.State.Yes_Id)
+                    State.IsEditMode = True
+                    State.WebserviceId = New Guid(CType(Grid.Rows(index).Cells(GRID_COL_WEB_SERVICE_ID_IDX).FindControl(GRID_CTRL_WEBSERVICE_ID), Label).Text)
+                    State.boWebservice = New Assurant.ElitaPlus.BusinessObjectsNew.Webservices(State.WebserviceId)
+                    State.PageIndex = Grid.PageIndex
+                    SaveBo(State.Yes_Id)
 
-                ElseIf (e.CommandName = Me.DELETE_COMMAND) Then
+                ElseIf (e.CommandName = DELETE_COMMAND) Then
                     index = CInt(e.CommandArgument)
                     'Clear the SelectedItemStyle to remove the highlight from the previously saved row
-                    Grid.SelectedIndex = Me.NO_ROW_SELECTED_INDEX
+                    Grid.SelectedIndex = NO_ROW_SELECTED_INDEX
 
                     'Save the Id in the Session
 
-                    Me.State.WebserviceId = New Guid(CType(Grid.Rows(index).Cells(GRID_COL_WEB_SERVICE_ID_IDX).FindControl(Me.GRID_CTRL_WEBSERVICE_ID), Label).Text) 'Me.State.selectedWebServiceId
+                    State.WebserviceId = New Guid(CType(Grid.Rows(index).Cells(GRID_COL_WEB_SERVICE_ID_IDX).FindControl(GRID_CTRL_WEBSERVICE_ID), Label).Text) 'Me.State.selectedWebServiceId
 
-                    Me.State.boWebservice = New Assurant.ElitaPlus.BusinessObjectsNew.Webservices(Me.State.WebserviceId)
+                    State.boWebservice = New Assurant.ElitaPlus.BusinessObjectsNew.Webservices(State.WebserviceId)
                     Try
-                        Me.State.boWebservice.Delete()
+                        State.boWebservice.Delete()
                         'Call the Save() method in the Manufacturer Business Object here
-                        Me.State.boWebservice.Save()
-                        Me.State.IsAfterSave = True
-                        Me.AddInfoMsg(Me.MSG_RECORD_DELETED_OK)
-                        Me.State.searchDV = Nothing
-                        Me.ReturnFromEditing()
-                        Me.State.PageIndex = Grid.PageIndex
+                        State.boWebservice.Save()
+                        State.IsAfterSave = True
+                        AddInfoMsg(MSG_RECORD_DELETED_OK)
+                        State.searchDV = Nothing
+                        ReturnFromEditing()
+                        State.PageIndex = Grid.PageIndex
                     Catch ex As Exception
-                        Me.State.boWebservice.RejectChanges()
+                        State.boWebservice.RejectChanges()
                         Throw ex
                     End Try
 
-                    Me.State.PageIndex = Grid.PageIndex
+                    State.PageIndex = Grid.PageIndex
 
-                ElseIf ((e.CommandName = Me.SORT_COMMAND) AndAlso Not (Me.IsEditing)) Then
+                ElseIf ((e.CommandName = SORT_COMMAND) AndAlso Not (IsEditing)) Then
 
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
 
-        Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+        Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Try
-                If Not dvRow Is Nothing And Me.State.searchDV.Count > 0 Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                        CType(e.Row.Cells(Me.GRID_COL_WEB_SERVICE_ID_IDX).FindControl(Me.GRID_CTRL_WEBSERVICE_ID), Label).Text = GetGuidStringFromByteArray(CType(dvRow("webservice_id"), Byte()))
+                If dvRow IsNot Nothing AndAlso State.searchDV.Count > 0 Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
+                        CType(e.Row.Cells(GRID_COL_WEB_SERVICE_ID_IDX).FindControl(GRID_CTRL_WEBSERVICE_ID), Label).Text = GetGuidStringFromByteArray(CType(dvRow("webservice_id"), Byte()))
 
                         If Not dvRow("last_operation_date").Equals(DBNull.Value) Then
-                            Dim lastOperationDate As Date = CType(dvRow(Me.State.boWebservice.WebServicesSearchDV.COL_LAST_OPERATION_DATE), Date)
-                            CType(e.Row.Cells(Me.GRID_COL_LAST_OPERATION_DATE_IDX).FindControl(Me.GRID_CTRL_LAST_OPERATION_DATE_LABLE_NAME), Label).Text = GetLongDateFormattedString(lastOperationDate)
+                            Dim lastOperationDate As Date = CType(dvRow(State.boWebservice.WebServicesSearchDV.COL_LAST_OPERATION_DATE), Date)
+                            CType(e.Row.Cells(GRID_COL_LAST_OPERATION_DATE_IDX).FindControl(GRID_CTRL_LAST_OPERATION_DATE_LABLE_NAME), Label).Text = GetLongDateFormattedString(lastOperationDate)
                         End If
 
-                        CType(e.Row.Cells(Me.GRID_COL_USER_IDX).FindControl(GRID_CTRL_LAST_CHANGE_BY_LABEL_NAME), Label).Text = dvRow("last_change_by").ToString
+                        CType(e.Row.Cells(GRID_COL_USER_IDX).FindControl(GRID_CTRL_LAST_CHANGE_BY_LABEL_NAME), Label).Text = dvRow("last_change_by").ToString
 
-                        If (Me.State.IsEditMode = True AndAlso Me.State.WebserviceId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow("webservice_id"), Byte())))) Then
-                            CType(e.Row.Cells(Me.GRID_COL_DEFAULT_ON_LINE_MESSAGE_IDX).FindControl(Me.GRID_CTRL_OFF_LINE_MESSAGE_NAME), TextBox).Text = dvRow("off_line_message").ToString
-                            If Not Me.State.AddingNewRow Then txtDefaultMsgFromLastRow = dvRow("off_line_message").ToString
-                            CType(e.Row.Cells(Me.GRID_COL_WEB_SERVICE_NAME_IDX).FindControl(Me.GRID_CTRL_WEB_SERVICE_LABEL_EDIT_NAME), Label).Text = dvRow("web_service_name").ToString
-                            CType(e.Row.Cells(Me.GRID_COL_ON_LINE_STATUS_IDX).FindControl(Me.GRID_CTRL_ON_LINE_STATUS_LABEL_EDIT_NAME), Label).Text = dvRow("on_line").ToString
-                            CType(e.Row.Cells(Me.GRID_COL_ON_LINE_STATUS_IDX).FindControl(Me.GRID_CTRL_ON_LINE_STATUS_LABEL_EDIT_NAME), Label).Text = dvRow("on_line").ToString
-                            CType(e.Row.Cells(GRID_COL_WEB_SERVICE_NAME_IDX).FindControl(Me.GRID_CTRL_WEB_SERVICE_LABEL_EDIT_NAME), Label).Text = dvRow("web_service_name").ToString
+                        If (State.IsEditMode = True AndAlso State.WebserviceId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow("webservice_id"), Byte())))) Then
+                            CType(e.Row.Cells(GRID_COL_DEFAULT_ON_LINE_MESSAGE_IDX).FindControl(GRID_CTRL_OFF_LINE_MESSAGE_NAME), TextBox).Text = dvRow("off_line_message").ToString
+                            If Not State.AddingNewRow Then txtDefaultMsgFromLastRow = dvRow("off_line_message").ToString
+                            CType(e.Row.Cells(GRID_COL_WEB_SERVICE_NAME_IDX).FindControl(GRID_CTRL_WEB_SERVICE_LABEL_EDIT_NAME), Label).Text = dvRow("web_service_name").ToString
+                            CType(e.Row.Cells(GRID_COL_ON_LINE_STATUS_IDX).FindControl(GRID_CTRL_ON_LINE_STATUS_LABEL_EDIT_NAME), Label).Text = dvRow("on_line").ToString
+                            CType(e.Row.Cells(GRID_COL_ON_LINE_STATUS_IDX).FindControl(GRID_CTRL_ON_LINE_STATUS_LABEL_EDIT_NAME), Label).Text = dvRow("on_line").ToString
+                            CType(e.Row.Cells(GRID_COL_WEB_SERVICE_NAME_IDX).FindControl(GRID_CTRL_WEB_SERVICE_LABEL_EDIT_NAME), Label).Text = dvRow("web_service_name").ToString
 
                         Else
 
-                            CType(e.Row.Cells(Me.GRID_COL_ON_LINE_STATUS_IDX).FindControl(Me.GRID_CTRL_ON_LINE_STATUS_LABEL_NAME), Label).Text = dvRow("on_line").ToString
-                            CType(e.Row.Cells(GRID_COL_WEB_SERVICE_NAME_IDX).FindControl(Me.GRID_CTRL_WEB_SERVICE_LABEL_NAME), Label).Text = dvRow("web_service_name").ToString
-                            CType(e.Row.Cells(Me.GRID_COL_DEFAULT_ON_LINE_MESSAGE_IDX).FindControl(GRID_CTRL_OFF_LINE_MESSAGE_LABEL_NAME), Label).Text = dvRow("off_line_message").ToString
-                            Dim btnActionStart As Button = CType(e.Row.Cells(Me.GRID_COL_STOP_START_BUTTON_IDX).FindControl(Me.ACTION_BUTTON_CONTROL_START_NAME), Button)
-                            Dim btnActionStop As Button = CType(e.Row.Cells(Me.GRID_COL_STOP_START_BUTTON_IDX).FindControl(Me.ACTION_BUTTON_CONTROL_STOP_NAME), Button)
-                            Dim imgImageButton As ImageButton = CType(e.Row.Cells(Me.GRID_COL_IMAGE_BUTTON_EDIT_IDX).FindControl(Me.ACTION_IMAGE_BUTTON_CONTROL_EDIT_NAME), ImageButton)
-                            Dim imgDeleteImageButton As ImageButton = CType(e.Row.Cells(Me.GRID_COL_IMAGE_BUTTON_EDIT_IDX).FindControl(Me.ACTION_IMAGE_BUTTON_CONTROL_DELETE_NAME), ImageButton)
-                            Dim btnItemsButton As Button = CType(e.Row.Cells(Me.GRID_COL_ITEMS_BUTTON_IDX).FindControl(Me.ACTION_BUTTON_CONTROL_ITEMS_NAME), Button)
-                            Dim lblOnLineStatusCtrl As Label = CType(e.Row.Cells(GRID_COL_ON_LINE_STATUS_IDX).FindControl(Me.GRID_CTRL_ON_LINE_STATUS_LABEL_NAME), Label)
-                            Dim lblWebServiceNameCtrl As Label = CType(e.Row.Cells(GRID_COL_WEB_SERVICE_NAME_IDX).FindControl(Me.GRID_CTRL_WEB_SERVICE_LABEL_NAME), Label)
+                            CType(e.Row.Cells(GRID_COL_ON_LINE_STATUS_IDX).FindControl(GRID_CTRL_ON_LINE_STATUS_LABEL_NAME), Label).Text = dvRow("on_line").ToString
+                            CType(e.Row.Cells(GRID_COL_WEB_SERVICE_NAME_IDX).FindControl(GRID_CTRL_WEB_SERVICE_LABEL_NAME), Label).Text = dvRow("web_service_name").ToString
+                            CType(e.Row.Cells(GRID_COL_DEFAULT_ON_LINE_MESSAGE_IDX).FindControl(GRID_CTRL_OFF_LINE_MESSAGE_LABEL_NAME), Label).Text = dvRow("off_line_message").ToString
+                            Dim btnActionStart As Button = CType(e.Row.Cells(GRID_COL_STOP_START_BUTTON_IDX).FindControl(ACTION_BUTTON_CONTROL_START_NAME), Button)
+                            Dim btnActionStop As Button = CType(e.Row.Cells(GRID_COL_STOP_START_BUTTON_IDX).FindControl(ACTION_BUTTON_CONTROL_STOP_NAME), Button)
+                            Dim imgImageButton As ImageButton = CType(e.Row.Cells(GRID_COL_IMAGE_BUTTON_EDIT_IDX).FindControl(ACTION_IMAGE_BUTTON_CONTROL_EDIT_NAME), ImageButton)
+                            Dim imgDeleteImageButton As ImageButton = CType(e.Row.Cells(GRID_COL_IMAGE_BUTTON_EDIT_IDX).FindControl(ACTION_IMAGE_BUTTON_CONTROL_DELETE_NAME), ImageButton)
+                            Dim btnItemsButton As Button = CType(e.Row.Cells(GRID_COL_ITEMS_BUTTON_IDX).FindControl(ACTION_BUTTON_CONTROL_ITEMS_NAME), Button)
+                            Dim lblOnLineStatusCtrl As Label = CType(e.Row.Cells(GRID_COL_ON_LINE_STATUS_IDX).FindControl(GRID_CTRL_ON_LINE_STATUS_LABEL_NAME), Label)
+                            Dim lblWebServiceNameCtrl As Label = CType(e.Row.Cells(GRID_COL_WEB_SERVICE_NAME_IDX).FindControl(GRID_CTRL_WEB_SERVICE_LABEL_NAME), Label)
 
-                            If Me.State.AddingNewRow Then
+                            If State.AddingNewRow Then
                                 btnActionStart.Visible = False
                                 btnActionStop.Visible = False
                                 imgImageButton.Visible = False
                                 imgDeleteImageButton.Visible = False
                                 btnItemsButton.Visible = False
-                                If e.Row.RowIndex = Me.State.searchDV.Count - 2 Then txtDefaultMsgFromLastRow = CType(e.Row.Cells(Me.GRID_COL_DEFAULT_ON_LINE_MESSAGE_IDX).FindControl(Me.GRID_CTRL_OFF_LINE_MESSAGE_LABEL_NAME), Label).Text
-                                If e.Row.RowIndex < Me.State.searchDV.Count - 1 Then e.Row.Enabled = False
+                                If e.Row.RowIndex = State.searchDV.Count - 2 Then txtDefaultMsgFromLastRow = CType(e.Row.Cells(GRID_COL_DEFAULT_ON_LINE_MESSAGE_IDX).FindControl(GRID_CTRL_OFF_LINE_MESSAGE_LABEL_NAME), Label).Text
+                                If e.Row.RowIndex < State.searchDV.Count - 1 Then e.Row.Enabled = False
                             Else
                                 If lblOnLineStatusCtrl.Text.Equals("Y") Then
                                     btnActionStart.Visible = False
                                     btnActionStop.Visible = True
-                                    lblOnLineStatusCtrl.Text = Me.State.On_line_Translated
+                                    lblOnLineStatusCtrl.Text = State.On_line_Translated
                                 ElseIf lblOnLineStatusCtrl.Text.Equals("N") Then
                                     btnActionStart.Visible = True
                                     btnActionStop.Visible = False
-                                    lblOnLineStatusCtrl.Text = Me.State.Off_line_Translated
+                                    lblOnLineStatusCtrl.Text = State.Off_line_Translated
                                 End If
                             End If
                         End If
@@ -741,59 +741,59 @@ Namespace Security
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub SetFocusOnEditableFieldInGrid(ByVal grid As GridView, ByVal cellPosition As Integer, ByVal controlName As String, ByVal itemIndex As Integer)
+        Private Sub SetFocusOnEditableFieldInGrid(grid As GridView, cellPosition As Integer, controlName As String, itemIndex As Integer)
             'Set focus on the Description TextBox for the EditItemIndex row
             Dim txtDefaultMsg As TextBox = CType(grid.Rows(itemIndex).Cells(cellPosition).FindControl(controlName), TextBox)
             SetFocus(txtDefaultMsg)
         End Sub
-        Private Sub SetFocusOnEditableDropDownFieldInGrid(ByVal grid As GridView, ByVal cellPosition As Integer, ByVal controlName As String, ByVal itemIndex As Integer)
+        Private Sub SetFocusOnEditableDropDownFieldInGrid(grid As GridView, cellPosition As Integer, controlName As String, itemIndex As Integer)
             'Set focus on the Description TextBox for the EditItemIndex row
             Dim cboDefaultMsg As DropDownList = CType(grid.Rows(itemIndex).Cells(cellPosition).FindControl(controlName), DropDownList)
             SetFocus(cboDefaultMsg)
         End Sub
 
-        Public Sub RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+        Public Sub RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+        Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
             Try
-                Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
+                Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
 
-                If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                    If Me.SortDirection.EndsWith(" ASC") Then
-                        Me.SortDirection = e.SortExpression + " DESC"
+                If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                    If SortDirection.EndsWith(" ASC") Then
+                        SortDirection = e.SortExpression + " DESC"
                     Else
-                        Me.SortDirection = e.SortExpression + " ASC"
+                        SortDirection = e.SortExpression + " ASC"
                     End If
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
-                Me.State.SortExpression = Me.SortDirection
-                Me.State.PageIndex = 0
-                Me.PopulateGrid()
+                State.SortExpression = SortDirection
+                State.PageIndex = 0
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub cboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-                Me.State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
-                Me.Grid.PageIndex = Me.State.PageIndex
-                Me.PopulateGrid()
+                State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
+                Grid.PageIndex = State.PageIndex
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -801,7 +801,7 @@ Namespace Security
             Get
                 Return ViewState("SortDirection").ToString
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 ViewState("SortDirection") = value
             End Set
         End Property

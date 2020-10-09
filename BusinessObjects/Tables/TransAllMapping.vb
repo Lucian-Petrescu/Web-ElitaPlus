@@ -6,48 +6,48 @@ Public Class TransallMapping
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New TransallMappingDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class TransallMapping
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New TransallMappingDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -90,7 +90,7 @@ Public Class TransallMapping
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(TransallMappingDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class TransallMapping
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(TransAllMappingDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -110,15 +110,15 @@ Public Class TransallMapping
                 Return New Guid(CType(Row(TransAllMappingDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(TransAllMappingDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(TransAllMappingDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=400)> _
-    Public Property InboundFilename() As String
+    Public Property InboundFilename As String
         Get
             CheckDeleted()
             If row(TransallMappingDAL.COL_NAME_INBOUND_FILENAME) Is DBNull.Value Then
@@ -127,15 +127,15 @@ Public Class TransallMapping
                 Return CType(row(TransallMappingDAL.COL_NAME_INBOUND_FILENAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransallMappingDAL.COL_NAME_INBOUND_FILENAME, Value)
+            SetValue(TransallMappingDAL.COL_NAME_INBOUND_FILENAME, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=400)> _
-    Public Property OutboundFilenameRegex() As String
+    Public Property OutboundFilenameRegex As String
         Get
             CheckDeleted()
             If row(TransallMappingDAL.COL_NAME_OUTBOUND_FILENAME_REGEX) Is DBNull.Value Then
@@ -144,15 +144,15 @@ Public Class TransallMapping
                 Return CType(row(TransallMappingDAL.COL_NAME_OUTBOUND_FILENAME_REGEX), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransallMappingDAL.COL_NAME_OUTBOUND_FILENAME_REGEX, Value)
+            SetValue(TransallMappingDAL.COL_NAME_OUTBOUND_FILENAME_REGEX, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=400)> _
-    Public Property OutputPath() As String
+    Public Property OutputPath As String
         Get
             CheckDeleted()
             If Row(TransAllMappingDAL.COL_NAME_OUTPUT_PATH) Is DBNull.Value Then
@@ -161,15 +161,15 @@ Public Class TransallMapping
                 Return CType(Row(TransAllMappingDAL.COL_NAME_OUTPUT_PATH), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransAllMappingDAL.COL_NAME_OUTPUT_PATH, Value)
+            SetValue(TransAllMappingDAL.COL_NAME_OUTPUT_PATH, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=400)> _
-    Public Property TransallPackage() As String
+    Public Property TransallPackage As String
         Get
             CheckDeleted()
             If row(TransallMappingDAL.COL_NAME_TRANSALL_PACKAGE) Is DBNull.Value Then
@@ -178,15 +178,15 @@ Public Class TransallMapping
                 Return CType(row(TransallMappingDAL.COL_NAME_TRANSALL_PACKAGE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransallMappingDAL.COL_NAME_TRANSALL_PACKAGE, Value)
+            SetValue(TransallMappingDAL.COL_NAME_TRANSALL_PACKAGE, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=4000)> _
-    Public Property LogfileEmails() As String
+    Public Property LogfileEmails As String
         Get
             CheckDeleted()
             If row(TransallMappingDAL.COL_NAME_LOGFILE_EMAILS) Is DBNull.Value Then
@@ -195,15 +195,15 @@ Public Class TransallMapping
                 Return CType(row(TransallMappingDAL.COL_NAME_LOGFILE_EMAILS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransallMappingDAL.COL_NAME_LOGFILE_EMAILS, Value)
+            SetValue(TransallMappingDAL.COL_NAME_LOGFILE_EMAILS, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property NumFiles() As LongType
+    Public Property NumFiles As LongType
         Get
             CheckDeleted()
             If row(TransallMappingDAL.COL_NAME_NUM_FILES) Is DBNull.Value Then
@@ -212,15 +212,15 @@ Public Class TransallMapping
                 Return New LongType(CType(row(TransallMappingDAL.COL_NAME_NUM_FILES), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(TransallMappingDAL.COL_NAME_NUM_FILES, Value)
+            SetValue(TransallMappingDAL.COL_NAME_NUM_FILES, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property LayoutCodeId() As Guid
+    Public Property LayoutCodeId As Guid
         Get
             CheckDeleted()
             If Row(TransAllMappingDAL.COL_NAME_LAYOUT_CODE) Is DBNull.Value Then
@@ -229,13 +229,13 @@ Public Class TransallMapping
                 Return New Guid(CType(Row(TransAllMappingDAL.COL_NAME_LAYOUT_CODE), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(TransAllMappingDAL.COL_NAME_LAYOUT_CODE, Value)
+            SetValue(TransAllMappingDAL.COL_NAME_LAYOUT_CODE, Value)
         End Set
     End Property
 
-    Public Property FtpSiteId() As Guid
+    Public Property FtpSiteId As Guid
         Get
             CheckDeleted()
             If Row(TransAllMappingDAL.COL_NAME_FTP_SITE_ID) Is DBNull.Value Then
@@ -244,9 +244,9 @@ Public Class TransallMapping
                 Return New Guid(CType(Row(TransAllMappingDAL.COL_NAME_FTP_SITE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(TransAllMappingDAL.COL_NAME_FTP_SITE_ID, Value)
+            SetValue(TransAllMappingDAL.COL_NAME_FTP_SITE_ID, Value)
         End Set
     End Property
 
@@ -256,15 +256,15 @@ Public Class TransallMapping
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New TransallMappingDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -275,7 +275,7 @@ Public Class TransallMapping
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function GetList(ByVal DealerId As Guid, Optional ByVal CompanyIds As ArrayList = Nothing) As DataView
+    Public Shared Function GetList(DealerId As Guid, Optional ByVal CompanyIds As ArrayList = Nothing) As DataView
 
         Try
             Dim dal As New DALObjects.TransAllMappingDAL
@@ -285,7 +285,7 @@ Public Class TransallMapping
         End Try
     End Function
 
-    Public Shared Function GetList(ByVal FileName As String, Optional ByVal CompanyIds As ArrayList = Nothing) As DataView
+    Public Shared Function GetList(FileName As String, Optional ByVal CompanyIds As ArrayList = Nothing) As DataView
 
         Try
             Dim dal As New DALObjects.TransAllMappingDAL
@@ -295,7 +295,7 @@ Public Class TransallMapping
         End Try
     End Function
 
-    Public Shared Function GetListByDirectory(ByVal DirectoryName As String, Optional ByVal CompanyIds As ArrayList = Nothing) As DataView
+    Public Shared Function GetListByDirectory(DirectoryName As String, Optional ByVal CompanyIds As ArrayList = Nothing) As DataView
 
         Try
             Dim dal As New DALObjects.TransAllMappingDAL
@@ -304,7 +304,7 @@ Public Class TransallMapping
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function GetListByDirectoryAndFile(ByVal DirectoryName As String, ByVal partialFileName As String, Optional ByVal CompanyIds As ArrayList = Nothing) As DataView
+    Public Shared Function GetListByDirectoryAndFile(DirectoryName As String, partialFileName As String, Optional ByVal CompanyIds As ArrayList = Nothing) As DataView
 
         Try
             Dim dal As New DALObjects.TransAllMappingDAL
@@ -314,7 +314,7 @@ Public Class TransallMapping
         End Try
     End Function
 
-    Public Shared Function GetListByOutputDirectoryAndFile(ByVal DirectoryName As String, ByVal partialFileName As String, Optional ByVal CompanyIds As ArrayList = Nothing) As DataView
+    Public Shared Function GetListByOutputDirectoryAndFile(DirectoryName As String, partialFileName As String, Optional ByVal CompanyIds As ArrayList = Nothing) As DataView
 
         Try
             Dim dal As New DALObjects.TransAllMappingDAL
@@ -324,7 +324,7 @@ Public Class TransallMapping
         End Try
     End Function
 
-    Public Shared Function GetListByOutputDirectory(ByVal DirectoryName As String, Optional ByVal CompanyIds As ArrayList = Nothing) As DataView
+    Public Shared Function GetListByOutputDirectory(DirectoryName As String, Optional ByVal CompanyIds As ArrayList = Nothing) As DataView
 
         Try
             Dim dal As New DALObjects.TransAllMappingDAL
@@ -338,11 +338,11 @@ Public Class TransallMapping
   
 
 #Region "Children Related"
-    Public Sub DetachTransMapOut(ByVal transMapOutIdGuidStrCollection As ArrayList)
+    Public Sub DetachTransMapOut(transMapOutIdGuidStrCollection As ArrayList)
         Dim transMapOutIdStr As Guid
         For Each transMapOutIdStr In transMapOutIdGuidStrCollection
             Dim tranMapOutBO As TransallMappingOut = New TransallMappingOut(transMapOutIdStr)
-            If Not tranMapOutBO Is Nothing Then
+            If tranMapOutBO IsNot Nothing Then
                 tranMapOutBO.Delete()
                 tranMapOutBO.Save()
             End If
@@ -350,7 +350,7 @@ Public Class TransallMapping
     End Sub
 #End Region
 
-    Public Shared Sub LogTransallMessage(ByVal region As String, ByVal filename As String, ByVal code As String, ByVal log_details As String, ByVal created_by As String)
+    Public Shared Sub LogTransallMessage(region As String, filename As String, code As String, log_details As String, created_by As String)
         Try
             Dim dal As New TransAllMappingDAL
             dal.LogTransallErrors(region, filename, code, log_details, created_by)

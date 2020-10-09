@@ -29,21 +29,21 @@ Public Class ServiceNetworkDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("service_network_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal CompanyGroupId As Guid, ByVal codeMask As String, ByVal descriptionMask As String) As DataSet
+    Public Function LoadList(CompanyGroupId As Guid, codeMask As String, descriptionMask As String) As DataSet
 
         'Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
         Dim parameters() As OracleParameter
@@ -62,27 +62,27 @@ Public Class ServiceNetworkDAL
         'End Try
 
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
 
         Dim whereClauseConditions As String = ""
 
         'whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("c." & Me.COL_NAME_COMPANY_GROUP_ID, CompanyGroupId, False)
-        If Me.FormatSearchMask(codeMask) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & Me.COL_NAME_SHORT_DESC & codeMask.ToUpper
+        If FormatSearchMask(codeMask) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & COL_NAME_SHORT_DESC & codeMask.ToUpper
         End If
-        If Me.FormatSearchMask(descriptionMask) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & Me.COL_NAME_DESCRIPTION & descriptionMask.ToUpper
+        If FormatSearchMask(descriptionMask) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & COL_NAME_DESCRIPTION & descriptionMask.ToUpper
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
             Dim ds As New DataSet
-            ds = DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters)
+            ds = DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -91,30 +91,30 @@ Public Class ServiceNetworkDAL
     End Function
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Private Function IsThereALikeClause(ByVal descriptionMask As String, ByVal codeMask As String) As Boolean
+    Private Function IsThereALikeClause(descriptionMask As String, codeMask As String) As Boolean
         Dim bIsLikeClause As Boolean
 
-        bIsLikeClause = Me.IsLikeClause(descriptionMask) OrElse Me.IsLikeClause(codeMask)
+        bIsLikeClause = IsLikeClause(descriptionMask) OrElse IsLikeClause(codeMask)
         Return bIsLikeClause
     End Function
 
-    Public Function LoadServiceCenter(ByVal oCountryIds As ArrayList) As DataSet
+    Public Function LoadServiceCenter(oCountryIds As ArrayList) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_SERVICE_CENTERS")
+        Dim selectStmt As String = Config("/SQL/LOAD_SERVICE_CENTERS")
         Dim parameters() As OracleParameter
 
         Dim whereClauseConditions As String = ""
 
-        whereClauseConditions &= MiscUtil.BuildListForSql("sc." & Me.COL_NAME_COUNTRY_ID, oCountryIds, False)
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        whereClauseConditions &= MiscUtil.BuildListForSql("sc." & COL_NAME_COUNTRY_ID, oCountryIds, False)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         'parameters = New OracleParameter() _
         '                            {New OracleParameter(COL_NAME_COUNTRY_ID, oCountryIds)}
         Try
-            Return (DBHelper.Fetch(selectStmt, Me.DSNAME))
+            Return (DBHelper.Fetch(selectStmt, DSNAME))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -124,7 +124,7 @@ Public Class ServiceNetworkDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim svcNetSrvCntl As New ServiceNetworkSvcDAL
         Dim srvcenterDal As New ServiceCenterDAL
 
@@ -136,10 +136,10 @@ Public Class ServiceNetworkDAL
             'First Pass updates Deletions
             svcNetSrvCntl.Update(familyDataset, tr, DataRowState.Deleted)
 
-            MyBase.Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Deleted)
+            MyBase.Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Deleted)
 
             'Second Pass updates additions and changes
-            Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
 
             svcNetSrvCntl.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
             srvcenterDal.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
@@ -156,12 +156,12 @@ Public Class ServiceNetworkDAL
             Throw ex
         End Try
     End Sub
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

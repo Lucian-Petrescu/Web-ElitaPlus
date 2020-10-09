@@ -66,7 +66,7 @@ Public Class ServiceNotificationFileProcessedDAL
 
 #Region "Signatures"
 
-    Public Delegate Sub AsyncCaller(ByVal oServiceNotificationFileProcessedData As ServiceNotificationFileProcessedData, ByVal selectStmt As String)
+    Public Delegate Sub AsyncCaller(oServiceNotificationFileProcessedData As ServiceNotificationFileProcessedData, selectStmt As String)
 
 #End Region
 
@@ -79,22 +79,22 @@ Public Class ServiceNotificationFileProcessedDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("svc_notification_processed_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal oServiceNotificationFileProcessedData As ServiceNotificationFileProcessedData) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(oServiceNotificationFileProcessedData As ServiceNotificationFileProcessedData) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         'Dim selectStmt As String
         Dim parameters(TOTAL_PARAM) As DBHelperParameter
         Dim sFileTypeCode As String
@@ -119,7 +119,7 @@ Public Class ServiceNotificationFileProcessedDAL
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -131,8 +131,8 @@ Public Class ServiceNotificationFileProcessedDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+        MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
     End Sub
 #End Region
 
@@ -158,7 +158,7 @@ Public Class ServiceNotificationFileProcessedDAL
     'End Sub
 
     ' Execute Store Procedure
-    Private Sub AsyncExecuteSP(ByVal oServiceNotificationFileProcessedData As ServiceNotificationFileProcessedData, ByVal selectStmt As String)
+    Private Sub AsyncExecuteSP(oServiceNotificationFileProcessedData As ServiceNotificationFileProcessedData, selectStmt As String)
         Dim inputParameters(TOTAL_PARAM_SP) As DBHelperParameter
         Dim outputParameter(0) As DBHelperParameter
 
@@ -177,18 +177,18 @@ Public Class ServiceNotificationFileProcessedDAL
         End If
     End Sub
 
-    Private Sub ExecuteSP(ByVal oServiceNotificationFileProcessedData As ServiceNotificationFileProcessedData, ByVal selectStmt As String)
+    Private Sub ExecuteSP(oServiceNotificationFileProcessedData As ServiceNotificationFileProcessedData, selectStmt As String)
         Dim aSyncHandler As New AsyncCaller(AddressOf AsyncExecuteSP)
         aSyncHandler.BeginInvoke(oServiceNotificationFileProcessedData, selectStmt, Nothing, Nothing)
     End Sub
 
-    Public Sub ValidateFile(ByVal oData As Object)
+    Public Sub ValidateFile(oData As Object)
         Dim oServiceNotificationFileProcessedData As ServiceNotificationFileProcessedData = CType(oData, ServiceNotificationFileProcessedData)
         Dim selectStmt As String
 
         Select Case oServiceNotificationFileProcessedData.fileTypeCode
             Case oServiceNotificationFileProcessedData.InterfaceTypeCode.NEW_NOTIFICATION
-                selectStmt = Me.Config("/SQL/VALIDATE_NEW_CLAIM_FILE")
+                selectStmt = Config("/SQL/VALIDATE_NEW_CLAIM_FILE")
                 ' Case oServiceNotificationFileProcessedData.InterfaceTypeCode.NEW_CLAIM_HP
                 '     selectStmt = Me.Config("/SQL/VALIDATE_NEW_CLAIM_HP")
                 'Case oServiceNotificationFileProcessedData.InterfaceTypeCode.CLOSE_CLAIM
@@ -204,13 +204,13 @@ Public Class ServiceNotificationFileProcessedDAL
         End Try
     End Sub
 
-    Public Sub ProcessFileRecords(ByVal oData As Object)
+    Public Sub ProcessFileRecords(oData As Object)
         Dim oServiceNotificationFileProcessedData As ServiceNotificationFileProcessedData = CType(oData, ServiceNotificationFileProcessedData)
         Dim selectStmt As String
 
         ' Select Case oServiceNotificationFileProcessedData.fileTypeCode
         '    Case oServiceNotificationFileProcessedData.InterfaceTypeCode.NEW_NOTIFICATION
-        selectStmt = Me.Config("/SQL/PROCESS_NEW_NOTIFICATION_FILE")
+        selectStmt = Config("/SQL/PROCESS_NEW_NOTIFICATION_FILE")
         'Case oServiceNotificationFileProcessedData.InterfaceTypeCode.NEW_CLAIM_HP
         '    selectStmt = Me.Config("/SQL/PROCESS_NEW_CLAIM_HP")
         'Case oServiceNotificationFileProcessedData.InterfaceTypeCode.CLOSE_CLAIM
@@ -226,13 +226,13 @@ Public Class ServiceNotificationFileProcessedDAL
         End Try
     End Sub
 
-    Public Sub DeleteFile(ByVal oData As Object)
+    Public Sub DeleteFile(oData As Object)
         Dim oServiceNotificationFileProcessedData As ServiceNotificationFileProcessedData = CType(oData, ServiceNotificationFileProcessedData)
         Dim selectStmt As String
 
         Select Case oServiceNotificationFileProcessedData.fileTypeCode
             Case oServiceNotificationFileProcessedData.InterfaceTypeCode.NEW_NOTIFICATION
-                selectStmt = Me.Config("/SQL/DELETE_NEW_CLAIM_FILE")
+                selectStmt = Config("/SQL/DELETE_NEW_CLAIM_FILE")
                 'Case oServiceNotificationFileProcessedData.InterfaceTypeCode.NEW_CLAIM_HP
                 '    selectStmt = Me.Config("/SQL/DELETE_NEW_CLAIM_HP")
                 'Case oServiceNotificationFileProcessedData.InterfaceTypeCode.CLOSE_CLAIM

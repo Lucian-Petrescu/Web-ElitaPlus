@@ -44,15 +44,15 @@ Namespace SpecializedServices.Timb
 
             If (Not CustomerData Is Nothing) Then
 
-                Me.CustomerName = CustomerData.Rows(0)("Customer_Name").ToString()
-                Me.IdentificationNumber = CustomerData.Rows(0)("Identification_Number").ToString()
-                Me.PhoneNumber = CustomerData.Rows(0)("Work_Phone").ToString()
-                Me.Address1 = CustomerData.Rows(0)("Address1").ToString()
-                Me.Address2 = CustomerData.Rows(0)("Address2").ToString()
-                Me.City = CustomerData.Rows(0)("City").ToString()
-                Me.StateProvince = CustomerData.Rows(0)("State_Province").ToString()
-                Me.ZipCode = CustomerData.Rows(0)("Postal_Code").ToString()
-                Me.Email = CustomerData.Rows(0)("Email").ToString()
+                CustomerName = CustomerData.Rows(0)("Customer_Name").ToString()
+                IdentificationNumber = CustomerData.Rows(0)("Identification_Number").ToString()
+                PhoneNumber = CustomerData.Rows(0)("Work_Phone").ToString()
+                Address1 = CustomerData.Rows(0)("Address1").ToString()
+                Address2 = CustomerData.Rows(0)("Address2").ToString()
+                City = CustomerData.Rows(0)("City").ToString()
+                StateProvince = CustomerData.Rows(0)("State_Province").ToString()
+                ZipCode = CustomerData.Rows(0)("Postal_Code").ToString()
+                Email = CustomerData.Rows(0)("Email").ToString()
             End If
         End Sub
     End Class

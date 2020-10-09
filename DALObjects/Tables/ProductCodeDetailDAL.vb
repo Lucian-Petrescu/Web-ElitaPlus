@@ -28,30 +28,30 @@ Public Class ProductCodeDetailDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("merchant_code_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
 
 
-    Public Function LoadList(ByVal DealerId As Guid, ByVal ProductId As Guid) As DataSet
+    Public Function LoadList(DealerId As Guid, ProductId As Guid) As DataSet
 
-        Dim selectstmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectstmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As DBHelper.DBHelperParameter
         Dim whereClauseConditions As String = ""
         Dim ds As New DataSet
@@ -60,7 +60,7 @@ Public Class ProductCodeDetailDAL
                                     New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, DealerId.ToByteArray)}
 
         Try
-            DBHelper.Fetch(ds, selectstmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectstmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -69,9 +69,9 @@ Public Class ProductCodeDetailDAL
 
     End Function
 #End Region
-    Public Function LoadList(ByVal ParentProductCodeId As Guid, ByVal familyDS As DataSet)
+    Public Function LoadList(ParentProductCodeId As Guid, familyDS As DataSet)
 
-        Dim selectStmt As String = Me.Config("/SQL/ChildListByParentID")
+        Dim selectStmt As String = Config("/SQL/ChildListByParentID")
         ' Dim ds As DataSet
         Dim dcPk As DataColumnCollection
 
@@ -80,15 +80,15 @@ Public Class ProductCodeDetailDAL
 
         Try
 
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
-    Public Function ChildListByParentID(ByVal ParentProductCodeId As Guid) As DataSet
+    Public Function ChildListByParentID(ParentProductCodeId As Guid) As DataSet
 
-        Dim selectstmt As String = Me.Config("/SQL/ChildListByParentID")
+        Dim selectstmt As String = Config("/SQL/ChildListByParentID")
         Dim parameters() As DBHelper.DBHelperParameter
         Dim whereClauseConditions As String = ""
         Dim ds As New DataSet
@@ -96,7 +96,7 @@ Public Class ProductCodeDetailDAL
                                     {New DBHelper.DBHelperParameter(COL_NAME_PRODUCT_CODE_PARENT_ID, ParentProductCodeId.ToByteArray)}
 
         Try
-            DBHelper.Fetch(ds, selectstmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectstmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)

@@ -24,7 +24,7 @@ Public Class WorkqueueHistoryForm
         Public AvailableItems As String
         Public WorkQueueReturnType As WorkQueueListForm.WorkQueueReturnType
 
-        Public Sub New(ByVal strWorkQueueName As String, ByVal oWorkQueueId As Guid, ByVal strAvailableItems As String, Optional ByVal WorkQueueReturnType As WorkQueueListForm.WorkQueueReturnType = Nothing)
+        Public Sub New(strWorkQueueName As String, oWorkQueueId As Guid, strAvailableItems As String, Optional ByVal WorkQueueReturnType As WorkQueueListForm.WorkQueueReturnType = Nothing)
             WorkQueueId = oWorkQueueId
             WorkQueueName = strWorkQueueName
             AvailableItems = strAvailableItems
@@ -67,27 +67,27 @@ Public Class WorkqueueHistoryForm
 
 
 #Region "Page Parameters"
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.MenuEnabled = True
+            MenuEnabled = True
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Dim oParam As WorkqueueHistoryForm.Parameters
         Try
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
 
-                oParam = CType(Me.CallingParameters, Parameters)
-                Me.State.WorkqueueId = oParam.WorkQueueId
-                Me.State.WorkqueueName = oParam.WorkQueueName
-                Me.State.WorkqueueAvailableItems = oParam.AvailableItems
-                Me.State.WorkQueueReturnType = oParam.WorkQueueReturnType
+                oParam = CType(CallingParameters, Parameters)
+                State.WorkqueueId = oParam.WorkQueueId
+                State.WorkqueueName = oParam.WorkQueueName
+                State.WorkqueueAvailableItems = oParam.AvailableItems
+                State.WorkQueueReturnType = oParam.WorkQueueReturnType
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
@@ -97,37 +97,37 @@ Public Class WorkqueueHistoryForm
 #Region "Page_Events"
 
     Private Sub UpdateBreadCrum()
-        If (Not Me.State Is Nothing) Then
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("WORK_QUEUE_HISTORY")
-            Me.MasterPage.PageTitle = Me.State.WorkqueueName & " : " & _
-                                      TranslationBase.TranslateLabelOrMessage("ITEMS_AVAILABLE") & " : " & Me.State.WorkqueueAvailableItems
+        If (State IsNot Nothing) Then
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("WORK_QUEUE_HISTORY")
+            MasterPage.PageTitle = State.WorkqueueName & " : " & _
+                                      TranslationBase.TranslateLabelOrMessage("ITEMS_AVAILABLE") & " : " & State.WorkqueueAvailableItems
         End If
     End Sub
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.MasterPage.MessageController.Clear()
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        MasterPage.MessageController.Clear()
         Try
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
 
-                Me.SortDirection = Me.State.SortExpression
+                SortDirection = State.SortExpression
 
-                Me.MasterPage.MessageController.Clear()
-                Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("WORK_QUEUE")
+                MasterPage.MessageController.Clear()
+                MasterPage.UsePageTabTitleInBreadCrum = False
+                MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("WORK_QUEUE")
                 UpdateBreadCrum()
 
                 TranslateGridHeader(Grid)
 
                 divDataContainer.Visible = True
-                Me.PopulateGrid()
+                PopulateGrid()
 
                 'Set page size
-                cboPageSize.SelectedValue = Me.State.PageSize.ToString()
+                cboPageSize.SelectedValue = State.PageSize.ToString()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
 
     End Sub
 
@@ -135,17 +135,17 @@ Public Class WorkqueueHistoryForm
         Try
             Dim oDataView As DataView
             Dim sortBy As String = String.Empty
-            If (Me.State.searchDV Is Nothing) Then
-                Me.State.searchDV = GetDV()
+            If (State.searchDV Is Nothing) Then
+                State.searchDV = GetDV()
             End If
 
             Grid.PageSize = State.PageSize
             If State.searchDV.Count = 0 Then
             Else
-                Me.Grid.DataSource = Me.State.searchDV
+                Grid.DataSource = State.searchDV
             End If
 
-            Me.State.PageIndex = Me.Grid.PageIndex
+            State.PageIndex = Grid.PageIndex
             divDataContainer.Visible = True
 
             Grid.Columns(GRID_COL_NAME_WORKQUEUE_ITEM_ID).Visible = False
@@ -153,20 +153,20 @@ Public Class WorkqueueHistoryForm
             Grid.Columns(GRID_COL_NAME_TIME_STAMP).Visible = True
             Grid.Columns(GRID_COL_NAME_REASON).Visible = True
 
-            If (Not Me.State.SortExpression.Equals(String.Empty)) Then
-                Me.State.searchDV.Sort = Me.SortDirection 'Me.State.SortExpression
+            If (Not State.SortExpression.Equals(String.Empty)) Then
+                State.searchDV.Sort = SortDirection 'Me.State.SortExpression
             End If
 
-            HighLightSortColumn(Grid, Me.SortDirection, True)
+            HighLightSortColumn(Grid, SortDirection, True)
 
-            Me.Grid.DataBind()
+            Grid.DataBind()
 
 
             ControlMgr.SetVisibleControl(Me, Grid, True)
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-            If Me.Grid.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
 
             If State.searchDV.Count = 0 Then
@@ -184,28 +184,28 @@ Public Class WorkqueueHistoryForm
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Private Function GetDV() As DataView
         Dim dv As DataView
-        Me.State.searchDV = GetGridDataView()
-        Me.State.searchDV.Sort = Grid.DataMember()
-        Return (Me.State.searchDV)
+        State.searchDV = GetGridDataView()
+        State.searchDV.Sort = Grid.DataMember()
+        Return (State.searchDV)
     End Function
 
     Private Function GetGridDataView() As DataView
-        Return (WorkqueueHistory.LoadWorkQueueItemHistory(Me.State.WorkqueueId, ElitaPlusIdentity.Current.ActiveUser.LanguageId))
+        Return (WorkqueueHistory.LoadWorkQueueItemHistory(State.WorkqueueId, ElitaPlusIdentity.Current.ActiveUser.LanguageId))
     End Function
 #End Region
 
 #Region "Grid related"
-    Protected Sub RowCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs)
+    Protected Sub RowCreated(sender As Object, e As GridViewRowEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Dim userBO As User
         Dim historyActionId As Guid
         Try
@@ -213,12 +213,12 @@ Public Class WorkqueueHistoryForm
             If (e.Row.RowType = DataControlRowType.DataRow) OrElse (e.Row.RowType = DataControlRowType.Separator) Then
 
                 historyActionId = New Guid(CType(dvRow(WorkqueueHistoryDAL.COL_NAME_HISTORY_ACTION_ID), Byte()))
-                e.Row.Cells(Me.GRID_COL_COL_NAME_HISTORY_ACTION).Text = LookupListNew.GetDescriptionFromId(LookupListCache.LK_WQ_HIST_ACTION, historyActionId)
-                e.Row.Cells(Me.GRID_COL_NAME_USER_NAME).Text = CType(dvRow(WorkqueueHistoryDAL.COL_NAME_USER_NAME), String)
+                e.Row.Cells(GRID_COL_COL_NAME_HISTORY_ACTION).Text = LookupListNew.GetDescriptionFromId(LookupListCache.LK_WQ_HIST_ACTION, historyActionId)
+                e.Row.Cells(GRID_COL_NAME_USER_NAME).Text = CType(dvRow(WorkqueueHistoryDAL.COL_NAME_USER_NAME), String)
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -226,73 +226,73 @@ Public Class WorkqueueHistoryForm
         Get
             Return ViewState("SortDirection").ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             ViewState("SortDirection") = value
         End Set
     End Property
 
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
         Try
-            Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
+            Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
-            If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                If Me.SortDirection.EndsWith(" ASC") Then
-                    Me.SortDirection = e.SortExpression + " DESC"
+            If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                If SortDirection.EndsWith(" ASC") Then
+                    SortDirection = e.SortExpression + " DESC"
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
             Else
-                Me.SortDirection = e.SortExpression + " ASC"
+                SortDirection = e.SortExpression + " ASC"
             End If
-            Me.State.SortExpression = Me.SortDirection
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.SortExpression = SortDirection
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
 
 #End Region
 
-    Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
         Try
             'Me.ReturnToCallingPage()
-            Me.callPage(WorkQueueListForm.URL & "?CALLER=STAFFING", New PageReturnType(Of WorkQueueListForm.WorkQueueReturnType)(DetailPageCommand.Nothing_, Me.State.WorkQueueReturnType, False))
+            callPage(WorkQueueListForm.URL & "?CALLER=STAFFING", New PageReturnType(Of WorkQueueListForm.WorkQueueReturnType)(DetailPageCommand.Nothing_, State.WorkQueueReturnType, False))
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
 
-    Private Sub cboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
-            Me.Grid.PageIndex = Me.State.PageIndex
-            Me.PopulateGrid()
+            State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
+            Grid.PageIndex = State.PageIndex
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = Grid.PageIndex
+            State.PageIndex = Grid.PageIndex
             'Me.State.workQueueId = Guid.Empty
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 

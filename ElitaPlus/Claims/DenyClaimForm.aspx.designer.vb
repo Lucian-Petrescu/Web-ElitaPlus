@@ -20,7 +20,7 @@ Partial Public Class DenyClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Form1 As Global.System.Web.UI.HtmlControls.HtmlForm
+    Protected WithEvents Form1 As HtmlForm
 
     '''<summary>
     '''moTitleLabel1 control.
@@ -29,7 +29,7 @@ Partial Public Class DenyClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moTitleLabel1 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moTitleLabel1 As Label
 
     '''<summary>
     '''moTitleLabel2 control.
@@ -38,7 +38,7 @@ Partial Public Class DenyClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moTitleLabel2 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moTitleLabel2 As Label
 
     '''<summary>
     '''ErrorCtrl control.
@@ -47,7 +47,7 @@ Partial Public Class DenyClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ErrorCtrl As Global.Assurant.ElitaPlus.ElitaPlusWebApp.ErrorController
+    Protected WithEvents ErrorCtrl As ErrorController
 
     '''<summary>
     '''EditPanel_WRITE control.
@@ -56,7 +56,7 @@ Partial Public Class DenyClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents EditPanel_WRITE As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents EditPanel_WRITE As Panel
 
     '''<summary>
     '''lblDeniedReason control.
@@ -65,7 +65,7 @@ Partial Public Class DenyClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDeniedReason As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDeniedReason As Label
 
     '''<summary>
     '''cboDeniedReason control.
@@ -74,7 +74,7 @@ Partial Public Class DenyClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboDeniedReason As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboDeniedReason As DropDownList
 
     '''<summary>
     '''lblInvoiceNumber control.
@@ -83,7 +83,7 @@ Partial Public Class DenyClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblInvoiceNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblInvoiceNumber As Label
 
     '''<summary>
     '''txtInvoiceNumber control.
@@ -92,7 +92,7 @@ Partial Public Class DenyClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtInvoiceNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtInvoiceNumber As TextBox
 
     '''<summary>
     '''lblPotFraudulent control.
@@ -101,7 +101,7 @@ Partial Public Class DenyClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPotFraudulent As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPotFraudulent As Label
 
     '''<summary>
     '''cboFraudulent control.
@@ -110,7 +110,7 @@ Partial Public Class DenyClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboFraudulent As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboFraudulent As DropDownList
 
     '''<summary>
     '''lblComplaint control.
@@ -119,7 +119,7 @@ Partial Public Class DenyClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblComplaint As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblComplaint As Label
 
     '''<summary>
     '''cboComplaint control.
@@ -128,7 +128,7 @@ Partial Public Class DenyClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboComplaint As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboComplaint As DropDownList
 
     '''<summary>
     '''btnCancel control.
@@ -137,7 +137,7 @@ Partial Public Class DenyClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnCancel As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnCancel As Button
 
     '''<summary>
     '''btnApply_WRITE control.
@@ -146,5 +146,5 @@ Partial Public Class DenyClaimForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnApply_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnApply_WRITE As Button
 End Class

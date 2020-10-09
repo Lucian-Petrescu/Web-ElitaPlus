@@ -38,23 +38,23 @@ Public Class AttributeValueDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
+    Public Sub Load(familyDS As DataSet, id As Guid)
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(TABLE_KEY_NAME, id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Function LoadList(ByVal pParentTableName As String, ByVal pReferenceId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Function LoadList(pParentTableName As String, pReferenceId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim ds As New DataSet
 
         Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure)
@@ -75,24 +75,24 @@ Public Class AttributeValueDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
         If ds Is Nothing Then
             Return
         End If
         If (changesFilter Or (supportChangesFilter)) <> (supportChangesFilter) Then
             Throw New NotSupportedException()
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
-    Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, tableName As String)
         command.AddParameter(PAR_I_NAME_ATTRIBUTE_VALUE_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_ATTRIBUTE_VALUE_ID)
 
     End Sub
 
-    Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, tableName As String)
         With command
             .AddParameter(PAR_I_NAME_ATTRIBUTE_VALUE_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_ATTRIBUTE_VALUE_ID)
             .AddParameter(PAR_I_NAME_ATTRIBUTE_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_ATTRIBUTE_ID)
@@ -106,7 +106,7 @@ Public Class AttributeValueDAL
 
     End Sub
 
-    Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, tableName As String)
         With command
             .AddParameter(PAR_I_NAME_ATTRIBUTE_VALUE_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_ATTRIBUTE_VALUE_ID)
             .AddParameter(PAR_I_NAME_ATTRIBUTE_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_ATTRIBUTE_ID)

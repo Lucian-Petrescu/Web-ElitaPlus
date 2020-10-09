@@ -29,44 +29,44 @@ Public Class AfaInvoiceDataDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("afa_invoice_data_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     
-    Public Function LoadInvoiceData(ByVal dealerID As Guid, ByVal invoiceMonth As String) As String
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_DEALER_INVOICE_DATA")
+    Public Function LoadInvoiceData(dealerID As Guid, invoiceMonth As String) As String
+        Dim selectStmt As String = Config("/SQL/LOAD_DEALER_INVOICE_DATA")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("dealer_id", dealerID.ToByteArray), _
                                                                                            New DBHelper.DBHelperParameter("invoice_month", invoiceMonth)}
 
         Return DBHelper.ReadOracleXmlTypeData(selectStmt, parameters)
     End Function
 
-    Public Function LoadActiveInvoice(ByVal familyDS As DataSet, ByVal dealerID As Guid, ByVal invoiceMonth As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_ACTIVE_INVOICE")
+    Public Function LoadActiveInvoice(familyDS As DataSet, dealerID As Guid, invoiceMonth As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_ACTIVE_INVOICE")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("dealer_id", dealerID.ToByteArray), _
                                                                                            New DBHelper.DBHelperParameter("invoice_month", invoiceMonth)}
         'Dim ds As New DataSet
         'DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
         'Return ds
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Sub SaveInvoiceHTML(ByVal id As Guid, ByVal strHTML As String)
+    Public Sub SaveInvoiceHTML(id As Guid, strHTML As String)
         Try
             Dim connection As New OracleConnection(DBHelper.ConnectString)
 
@@ -103,7 +103,7 @@ Public Class AfaInvoiceDataDAL
     End Sub
 
 
-    Public Sub SaveInvoiceCSV(ByVal id As Guid, ByVal strCSV As String)
+    Public Sub SaveInvoiceCSV(id As Guid, strCSV As String)
         Try
             Dim connection As New OracleConnection(DBHelper.ConnectString)
 
@@ -142,12 +142,12 @@ Public Class AfaInvoiceDataDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 

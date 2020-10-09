@@ -1,7 +1,6 @@
-﻿Imports Assurant.ElitaPlus.Business
+﻿
 Imports Assurant.ElitaPlus.DataAccessInterface
 Imports Assurant.ElitaPlus.DataEntities
-Imports Assurant.ElitaPlus.Security
 
 Public Class AddressManager
     Implements IAddressManager
@@ -9,7 +8,7 @@ Public Class AddressManager
     Private ReadOnly m_CacheFacade As ICacheFacade
     Private ReadOnly m_AdderssRepository As IAddressRepository(Of Address)
 
-    Public Sub New(ByVal pCacheFacade As ICacheFacade, ByVal pAddressRepository As IAddressRepository(Of Address))
+    Public Sub New(pCacheFacade As ICacheFacade, pAddressRepository As IAddressRepository(Of Address))
         m_CacheFacade = pCacheFacade
         m_AdderssRepository = pAddressRepository
     End Sub

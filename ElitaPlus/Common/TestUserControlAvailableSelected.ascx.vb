@@ -7,9 +7,9 @@ Namespace Generic
 #End Region
 
 #Region "Events"
-        Public Event SelectedListChanged(ByVal aSrc As TestUserControlAvailableSelected, ByVal aReason As EventArg)
-        Public Event Attach(ByVal aSrc As TestUserControlAvailableSelected, ByVal attachedList As ArrayList)
-        Public Event Detach(ByVal aSrc As TestUserControlAvailableSelected, ByVal detachedList As ArrayList)
+        Public Event SelectedListChanged(aSrc As TestUserControlAvailableSelected, aReason As EventArg)
+        Public Event Attach(aSrc As TestUserControlAvailableSelected, attachedList As ArrayList)
+        Public Event Detach(aSrc As TestUserControlAvailableSelected, detachedList As ArrayList)
 
 #End Region
 #Region "Attributes"
@@ -29,16 +29,16 @@ Namespace Generic
             Get
 
             End Get
-            Set(ByVal Value As String)
-                Me.moAvailableTitle.Text = Value
+            Set(Value As String)
+                moAvailableTitle.Text = Value
             End Set
         End Property
         Public Property SelectedDesc() As String
             Get
 
             End Get
-            Set(ByVal Value As String)
-                Me.moSelectedTitle.Text = Value
+            Set(Value As String)
+                moSelectedTitle.Text = Value
             End Set
         End Property
 
@@ -71,10 +71,10 @@ Namespace Generic
 
         Public Property BackColor() As String
             Get
-                Return (Me.moOutTable.BgColor)
+                Return (moOutTable.BgColor)
             End Get
-            Set(ByVal Value As String)
-                Me.moOutTable.BgColor = Value
+            Set(Value As String)
+                moOutTable.BgColor = Value
             End Set
         End Property
 
@@ -92,7 +92,7 @@ Namespace Generic
 
         Public ReadOnly Property SelectedListListBox() As ListBox
             Get
-                Return Me.moSelectedList
+                Return moSelectedList
             End Get
 
         End Property
@@ -111,7 +111,7 @@ Namespace Generic
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -119,32 +119,32 @@ Namespace Generic
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
 
         End Sub
 
-        Private Sub BtnAdd_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnAdd_WRITE.Click
+        Private Sub BtnAdd_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnAdd_WRITE.Click
             BtnAdd_Action()
-            Me.EnableDisableButtons()
+            EnableDisableButtons()
             RemoveSelection(moSelectedList)
         End Sub
 
-        Private Sub BtnAddAll_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnAddAll_WRITE.Click
+        Private Sub BtnAddAll_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnAddAll_WRITE.Click
             BtnAddAll_Action()
-            Me.EnableDisableButtons()
+            EnableDisableButtons()
             RemoveSelection(moSelectedList)
         End Sub
 
-        Private Sub BtnRemove_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnRemove_WRITE.Click
+        Private Sub BtnRemove_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnRemove_WRITE.Click
             BtnRemove_Action()
-            Me.EnableDisableButtons()
+            EnableDisableButtons()
             RemoveSelection(moAvailableList)
         End Sub
 
-        Private Sub BtnRemoveAll_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnRemoveAll_WRITE.Click
+        Private Sub BtnRemoveAll_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnRemoveAll_WRITE.Click
             BtnRemoveAll_Action()
-            Me.EnableDisableButtons()
+            EnableDisableButtons()
             RemoveSelection(moAvailableList)
         End Sub
 
@@ -152,21 +152,21 @@ Namespace Generic
 
 #Region "Button Management"
 
-        Private Sub RemoveSelection(ByVal aListBox As ListBox)
+        Private Sub RemoveSelection(aListBox As ListBox)
             Dim oItem As ListItem
             For Each oItem In aListBox.Items
                 oItem.Selected = False
             Next
         End Sub
 
-        Private Sub RemoveFromList(ByVal BoxToRemove As ListBox, ByVal BoxThatContains As ListBox)
+        Private Sub RemoveFromList(BoxToRemove As ListBox, BoxThatContains As ListBox)
             Dim oItem As ListItem
             For Each oItem In BoxThatContains.Items
                 BoxToRemove.Items.Remove(oItem)
             Next
         End Sub
 
-        Private Sub AddToListBox(ByVal BoxToAdd As ListBox, ByVal BoxThatContains As ListBox)
+        Private Sub AddToListBox(BoxToAdd As ListBox, BoxThatContains As ListBox)
             Dim oItem As ListItem
             For Each oItem In BoxThatContains.Items
                 If oItem.Selected = True Then
@@ -175,14 +175,14 @@ Namespace Generic
             Next
         End Sub
 
-        Private Sub AddAllList(ByVal BoxToAdd As ListBox, ByVal BoxThatContains As ListBox)
+        Private Sub AddAllList(BoxToAdd As ListBox, BoxThatContains As ListBox)
             Dim oItem As ListItem
             For Each oItem In BoxThatContains.Items
                 BoxToAdd.Items.Add(oItem)
             Next
         End Sub
         Public Sub BtnAdd_Action()
-            Dim selectedItemValues As ArrayList = Me.GetSelectedValueListCollection(Me.moAvailableList)
+            Dim selectedItemValues As ArrayList = GetSelectedValueListCollection(moAvailableList)
             AddToListBox(moSelectedList, moAvailableList)
             Sort(moSelectedList)
             'SelectedListListBox = moSelectedList
@@ -192,7 +192,7 @@ Namespace Generic
         End Sub
 
         Private Sub BtnAddAll_Action()
-            Dim itemValues As ArrayList = Me.GetAllValueListCollection(Me.moAvailableList)
+            Dim itemValues As ArrayList = GetAllValueListCollection(moAvailableList)
             AddAllList(moSelectedList, moAvailableList)
             Sort(moSelectedList)
             'SelectedListListBox = moSelectedList
@@ -202,7 +202,7 @@ Namespace Generic
         End Sub
 
         Private Sub BtnRemove_Action()
-            Dim selectedItemValues As ArrayList = Me.GetSelectedValueListCollection(Me.moSelectedList)
+            Dim selectedItemValues As ArrayList = GetSelectedValueListCollection(moSelectedList)
             AddToListBox(moAvailableList, moSelectedList)
             Sort(moAvailableList)
             RemoveFromList(moSelectedList, moAvailableList)
@@ -211,7 +211,7 @@ Namespace Generic
         End Sub
 
         Private Sub BtnRemoveAll_Action()
-            Dim itemValues As ArrayList = Me.GetAllValueListCollection(Me.moSelectedList)
+            Dim itemValues As ArrayList = GetAllValueListCollection(moSelectedList)
             AddAllList(moAvailableList, moSelectedList)
             Sort(moAvailableList)
             RemoveFromList(moSelectedList, moAvailableList)
@@ -230,14 +230,14 @@ Namespace Generic
                 ControlMgr.SetEnableControl(Page, BtnAdd_WRITE, False)
                 ControlMgr.SetEnableControl(Page, BtnAddAll_WRITE, False)
             End If
-            If Me.moSelectedList.Items.Count = 0 Then
+            If moSelectedList.Items.Count = 0 Then
                 ControlMgr.SetEnableControl(Page, BtnRemove_WRITE, False)
                 ControlMgr.SetEnableControl(Page, BtnRemoveAll_WRITE, False)
             End If
         End Sub
 
 
-        Private Function GetSelectedValueListCollection(ByVal listCtr As ListControl) As ArrayList
+        Private Function GetSelectedValueListCollection(listCtr As ListControl) As ArrayList
             Dim item As ListItem
             Dim result As New ArrayList
             For Each item In listCtr.Items
@@ -248,7 +248,7 @@ Namespace Generic
             Return result
         End Function
 
-        Private Function GetAllValueListCollection(ByVal listCtr As ListControl) As ArrayList
+        Private Function GetAllValueListCollection(listCtr As ListControl) As ArrayList
             Dim item As ListItem
             Dim result As New ArrayList
             For Each item In listCtr.Items
@@ -262,14 +262,14 @@ Namespace Generic
 #Region "Set List Data"
 
 
-        Public Sub SetAvailableData(ByVal dv As DataView, ByVal textColumnName As String, ByVal guidValueColumnName As String)
+        Public Sub SetAvailableData(dv As DataView, textColumnName As String, guidValueColumnName As String)
             ElitaPlusPage.BindListControlToDataView(moAvailableList, dv, textColumnName, guidValueColumnName, False)
-            Me.EnableDisableButtons()
+            EnableDisableButtons()
         End Sub
 
-        Public Sub SetSelectedData(ByVal dv As DataView, ByVal textColumnName As String, ByVal guidValueColumnName As String)
+        Public Sub SetSelectedData(dv As DataView, textColumnName As String, guidValueColumnName As String)
             ElitaPlusPage.BindListControlToDataView(moSelectedList, dv, textColumnName, guidValueColumnName, False)
-            Me.EnableDisableButtons()
+            EnableDisableButtons()
         End Sub
 
 
@@ -279,7 +279,7 @@ Namespace Generic
         Private Class TheComparer
             Implements System.Collections.IComparer
 
-            Function Compare(ByVal x As Object, ByVal y As Object) As Integer _
+            Function Compare(x As Object, y As Object) As Integer _
                   Implements System.Collections.IComparer.Compare
                 Dim oXItem As ListItem = CType(x, ListItem)
                 Dim oYItem As ListItem = CType(y, ListItem)
@@ -289,7 +289,7 @@ Namespace Generic
             End Function
         End Class
 
-        Private Sub Sort(ByVal aList As ListBox)
+        Private Sub Sort(aList As ListBox)
             Dim oArray As ArrayList = New ArrayList
             Dim oItem As ListItem
             Dim oComparer As IComparer = New TheComparer

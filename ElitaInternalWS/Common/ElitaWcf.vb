@@ -11,12 +11,12 @@ Public Class ElitaWcf
     Protected Sub DoWork()
     End Sub
 
-    Public Function Hello(ByVal name As String) As String
+    Public Function Hello(name As String) As String
         '  Return "Hello, " & name
         Return ElitaService.Hello(name)
     End Function
 
-    Public Function LoginBody(ByVal networkID As String, ByVal password As String, ByVal group As String) As String
+    Public Function LoginBody(networkID As String, password As String, group As String) As String
         Dim token As String
 
         'AppConfig.SetModeLog(AppConfig.DB_LOG, True)
@@ -85,10 +85,10 @@ Public Class ElitaWcf
 
     End Function
 
-    Public Function ProcessRequest(ByVal token As String, _
-                                               ByVal functionToProcess As String, _
-                                               ByVal xmlStringDataIn As String, _
-                                               ByVal webServiceName As String) As String
+    Public Function ProcessRequest(token As String, _
+                                               functionToProcess As String, _
+                                               xmlStringDataIn As String, _
+                                               webServiceName As String) As String
 
         Return ElitaService.ProcessRequest(True, token, functionToProcess, xmlStringDataIn, _
                                             webServiceName)

@@ -47,7 +47,7 @@ Namespace Reports
         Public Class RptParam
             Public moCeHelperParameter As ceHelperParameter
 
-            Public Sub New(ByVal parmName As String, ByVal parmValue As String,
+            Public Sub New(parmName As String, parmValue As String,
             Optional ByVal parmSubReportName As String = ceHelperParameter.EMPTY_CEPARAM)
                 moCeHelperParameter = New ceHelperParameter(parmName, parmValue, parmSubReportName)
             End Sub
@@ -122,7 +122,7 @@ Namespace Reports
             Get
                 Return moError.status
             End Get
-            Set(ByVal Value As SSHelper.RptStatus)
+            Set(Value As SSHelper.RptStatus)
                 moError.status = Value
             End Set
         End Property
@@ -131,7 +131,7 @@ Namespace Reports
             Get
                 Return moError.msg
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 moError.msg = Value
             End Set
         End Property
@@ -156,7 +156,7 @@ Namespace Reports
                 Get
                     Return sError
                 End Get
-                Set(ByVal Value As SSHelper.RptError)
+                Set(Value As SSHelper.RptError)
                     sError = Value
                 End Set
             End Property
@@ -165,7 +165,7 @@ Namespace Reports
                 Get
                     Return sError.status
                 End Get
-                Set(ByVal Value As SSHelper.RptStatus)
+                Set(Value As SSHelper.RptStatus)
                     sError.status = Value
                 End Set
             End Property
@@ -174,7 +174,7 @@ Namespace Reports
                 Get
                     Return sError.msg
                 End Get
-                Set(ByVal Value As String)
+                Set(Value As String)
                     sError.msg = Value
                 End Set
             End Property
@@ -201,7 +201,7 @@ Namespace Reports
             MyBase.New(True)
         End Sub
 
-        Public Sub New(ByVal useExistingState As Boolean)
+        Public Sub New(useExistingState As Boolean)
             MyBase.New(useExistingState)
         End Sub
 
@@ -214,13 +214,13 @@ Namespace Reports
         Protected Shadows ReadOnly Property State() As MyState
             Get
                 Dim st As MyState = Nothing
-                Dim key As Type = Me.GetType()
-                If Me.StateSession.Contains(key) Then
-                    st = CType(Me.StateSession.Item(key), MyState)
+                Dim key As Type = [GetType]()
+                If StateSession.Contains(key) Then
+                    st = CType(StateSession.Item(key), MyState)
                 End If
                 If st Is Nothing Then
                     st = New MyState
-                    Me.StateSession.Item(key) = st
+                    StateSession.Item(key) = st
                 End If
                 Return st
             End Get
@@ -228,14 +228,14 @@ Namespace Reports
 
         Protected Sub SetStateProperties()
             SetStateProperties_NoErrStatus()
-            Me.State.ErrStatus = SSHelper.RptStatus.SUCCESS
+            State.ErrStatus = SSHelper.RptStatus.SUCCESS
         End Sub
 
         Protected Sub SetStateProperties_NoErrStatus()
-            Me.State.moParams = CType(Session(SESSION_PARAMETERS_KEY), Params)
-            Me.State.moRptPath = AppConfig.SS.RootDir & "\" & Me.State.moParams.msRptName
-            Me.State.moRptFormat = GetRepFormat(Me.State.moParams)
-            Me.State.moRptParams = GetCeRptParams(Me.State.moParams.moRptParams)
+            State.moParams = CType(Session(SESSION_PARAMETERS_KEY), Params)
+            State.moRptPath = AppConfig.SS.RootDir & "\" & State.moParams.msRptName
+            State.moRptFormat = GetRepFormat(State.moParams)
+            State.moRptParams = GetCeRptParams(State.moParams.moRptParams)
         End Sub
 
 #End Region
@@ -245,7 +245,7 @@ Namespace Reports
         Public Shared Function GetSSHelper() As SSHelper
             Dim oSSHelper As SSHelper
 
-            If Not HttpContext.Current.Session(ELPWebConstants.SSHELPER) Is Nothing Then
+            If HttpContext.Current.Session(ELPWebConstants.SSHELPER) IsNot Nothing Then
                 oSSHelper = CType(HttpContext.Current.Session(ELPWebConstants.SSHELPER), SSHelper)
             Else
                 Try
@@ -290,7 +290,7 @@ Namespace Reports
                 .dbServerType = SsReportServerType.ssServerTypeOracle
                 .dbServer = AppConfig.DataBase.Server
 
-                If Not objParameters Is Nothing AndAlso Not objParameters.AppUserId Is Nothing Then
+                If objParameters IsNot Nothing AndAlso objParameters.AppUserId IsNot Nothing Then
                     .dbUserID = objParameters.AppUserId
                     .dbPW = objParameters.AppPassword
                 Else
@@ -325,7 +325,7 @@ Namespace Reports
 
 #Region "Mapping Parameters"
 
-        Public Shared Function GetRepFormat(ByVal oParams As ReportCeBase.Params) As SSHelper.RepFormat
+        Public Shared Function GetRepFormat(oParams As ReportCeBase.Params) As SSHelper.RepFormat
             Dim oRptFormat As RptFormat = oParams.moRptFormat
             Dim oRepFormat As SSHelper.RepFormat
 
@@ -355,14 +355,14 @@ Namespace Reports
 
 
 
-        Public Function GetCeRptParams(ByVal oRptParams() As RptParam) As ArrayList
+        Public Function GetCeRptParams(oRptParams() As RptParam) As ArrayList
             Dim oCeRptParams As New ArrayList
             Dim oRptParam As RptParam
             Dim oCeHelperParameter As ceHelperParameter
 
-            If Not oRptParams Is Nothing Then
+            If oRptParams IsNot Nothing Then
                 For Each oRptParam In oRptParams
-                    If Not oRptParam Is Nothing Then
+                    If oRptParam IsNot Nothing Then
                         oCeRptParams.Add(oRptParam.moCeHelperParameter)
                     Else
                         'TODO Write Log for the error of the missing parameter.
@@ -381,7 +381,7 @@ Namespace Reports
         Public Function GetRptAction() As String
             Dim oAction As String
 
-            oAction = [Enum].GetName(GetType(RptAction), Me.State.moParams.moAction)
+            oAction = [Enum].GetName(GetType(RptAction), State.moParams.moAction)
 
             Return oAction
         End Function
@@ -390,12 +390,12 @@ Namespace Reports
 
 #Region "Schedule"
 
-        Public Shared Function GetRptFtp(ByVal oParams As ReportCeBase.Params) As String
+        Public Shared Function GetRptFtp(oParams As ReportCeBase.Params) As String
             Dim oFtp As String = String.Empty
             Dim sDate As String = "Now"
             Dim dEmptyDate As DateTime = Nothing
 
-            If ((Not oParams.moSched Is Nothing) AndAlso (Not oParams.moSched.ftp Is Nothing)) Then
+            If ((oParams.moSched IsNot Nothing) AndAlso (oParams.moSched.ftp IsNot Nothing)) Then
                 If Not oParams.moSched.startDateTime.Equals(dEmptyDate) Then
                     sDate = ElitaPlusPage.GetLongDateFormattedString(oParams.moSched.startDateTime)
                 End If
@@ -408,13 +408,13 @@ Namespace Reports
 #End Region
 
 #Region "Access Report"
-        Public Shared Function GetReportFormat(ByVal form As ElitaPlusPage) As ReportCeBaseForm.RptFormat
+        Public Shared Function GetReportFormat(form As ElitaPlusPage) As ReportCeBaseForm.RptFormat
             Dim rptFormat As ReportCeBaseForm.RptFormat
             Dim rptCeInputCtrl As ReportCeInputControl = CType(form.FindControl("moReportCeInputControl"), ReportCeInputControl)
             Dim view As RadioButton
             Dim pdf As RadioButton
             Dim txt As RadioButton
-            If Not rptCeInputCtrl Is Nothing Then
+            If rptCeInputCtrl IsNot Nothing Then
                 view = CType(rptCeInputCtrl.FindControl("radiobuttonView"), RadioButton)
                 pdf = CType(rptCeInputCtrl.FindControl("RadiobuttonPDF"), RadioButton)
                 txt = CType(rptCeInputCtrl.FindControl("RadiobuttonTXT"), RadioButton)
@@ -437,7 +437,7 @@ Namespace Reports
             Return (rptFormat)
         End Function
 
-        Public Shared Function GetReportFormat(ByVal ceFormat As String) As ReportCeBaseForm.RptFormat
+        Public Shared Function GetReportFormat(ceFormat As String) As ReportCeBaseForm.RptFormat
             Dim oRptFormat As ReportCeBaseForm.RptFormat
             Dim ceRptFormat As SSHelper.RptFormat =
                         CType(SSHelper.RptFormat.Parse(GetType(SSHelper.RptFormat), ceFormat), SSHelper.RptFormat)
@@ -459,7 +459,7 @@ Namespace Reports
         End Function
 
 
-        Public Shared Sub EnableReportCe(ByVal form As ElitaPlusPage, ByVal TheReportCeInputControl As ReportCeInputControl)
+        Public Shared Sub EnableReportCe(form As ElitaPlusPage, TheReportCeInputControl As ReportCeInputControl)
             ' Enable Progress Bar
             TheReportCeInputControl.IsBarProgressVisible = "True"
             form.InstallReportCe()
@@ -471,7 +471,7 @@ Namespace Reports
         Public Function GetRptViewer() As RptViewer
             Dim oViewer As RptViewer
 
-            If (Me.State.moParams Is Nothing) Then
+            If (State.moParams Is Nothing) Then
                 SetStateProperties_NoErrStatus()
             End If
             If (Me.State.moParams.moRptFormat = ReportCeBaseForm.RptFormat.TEXT_CSV) OrElse
@@ -492,7 +492,7 @@ Namespace Reports
             Return oViewer
         End Function
 
-        Private Sub CreateZipFiles(ByVal zipFileName As String, ByVal sourceDirectory As String)
+        Private Sub CreateZipFiles(zipFileName As String, sourceDirectory As String)
             Try
                 Dim sourceDir As String = sourceDirectory.Replace("/", "\")
                 Dim destinationFileName As String = sourceDir & "\" & zipFileName
@@ -503,7 +503,7 @@ Namespace Reports
             End Try
         End Sub
 
-        Private Sub DownloadFile(ByVal fileName As String, ByVal sourceDirectory As String)
+        Private Sub DownloadFile(fileName As String, sourceDirectory As String)
 
             Dim pathFileName As String = sourceDirectory & "\" & fileName
 
@@ -520,7 +520,7 @@ Namespace Reports
 
         End Sub
 
-        Private Sub SendResponse(ByVal mimeString As String, ByVal byteStream() As Byte, ByVal filename As String)
+        Private Sub SendResponse(mimeString As String, byteStream() As Byte, filename As String)
             Dim sAttachFilename As String
 
             '  sAttachFilename = "attachment; filename=" & filename  ' Open/Save
@@ -536,7 +536,7 @@ Namespace Reports
             Response.End()
         End Sub
 
-        Private Sub CreateFolder(ByVal folderName As String)
+        Private Sub CreateFolder(folderName As String)
             Dim objDir As New DirectoryInfo(folderName)
             Try
                 If Not objDir.Exists() Then
@@ -550,7 +550,7 @@ Namespace Reports
 
 #Region "Formating & Validation"
 
-        Public Shared Function FormatDate(ByVal lbl As Label, ByVal sDate As String) As String
+        Public Shared Function FormatDate(lbl As Label, sDate As String) As String
             Dim sFormated As String
             Dim tempDate As Date
 
@@ -561,7 +561,7 @@ Namespace Reports
             Return sFormated
         End Function
 
-        Public Shared Sub ValidateBeginEndDate(ByVal beginLbl As Label, ByVal beginDate As String, ByVal endLbl As Label, ByVal endDate As String)
+        Public Shared Sub ValidateBeginEndDate(beginLbl As Label, beginDate As String, endLbl As Label, endDate As String)
             Dim tempEndDate As Date
             Dim tempBeginDate As Date
 
@@ -580,7 +580,7 @@ Namespace Reports
 
 #Region "JavaScript"
 
-        Protected Sub SendReportError(ByVal statusMsg As String, ByVal errorMsg As String)
+        Protected Sub SendReportError(statusMsg As String, errorMsg As String)
             Dim sJavaScript As String
             Dim transMsg As String = TranslationBase.TranslateLabelOrMessage(statusMsg)
 
@@ -589,7 +589,7 @@ Namespace Reports
             '  sJavaScript &= "parent.document.all('moReportCeInputControl_moReportCeErrorMsg').value = '" & errorMsg & "';" & Environment.NewLine
             sJavaScript &= "parent.SendReportError('" & transMsg & "','" & errorMsg & "');" & Environment.NewLine
             sJavaScript &= "</SCRIPT>" & Environment.NewLine
-            Me.RegisterStartupScript("SendReportError", sJavaScript)
+            RegisterStartupScript("SendReportError", sJavaScript)
         End Sub
 
         Protected Sub ContinueWaitingForReport()
@@ -598,7 +598,7 @@ Namespace Reports
             sJavaScript = "<SCRIPT>" & Environment.NewLine
             sJavaScript &= "buttonContinueForReportClick();" & Environment.NewLine
             sJavaScript &= "</SCRIPT>" & Environment.NewLine
-            Me.RegisterStartupScript("ContinueWaitingForReport", sJavaScript)
+            RegisterStartupScript("ContinueWaitingForReport", sJavaScript)
         End Sub
 #End Region
     End Class

@@ -15,7 +15,7 @@ Public Class SendWelcomeEmailTask
 
 #Region "Constructors"
 
-    Public Sub New(ByVal machineName As String, ByVal processThreadName As String)
+    Public Sub New(machineName As String, processThreadName As String)
         MyBase.New(machineName, processThreadName)
     End Sub
 
@@ -26,7 +26,7 @@ Public Class SendWelcomeEmailTask
         Get
             Return _certificateId
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             _certificateId = value
         End Set
     End Property
@@ -35,7 +35,7 @@ Public Class SendWelcomeEmailTask
         Get
             Return _oCertificate
         End Get
-        Set(ByVal value As Certificate)
+        Set(value As Certificate)
             _oCertificate = value
         End Set
     End Property

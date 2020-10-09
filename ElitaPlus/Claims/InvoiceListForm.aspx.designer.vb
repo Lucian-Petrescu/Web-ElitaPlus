@@ -22,7 +22,7 @@ Partial Public Class InvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSearchInvoiceNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSearchInvoiceNumber As Label
 
     '''<summary>
     '''LabelSearchPayeeName control.
@@ -31,7 +31,7 @@ Partial Public Class InvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSearchPayeeName As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSearchPayeeName As Label
 
     '''<summary>
     '''TextBoxSearchInvoiceNumber control.
@@ -40,7 +40,7 @@ Partial Public Class InvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxSearchInvoiceNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxSearchInvoiceNumber As TextBox
 
     '''<summary>
     '''TextBoxSearchPayeeName control.
@@ -49,7 +49,7 @@ Partial Public Class InvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxSearchPayeeName As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxSearchPayeeName As TextBox
 
     '''<summary>
     '''LabelSearchCreatedDate control.
@@ -58,7 +58,7 @@ Partial Public Class InvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSearchCreatedDate As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSearchCreatedDate As Label
 
     '''<summary>
     '''LabelSearchClaimNumber control.
@@ -67,7 +67,7 @@ Partial Public Class InvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSearchClaimNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSearchClaimNumber As Label
 
     '''<summary>
     '''LabelSearchInvoiceAmount control.
@@ -76,7 +76,7 @@ Partial Public Class InvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSearchInvoiceAmount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSearchInvoiceAmount As Label
 
     '''<summary>
     '''TextBoxSearchCreatedDate control.
@@ -85,7 +85,7 @@ Partial Public Class InvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxSearchCreatedDate As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxSearchCreatedDate As TextBox
 
     '''<summary>
     '''ImageButtonSearchCreatedDate control.
@@ -94,7 +94,7 @@ Partial Public Class InvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ImageButtonSearchCreatedDate As Global.System.Web.UI.WebControls.ImageButton
+    Protected WithEvents ImageButtonSearchCreatedDate As ImageButton
 
     '''<summary>
     '''TextBoxSearchClaimNumber control.
@@ -103,7 +103,7 @@ Partial Public Class InvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxSearchClaimNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxSearchClaimNumber As TextBox
 
     '''<summary>
     '''TextBoxSearchInvoiceAmount control.
@@ -112,7 +112,7 @@ Partial Public Class InvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxSearchInvoiceAmount As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxSearchInvoiceAmount As TextBox
 
     '''<summary>
     '''lblSortBy control.
@@ -121,7 +121,7 @@ Partial Public Class InvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblSortBy As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblSortBy As Label
 
     '''<summary>
     '''cboSortBy control.
@@ -130,7 +130,7 @@ Partial Public Class InvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboSortBy As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboSortBy As DropDownList
 
     '''<summary>
     '''btnClearSearch control.
@@ -139,7 +139,7 @@ Partial Public Class InvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnClearSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnClearSearch As Button
 
     '''<summary>
     '''btnSearch control.
@@ -148,7 +148,7 @@ Partial Public Class InvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSearch As Button
 
     '''<summary>
     '''trPageSize control.
@@ -157,7 +157,7 @@ Partial Public Class InvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trPageSize As HtmlTableRow
 
     '''<summary>
     '''lblPageSize control.
@@ -166,7 +166,7 @@ Partial Public Class InvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPageSize As Label
 
     '''<summary>
     '''cboPageSize control.
@@ -175,7 +175,7 @@ Partial Public Class InvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboPageSize As DropDownList
 
     '''<summary>
     '''lblRecordCount control.
@@ -184,7 +184,7 @@ Partial Public Class InvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblRecordCount As Label
 
     '''<summary>
     '''Grid control.
@@ -193,5 +193,5 @@ Partial Public Class InvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Grid As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents Grid As GridView
 End Class

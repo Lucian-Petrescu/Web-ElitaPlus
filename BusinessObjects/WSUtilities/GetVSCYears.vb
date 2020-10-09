@@ -15,7 +15,7 @@ Public Class GetVSCYears
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetVSCYearsDs)
+    Public Sub New(ds As GetVSCYearsDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -28,7 +28,7 @@ Public Class GetVSCYears
 #Region "Private Members"
 
 
-    Private Sub MapDataSet(ByVal ds As GetVSCYearsDs)
+    Private Sub MapDataSet(ds As GetVSCYearsDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -41,8 +41,8 @@ Public Class GetVSCYears
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -50,13 +50,13 @@ Public Class GetVSCYears
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetVSCYearsDs)
+    Private Sub Load(ds As GetVSCYearsDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -69,13 +69,13 @@ Public Class GetVSCYears
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetVSCYearsDs)
+    Private Sub PopulateBOFromWebService(ds As GetVSCYearsDs)
         Try
             If ds.GetVSCYears.Count = 0 Then Exit Sub
             With ds.GetVSCYears.Item(0)
-                Me.Make = .Make
-                Me.Model = .Model
-                Me.EngineVersion = .Engine_Version
+                Make = .Make
+                Model = .Model
+                EngineVersion = .Engine_Version
             End With
 
         Catch ex As BOValidationException
@@ -92,62 +92,62 @@ Public Class GetVSCYears
 
 #Region "Properties"
 
-    Public Property CompanyGroupCode() As String
+    Public Property CompanyGroupCode As String
         Get
-            If Row(Me.DATA_COL_NAME_COMPANY_GROUP_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_COMPANY_GROUP_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_COMPANY_GROUP_CODE), String))
+                Return (CType(Row(DATA_COL_NAME_COMPANY_GROUP_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_COMPANY_GROUP_CODE, Value)
+            SetValue(DATA_COL_NAME_COMPANY_GROUP_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property Make() As String
+    Public Property Make As String
         Get
-            If Row(Me.DATA_COL_NAME_MAKE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_MAKE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_MAKE), String))
+                Return (CType(Row(DATA_COL_NAME_MAKE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_MAKE, Value)
+            SetValue(DATA_COL_NAME_MAKE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property Model() As String
+    Public Property Model As String
         Get
-            If Row(Me.DATA_COL_NAME_MODEL) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_MODEL) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_MODEL), String))
+                Return (CType(Row(DATA_COL_NAME_MODEL), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_MODEL, Value)
+            SetValue(DATA_COL_NAME_MODEL, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property EngineVersion() As String
+    Public Property EngineVersion As String
         Get
-            If Row(Me.DATA_COL_NAME_ENGINE_VERSION) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_ENGINE_VERSION) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_ENGINE_VERSION), String))
+                Return (CType(Row(DATA_COL_NAME_ENGINE_VERSION), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_ENGINE_VERSION, Value)
+            SetValue(DATA_COL_NAME_ENGINE_VERSION, Value)
         End Set
     End Property
 
@@ -157,7 +157,7 @@ Public Class GetVSCYears
 
     Public Overrides Function ProcessWSRequest() As String
         Try
-            Me.Validate()
+            Validate()
             Dim objCompanyGroup As CompanyGroup = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup
             Dim companyGroupID As Guid = objCompanyGroup.Id
 

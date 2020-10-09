@@ -6,54 +6,54 @@ Public Class Manufacturer
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
-        Me.SetValue(ManufacturerDAL.COL_NAME_COMPANY_GROUP_ID, ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
+        Dataset = New DataSet
+        Load()
+        SetValue(ManufacturerDAL.COL_NAME_COMPANY_GROUP_ID, ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
     End Sub
 
     'New BO
-    Public Sub New(ByVal sDesc As String, ByVal CompanyGroupID As Guid)
+    Public Sub New(sDesc As String, CompanyGroupID As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
+        Dataset = New DataSet
         'Me.SetValue(ManufacturerDAL.COL_NAME_DESCRIPTION, sDesc.ToUpper)
         'Me.SetValue(ManufacturerDAL.COL_NAME_COMPANY_GROUP_ID, ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
-        Me.Load(sDesc, CompanyGroupID)
+        Load(sDesc, CompanyGroupID)
 
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ManufacturerDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -61,23 +61,23 @@ Public Class Manufacturer
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ManufacturerDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -85,23 +85,23 @@ Public Class Manufacturer
         End Try
     End Sub
 
-    Protected Sub Load(ByVal sDesc As String, ByVal CompanyGroupID As Guid)
+    Protected Sub Load(sDesc As String, CompanyGroupID As Guid)
         Try
             Dim dal As New ManufacturerDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(sDesc, dal.COL_NAME_MANUFACTURER_ID, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(sDesc, dal.COL_NAME_MANUFACTURER_ID, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, sDesc, CompanyGroupID)
-                Me.Row = Me.FindRow(sDesc, dal.COL_NAME_DESCRIPTION, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, sDesc, CompanyGroupID)
+                Row = FindRow(sDesc, dal.COL_NAME_DESCRIPTION, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
 
@@ -128,7 +128,7 @@ Public Class Manufacturer
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ManufacturerDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -139,7 +139,7 @@ Public Class Manufacturer
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=255)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(ManufacturerDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -148,15 +148,15 @@ Public Class Manufacturer
                 Return CType(Row(ManufacturerDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ManufacturerDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(ManufacturerDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public ReadOnly Property companyGroupId() As Guid
+    Public ReadOnly Property companyGroupId As Guid
         Get
             CheckDeleted()
             If Row(ManufacturerDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -180,18 +180,18 @@ Public Class Manufacturer
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ManufacturerDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then Me.Load(Me.Id)
+                If Row.RowState <> DataRowState.Detached Then Load(Id)
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
 
-    Public Shared Function ResolveManufacturer(ByVal manufacturerName As String, ByVal companyGroupId As Guid) As Guid
+    Public Shared Function ResolveManufacturer(manufacturerName As String, companyGroupId As Guid) As Guid
         Dim dal As New ManufacturerDAL
         Try
             Return dal.ResolveManufacturer(manufacturerName, companyGroupId)
@@ -202,8 +202,8 @@ Public Class Manufacturer
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function LoadList(ByVal descriptionMask As String, _
-                                      ByVal companyGroupId As Guid) As DataView
+    Public Shared Function LoadList(descriptionMask As String, _
+                                      companyGroupId As Guid) As DataView
         Try
             Dim dal As New ManufacturerDAL
             Dim ds As Dataset
@@ -216,7 +216,7 @@ Public Class Manufacturer
 
     End Function
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid) As DataView
 
         Dim dt As DataTable
         dt = dv.Table
@@ -235,7 +235,7 @@ Public Class Manufacturer
 #End Region
 
 #Region "Lookup Functions"
-    Public Shared Function GetDescription(ByVal pManufacturerId As Guid) As String
+    Public Shared Function GetDescription(pManufacturerId As Guid) As String
         If (pManufacturerId = Guid.Empty) Then
             Return String.Empty
         End If
@@ -278,7 +278,7 @@ Public Class Manufacturer
     '        Throw New ElitaWSException(ex.Message)
     '    End Try
     'End Function
-    Public Shared Function GetVSCMakes(ByVal CompanyGroupId As Guid) As DataSet
+    Public Shared Function GetVSCMakes(CompanyGroupId As Guid) As DataSet
         Try
             Dim dal As New ManufacturerDAL
             Return dal.LoadVSCMakes(CompanyGroupId)
@@ -289,7 +289,7 @@ Public Class Manufacturer
 
     End Function
 
-    Public Shared Function GetMakesForWS(ByVal CompanyGroupId As Guid) As DataSet
+    Public Shared Function GetMakesForWS(CompanyGroupId As Guid) As DataSet
         Try
             Dim dal As New ManufacturerDAL
             Return dal.LoadMakesForWS(CompanyGroupId)
@@ -300,7 +300,7 @@ Public Class Manufacturer
 
     End Function
 
-    Public Shared Function GetMakesForWSByWarrantyMaster(ByVal dealerId As Guid, ByVal CompanyGroupId As Guid) As DataSet
+    Public Shared Function GetMakesForWSByWarrantyMaster(dealerId As Guid, CompanyGroupId As Guid) As DataSet
         Try
             Dim dal As New ManufacturerDAL
             Return dal.GetMakesForWSByWarrantyMaster(dealerId, CompanyGroupId)

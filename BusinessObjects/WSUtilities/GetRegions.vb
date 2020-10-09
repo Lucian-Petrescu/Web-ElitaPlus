@@ -17,7 +17,7 @@ Public Class GetRegions
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetRegionsDs)
+    Public Sub New(ds As GetRegionsDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -30,7 +30,7 @@ Public Class GetRegions
 #Region "Private Members"
 
 
-    Private Sub MapDataSet(ByVal ds As GetRegionsDs)
+    Private Sub MapDataSet(ds As GetRegionsDs)
 
         Dim schema As String = ds.GetXmlSchema '.Replace(SOURCE_COL_MAKE, DATA_COL_NAME_MANUFACTURER).Replace(SOURCE_COL_MILEAGE, DATA_COL_NAME_ODOMETER).Replace(SOURCE_COL_NEWUSED, DATA_COL_NAME_CONDITION)
 
@@ -43,8 +43,8 @@ Public Class GetRegions
             Next
         Next
 
-        Me.Dataset = New Dataset
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New Dataset
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -52,13 +52,13 @@ Public Class GetRegions
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetRegionsDs)
+    Private Sub Load(ds As GetRegionsDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -71,11 +71,11 @@ Public Class GetRegions
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetRegionsDs)
+    Private Sub PopulateBOFromWebService(ds As GetRegionsDs)
         Try
             If ds.GetRegions.Count = 0 Then Exit Sub
             With ds.GetRegions.Item(0)
-                If Not .Iscountry_codeNull Then Me.CountryCode = .country_code
+                If Not .Iscountry_codeNull Then CountryCode = .country_code
             End With
 
         Catch ex As BOValidationException
@@ -92,17 +92,17 @@ Public Class GetRegions
 
 #Region "Properties"
 
-    Public Property CountryCode() As String
+    Public Property CountryCode As String
         Get
-            If Row(Me.DATA_COL_NAME_COUNTRY_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_COUNTRY_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_COUNTRY_CODE), String))
+                Return (CType(Row(DATA_COL_NAME_COUNTRY_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_COUNTRY_CODE, Value)
+            SetValue(DATA_COL_NAME_COUNTRY_CODE, Value)
         End Set
     End Property
 
@@ -112,25 +112,25 @@ Public Class GetRegions
 
     Public Overrides Function ProcessWSRequest() As String
         'if the country code was not provided, get it from the user object.
-        If Me.CountryCode Is Nothing OrElse Me.CountryCode.Equals(String.Empty) Then
+        If CountryCode Is Nothing OrElse CountryCode.Equals(String.Empty) Then
             Dim objCountry As Country = ElitaPlusIdentity.Current.ActiveUser.Country(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
-            Me.CountryCode = objCountry.Code
+            CountryCode = objCountry.Code
         End If
-        Dim objCountryDV As DataView = Country.getList("", Me.CountryCode)
+        Dim objCountryDV As DataView = Country.getList("", CountryCode)
         Try
-            Me.Validate()
+            Validate()
 
             If objCountryDV Is Nothing Then
                 Throw New BOValidationException("GetRegions Error: ", ERROR_ACCESSING_DATABASE)
             ElseIf objCountryDV.Count <> 1 Then
                 Throw New BOValidationException("GetRegions Error: ", COUNTRY_NOT_FOUND)
             Else
-                Dim country_id As New Guid(CType(objCountryDV.Table.Rows(0).Item(Me.COL_NAME_COUNTRY_ID), Byte()))
+                Dim country_id As New Guid(CType(objCountryDV.Table.Rows(0).Item(COL_NAME_COUNTRY_ID), Byte()))
                 Dim objregionDS As DataSet = Region.LoadList(country_id)
                 If objregionDS Is Nothing Then
                     Throw New BOValidationException("GetRegions Error: ", ERROR_ACCESSING_DATABASE)
                 ElseIf objregionDS.Tables.Count > 0 AndAlso objregionDS.Tables(0).Rows.Count > 0 Then
-                    objregionDS.Tables(0).Columns.Remove(Me.COL_NAME_REGION_ID)
+                    objregionDS.Tables(0).Columns.Remove(COL_NAME_REGION_ID)
                     Return (XMLHelper.FromDatasetToXML(objregionDS))
                 ElseIf objregionDS.Tables.Count > 0 AndAlso objregionDS.Tables(0).Rows.Count = 0 Then
                     Throw New BOValidationException("GetRegions Error: ", REGION_NOT_FOUND)

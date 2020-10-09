@@ -27,7 +27,7 @@ Public Class ElitaClaim
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As ElitaClaimDs, ByVal xml As String)
+    Public Sub New(ds As ElitaClaimDs, xml As String)
         MyBase.New()
 
         'MapDataSet(ds)
@@ -47,7 +47,7 @@ Public Class ElitaClaim
     Dim _functionTypeId As Guid = Guid.Empty
     Dim myXml As String
 
-    Private Sub MapDataSet(ByVal ds As ElitaClaimDs)
+    Private Sub MapDataSet(ds As ElitaClaimDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -60,8 +60,8 @@ Public Class ElitaClaim
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -69,13 +69,13 @@ Public Class ElitaClaim
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As ElitaClaimDs)
+    Private Sub Load(ds As ElitaClaimDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -88,23 +88,21 @@ Public Class ElitaClaim
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As ElitaClaimDs)
+    Private Sub PopulateBOFromWebService(ds As ElitaClaimDs)
         Try
-            If ds.TRANSACTION_HEADER.Count = 0 Or ds.TRANSACTION_DATA_RECORD.Count = 0 Then Exit Sub
+            If ds.TRANSACTION_HEADER.Count = 0 OrElse ds.TRANSACTION_DATA_RECORD.Count = 0 Then Exit Sub
             With ds.TRANSACTION_HEADER.Item(0)
-                Me.TransactionId = .TRANSACTION_ID
-                Me.FunctionTypeCode = .FUNCTION_TYPE_CODE
+                TransactionId = .TRANSACTION_ID
+                FunctionTypeCode = .FUNCTION_TYPE_CODE
             End With
 
-            If Not (Me.FunctionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_INSERT_NEW_CLAIM Or _
-                    Me.FunctionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_UPDATE_CLAIM Or _
-                    Me.FunctionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_NEW_CLAIM Or _
-                    Me.FunctionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_UPDATE_CLAIM) Then
+            If Not (FunctionTypeCode = TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_INSERT_NEW_CLAIM OrElse FunctionTypeCode = TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_UPDATE_CLAIM OrElse FunctionTypeCode = TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_NEW_CLAIM Or _
+                    FunctionTypeCode = TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_UPDATE_CLAIM) Then
                 Throw New BOValidationException("ElitaCancelSvcIntegration Error: ", Common.ErrorCodes.ERR_FUNCTION_TYPE_CODE)
             Else
-                Me.FunctionTypeId = LookupListNew.GetIdFromCode(LookupListNew.GetGVSFunctionTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), Me.FunctionTypeCode)
+                FunctionTypeId = LookupListNew.GetIdFromCode(LookupListNew.GetGVSFunctionTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), FunctionTypeCode)
 
-                If Me.FunctionTypeId.Equals(Guid.Empty) Then
+                If FunctionTypeId.Equals(Guid.Empty) Then
                     Throw New BOValidationException("ElitaCancelSvcIntegration Error: ", Common.ErrorCodes.ERR_FUNCTION_TYPE_CODE)
                 End If
             End If
@@ -123,29 +121,29 @@ Public Class ElitaClaim
 
 #Region "Properties"
 
-    Public Property TransactionId() As String
+    Public Property TransactionId As String
         Get
             Return _transactionId
         End Get
-        Set(ByVal Value As String)
+        Set
             _transactionId = Value
         End Set
     End Property
 
-    Public Property FunctionTypeCode() As String
+    Public Property FunctionTypeCode As String
         Get
             Return _functionTypeCode
         End Get
-        Set(ByVal Value As String)
+        Set
             _functionTypeCode = Value
         End Set
     End Property
 
-    Public Property FunctionTypeId() As Guid
+    Public Property FunctionTypeId As Guid
         Get
             Return _functionTypeId
         End Get
-        Set(ByVal Value As Guid)
+        Set
             _functionTypeId = Value
         End Set
     End Property
@@ -179,26 +177,26 @@ Public Class ElitaClaim
 
             For Each header As XElement In tranHeader.Elements
                 If header.Name = "TRANSACTION_ID" then
-                    Me.TransactionId = header.Value
+                    TransactionId = header.Value
                 Else IF header.Name = "FUNCTION_TYPE_CODE" then
-                    Me.FunctionTypeCode = header.Value
+                    FunctionTypeCode = header.Value
                 End If
             Next
 
-            If TransactionLogHeader.IsTransactionExist(Me.TransactionId) Then
+            If TransactionLogHeader.IsTransactionExist(TransactionId) Then
                 Throw New BOValidationException("ElitaCancelSvcIntegration Error: ", Common.ErrorCodes.ERR_TRANSACTION_ALREADY_EXIST)
             End If
 
-            If Me.FunctionTypeCode Is Nothing Or _
-                Not (Me.FunctionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_INSERT_NEW_CLAIM Or _
-                    Me.FunctionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_UPDATE_CLAIM Or _
-                    Me.FunctionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_NEW_CLAIM Or _
-                    Me.FunctionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_UPDATE_CLAIM) Then
+            If FunctionTypeCode Is Nothing Or _
+                Not (FunctionTypeCode = TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_INSERT_NEW_CLAIM Or _
+                    FunctionTypeCode = TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_UPDATE_CLAIM Or _
+                    FunctionTypeCode = TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_NEW_CLAIM Or _
+                    FunctionTypeCode = TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_UPDATE_CLAIM) Then
                 Throw New BOValidationException("ElitaCancelSvcIntegration Error: ", Common.ErrorCodes.ERR_FUNCTION_TYPE_CODE)
             Else
-                Me.FunctionTypeId = LookupListNew.GetIdFromCode(LookupListNew.GetGVSFunctionTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), Me.FunctionTypeCode)
+                FunctionTypeId = LookupListNew.GetIdFromCode(LookupListNew.GetGVSFunctionTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), FunctionTypeCode)
 
-                If Me.FunctionTypeId.Equals(Guid.Empty) Then
+                If FunctionTypeId.Equals(Guid.Empty) Then
                     Throw New BOValidationException("ElitaCancelSvcIntegration Error: ", Common.ErrorCodes.ERR_FUNCTION_TYPE_CODE)
                 End If
             End If
@@ -215,18 +213,18 @@ Public Class ElitaClaim
                     
                     If transFamilyBO Is Nothing Then
                         transFamilyBO = New TransactionLogHeader
-                        transFamilyBO.TransactionStatusID = LookupListNew.GetIdFromCode(LookupListNew.GetGVSTransactionStatusList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), DALObjects.TransactionLogHeaderDAL.TRANSACTION_STATUS_NEW)
+                        transFamilyBO.TransactionStatusID = LookupListNew.GetIdFromCode(LookupListNew.GetGVSTransactionStatusList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), TransactionLogHeaderDAL.TRANSACTION_STATUS_NEW)
                         transFamilyBO.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-                        transFamilyBO.FunctionTypeID = Me.FunctionTypeId
+                        transFamilyBO.FunctionTypeID = FunctionTypeId
                         transFamilyBO.TransactionXml = xmlRec
-                        transFamilyBO.GVSoriginalTransNo = Me.TransactionId
+                        transFamilyBO.GVSoriginalTransNo = TransactionId
                     Else
                         Dim logHeader As TransactionLogHeader = transFamilyBO.AddTransactionLogHeader(Guid.Empty)
-                        logHeader.TransactionStatusID = LookupListNew.GetIdFromCode(LookupListNew.GetGVSTransactionStatusList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), DALObjects.TransactionLogHeaderDAL.TRANSACTION_STATUS_NEW)
+                        logHeader.TransactionStatusID = LookupListNew.GetIdFromCode(LookupListNew.GetGVSTransactionStatusList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), TransactionLogHeaderDAL.TRANSACTION_STATUS_NEW)
                         logHeader.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-                        logHeader.FunctionTypeID = Me.FunctionTypeId
+                        logHeader.FunctionTypeID = FunctionTypeId
                         logHeader.TransactionXml = xmlRec
-                        logHeader.GVSoriginalTransNo = Me.TransactionId
+                        logHeader.GVSoriginalTransNo = TransactionId
                     End If
                     
                     count = count + 1

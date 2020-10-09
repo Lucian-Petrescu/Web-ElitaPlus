@@ -1,5 +1,6 @@
 ﻿Imports System.Globalization
 Imports System.Collections.Generic
+Imports System.Threading
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.Claims.AccountPayable
 
 Partial Class APInvoiceListForm
@@ -55,7 +56,7 @@ Partial Class APInvoiceListForm
             Set(value As String)
                 _DueDateFromString = value
                 Dim dt As Date
-                If DateTime.TryParseExact(DueDateFromString.Trim(), DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt) Then
+                If DateTime.TryParseExact(DueDateFromString.Trim(), DATE_FORMAT, Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt) Then
                     _DueDateFrom = dt
                 End If
             End Set
@@ -74,7 +75,7 @@ Partial Class APInvoiceListForm
             Set(value As String)
                 _DueDateToString = value
                 Dim dt As Date
-                If DateTime.TryParseExact(_DueDateToString.Trim(), DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt) Then
+                If DateTime.TryParseExact(_DueDateToString.Trim(), DATE_FORMAT, Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt) Then
                     _DueDateTo = dt
                 End If
             End Set
@@ -93,7 +94,7 @@ Partial Class APInvoiceListForm
             Set(value As String)
                 _InvoiceDateString = value
                 Dim dt As Date
-                If DateTime.TryParseExact(_InvoiceDateString.Trim(), DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt) Then
+                If DateTime.TryParseExact(_InvoiceDateString.Trim(), DATE_FORMAT, Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt) Then
                     _InvoiceDate = dt
                 End If
             End Set
@@ -137,9 +138,9 @@ Partial Class APInvoiceListForm
 
 #Region "Page_Events"
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
-        Page.RegisterHiddenField("__EVENTTARGET", Me.btnSearch.ClientID)
+        Page.RegisterHiddenField("__EVENTTARGET", btnSearch.ClientID)
         MasterPage.MessageController.Clear_Hide()
         lblBatchNum.ForeColor = Color.Empty
 
@@ -159,8 +160,8 @@ Partial Class APInvoiceListForm
                 TranslateGridHeader(Grid)
 
                 If State.IsGridVisible Then
-                    cboPageSize.SelectedValue = CType(Me.State.selectedPageSize, String)
-                    Grid.PageSize = Me.State.selectedPageSize
+                    cboPageSize.SelectedValue = CType(State.selectedPageSize, String)
+                    Grid.PageSize = State.selectedPageSize
                     PopulateGrid()
                     SetGridItemStyleColor(Grid)
                 End If
@@ -173,14 +174,14 @@ Partial Class APInvoiceListForm
         ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
             MenuEnabled = True
             IsReturningFromChild = True
-            Dim retObj As APInvoiceDetailForm.ReturnType = CType(Me.ReturnedValues, APInvoiceDetailForm.ReturnType)
-            If Not retObj Is Nothing AndAlso retObj.DataChanged Then
+            Dim retObj As APInvoiceDetailForm.ReturnType = CType(ReturnedValues, APInvoiceDetailForm.ReturnType)
+            If retObj IsNot Nothing AndAlso retObj.DataChanged Then
                 'refresh the search since invoice data changed
-                Me.State.SearchDv = Nothing
+                State.SearchDv = Nothing
             End If
         Catch ex As Exception
             HandleErrors(ex, ErrControllerMaster)
@@ -189,19 +190,19 @@ Partial Class APInvoiceListForm
 
     Private Sub APInvoiceListForm_PreRender(sender As Object, e As EventArgs) Handles Me.PreRender
         'sysn buttons' visibility with the grid's visibility
-        If State.IsGridVisible = True AndAlso Not State.SearchDv Is Nothing AndAlso State.SearchDv.Count > 0 Then
+        If State.IsGridVisible = True AndAlso State.SearchDv IsNot Nothing AndAlso State.SearchDv.Count > 0 Then
             divButtons.Visible = True
 
             Dim chkbox As CheckBox
             chkbox = CType(Grid.HeaderRow.FindControl(GRID_COL_SELECT_ALL_CTRL), CheckBox)
-            If (Not chkbox Is Nothing) Then
+            If (chkbox IsNot Nothing) Then
                 chkbox.InputAttributes("class") = "checkboxHeader"
             End If
 
             For Each row As GridViewRow In Grid.Rows
                 If row.RowType = DataControlRowType.DataRow Then
                     chkbox = CType(row.Cells(GRID_COL_CHECKBOX_IDX).FindControl(GRID_COL_SELECT_CTRL), CheckBox)
-                    If (Not chkbox Is Nothing) Then
+                    If (chkbox IsNot Nothing) Then
                         chkbox.InputAttributes("class") = "checkboxLine"
                     End If
                 End If
@@ -215,11 +216,11 @@ Partial Class APInvoiceListForm
 
 #Region "Controlling logic"
     Private Sub UpdateBreadCrum()
-        If (Not Me.State Is Nothing) Then
-            If (Not Me.State Is Nothing) Then
-                Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
+        If (State IsNot Nothing) Then
+            If (State IsNot Nothing) Then
+                MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
                     TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
             End If
         End If
     End Sub
@@ -233,13 +234,13 @@ Partial Class APInvoiceListForm
             SetDefaultButton(txtInvoiceDueDateFrom, btnSearch)
             SetDefaultButton(txtInvoiceDueDateTo, btnSearch)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
     Private Sub PopulateSearchFieldsFromState()
 
         Try
-            If Not State.Criterias Is Nothing Then
+            If State.Criterias IsNot Nothing Then
                 txtVendorCode.Text = State.Criterias.VendorCode
                 txtInvoiceNumber.Text = State.Criterias.InvoiceNumber
                 txtInvoiceSource.Text = State.Criterias.Source
@@ -290,7 +291,7 @@ Partial Class APInvoiceListForm
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
@@ -305,7 +306,7 @@ Partial Class APInvoiceListForm
             State.Criterias.Source = txtInvoiceSource.Text
 
             If String.IsNullOrWhiteSpace(txtInvoiceDate.Text) = False Then
-                If Date.TryParseExact(txtInvoiceDate.Text.Trim(), DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt) Then
+                If Date.TryParseExact(txtInvoiceDate.Text.Trim(), DATE_FORMAT, Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt) Then
                     If (dt <> Date.MinValue) Then
                         State.Criterias.InvoiceDateString = txtInvoiceDate.Text.Trim
                     End If
@@ -318,25 +319,25 @@ Partial Class APInvoiceListForm
             End If
 
             If String.IsNullOrEmpty(txtInvoiceDueDateFrom.Text) = False Then
-                If Date.TryParseExact(txtInvoiceDueDateFrom.Text.Trim(), DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt) Then
+                If Date.TryParseExact(txtInvoiceDueDateFrom.Text.Trim(), DATE_FORMAT, Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt) Then
                     If (dt <> Date.MinValue) Then
                         State.Criterias.DueDateFromString = txtInvoiceDueDateFrom.Text.Trim
                     End If
                 Else
                     blnSuccess = False
-                    ElitaPlusPage.SetLabelError(lblInvoiceDueDateFrom)
+                    SetLabelError(lblInvoiceDueDateFrom)
                     Throw New GUIException(Message.MSG_INVALID_DATE, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DATE_ERR)
                 End If
             End If
 
             If String.IsNullOrEmpty(txtInvoiceDueDateTo.Text) = False Then
-                If Date.TryParseExact(txtInvoiceDueDateTo.Text.Trim(), DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt) Then
+                If Date.TryParseExact(txtInvoiceDueDateTo.Text.Trim(), DATE_FORMAT, Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt) Then
                     If (dt <> Date.MinValue) Then
                         State.Criterias.DueDateToString = txtInvoiceDueDateTo.Text.Trim
                     End If
                 Else
                     blnSuccess = False
-                    ElitaPlusPage.SetLabelError(lblInvoiceDueDateTo)
+                    SetLabelError(lblInvoiceDueDateTo)
                     Throw New GUIException(Message.MSG_INVALID_DATE, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DATE_ERR)
                 End If
             End If
@@ -390,7 +391,7 @@ Partial Class APInvoiceListForm
         PopulateGrid()
     End Sub
 
-    Private Function validInvoiceSelectionForDelete(ByVal invoiceList As List(Of Guid)) As Boolean
+    Private Function validInvoiceSelectionForDelete(invoiceList As List(Of Guid)) As Boolean
         Dim isSelectionValid As Boolean = True
         If invoiceList.Count > 0 Then
             Dim dv As DataView = State.SearchDv
@@ -421,7 +422,7 @@ Partial Class APInvoiceListForm
         Return isSelectionValid
     End Function
 
-    Private Function validInvoiceSelectionForPayment(ByVal strBatchNumber As String, ByVal invoiceList As List(Of Guid)) As Boolean
+    Private Function validInvoiceSelectionForPayment(strBatchNumber As String, invoiceList As List(Of Guid)) As Boolean
         Dim isSelectionValid As Boolean = True, blnVendorErr As Boolean = False
         Dim guidVendorId As Guid = Guid.Empty
 
@@ -533,7 +534,7 @@ Partial Class APInvoiceListForm
             txtBatchNum.Text = String.Empty
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -611,7 +612,7 @@ Partial Class APInvoiceListForm
 
     'End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
@@ -620,7 +621,7 @@ Partial Class APInvoiceListForm
         End Try
     End Sub
 
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
         Dim btnEditItem As LinkButton
         Dim chkbox As CheckBox
@@ -629,7 +630,7 @@ Partial Class APInvoiceListForm
 
             'If e.Row.RowType = DataControlRowType.DataRow OrElse (e.Row.RowType = DataControlRowType.Separator) Then
             If e.Row.RowType = DataControlRowType.DataRow Then
-                If (Not e.Row.Cells(GRID_COL_INVOICE_NUMBER_IDX).FindControl(GRID_COL_INVOICE_NUMBER_CTRL) Is Nothing) Then
+                If (e.Row.Cells(GRID_COL_INVOICE_NUMBER_IDX).FindControl(GRID_COL_INVOICE_NUMBER_CTRL) IsNot Nothing) Then
                     btnEditItem = CType(e.Row.Cells(GRID_COL_INVOICE_NUMBER_IDX).FindControl(GRID_COL_INVOICE_NUMBER_CTRL), LinkButton)
                     btnEditItem.CommandArgument = e.Row.RowIndex.ToString
                     btnEditItem.CommandName = SELECT_COMMAND_NAME
@@ -637,15 +638,15 @@ Partial Class APInvoiceListForm
                 End If
 
                 ' populate dates fields
-                If Not dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_DATE) Is DBNull.Value Then
+                If dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_DATE) IsNot DBNull.Value Then
                     PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_INVOICE_DATE_IDX), GetLongDateFormattedString(CType(dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_DATE), Date)))
                 End If
 
-                If Not dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_DUE_DATE) Is DBNull.Value Then
+                If dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_DUE_DATE) IsNot DBNull.Value Then
                     PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_DUE_DATE_IDX), GetLongDateFormattedString(CType(dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_DUE_DATE), Date)))
                 End If
 
-                If Not dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_PAYMENT_DATE) Is DBNull.Value Then
+                If dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_PAYMENT_DATE) IsNot DBNull.Value Then
                     PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_PYMT_DATE_IDX), GetLongDateFormattedString(CType(dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_PAYMENT_DATE), Date)))
                 End If
 
@@ -659,7 +660,7 @@ Partial Class APInvoiceListForm
         End Try
     End Sub
 
-    Private Sub cboPageSize_SelectedIndexChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
             State.PageIndex = NewCurrentPageIndex(Grid, State.SearchDv.Count, State.selectedPageSize)
@@ -670,12 +671,12 @@ Partial Class APInvoiceListForm
         End Try
     End Sub
 
-    Public Sub Grid_RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+    Public Sub Grid_RowCommand(source As Object, e As GridViewCommandEventArgs) Handles Grid.RowCommand
         Dim rowIndex As Integer = 0
         Dim invoiceHeaderId As String = String.Empty
 
         Try
-            If (Not e.CommandArgument.ToString().Equals(String.Empty)) And (e.CommandName = SELECT_COMMAND_NAME) Then
+            If (Not e.CommandArgument.ToString().Equals(String.Empty)) AndAlso (e.CommandName = SELECT_COMMAND_NAME) Then
                 rowIndex = CInt(e.CommandArgument)
 
                 If State Is Nothing Then
@@ -684,24 +685,24 @@ Partial Class APInvoiceListForm
                 End If
 
                 invoiceHeaderId = Grid.Rows(rowIndex).Cells(GRID_COL_INVOICE_HEADER_ID_IDX).Text
-                Me.State.SelectedInvoiceId = New Guid(invoiceHeaderId)
+                State.SelectedInvoiceId = New Guid(invoiceHeaderId)
                 If Grid.Rows(rowIndex).Cells(GRID_COL_PAYMENT_STATUS_XCD).Text = AddApInvoiceForm.InvoiceStatusIncomplete Then
-                    callPage(AddApInvoiceForm.Url, Me.State.SelectedInvoiceId)
+                    callPage(AddApInvoiceForm.Url, State.SelectedInvoiceId)
                 Else
                     'calling AP invoice detail pages
-                    callPage(APInvoiceDetailForm.URL, Me.State.SelectedInvoiceId)
+                    callPage(APInvoiceDetailForm.URL, State.SelectedInvoiceId)
                 End If
 
 
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Public Sub RowCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Public Sub RowCreated(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
@@ -709,7 +710,7 @@ Partial Class APInvoiceListForm
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As EventArgs) Handles Grid.PageIndexChanged
         Try
             State.PageIndex = Grid.PageIndex
             State.SelectedInvoiceId = Guid.Empty
@@ -721,7 +722,7 @@ Partial Class APInvoiceListForm
 
     Protected Sub btnAdd_WRITE_Click(sender As Object, e As EventArgs) Handles btnAdd_WRITE.Click
 
-        Me.callPage(AddApInvoiceForm.URL, Nothing)
+        callPage(AddApInvoiceForm.URL, Nothing)
     End Sub
 
 #End Region

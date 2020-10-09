@@ -22,7 +22,7 @@ Partial Public Class PendingClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSearchClaimNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSearchClaimNumber As Label
 
     '''<summary>
     '''LabelSearchCustomerCertificate control.
@@ -31,7 +31,7 @@ Partial Public Class PendingClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSearchCustomerCertificate As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSearchCustomerCertificate As Label
 
     '''<summary>
     '''TextBoxSearchClaimNumber control.
@@ -40,7 +40,7 @@ Partial Public Class PendingClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxSearchClaimNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxSearchClaimNumber As TextBox
 
     '''<summary>
     '''TextBoxSearchCertificate control.
@@ -49,7 +49,7 @@ Partial Public Class PendingClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxSearchCertificate As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxSearchCertificate As TextBox
 
     '''<summary>
     '''LabelSearchServiceDealer control.
@@ -58,7 +58,7 @@ Partial Public Class PendingClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSearchServiceDealer As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSearchServiceDealer As Label
 
     '''<summary>
     '''cboSearchDealer control.
@@ -67,7 +67,7 @@ Partial Public Class PendingClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboSearchDealer As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboSearchDealer As DropDownList
 
     '''<summary>
     '''btnClearSearch control.
@@ -76,7 +76,7 @@ Partial Public Class PendingClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnClearSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnClearSearch As Button
 
     '''<summary>
     '''btnSearch control.
@@ -85,7 +85,7 @@ Partial Public Class PendingClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSearch As Button
 
     '''<summary>
     '''trPageSize control.
@@ -94,7 +94,7 @@ Partial Public Class PendingClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trPageSize As HtmlTableRow
 
     '''<summary>
     '''lblPageSize control.
@@ -103,7 +103,7 @@ Partial Public Class PendingClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPageSize As Label
 
     '''<summary>
     '''cboPageSize control.
@@ -112,7 +112,7 @@ Partial Public Class PendingClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboPageSize As DropDownList
 
     '''<summary>
     '''lblRecordCount control.
@@ -121,7 +121,7 @@ Partial Public Class PendingClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblRecordCount As Label
 
     '''<summary>
     '''PendingGrid control.
@@ -130,5 +130,5 @@ Partial Public Class PendingClaimListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents PendingGrid As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents PendingGrid As GridView
 End Class

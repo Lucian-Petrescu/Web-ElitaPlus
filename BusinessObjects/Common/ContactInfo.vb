@@ -1,10 +1,12 @@
 ﻿'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE BusinessObject.cst (11/2/2011)  ********************
+Imports System.Collections.Generic
+Imports System.Text.RegularExpressions
 
 Public Class ContactInfo
     Inherits BusinessObjectBase
 
     Public Interface IContactInfoUser
-        Property ContactInfoId() As Guid
+        Property ContactInfoId As Guid
     End Interface
 
 #Region "Private Attributes"
@@ -16,101 +18,101 @@ Public Class ContactInfo
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet, ByVal userObj As IContactInfoUser)
+    Public Sub New(id As Guid, familyDS As DataSet, userObj As IContactInfoUser)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
-        Me._userObj = userObj
+        Dataset = familyDS
+        Load(id)
+        _userObj = userObj
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet, ByVal userObj As IContactInfoUser, ByVal Flg As Boolean)
+    Public Sub New(id As Guid, familyDS As DataSet, userObj As IContactInfoUser, Flg As Boolean)
         MyBase.New(Flg)
-        Me.Dataset = familyDS
-        Me.Load(id)
-        Me._userObj = userObj
+        Dataset = familyDS
+        Load(id)
+        _userObj = userObj
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet, ByVal userObj As IContactInfoUser)
+    Public Sub New(familyDS As DataSet, userObj As IContactInfoUser)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
-        Me._userObj = userObj
+        Dataset = familyDS
+        Load()
+        _userObj = userObj
     End Sub
 
 
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ContactInfoDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ContactInfoDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
@@ -140,7 +142,7 @@ Public Class ContactInfo
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ContactInfoDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -151,7 +153,7 @@ Public Class ContactInfo
     End Property
 
     <ValueMandatory("")> _
-    Public Property AddressTypeId() As Guid
+    Public Property AddressTypeId As Guid
         Get
             CheckDeleted()
             If Row(ContactInfoDAL.COL_NAME_ADDRESS_TYPE_ID) Is DBNull.Value Then
@@ -160,15 +162,15 @@ Public Class ContactInfo
                 Return New Guid(CType(Row(ContactInfoDAL.COL_NAME_ADDRESS_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContactInfoDAL.COL_NAME_ADDRESS_TYPE_ID, Value)
+            SetValue(ContactInfoDAL.COL_NAME_ADDRESS_TYPE_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property AddressId() As Guid
+    Public Property AddressId As Guid
         Get
             CheckDeleted()
             If row(ContactInfoDAL.COL_NAME_ADDRESS_ID) Is DBNull.Value Then
@@ -177,15 +179,15 @@ Public Class ContactInfo
                 Return New Guid(CType(row(ContactInfoDAL.COL_NAME_ADDRESS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContactInfoDAL.COL_NAME_ADDRESS_ID, Value)
+            SetValue(ContactInfoDAL.COL_NAME_ADDRESS_ID, Value)
         End Set
     End Property
 
 
     <RequiredFieldBySetting("", Nothing, "[SALU]")> _
-    Public Property SalutationId() As Guid
+    Public Property SalutationId As Guid
         Get
             CheckDeleted()
             If Row(ContactInfoDAL.COL_NAME_SALUTATION_ID) Is DBNull.Value Then
@@ -194,15 +196,15 @@ Public Class ContactInfo
                 Return New Guid(CType(Row(ContactInfoDAL.COL_NAME_SALUTATION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContactInfoDAL.COL_NAME_SALUTATION_ID, Value)
+            SetValue(ContactInfoDAL.COL_NAME_SALUTATION_ID, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=50), RequiredFieldBySetting("", Nothing, "[NAME]")> _
-    Public Property Name() As String
+    Public Property Name As String
         Get
             CheckDeleted()
             If Row(ContactInfoDAL.COL_NAME_NAME) Is DBNull.Value Then
@@ -211,15 +213,15 @@ Public Class ContactInfo
                 Return CType(Row(ContactInfoDAL.COL_NAME_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ContactInfoDAL.COL_NAME_NAME, Value)
+            SetValue(ContactInfoDAL.COL_NAME_NAME, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=20), RequiredFieldBySetting("", Nothing, "[HPHONE]")> _
-    Public Property HomePhone() As String
+    Public Property HomePhone As String
         Get
             CheckDeleted()
             If Row(ContactInfoDAL.COL_NAME_HOME_PHONE) Is DBNull.Value Then
@@ -228,15 +230,15 @@ Public Class ContactInfo
                 Return CType(Row(ContactInfoDAL.COL_NAME_HOME_PHONE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ContactInfoDAL.COL_NAME_HOME_PHONE, Value)
+            SetValue(ContactInfoDAL.COL_NAME_HOME_PHONE, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=20), RequiredFieldBySetting("", Nothing, "[WPHONE]")> _
-    Public Property WorkPhone() As String
+    Public Property WorkPhone As String
         Get
             CheckDeleted()
             If Row(ContactInfoDAL.COL_NAME_WORK_PHONE) Is DBNull.Value Then
@@ -245,15 +247,15 @@ Public Class ContactInfo
                 Return CType(Row(ContactInfoDAL.COL_NAME_WORK_PHONE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ContactInfoDAL.COL_NAME_WORK_PHONE, Value)
+            SetValue(ContactInfoDAL.COL_NAME_WORK_PHONE, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=50), RequiredFieldBySetting("", Nothing, "[EMAIL]")> _
-    Public Property Email() As String
+    Public Property Email As String
         Get
             CheckDeleted()
             If Row(ContactInfoDAL.COL_NAME_EMAIL) Is DBNull.Value Then
@@ -262,15 +264,15 @@ Public Class ContactInfo
                 Return CType(Row(ContactInfoDAL.COL_NAME_EMAIL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ContactInfoDAL.COL_NAME_EMAIL, Value)
+            SetValue(ContactInfoDAL.COL_NAME_EMAIL, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=20), RequiredFieldBySetting("", Nothing, "[CPHONE]")> _
-    Public Property CellPhone() As String
+    Public Property CellPhone As String
         Get
             CheckDeleted()
             If Row(ContactInfoDAL.COL_NAME_CELL_PHONE) Is DBNull.Value Then
@@ -279,38 +281,38 @@ Public Class ContactInfo
                 Return CType(Row(ContactInfoDAL.COL_NAME_CELL_PHONE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ContactInfoDAL.COL_NAME_CELL_PHONE, Value)
+            SetValue(ContactInfoDAL.COL_NAME_CELL_PHONE, Value)
         End Set
     End Property
 
     Private _address As Address = Nothing
-    Public ReadOnly Property Address(ByVal parentDataSet As DataSet) As Address
+    Public ReadOnly Property Address(parentDataSet As DataSet) As Address
         Get
-            If Me._address Is Nothing Then
-                If Me.AddressId.Equals(Guid.Empty) Then
-                    Me._address = New Address(parentDataSet, Nothing)
-                    Me.AddressId = Me._address.Id
+            If _address Is Nothing Then
+                If AddressId.Equals(Guid.Empty) Then
+                    _address = New Address(parentDataSet, Nothing)
+                    AddressId = _address.Id
                 Else
-                    Me._address = New Address(Me.AddressId, parentDataSet, Nothing)
+                    _address = New Address(AddressId, parentDataSet, Nothing)
                 End If
             End If
-            Return Me._address
+            Return _address
         End Get
     End Property
 
-    Public ReadOnly Property Address() As Address
+    Public ReadOnly Property Address As Address
         Get
-            Return Me.Address(Me.Dataset)
+            Return Address(Dataset)
         End Get
     End Property
 
-    Public ReadOnly Property ContactInfoReqFields() As String
+    Public ReadOnly Property ContactInfoReqFields As String
         Get
-            If Me._countryObject Is Nothing Then
-                If Not Me._address Is Nothing AndAlso Not Me._address.CountryId.Equals(Guid.Empty) Then
-                    _countryObject = New Country(Me._address.CountryId)
+            If _countryObject Is Nothing Then
+                If _address IsNot Nothing AndAlso Not _address.CountryId.Equals(Guid.Empty) Then
+                    _countryObject = New Country(_address.CountryId)
                 Else
                     _countryObject = ElitaPlusIdentity.Current.ActiveUser.Country(ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID)
                 End If
@@ -320,7 +322,7 @@ Public Class ContactInfo
     End Property
 
     <ValidStringLength("", Max:=200)> _
-    Public Property Company() As String
+    Public Property Company As String
         Get
             CheckDeleted()
             If row(ContactInfoDAL.COL_NAME_COMPANY) Is DBNull.Value Then
@@ -329,15 +331,15 @@ Public Class ContactInfo
                 Return CType(row(ContactInfoDAL.COL_NAME_COMPANY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ContactInfoDAL.COL_NAME_COMPANY, Value)
+            SetValue(ContactInfoDAL.COL_NAME_COMPANY, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=200)> _
-    Public Property JobTitle() As String
+    Public Property JobTitle As String
         Get
             CheckDeleted()
             If row(ContactInfoDAL.COL_NAME_JOB_TITLE) Is DBNull.Value Then
@@ -346,15 +348,15 @@ Public Class ContactInfo
                 Return CType(row(ContactInfoDAL.COL_NAME_JOB_TITLE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ContactInfoDAL.COL_NAME_JOB_TITLE, Value)
+            SetValue(ContactInfoDAL.COL_NAME_JOB_TITLE, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=25)> _
-    Public Property FirstName() As String
+    Public Property FirstName As String
         Get
             CheckDeleted()
             If Row(ContactInfoDAL.COL_NAME_FIRST_NAME) Is DBNull.Value Then
@@ -363,14 +365,14 @@ Public Class ContactInfo
                 Return CType(Row(ContactInfoDAL.COL_NAME_FIRST_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ContactInfoDAL.COL_NAME_FIRST_NAME, Value)
+            SetValue(ContactInfoDAL.COL_NAME_FIRST_NAME, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=25)> _
-    Public Property LastName() As String
+    Public Property LastName As String
         Get
             CheckDeleted()
             If Row(ContactInfoDAL.COL_NAME_LAST_NAME) Is DBNull.Value Then
@@ -379,9 +381,9 @@ Public Class ContactInfo
                 Return CType(Row(ContactInfoDAL.COL_NAME_LAST_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ContactInfoDAL.COL_NAME_LAST_NAME, Value)
+            SetValue(ContactInfoDAL.COL_NAME_LAST_NAME, Value)
         End Set
     End Property
 
@@ -391,18 +393,18 @@ Public Class ContactInfo
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ContactInfoDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
@@ -420,35 +422,35 @@ Public Class ContactInfo
             _ItemName = String.Empty
             _Required = True
         End Sub
-        Public Sub New(ByVal ItemName As String, Optional ByVal Required As Boolean = True)
+        Public Sub New(ItemName As String, Optional ByVal Required As Boolean = True)
             _ItemName = ItemName
             _Required = Required
         End Sub
-        Public Property ItemName() As String
+        Public Property ItemName As String
             Get
                 Return _ItemName
             End Get
-            Set(ByVal Value As String)
+            Set
                 _ItemName = Value
             End Set
         End Property
-        Public Property Required() As Boolean
+        Public Property Required As Boolean
             Get
                 Return _Required
             End Get
-            Set(ByVal Value As Boolean)
+            Set
                 Required = Value
             End Set
         End Property
     End Class
-    Public Shared Sub SplitContactInfoRequiredFieldsString(ByVal ContactInfoReqFieldsStr As String, ByRef AddressComponents As Collections.Generic.List(Of ContactInfoRequiredFieldsItem))
+    Public Shared Sub SplitContactInfoRequiredFieldsString(ContactInfoReqFieldsStr As String, ByRef AddressComponents As List(Of ContactInfoRequiredFieldsItem))
         ContactInfoReqFieldsStr = ContactInfoReqFieldsStr.Trim
         'MailAddrFmtStr = "[ADR1][-][\n][ADR2][\n][ZIP][Space][CITY][Space][COU][\n][RGNAME]*[,][Space][RGCODE]"
         If ContactInfoReqFieldsStr.Trim <> "" Then
-            AddressComponents = New Collections.Generic.List(Of ContactInfoRequiredFieldsItem)(15)
-            Dim RegExp As Text.RegularExpressions.Regex, blnRequired As Boolean
-            RegExp = New Text.RegularExpressions.Regex("\[(.)+?\](\*)*")
-            Dim m As Text.RegularExpressions.Match = RegExp.Match(ContactInfoReqFieldsStr)
+            AddressComponents = New List(Of ContactInfoRequiredFieldsItem)(15)
+            Dim regExp As Regex, blnRequired As Boolean
+            regExp = New Regex("\[(.)+?\](\*)*", RegexOptions.None, new TimeSpan(0,0,0,0, 100))
+            Dim m As Match = regExp.Match(ContactInfoReqFieldsStr)
             While (m.Success)
                 blnRequired = True
                 If m.Value.Trim.EndsWith("]*") Then blnRequired = False
@@ -457,12 +459,12 @@ Public Class ContactInfo
             End While
         End If
     End Sub
-    Public Shared Function IsAddressComponentRequired(ByVal MailAddrFmtStr As String, ByVal strComponent As String) As Boolean
+    Public Shared Function IsAddressComponentRequired(MailAddrFmtStr As String, strComponent As String) As Boolean
         Dim blnRequired As Boolean = False
         MailAddrFmtStr = MailAddrFmtStr.Trim
         If MailAddrFmtStr.Trim <> "" Then
-            Dim RegExp As Text.RegularExpressions.Regex = New Text.RegularExpressions.Regex("\[(.+?)\](\*)*")
-            Dim m As Text.RegularExpressions.Match = RegExp.Match(MailAddrFmtStr)
+            Dim regExp = New Regex("\[(.+?)\](\*)*", RegexOptions.None, new TimeSpan(0,0,0,0, 100))
+            Dim m As Match = regExp.Match(MailAddrFmtStr)
             While (m.Success)
                 If m.Groups(1).Value.Trim = strComponent.Trim AndAlso (Not m.Value.Trim.EndsWith("]*")) Then
                     blnRequired = True
@@ -481,22 +483,22 @@ Public Class ContactInfo
     Public NotInheritable Class RequiredFieldBySetting
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String, ByVal x As String, ByVal shortName As String)
+        Public Sub New(fieldDisplayName As String, x As String, shortName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR)
             propertyShortName = shortName
         End Sub
 
         Private _propertyShortName As String = Nothing
-        Private Property propertyShortName() As String
+        Private Property propertyShortName As String
             Get
                 Return _propertyShortName
             End Get
-            Set(ByVal Value As String)
+            Set
                 _propertyShortName = Value
             End Set
         End Property
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ContactInfo = CType(objectToValidate, ContactInfo)
 
             If InStr(obj.ContactInfoReqFields, propertyShortName) > 0 Then

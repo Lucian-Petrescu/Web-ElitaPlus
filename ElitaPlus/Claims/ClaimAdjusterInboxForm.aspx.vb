@@ -1,13 +1,17 @@
 ﻿Imports Microsoft.VisualBasic
 Imports System.Collections.Generic
+Imports System.Diagnostics
 Imports AjaxControlToolkit
 Imports System.Text
 
 Imports System.Threading
+Imports System.Web.Script.Services
+Imports System.Web.Services
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.Web.Forms
 Imports Assurant.Elita.CommonConfiguration.DataElements
+Imports Assurant.ElitaPlus.DALObjects
 
 
 Partial Class ClaimAdjusterInboxForm
@@ -16,18 +20,18 @@ Partial Class ClaimAdjusterInboxForm
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
     Protected WithEvents ErrorCtrl As ErrorController
-    Protected WithEvents lblBlank As System.Web.UI.WebControls.Label
-    Protected WithEvents trSortBy As System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents lblBlank As Label
+    Protected WithEvents trSortBy As HtmlTableRow
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -128,7 +132,7 @@ Partial Class ClaimAdjusterInboxForm
         Public SearchClicked As Boolean
         Public authorizedAmountCulture As String
         Public selectedClaimStausCode As String = String.Empty
-        Public ActionInProgress As DetailPageCommand = ElitaPlusPage.DetailPageCommand.Nothing_
+        Public ActionInProgress As DetailPageCommand = DetailPageCommand.Nothing_
         Public cmdProcessRecord As String = String.Empty
         Public selectedPageIndex As Integer = DEFAULT_PAGE_INDEX
 
@@ -161,7 +165,7 @@ Partial Class ClaimAdjusterInboxForm
         Get
             Return ViewState("SortDirection").ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             ViewState("SortDirection") = value
         End Set
     End Property
@@ -173,77 +177,77 @@ Partial Class ClaimAdjusterInboxForm
 #End Region
 #Region "Page_Events"
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
-        Page.RegisterHiddenField("__EVENTTARGET", Me.btnSearch.ClientID)
-        Me.ErrorCtrl.Clear_Hide()
+        Page.RegisterHiddenField("__EVENTTARGET", btnSearch.ClientID)
+        ErrorCtrl.Clear_Hide()
         Try
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
 
 
-                Me.SortDirection = Me.State.SortExpression
-                Me.SetDefaultButton(Me.txtClaimNumber, btnSearch)
-                Me.SetDefaultButton(Me.txtAuthorizationNumber, btnSearch)
-                Me.SetDefaultButton(txtServiceCenterName, btnSearch)
+                SortDirection = State.SortExpression
+                SetDefaultButton(txtClaimNumber, btnSearch)
+                SetDefaultButton(txtAuthorizationNumber, btnSearch)
+                SetDefaultButton(txtServiceCenterName, btnSearch)
                 ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                Me.tDDataGrid.Visible = False
-                Me.tDDataGrid1.Visible = False
+                tDDataGrid.Visible = False
+                tDDataGrid1.Visible = False
                 PopulateDropDowns()
                 PopulateSearchFieldsFromState()
-                TranslateGridHeader(Me.modataGrid)
+                TranslateGridHeader(modataGrid)
 
-                Me.AddCalendar(Me.BtnBeginDate, Me.txtExt_Sts_Date_From)
-                Me.AddCalendar(Me.BtnEndDate, Me.txtExt_Sts_Date_To)
+                AddCalendar(BtnBeginDate, txtExt_Sts_Date_From)
+                AddCalendar(BtnEndDate, txtExt_Sts_Date_To)
 
-                If Me.State.IsGridVisible Then
-                    If Not (Me.State.selectedPageSize = DEFAULT_PAGE_SIZE) Then
-                        cboPageSize.SelectedValue = CType(Me.State.selectedPageSize, String)
-                        modataGrid.PageSize = Me.State.selectedPageSize
+                If State.IsGridVisible Then
+                    If Not (State.selectedPageSize = DEFAULT_PAGE_SIZE) Then
+                        cboPageSize.SelectedValue = CType(State.selectedPageSize, String)
+                        modataGrid.PageSize = State.selectedPageSize
                     End If
-                    Me.PopulateGrid()
-                    Me.tDDataGrid.Visible = True
-                    Me.tDDataGrid1.Visible = True
+                    PopulateGrid()
+                    tDDataGrid.Visible = True
+                    tDDataGrid1.Visible = True
                 End If
-                Me.SetGridItemStyleColor(Me.modataGrid)
-                SetFocus(Me.txtClaimNumber)
+                SetGridItemStyleColor(modataGrid)
+                SetFocus(txtClaimNumber)
 
             End If
 
             Dim objCompanyGroup As CompanyGroup = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup
             If (GetFastApprovalNoID() = objCompanyGroup.ClaimFastApprovalId) Then
-                modataGrid.Columns(Me.GRID_COL_SALES_PRICE_IDX).Visible = False
-                modataGrid.Columns(Me.GRID_COL_PAYMENT_AMOUNT_IDX).Visible = False
-                modataGrid.Columns(Me.GRID_COL_END_DATE_IDX).Visible = False
-                modataGrid.Columns(Me.GRID_COL_COVERAGE_TYPE_IDX).Visible = False
-                modataGrid.Columns(Me.GRID_COL_PROBLEM_DESCRIPTION_IDX).Visible = False
-                modataGrid.Columns(Me.GRID_COL_TECHNICAL_REPORT_IDX).Visible = False
-                modataGrid.Columns(Me.GRID_COL_EXTENDED_STATUS_COMMENT_IDX).Visible = False
-                modataGrid.Columns(Me.GRID_COL_COMMENT_IDX).Visible = False
+                modataGrid.Columns(GRID_COL_SALES_PRICE_IDX).Visible = False
+                modataGrid.Columns(GRID_COL_PAYMENT_AMOUNT_IDX).Visible = False
+                modataGrid.Columns(GRID_COL_END_DATE_IDX).Visible = False
+                modataGrid.Columns(GRID_COL_COVERAGE_TYPE_IDX).Visible = False
+                modataGrid.Columns(GRID_COL_PROBLEM_DESCRIPTION_IDX).Visible = False
+                modataGrid.Columns(GRID_COL_TECHNICAL_REPORT_IDX).Visible = False
+                modataGrid.Columns(GRID_COL_EXTENDED_STATUS_COMMENT_IDX).Visible = False
+                modataGrid.Columns(GRID_COL_COMMENT_IDX).Visible = False
             End If
 
-            Me.DisplayProgressBarOnClick(Me.btnSearch, "Loading_Claims")
-            Me.DisplayProgressBarOnClick(Me.ApproveButton_WRITE, "Processing")
-            Me.DisplayProgressBarOnClick(Me.RejectButton_WRITE, "Processing")
+            DisplayProgressBarOnClick(btnSearch, "Loading_Claims")
+            DisplayProgressBarOnClick(ApproveButton_WRITE, "Processing")
+            DisplayProgressBarOnClick(RejectButton_WRITE, "Processing")
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
-        Me.ShowMissingTranslations(Me.ErrorCtrl)
+        ShowMissingTranslations(ErrorCtrl)
     End Sub
 
     'Private Sub SetDefaultButton(ByVal txt As TextBox, ByVal defaultButton As Button)
     '    txt.Attributes.Add("onkeydown", "fnTrapKD(" + defaultButton.ClientID + ",event)")
     'End Sub
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.MenuEnabled = True
-            Me.IsReturningFromChild = True
-            Dim retObj As ClaimForm.ReturnType = CType(Me.ReturnedValues, ClaimForm.ReturnType)
-            If Not retObj Is Nothing AndAlso retObj.BoChanged Then
-                Me.State.searchDV = Nothing
+            MenuEnabled = True
+            IsReturningFromChild = True
+            Dim retObj As ClaimForm.ReturnType = CType(ReturnedValues, ClaimForm.ReturnType)
+            If retObj IsNot Nothing AndAlso retObj.BoChanged Then
+                State.searchDV = Nothing
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
@@ -269,11 +273,11 @@ Partial Class ClaimAdjusterInboxForm
                                                    })
 
             Dim defaultSelectedSortByCodeId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_ADJUSTER_CLAIM_SEARCH_FIELDS, Codes.DEFAULT_SORT_FOR_ADJUSTER_INBOX)
-            If (Me.State.selectedSortById.Equals(Guid.Empty)) Then
-                Me.SetSelectedItem(Me.cboSortBy, defaultSelectedSortByCodeId)
-                Me.State.selectedSortById = defaultSelectedSortByCodeId
+            If (State.selectedSortById.Equals(Guid.Empty)) Then
+                SetSelectedItem(cboSortBy, defaultSelectedSortByCodeId)
+                State.selectedSortById = defaultSelectedSortByCodeId
             Else
-                Me.SetSelectedItem(Me.cboSortBy, Me.State.selectedSortById)
+                SetSelectedItem(cboSortBy, State.selectedSortById)
             End If
 
             Dim oSortOrder As ListItem() = CommonConfigManager.Current.ListManager.GetList("SORT_ORDER", Thread.CurrentPrincipal.GetLanguageCode())
@@ -284,11 +288,11 @@ Partial Class ClaimAdjusterInboxForm
 
 
             Dim defaultSelectedSortOrderCodeId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_SORT_ORDER, Codes.DEFAULT_SORT_ORDER_FOR_ADJUSTER_INBOX)
-            If (Me.State.selectedSortOrderId.Equals(Guid.Empty)) Then
-                Me.SetSelectedItem(Me.cboSortOrder, defaultSelectedSortOrderCodeId)
-                Me.State.selectedSortOrderId = defaultSelectedSortOrderCodeId
+            If (State.selectedSortOrderId.Equals(Guid.Empty)) Then
+                SetSelectedItem(cboSortOrder, defaultSelectedSortOrderCodeId)
+                State.selectedSortOrderId = defaultSelectedSortOrderCodeId
             Else
-                Me.SetSelectedItem(Me.cboSortOrder, Me.State.selectedSortOrderId)
+                SetSelectedItem(cboSortOrder, State.selectedSortOrderId)
             End If
 
             'Claim Types
@@ -300,8 +304,8 @@ Partial Class ClaimAdjusterInboxForm
                                                    })
 
 
-            If Not (Me.State.selectedClaimTypeId.Equals(Guid.Empty)) Then
-                Me.SetSelectedItem(Me.cboClaimType, Me.State.selectedClaimTypeId)
+            If Not (State.selectedClaimTypeId.Equals(Guid.Empty)) Then
+                SetSelectedItem(cboClaimType, State.selectedClaimTypeId)
             End If
 
             'Claim Extended Status
@@ -316,10 +320,10 @@ Partial Class ClaimAdjusterInboxForm
                                                    })
 
 
-            If Not (Me.State.selectedClaimExtendedStatusId.Equals(Guid.Empty)) Then
-                Me.SetSelectedItem(Me.cboClaimExtendedStatus, Me.State.selectedClaimExtendedStatusId)
+            If Not (State.selectedClaimExtendedStatusId.Equals(Guid.Empty)) Then
+                SetSelectedItem(cboClaimExtendedStatus, State.selectedClaimExtendedStatusId)
             End If
-            Me.cboClaimExtendedStatus.Attributes.Add("onchange", "ToggleSelection1('" & cboClaimExtendedStatus.ClientID & "','" & cboStatusOwner.ClientID & "')")
+            cboClaimExtendedStatus.Attributes.Add("onchange", "ToggleSelection1('" & cboClaimExtendedStatus.ClientID & "','" & cboStatusOwner.ClientID & "')")
 
             'Claim Extended Status Owner
 
@@ -329,10 +333,10 @@ Partial Class ClaimAdjusterInboxForm
                                                     .AddBlankItem = True
                                                    })
 
-            If Not (Me.State.selectedClaimExtendedStatusOwnerId.Equals(Guid.Empty)) Then
-                Me.SetSelectedItem(Me.cboStatusOwner, Me.State.selectedClaimExtendedStatusOwnerId)
+            If Not (State.selectedClaimExtendedStatusOwnerId.Equals(Guid.Empty)) Then
+                SetSelectedItem(cboStatusOwner, State.selectedClaimExtendedStatusOwnerId)
             End If
-            Me.cboStatusOwner.Attributes.Add("onchange", "ToggleSelection2('" & cboStatusOwner.ClientID & "','" & cboClaimExtendedStatus.ClientID & "')")
+            cboStatusOwner.Attributes.Add("onchange", "ToggleSelection2('" & cboStatusOwner.ClientID & "','" & cboClaimExtendedStatus.ClientID & "')")
 
             'SC_Turn_Around_Time list
             'Dim oSCTurnAroundTimeDv As DataView
@@ -346,8 +350,8 @@ Partial Class ClaimAdjusterInboxForm
                                                    })
 
 
-            If Not (Me.State.selectedTATId.Equals(Guid.Empty)) Then
-                Me.SetSelectedItem(Me.cboSCTurnAroundTime, Me.State.selectedTATId)
+            If Not (State.selectedTATId.Equals(Guid.Empty)) Then
+                SetSelectedItem(cboSCTurnAroundTime, State.selectedTATId)
             End If
 
             'AutoApproved
@@ -360,15 +364,15 @@ Partial Class ClaimAdjusterInboxForm
                                                     .AddBlankItem = True
                                                    })
 
-            If Not (Me.State.selectedAutoApproveId.Equals(Guid.Empty)) Then
-                Me.SetSelectedItem(Me.cboAutoApproved, Me.State.selectedAutoApproveId)
+            If Not (State.selectedAutoApproveId.Equals(Guid.Empty)) Then
+                SetSelectedItem(cboAutoApproved, State.selectedAutoApproveId)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Public Sub PutInvisibleSvcColumns(ByVal oGrid As DataGrid)
+    Public Sub PutInvisibleSvcColumns(oGrid As DataGrid)
         Try
             'If ElitaPlusIdentity.Current.ActiveUser.IsServiceCenter Then
             '    'oGrid.Columns(GRID_COL_SERVICE_CENTER_IDX).Visible = False
@@ -376,7 +380,7 @@ Partial Class ClaimAdjusterInboxForm
             '    'oGrid.Columns(GRID_COL_AUTHORIZED_AMOUNT_IDX).Visible = False
             'End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
@@ -384,17 +388,17 @@ Partial Class ClaimAdjusterInboxForm
         'Each time the data is bound to the grid we need to build up the CheckBoxIDs array
 
         'Get the header CheckBox
-        Dim cbHeader As CheckBox = CType(Me.modataGrid.HeaderRow.FindControl("HeaderLevelCheckBox"), CheckBox)
+        Dim cbHeader As CheckBox = CType(modataGrid.HeaderRow.FindControl("HeaderLevelCheckBox"), CheckBox)
 
         'Run the ChangeCheckBoxState client-side function whenever the
         'header checkbox is checked/unchecked
-        cbHeader.Attributes("onclick") = "ChangeAllCheckBoxStates(this.checked, '" & Me.ApproveButton_WRITE.ClientID & "', '" & Me.RejectButton_WRITE.ClientID & "');"
+        cbHeader.Attributes("onclick") = "ChangeAllCheckBoxStates(this.checked, '" & ApproveButton_WRITE.ClientID & "', '" & RejectButton_WRITE.ClientID & "');"
 
         'Add the CheckBox's ID to the client-side CheckBoxIDs array
         Dim ArrayValues As New List(Of String)
         ArrayValues.Add(String.Concat("'", cbHeader.ClientID, "'"))
 
-        For Each gvr As GridViewRow In Me.modataGrid.Rows
+        For Each gvr As GridViewRow In modataGrid.Rows
             'Get a programmatic reference to the CheckBox control
             Dim cb As CheckBox = CType(gvr.FindControl("btnSelected"), CheckBox)
 
@@ -402,7 +406,7 @@ Partial Class ClaimAdjusterInboxForm
             'cb.Attributes("onclick") = "ChangeHeaderAsNeeded();"
 
             'Add the CheckBox's ID to the client-side CheckBoxIDs array
-            If Not cb Is Nothing Then ArrayValues.Add(String.Concat("'", cb.ClientID, "'"))
+            If cb IsNot Nothing Then ArrayValues.Add(String.Concat("'", cb.ClientID, "'"))
         Next
 
         'Output the array to the Literal control (CheckBoxIDsArray)
@@ -418,110 +422,110 @@ Partial Class ClaimAdjusterInboxForm
         Try
             If Not PopulateStateFromSearchFields() Then Exit Sub
 
-            If (Me.State.searchDV Is Nothing) Then
+            If (State.searchDV Is Nothing) Then
                 Dim sortBy As String
-                sortBy = LookupListNew.GetCodeFromId(LookupListNew.LK_ADJUSTER_CLAIM_SEARCH_FIELDS, Me.State.selectedSortById)
+                sortBy = LookupListNew.GetCodeFromId(LookupListNew.LK_ADJUSTER_CLAIM_SEARCH_FIELDS, State.selectedSortById)
 
                 Dim SortOrderCode As String
-                SortOrderCode = LookupListNew.GetCodeFromId(LookupListNew.LK_SORT_ORDER, Me.State.selectedSortOrderId)
+                SortOrderCode = LookupListNew.GetCodeFromId(LookupListNew.LK_SORT_ORDER, State.selectedSortOrderId)
 
-                Me.State.searchDV = Claim.getAdjusterList(Me.State.claimNumber,
-                                                          Me.State.serviceCenterName,
-                                                          Me.State.authorizationNumber,
-                                                          Me.State.selectedClaimStausCode,
-                                                          Me.State.selectedClaimTypeId,
-                                                          Me.State.selectedClaimExtendedStatusId,
-                                                          Me.State.selectedClaimExtendedStatusOwnerId,
-                                                          Me.State.selectedTATId,
-                                                          Me.State.selectedAutoApproveDesc,
-                                                          Me.State.BeginDate,
-                                                          Me.State.EndDate,
-                                                          Me.State.ClaimAdjuster,
-                                                          Me.State.ClaimAddedBy,
+                State.searchDV = Claim.getAdjusterList(State.claimNumber,
+                                                          State.serviceCenterName,
+                                                          State.authorizationNumber,
+                                                          State.selectedClaimStausCode,
+                                                          State.selectedClaimTypeId,
+                                                          State.selectedClaimExtendedStatusId,
+                                                          State.selectedClaimExtendedStatusOwnerId,
+                                                          State.selectedTATId,
+                                                          State.selectedAutoApproveDesc,
+                                                          State.BeginDate,
+                                                          State.EndDate,
+                                                          State.ClaimAdjuster,
+                                                          State.ClaimAddedBy,
                                                           SortOrderCode,
                                                           sortBy)
-                If (Me.State.SearchClicked) Then
-                    Me.ValidSearchResultCount(Me.State.searchDV.Count, True)
-                    Me.State.SearchClicked = False
+                If (State.SearchClicked) Then
+                    ValidSearchResultCount(State.searchDV.Count, True)
+                    State.SearchClicked = False
                 End If
             End If
 
-            Me.modataGrid.AutoGenerateColumns = False
-            Me.modataGrid.AllowSorting = True
+            modataGrid.AutoGenerateColumns = False
+            modataGrid.AllowSorting = True
             'Me.State.searchDV.Sort = Me.State.SortExpression
 
-            Me.modataGrid.DataSource = Me.State.searchDV
+            modataGrid.DataSource = State.searchDV
 
-            HighLightSortColumn(modataGrid, Me.SortDirection)
+            HighLightSortColumn(modataGrid, SortDirection)
 
-            Me.modataGrid.DataBind()
+            modataGrid.DataBind()
 
-            ControlMgr.SetVisibleControl(Me, modataGrid, Me.State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, modataGrid, State.IsGridVisible)
 
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.State.IsGridVisible)
-            ControlMgr.SetVisibleControl(Me, lblRecordCount, Me.State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, lblRecordCount, State.IsGridVisible)
 
-            Session("recCount") = Me.State.searchDV.Count
+            Session("recCount") = State.searchDV.Count
 
-            If Me.State.searchDV.Count > 0 Then
+            If State.searchDV.Count > 0 Then
                 BuildCheckBoxIDsArray()
-                If Me.State.IsGridVisible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIMS_FOUND)
+                If State.IsGridVisible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIMS_FOUND)
                 End If
-                Me.ApproveButton_WRITE.Visible = True
-                Me.RejectButton_WRITE.Visible = True
-                Me.tDDataGrid.Visible = True
-                Me.tDDataGrid1.Visible = True
+                ApproveButton_WRITE.Visible = True
+                RejectButton_WRITE.Visible = True
+                tDDataGrid.Visible = True
+                tDDataGrid1.Visible = True
             Else
-                If Me.modataGrid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIMS_FOUND)
+                If modataGrid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIMS_FOUND)
                 End If
-                Me.ApproveButton_WRITE.Visible = False
-                Me.RejectButton_WRITE.Visible = False
-                Me.tDDataGrid.Visible = True
+                ApproveButton_WRITE.Visible = False
+                RejectButton_WRITE.Visible = False
+                tDDataGrid.Visible = True
                 'Me.tDDataGrid.Visible = False
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
     Public Sub PopulateSearchFieldsFromState()
         Try
 
-            Me.txtAuthorizationNumber.Text = Me.State.authorizationNumber
-            Me.txtClaimNumber.Text = Me.State.claimNumber
-            If Not Me.State.selectedClaimTypeId.Equals(Guid.Empty) Then
-                Me.SetSelectedItem(Me.cboClaimType, Me.State.selectedClaimTypeId)
+            txtAuthorizationNumber.Text = State.authorizationNumber
+            txtClaimNumber.Text = State.claimNumber
+            If Not State.selectedClaimTypeId.Equals(Guid.Empty) Then
+                SetSelectedItem(cboClaimType, State.selectedClaimTypeId)
             End If
-            Me.txtServiceCenterName.Text = Me.State.serviceCenterName
+            txtServiceCenterName.Text = State.serviceCenterName
 
-            If Not Me.State.selectedClaimExtendedStatusId.Equals(Guid.Empty) Then
-                Me.SetSelectedItem(Me.cboClaimExtendedStatus, Me.State.selectedClaimExtendedStatusId)
-            End If
-
-            If Not Me.State.selectedClaimStausCode.Equals(String.Empty) Then
-                Me.SetSelectedItem(Me.cboClaimStatus, Me.State.selectedClaimStausCode)
+            If Not State.selectedClaimExtendedStatusId.Equals(Guid.Empty) Then
+                SetSelectedItem(cboClaimExtendedStatus, State.selectedClaimExtendedStatusId)
             End If
 
-            If Not Me.State.selectedClaimExtendedStatusOwnerId.Equals(Guid.Empty) Then
-                Me.SetSelectedItem(Me.cboStatusOwner, Me.State.selectedClaimExtendedStatusOwnerId)
+            If Not State.selectedClaimStausCode.Equals(String.Empty) Then
+                SetSelectedItem(cboClaimStatus, State.selectedClaimStausCode)
             End If
 
-            If Not Me.State.selectedTATId.Equals(Guid.Empty) Then
-                Me.SetSelectedItem(Me.cboSCTurnAroundTime, Me.State.selectedTATId)
+            If Not State.selectedClaimExtendedStatusOwnerId.Equals(Guid.Empty) Then
+                SetSelectedItem(cboStatusOwner, State.selectedClaimExtendedStatusOwnerId)
             End If
 
-            Me.SetSelectedItem(Me.cboSortBy, Me.State.selectedSortById)
-            Me.SetSelectedItem(Me.cboSortOrder, Me.State.selectedSortOrderId)
+            If Not State.selectedTATId.Equals(Guid.Empty) Then
+                SetSelectedItem(cboSCTurnAroundTime, State.selectedTATId)
+            End If
 
-            If Not Me.State.selectedAutoApproveId.Equals(Guid.Empty) Then
-                Me.SetSelectedItem(Me.cboAutoApproved, Me.State.selectedAutoApproveId)
+            SetSelectedItem(cboSortBy, State.selectedSortById)
+            SetSelectedItem(cboSortOrder, State.selectedSortOrderId)
+
+            If Not State.selectedAutoApproveId.Equals(Guid.Empty) Then
+                SetSelectedItem(cboAutoApproved, State.selectedAutoApproveId)
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
@@ -529,72 +533,72 @@ Partial Class ClaimAdjusterInboxForm
         Dim dblAmount As Double
 
         Try
-            Me.State.claimNumber = Me.txtClaimNumber.Text
+            State.claimNumber = txtClaimNumber.Text
 
-            Me.State.selectedClaimTypeId = Me.GetSelectedItem(Me.cboClaimType)
-            Me.State.selectedClaimStausCode = Me.GetSelectedValue(Me.cboClaimStatus)
-            Me.State.selectedClaimExtendedStatusId = Me.GetSelectedItem(Me.cboClaimExtendedStatus)
-            Me.State.selectedClaimExtendedStatusOwnerId = Me.GetSelectedItem(Me.cboStatusOwner)
-            Me.State.selectedTATId = Me.GetSelectedItem(Me.cboSCTurnAroundTime)
+            State.selectedClaimTypeId = GetSelectedItem(cboClaimType)
+            State.selectedClaimStausCode = GetSelectedValue(cboClaimStatus)
+            State.selectedClaimExtendedStatusId = GetSelectedItem(cboClaimExtendedStatus)
+            State.selectedClaimExtendedStatusOwnerId = GetSelectedItem(cboStatusOwner)
+            State.selectedTATId = GetSelectedItem(cboSCTurnAroundTime)
 
-            Me.State.serviceCenterName = Me.txtServiceCenterName.Text
-            Me.State.authorizationNumber = Me.txtAuthorizationNumber.Text
-            Me.State.selectedSortById = Me.GetSelectedItem(Me.cboSortBy)
-            Me.State.selectedSortOrderId = Me.GetSelectedItem(Me.cboSortOrder)
-            Me.State.selectedAutoApproveId = Me.GetSelectedItem(Me.cboAutoApproved)
-            Me.State.selectedAutoApproveDesc = Me.GetSelectedDescription(Me.cboAutoApproved)
-            If Me.txtExt_Sts_Date_From.Text <> String.Empty Then
-                Me.State.BeginDate = DateTime.Parse(Me.txtExt_Sts_Date_From.Text).ToString(DALObjects.DALBase.DOTNET_QUERY_DATEFORMAT)
+            State.serviceCenterName = txtServiceCenterName.Text
+            State.authorizationNumber = txtAuthorizationNumber.Text
+            State.selectedSortById = GetSelectedItem(cboSortBy)
+            State.selectedSortOrderId = GetSelectedItem(cboSortOrder)
+            State.selectedAutoApproveId = GetSelectedItem(cboAutoApproved)
+            State.selectedAutoApproveDesc = GetSelectedDescription(cboAutoApproved)
+            If txtExt_Sts_Date_From.Text <> String.Empty Then
+                State.BeginDate = DateTime.Parse(txtExt_Sts_Date_From.Text).ToString(DALBase.DOTNET_QUERY_DATEFORMAT)
             End If
-            If Me.txtExt_Sts_Date_To.Text <> String.Empty Then
-                Me.State.EndDate = DateTime.Parse(Me.txtExt_Sts_Date_To.Text).ToString(DALObjects.DALBase.DOTNET_QUERY_DATEFORMAT)
+            If txtExt_Sts_Date_To.Text <> String.Empty Then
+                State.EndDate = DateTime.Parse(txtExt_Sts_Date_To.Text).ToString(DALBase.DOTNET_QUERY_DATEFORMAT)
             End If
-            Me.State.ClaimAdjuster = Me.txtClaimAdjuster.Text
-            Me.State.ClaimAddedBy = Me.txtCreatedBy.Text
+            State.ClaimAdjuster = txtClaimAdjuster.Text
+            State.ClaimAddedBy = txtCreatedBy.Text
             Return True
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Function
 
     'This method will change the Page Index and the Selected Index
-    Public Function FindDVSelectedRowIndex(ByVal dv As Claim.ClaimAdjusterSearchDV) As Integer
+    Public Function FindDVSelectedRowIndex(dv As Claim.ClaimAdjusterSearchDV) As Integer
         Try
-            If Me.State.selectedClaimId.Equals(Guid.Empty) Then
+            If State.selectedClaimId.Equals(Guid.Empty) Then
                 Return -1
             Else
                 'Jump to the Right Page
                 Dim i As Integer
                 For i = 0 To dv.Count - 1
-                    If New Guid(CType(dv(i)(Claim.ClaimAdjusterSearchDV.COL_CLAIM_ID), Byte())).Equals(Me.State.selectedClaimId) Then
+                    If New Guid(CType(dv(i)(Claim.ClaimAdjusterSearchDV.COL_CLAIM_ID), Byte())).Equals(State.selectedClaimId) Then
                         Return i
                     End If
                 Next
             End If
             Return -1
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Function
 
-    Public Function FindTATColor(ByVal TAT As Integer) As String
-        If Me.State.TATDV Is Nothing Then
-            Me.State.TATDV = TurnAroundTimeRange.LoadListWithColor()
+    Public Function FindTATColor(TAT As Integer) As String
+        If State.TATDV Is Nothing Then
+            State.TATDV = TurnAroundTimeRange.LoadListWithColor()
         End If
 
-        If Not Me.State.TATDV Is Nothing AndAlso Me.State.TATDV.Count > 0 Then
+        If State.TATDV IsNot Nothing AndAlso State.TATDV.Count > 0 Then
 
             Dim i As Integer
-            For i = 0 To Me.State.TATDV.Count - 1
-                If CType(Me.State.TATDV.Item(i)("min_days"), Integer) <= TAT AndAlso CType(Me.State.TATDV.Item(i)("max_days"), Integer) >= TAT Then
+            For i = 0 To State.TATDV.Count - 1
+                If CType(State.TATDV.Item(i)("min_days"), Integer) <= TAT AndAlso CType(State.TATDV.Item(i)("max_days"), Integer) >= TAT Then
                     Try
-                        Dim c As Color = System.Drawing.ColorTranslator.FromHtml(Me.State.TATDV.Item(i)("color_code").ToString)
+                        Dim c As Color = ColorTranslator.FromHtml(State.TATDV.Item(i)("color_code").ToString)
                     Catch ex As Exception
                         Throw New GUIException(Message.MSG_INVALID_COLOR_CODE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_COLOR_CODE)
                     End Try
-                    Return (Me.State.TATDV.Item(i)("color_code").ToString)
+                    Return (State.TATDV.Item(i)("color_code").ToString)
                 End If
             Next
 
@@ -605,7 +609,7 @@ Partial Class ClaimAdjusterInboxForm
     End Function
 
     Function IsDataGPageDirty() As Boolean
-        Dim Result As String = Me.HiddenIsPageDirty.Value
+        Dim Result As String = HiddenIsPageDirty.Value
         Return Result.Equals("YES")
     End Function
     Private Sub ProcessCommand()
@@ -615,7 +619,7 @@ Partial Class ClaimAdjusterInboxForm
         checkValueArray = checkRecords.Value.Split(":"c)
 
         For i = 0 To checkValueArray.Length - 1
-            If (Not checkValueArray(i) Is Nothing And checkValueArray(i) <> "") Then
+            If (checkValueArray(i) IsNot Nothing AndAlso checkValueArray(i) <> "") Then
                 checkValues = checkValueArray(i).ToString & ":" & checkValues
             End If
         Next
@@ -627,17 +631,17 @@ Partial Class ClaimAdjusterInboxForm
         checkRecords.Value = ""
         comments = String.Empty
         risktypes = String.Empty
-        Me.State.searchDV = Nothing
+        State.searchDV = Nothing
         PopulateGrid()
     End Sub
 
     Private Function GetCheckedItemsValues() As String
         Dim checkedValues As String = String.Empty
-        For Each gvrow As GridViewRow In Me.modataGrid.Rows
-            Dim CheckBox1 As CheckBox = DirectCast(gvrow.FindControl(Me.GRID_CTRL_NAME_CHECKBOX), CheckBox)
+        For Each gvrow As GridViewRow In modataGrid.Rows
+            Dim CheckBox1 As CheckBox = DirectCast(gvrow.FindControl(GRID_CTRL_NAME_CHECKBOX), CheckBox)
 
             If CheckBox1.Checked Then
-                Dim claimId As Guid = New Guid(gvrow.Cells(Me.GRID_COL_CLAIM_ID_IDX).Text)
+                Dim claimId As Guid = New Guid(gvrow.Cells(GRID_COL_CLAIM_ID_IDX).Text)
 
                 checkedValues += GuidControl.GuidToHexString(claimId) & ":"
             End If
@@ -648,9 +652,9 @@ Partial Class ClaimAdjusterInboxForm
     'req 5547
     Private Function GetCheckedItemsComments() As String
         Dim claimComments As String = String.Empty
-        For Each gvrow As GridViewRow In Me.modataGrid.Rows
-            Dim txtBox As TextBox = DirectCast(gvrow.FindControl(Me.GRID_CTRL_NAME_TEXTBOX), TextBox)
-            Dim CheckBox1 As CheckBox = DirectCast(gvrow.FindControl(Me.GRID_CTRL_NAME_CHECKBOX), CheckBox)
+        For Each gvrow As GridViewRow In modataGrid.Rows
+            Dim txtBox As TextBox = DirectCast(gvrow.FindControl(GRID_CTRL_NAME_TEXTBOX), TextBox)
+            Dim CheckBox1 As CheckBox = DirectCast(gvrow.FindControl(GRID_CTRL_NAME_CHECKBOX), CheckBox)
 
             If CheckBox1.Checked Then
                 Dim comment As String = txtBox.Text
@@ -665,11 +669,11 @@ Partial Class ClaimAdjusterInboxForm
 
     Private Function GetCheckedItemsRiskType() As String
         Dim checkedValues As String = String.Empty
-        For Each gvrow As GridViewRow In Me.modataGrid.Rows
-            Dim CheckBox1 As CheckBox = DirectCast(gvrow.FindControl(Me.GRID_CTRL_NAME_CHECKBOX), CheckBox)
+        For Each gvrow As GridViewRow In modataGrid.Rows
+            Dim CheckBox1 As CheckBox = DirectCast(gvrow.FindControl(GRID_CTRL_NAME_CHECKBOX), CheckBox)
 
             If CheckBox1.Checked Then
-                Dim riskTypeId As Guid = New Guid(gvrow.Cells(Me.GRID_COL_RISK_TYPE_ID_IDX).Text)
+                Dim riskTypeId As Guid = New Guid(gvrow.Cells(GRID_COL_RISK_TYPE_ID_IDX).Text)
 
                 checkedValues += GuidControl.GuidToHexString(riskTypeId) & ":"
             End If
@@ -680,30 +684,30 @@ Partial Class ClaimAdjusterInboxForm
 
     Protected Function ProcessRecords() As Boolean
         Try
-            Dim outputParameters() As DALObjects.DBHelper.DBHelperParameter
-            outputParameters = Claim.ApproveOrRejectClaims(Me.State.cmdProcessRecord, checkRecords.Value, comments, risktypes)
+            Dim outputParameters() As DBHelper.DBHelperParameter
+            outputParameters = Claim.ApproveOrRejectClaims(State.cmdProcessRecord, checkRecords.Value, comments, risktypes)
 
             If CType(outputParameters(0).Value, Integer) = 0 Then
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
-                Me.HiddenSaveChangesPromptResponse.Value = Me.MSG_BTN_OK
-                Me.DisplayMessageWithSubmit(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                State.ActionInProgress = DetailPageCommand.OK
+                HiddenSaveChangesPromptResponse.Value = MSG_BTN_OK
+                DisplayMessageWithSubmit(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
             ElseIf CType(outputParameters(0).Value, Integer) = 100 Then
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
-                Me.HiddenSaveChangesPromptResponse.Value = Me.MSG_BTN_OK
-                Me.DisplayMessageWithSubmit(CType(outputParameters(1).Value, String), "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO, False)
+                State.ActionInProgress = DetailPageCommand.OK
+                HiddenSaveChangesPromptResponse.Value = MSG_BTN_OK
+                DisplayMessageWithSubmit(CType(outputParameters(1).Value, String), "", MSG_BTN_OK, MSG_TYPE_INFO, False)
             ElseIf CType(outputParameters(0).Value, Integer) = 300 Then
                 'Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR, Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR)
-                Me.ErrControllerMaster.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR)
+                ErrControllerMaster.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR)
             Else
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
-                Me.HiddenSaveChangesPromptResponse.Value = Me.MSG_BTN_OK
-                Me.DisplayMessageWithSubmit(CType(outputParameters(1).Value, String), "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO, False)
+                State.ActionInProgress = DetailPageCommand.OK
+                HiddenSaveChangesPromptResponse.Value = MSG_BTN_OK
+                DisplayMessageWithSubmit(CType(outputParameters(1).Value, String), "", MSG_BTN_OK, MSG_TYPE_INFO, False)
             End If
 
             PopulateGrid()
             Return True
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
             Return False
         End Try
     End Function
@@ -718,24 +722,24 @@ Partial Class ClaimAdjusterInboxForm
             GUIException.ValidateDate(lblExt_Sts_Date_To, txtExt_Sts_Date_To.Text)
 
             If txtExt_Sts_Date_From.Text.Trim() <> String.Empty AndAlso CDate(txtExt_Sts_Date_From.Text) > CDate(txtExt_Sts_Date_To.Text) Then
-                ElitaPlusPage.SetLabelError(lblExt_Sts_Date_From)
+                SetLabelError(lblExt_Sts_Date_From)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_BEGIN_END_DATE_ERR)
             End If
         End If
 
-        Me.lblExt_Sts_Date_From.ForeColor = Me.lblClaimStatus.ForeColor
-        Me.lblExt_Sts_Date_To.ForeColor = Me.lblClaimStatus.ForeColor
+        lblExt_Sts_Date_From.ForeColor = lblClaimStatus.ForeColor
+        lblExt_Sts_Date_To.ForeColor = lblClaimStatus.ForeColor
 
         If txtExt_Sts_Date_From.Text.Trim = String.Empty Then
-            Me.State.BeginDate = Nothing
+            State.BeginDate = Nothing
         Else
-            Me.State.BeginDate = Me.txtExt_Sts_Date_From.Text
+            State.BeginDate = txtExt_Sts_Date_From.Text
         End If
 
         If txtExt_Sts_Date_To.Text.Trim = String.Empty Then
-            Me.State.EndDate = Nothing
+            State.EndDate = Nothing
         Else
-            Me.State.EndDate = Me.txtExt_Sts_Date_To.Text
+            State.EndDate = txtExt_Sts_Date_To.Text
         End If
 
     End Sub
@@ -744,40 +748,40 @@ Partial Class ClaimAdjusterInboxForm
 
 #Region " Datagrid Related "
 
-    Private Sub moDataGrid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles modataGrid.PageIndexChanging
+    Private Sub moDataGrid_PageIndexChanged(source As Object, e As GridViewPageEventArgs) Handles modataGrid.PageIndexChanging
         Try
-            Me.State.selectedPageIndex = e.NewPageIndex
+            State.selectedPageIndex = e.NewPageIndex
             If IsDataGPageDirty() Then
-                Me.ApproveButton_WRITE.Enabled = True
-                Me.RejectButton_WRITE.Enabled = True
+                ApproveButton_WRITE.Enabled = True
+                RejectButton_WRITE.Enabled = True
                 DisplayMessage(Message.MSG_PAGE_ALERT_PROMPT, "", MSG_BTN_OK, MSG_TYPE_ALERT)
             Else
-                Me.modataGrid.PageIndex = e.NewPageIndex
+                modataGrid.PageIndex = e.NewPageIndex
                 PopulateGrid()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub moDataGrid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub moDataGrid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             If IsDataGPageDirty() Then
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.GridPageSize
-                Me.ApproveButton_WRITE.Enabled = True
-                Me.RejectButton_WRITE.Enabled = True
+                State.ActionInProgress = DetailPageCommand.GridPageSize
+                ApproveButton_WRITE.Enabled = True
+                RejectButton_WRITE.Enabled = True
                 DisplayMessage(Message.MSG_PAGE_ALERT_PROMPT, "", MSG_BTN_OK, MSG_TYPE_ALERT)
             Else
                 modataGrid.PageIndex = NewCurrentPageIndex(modataGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
-                Me.PopulateGrid()
+                State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
+                PopulateGrid()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Protected Sub ItemBound(ByVal source As Object, ByVal e As GridViewRowEventArgs) Handles modataGrid.RowDataBound
+    Protected Sub ItemBound(source As Object, e As GridViewRowEventArgs) Handles modataGrid.RowDataBound
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
@@ -799,65 +803,65 @@ Partial Class ClaimAdjusterInboxForm
         End If
 
         Try
-            If Not dvRow Is Nothing Then
+            If dvRow IsNot Nothing Then
 
 
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_CLAIM_ID_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_CLAIM_ID))
-                    If Not dvRow(Claim.ClaimAdjusterSearchDV.COL_CLAIM_TAT) Is System.DBNull.Value Then
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_ID_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_CLAIM_ID))
+                    If dvRow(Claim.ClaimAdjusterSearchDV.COL_CLAIM_TAT) IsNot DBNull.Value Then
                         Dim claim_TAT As Integer = CType(dvRow(Claim.ClaimAdjusterSearchDV.COL_CLAIM_TAT), Integer)
                         Dim claim_TAT_colorCode As String = FindTATColor(claim_TAT)
-                        If Not claim_TAT_colorCode Is Nothing AndAlso Not claim_TAT_colorCode.Equals(String.Empty) Then e.Row.Cells(Me.GRID_COL_CLAIM_TAT_IDX).BackColor = System.Drawing.ColorTranslator.FromHtml(claim_TAT_colorCode)
+                        If claim_TAT_colorCode IsNot Nothing AndAlso Not claim_TAT_colorCode.Equals(String.Empty) Then e.Row.Cells(GRID_COL_CLAIM_TAT_IDX).BackColor = ColorTranslator.FromHtml(claim_TAT_colorCode)
                     End If
 
-                    If Not dvRow(Claim.ClaimAdjusterSearchDV.COL_SVC_TAT) Is System.DBNull.Value Then
-                        Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_SVC_TAT_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_SVC_TAT).ToString)
+                    If dvRow(Claim.ClaimAdjusterSearchDV.COL_SVC_TAT) IsNot DBNull.Value Then
+                        PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_SVC_TAT_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_SVC_TAT).ToString)
                         Dim SVC_TAT As Integer = CType(dvRow(Claim.ClaimAdjusterSearchDV.COL_SVC_TAT), Integer)
                         Dim SVC_TAT_colorCode As String = FindTATColor(SVC_TAT)
-                        If Not SVC_TAT_colorCode Is Nothing AndAlso Not SVC_TAT_colorCode.Equals(String.Empty) Then e.Row.Cells(Me.GRID_COL_SVC_TAT_IDX).BackColor = System.Drawing.ColorTranslator.FromHtml(SVC_TAT_colorCode)
+                        If SVC_TAT_colorCode IsNot Nothing AndAlso Not SVC_TAT_colorCode.Equals(String.Empty) Then e.Row.Cells(GRID_COL_SVC_TAT_IDX).BackColor = ColorTranslator.FromHtml(SVC_TAT_colorCode)
                     Else
-                        e.Row.Cells(Me.GRID_COL_SVC_TAT_IDX).Text = "N/A"
+                        e.Row.Cells(GRID_COL_SVC_TAT_IDX).Text = "N/A"
                     End If
 
                     'Checkbox logic
                     Dim transIdStr As String = String.Empty
                     Dim checkBox As CheckBox = New CheckBox
-                    checkBox = CType(e.Row.Cells(Me.GRID_COL_CHK_BOX_IDX).FindControl(Me.GRID_CTRL_NAME_CHECKBOX), CheckBox)
-                    checkBox.Attributes.Add("onclick", "CheckboxAction('" & transIdStr & "','" & checkBox.ClientID & "','" & Me.ApproveButton_WRITE.ClientID & "', '" & Me.RejectButton_WRITE.ClientID & "','" & checkRecords.ClientID & "') ; ChangeHeaderAsNeeded();")
+                    checkBox = CType(e.Row.Cells(GRID_COL_CHK_BOX_IDX).FindControl(GRID_CTRL_NAME_CHECKBOX), CheckBox)
+                    checkBox.Attributes.Add("onclick", "CheckboxAction('" & transIdStr & "','" & checkBox.ClientID & "','" & ApproveButton_WRITE.ClientID & "', '" & RejectButton_WRITE.ClientID & "','" & checkRecords.ClientID & "') ; ChangeHeaderAsNeeded();")
 
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_CLAIM_TAT_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_CLAIM_TAT).ToString)
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_TAT_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_CLAIM_TAT).ToString)
 
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_CLAIM_EXT_STATUS_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_CLAIM_EXTENDED_STATUS))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_STATUS_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_CLAIM_STATUS))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_CLAIM_ADJUSTER_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_CLAIM_ADJUSTER))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_ADDED_BY_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_ADDED_BY))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_AUTO_APPROVED_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_AUTO_APPROVED))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_EXT_STATUS_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_CLAIM_EXTENDED_STATUS))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_STATUS_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_CLAIM_STATUS))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_ADJUSTER_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_CLAIM_ADJUSTER))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_ADDED_BY_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_ADDED_BY))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_AUTO_APPROVED_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_AUTO_APPROVED))
 
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_STATUS_OWNER_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_CLAIM_EXTENDED_STATUS_OWNER))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_CLAIM_NUMBER_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_CLAIM_NUMBER))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_STATUS_OWNER_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_CLAIM_EXTENDED_STATUS_OWNER))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_NUMBER_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_CLAIM_NUMBER))
                     'CType(e.Row.Cells(Me.GRID_COL_CLAIM_NUMBER_IDX).FindControl("Claim_NumberItemLabel"), Label).Text = dvRow(Claim.ClaimAdjusterSearchDV.COL_CLAIM_NUMBER).ToString
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_SERVICE_CENTER_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_SERVICE_CENTER_NAME))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_CLAIM_TYPE_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_CLAIM_TYPE_DESCRIPTION))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_AUTHORIZATION_NUMBER_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_AUTHORIZATION_NUMBER))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_PRODUCT_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_PRODUCT_DESCRIPTION))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_SERVICE_CENTER_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_SERVICE_CENTER_NAME))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_TYPE_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_CLAIM_TYPE_DESCRIPTION))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_AUTHORIZATION_NUMBER_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_AUTHORIZATION_NUMBER))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_PRODUCT_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_PRODUCT_DESCRIPTION))
 
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_SALES_PRICE_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_SALES_PRICE))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_COVERAGE_TYPE_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_COVERAGE_TYPE))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_END_DATE_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_EXPIRATION_DATE))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_PAYMENT_AMOUNT_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_PAYMENT_AMOUNT))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_SALES_PRICE_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_SALES_PRICE))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_COVERAGE_TYPE_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_COVERAGE_TYPE))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_END_DATE_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_EXPIRATION_DATE))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_PAYMENT_AMOUNT_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_PAYMENT_AMOUNT))
 
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_AUTH_AMOUNT_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_AUTHORIZED_AMOUNT))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_PROPOSED_AMOUNT_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_PROPOSED_AMOUNT))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_LABOR_AMOUNT_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_LABOR_AMOUNT))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_PARTS_AMOUNT_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_PART_AMOUNT))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_SVC_CHARGE_AMOUNT_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_SERVICE_CHARGE))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_RISK_TYPE_ID_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_RISK_TYPE_ID))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_AUTH_AMOUNT_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_AUTHORIZED_AMOUNT))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_PROPOSED_AMOUNT_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_PROPOSED_AMOUNT))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_LABOR_AMOUNT_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_LABOR_AMOUNT))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_PARTS_AMOUNT_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_PART_AMOUNT))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_SVC_CHARGE_AMOUNT_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_SERVICE_CHARGE))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_RISK_TYPE_ID_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_RISK_TYPE_ID))
 
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_INBOUND_TRACKING_NUMBER_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_INBOUND_TRACKING_NUMBER))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_OUTBOUND_TRACKING_NUMBER_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_OUTBOUND_TRACKING_NUMBER))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_REPLACEMENT_DEVICE_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_REPLACEMENT_DEVICE))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_REPLACEMENT_DEVICE_COMMENTS_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_REPLACEMENT_DEVICE_COMMENTS))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_INBOUND_TRACKING_NUMBER_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_INBOUND_TRACKING_NUMBER))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_OUTBOUND_TRACKING_NUMBER_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_OUTBOUND_TRACKING_NUMBER))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_REPLACEMENT_DEVICE_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_REPLACEMENT_DEVICE))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_REPLACEMENT_DEVICE_COMMENTS_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_REPLACEMENT_DEVICE_COMMENTS))
                     
 
                     'Checkbox should be grayed out (unable to be selected) if:
@@ -865,8 +869,8 @@ Partial Class ClaimAdjusterInboxForm
                     'Claim Status is different than ‘A’
                     Dim curAuthAmount As Decimal
                     Dim curPrposedAmount As Decimal
-                    Dim cb As CheckBox = CType(e.Row.Cells(Me.GRID_COL_CHK_BOX_IDX).FindControl("btnSelected"), CheckBox)
-                    If Not dvRow(Claim.ClaimAdjusterSearchDV.COL_AUTHORIZED_AMOUNT) Is System.DBNull.Value Then
+                    Dim cb As CheckBox = CType(e.Row.Cells(GRID_COL_CHK_BOX_IDX).FindControl("btnSelected"), CheckBox)
+                    If dvRow(Claim.ClaimAdjusterSearchDV.COL_AUTHORIZED_AMOUNT) IsNot DBNull.Value Then
                         curAuthAmount = CType(dvRow(Claim.ClaimAdjusterSearchDV.COL_AUTHORIZED_AMOUNT), Decimal)
                     End If
                     'If Not dvRow(Claim.ClaimAdjusterSearchDV.COL_PROPOSED_AMOUNT) Is System.DBNull.Value Then
@@ -877,7 +881,7 @@ Partial Class ClaimAdjusterInboxForm
                     'End If
 
                     'Request 5547
-                    If Not dvRow(Claim.ClaimAdjusterSearchDV.COL_PROPOSED_AMOUNT) Is System.DBNull.Value Then
+                    If dvRow(Claim.ClaimAdjusterSearchDV.COL_PROPOSED_AMOUNT) IsNot DBNull.Value Then
                         curPrposedAmount = CType(dvRow(Claim.ClaimAdjusterSearchDV.COL_PROPOSED_AMOUNT), Decimal)
                         If curPrposedAmount > curAuthAmount Then
                             Dim objCompanyGroup As CompanyGroup = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup
@@ -893,37 +897,37 @@ Partial Class ClaimAdjusterInboxForm
                         cb.Enabled = False
                     End If
 
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_TRIP_AMOUNT_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_TRIP_AMOUNT))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_OTHER_AMOUNT_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_OTHER_AMOUNT))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_SHIPPING_AMOUNT_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_SHIPPING_AMOUNT))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_TRIP_AMOUNT_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_TRIP_AMOUNT))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_OTHER_AMOUNT_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_OTHER_AMOUNT))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_SHIPPING_AMOUNT_IDX), dvRow(Claim.ClaimAdjusterSearchDV.COL_SHIPPING_AMOUNT))
 
                 End If
             End If
             BaseItemBound(source, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles modataGrid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As GridViewSortEventArgs) Handles modataGrid.Sorting
         Try
 
-            Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
-            If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                If Me.SortDirection.EndsWith(" ASC") Then
-                    Me.SortDirection = e.SortExpression + " DESC"
+            Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
+            If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                If SortDirection.EndsWith(" ASC") Then
+                    SortDirection = e.SortExpression + " DESC"
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
             Else
-                Me.SortDirection = e.SortExpression + " ASC"
+                SortDirection = e.SortExpression + " ASC"
             End If
-            Me.State.SortExpression = Me.SortDirection
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.SortExpression = SortDirection
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
@@ -956,40 +960,40 @@ Partial Class ClaimAdjusterInboxForm
     '    ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, modataGrid)
     'End Sub
 
-    Protected Overloads Sub ItemCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs)
+    Protected Overloads Sub ItemCreated(sender As Object, e As GridViewRowEventArgs)
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Public Sub ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles modataGrid.RowCommand
+    Public Sub ItemCommand(source As Object, e As GridViewCommandEventArgs) Handles modataGrid.RowCommand
         Try
 
             If IsDataGPageDirty() Then
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.GridPageSize
-                Me.ApproveButton_WRITE.Enabled = True
-                Me.RejectButton_WRITE.Enabled = True
+                State.ActionInProgress = DetailPageCommand.GridPageSize
+                ApproveButton_WRITE.Enabled = True
+                RejectButton_WRITE.Enabled = True
                 DisplayMessage(Message.MSG_PAGE_ALERT_PROMPT, "", MSG_BTN_OK, MSG_TYPE_ALERT)
-            ElseIf (e.CommandName = Me.EDIT_COMMAND) Then
+            ElseIf (e.CommandName = EDIT_COMMAND) Then
                 Dim index As Integer = -1
                 If e.CommandName = "EditRecord" Then
                     index = CInt(e.CommandArgument)
                 End If
 
-                If Me.State Is Nothing Then
-                    Me.Trace(Me, "Restoring State")
-                    Me.RestoreState(New MyState)
+                If State Is Nothing Then
+                    Trace(Me, "Restoring State")
+                    RestoreState(New MyState)
                 End If
-                Me.State.selectedClaimId = New Guid(Me.modataGrid.Rows(index).Cells(Me.GRID_COL_CLAIM_ID_IDX).Text)
+                State.selectedClaimId = New Guid(modataGrid.Rows(index).Cells(GRID_COL_CLAIM_ID_IDX).Text)
 
-                Me.callPage(ClaimForm.URL, Me.State.selectedClaimId)
+                callPage(ClaimForm.URL, State.selectedClaimId)
 
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
@@ -999,75 +1003,75 @@ Partial Class ClaimAdjusterInboxForm
 #Region " Button Clicks "
 
 
-    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
             'Me.PopulateSearchFieldsFromState()
-            Me.State.SearchClicked = True
-            Me.State.PageIndex = 0
-            Me.State.selectedClaimId = Guid.Empty
-            Me.State.IsGridVisible = True
-            Me.State.searchDV = Nothing
-            Me.State.selectedSortById = New Guid(Me.cboSortBy.SelectedValue)
-            Me.ValidateDates()
-            Me.PopulateGrid()
+            State.SearchClicked = True
+            State.PageIndex = 0
+            State.selectedClaimId = Guid.Empty
+            State.IsGridVisible = True
+            State.searchDV = Nothing
+            State.selectedSortById = New Guid(cboSortBy.SelectedValue)
+            ValidateDates()
+            PopulateGrid()
             checkRecords.Value = ""
-            Me.tDDataGrid1.Visible = True
-            Me.tDDataGrid.Visible = True
+            tDDataGrid1.Visible = True
+            tDDataGrid.Visible = True
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub ApproveButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ApproveButton_WRITE.Click
+    Private Sub ApproveButton_WRITE_Click(sender As Object, e As EventArgs) Handles ApproveButton_WRITE.Click
         Try
 
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
-            Me.State.cmdProcessRecord = DALObjects.ClaimDAL.CMD_APPROVE
-            Me.ProcessCommand()
+            State.ActionInProgress = DetailPageCommand.Accept
+            State.cmdProcessRecord = ClaimDAL.CMD_APPROVE
+            ProcessCommand()
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub RejectButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RejectButton_WRITE.Click
+    Private Sub RejectButton_WRITE_Click(sender As Object, e As EventArgs) Handles RejectButton_WRITE.Click
         Try
             'Resend confirmation
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
-            Me.State.cmdProcessRecord = DALObjects.ClaimDAL.CMD_REJECT
-            Me.ProcessCommand()
-        Catch ex As Threading.ThreadAbortException
+            State.ActionInProgress = DetailPageCommand.Accept
+            State.cmdProcessRecord = ClaimDAL.CMD_REJECT
+            ProcessCommand()
+        Catch ex As ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub btnClearSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         Try
-            Me.txtClaimNumber.Text = String.Empty
-            Me.txtAuthorizationNumber.Text = String.Empty
-            Me.cboClaimStatus.SelectedIndex = 0
-            Me.txtServiceCenterName.Text = String.Empty
-            Me.cboClaimType.SelectedIndex = 0
-            Me.cboClaimExtendedStatus.SelectedIndex = 0
-            Me.cboStatusOwner.SelectedIndex = 0
-            Me.cboSCTurnAroundTime.SelectedIndex = 0
+            txtClaimNumber.Text = String.Empty
+            txtAuthorizationNumber.Text = String.Empty
+            cboClaimStatus.SelectedIndex = 0
+            txtServiceCenterName.Text = String.Empty
+            cboClaimType.SelectedIndex = 0
+            cboClaimExtendedStatus.SelectedIndex = 0
+            cboStatusOwner.SelectedIndex = 0
+            cboSCTurnAroundTime.SelectedIndex = 0
             cboAutoApproved.SelectedIndex = 0
             txtExt_Sts_Date_From.Text = String.Empty
             txtExt_Sts_Date_To.Text = String.Empty
             txtClaimAdjuster.Text = String.Empty
             txtCreatedBy.Text = String.Empty
-            Me.SetSelectedItem(Me.cboSortBy, Me.State.selectedSortById)
-            Me.SetSelectedItem(Me.cboSortOrder, Me.State.selectedSortOrderId)
+            SetSelectedItem(cboSortBy, State.selectedSortById)
+            SetSelectedItem(cboSortOrder, State.selectedSortOrderId)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
 #End Region
 
-    Private Sub modataGrid_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles modataGrid.RowCreated
+    Private Sub modataGrid_RowCreated(sender As Object, e As GridViewRowEventArgs) Handles modataGrid.RowCreated
 
         Try
               If e.Row.RowType = DataControlRowType.DataRow Then
@@ -1082,9 +1086,9 @@ Partial Class ClaimAdjusterInboxForm
                 Dim behaviorID3 As String = "pce3_" + e.Row.RowIndex.ToString
                 pce3.BehaviorID = behaviorID3
 
-                Dim img1 As System.Web.UI.WebControls.Image = CType(e.Row.FindControl("Image1"), System.Web.UI.WebControls.Image)
-                Dim img2 As System.Web.UI.WebControls.Image = CType(e.Row.FindControl("Image2"), System.Web.UI.WebControls.Image)
-                Dim img3 As System.Web.UI.WebControls.Image = CType(e.Row.FindControl("Image3"), System.Web.UI.WebControls.Image)
+                Dim img1 As WebControls.Image = CType(e.Row.FindControl("Image1"), WebControls.Image)
+                Dim img2 As WebControls.Image = CType(e.Row.FindControl("Image2"), WebControls.Image)
+                Dim img3 As WebControls.Image = CType(e.Row.FindControl("Image3"), WebControls.Image)
 
                 Dim OnMouseOverScript1 As String = String.Format("$find('{0}').showPopup();", behaviorID1)
                 Dim OnMouseOutScript1 As String = String.Format("$find('{0}').hidePopup();", behaviorID1)
@@ -1106,16 +1110,16 @@ Partial Class ClaimAdjusterInboxForm
 
               End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
       
 
     End Sub
 
 
-    <System.Web.Script.Services.ScriptMethod()> _
-    <System.Web.Services.WebMethod()>
-    Public Shared Function GetProblemDescription(ByVal contextKey As String) As String
+    <ScriptMethod()> _
+    <WebMethod()>
+    Public Shared Function GetProblemDescription(contextKey As String) As String
 
         Dim description As String = Claim.GetProblemDescription(contextKey)
 
@@ -1136,9 +1140,9 @@ Partial Class ClaimAdjusterInboxForm
 
     End Function
 
-    <System.Web.Script.Services.ScriptMethod()> _
-    <System.Web.Services.WebMethod()>
-    Public Shared Function GetTechnicalReport(ByVal contextKey As String) As String
+    <ScriptMethod()> _
+    <WebMethod()>
+    Public Shared Function GetTechnicalReport(contextKey As String) As String
 
         Dim description As String = Claim.GetTechnicalReport(contextKey)
 
@@ -1159,9 +1163,9 @@ Partial Class ClaimAdjusterInboxForm
 
     End Function
 
-    <System.Web.Script.Services.ScriptMethod()> _
-    <System.Web.Services.WebMethod()>
-    Public Shared Function GetExtendedStatusComment(ByVal contextKey As String) As String
+    <ScriptMethod()> _
+    <WebMethod()>
+    Public Shared Function GetExtendedStatusComment(contextKey As String) As String
 
         Dim description As String = Claim.GetExtendedStatusComment(contextKey)
 

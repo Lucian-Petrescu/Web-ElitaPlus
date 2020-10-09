@@ -13,7 +13,7 @@ Namespace GeographicServices
             FaultContract(GetType(CountryNotFoundFault)),
             FaultContract(GetType(RegionNotFoundFault)),
             FaultContract(GetType(ValidationFault))>
-        Function GetRegionsAndComunasInfo(ByVal request As GetRegionsAndComunasInfoRequest) As GetRegionsAndComunasInfoResponse
+        Function GetRegionsAndComunasInfo(request As GetRegionsAndComunasInfoRequest) As GetRegionsAndComunasInfoResponse
 
     End Interface
 

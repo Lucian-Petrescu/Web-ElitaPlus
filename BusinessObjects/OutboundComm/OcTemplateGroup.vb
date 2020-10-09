@@ -6,48 +6,48 @@ Public Class OcTemplateGroup
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New OcTemplateGroupDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class OcTemplateGroup
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New OcTemplateGroupDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -89,7 +89,7 @@ Public Class OcTemplateGroup
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(OcTemplateGroupDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -100,7 +100,7 @@ Public Class OcTemplateGroup
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=400), CheckDuplicate("")>
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If row(OcTemplateGroupDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -109,15 +109,15 @@ Public Class OcTemplateGroup
                 Return CType(row(OcTemplateGroupDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(OcTemplateGroupDAL.COL_NAME_CODE, Value)
+            SetValue(OcTemplateGroupDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=2000)>
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If row(OcTemplateGroupDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -126,15 +126,15 @@ Public Class OcTemplateGroup
                 Return CType(row(OcTemplateGroupDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(OcTemplateGroupDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(OcTemplateGroupDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=400)>
-    Public Property GroupAccountUserName() As String
+    Public Property GroupAccountUserName As String
         Get
             CheckDeleted()
             If row(OcTemplateGroupDAL.COL_NAME_GROUP_ACCOUNT_USER_NAME) Is DBNull.Value Then
@@ -143,15 +143,15 @@ Public Class OcTemplateGroup
                 Return CType(row(OcTemplateGroupDAL.COL_NAME_GROUP_ACCOUNT_USER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(OcTemplateGroupDAL.COL_NAME_GROUP_ACCOUNT_USER_NAME, Value)
+            SetValue(OcTemplateGroupDAL.COL_NAME_GROUP_ACCOUNT_USER_NAME, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=400)>
-    Public Property GroupAccountPassword() As String
+    Public Property GroupAccountPassword As String
         Get
             CheckDeleted()
             If row(OcTemplateGroupDAL.COL_NAME_GROUP_ACCOUNT_PASSWORD) Is DBNull.Value Then
@@ -160,19 +160,19 @@ Public Class OcTemplateGroup
                 Return CType(row(OcTemplateGroupDAL.COL_NAME_GROUP_ACCOUNT_PASSWORD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(OcTemplateGroupDAL.COL_NAME_GROUP_ACCOUNT_PASSWORD, Value)
+            SetValue(OcTemplateGroupDAL.COL_NAME_GROUP_ACCOUNT_PASSWORD, Value)
         End Set
     End Property
 
-    Public ReadOnly Property DealerList() As OcTemplateGroupDealerList
+    Public ReadOnly Property DealerList As OcTemplateGroupDealerList
         Get
             Return New OcTemplateGroupDealerList(Me)
         End Get
     End Property
 
-    Public ReadOnly Property TemplateList() As OcTemplateList
+    Public ReadOnly Property TemplateList As OcTemplateList
         Get
             Return New OcTemplateList(Me)
         End Get
@@ -183,17 +183,17 @@ Public Class OcTemplateGroup
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso (Me.IsDirty OrElse Me.IsFamilyDirty) AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso (IsDirty OrElse IsFamilyDirty) AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New OcTemplateGroupDAL
                 'dal.Update(Me.Row)
-                MyBase.UpdateFamily(Me.Dataset)
-                dal.UpdateFamily(Me.Dataset)
+                UpdateFamily(Dataset)
+                dal.UpdateFamily(Dataset)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -201,20 +201,20 @@ Public Class OcTemplateGroup
         End Try
     End Sub
 
-    Public Sub Copy(ByVal original As OcTemplateGroup)
-        If Not Me.IsNew Then
+    Public Sub Copy(original As OcTemplateGroup)
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Template Group")
         End If
         'Copy myself
-        Me.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 
     Public Sub AttachDealers(selectedDealerGuidStringCollection As ArrayList)
         Dim dealerGuid As String
         For Each dealerGuid In selectedDealerGuidStringCollection
-            Dim templateGroupDealer As OcTemplateGroupDealer = Me.DealerList.GetNewChild
+            Dim templateGroupDealer As OcTemplateGroupDealer = DealerList.GetNewChild
             templateGroupDealer.DealerId = New Guid(dealerGuid)
-            templateGroupDealer.OcTemplateGroupId = Me.Id
+            templateGroupDealer.OcTemplateGroupId = Id
             templateGroupDealer.Save()
         Next
     End Sub
@@ -222,7 +222,7 @@ Public Class OcTemplateGroup
     Public Sub DetachDealers(selectedDealerGuidStringCollection As ArrayList)
         Dim dealerGuid As String
         For Each dealerGuid In selectedDealerGuidStringCollection
-            Dim templateGroupDealer = Me.DealerList.Find(New Guid(dealerGuid))
+            Dim templateGroupDealer = DealerList.Find(New Guid(dealerGuid))
             templateGroupDealer.Delete()
             templateGroupDealer.Save()
         Next
@@ -234,10 +234,10 @@ Public Class OcTemplateGroup
         Dim dal As New OcTemplateGroupDAL
         'Dim companyIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
         'Dim companyGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-        Dim dv As OcTemplateGroup.OcTemplateGroupSearchDV = GetList(Me.Code)
+        Dim dv As OcTemplateGroup.OcTemplateGroupSearchDV = GetList(Code)
 
         For Each dr As DataRow In dv.Table.Rows
-            If (Not New Guid(CType(dr(OcTemplateGroupDAL.COL_NAME_OC_TEMPLATE_GROUP_ID), Byte())).Equals(Me.Id)) Then
+            If (Not New Guid(CType(dr(OcTemplateGroupDAL.COL_NAME_OC_TEMPLATE_GROUP_ID), Byte())).Equals(Id)) Then
                 Return True
             End If
         Next
@@ -253,12 +253,12 @@ Public Class OcTemplateGroup
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
     End Class
 
-    Shared Function GetList(ByVal code As String) As OcTemplateGroupSearchDV
+    Shared Function GetList(code As String) As OcTemplateGroupSearchDV
         Try
             Dim dal As New OcTemplateGroupDAL
             Return New OcTemplateGroupSearchDV(dal.LoadList(code).Tables(0))
@@ -267,11 +267,11 @@ Public Class OcTemplateGroup
         End Try
     End Function
 
-    Public Shared Function GetAssociatedTemplateCount(ByVal templateGroupId As Guid) As Integer
+    Public Shared Function GetAssociatedTemplateCount(templateGroupId As Guid) As Integer
         Try
             Dim dal As New OcTemplateGroupDAL
             Dim dataSet As DataSet = dal.GetAssociatedTemplateCount(templateGroupId)
-            If Not dataSet Is Nothing AndAlso dataSet.Tables.Count > 0 AndAlso dataSet.Tables(0).Rows.Count > 0 Then
+            If dataSet IsNot Nothing AndAlso dataSet.Tables.Count > 0 AndAlso dataSet.Tables(0).Rows.Count > 0 Then
                 If dataSet.Tables(0).Rows(0)(OcTemplateGroupDAL.COL_NAME_NUMBER_OF_TEMPLATES) Is DBNull.Value Then
                     Return 0
                 Else
@@ -292,11 +292,11 @@ Public Class OcTemplateGroup
         Inherits ValidBaseAttribute
         Private Const DUPLICATE_TEMPLATE_GROUP_CODE As String = "DUPLICATE_TEMPLATE_GROUP_CODE"
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, DUPLICATE_TEMPLATE_GROUP_CODE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As OcTemplateGroup = CType(objectToValidate, OcTemplateGroup)
             If (obj.CheckDuplicateCode()) Then
                 Return False
@@ -307,11 +307,11 @@ Public Class OcTemplateGroup
     End Class
 #End Region
 
-    Private Function GetDealers(ByVal companies As ArrayList) As DataView
+    Private Function GetDealers(companies As ArrayList) As DataView
         Return New DataView(LookupListNew.GetDealerLookupList(companies).ToTable)
     End Function
 
-    Public Function GetAvailableDealers(ByVal companies As ArrayList) As DataView
+    Public Function GetAvailableDealers(companies As ArrayList) As DataView
         Dim dv As DataView
         Dim sequenceCondition As String
 
@@ -327,7 +327,7 @@ Public Class OcTemplateGroup
         Return dv
     End Function
 
-    Public Function GetSelectedDealers(ByVal companies As ArrayList) As DataView
+    Public Function GetSelectedDealers(companies As ArrayList) As DataView
         Dim dv As DataView
         Dim sequenceCondition As String
 
@@ -343,16 +343,16 @@ Public Class OcTemplateGroup
         Return dv
     End Function
 
-    Protected Function GetDealersLookupListSelectedSequenceFilter(ByVal dv As DataView, ByVal isFilterInclusive As Boolean) As String
+    Protected Function GetDealersLookupListSelectedSequenceFilter(dv As DataView, isFilterInclusive As Boolean) As String
         Dim templateGroupDealer As OcTemplateGroupDealer
         Dim inClause As String = "(-1"
 
-        For Each templateGroupDealer In Me.DealerList
+        For Each templateGroupDealer In DealerList
             inClause &= "," & LookupListNew.GetSequenceFromId(dv, templateGroupDealer.DealerId)
         Next
 
         inClause &= ")"
-        Dim rowFilter As String = BusinessObjectBase.SYSTEM_SEQUENCE_COL_NAME
+        Dim rowFilter As String = SYSTEM_SEQUENCE_COL_NAME
 
         If isFilterInclusive Then
             rowFilter &= " IN " & inClause

@@ -40,14 +40,14 @@ Partial Class InterfaceProgressControl
         Protected ReadOnly Property TheState() As MyState
             Get
                 Try
-                    If Me.moState Is Nothing Then
-                        Me.moState = CType(Session(SESSION_LOCALSTATE_KEY), MyState)
-                        If Me.moState Is Nothing Then
-                            Me.moState = New MyState
-                            Session(SESSION_LOCALSTATE_KEY) = Me.moState
+                    If moState Is Nothing Then
+                        moState = CType(Session(SESSION_LOCALSTATE_KEY), MyState)
+                        If moState Is Nothing Then
+                            moState = New MyState
+                            Session(SESSION_LOCALSTATE_KEY) = moState
                         End If
                     End If
-                    Return Me.moState
+                    Return moState
                 Catch ex As Exception
                     'When we are in design mode there is no session object
                     Return Nothing
@@ -71,7 +71,7 @@ Partial Class InterfaceProgressControl
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -81,7 +81,7 @@ Partial Class InterfaceProgressControl
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
         End Sub
 
@@ -89,22 +89,22 @@ Partial Class InterfaceProgressControl
 
 #Region "Handlers-Button"
 
-        Private Sub btnViewHidden_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnViewHidden.Click
+        Private Sub btnViewHidden_Click(sender As System.Object, e As System.EventArgs) Handles btnViewHidden.Click
             ThePage.SetProgressTimeOutScript(TheState.baseController)
         End Sub
 
-        Private Sub btnErrorHidden_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnErrorHidden.Click
+        Private Sub btnErrorHidden_Click(sender As System.Object, e As System.EventArgs) Handles btnErrorHidden.Click
             Dim oContainer As Control
             Dim oErrorController As IErrorController
 
-            oContainer = Me.BindingContainer
+            oContainer = BindingContainer
             If ThePage.MasterPage Is Nothing Then
                 oErrorController = ThePage.ErrControllerMaster
                 If oErrorController Is Nothing Then
                     If oContainer.NamingContainer Is Nothing Then
-                        oErrorController = CType(Me.BindingContainer.FindControl("ErrorCtrl"), ErrorController)
+                        oErrorController = CType(BindingContainer.FindControl("ErrorCtrl"), ErrorController)
                     Else
-                        oErrorController = CType(Me.BindingContainer.BindingContainer.FindControl("ErrorCtrl"), ErrorController)
+                        oErrorController = CType(BindingContainer.BindingContainer.FindControl("ErrorCtrl"), ErrorController)
                     End If
                 End If
             Else

@@ -21,7 +21,7 @@ Namespace Tables
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -73,85 +73,85 @@ Namespace Tables
             End Get
         End Property
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.MenuEnabled = True
-                Me.IsReturningFromChild = True
+                MenuEnabled = True
+                IsReturningFromChild = True
                 Dim retObj As QuestionForm.ReturnType = CType(ReturnPar, QuestionForm.ReturnType)
-                Me.State.HasDataChanged = retObj.HasDataChanged
+                State.HasDataChanged = retObj.HasDataChanged
                 Select Case retObj.LastOperation
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        If Not retObj Is Nothing Then
+                        If retObj IsNot Nothing Then
                             If Not retObj.EditingBo.IsNew Then
-                                Me.State.SelectedSoftQuestionId = retObj.EditingBo.Id
+                                State.SelectedSoftQuestionId = retObj.EditingBo.Id
                             End If
-                            Me.State.IsGridVisible = True
+                            State.IsGridVisible = True
                         End If
                     Case ElitaPlusPage.DetailPageCommand.Expire
-                        Me.DisplayMessage(Message.EXPIRE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                        DisplayMessage(Message.EXPIRE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                     Case ElitaPlusPage.DetailPageCommand.Delete
-                        Me.DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                        DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 End Select
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
         Private Sub SaveGuiState()
-            With Me.State
-                .Code = Me.txtCode.Text
-                .Description = Me.txtDescription.Text
-                .Questiontype = Me.GetSelectedDescription(ddlQuestionType)
-                .SearchTags = Me.txtSearchTags.Text
-                .Issue = Me.txtIssue.Text
-                .ActiveOn = Me.txtActiveOn.Text
+            With State
+                .Code = txtCode.Text
+                .Description = txtDescription.Text
+                .Questiontype = GetSelectedDescription(ddlQuestionType)
+                .SearchTags = txtSearchTags.Text
+                .Issue = txtIssue.Text
+                .ActiveOn = txtActiveOn.Text
             End With
         End Sub
 
         Private Sub RestoreGuiState()
-            With Me.State
-                Me.txtCode.Text = .Code
-                Me.txtDescription.Text = .Description
-                Me.SetSelectedItemByText(ddlQuestionType, .Questiontype)
-                Me.txtSearchTags.Text = .SearchTags
-                Me.txtIssue.Text = .Issue
-                Me.txtActiveOn.Text = .ActiveOn
+            With State
+                txtCode.Text = .Code
+                txtDescription.Text = .Description
+                SetSelectedItemByText(ddlQuestionType, .Questiontype)
+                txtSearchTags.Text = .SearchTags
+                txtIssue.Text = .Issue
+                txtActiveOn.Text = .ActiveOn
             End With
         End Sub
 
 #End Region
 
 #Region "Page_Events"
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
-                Me.ErrorCtrl.Clear_Hide()
-                If Not Me.IsPostBack Then
-                    Me.SetDefaultButton(Me.txtCode, btnSearch)
-                    Me.SetDefaultButton(Me.txtDescription, btnSearch)
+                ErrorCtrl.Clear_Hide()
+                If Not IsPostBack Then
+                    SetDefaultButton(txtCode, btnSearch)
+                    SetDefaultButton(txtDescription, btnSearch)
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
                     ControlMgr.SetEnableControl(Me, txtIssue, False)
-                    Me.AddCalendar(Me.imgActiveOn, Me.txtActiveOn)
+                    AddCalendar(imgActiveOn, txtActiveOn)
                     PopulateDropDowns()
-                    Me.RestoreGuiState()
-                    If Me.State.IsGridVisible Then
-                        If Not (Me.State.SelectedPageSize = DEFAULT_PAGE_SIZE) Then
-                            cboPageSize.SelectedValue = CType(Me.State.SelectedPageSize, String)
-                            If (Me.State.SelectedPageSize = 0) Then
-                                Me.State.SelectedPageSize = DEFAULT_PAGE_SIZE
+                    RestoreGuiState()
+                    If State.IsGridVisible Then
+                        If Not (State.SelectedPageSize = DEFAULT_PAGE_SIZE) Then
+                            cboPageSize.SelectedValue = CType(State.SelectedPageSize, String)
+                            If (State.SelectedPageSize = 0) Then
+                                State.SelectedPageSize = DEFAULT_PAGE_SIZE
                             End If
-                            Grid.PageSize = Me.State.SelectedPageSize
+                            Grid.PageSize = State.SelectedPageSize
                         End If
-                        Me.PopulateGrid()
+                        PopulateGrid()
                     End If
-                    Me.SetGridItemStyleColor(Me.Grid)
+                    SetGridItemStyleColor(Grid)
                 Else
-                    Me.SaveGuiState()
+                    SaveGuiState()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 #End Region
 
@@ -180,43 +180,43 @@ Namespace Tables
                 strActiveOn = dteActiveOn.ToString("dd-MMM-yyyy")
             End If
 
-            If ((Me.State.SearchDV Is Nothing) OrElse (Me.State.HasDataChanged)) Then
-                Me.State.SearchDV = Question.getQuestionList(Me.txtCode.Text, Me.txtDescription.Text, New Guid(Me.ddlQuestionType.SelectedItem.Value), Me.txtSearchTags.Text,
-                    Me.txtIssue.Text, strActiveOn)
+            If ((State.SearchDV Is Nothing) OrElse (State.HasDataChanged)) Then
+                State.SearchDV = Question.getQuestionList(txtCode.Text, txtDescription.Text, New Guid(ddlQuestionType.SelectedItem.Value), txtSearchTags.Text,
+                    txtIssue.Text, strActiveOn)
             End If
-            Me.State.SearchDV.Sort = Me.State.SortExpression
+            State.SearchDV.Sort = State.SortExpression
 
-            Me.Grid.AutoGenerateColumns = False
-            Me.Grid.Columns(Me.GRID_COL_CODE_IDX).SortExpression = Question.QuestionSearchDV.COL_NAME_CODE
-            Me.Grid.Columns(Me.GRID_COL_DESCRIPTION_IDX).SortExpression = Question.QuestionSearchDV.COL_NAME_DESCRIPTION
-            Me.Grid.Columns(Me.GRID_COL_QUESTION_TYPE_IDX).SortExpression = Question.QuestionSearchDV.COL_NAME_QUESTION_TYPE
-            Me.Grid.Columns(Me.GRID_COL_EFFECTIVE_DATE_IDX).SortExpression = Question.QuestionSearchDV.COL_NAME_EFFECTIVE
-            Me.Grid.Columns(Me.GRID_COL_EXPIRATION_DATE_IDX).SortExpression = Question.QuestionSearchDV.COL_NAME_EXPIRATION
+            Grid.AutoGenerateColumns = False
+            Grid.Columns(GRID_COL_CODE_IDX).SortExpression = Question.QuestionSearchDV.COL_NAME_CODE
+            Grid.Columns(GRID_COL_DESCRIPTION_IDX).SortExpression = Question.QuestionSearchDV.COL_NAME_DESCRIPTION
+            Grid.Columns(GRID_COL_QUESTION_TYPE_IDX).SortExpression = Question.QuestionSearchDV.COL_NAME_QUESTION_TYPE
+            Grid.Columns(GRID_COL_EFFECTIVE_DATE_IDX).SortExpression = Question.QuestionSearchDV.COL_NAME_EFFECTIVE
+            Grid.Columns(GRID_COL_EXPIRATION_DATE_IDX).SortExpression = Question.QuestionSearchDV.COL_NAME_EXPIRATION
 
-            SetPageAndSelectedIndexFromGuid(Me.State.SearchDV, Me.State.SelectedSoftQuestionId, Me.Grid, Me.State.PageIndex)
-            Me.SortAndBindGrid()
+            SetPageAndSelectedIndexFromGuid(State.SearchDV, State.SelectedSoftQuestionId, Grid, State.PageIndex)
+            SortAndBindGrid()
         End Sub
 
         Private Sub SortAndBindGrid()
-            Me.State.PageIndex = Me.Grid.CurrentPageIndex
-            Me.Grid.DataSource = Me.State.SearchDV
-            HighLightSortColumn(Grid, Me.State.SortExpression)
-            Me.Grid.DataBind()
+            State.PageIndex = Grid.CurrentPageIndex
+            Grid.DataSource = State.SearchDV
+            HighLightSortColumn(Grid, State.SortExpression)
+            Grid.DataBind()
 
-            ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
 
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-            Session("recCount") = Me.State.SearchDV.Count
+            Session("recCount") = State.SearchDV.Count
 
-            If Me.State.SearchDV.Count > 0 Then
+            If State.SearchDV.Count > 0 Then
 
-                If Me.Grid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.SearchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If Grid.Visible Then
+                    lblRecordCount.Text = State.SearchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             Else
-                If Me.Grid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.SearchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If Grid.Visible Then
+                    lblRecordCount.Text = State.SearchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             End If
         End Sub
@@ -225,75 +225,75 @@ Namespace Tables
 #Region " Datagrid Related "
 
         'The Binding Logic is here  
-        Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+        Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                    e.Item.Cells(Me.GRID_COL_SOFT_QUESTION_ID_IDX).Text = New Guid(CType(dvRow(Question.QuestionSearchDV.COL_NAME_SOFT_QUESTION_ID), Byte())).ToString
-                    e.Item.Cells(Me.GRID_COL_CODE_IDX).Text = dvRow(Question.QuestionSearchDV.COL_NAME_CODE).ToString
-                    e.Item.Cells(Me.GRID_COL_DESCRIPTION_IDX).Text = dvRow(Question.QuestionSearchDV.COL_NAME_DESCRIPTION).ToString
-                    e.Item.Cells(Me.GRID_COL_QUESTION_TYPE_IDX).Text = dvRow(Question.QuestionSearchDV.COL_NAME_QUESTION_TYPE).ToString
-                    e.Item.Cells(Me.GRID_COL_EFFECTIVE_DATE_IDX).Text = dvRow(Question.QuestionSearchDV.COL_NAME_EFFECTIVE).ToString
-                    e.Item.Cells(Me.GRID_COL_EXPIRATION_DATE_IDX).Text = dvRow(Question.QuestionSearchDV.COL_NAME_EXPIRATION).ToString
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
+                    e.Item.Cells(GRID_COL_SOFT_QUESTION_ID_IDX).Text = New Guid(CType(dvRow(Question.QuestionSearchDV.COL_NAME_SOFT_QUESTION_ID), Byte())).ToString
+                    e.Item.Cells(GRID_COL_CODE_IDX).Text = dvRow(Question.QuestionSearchDV.COL_NAME_CODE).ToString
+                    e.Item.Cells(GRID_COL_DESCRIPTION_IDX).Text = dvRow(Question.QuestionSearchDV.COL_NAME_DESCRIPTION).ToString
+                    e.Item.Cells(GRID_COL_QUESTION_TYPE_IDX).Text = dvRow(Question.QuestionSearchDV.COL_NAME_QUESTION_TYPE).ToString
+                    e.Item.Cells(GRID_COL_EFFECTIVE_DATE_IDX).Text = dvRow(Question.QuestionSearchDV.COL_NAME_EFFECTIVE).ToString
+                    e.Item.Cells(GRID_COL_EXPIRATION_DATE_IDX).Text = dvRow(Question.QuestionSearchDV.COL_NAME_EXPIRATION).ToString
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 Grid.CurrentPageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.PopulateGrid()
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub Grid_SortCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
+        Private Sub Grid_SortCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
             Try
-                If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                    If Me.State.SortExpression.EndsWith(" DESC") Then
-                        Me.State.SortExpression = e.SortExpression
+                If State.SortExpression.StartsWith(e.SortExpression) Then
+                    If State.SortExpression.EndsWith(" DESC") Then
+                        State.SortExpression = e.SortExpression
                     Else
-                        Me.State.SortExpression &= " DESC"
+                        State.SortExpression &= " DESC"
                     End If
                 Else
-                    Me.State.SortExpression = e.SortExpression
+                    State.SortExpression = e.SortExpression
                 End If
-                Me.State.PageIndex = 0
-                Me.PopulateGrid()
+                State.PageIndex = 0
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Public Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+        Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
             Try
                 If e.CommandName = "SelectAction" Then
-                    Me.State.SelectedSoftQuestionId = New Guid(e.Item.Cells(Me.GRID_COL_SOFT_QUESTION_ID_IDX).Text)
-                    Me.callPage(QuestionForm.URL, Me.State.SelectedSoftQuestionId)
+                    State.SelectedSoftQuestionId = New Guid(e.Item.Cells(GRID_COL_SOFT_QUESTION_ID_IDX).Text)
+                    callPage(QuestionForm.URL, State.SelectedSoftQuestionId)
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
 
         End Sub
 
-        Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs)
+        Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub Grid_PageIndexChanged(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+        Private Sub Grid_PageIndexChanged(source As System.Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
             Try
-                Me.State.PageIndex = e.NewPageIndex
-                Me.State.SelectedSoftQuestionId = Guid.Empty
-                Me.PopulateGrid()
+                State.PageIndex = e.NewPageIndex
+                State.SelectedSoftQuestionId = Guid.Empty
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -301,38 +301,38 @@ Namespace Tables
 
 #Region "Button Clicks "
 
-        Protected Sub btnSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+        Protected Sub btnSearch_Click(sender As Object, e As System.EventArgs) Handles btnSearch.Click
             Try
-                Me.State.PageIndex = 0
-                Me.State.SelectedSoftQuestionId = Guid.Empty
-                Me.State.IsGridVisible = True
-                Me.State.SearchDV = Nothing
-                Me.State.HasDataChanged = False
-                Me.PopulateGrid()
+                State.PageIndex = 0
+                State.SelectedSoftQuestionId = Guid.Empty
+                State.IsGridVisible = True
+                State.SearchDV = Nothing
+                State.HasDataChanged = False
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Protected Sub btnAdd_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd_WRITE.Click
+        Protected Sub btnAdd_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnAdd_WRITE.Click
             Try
-                Me.callPage(QuestionForm.URL)
+                callPage(QuestionForm.URL)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Protected Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+        Protected Sub btnClearSearch_Click(sender As Object, e As System.EventArgs) Handles btnClearSearch.Click
             Try
-                Me.txtCode.Text = ""
-                Me.txtDescription.Text = ""
-                Me.txtSearchTags.Text = ""
-                Me.ddlQuestionType.SelectedIndex = Me.BLANK_ITEM_SELECTED
-                Me.txtIssue.Text = ""
-                Me.txtActiveOn.Text = ""
-                Me.txtIssue.Enabled = False
+                txtCode.Text = ""
+                txtDescription.Text = ""
+                txtSearchTags.Text = ""
+                ddlQuestionType.SelectedIndex = BLANK_ITEM_SELECTED
+                txtIssue.Text = ""
+                txtActiveOn.Text = ""
+                txtIssue.Enabled = False
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 

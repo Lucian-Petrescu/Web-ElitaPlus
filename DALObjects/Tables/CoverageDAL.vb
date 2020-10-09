@@ -79,39 +79,39 @@ Public Class CoverageDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("coverage_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal familyDs As DataSet, ByVal coverageId As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Dim covergeParam As New DBHelper.DBHelperParameter(Me.COL_NAME_COVERAGE_ID, coverageId)
-        DBHelper.Fetch(familyDs, selectStmt, Me.TABLE_NAME, New DBHelper.DBHelperParameter() {covergeParam})
+    Public Function LoadList(familyDs As DataSet, coverageId As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Dim covergeParam As New DBHelper.DBHelperParameter(COL_NAME_COVERAGE_ID, coverageId)
+        DBHelper.Fetch(familyDs, selectStmt, TABLE_NAME, New DBHelper.DBHelperParameter() {covergeParam})
     End Function
 
-    Public Function LoadList(ByVal compIds As ArrayList, ByVal dealerId As Guid, ByVal productCodeId As Guid,
-                             ByVal itemId As Guid, ByVal coverageTypeId As Guid,
-                             ByVal certificateDuration As Assurant.Common.Types.LongType,
-                             ByVal coverageDuration As Assurant.Common.Types.LongType, ByVal LanguageId As Guid) As DataSet
+    Public Function LoadList(compIds As ArrayList, dealerId As Guid, productCodeId As Guid,
+                             itemId As Guid, coverageTypeId As Guid,
+                             certificateDuration As Assurant.Common.Types.LongType,
+                             coverageDuration As Assurant.Common.Types.LongType, LanguageId As Guid) As DataSet
 
         Try
-            Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+            Dim selectStmt As String = Config("/SQL/LOAD_LIST")
             Dim parameters() As DBHelper.DBHelperParameter
             Dim inClauseCondition As String
             Dim whereClauseConditions As String = ""
             Dim ds As New DataSet
 
-            inClauseCondition &= " AND edealer." & MiscUtil.BuildListForSql(Me.COL_NAME_COMPANY_ID, compIds, True)
+            inClauseCondition &= " AND edealer." & MiscUtil.BuildListForSql(COL_NAME_COMPANY_ID, compIds, True)
 
             If Not dealerId.Equals(Guid.Empty) Then
                 whereClauseConditions &= Environment.NewLine & "AND " & "EDEALER.DEALER_ID = " & MiscUtil.GetDbStringFromGuid(dealerId)
@@ -138,22 +138,22 @@ Public Class CoverageDAL
             End If
 
             If Not inClauseCondition = "" Then
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClauseCondition)
+                selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClauseCondition)
             Else
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, "")
+                selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, "")
             End If
 
             If Not whereClauseConditions = "" Then
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
             Else
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
 
             End If
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER,
+            selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER,
                                     Environment.NewLine & "ORDER BY " & Environment.NewLine &
-                                    "UPPER(" & Me.COL_NAME_DEALER & "), UPPER(" &
-                                    Me.COL_NAME_PRODUCT_CODE & "), UPPER(" & Me.COL_NAME_RISK_TYPE &
-                                    "), " & COL_NAME_ITEM_NUMBER & ", UPPER(" & Me.COL_NAME_COVERAGE_TYPE &
+                                    "UPPER(" & COL_NAME_DEALER & "), UPPER(" &
+                                    COL_NAME_PRODUCT_CODE & "), UPPER(" & COL_NAME_RISK_TYPE &
+                                    "), " & COL_NAME_ITEM_NUMBER & ", UPPER(" & COL_NAME_COVERAGE_TYPE &
                                     "), " & COL_NAME_CERTIFICATE_DURATION & "," & COL_NAME_COVERAGE_DURATION &
                                     "," & COL_NAME_EFFECTIVE & " DESC, " & COL_NAME_EXPIRATION)
             ' ORDER BY
@@ -163,17 +163,17 @@ Public Class CoverageDAL
             parameters = New DBHelper.DBHelperParameter() _
                                         {New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, LanguageId.ToByteArray)}
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
-    Public Function MaxExpiration(ByVal itemId As Guid, ByVal coverageTypeId As Guid, _
-                                    ByVal certificateDuration As Assurant.Common.Types.LongType, _
-                                    ByVal coverageDuration As Assurant.Common.Types.LongType)
+    Public Function MaxExpiration(itemId As Guid, coverageTypeId As Guid, _
+                                    certificateDuration As Assurant.Common.Types.LongType, _
+                                    coverageDuration As Assurant.Common.Types.LongType)
         Try
-            Dim selectStmt As String = Me.Config("/SQL/MAX_EXPIRATION")
+            Dim selectStmt As String = Config("/SQL/MAX_EXPIRATION")
             Dim parameters() As DBHelper.DBHelperParameter
             Dim ds As New DataSet
             parameters = New DBHelper.DBHelperParameter() _
@@ -182,22 +182,22 @@ Public Class CoverageDAL
                                          New DBHelper.DBHelperParameter(COL_NAME_CERTIFICATE_DURATION, certificateDuration.Value), _
                                          New DBHelper.DBHelperParameter(COL_NAME_COVERAGE_DURATION, coverageDuration.Value)}
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetCoverageList(ByVal dealerId As Guid, ByVal productCodeId As Guid, ByVal riskTypeId As Guid, _
-                                    ByVal itemId As Guid, ByVal coverageTypeId As Guid, _
-                                    ByVal certificateDuration As Assurant.Common.Types.LongType, _
-                                    ByVal coverageDuration As Assurant.Common.Types.LongType, _
-                                    ByVal effectiveDate As Assurant.Common.Types.DateType, _
-                                    ByVal expirationDate As Assurant.Common.Types.DateType, _
-                                    ByVal excludeCoverageID As Guid)
+    Public Function GetCoverageList(dealerId As Guid, productCodeId As Guid, riskTypeId As Guid, _
+                                    itemId As Guid, coverageTypeId As Guid, _
+                                    certificateDuration As Assurant.Common.Types.LongType, _
+                                    coverageDuration As Assurant.Common.Types.LongType, _
+                                    effectiveDate As Assurant.Common.Types.DateType, _
+                                    expirationDate As Assurant.Common.Types.DateType, _
+                                    excludeCoverageID As Guid)
         Try
-            Dim selectStmt As String = Me.Config("/SQL/COVERAGE_LIST")
+            Dim selectStmt As String = Config("/SQL/COVERAGE_LIST")
             Dim parameters() As DBHelper.DBHelperParameter
             Dim ds As New DataSet
             parameters = New DBHelper.DBHelperParameter() _
@@ -213,63 +213,63 @@ Public Class CoverageDAL
                                          New DBHelper.DBHelperParameter(COL_NAME_CERTIFICATE_DURATION, certificateDuration.Value), _
                                          New DBHelper.DBHelperParameter(COL_NAME_COVERAGE_ID, excludeCoverageID)}
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetCurrencyOfCoverage(ByVal coverageId As Guid)
+    Public Function GetCurrencyOfCoverage(coverageId As Guid)
         Try
-            Dim selectStmt As String = Me.Config("/SQL/CURRENCY_OF_COVERAGE")
+            Dim selectStmt As String = Config("/SQL/CURRENCY_OF_COVERAGE")
             Dim ds As New DataSet
             Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("coverage_id", coverageId.ToByteArray)}
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetProductLiabilityLimitBaseid(ByVal productId As Guid)
+    Public Function GetProductLiabilityLimitBaseid(productId As Guid)
         Try
-            Dim selectStmt As String = Me.Config("/SQL/PRODUCT_LIABILITY_LIMIT_BASE")
+            Dim selectStmt As String = Config("/SQL/PRODUCT_LIABILITY_LIMIT_BASE")
             Dim ds As New DataSet
             Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("product_code_id", productId.ToByteArray)}
 
-            DBHelper.Fetch(ds, selectStmt, Me.PROD_TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, PROD_TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetCoverageDeductible(ByVal dealerId As Guid, ByVal effectiveDate As String, ByVal languageId As Guid)
+    Public Function GetCoverageDeductible(dealerId As Guid, effectiveDate As String, languageId As Guid)
         Try
-            Dim selectStmt As String = Me.Config("/SQL/GET_COVERAGE_DEDUCTIBLE_FROM_CONTRACT")
+            Dim selectStmt As String = Config("/SQL/GET_COVERAGE_DEDUCTIBLE_FROM_CONTRACT")
             Dim ds As New DataSet
             Dim whereClauseConditions As String = ""
             Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("effective_date", effectiveDate)}
 
-            whereClauseConditions &= "   and ELP_LANGUAGE.LANGUAGE_ID = '" & Me.GuidToSQLString(languageId) & "'"
-            whereClauseConditions &= "  and c.dealer_id= '" & Me.GuidToSQLString(dealerId) & "'"
+            whereClauseConditions &= "   and ELP_LANGUAGE.LANGUAGE_ID = '" & GuidToSQLString(languageId) & "'"
+            whereClauseConditions &= "  and c.dealer_id= '" & GuidToSQLString(dealerId) & "'"
             If Not whereClauseConditions = "" Then
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
             Else
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+                selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
             End If
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadDealerCoveragesInfo(ByRef ds As DataSet, ByVal dealerId As Guid, ByVal WarrSalesDate As Date) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_DEALER_COVERAGES_INFO_FOR_WS")
+    Public Function LoadDealerCoveragesInfo(ByRef ds As DataSet, dealerId As Guid, WarrSalesDate As Date) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_DEALER_COVERAGES_INFO_FOR_WS")
         Dim parameters() As DBHelper.DBHelperParameter
         Dim whereClauseConditions As String = ""
         Dim OrderByClause As String = ""
@@ -290,8 +290,8 @@ Public Class CoverageDAL
         End Try
     End Function
 
-    Public Sub ExpireCoverages(ByVal dealerId As Guid, ByVal expirationDate As Date, ByVal effectiveDate As Date, Optional ByVal Transaction As IDbTransaction = Nothing)
-        Dim updateStmt As String = Me.Config("/SQL/EXPIRE_COVERAGES")
+    Public Sub ExpireCoverages(dealerId As Guid, expirationDate As Date, effectiveDate As Date, Optional ByVal Transaction As IDbTransaction = Nothing)
+        Dim updateStmt As String = Config("/SQL/EXPIRE_COVERAGES")
         Dim parameters() As DBHelper.DBHelperParameter
         
         Dim tr As IDbTransaction = Transaction
@@ -321,12 +321,12 @@ Public Class CoverageDAL
         End Try
     End Sub
 
-    Public Function GetAssociatedCertificateCount(ByVal coverageId As Guid)
+    Public Function GetAssociatedCertificateCount(coverageId As Guid)
         Try
-            Dim selectStmt As String = Me.Config("/SQL/GET_ASSOCIATED_CERT_COUNT")
+            Dim selectStmt As String = Config("/SQL/GET_ASSOCIATED_CERT_COUNT")
             Dim ds As New DataSet
             Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("coverage_id", coverageId.ToByteArray)}
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -336,18 +336,18 @@ Public Class CoverageDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         Dim oAttributeValueDAL As New AttributeValueDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
             oAttributeValueDAL.Update(ds.GetChanges(), Transaction)
         End If
     End Sub
 
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim oProdDepSchDal As New DepreciationScdRelationDal
         Dim oAttributeValueDAL As New AttributeValueDAL
         Dim tr As IDbTransaction = Transaction
@@ -356,8 +356,8 @@ Public Class CoverageDAL
         End If
         Try
              oProdDepSchDal.Update(familyDataset, tr, DataRowState.Deleted)
-            MyBase.Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
-            Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            MyBase.Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
+            Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
 
             oAttributeValueDAL.Update(familyDataset.GetChanges(), tr)
 

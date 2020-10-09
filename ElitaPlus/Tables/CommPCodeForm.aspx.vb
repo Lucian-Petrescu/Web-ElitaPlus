@@ -52,20 +52,20 @@ Namespace Tables
         Private Sub SetStateProperties()
             Dim oProductCode As ProductCode
 
-            Me.State.moCommPCodeId = CType(Me.CallingParameters, Guid)
-            If Me.State.moCommPCodeId.Equals(Guid.Empty) Then
-                Me.State.IsPCodeNew = True
+            State.moCommPCodeId = CType(CallingParameters, Guid)
+            If State.moCommPCodeId.Equals(Guid.Empty) Then
+                State.IsPCodeNew = True
                 ClearPCode()
                 SetPCodeButtonsState(True)
                 PopulatePCode()
                 TheDealerControl.ChangeEnabledControlProperty(True)
-                Me.ChangeEnabledControlProperty(Me.moProductCodeDrop, True)
+                ChangeEnabledControlProperty(moProductCodeDrop, True)
             Else
-                Me.State.IsPCodeNew = False
+                State.IsPCodeNew = False
                 SetPCodeButtonsState(False)
                 PopulatePCode()
                 TheDealerControl.ChangeEnabledControlProperty(False)
-                Me.ChangeEnabledControlProperty(Me.moProductCodeDrop, False)
+                ChangeEnabledControlProperty(moProductCodeDrop, False)
             End If
         End Sub
 
@@ -140,18 +140,18 @@ Namespace Tables
 
         Private ReadOnly Property ThePCode() As CommPCode
             Get
-                If Me.State.MyBo Is Nothing Then
-                    If Me.State.IsPCodeNew = True Then
+                If State.MyBo Is Nothing Then
+                    If State.IsPCodeNew = True Then
                         ' For creating, inserting
-                        Me.State.MyBo = New CommPCode
-                        Me.State.moCommPCodeId = Me.State.MyBo.Id
+                        State.MyBo = New CommPCode
+                        State.moCommPCodeId = State.MyBo.Id
                     Else
                         ' For updating, deleting
-                        Me.State.MyBo = New CommPCode(Me.State.moCommPCodeId)
+                        State.MyBo = New CommPCode(State.moCommPCodeId)
                     End If
                 End If
-                BindBoPropertiesToLabels(Me.State.MyBo)
-                Return Me.State.MyBo
+                BindBoPropertiesToLabels(State.MyBo)
+                Return State.MyBo
             End Get
         End Property
 
@@ -159,7 +159,7 @@ Namespace Tables
             Get
                 If moExpirationData Is Nothing Then
                     moExpirationData = New CommPCodeData
-                    moExpirationData.productCodeId = Me.GetSelectedItem(moProductCodeDrop)
+                    moExpirationData.productCodeId = GetSelectedItem(moProductCodeDrop)
                 End If
                 Return ThePCode.ExpirationCount(moExpirationData)
             End Get
@@ -169,7 +169,7 @@ Namespace Tables
             Get
                 If moExpirationData Is Nothing Then
                     moExpirationData = New CommPCodeData
-                    moExpirationData.productCodeId = Me.GetSelectedItem(moProductCodeDrop)
+                    moExpirationData.productCodeId = GetSelectedItem(moProductCodeDrop)
                 End If
                 Return ThePCode.MaxExpiration(moExpirationData)
             End Get
@@ -188,15 +188,15 @@ Namespace Tables
             Get
                 Dim oProductCode As ProductCode
 
-                If Me.State.moDealerId.Equals(Guid.Empty) Then
+                If State.moDealerId.Equals(Guid.Empty) Then
                     oProductCode = New ProductCode(ThePCode.ProductCodeId)
-                    Me.State.moDealerId = oProductCode.DealerId
+                    State.moDealerId = oProductCode.DealerId
                 End If
 
-                Return Me.State.moDealerId
+                Return State.moDealerId
             End Get
-            Set(ByVal value As Guid)
-                Me.State.moDealerId = value
+            Set(value As Guid)
+                State.moDealerId = value
             End Set
         End Property
 
@@ -208,17 +208,17 @@ Namespace Tables
             Get
 
                 '  If Me.State.moCommPCodeEntity Is Nothing Then
-                If Me.State.IsPCodeEntityNew = True Then
+                If State.IsPCodeEntityNew = True Then
                     ' For creating, inserting
-                    Me.State.moCommPCodeEntity = New CommPCodeEntity
-                    Me.State.moCommPCodeEntityId = Me.State.moCommPCodeEntity.Id
+                    State.moCommPCodeEntity = New CommPCodeEntity
+                    State.moCommPCodeEntityId = State.moCommPCodeEntity.Id
                 Else
                     ' For updating, deleting
-                    Me.State.moCommPCodeEntity = New CommPCodeEntity(Me.State.moCommPCodeEntityId)
+                    State.moCommPCodeEntity = New CommPCodeEntity(State.moCommPCodeEntityId)
                 End If
                 '  End If
 
-                Return Me.State.moCommPCodeEntity
+                Return State.moCommPCodeEntity
             End Get
 
         End Property
@@ -231,33 +231,33 @@ Namespace Tables
 
 #Region "Handlers-Init"
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
             Try
-                Me.ErrControllerMaster.Clear_Hide()
-                Me.moErrorControllerEntity.Clear_Hide()
+                ErrControllerMaster.Clear_Hide()
+                moErrorControllerEntity.Clear_Hide()
                 ClearLabelsErrSign()
                 ClearGridHeaders(moEntityGrid)
                 If Not Page.IsPostBack Then
                     '     ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
-                    Me.TranslateGridHeader(moEntityGrid)
-                    Me.TranslateGridControls(moEntityGrid)
-                    Me.SetGridItemStyleColor(moEntityGrid)
-                    Me.SetStateProperties()
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
+                    TranslateGridHeader(moEntityGrid)
+                    TranslateGridControls(moEntityGrid)
+                    SetGridItemStyleColor(moEntityGrid)
+                    SetStateProperties()
 
-                    Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, _
-                                                                        Me.MSG_TYPE_CONFIRM, True)
-                    Me.AddCalendar(Me.BtnEffectiveDate_WRITE, Me.moEffectiveText_WRITE)
-                    Me.AddCalendar(Me.BtnExpirationDate_WRITE, Me.moExpirationText_WRITE)
+                    AddControlMsg(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, _
+                                                                        MSG_TYPE_CONFIRM, True)
+                    AddCalendar(BtnEffectiveDate_WRITE, moEffectiveText_WRITE)
+                    AddCalendar(BtnExpirationDate_WRITE, moExpirationText_WRITE)
                     FromGridToBuffer()
                 Else
                     CheckIfComingFromConfirm()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
 #End Region
@@ -266,23 +266,23 @@ Namespace Tables
 
         Private Sub GoBack()
             Dim retType As New CommissionPeriodSearchForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, _
-                                                                                Me.State.moCommPCodeId, Me.State.boChanged)
-            Me.ReturnToCallingPage(retType)
+                                                                                State.moCommPCodeId, State.boChanged)
+            ReturnToCallingPage(retType)
         End Sub
 
-        Protected Sub btnBack_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnBack.Click
+        Protected Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             Try
                 If IsDirtyPCodeBO() = True Then
-                    Me.DisplayMessageWithDelay(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, _
-                                            Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                    DisplayMessageWithDelay(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, _
+                                            HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
                     GoBack()
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
                 GoBack()
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             Finally
                 FromGridToBuffer()
             End Try
@@ -290,54 +290,54 @@ Namespace Tables
 
         Private Sub SavePCodeChanges()
             If ApplyPCodeChanges() = True Then
-                Me.State.boChanged = True
+                State.boChanged = True
                 PopulatePCode()
                 SetPCodeButtonsState(False)
             End If
         End Sub
 
-        Protected Sub btnSave_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSave_WRITE.Click
+        Protected Sub btnSave_WRITE_Click(sender As Object, e As EventArgs) Handles btnSave_WRITE.Click
             Try
                 SavePCodeChanges()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             Finally
                 FromGridToBuffer()
             End Try
         End Sub
 
-        Protected Sub btnUndo_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnUndo_WRITE.Click
+        Protected Sub btnUndo_WRITE_Click(sender As Object, e As EventArgs) Handles btnUndo_WRITE.Click
             Try
                 ClearPCode()
                 PopulatePCode()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             Finally
                 FromGridToBuffer()
             End Try
         End Sub
 
         Private Sub CreateNew()
-            Me.State.MyBo = Nothing
-            Me.State.moCommPCodeId = Guid.Empty
-            Me.State.IsPCodeNew = True
+            State.MyBo = Nothing
+            State.moCommPCodeId = Guid.Empty
+            State.IsPCodeNew = True
             ClearPCode()
             SetPCodeButtonsState(True)
             PopulatePCode()
             TheDealerControl.ChangeEnabledControlProperty(True)
-            Me.ChangeEnabledControlProperty(Me.moProductCodeDrop, True)
+            ChangeEnabledControlProperty(moProductCodeDrop, True)
         End Sub
 
-        Protected Sub btnNew_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnNew_WRITE.Click
+        Protected Sub btnNew_WRITE_Click(sender As Object, e As EventArgs) Handles btnNew_WRITE.Click
             Try
                 If IsDirtyPCodeBO() = True Then
-                    Me.DisplayMessageWithDelay(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                    DisplayMessageWithDelay(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
                     CreateNew()
                 End If
             Catch ex As Exception
-               Me.HandleErrors(ex, Me.ErrControllerMaster)
+               HandleErrors(ex, ErrControllerMaster)
             Finally
                 FromGridToBuffer()
             End Try
@@ -345,43 +345,43 @@ Namespace Tables
 
         Private Sub CreateNewCopy()
             Dim newObj As New CommPCode
-            Me.State.MyBo = Nothing
+            State.MyBo = Nothing
             ClearEntity()
-            Me.State.searchDV = newObj.Copy(ThePCode)
-            Me.State.IsPCodeNew = True
-            Me.State.MyBo = newObj
-            Me.SetGridControls(moEntityGrid, False)
+            State.searchDV = newObj.Copy(ThePCode)
+            State.IsPCodeNew = True
+            State.MyBo = newObj
+            SetGridControls(moEntityGrid, False)
             EnableDateFields()
             SetPCodeButtonsState(True)
             SetEntityButtonsState(False)
-            PopulatePCodeEntity(Me.POPULATE_ACTION_NO_EDIT, False)
+            PopulatePCodeEntity(POPULATE_ACTION_NO_EDIT, False)
         End Sub
 
-        Protected Sub btnCopy_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCopy_WRITE.Click
+        Protected Sub btnCopy_WRITE_Click(sender As Object, e As EventArgs) Handles btnCopy_WRITE.Click
             Try
                 If IsDirtyPCodeBO() = True Then
-                    Me.DisplayMessageWithDelay(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                    DisplayMessageWithDelay(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
                 Else
                     CreateNewCopy()
                 End If
             Catch ex As Exception
-               Me.HandleErrors(ex, Me.ErrControllerMaster)
+               HandleErrors(ex, ErrControllerMaster)
             Finally
                 FromGridToBuffer()
             End Try
         End Sub
 
-        Protected Sub btnDelete_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnDelete_WRITE.Click
+        Protected Sub btnDelete_WRITE_Click(sender As Object, e As EventArgs) Handles btnDelete_WRITE.Click
             Try
                 If DeletePCode() = True Then
-                    Me.State.boChanged = True
+                    State.boChanged = True
                     GoBack()
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -390,20 +390,20 @@ Namespace Tables
 #Region "Handlers-DropDowns"
 
         ' Multiple Dealer Drop 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
            Handles moDealerMultipleDrop.SelectedDropChanged
             Try
                 EnableDateFields()
-                If Me.State.IsPCodeNew = True Then
+                If State.IsPCodeNew = True Then
                    TheDealerId = TheDealerControl.SelectedGuid
                     PopulateProductCode()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub moProductCodeDrop_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles moProductCodeDrop.SelectedIndexChanged
+        Private Sub moProductCodeDrop_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles moProductCodeDrop.SelectedIndexChanged
             If moProductCodeDrop.SelectedIndex > 0 Then                
                 ' PopulateUpfrontComm()
             End If
@@ -414,15 +414,15 @@ Namespace Tables
 
 #Region "Handlers-Labels"
 
-        Protected Sub BindBoPropertiesToLabels(ByVal oPCode As CommPCode)
-            Me.BindBOPropertyToLabel(oPCode, PRODUCT_CODE_ID_PROPERTY, moProductCodeLabel)
-            Me.BindBOPropertyToLabel(oPCode, EFFECTIVE_DATE_PROPERTY, moEffectiveLabel)
-            Me.BindBOPropertyToLabel(oPCode, EXPIRATION_DATE_PROPERTY, moExpirationLabel)
+        Protected Sub BindBoPropertiesToLabels(oPCode As CommPCode)
+            BindBOPropertyToLabel(oPCode, PRODUCT_CODE_ID_PROPERTY, moProductCodeLabel)
+            BindBOPropertyToLabel(oPCode, EFFECTIVE_DATE_PROPERTY, moEffectiveLabel)
+            BindBOPropertyToLabel(oPCode, EXPIRATION_DATE_PROPERTY, moExpirationLabel)
         End Sub
 
         Public Sub ClearLabelsErrSign()
-            Me.ClearLabelErrSign(moEffectiveLabel)
-            Me.ClearLabelErrSign(moExpirationLabel)
+            ClearLabelErrSign(moEffectiveLabel)
+            ClearLabelErrSign(moExpirationLabel)
         End Sub
 #End Region
 
@@ -430,18 +430,18 @@ Namespace Tables
 
 #Region "Button-Management"
 
-        Private Sub SetPCodeButtonsState(ByVal bIsNew As Boolean)
+        Private Sub SetPCodeButtonsState(bIsNew As Boolean)
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, Not bIsNew)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, Not bIsNew)
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, Not bIsNew)
         End Sub
 
-        Private Sub EnableEffective(ByVal bIsEnable As Boolean)
+        Private Sub EnableEffective(bIsEnable As Boolean)
             ControlMgr.SetEnableControl(Me, moEffectiveText_WRITE, bIsEnable)
             ControlMgr.SetVisibleControl(Me, BtnEffectiveDate_WRITE, bIsEnable)
         End Sub
 
-        Private Sub EnableExpiration(ByVal bIsEnable As Boolean)
+        Private Sub EnableExpiration(bIsEnable As Boolean)
             ControlMgr.SetEnableControl(Me, moExpirationText_WRITE, bIsEnable)
             ControlMgr.SetVisibleControl(Me, BtnExpirationDate_WRITE, bIsEnable)
         End Sub
@@ -457,7 +457,7 @@ Namespace Tables
                     ' Next Year
                     moExpirationText_WRITE.Text = Date.Now().AddYears(1).ToString("dd-MMM-yyyy", CultureInfo.CurrentCulture)
                 Case 1
-                    If Me.State.IsPCodeNew = True Then
+                    If State.IsPCodeNew = True Then
                         'New Record
                         ' Next Day MaxExpiration
                         moEffectiveText_WRITE.Text = MaxExpiration.AddDays(1).ToString("dd-MMM-yyyy", CultureInfo.CurrentCulture)
@@ -471,7 +471,7 @@ Namespace Tables
                     ControlMgr.SetEnableControl(Me, BtnExpirationDate_WRITE, True)
                 Case Else   ' There is more than one record
                     EnableExpiration(True)
-                    If Me.State.IsPCodeNew = True Then
+                    If State.IsPCodeNew = True Then
                         'New Record
                         ' Next Day MaxExpiration
                         moEffectiveText_WRITE.Text = MaxExpiration.AddDays(1).ToString("dd-MMM-yyyy", CultureInfo.CurrentCulture)
@@ -501,7 +501,7 @@ Namespace Tables
             TheDealerControl.BindData(oDataView)
             TheDealerControl.AutoPostBackDD = True
 
-            If Me.State.IsPCodeNew = True Then
+            If State.IsPCodeNew = True Then
                 TheDealerControl.NothingSelected = True
             Else
                 TheDealerControl.SelectedGuid = TheDealerId
@@ -510,14 +510,14 @@ Namespace Tables
         End Sub
 
         Private Sub PopulateProductCode()
-            If ((TheDealerControl.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX) OrElse
-                (TheDealerControl.SelectedIndex = Me.BLANK_ITEM_SELECTED)) Then Return
+            If ((TheDealerControl.SelectedIndex = NO_ITEM_SELECTED_INDEX) OrElse
+                (TheDealerControl.SelectedIndex = BLANK_ITEM_SELECTED)) Then Return
 
             Dim listcontextForProductCodeList As ListContext = New ListContext()
             listcontextForProductCodeList.DealerId = TheDealerId
             Dim productCodeList As ListItem() = CommonConfigManager.Current.ListManager.GetList("ProductCodeByDealer", Thread.CurrentPrincipal.GetLanguageCode(), listcontextForProductCodeList)
 
-            Me.moProductCodeDrop.Populate(productCodeList, New PopulateOptions() With
+            moProductCodeDrop.Populate(productCodeList, New PopulateOptions() With
                     {
                        .AddBlankItem = True,
                        .TextFunc = AddressOf .GetCode,
@@ -525,16 +525,16 @@ Namespace Tables
                     })
             'Me.BindListControlToDataView(moProductCodeDrop, LookupListNew.GetProductCodeLookupList(TheDealerId), "CODE")
 
-            If Me.State.IsPCodeNew = True Then
-                moProductCodeDrop.SelectedIndex = Me.BLANK_ITEM_SELECTED
+            If State.IsPCodeNew = True Then
+                moProductCodeDrop.SelectedIndex = BLANK_ITEM_SELECTED
             Else
-                Me.SetSelectedItem(moProductCodeDrop, ThePCode.ProductCodeId)
+                SetSelectedItem(moProductCodeDrop, ThePCode.ProductCodeId)
             End If
         End Sub
 
         Private Sub PopulateDates()
-            Me.PopulateControlFromBOProperty(moEffectiveText_WRITE, ThePCode.EffectiveDate)
-            Me.PopulateControlFromBOProperty(moExpirationText_WRITE, ThePCode.ExpirationDate)
+            PopulateControlFromBOProperty(moEffectiveText_WRITE, ThePCode.EffectiveDate)
+            PopulateControlFromBOProperty(moExpirationText_WRITE, ThePCode.ExpirationDate)
         End Sub
         Private Sub PopulateUpfrontComm()
             'Dim oProdcode As ProductCode
@@ -567,7 +567,7 @@ Namespace Tables
                 PopulatePCodeEntity()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
@@ -578,7 +578,7 @@ Namespace Tables
 
         Private Sub ClearDealerProdCode()
             Dim oProdCode As ProductCode
-            If Me.State.IsPCodeNew = True Then
+            If State.IsPCodeNew = True Then
                 If TheDealerControl.SelectedIndex >= 0 Then TheDealerControl.SelectedIndex = 0
                 If moProductCodeDrop.SelectedIndex >= 0 Then moProductCodeDrop.SelectedIndex = 0
                 'If pnlUpfrontComm.Visible = True Then
@@ -586,7 +586,7 @@ Namespace Tables
                 'End If
             Else
                 TheDealerControl.SelectedGuid = TheDealerId
-                Me.SetSelectedItem(moProductCodeDrop, ThePCode.ProductCodeId)
+                SetSelectedItem(moProductCodeDrop, ThePCode.ProductCodeId)
                 'If pnlUpfrontComm.Visible = True Then
                 '    oProdCode = New ProductCode(ThePCode.ProductCodeId)
                 '    Me.SetSelectedItem(moupfrontcommDrop, oProdCode.UpfrontCommissionId)
@@ -605,17 +605,17 @@ Namespace Tables
 
 #Region "Business Part"
 
-        Private Sub PopulatePCodeBOFromForm(ByVal oPCode As CommPCode)
+        Private Sub PopulatePCodeBOFromForm(oPCode As CommPCode)
             With oPCode
                 ' DropDowns
-                .ProductCodeId = Me.GetSelectedItem(moProductCodeDrop)
+                .ProductCodeId = GetSelectedItem(moProductCodeDrop)
                 ' Texts
-                Me.PopulateBOProperty(oPCode, EFFECTIVE_DATE_PROPERTY, moEffectiveText_WRITE)
-                Me.PopulateBOProperty(oPCode, EXPIRATION_DATE_PROPERTY, moExpirationText_WRITE)
+                PopulateBOProperty(oPCode, EFFECTIVE_DATE_PROPERTY, moEffectiveText_WRITE)
+                PopulateBOProperty(oPCode, EXPIRATION_DATE_PROPERTY, moExpirationText_WRITE)
             End With
 
 
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Sub
@@ -627,7 +627,7 @@ Namespace Tables
 
             oPCode = ThePCode
             With oPCode
-                PopulatePCodeBOFromForm(Me.State.MyBo)
+                PopulatePCodeBOFromForm(State.MyBo)
                 bIsDirty = .IsDirty
             End With
             bIsEntityDirty = IsDirtyEntityBO()
@@ -650,11 +650,11 @@ Namespace Tables
                     '  Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
                     AddInfoMsgWithDelay(Message.MSG_RECORD_NOT_SAVED)
                 End If
-                Me.State.IsPCodeNew = False
-                Me.State.IsPCodeEntityNew = False
+                State.IsPCodeNew = False
+                State.IsPCodeEntityNew = False
                 SetPCodeButtonsState(False)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
                 bIsOk = False
             End Try
             Return bIsOk
@@ -677,13 +677,13 @@ Namespace Tables
                     End If
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
                 bIsOk = False
             End Try
             Return bIsOk
         End Function
 
-        Public Shared Sub SetLabelColor(ByVal lbl As Label)
+        Public Shared Sub SetLabelColor(lbl As Label)
             lbl.ForeColor = Color.Black
         End Sub
 #End Region
@@ -694,7 +694,7 @@ Namespace Tables
 
 #Region "Entity Handlers-Buttons"
 
-        Private Sub setbuttons(ByVal enable As Boolean)
+        Private Sub setbuttons(enable As Boolean)
             ControlMgr.SetEnableControl(Me, btnBack, enable)
             ControlMgr.SetEnableControl(Me, btnSave_WRITE, enable)
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, enable)
@@ -706,21 +706,21 @@ Namespace Tables
         End Sub
 
         Private Sub NewEntity()
-           Me.State.moCommPCodeEntityId = Guid.Empty
-            Me.State.IsPCodeEntityNew = True
-            Me.State.searchDV = FromGridToBuffer(False)
+           State.moCommPCodeEntityId = Guid.Empty
+            State.IsPCodeEntityNew = True
+            State.searchDV = FromGridToBuffer(False)
             PopulatePCodeEntity(POPULATE_ACTION_NEW, False)
-            Me.SetGridControls(moEntityGrid, False)
-            EnableDisableControls(Me.moPCodePanel_WRITE, True)
+            SetGridControls(moEntityGrid, False)
+            EnableDisableControls(moPCodePanel_WRITE, True)
            
         End Sub
 
-        Protected Sub BtnNewEntity_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BtnNewEntity_WRITE.Click
+        Protected Sub BtnNewEntity_WRITE_Click(sender As Object, e As EventArgs) Handles BtnNewEntity_WRITE.Click
             Try
                 NewEntity()
             
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorControllerEntity)
+                HandleErrors(ex, moErrorControllerEntity)
             Finally
                 FromGridToBuffer()
             End Try
@@ -731,7 +731,7 @@ Namespace Tables
 
 #Region "Entity Handlers-Dropdowns"
 
-        Protected Sub moPayeeTypeDrop_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Protected Sub moPayeeTypeDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs)
             Dim payeeDrop, entityDrop, dealerdrop As DropDownList
             Dim payeeGuid As Guid
             Dim payeeView As DataView
@@ -745,7 +745,7 @@ Namespace Tables
                 ' Enitity
                 entityDrop = CType(GetGridControl(moEntityGrid, index, ENTITY_ENTITY_COL), DropDownList)
                 ClearEntityDrop(entityDrop)
-                payeeGuid = Me.GetSelectedItem(payeeDrop)
+                payeeGuid = GetSelectedItem(payeeDrop)
                 payeeView = LookupListNew.GetPayeeTypeLookupList(Authentication.LangId)
                 payeeCode = LookupListNew.GetCodeFromId(payeeView, payeeGuid)
                 If payeeCode = Codes.Payee_Type_Comm_Entity Then
@@ -753,13 +753,13 @@ Namespace Tables
                 End If
                 'REQ-976
                 If payeeCode = Codes.Payee_Type_Branch Then
-                    dealerdrop = CType(Me.moDealerMultipleDrop.FindControl("moMultipleColumnDrop"), DropDownList)
+                    dealerdrop = CType(moDealerMultipleDrop.FindControl("moMultipleColumnDrop"), DropDownList)
                     PopulateBranchEntityDrop(dealerdrop, entityDrop)
                 End If
                 'End REQ-976
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorControllerEntity)
+                HandleErrors(ex, moErrorControllerEntity)
             Finally
                 FromGridToBuffer()
             End Try
@@ -798,12 +798,12 @@ Namespace Tables
         '    End Try
         'End Sub
 
-        Public Sub RowCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs)
+        Public Sub RowCreated(sender As Object, e As GridViewRowEventArgs)
             BaseItemCreated(sender, e)
           
         End Sub
 
-        Protected Sub ItemBound(ByVal source As Object, ByVal e As GridViewRowEventArgs) Handles moEntityGrid.RowDataBound
+        Protected Sub ItemBound(source As Object, e As GridViewRowEventArgs) Handles moEntityGrid.RowDataBound
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim oTextBox As TextBox
@@ -813,72 +813,72 @@ Namespace Tables
             Dim sCommAmount, sMarkupAmount, clawbackdays As String
             Dim payeeView As DataView
            
-            If (itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
+            If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
                 With e.Row
-                    If Not dvRow(CommPCodeEntityDAL.COL_NAME_PAYEE_TYPE_ID) Is DBNull.Value Then
+                    If dvRow(CommPCodeEntityDAL.COL_NAME_PAYEE_TYPE_ID) IsNot DBNull.Value Then
                         payeeDrop = CType(e.Row.FindControl("moPayeeTypeDrop"), DropDownList)
                         PopulatePayeeDrop(payeeDrop)
                         payeeGuid = New Guid(CType(dvRow(CommPCodeEntityDAL.COL_NAME_PAYEE_TYPE_ID), Byte()))
                         If (payeeDrop.Items.FindByValue(payeeGuid.ToString) Is Nothing) Then
                             ' New Record
-                            payeeDrop.SelectedIndex = Me.BLANK_ITEM_SELECTED
+                            payeeDrop.SelectedIndex = BLANK_ITEM_SELECTED
                         Else 'Old Record
-                            Me.SetSelectedItem(payeeDrop, payeeGuid)
+                            SetSelectedItem(payeeDrop, payeeGuid)
                         End If
 
                     End If
 
                     ' Entity Depends on Payee Type
-                    If Not dvRow(CommPCodeEntityDAL.COL_NAME_PAYEE_TYPE_ID) Is DBNull.Value Then
+                    If dvRow(CommPCodeEntityDAL.COL_NAME_PAYEE_TYPE_ID) IsNot DBNull.Value Then
                         entityDrop = CType(e.Row.FindControl("moEntityDrop"), DropDownList)
                         ClearEntityDrop(entityDrop)
                         payeeView = LookupListNew.GetPayeeTypeLookupList(Authentication.LangId)
                         payeeCode = LookupListNew.GetCodeFromId(payeeView, payeeGuid)
                         If payeeCode = Codes.Payee_Type_Comm_Entity Then
                             PopulateEntityDrop(entityDrop)
-                            If Not dvRow(CommPCodeEntityDAL.COL_NAME_ENTITY_ID) Is DBNull.Value Then
+                            If dvRow(CommPCodeEntityDAL.COL_NAME_ENTITY_ID) IsNot DBNull.Value Then
                                 entityGuid = New Guid(CType(dvRow(CommPCodeEntityDAL.COL_NAME_ENTITY_ID), Byte()))
                             Else
                                 entityGuid = Guid.Empty
                             End If
                             If (entityDrop.Items.FindByValue(entityGuid.ToString) Is Nothing) Then
                                 ' New Record
-                                entityDrop.SelectedIndex = Me.BLANK_ITEM_SELECTED
+                                entityDrop.SelectedIndex = BLANK_ITEM_SELECTED
                             Else 'Old Record
-                                Me.SetSelectedItem(entityDrop, entityGuid)
+                                SetSelectedItem(entityDrop, entityGuid)
                             End If
                         End If
 
                         ''REQ 976
                         If payeeCode = Codes.Payee_Type_Branch Then
-                            dealerdrop = CType(Me.moDealerMultipleDrop.FindControl("moMultipleColumnDrop"), DropDownList)
+                            dealerdrop = CType(moDealerMultipleDrop.FindControl("moMultipleColumnDrop"), DropDownList)
                             PopulateBranchEntityDrop(dealerdrop, entityDrop)
-                            If Not dvRow(CommPCodeEntityDAL.COL_NAME_BRANCH_ID) Is DBNull.Value Then
+                            If dvRow(CommPCodeEntityDAL.COL_NAME_BRANCH_ID) IsNot DBNull.Value Then
                                 entityGuid = New Guid(CType(dvRow(CommPCodeEntityDAL.COL_NAME_BRANCH_ID), Byte()))
                             Else
                                 entityGuid = Guid.Empty
                             End If
                             If (entityDrop.Items.FindByValue(entityGuid.ToString) Is Nothing) Then
                                 ' New Record
-                                entityDrop.SelectedIndex = Me.BLANK_ITEM_SELECTED
+                                entityDrop.SelectedIndex = BLANK_ITEM_SELECTED
                             Else 'Old Record
-                                Me.SetSelectedItem(entityDrop, entityGuid)
+                                SetSelectedItem(entityDrop, entityGuid)
                             End If
                         End If
 
                         If payeeCode Is Nothing Then
-                            dealerdrop = CType(Me.moDealerMultipleDrop.FindControl("moMultipleColumnDrop"), DropDownList)
+                            dealerdrop = CType(moDealerMultipleDrop.FindControl("moMultipleColumnDrop"), DropDownList)
                             PopulateBranchEntityDrop(dealerdrop, entityDrop)
-                            If Not dvRow(CommPCodeEntityDAL.COL_NAME_BRANCH_ID) Is DBNull.Value Then
+                            If dvRow(CommPCodeEntityDAL.COL_NAME_BRANCH_ID) IsNot DBNull.Value Then
                                 entityGuid = New Guid(CType(dvRow(CommPCodeEntityDAL.COL_NAME_BRANCH_ID), Byte()))
                             Else
                                 entityGuid = Guid.Empty
                             End If
                             If (entityDrop.Items.FindByValue(entityGuid.ToString) Is Nothing) Then
                                 ' New Record
-                                entityDrop.SelectedIndex = Me.BLANK_ITEM_SELECTED
+                                entityDrop.SelectedIndex = BLANK_ITEM_SELECTED
                             Else 'Old Record
-                                Me.SetSelectedItem(entityDrop, entityGuid)
+                                SetSelectedItem(entityDrop, entityGuid)
                             End If
                         End If
 
@@ -905,7 +905,7 @@ Namespace Tables
 
                     'End If
 
-                    If Not dvRow(CommPCodeEntityDAL.COL_NAME_IS_COMM_FIXED_CODE) Is DBNull.Value Then
+                    If dvRow(CommPCodeEntityDAL.COL_NAME_IS_COMM_FIXED_CODE) IsNot DBNull.Value Then
                         isCommFixedDrop = CType(e.Row.FindControl("moIsCommFixedDrop"), DropDownList)
                         isCommFixedDrop.Attributes.Add("onchange", "setCommDrop(this, " & .RowIndex & ")")
                         PopulateYesNoDrop(isCommFixedDrop, False)
@@ -914,18 +914,18 @@ Namespace Tables
                             ' New Record
                             isCommFixedCode = "Y"
                         End If
-                        Me.SetSelectedItem(isCommFixedDrop, isCommFixedCode)
+                        SetSelectedItem(isCommFixedDrop, isCommFixedCode)
                     End If
 
-                    If Not dvRow(CommPCodeEntityDAL.COL_NAME_COMM_SCHEDULE_ID) Is DBNull.Value Then
+                    If dvRow(CommPCodeEntityDAL.COL_NAME_COMM_SCHEDULE_ID) IsNot DBNull.Value Then
                         commScheduleDrop = CType(e.Row.FindControl("moCommScheduleDrop"), DropDownList)
                         PopulateCommScheduleDrop(commScheduleDrop)
                         commScheduleGuid = New Guid(CType(dvRow(CommPCodeEntityDAL.COL_NAME_COMM_SCHEDULE_ID), Byte()))
                         If (commScheduleDrop.Items.FindByValue(commScheduleGuid.ToString) Is Nothing) Then
                             ' New Record
-                            commScheduleDrop.SelectedIndex = Me.BLANK_ITEM_SELECTED
+                            commScheduleDrop.SelectedIndex = BLANK_ITEM_SELECTED
                         Else 'Old Record
-                            Me.SetSelectedItem(commScheduleDrop, commScheduleGuid)
+                            SetSelectedItem(commScheduleDrop, commScheduleGuid)
                         End If
                     End If
 
@@ -936,7 +936,7 @@ Namespace Tables
                     oTextBox = CType(.FindControl("moCommissionAmount"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setCommTotal(this, " & .RowIndex & ")")
                     sCommAmount = GetAmountFormattedDoubleString(CType(dvRow(CommPCodeEntityDAL.COL_NAME_COMMISSION_AMOUNT), String))
-                    Me.PopulateControlFromBOProperty(oTextBox, sCommAmount)
+                    PopulateControlFromBOProperty(oTextBox, sCommAmount)
 
                     'If Not dvRow(CommPCodeEntityDAL.COL_NAME_IS_MARKUP_FIXED_CODE) Is DBNull.Value Then
                     '    isMarkupFixedDrop = CType(e.Row.FindControl("moIsMarkupFixedDrop"), DropDownList)
@@ -957,7 +957,7 @@ Namespace Tables
                     oTextBox = CType(.FindControl("moMarkupAmountText"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setMarkupTotal(this, " & .RowIndex & ")")
                     sMarkupAmount = GetAmountFormattedDoubleString(CType(dvRow(CommPCodeEntityDAL.COL_NAME_MARKUP_AMOUNT), String))
-                    Me.PopulateControlFromBOProperty(oTextBox, sMarkupAmount)
+                    PopulateControlFromBOProperty(oTextBox, sMarkupAmount)
 
                     ''REQ-976 
                     If dvRow(CommPCodeEntityDAL.COL_NAME_DAYS_TO_CLAWBACK) Is DBNull.Value Then
@@ -968,7 +968,7 @@ Namespace Tables
                     oTextBox = CType(.FindControl("modaystoclawbackText"), TextBox)
 
                     clawbackdays = CType(dvRow(CommPCodeEntityDAL.COL_NAME_DAYS_TO_CLAWBACK), String)
-                    Me.PopulateControlFromBOProperty(oTextBox, clawbackdays)
+                    PopulateControlFromBOProperty(oTextBox, clawbackdays)
 
                     'End REQ-976
                 End With
@@ -986,17 +986,17 @@ Namespace Tables
                 oTextBox = CType(e.Row.FindControl("moTotalCommText"), TextBox)
                 oTextBox.Text = String.Empty
                 EnableDisableControls(oTextBox, True)  ' ReadOnly
-                Me.State.totalCFId = oTextBox.ClientID
+                State.totalCFId = oTextBox.ClientID
                 oTextBox = CType(e.Row.FindControl("moTotalMarkupText"), TextBox)
                 oTextBox.Text = String.Empty
                 EnableDisableControls(oTextBox, True)  ' ReadOnly
-                Me.State.totalMFId = oTextBox.ClientID
+                State.totalMFId = oTextBox.ClientID
             End If
             BaseItemBound(source, e)
             
         End Sub
 
-        Private Sub RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles moEntityGrid.RowCommand
+        Private Sub RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles moEntityGrid.RowCommand
             Try
                 'If (e.CommandName = Me.EDIT_COMMAND_NAME) Then
                 '    Dim index As Integer = CInt(e.CommandArgument)
@@ -1022,17 +1022,17 @@ Namespace Tables
 
                 'ElseIf (e.CommandName = Me.DELETE_COMMAND_NAME) Then
 
-                If (e.CommandName = Me.DELETE_COMMAND_NAME) Then
+                If (e.CommandName = DELETE_COMMAND_NAME) Then
                     Dim index As Integer = CInt(e.CommandArgument)
-                    Me.State.moCommPCodeEntityId = Me.GetGuidFromString( _
-                                    Me.GetGridText(Me.moEntityGrid, index, ENTITY_ID_COL))
+                    State.moCommPCodeEntityId = GetGuidFromString( _
+                                    GetGridText(moEntityGrid, index, ENTITY_ID_COL))
                     If DeleteEntity(True) = True Then
-                        PopulatePCodeEntity(Me.POPULATE_ACTION_NO_EDIT)
+                        PopulatePCodeEntity(POPULATE_ACTION_NO_EDIT)
                     End If
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorControllerEntity)
+                HandleErrors(ex, moErrorControllerEntity)
             Finally
                 FromGridToBuffer()
             End Try
@@ -1043,14 +1043,14 @@ Namespace Tables
 
 #Region "Entity-Handlers-Labels"
 
-        Protected Sub BindBoPropertiesToGridHeader(ByVal oEntity As CommPCodeEntity)
-            Me.BindBOPropertyToGridHeader(oEntity, COMMISSION_AMOUNT_PROPERTY, _
-                                                Me.moEntityGrid.Columns(ENTITY_COMMISSION_AMOUNT_COL))
-            Me.BindBOPropertyToGridHeader(oEntity, MARKUP_AMOUNT_PROPERTY, _
-                                                Me.moEntityGrid.Columns(ENTITY_MARKUP_AMOUNT_COL))
+        Protected Sub BindBoPropertiesToGridHeader(oEntity As CommPCodeEntity)
+            BindBOPropertyToGridHeader(oEntity, COMMISSION_AMOUNT_PROPERTY, _
+                                                moEntityGrid.Columns(ENTITY_COMMISSION_AMOUNT_COL))
+            BindBOPropertyToGridHeader(oEntity, MARKUP_AMOUNT_PROPERTY, _
+                                                moEntityGrid.Columns(ENTITY_MARKUP_AMOUNT_COL))
 
             'REQ-976
-            Me.BindBOPropertyToGridHeader(oEntity, DAYS_TO_CLAWBACK_PROPERTY, Me.moEntityGrid.Columns(ENTITY_DAYS_TO_CLAWBACK_COL))
+            BindBOPropertyToGridHeader(oEntity, DAYS_TO_CLAWBACK_PROPERTY, moEntityGrid.Columns(ENTITY_DAYS_TO_CLAWBACK_COL))
             'END REQ-976
         End Sub
 
@@ -1061,12 +1061,12 @@ Namespace Tables
 
 #Region "Entity Button-Management"
 
-        Public Overrides Sub BaseSetButtonsState(ByVal bIsEdit As Boolean)
+        Public Overrides Sub BaseSetButtonsState(bIsEdit As Boolean)
             SetEntityButtonsState(bIsEdit)
         End Sub
 
-        Private Sub SetEntityButtonsState(ByVal bIsEdit As Boolean)
-            If Me.State.IsPCodeNew = True Then
+        Private Sub SetEntityButtonsState(bIsEdit As Boolean)
+            If State.IsPCodeNew = True Then
                 ControlMgr.SetVisibleControl(Me, BtnNewEntity_WRITE, False)
             Else
                 ControlMgr.SetVisibleControl(Me, BtnNewEntity_WRITE, True)
@@ -1079,7 +1079,7 @@ Namespace Tables
 
 #Region "Entity Populate"
 
-        Private Function PopulatePayeeDrop(ByVal payeeDrop As DropDownList) As ListItem()
+        Private Function PopulatePayeeDrop(payeeDrop As DropDownList) As ListItem()
             Try
                 'Dim payeeView As DataView = LookupListNew.GetPayeeTypeLookupList(Authentication.LangId)
                 'Me.BindListControlToDataView(payeeDrop, payeeView, , , False)
@@ -1091,11 +1091,11 @@ Namespace Tables
                 Return payeeTypes
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorControllerEntity)
+                HandleErrors(ex, moErrorControllerEntity)
             End Try
         End Function
 
-        Private Function PopulateCommScheduleDrop(ByVal commSchlDrop As DropDownList) As ListItem()
+        Private Function PopulateCommScheduleDrop(commSchlDrop As DropDownList) As ListItem()
             Try
                 'Dim commSchlView As DataView = LookupListNew.GetCommScheduleLookupList(Authentication.LangId)
                 'Me.BindListControlToDataView(commSchlDrop, commSchlView, , , True)
@@ -1109,11 +1109,11 @@ Namespace Tables
                 Return CommSchedule
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorControllerEntity)
+                HandleErrors(ex, moErrorControllerEntity)
             End Try
         End Function
 
-        Private Sub PopulateEntityDrop(ByVal entityDrop As DropDownList)
+        Private Sub PopulateEntityDrop(entityDrop As DropDownList)
             Dim listcontextForCommEntity As ListContext = New ListContext()
             listcontextForCommEntity.CompanyGroupId = Authentication.CompanyGroupId
             Dim commEntityList As ListItem() = CommonConfigManager.Current.ListManager.GetList("CommEntityByCompanyGroup", Thread.CurrentPrincipal.GetLanguageCode(), listcontextForCommEntity)
@@ -1130,8 +1130,8 @@ Namespace Tables
             'Me.BindListControlToDataView(entityDrop, enitityView, , , True)
         End Sub
         ''REQ-976
-        Private Sub PopulateBranchEntityDrop(ByVal dealerdrop As DropDownList, ByVal entityDrop As DropDownList)
-            Dim dealerid As Guid = Me.GetSelectedItem(dealerdrop)
+        Private Sub PopulateBranchEntityDrop(dealerdrop As DropDownList, entityDrop As DropDownList)
+            Dim dealerid As Guid = GetSelectedItem(dealerdrop)
             Dim listcontextForBranchCode As ListContext = New ListContext()
             listcontextForBranchCode.DealerId = TheDealerId
             Dim branchCodeList As ListItem() = CommonConfigManager.Current.ListManager.GetList(ListCodes.BranchCodeByDealer, Thread.CurrentPrincipal.GetLanguageCode(), listcontextForBranchCode)
@@ -1147,7 +1147,7 @@ Namespace Tables
         End Sub
         'End REQ-976
 
-        Private Sub PopulateYesNoDrop(ByVal yesNoDrop As DropDownList, ByVal nothingSelected As Boolean)
+        Private Sub PopulateYesNoDrop(yesNoDrop As DropDownList, nothingSelected As Boolean)
             Try
                 'Dim yesNoView As DataView = LookupListNew.GetYesNoLookupList(Authentication.LangId)
                 'Me.BindListTextToDataView(yesNoDrop, yesNoView, , "CODE", nothingSelected)
@@ -1159,20 +1159,20 @@ Namespace Tables
                                                       .ValueFunc = AddressOf .GetCode
                                                      })
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorControllerEntity)
+                HandleErrors(ex, moErrorControllerEntity)
             End Try
         End Sub
 
         Private Function GetPCodeEntityDataView() As DataView
-            Dim commPCodeEntityView As DataView = CommPCodeEntity.getList(Me.State.MyBo.Id)
+            Dim commPCodeEntityView As DataView = CommPCodeEntity.getList(State.MyBo.Id)
             Return commPCodeEntityView
 
         End Function
 
-        Public Overrides Sub AddNewBoRow(ByVal dv As DataView)
+        Public Overrides Sub AddNewBoRow(dv As DataView)
             Dim oId As Guid = Guid.NewGuid
 
-            Me.BaseAddNewGridRow(Me.moEntityGrid, dv, oId)
+            BaseAddNewGridRow(moEntityGrid, dv, oId)
         End Sub
 
         Private Sub PopulatePCodeEntity(Optional ByVal oAction As String = POPULATE_ACTION_NONE, _
@@ -1182,19 +1182,19 @@ Namespace Tables
             Dim totalPMarkup As Double = 0
 
             Try
-                If Me.State.IsPCodeNew = True Then
+                If State.IsPCodeNew = True Then
                     SetEntityButtonsState(False)
                 End If
 
                 If reLoad = True Then
                     oDataView = GetPCodeEntityDataView()
-                    Me.State.MyBo.AttachEntities(totalPComm, totalPMarkup)
-                    Me.State.searchDV = oDataView
+                    State.MyBo.AttachEntities(totalPComm, totalPMarkup)
+                    State.searchDV = oDataView
                 End If
-                BasePopulateGrid(Me.moEntityGrid, Me.State.searchDV, Me.State.moCommPCodeEntityId, oAction)
+                BasePopulateGrid(moEntityGrid, State.searchDV, State.moCommPCodeEntityId, oAction)
             
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorControllerEntity)
+                HandleErrors(ex, moErrorControllerEntity)
             End Try
 
         End Sub
@@ -1204,12 +1204,12 @@ Namespace Tables
 #Region "Entity Clear"
 
         Private Sub ClearEntity()
-            Me.moEntityGrid.DataSource = Nothing
-            Me.moEntityGrid.DataBind()
+            moEntityGrid.DataSource = Nothing
+            moEntityGrid.DataBind()
         End Sub
 
-        Private Sub ClearEntityDrop(ByVal entityDrop As DropDownList)
-            Me.ClearList(entityDrop)
+        Private Sub ClearEntityDrop(entityDrop As DropDownList)
+            ClearList(entityDrop)
         End Sub
 
 #End Region
@@ -1224,24 +1224,24 @@ Namespace Tables
             Return bIsDirty
         End Function
 
-        Private Function DeleteEntity(ByVal singleEntry As Boolean) As Boolean
+        Private Function DeleteEntity(singleEntry As Boolean) As Boolean
             Dim bIsOk As Boolean = True
             If (singleEntry = True) Then
-                Me.State.moCommPCodeEntity = New CommPCodeEntity(Me.State.moCommPCodeEntityId)
+                State.moCommPCodeEntity = New CommPCodeEntity(State.moCommPCodeEntityId)
             Else
-                Me.State.moCommPCodeEntity = Me.State.MyBo.AddCommPCodeEntity(Me.State.moCommPCodeEntityId)
+                State.moCommPCodeEntity = State.MyBo.AddCommPCodeEntity(State.moCommPCodeEntityId)
             End If
 
             Try
-                With Me.State.moCommPCodeEntity
+                With State.moCommPCodeEntity
                     .Delete(singleEntry)
                     .Save()
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorControllerEntity)
+                HandleErrors(ex, moErrorControllerEntity)
                 bIsOk = False
             End Try
-            Me.State.moCommPCodeEntity = Nothing
+            State.moCommPCodeEntity = Nothing
             Return bIsOk
         End Function
 
@@ -1254,8 +1254,8 @@ Namespace Tables
             'Try
             oRows = CommPCodeEntity.getList(ThePCode.Id).Table.Rows
             For Each oRow In oRows
-                Me.State.moCommPCodeEntityId = New Guid(CType(oRow(CommPCodeEntityDAL.COL_NAME_COMM_P_CODE_ENTITY_ID), Byte()))
-                Me.State.moCommPCodeEntity = Me.State.MyBo.AddCommPCodeEntity(Me.State.moCommPCodeEntityId)
+                State.moCommPCodeEntityId = New Guid(CType(oRow(CommPCodeEntityDAL.COL_NAME_COMM_P_CODE_ENTITY_ID), Byte()))
+                State.moCommPCodeEntity = State.MyBo.AddCommPCodeEntity(State.moCommPCodeEntityId)
                 If DeleteEntity(False) = False Then Return False
             Next
             Return bIsOk
@@ -1274,58 +1274,58 @@ Namespace Tables
 
             If moEntityGrid.Rows.Count = 0 Then Return bIsDirty
             For Each row As GridViewRow In moEntityGrid.Rows
-                entityId = Me.GetGuidFromString( _
-                                Me.GetGridText(Me.moEntityGrid, row.RowIndex, ENTITY_ID_COL))
-                entity = Me.State.MyBo.AddCommPCodeEntity(entityId)
+                entityId = GetGuidFromString( _
+                                GetGridText(moEntityGrid, row.RowIndex, ENTITY_ID_COL))
+                entity = State.MyBo.AddCommPCodeEntity(entityId)
                 BindBoPropertiesToGridHeader(entity)
 
                 ' Descriptions
-                Me.PopulateBOProperty(entity, COMMISSION_AMOUNT_PROPERTY, _
-                    CType(Me.GetGridControl(moEntityGrid, row.RowIndex, ENTITY_COMMISSION_AMOUNT_COL), TextBox))
-                Me.PopulateBOProperty(entity, MARKUP_AMOUNT_PROPERTY, _
-                    CType(Me.GetGridControl(moEntityGrid, row.RowIndex, ENTITY_MARKUP_AMOUNT_COL), TextBox))
+                PopulateBOProperty(entity, COMMISSION_AMOUNT_PROPERTY, _
+                    CType(GetGridControl(moEntityGrid, row.RowIndex, ENTITY_COMMISSION_AMOUNT_COL), TextBox))
+                PopulateBOProperty(entity, MARKUP_AMOUNT_PROPERTY, _
+                    CType(GetGridControl(moEntityGrid, row.RowIndex, ENTITY_MARKUP_AMOUNT_COL), TextBox))
                 'REQ-976
-                Me.PopulateBOProperty(entity, DAYS_TO_CLAWBACK_PROPERTY, _
-                                      CType(Me.GetGridControl(moEntityGrid, row.RowIndex, ENTITY_DAYS_TO_CLAWBACK_COL), TextBox))
+                PopulateBOProperty(entity, DAYS_TO_CLAWBACK_PROPERTY, _
+                                      CType(GetGridControl(moEntityGrid, row.RowIndex, ENTITY_DAYS_TO_CLAWBACK_COL), TextBox))
 
                 'End REQ-976
 
                 ' Guids
                 payeeDrop = CType(row.FindControl("moPayeeTypeDrop"), DropDownList)
-                payeeId = Me.GetSelectedItem(payeeDrop)
-                Me.PopulateBOProperty(entity, PAYEE_TYPE_ID_PROPERTY, payeeId)
+                payeeId = GetSelectedItem(payeeDrop)
+                PopulateBOProperty(entity, PAYEE_TYPE_ID_PROPERTY, payeeId)
 
                 'REQ-976
-                payeedesc = Me.GetSelectedDescription(payeeDrop)
+                payeedesc = GetSelectedDescription(payeeDrop)
 
                 If payeedesc = "Branch" Then
                     entityDrop = CType(row.FindControl("moEntityDrop"), DropDownList)
-                    entityDropId = Me.GetSelectedItem(entityDrop)
-                    Me.PopulateBOProperty(entity, BRANCH_ID_PROPERTY, entityDropId)
+                    entityDropId = GetSelectedItem(entityDrop)
+                    PopulateBOProperty(entity, BRANCH_ID_PROPERTY, entityDropId)
                 Else
                     ' If payeedesc = "Commission Entity" Then
                     entityDrop = CType(row.FindControl("moEntityDrop"), DropDownList)
-                    entityDropId = Me.GetSelectedItem(entityDrop)
-                    Me.PopulateBOProperty(entity, ENTITY_ID_PROPERTY, entityDropId)
+                    entityDropId = GetSelectedItem(entityDrop)
+                    PopulateBOProperty(entity, ENTITY_ID_PROPERTY, entityDropId)
                 End If
                 'End Req-976
 
 
                 isCommFixedDrop = CType(row.FindControl("moIsCommFixedDrop"), DropDownList)
                 isFixedView = LookupListNew.GetYesNoLookupList(Authentication.LangId)
-                isCommFixedCode = Me.GetSelectedValue(isCommFixedDrop)
+                isCommFixedCode = GetSelectedValue(isCommFixedDrop)
                 isCommFixedId = LookupListNew.GetIdFromCode(isFixedView, isCommFixedCode)
-                Me.PopulateBOProperty(entity, IS_COMM_FIXED_ID_PROPERTY, isCommFixedId)
+                PopulateBOProperty(entity, IS_COMM_FIXED_ID_PROPERTY, isCommFixedId)
 
                 commScheduleDrop = CType(row.FindControl("mocommScheduleDrop"), DropDownList)
-                commScheduleId = Me.GetSelectedItem(commScheduleDrop)
-                Me.PopulateBOProperty(entity, COMM_SCHEDULE_ID_PROPERTY, commScheduleId)
+                commScheduleId = GetSelectedItem(commScheduleDrop)
+                PopulateBOProperty(entity, COMM_SCHEDULE_ID_PROPERTY, commScheduleId)
 
                 'isMarkupFixedDrop = CType(row.FindControl("moIsMarkupFixedDrop"), DropDownList)
                 'isMarkupFixedCode = Me.GetSelectedValue(isMarkupFixedDrop)
                 'isMarkupFixedId = LookupListNew.GetIdFromCode(isFixedView, isMarkupFixedCode)
                 'Me.PopulateBOProperty(entity, IS_MARKUP_FIXED_ID_PROPERTY, isMarkupFixedId)
-                If Me.ErrCollection.Count > 0 Then
+                If ErrCollection.Count > 0 Then
                     Throw New PopulateBOErrorException
                 End If
                 If entity.IsDirty = True Then
@@ -1347,18 +1347,18 @@ Namespace Tables
 #Region "P Code State-Management"
 
         Protected Sub ComingFromBack()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the Back Button
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         ' Save and go back to Search Page
                         If ApplyPCodeChanges() = True Then
-                            Me.State.boChanged = True
+                            State.boChanged = True
                             GoBack()
                         End If
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
                         ' Go back to Search Page
                         GoBack()
                 End Select
@@ -1367,18 +1367,18 @@ Namespace Tables
         End Sub
 
         Protected Sub ComingFromNew()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the New Button
 
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         ' Save and create a new BO
                         If ApplyPCodeChanges() = True Then
                             CreateNew()
                         End If
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
                         ' create a new BO
                         CreateNew()
                 End Select
@@ -1387,19 +1387,19 @@ Namespace Tables
         End Sub
 
         Protected Sub ComingFromNewCopy()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the New Copy Button
 
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         ' Save and create a new Copy BO
                         If ApplyPCodeChanges() = True Then
-                            Me.State.boChanged = True
+                            State.boChanged = True
                             CreateNewCopy()
                         End If
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
                         ' create a new BO
                         CreateNewCopy()
                 End Select
@@ -1409,7 +1409,7 @@ Namespace Tables
 
         Protected Sub CheckIfComingFromConfirm()
             Try
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     ' Period
                     Case ElitaPlusPage.DetailPageCommand.Back
                         ComingFromBack()
@@ -1421,15 +1421,15 @@ Namespace Tables
                         ComingFromNewCopy()
                         FromGridToBuffer()
                     Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                        Me.ErrControllerMaster.AddErrorAndShow(Me.State.LastErrMsg)
+                        ErrControllerMaster.AddErrorAndShow(State.LastErrMsg)
                         FromGridToBuffer()
                 End Select
 
                 'Clean after consuming the action
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                Me.HiddenSaveChangesPromptResponse.Value = String.Empty
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                HiddenSaveChangesPromptResponse.Value = String.Empty
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -1450,17 +1450,17 @@ Namespace Tables
                     .AppendLine()
                     .Append("function GetCommFixedId() {")
                     .AppendLine()
-                    .Append("return '" & Me.State.totalCFId & "';")
+                    .Append("return '" & State.totalCFId & "';")
                     .Append("}")
                     .AppendLine()
                     .Append("function GetMarkupFixedId() {")
                     .AppendLine()
-                    .Append("return '" & Me.State.totalMFId & "';")
+                    .Append("return '" & State.totalMFId & "';")
                     .Append("}")
                     .AppendLine()
                     .Append("function InitFixedArrays() {")
                     .AppendLine()
-                    .Append(Me.State.sBuffer.ToString())
+                    .Append(State.sBuffer.ToString())
                     .Append("}")
                     .AppendLine()
                     .Append("InitFixedArrays();")
@@ -1477,15 +1477,15 @@ Namespace Tables
             'moEntityCTotalPText.Text = GetAmountFormattedDoubleString(Me.State.totalCF.ToString)
             'moEntityMTotalPText.Text = GetAmountFormattedDoubleString(Me.State.totalMF.ToString)
 
-            If (Not moEntityGrid.FooterRow Is Nothing) Then
+            If (moEntityGrid.FooterRow IsNot Nothing) Then
                 oTextBox = CType(moEntityGrid.FooterRow.FindControl("moTotalCommText"), TextBox)
-                If (Not oTextBox Is Nothing) Then
-                    oTextBox.Text = GetAmountFormattedDoubleString(Me.State.totalCF.ToString)
+                If (oTextBox IsNot Nothing) Then
+                    oTextBox.Text = GetAmountFormattedDoubleString(State.totalCF.ToString)
                 End If
 
                 oTextBox = CType(moEntityGrid.FooterRow.FindControl("moTotalMarkupText"), TextBox)
-                If (Not oTextBox Is Nothing) Then
-                    oTextBox.Text = GetAmountFormattedDoubleString(Me.State.totalMF.ToString)
+                If (oTextBox IsNot Nothing) Then
+                    oTextBox.Text = GetAmountFormattedDoubleString(State.totalMF.ToString)
                 End If
             End If
         End Sub
@@ -1503,37 +1503,37 @@ Namespace Tables
 
 
             Try
-                Me.State.sBuffer = New StringBuilder(String.Empty)
-                Me.State.totalCF = 0
-                Me.State.totalMF = 0
+                State.sBuffer = New StringBuilder(String.Empty)
+                State.totalCF = 0
+                State.totalMF = 0
                 oDataSet = New DataSet
             
 
                 For Each row As GridViewRow In moEntityGrid.Rows
                     dCommAmount = 0
                     dMarkupAmount = 0
-                    entityId = Me.GetGuidFromString( _
-                                Me.GetGridText(Me.moEntityGrid, row.RowIndex, ENTITY_ID_COL))
+                    entityId = GetGuidFromString( _
+                                GetGridText(moEntityGrid, row.RowIndex, ENTITY_ID_COL))
 
                     entityList = New CommPCodeEntityList(True, entityId, oDataSet)
 
 
                     ' Descriptions
-                    Me.PopulateBOProperty(entityList, COMMISSION_AMOUNT_PROPERTY, _
-                        CType(Me.GetGridControl(moEntityGrid, row.RowIndex, ENTITY_COMMISSION_AMOUNT_COL), TextBox))
-                    Me.PopulateBOProperty(entityList, MARKUP_AMOUNT_PROPERTY, _
-                        CType(Me.GetGridControl(moEntityGrid, row.RowIndex, ENTITY_MARKUP_AMOUNT_COL), TextBox))
+                    PopulateBOProperty(entityList, COMMISSION_AMOUNT_PROPERTY, _
+                        CType(GetGridControl(moEntityGrid, row.RowIndex, ENTITY_COMMISSION_AMOUNT_COL), TextBox))
+                    PopulateBOProperty(entityList, MARKUP_AMOUNT_PROPERTY, _
+                        CType(GetGridControl(moEntityGrid, row.RowIndex, ENTITY_MARKUP_AMOUNT_COL), TextBox))
                     'REQ-976
-                    Me.PopulateBOProperty(entityList, DAYS_TO_CLAWBACK_PROPERTY, _
-                                    CType(Me.GetGridControl(moEntityGrid, row.RowIndex, ENTITY_DAYS_TO_CLAWBACK_COL), TextBox))
+                    PopulateBOProperty(entityList, DAYS_TO_CLAWBACK_PROPERTY, _
+                                    CType(GetGridControl(moEntityGrid, row.RowIndex, ENTITY_DAYS_TO_CLAWBACK_COL), TextBox))
 
                     'END REQ-976
                     ' Guids
                     payeeDrop = CType(row.FindControl("moPayeeTypeDrop"), DropDownList)
-                    payeeId = Me.GetSelectedItem(payeeDrop)
-                    Me.PopulateBOProperty(entityList, PAYEE_TYPE_ID_PROPERTY, payeeId)
-                    payeeDesc = Me.GetSelectedDescription(payeeDrop)
-                    Me.PopulateBOProperty(entityList, PAYEE_TYPE_PROPERTY, payeeDesc)
+                    payeeId = GetSelectedItem(payeeDrop)
+                    PopulateBOProperty(entityList, PAYEE_TYPE_ID_PROPERTY, payeeId)
+                    payeeDesc = GetSelectedDescription(payeeDrop)
+                    PopulateBOProperty(entityList, PAYEE_TYPE_PROPERTY, payeeDesc)
 
                     'entityDrop = CType(row.FindControl("moEntityDrop"), DropDownList)
                     'entityDropId = Me.GetSelectedItem(entityDrop)
@@ -1544,35 +1544,35 @@ Namespace Tables
                     'REQ-976
                     If payeeDesc = "Branch" Then
                         entityDrop = CType(row.FindControl("moEntityDrop"), DropDownList)
-                        dealerdrop = CType(Me.moDealerMultipleDrop.FindControl("moMultipleColumnDrop"), DropDownList)
-                        entityDropId = Me.GetSelectedItem(entityDrop)
-                        Me.PopulateBOProperty(entityList, BRANCH_ID_PROPERTY, entityDropId)
-                        entityDropDesc = Me.GetSelectedDescription(entityDrop)
-                        Me.PopulateBOProperty(entityList, BRANCH_PROPERTY, entityDropDesc)
+                        dealerdrop = CType(moDealerMultipleDrop.FindControl("moMultipleColumnDrop"), DropDownList)
+                        entityDropId = GetSelectedItem(entityDrop)
+                        PopulateBOProperty(entityList, BRANCH_ID_PROPERTY, entityDropId)
+                        entityDropDesc = GetSelectedDescription(entityDrop)
+                        PopulateBOProperty(entityList, BRANCH_PROPERTY, entityDropDesc)
 
                     Else
                         entityDrop = CType(row.FindControl("moEntityDrop"), DropDownList)
-                        entityDropId = Me.GetSelectedItem(entityDrop)
-                        Me.PopulateBOProperty(entityList, ENTITY_ID_PROPERTY, entityDropId)
-                        entityDropDesc = Me.GetSelectedDescription(entityDrop)
-                        Me.PopulateBOProperty(entityList, ENTITY_PROPERTY, entityDropDesc)
+                        entityDropId = GetSelectedItem(entityDrop)
+                        PopulateBOProperty(entityList, ENTITY_ID_PROPERTY, entityDropId)
+                        entityDropDesc = GetSelectedDescription(entityDrop)
+                        PopulateBOProperty(entityList, ENTITY_PROPERTY, entityDropDesc)
                     End If
                     'End Req-976
 
                     isCommFixedDrop = CType(row.FindControl("moIsCommFixedDrop"), DropDownList)
                     isFixedView = LookupListNew.GetYesNoLookupList(Authentication.LangId)
-                    isCommFixedCode = Me.GetSelectedValue(isCommFixedDrop)
+                    isCommFixedCode = GetSelectedValue(isCommFixedDrop)
                     isCommFixedId = LookupListNew.GetIdFromCode(isFixedView, isCommFixedCode)
-                    Me.PopulateBOProperty(entityList, IS_COMM_FIXED_ID_PROPERTY, isCommFixedId)
-                    Me.PopulateBOProperty(entityList, IS_COMM_FIXED_CODE_PROPERTY, isCommFixedCode)
-                    isCommFixedDesc = Me.GetSelectedDescription(isCommFixedDrop)
-                    Me.PopulateBOProperty(entityList, IS_COMM_FIXED_PROPERTY, isCommFixedDesc)
+                    PopulateBOProperty(entityList, IS_COMM_FIXED_ID_PROPERTY, isCommFixedId)
+                    PopulateBOProperty(entityList, IS_COMM_FIXED_CODE_PROPERTY, isCommFixedCode)
+                    isCommFixedDesc = GetSelectedDescription(isCommFixedDrop)
+                    PopulateBOProperty(entityList, IS_COMM_FIXED_PROPERTY, isCommFixedDesc)
 
                     commScheduleDrop = CType(row.FindControl("moCommScheduleDrop"), DropDownList)
-                    commScheduleId = Me.GetSelectedItem(commScheduleDrop)
-                    Me.PopulateBOProperty(entityList, COMM_SCHEDULE_ID_PROPERTY, commScheduleId)
-                    commScheduleDesc = Me.GetSelectedDescription(commScheduleDrop)
-                    Me.PopulateBOProperty(entityList, COMM_SCHEDULE_PROPERTY, commScheduleDesc)
+                    commScheduleId = GetSelectedItem(commScheduleDrop)
+                    PopulateBOProperty(entityList, COMM_SCHEDULE_ID_PROPERTY, commScheduleId)
+                    commScheduleDesc = GetSelectedDescription(commScheduleDrop)
+                    PopulateBOProperty(entityList, COMM_SCHEDULE_PROPERTY, commScheduleDesc)
 
                     'isMarkupFixedDrop = CType(row.FindControl("moIsMarkupFixedDrop"), DropDownList)
                     'isMarkupFixedCode = Me.GetSelectedValue(isMarkupFixedDrop)
@@ -1583,32 +1583,32 @@ Namespace Tables
                     'Me.PopulateBOProperty(entityList, IS_MARKUP_FIXED_PROPERTY, isMarkupFixedDesc)
 
                     If (doReg = True) Then
-                        Me.State.sBuffer.Append("isCommFixedArr[" & row.RowIndex & "] = '" & isCommFixedCode & "';")
-                        Me.State.sBuffer.AppendLine()
-                        If Not entityList.CommissionAmount Is Nothing Then
+                        State.sBuffer.Append("isCommFixedArr[" & row.RowIndex & "] = '" & isCommFixedCode & "';")
+                        State.sBuffer.AppendLine()
+                        If entityList.CommissionAmount IsNot Nothing Then
                             dCommAmount = entityList.CommissionAmount.Value
                         End If
-                        Me.State.sBuffer.Append("commAmountArr[" & row.RowIndex & "] = '" & dCommAmount.ToString & "';")
-                        Me.State.sBuffer.AppendLine()
+                        State.sBuffer.Append("commAmountArr[" & row.RowIndex & "] = '" & dCommAmount.ToString & "';")
+                        State.sBuffer.AppendLine()
                         'Me.State.sBuffer.Append("isMarkupFixedArr[" & row.RowIndex & "] = '" & isMarkupFixedCode & "';")
                         'Me.State.sBuffer.AppendLine()
-                        If Not entityList.MarkupAmount Is Nothing Then
+                        If entityList.MarkupAmount IsNot Nothing Then
                             dMarkupAmount = entityList.MarkupAmount.Value
                         End If
-                        Me.State.sBuffer.Append("markupAmountArr[" & row.RowIndex & "] = '" & dMarkupAmount.ToString & "';")
-                        Me.State.sBuffer.AppendLine()
+                        State.sBuffer.Append("markupAmountArr[" & row.RowIndex & "] = '" & dMarkupAmount.ToString & "';")
+                        State.sBuffer.AppendLine()
                     End If
                     If isCommFixedCode = "N" Then
-                        If Not entityList.CommissionAmount Is Nothing Then
+                        If entityList.CommissionAmount IsNot Nothing Then
                             dCommAmount = entityList.CommissionAmount.Value
                         End If
-                        Me.State.totalCF += Math.Round(dCommAmount, 2)
+                        State.totalCF += Math.Round(dCommAmount, 2)
                     End If
                     If isCommFixedCode = "N" Then
-                        If Not entityList.MarkupAmount Is Nothing Then
+                        If entityList.MarkupAmount IsNot Nothing Then
                             dMarkupAmount = entityList.MarkupAmount.Value
                         End If
-                        Me.State.totalMF += Math.Round(dMarkupAmount, 2)
+                        State.totalMF += Math.Round(dMarkupAmount, 2)
                     End If
                     'If isMarkupFixedCode = "N" Then
                     '    If Not entityList.MarkupAmount Is Nothing Then
@@ -1629,14 +1629,14 @@ Namespace Tables
                 '    Return Nothing
                 'End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Function
 
 #End Region
 
 
-        Private Sub moEntityGrid_RowEditing(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewEditEventArgs) Handles moEntityGrid.RowEditing
+        Private Sub moEntityGrid_RowEditing(sender As Object, e As System.Web.UI.WebControls.GridViewEditEventArgs) Handles moEntityGrid.RowEditing
 
         End Sub
     End Class

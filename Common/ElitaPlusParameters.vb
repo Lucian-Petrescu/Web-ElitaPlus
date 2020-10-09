@@ -22,7 +22,7 @@ Public Class ElitaPlusParameters
 #Region " Constructors "
 
     Public Sub New()
-        Me.msAuthenticationType = NONE_AUTHENTICATION_TYPE
+        msAuthenticationType = NONE_AUTHENTICATION_TYPE
     End Sub
 
 #End Region
@@ -31,7 +31,7 @@ Public Class ElitaPlusParameters
 
     Public ReadOnly Property AuthenticationType() As String Implements IIdentity.AuthenticationType
         Get
-            Return Me.msAuthenticationType
+            Return msAuthenticationType
         End Get
     End Property
 

@@ -6,48 +6,48 @@ Public Class PartsDescription
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New PartsDescriptionDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class PartsDescription
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New PartsDescriptionDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -89,7 +89,7 @@ Public Class PartsDescription
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(PartsDescriptionDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -100,7 +100,7 @@ Public Class PartsDescription
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(PartsDescriptionDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -109,15 +109,15 @@ Public Class PartsDescription
                 Return New Guid(CType(Row(PartsDescriptionDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(PartsDescriptionDAL.COL_NAME_COMPANY_GROUP_ID, Value)
+            SetValue(PartsDescriptionDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property RiskGroupId() As Guid
+    Public Property RiskGroupId As Guid
         Get
             CheckDeleted()
             If Row(PartsDescriptionDAL.COL_NAME_RISK_GROUP_ID) Is DBNull.Value Then
@@ -126,15 +126,15 @@ Public Class PartsDescription
                 Return New Guid(CType(Row(PartsDescriptionDAL.COL_NAME_RISK_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(PartsDescriptionDAL.COL_NAME_RISK_GROUP_ID, Value)
+            SetValue(PartsDescriptionDAL.COL_NAME_RISK_GROUP_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=60)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(PartsDescriptionDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -143,15 +143,15 @@ Public Class PartsDescription
                 Return CType(Row(PartsDescriptionDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(PartsDescriptionDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(PartsDescriptionDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=60), EnglishDescriptionValidator("")> _
-    Public Property DescriptionEnglish() As String
+    Public Property DescriptionEnglish As String
         Get
             CheckDeleted()
             If Row(PartsDescriptionDAL.COL_NAME_DESCRIPTION_ENGLISH) Is DBNull.Value Then
@@ -160,14 +160,14 @@ Public Class PartsDescription
                 Return CType(Row(PartsDescriptionDAL.COL_NAME_DESCRIPTION_ENGLISH), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(PartsDescriptionDAL.COL_NAME_DESCRIPTION_ENGLISH, Value)
+            SetValue(PartsDescriptionDAL.COL_NAME_DESCRIPTION_ENGLISH, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30), PartCodeValidator("")> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(PartsDescriptionDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -176,13 +176,13 @@ Public Class PartsDescription
                 Return CType(Row(PartsDescriptionDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(PartsDescriptionDAL.COL_NAME_CODE, Value)
+            SetValue(PartsDescriptionDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
-    Public Shared ReadOnly Property NextCode() As String
+    Public Shared ReadOnly Property NextCode As String
         Get
             Dim dalParts As PartsDescriptionDAL = New PartsDescriptionDAL
             Return dalParts.GetNextCode(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
@@ -195,20 +195,20 @@ Public Class PartsDescription
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New PartsDescriptionDAL
 
                 'If Me.Row.RowState = DataRowState.Added Then
                 '    Me.Row(PartsDescriptionDAL.COL_NAME_CODE) = NextCode()
                 'End If
 
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -219,7 +219,7 @@ Public Class PartsDescription
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getList(ByVal riskGroupID As Guid, ByVal description As String) As PartsDescriptionDV
+    Public Shared Function getList(riskGroupID As Guid, description As String) As PartsDescriptionDV
 
         Try
             Dim dal As New PartsDescriptionDAL
@@ -238,7 +238,7 @@ Public Class PartsDescription
 
     End Function
 
-    Public Shared Function getListForWS(ByVal riskGroupID As Guid) As DataTable
+    Public Shared Function getListForWS(riskGroupID As Guid) As DataTable
 
         Try
             Dim dal As New PartsDescriptionDAL
@@ -263,16 +263,16 @@ Public Class PartsDescription
 
     End Function
 
-    Public Shared Function IsValidCode(ByVal code As String) As Boolean
+    Public Shared Function IsValidCode(code As String) As Boolean
         Dim dalParts As PartsDescriptionDAL = New PartsDescriptionDAL
         Return dalParts.IsValidCode(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, code)
     End Function
 
-    Public Shared Function GetPartDescriptionByCode(ByVal code As String) As Guid
+    Public Shared Function GetPartDescriptionByCode(code As String) As Guid
         Dim dalParts As PartsDescriptionDAL = New PartsDescriptionDAL
         Return dalParts.GetPartDescriptionByCode(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, code)
     End Function
-    Public Shared Function GetPartDescriptionByCode(ByVal code As String, ByVal ClaimId As Guid) As Guid
+    Public Shared Function GetPartDescriptionByCode(code As String, ClaimId As Guid) As Guid
         Dim dalParts As PartsDescriptionDAL = New PartsDescriptionDAL
         Return dalParts.GetPartDescriptionByCode(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, code, ClaimId)
     End Function
@@ -291,29 +291,29 @@ Public Class PartsDescription
 
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property PartsDescID(ByVal row) As Guid
+        Public Shared ReadOnly Property PartsDescID(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_PARTS_DESCRIPTION_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property RiskGroup(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property RiskGroup(row As DataRow) As String
             Get
                 Return row(COL_NAME_RISK_GROUP).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Code(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Code(row As DataRow) As String
             Get
                 Return row(COL_NAME_CODE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property RiskGroupID(ByVal row As DataRow) As Guid
+        Public Shared ReadOnly Property RiskGroupID(row As DataRow) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_RISK_GROUP_ID), Byte()))
             End Get
@@ -321,7 +321,7 @@ Public Class PartsDescription
 
     End Class
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal partsDescId As Guid, ByVal riskGroupID As Guid, ByVal companyGrpID As Guid) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, partsDescId As Guid, riskGroupID As Guid, companyGrpID As Guid) As DataView
 
         Dim dt As DataTable
         dt = dv.Table
@@ -344,15 +344,15 @@ Public Class PartsDescription
     Public NotInheritable Class PartCodeValidator
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.PART_CODE_ALREADY_EXIST)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PartsDescription = CType(objectToValidate, PartsDescription)
             Dim dal As New PartsDescriptionDAL
 
-            If (Not obj.Code Is Nothing) AndAlso (obj.Code.Trim <> String.Empty) Then
+            If (obj.Code IsNot Nothing) AndAlso (obj.Code.Trim <> String.Empty) Then
 
                 If Not dal.IsPartCodeUnique(obj.RiskGroupId, obj.CompanyGroupId, obj.Code.Trim) Then
                     Return False
@@ -367,15 +367,15 @@ Public Class PartsDescription
     Public NotInheritable Class EnglishDescriptionValidator
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.ENGLISH_DESCRIPTION_ALREADY_EXIST)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PartsDescription = CType(objectToValidate, PartsDescription)
             Dim dal As New PartsDescriptionDAL
 
-            If (Not obj.DescriptionEnglish Is Nothing) AndAlso (obj.DescriptionEnglish.Trim <> String.Empty) Then
+            If (obj.DescriptionEnglish IsNot Nothing) AndAlso (obj.DescriptionEnglish.Trim <> String.Empty) Then
 
                 If Not dal.IsEnglishDescriptionUnique(obj.RiskGroupId, obj.CompanyGroupId, obj.DescriptionEnglish.Trim) Then
                     Return False

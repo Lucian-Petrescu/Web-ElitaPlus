@@ -6,48 +6,48 @@ Public Class EarningPercent
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New EarningPercentDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class EarningPercent
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New EarningPercentDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -105,7 +105,7 @@ Public Class EarningPercent
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(EarningPercentDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -116,7 +116,7 @@ Public Class EarningPercent
     End Property
 
     <ValueMandatory("")> _
-    Public Property EarningPatternId() As Guid
+    Public Property EarningPatternId As Guid
         Get
             CheckDeleted()
             If Row(EarningPercentDAL.COL_NAME_EARNING_PATTERN_ID) Is DBNull.Value Then
@@ -125,15 +125,15 @@ Public Class EarningPercent
                 Return New Guid(CType(Row(EarningPercentDAL.COL_NAME_EARNING_PATTERN_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(EarningPercentDAL.COL_NAME_EARNING_PATTERN_ID, Value)
+            SetValue(EarningPercentDAL.COL_NAME_EARNING_PATTERN_ID, Value)
         End Set
     End Property
 
 
-    <ValueMandatory(""), ValidNumericRange("EarningTerm", MIN:=MIN_TERM, Max:=MAX_TERM, Message:=ElitaPlus.Common.ErrorCodes.EARNING_MONTH_MUST_BE_BETWEEN_1_AND_999), ValidTerm("")> _
-    Public Property EarningTerm() As LongType
+    <ValueMandatory(""), ValidNumericRange("EarningTerm", MIN:=MIN_TERM, Max:=MAX_TERM, Message:=Common.ErrorCodes.EARNING_MONTH_MUST_BE_BETWEEN_1_AND_999), ValidTerm("")> _
+    Public Property EarningTerm As LongType
         Get
             CheckDeleted()
             If Row(EarningPercentDAL.COL_NAME_EARNING_TERM) Is DBNull.Value Then
@@ -142,15 +142,15 @@ Public Class EarningPercent
                 Return New LongType(CType(Row(EarningPercentDAL.COL_NAME_EARNING_TERM), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(EarningPercentDAL.COL_NAME_EARNING_TERM, Value)
+            SetValue(EarningPercentDAL.COL_NAME_EARNING_TERM, Value)
         End Set
     End Property
 
 
-    <ValueMandatory(""), ValidNumericRange("EarningPercent", MIN:=MIN_PERCENT, Max:=MAX_PERCENT, Message:=ElitaPlus.Common.ErrorCodes.EARNING_PERCENT_MUST_BE_LESS_THAN_100), ValidPercent(""), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=EARNING_PERCENT_FORM012)> _
-    Public Property EarningPercent() As DecimalType
+    <ValueMandatory(""), ValidNumericRange("EarningPercent", MIN:=MIN_PERCENT, Max:=MAX_PERCENT, Message:=Common.ErrorCodes.EARNING_PERCENT_MUST_BE_LESS_THAN_100), ValidPercent(""), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=EARNING_PERCENT_FORM012)> _
+    Public Property EarningPercent As DecimalType
         Get
             CheckDeleted()
             If Row(EarningPercentDAL.COL_NAME_EARNING_PERCENT) Is DBNull.Value Then
@@ -159,9 +159,9 @@ Public Class EarningPercent
                 Return New DecimalType(CType(Row(EarningPercentDAL.COL_NAME_EARNING_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(EarningPercentDAL.COL_NAME_EARNING_PERCENT, Value)
+            SetValue(EarningPercentDAL.COL_NAME_EARNING_PERCENT, Value)
         End Set
     End Property
 
@@ -174,15 +174,15 @@ Public Class EarningPercent
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New EarningPercentDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New Dataset
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New Dataset
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -192,7 +192,7 @@ Public Class EarningPercent
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetList(ByVal EarningPatternId As Guid) As DataView
+    Public Shared Function GetList(EarningPatternId As Guid) As DataView
         Try
             Dim dal As New EarningPercentDAL
             Return New DataView(dal.LoadList(EarningPatternId).Tables(0))
@@ -205,7 +205,7 @@ Public Class EarningPercent
         Dim obj As EarningPercent = Me
 
         Dim bValid As Boolean = True
-        If Not obj.EarningTerm Is Nothing Then
+        If obj.EarningTerm IsNot Nothing Then
             Dim dal As New EarningPercentDAL
             Dim termCnt As Integer = dal.TermCount(obj.MAX_TERM, obj.EarningPatternId, Guid.Empty)
             If termCnt <> obj.EarningTerm.Value Then bValid = False
@@ -222,15 +222,15 @@ Public Class EarningPercent
     Public NotInheritable Class ValidTerm
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, ElitaPlus.Common.ErrorCodes.EARNING_MONTH_IS_INVALID)
+        Public Sub New(fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, Common.ErrorCodes.EARNING_MONTH_IS_INVALID)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As EarningPercent = CType(objectToValidate, EarningPercent)
 
             Dim bValid As Boolean = True
-            If Not obj.EarningTerm Is Nothing Then
+            If obj.EarningTerm IsNot Nothing Then
                 Dim dal As New EarningPercentDAL
                 Dim termCnt As Integer = dal.TermCount(obj.EarningTerm.Value, obj.EarningPatternId, obj.Id)
                 If termCnt <> obj.EarningTerm.Value - 1 Then bValid = False
@@ -247,11 +247,11 @@ Public Class EarningPercent
     Public NotInheritable Class ValidPercent
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, ElitaPlus.Common.ErrorCodes.EARNING_PERCENT_IS_INVALID)
+        Public Sub New(fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, Common.ErrorCodes.EARNING_PERCENT_IS_INVALID)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As EarningPercent = CType(objectToValidate, EarningPercent)
             Dim bValid As Boolean = True
 

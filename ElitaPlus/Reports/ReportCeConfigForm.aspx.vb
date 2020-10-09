@@ -56,14 +56,14 @@ Namespace Reports
             End Get
         End Property
 
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Try
-                If Not Me.CallingParameters Is Nothing Then
+                If CallingParameters IsNot Nothing Then
                     'Get the id from the parent
-                    Me.State.MyBo = New ReportConfig(CType(Me.CallingParameters, Guid))
+                    State.MyBo = New ReportConfig(CType(CallingParameters, Guid))
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
@@ -74,17 +74,17 @@ Namespace Reports
 
 #Region "Handler-Init"
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
             Try
                 ErrControllerMaster.Clear_Hide()
                 ClearLabelsErrSign()
                 If Not Page.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
-                    Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, _
-                                                                        Me.MSG_TYPE_CONFIRM, True)
-                    If Me.State.MyBo Is Nothing Then
-                        Me.State.MyBo = New ReportConfig
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
+                    AddControlMsg(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, _
+                                                                        MSG_TYPE_CONFIRM, True)
+                    If State.MyBo Is Nothing Then
+                        State.MyBo = New ReportConfig
                     End If
                     PopulateAll()
                     EnableDisableFields()
@@ -93,10 +93,10 @@ Namespace Reports
                 BindBoPropertiesToLabels()
                 CheckIfComingFromConfirm()
             Catch ex As Exception
-                Me.HandleErrors(ex, ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
-            Me.ShowMissingTranslations(ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
 
         End Sub
 
@@ -106,93 +106,93 @@ Namespace Reports
 
         Private Sub GoBack()
             Dim retType As New ReportCeConfigListForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, _
-                                                            Me.State.MyBo.Id, Me.State.HasDataChanged)
-            Me.ReturnToCallingPage(retType)
+                                                            State.MyBo.Id, State.HasDataChanged)
+            ReturnToCallingPage(retType)
         End Sub
 
-        Protected Sub btnBack_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnBack.Click
+        Protected Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             Try
                 If (Not moReportCeDrop.Items.Count > 0) Then
-                    Me.ReturnToAppHomePage()
+                    ReturnToAppHomePage()
                 End If
 
-                Me.PopulateBOsFromForm()
-                If Me.State.MyBo.IsDirty = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM,
-                                                Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                PopulateBOsFromForm()
+                If State.MyBo.IsDirty = True Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM,
+                                                HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
                     GoBack()
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub btnApply_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnApply_WRITE.Click
+        Protected Sub btnApply_WRITE_Click(sender As Object, e As EventArgs) Handles btnApply_WRITE.Click
             ApplyChanges()
         End Sub
 
-        Protected Sub btnUndo_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnUndo_WRITE.Click
+        Protected Sub btnUndo_WRITE_Click(sender As Object, e As EventArgs) Handles btnUndo_WRITE.Click
             Try
                 PopulateAll()
             Catch ex As Exception
-                Me.HandleErrors(ex, ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
         Private Sub CreateNew()
-            Me.State.MyBo = New ReportConfig
+            State.MyBo = New ReportConfig
             ClearAll()
-           Me.PopulateAll()
+           PopulateAll()
             EnableDisableFields()
         End Sub
 
-        Protected Sub btnNew_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnNew_WRITE.Click
+        Protected Sub btnNew_WRITE_Click(sender As Object, e As EventArgs) Handles btnNew_WRITE.Click
             Try
-                Me.PopulateBOsFromForm()
-                If Me.State.MyBo.IsDirty = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                PopulateBOsFromForm()
+                If State.MyBo.IsDirty = True Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
                     CreateNew()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
        
         Private Sub CreateNewCopy()
-            Me.State.MyBo = New ReportConfig
+            State.MyBo = New ReportConfig
             EnableDisableFields()
         End Sub
 
-        Protected Sub btnCopy_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCopy_WRITE.Click
+        Protected Sub btnCopy_WRITE_Click(sender As Object, e As EventArgs) Handles btnCopy_WRITE.Click
             Try
-                If Me.State.MyBo.IsDirty = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                If State.MyBo.IsDirty = True Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
                 Else
                     CreateNewCopy()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub btnDelete_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnDelete_WRITE.Click
+        Protected Sub btnDelete_WRITE_Click(sender As Object, e As EventArgs) Handles btnDelete_WRITE.Click
             Try
                 If DeleteReportConfig() = True Then
-                    Me.State.HasDataChanged = True
+                    State.HasDataChanged = True
                     Dim retType As New ReportCeConfigListForm.ReturnType(ElitaPlusPage.DetailPageCommand.Delete, _
                                     Guid.Empty)
                     retType.BoChanged = True
-                    Me.ReturnToCallingPage(retType)
+                    ReturnToCallingPage(retType)
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -201,17 +201,17 @@ Namespace Reports
 #Region "Handlers-Labels"
 
         Private Sub BindBoPropertiesToLabels()
-            Me.BindBOPropertyToLabel(Me.State.MyBo, COMPANY_ID_PROPERTY, TheCompanyMControl.CaptionLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBo, REPORT_CE_NAME_PROPERTY, Me.moReportCeLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBo, FORM_ID_PROPERTY, Me.moReportLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBo, LARGE_REPORT_PROPERTY, Me.moLargeLabel)
+            BindBOPropertyToLabel(State.MyBo, COMPANY_ID_PROPERTY, TheCompanyMControl.CaptionLabel)
+            BindBOPropertyToLabel(State.MyBo, REPORT_CE_NAME_PROPERTY, moReportCeLabel)
+            BindBOPropertyToLabel(State.MyBo, FORM_ID_PROPERTY, moReportLabel)
+            BindBOPropertyToLabel(State.MyBo, LARGE_REPORT_PROPERTY, moLargeLabel)
         End Sub
 
         Private Sub ClearLabelsErrSign()
-            Me.ClearLabelErrSign(TheCompanyMControl.CaptionLabel)
-            Me.ClearLabelErrSign(Me.moReportCeLabel)
-            Me.ClearLabelErrSign(Me.moReportLabel)
-            Me.ClearLabelErrSign(Me.moLargeLabel)
+            ClearLabelErrSign(TheCompanyMControl.CaptionLabel)
+            ClearLabelErrSign(moReportCeLabel)
+            ClearLabelErrSign(moReportLabel)
+            ClearLabelErrSign(moLargeLabel)
         End Sub
 #End Region
 
@@ -219,7 +219,7 @@ Namespace Reports
 
 #Region "Enable-Disable"
 
-        Private Sub SetButtonsState(ByVal bIsNew As Boolean)
+        Private Sub SetButtonsState(bIsNew As Boolean)
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, Not bIsNew)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, Not bIsNew)
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, Not bIsNew)
@@ -227,7 +227,7 @@ Namespace Reports
         End Sub
 
         Protected Sub EnableDisableFields()
-           SetButtonsState(Me.State.MyBo.IsNew)
+           SetButtonsState(State.MyBo.IsNew)
         End Sub
 
 #End Region
@@ -255,9 +255,9 @@ Namespace Reports
             Dim yesNoId As Guid
             Dim oReportCeName As String = String.Empty
 
-            With Me.State.MyBo
-                Me.SetSelectedItem(Me.moReportDrop, .FormId)
-                If ((Not .ReportCeName Is Nothing) AndAlso (Not .ReportCeName Is String.Empty)) Then
+            With State.MyBo
+                SetSelectedItem(moReportDrop, .FormId)
+                If ((.ReportCeName IsNot Nothing) AndAlso (.ReportCeName IsNot String.Empty)) Then
                     oReportCeName = .ReportCeName
                 End If
 
@@ -265,7 +265,7 @@ Namespace Reports
                     .LargeReport = Codes.YESNO_N
                 End If
                 yesNoId = LookupListNew.GetIdFromCode(yesNoLkL, .LargeReport)
-                Me.SetSelectedItem(Me.moLargeDrop, yesNoId)
+                SetSelectedItem(moLargeDrop, yesNoId)
 
             End With
         End Sub
@@ -276,13 +276,13 @@ Namespace Reports
             Dim yesNoId As Guid
             Dim yesNoCode As String
 
-           Me.State.MyBo.CompanyId = Me.moCompanyMult.SelectedGuid
-            Me.PopulateBOProperty(Me.State.MyBo, FORM_ID_PROPERTY, Me.moReportDrop)
+           State.MyBo.CompanyId = moCompanyMult.SelectedGuid
+            PopulateBOProperty(State.MyBo, FORM_ID_PROPERTY, moReportDrop)
 
-            yesNoId = Me.GetSelectedItem(Me.moLargeDrop)
+            yesNoId = GetSelectedItem(moLargeDrop)
             yesNoCode = LookupListNew.GetCodeFromId(yesNoLkL, yesNoId)
-            Me.PopulateBOProperty(Me.State.MyBo, LARGE_REPORT_PROPERTY, yesNoCode)
-            If Me.ErrCollection.Count > 0 Then
+            PopulateBOProperty(State.MyBo, LARGE_REPORT_PROPERTY, yesNoCode)
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Sub
@@ -325,18 +325,18 @@ Namespace Reports
         Private Function ApplyChanges() As Boolean
             Dim isOK As Boolean = True
             Try
-                Me.PopulateBOsFromForm()
-                If Me.State.MyBo.IsDirty Then
-                    Me.State.MyBo.Save()
-                    Me.State.HasDataChanged = True
-                    Me.PopulateFormFromBOs()
+                PopulateBOsFromForm()
+                If State.MyBo.IsDirty Then
+                    State.MyBo.Save()
+                    State.HasDataChanged = True
+                    PopulateFormFromBOs()
                     EnableDisableFields()
-                   Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                   DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 Else
-                    Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
                 isOK = False
             End Try
             Return isOK
@@ -346,7 +346,7 @@ Namespace Reports
             Dim bIsOk As Boolean = True
 
             Try
-                With Me.State.MyBo
+                With State.MyBo
                     .BeginEdit()
                     PopulateBOsFromForm()
                     .Delete()
@@ -354,7 +354,7 @@ Namespace Reports
                     .EndEdit()
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
                 bIsOk = False
             End Try
             Return bIsOk
@@ -365,18 +365,18 @@ Namespace Reports
 #Region "State Management"
 
         Protected Sub ComingFromBack()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the Back Button
 
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         If ApplyChanges() = True Then
-                            Me.State.HasDataChanged = True
+                            State.HasDataChanged = True
                             GoBack()
                         End If
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
                         GoBack()
                 End Select
             End If
@@ -384,16 +384,16 @@ Namespace Reports
         End Sub
 
         Protected Sub ComingFromNew()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         If ApplyChanges() = True Then
-                            Me.State.HasDataChanged = True
+                            State.HasDataChanged = True
                             CreateNew()
                         End If
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
                         CreateNew()
                 End Select
             End If
@@ -401,16 +401,16 @@ Namespace Reports
         End Sub
 
         Protected Sub ComingFromNewCopy()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         If ApplyChanges() = True Then
-                            Me.State.HasDataChanged = True
+                            State.HasDataChanged = True
                             CreateNewCopy()
                         End If
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
                         CreateNewCopy()
                 End Select
             End If
@@ -419,7 +419,7 @@ Namespace Reports
 
         Protected Sub CheckIfComingFromConfirm()
             Try
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
                         ComingFromBack()
                     Case ElitaPlusPage.DetailPageCommand.New_
@@ -428,11 +428,11 @@ Namespace Reports
                         ComingFromNewCopy()
                 End Select
 
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                Me.HiddenSaveChangesPromptResponse.Value = String.Empty
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                HiddenSaveChangesPromptResponse.Value = String.Empty
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 

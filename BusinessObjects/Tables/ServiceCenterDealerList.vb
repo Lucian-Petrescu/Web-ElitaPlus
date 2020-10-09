@@ -2,16 +2,16 @@ Public Class ServiceCenterDealerList
 
     Inherits BusinessObjectListBase
 
-    Public Sub New(ByVal parent As ServiceCenter)
+    Public Sub New(parent As ServiceCenter)
         MyBase.New(LoadTable(parent), GetType(ServiceCenterDealer), parent)
     End Sub
 
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, ServiceCenterDealer).ServiceCenterId.Equals(CType(Parent, ServiceCenter).Id)
     End Function
 
-    Public Function Find(ByVal DealerId As Guid) As ServiceCenterDealer
+    Public Function Find(DealerId As Guid) As ServiceCenterDealer
         Dim bo As ServiceCenterDealer
         For Each bo In Me
             If bo.DealerId.Equals(DealerId) Then Return bo
@@ -21,7 +21,7 @@ Public Class ServiceCenterDealerList
 
 
 #Region "Class Methods"
-    Private Shared Function LoadTable(ByVal parent As ServiceCenter) As DataTable
+    Private Shared Function LoadTable(parent As ServiceCenter) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(ServiceCenterDealerList)) Then
                 Dim dal As New ServiceCenterDealerDAL

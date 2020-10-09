@@ -15,8 +15,8 @@ Namespace SpecializedServices.GW
         End Sub
 
         Public Sub New(pCompany As Company)
-            Me.CompanyCode = pCompany.Code
-            Me.CompanyName = pCompany.Description
+            CompanyCode = pCompany.Code
+            CompanyName = pCompany.Description
         End Sub
     End Class
 End Namespace

@@ -11,7 +11,7 @@
 
 #Region "Properties"
 
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(DealerInflationDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -21,7 +21,7 @@
         End Get
     End Property
    
-    Public Property DealerInflationId() As Guid
+    Public Property DealerInflationId As Guid
         Get
             CheckDeleted()
             If Row(DealerInflationDAL.COL_NAME_DEALER_INFLATION_ID) Is DBNull.Value Then
@@ -30,13 +30,13 @@
                 Return New Guid(CType(Row(DealerInflationDAL.COL_NAME_DEALER_INFLATION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerInflationDAL.COL_NAME_DEALER_INFLATION_ID, Value)
+            SetValue(DealerInflationDAL.COL_NAME_DEALER_INFLATION_ID, Value)
         End Set
     End Property
 
-    Public Property Dealer() As String
+    Public Property Dealer As String
         Get
             CheckDeleted()
             If Row(DealerInflationDAL.COL_NAME_INFLATION_MONTH) Is DBNull.Value Then
@@ -45,13 +45,13 @@
                 Return CType(Row(DealerInflationDAL.COL_NAME_INFLATION_MONTH), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerInflationDAL.COL_NAME_INFLATION_MONTH, Value)
+            SetValue(DealerInflationDAL.COL_NAME_INFLATION_MONTH, Value)
         End Set
     End Property
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(DealerInflationDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -60,14 +60,14 @@
                 Return New Guid(CType(Row(DealerInflationDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerInflationDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(DealerInflationDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
     
     <ValueMandatory("")>
-    Public Property InflationMonth() As String
+    Public Property InflationMonth As String
         Get
             CheckDeleted()
             If Row(DealerInflationDAL.COL_NAME_INFLATION_MONTH) Is DBNull.Value Then
@@ -76,14 +76,14 @@
                 Return CType(Row(DealerInflationDAL.COL_NAME_INFLATION_MONTH), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerInflationDAL.COL_NAME_INFLATION_MONTH, Value)
+            SetValue(DealerInflationDAL.COL_NAME_INFLATION_MONTH, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property InflationYear() As string
+    Public Property InflationYear As string
         Get
             CheckDeleted()
             If Row(DealerInflationDAL.COL_NAME_INFLATION_YEAR) Is DBNull.Value Then
@@ -92,14 +92,14 @@
                 Return CType(Row(DealerInflationDAL.COL_NAME_INFLATION_YEAR), string)
             End If
         End Get
-        Set(ByVal Value As string)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerInflationDAL.COL_NAME_INFLATION_YEAR, Value)
+            SetValue(DealerInflationDAL.COL_NAME_INFLATION_YEAR, Value)
         End Set
     End Property
 
     <ValueMandatoryDealerInflationPct(""),ValidNumericRange("", Min:=0, Max:=9999.99)>
-    Public Property InflationPct() As DecimalType
+    Public Property InflationPct As DecimalType
         Get
             CheckDeleted()
             If Row(DealerInflationDAL.COL_NAME_INFLATION_PCT) Is DBNull.Value Then
@@ -108,9 +108,9 @@
                 Return New DecimalType(CType(Row(DealerInflationDAL.COL_NAME_INFLATION_PCT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerInflationDAL.COL_NAME_INFLATION_PCT, Value)
+            SetValue(DealerInflationDAL.COL_NAME_INFLATION_PCT, Value)
         End Set
     End Property
 
@@ -121,31 +121,31 @@
 
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
-    public Sub New (ByVal id As Guid, ByVal key As Guid)
+    public Sub New (id As Guid, key As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id,key)
+        Dataset = New DataSet
+        Load(id,key)
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New DealerInflationDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
            
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -153,23 +153,23 @@
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New DealerInflationDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then '
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then '
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -177,23 +177,23 @@
         End Try
     End Sub
 
-    Protected Sub Load(ByVal searchid As Guid,ByVal key As Guid)
+    Protected Sub Load(searchid As Guid,key As Guid)
         Try
             Dim dal As New DealerInflationDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(key, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(key, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 
-                dal.Load(Me.Dataset, searchid)
-                Me.Row = Me.FindRow(key, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 
+                dal.Load(Dataset, searchid)
+                Row = FindRow(key, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -208,16 +208,16 @@
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New DealerInflationDAL
-                dal.SaveDealerInflation(Me.Row)
+                dal.SaveDealerInflation(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim searchid As Guid = Me.DealerId
-                    Dim lookupkey As Guid = Me.DealerInflationId
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing 
-                    Me.Load( searchid,lookupkey)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim searchid As Guid = DealerId
+                    Dim lookupkey As Guid = DealerInflationId
+                    Dataset = New DataSet
+                    Row = Nothing 
+                    Load( searchid,lookupkey)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -228,15 +228,15 @@
     Public Function GetDealerInflation() As DealerInflationDV
         Dim dealerInflationDAL As New DealerInflationDAL
 
-        If Not (Me.DealerId.Equals(Guid.Empty)) Then
-            Return New DealerInflationDV(DealerInflationDAL.LoadDealerInflation(Me.DealerId).Tables(0))
+        If Not (DealerId.Equals(Guid.Empty)) Then
+            Return New DealerInflationDV(DealerInflationDAL.LoadDealerInflation(DealerId).Tables(0))
         End If
 
     End Function
 
-    Public Function ValidateNewDealerInflation(ByVal DealerInflations As DealerInflationDV) As Boolean
+    Public Function ValidateNewDealerInflation(DealerInflations As DealerInflationDV) As Boolean
 
-        Dim dealerInflation() = DealerInflations.ToTable().Select(COL_NAME_INFLATION_YEAR & "=" & Me.InflationYear &  " And " & COL_NAME_INFLATION_MONTH  &"=" & Me.InflationMonth)
+        Dim dealerInflation() = DealerInflations.ToTable().Select(COL_NAME_INFLATION_YEAR & "=" & InflationYear &  " And " & COL_NAME_INFLATION_MONTH  &"=" & InflationMonth)
                                
         If dealerInflation.Length >0 Then
             Return true
@@ -264,7 +264,7 @@
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -272,7 +272,7 @@
 #End Region
 
 #Region "Grid Data Related"
-    Public Shared Function GetEmptyList(ByVal dv As DataView) As System.Data.DataView
+    Public Shared Function GetEmptyList(dv As DataView) As System.Data.DataView
         Try
 
             Dim dsv As DataSet
@@ -292,7 +292,7 @@
         End Try
     End Function
 
-    Public Shared Sub AddNewRowToSearchDV(ByRef dv As DealerInflationDV, ByVal NewBO As DealerInflation)
+    Public Shared Sub AddNewRowToSearchDV(ByRef dv As DealerInflationDV, NewBO As DealerInflation)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         If NewBO.IsNew Then
@@ -328,11 +328,11 @@
     Public NotInheritable Class ValueMandatoryDealerInflationPct
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.VALUE_REQUIRED_DEALER_INFLATION__PERCENTAGE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As DealerInflation = CType(objectToValidate, DealerInflation)
             If obj.IsNew AndAlso valueToCheck Is Nothing Then
                 Return False

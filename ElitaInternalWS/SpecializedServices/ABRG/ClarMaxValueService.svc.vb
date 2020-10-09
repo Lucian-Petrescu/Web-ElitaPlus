@@ -11,15 +11,15 @@ Public Class ClarMaxValueService
     Public Const MAKE_APPLE = "APPLE"
     Private Property CompanyGroupManager As ICompanyGroupManager
 
-    Public Sub New(ByVal pCompGroupManager As ICompanyGroupManager)
+    Public Sub New(pCompGroupManager As ICompanyGroupManager)
         If (pCompGroupManager Is Nothing) Then
             Throw New ArgumentNullException("pCompGroupManager")
         End If
 
-        Me.CompanyGroupManager = pCompGroupManager
+        CompanyGroupManager = pCompGroupManager
     End Sub
 
-    Public Function GetCertificate(ByVal request As GetCertificateRequest) As GetCertificateResponse Implements IClarMaxValueService.GetCertificate
+    Public Function GetCertificate(request As GetCertificateRequest) As GetCertificateResponse Implements IClarMaxValueService.GetCertificate
         Dim oCertificate As Certificate
         Dim oCertificateItem As CertItem
         Dim oManufacturer As String

@@ -78,7 +78,7 @@ Public Class BatchService
 #Region "Designer Code"
     'UserService overrides dispose to clean up the component list.
     <System.Diagnostics.DebuggerNonUserCode()> _
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+    Protected Overrides Sub Dispose(disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
                 components.Dispose()
@@ -97,7 +97,7 @@ Public Class BatchService
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         components = New System.ComponentModel.Container()
-        Me.ServiceName = SERVICE_NAME
+        ServiceName = SERVICE_NAME
     End Sub
 
 #End Region
@@ -145,7 +145,7 @@ Public Class BatchService
 
     End Sub
 
-    Protected Overrides Sub OnStart(ByVal args() As String)
+    Protected Overrides Sub OnStart(args() As String)
         ' Add code here to start your service. This method should set things
         ' in motion so your service can do its work.
 
@@ -252,13 +252,13 @@ Public Class BatchService
 
 #Region "Processing"
 
-    Public Function ProcessRequest(ByVal networkID As String, _
-                              ByVal password As String, _
-                              ByVal LDAPGroup As String, _
-                              ByVal functionToProcess As String, _
-                              ByVal xmlStringDataIn As String, _
-                              ByVal hubRegion As String, _
-                              ByVal isAsync As Boolean, _
+    Public Function ProcessRequest(networkID As String, _
+                              password As String, _
+                              LDAPGroup As String, _
+                              functionToProcess As String, _
+                              xmlStringDataIn As String, _
+                              hubRegion As String, _
+                              isAsync As Boolean, _
                               Optional ByVal CalledFromQueue As Boolean = False) As String
 
         Try
@@ -406,7 +406,7 @@ Public Class BatchService
         End Try
     End Function
 
-    Function GetErrors(ByVal ex As Exception, ByVal Message As String) As String
+    Function GetErrors(ex As Exception, Message As String) As String
 
         Instrumentation.WriteLog("BEGIN")
 
@@ -447,7 +447,7 @@ Public Class BatchService
         Instrumentation.WriteLog("END")
     End Sub
 
-    Public Sub TimerElapsed(ByVal source As Object, ByVal e As EventArgs)
+    Public Sub TimerElapsed(source As Object, e As EventArgs)
 
         If Not My.Settings.PendingRequests Is Nothing AndAlso My.Settings.PendingRequests.Count > 0 Then
             If Not My.Settings.isRunning Then
@@ -463,7 +463,7 @@ Public Class BatchService
 
 #Region "Authentication"
 
-    Public Function VerifyLogin(ByVal networkId As String, ByVal appPassword As String, ByVal group As String, ByVal hubRegion As String) As Boolean
+    Public Function VerifyLogin(networkId As String, appPassword As String, group As String, hubRegion As String) As Boolean
         Dim isValidUser As Boolean = False
 
         Try
@@ -491,7 +491,7 @@ Public Class BatchService
     ''' <history>
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Private Sub LoginElita(ByVal networkID As String, ByVal hubRegion As String)
+    Private Sub LoginElita(networkID As String, hubRegion As String)
 
         Try
             Instrumentation.WriteLog("LoginElita BEGIN : networkId : " & networkID & ", hubRegion : " & hubRegion)

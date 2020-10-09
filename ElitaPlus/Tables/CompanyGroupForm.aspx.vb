@@ -28,41 +28,41 @@ Namespace Tables
 
         Public ReadOnly Property IsEditing() As Boolean
             Get
-                IsEditing = (Me.Grid.EditItemIndex > NO_ROW_SELECTED_INDEX)
+                IsEditing = (Grid.EditItemIndex > NO_ROW_SELECTED_INDEX)
             End Get
         End Property
 
 #End Region
 #Region "Page Return"
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.IsReturningFromChild = True
+                IsReturningFromChild = True
                 Dim retObj As CompanyGroupDetailForm.ReturnType = CType(ReturnPar, CompanyGroupDetailForm.ReturnType)
-                Me.State.HasDataChanged = retObj.BoChanged
-                If Not retObj Is Nothing AndAlso retObj.BoChanged Then
-                    Me.State.searchDV = Nothing
+                State.HasDataChanged = retObj.BoChanged
+                If retObj IsNot Nothing AndAlso retObj.BoChanged Then
+                    State.searchDV = Nothing
                 End If
-                Me.State.IsGridVisible = False
+                State.IsGridVisible = False
                 Select Case retObj.LastOperation
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        If Not retObj Is Nothing Then
+                        If retObj IsNot Nothing Then
                             If Not retObj.EditingBo.IsNew Then
-                                Me.State.SelectedCompanyGroupId = retObj.EditingBo.Id
-                                Me.State.IsGridVisible = True
+                                State.SelectedCompanyGroupId = retObj.EditingBo.Id
+                                State.IsGridVisible = True
                             End If
 
                         End If
                     Case ElitaPlusPage.DetailPageCommand.Save
-                        If Not retObj Is Nothing Then
-                            Me.State.MyBO = New CompanyGroup(retObj.EditingBo.Id)
-                            Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                        If retObj IsNot Nothing Then
+                            State.MyBO = New CompanyGroup(retObj.EditingBo.Id)
+                            AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
                         End If
                     Case ElitaPlusPage.DetailPageCommand.Delete
 
-                        Me.DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                        DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 End Select
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
@@ -115,7 +115,7 @@ Namespace Tables
         <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
 
         End Sub
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -149,22 +149,22 @@ Namespace Tables
 
 #Region "Button Click Handlers"
 
-        Private Sub SearchButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SearchButton.Click
+        Private Sub SearchButton_Click(sender As System.Object, e As System.EventArgs) Handles SearchButton.Click
             Try
 
-                Me.State.PageIndex = 0
-                Me.State.Id = Guid.Empty
-                Me.State.searchDV = Nothing
-                Me.State.btnsearchclicked = True
+                State.PageIndex = 0
+                State.Id = Guid.Empty
+                State.searchDV = Nothing
+                State.btnsearchclicked = True
                 PopulateGrid()
-                Me.State.btnsearchclicked = False
+                State.btnsearchclicked = False
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Private Sub ClearButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ClearButton.Click
+        Private Sub ClearButton_Click(sender As System.Object, e As System.EventArgs) Handles ClearButton.Click
 
             ClearSearchCriteria()
 
@@ -177,17 +177,17 @@ Namespace Tables
                 SearchCodeTextBox.Text = String.Empty
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Private Sub NewButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew.Click
+        Private Sub NewButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew.Click
 
             Try
-                Me.callPage(CompanyGroupDetailForm.url)
+                callPage(CompanyGroupDetailForm.url)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
@@ -196,54 +196,54 @@ Namespace Tables
 
 #Region "Private Methods"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
 
             'Put user code to initialize the page here
             Try
 
                 ' Populate the header and bredcrumb
-                Me.MasterPage.MessageController.Clear()
-                Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(ADMIN)
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(COMPANY_GROUP)
-                Me.UpdateBreadCrum()
+                MasterPage.MessageController.Clear()
+                MasterPage.UsePageTabTitleInBreadCrum = False
+                MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(ADMIN)
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(COMPANY_GROUP)
+                UpdateBreadCrum()
 
-                If Not Me.IsPostBack Then
-                    Me.SetDefaultButton(Me.SearchCodeTextBox, Me.SearchButton)
-                    Me.SetDefaultButton(Me.SearchDescriptionTextBox, Me.SearchButton)
+                If Not IsPostBack Then
+                    SetDefaultButton(SearchCodeTextBox, SearchButton)
+                    SetDefaultButton(SearchDescriptionTextBox, SearchButton)
 
                     PopulateSearchFieldsFromState()
 
 
 
-                    If Me.State.IsGridVisible Then
-                        If Not (Me.State.selectedPageSize = DEFAULT_NEW_UI_PAGE_SIZE) Then
-                            cboPageSize.SelectedValue = CType(Me.State.selectedPageSize, String)
-                            Grid.PageSize = Me.State.selectedPageSize
+                    If State.IsGridVisible Then
+                        If Not (State.selectedPageSize = DEFAULT_NEW_UI_PAGE_SIZE) Then
+                            cboPageSize.SelectedValue = CType(State.selectedPageSize, String)
+                            Grid.PageSize = State.selectedPageSize
                         End If
-                        Me.PopulateGrid()
+                        PopulateGrid()
                     End If
-                    Me.SetGridItemStyleColor(Me.Grid)
+                    SetGridItemStyleColor(Grid)
 
 
-                    If Me.State.MyBO Is Nothing Then
-                        Me.State.MyBO = New CompanyGroup
-                        Me.State.IsNew = True
+                    If State.MyBO Is Nothing Then
+                        State.MyBO = New CompanyGroup
+                        State.IsNew = True
                     End If
 
 
                 End If
-                Me.DisplayNewProgressBarOnClick(Me.SearchButton, LOADING_COMPANY_GROUPS)
+                DisplayNewProgressBarOnClick(SearchButton, LOADING_COMPANY_GROUPS)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
 
         End Sub
         Private Sub UpdateBreadCrum()
 
-            If (Not Me.State Is Nothing) Then
-                Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & _
+            If (State IsNot Nothing) Then
+                MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & _
                     TranslationBase.TranslateLabelOrMessage(COMPANY_GROUP)
             End If
 
@@ -254,38 +254,38 @@ Namespace Tables
                 'Refresh the DataView and Call SetPageAndSelectedIndexFromGuid() to go to the Page 
                 'where the most recently saved Record exists in the DataView
                 populatestateFromsearchFields()
-                If (Me.State.searchDV Is Nothing) Then
-                    Me.State.searchDV = CompanyGroup.LoadList(Me.State.DescriptionMask, Me.State.CodeMask, , Me.State.btnsearchclicked)
+                If (State.searchDV Is Nothing) Then
+                    State.searchDV = CompanyGroup.LoadList(State.DescriptionMask, State.CodeMask, , State.btnsearchclicked)
 
                 End If
 
 
-                If Me.State.searchDV.Count > 0 Then
-                    Me.State.IsGridVisible = True
+                If State.searchDV.Count > 0 Then
+                    State.IsGridVisible = True
                 Else
-                    Me.State.IsGridVisible = False
+                    State.IsGridVisible = False
                 End If
 
-                Me.Grid.PageSize = Me.State.selectedPageSize
+                Grid.PageSize = State.selectedPageSize
                 'Ticket # 748479 - Search grids in Tables tab should not show pop-up message when number of retrieved record is over 1,000
                 'Me.ValidSearchResultCount(Me.State.searchDV.Count, True)
-                Me.State.searchDV.Sort = Me.State.SortExpression
+                State.searchDV.Sort = State.SortExpression
 
 
-                If Not (Me.State.searchDV Is Nothing) Then
-                    Me.Grid.AutoGenerateColumns = False
-                    Me.Grid.Columns(Me.DESCRIPTION_COL_IDX).SortExpression = CompanyGroup.CompanyGroupDV.COL_DESCRIPTION
-                    Me.Grid.Columns(Me.CODE_COL_IDX).SortExpression = CompanyGroup.CompanyGroupDV.COL_CODE
-                    Me.Grid.Columns(Me.CLAIM_GROUP_COL).SortExpression = CompanyGroup.CompanyGroupDV.COL_NAME_CLAIM_NUMBERING_DESCRIPTION
-                    Me.Grid.Columns(Me.FTP_SITE_COL).SortExpression = CompanyGroup.CompanyGroupDV.COL_NAME_FTP_SITE
+                If Not (State.searchDV Is Nothing) Then
+                    Grid.AutoGenerateColumns = False
+                    Grid.Columns(DESCRIPTION_COL_IDX).SortExpression = CompanyGroup.CompanyGroupDV.COL_DESCRIPTION
+                    Grid.Columns(CODE_COL_IDX).SortExpression = CompanyGroup.CompanyGroupDV.COL_CODE
+                    Grid.Columns(CLAIM_GROUP_COL).SortExpression = CompanyGroup.CompanyGroupDV.COL_NAME_CLAIM_NUMBERING_DESCRIPTION
+                    Grid.Columns(FTP_SITE_COL).SortExpression = CompanyGroup.CompanyGroupDV.COL_NAME_FTP_SITE
 
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.Id, Me.Grid, Me.State.PageIndex)
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.Id, Grid, State.PageIndex)
                     SortAndBindGrid()
-                    Me.ValidSearchResultCountNew(Me.State.searchDV.Count, True)
+                    ValidSearchResultCountNew(State.searchDV.Count, True)
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
@@ -293,36 +293,36 @@ Namespace Tables
 
         Private Sub populatestateFromsearchFields()
 
-            Me.State.DescriptionMask = SearchDescriptionTextBox.Text
-            Me.State.CodeMask = SearchCodeTextBox.Text
+            State.DescriptionMask = SearchDescriptionTextBox.Text
+            State.CodeMask = SearchCodeTextBox.Text
 
 
         End Sub
         Private Sub PopulateSearchFieldsFromState()
-            SearchDescriptionTextBox.Text = Me.State.DescriptionMask
-            SearchCodeTextBox.Text = Me.State.CodeMask
+            SearchDescriptionTextBox.Text = State.DescriptionMask
+            SearchCodeTextBox.Text = State.CodeMask
         End Sub
 
         Private Sub SortAndBindGrid()
-            Me.State.PageIndex = Me.Grid.CurrentPageIndex
-            Me.Grid.DataSource = Me.State.searchDV
-            HighLightSortColumn(Grid, Me.State.SortExpression, Me.IsNewUI)
-            Me.Grid.DataBind()
+            State.PageIndex = Grid.CurrentPageIndex
+            Grid.DataSource = State.searchDV
+            HighLightSortColumn(Grid, State.SortExpression, IsNewUI)
+            Grid.DataBind()
 
-            ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
 
 
 
-            Session("recCount") = Me.State.searchDV.Count
-            If Me.State.searchDV.Count > 0 Then
+            Session("recCount") = State.searchDV.Count
+            If State.searchDV.Count > 0 Then
                 ControlMgr.SetVisibleControl(Me, SearchResults, True)
-                If Me.Grid.Visible Then
+                If Grid.Visible Then
 
-                    Me.lblRecordCount.Text = (Me.State.searchDV.Count) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                    lblRecordCount.Text = (State.searchDV.Count) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             Else
                 ControlMgr.SetVisibleControl(Me, SearchResults, False)
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
 
             End If
 
@@ -332,7 +332,7 @@ Namespace Tables
 #Region " Datagrid Related "
 
         'The Binding Logic is here
-        Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+        Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
             Dim btnEditButtonCode As LinkButton
@@ -341,102 +341,102 @@ Namespace Tables
                 itemType = ListItemType.AlternatingItem OrElse _
                 itemType = ListItemType.SelectedItem) Then
 
-                If (Not e.Item.Cells(Me.CODE_COL_IDX).FindControl(Me.COL_COMPANY_GROUP_CTRL) Is Nothing) Then
-                    btnEditButtonCode = CType(e.Item.Cells(Me.CODE_COL_IDX).FindControl(Me.COL_COMPANY_GROUP_CTRL), LinkButton)
+                If (e.Item.Cells(CODE_COL_IDX).FindControl(COL_COMPANY_GROUP_CTRL) IsNot Nothing) Then
+                    btnEditButtonCode = CType(e.Item.Cells(CODE_COL_IDX).FindControl(COL_COMPANY_GROUP_CTRL), LinkButton)
                     btnEditButtonCode.Text = dvRow(CompanyGroup.CompanyGroupDV.COL_CODE).ToString
                     btnEditButtonCode.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(CompanyGroup.CompanyGroupDV.COL_COMPANY_GROUP_ID), Byte()))
                     btnEditButtonCode.CommandName = SELECT_ACTION_COMMAND
                 End If
-                e.Item.Cells(Me.ID_COL_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(CompanyGroup.CompanyGroupDV.COL_COMPANY_GROUP_ID), Byte()))
-                e.Item.Cells(Me.DESCRIPTION_COL_IDX).Text = dvRow(CompanyGroup.CompanyGroupDV.COL_DESCRIPTION).ToString
-                e.Item.Cells(Me.CLAIM_GROUP_COL).Text = dvRow(CompanyGroup.CompanyGroupDV.COL_NAME_CLAIM_NUMBERING_DESCRIPTION).ToString()
-                e.Item.Cells(Me.FTP_SITE_COL).Text = dvRow(CompanyGroup.CompanyGroupDV.COL_NAME_FTP_SITE).ToString()
-                e.Item.Cells(Me.INVOICE_GROUP_COL).Text = dvRow(CompanyGroup.CompanyGroupDV.COL_NAME_INVOICE_NUMBERING_DESCRIPTION).ToString()
+                e.Item.Cells(ID_COL_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(CompanyGroup.CompanyGroupDV.COL_COMPANY_GROUP_ID), Byte()))
+                e.Item.Cells(DESCRIPTION_COL_IDX).Text = dvRow(CompanyGroup.CompanyGroupDV.COL_DESCRIPTION).ToString
+                e.Item.Cells(CLAIM_GROUP_COL).Text = dvRow(CompanyGroup.CompanyGroupDV.COL_NAME_CLAIM_NUMBERING_DESCRIPTION).ToString()
+                e.Item.Cells(FTP_SITE_COL).Text = dvRow(CompanyGroup.CompanyGroupDV.COL_NAME_FTP_SITE).ToString()
+                e.Item.Cells(INVOICE_GROUP_COL).Text = dvRow(CompanyGroup.CompanyGroupDV.COL_NAME_INVOICE_NUMBERING_DESCRIPTION).ToString()
 
 
             End If
         End Sub
 
-        Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+        Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
 
             Try
-                If (Not (Me.State.IsEditMode)) Then
-                    Me.State.PageIndex = e.NewPageIndex
-                    Me.Grid.CurrentPageIndex = Me.State.PageIndex
-                    Me.PopulateGrid()
-                    Me.Grid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
+                If (Not (State.IsEditMode)) Then
+                    State.PageIndex = e.NewPageIndex
+                    Grid.CurrentPageIndex = State.PageIndex
+                    PopulateGrid()
+                    Grid.SelectedIndex = NO_ITEM_SELECTED_INDEX
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Protected Sub ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+        Protected Sub ItemCommand(source As Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
 
             Try
                 Dim index As Integer = e.Item.ItemIndex
 
-                If (e.CommandName = Me.SELECT_ACTION_COMMAND) Then
+                If (e.CommandName = SELECT_ACTION_COMMAND) Then
                     'Do the Edit here
 
                     'Set the IsEditMode flag to TRUE
-                    Me.State.IsEditMode = True
+                    State.IsEditMode = True
 
 
-                    Me.State.Id = New Guid(Me.Grid.Items(e.Item.ItemIndex).Cells(Me.ID_COL_IDX).Text)
-                    Me.State.MyBO = New CompanyGroup(Me.State.Id)
+                    State.Id = New Guid(Grid.Items(e.Item.ItemIndex).Cells(ID_COL_IDX).Text)
+                    State.MyBO = New CompanyGroup(State.Id)
 
-                    Me.callPage(CompanyGroupDetailForm.url, New CompanyGroupDetailForm.Parameters(Me.State.Id))
+                    callPage(CompanyGroupDetailForm.url, New CompanyGroupDetailForm.Parameters(State.Id))
 
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Protected Sub ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs)
+        Protected Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 Grid.CurrentPageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
-                Me.PopulateGrid()
+                State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
+        Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
 
             Try
-                If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                    If Me.State.SortExpression.EndsWith(" DESC") Then
-                        Me.State.SortExpression = e.SortExpression
+                If State.SortExpression.StartsWith(e.SortExpression) Then
+                    If State.SortExpression.EndsWith(" DESC") Then
+                        State.SortExpression = e.SortExpression
                     Else
-                        Me.State.SortExpression &= " DESC"
+                        State.SortExpression &= " DESC"
                     End If
                 Else
-                    Me.State.SortExpression = e.SortExpression
+                    State.SortExpression = e.SortExpression
                 End If
                 'To handle the requirement of always going to the FIRST page on the Grid whenever the user switches the sorting criterion
                 'Set the Me.State.selectedClaimId = Guid.Empty and set Me.State.PageIndex = 0
-                Me.State.Id = Guid.Empty
-                Me.State.PageIndex = 0
+                State.Id = Guid.Empty
+                State.PageIndex = 0
 
-                Me.PopulateGrid()
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
 
-        Private Sub SetFocusOnEditableFieldInGrid(ByVal grid As DataGrid, ByVal cellPosition As Integer, ByVal controlName As String, ByVal itemIndex As Integer)
+        Private Sub SetFocusOnEditableFieldInGrid(grid As DataGrid, cellPosition As Integer, controlName As String, itemIndex As Integer)
             'Set focus on the Description TextBox for the EditItemIndex row
             Dim desc As TextBox = CType(grid.Items(itemIndex).Cells(cellPosition).FindControl(controlName), TextBox)
             SetFocus(desc)

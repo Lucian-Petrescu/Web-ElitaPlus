@@ -2,16 +2,16 @@
 
     Inherits BusinessObjectListBase
 
-    Public Sub New(ByVal parent As ServiceCenter)
+    Public Sub New(parent As ServiceCenter)
         MyBase.New(LoadTable(parent), GetType(ServCenterMethRepair), parent)
     End Sub
 
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, ServCenterMethRepair).ServiceCenterId.Equals(CType(Parent, ServiceCenter).Id)
     End Function
 
-    Public Function Find(ByVal MthodId As Guid) As ServCenterMethRepair
+    Public Function Find(MthodId As Guid) As ServCenterMethRepair
         Dim bo As ServCenterMethRepair
         For Each bo In Me
             If bo.ServCenterMorId.Equals(MthodId) Then Return bo
@@ -21,7 +21,7 @@
 
 
 #Region "Class Methods"
-    Private Shared Function LoadTable(ByVal parent As ServiceCenter) As DataTable
+    Private Shared Function LoadTable(parent As ServiceCenter) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(ServCenterMethRepairList)) Then
                 Dim dal As New ServCenterMethRepairDAL

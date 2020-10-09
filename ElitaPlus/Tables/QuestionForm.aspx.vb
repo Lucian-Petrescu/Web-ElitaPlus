@@ -15,7 +15,7 @@ Partial Class Questionform
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -73,9 +73,9 @@ Partial Class Questionform
         Public LastOperation As DetailPageCommand
         Public EditingBo As Question
         Public HasDataChanged As Boolean
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As Question, ByVal hasDataChanged As Boolean)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(LastOp As DetailPageCommand, curEditingBo As Question, hasDataChanged As Boolean)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
             Me.HasDataChanged = hasDataChanged
         End Sub
     End Class
@@ -111,15 +111,15 @@ Partial Class Questionform
         End Get
     End Property
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 'Get the id from the parent
-                Me.State.MyBO = New Question(CType(Me.CallingParameters, Guid))
-                Me.State.SoftQuestionGrp = Me.State.MyBO.GetSoftQuestionGroup()
+                State.MyBO = New Question(CType(CallingParameters, Guid))
+                State.SoftQuestionGrp = State.MyBO.GetSoftQuestionGroup()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
@@ -127,23 +127,23 @@ Partial Class Questionform
 
 #Region "Page Events"
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Try
-            Me.ErrorCtrl.Clear_Hide()
-            If Not Me.IsPostBack Then
+            ErrorCtrl.Clear_Hide()
+            If Not IsPostBack Then
                 'Date Calendars
                 '  Me.MenuEnabled = False
-                Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, True)
-                If Me.State.MyBO Is Nothing Then
-                    Me.State.MyBO = New Question
-                    Me.State.SoftQuestionGrp = Me.State.MyBO.GetSoftQuestionGroup()
-                    Me.State.MyBO.SoftQuestionGroupId = Me.State.SoftQuestionGrp.Id
+                AddControlMsg(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, True)
+                If State.MyBO Is Nothing Then
+                    State.MyBO = New Question
+                    State.SoftQuestionGrp = State.MyBO.GetSoftQuestionGroup()
+                    State.MyBO.SoftQuestionGroupId = State.SoftQuestionGrp.Id
                 End If
                 PopulateDropdowns()
-                Me.TranslateGridHeader(Me.GVAnswers)
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
+                TranslateGridHeader(GVAnswers)
+                PopulateFormFromBOs()
+                EnableDisableFields()
             Else
                 SelectedTabIndex = hdnSelectedTab.Value
                 DisableTabIndex = hdnDisabledTab.Value
@@ -151,14 +151,14 @@ Partial Class Questionform
             BindBoPropertiesToLabels()
             BindBoPropertiesToGridHeader()
             CheckIfComingFromSaveConfirm()
-            If Not Me.IsPostBack Then
-                Me.AddLabelDecorations(Me.State.MyBO)
+            If Not IsPostBack Then
+                AddLabelDecorations(State.MyBO)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
-        Me.ShowMissingTranslations(Me.ErrorCtrl)
+        ShowMissingTranslations(ErrorCtrl)
     End Sub
     Private Sub Questionform_PreRender(sender As Object, e As EventArgs) Handles Me.PreRender
         hdnSelectedTab.Value = SelectedTabIndex
@@ -175,7 +175,7 @@ Partial Class Questionform
         ControlMgr.SetEnableControl(Me, btnNew_WRITE, True)
         ControlMgr.SetEnableControl(Me, btnCopy_WRITE, True)
         'Now disable depebding on the object state
-        If Me.State.MyBO.IsNew Then
+        If State.MyBO.IsNew Then
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, False)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, False)
@@ -184,7 +184,7 @@ Partial Class Questionform
         'WRITE YOU OWN CODE HERE
     End Sub
 
-    Sub EnableDisableParentControls(ByVal enableToggle As Boolean)
+    Sub EnableDisableParentControls(enableToggle As Boolean)
         ControlMgr.SetEnableControl(Me, btnBack, enableToggle)
         ControlMgr.SetEnableControl(Me, btnCopy_WRITE, enableToggle)
         ControlMgr.SetEnableControl(Me, btnDelete_WRITE, enableToggle)
@@ -208,8 +208,8 @@ Partial Class Questionform
         ControlMgr.SetEnableControl(Me, txtEffective, enableToggle)
 
         If enableToggle Then        'if you are trying to enable we'll enable only those that need to
-            With Me.State.MyBO
-                If Not .IsNew And Not .QuestionTypeId.Equals(Guid.Empty) Then
+            With State.MyBO
+                If Not .IsNew AndAlso Not .QuestionTypeId.Equals(Guid.Empty) Then
                     ControlMgr.SetEnableControl(Me, ddlQuestionType, False)
                 Else
                     ControlMgr.SetEnableControl(Me, ddlQuestionType, True)
@@ -228,7 +228,7 @@ Partial Class Questionform
         End If
     End Sub
 
-    Sub EnableDisableaNSWERControl(ByVal enableToggle As Boolean)
+    Sub EnableDisableaNSWERControl(enableToggle As Boolean)
         ControlMgr.SetEnableControl(Me, btnCancelAnswer, enableToggle)
         ControlMgr.SetEnableControl(Me, btnSaveAnswer, enableToggle)
         ControlMgr.SetEnableControl(Me, btnNewAnswer, Not enableToggle)
@@ -236,28 +236,28 @@ Partial Class Questionform
 
 
     Protected Sub BindBoPropertiesToLabels()
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Code", Me.lblCode)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Description", Me.lblDescription)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Effective", Me.lbleffectiveDate)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Expiration", Me.lblExpirationDate)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "QuestionType", Me.lblQuestionType)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "AnswerType", Me.lblAnswerType)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "Attribute", Me.lblAttribute)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "CustomerMessage", Me.lblCustomerMessage)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "SearchTags", Me.lblSearchTags)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "ImpactsClaim", Me.lblImpactsClaim)
-        Me.ClearGridViewHeadersAndLabelsErrSign()
+        BindBOPropertyToLabel(State.MyBO, "Code", lblCode)
+        BindBOPropertyToLabel(State.MyBO, "Description", lblDescription)
+        BindBOPropertyToLabel(State.MyBO, "Effective", lbleffectiveDate)
+        BindBOPropertyToLabel(State.MyBO, "Expiration", lblExpirationDate)
+        BindBOPropertyToLabel(State.MyBO, "QuestionType", lblQuestionType)
+        BindBOPropertyToLabel(State.MyBO, "AnswerType", lblAnswerType)
+        BindBOPropertyToLabel(State.MyBO, "Attribute", lblAttribute)
+        BindBOPropertyToLabel(State.MyBO, "CustomerMessage", lblCustomerMessage)
+        BindBOPropertyToLabel(State.MyBO, "SearchTags", lblSearchTags)
+        BindBOPropertyToLabel(State.MyBO, "ImpactsClaim", lblImpactsClaim)
+        ClearGridViewHeadersAndLabelsErrSign()
     End Sub
 
     Private Sub BindBoPropertiesToGridHeader()
-        Me.BindBOPropertyToGridHeader(Me.State.MyAnswerChildBO, "AnswerOrder", GVAnswers.Columns(GRID_COL_ANSWER_ORDER))
-        Me.BindBOPropertyToGridHeader(Me.State.MyAnswerChildBO, "Code", GVAnswers.Columns(GRID_COL_ANSWER_CODE))
-        Me.BindBOPropertyToGridHeader(Me.State.MyAnswerChildBO, "AnswerValue", GVAnswers.Columns(GRID_COL_ANSWER_VALUE)) 'DEF-2846
-        Me.BindBOPropertyToGridHeader(Me.State.MyAnswerChildBO, "Description", GVAnswers.Columns(GRID_COL_DESCRIPTION))
-        Me.BindBOPropertyToGridHeader(Me.State.MyAnswerChildBO, "SupportsClaimId", GVAnswers.Columns(GRID_COL_SUPPORTS_CLAIM))
-        Me.BindBOPropertyToGridHeader(Me.State.MyAnswerChildBO, "Score", GVAnswers.Columns(GRID_COL_SCORE))
-        Me.BindBOPropertyToGridHeader(Me.State.MyAnswerChildBO, "Effective", GVAnswers.Columns(GRID_COL_EFFECTIVE))
-        Me.BindBOPropertyToGridHeader(Me.State.MyAnswerChildBO, "Expiration", GVAnswers.Columns(GRID_COL_EXPIRATION))
+        BindBOPropertyToGridHeader(State.MyAnswerChildBO, "AnswerOrder", GVAnswers.Columns(GRID_COL_ANSWER_ORDER))
+        BindBOPropertyToGridHeader(State.MyAnswerChildBO, "Code", GVAnswers.Columns(GRID_COL_ANSWER_CODE))
+        BindBOPropertyToGridHeader(State.MyAnswerChildBO, "AnswerValue", GVAnswers.Columns(GRID_COL_ANSWER_VALUE)) 'DEF-2846
+        BindBOPropertyToGridHeader(State.MyAnswerChildBO, "Description", GVAnswers.Columns(GRID_COL_DESCRIPTION))
+        BindBOPropertyToGridHeader(State.MyAnswerChildBO, "SupportsClaimId", GVAnswers.Columns(GRID_COL_SUPPORTS_CLAIM))
+        BindBOPropertyToGridHeader(State.MyAnswerChildBO, "Score", GVAnswers.Columns(GRID_COL_SCORE))
+        BindBOPropertyToGridHeader(State.MyAnswerChildBO, "Effective", GVAnswers.Columns(GRID_COL_EFFECTIVE))
+        BindBOPropertyToGridHeader(State.MyAnswerChildBO, "Expiration", GVAnswers.Columns(GRID_COL_EXPIRATION))
     End Sub
 
     Protected Sub PopulateDropdowns()
@@ -292,28 +292,28 @@ Partial Class Questionform
                                            {
                                             .AddBlankItem = True
                                            })
-        Me.AddCalendarwithTime(btneffective, txtEffective, , txtEffective.Text)
-        Me.AddCalendarwithTime(btnExpiration, txtExpirationDate, , txtExpirationDate.Text)
+        AddCalendarwithTime(btneffective, txtEffective, , txtEffective.Text)
+        AddCalendarwithTime(btnExpiration, txtExpirationDate, , txtExpirationDate.Text)
     End Sub
 
     Protected Sub PopulateFormFromBOs()
-        With Me.State.MyBO
+        With State.MyBO
             Dim languageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
-            Me.SetGridItemStyleColor(GVAnswers)
+            SetGridItemStyleColor(GVAnswers)
             PopulateAnswerDetailGrid()
-            Me.PopulateControlFromBOProperty(ddlanswerType, .AnswerTypeId)
-            Me.PopulateControlFromBOProperty(ddlQuestionType, .QuestionTypeId)
+            PopulateControlFromBOProperty(ddlanswerType, .AnswerTypeId)
+            PopulateControlFromBOProperty(ddlQuestionType, .QuestionTypeId)
 
             'Question type id -> don't allow to change for a saved/old record
-            If Not .IsNew And Not .QuestionTypeId.Equals(Guid.Empty) Then
+            If Not .IsNew AndAlso Not .QuestionTypeId.Equals(Guid.Empty) Then
                 ControlMgr.SetEnableControl(Me, ddlQuestionType, False)
             Else
                 ControlMgr.SetEnableControl(Me, ddlQuestionType, True)
             End If
 
             If LookupListNew.GetCodeFromId(LookupListNew.GetQuestionTypeLookupList(languageId), .QuestionTypeId) = QTYP_ISSUE Then
-                Me.PopulateControlFromBOProperty(ddlAttribute, .EntityAttributeId)
-                Me.PopulateControlFromBOProperty(ddlImpactsClaim, .ImpactsClaimId)
+                PopulateControlFromBOProperty(ddlAttribute, .EntityAttributeId)
+                PopulateControlFromBOProperty(ddlImpactsClaim, .ImpactsClaimId)
             Else
                 ControlMgr.SetEnableControl(Me, ddlImpactsClaim, False)
                 ControlMgr.SetEnableControl(Me, ddlAttribute, False)
@@ -330,15 +330,15 @@ Partial Class Questionform
                 ControlMgr.SetEnableControl(Me, txtCode, False)
             End If
 
-            Me.PopulateControlFromBOProperty(txtDescription, .Description)
-            Me.PopulateControlFromBOProperty(txtCode, .Code)
-            Me.PopulateControlFromBOProperty(txtEffective, .Effective, "dd-MMM-yyyy HH:mm:ss tt")
-            Me.PopulateControlFromBOProperty(txtExpirationDate, .Expiration, "dd-MMM-yyyy HH:mm:ss tt")
-            Me.PopulateControlFromBOProperty(txtCustomerMessage, .CustomerMessage)
-            Me.PopulateControlFromBOProperty(txtSearchTags, .SearchTags)
+            PopulateControlFromBOProperty(txtDescription, .Description)
+            PopulateControlFromBOProperty(txtCode, .Code)
+            PopulateControlFromBOProperty(txtEffective, .Effective, "dd-MMM-yyyy HH:mm:ss tt")
+            PopulateControlFromBOProperty(txtExpirationDate, .Expiration, "dd-MMM-yyyy HH:mm:ss tt")
+            PopulateControlFromBOProperty(txtCustomerMessage, .CustomerMessage)
+            PopulateControlFromBOProperty(txtSearchTags, .SearchTags)
 
             'IF question is expired then don't allow the user to make any change to it
-            If Me.State.MyBO.Expiration.Value < DateTime.Now Then
+            If State.MyBO.Expiration.Value < DateTime.Now Then
                 EnableDisableParentControls(False)
                 EnableTab(False)
 
@@ -356,32 +356,32 @@ Partial Class Questionform
 
     Sub PopulateAnswerDetailGrid()
         Try
-            Dim dv As Question.AnswerSelectionView = Me.State.MyBO.GetAnswerSelectionView()
-            dv.Sort = Me.State.SortExpressionAnswerDetailGrid
+            Dim dv As Question.AnswerSelectionView = State.MyBO.GetAnswerSelectionView()
+            dv.Sort = State.SortExpressionAnswerDetailGrid
             Session("recCount") = dv.Count
 
-            Me.GVAnswers.Columns(Me.GRID_COL_ANSWER_CODE).SortExpression = Question.AnswerSelectionView.COL_NAME_CODE
-            Me.GVAnswers.Columns(Me.GRID_COL_ANSWER_ORDER).SortExpression = Question.AnswerSelectionView.COL_NAME_ORDER
-            Me.GVAnswers.Columns(Me.GRID_COL_DESCRIPTION).SortExpression = Question.AnswerSelectionView.COL_NAME_DESCRIPTION
-            Me.GVAnswers.Columns(Me.GRID_COL_SUPPORTS_CLAIM).SortExpression = Question.AnswerSelectionView.COL_NAME_SUPPORTS_CLAIM
-            Me.GVAnswers.Columns(Me.GRID_COL_ANSWER_VALUE).SortExpression = Question.AnswerSelectionView.COL_NAME_VALUE
-            Me.GVAnswers.Columns(Me.GRID_COL_EFFECTIVE).SortExpression = Question.AnswerSelectionView.COL_NAME_EFFECTIVE
-            Me.GVAnswers.Columns(Me.GRID_COL_EXPIRATION).SortExpression = Question.AnswerSelectionView.COL_NAME_EXPIRATION
-            Me.SetGridItemStyleColor(Me.GVAnswers)
+            GVAnswers.Columns(GRID_COL_ANSWER_CODE).SortExpression = Question.AnswerSelectionView.COL_NAME_CODE
+            GVAnswers.Columns(GRID_COL_ANSWER_ORDER).SortExpression = Question.AnswerSelectionView.COL_NAME_ORDER
+            GVAnswers.Columns(GRID_COL_DESCRIPTION).SortExpression = Question.AnswerSelectionView.COL_NAME_DESCRIPTION
+            GVAnswers.Columns(GRID_COL_SUPPORTS_CLAIM).SortExpression = Question.AnswerSelectionView.COL_NAME_SUPPORTS_CLAIM
+            GVAnswers.Columns(GRID_COL_ANSWER_VALUE).SortExpression = Question.AnswerSelectionView.COL_NAME_VALUE
+            GVAnswers.Columns(GRID_COL_EFFECTIVE).SortExpression = Question.AnswerSelectionView.COL_NAME_EFFECTIVE
+            GVAnswers.Columns(GRID_COL_EXPIRATION).SortExpression = Question.AnswerSelectionView.COL_NAME_EXPIRATION
+            SetGridItemStyleColor(GVAnswers)
 
-            If Me.State.IsAnswerEditing Then
-                Me.SetPageAndSelectedIndexFromGuid(dv, Me.State.AnswerSelectedChildId, GVAnswers,
+            If State.IsAnswerEditing Then
+                SetPageAndSelectedIndexFromGuid(dv, State.AnswerSelectedChildId, GVAnswers,
                                         GVAnswers.PageIndex, True)
             Else
-                SetPageAndSelectedIndexFromGuid(dv, Me.State.AnswerSelectedChildId, Me.GVAnswers, Me.State.AnswerDetailPageIndex)
-                Me.State.AnswerDetailPageIndex = Me.GVAnswers.PageIndex
+                SetPageAndSelectedIndexFromGuid(dv, State.AnswerSelectedChildId, GVAnswers, State.AnswerDetailPageIndex)
+                State.AnswerDetailPageIndex = GVAnswers.PageIndex
             End If
 
 
             If dv.Count > 0 Then
-                Me.GVAnswers.DataSource = dv
-                Me.GVAnswers.AutoGenerateColumns = False
-                Me.GVAnswers.DataBind()
+                GVAnswers.DataSource = dv
+                GVAnswers.AutoGenerateColumns = False
+                GVAnswers.DataBind()
                 GVAnswers.PageIndex = NewCurrentPageIndex(GVAnswers, CType(Session("recCount"), Int32), CType(ddlPageSize.SelectedValue, Int32))
             Else
                 dv.AddNew()
@@ -392,7 +392,7 @@ Partial Class Questionform
                 GVAnswers.Rows(0).Controls.Clear()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
 
@@ -402,130 +402,130 @@ Partial Class Questionform
     End Sub
 
     Protected Sub PopulateBOsFormFrom()
-        With Me.State.MyBO
-            Me.PopulateBOProperty(Me.State.MyBO, "Code", Me.txtCode)
-            Me.PopulateBOProperty(Me.State.MyBO, "Description", Me.txtDescription)
-            Me.PopulateBOProperty(Me.State.MyBO, "Effective", Me.txtEffective)
-            Me.PopulateBOProperty(Me.State.MyBO, "Expiration", Me.txtExpirationDate)
-            Me.PopulateBOProperty(Me.State.MyBO, "QuestionTypeId", Me.ddlQuestionType)
-            Me.PopulateBOProperty(Me.State.MyBO, "AnswerTypeId", Me.ddlanswerType)
-            Me.PopulateBOProperty(Me.State.MyBO, "EntityAttributeId", Me.ddlAttribute)
-            Me.PopulateBOProperty(Me.State.MyBO, "ImpactsClaimId", Me.ddlImpactsClaim)
-            Me.PopulateBOProperty(Me.State.MyBO, "CustomerMessage", Me.txtCustomerMessage)
-            Me.PopulateBOProperty(Me.State.MyBO, "SearchTags", Me.txtSearchTags)
+        With State.MyBO
+            PopulateBOProperty(State.MyBO, "Code", txtCode)
+            PopulateBOProperty(State.MyBO, "Description", txtDescription)
+            PopulateBOProperty(State.MyBO, "Effective", txtEffective)
+            PopulateBOProperty(State.MyBO, "Expiration", txtExpirationDate)
+            PopulateBOProperty(State.MyBO, "QuestionTypeId", ddlQuestionType)
+            PopulateBOProperty(State.MyBO, "AnswerTypeId", ddlanswerType)
+            PopulateBOProperty(State.MyBO, "EntityAttributeId", ddlAttribute)
+            PopulateBOProperty(State.MyBO, "ImpactsClaimId", ddlImpactsClaim)
+            PopulateBOProperty(State.MyBO, "CustomerMessage", txtCustomerMessage)
+            PopulateBOProperty(State.MyBO, "SearchTags", txtSearchTags)
 
             'set the description of soft question group same as question 
-            Me.PopulateBOProperty(Me.State.SoftQuestionGrp, "Description", Me.txtDescription)
+            PopulateBOProperty(State.SoftQuestionGrp, "Description", txtDescription)
 
         End With
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Sub
 
     Protected Sub CreateNew()
-        Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
-        Me.State.MyBO = New Question
-        Me.State.SoftQuestionGrp = Me.State.MyBO.GetSoftQuestionGroup()
-        Me.State.MyBO.SoftQuestionGroupId = Me.State.SoftQuestionGrp.Id
-        Me.PopulateFormFromBOs()
-        Me.EnableDisableFields()
+        State.ScreenSnapShotBO = Nothing 'Reset the backup copy
+        State.MyBO = New Question
+        State.SoftQuestionGrp = State.MyBO.GetSoftQuestionGroup()
+        State.MyBO.SoftQuestionGroupId = State.SoftQuestionGrp.Id
+        PopulateFormFromBOs()
+        EnableDisableFields()
     End Sub
 
     Protected Sub CreateNewWithCopy()
         Dim newObj As New Question
-        newObj.Copy(Me.State.MyBO)
-        Me.State.MyBO = newObj
-        Me.State.SoftQuestionGrp = Me.State.MyBO.GetSoftQuestionGroup()
-        Me.State.MyBO.SoftQuestionGroupId = Me.State.SoftQuestionGrp.Id
+        newObj.Copy(State.MyBO)
+        State.MyBO = newObj
+        State.SoftQuestionGrp = State.MyBO.GetSoftQuestionGroup()
+        State.MyBO.SoftQuestionGroupId = State.SoftQuestionGrp.Id
         EnableDisableParentControls(True)
-        Me.PopulateFormFromBOs()
-        Me.EnableDisableFields()
+        PopulateFormFromBOs()
+        EnableDisableFields()
         'create the backup copy
-        Me.State.ScreenSnapShotBO = New Question
-        Me.State.ScreenSnapShotBO.Copy(Me.State.MyBO)
+        State.ScreenSnapShotBO = New Question
+        State.ScreenSnapShotBO.Copy(State.MyBO)
     End Sub
 
     Protected Sub CheckIfComingFromSaveConfirm()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-        If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
-            If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Accept Then
-                Me.State.MyBO.Save()
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+        If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
+            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Accept Then
+                State.MyBO.Save()
             End If
-            Select Case Me.State.ActionInProgress
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.Delete
 
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                    Me.CreateNew()
+                    DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                    Me.CreateNewWithCopy()
+                    DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                    CreateNewWithCopy()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.Accept
-                    If Me.State.IsAnswerEditing Then
-                        Me.PopulateAnswerChildBOFromDetail()
-                        Me.State.MyAnswerChildBO.Save()
-                        Me.State.MyAnswerChildBO.EndEdit()
-                        Me.State.IsAnswerEditing = False
+                    If State.IsAnswerEditing Then
+                        PopulateAnswerChildBOFromDetail()
+                        State.MyAnswerChildBO.Save()
+                        State.MyAnswerChildBO.EndEdit()
+                        State.IsAnswerEditing = False
                     End If
-                    If Me.State.OverlapExists Then
-                        If Me.State.MyBO.IsDirty Then
-                            If Me.State.MyBO.ExpireOverLappingQuestions() Then
-                                Me.State.SoftQuestionGrp.Save()
-                                Me.State.MyBO.Save()
-                                Me.State.HasDataChanged = False
-                                Me.PopulateFormFromBOs()
-                                Me.EnableDisableFields()
-                                Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    If State.OverlapExists Then
+                        If State.MyBO.IsDirty Then
+                            If State.MyBO.ExpireOverLappingQuestions() Then
+                                State.SoftQuestionGrp.Save()
+                                State.MyBO.Save()
+                                State.HasDataChanged = False
+                                PopulateFormFromBOs()
+                                EnableDisableFields()
+                                DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                             End If
                         Else
-                            Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                            DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
                         End If
-                        Me.State.OverlapExists = False
+                        State.OverlapExists = False
                     Else
-                        Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                        DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
                     End If
-                    Me.EnableDisableFields()
-                    Me.PopulateAnswerDetailGrid()
+                    EnableDisableFields()
+                    PopulateAnswerDetailGrid()
             End Select
-        ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-            Select Case Me.State.ActionInProgress
+        ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.CreateNew()
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    Me.CreateNewWithCopy()
+                    CreateNewWithCopy()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.ErrorCtrl.AddErrorAndShow(Me.State.LastErrMsg)
+                    ErrorCtrl.AddErrorAndShow(State.LastErrMsg)
                 Case ElitaPlusPage.DetailPageCommand.Accept
-                    If Me.State.IsAnswerEditing Then
-                        Me.State.MyAnswerChildBO.cancelEdit()
-                        If Me.State.MyAnswerChildBO.IsSaveNew Then
-                            Me.State.MyAnswerChildBO.Delete()
-                            Me.State.MyAnswerChildBO.Save()
+                    If State.IsAnswerEditing Then
+                        State.MyAnswerChildBO.cancelEdit()
+                        If State.MyAnswerChildBO.IsSaveNew Then
+                            State.MyAnswerChildBO.Delete()
+                            State.MyAnswerChildBO.Save()
                         End If
-                        Me.State.IsAnswerEditing = False
+                        State.IsAnswerEditing = False
                     End If
-                    Me.EnableDisableFields()
-                    Me.PopulateAnswerDetailGrid()
+                    EnableDisableFields()
+                    PopulateAnswerDetailGrid()
             End Select
         End If
         'Clean after consuming the action
-        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-        Me.HiddenSaveChangesPromptResponse.Value = ""
+        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        HiddenSaveChangesPromptResponse.Value = ""
     End Sub
 
-    Sub EndAnswerChildEdit(ByVal lastop As ElitaPlusPage.DetailPageCommand)
+    Sub EndAnswerChildEdit(lastop As ElitaPlusPage.DetailPageCommand)
         Try
-            With Me.State
+            With State
                 Select Case lastop
                     Case ElitaPlusPage.DetailPageCommand.OK
-                        Me.PopulateAnswerChildBOFromDetail()
+                        PopulateAnswerChildBOFromDetail()
                         .MyAnswerChildBO.Save()
                         .MyAnswerChildBO.EndEdit()
                     Case ElitaPlusPage.DetailPageCommand.Cancel
@@ -541,18 +541,18 @@ Partial Class Questionform
                         .AnswerSelectedChildId = Guid.Empty
                 End Select
             End With
-            Me.State.IsAnswerEditing = False
-            Me.EnableDisableFields()
-            Me.PopulateAnswerDetailGrid()
+            State.IsAnswerEditing = False
+            EnableDisableFields()
+            PopulateAnswerDetailGrid()
             EnableDisableaNSWERControl(False)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
     Sub BeginAnswerChildEdit()
-        Me.State.IsAnswerEditing = True
-        With Me.State
+        State.IsAnswerEditing = True
+        With State
             If Not .AnswerSelectedChildId.Equals(Guid.Empty) Then
                 .MyAnswerChildBO = .MyBO.GetAnswerChild(.AnswerSelectedChildId)
             Else
@@ -567,75 +567,75 @@ Partial Class Questionform
         'ensure that grid's edit index is set before this gets a call
         If GVAnswers.EditIndex = -1 Then Exit Sub
         Dim gRow As GridViewRow = GVAnswers.Rows(GVAnswers.EditIndex)
-        Dim ddlSupportsClaim As DropDownList = CType(gRow.Cells(Me.GRID_COL_SUPPORTS_CLAIM).FindControl(Me.GRID_CONTROL_SUPPORTS_CLAIM), DropDownList)
+        Dim ddlSupportsClaim As DropDownList = CType(gRow.Cells(GRID_COL_SUPPORTS_CLAIM).FindControl(GRID_CONTROL_SUPPORTS_CLAIM), DropDownList)
         Dim txtCommon As TextBox
 
-        With Me.State.MyAnswerChildBO
-            If Not ddlSupportsClaim Is Nothing Then
+        With State.MyAnswerChildBO
+            If ddlSupportsClaim IsNot Nothing Then
                 If Not .SupportsClaimId = Guid.Empty Then
-                    Me.PopulateControlFromBOProperty(ddlSupportsClaim, .SupportsClaimId)
+                    PopulateControlFromBOProperty(ddlSupportsClaim, .SupportsClaimId)
                 End If
             End If
 
-            Dim lblCommon As Label = CType(gRow.Cells(Me.GRID_COL_ANSWER_CODE).FindControl(Me.GRID_CONTROL_ANSWER_CODE), Label)
-            If Not lblCommon Is Nothing Then
-                Me.PopulateControlFromBOProperty(lblCommon, .Code)
+            Dim lblCommon As Label = CType(gRow.Cells(GRID_COL_ANSWER_CODE).FindControl(GRID_CONTROL_ANSWER_CODE), Label)
+            If lblCommon IsNot Nothing Then
+                PopulateControlFromBOProperty(lblCommon, .Code)
             End If
 
-            Dim imgbtn As ImageButton = CType(gRow.Cells(Me.GRID_COL_ANSWER_CODE).FindControl(Me.GRID_CONTROL_CLEAR_CODE), ImageButton)
+            Dim imgbtn As ImageButton = CType(gRow.Cells(GRID_COL_ANSWER_CODE).FindControl(GRID_CONTROL_CLEAR_CODE), ImageButton)
             imgbtn.Attributes.Add("onclick", "javascript:return ClearCodeValue('" & GVAnswers.ClientID & "','" & GVAnswers.EditIndex & "')")
 
 
-            txtCommon = CType(gRow.Cells(Me.GRID_COL_DESCRIPTION).FindControl(Me.GRID_CONTROL_ANSWER_DESCRIPTION), TextBox)
-            If Not txtCommon Is Nothing Then
-                Me.PopulateControlFromBOProperty(txtCommon, .Description)
+            txtCommon = CType(gRow.Cells(GRID_COL_DESCRIPTION).FindControl(GRID_CONTROL_ANSWER_DESCRIPTION), TextBox)
+            If txtCommon IsNot Nothing Then
+                PopulateControlFromBOProperty(txtCommon, .Description)
             End If
 
             'user should allowed to edit effective date of future questions 
             ''any list having effective Date (not time) less than today will not be able to change effective date
-            txtCommon = CType(gRow.Cells(Me.GRID_COL_EFFECTIVE).FindControl(Me.GRID_CONTROL_EFFECTIVE), TextBox)
-            If Not txtCommon Is Nothing Then
-                Me.PopulateControlFromBOProperty(txtCommon, .Effective)
+            txtCommon = CType(gRow.Cells(GRID_COL_EFFECTIVE).FindControl(GRID_CONTROL_EFFECTIVE), TextBox)
+            If txtCommon IsNot Nothing Then
+                PopulateControlFromBOProperty(txtCommon, .Effective)
             End If
 
-            imgbtn = CType(gRow.Cells(Me.GRID_COL_ANSWER_CODE).FindControl(Me.GRID_CONTROL_BTN_EFFECTIVE), ImageButton)
+            imgbtn = CType(gRow.Cells(GRID_COL_ANSWER_CODE).FindControl(GRID_CONTROL_BTN_EFFECTIVE), ImageButton)
             If Not .Effective.Value.Date < DateTime.Now.Date Then
                 ControlMgr.SetEnableControl(Me, txtCommon, True)
-                If Not imgbtn Is Nothing Then
+                If imgbtn IsNot Nothing Then
                     ControlMgr.SetEnableControl(Me, imgbtn, True)
                 End If
             Else
                 ControlMgr.SetEnableControl(Me, txtCommon, False)
-                If Not imgbtn Is Nothing Then
+                If imgbtn IsNot Nothing Then
                     ControlMgr.SetEnableControl(Me, imgbtn, False)
                 End If
             End If
 
-            txtCommon = CType(gRow.Cells(Me.GRID_COL_EXPIRATION).FindControl(Me.GRID_CONTROL_EXPIRATION), TextBox)
-            If Not txtCommon Is Nothing Then
-                Me.PopulateControlFromBOProperty(txtCommon, .Expiration)
+            txtCommon = CType(gRow.Cells(GRID_COL_EXPIRATION).FindControl(GRID_CONTROL_EXPIRATION), TextBox)
+            If txtCommon IsNot Nothing Then
+                PopulateControlFromBOProperty(txtCommon, .Expiration)
             End If
 
-            txtCommon = CType(gRow.Cells(Me.GRID_COL_ANSWER_VALUE).FindControl(Me.GRID_CONTROL_ANSWER_VALUE), TextBox)
-            If Not txtCommon Is Nothing Then
-                Me.PopulateControlFromBOProperty(txtCommon, .AnswerValue)
+            txtCommon = CType(gRow.Cells(GRID_COL_ANSWER_VALUE).FindControl(GRID_CONTROL_ANSWER_VALUE), TextBox)
+            If txtCommon IsNot Nothing Then
+                PopulateControlFromBOProperty(txtCommon, .AnswerValue)
             End If
 
-            txtCommon = CType(gRow.Cells(Me.GRID_COL_ANSWER_ORDER).FindControl(Me.GRID_CONTROL_ANSWER_ORDER), TextBox)
-            If Not txtCommon Is Nothing Then
-                Me.PopulateControlFromBOProperty(txtCommon, .AnswerOrder)
+            txtCommon = CType(gRow.Cells(GRID_COL_ANSWER_ORDER).FindControl(GRID_CONTROL_ANSWER_ORDER), TextBox)
+            If txtCommon IsNot Nothing Then
+                PopulateControlFromBOProperty(txtCommon, .AnswerOrder)
             End If
 
-            txtCommon = CType(gRow.Cells(Me.GRID_COL_SCORE).FindControl(Me.GRID_CONTROL_ANSWER_SCORE), TextBox)
-            If Not txtCommon Is Nothing Then
-                Me.PopulateControlFromBOProperty(txtCommon, .Score)
+            txtCommon = CType(gRow.Cells(GRID_COL_SCORE).FindControl(GRID_CONTROL_ANSWER_SCORE), TextBox)
+            If txtCommon IsNot Nothing Then
+                PopulateControlFromBOProperty(txtCommon, .Score)
             End If
 
         End With
     End Sub
 
 
-    Public Sub SetGridRowControls(ByVal gridrow As GridViewRow, ByVal enable As Boolean)
+    Public Sub SetGridRowControls(gridrow As GridViewRow, enable As Boolean)
         Dim i As Integer
         Dim edt As ImageButton
         Dim del As ImageButton
@@ -644,13 +644,13 @@ Partial Class Questionform
         '  Enable or Disable EDIT and DELETE buttons on the GridRow
 
         edt = CType(gridrow.Cells(EDIT_COL).FindControl(EDIT_CONTROL_NAME), ImageButton)
-        If Not edt Is Nothing Then
+        If edt IsNot Nothing Then
             edt.Enabled = enable
             edt.Visible = enable
         End If
 
         del = CType(gridrow.Cells(DELETE_COL).FindControl(DELETE_CONTROL_NAME), ImageButton)
-        If Not del Is Nothing Then
+        If del IsNot Nothing Then
             del.Enabled = enable
             del.Visible = enable
         End If
@@ -664,66 +664,66 @@ Partial Class Questionform
         If GVAnswers.EditIndex = -1 Then Exit Sub
         Dim gRow As GridViewRow = GVAnswers.Rows(GVAnswers.EditIndex)
 
-        Dim ddlSupportsClaim As DropDownList = CType(Me.GVAnswers.Rows(Me.GVAnswers.EditIndex).Cells(Me.GRID_COL_SUPPORTS_CLAIM).FindControl(Me.GRID_CONTROL_SUPPORTS_CLAIM), DropDownList)
-        If Not ddlSupportsClaim Is Nothing Then
-            Me.PopulateBOProperty(Me.State.MyAnswerChildBO, "SupportsClaimId", New Guid(ddlSupportsClaim.SelectedValue))
+        Dim ddlSupportsClaim As DropDownList = CType(GVAnswers.Rows(GVAnswers.EditIndex).Cells(GRID_COL_SUPPORTS_CLAIM).FindControl(GRID_CONTROL_SUPPORTS_CLAIM), DropDownList)
+        If ddlSupportsClaim IsNot Nothing Then
+            PopulateBOProperty(State.MyAnswerChildBO, "SupportsClaimId", New Guid(ddlSupportsClaim.SelectedValue))
         End If
 
-        With Me.State.MyAnswerChildBO
+        With State.MyAnswerChildBO
             Dim txtCommon As TextBox
-            With Me.State.MyAnswerChildBO
-                Dim lblCommon As Label = CType(gRow.Cells(Me.GRID_COL_ANSWER_CODE).FindControl(Me.GRID_CONTROL_ANSWER_CODE), Label)
-                If Not lblCommon Is Nothing Then
-                    Me.PopulateBOProperty(Me.State.MyAnswerChildBO, "Code", lblCommon.Text)
+            With State.MyAnswerChildBO
+                Dim lblCommon As Label = CType(gRow.Cells(GRID_COL_ANSWER_CODE).FindControl(GRID_CONTROL_ANSWER_CODE), Label)
+                If lblCommon IsNot Nothing Then
+                    PopulateBOProperty(State.MyAnswerChildBO, "Code", lblCommon.Text)
                 End If
 
-                txtCommon = CType(gRow.Cells(Me.GRID_COL_DESCRIPTION).FindControl(Me.GRID_CONTROL_ANSWER_DESCRIPTION), TextBox)
-                If Not txtCommon Is Nothing Then
-                    Me.PopulateBOProperty(Me.State.MyAnswerChildBO, "Description", txtCommon)
+                txtCommon = CType(gRow.Cells(GRID_COL_DESCRIPTION).FindControl(GRID_CONTROL_ANSWER_DESCRIPTION), TextBox)
+                If txtCommon IsNot Nothing Then
+                    PopulateBOProperty(State.MyAnswerChildBO, "Description", txtCommon)
                 End If
 
-                txtCommon = CType(gRow.Cells(Me.GRID_COL_EFFECTIVE).FindControl(Me.GRID_CONTROL_EFFECTIVE), TextBox)
-                If Not txtCommon Is Nothing Then
-                    Me.PopulateBOProperty(Me.State.MyAnswerChildBO, "Effective", txtCommon)
+                txtCommon = CType(gRow.Cells(GRID_COL_EFFECTIVE).FindControl(GRID_CONTROL_EFFECTIVE), TextBox)
+                If txtCommon IsNot Nothing Then
+                    PopulateBOProperty(State.MyAnswerChildBO, "Effective", txtCommon)
                 End If
 
-                txtCommon = CType(gRow.Cells(Me.GRID_COL_EXPIRATION).FindControl(Me.GRID_CONTROL_EXPIRATION), TextBox)
-                If Not txtCommon Is Nothing Then
-                    Me.PopulateBOProperty(Me.State.MyAnswerChildBO, "Expiration", txtCommon)
+                txtCommon = CType(gRow.Cells(GRID_COL_EXPIRATION).FindControl(GRID_CONTROL_EXPIRATION), TextBox)
+                If txtCommon IsNot Nothing Then
+                    PopulateBOProperty(State.MyAnswerChildBO, "Expiration", txtCommon)
                 End If
 
-                txtCommon = CType(gRow.Cells(Me.GRID_COL_ANSWER_VALUE).FindControl(Me.GRID_CONTROL_ANSWER_VALUE), TextBox)
-                If Not txtCommon Is Nothing Then
-                    Me.PopulateBOProperty(Me.State.MyAnswerChildBO, "AnswerValue", txtCommon)
+                txtCommon = CType(gRow.Cells(GRID_COL_ANSWER_VALUE).FindControl(GRID_CONTROL_ANSWER_VALUE), TextBox)
+                If txtCommon IsNot Nothing Then
+                    PopulateBOProperty(State.MyAnswerChildBO, "AnswerValue", txtCommon)
                 End If
 
-                txtCommon = CType(gRow.Cells(Me.GRID_COL_ANSWER_ORDER).FindControl(Me.GRID_CONTROL_ANSWER_ORDER), TextBox)
-                If Not txtCommon Is Nothing Then
-                    Me.PopulateBOProperty(Me.State.MyAnswerChildBO, "AnswerOrder", txtCommon)
+                txtCommon = CType(gRow.Cells(GRID_COL_ANSWER_ORDER).FindControl(GRID_CONTROL_ANSWER_ORDER), TextBox)
+                If txtCommon IsNot Nothing Then
+                    PopulateBOProperty(State.MyAnswerChildBO, "AnswerOrder", txtCommon)
                 End If
 
-                txtCommon = CType(gRow.Cells(Me.GRID_COL_SCORE).FindControl(Me.GRID_CONTROL_ANSWER_SCORE), TextBox)
-                If Not txtCommon Is Nothing Then
-                    Me.PopulateBOProperty(Me.State.MyAnswerChildBO, "Score", txtCommon)
+                txtCommon = CType(gRow.Cells(GRID_COL_SCORE).FindControl(GRID_CONTROL_ANSWER_SCORE), TextBox)
+                If txtCommon IsNot Nothing Then
+                    PopulateBOProperty(State.MyAnswerChildBO, "Score", txtCommon)
                 End If
 
                 'Hardcoding for now to remove dependency of running scripts everytime an answer is added.
                 'Needs to be fixed by creating a UI for it..
-                If (.AnswerValue.ToUpperInvariant.Contains("YES") Or .AnswerValue.ToUpperInvariant.Contains("SI")) Then
-                    Me.State.MyAnswerChildBO.ListItemId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
+                If (.AnswerValue.ToUpperInvariant.Contains("YES") OrElse .AnswerValue.ToUpperInvariant.Contains("SI")) Then
+                    State.MyAnswerChildBO.ListItemId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
                 End If
 
                 If (.AnswerValue.ToUpperInvariant.Contains("NO")) Then
-                    Me.State.MyAnswerChildBO.ListItemId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
+                    State.MyAnswerChildBO.ListItemId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
                 End If
 
             End With
         End With
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Sub
-    Private Sub EnableTab(ByVal blnFlag As Boolean)
+    Private Sub EnableTab(blnFlag As Boolean)
         If blnFlag = True Then 'enable
             SelectedTabIndex = "0"
             DisableTabIndex = String.Empty
@@ -733,11 +733,11 @@ Partial Class Questionform
         End If
     End Sub
     Private Function CheckQuestionOverlap() As Boolean
-        Return Me.State.MyBO.Accept(New OverlapValidationVisitor)
+        Return State.MyBO.Accept(New OverlapValidationVisitor)
     End Function
 
     Private Function CheckExistingFutureRuleOverlap() As Boolean
-        Return Me.State.MyBO.Accept(New FutureOverlapValidationVisitor)
+        Return State.MyBO.Accept(New FutureOverlapValidationVisitor)
     End Function
 
 
@@ -745,126 +745,126 @@ Partial Class Questionform
 
 #Region "Button Clicks"
 
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
             Else
-                Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
-            Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-            Me.State.LastErrMsg = Me.ErrorCtrl.Text
+            HandleErrors(ex, ErrorCtrl)
+            DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+            State.LastErrMsg = ErrorCtrl.Text
         End Try
     End Sub
 
-    Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
         Try
-            Me.PopulateBOsFormFrom()
-            Me.State.MyBO.Validate()
-            If Me.CheckQuestionOverlap() Then
-                If Me.CheckExistingFutureRuleOverlap() Then
+            PopulateBOsFormFrom()
+            State.MyBO.Validate()
+            If CheckQuestionOverlap() Then
+                If CheckExistingFutureRuleOverlap() Then
                     Throw New GUIException(Message.MSG_GUI_OVERLAPPING_RULES, Assurant.ElitaPlus.Common.ErrorCodes.EQUIPMENT_LIST_CODE_OVERLAPPED)
                 End If
-                Me.DisplayMessage(Message.MSG_GUI_OVERLAPPING_RECORDS, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = DetailPageCommand.Accept
-                Me.State.OverlapExists = True
+                DisplayMessage(Message.MSG_GUI_OVERLAPPING_RECORDS, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = DetailPageCommand.Accept
+                State.OverlapExists = True
                 Exit Sub
             End If
 
-            If Me.State.MyBO.IsDirty Then
-                Me.State.SoftQuestionGrp.Save()
-                Me.State.MyBO.UpdateTranslation()
-                Me.State.MyBO.Save()
-                Me.State.HasDataChanged = False
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
-                Me.ClearGridViewHeadersAndLabelsErrSign()
-                Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+            If State.MyBO.IsDirty Then
+                State.SoftQuestionGrp.Save()
+                State.MyBO.UpdateTranslation()
+                State.MyBO.Save()
+                State.HasDataChanged = False
+                PopulateFormFromBOs()
+                EnableDisableFields()
+                ClearGridViewHeadersAndLabelsErrSign()
+                DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
             Else
-                Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnUndo_Write_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_Write.Click
+    Private Sub btnUndo_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_Write.Click
         Try
-            If Not Me.State.MyBO.IsNew Then
+            If Not State.MyBO.IsNew Then
                 'Reload from the DB
-                Me.State.MyBO = New Question(Me.State.MyBO.Id)
-            ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+                State.MyBO = New Question(State.MyBO.Id)
+            ElseIf State.ScreenSnapShotBO IsNot Nothing Then
                 'It was a new with copy
-                Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                State.MyBO.Clone(State.ScreenSnapShotBO)
             Else
-                Me.State.MyBO = New Question
+                State.MyBO = New Question
             End If
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
+            PopulateFormFromBOs()
+            EnableDisableFields()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+    Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
         Try
-            If Me.State.MyBO.IsQuestionAssignedtoIssue Then
+            If State.MyBO.IsQuestionAssignedtoIssue Then
                 Throw New GUIException(Message.MSG_GUI_QUESTION_ASSIGNED_TO_ISSUE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_LIST_CODE_ERR)
             Else
-                If Not Me.State.MyBO.Effective.Value > DateTime.Now Then
+                If Not State.MyBO.Effective.Value > DateTime.Now Then
                     'for future effective date delete the question which has not been assigned to any question list
-                    Me.State.MyBO.Delete()
-                    Me.State.MyBO.Save()
-                    Me.State.HasDataChanged = True
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.MyBO, Me.State.HasDataChanged))
+                    State.MyBO.Delete()
+                    State.MyBO.Save()
+                    State.HasDataChanged = True
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, State.MyBO, State.HasDataChanged))
                 Else
                     'for current question - expire it by setting the expiry date
-                    Me.State.MyBO.Accept(New ExpirationVisitor)
-                    Me.State.MyBO.Save()
-                    Me.State.HasDataChanged = True
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Expire, Me.State.MyBO, Me.State.HasDataChanged))
+                    State.MyBO.Accept(New ExpirationVisitor)
+                    State.MyBO.Save()
+                    State.HasDataChanged = True
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Expire, State.MyBO, State.HasDataChanged))
                 End If
             End If
 
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
             'undo the delete
-            Me.State.MyBO.RejectChanges()
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            State.MyBO.RejectChanges()
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+    Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
             Else
-                Me.CreateNew()
+                CreateNew()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnCopy_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+    Private Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
             Else
-                Me.CreateNewWithCopy()
+                CreateNewWithCopy()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
@@ -872,65 +872,65 @@ Partial Class Questionform
 
 #Region "Detail Grid Events"
 
-    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As DataGridItemEventArgs)
+    Public Sub ItemCreated(sender As System.Object, e As DataGridItemEventArgs)
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
 #Region "Answers Grid"
-    Protected Sub GVAnswers_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GVAnswers.PageIndexChanging
+    Protected Sub GVAnswers_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GVAnswers.PageIndexChanging
         Try
-            Me.State.AnswerDetailPageIndex = e.NewPageIndex
-            Me.State.AnswerSelectedChildId = Guid.Empty
-            Me.PopulateAnswerDetailGrid()
+            State.AnswerDetailPageIndex = e.NewPageIndex
+            State.AnswerSelectedChildId = Guid.Empty
+            PopulateAnswerDetailGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Protected Sub GVAnswers_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+    Protected Sub GVAnswers_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
         Try
             Dim nIndex As Integer
             If e.CommandName = ElitaPlusSearchPage.EDIT_COMMAND_NAME Then
                 nIndex = CInt(e.CommandArgument)
-                Me.State.AnswerSelectedChildId = New Guid(CType(Me.GVAnswers.Rows(nIndex).Cells(Me.GRID_COL_ANSWER_ID).Controls(0), Label).Text)
-                Me.State.IsAnswerEditing = True
-                Me.BeginAnswerChildEdit()
+                State.AnswerSelectedChildId = New Guid(CType(GVAnswers.Rows(nIndex).Cells(GRID_COL_ANSWER_ID).Controls(0), Label).Text)
+                State.IsAnswerEditing = True
+                BeginAnswerChildEdit()
                 PopulateAnswerDetailGrid()
-                Me.FillDropdownList()
-                Me.PopulateDetailFromAnswerChildBO()
+                FillDropdownList()
+                PopulateDetailFromAnswerChildBO()
                 ElitaPlusSearchPage.SetGridControls(GVAnswers, False)
-                Me.EnableDisableFields()
+                EnableDisableFields()
                 EnableDisableaNSWERControl(True)
             ElseIf e.CommandName = ElitaPlusSearchPage.DELETE_COMMAND_NAME Then
                 nIndex = CInt(e.CommandArgument)
-                Me.State.AnswerSelectedChildId = New Guid(CType(Me.GVAnswers.Rows(nIndex).Cells(Me.GRID_COL_ANSWER_ID).Controls(0), Label).Text)
-                Me.State.IsAnswerEditing = True
+                State.AnswerSelectedChildId = New Guid(CType(GVAnswers.Rows(nIndex).Cells(GRID_COL_ANSWER_ID).Controls(0), Label).Text)
+                State.IsAnswerEditing = True
                 BeginAnswerChildEdit()
                 EndAnswerChildEdit(ElitaPlusPage.DetailPageCommand.Delete)
                 PopulateAnswerDetailGrid()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Protected Sub GVAnswers_ItemCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+    Protected Sub GVAnswers_ItemCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
         Try
             MyBase.BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub GVAnswers_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GVAnswers.RowDataBound
+    Private Sub GVAnswers_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GVAnswers.RowDataBound
         If e.Row.RowType = DataControlRowType.DataRow Then
-            If Not Me.State.IsAnswerEditing Then
-                If CType(e.Row.Cells(Me.GRID_COL_EXPIRATION).Controls(0), Label).Text <> "" Then
-                    Dim expDate As DateTime = DateHelper.GetDateValue(CType(e.Row.Cells(Me.GRID_COL_EXPIRATION).Controls(0), Label).Text)
+            If Not State.IsAnswerEditing Then
+                If CType(e.Row.Cells(GRID_COL_EXPIRATION).Controls(0), Label).Text <> "" Then
+                    Dim expDate As DateTime = DateHelper.GetDateValue(CType(e.Row.Cells(GRID_COL_EXPIRATION).Controls(0), Label).Text)
                     If expDate < DateTime.Now Then
                         SetGridRowControls(e.Row, False)
                     End If
@@ -939,20 +939,20 @@ Partial Class Questionform
         End If
     End Sub
 
-    Private Sub GVAnswers_Sorting(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles GVAnswers.Sorting
+    Private Sub GVAnswers_Sorting(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles GVAnswers.Sorting
         Try
-            If Me.State.SortExpressionAnswerDetailGrid.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpressionAnswerDetailGrid.StartsWith(e.SortExpression & " DESC") Then
-                    Me.State.SortExpressionAnswerDetailGrid = e.SortExpression
+            If State.SortExpressionAnswerDetailGrid.StartsWith(e.SortExpression) Then
+                If State.SortExpressionAnswerDetailGrid.StartsWith(e.SortExpression & " DESC") Then
+                    State.SortExpressionAnswerDetailGrid = e.SortExpression
                 Else
-                    Me.State.SortExpressionAnswerDetailGrid = e.SortExpression & " DESC"
+                    State.SortExpressionAnswerDetailGrid = e.SortExpression & " DESC"
                 End If
             Else
-                Me.State.SortExpressionAnswerDetailGrid = e.SortExpression
+                State.SortExpressionAnswerDetailGrid = e.SortExpression
             End If
-            Me.PopulateAnswerDetailGrid()
+            PopulateAnswerDetailGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
@@ -961,54 +961,54 @@ Partial Class Questionform
         'fill the drop downs
         If GVAnswers.EditIndex = -1 Then Exit Sub
         Dim gRow As GridViewRow = GVAnswers.Rows(GVAnswers.EditIndex)
-        Dim moIsCoveredDrop As DropDownList = DirectCast(gRow.Cells(Me.GRID_COL_SUPPORTS_CLAIM).FindControl(Me.GRID_CONTROL_SUPPORTS_CLAIM), DropDownList)
+        Dim moIsCoveredDrop As DropDownList = DirectCast(gRow.Cells(GRID_COL_SUPPORTS_CLAIM).FindControl(GRID_CONTROL_SUPPORTS_CLAIM), DropDownList)
         Dim languageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
 
-        With Me.State.MyAnswerChildBO
-            If Not moIsCoveredDrop Is Nothing Then
+        With State.MyAnswerChildBO
+            If moIsCoveredDrop IsNot Nothing Then
                 ' Me.BindListControlToDataView(moIsCoveredDrop, LookupListNew.GetYesNoLookupList(languageId), , , False)
                 moIsCoveredDrop.Populate(CommonConfigManager.Current.ListManager.GetList("YESNO", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions())
             End If
         End With
 
-        Dim btn As ImageButton = DirectCast(gRow.Cells(Me.GRID_COL_EFFECTIVE).FindControl(Me.GRID_CONTROL_BTN_EFFECTIVE), ImageButton)
-        Dim btn1 As ImageButton = DirectCast(gRow.Cells(Me.GRID_COL_EXPIRATION).FindControl(Me.GRID_CONTROL_BTN_EXPIRATION), ImageButton)
+        Dim btn As ImageButton = DirectCast(gRow.Cells(GRID_COL_EFFECTIVE).FindControl(GRID_CONTROL_BTN_EFFECTIVE), ImageButton)
+        Dim btn1 As ImageButton = DirectCast(gRow.Cells(GRID_COL_EXPIRATION).FindControl(GRID_CONTROL_BTN_EXPIRATION), ImageButton)
 
         Dim txtcommon As TextBox
-        txtcommon = CType(gRow.Cells(Me.GRID_COL_EFFECTIVE).FindControl(Me.GRID_CONTROL_EFFECTIVE), TextBox)
-        If Not txtcommon Is Nothing Then
-            Me.AddCalendarwithTime(btn, txtcommon, , txtcommon.Text)
+        txtcommon = CType(gRow.Cells(GRID_COL_EFFECTIVE).FindControl(GRID_CONTROL_EFFECTIVE), TextBox)
+        If txtcommon IsNot Nothing Then
+            AddCalendarwithTime(btn, txtcommon, , txtcommon.Text)
         End If
 
-        txtcommon = CType(gRow.Cells(Me.GRID_COL_EXPIRATION).FindControl(Me.GRID_CONTROL_EXPIRATION), TextBox)
-        If Not txtcommon Is Nothing Then
-            Me.AddCalendarwithTime(btn1, txtcommon, , txtcommon.Text)
+        txtcommon = CType(gRow.Cells(GRID_COL_EXPIRATION).FindControl(GRID_CONTROL_EXPIRATION), TextBox)
+        If txtcommon IsNot Nothing Then
+            AddCalendarwithTime(btn1, txtcommon, , txtcommon.Text)
         End If
     End Sub
 
-    Protected Sub Answer_Value_TextChanged(ByVal obj As Object, ByVal arg As EventArgs)
+    Protected Sub Answer_Value_TextChanged(obj As Object, arg As EventArgs)
         Try
             Dim gRow As GridViewRow = GVAnswers.Rows(GVAnswers.EditIndex)
-            Dim lblcode As Label = DirectCast(gRow.Cells(Me.GRID_COL_SUPPORTS_CLAIM).FindControl(Me.GRID_CONTROL_ANSWER_CODE), Label)
-            If Not lblcode Is Nothing Then
+            Dim lblcode As Label = DirectCast(gRow.Cells(GRID_COL_SUPPORTS_CLAIM).FindControl(GRID_CONTROL_ANSWER_CODE), Label)
+            If lblcode IsNot Nothing Then
                 Dim str As String = Answer.GetAnswerCodebyValue(CType(obj, TextBox).Text)
-                If Not str Is Nothing Then
+                If str IsNot Nothing Then
                     lblcode.Text = str
                 Else
                     lblcode.Text = ""
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles ddlPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles ddlPageSize.SelectedIndexChanged
         Try
 
-            Me.PopulateAnswerDetailGrid()
+            PopulateAnswerDetailGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
@@ -1019,24 +1019,24 @@ Partial Class Questionform
 #Region "Detail Clicks"
 
 #Region "Answers Grid  buttons"
-    Private Sub btnAnswerCancelChild_Write_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCancelAnswer.Click
+    Private Sub btnAnswerCancelChild_Write_Click(sender As Object, e As System.EventArgs) Handles btnCancelAnswer.Click
         Try
             ElitaPlusSearchPage.SetGridControls(GVAnswers, True)
-            Me.EndAnswerChildEdit(ElitaPlusPage.DetailPageCommand.Cancel)
+            EndAnswerChildEdit(ElitaPlusPage.DetailPageCommand.Cancel)
             EnableDisableParentControls(True)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnAnswerOkChild_Write_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSaveAnswer.Click
+    Private Sub btnAnswerOkChild_Write_Click(sender As Object, e As System.EventArgs) Handles btnSaveAnswer.Click
         Try
             ''DEF-2285
-            Me.ValidateAnswer()
-            Me.EndAnswerChildEdit(ElitaPlusPage.DetailPageCommand.OK)
+            ValidateAnswer()
+            EndAnswerChildEdit(ElitaPlusPage.DetailPageCommand.OK)
             EnableDisableParentControls(True)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
@@ -1048,18 +1048,17 @@ Partial Class Questionform
 
         Try
             '#1 get the database values to compare with new changed values
-            Me.State.MyAnswerChildBO.Load(ds, Me.State.MyAnswerChildBO.Id)
+            State.MyAnswerChildBO.Load(ds, State.MyAnswerChildBO.Id)
             Dim gRow As GridViewRow = GVAnswers.Rows(GVAnswers.EditIndex)
 
             '#2 If changed then expire previous Answer
             If ds.Tables(ELP_ANSWER).Rows.Count > 0 Then
-                If Not CType(gRow.Cells(Me.GRID_COL_ANSWER_VALUE).FindControl(Me.GRID_CONTROL_ANSWER_VALUE), TextBox).Text = Nothing And
-                     Not CType(gRow.Cells(Me.GRID_COL_ANSWER_VALUE).FindControl(Me.GRID_CONTROL_ANSWER_VALUE), TextBox).Text.Equals(ds.Tables(ELP_ANSWER).Rows(0)(ANSWER_VALUE)) Then
+                If Not CType(gRow.Cells(GRID_COL_ANSWER_VALUE).FindControl(GRID_CONTROL_ANSWER_VALUE), TextBox).Text = Nothing AndAlso Not CType(gRow.Cells(GRID_COL_ANSWER_VALUE).FindControl(GRID_CONTROL_ANSWER_VALUE), TextBox).Text.Equals(ds.Tables(ELP_ANSWER).Rows(0)(ANSWER_VALUE)) Then
                     ExpireOldCreateNewAnswer()
-                ElseIf Not New Guid(DirectCast(gRow.Cells(Me.GRID_COL_SUPPORTS_CLAIM).FindControl(Me.GRID_CONTROL_SUPPORTS_CLAIM), DropDownList).Text) = New Guid(CType(ds.Tables(ELP_ANSWER).Rows(0)(SUPPORTS_CLAIM_ID), Byte())) Then
+                ElseIf Not New Guid(DirectCast(gRow.Cells(GRID_COL_SUPPORTS_CLAIM).FindControl(GRID_CONTROL_SUPPORTS_CLAIM), DropDownList).Text) = New Guid(CType(ds.Tables(ELP_ANSWER).Rows(0)(SUPPORTS_CLAIM_ID), Byte())) Then
                     ExpireOldCreateNewAnswer()
                 Else
-                    Decimal.TryParse(CType(gRow.Cells(Me.GRID_COL_SCORE).FindControl(Me.GRID_CONTROL_ANSWER_SCORE), TextBox).Text, newScore)
+                    Decimal.TryParse(CType(gRow.Cells(GRID_COL_SCORE).FindControl(GRID_CONTROL_ANSWER_SCORE), TextBox).Text, newScore)
                     Decimal.TryParse(ds.Tables(ELP_ANSWER).Rows(0)(SCORE).ToString, oldScore)
                     If Not newScore = oldScore Then
                         ExpireOldCreateNewAnswer()
@@ -1067,7 +1066,7 @@ Partial Class Questionform
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
@@ -1076,40 +1075,40 @@ Partial Class Questionform
         Try
             Dim gRow As GridViewRow = GVAnswers.Rows(GVAnswers.EditIndex)
             '#3 Create new answer and copy old answer to new answer
-            Me.State.MyAnswerChildBOOld = Me.State.MyBO.GetNewAnswerChild
-            Me.State.MyAnswerChildBOOld.BeginEdit()
-            Me.State.MyAnswerChildBOOld.Clone(Me.State.MyAnswerChildBO)
-            Me.State.MyAnswerChildBOOld.Expiration = DateTime.Now
-            Me.State.MyAnswerChildBOOld.EndEdit()
-            CType(gRow.Cells(Me.GRID_COL_EFFECTIVE).FindControl(Me.GRID_CONTROL_EFFECTIVE), TextBox).Text = DateTime.Now.ToString
+            State.MyAnswerChildBOOld = State.MyBO.GetNewAnswerChild
+            State.MyAnswerChildBOOld.BeginEdit()
+            State.MyAnswerChildBOOld.Clone(State.MyAnswerChildBO)
+            State.MyAnswerChildBOOld.Expiration = DateTime.Now
+            State.MyAnswerChildBOOld.EndEdit()
+            CType(gRow.Cells(GRID_COL_EFFECTIVE).FindControl(GRID_CONTROL_EFFECTIVE), TextBox).Text = DateTime.Now.ToString
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
 
-    Private Sub btnSaveAnswerChild_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNewAnswer.Click
+    Private Sub btnSaveAnswerChild_Click(sender As Object, e As System.EventArgs) Handles btnNewAnswer.Click
         Try
-            Me.State.AnswerSelectedChildId = Guid.Empty
-            Me.BeginAnswerChildEdit()
-            Me.State.AnswerSelectedChildId = Me.State.MyAnswerChildBO.Id
-            Me.PopulateAnswerDetailGrid()
-            Me.FillDropdownList()
+            State.AnswerSelectedChildId = Guid.Empty
+            BeginAnswerChildEdit()
+            State.AnswerSelectedChildId = State.MyAnswerChildBO.Id
+            PopulateAnswerDetailGrid()
+            FillDropdownList()
             PopulateDetailFromAnswerChildBO()
             EnableDisableParentControls(False)
             ElitaPlusSearchPage.SetGridControls(GVAnswers, False)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Protected Sub btnClearCode_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+    Protected Sub btnClearCode_Click(sender As Object, e As System.EventArgs)
         Try
-            If Me.State.IsAnswerEditing Then
-                Me.State.MyAnswerChildBO.Code = ""
+            If State.IsAnswerEditing Then
+                State.MyAnswerChildBO.Code = ""
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
@@ -1118,11 +1117,11 @@ Partial Class Questionform
 #End Region
 
 #Region "Handle-Drop downs"
-    Private Sub ddlQuestionType_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ddlQuestionType.SelectedIndexChanged
+    Private Sub ddlQuestionType_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles ddlQuestionType.SelectedIndexChanged
         Try
             Dim languageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
-            Me.PopulateBOProperty(Me.State.MyBO, "QuestionTypeId", Me.ddlQuestionType)
-            With Me.State.MyBO
+            PopulateBOProperty(State.MyBO, "QuestionTypeId", ddlQuestionType)
+            With State.MyBO
                 If LookupListNew.GetCodeFromId(LookupListNew.GetQuestionTypeLookupList(languageId), .QuestionTypeId) = QTYP_ISSUE Then
                     ControlMgr.SetEnableControl(Me, ddlAttribute, True)
                     ControlMgr.SetEnableControl(Me, ddlImpactsClaim, True)
@@ -1130,12 +1129,12 @@ Partial Class Questionform
                 Else
                     ControlMgr.SetEnableControl(Me, ddlAttribute, False)
                     ControlMgr.SetEnableControl(Me, ddlImpactsClaim, False)
-                    Me.State.MyBO.ImpactsClaimId = Nothing
-                    PopulateControlFromBOProperty(ddlImpactsClaim, Me.State.MyBO.ImpactsClaimId)
+                    State.MyBO.ImpactsClaimId = Nothing
+                    PopulateControlFromBOProperty(ddlImpactsClaim, State.MyBO.ImpactsClaimId)
                 End If
             End With
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 

@@ -15,9 +15,9 @@ Public Class ElitaPlusPage
         Public LastOperation As ElitaPlusPage.DetailPageCommand
         Public EditingBo As T
         Public HasDataChanged As Boolean
-        Public Sub New(ByVal LastOp As ElitaPlusPage.DetailPageCommand, ByVal currentEditingBo As T, ByVal hasDataChanged As Boolean)
-            Me.LastOperation = LastOp
-            Me.EditingBo = currentEditingBo
+        Public Sub New(LastOp As ElitaPlusPage.DetailPageCommand, currentEditingBo As T, hasDataChanged As Boolean)
+            LastOperation = LastOp
+            EditingBo = currentEditingBo
             Me.HasDataChanged = hasDataChanged
         End Sub
     End Class
@@ -113,7 +113,7 @@ Public Class ElitaPlusPage
             End If
             Return mPagePermissionType
         End Get
-        Set(ByVal Value As FormAuthorization.enumPermissionType)
+        Set(Value As FormAuthorization.enumPermissionType)
             mPagePermissionType = Value
         End Set
     End Property
@@ -159,11 +159,11 @@ Public Class ElitaPlusPage
         MyBase.New()
     End Sub
 
-    Public Sub New(ByVal State As Object)
+    Public Sub New(State As Object)
         MyBase.New(State)
     End Sub
 
-    Public Sub New(ByVal useExistingState As Boolean)
+    Public Sub New(useExistingState As Boolean)
         MyBase.New(useExistingState)
     End Sub
 
@@ -178,7 +178,7 @@ Public Class ElitaPlusPage
     Public Sub Print()
         Dim messageContent As String
         messageContent = ("<script language=JavaScript> window.print() </script>")
-        Me.Page.RegisterStartupScript("windowsprintcommand", messageContent)
+        Page.RegisterStartupScript("windowsprintcommand", messageContent)
     End Sub
 
     Public Function GetTranslationProcessReference() As TranslationProcess
@@ -200,7 +200,7 @@ Public Class ElitaPlusPage
     'Input Values:Form name and current language.
     'Uses:Translation Process
     '------------------------------------- 
-    Public Sub TranslatePage(ByVal oTranslationProcess As TranslationProcess)
+    Public Sub TranslatePage(oTranslationProcess As TranslationProcess)
 
         Dim oControl As Control = GetRootOfPage()
         'pass the form which is the main container control and the language id.
@@ -252,7 +252,7 @@ Public Class ElitaPlusPage
         Return bCanUpdate
     End Function
 
-    Public Function CanSetControlEnabled(ByVal sControlName As String) As Boolean
+    Public Function CanSetControlEnabled(sControlName As String) As Boolean
         Dim bCanUpdate As Boolean = True
         Dim oRow As DataRow
         Dim sDbControlName As String
@@ -282,7 +282,7 @@ Public Class ElitaPlusPage
         Return bCanUpdate
     End Function
 
-    Public Function CanSetControlVisible(ByVal sControlName As String) As Boolean
+    Public Function CanSetControlVisible(sControlName As String) As Boolean
         Dim bCanUpdate As Boolean = True
         Dim oRow As DataRow
         Dim sDbControlName As String
@@ -300,7 +300,7 @@ Public Class ElitaPlusPage
         Return bCanUpdate
     End Function
 
-    Public Function CanEnableControl(ByVal oWebControl As WebControl) As Boolean
+    Public Function CanEnableControl(oWebControl As WebControl) As Boolean
         Dim bCanEnable As Boolean = True
         Dim sWebControlName As String = oWebControl.ID
 
@@ -327,7 +327,7 @@ Public Class ElitaPlusPage
     'Input Values:sNetworkID -user's id.
     '-------------------------------------
 
-    Private Sub DisableUnauthorizedControls(ByVal sNetworkID As String)
+    Private Sub DisableUnauthorizedControls(sNetworkID As String)
 
         Dim sPageName As String = Path.GetFileNameWithoutExtension(Request.Url.ToString)
 
@@ -366,7 +366,7 @@ Public Class ElitaPlusPage
             End If
 
             'if the control is found 
-            If Not oControl Is Nothing Then
+            If oControl IsNot Nothing Then
                 'DisableSingleControl(oControl)
                 SetSingleControlStatusByPermissionTyppe(oControl, sPermissionType)
             End If
@@ -425,30 +425,30 @@ Public Class ElitaPlusPage
 
     'End Function
 
-    Private Function FindNestedControl(ByVal ctlName As String, ByVal parentCtl As Control) As Control
+    Private Function FindNestedControl(ctlName As String, parentCtl As Control) As Control
 
         For Each ctrl As Control In parentCtl.Controls
             'Return if found
-            If Not ctrl.FindControl(ctlName) Is Nothing Then Return ctrl.FindControl(ctlName)
+            If ctrl.FindControl(ctlName) IsNot Nothing Then Return ctrl.FindControl(ctlName)
 
             For Each currentControl As Control In ctrl.Controls
                 'Return if found
-                If Not currentControl.FindControl(ctlName) Is Nothing Then Return currentControl.FindControl(ctlName)
+                If currentControl.FindControl(ctlName) IsNot Nothing Then Return currentControl.FindControl(ctlName)
 
                 If currentControl.GetType.Name = "TabContainer" Then
                     For Each currentContainer As Control In currentControl.Controls
                         'Return if found
-                        If Not currentContainer.FindControl(ctlName) Is Nothing Then Return currentContainer.FindControl(ctlName)
+                        If currentContainer.FindControl(ctlName) IsNot Nothing Then Return currentContainer.FindControl(ctlName)
 
                         If currentContainer.GetType.Name = "TabPanel" Then
                             For Each currentCtrl As Control In currentContainer.Controls
                                 'Return if found
-                                If Not currentCtrl.FindControl(ctlName) Is Nothing Then Return currentCtrl.FindControl(ctlName)
+                                If currentCtrl.FindControl(ctlName) IsNot Nothing Then Return currentCtrl.FindControl(ctlName)
 
                                 If currentCtrl.GetType.Name = "Control" Then
                                     For Each ctrltomodify As Control In currentCtrl.Controls
                                         'Return if found
-                                        If Not ctrltomodify.FindControl(ctlName) Is Nothing Then Return ctrltomodify.FindControl(ctlName)
+                                        If ctrltomodify.FindControl(ctlName) IsNot Nothing Then Return ctrltomodify.FindControl(ctlName)
 
                                     Next
                                 End If
@@ -459,7 +459,7 @@ Public Class ElitaPlusPage
             Next
             'Not found, so check children
             ctrl = FindNestedChildControls(ctlName, ctrl)
-            If Not ctrl Is Nothing Then
+            If ctrl IsNot Nothing Then
                 Return ctrl
             End If
         Next
@@ -469,30 +469,30 @@ Public Class ElitaPlusPage
 
     End Function
 
-    Private Function FindNestedChildControls(ByVal ctlName As String, ByVal parentCtl As Control) As Control
+    Private Function FindNestedChildControls(ctlName As String, parentCtl As Control) As Control
 
         For Each ctrl As Control In parentCtl.Controls
             'Return if found
-            If Not ctrl.FindControl(ctlName) Is Nothing Then Return ctrl.FindControl(ctlName)
+            If ctrl.FindControl(ctlName) IsNot Nothing Then Return ctrl.FindControl(ctlName)
 
             For Each currentControl As Control In ctrl.Controls
                 'Return if found
-                If Not currentControl.FindControl(ctlName) Is Nothing Then Return currentControl.FindControl(ctlName)
+                If currentControl.FindControl(ctlName) IsNot Nothing Then Return currentControl.FindControl(ctlName)
 
                 If currentControl.GetType.Name = "TabContainer" Then
                     For Each currentContainer As Control In currentControl.Controls
                         'Return if found
-                        If Not currentContainer.FindControl(ctlName) Is Nothing Then Return currentContainer.FindControl(ctlName)
+                        If currentContainer.FindControl(ctlName) IsNot Nothing Then Return currentContainer.FindControl(ctlName)
 
                         If currentContainer.GetType.Name = "TabPanel" Then
                             For Each currentCtrl As Control In currentContainer.Controls
                                 'Return if found
-                                If Not currentCtrl.FindControl(ctlName) Is Nothing Then Return currentCtrl.FindControl(ctlName)
+                                If currentCtrl.FindControl(ctlName) IsNot Nothing Then Return currentCtrl.FindControl(ctlName)
 
                                 If currentCtrl.GetType.Name = "Control" Then
                                     For Each ctrltomodify As Control In currentCtrl.Controls
                                         'Return if found
-                                        If Not ctrltomodify.FindControl(ctlName) Is Nothing Then Return ctrltomodify.FindControl(ctlName)
+                                        If ctrltomodify.FindControl(ctlName) IsNot Nothing Then Return ctrltomodify.FindControl(ctlName)
 
                                     Next
                                 End If
@@ -503,7 +503,7 @@ Public Class ElitaPlusPage
             Next
             'Not found, so check children
             ctrl = FindNestedChildControls(ctlName, ctrl)
-            If Not ctrl Is Nothing Then
+            If ctrl IsNot Nothing Then
                 Return ctrl
             End If
         Next
@@ -519,7 +519,7 @@ Public Class ElitaPlusPage
     Private Function GetRootOfPage() As Control
 
         If Page.FindControl(INTERNAL_PAGE_NAME) Is Nothing Then
-            If Not Page.Master Is Nothing Then
+            If Page.Master IsNot Nothing Then
                 If Page.Master.FindControl(INTERNAL_PAGE_NAME) Is Nothing Then
                     Return Page.Master.Master.FindControl(INTERNAL_PAGE_NAME)
                 Else
@@ -538,7 +538,7 @@ Public Class ElitaPlusPage
     'Input Values:any control can serve as a starting point. but most likely to start at page object.
     'Uses:DisableSingleControl
     '-------------------------------------
-    Private Sub DisableControlGroup(ByVal oCurrentControl As Control, ByVal bWriteMarked As Boolean)
+    Private Sub DisableControlGroup(oCurrentControl As Control, bWriteMarked As Boolean)
 
         Dim oControl As Control
 
@@ -547,7 +547,7 @@ Public Class ElitaPlusPage
 
             If oControl.ID <> String.Empty Then
 
-                Me.DisableIfWriteControl(oControl, bWriteMarked)
+                DisableIfWriteControl(oControl, bWriteMarked)
 
             End If
 
@@ -564,7 +564,7 @@ Public Class ElitaPlusPage
                 ' is not marked
                 Try
 
-                    If ((Not bWriteMarked) And ((oControl.ID Is Nothing) OrElse (Not oControl.ID.ToUpper.EndsWith(CONTROL_WRITE_MARK)))) Then
+                    If ((Not bWriteMarked) AndAlso ((oControl.ID Is Nothing) OrElse (Not oControl.ID.ToUpper.EndsWith(CONTROL_WRITE_MARK)))) Then
                         bCurrentWriteMarked = False
                     End If
                 Catch ex As Exception
@@ -585,7 +585,7 @@ Public Class ElitaPlusPage
     'Purpose:Set a single control depending on it's type name and permission type
     'Input Values:oCurrentControl
     '-------------------------------------
-    Private Sub SetSingleControlStatusByPermissionTyppe(ByVal oCurrentControl As Control, ByVal strPermissionType As String)
+    Private Sub SetSingleControlStatusByPermissionTyppe(oCurrentControl As Control, strPermissionType As String)
         Dim oWebcontrol As WebControl
         Dim oUserControl As UserControl
         Try
@@ -614,10 +614,10 @@ Public Class ElitaPlusPage
                     Case "I"
                         oUserControl.Visible = False
                     Case "V"
-                        oUserControl.Visible = (oUserControl.Visible And True)
+                        oUserControl.Visible = (oUserControl.Visible AndAlso True)
                         EnableDisableControlGroup(oUserControl, False)
                     Case "E"
-                        oUserControl.Visible = (oUserControl.Visible And True)
+                        oUserControl.Visible = (oUserControl.Visible AndAlso True)
                         EnableDisableControlGroup(oUserControl, True)
                 End Select
             End If
@@ -632,7 +632,7 @@ Public Class ElitaPlusPage
     'Input Values:any control can serve as a starting point.
     'Uses:EnableDisableControlGroup
     '-------------------------------------
-    Private Sub EnableDisableControlGroup(ByVal oCurrentControl As Control, ByVal blnEnable As Boolean)
+    Private Sub EnableDisableControlGroup(oCurrentControl As Control, blnEnable As Boolean)
         Try
             Dim oControl As Control
             For Each oControl In oCurrentControl.Controls
@@ -654,7 +654,7 @@ Public Class ElitaPlusPage
     'Purpose:Enable/Disable a single webControl
     'Input Values:oCurrentControl
     '-------------------------------------
-    Private Sub EnableDisableSingleWebControl(ByVal oCurrentControl As Control, ByVal blnEnable As Boolean)
+    Private Sub EnableDisableSingleWebControl(oCurrentControl As Control, blnEnable As Boolean)
         Try
             Dim oWebcontrol As WebControl
             If oCurrentControl.GetType.IsSubclassOf(GetType(WebControl)) Then
@@ -673,7 +673,7 @@ Public Class ElitaPlusPage
     'Purpose:Disable a single control depending on it's type name.
     'Input Values:oCurrentControl
     '-------------------------------------
-    Private Sub DisableSingleControl(ByVal oCurrentControl As Control)
+    Private Sub DisableSingleControl(oCurrentControl As Control)
 
         Dim oWebcontrol As WebControl
         Dim oUserControl As UserControl
@@ -694,7 +694,7 @@ Public Class ElitaPlusPage
     'For buttons. Disables only the buttons with CommandName = 'WRITE'
     'Input Values:oCurrentControl
     '-------------------------------------
-    Private Sub DisableIfWriteControl(ByVal oCurrentControl As Control, ByVal bWriteMarked As Boolean)
+    Private Sub DisableIfWriteControl(oCurrentControl As Control, bWriteMarked As Boolean)
 
         Dim oWebcontrol As WebControl
 
@@ -702,7 +702,7 @@ Public Class ElitaPlusPage
             oWebcontrol = CType(oCurrentControl, WebControl)
 
             If Not oWebcontrol.GetType.ToString.Equals("System.Web.UI.WebControls.Label") AndAlso Not oWebcontrol.GetType.ToString.Equals("System.Web.UI.WebControls.Panel") Then
-                If (oWebcontrol.ID.ToUpper.EndsWith(CONTROL_WRITE_MARK) Or (bWriteMarked)) Then
+                If (oWebcontrol.ID.ToUpper.EndsWith(CONTROL_WRITE_MARK) OrElse (bWriteMarked)) Then
                     oWebcontrol.Enabled = False
                 End If
             End If
@@ -710,7 +710,7 @@ Public Class ElitaPlusPage
         End If
 
     End Sub
-    Private Sub DisableIfWriteControl(ByVal oCurrentControl As Control)
+    Private Sub DisableIfWriteControl(oCurrentControl As Control)
 
         Dim oWebcontrol As WebControl
 
@@ -729,13 +729,13 @@ Public Class ElitaPlusPage
            AndAlso (sPageName.ToUpper <> "HOMEFORM") AndAlso (sPageName.ToUpper <> "MAINPAGE") _
            AndAlso (sPageName.ToUpper <> "LOGINFORM") AndAlso (sPageName.ToUpper <> "ERRORFORM") Then
             If (sPageName.ToUpper = "NOTIFICATIONLISTFORM" AndAlso CType(Session("PageCalledFrom"), String) = "MAINPAGE") Then
-                Me.MenuEnabled = False
+                MenuEnabled = False
             Else
-                Me.MenuEnabled = FormAuthorization.AllowNavigation(sPageName)
+                MenuEnabled = FormAuthorization.AllowNavigation(sPageName)
             End If
 
         Else
-            Me.MenuEnabled = True
+            MenuEnabled = True
         End If
     End Sub
 
@@ -745,7 +745,7 @@ Public Class ElitaPlusPage
 
 #Region "Page Events: Page_load"
 
-    Private Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As System.EventArgs) Handles MyBase.Load
 
         'Added check to see if a scriptmanager exists on the page.  If it does, do not render the WAIT
         '   script as it disables ajax scripting
@@ -757,18 +757,16 @@ Public Class ElitaPlusPage
         AddResubmitBlock()
 
 
-        If (Me.GetType.Name.ToLower <> GetType(ErrorForm).Name.ToLower & "_aspx") AndAlso
-           (Not Me.NavController Is Nothing AndAlso Not MyBase.useExistingState) Then
-            Me.NavController.Navigate(Me)
+        If ([GetType].Name.ToLower <> GetType(ErrorForm).Name.ToLower & "_aspx") AndAlso
+           (NavController IsNot Nothing AndAlso Not MyBase.useExistingState) Then
+            NavController.Navigate(Me)
         End If
 
         If Not Page.IsPostBack Then
             ApplyAllowNavigation()
         End If
         'This is to avoid looping
-        If ((Me.GetType.Name.ToLower = GetType(LoginForm).Name.ToLower & "_aspx") Or
-            (Me.GetType.Name.ToLower = GetType(ErrorForm).Name.ToLower & "_aspx") Or
-            (Me.GetType.Name.ToLower = "default".ToLower & "_aspx")) Then
+        If (([GetType].Name.ToLower = GetType(LoginForm).Name.ToLower & "_aspx") OrElse ([GetType].Name.ToLower = GetType(ErrorForm).Name.ToLower & "_aspx") OrElse ([GetType].Name.ToLower = "default".ToLower & "_aspx")) Then
             Return 'Nothin to do
         End If
 
@@ -778,7 +776,7 @@ Public Class ElitaPlusPage
         '    '    Return 'Nothin to do
         'End If
 
-        If (Me.GetType.BaseType.FullName = "Assurant.ElitaPlus.ElitaPlusWebApp.MainPage") Then
+        If ([GetType].BaseType.FullName = "Assurant.ElitaPlus.ElitaPlusWebApp.MainPage") Then
             Return 'Nothin to do
         End If
 
@@ -791,20 +789,20 @@ Public Class ElitaPlusPage
         If Not Page.IsPostBack Then
 
             'We are not doing any security check for accessing the Calendar form page
-            If Not (Me.GetType.Name.ToLower = GetType(CalendarForm).Name.ToLower & "_aspx") Then
+            If Not ([GetType].Name.ToLower = GetType(CalendarForm).Name.ToLower & "_aspx") Then
                 ApplyAuthorization()
                 DisableUnauthorizedControls(ElitaPlusIdentity.Current.ActiveUser.NetworkId)
             End If
             NavigationHistory.AddPageToHistory(Request.Path)
             TranslatePage(oTranslationProcess)
-            ResizeButton(Me.Form)
+            ResizeButton(Form)
         End If
 
         'Error Cleaning when starting
-        Me._errCollection.Clear()
+        _errCollection.Clear()
     End Sub
 
-    Private Sub ResizeButton(ByVal containerCtl As Control)
+    Private Sub ResizeButton(containerCtl As Control)
         Dim ctl As Control, btn As Button, btnWidth As Integer
         Try
             For Each ctl In containerCtl.Controls
@@ -1012,7 +1010,7 @@ Public Class ElitaPlusPage
     '    '    AppConfig.DataBase.Server)
     'End Sub
 
-    Protected Function PopulateUserSession(ByVal networkID As String, ByVal machineName As String) As Boolean
+    Protected Function PopulateUserSession(networkID As String, machineName As String) As Boolean
         Dim principal As ElitaPlusPrincipal
         Dim oAuthentication As New Authentication
 
@@ -1069,7 +1067,7 @@ Public Class ElitaPlusPage
 #End Region
 
 #Region "Common Dropdown binding and GUID handling Helper Functions "
-    Public Shared Sub BindListControlToArray(ByVal lstControl As ListControl, ByVal Data As ListItem(),
+    Public Shared Sub BindListControlToArray(lstControl As ListControl, Data As ListItem(),
                                              Optional ByVal AddNothingSelected As Boolean = True, Optional ByVal AddSelectSelected As Boolean = False,
                                              Optional ByVal nothingValue As String = "", Optional ByVal selectValue As String = "")
         Dim i As Integer
@@ -1080,14 +1078,14 @@ Public Class ElitaPlusPage
         If AddSelectSelected Then
             lstControl.Items.Add(New ListItem("Select", selectValue))
         End If
-        If Not Data Is Nothing Then
+        If Data IsNot Nothing Then
             For i = 0 To Data.Count - 1
                 lstControl.Items.Add(Data(i))
             Next
         End If
     End Sub
 
-    Public Shared Sub BindListControlToDataView(ByVal lstControl As ListControl, ByVal Data As DataView,
+    Public Shared Sub BindListControlToDataView(lstControl As ListControl, Data As DataView,
                                                 Optional ByVal TextColumnName As String = "DESCRIPTION", Optional ByVal GuidValueColumnName As String = "ID",
                                                 Optional ByVal AddNothingSelected As Boolean = True, Optional ByVal SortByTextColumn As Boolean = True,
                                                 Optional ByVal AddSelectSelected As Boolean = False,
@@ -1103,7 +1101,7 @@ Public Class ElitaPlusPage
         If AddOtherSelected Then
             lstControl.Items.Add(New ListItem("Other", Guid.Empty.ToString))
         End If
-        If Not Data Is Nothing Then
+        If Data IsNot Nothing Then
             If SortByTextColumn Then
                 Data.Table.Locale = CultureInfo.CurrentCulture
                 Data.Sort = TextColumnName
@@ -1113,7 +1111,7 @@ Public Class ElitaPlusPage
             Next
         End If
     End Sub
-    Public Shared Sub BindCodeNameToListControl(ByVal lstControl As ListControl, ByVal Data As DataView,
+    Public Shared Sub BindCodeNameToListControl(lstControl As ListControl, Data As DataView,
                                                 Optional ByVal TextColumnName1 As String = "DESCRIPTION", Optional ByVal TextColumnName2 As String = "CODE", Optional ByVal GuidValueColumnName As String = "ID",
                                                 Optional ByVal AddNothingSelected As Boolean = True, Optional ByVal SortByTextColumn As Boolean = True,
                                                 Optional ByVal AddSelectSelected As Boolean = False)
@@ -1125,7 +1123,7 @@ Public Class ElitaPlusPage
         If AddSelectSelected Then
             lstControl.Items.Add(New ListItem("Select", Guid.Empty.ToString))
         End If
-        If Not Data Is Nothing Then
+        If Data IsNot Nothing Then
             If SortByTextColumn Then
                 Data.Table.Locale = CultureInfo.CurrentCulture
                 Data.Sort = TextColumnName1
@@ -1136,7 +1134,7 @@ Public Class ElitaPlusPage
         End If
     End Sub
 
-    Public Shared Sub BindCodeToListControl(ByVal lstControl As ListControl, ByVal Data As DataView,
+    Public Shared Sub BindCodeToListControl(lstControl As ListControl, Data As DataView,
                                             Optional ByVal TextColumnName1 As String = "DESCRIPTION", Optional ByVal TextColumnName2 As String = "CODE",
                                             Optional ByVal AddNothingSelected As Boolean = True, Optional ByVal SortByTextColumn As Boolean = True,
                                             Optional ByVal AddSelectSelected As Boolean = False)
@@ -1148,7 +1146,7 @@ Public Class ElitaPlusPage
         If AddSelectSelected Then
             lstControl.Items.Add(New ListItem("Select", String.Empty))
         End If
-        If Not Data Is Nothing Then
+        If Data IsNot Nothing Then
             If SortByTextColumn Then
                 Data.Table.Locale = CultureInfo.CurrentCulture
                 Data.Sort = TextColumnName1
@@ -1159,7 +1157,7 @@ Public Class ElitaPlusPage
         End If
     End Sub
 
-    Public Shared Sub BindListTextToDataView(ByVal lstControl As ListControl, ByVal Data As DataView,
+    Public Shared Sub BindListTextToDataView(lstControl As ListControl, Data As DataView,
                                              Optional ByVal TextColumnName As String = "DESCRIPTION", Optional ByVal ValueColumnName As String = "ID",
                                              Optional ByVal AddNothingSelected As Boolean = True, Optional ByVal SortByTextColumn As Boolean = True)
         Dim i As Integer
@@ -1168,7 +1166,7 @@ Public Class ElitaPlusPage
             lstControl.Items.Add(New ListItem("", "0"))
         End If
 
-        If Not Data Is Nothing Then
+        If Data IsNot Nothing Then
             If SortByTextColumn Then
                 Data.Table.Locale = CultureInfo.CurrentCulture
                 Data.Sort = TextColumnName
@@ -1180,9 +1178,9 @@ Public Class ElitaPlusPage
 
     End Sub
 
-    Public Sub SetSelectedItemByText(ByVal lstControl As ListControl, ByVal SelectItem As String)
+    Public Sub SetSelectedItemByText(lstControl As ListControl, SelectItem As String)
         Dim item As ListItem = lstControl.SelectedItem
-        If Not item Is Nothing Then item.Selected = False
+        If item IsNot Nothing Then item.Selected = False
         Try
             lstControl.Items.FindByText(SelectItem.ToString).Selected = True
             lstControl.Style.Remove("background")
@@ -1192,9 +1190,9 @@ Public Class ElitaPlusPage
         End Try
     End Sub
 
-    Public Sub SetSelectedItem(ByVal lstControl As ListControl, ByVal SelectItem As String)
+    Public Sub SetSelectedItem(lstControl As ListControl, SelectItem As String)
         Dim item As ListItem = lstControl.SelectedItem
-        If Not item Is Nothing Then item.Selected = False
+        If item IsNot Nothing Then item.Selected = False
         Try
             lstControl.Items.FindByValue(SelectItem.ToString).Selected = True
             lstControl.Style.Remove("background")
@@ -1204,9 +1202,9 @@ Public Class ElitaPlusPage
         End Try
     End Sub
 
-    Public Shared Sub SetSelectedItem(ByVal lstControl As ListControl, ByVal SelectItem As Guid)
+    Public Shared Sub SetSelectedItem(lstControl As ListControl, SelectItem As Guid)
         Dim item As ListItem = lstControl.SelectedItem
-        If Not item Is Nothing Then item.Selected = False
+        If item IsNot Nothing Then item.Selected = False
         Try
             lstControl.Items.FindByValue(SelectItem.ToString).Selected = True
             lstControl.Style.Remove("background")
@@ -1216,7 +1214,7 @@ Public Class ElitaPlusPage
         End Try
     End Sub
 
-    Public Shared Sub BindSelectItem(ByVal sValue As String, ByVal oList As ListControl)
+    Public Shared Sub BindSelectItem(sValue As String, oList As ListControl)
         Dim oItem As ListItem
 
         oList.DataTextField = "Description"
@@ -1243,7 +1241,7 @@ Public Class ElitaPlusPage
 
     End Sub
 
-    Public Shared Sub BindSelectItemByText(ByVal sText As String, ByVal oList As ListControl)
+    Public Shared Sub BindSelectItemByText(sText As String, oList As ListControl)
         Dim oItem As ListItem
 
         oList.DataTextField = "Description"
@@ -1271,7 +1269,7 @@ Public Class ElitaPlusPage
 
     End Sub
 
-    Public Shared Sub ClearList(ByVal aList As ListControl)
+    Public Shared Sub ClearList(aList As ListControl)
         Dim nCount As Integer = aList.Items.Count
         Dim nIndex As Integer
 
@@ -1280,7 +1278,7 @@ Public Class ElitaPlusPage
         Next
     End Sub
 
-    Public Shared Function GetSelectedDescription(ByVal lstControl As ListControl) As String
+    Public Shared Function GetSelectedDescription(lstControl As ListControl) As String
         If lstControl.SelectedIndex = NO_ITEM_SELECTED_INDEX Then
             Return String.Empty
         Else
@@ -1288,7 +1286,7 @@ Public Class ElitaPlusPage
         End If
     End Function
 
-    Public Shared Function GetSelectedValue(ByVal lstControl As ListControl) As String
+    Public Shared Function GetSelectedValue(lstControl As ListControl) As String
         If lstControl.SelectedIndex = NO_ITEM_SELECTED_INDEX Then
             Return String.Empty
         Else
@@ -1296,7 +1294,7 @@ Public Class ElitaPlusPage
         End If
     End Function
 
-    Public Shared Function GetSelectedItem(ByVal lstControl As ListControl) As Guid
+    Public Shared Function GetSelectedItem(lstControl As ListControl) As Guid
         If lstControl.SelectedIndex = NO_ITEM_SELECTED_INDEX Then
             Return Guid.Empty
         Else
@@ -1304,16 +1302,16 @@ Public Class ElitaPlusPage
         End If
     End Function
 
-    Public Shared Function GetGuidStringFromByteArray(ByVal value As Byte()) As String
+    Public Shared Function GetGuidStringFromByteArray(value As Byte()) As String
         Return New Guid(value).ToString
     End Function
 
-    Public Shared Function GetGuidStringFromByteArray(ByVal value As Object, ByVal IgnoreNull As String) As String
+    Public Shared Function GetGuidStringFromByteArray(value As Object, IgnoreNull As String) As String
 
         Try
             Return New Guid(CType(value, Byte())).ToString
         Catch ex As Exception
-            If Not IgnoreNull Is Nothing AndAlso IgnoreNull.Equals("true") Then
+            If IgnoreNull IsNot Nothing AndAlso IgnoreNull.Equals("true") Then
                 Return Guid.Empty.ToString
             Else
                 Throw ex
@@ -1322,11 +1320,11 @@ Public Class ElitaPlusPage
 
     End Function
 
-    Public Shared Function GetGuidFromString(ByVal value As String) As Guid
+    Public Shared Function GetGuidFromString(value As String) As Guid
         Return New Guid(value)
     End Function
 
-    Public Shared Function RemoveLastPercent(ByVal source As String) As String
+    Public Shared Function RemoveLastPercent(source As String) As String
         Dim sTarget As String = source
         If source.EndsWith("%") Then
             sTarget = source.Remove(source.Length - 1, 1)
@@ -1337,11 +1335,11 @@ Public Class ElitaPlusPage
     ' *************************************************************************** '
     '   Sub GetSelectedList: Get list of selected items in a list control
     ' *************************************************************************** '
-    Protected Function GetSelectedList(ByVal control As ListControl) As String()
+    Protected Function GetSelectedList(control As ListControl) As String()
 
         Dim strItems As New System.Collections.ArrayList
 
-        If Not control Is Nothing Then
+        If control IsNot Nothing Then
 
             Dim item As ListItem
 
@@ -1365,11 +1363,11 @@ Public Class ElitaPlusPage
     ' *************************************************************************** '
     '   Sub GetListValues: Get list of all items in a list control
     ' *************************************************************************** '
-    Protected Function GetListValues(ByVal control As ListControl) As String()
+    Protected Function GetListValues(control As ListControl) As String()
 
         Dim strItems As New System.Collections.ArrayList
 
-        If Not control Is Nothing Then
+        If control IsNot Nothing Then
 
             Dim item As ListItem
 
@@ -1395,7 +1393,7 @@ Public Class ElitaPlusPage
     ' *************************************************************************** '
     '   Sub AddCalendar: Add a calendar popup to a control's onclick event
     ' *************************************************************************** '
-    Public Sub AddCalendar(ByVal control As System.Web.UI.WebControls.WebControl, ByVal textbox As System.Web.UI.WebControls.WebControl, Optional ByVal caller As String = "", Optional ByVal setDateTime As String = "N", Optional ByVal disablePreviousDates As String = "N")
+    Public Sub AddCalendar(control As System.Web.UI.WebControls.WebControl, textbox As System.Web.UI.WebControls.WebControl, Optional ByVal caller As String = "", Optional ByVal setDateTime As String = "N", Optional ByVal disablePreviousDates As String = "N")
         Dim AppPath As String = Request.ApplicationPath
         Dim ServerName As String = Request.ServerVariables("SERVER_NAME")
         'Dim url As String = "http://" & ServerName & AppPath & "/Common/CalendarForm.aspx"
@@ -1415,7 +1413,7 @@ Public Class ElitaPlusPage
     '    control.Attributes.Add("onclick", "javascript:return openCalendar('" & textId & "', '" & caller & "', '" & url & "', '" & setDateTime & "')")
     'End Sub
 
-    Public Sub AddCalendarwithTime(ByVal control As System.Web.UI.WebControls.WebControl, ByVal textbox As System.Web.UI.WebControls.WebControl, Optional ByVal caller As String = "", Optional ByVal setDateTime As String = "N")
+    Public Sub AddCalendarwithTime(control As System.Web.UI.WebControls.WebControl, textbox As System.Web.UI.WebControls.WebControl, Optional ByVal caller As String = "", Optional ByVal setDateTime As String = "N")
         Dim AppPath As String = Request.ApplicationPath
         Dim ServerName As String = Request.ServerVariables("SERVER_NAME")
         Dim url As String = ELPWebConstants.APPLICATION_PATH & "/Common/CalendarWithtimeForm.aspx"
@@ -1424,7 +1422,7 @@ Public Class ElitaPlusPage
         control.Attributes.Add("onclick", "javascript:return openCalendarwithtime('" & textId & "', '" & caller & "', '" & url & "', '" & setDateTime & "')")
     End Sub
 
-    Public Sub AddCalendar_New(ByVal control As System.Web.UI.WebControls.WebControl, ByVal textbox As System.Web.UI.WebControls.WebControl, Optional ByVal caller As String = "", Optional ByVal setDateTime As String = "N",
+    Public Sub AddCalendar_New(control As System.Web.UI.WebControls.WebControl, textbox As System.Web.UI.WebControls.WebControl, Optional ByVal caller As String = "", Optional ByVal setDateTime As String = "N",
                                Optional ByVal disablePreviousDates As String = "N")
         Dim AppPath As String = Request.ApplicationPath
         Dim ServerName As String = Request.ServerVariables("SERVER_NAME")
@@ -1435,8 +1433,8 @@ Public Class ElitaPlusPage
         control.Attributes.Add("onclick", "javascript:return openCalendar_New('" & textId & "', '" & caller & "', '" & url & "', '" & setDateTime & "', '" & disablePreviousDates & "')")
     End Sub
 
-    Public Shared Sub SharedAddCalendarNew(ByVal control As System.Web.UI.WebControls.WebControl,
-                                           ByVal textBox As System.Web.UI.WebControls.WebControl,
+    Public Shared Sub SharedAddCalendarNew(control As System.Web.UI.WebControls.WebControl,
+                                           textBox As System.Web.UI.WebControls.WebControl,
                                            Optional ByVal caller As String = "",
                                            Optional ByVal setDateTime As String = "N",
                                            Optional ByVal disablePreviousDates As String = "N")
@@ -1446,22 +1444,22 @@ Public Class ElitaPlusPage
         control.Attributes.Add("onclick", $"javascript:return openCalendar_New('{textId}', '{caller}', '{url}', '{setDateTime}', '{disablePreviousDates}')")
     End Sub
 
-    Public Shared Sub AddCalendarNewWithEnableDates(ByVal control As System.Web.UI.WebControls.WebControl,
-                                                    ByVal textBox As System.Web.UI.WebControls.WebControl,
+    Public Shared Sub AddCalendarNewWithEnableDates(control As System.Web.UI.WebControls.WebControl,
+                                                    textBox As System.Web.UI.WebControls.WebControl,
                                                     Optional ByVal caller As String = "",
                                                     Optional ByVal setDateTime As String = "N",
                                                     Optional ByVal enabledDates As List(Of Date) = Nothing)
         Dim url As String = ELPWebConstants.APPLICATION_PATH & "/Common/CalendarForm_New.aspx"
         Dim textId As String = textBox.UniqueID.Replace(":", "_").Replace("$", "_")
         Dim strEnabledDates As String = String.Empty
-        If Not enabledDates Is Nothing AndAlso enabledDates.Count > 0 Then
+        If enabledDates IsNot Nothing AndAlso enabledDates.Count > 0 Then
             enabledDates.ForEach(Sub(d) strEnabledDates = $"{strEnabledDates}{d.ToString("yyyyMMdd")}|")
         End If
         control.Attributes.Add("onclick", $"javascript:return openCalendar_New_enableDates('{textId}', '{caller}', '{url}', '{setDateTime}', '{strEnabledDates}')")
     End Sub
 
-    Public Shared Sub AddCalendarNewWithDisableBeforeDate(ByVal control As System.Web.UI.WebControls.WebControl,
-                                                          ByVal textBox As System.Web.UI.WebControls.WebControl,
+    Public Shared Sub AddCalendarNewWithDisableBeforeDate(control As System.Web.UI.WebControls.WebControl,
+                                                          textBox As System.Web.UI.WebControls.WebControl,
                                                           Optional ByVal caller As String = "",
                                                           Optional ByVal setDateTime As String = "N",
                                                           Optional ByVal disableBeforeDate As Date = Nothing)
@@ -1476,7 +1474,7 @@ Public Class ElitaPlusPage
         control.Attributes.Add("onclick", $"javascript:return openCalendar_New_disableBeforeDate('{textId}', '{caller}', '{url}', '{setDateTime}', '{strDisabledBeforeDate}')")
     End Sub
 
-    Public Sub AddCalendarwithTime_New(ByVal control As System.Web.UI.WebControls.WebControl, ByVal textbox As System.Web.UI.WebControls.WebControl, Optional ByVal caller As String = "", Optional ByVal setDateTime As String = "N")
+    Public Sub AddCalendarwithTime_New(control As System.Web.UI.WebControls.WebControl, textbox As System.Web.UI.WebControls.WebControl, Optional ByVal caller As String = "", Optional ByVal setDateTime As String = "N")
         Dim AppPath As String = Request.ApplicationPath
         Dim ServerName As String = Request.ServerVariables("SERVER_NAME")
         Dim url As String = ELPWebConstants.APPLICATION_PATH & "/Common/CalendarWithtimeForm_New.aspx"
@@ -1485,36 +1483,36 @@ Public Class ElitaPlusPage
         control.Attributes.Add("onclick", "javascript:return openCalendarwithtime_New('" & textId & "', '" & caller & "', '" & url & "', '" & setDateTime & "')")
     End Sub
 
-    Public Sub AddConfirmation(ByVal control As System.Web.UI.WebControls.WebControl, ByVal strMsg As String, Optional ByVal Translate As Boolean = True)
+    Public Sub AddConfirmation(control As System.Web.UI.WebControls.WebControl, strMsg As String, Optional ByVal Translate As Boolean = True)
         Dim translatedMsg As String = strMsg
         If Translate Then translatedMsg = TranslationBase.TranslateLabelOrMessage(strMsg)
 
-        Dim sJavaScript As String = "javascript:return showMessage('" & translatedMsg & "', '" & "ConfirmationWindow" & "', '" & Me.MSG_BTN_YES_NO & "', '" & Me.MSG_TYPE_CONFIRM & "', '" & "null" & "');"
+        Dim sJavaScript As String = "javascript:return showMessage('" & translatedMsg & "', '" & "ConfirmationWindow" & "', '" & MSG_BTN_YES_NO & "', '" & MSG_TYPE_CONFIRM & "', '" & "null" & "');"
 
         control.Attributes.Add("onclick", sJavaScript)
     End Sub
 
-    Public Sub AddConfirmationAndDisplayProgressBar(ByVal control As System.Web.UI.WebControls.WebControl, ByVal strConfirmationMsg As String, ByVal strProgressMsg As String, Optional ByVal translate As Boolean = True)
+    Public Sub AddConfirmationAndDisplayProgressBar(control As System.Web.UI.WebControls.WebControl, strConfirmationMsg As String, strProgressMsg As String, Optional ByVal translate As Boolean = True)
 
         DisplayProgressBarOnClick(CType(control, Button), strProgressMsg, translate)
 
         Dim translatedMsg As String = strConfirmationMsg
         If translate Then translatedMsg = TranslationBase.TranslateLabelOrMessage(strConfirmationMsg)
 
-        Dim sJavaScript As String = "if (showMessage('" & translatedMsg & "', '" & "ConfirmationWindow" & "', '" & Me.MSG_BTN_YES_NO & "', '" & Me.MSG_TYPE_CONFIRM & "', '" & "null" & "')){" + control.Attributes("onclick") + " }else{return false;}"
+        Dim sJavaScript As String = "if (showMessage('" & translatedMsg & "', '" & "ConfirmationWindow" & "', '" & MSG_BTN_YES_NO & "', '" & MSG_TYPE_CONFIRM & "', '" & "null" & "')){" + control.Attributes("onclick") + " }else{return false;}"
 
         control.Attributes("onclick") = sJavaScript
 
     End Sub
 
-    Public Sub AddConfirmationAndDisplayNewProgressBar(ByVal control As System.Web.UI.WebControls.WebControl, ByVal strConfirmationMsg As String, ByVal strProgressMsg As String, Optional ByVal translate As Boolean = True)
+    Public Sub AddConfirmationAndDisplayNewProgressBar(control As System.Web.UI.WebControls.WebControl, strConfirmationMsg As String, strProgressMsg As String, Optional ByVal translate As Boolean = True)
 
         DisplayNewProgressBarOnClick(CType(control, Button), strProgressMsg, translate)
 
         Dim translatedMsg As String = strConfirmationMsg
         If translate Then translatedMsg = TranslationBase.TranslateLabelOrMessage(strConfirmationMsg)
 
-        Dim sJavaScript As String = "if (showMessage('" & translatedMsg & "', '" & "ConfirmationWindow" & "', '" & Me.MSG_BTN_YES_NO & "', '" & Me.MSG_TYPE_CONFIRM & "', '" & "null" & "')){" + control.Attributes("onclick") + " }else{return false;}"
+        Dim sJavaScript As String = "if (showMessage('" & translatedMsg & "', '" & "ConfirmationWindow" & "', '" & MSG_BTN_YES_NO & "', '" & MSG_TYPE_CONFIRM & "', '" & "null" & "')){" + control.Attributes("onclick") + " }else{return false;}"
 
         control.Attributes("onclick") = sJavaScript
 
@@ -1522,7 +1520,7 @@ Public Class ElitaPlusPage
 
 
 
-    Public Sub AddInfoMsg(ByVal strMsg As String, Optional ByVal Translate As Boolean = True)
+    Public Sub AddInfoMsg(strMsg As String, Optional ByVal Translate As Boolean = True)
         Dim translatedMsg As String = strMsg
         If Translate Then translatedMsg = TranslationBase.TranslateLabelOrMessage(strMsg)
         'Session(SESSION_TRANSLATION) = translatedMsg
@@ -1530,14 +1528,14 @@ Public Class ElitaPlusPage
         sJavaScript = "<SCRIPT>" & Environment.NewLine
         'sJavaScript &= "window.alert('" & translatedMsg & "');" & Environment.NewLine
 
-        sJavaScript &= "try{resizeForm();}catch(e){} showMessage('" & translatedMsg & "', '" & "AlertWindow" & "', '" & Me.MSG_BTN_OK & "', '" & Me.MSG_TYPE_INFO & "', '" & "null" & "');" & Environment.NewLine
+        sJavaScript &= "try{resizeForm();}catch(e){} showMessage('" & translatedMsg & "', '" & "AlertWindow" & "', '" & MSG_BTN_OK & "', '" & MSG_TYPE_INFO & "', '" & "null" & "');" & Environment.NewLine
 
         sJavaScript &= "</SCRIPT>" & Environment.NewLine
-        Me.RegisterStartupScript("ShowConfirmation", sJavaScript)
+        RegisterStartupScript("ShowConfirmation", sJavaScript)
     End Sub
 
 
-    Public Sub AddConfirmMsg(ByVal strMsg As String, ByVal ReturnResponseIn As HtmlInputHidden, Optional ByVal Translate As Boolean = True)
+    Public Sub AddConfirmMsg(strMsg As String, ReturnResponseIn As HtmlInputHidden, Optional ByVal Translate As Boolean = True)
         Dim translatedMsg As String = strMsg
         If Translate Then translatedMsg = TranslationBase.TranslateLabelOrMessage(strMsg)
         'Session(SESSION_TRANSLATION) = translatedMsg
@@ -1545,10 +1543,10 @@ Public Class ElitaPlusPage
         sJavaScript = "<SCRIPT>" & Environment.NewLine
         sJavaScript &= "try{resizeForm();}catch(e){} ConfirmAndSubmit('" & translatedMsg & "','" & ReturnResponseIn.ClientID & "');" & Environment.NewLine
         sJavaScript &= "</SCRIPT>" & Environment.NewLine
-        Me.RegisterStartupScript("ShowConfirmation", sJavaScript)
+        RegisterStartupScript("ShowConfirmation", sJavaScript)
     End Sub
 
-    Public Sub AddInfoMsgWithSubmit(ByVal strMsg As String, ByVal ReturnResponseIn As HtmlInputHidden, Optional ByVal Translate As Boolean = True)
+    Public Sub AddInfoMsgWithSubmit(strMsg As String, ReturnResponseIn As HtmlInputHidden, Optional ByVal Translate As Boolean = True)
         Dim translatedMsg As String = strMsg
         If Translate Then translatedMsg = TranslationBase.TranslateLabelOrMessage(strMsg)
         'Session(SESSION_TRANSLATION) = translatedMsg
@@ -1556,40 +1554,40 @@ Public Class ElitaPlusPage
         sJavaScript = "<SCRIPT>" & Environment.NewLine
         sJavaScript &= "try{resizeForm();}catch(e){} AlertAndSubmit('" & translatedMsg & "','" & ReturnResponseIn.ClientID & "');" & Environment.NewLine
         sJavaScript &= "</SCRIPT>" & Environment.NewLine
-        Me.RegisterStartupScript("ShowConfirmation", sJavaScript)
+        RegisterStartupScript("ShowConfirmation", sJavaScript)
     End Sub
 
-    Public Sub AddInfoMsgWithDelay(ByVal strMsg As String, Optional ByVal Translate As Boolean = True, Optional ByVal DelayMillSeconds As Integer = 500)
+    Public Sub AddInfoMsgWithDelay(strMsg As String, Optional ByVal Translate As Boolean = True, Optional ByVal DelayMillSeconds As Integer = 500)
         Dim translatedMsg As String = strMsg
         If Translate Then translatedMsg = TranslationBase.TranslateLabelOrMessage(strMsg)
         Dim sJavaScript As String
         sJavaScript = "<SCRIPT>" & Environment.NewLine
-        sJavaScript &= "try{resizeForm();}catch(e){} var t=setTimeout(""showMessage('" & translatedMsg & "', '" & "AlertWindow" & "', '" & Me.MSG_BTN_OK & "', '" & Me.MSG_TYPE_INFO & "', '" & "null" & "')""," & DelayMillSeconds.ToString & ");" & Environment.NewLine
+        sJavaScript &= "try{resizeForm();}catch(e){} var t=setTimeout(""showMessage('" & translatedMsg & "', '" & "AlertWindow" & "', '" & MSG_BTN_OK & "', '" & MSG_TYPE_INFO & "', '" & "null" & "')""," & DelayMillSeconds.ToString & ");" & Environment.NewLine
         sJavaScript &= "</SCRIPT>" & Environment.NewLine
-        Me.RegisterStartupScript("ShowConfirmation", sJavaScript)
+        RegisterStartupScript("ShowConfirmation", sJavaScript)
     End Sub
 
-    Public Sub AcctSettingTypeSubmit(ByVal strMsg As String, ByVal ReturnResponseIn As HtmlInputHidden, Optional ByVal Translate As Boolean = True)
+    Public Sub AcctSettingTypeSubmit(strMsg As String, ReturnResponseIn As HtmlInputHidden, Optional ByVal Translate As Boolean = True)
         Dim translatedMsg As String = strMsg
         If Translate Then translatedMsg = TranslationBase.TranslateLabelOrMessage(strMsg)
         Dim sJavaScript As String
         sJavaScript = "<SCRIPT>" & Environment.NewLine
         sJavaScript &= "try{resizeForm();}catch(e){} AcctSettingTypeSubmit('" & translatedMsg & "','" & ReturnResponseIn.ClientID & "');" & Environment.NewLine
         sJavaScript &= "</SCRIPT>" & Environment.NewLine
-        Me.RegisterStartupScript("ShowConfirmation", sJavaScript)
+        RegisterStartupScript("ShowConfirmation", sJavaScript)
     End Sub
 
-    Public Sub AddControlMsg(ByVal control As System.Web.UI.WebControls.WebControl, ByVal strMsg As String, ByVal title As String, ByVal buttons As String, ByVal type As String, Optional ByVal Translate As Boolean = True)
+    Public Sub AddControlMsg(control As System.Web.UI.WebControls.WebControl, strMsg As String, title As String, buttons As String, type As String, Optional ByVal Translate As Boolean = True)
         Dim translatedMsg As String = strMsg
         If Translate Then translatedMsg = TranslationBase.TranslateLabelOrMessage(strMsg)
         control.Attributes.Add("onclick", "javascript:return showMessage('" & translatedMsg & "', '" & title & "', '" & buttons & "', '" & type & "', 'null');")
     End Sub
-    Public Function GetTranslation(ByVal strUIPROGCODE As String, Optional ByVal Translate As Boolean = True) As String
+    Public Function GetTranslation(strUIPROGCODE As String, Optional ByVal Translate As Boolean = True) As String
         Dim translatedMsg As String = strUIPROGCODE
         If Translate Then translatedMsg = TranslationBase.TranslateLabelOrMessage(strUIPROGCODE)
         Return translatedMsg
     End Function
-    Public Sub DisplayMessage(ByVal strMsg As String, ByVal title As String, ByVal buttons As String, ByVal type As String, Optional ByVal ReturnResponseIn As HtmlInputHidden = Nothing, Optional ByVal Translate As Boolean = True)
+    Public Sub DisplayMessage(strMsg As String, title As String, buttons As String, type As String, Optional ByVal ReturnResponseIn As HtmlInputHidden = Nothing, Optional ByVal Translate As Boolean = True)
         Dim translatedMsg As String = strMsg
         If Translate Then translatedMsg = TranslationBase.TranslateLabelOrMessage(strMsg)
         Dim sJavaScript As String
@@ -1598,25 +1596,25 @@ Public Class ElitaPlusPage
         ' Session(SESSION_TRANSLATION) = translatedMsg
 
         Dim id As String = "null"
-        If Not ReturnResponseIn Is Nothing Then
+        If ReturnResponseIn IsNot Nothing Then
             id = ReturnResponseIn.ClientID
         End If
 
         If Me.IsNewUI Then
 
-            Me.SetDisplayMessageControls(translatedMsg, buttons, type, id)
+            SetDisplayMessageControls(translatedMsg, buttons, type, id)
             sJavaScript = "<SCRIPT>" & Environment.NewLine
             sJavaScript &= "revealModalAfterLoaded('modalPage');" & Environment.NewLine
             sJavaScript &= "</SCRIPT>" & Environment.NewLine
 
-            Me.RegisterStartupScript("ShowConfirmation", sJavaScript)
+            RegisterStartupScript("ShowConfirmation", sJavaScript)
 
         Else
             sJavaScript = "<SCRIPT>" & Environment.NewLine
             sJavaScript &= "try{resizeForm();}catch(e){} showMessageAfterLoaded('" & translatedMsg & "', '" & title & "', '" & buttons & "', '" & type & "', '" & id & "');" & Environment.NewLine
             sJavaScript &= "</SCRIPT>" & Environment.NewLine
 
-            Me.RegisterStartupScript("ShowConfirmation", sJavaScript)
+            RegisterStartupScript("ShowConfirmation", sJavaScript)
 
         End If
 
@@ -1625,17 +1623,17 @@ Public Class ElitaPlusPage
 
     End Sub
 
-    Public Sub SetDisplayMessageControls(ByVal strMsg As String, ByVal buttons As String, ByVal type As String, Optional ByVal ReturnResponseId As String = Nothing)
+    Public Sub SetDisplayMessageControls(strMsg As String, buttons As String, type As String, Optional ByVal ReturnResponseId As String = Nothing)
 
         Dim imgMsgIcon As HtmlImage
         Dim tdBtnArea As HtmlTableCell
         Dim tdModalMessage As HtmlTableCell
         Dim modalTitleText As Label
 
-        imgMsgIcon = CType(Me.Master.FindControl("imgMsgIcon"), HtmlImage)
-        tdBtnArea = CType(Me.Master.FindControl("tdBtnArea"), HtmlTableCell)
-        tdModalMessage = CType(Me.Master.FindControl("tdModalMessage"), HtmlTableCell)
-        modalTitleText = CType(Me.Master.FindControl("modalTitleText"), Label)
+        imgMsgIcon = CType(Master.FindControl("imgMsgIcon"), HtmlImage)
+        tdBtnArea = CType(Master.FindControl("tdBtnArea"), HtmlTableCell)
+        tdModalMessage = CType(Master.FindControl("tdModalMessage"), HtmlTableCell)
+        modalTitleText = CType(Master.FindControl("modalTitleText"), Label)
 
         If type = "0" Then
             imgMsgIcon.Src = "~/Navigation/images/infoIcon.gif"
@@ -1675,33 +1673,33 @@ Public Class ElitaPlusPage
 
     End Sub
 
-    Public Sub DisplayMessageWithDelay(ByVal strMsg As String, ByVal title As String, ByVal buttons As String, ByVal type As String, Optional ByVal ReturnResponseIn As HtmlInputHidden = Nothing, Optional ByVal Translate As Boolean = True, Optional ByVal DelayMillSeconds As Integer = 500)
+    Public Sub DisplayMessageWithDelay(strMsg As String, title As String, buttons As String, type As String, Optional ByVal ReturnResponseIn As HtmlInputHidden = Nothing, Optional ByVal Translate As Boolean = True, Optional ByVal DelayMillSeconds As Integer = 500)
         Dim translatedMsg As String = strMsg
         If Translate Then translatedMsg = TranslationBase.TranslateLabelOrMessage(strMsg)
         Dim sJavaScript As String
         Dim id As String = "null"
-        If Not ReturnResponseIn Is Nothing Then
+        If ReturnResponseIn IsNot Nothing Then
             id = ReturnResponseIn.ClientID
         End If
         sJavaScript = "<SCRIPT>" & Environment.NewLine
         sJavaScript &= "try{resizeForm();}catch(e){} var t=setTimeout(""showMessage('" & translatedMsg & "', '" & title & "', '" & buttons & "', '" & type & "', '" & id & "')"", " & DelayMillSeconds.ToString & ");" & Environment.NewLine
         sJavaScript &= "</SCRIPT>" & Environment.NewLine
-        Me.RegisterStartupScript("ShowConfirmation", sJavaScript)
+        RegisterStartupScript("ShowConfirmation", sJavaScript)
     End Sub
 
-    Public Sub DisplayMessageWithSubmit(ByVal strMsg As String, ByVal title As String, ByVal buttons As String, ByVal type As String, Optional ByVal Translate As Boolean = True)
+    Public Sub DisplayMessageWithSubmit(strMsg As String, title As String, buttons As String, type As String, Optional ByVal Translate As Boolean = True)
         Dim translatedMsg As String = strMsg
         If Translate Then translatedMsg = TranslationBase.TranslateLabelOrMessage(strMsg)
         Dim sJavaScript As String
 
-        If Me.IsNewUI Then
+        If IsNewUI Then
 
-            Me.SetDisplayMessageControls(translatedMsg, buttons, type, Nothing)
+            SetDisplayMessageControls(translatedMsg, buttons, type, Nothing)
             sJavaScript = "<SCRIPT>" & Environment.NewLine
             sJavaScript &= "revealModal('modalPage');" & Environment.NewLine
             sJavaScript &= "</SCRIPT>" & Environment.NewLine
 
-            Me.RegisterStartupScript("ShowConfirmation", sJavaScript)
+            RegisterStartupScript("ShowConfirmation", sJavaScript)
 
         Else
 
@@ -1710,7 +1708,7 @@ Public Class ElitaPlusPage
             sJavaScript = "<SCRIPT>" & Environment.NewLine
             sJavaScript &= "try{resizeForm();}catch(e){} showMessageWithSubmit('" & translatedMsg & "', '" & title & "', '" & buttons & "', '" & type & "');" & Environment.NewLine
             sJavaScript &= "</SCRIPT>" & Environment.NewLine
-            Me.RegisterStartupScript("ShowConfirmation", sJavaScript)
+            RegisterStartupScript("ShowConfirmation", sJavaScript)
         End If
     End Sub
 
@@ -1719,7 +1717,7 @@ Public Class ElitaPlusPage
         'lit.Text = "<IFRAME id=""progressFrame"" style=""DISPLAY: none; Z-INDEX: 300; LEFT: 170px; OVERFLOW: hidden; WIDTH: 300px; PADDING-TOP: 0px; POSITION: absolute; TOP: 300px; HEIGHT: 117px"" name=""progressFrame"" marginWidth=""0"" src=""../Common/MessageProgressForm.aspx"" frameBorder=""no"" scrolling=""no""></IFRAME>"
         lit.Text = "<IFRAME id=""progressFrame"" style=""DISPLAY: none; Z-INDEX: 300; LEFT: 170px; OVERFLOW: hidden; WIDTH: 300px; PADDING-TOP: 0px; POSITION: absolute; TOP: 300px; HEIGHT: 142px"" name=""progressFrame"" marginWidth=""0"" src=""../Common/MessageProgressForm.aspx"" frameBorder=""no"" scrolling=""no""></IFRAME>"
         lit.ID = "__ProgressBarInternalFrame__"
-        If Not PageForm Is Nothing AndAlso PageForm.FindControl(lit.ID) Is Nothing Then
+        If PageForm IsNot Nothing AndAlso PageForm.FindControl(lit.ID) Is Nothing Then
             PageForm.Controls.Add(lit)
         End If
     End Sub
@@ -1728,7 +1726,7 @@ Public Class ElitaPlusPage
         Dim lit As New System.Web.UI.WebControls.Literal
         lit.Text = "<IFRAME id=""progressFrame"" style=""DISPLAY: none; Z-INDEX: 300; LEFT: 170px; OVERFLOW: hidden; WIDTH: 400px; PADDING-TOP: 0px; POSITION: absolute; TOP: 300px; HEIGHT: 142px"" name=""progressFrame"" marginWidth=""0"" src=""../Common/MessageProgressForm_New.aspx"" frameBorder=""0"" scrolling=""no""></IFRAME>"
         lit.ID = "__ProgressBarInternalFrame__"
-        If Not PageForm Is Nothing AndAlso PageForm.FindControl(lit.ID) Is Nothing Then
+        If PageForm IsNot Nothing AndAlso PageForm.FindControl(lit.ID) Is Nothing Then
             PageForm.Controls.Add(lit)
         End If
     End Sub
@@ -1739,7 +1737,7 @@ Public Class ElitaPlusPage
         'lit.Text = "<IFRAME id=""reportViewerFrame"" style=""DISPLAY: none; Z-INDEX: 300; LEFT: 170px; OVERFLOW: hidden; WIDTH: 100%; PADDING-TOP: 0px; POSITION: absolute; TOP: 300px; HEIGHT: 100%"" name=""progressFrame"" marginWidth=""0"" src="""" frameBorder=""no"" scrolling=""no""></IFRAME>"
         lit.ID = "__ReportViewerFrame__"
 
-        If Not PageForm Is Nothing AndAlso PageForm.FindControl(lit.ID) Is Nothing Then
+        If PageForm IsNot Nothing AndAlso PageForm.FindControl(lit.ID) Is Nothing Then
             PageForm.Controls.Add(lit)
         End If
 
@@ -1750,7 +1748,7 @@ Public Class ElitaPlusPage
         ' lit.Text = "<IFRAME id=""progressFrame"" style=""DISPLAY: none; Z-INDEX: 300; LEFT: 170px; OVERFLOW: hidden; WIDTH: 100%; PADDING-TOP: 0px; POSITION: absolute; TOP: 300px; HEIGHT: 100%"" name=""progressFrame"" marginWidth=""0"" src=""../Common/MessageProgressForm.aspx"" frameBorder=""no"" scrolling=""no""></IFRAME>"
         lit.ID = "__ProgressBarInternalFrame__"
 
-        If Not PageForm Is Nothing AndAlso PageForm.FindControl(lit.ID) Is Nothing Then
+        If PageForm IsNot Nothing AndAlso PageForm.FindControl(lit.ID) Is Nothing Then
             PageForm.Controls.Add(lit)
         End If
         InstallReportViewer()
@@ -1760,32 +1758,32 @@ Public Class ElitaPlusPage
         Dim lit As New System.Web.UI.WebControls.Literal
         lit.Text = "<IFRAME id=""progressFrame"" style=""DISPLAY: none; Z-INDEX: 300; LEFT: 170px; OVERFLOW: hidden; WIDTH: 450px; PADDING-TOP: 0px; POSITION: absolute; TOP: 300px; HEIGHT: 162px"" name=""progressFrame"" marginWidth=""0"" src=""../Common/MessageProgressForm_New.aspx"" frameBorder=""0"" scrolling=""no""></IFRAME>"
         lit.ID = "__ProgressBarInternalFrame__"
-        If Not PageForm Is Nothing AndAlso PageForm.FindControl(lit.ID) Is Nothing Then
+        If PageForm IsNot Nothing AndAlso PageForm.FindControl(lit.ID) Is Nothing Then
             PageForm.Controls.Add(lit)
         End If
         InstallReportViewer()
 
     End Sub
 
-    Public Sub HideHtmlElement(ByVal elementId As String)
+    Public Sub HideHtmlElement(elementId As String)
         Dim sJavaScript As String
 
         sJavaScript = "<SCRIPT>" & Environment.NewLine
         sJavaScript &= "document.all.item('" & elementId & "').style.display = 'none';"
         sJavaScript &= "</SCRIPT>" & Environment.NewLine
-        Me.RegisterStartupScript("HideElement", sJavaScript)
+        RegisterStartupScript("HideElement", sJavaScript)
     End Sub
 
-    Public Sub ShowHtmlElement(ByVal elementId As String)
+    Public Sub ShowHtmlElement(elementId As String)
         Dim sJavaScript As String
 
         sJavaScript = "<SCRIPT>" & Environment.NewLine
         sJavaScript &= "document.all.item('" & elementId & "').style.display = '';"
         sJavaScript &= "</SCRIPT>" & Environment.NewLine
-        Me.RegisterStartupScript("showElement", sJavaScript)
+        RegisterStartupScript("showElement", sJavaScript)
     End Sub
 
-    Public Sub DisplayProgressBarOnClick(ByVal onClickBtn As Button, ByVal msg As String, Optional ByVal translate As Boolean = True)
+    Public Sub DisplayProgressBarOnClick(onClickBtn As Button, msg As String, Optional ByVal translate As Boolean = True)
         If translate Then
             msg = TranslationBase.TranslateLabelOrMessage(msg)
         End If
@@ -1793,7 +1791,7 @@ Public Class ElitaPlusPage
         InstallDisplayProgressBar()
     End Sub
 
-    Public Sub DisplayProgressBarOnClick(ByVal ctl As WebControl, ByVal msg As String, Optional ByVal translate As Boolean = True)
+    Public Sub DisplayProgressBarOnClick(ctl As WebControl, msg As String, Optional ByVal translate As Boolean = True)
         If translate Then
             msg = TranslationBase.TranslateLabelOrMessage(msg)
         End If
@@ -1801,7 +1799,7 @@ Public Class ElitaPlusPage
         InstallDisplayProgressBar()
     End Sub
 
-    Public Sub DisplayNewProgressBarOnClick(ByVal onClickBtn As Button, ByVal msg As String, Optional ByVal translate As Boolean = True)
+    Public Sub DisplayNewProgressBarOnClick(onClickBtn As Button, msg As String, Optional ByVal translate As Boolean = True)
         If translate Then
             msg = TranslationBase.TranslateLabelOrMessage(msg)
         End If
@@ -1810,7 +1808,7 @@ Public Class ElitaPlusPage
     End Sub
 
     Sub AddResubmitBlock()
-        If Not PageForm Is Nothing Then
+        If PageForm IsNot Nothing Then
             PageForm.Attributes.Add("onsubmit", "return(! IsSubmitting());")
             Dim lit As New System.Web.UI.WebControls.Literal, strbuilder As New System.Text.StringBuilder
             strbuilder.Append("<script>")
@@ -1847,7 +1845,7 @@ Public Class ElitaPlusPage
 
     End Sub
 
-    Protected Overloads Sub SetFocus(ByVal control As WebControl)
+    Protected Overloads Sub SetFocus(control As WebControl)
         Dim sJavaScript As String
         Dim controlId As String = control.UniqueID 'control.UniqueID.Replace(":", "_")
         sJavaScript = "<script language=""javascript"" > " & Environment.NewLine
@@ -1855,7 +1853,7 @@ Public Class ElitaPlusPage
         sJavaScript &= "  SetFocusToElement(" & "'" & controlId & "')" & Environment.NewLine
         sJavaScript &= "   }catch(e){}" & Environment.NewLine
         sJavaScript &= "</script>" & Environment.NewLine
-        Me.RegisterStartupScript("SetFocusScript_" & controlId, sJavaScript)
+        RegisterStartupScript("SetFocusScript_" & controlId, sJavaScript)
     End Sub
 
     Protected Sub SetFocusOnFirstEditableControl()
@@ -1865,14 +1863,14 @@ Public Class ElitaPlusPage
         sJavaScript &= "SetFocusToFirstEditableElement()" & Environment.NewLine
         sJavaScript &= "   }catch(e){}" & Environment.NewLine
         sJavaScript &= "</script>" & Environment.NewLine
-        Me.RegisterStartupScript("SetFocusScript", sJavaScript)
+        RegisterStartupScript("SetFocusScript", sJavaScript)
     End Sub
 
 
     ' *************************************************************************** '
     '   Sub WindowOpen: Displays a message with a list of validation errors
     ' *************************************************************************** '
-    Protected Sub WindowOpen(ByVal url As String, ByVal name As String)
+    Protected Sub WindowOpen(url As String, name As String)
         Dim sJavaScript As String
 
         '   AddHiddenForWindowOpen()
@@ -1881,29 +1879,29 @@ Public Class ElitaPlusPage
         sJavaScript &= "newWindow = windowOpen('" & url & "','" & name & "');" & Environment.NewLine
         sJavaScript &= "newWindow.document.title = '" & name & "';" & Environment.NewLine
         sJavaScript &= "</SCRIPT>" & Environment.NewLine
-        Me.RegisterStartupScript("MaximizedWindowOpen", sJavaScript)
+        RegisterStartupScript("MaximizedWindowOpen", sJavaScript)
     End Sub
 
     ' *************************************************************************** '
     '   Sub WindowOpen: Displays a message with a list of validation errors
     ' *************************************************************************** '
-    Protected Sub WindowOpen(ByVal url As String)
+    Protected Sub WindowOpen(url As String)
         Dim sJavaScript As String
         sJavaScript = "<SCRIPT>" & Environment.NewLine
         sJavaScript &= "openSupportWindow('" & url & "','');" & Environment.NewLine
         sJavaScript &= "</SCRIPT>" & Environment.NewLine
-        Me.RegisterStartupScript("MaximizedWindowOpen", sJavaScript)
+        RegisterStartupScript("MaximizedWindowOpen", sJavaScript)
     End Sub
     'to be renamed...
-    Protected Sub myWindowOpen(ByVal url As String)
+    Protected Sub myWindowOpen(url As String)
         Dim sJavaScript As String
         sJavaScript = "<SCRIPT>" & Environment.NewLine
         sJavaScript &= "mywindowOpen('" & url & "','');" & Environment.NewLine
         sJavaScript &= "</SCRIPT>" & Environment.NewLine
-        Me.RegisterStartupScript("MaximizedWindowOpen", sJavaScript)
+        RegisterStartupScript("MaximizedWindowOpen", sJavaScript)
     End Sub
 
-    Protected Shared Sub OpenPopup(ByVal url As String, ByVal callingPage As Page)
+    Protected Shared Sub OpenPopup(url As String, callingPage As Page)
         Dim sJavaScript As String
         sJavaScript = "<SCRIPT>" & Environment.NewLine
         sJavaScript &= "mywindowOpen('" & url & "','');" & Environment.NewLine
@@ -1911,21 +1909,21 @@ Public Class ElitaPlusPage
         callingPage.RegisterStartupScript("MaximizedWindowOpen", sJavaScript)
     End Sub
 
-    Public Sub HandleGridMessages(ByVal count As Int32, Optional ByVal checkForCount As Boolean = False)
-        If (Me.IsNewUI) Then
+    Public Sub HandleGridMessages(count As Int32, Optional ByVal checkForCount As Boolean = False)
+        If (IsNewUI) Then
             If count > 1000 AndAlso checkForCount Then
                 'Me.DisplayMessage("Only the first 1000 records are shown. Please modify your search criteria.", "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                Me.MasterPage.MessageController.AddInformation(Message.MSG_MAX_LIMIT_EXCEEDED_REFINE_SEARCH_CRITERIA, True)
+                MasterPage.MessageController.AddInformation(Message.MSG_MAX_LIMIT_EXCEEDED_REFINE_SEARCH_CRITERIA, True)
             ElseIf count = 0 Then
-                Me.MasterPage.MessageController.AddInformation(Message.MSG_NO_RECORDS_FOUND, True)
+                MasterPage.MessageController.AddInformation(Message.MSG_NO_RECORDS_FOUND, True)
             End If
         Else
             If count > 1000 AndAlso checkForCount Then
                 'Me.DisplayMessage("Only the first 1000 records are shown. Please modify your search criteria.", "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                Me.DisplayMessage(Message.MSG_MAX_LIMIT_EXCEEDED_REFINE_SEARCH_CRITERIA, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                DisplayMessage(Message.MSG_MAX_LIMIT_EXCEEDED_REFINE_SEARCH_CRITERIA, "", MSG_BTN_OK, MSG_TYPE_INFO)
             ElseIf count = 0 Then
                 'Me.DisplayMessage("No records were found.", "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                Me.DisplayMessage(Message.MSG_NO_RECORDS_FOUND, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                DisplayMessage(Message.MSG_NO_RECORDS_FOUND, "", MSG_BTN_OK, MSG_TYPE_INFO)
             End If
         End If
     End Sub
@@ -1940,7 +1938,7 @@ Public Class ElitaPlusPage
 
         sJavaScript &= "SetProgressTimeOut('" & baseController & "');" & Environment.NewLine
         sJavaScript &= "</SCRIPT>" & Environment.NewLine
-        Me.RegisterStartupScript("SetProgressTimeOutScript", sJavaScript)
+        RegisterStartupScript("SetProgressTimeOutScript", sJavaScript)
     End Sub
 
     Public Sub InstallReportCe()
@@ -1950,12 +1948,12 @@ Public Class ElitaPlusPage
         sJavaScript = "<SCRIPT>" & Environment.NewLine
         sJavaScript &= "EnableReportCe();" & Environment.NewLine
         sJavaScript &= "</SCRIPT>" & Environment.NewLine
-        Me.RegisterStartupScript("EnableReportCe", sJavaScript)
+        RegisterStartupScript("EnableReportCe", sJavaScript)
     End Sub
 
-    Protected Sub CloseProgressBarParent(ByVal statusMsg As String, ByVal viewerName As String,
-                                         ByVal errorMsg As String, ByVal rptAction As String,
-                                         ByVal rptFtp As String)
+    Protected Sub CloseProgressBarParent(statusMsg As String, viewerName As String,
+                                         errorMsg As String, rptAction As String,
+                                         rptFtp As String)
         Dim sJavaScript As String
         Dim transMsg As String = TranslationBase.TranslateLabelOrMessage(statusMsg)
 
@@ -1966,22 +1964,22 @@ Public Class ElitaPlusPage
             sJavaScript &= "buttonClick();" & Environment.NewLine
         End If
         sJavaScript &= "</SCRIPT>" & Environment.NewLine
-        Me.RegisterStartupScript("CloseProgressBarParent", sJavaScript)
+        RegisterStartupScript("CloseProgressBarParent", sJavaScript)
     End Sub
-    Protected Sub CloseReportTimerControl(ByVal closetimer As String)
+    Protected Sub CloseReportTimerControl(closetimer As String)
         Dim sJavaScript As String
 
         '   AddHiddenForWindowOpen()
         sJavaScript = "<SCRIPT>" & Environment.NewLine
         sJavaScript &= "parent.parent.SetCloseTimerVariable('" & closetimer & "');" & Environment.NewLine
         sJavaScript &= "</SCRIPT>" & Environment.NewLine
-        Me.RegisterStartupScript("CloseReportTimerControl", sJavaScript)
+        RegisterStartupScript("CloseReportTimerControl", sJavaScript)
     End Sub
 
 #End Region
 
 #Region "Common Culture Related Helper Function"
-    Public Shared Function GetDateFormattedStringNullable(ByVal value As Nullable(Of Date)) As String
+    Public Shared Function GetDateFormattedStringNullable(value As Nullable(Of Date)) As String
         If (value.HasValue) Then
             Return GetDateFormattedString(value.Value)
         Else
@@ -1989,7 +1987,7 @@ Public Class ElitaPlusPage
         End If
     End Function
 
-    Public Shared Function GetLongDateFormattedStringNullable(ByVal value As Nullable(Of Date)) As String
+    Public Shared Function GetLongDateFormattedStringNullable(value As Nullable(Of Date)) As String
         If (value.HasValue) Then
             Return GetLongDateFormattedString(value.Value)
         Else
@@ -1997,7 +1995,7 @@ Public Class ElitaPlusPage
         End If
     End Function
 
-    Public Shared Function GetLongDate12FormattedStringNullable(ByVal value As Nullable(Of Date)) As String
+    Public Shared Function GetLongDate12FormattedStringNullable(value As Nullable(Of Date)) As String
         If (value.HasValue) Then
             Return GetLongDate12FormattedString(value.Value)
         Else
@@ -2005,13 +2003,13 @@ Public Class ElitaPlusPage
         End If
     End Function
 
-    Public Shared Function GetDateFormattedString(ByVal value As Date) As String
+    Public Shared Function GetDateFormattedString(value As Date) As String
         Dim LanguageCode = ElitaPlusIdentity.Current.ActiveUser.LanguageCode
         Dim formattedValue = CommonConfigManager.Current.LanguageManager.Get(LanguageCode).GetAwaiter().GetResult()?.FormatDate(value)
         Return formattedValue.ToString()
     End Function
 
-    Public Shared Function GetLongDateFormattedString(ByVal value As Date) As String
+    Public Shared Function GetLongDateFormattedString(value As Date) As String
         Dim LanguageCode = ElitaPlusIdentity.Current.ActiveUser.LanguageCode
         Dim formattedDate = CommonConfigManager.Current.LanguageManager.Get(LanguageCode).GetAwaiter().GetResult()?.FormatDate(value)
         Dim FormattedTime = CommonConfigManager.Current.LanguageManager.Get(LanguageCode).GetAwaiter().GetResult()?.FormatTime(value)
@@ -2027,12 +2025,12 @@ Public Class ElitaPlusPage
         Return LongDateTimeValue.ToString()
     End Function
 
-    Public Shared Function GetLongDateFormattedStringWithFormat(ByVal value As Date, ByVal Format As String) As String
+    Public Shared Function GetLongDateFormattedStringWithFormat(value As Date, Format As String) As String
         'Return value.ToString(DATE_FORMAT, LocalizationMgr.CurrentCulture)
         Return value.ToString(Format, System.Threading.Thread.CurrentThread.CurrentCulture)
     End Function
 
-    Public Shared Function GetLongDateFormattedStringWithFormat(ByVal value As Date?, ByVal format As String) As String
+    Public Shared Function GetLongDateFormattedStringWithFormat(value As Date?, format As String) As String
         'Return value.ToString(DATE_FORMAT, LocalizationMgr.CurrentCulture)
         If Not value.HasValue Then
             Return String.Empty
@@ -2041,7 +2039,7 @@ Public Class ElitaPlusPage
         Return GetLongDateFormattedStringWithFormat(CType(value.Value, Date), format)
     End Function
 
-    Public Shared Function GetLongDate12FormattedString(ByVal value As Date) As String
+    Public Shared Function GetLongDate12FormattedString(value As Date) As String
         Dim LanguageCode = ElitaPlusIdentity.Current.ActiveUser.LanguageCode
         Dim formattedDate = CommonConfigManager.Current.LanguageManager.Get(LanguageCode).GetAwaiter().GetResult()?.FormatDate(value)
         Dim FormattedTime = CommonConfigManager.Current.LanguageManager.Get(LanguageCode).GetAwaiter().GetResult()?.FormatTime(value)
@@ -2049,31 +2047,31 @@ Public Class ElitaPlusPage
         Return FormattedValue.ToString()
     End Function
 
-    Public Shared Function GetAmountFormattedString(ByVal value As Decimal, Optional ByVal format As String = Nothing) As String
+    Public Shared Function GetAmountFormattedString(value As Decimal, Optional ByVal format As String = Nothing) As String
         If format Is Nothing Then format = DECIMAL_FORMAT
         Return value.ToString(format, System.Threading.Thread.CurrentThread.CurrentCulture)
     End Function
 
-    Public Shared Function GetAmountFormattedDoubleString(ByVal value As String, Optional ByVal format As String = Nothing) As String
+    Public Shared Function GetAmountFormattedDoubleString(value As String, Optional ByVal format As String = Nothing) As String
 
         If format Is Nothing Then format = DECIMAL_FORMAT
 
         Return Convert.ToDouble(value).ToString(format, System.Threading.Thread.CurrentThread.CurrentCulture)
 
     End Function
-    Public Shared Function GetAmountFormattedToString(ByVal value As String) As String
+    Public Shared Function GetAmountFormattedToString(value As String) As String
         Return Convert.ToString(value, System.Threading.Thread.CurrentThread.CurrentCulture)
     End Function
 
     'REQ-5773
-    Public Shared Function GetAmountFormattedPercentString(ByVal value As Decimal, Optional ByVal format As String = Nothing) As String
+    Public Shared Function GetAmountFormattedPercentString(value As Decimal, Optional ByVal format As String = Nothing) As String
 
         If format Is Nothing Then format = PERCENT_FORMAT
         Return value.ToString(format, System.Threading.Thread.CurrentThread.CurrentCulture)
     End Function
 
 
-    Public Shared Function GetAmountFormattedToVariableString(ByVal value As Decimal, Optional ByVal format As String = Nothing) As String
+    Public Shared Function GetAmountFormattedToVariableString(value As Decimal, Optional ByVal format As String = Nothing) As String
         Dim v As String = value.ToString()
         If (v.Contains(".")) Then
             Dim arr() As String = v.Split(CChar("."))
@@ -2111,16 +2109,16 @@ Public Class ElitaPlusPage
         sJavaScript = "<SCRIPT>" & Environment.NewLine
         sJavaScript &= "var IsPointFormat = '" & IsPointFormat() & "';" & Environment.NewLine
         sJavaScript &= "</SCRIPT>" & Environment.NewLine
-        Me.Page.RegisterStartupScript("Test", sJavaScript)
+        Page.RegisterStartupScript("Test", sJavaScript)
     End Sub
 
-    Public Shared Function GetDecimalSeperator(ByVal culturecode As String) As String
+    Public Shared Function GetDecimalSeperator(culturecode As String) As String
         Dim decimalsep As String
         decimalsep = CultureInfo.CreateSpecificCulture(culturecode).NumberFormat.CurrencyDecimalSeparator
         Return decimalsep
     End Function
 
-    Public Shared Function GetGroupSeperator(ByVal culturecode As String) As String
+    Public Shared Function GetGroupSeperator(culturecode As String) As String
         Dim groupsep As String
         groupsep = CultureInfo.CreateSpecificCulture(culturecode).NumberFormat.CurrencyGroupSeparator
         Return groupsep
@@ -2136,7 +2134,7 @@ Public Class ElitaPlusPage
     '   Sub PopulateBOProperty: Overloaded routine to set the BO property for all
     '                           lookup lists
     ' *************************************************************************** '
-    Public Sub PopulateBOProperty(ByVal bo As Object, ByVal propertyName As String, ByVal comboBox As DropDownList,
+    Public Sub PopulateBOProperty(bo As Object, propertyName As String, comboBox As DropDownList,
                                   Optional ByVal isGuidValue As Boolean = True, Optional ByVal isStringValue As Boolean = False)
 
         Try
@@ -2147,7 +2145,7 @@ Public Class ElitaPlusPage
                 piPropertyInfo.SetValue(bo, value, Nothing)
             ElseIf (isStringValue = True) Then
                 Dim value As String = GetSelectedValue(comboBox)
-                If Not (String.IsNullOrWhiteSpace(piPropertyInfo.GetValue(bo)) And String.IsNullOrWhiteSpace(value)) Then
+                If Not (String.IsNullOrWhiteSpace(piPropertyInfo.GetValue(bo)) AndAlso String.IsNullOrWhiteSpace(value)) Then
                     piPropertyInfo.SetValue(bo, value, Nothing)
                 End If
             Else
@@ -2164,7 +2162,7 @@ Public Class ElitaPlusPage
     ' *********************************************************************************** '
     '   Sub PopulateBOProperty: Overloaded routine to set the BO property for a checkbox
     ' *********************************************************************************** '
-    Protected Sub PopulateBOProperty(ByVal bo As Object, ByVal propertyName As String, ByVal chkBox As CheckBox)
+    Protected Sub PopulateBOProperty(bo As Object, propertyName As String, chkBox As CheckBox)
 
         Try
             Dim piPropertyInfo As System.Reflection.PropertyInfo = bo.GetType.GetProperty(propertyName)
@@ -2180,32 +2178,32 @@ Public Class ElitaPlusPage
     End Sub
 
 
-    Public Sub PopulateBOProperty(ByVal bo As Object, ByVal propertyName As String, ByVal tBox As TextBox)
+    Public Sub PopulateBOProperty(bo As Object, propertyName As String, tBox As TextBox)
         Dim lbl As Label
         Dim oColumn As DataGridColumn
         Dim sUniqueId As String
         Try
-            Me.PopulateBOProperty(bo, propertyName, tBox.Text)
+            PopulateBOProperty(bo, propertyName, tBox.Text)
         Catch ex As Exception
             Try
                 sUniqueId = GetValueFromPropertyName(bo, "UniqueId")
                 ' Verifies whether  is a Detail Control
-                lbl = Me.FindBoPropAssociatedLabel(bo.GetType, propertyName, sUniqueId)
+                lbl = FindBoPropAssociatedLabel(bo.GetType, propertyName, sUniqueId)
                 '  lbl = Me.FindBoPropAssociatedLabel(bo, propertyName)
-                If Not lbl Is Nothing Then
+                If lbl IsNot Nothing Then
                     lbl.ForeColor = Color.Red
                     Throw New PopulateBOPropException(propertyName, tBox, lbl, ex)
                 Else
 
-                    If TypeOf (Me.boPropToGridHeaderBinding.Item(GetUniqueKeyName(bo.GetType, propertyName, sUniqueId))) Is TemplateField Then
-                        Dim grdColTmplFld As TemplateField = Me.FindBoPropAssociatedGridHeaderTmplFld(bo.GetType, propertyName, sUniqueId)
-                        If Not grdColTmplFld Is Nothing Then
+                    If TypeOf (boPropToGridHeaderBinding.Item(GetUniqueKeyName(bo.GetType, propertyName, sUniqueId))) Is TemplateField Then
+                        Dim grdColTmplFld As TemplateField = FindBoPropAssociatedGridHeaderTmplFld(bo.GetType, propertyName, sUniqueId)
+                        If grdColTmplFld IsNot Nothing Then
                             grdColTmplFld.HeaderStyle.ForeColor = Color.Red
                             Throw New PopulateBOPropException(propertyName, tBox, oColumn, ex)
                         End If
-                    ElseIf TypeOf (Me.boPropToGridHeaderBinding.Item(GetUniqueKeyName(bo.GetType, propertyName, sUniqueId))) Is DataGridColumn Then
-                        Dim assocGridColumn As DataGridColumn = Me.FindBoPropAssociatedGridHeader(bo.GetType, propertyName, sUniqueId)
-                        If Not assocGridColumn Is Nothing Then
+                    ElseIf TypeOf (boPropToGridHeaderBinding.Item(GetUniqueKeyName(bo.GetType, propertyName, sUniqueId))) Is DataGridColumn Then
+                        Dim assocGridColumn As DataGridColumn = FindBoPropAssociatedGridHeader(bo.GetType, propertyName, sUniqueId)
+                        If assocGridColumn IsNot Nothing Then
                             assocGridColumn.HeaderStyle.ForeColor = Color.Red
                             Throw New PopulateBOPropException(propertyName, tBox, oColumn, ex)
                         End If
@@ -2213,7 +2211,7 @@ Public Class ElitaPlusPage
                 End If
 
             Catch ex1 As Exception
-                Me.ErrCollection.Add(ex1)
+                ErrCollection.Add(ex1)
             End Try
         End Try
     End Sub
@@ -2222,26 +2220,26 @@ Public Class ElitaPlusPage
     '   Sub PopulateBOProperty: Overloaded routine to set the BO property for all
     '                           lookup lists
     ' *************************************************************************** '
-    Public Sub PopulateBundlesBOProperty(ByVal bo As Object, ByVal propertyName As String, ByVal tBox As TextBox)
+    Public Sub PopulateBundlesBOProperty(bo As Object, propertyName As String, tBox As TextBox)
         Dim lbl As Label
         Dim oColumn As DataControlField
         Dim sUniqueId As String
         Try
-            Me.PopulateBOProperty(bo, propertyName, tBox.Text)
+            PopulateBOProperty(bo, propertyName, tBox.Text)
         Catch ex As Exception
             Try
                 sUniqueId = GetValueFromPropertyName(bo, "UniqueId")
                 ' Verifies whether  is a Detail Control
-                lbl = Me.FindBoPropAssociatedLabel(bo.GetType, propertyName, sUniqueId)
+                lbl = FindBoPropAssociatedLabel(bo.GetType, propertyName, sUniqueId)
                 '  lbl = Me.FindBoPropAssociatedLabel(bo, propertyName)
-                If Not lbl Is Nothing Then
+                If lbl IsNot Nothing Then
                     lbl.ForeColor = Color.Red
                     Throw New PopulateBOPropException(propertyName, tBox, lbl, ex)
                 Else
                     ' Verifies whether  is a Grid Control
                     '  oColumn = Me.FindBoPropAssociatedGridHeader(bo.GetType, propertyName)
-                    oColumn = Me.FindBoPropAssociatedGridViewHeader(bo.GetType, propertyName, sUniqueId)
-                    If Not oColumn Is Nothing Then
+                    oColumn = FindBoPropAssociatedGridViewHeader(bo.GetType, propertyName, sUniqueId)
+                    If oColumn IsNot Nothing Then
                         oColumn.HeaderStyle.ForeColor = Color.Red
                         '      errStrList(i) &= RemoveDecoration(assocGridColumn.HeaderText) & ":"
                         Throw New PopulateBOPropException(propertyName, tBox, oColumn, ex)
@@ -2249,13 +2247,13 @@ Public Class ElitaPlusPage
                 End If
 
             Catch ex1 As Exception
-                Me.ErrCollection.Add(ex1)
+                ErrCollection.Add(ex1)
             End Try
         End Try
     End Sub
 
 
-    Public Function GetValueFromPropertyName(ByVal bo As Object, ByVal propertyName As String) As String
+    Public Function GetValueFromPropertyName(bo As Object, propertyName As String) As String
         Dim sPropertyValue As String
         Try
             Dim piPropertyInfo As System.Reflection.PropertyInfo = bo.GetType.GetProperty(propertyName)
@@ -2266,7 +2264,7 @@ Public Class ElitaPlusPage
         End Try
     End Function
 
-    Public Function GetGuidValueFromPropertyName(ByVal bo As Object, ByVal propertyName As String) As Guid
+    Public Function GetGuidValueFromPropertyName(bo As Object, propertyName As String) As Guid
         Dim oPropertyValue As Guid
         Try
             Dim piPropertyInfo As System.Reflection.PropertyInfo = bo.GetType.GetProperty(propertyName)
@@ -2277,18 +2275,18 @@ Public Class ElitaPlusPage
         End Try
     End Function
 
-    Public Sub PopulateControlFromPropertyName(ByVal bo As Object, ByVal oControl As Control, ByVal propertyName As String, Optional ByVal format As String = Nothing)
+    Public Sub PopulateControlFromPropertyName(bo As Object, oControl As Control, propertyName As String, Optional ByVal format As String = Nothing)
         Dim sPropertyValue As String
         Dim oPropertyValue As Guid
         Dim lbl As Label
         Dim oColumn As DataGridColumn
         Dim sUniqueId As String
         Try
-            If TypeOf oControl Is Label Or TypeOf oControl Is TableCell _
-               Or TypeOf oControl Is TextBox Or TypeOf oControl Is CheckBox Then
+            If TypeOf oControl Is Label OrElse TypeOf oControl Is TableCell _
+               OrElse TypeOf oControl Is TextBox OrElse TypeOf oControl Is CheckBox Then
                 sPropertyValue = GetValueFromPropertyName(bo, propertyName)
                 PopulateControlFromBOProperty(oControl, sPropertyValue, format)
-            ElseIf TypeOf oControl Is DropDownList Or TypeOf oControl Is ListBox Then
+            ElseIf TypeOf oControl Is DropDownList OrElse TypeOf oControl Is ListBox Then
                 oPropertyValue = GetGuidValueFromPropertyName(bo, propertyName)
                 PopulateControlFromBOProperty(oControl, oPropertyValue, format)
             Else
@@ -2299,21 +2297,21 @@ Public Class ElitaPlusPage
             Try
                 sUniqueId = GetValueFromPropertyName(bo, "UniqueId")
                 ' Verifies whether  is a Detail Control
-                lbl = Me.FindBoPropAssociatedLabel(bo.GetType, propertyName, sUniqueId)
-                If Not lbl Is Nothing Then
+                lbl = FindBoPropAssociatedLabel(bo.GetType, propertyName, sUniqueId)
+                If lbl IsNot Nothing Then
                     lbl.ForeColor = Color.Red
                     Throw New PopulateBOPropException(propertyName, oControl, lbl, ex)
                 Else
                     ' Verifies whether  is a Grid Control
-                    oColumn = Me.FindBoPropAssociatedGridHeader(bo.GetType, propertyName, sUniqueId)
-                    If Not oColumn Is Nothing Then
+                    oColumn = FindBoPropAssociatedGridHeader(bo.GetType, propertyName, sUniqueId)
+                    If oColumn IsNot Nothing Then
                         oColumn.HeaderStyle.ForeColor = Color.Red
                         Throw New PopulateBOPropException(propertyName, oControl, oColumn, ex)
                     End If
                 End If
 
             Catch ex1 As Exception
-                Me.ErrCollection.Add(ex1)
+                ErrCollection.Add(ex1)
             End Try
         End Try
     End Sub
@@ -2321,7 +2319,7 @@ Public Class ElitaPlusPage
     '   Sub PopulateBOProperty: Overloaded routine to set the BO properties for all
     '                           form controls except lookup lists
     ' *************************************************************************** '
-    Protected Sub PopulateBOProperty(ByVal bo As Object, ByVal propertyName As String, ByVal value As String)
+    Protected Sub PopulateBOProperty(bo As Object, propertyName As String, value As String)
 
         Try
             Dim piPropertyInfo As System.Reflection.PropertyInfo = bo.GetType.GetProperty(propertyName)
@@ -2374,7 +2372,7 @@ Public Class ElitaPlusPage
 
     End Sub
 
-    Protected Sub PopulateBOProperty(ByVal bo As Object, ByVal propertyName As String, ByVal value As Boolean)
+    Protected Sub PopulateBOProperty(bo As Object, propertyName As String, value As Boolean)
 
         Try
             Dim piPropertyInfo As System.Reflection.PropertyInfo = bo.GetType.GetProperty(propertyName)
@@ -2398,7 +2396,7 @@ Public Class ElitaPlusPage
 
     End Sub
 
-    Public Shared Sub PopulateBOProperty(ByVal bo As Object, ByVal propertyName As String, ByVal value As Guid)
+    Public Shared Sub PopulateBOProperty(bo As Object, propertyName As String, value As Guid)
 
         Try
             Dim piPropertyInfo As System.Reflection.PropertyInfo = bo.GetType.GetProperty(propertyName)
@@ -2423,7 +2421,7 @@ Public Class ElitaPlusPage
         End Try
     End Sub
 
-    Public Sub SetLabelsError(ByVal bo As Object, ByVal brokenRules() As String)
+    Public Sub SetLabelsError(bo As Object, brokenRules() As String)
         Dim lbl As Label
         Dim propertyName, sUniqueId As String
         Dim i As Integer
@@ -2432,23 +2430,23 @@ Public Class ElitaPlusPage
             Dim parsedString() As String = brokenRules(i).Split(":"c)
             propertyName = parsedString(0)
             sUniqueId = GetValueFromPropertyName(bo, "UniqueId")
-            lbl = Me.FindBoPropAssociatedLabel(bo.GetType, propertyName, sUniqueId)
+            lbl = FindBoPropAssociatedLabel(bo.GetType, propertyName, sUniqueId)
             'lbl = Me.FindBoPropAssociatedLabel(bo, propertyName)
-            If Not lbl Is Nothing Then
+            If lbl IsNot Nothing Then
                 lbl.ForeColor = Color.Red
             End If
         Next
     End Sub
 
-    Public Shared Sub SetLabelError(ByVal lbl As Label)
+    Public Shared Sub SetLabelError(lbl As Label)
         lbl.ForeColor = Color.Red
     End Sub
 
-    Public Shared Sub ClearLabelError(ByVal lbl As Label)
+    Public Shared Sub ClearLabelError(lbl As Label)
         lbl.ForeColor = Color.Empty
     End Sub
 
-    Private Function GetFromattedText(ByVal propertyValue As Object, Optional ByVal format As String = Nothing) As String
+    Private Function GetFromattedText(propertyValue As Object, Optional ByVal format As String = Nothing) As String
         Dim formattedValue As String
 
         If propertyValue Is Nothing Then
@@ -2456,21 +2454,21 @@ Public Class ElitaPlusPage
         Else
             formattedValue = propertyValue.ToString.ToString(LocalizationMgr.CurrentFormatProvider)
             If (propertyValue.GetType Is GetType(DateType)) Then
-                formattedValue = Me.GetDateFormattedString(CType(propertyValue, DateType).Value)
-            ElseIf (propertyValue.GetType Is GetType(DateTimeType) And format IsNot Nothing) Then
-                formattedValue = Me.GetLongDateFormattedStringWithFormat(CType(propertyValue, DateTimeType).Value, format)
+                formattedValue = GetDateFormattedString(CType(propertyValue, DateType).Value)
+            ElseIf (propertyValue.GetType Is GetType(DateTimeType) AndAlso format IsNot Nothing) Then
+                formattedValue = GetLongDateFormattedStringWithFormat(CType(propertyValue, DateTimeType).Value, format)
             ElseIf (propertyValue.GetType Is GetType(DateTimeType)) Then
-                formattedValue = Me.GetLongDateFormattedString(CType(propertyValue, DateTimeType).Value)
+                formattedValue = GetLongDateFormattedString(CType(propertyValue, DateTimeType).Value)
             ElseIf (propertyValue.GetType Is GetType(DateTime)) Then
-                formattedValue = Me.GetLongDateFormattedString(CType(propertyValue, DateTime))
+                formattedValue = GetLongDateFormattedString(CType(propertyValue, DateTime))
             ElseIf (propertyValue.GetType Is GetType(Date)) Then
-                formattedValue = Me.GetDateFormattedString(CType(propertyValue, Date))
+                formattedValue = GetDateFormattedString(CType(propertyValue, Date))
             ElseIf (propertyValue.GetType Is GetType(DecimalType)) Then
-                formattedValue = Me.GetAmountFormattedString(CType(propertyValue, DecimalType).Value, format)
+                formattedValue = GetAmountFormattedString(CType(propertyValue, DecimalType).Value, format)
             ElseIf (propertyValue.GetType Is GetType(Decimal) OrElse propertyValue.GetType Is GetType(Double) OrElse propertyValue.GetType Is GetType(Single)) Then
-                formattedValue = Me.GetAmountFormattedString(CType(propertyValue, Decimal), format)
+                formattedValue = GetAmountFormattedString(CType(propertyValue, Decimal), format)
             ElseIf (propertyValue.GetType Is GetType(Byte())) Then
-                formattedValue = Me.GetGuidStringFromByteArray(CType(propertyValue, Byte()))
+                formattedValue = GetGuidStringFromByteArray(CType(propertyValue, Byte()))
             End If
 
         End If
@@ -2478,7 +2476,7 @@ Public Class ElitaPlusPage
     End Function
 
 
-    Private Function GetFromattedCheckBox(ByVal propertyValue As Object, Optional ByVal format As String = Nothing) As Boolean
+    Private Function GetFromattedCheckBox(propertyValue As Object, Optional ByVal format As String = Nothing) As Boolean
         Dim formattedValue As Boolean
 
         If propertyValue Is Nothing Then
@@ -2493,7 +2491,7 @@ Public Class ElitaPlusPage
     '   Sub PopulateBOProperty: Routine to set the GUI control contents 
     '                           from the BO propety values
     ' *************************************************************************** '
-    Public Sub PopulateControlFromBOProperty(ByVal oControl As Control, ByVal propertyValue As Object, Optional ByVal format As String = Nothing)
+    Public Sub PopulateControlFromBOProperty(oControl As Control, propertyValue As Object, Optional ByVal format As String = Nothing)
         Dim oLabel As Label
         Dim oTableCell As TableCell
         Dim oTextBox As TextBox
@@ -2518,8 +2516,8 @@ Public Class ElitaPlusPage
             ElseIf TypeOf oControl Is CheckBox Then
                 oCheckBox = CType(oControl, CheckBox)
                 oCheckBox.Checked = GetFromattedCheckBox(propertyValue, format)
-            ElseIf TypeOf oControl Is DropDownList Or TypeOf oControl Is ListBox Then
-                Me.SetSelectedItem(CType(oControl, ListControl), CType(propertyValue, Guid))
+            ElseIf TypeOf oControl Is DropDownList OrElse TypeOf oControl Is ListBox Then
+                SetSelectedItem(CType(oControl, ListControl), CType(propertyValue, Guid))
             ElseIf (TypeOf oControl Is LinkButton) Then
                 oLinkButton = CType(oControl, LinkButton)
                 oLinkButton.Text = GetFromattedText(propertyValue, format)
@@ -2546,22 +2544,22 @@ Public Class ElitaPlusPage
 
     End Property
 
-    Public Function ShowMissingTranslations(ByVal oErrorController As ErrorController) As String
+    Public Function ShowMissingTranslations(oErrorController As ErrorController) As String
         ShowMissingTranslations(DirectCast(oErrorController, IErrorController))
     End Function
 
-    Public Function ShowMissingTranslations(ByVal oErrorController As IMessageController) As String
+    Public Function ShowMissingTranslations(oErrorController As IMessageController) As String
         ShowMissingTranslations(DirectCast(oErrorController, IErrorController))
     End Function
 
-    Private Function ShowMissingTranslations(ByVal oErrorController As IErrorController) As String
+    Private Function ShowMissingTranslations(oErrorController As IErrorController) As String
 
         Dim sb As New StringBuilder
         Dim sText As String
         Dim bnotSemiColon As Boolean = False
 
-        If Me.MissingTranslationsCount > 0 Then
-            For Each sText In Me.MissingTranslations
+        If MissingTranslationsCount > 0 Then
+            For Each sText In MissingTranslations
                 If sText.Trim <> ":" Then
                     bnotSemiColon = True
                     oErrorController.AddError(sText & ": is not Translated", False)
@@ -2629,51 +2627,51 @@ Public Class ElitaPlusPage
     '    Return Result
     'End Function
 
-    Public Function TranslateDropdownItems(ByVal DropdownCode As String) As DataView
+    Public Function TranslateDropdownItems(DropdownCode As String) As DataView
         Return TranslateDropdownItems(DropdownCode, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
     End Function
 
-    Public Function TranslateDropdownItems(ByVal DropdownCode As String, ByVal LangId As Guid) As DataView
+    Public Function TranslateDropdownItems(DropdownCode As String, LangId As Guid) As DataView
         Return LookupListNew.DropdownLookupList(DropdownCode, LangId)
     End Function
 
-    Public Sub TranslateControl(ByVal Control As WebControl)
+    Public Sub TranslateControl(Control As WebControl)
         TranslateControl(Control, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
     End Sub
 
-    Public Sub TranslateControl(ByVal Control As WebControl, ByVal LangId As Guid)
+    Public Sub TranslateControl(Control As WebControl, LangId As Guid)
         Dim ControlType As Type = Control.GetType
         Dim fInfo As System.Reflection.FieldInfo = ControlType.GetField("Text", Reflection.BindingFlags.Instance Or Reflection.BindingFlags.Public)
-        If Not fInfo Is Nothing Then
+        If fInfo IsNot Nothing Then
             Dim originalValue As String = CType(fInfo.GetValue(Control), String)
-            If Not originalValue Is Nothing Then
+            If originalValue IsNot Nothing Then
                 Dim newValue As String = TranslationBase.TranslateLabelOrMessage(originalValue, LangId)
                 fInfo.SetValue(Control, newValue)
             End If
         End If
     End Sub
 
-    Public Overloads Sub TranslateGridHeader(ByVal oGrid As System.Web.UI.WebControls.DataGrid)
+    Public Overloads Sub TranslateGridHeader(oGrid As System.Web.UI.WebControls.DataGrid)
         Dim TransProcObj As TranslationProcess = GetTranslationProcessReference()
         TransProcObj.TranslateGridHeader(oGrid)
     End Sub
 
-    Public Overloads Sub TranslateGridHeader(ByVal oGrid As System.Web.UI.WebControls.GridView)
+    Public Overloads Sub TranslateGridHeader(oGrid As System.Web.UI.WebControls.GridView)
         Dim TransProcObj As TranslationProcess = GetTranslationProcessReference()
         TransProcObj.TranslateGridHeader(oGrid)
     End Sub
 
-    Public Overloads Sub TranslateGridControls(ByVal oGrid As System.Web.UI.WebControls.DataGrid)
+    Public Overloads Sub TranslateGridControls(oGrid As System.Web.UI.WebControls.DataGrid)
         Dim TransProcObj As TranslationProcess = GetTranslationProcessReference()
         TransProcObj.TranslateControlsInGrid(oGrid)
     End Sub
 
-    Public Overloads Sub TranslateGridControls(ByVal oGrid As System.Web.UI.WebControls.GridView)
+    Public Overloads Sub TranslateGridControls(oGrid As System.Web.UI.WebControls.GridView)
         Dim TransProcObj As TranslationProcess = GetTranslationProcessReference()
         TransProcObj.TranslateControlsInGrid(oGrid)
     End Sub
 
-    Public Function TranslateBrokenRules(ByVal BrokenRules() As String, ByVal LangId As Guid) As String()
+    Public Function TranslateBrokenRules(BrokenRules() As String, LangId As Guid) As String()
         Dim Result(BrokenRules.Length - 1) As String
         Dim i As Integer
         For i = 0 To BrokenRules.Length - 1
@@ -2685,13 +2683,13 @@ Public Class ElitaPlusPage
         Return Result
     End Function
 
-    Public Function TranslateBrokenRules(ByVal BrokenRules() As String) As String()
+    Public Function TranslateBrokenRules(BrokenRules() As String) As String()
         Return TranslateBrokenRules(BrokenRules, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
     End Function
 
-    Public Sub TranslateControlsUnder(ByVal rootControl As System.Web.UI.Control)
+    Public Sub TranslateControlsUnder(rootControl As System.Web.UI.Control)
         'pass the form which is the main container control and the language id.
-        Me.GetTranslationProcessReference.TranslateThePage(rootControl, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+        GetTranslationProcessReference.TranslateThePage(rootControl, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
     End Sub
 
 #End Region
@@ -2705,14 +2703,14 @@ Public Class ElitaPlusPage
 
     Public ReadOnly Property ErrCollection() As ArrayList
         Get
-            Return Me._errCollection
+            Return _errCollection
         End Get
     End Property
 
 
     Public ReadOnly Property OnErr() As Boolean
         Get
-            Return Me._onErr
+            Return _onErr
         End Get
     End Property
 
@@ -2742,19 +2740,19 @@ Public Class ElitaPlusPage
     'End Sub
 
     Protected Function GetFormattedAndTranslatedErrorsFromErrCollection() As String()
-        If Me._errCollection.Count = 0 Then Return Nothing
+        If _errCollection.Count = 0 Then Return Nothing
         Dim exc As Exception
-        Dim errStrList(Me._errCollection.Count - 1) As String
+        Dim errStrList(_errCollection.Count - 1) As String
         Dim i As Integer = 0
-        For Each exc In Me._errCollection
+        For Each exc In _errCollection
             errStrList(i) = ""
             If exc.GetType Is GetType(PopulateBOPropException) Then
                 Dim popBoPropExc As PopulateBOPropException = CType(exc, PopulateBOPropException)
                 With popBoPropExc
-                    If Not .LabelControl Is Nothing Then
-                        errStrList(i) &= Me.RemoveDecoration(.LabelControl.Text) & ":"
-                    ElseIf Not .GridColumnControl Is Nothing Then
-                        errStrList(i) &= Me.RemoveDecoration(.GridColumnControl.HeaderText) & ":"
+                    If .LabelControl IsNot Nothing Then
+                        errStrList(i) &= RemoveDecoration(.LabelControl.Text) & ":"
+                    ElseIf .GridColumnControl IsNot Nothing Then
+                        errStrList(i) &= RemoveDecoration(.GridColumnControl.HeaderText) & ":"
                     Else
                         errStrList(i) &= .BoPropName & ":"
                     End If
@@ -2769,7 +2767,7 @@ Public Class ElitaPlusPage
         Return errStrList
     End Function
 
-    Protected Function GetFormattedAndTranslatedErrorsFromBOValidationExc(ByVal validationExc As BOValidationException) As String()
+    Protected Function GetFormattedAndTranslatedErrorsFromBOValidationExc(validationExc As BOValidationException) As String()
         Dim err As Assurant.Common.Validation.ValidationError
         Dim errStrList(validationExc.ValidationErrorList.Length - 1) As String
         Dim i As Integer = 0
@@ -2787,22 +2785,22 @@ Public Class ElitaPlusPage
             ' Dim assocLbl As Label = FindBoPropAssociatedLabel(err.BusinessObjectType, err.PropertyName)
             Dim assocLbl As Label = FindBoPropAssociatedLabel(err.BusinessObjectType, err.PropertyName,
                                                               validationExc.UniqueId)
-            If Not assocLbl Is Nothing Then
+            If assocLbl IsNot Nothing Then
                 assocLbl.ForeColor = Color.Red
                 errStrList(i) &= RemoveDecoration(assocLbl.Text) & ":"
             End If
             'Check if there is a Grid Header bound to the BO property
-            If TypeOf (Me.boPropToGridHeaderBinding.Item(GetUniqueKeyName(err.BusinessObjectType, err.PropertyName, validationExc.UniqueId))) Is TemplateField Then
-                Dim grdColTmplFld As TemplateField = Me.FindBoPropAssociatedGridHeaderTmplFld(err.BusinessObjectType, err.PropertyName,
+            If TypeOf (boPropToGridHeaderBinding.Item(GetUniqueKeyName(err.BusinessObjectType, err.PropertyName, validationExc.UniqueId))) Is TemplateField Then
+                Dim grdColTmplFld As TemplateField = FindBoPropAssociatedGridHeaderTmplFld(err.BusinessObjectType, err.PropertyName,
                                                                                               validationExc.UniqueId)
-                If Not grdColTmplFld Is Nothing Then
+                If grdColTmplFld IsNot Nothing Then
                     grdColTmplFld.HeaderStyle.ForeColor = Color.Red
                     errStrList(i) &= RemoveDecoration(grdColTmplFld.HeaderText) & ":"
                 End If
-            ElseIf TypeOf (Me.boPropToGridHeaderBinding.Item(GetUniqueKeyName(err.BusinessObjectType, err.PropertyName, validationExc.UniqueId))) Is DataGridColumn Then
-                Dim assocGridColumn As DataGridColumn = Me.FindBoPropAssociatedGridHeader(err.BusinessObjectType, err.PropertyName,
+            ElseIf TypeOf (boPropToGridHeaderBinding.Item(GetUniqueKeyName(err.BusinessObjectType, err.PropertyName, validationExc.UniqueId))) Is DataGridColumn Then
+                Dim assocGridColumn As DataGridColumn = FindBoPropAssociatedGridHeader(err.BusinessObjectType, err.PropertyName,
                                                                                           validationExc.UniqueId)
-                If Not assocGridColumn Is Nothing Then
+                If assocGridColumn IsNot Nothing Then
                     assocGridColumn.HeaderStyle.ForeColor = Color.Red
                     errStrList(i) &= RemoveDecoration(assocGridColumn.HeaderText) & ":"
                 End If
@@ -2836,8 +2834,8 @@ Public Class ElitaPlusPage
     'End Function
 
     ' New Framework
-    Private Function GetUniqueKeyName(ByVal bo As IBusinessObjectBase, ByVal propName As String,
-                                      ByVal uniqueId As String) As String
+    Private Function GetUniqueKeyName(bo As IBusinessObjectBase, propName As String,
+                                      uniqueId As String) As String
         Dim keyName As String
 
         keyName = (bo.GetType.Name & "." & propName).ToUpper & "." & uniqueId
@@ -2854,18 +2852,18 @@ Public Class ElitaPlusPage
     'End Function
 
     'Type
-    Private Function GetUniqueKeyName(ByVal boType As Type, ByVal propName As String,
-                                      ByVal uniqueId As String) As String
+    Private Function GetUniqueKeyName(boType As Type, propName As String,
+                                      uniqueId As String) As String
         Dim keyName As String
 
         keyName = (boType.Name & "." & propName).ToUpper & "." & uniqueId
         Return keyName
     End Function
 
-    Public Sub BindBOPropertyToLabel(ByVal bo As IBusinessObjectBase, ByVal propName As String, ByVal lbl As Label)
+    Public Sub BindBOPropertyToLabel(bo As IBusinessObjectBase, propName As String, lbl As Label)
         Try
-            If Not bo Is Nothing Then
-                Me.boPropToLabelBinding.Item(GetUniqueKeyName(bo, propName, bo.UniqueId)) = lbl
+            If bo IsNot Nothing Then
+                boPropToLabelBinding.Item(GetUniqueKeyName(bo, propName, bo.UniqueId)) = lbl
             End If
         Catch ex As Exception
         End Try
@@ -2880,18 +2878,18 @@ Public Class ElitaPlusPage
     '    End Try
     'End Sub
 
-    Public Overloads Sub BindBOPropertyToGridHeader(ByVal bo As IBusinessObjectBase, ByVal propName As String, ByVal gridHeader As DataGridColumn)
+    Public Overloads Sub BindBOPropertyToGridHeader(bo As IBusinessObjectBase, propName As String, gridHeader As DataGridColumn)
         Try
             'Me.boPropToGridHeaderBinding.Item((bo.GetType.Name & "." & propName).ToUpper) = gridHeader
-            Me.boPropToGridHeaderBinding.Item(GetUniqueKeyName(bo, propName, bo.UniqueId)) = gridHeader
+            boPropToGridHeaderBinding.Item(GetUniqueKeyName(bo, propName, bo.UniqueId)) = gridHeader
         Catch ex As Exception
         End Try
     End Sub
 
-    Public Overloads Sub BindBOPropertyToGridHeader(ByVal bo As IBusinessObjectBase, ByVal propName As String, ByVal gridHeader As DataControlField)
+    Public Overloads Sub BindBOPropertyToGridHeader(bo As IBusinessObjectBase, propName As String, gridHeader As DataControlField)
         Try
             'Me.boPropToGridHeaderBinding.Item((bo.GetType.Name & "." & propName).ToUpper) = gridHeader
-            Me.boPropToGridHeaderBinding.Item(GetUniqueKeyName(bo, propName, bo.UniqueId)) = gridHeader
+            boPropToGridHeaderBinding.Item(GetUniqueKeyName(bo, propName, bo.UniqueId)) = gridHeader
         Catch ex As Exception
         End Try
     End Sub
@@ -2901,13 +2899,13 @@ Public Class ElitaPlusPage
     '    Return CType(Me.boPropToLabelBinding.Item((boType.Name & "." & propName).ToUpper), Label)
     'End Function
 
-    Protected Function FindBoPropAssociatedLabel(ByVal boType As Type, ByVal propName As String,
-                                                 ByVal sUniqueId As String) As Label
+    Protected Function FindBoPropAssociatedLabel(boType As Type, propName As String,
+                                                 sUniqueId As String) As Label
         Dim oLabel As Label
         '   Return CType(Me.boPropToLabelBinding.Item((boType.Name & "." & propName).ToUpper), Label)
-        oLabel = CType(Me.boPropToLabelBinding.Item(GetUniqueKeyName(boType, propName, sUniqueId)), Label)
+        oLabel = CType(boPropToLabelBinding.Item(GetUniqueKeyName(boType, propName, sUniqueId)), Label)
         If oLabel Is Nothing Then
-            oLabel = CType(Me.boPropToLabelBinding.Item(GetUniqueKeyName(boType, propName, "")), Label)
+            oLabel = CType(boPropToLabelBinding.Item(GetUniqueKeyName(boType, propName, "")), Label)
         End If
         '  Return CType(Me.boPropToLabelBinding.Item(GetUniqueKeyName(boType, propName, sUniqueId)), Label)
         Return oLabel
@@ -2917,38 +2915,38 @@ Public Class ElitaPlusPage
     '    Return CType(Me.boPropToGridHeaderBinding.Item((boType.Name & "." & propName).ToUpper), DataGridColumn)
     'End Function
 
-    Protected Overloads Function FindBoPropAssociatedGridHeader(ByVal boType As Type, ByVal propName As String,
-                                                                ByVal sUniqueId As String) As DataGridColumn
+    Protected Overloads Function FindBoPropAssociatedGridHeader(boType As Type, propName As String,
+                                                                sUniqueId As String) As DataGridColumn
         Dim oCol As DataGridColumn
 
-        oCol = CType(Me.boPropToGridHeaderBinding.Item(GetUniqueKeyName(boType, propName, sUniqueId)), DataGridColumn)
+        oCol = CType(boPropToGridHeaderBinding.Item(GetUniqueKeyName(boType, propName, sUniqueId)), DataGridColumn)
         If oCol Is Nothing Then
-            oCol = CType(Me.boPropToGridHeaderBinding.Item(GetUniqueKeyName(boType, propName, "")), DataGridColumn)
+            oCol = CType(boPropToGridHeaderBinding.Item(GetUniqueKeyName(boType, propName, "")), DataGridColumn)
         End If
 
         '  Return CType(Me.boPropToGridHeaderBinding.Item(GetUniqueKeyName(boType, propName, sUniqueId)), DataGridColumn)
         Return oCol
     End Function
 
-    Protected Overloads Function FindBoPropAssociatedGridHeaderTmplFld(ByVal boType As Type, ByVal propName As String,
-                                                                       ByVal sUniqueId As String) As TemplateField
+    Protected Overloads Function FindBoPropAssociatedGridHeaderTmplFld(boType As Type, propName As String,
+                                                                       sUniqueId As String) As TemplateField
         Dim oCol As TemplateField
 
-        oCol = CType(Me.boPropToGridHeaderBinding.Item(GetUniqueKeyName(boType, propName, sUniqueId)), TemplateField)
+        oCol = CType(boPropToGridHeaderBinding.Item(GetUniqueKeyName(boType, propName, sUniqueId)), TemplateField)
         If oCol Is Nothing Then
-            oCol = CType(Me.boPropToGridHeaderBinding.Item(GetUniqueKeyName(boType, propName, "")), TemplateField)
+            oCol = CType(boPropToGridHeaderBinding.Item(GetUniqueKeyName(boType, propName, "")), TemplateField)
         End If
 
         Return oCol
     End Function
 
-    Protected Overloads Function FindBoPropAssociatedGridViewHeader(ByVal boType As Type, ByVal propName As String,
-                                                                    ByVal sUniqueId As String) As DataControlField
+    Protected Overloads Function FindBoPropAssociatedGridViewHeader(boType As Type, propName As String,
+                                                                    sUniqueId As String) As DataControlField
         Dim oCol As DataControlField
 
-        oCol = CType(Me.boPropToGridHeaderBinding.Item(GetUniqueKeyName(boType, propName, sUniqueId)), DataControlField)
+        oCol = CType(boPropToGridHeaderBinding.Item(GetUniqueKeyName(boType, propName, sUniqueId)), DataControlField)
         If oCol Is Nothing Then
-            oCol = CType(Me.boPropToGridHeaderBinding.Item(GetUniqueKeyName(boType, propName, "")), DataControlField)
+            oCol = CType(boPropToGridHeaderBinding.Item(GetUniqueKeyName(boType, propName, "")), DataControlField)
         End If
 
         '  Return CType(Me.boPropToGridHeaderBinding.Item(GetUniqueKeyName(boType, propName, sUniqueId)), DataControlField)
@@ -2958,11 +2956,11 @@ Public Class ElitaPlusPage
     <Obsolete("Replace the call with ClearGridViewHeadersAndLabelsErrorSign method")>
     Public Sub ClearGridHeadersAndLabelsErrSign()
         Dim lbl As Label
-        For Each lbl In Me.boPropToLabelBinding.Values
+        For Each lbl In boPropToLabelBinding.Values
             lbl.ForeColor = Color.Empty
         Next
         Dim gridCol As DataGridColumn
-        For Each gridCol In Me.boPropToGridHeaderBinding.Values
+        For Each gridCol In boPropToGridHeaderBinding.Values
             gridCol.HeaderStyle.ForeColor = Color.Empty
         Next
     End Sub
@@ -2970,11 +2968,11 @@ Public Class ElitaPlusPage
     <Obsolete("Replace the call with ClearGridViewHeadersAndLabelsErrorSign method")>
     Public Sub ClearGridViewHeadersAndLabelsErrSign()
         Dim lbl As Label
-        For Each lbl In Me.boPropToLabelBinding.Values
+        For Each lbl In boPropToLabelBinding.Values
             lbl.ForeColor = Color.Empty
         Next
         Dim gridCol As DataControlField
-        For Each gridCol In Me.boPropToGridHeaderBinding.Values
+        For Each gridCol In boPropToGridHeaderBinding.Values
             gridCol.HeaderStyle.ForeColor = Color.Empty
         Next
     End Sub
@@ -2985,11 +2983,11 @@ Public Class ElitaPlusPage
     ''' <remarks>This function works with both <see cref="DataGrid"/> and <see cref="GridView"/></remarks>
     Public Sub ClearGridViewHeadersAndLabelsErrorSign()
         Dim lbl As Label
-        For Each lbl In Me.boPropToLabelBinding.Values
+        For Each lbl In boPropToLabelBinding.Values
             lbl.ForeColor = Color.Empty
         Next
         Dim obj As Object
-        For Each obj In Me.boPropToGridHeaderBinding.Values
+        For Each obj In boPropToGridHeaderBinding.Values
             If (GetType(DataControlField).IsAssignableFrom(obj.GetType())) Then
                 DirectCast(obj, DataControlField).HeaderStyle.ForeColor = Color.Empty
             ElseIf (GetType(DataGridColumn).IsAssignableFrom(obj.GetType())) Then
@@ -2998,21 +2996,21 @@ Public Class ElitaPlusPage
         Next
     End Sub
 
-    Public Sub ClearLabelErrSign(ByVal oLabel As Label)
+    Public Sub ClearLabelErrSign(oLabel As Label)
         oLabel.ForeColor = Color.Empty
     End Sub
 
-    Public Overridable Sub HandleErrors(ByVal exc As Exception, ByVal ErrorCtrl As ErrorController, Optional ByVal Translate As Boolean = True)
+    Public Overridable Sub HandleErrors(exc As Exception, ErrorCtrl As ErrorController, Optional ByVal Translate As Boolean = True)
         HandleErrors(exc, DirectCast(ErrorCtrl, IErrorController), Translate)
     End Sub
 
-    Public Overridable Sub HandleErrors(ByVal exc As Exception, ByVal ErrorCtrl As IMessageController, Optional ByVal Translate As Boolean = True)
+    Public Overridable Sub HandleErrors(exc As Exception, ErrorCtrl As IMessageController, Optional ByVal Translate As Boolean = True)
         HandleErrors(exc, DirectCast(ErrorCtrl, IErrorController), Translate)
     End Sub
 
-    Private Sub HandleErrors(ByVal exc As Exception, ByVal ErrorCtrl As IErrorController, Optional ByVal Translate As Boolean = True)
+    Private Sub HandleErrors(exc As Exception, ErrorCtrl As IErrorController, Optional ByVal Translate As Boolean = True)
         If exc.GetType Is GetType(Threading.ThreadAbortException) OrElse
-           (Not exc.InnerException Is Nothing AndAlso exc.InnerException.GetType Is GetType(Threading.ThreadAbortException)) Then
+           (exc.InnerException IsNot Nothing AndAlso exc.InnerException.GetType Is GetType(Threading.ThreadAbortException)) Then
             Return
         End If
 
@@ -3039,10 +3037,10 @@ Public Class ElitaPlusPage
         If exc.GetType.Name.Equals("FaultException") Then
             ErrorCtrl.AddErrorAndShow(exc.Message, False)
         ElseIf ex.GetType Is GetType(PopulateBOErrorException) Then
-            Dim populateErrList() As String = Me.GetFormattedAndTranslatedErrorsFromErrCollection
+            Dim populateErrList() As String = GetFormattedAndTranslatedErrorsFromErrCollection
             ErrorCtrl.AddErrorAndShow(populateErrList, False)
         ElseIf ex.GetType Is GetType(BOValidationException) Then
-            Dim boValidationErrList() As String = Me.GetFormattedAndTranslatedErrorsFromBOValidationExc(CType(ex, BOValidationException))
+            Dim boValidationErrList() As String = GetFormattedAndTranslatedErrorsFromBOValidationExc(CType(ex, BOValidationException))
             ErrorCtrl.AddErrorAndShow(boValidationErrList, False)
         Else
             ErrorCtrl.AddErrorAndShow(ex.Code, Translate)
@@ -3051,19 +3049,19 @@ Public Class ElitaPlusPage
             End If
         End If
 
-        Me.Log(ex)
+        Log(ex)
     End Sub
 
-    Function GetOriginalExceptionMessage(ByVal exc As Exception) As String
+    Function GetOriginalExceptionMessage(exc As Exception) As String
         Dim curExc As Exception = exc
-        While Not curExc.InnerException Is Nothing
+        While curExc.InnerException IsNot Nothing
             curExc = curExc.InnerException
         End While
         Return curExc.Message
     End Function
 
     'This method assumes you have called "BindBOPropertyToLabel" or BindBOPropertyToGridHeader      
-    Public Sub AddLabelDecorations(ByVal bo As Object)
+    Public Sub AddLabelDecorations(bo As Object)
         Dim key As String
         Dim objType As Type = bo.GetType
         Dim attributes As Object()
@@ -3082,9 +3080,9 @@ Public Class ElitaPlusPage
                 Dim mandatoryAttr As Object()
                 Dim isMandatory As Boolean = False
 
-                If Not pInfo Is Nothing Then
+                If pInfo IsNot Nothing Then
                     mandatoryAttr = pInfo.GetCustomAttributes(GetType(ValueMandatoryAttribute), True)
-                    If Not mandatoryAttr Is Nothing AndAlso mandatoryAttr.Length > 0 Then
+                    If mandatoryAttr IsNot Nothing AndAlso mandatoryAttr.Length > 0 Then
                         isMandatory = True
                     Else
                         'if no mandatory attributes, check the custom attributes to see if any are required.
@@ -3116,7 +3114,7 @@ Public Class ElitaPlusPage
                             For Each currField As FieldInfo In fields
                                 If (currField.Name.ToUpper() = propName) Then
                                     mandatoryAttr = currField.GetCustomAttributes(GetType(ValueMandatoryAttribute), True)
-                                    If Not mandatoryAttr Is Nothing AndAlso mandatoryAttr.Length > 0 Then
+                                    If mandatoryAttr IsNot Nothing AndAlso mandatoryAttr.Length > 0 Then
                                         isMandatory = True
                                     Else
                                         'if no mandatory attributes, check the custom attributes to see if any are required.
@@ -3145,7 +3143,7 @@ Public Class ElitaPlusPage
                             For Each currProperty As PropertyInfo In properties
                                 If (currProperty.Name.ToUpper() = propName) Then
                                     mandatoryAttr = currProperty.GetCustomAttributes(GetType(ValueMandatoryAttribute), True)
-                                    If Not mandatoryAttr Is Nothing AndAlso mandatoryAttr.Length > 0 Then
+                                    If mandatoryAttr IsNot Nothing AndAlso mandatoryAttr.Length > 0 Then
                                         isMandatory = True
                                     Else
                                         'if no mandatory attributes, check the custom attributes to see if any are required.
@@ -3171,7 +3169,7 @@ Public Class ElitaPlusPage
 
                 If isMandatory Then
                     'Add the Required Symbol in front of the Label 
-                    If (Me.IsNewUI) Then
+                    If (IsNewUI) Then
                         If Not lbl.Text.StartsWith("<span class=""mandatory"">*</span> ") Then
                             lbl.Text = "<span class=""mandatory"">*</span> " & lbl.Text
                         End If
@@ -3205,7 +3203,7 @@ Public Class ElitaPlusPage
     '    Return retValue
     'End Function
 
-    Protected Function RemoveDecoration(ByVal originalText As String) As String
+    Protected Function RemoveDecoration(originalText As String) As String
         Dim retValue As String = originalText
         If retValue.StartsWith("&nbsp;") Then
             retValue = retValue.Replace("&nbsp;", "")
@@ -3232,11 +3230,11 @@ Public Class ElitaPlusPage
 #Region "Master Page"
     Public ReadOnly Property MasterPage As MasterBase
         Get
-            If (Me.Master Is Nothing) Then
+            If (Master Is Nothing) Then
                 Return Nothing
             Else
-                If (Me.Master.GetType().BaseType.BaseType.Equals(GetType(MasterBase))) Then
-                    Return CType(Me.Master, MasterBase)
+                If (Master.GetType().BaseType.BaseType.Equals(GetType(MasterBase))) Then
+                    Return CType(Master, MasterBase)
                 Else
                     Return Nothing
                 End If
@@ -3246,13 +3244,13 @@ Public Class ElitaPlusPage
 
     Public ReadOnly Property IsNewUI() As Boolean
         Get
-            If (Me.MasterPage Is Nothing) Then
+            If (MasterPage Is Nothing) Then
                 Return False
             Else
-                If (Me.Master.GetType().BaseType.BaseType.Equals(GetType(MasterBase))) Then
-                    If Not Me.MasterErrController Is Nothing Then Return True Else Return False
+                If (Master.GetType().BaseType.BaseType.Equals(GetType(MasterBase))) Then
+                    If MasterErrController IsNot Nothing Then Return True Else Return False
                     ' Return True
-                ElseIf (Me.Master.GetType().BaseType.FullName = GetType(ElitaBase).FullName) Then
+                ElseIf (Master.GetType().BaseType.FullName = GetType(ElitaBase).FullName) Then
                     Return True
                 Else
                     Return False
@@ -3264,7 +3262,7 @@ Public Class ElitaPlusPage
 
 
 #Region "Loging"
-    Public Shared Sub Log(ByVal msg As String)
+    Public Shared Sub Log(msg As String)
         Try
             'Dim APPLICATION_LOG_NAME As String = ConfigurationMgr.ConfigValue("LogCategoryName") 'Web
             'Dim APPLICATION_NAME As String = ConfigurationMgr.ConfigValue("LogAppName") ' ElitaPlus
@@ -3275,7 +3273,7 @@ Public Class ElitaPlusPage
         End Try
     End Sub
 
-    Public Shared Sub Log(ByVal ex As Exception)
+    Public Shared Sub Log(ex As Exception)
         Try
             'Dim APPLICATION_LOG_NAME As String = ConfigurationMgr.ConfigValue("LogCategoryName") 'Web
             'Dim APPLICATION_NAME As String = ConfigurationMgr.ConfigValue("LogAppName") ' ElitaPlus
@@ -3297,7 +3295,7 @@ Public Class ElitaPlusPage
     '    End Try
     'End Sub
 
-    Public Shared Shadows Sub Trace(ByVal page As ElitaPlusPage, ByVal msg As String)
+    Public Shared Shadows Sub Trace(page As ElitaPlusPage, msg As String)
         Dim id As String = page.Session.SessionID
         Dim pageName As String = page.ToString
         AppConfig.DebugMessage.Trace(id, pageName, msg & "@ SCount = " & page.Navigator.NavStackCount.ToString)
@@ -3316,7 +3314,7 @@ Public Class ElitaPlusPage
         '    End If
         '    Return CurrMenuState = ELPWebConstants.enumMenu_State.View_Page_Mode
         'End Get
-        Set(ByVal Value As Boolean)
+        Set(Value As Boolean)
 
             'Dim updateHeader As Boolean = False
             'Dim CurrMenuState As ELPWebConstants.enumMenu_State
@@ -3365,31 +3363,31 @@ Public Class ElitaPlusPage
 
                 Dim sJavaScript As String
                 sJavaScript = String.Format("<SCRIPT>try{{parent.enabled={0};parent.ToggleMenus();}}catch(e){{}}</SCRIPT>", Value.ToString.ToLower)
-                Me.RegisterStartupScript("MENU_ENABLED", sJavaScript)
+                RegisterStartupScript("MENU_ENABLED", sJavaScript)
 
             End If
         End Set
     End Property
 
     Public Sub ReturnToAppHomePage()
-        Me.Redirect(Me.AppHomeUrl)
+        Redirect(AppHomeUrl)
     End Sub
 
     Public Sub ReturnToTabHomePage()
-        Me.Redirect(Me.TabHomeUrl)
+        Redirect(TabHomeUrl)
     End Sub
 
     Public Sub ReloadHeader()
         Dim sJavascript As String
         sJavascript = "<SCRIPT>try{parent.enabled = false;parent.ToggleMenus();parent.refreshMenus();}catch(e){}</SCRIPT>"
-        Me.RegisterStartupScript("REFRESHMENU", sJavascript)
+        RegisterStartupScript("REFRESHMENU", sJavascript)
     End Sub
 
 #End Region
 
 #Region "Control-Management"
 
-    Public Shared Sub SetTextBackColor(ByVal oTextBox As TextBox, ByVal bDisable As Boolean, Optional ByVal isNewUI As Boolean = False)
+    Public Shared Sub SetTextBackColor(oTextBox As TextBox, bDisable As Boolean, Optional ByVal isNewUI As Boolean = False)
         If (Not isNewUI) Then
             If bDisable Then
                 oTextBox.BackColor = Color.White
@@ -3400,7 +3398,7 @@ Public Class ElitaPlusPage
         End If
     End Sub
 
-    Public Shared Sub EnableDisableControls_old(ByVal oParentControl As Control, ByVal bDisable As Boolean)
+    Public Shared Sub EnableDisableControls_old(oParentControl As Control, bDisable As Boolean)
 
         Dim controlCurrent As Control
         Dim sTemp As String
@@ -3413,7 +3411,7 @@ Public Class ElitaPlusPage
             Select Case sTemp
                 Case "System.Web.UI.WebControls.WebControl"
 
-                    If controlCurrent.GetType.ToString = "System.Web.UI.WebControls.Image" Or controlCurrent.GetType.ToString = "System.Web.UI.WebControls.Label" Or controlCurrent.GetType.ToString = "System.Web.UI.WebControls.Button" Then
+                    If controlCurrent.GetType.ToString = "System.Web.UI.WebControls.Image" OrElse controlCurrent.GetType.ToString = "System.Web.UI.WebControls.Label" OrElse controlCurrent.GetType.ToString = "System.Web.UI.WebControls.Button" Then
                         ' do nothing
                     ElseIf controlCurrent.GetType.ToString = "System.Web.UI.WebControls.TextBox" Then
                         Dim txtBox As TextBox = CType(controlCurrent, System.Web.UI.WebControls.TextBox)
@@ -3431,7 +3429,7 @@ Public Class ElitaPlusPage
 
     End Sub
 
-    Public Sub EnableDisableControls(ByVal oParentControl As Control, ByVal bDisable As Boolean)
+    Public Sub EnableDisableControls(oParentControl As Control, bDisable As Boolean)
 
         Dim controlCurrent As Control
         Dim sTemp As String
@@ -3441,14 +3439,12 @@ Public Class ElitaPlusPage
         Select Case sTemp
             Case "System.Web.UI.WebControls.WebControl"
 
-                If oParentControl.GetType.ToString = "System.Web.UI.WebControls.Image" Or
-                   oParentControl.GetType.ToString = "System.Web.UI.WebControls.Label" Or
-                   oParentControl.GetType.ToString = "System.Web.UI.WebControls.Button" Then
+                If oParentControl.GetType.ToString = "System.Web.UI.WebControls.Image" OrElse oParentControl.GetType.ToString = "System.Web.UI.WebControls.Label" OrElse oParentControl.GetType.ToString = "System.Web.UI.WebControls.Button" Then
                     ' do nothing
                 ElseIf oParentControl.GetType.ToString = "System.Web.UI.WebControls.TextBox" Then
                     Dim txtBox As TextBox = CType(oParentControl, System.Web.UI.WebControls.TextBox)
                     txtBox.ReadOnly = bDisable
-                    SetTextBackColor(txtBox, bDisable, Me.IsNewUI)
+                    SetTextBackColor(txtBox, bDisable, IsNewUI)
                 End If
 
             Case "System.Web.UI.WebControls.ListControl"
@@ -3462,13 +3458,13 @@ Public Class ElitaPlusPage
 
     End Sub
 
-    Public Shared Sub SetDefaultButton(ByVal oControl As WebControl, ByVal defaultButton As Button)
+    Public Shared Sub SetDefaultButton(oControl As WebControl, defaultButton As Button)
         'oControl.Attributes.Add("onkeydown", "fnTrapKD(" + defaultButton.ClientID + ",event)")
         oControl.Attributes.Add("onkeydown", "fnTrapKD(document.getElementById('" + defaultButton.ClientID + "'),event)")
     End Sub
 
 
-    Public Sub SetEnabledForControlFamily(ByVal controlFamilyRoot As Control, ByVal enabled As Boolean, Optional ByVal includeRootControl As Boolean = False)
+    Public Sub SetEnabledForControlFamily(controlFamilyRoot As Control, enabled As Boolean, Optional ByVal includeRootControl As Boolean = False)
         If (includeRootControl) Then
             ChangeEnabledProperty(controlFamilyRoot, enabled)
         End If
@@ -3480,18 +3476,18 @@ Public Class ElitaPlusPage
     End Sub
 
 
-    Protected Sub ChangeEnabledProperty(ByVal ctrl As Control, ByVal enabled As Boolean)
+    Protected Sub ChangeEnabledProperty(ctrl As Control, enabled As Boolean)
         Try
             If ((ctrl.GetType) Is GetType(WebControls.TextBox)) Then
                 If enabled = False Then 'change to readonly always allowed
                     CType(ctrl, WebControls.TextBox).ReadOnly = Not (enabled)
-                    If Not Me.IsNewUI Then
+                    If Not IsNewUI Then
                         CType(ctrl, WebControls.TextBox).CssClass = "FLATTEXTBOX"
                     End If
                 Else
                     If CanEnableControl(CType(ctrl, WebControl)) Then ' check whether change is allowed
                         CType(ctrl, WebControls.TextBox).ReadOnly = Not (enabled)
-                        If Not Me.IsNewUI Then
+                        If Not IsNewUI Then
                             CType(ctrl, WebControls.TextBox).CssClass = ""
                         End If
                     End If
@@ -3500,7 +3496,7 @@ Public Class ElitaPlusPage
                 'NOTHING TO DO FOR NOW. MAYBE CHANGE THE COLOR LATER
             Else
                 Dim pinfo As PropertyInfo = ctrl.GetType.GetProperty("Enabled", BindingFlags.IgnoreCase Or BindingFlags.Public Or BindingFlags.Instance)
-                If Not pinfo Is Nothing Then
+                If pinfo IsNot Nothing Then
                     '   pinfo.SetValue(ctrl, enabled, Nothing)
                     If ctrl.GetType.IsSubclassOf(GetType(WebControl)) Then
                         ControlMgr.SetEnableControl(Me, CType(ctrl, WebControl), enabled)
@@ -3510,7 +3506,7 @@ Public Class ElitaPlusPage
 
                 End If
                 'Change the color for a DropdownList control
-                If Not Me.IsNewUI Then
+                If Not IsNewUI Then
                     If ((ctrl.GetType) Is GetType(WebControls.DropDownList)) Then
 
                         If (enabled) Then
@@ -3529,7 +3525,7 @@ Public Class ElitaPlusPage
 
     End Sub
 
-    Public Sub AddControlWatcher(ByVal controlToWatch As System.Web.UI.WebControls.WebControl, ByVal controlToWatchOnValue As String, ByVal controlToChange As System.Web.UI.WebControls.WebControl, ByVal controlToChangeNewValue As String, Optional ByVal conditional As Boolean = False)
+    Public Sub AddControlWatcher(controlToWatch As System.Web.UI.WebControls.WebControl, controlToWatchOnValue As String, controlToChange As System.Web.UI.WebControls.WebControl, controlToChangeNewValue As String, Optional ByVal conditional As Boolean = False)
         If conditional Then
             controlToWatch.Attributes.Add("onchange", "(if document.all('" & controlToChange.UniqueID & "').value == '" & controlToWatchOnValue & "'){document.all('" & controlToChange.UniqueID & "').value=" & controlToChangeNewValue & "};")
         Else
@@ -3537,7 +3533,7 @@ Public Class ElitaPlusPage
         End If
     End Sub
 
-    Public Sub AddControlWatcher(ByVal controlToWatch As System.Web.UI.WebControls.WebControl, ByVal controlToWatchOnValue As String, ByVal controlToChange As System.Web.UI.WebControls.WebControl, ByVal controlToChangeIsDisabled As Boolean, ByVal controlToChangeIsVisible As Boolean, Optional ByVal conditional As Boolean = False)
+    Public Sub AddControlWatcher(controlToWatch As System.Web.UI.WebControls.WebControl, controlToWatchOnValue As String, controlToChange As System.Web.UI.WebControls.WebControl, controlToChangeIsDisabled As Boolean, controlToChangeIsVisible As Boolean, Optional ByVal conditional As Boolean = False)
 
         If conditional Then
             controlToWatch.Attributes.Add("onchange", "debugger; (if document.all('" & controlToChange.UniqueID & "').value == '" & controlToWatchOnValue & "'){document.all('" & controlToChange.UniqueID & "').disabled=" & controlToChangeIsDisabled & ";document.all('" & controlToChange.UniqueID & "').style.visibility=" & controlToChangeIsVisible & ";")
@@ -3546,8 +3542,8 @@ Public Class ElitaPlusPage
         End If
     End Sub
 
-    Public Sub ChangeEnabledControlProperty(ByVal ctrl As Control, ByVal enabled As Boolean)
-        Me.ChangeEnabledProperty(ctrl, enabled)
+    Public Sub ChangeEnabledControlProperty(ctrl As Control, enabled As Boolean)
+        ChangeEnabledProperty(ctrl, enabled)
     End Sub
 
 
@@ -3556,13 +3552,13 @@ Public Class ElitaPlusPage
 #Region "Session Info Properties"
     Public Property AppHomeUrl() As String
         Get
-            If Not DirectCast(Me, IComponent).Site Is Nothing AndAlso DirectCast(Me, IComponent).Site.DesignMode Then
+            If DirectCast(Me, IComponent).Site IsNot Nothing AndAlso DirectCast(Me, IComponent).Site.DesignMode Then
                 Return Nothing
             End If
-            Return Me.Session(Me.APP_HOME_URL_SESSION_KEY).ToString
+            Return Session(APP_HOME_URL_SESSION_KEY).ToString
         End Get
-        Set(ByVal Value As String)
-            Me.Session(Me.APP_HOME_URL_SESSION_KEY) = Value
+        Set(Value As String)
+            Session(APP_HOME_URL_SESSION_KEY) = Value
         End Set
     End Property
 
@@ -3576,8 +3572,8 @@ Public Class ElitaPlusPage
             'ALR - Commented out the tab return as we are no longer using tabs.  Return the AppHomeURL
             Return AppHomeUrl
         End Get
-        Set(ByVal Value As String)
-            Me.Session(Me.TAB_HOME_URL_SESSION_KEY) = Value
+        Set(Value As String)
+            Session(TAB_HOME_URL_SESSION_KEY) = Value
         End Set
     End Property
 #End Region
@@ -3587,10 +3583,10 @@ Public Class ElitaPlusPage
     Public Const SESSION_KEY_CURRENT_FLOW_CTRL As String = "SESSION_KEY_CURRENT_FLOW_CTRL"
     Public Property NavController() As INavigationController
         Get
-            Return CType(Session(Me.SESSION_KEY_CURRENT_FLOW_CTRL), INavigationController)
+            Return CType(Session(SESSION_KEY_CURRENT_FLOW_CTRL), INavigationController)
         End Get
-        Set(ByVal Value As INavigationController)
-            Session(Me.SESSION_KEY_CURRENT_FLOW_CTRL) = Value
+        Set(Value As INavigationController)
+            Session(SESSION_KEY_CURRENT_FLOW_CTRL) = Value
         End Set
     End Property
 
@@ -3607,8 +3603,8 @@ Public Class ElitaPlusPage
         Get
             Dim errCtl As ErrorController
             Try
-                If Not Page.Master Is Nothing Then
-                    errCtl = CType(Me.Master, MasterBase).ErrController
+                If Page.Master IsNot Nothing Then
+                    errCtl = CType(Master, MasterBase).ErrController
                 End If
                 Return errCtl
             Catch ex As Exception
@@ -3620,8 +3616,8 @@ Public Class ElitaPlusPage
         Get
             Dim rptCtl As Reports.ReportCeInputControl
             Try
-                If Not Page.Master Is Nothing Then
-                    rptCtl = CType(Me.Master, MasterBase).ReportCeInputControl
+                If Page.Master IsNot Nothing Then
+                    rptCtl = CType(Master, MasterBase).ReportCeInputControl
                 End If
                 Return rptCtl
             Catch ex As Exception
@@ -3634,8 +3630,8 @@ Public Class ElitaPlusPage
         Get
             Dim rptCtl As Reports.ReportExtractInputControl
             Try
-                If Not Page.Master Is Nothing Then
-                    rptCtl = CType(Me.Master, MasterBase).ReportExtractInputControl
+                If Page.Master IsNot Nothing Then
+                    rptCtl = CType(Master, MasterBase).ReportExtractInputControl
                 End If
                 Return rptCtl
             Catch ex As Exception
@@ -3648,8 +3644,8 @@ Public Class ElitaPlusPage
         Get
             Dim errCtl As MessageController
             Try
-                If Not Page.Master Is Nothing Then
-                    errCtl = CType(CType(Me.Master, MasterBase).MessageController, MessageController)
+                If Page.Master IsNot Nothing Then
+                    errCtl = CType(CType(Master, MasterBase).MessageController, MessageController)
                 End If
                 Return errCtl
             Catch ex As Exception
@@ -3658,26 +3654,26 @@ Public Class ElitaPlusPage
         End Get
     End Property
 
-    Public Function SetFormTitle(ByVal TextValue As String, Optional ByVal Translate As Boolean = True) As String
+    Public Function SetFormTitle(TextValue As String, Optional ByVal Translate As Boolean = True) As String
         Try
-            If Not Page.Master Is Nothing Then
+            If Page.Master IsNot Nothing Then
                 If Translate Then
-                    CType(Me.Master, MasterBase).PageTitle = TranslationBase.TranslateLabelOrMessage(TextValue)
+                    CType(Master, MasterBase).PageTitle = TranslationBase.TranslateLabelOrMessage(TextValue)
                 Else
-                    CType(Me.Master, MasterBase).PageTitle = TextValue
+                    CType(Master, MasterBase).PageTitle = TextValue
                 End If
             End If
         Catch ex As Exception
         End Try
     End Function
 
-    Public Function SetFormTab(ByVal TextValue As String, Optional ByVal Translate As Boolean = True) As String
+    Public Function SetFormTab(TextValue As String, Optional ByVal Translate As Boolean = True) As String
         Try
-            If Not Page.Master Is Nothing Then
+            If Page.Master IsNot Nothing Then
                 If Translate Then
-                    CType(Me.Master, MasterBase).PageTab = TranslationBase.TranslateLabelOrMessage(TextValue)
+                    CType(Master, MasterBase).PageTab = TranslationBase.TranslateLabelOrMessage(TextValue)
                 Else
-                    CType(Me.Master, MasterBase).PageTab = TextValue
+                    CType(Master, MasterBase).PageTab = TextValue
                 End If
             End If
         Catch ex As Exception
@@ -3687,10 +3683,10 @@ Public Class ElitaPlusPage
     Public ReadOnly Property PageForm(Optional ByVal formName As String = "form1") As HtmlForm
         Get
             Dim frm As HtmlForm
-            If Not Me.FindControl(formName) Is Nothing Then
-                frm = CType(Me.FindControl(formName), HtmlForm)
-            ElseIf Not Me.Master Is Nothing Then
-                frm = CType(Me.Master, MasterBase).PageForm(formName)
+            If FindControl(formName) IsNot Nothing Then
+                frm = CType(FindControl(formName), HtmlForm)
+            ElseIf Master IsNot Nothing Then
+                frm = CType(Master, MasterBase).PageForm(formName)
             End If
             Return frm
         End Get
@@ -3698,7 +3694,7 @@ Public Class ElitaPlusPage
 
 #End Region
     <System.Web.Services.WebMethod()>
-    Public Shared Function GetListOfComunas(ByVal regionID As Guid) As List(Of String)
+    Public Shared Function GetListOfComunas(regionID As Guid) As List(Of String)
 
         Dim arrItems As List(Of String) = New List(Of String)
         Try

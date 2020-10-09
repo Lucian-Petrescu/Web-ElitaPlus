@@ -57,7 +57,7 @@ Namespace Reports
         End Sub
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -67,32 +67,32 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                 Else
                     ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -108,7 +108,7 @@ Namespace Reports
 
         Private Sub ClearErrLabels()
             ' Me.ClearLabelErrSign(MonthYearLabel)
-            Me.ClearLabelErrSign(lblnumber)
+            ClearLabelErrSign(lblnumber)
         End Sub
 
 #End Region
@@ -123,7 +123,7 @@ Namespace Reports
 #End Region
 
 #Region "Crystal Enterprise"
-        Function SetRptParameters(ByVal userid As String, ByVal lastnumberofFiles As Integer) As ReportCeBaseForm.Params
+        Function SetRptParameters(userid As String, lastnumberofFiles As Integer) As ReportCeBaseForm.Params
 
             Dim Params As New ReportCeBaseForm.Params
             Dim repParams(TOTALPARAMS) As ReportCeBaseForm.RptParam
@@ -139,7 +139,7 @@ Namespace Reports
             End With
             SetReportParams(rptParams, repParams, String.Empty, PARAMS_PER_REPORT * 0) ' Main Report
 
-            Me.rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
+            rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
 
             With Params
                 .msRptName = reportName
@@ -152,8 +152,8 @@ Namespace Reports
             Return Params
         End Function
 
-        Sub SetReportParams(ByVal rptParams As ReportParams, ByVal repParams() As ReportCeBaseForm.RptParam,
-                          ByVal reportName As String, ByVal startIndex As Integer)
+        Sub SetReportParams(rptParams As ReportParams, repParams() As ReportCeBaseForm.RptParam,
+                          reportName As String, startIndex As Integer)
 
             With rptParams
                 repParams(startIndex) = New ReportCeBaseForm.RptParam("V_USER_ID", .userid, reportName)
@@ -167,10 +167,10 @@ Namespace Reports
             Dim params As ReportCeBaseForm.Params
             Dim lastnumberofFiles As Integer
 
-            If txtnumber.Text.Trim.ToString = String.Empty Or Not IsNumeric(txtnumber.Text.Trim.ToString) Then
+            If txtnumber.Text.Trim.ToString = String.Empty OrElse Not IsNumeric(txtnumber.Text.Trim.ToString) Then
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_NUMBER_OF_ACTIVE_DAYS_ERR)
             Else
-                lastnumberofFiles = CType(Me.txtnumber.Text, Integer)
+                lastnumberofFiles = CType(txtnumber.Text, Integer)
                 If ((lastnumberofFiles < 0) OrElse (lastnumberofFiles > 999)) Then
                     ElitaPlusPage.SetLabelError(lblnumber)
                     Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_NUMBER)

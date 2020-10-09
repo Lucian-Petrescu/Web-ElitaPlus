@@ -7,51 +7,51 @@ Public Class AccountingCloseInfo
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
+        Dataset = familyDS
         Dim dal As New AccountingCloseInfoDAL
         'If Me.Dataset.Tables(dal.TABLE_NAME).Rows.Count < 12 Then
-        Me.Load()
+        Load()
         'End If
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New AccountingCloseInfoDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -59,23 +59,23 @@ Public Class AccountingCloseInfo
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New AccountingCloseInfoDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -100,7 +100,7 @@ Public Class AccountingCloseInfo
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(AccountingCloseInfoDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -111,7 +111,7 @@ Public Class AccountingCloseInfo
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(AccountingCloseInfoDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -120,15 +120,15 @@ Public Class AccountingCloseInfo
                 Return New Guid(CType(Row(AccountingCloseInfoDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(AccountingCloseInfoDAL.COL_NAME_COMPANY_ID, Value)
+            SetValue(AccountingCloseInfoDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidateEntedClossingDate("")> _
-    Public Property ClosingDate() As DateType
+    Public Property ClosingDate As DateType
         Get
             CheckDeleted()
             If Row(AccountingCloseInfoDAL.COL_NAME_CLOSING_DATE) Is DBNull.Value Then
@@ -137,17 +137,17 @@ Public Class AccountingCloseInfo
                 Return New DateType(CType(Row(AccountingCloseInfoDAL.COL_NAME_CLOSING_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(AccountingCloseInfoDAL.COL_NAME_CLOSING_DATE, Value)
+            SetValue(AccountingCloseInfoDAL.COL_NAME_CLOSING_DATE, Value)
         End Set
     End Property
 
-    Public Property isDateEnable() As Boolean
+    Public Property isDateEnable As Boolean
         Get
             Return mIsDateEnable
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             mIsDateEnable = Value
         End Set
     End Property
@@ -161,15 +161,15 @@ Public Class AccountingCloseInfo
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New AccountingCloseInfoDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New Dataset
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New Dataset
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -181,10 +181,10 @@ Public Class AccountingCloseInfo
 
 #Region "DataView Retrieveing Methods"
 
-    Private Shared Function GetAccountingCloseInfoList(ByVal parent As Company, ByVal cmpId As Guid) As DataTable
+    Private Shared Function GetAccountingCloseInfoList(parent As Company, cmpId As Guid) As DataTable
 
         Try
-            If Not parent.IsChildrenCollectionLoaded(GetType(AccountingCloseInfoList)) Or If(parent.Dataset.Tables(AccountingCloseInfoDAL.TABLE_NAME) Is Nothing, True, parent.Dataset.Tables(AccountingCloseInfoDAL.TABLE_NAME).Rows.Count <= 0) Then
+            If Not parent.IsChildrenCollectionLoaded(GetType(AccountingCloseInfoList)) OrElse If(parent.Dataset.Tables(AccountingCloseInfoDAL.TABLE_NAME) Is Nothing, True, parent.Dataset.Tables(AccountingCloseInfoDAL.TABLE_NAME).Rows.Count <= 0) Then
                 Dim dal As New AccountingCloseInfoDAL
                 dal.LoadList(cmpId, parent.Dataset)
                 parent.AddChildrenCollection(GetType(AccountingCloseInfoList))
@@ -196,7 +196,7 @@ Public Class AccountingCloseInfo
         End Try
     End Function
 
-    Private Shared Function GetAccountingCloseInfoListCountNumber(ByVal parent As Company, ByVal cmpId As Guid) As DataTable
+    Private Shared Function GetAccountingCloseInfoListCountNumber(parent As Company, cmpId As Guid) As DataTable
         Try
             Return parent.Dataset.Tables(AccountingCloseInfoDAL.TABLE_NAME)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -204,7 +204,7 @@ Public Class AccountingCloseInfo
         End Try
     End Function
 
-    Public Shared Function GetClosingYears(ByVal companyId As Guid) As DataView
+    Public Shared Function GetClosingYears(companyId As Guid) As DataView
         Try
             Dim dal As New AccountingCloseInfoDAL
             Dim ds As Dataset
@@ -218,7 +218,7 @@ Public Class AccountingCloseInfo
 
     End Function
 
-    Public Shared Function GetClosingYearsByUser(ByVal userId As Guid) As DataView
+    Public Shared Function GetClosingYearsByUser(userId As Guid) As DataView
         Try
             Dim dal As New AccountingCloseInfoDAL
             Dim ds As Dataset
@@ -232,7 +232,7 @@ Public Class AccountingCloseInfo
 
     End Function
 
-    Public Shared Function GetAccountingCloseDates(ByVal companyId As Guid, ByVal Year As String) As DataView
+    Public Shared Function GetAccountingCloseDates(companyId As Guid, Year As String) As DataView
         Try
             Dim dal As New AccountingCloseInfoDAL
             Dim ds As Dataset
@@ -246,7 +246,7 @@ Public Class AccountingCloseInfo
 
     End Function
     '
-    Public Shared Function GetLastClosingDate(ByVal companyId As Guid) As AccountingCloseInfoSearchDV
+    Public Shared Function GetLastClosingDate(companyId As Guid) As AccountingCloseInfoSearchDV
 
         Try
             Dim dal As New AccountingCloseInfoDAL
@@ -260,21 +260,21 @@ Public Class AccountingCloseInfo
 
     End Function
 
-    Public Shared Function GetAccountingCloseDate(ByVal companyId As Guid, ByVal forThisDate As Date, Optional ByVal minCloseDate As Boolean = False) As Date
+    Public Shared Function GetAccountingCloseDate(companyId As Guid, forThisDate As Date, Optional ByVal minCloseDate As Boolean = False) As Date
         Try
             Dim dal As New AccountingCloseInfoDAL
             Dim dateRow As DataRow = dal.GetAccountingCloseDate(companyId, forThisDate)
             Dim dtInqAccountingCloseDate As Date
 
             If minCloseDate = True Then
-                If Not dateRow Is Nothing AndAlso Not dateRow.Item(dal.COL_NAME_CLOSING_DATE) Is System.DBNull.Value Then
+                If dateRow IsNot Nothing AndAlso dateRow.Item(dal.COL_NAME_CLOSING_DATE) IsNot DBNull.Value Then
                     Return CType(dateRow.Item(dal.COL_NAME_CLOSING_DATE), Date)
                 Else
                     dtInqAccountingCloseDate = GetMinAccountingCloseDate(companyId)
                     Return dtInqAccountingCloseDate                    
                 End If
             Else
-                If Not dateRow Is Nothing AndAlso Not dateRow.Item(dal.COL_NAME_CLOSING_DATE) Is System.DBNull.Value Then
+                If dateRow IsNot Nothing AndAlso dateRow.Item(dal.COL_NAME_CLOSING_DATE) IsNot DBNull.Value Then
                     Return CType(dateRow.Item(dal.COL_NAME_CLOSING_DATE), Date)
                 Else
                     'Throw New BOValidationException(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLOSED_ACCOUNTING_MONTH_NOT_FOUND)
@@ -287,11 +287,11 @@ Public Class AccountingCloseInfo
         End Try
 
     End Function
-    Public Shared Function GetMinAccountingCloseDate(ByVal companyId As Guid) As Date
+    Public Shared Function GetMinAccountingCloseDate(companyId As Guid) As Date
         Try
             Dim dal As New AccountingCloseInfoDAL
             Dim dateRow As DataRow = dal.GetMinAccountingCloseDate(companyId)
-            If Not dateRow Is Nothing AndAlso Not dateRow.Item(dal.COL_NAME_CLOSING_DATE) Is System.DBNull.Value Then
+            If dateRow IsNot Nothing AndAlso dateRow.Item(dal.COL_NAME_CLOSING_DATE) IsNot DBNull.Value Then
                 Return CType(dateRow.Item(dal.COL_NAME_CLOSING_DATE), Date)
             Else
                 'Throw New BOValidationException(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLOSED_ACCOUNTING_MONTH_NOT_FOUND)
@@ -303,7 +303,7 @@ Public Class AccountingCloseInfo
         End Try
 
     End Function
-    Public Shared Function GetAllAccountingCloseDates(ByVal companyId As Guid) As DataView
+    Public Shared Function GetAllAccountingCloseDates(companyId As Guid) As DataView
         Try
             Dim dal As New AccountingCloseInfoDAL
             Dim ds As Dataset
@@ -330,7 +330,7 @@ Public Class AccountingCloseInfo
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -342,11 +342,11 @@ Public Class AccountingCloseInfo
               Public NotInheritable Class ValidateEntedClossingDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_DATE_ENTER_CANNOT_BE_LOWER_THAT_TODAYS_DATE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As AccountingCloseInfo = CType(objectToValidate, AccountingCloseInfo)
             Dim EntedClossingDate As Date
 
@@ -370,26 +370,26 @@ Public Class AccountingCloseInfo
 
     Public Class AccountingCloseInfoListCount
         Inherits BusinessObjectListBase
-        Public Sub New(ByVal parent As Company, ByVal cmpId As Guid)
+        Public Sub New(parent As Company, cmpId As Guid)
             MyBase.New(GetAccountingCloseInfoListCountNumber(parent, cmpId), GetType(AccountingCloseInfo), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return True
         End Function
     End Class
 
     Public Class AccountingCloseInfoList
         Inherits BusinessObjectListBase
-        Public Sub New(ByVal parent As Company, ByVal cmpId As Guid)
+        Public Sub New(parent As Company, cmpId As Guid)
             MyBase.New(GetAccountingCloseInfoList(parent, cmpId), GetType(AccountingCloseInfo), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return True
         End Function
 
-        Public Function FindById(ByVal AccountingCloseInfoId As Guid) As AccountingCloseInfo
+        Public Function FindById(AccountingCloseInfoId As Guid) As AccountingCloseInfo
             Dim bo As AccountingCloseInfo
             For Each bo In Me
                 If bo.Id.Equals(AccountingCloseInfoId) Then Return bo

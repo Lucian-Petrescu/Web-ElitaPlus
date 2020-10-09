@@ -1,16 +1,16 @@
 Public Class ZipDistrictDetailList
     Inherits BusinessObjectListBase
 
-    Public Sub New(ByVal parent As ZipDistrict)
+    Public Sub New(parent As ZipDistrict)
         MyBase.New(LoadTable(parent), GetType(ZipDistrictDetail), parent)
     End Sub
 
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, ZipDistrictDetail).ZipDistrictId.Equals(CType(Parent, ZipDistrict).Id)
     End Function
 
-    Public Function Find(ByVal zipCode As String) As ZipDistrictDetail
+    Public Function Find(zipCode As String) As ZipDistrictDetail
         Dim bo As ZipDistrictDetail
         For Each bo In Me
             If bo.ZipCode = zipCode Then Return bo
@@ -20,7 +20,7 @@ Public Class ZipDistrictDetailList
 
 
 #Region "Class Methods"
-    Private Shared Function LoadTable(ByVal parent As ZipDistrict) As DataTable
+    Private Shared Function LoadTable(parent As ZipDistrict) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(ZipDistrictDetailList)) Then
                 Dim dal As New ZipDistrictDetailDAL

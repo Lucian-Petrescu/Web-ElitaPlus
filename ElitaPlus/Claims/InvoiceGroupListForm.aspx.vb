@@ -1,5 +1,6 @@
 ﻿Imports System.Threading
 Imports Assurant.Elita.CommonConfiguration
+Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.Web.Forms
 Public Class InvoiceGroupListForm
@@ -64,88 +65,88 @@ Public Class InvoiceGroupListForm
         End Get
     End Property
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
 
         Try
-            Me.MenuEnabled = True
-            Me.IsReturningFromChild = True
+            MenuEnabled = True
+            IsReturningFromChild = True
             Dim retObj As InvoiceGroupDetailForm.ReturnType = CType(ReturnPar, InvoiceGroupDetailForm.ReturnType)
-            Me.State.HasDataChanged = retObj.HasDataChanged
-            If Not retObj Is Nothing AndAlso retObj.HasDataChanged Then
-                Me.State.searchDV = Nothing
+            State.HasDataChanged = retObj.HasDataChanged
+            If retObj IsNot Nothing AndAlso retObj.HasDataChanged Then
+                State.searchDV = Nothing
 
             End If
-            Me.State.IsGridVisible = False
+            State.IsGridVisible = False
             Select Case retObj.LastOperation
-                Case ElitaPlusPage.DetailPageCommand.Back
-                    If Not retObj Is Nothing Then
+                Case DetailPageCommand.Back
+                    If retObj IsNot Nothing Then
                         If Not retObj.EditingBo.IsNew Then
-                            Me.State.selectedInvoiceGroupId = retObj.EditingBo.Id
-                            Me.State.IsGridVisible = True
+                            State.selectedInvoiceGroupId = retObj.EditingBo.Id
+                            State.IsGridVisible = True
                         End If
 
                     End If
-                Case ElitaPlusPage.DetailPageCommand.Delete
-                    Me.DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                Case DetailPageCommand.Delete
+                    DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                     'Case ElitaPlusPage.DetailPageCommand.Expire
                     '    Me.DisplayMessage(Message.EXPIRE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                    Me.State.IsGridVisible = True
+                    State.IsGridVisible = True
             End Select
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
 
 #Region "Page Events"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
 
-        Me.MasterPage.MessageController.Clear()
-        Me.Form.DefaultButton = btnSearch.UniqueID
+        MasterPage.MessageController.Clear()
+        Form.DefaultButton = btnSearch.UniqueID
         Try
 
             ' Populate the header and bredcrumb
-            Me.MasterPage.MessageController.Clear()
-            Me.MasterPage.UsePageTabTitleInBreadCrum = False
-            Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(CLAIMS)
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(INVOICE_GROUP)
-            Me.UpdateBreadCrum()
+            MasterPage.MessageController.Clear()
+            MasterPage.UsePageTabTitleInBreadCrum = False
+            MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(CLAIMS)
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(INVOICE_GROUP)
+            UpdateBreadCrum()
 
 
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
 
                 PopulateDropdowns()
                 PopulateSearchFieldsFromState()
 
-                Me.AddCalendar_New(Me.ImageButtonDueDate, Me.txtDuedate)
-                Me.AddCalendar_New(Me.ImageGroupnumfromDate, Me.txtgrpnumbfromdate)
-                Me.AddCalendar_New(Me.ImageGroupnumtoDate, Me.txtgrpnumbertodate)
-                If Me.State.IsGridVisible Then
-                    If Not (Me.State.selectedPageSize = DEFAULT_NEW_UI_PAGE_SIZE) Then
-                        cboPageSize.SelectedValue = CType(Me.State.selectedPageSize, String)
-                        Grid.PageSize = Me.State.selectedPageSize
+                AddCalendar_New(ImageButtonDueDate, txtDuedate)
+                AddCalendar_New(ImageGroupnumfromDate, txtgrpnumbfromdate)
+                AddCalendar_New(ImageGroupnumtoDate, txtgrpnumbertodate)
+                If State.IsGridVisible Then
+                    If Not (State.selectedPageSize = DEFAULT_NEW_UI_PAGE_SIZE) Then
+                        cboPageSize.SelectedValue = CType(State.selectedPageSize, String)
+                        Grid.PageSize = State.selectedPageSize
                     End If
-                    If Not Me.State Is Nothing Then
-                        Me.PopulateGrid()
+                    If State IsNot Nothing Then
+                        PopulateGrid()
 
                     End If
                 End If
-                Me.SetGridItemStyleColor(Me.Grid)
+                SetGridItemStyleColor(Grid)
 
             End If
-            Me.DisplayNewProgressBarOnClick(Me.btnSearch, LOADING_INVOICE_GROUPS)
+            DisplayNewProgressBarOnClick(btnSearch, LOADING_INVOICE_GROUPS)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
 
     End Sub
 
 
     Private Sub UpdateBreadCrum()
 
-        If (Not Me.State Is Nothing) Then
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
+        If (State IsNot Nothing) Then
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
                 TranslationBase.TranslateLabelOrMessage(INVOICE_GROUP)
         End If
 
@@ -154,45 +155,45 @@ Public Class InvoiceGroupListForm
 
 #Region "Button Event Handlers"
 
-    Private Sub btnClearSearch_Click(ByVal Sender As System.Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(Sender As Object, e As EventArgs) Handles btnClearSearch.Click
         Try
-            Me.ClearSearch()
+            ClearSearch()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
             Dim begindate, enddate As Date
-            If Date.TryParse(Me.txtgrpnumbfromdate.Text, begindate) AndAlso Date.TryParse(Me.txtgrpnumbertodate.Text, enddate) Then
+            If Date.TryParse(txtgrpnumbfromdate.Text, begindate) AndAlso Date.TryParse(txtgrpnumbertodate.Text, enddate) Then
                 If begindate > enddate Then
 
                     Throw New GUIException(Message.MSG_INVALID_BEGIN_END_DATES_ERR, Assurant.ElitaPlus.Common.ErrorCodes.GUI_BEGIN_END_DATE_ERR)
                 End If
 
             End If
-            Me.State.PageIndex = 0
-            Me.State.IsGridVisible = True
-            Me.State.searchDV = Nothing
-            Me.State.HasDataChanged = False
-            Me.State.searchBtnClicked = True
+            State.PageIndex = 0
+            State.IsGridVisible = True
+            State.searchDV = Nothing
+            State.HasDataChanged = False
+            State.searchBtnClicked = True
             PopulateGrid()
-            Me.State.searchBtnClicked = False
-            If Not Me.State.searchDV Is Nothing Then
-                Me.ValidSearchResultCountNew(Me.State.searchDV.Count, True)
+            State.searchBtnClicked = False
+            If State.searchDV IsNot Nothing Then
+                ValidSearchResultCountNew(State.searchDV.Count, True)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnnew_CLick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew.Click
+    Private Sub btnnew_CLick(sender As Object, e As EventArgs) Handles btnNew.Click
         Try
-            Me.callPage(InvoiceGroupDetailForm.URL)
+            callPage(InvoiceGroupDetailForm.URL)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -203,119 +204,119 @@ Public Class InvoiceGroupListForm
 
     Public Sub ClearSearch()
         Try
-            Me.txtinvgroupnumber.Text = String.Empty
-            Me.txtclaimnumber.Text = String.Empty
-            Me.ddlcountry.SelectedIndex = Me.BLANK_ITEM_SELECTED
-            Me.txtgrpnumbertodate.Text = String.Empty
-            Me.txtgrpnumbfromdate.Text = String.Empty
-            Me.txtMobilenumber.Text = String.Empty
-            Me.txtDuedate.Text = String.Empty
-            Me.txtservicecentername.Text = String.Empty
-            Me.txtgrpnumbfromdate.Text = String.Empty
-            Me.txtInvoiceNum.Text = String.Empty
-            Me.ddlStatus.SelectedIndex = Me.BLANK_ITEM_SELECTED
-            Me.txtbxmembershipnumb.Text = String.Empty
-            Me.txtCertificatenumb.Text = String.Empty
+            txtinvgroupnumber.Text = String.Empty
+            txtclaimnumber.Text = String.Empty
+            ddlcountry.SelectedIndex = BLANK_ITEM_SELECTED
+            txtgrpnumbertodate.Text = String.Empty
+            txtgrpnumbfromdate.Text = String.Empty
+            txtMobilenumber.Text = String.Empty
+            txtDuedate.Text = String.Empty
+            txtservicecentername.Text = String.Empty
+            txtgrpnumbfromdate.Text = String.Empty
+            txtInvoiceNum.Text = String.Empty
+            ddlStatus.SelectedIndex = BLANK_ITEM_SELECTED
+            txtbxmembershipnumb.Text = String.Empty
+            txtCertificatenumb.Text = String.Empty
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
     Public Sub PopulateSearchFieldsFromState()
-        Me.SetSelectedItem(ddlcountry, Me.State.CountryId)
-        Me.txtInvoiceNum.Text = Me.State.Invgroupnum
-        Me.txtservicecentername.Text = Me.State.servicecentername
-        Me.txtclaimnumber.Text = Me.State.claimnumber
-        Me.txtMobilenumber.Text = Me.State.mobilenum
-        Me.txtDuedate.Text = Me.State.duedate
-        Me.txtgrpnumbfromdate.Text = Me.State.groupnumberfrom
-        Me.txtgrpnumbertodate.Text = Me.State.groupnumberto
-        Me.txtInvoiceNum.Text = Me.State.Invoicenum
-        Me.SetSelectedItem(ddlStatus, Me.State.InvoicestatusId)
-        Me.txtbxmembershipnumb.Text = Me.State.membershipnum
-        Me.txtCertificatenumb.Text = Me.State.certnumber
+        SetSelectedItem(ddlcountry, State.CountryId)
+        txtInvoiceNum.Text = State.Invgroupnum
+        txtservicecentername.Text = State.servicecentername
+        txtclaimnumber.Text = State.claimnumber
+        txtMobilenumber.Text = State.mobilenum
+        txtDuedate.Text = State.duedate
+        txtgrpnumbfromdate.Text = State.groupnumberfrom
+        txtgrpnumbertodate.Text = State.groupnumberto
+        txtInvoiceNum.Text = State.Invoicenum
+        SetSelectedItem(ddlStatus, State.InvoicestatusId)
+        txtbxmembershipnumb.Text = State.membershipnum
+        txtCertificatenumb.Text = State.certnumber
     End Sub
     Public Sub PopulateStateFromSearchFields()
-        Me.State.CountryId = Me.GetSelectedItem(ddlcountry)
-        Me.State.Invgroupnum = Me.txtinvgroupnumber.Text.ToUpper.Trim
-        Me.State.servicecentername = Me.txtservicecentername.Text.ToUpper
-        Me.State.claimnumber = Me.txtclaimnumber.Text.ToUpper.Trim
-        Me.State.mobilenum = Me.txtMobilenumber.Text.ToUpper.Trim
-        Me.State.duedate = Me.txtDuedate.Text
-        Me.State.groupnumberfrom = Me.txtgrpnumbfromdate.Text
-        Me.State.groupnumberto = Me.txtgrpnumbertodate.Text
-        Me.State.Invoicenum = Me.txtInvoiceNum.Text.ToUpper.Trim
-        Me.State.InvoicestatusId = Me.GetSelectedItem(ddlStatus)
-        Me.State.membershipnum = Me.txtbxmembershipnumb.Text.ToUpper.Trim
-        Me.State.certnumber = Me.txtCertificatenumb.Text.ToUpper.Trim
+        State.CountryId = GetSelectedItem(ddlcountry)
+        State.Invgroupnum = txtinvgroupnumber.Text.ToUpper.Trim
+        State.servicecentername = txtservicecentername.Text.ToUpper
+        State.claimnumber = txtclaimnumber.Text.ToUpper.Trim
+        State.mobilenum = txtMobilenumber.Text.ToUpper.Trim
+        State.duedate = txtDuedate.Text
+        State.groupnumberfrom = txtgrpnumbfromdate.Text
+        State.groupnumberto = txtgrpnumbertodate.Text
+        State.Invoicenum = txtInvoiceNum.Text.ToUpper.Trim
+        State.InvoicestatusId = GetSelectedItem(ddlStatus)
+        State.membershipnum = txtbxmembershipnumb.Text.ToUpper.Trim
+        State.certnumber = txtCertificatenumb.Text.ToUpper.Trim
 
     End Sub
     Public Sub PopulateGrid()
         Try
             PopulateStateFromSearchFields()
-            If ((Me.State.searchDV Is Nothing) OrElse (Me.State.HasDataChanged)) Then
+            If ((State.searchDV Is Nothing) OrElse (State.HasDataChanged)) Then
 
-                Me.State.searchDV = InvoiceGroup.getList(Me.State.Invgroupnum, Me.State.claimnumber,
-                                                         Me.State.CountryId, Me.State.groupnumberfrom,
-                                                         Me.State.mobilenum, Me.State.duedate,
-                                                         Me.State.servicecentername, Me.State.groupnumberto,
-                                                         Me.State.Invoicenum, Me.State.InvoicestatusId,
-                                                         Me.State.membershipnum, Me.State.certnumber, Me.State.searchBtnClicked)
+                State.searchDV = InvoiceGroup.getList(State.Invgroupnum, State.claimnumber,
+                                                         State.CountryId, State.groupnumberfrom,
+                                                         State.mobilenum, State.duedate,
+                                                         State.servicecentername, State.groupnumberto,
+                                                         State.Invoicenum, State.InvoicestatusId,
+                                                         State.membershipnum, State.certnumber, State.searchBtnClicked)
             End If
 
-            Me.Grid.PageSize = Me.State.selectedPageSize
-            If Not (Me.State.searchDV Is Nothing) Then
+            Grid.PageSize = State.selectedPageSize
+            If Not (State.searchDV Is Nothing) Then
 
-                If Me.State.searchBtnClicked Then
-                    Me.State.SortExpression = InvoiceGroup.InvoiceGroupSearchDV.COL_INVOICE_GROUP_NUMBER
-                    Me.State.SortExpression &= " DESC"
+                If State.searchBtnClicked Then
+                    State.SortExpression = InvoiceGroup.InvoiceGroupSearchDV.COL_INVOICE_GROUP_NUMBER
+                    State.SortExpression &= " DESC"
 
-                    Me.State.searchDV.Sort = Me.State.SortExpression
+                    State.searchDV.Sort = State.SortExpression
 
                 Else
-                    Me.State.searchDV.Sort = Me.State.SortExpression
+                    State.searchDV.Sort = State.SortExpression
                 End If
-                Me.Grid.Columns(Me.GRID_COL_Group_NUMBER_IDX).SortExpression = InvoiceGroup.InvoiceGroupSearchDV.COL_INVOICE_GROUP_NUMBER
-                Me.Grid.Columns(Me.GRID_COL_SERVICE_CENTER_IDX).SortExpression = InvoiceGroup.InvoiceGroupSearchDV.COL_SERVICE_CENTER_NAME
-                Me.Grid.Columns(Me.GRID_COL_GROUP_TIMESTAMP_IDX).SortExpression = InvoiceGroup.InvoiceGroupSearchDV.COL_INVOICE_GROUP_CREATED_DATE
-                Me.Grid.Columns(Me.GRID_COL_USER_IDX).SortExpression = InvoiceGroup.InvoiceGroupSearchDV.COL_INVOICE_GROUP_USER
+                Grid.Columns(GRID_COL_Group_NUMBER_IDX).SortExpression = InvoiceGroup.InvoiceGroupSearchDV.COL_INVOICE_GROUP_NUMBER
+                Grid.Columns(GRID_COL_SERVICE_CENTER_IDX).SortExpression = InvoiceGroup.InvoiceGroupSearchDV.COL_SERVICE_CENTER_NAME
+                Grid.Columns(GRID_COL_GROUP_TIMESTAMP_IDX).SortExpression = InvoiceGroup.InvoiceGroupSearchDV.COL_INVOICE_GROUP_CREATED_DATE
+                Grid.Columns(GRID_COL_USER_IDX).SortExpression = InvoiceGroup.InvoiceGroupSearchDV.COL_INVOICE_GROUP_USER
 
-                SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.selectedInvoiceGroupId, Me.Grid, Me.State.PageIndex)
-                Me.SortAndBindGrid()
+                SetPageAndSelectedIndexFromGuid(State.searchDV, State.selectedInvoiceGroupId, Grid, State.PageIndex)
+                SortAndBindGrid()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Private Sub SortAndBindGrid()
         Try
-            Me.State.PageIndex = Me.Grid.CurrentPageIndex
-            Me.Grid.DataSource = Me.State.searchDV
-            HighLightSortColumn(Grid, Me.State.SortExpression, Me.IsNewUI)
-            Me.Grid.DataBind()
+            State.PageIndex = Grid.CurrentPageIndex
+            Grid.DataSource = State.searchDV
+            HighLightSortColumn(Grid, State.SortExpression, IsNewUI)
+            Grid.DataBind()
 
 
 
-            Session("recCount") = Me.State.searchDV.Count
+            Session("recCount") = State.searchDV.Count
 
-            If Me.State.searchDV.Count > 0 Then
+            If State.searchDV.Count > 0 Then
 
                 ControlMgr.SetVisibleControl(Me, Grid, True)
                 ControlMgr.SetVisibleControl(Me, SearchResults, True)
 
-                If Me.Grid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If Grid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             Else
 
                 ControlMgr.SetVisibleControl(Me, Grid, False)
                 ControlMgr.SetVisibleControl(Me, SearchResults, False)
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -324,26 +325,26 @@ Public Class InvoiceGroupListForm
             'Dim langID As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
             'Me.BindListControlToDataView(Me.ddlcountry, LookupListNew.GetUserCountriesLookupList)
             'Me.BindListControlToDataView(Me.ddlStatus, LookupListNew.DropdownLookupList(LookupListNew.LK_INVOICE_STATUS, langID))
-            Dim CountryList As DataElements.ListItem() =
+            Dim CountryList As ListItem() =
                                 CommonConfigManager.Current.ListManager.GetList(listCode:=ListCodes.Country)
-            Dim UserCountries As DataElements.ListItem() = (From Country In CountryList
+            Dim UserCountries As ListItem() = (From Country In CountryList
                                                             Where ElitaPlusIdentity.Current.ActiveUser.Countries.Contains(Country.ListItemId)
                                                             Select Country).ToArray()
-            Me.ddlcountry.Populate(UserCountries.ToArray(),
+            ddlcountry.Populate(UserCountries.ToArray(),
                             New PopulateOptions() With
                             {
                                 .AddBlankItem = True
                             })
 
-            Dim StatusList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="INV_STAT",
+            Dim StatusList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="INV_STAT",
                                                                                                         languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
-            Me.ddlStatus.Populate(StatusList.ToArray(),
+            ddlStatus.Populate(StatusList.ToArray(),
                                     New PopulateOptions() With
                                     {
                                         .AddBlankItem = True
                                     })
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -351,110 +352,110 @@ Public Class InvoiceGroupListForm
         Try
             'Dim langID As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
             'Me.BindListControlToDataView(Me.ddlStatus, LookupListNew.DropdownLookupList(LookupListNew.LK_INVOICE_STATUS, langID))
-            Dim StatusList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="INV_STAT",
+            Dim StatusList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="INV_STAT",
                                                                                                         languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
-            Me.ddlStatus.Populate(StatusList.ToArray(),
+            ddlStatus.Populate(StatusList.ToArray(),
                                     New PopulateOptions() With
                                     {
                                         .AddBlankItem = True
                                     })
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
 
 #Region "DataGrid Related"
-    Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+    Private Sub Grid_ItemDataBound(sender As Object, e As DataGridItemEventArgs) Handles Grid.ItemDataBound
         Try
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
             Dim btnEditButtonCode As LinkButton
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
-                If (Not e.Item.Cells(Me.GRID_COL_Group_NUMBER_IDX).FindControl(Me.GRID_COL_Group_Number_CTRL) Is Nothing) Then
-                    btnEditButtonCode = CType(e.Item.Cells(Me.GRID_COL_Group_NUMBER_IDX).FindControl(Me.GRID_COL_Group_Number_CTRL), LinkButton)
+                If (e.Item.Cells(GRID_COL_Group_NUMBER_IDX).FindControl(GRID_COL_Group_Number_CTRL) IsNot Nothing) Then
+                    btnEditButtonCode = CType(e.Item.Cells(GRID_COL_Group_NUMBER_IDX).FindControl(GRID_COL_Group_Number_CTRL), LinkButton)
                     btnEditButtonCode.Text = dvRow(InvoiceGroup.InvoiceGroupSearchDV.COL_INVOICE_GROUP_NUMBER).ToString
                     btnEditButtonCode.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(InvoiceGroup.InvoiceGroupSearchDV.COL_INVOICE_GROUP_ID), Byte()))
                     btnEditButtonCode.CommandName = SELECT_ACTION_COMMAND
                 End If
 
-                e.Item.Cells(Me.GRID_COL_INVOICE_GROUP_ID_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(InvoiceGroup.InvoiceGroupSearchDV.COL_INVOICE_GROUP_ID), Byte()))
-                e.Item.Cells(Me.GRID_COL_SERVICE_CENTER_IDX).Text = dvRow(InvoiceGroup.InvoiceGroupSearchDV.COL_SERVICE_CENTER_NAME).ToString
-                e.Item.Cells(Me.GRID_COL_GROUP_TIMESTAMP_IDX).Text = dvRow(InvoiceGroup.InvoiceGroupSearchDV.COL_INVOICE_GROUP_CREATED_DATE).ToString
-                e.Item.Cells(Me.GRID_COL_USER_IDX).Text = dvRow(InvoiceGroup.InvoiceGroupSearchDV.COL_INVOICE_GROUP_USER).ToString
+                e.Item.Cells(GRID_COL_INVOICE_GROUP_ID_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(InvoiceGroup.InvoiceGroupSearchDV.COL_INVOICE_GROUP_ID), Byte()))
+                e.Item.Cells(GRID_COL_SERVICE_CENTER_IDX).Text = dvRow(InvoiceGroup.InvoiceGroupSearchDV.COL_SERVICE_CENTER_NAME).ToString
+                e.Item.Cells(GRID_COL_GROUP_TIMESTAMP_IDX).Text = dvRow(InvoiceGroup.InvoiceGroupSearchDV.COL_INVOICE_GROUP_CREATED_DATE).ToString
+                e.Item.Cells(GRID_COL_USER_IDX).Text = dvRow(InvoiceGroup.InvoiceGroupSearchDV.COL_INVOICE_GROUP_USER).ToString
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Public Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles Grid.ItemCommand
+    Public Sub ItemCommand(source As Object, e As DataGridCommandEventArgs) Handles Grid.ItemCommand
         Try
             Dim recievedate As Date
             If e.CommandName = "SelectAction" Then
 
 
-                Me.State.selectedInvoiceGroupId = New Guid(e.Item.Cells(Me.GRID_COL_INVOICE_GROUP_ID_IDX).Text)
+                State.selectedInvoiceGroupId = New Guid(e.Item.Cells(GRID_COL_INVOICE_GROUP_ID_IDX).Text)
 
-                Me.callPage(InvoiceGroupDetailForm.URL, Me.State.selectedInvoiceGroupId)
+                callPage(InvoiceGroupDetailForm.URL, State.selectedInvoiceGroupId)
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemCreated
+    Public Sub ItemCreated(sender As Object, e As DataGridItemEventArgs) Handles Grid.ItemCreated
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = e.NewPageIndex
-            Me.State.selectedInvoiceGroupId = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = e.NewPageIndex
+            State.selectedInvoiceGroupId = Guid.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
 
-    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.CurrentPageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-            Me.State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.PopulateGrid()
+            State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
+    Private Sub Grid_SortCommand(source As Object, e As DataGridSortCommandEventArgs) Handles Grid.SortCommand
         Try
 
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith("DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith("DESC") Then
+                    State.SortExpression = e.SortExpression
 
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
 
 
 
 
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
-            Me.State.PageIndex = 0
+            State.PageIndex = 0
 
-            Me.PopulateGrid()
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region

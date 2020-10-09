@@ -71,7 +71,7 @@ Public Class ClaimFileProcessedDAL
 
 #Region "Signatures"
 
-    Public Delegate Sub AsyncCaller(ByVal oClaimFileProcessedData As ClaimFileProcessedData, ByVal selectStmt As String)
+    Public Delegate Sub AsyncCaller(oClaimFileProcessedData As ClaimFileProcessedData, selectStmt As String)
 
 #End Region
 
@@ -84,22 +84,22 @@ Public Class ClaimFileProcessedDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("claimfile_processed_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal oClaimFileProcessedData As ClaimFileProcessedData) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(oClaimFileProcessedData As ClaimFileProcessedData) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters(TOTAL_PARAM) As DBHelperParameter
         Dim sFileTypeCode As String
 
@@ -114,15 +114,15 @@ Public Class ClaimFileProcessedDAL
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadListForADealer(ByVal oClaimFileProcessedData As ClaimFileProcessedData, ByVal dealerCode As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_FOR_A_DEALER")
+    Public Function LoadListForADealer(oClaimFileProcessedData As ClaimFileProcessedData, dealerCode As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_FOR_A_DEALER")
         Dim parameters(TOTAL_PARAM2) As DBHelperParameter
         Dim sFileTypeCode As String
 
@@ -138,7 +138,7 @@ Public Class ClaimFileProcessedDAL
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -148,8 +148,8 @@ Public Class ClaimFileProcessedDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+        MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
     End Sub
 #End Region
 
@@ -175,7 +175,7 @@ Public Class ClaimFileProcessedDAL
     'End Sub
 
     ' Execute Store Procedure
-    Private Sub AsyncExecuteSP(ByVal oClaimFileProcessedData As ClaimFileProcessedData, ByVal selectStmt As String)
+    Private Sub AsyncExecuteSP(oClaimFileProcessedData As ClaimFileProcessedData, selectStmt As String)
         Dim inputParameters(TOTAL_PARAM_SP) As DBHelperParameter
         Dim outputParameter(0) As DBHelperParameter
 
@@ -193,24 +193,24 @@ Public Class ClaimFileProcessedDAL
         End If
     End Sub
 
-    Private Sub ExecuteSP(ByVal oClaimFileProcessedData As ClaimFileProcessedData, ByVal selectStmt As String)
+    Private Sub ExecuteSP(oClaimFileProcessedData As ClaimFileProcessedData, selectStmt As String)
         Dim aSyncHandler As New AsyncCaller(AddressOf AsyncExecuteSP)
         aSyncHandler.BeginInvoke(oClaimFileProcessedData, selectStmt, Nothing, Nothing)
     End Sub
 
-    Public Sub ValidateFile(ByVal oData As Object)
+    Public Sub ValidateFile(oData As Object)
         Dim oClaimFileProcessedData As ClaimFileProcessedData = CType(oData, ClaimFileProcessedData)
         Dim selectStmt As String
 
         Select Case oClaimFileProcessedData.fileTypeCode
             Case oClaimFileProcessedData.InterfaceTypeCode.NEW_CLAIM
-                selectStmt = Me.Config("/SQL/VALIDATE_NEW_CLAIM_FILE")
+                selectStmt = Config("/SQL/VALIDATE_NEW_CLAIM_FILE")
             Case oClaimFileProcessedData.InterfaceTypeCode.NEW_CLAIM_HP
-                selectStmt = Me.Config("/SQL/VALIDATE_NEW_CLAIM_HP")
+                selectStmt = Config("/SQL/VALIDATE_NEW_CLAIM_HP")
             Case oClaimFileProcessedData.InterfaceTypeCode.CLOSE_CLAIM
-                selectStmt = Me.Config("/SQL/VALIDATE_CLOSE_CLAIM_FILE")
+                selectStmt = Config("/SQL/VALIDATE_CLOSE_CLAIM_FILE")
             Case oClaimFileProcessedData.InterfaceTypeCode.CLOSE_CLAIM_SUNCOM
-                selectStmt = Me.Config("/SQL/VALIDATE_CLOSE_CLAIM_SUNCOM")
+                selectStmt = Config("/SQL/VALIDATE_CLOSE_CLAIM_SUNCOM")
         End Select
 
         Try
@@ -220,19 +220,19 @@ Public Class ClaimFileProcessedDAL
         End Try
     End Sub
 
-    Public Sub ProcessFileRecords(ByVal oData As Object)
+    Public Sub ProcessFileRecords(oData As Object)
         Dim oClaimFileProcessedData As ClaimFileProcessedData = CType(oData, ClaimFileProcessedData)
         Dim selectStmt As String
 
         Select Case oClaimFileProcessedData.fileTypeCode
             Case oClaimFileProcessedData.InterfaceTypeCode.NEW_CLAIM
-                selectStmt = Me.Config("/SQL/PROCESS_NEW_CLAIM_FILE")
+                selectStmt = Config("/SQL/PROCESS_NEW_CLAIM_FILE")
             Case oClaimFileProcessedData.InterfaceTypeCode.NEW_CLAIM_HP
-                selectStmt = Me.Config("/SQL/PROCESS_NEW_CLAIM_HP")
+                selectStmt = Config("/SQL/PROCESS_NEW_CLAIM_HP")
             Case ClaimFileProcessedData.InterfaceTypeCode.CLOSE_CLAIM
-                selectStmt = Me.Config("/SQL/PROCESS_CLOSE_CLAIM_FILE")
+                selectStmt = Config("/SQL/PROCESS_CLOSE_CLAIM_FILE")
             Case ClaimFileProcessedData.InterfaceTypeCode.CLOSE_CLAIM_SUNCOM
-                selectStmt = Me.Config("/SQL/PROCESS_CLOSE_CLAIM_SUNCOM")
+                selectStmt = Config("/SQL/PROCESS_CLOSE_CLAIM_SUNCOM")
         End Select
 
         Try
@@ -242,19 +242,19 @@ Public Class ClaimFileProcessedDAL
         End Try
     End Sub
 
-    Public Sub DeleteFile(ByVal oData As Object)
+    Public Sub DeleteFile(oData As Object)
         Dim oClaimFileProcessedData As ClaimFileProcessedData = CType(oData, ClaimFileProcessedData)
         Dim selectStmt As String
 
         Select Case oClaimFileProcessedData.fileTypeCode
             Case oClaimFileProcessedData.InterfaceTypeCode.NEW_CLAIM
-                selectStmt = Me.Config("/SQL/DELETE_NEW_CLAIM_FILE")
+                selectStmt = Config("/SQL/DELETE_NEW_CLAIM_FILE")
             Case oClaimFileProcessedData.InterfaceTypeCode.NEW_CLAIM_HP
-                selectStmt = Me.Config("/SQL/DELETE_NEW_CLAIM_HP")
+                selectStmt = Config("/SQL/DELETE_NEW_CLAIM_HP")
             Case oClaimFileProcessedData.InterfaceTypeCode.CLOSE_CLAIM
-                selectStmt = Me.Config("/SQL/DELETE_CLOSE_CLAIM_FILE")
+                selectStmt = Config("/SQL/DELETE_CLOSE_CLAIM_FILE")
             Case oClaimFileProcessedData.InterfaceTypeCode.CLOSE_CLAIM_SUNCOM
-                selectStmt = Me.Config("/SQL/DELETE_CLOSE_CLAIM_SUNCOM")
+                selectStmt = Config("/SQL/DELETE_CLOSE_CLAIM_SUNCOM")
         End Select
 
         Try

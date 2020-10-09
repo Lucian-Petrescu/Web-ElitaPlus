@@ -22,10 +22,10 @@ Public Class UserControlContactInfo
 
     Public Property MyGenBO() As BusinessObjectBase
         Get
-            Return CType(Me.Page.StateSession.Item(Me.UniqueID), BusinessObjectBase)
+            Return CType(Page.StateSession.Item(UniqueID), BusinessObjectBase)
         End Get
-        Set(ByVal Value As BusinessObjectBase)
-            Me.Page.StateSession.Item(Me.UniqueID) = Value
+        Set(Value As BusinessObjectBase)
+            Page.StateSession.Item(UniqueID) = Value
         End Set
     End Property
 
@@ -34,8 +34,8 @@ Public Class UserControlContactInfo
         Get
             Return _ContactInfoBO
         End Get
-        Set(ByVal Value As ContactInfo)
-            Me._ContactInfoBO = Value
+        Set(Value As ContactInfo)
+            _ContactInfoBO = Value
         End Set
     End Property
 
@@ -63,8 +63,8 @@ Public Class UserControlContactInfo
 
 #Region "Page Events"
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.EnableDisableFields()
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        EnableDisableFields()
     End Sub
 
 #End Region
@@ -72,25 +72,25 @@ Public Class UserControlContactInfo
 #Region "Load"
 
     '' REQ-784
-    Public Sub NewClaimBind(ByVal oBusObj As BusinessObjectBase)
+    Public Sub NewClaimBind(oBusObj As BusinessObjectBase)
         'ContactInfoBO = oContactInfo
         MyGenBO = oBusObj
-        If Not Me.MyGenBO Is Nothing Then
+        If MyGenBO IsNot Nothing Then
             BindBoPropertiesToLabels()
-            Me.Page.AddLabelDecorations(MyGenBO)
+            Page.AddLabelDecorations(MyGenBO)
         End If
-        Me.PopulateDropdowns()
+        PopulateDropdowns()
     End Sub
 
     ''REQ-784
     Protected Sub BindBoPropertiesToLabels()
-        Me.Page.BindBOPropertyToLabel(Me.MyGenBO, SALUTATION, Me.moSalutationLabel)
-        Me.Page.BindBOPropertyToLabel(Me.MyGenBO, ADDRESS_TYPE, Me.Label1)
-        Me.Page.BindBOPropertyToLabel(Me.MyGenBO, NAME, Me.moContactNameLabel)
-        Me.Page.BindBOPropertyToLabel(Me.MyGenBO, HOME_PHONE, Me.moHomePhoneLabel)
-        Me.Page.BindBOPropertyToLabel(Me.MyGenBO, EMAIL, Me.moEmailAddressLabel)
-        Me.Page.BindBOPropertyToLabel(Me.MyGenBO, WORK_PHONE, Me.moWorkPhoneLabel)
-        Me.Page.BindBOPropertyToLabel(Me.MyGenBO, CELL_PHONE, Me.moCellPhoneLabel)
+        Page.BindBOPropertyToLabel(MyGenBO, SALUTATION, moSalutationLabel)
+        Page.BindBOPropertyToLabel(MyGenBO, ADDRESS_TYPE, Label1)
+        Page.BindBOPropertyToLabel(MyGenBO, NAME, moContactNameLabel)
+        Page.BindBOPropertyToLabel(MyGenBO, HOME_PHONE, moHomePhoneLabel)
+        Page.BindBOPropertyToLabel(MyGenBO, EMAIL, moEmailAddressLabel)
+        Page.BindBOPropertyToLabel(MyGenBO, WORK_PHONE, moWorkPhoneLabel)
+        Page.BindBOPropertyToLabel(MyGenBO, CELL_PHONE, moCellPhoneLabel)
     End Sub
 
 
@@ -107,7 +107,7 @@ Public Class UserControlContactInfo
                 CommonConfigManager.Current.ListManager.GetList(listCode:="SLTN",
                                                                 languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
 
-            Me.cboSalutationId.Populate(SalutationList,
+            cboSalutationId.Populate(SalutationList,
                                             New PopulateOptions() With
                                             {
                                                 .AddBlankItem = True
@@ -117,7 +117,7 @@ Public Class UserControlContactInfo
                     CommonConfigManager.Current.ListManager.GetList(listCode:="ATYPE",
                                                                     languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
 
-            Me.moAddressTypeDrop_WRITE.Populate(AddressTypeList,
+            moAddressTypeDrop_WRITE.Populate(AddressTypeList,
                                             New PopulateOptions() With
                                             {
                                                 .AddBlankItem = True
@@ -127,27 +127,27 @@ Public Class UserControlContactInfo
         End Try
     End Sub
     '' REQ-784
-    Public Sub Bind(ByVal oBusObj As BusinessObjectBase)
+    Public Sub Bind(oBusObj As BusinessObjectBase)
         MyGenBO = oBusObj
-        If Not Me.MyGenBO Is Nothing Then
+        If MyGenBO IsNot Nothing Then
             BindBoPropertiesToLabels()
-            Me.Page.AddLabelDecorations(Me.MyGenBO)
+            Page.AddLabelDecorations(MyGenBO)
         End If
         PopulateDropdowns()
         PopulateControlFromBO()
     End Sub
     'Req 784
     Public Sub PopulateControlFromBO()
-        If Not Me.MyGenBO Is Nothing Then
-            With Me.MyGenBO
+        If MyGenBO IsNot Nothing Then
+            With MyGenBO
 
-                Me.Page.PopulateControlFromPropertyName(MyGenBO, moAddressTypeDrop_WRITE, "AddressTypeId")
-                Me.Page.PopulateControlFromPropertyName(MyGenBO, cboSalutationId, "SalutationId")
-                Me.Page.PopulateControlFromPropertyName(MyGenBO, moContactNameText, "Name")
-                Me.Page.PopulateControlFromPropertyName(MyGenBO, moHomePhoneText, "HomePhone")
-                Me.Page.PopulateControlFromPropertyName(MyGenBO, moEmailAddressText, "Email")
-                Me.Page.PopulateControlFromPropertyName(MyGenBO, moWorkPhoneText, "WorkPhone")
-                Me.Page.PopulateControlFromPropertyName(MyGenBO, moCellPhoneText, "CellPhone")
+                Page.PopulateControlFromPropertyName(MyGenBO, moAddressTypeDrop_WRITE, "AddressTypeId")
+                Page.PopulateControlFromPropertyName(MyGenBO, cboSalutationId, "SalutationId")
+                Page.PopulateControlFromPropertyName(MyGenBO, moContactNameText, "Name")
+                Page.PopulateControlFromPropertyName(MyGenBO, moHomePhoneText, "HomePhone")
+                Page.PopulateControlFromPropertyName(MyGenBO, moEmailAddressText, "Email")
+                Page.PopulateControlFromPropertyName(MyGenBO, moWorkPhoneText, "WorkPhone")
+                Page.PopulateControlFromPropertyName(MyGenBO, moCellPhoneText, "CellPhone")
             End With
         End If
     End Sub
@@ -157,21 +157,21 @@ Public Class UserControlContactInfo
         '' Populate child control inside the parent user control
         moAddressController.PopulateBOFromControl(True)
 
-        If Not Me.MyGenBO Is Nothing Then
+        If MyGenBO IsNot Nothing Then
             BindBoPropertiesToLabels()
-            Me.Page.AddLabelDecorations(Me.MyGenBO)
+            Page.AddLabelDecorations(MyGenBO)
         End If
 
-        If Not Me.MyGenBO Is Nothing AndAlso Not MyGenBO.IsDeleted Then
-            With Me.MyGenBO
-                Me.Page.PopulateBOProperty(Me.MyGenBO, "SalutationId", cboSalutationId)
-                Me.Page.PopulateBOProperty(Me.MyGenBO, "AddressTypeId", moAddressTypeDrop_WRITE)
-                Me.Page.PopulateBOProperty(Me.MyGenBO, "Name", moContactNameText)
-                Me.Page.PopulateBOProperty(Me.MyGenBO, "HomePhone", moHomePhoneText)
-                Me.Page.PopulateBOProperty(Me.MyGenBO, "Email", moEmailAddressText)
-                Me.Page.PopulateBOProperty(Me.MyGenBO, "WorkPhone", moWorkPhoneText)
-                Me.Page.PopulateBOProperty(Me.MyGenBO, "CellPhone", moCellPhoneText)
-                Me.Page.PopulateBOProperty(Me.MyGenBO, "AddressId", CType(Me.MyGenBO, ContactInfo).AddressId)
+        If MyGenBO IsNot Nothing AndAlso Not MyGenBO.IsDeleted Then
+            With MyGenBO
+                Page.PopulateBOProperty(MyGenBO, "SalutationId", cboSalutationId)
+                Page.PopulateBOProperty(MyGenBO, "AddressTypeId", moAddressTypeDrop_WRITE)
+                Page.PopulateBOProperty(MyGenBO, "Name", moContactNameText)
+                Page.PopulateBOProperty(MyGenBO, "HomePhone", moHomePhoneText)
+                Page.PopulateBOProperty(MyGenBO, "Email", moEmailAddressText)
+                Page.PopulateBOProperty(MyGenBO, "WorkPhone", moWorkPhoneText)
+                Page.PopulateBOProperty(MyGenBO, "CellPhone", moCellPhoneText)
+                Page.PopulateBOProperty(MyGenBO, "AddressId", CType(MyGenBO, ContactInfo).AddressId)
 
 
             End With
@@ -188,11 +188,11 @@ Public Class UserControlContactInfo
         Try
 
             '' Always Visible False
-            ControlMgr.SetVisibleControl(CType(Me.Page, ElitaPlusPage), Me.moSalutationText, False)
+            ControlMgr.SetVisibleControl(CType(Page, ElitaPlusPage), moSalutationText, False)
             'ControlMgr.SetVisibleControl(CType(Me.Page, ElitaPlusPage), Me.moSalutationLabel, False)
-            ControlMgr.SetVisibleControl(CType(Me.Page, ElitaPlusPage), Me.moAddressTypeText, False)
-            ControlMgr.SetVisibleControl(CType(Me.Page, ElitaPlusPage), moAddressController.FindControl("moCountryText"), False)
-            ControlMgr.SetVisibleControl(CType(Me.Page, ElitaPlusPage), moAddressController.FindControl("moRegionText"), False)
+            ControlMgr.SetVisibleControl(CType(Page, ElitaPlusPage), moAddressTypeText, False)
+            ControlMgr.SetVisibleControl(CType(Page, ElitaPlusPage), moAddressController.FindControl("moCountryText"), False)
+            ControlMgr.SetVisibleControl(CType(Page, ElitaPlusPage), moAddressController.FindControl("moRegionText"), False)
 
             'isSalutation = Me.GetYesNo(ElitaPlusIdentity.Current.ActiveUser.LanguageId, LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "N"))
 
@@ -211,7 +211,7 @@ Public Class UserControlContactInfo
 
         End Try
     End Sub
-    Public Sub EnableDisablecontrol(ByVal bvalue As Boolean)
+    Public Sub EnableDisablecontrol(bvalue As Boolean)
 
         cboSalutationId.Enabled = True
         moAddressTypeDrop_WRITE.Enabled = True
@@ -227,7 +227,7 @@ Public Class UserControlContactInfo
 
 
     End Sub
-    Private Function GetYesNo(ByVal LanguageId As Guid, ByVal oId As Guid) As Boolean
+    Private Function GetYesNo(LanguageId As Guid, oId As Guid) As Boolean
         Dim oYesList As DataView = LookupListNew.GetListItemId(oId, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False)
         Dim oYesNo As String = oYesList.Item(FIRST_ROW).Item(CODE).ToString
         If oYesNo = YES Then

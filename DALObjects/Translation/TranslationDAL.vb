@@ -11,8 +11,8 @@ Public Class TranslationDAL
 
 #Region "DATA ACCESS ROUTINES"
 
-    Public Function GetTranslations(ByVal InClause As String, ByVal oLanguageID As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_TRANSLATION_BASIC_CONTROLS")
+    Public Function GetTranslations(InClause As String, oLanguageID As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_TRANSLATION_BASIC_CONTROLS")
         Dim ds As New DataSet
 
         selectStmt = selectStmt.Replace("ZZZ_UI_PROG_CODES", InClause)
@@ -20,7 +20,7 @@ Public Class TranslationDAL
                     {New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, oLanguageID.ToByteArray) _
                     }
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -29,11 +29,11 @@ Public Class TranslationDAL
     End Function
 
     Public Function Get_EnglishLanguageID() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_ENLISH_LANGUAGES_ID")
+        Dim selectStmt As String = Config("/SQL/GET_ENLISH_LANGUAGES_ID")
         Dim ds As New DataSet
 
         Try
-            ds = DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+            ds = DBHelper.Fetch(selectStmt, TABLE_NAME)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try

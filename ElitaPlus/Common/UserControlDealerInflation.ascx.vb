@@ -11,7 +11,7 @@ Partial Class UserControlDealerInflation
 
     End Class
 
-    Public Delegate Sub RequestData(ByVal sender As Object, ByRef e As RequestDataEventArgs)
+    Public Delegate Sub RequestData(sender As Object, ByRef e As RequestDataEventArgs)
 
     Public Event RequestDealerInflationData As RequestData
     Public Event PropertyChanged As PropertyChangedEventHandler
@@ -52,10 +52,10 @@ Partial Class UserControlDealerInflation
 
     Public Property DealerId As Nullable(Of Guid)
         Get
-            Return Me.TheState.dealerId
+            Return TheState.dealerId
         End Get
-        Set(ByVal value As Nullable(Of Guid))
-            Me.TheState.dealerId = CType(value, Guid)
+        Set(value As Nullable(Of Guid))
+            TheState.dealerId = CType(value, Guid)
             RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs("DealerId"))
         End Set
     End Property
@@ -87,10 +87,10 @@ Partial Class UserControlDealerInflation
     Protected ReadOnly Property TheState() As MyState
         Get
             Try
-                If Me.ThePage.StateSession.Item(Me.UniqueID) Is Nothing Then
-                    Me.ThePage.StateSession.Item(Me.UniqueID) = New MyState
+                If ThePage.StateSession.Item(UniqueID) Is Nothing Then
+                    ThePage.StateSession.Item(UniqueID) = New MyState
                 End If
-                Return CType(Me.ThePage.StateSession.Item(Me.UniqueID), MyState)
+                Return CType(ThePage.StateSession.Item(UniqueID), MyState)
 
             Catch ex As Exception
                 Return Nothing
@@ -106,62 +106,62 @@ Partial Class UserControlDealerInflation
 
     Public ReadOnly Property IsGridInEditMode() As Boolean
         Get
-            Return Me.DealerInflationGrid.EditIndex > Me.ThePage.NO_ITEM_SELECTED_INDEX
+            Return DealerInflationGrid.EditIndex > ThePage.NO_ITEM_SELECTED_INDEX
         End Get
     End Property
 
     Public Property SortDirection() As String
         Get
-            If Not ViewState("SortDirection") Is Nothing Then
+            If ViewState("SortDirection") IsNot Nothing Then
                 Return ViewState("SortDirection").ToString
             Else
                 Return dealerinflation.COL_NAME_INFLATION_YEAR
             End If
 
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             ViewState("SortDirection") = value
         End Set
     End Property
     Public Property Dealer As String
         Get
-            Return Me.TheState.dealer
+            Return TheState.dealer
         End Get
-        Set(ByVal value As String)
-            Me.TheState.dealer = value
+        Set(value As String)
+            TheState.dealer = value
         End Set
     End Property
 #End Region
     
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
        Try
            If Page.IsPostBack Then
              
-               Dim confResponseDel As String = Me.HiddenDIDeletePromptResponse.Value
+               Dim confResponseDel As String = HiddenDIDeletePromptResponse.Value
              
-               If Not confResponseDel Is Nothing AndAlso confResponseDel = Me.ThePage.MSG_VALUE_YES Then
-                   If Me.TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete Then
-                       Me.TheState.DefaultDealerInflationID = GuidControl.ByteArrayToGuid(dealerinflationGrid.DataKeys(Me.TheState.deleteRowIndex).Values(0))
-                       Me.ThePage.MasterPage.MessageController.AddSuccess(Me.MSG_RECORD_DELETED_OK, True)
-                       Me.TheState.PageIndex = dealerinflationGrid.PageIndex
-                       Me.TheState.IsAfterSave = True
-                       Me.TheState.DealerInflationDV = Nothing
+               If confResponseDel IsNot Nothing AndAlso confResponseDel = ThePage.MSG_VALUE_YES Then
+                   If TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete Then
+                       TheState.DefaultDealerInflationID = GuidControl.ByteArrayToGuid(dealerinflationGrid.DataKeys(TheState.deleteRowIndex).Values(0))
+                       ThePage.MasterPage.MessageController.AddSuccess(MSG_RECORD_DELETED_OK, True)
+                       TheState.PageIndex = dealerinflationGrid.PageIndex
+                       TheState.IsAfterSave = True
+                       TheState.DealerInflationDV = Nothing
                        PopulateGrid()
-                       Me.TheState.PageIndex = dealerinflationGrid.PageIndex
-                       Me.TheState.IsEditMode = False
+                       TheState.PageIndex = dealerinflationGrid.PageIndex
+                       TheState.IsEditMode = False
                        SetControlState()
-                       Me.TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                       Me.HiddenDIDeletePromptResponse.Value = ""
+                       TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                       HiddenDIDeletePromptResponse.Value = ""
                    End If
-               ElseIf Not confResponseDel Is Nothing AndAlso confResponseDel = Me.ThePage.MSG_VALUE_NO Then
-                   Me.TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                   Me.HiddenDIDeletePromptResponse.Value = ""
+               ElseIf confResponseDel IsNot Nothing AndAlso confResponseDel = ThePage.MSG_VALUE_NO Then
+                   TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                   HiddenDIDeletePromptResponse.Value = ""
                End If
            Else     
                SortDirection = DealerInflation.COL_NAME_INFLATION_YEAR
            End If
        Catch ex As Exception
-           Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+           ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
        End Try
         
     End Sub
@@ -172,24 +172,24 @@ Partial Class UserControlDealerInflation
     Public Sub Populate()
 
         Dim e As New RequestDataEventArgs
-        If (Me.TheState.dealerId.Equals(Guid.Empty)) Then
+        If (TheState.dealerId.Equals(Guid.Empty)) Then
             Throw New GUIException("You must select a dealer first", Assurant.ElitaPlus.Common.ErrorCodes.GUI_DEALER_MUST_BE_SELECTED_ERR)
         end if
 
         RaiseEvent RequestDealerInflationData(Me, e)
-        Me.TheState.DealerInflationDV = e.Data
-        Me.PopulateGrid()
+        TheState.DealerInflationDV = e.Data
+        PopulateGrid()
 
     End Sub
 
     Public Sub PopulateGrid()
         
         If (Not Page.IsPostBack) Then
-            Me.ThePage.TranslateGridHeader(DealerInflationGrid)
+            ThePage.TranslateGridHeader(DealerInflationGrid)
         End If
        
         Dim blnNewSearch As Boolean = False
-        cboDiPageSize.SelectedValue = CType(Me.TheState.PageSize, String)
+        cboDiPageSize.SelectedValue = CType(TheState.PageSize, String)
         Dim objDealerInflation As New DealerInflation
 
         
@@ -197,24 +197,24 @@ Partial Class UserControlDealerInflation
         Try
             With TheState
                 If (.DealerInflationDV Is Nothing) Then
-                    objDealerInflation.DealerId = Me.TheState.dealerId
+                    objDealerInflation.DealerId = TheState.dealerId
                     .DealerInflationDV = objDealerInflation.GetDealerInflation()
                     blnNewSearch = True
                 End If
             End With
 
-            If Not TheState.DealerInflationDV Is Nothing  AndAlso Not TheState.IsGridAddNew Then
+            If TheState.DealerInflationDV IsNot Nothing  AndAlso Not TheState.IsGridAddNew Then
                 TheState.DealerInflationDV.Sort = SortDirection
             End If
             
-            If (Me.TheState.IsAfterSave) Then
-                Me.TheState.IsAfterSave = False
-                Me.ThePage.SetPageAndSelectedIndexFromGuid(Me.TheState.DealerInflationDV, Me.TheState.DefaultDealerInflationID, Me.DealerInflationGrid, Me.TheState.PageIndex)
-            ElseIf (Me.TheState.IsEditMode) Then
-                Me.ThePage.SetPageAndSelectedIndexFromGuid(Me.TheState.DealerInflationDV, Me.TheState.DefaultDealerInflationID, Me.DealerInflationGrid, Me.TheState.PageIndex, Me.TheState.IsEditMode)
+            If (TheState.IsAfterSave) Then
+                TheState.IsAfterSave = False
+                ThePage.SetPageAndSelectedIndexFromGuid(TheState.DealerInflationDV, TheState.DefaultDealerInflationID, DealerInflationGrid, TheState.PageIndex)
+            ElseIf (TheState.IsEditMode) Then
+                ThePage.SetPageAndSelectedIndexFromGuid(TheState.DealerInflationDV, TheState.DefaultDealerInflationID, DealerInflationGrid, TheState.PageIndex, TheState.IsEditMode)
             Else
-                If Not TheState.DealerInflationDV Is Nothing
-                    Me.ThePage.SetPageAndSelectedIndexFromGuid(Me.TheState.DealerInflationDV, Guid.Empty, Me.DealerInflationGrid, Me.TheState.PageIndex)
+                If TheState.DealerInflationDV IsNot Nothing
+                    ThePage.SetPageAndSelectedIndexFromGuid(TheState.DealerInflationDV, Guid.Empty, DealerInflationGrid, TheState.PageIndex)
                 End if
             End If
 
@@ -222,7 +222,7 @@ Partial Class UserControlDealerInflation
             DealerInflationGrid.Columns(GRID_COL_INFLATION_MONTH).SortExpression = DealerInflation.COL_NAME_INFLATION_MONTH
             DealerInflationGrid.Columns(GRID_COL_INFLATION_PCT).SortExpression = DealerInflation.COL_NAME_INFLATION_PCT
 
-            If Not TheState.DealerInflationDV is Nothing AndAlso Me.TheState.DealerInflationDV.Count = 0 Then
+            If TheState.DealerInflationDV IsNot Nothing AndAlso TheState.DealerInflationDV.Count = 0 Then
                 For Each gvRow As GridViewRow In DealerInflationGrid.Rows
                     gvRow.Visible = False
                     gvRow.Controls.Clear()
@@ -235,108 +235,108 @@ Partial Class UserControlDealerInflation
                 cboDiPageSize.Visible = True
                 colonSepertor.Visible = True
             End If
-            Me.DealerInflationGrid.AutoGenerateColumns = False
+            DealerInflationGrid.AutoGenerateColumns = False
             SortAndBindGrid(blnNewSearch)
 
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles DealerInflationGrid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles DealerInflationGrid.RowDataBound
         Try
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim strID As String
 
-            If Not dvRow Is Nothing And Not Me.TheState.bnoRow Then
-                strID = Me.ThePage.GetGuidStringFromByteArray(CType(dvRow(DealerInflation.DealerInflationDV.COL_dealer_inflation_id), Byte()))
+            If dvRow IsNot Nothing AndAlso Not TheState.bnoRow Then
+                strID = ThePage.GetGuidStringFromByteArray(CType(dvRow(DealerInflation.DealerInflationDV.COL_dealer_inflation_id), Byte()))
 
-                If (Me.TheState.IsEditMode = True AndAlso Me.TheState.DefaultDealerInflationID.ToString.Equals(strID)) Then
+                If (TheState.IsEditMode = True AndAlso TheState.DefaultDealerInflationID.ToString.Equals(strID)) Then
 
-                    CType(e.Row.Cells(Me.GRID_COL_DEALER).FindControl(Me.GRID_CTRL_NAME_LABLE_DEALER), Label).Text =  Me.TheState.dealer
+                    CType(e.Row.Cells(GRID_COL_DEALER).FindControl(GRID_CTRL_NAME_LABLE_DEALER), Label).Text =  TheState.dealer
                    
-                    Dim moInflationMonthDropDown As DropDownList = CType(e.Row.Cells(Me.GRID_COL_INFLATION_MONTH).FindControl(Me.GRID_CTRL_NAME_EDIT_INFLATION_MONTH), DropDownList)
+                    Dim moInflationMonthDropDown As DropDownList = CType(e.Row.Cells(GRID_COL_INFLATION_MONTH).FindControl(GRID_CTRL_NAME_EDIT_INFLATION_MONTH), DropDownList)
                     ElitaPlusPage.BindListControlToDataView(moInflationMonthDropDown, LookupListNew.GetMonthsLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId),"CODE",,false)
                     If (Not String.IsNullOrWhiteSpace(dvRow(DealerInflation.DealerInflationDV.COL_inflation_month).ToString())) Then
-                        Me.ThePage.SetSelectedItemByText(moInflationMonthDropDown, DealerInflationGrid.DataKeys(e.Row.RowIndex).Values(GRID_COL_INFLATION_MONTH))
+                        ThePage.SetSelectedItemByText(moInflationMonthDropDown, DealerInflationGrid.DataKeys(e.Row.RowIndex).Values(GRID_COL_INFLATION_MONTH))
                     End If
 
                     
 
-                    Dim moInflationYearDropDown As DropDownList = CType(e.Row.Cells(Me.GRID_COL_INFLATION_YEAR).FindControl(Me.GRID_CTRL_NAME_EDIT_INFLATION_YEAR), DropDownList)
+                    Dim moInflationYearDropDown As DropDownList = CType(e.Row.Cells(GRID_COL_INFLATION_YEAR).FindControl(GRID_CTRL_NAME_EDIT_INFLATION_YEAR), DropDownList)
                     ElitaPlusPage.BindListControlToDataView(moInflationYearDropDown, GetInflationYears(),,,false)
                    If TheState.IsGridAddNew = True then  
-                       Me.ThePage.SetSelectedItemByText(moInflationYearDropDown, DateTime.Now.Year)
+                       ThePage.SetSelectedItemByText(moInflationYearDropDown, DateTime.Now.Year)
                    Elseif (Not String.IsNullOrWhiteSpace(dvRow(DealerInflation.DealerInflationDV.COL_inflation_month).ToString())) Then
-                        Me.ThePage.SetSelectedItemByText(moInflationYearDropDown, DealerInflationGrid.DataKeys(e.Row.RowIndex).Values(GRID_COL_INFLATION_YEAR))
+                        ThePage.SetSelectedItemByText(moInflationYearDropDown, DealerInflationGrid.DataKeys(e.Row.RowIndex).Values(GRID_COL_INFLATION_YEAR))
                    End If
 
                    If TheState.IsGridAddNew = True Then
-                       ControlMgr.SetEnableControl(Me.ThePage, moInflationYearDropDown, true)
-                       ControlMgr.SetEnableControl(Me.ThePage, moInflationMonthDropDown, true)
+                       ControlMgr.SetEnableControl(ThePage, moInflationYearDropDown, true)
+                       ControlMgr.SetEnableControl(ThePage, moInflationMonthDropDown, true)
                    Else 
-                       ControlMgr.SetEnableControl(Me.ThePage, moInflationYearDropDown, false)
-                       ControlMgr.SetEnableControl(Me.ThePage, moInflationMonthDropDown, false)
+                       ControlMgr.SetEnableControl(ThePage, moInflationYearDropDown, false)
+                       ControlMgr.SetEnableControl(ThePage, moInflationMonthDropDown, false)
                    End If
 
-                    CType(e.Row.Cells(Me.GRID_COL_INFLATION_PCT).FindControl(Me.GRID_CTRL_NAME_EDIT_INFLATION_PCT), TextBox).Text = dvRow(DealerInflation.DealerInflationDV.COL_inflation_pct).ToString
+                    CType(e.Row.Cells(GRID_COL_INFLATION_PCT).FindControl(GRID_CTRL_NAME_EDIT_INFLATION_PCT), TextBox).Text = dvRow(DealerInflation.DealerInflationDV.COL_inflation_pct).ToString
                     
                 Else
-                    CType(e.Row.Cells(Me.GRID_COL_DEALER).FindControl(Me.GRID_CTRL_NAME_LABLE_DEALER), Label).Text = dvRow(DealerInflation.DealerInflationDV.COL_DEALER).ToString
-                    CType(e.Row.Cells(Me.GRID_COL_INFLATION_MONTH).FindControl(Me.GRID_CTRL_NAME_LABEL_INFLATION_MONTH), Label).Text = dvRow(DealerInflation.DealerInflationDV.COL_inflation_month).ToString
-                    CType(e.Row.Cells(Me.GRID_COL_INFLATION_YEAR).FindControl(Me.GRID_CTRL_NAME_LABLE_INFLATION_YEAR), Label).Text = dvRow(DealerInflation.DealerInflationDV.COL_inflation_year).ToString
-                    CType(e.Row.Cells(Me.GRID_COL_INFLATION_PCT).FindControl(Me.GRID_CTRL_NAME_LABEL_INFLATION_PCT), Label).Text = dvRow(DealerInflation.DealerInflationDV.COL_inflation_pct).ToString
+                    CType(e.Row.Cells(GRID_COL_DEALER).FindControl(GRID_CTRL_NAME_LABLE_DEALER), Label).Text = dvRow(DealerInflation.DealerInflationDV.COL_DEALER).ToString
+                    CType(e.Row.Cells(GRID_COL_INFLATION_MONTH).FindControl(GRID_CTRL_NAME_LABEL_INFLATION_MONTH), Label).Text = dvRow(DealerInflation.DealerInflationDV.COL_inflation_month).ToString
+                    CType(e.Row.Cells(GRID_COL_INFLATION_YEAR).FindControl(GRID_CTRL_NAME_LABLE_INFLATION_YEAR), Label).Text = dvRow(DealerInflation.DealerInflationDV.COL_inflation_year).ToString
+                    CType(e.Row.Cells(GRID_COL_INFLATION_PCT).FindControl(GRID_CTRL_NAME_LABEL_INFLATION_PCT), Label).Text = dvRow(DealerInflation.DealerInflationDV.COL_inflation_pct).ToString
            
                 End If
             End If
 
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Public Sub RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles DealerInflationGrid.RowCommand
+    Public Sub RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles DealerInflationGrid.RowCommand
 
         Try
             Dim index As Integer
-            If (e.CommandName = Me.EDIT_COMMAND) Then
+            If (e.CommandName = EDIT_COMMAND) Then
                 index = CInt(e.CommandArgument)
-                Me.TheState.IsEditMode = True
-                Me.TheState.DefaultDealerInflationID = GuidControl.ByteArrayToGuid(DealerInflationGrid.DataKeys(index).Values(0))
-                Me.TheState.MyBO = New DealerInflation(Me.TheState.dealerId,Me.TheState.DefaultDealerInflationID)
-                Me.Populate()
-                Me.TheState.PageIndex = DealerInflationGrid.PageIndex
-                Me.SetControlState()
+                TheState.IsEditMode = True
+                TheState.DefaultDealerInflationID = GuidControl.ByteArrayToGuid(DealerInflationGrid.DataKeys(index).Values(0))
+                TheState.MyBO = New DealerInflation(TheState.dealerId,TheState.DefaultDealerInflationID)
+                Populate()
+                TheState.PageIndex = DealerInflationGrid.PageIndex
+                SetControlState()
 
                 Try
-                    Me.DealerInflationGrid.Rows(index).Focus()
+                    DealerInflationGrid.Rows(index).Focus()
                 Catch ex As Exception
-                    Me.DealerInflationGrid.Focus()
+                    DealerInflationGrid.Focus()
                 End Try
 
-            ElseIf (e.CommandName = Me.DELETE_COMMAND) Then
+            ElseIf (e.CommandName = DELETE_COMMAND) Then
                
                 Try
                     index = CInt(e.CommandArgument)
-                    Me.TheState.DefaultDealerInflationID = GuidControl.ByteArrayToGuid(DealerInflationGrid.DataKeys(index).Values(0))
-                    Me.TheState.MyBO = New DealerInflation(Me.TheState.dealerId, Me.TheState.DefaultDealerInflationID)
-                    Me.TheState.MyBO.Delete()
-                    Me.TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
-                    Me.TheState.MyBO.Save()
-                    Me.TheState.IsAfterSave = True
+                    TheState.DefaultDealerInflationID = GuidControl.ByteArrayToGuid(DealerInflationGrid.DataKeys(index).Values(0))
+                    TheState.MyBO = New DealerInflation(TheState.dealerId, TheState.DefaultDealerInflationID)
+                    TheState.MyBO.Delete()
+                    TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+                    TheState.MyBO.Save()
+                    TheState.IsAfterSave = True
                     Populate()
-                    Me.ThePage.MasterPage.MessageController.AddSuccess(Assurant.ElitaPlus.Common.ErrorCodes.MSG_RECORD_DELETED_OK, True)
+                    ThePage.MasterPage.MessageController.AddSuccess(Assurant.ElitaPlus.Common.ErrorCodes.MSG_RECORD_DELETED_OK, True)
                 Catch ex As Exception
-                    Me.TheState.MyBO.RejectChanges()
+                    TheState.MyBO.RejectChanges()
                     Throw ex
                 End Try
 
             End If
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
 
     End Sub
@@ -344,85 +344,85 @@ Partial Class UserControlDealerInflation
     Private Sub SortAndBindGrid(Optional ByVal blnShowErr As Boolean = True)
        
         Dim objDealerInflation As New DealerInflation
-        Me.TheState.PageIndex = Me.DealerInflationGrid.PageIndex
+        TheState.PageIndex = DealerInflationGrid.PageIndex
 
-        If (Not Me.TheState.DealerInflationDV is Nothing AndAlso  Me.TheState.DealerInflationDV.Count = 0) Then
+        If (TheState.DealerInflationDV IsNot Nothing AndAlso  TheState.DealerInflationDV.Count = 0) Then
             Dim dv As DataView = objDealerInflation.GetDealerInflation()
-            Me.TheState.bnoRow = True
-            if not dv is Nothing Then
+            TheState.bnoRow = True
+            if dv IsNot Nothing Then
                 objDealerInflation.GetEmptyList(dv)
             End If
-            Me.TheState.DealerInflationDV = Nothing
-            Me.TheState.MyBO = New DealerInflation
-            TheState.MyBO.AddNewRowToSearchDV(Me.TheState.DealerInflationDV, Me.TheState.MyBO)
-           Me.DealerInflationGrid.DataSource = Me.TheState.DealerInflationDV
-            Me.ThePage.HighLightSortColumn(DealerInflationGrid,   Me.SortDirection, True)
-            Me.DealerInflationGrid.DataBind()
+            TheState.DealerInflationDV = Nothing
+            TheState.MyBO = New DealerInflation
+            TheState.MyBO.AddNewRowToSearchDV(TheState.DealerInflationDV, TheState.MyBO)
+           DealerInflationGrid.DataSource = TheState.DealerInflationDV
+            ThePage.HighLightSortColumn(DealerInflationGrid,   SortDirection, True)
+            DealerInflationGrid.DataBind()
             If Not DealerInflationGrid.BottomPagerRow.Visible Then DealerInflationGrid.BottomPagerRow.Visible = True
-            Me.DealerInflationGrid.Rows(0).Visible = False
-            Me.TheState.IsGridAddNew = True
-            Me.TheState.IsGridVisible = False
-            Me.lblRecordCount.Text = "0 " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            DealerInflationGrid.Rows(0).Visible = False
+            TheState.IsGridAddNew = True
+            TheState.IsGridVisible = False
+            lblRecordCount.Text = "0 " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             If blnShowErr Then
-                Me.ThePage.MasterPage.MessageController.AddInformation(ElitaPlus.ElitaPlusWebApp.Message.MSG_NO_RECORDS_FOUND, True)
+                ThePage.MasterPage.MessageController.AddInformation(ElitaPlus.ElitaPlusWebApp.Message.MSG_NO_RECORDS_FOUND, True)
             End If
         Else
-            Me.TheState.bnoRow = False
-            Me.DealerInflationGrid.Enabled = True
-            Me.DealerInflationGrid.PageSize = Me.TheState.PageSize
-            Me.DealerInflationGrid.DataSource = Me.TheState.DealerInflationDV
-            Me.TheState.IsGridVisible = True
-            Me.ThePage.HighLightSortColumn(DealerInflationGrid,   Me.SortDirection , True)
-            Me.DealerInflationGrid.DataBind()
+            TheState.bnoRow = False
+            DealerInflationGrid.Enabled = True
+            DealerInflationGrid.PageSize = TheState.PageSize
+            DealerInflationGrid.DataSource = TheState.DealerInflationDV
+            TheState.IsGridVisible = True
+            ThePage.HighLightSortColumn(DealerInflationGrid,   SortDirection , True)
+            DealerInflationGrid.DataBind()
             If Not DealerInflationGrid.BottomPagerRow.Visible Then DealerInflationGrid.BottomPagerRow.Visible = True
         End If
 
-        ControlMgr.SetVisibleControl(Me.ThePage, DealerInflationGrid, Me.TheState.IsGridVisible)
+        ControlMgr.SetVisibleControl(ThePage, DealerInflationGrid, TheState.IsGridVisible)
 
-        If Me.DealerInflationGrid.Visible AndAlso  Not Me.TheState.DealerInflationDV Is Nothing Then
+        If DealerInflationGrid.Visible AndAlso  TheState.DealerInflationDV IsNot Nothing Then
 
-            Session("recCount") = Me.TheState.DealerInflationDV.Count
+            Session("recCount") = TheState.DealerInflationDV.Count
             If Not DealerInflationGrid.BottomPagerRow.Visible Then DealerInflationGrid.BottomPagerRow.Visible = True
-            If (Me.TheState.IsGridAddNew ) Then
-                Me.lblRecordCount.Text = String.Format("{0} {1}", (Me.TheState.DealerInflationDV.Count - 1), TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND))
+            If (TheState.IsGridAddNew ) Then
+                lblRecordCount.Text = String.Format("{0} {1}", (TheState.DealerInflationDV.Count - 1), TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND))
             Else
-                Me.lblRecordCount.Text = String.Format("{0} {1}", Me.TheState.DealerInflationDV.Count, TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND))
+                lblRecordCount.Text = String.Format("{0} {1}", TheState.DealerInflationDV.Count, TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND))
             End If
         End If
-        ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me.ThePage, DealerInflationGrid)
+        ControlMgr.DisableEditDeleteGridIfNotEditAuth(ThePage, DealerInflationGrid)
 
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles DealerInflationGrid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles DealerInflationGrid.PageIndexChanged
         Try
-            If (Not (Me.TheState.IsEditMode)) Then
-                Me.TheState.PageIndex = DealerInflationGrid.PageIndex
-                Me.TheState.DefaultDealerInflationID = Guid.Empty
-                Me.PopulateGrid()
+            If (Not (TheState.IsEditMode)) Then
+                TheState.PageIndex = DealerInflationGrid.PageIndex
+                TheState.DefaultDealerInflationID = Guid.Empty
+                PopulateGrid()
             End If
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles DealerInflationGrid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles DealerInflationGrid.PageIndexChanging
         Try
             DealerInflationGrid.PageIndex = e.NewPageIndex
             TheState.PageIndex = DealerInflationGrid.PageIndex
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
     End Sub
 
-    Public Sub RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles DealerInflationGrid.RowCreated
+    Public Sub RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles DealerInflationGrid.RowCreated
         Try
             ThePage.BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As GridViewSortEventArgs) Handles DealerInflationGrid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As GridViewSortEventArgs) Handles DealerInflationGrid.Sorting
         Try
             Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ", StringComparison.Ordinal)
 
@@ -437,10 +437,10 @@ Partial Class UserControlDealerInflation
                 SortDirection = e.SortExpression + " ASC"
             End If
 
-            Me.TheState.PageIndex = 0
+            TheState.PageIndex = 0
             PopulateGrid()
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
     End Sub
 
@@ -450,16 +450,16 @@ Partial Class UserControlDealerInflation
     #Region "Helper functions"
 
     Private Sub SetControlState()
-        If (Me.TheState.IsEditMode) Then
-            ControlMgr.SetVisibleControl(Me.ThePage, NewButton_WRITE, False)
-            If (Me.cboDiPageSize.Enabled) Then
-                ControlMgr.SetEnableControl(Me.ThePage, cboDiPageSize, False)
+        If (TheState.IsEditMode) Then
+            ControlMgr.SetVisibleControl(ThePage, NewButton_WRITE, False)
+            If (cboDiPageSize.Enabled) Then
+                ControlMgr.SetEnableControl(ThePage, cboDiPageSize, False)
             End If
 
         Else
-            ControlMgr.SetVisibleControl(Me.ThePage, NewButton_WRITE, True)
-            If Not (Me.cboDiPageSize.Enabled) Then
-                ControlMgr.SetEnableControl(Me.ThePage, Me.cboDiPageSize, True)
+            ControlMgr.SetVisibleControl(ThePage, NewButton_WRITE, True)
+            If Not (cboDiPageSize.Enabled) Then
+                ControlMgr.SetEnableControl(ThePage, cboDiPageSize, True)
             End If
         End If
     End Sub
@@ -468,46 +468,46 @@ Partial Class UserControlDealerInflation
 
         DealerInflationGrid.EditIndex = NO_ROW_SELECTED_INDEX
 
-        If (Me.DealerInflationGrid.PageCount = 0) Then
-            ControlMgr.SetVisibleControl(Me.ThePage, DealerInflationGrid, False)
+        If (DealerInflationGrid.PageCount = 0) Then
+            ControlMgr.SetVisibleControl(ThePage, DealerInflationGrid, False)
         Else
-            ControlMgr.SetVisibleControl(Me.ThePage, DealerInflationGrid, True)
+            ControlMgr.SetVisibleControl(ThePage, DealerInflationGrid, True)
         End If
 
-        Me.TheState.IsEditMode = False
-        Me.PopulateGrid()
-        Me.TheState.PageIndex = DealerInflationGrid.PageIndex
+        TheState.IsEditMode = False
+        PopulateGrid()
+        TheState.PageIndex = DealerInflationGrid.PageIndex
         SetControlState()
     End Sub
 
     Private Sub RemoveNewRowFromSearchDV()
-        Dim rowind As Integer = Me.ThePage.NO_ITEM_SELECTED_INDEX
+        Dim rowind As Integer = ThePage.NO_ITEM_SELECTED_INDEX
         With TheState
-            If Not .DealerInflationDV Is Nothing Then
-                rowind = Me.ThePage.FindSelectedRowIndexFromGuid(.DealerInflationDV, .DefaultDealerInflationID)
+            If .DealerInflationDV IsNot Nothing Then
+                rowind = ThePage.FindSelectedRowIndexFromGuid(.DealerInflationDV, .DefaultDealerInflationID)
             End If
         End With
-        If rowind <> Me.ThePage.NO_ITEM_SELECTED_INDEX Then TheState.DealerInflationDV.Delete(rowind)
+        If rowind <> ThePage.NO_ITEM_SELECTED_INDEX Then TheState.DealerInflationDV.Delete(rowind)
     End Sub
 
     Private Sub AddNew()
-        If TheState.MyBO Is Nothing OrElse Me.TheState.MyBO.IsNew = False Then
+        If TheState.MyBO Is Nothing OrElse TheState.MyBO.IsNew = False Then
             TheState.MyBO = New Dealerinflation
-            TheState.MyBO.AddNewRowToSearchDV(Me.TheState.DealerInflationDV, Me.TheState.MyBO)
+            TheState.MyBO.AddNewRowToSearchDV(TheState.DealerInflationDV, TheState.MyBO)
         End If
-        TheState.DefaultDealerInflationID = Me.TheState.MyBO.Id
+        TheState.DefaultDealerInflationID = TheState.MyBO.Id
         TheState.IsGridAddNew = True
         PopulateGrid()
         'Set focus on the Code TextBox for the EditItemIndex row
-        ThePage.SetPageAndSelectedIndexFromGuid(Me.TheState.DealerInflationDV, Me.TheState.DefaultDealerInflationID, Me.DealerInflationGrid, _
-                                                TheState.PageIndex, Me.TheState.IsEditMode)
-        ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me.ThePage, DealerInflationGrid)
-        ThePage.SetGridControls(Me.DealerInflationGrid, False)
+        ThePage.SetPageAndSelectedIndexFromGuid(TheState.DealerInflationDV, TheState.DefaultDealerInflationID, DealerInflationGrid, _
+                                                TheState.PageIndex, TheState.IsEditMode)
+        ControlMgr.DisableEditDeleteGridIfNotEditAuth(ThePage, DealerInflationGrid)
+        ThePage.SetGridControls(DealerInflationGrid, False)
 
         Try
-            Me.DealerInflationGrid.Rows(Me.DealerInflationGrid.SelectedIndex).Focus()
+            DealerInflationGrid.Rows(DealerInflationGrid.SelectedIndex).Focus()
         Catch ex As Exception
-            Me.DealerInflationGrid.Focus()
+            DealerInflationGrid.Focus()
         End Try
 
     End Sub
@@ -534,29 +534,29 @@ Partial Class UserControlDealerInflation
         Dim objDropDownList As DropDownList
         Dim dealerInflationPct As TextBox
        
-        With Me.TheState.MyBO
+        With TheState.MyBO
 
-            dealerInflationPct = CType(DealerInflationGrid.Rows(Me.DealerInflationGrid.EditIndex).Cells(GRID_COL_INFLATION_PCT).FindControl(GRID_CTRL_NAME_EDIT_INFLATION_PCT), TextBox)
+            dealerInflationPct = CType(DealerInflationGrid.Rows(DealerInflationGrid.EditIndex).Cells(GRID_COL_INFLATION_PCT).FindControl(GRID_CTRL_NAME_EDIT_INFLATION_PCT), TextBox)
            
-            If (Me.TheState.IsEditMode = True AndAlso Me.TheState.IsGridAddNew = False) Then
+            If (TheState.IsEditMode = True AndAlso TheState.IsGridAddNew = False) Then
 
-                Me.ThePage.PopulateBOProperty(TheState.MyBO, "DealerInflationId", New Guid(CType(DealerInflationGrid.DataKeys(DealerInflationGrid.EditIndex).Values(GRID_COL_DEALER_INFLATION_ID), Byte())))
-            Elseif  Me.TheState.IsGridAddNew = true
-                Me.ThePage.PopulateBOProperty(TheState.MyBO, "DealerInflationId", Guid.NewGuid())
+                ThePage.PopulateBOProperty(TheState.MyBO, "DealerInflationId", New Guid(CType(DealerInflationGrid.DataKeys(DealerInflationGrid.EditIndex).Values(GRID_COL_DEALER_INFLATION_ID), Byte())))
+            Elseif  TheState.IsGridAddNew = true
+                ThePage.PopulateBOProperty(TheState.MyBO, "DealerInflationId", Guid.NewGuid())
             End If
            
-            Me.ThePage.PopulateBOProperty(TheState.MyBO, "DealerId", Me.TheState.dealerId)
+            ThePage.PopulateBOProperty(TheState.MyBO, "DealerId", TheState.dealerId)
            
-            objDropDownList = CType(DealerInflationGrid.Rows((Me.DealerInflationGrid.EditIndex)).Cells(GRID_COL_INFLATION_MONTH).FindControl(GRID_CTRL_NAME_EDIT_INFLATION_MONTH), DropDownList)
-            Me.ThePage.PopulateBOProperty(TheState.MyBO, "InflationMonth", objDropDownList,false)
+            objDropDownList = CType(DealerInflationGrid.Rows((DealerInflationGrid.EditIndex)).Cells(GRID_COL_INFLATION_MONTH).FindControl(GRID_CTRL_NAME_EDIT_INFLATION_MONTH), DropDownList)
+            ThePage.PopulateBOProperty(TheState.MyBO, "InflationMonth", objDropDownList,false)
 
-            objDropDownList = CType(DealerInflationGrid.Rows((Me.DealerInflationGrid.EditIndex)).Cells(GRID_COL_INFLATION_YEAR).FindControl(GRID_CTRL_NAME_EDIT_INFLATION_YEAR), DropDownList)
-            Me.ThePage.PopulateBOProperty(TheState.MyBO, "InflationYear", objDropDownList,False)
+            objDropDownList = CType(DealerInflationGrid.Rows((DealerInflationGrid.EditIndex)).Cells(GRID_COL_INFLATION_YEAR).FindControl(GRID_CTRL_NAME_EDIT_INFLATION_YEAR), DropDownList)
+            ThePage.PopulateBOProperty(TheState.MyBO, "InflationYear", objDropDownList,False)
             
-            Me.ThePage.PopulateBOProperty(TheState.MyBO, "InflationPct", dealerInflationPct)
+            ThePage.PopulateBOProperty(TheState.MyBO, "InflationPct", dealerInflationPct)
             
         End With
-        If Me.ThePage.ErrCollection.Count > 0 Then
+        If ThePage.ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Function
@@ -569,52 +569,52 @@ Partial Class UserControlDealerInflation
             TheState.IsGridVisible = True
             TheState.IsGridAddNew = True
             AddNew()
-            Me.SetControlState()
+            SetControlState()
 
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub btnSave_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Protected Sub btnSave_Click(sender As Object, e As EventArgs)
 
         Try
             PopulateBOFromForm()
            
-            If Me.TheState.IsGridAddNew AndAlso TheState.MyBO.ValidateNewDealerInflation(Me.TheState.DealerInflationDV) Then
-                Me.ThePage.MasterPage.MessageController.AddWarning(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_INFLATION, True)
+            If TheState.IsGridAddNew AndAlso TheState.MyBO.ValidateNewDealerInflation(TheState.DealerInflationDV) Then
+                ThePage.MasterPage.MessageController.AddWarning(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_INFLATION, True)
                 Return
             End If
             If  TheState.MyBO.DealerId = Guid.Empty  Then
-                Me.ThePage.MasterPage.MessageController.AddWarning(Assurant.ElitaPlus.Common.ErrorCodes.DEALER_IS_REQUIRED, True)
+                ThePage.MasterPage.MessageController.AddWarning(Assurant.ElitaPlus.Common.ErrorCodes.DEALER_IS_REQUIRED, True)
                 Return
             End If
 
 
-            If (Me.TheState.MyBO.IsDirty) Then
+            If (TheState.MyBO.IsDirty) Then
                 Try
-                    Me.TheState.MyBO.Save()
+                    TheState.MyBO.Save()
                 Catch ex As DataBaseUniqueKeyConstraintViolationException
                     Throw New GUIException("Unique constraint violation", Assurant.ElitaPlus.Common.ErrorCodes.DUPLICATE_KEY_CONSTRAINT_VIOLATED)
                 End Try
 
-                Me.TheState.IsAfterSave = True
-                Me.TheState.IsGridAddNew = False
-                Me.ThePage.MasterPage.MessageController.AddSuccess(Me.MSG_RECORD_SAVED_OK, True)
-                Me.TheState.DealerInflationDV = Nothing
-                Me.TheState.MyBO = Nothing
-                Me.ReturnFromEditing()
+                TheState.IsAfterSave = True
+                TheState.IsGridAddNew = False
+                ThePage.MasterPage.MessageController.AddSuccess(MSG_RECORD_SAVED_OK, True)
+                TheState.DealerInflationDV = Nothing
+                TheState.MyBO = Nothing
+                ReturnFromEditing()
             Else
-                Me.ThePage.MasterPage.MessageController.AddWarning(Me.MSG_RECORD_NOT_SAVED, True)
-                Me.ReturnFromEditing()
+                ThePage.MasterPage.MessageController.AddWarning(MSG_RECORD_NOT_SAVED, True)
+                ReturnFromEditing()
             End If
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Protected Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Protected Sub btnCancel_Click(sender As Object, e As EventArgs)
         Try
             With TheState
                 If .IsGridAddNew Then
@@ -623,16 +623,16 @@ Partial Class UserControlDealerInflation
                     DealerInflationGrid.PageIndex = .PageIndex
                 End If
                 .DefaultDealerInflationID = Guid.Empty
-                Me.TheState.MyBO = Nothing
+                TheState.MyBO = Nothing
                 .IsEditMode = False
             End With
-            DealerInflationGrid.EditIndex = Me.ThePage.NO_ITEM_SELECTED_INDEX
+            DealerInflationGrid.EditIndex = ThePage.NO_ITEM_SELECTED_INDEX
 
             PopulateGrid()
             SetControlState()
-            Me.DealerInflationGrid.Focus()
+            DealerInflationGrid.Focus()
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
     End Sub
 #End Region

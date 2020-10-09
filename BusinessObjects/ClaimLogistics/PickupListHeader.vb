@@ -6,48 +6,48 @@ Public Class PickupListHeader
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New PickupListHeaderDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class PickupListHeader
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New PickupListHeaderDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -90,7 +90,7 @@ Public Class PickupListHeader
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(PickupListHeaderDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class PickupListHeader
     End Property
 
     <ValidStringLength("", Max:=120)> _
-    Public Property PickupType() As String
+    Public Property PickupType As String
         Get
             CheckDeleted()
             If row(PickupListHeaderDAL.COL_NAME_PICKUP_TYPE) Is DBNull.Value Then
@@ -110,15 +110,15 @@ Public Class PickupListHeader
                 Return CType(row(PickupListHeaderDAL.COL_NAME_PICKUP_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(PickupListHeaderDAL.COL_NAME_PICKUP_TYPE, Value)
+            SetValue(PickupListHeaderDAL.COL_NAME_PICKUP_TYPE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property PicklistNumber() As String
+    Public Property PicklistNumber As String
         Get
             CheckDeleted()
             If row(PickupListHeaderDAL.COL_NAME_PICKLIST_NUMBER) Is DBNull.Value Then
@@ -127,15 +127,15 @@ Public Class PickupListHeader
                 Return CType(row(PickupListHeaderDAL.COL_NAME_PICKLIST_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(PickupListHeaderDAL.COL_NAME_PICKLIST_NUMBER, Value)
+            SetValue(PickupListHeaderDAL.COL_NAME_PICKLIST_NUMBER, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property RouteId() As Guid
+    Public Property RouteId As Guid
         Get
             CheckDeleted()
             If row(PickupListHeaderDAL.COL_NAME_ROUTE_ID) Is DBNull.Value Then
@@ -144,15 +144,15 @@ Public Class PickupListHeader
                 Return New Guid(CType(row(PickupListHeaderDAL.COL_NAME_ROUTE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(PickupListHeaderDAL.COL_NAME_ROUTE_ID, Value)
+            SetValue(PickupListHeaderDAL.COL_NAME_ROUTE_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property HeaderStatusId() As Guid
+    Public Property HeaderStatusId As Guid
         Get
             CheckDeleted()
             If row(PickupListHeaderDAL.COL_NAME_HEADER_STATUS_ID) Is DBNull.Value Then
@@ -161,9 +161,9 @@ Public Class PickupListHeader
                 Return New Guid(CType(row(PickupListHeaderDAL.COL_NAME_HEADER_STATUS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(PickupListHeaderDAL.COL_NAME_HEADER_STATUS_ID, Value)
+            SetValue(PickupListHeaderDAL.COL_NAME_HEADER_STATUS_ID, Value)
         End Set
     End Property
 
@@ -176,15 +176,15 @@ Public Class PickupListHeader
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New PickupListHeaderDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -195,7 +195,7 @@ Public Class PickupListHeader
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function GetNewOpenClaims(ByVal RouteId As Guid) As DataSet
+    Public Shared Function GetNewOpenClaims(RouteId As Guid) As DataSet
 
         Try
             Dim companies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -207,7 +207,7 @@ Public Class PickupListHeader
         End Try
     End Function
 
-    Public Shared Function GetClaimsReadyFromSC(ByVal RouteId As Guid) As DataSet
+    Public Shared Function GetClaimsReadyFromSC(RouteId As Guid) As DataSet
 
         Try
             Dim companies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -220,21 +220,21 @@ Public Class PickupListHeader
         End Try
     End Function
 
-    Public Shared Function GetClaimIDByCode(ByVal claimNumber As String, ByVal certItemCoverageCode As String) As Guid
+    Public Shared Function GetClaimIDByCode(claimNumber As String, certItemCoverageCode As String) As Guid
         Dim claimID As Guid = Guid.Empty
         Dim dal As New PickupListHeaderDAL
         Dim ds As DataSet = dal.GetClaimIDByCode(ElitaPlusIdentity.Current.ActiveUser.Companies, claimNumber, certItemCoverageCode)
 
-        If (ds.Tables.Count > 0 And ds.Tables(0).Rows.Count > 0) Then
+        If (ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0) Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)
-            claimID = New Guid(CType(dr(DALObjects.ClaimDAL.COL_NAME_CLAIM_ID), Byte()))
+            claimID = New Guid(CType(dr(ClaimDAL.COL_NAME_CLAIM_ID), Byte()))
         End If
 
         Return claimID
 
     End Function
 
-    Public Shared Function UpdatePickListStatus(ByVal PickListNumber As String, ByVal pickupBy As String) As DataSet
+    Public Shared Function UpdatePickListStatus(PickListNumber As String, pickupBy As String) As DataSet
 
         Try
             Dim userId As Guid = ElitaPlusIdentity.Current.ActiveUser.Id
@@ -247,7 +247,7 @@ Public Class PickupListHeader
 
     End Function
 
-    Public Shared Function UpdatePickListStatus_Received(ByVal PickListNumber As String, ByVal ServiceCenterID As Guid, ByVal claimStr As String) As DataSet
+    Public Shared Function UpdatePickListStatus_Received(PickListNumber As String, ServiceCenterID As Guid, claimStr As String) As DataSet
 
         Try
             Dim userId As Guid = ElitaPlusIdentity.Current.ActiveUser.Id
@@ -261,7 +261,7 @@ Public Class PickupListHeader
 
     End Function
 
-    Public Shared Function GetActiveClaimsForSvc(ByVal serviceNetworkID As Guid, ByVal sortOrder As Integer, ByVal claimStatusCodeId As Guid) As DataSet
+    Public Shared Function GetActiveClaimsForSvc(serviceNetworkID As Guid, sortOrder As Integer, claimStatusCodeId As Guid) As DataSet
 
         Try
             Dim dal As New PickupListHeaderDAL
@@ -272,7 +272,7 @@ Public Class PickupListHeader
         End Try
     End Function
 
-    Public Shared Function GetClaimInfo(ByVal claimId As Guid, ByVal includeStatusHistory As String, ByVal customerName As String, ByVal customerPhone As String, ByVal AuthorizationNumber As String) As DataSet
+    Public Shared Function GetClaimInfo(claimId As Guid, includeStatusHistory As String, customerName As String, customerPhone As String, AuthorizationNumber As String) As DataSet
 
         Try
             Dim dal As New PickupListHeaderDAL
@@ -283,7 +283,7 @@ Public Class PickupListHeader
         End Try
     End Function
 
-    Public Shared Function GetClaimStatusHistory(ByVal claimId As Guid) As DataSet
+    Public Shared Function GetClaimStatusHistory(claimId As Guid) As DataSet
 
         Try
             Dim dal As New PickupListHeaderDAL
@@ -294,7 +294,7 @@ Public Class PickupListHeader
         End Try
     End Function
 
-    Public Shared Function GetClaimsByPickList(ByVal HeaderID As Guid, ByVal StoreServiceCenterID As Guid, ByVal ServiceCenterID As Guid) As DataSet
+    Public Shared Function GetClaimsByPickList(HeaderID As Guid, StoreServiceCenterID As Guid, ServiceCenterID As Guid) As DataSet
 
         Try
             Dim companies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -306,7 +306,7 @@ Public Class PickupListHeader
         End Try
     End Function
 
-    Public Shared Function GetPicklistByDateRange(ByVal startDate As DateTime, ByVal endDate As DateTime) As DataSet
+    Public Shared Function GetPicklistByDateRange(startDate As DateTime, endDate As DateTime) As DataSet
 
         Try
             Dim dal As New PickupListHeaderDAL
@@ -320,7 +320,7 @@ Public Class PickupListHeader
     End Function
 
 
-    Public Shared Function GetClaimsByDateRange(ByVal startDate As DateTime, ByVal endDate As DateTime, ByVal serviceCenterId As Guid) As DataSet
+    Public Shared Function GetClaimsByDateRange(startDate As DateTime, endDate As DateTime, serviceCenterId As Guid) As DataSet
 
         Try
             Dim dal As New PickupListHeaderDAL

@@ -1,6 +1,6 @@
 ﻿'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE BusinessObject.cst (6/18/2015)  ********************
 Imports System.Configuration
-Imports Assurant.ElitaPlus.DALObjects.Documents
+Imports System.Security.Cryptography
 Imports Microsoft.WindowsAzure.Storage
 Imports Microsoft.WindowsAzure.Storage.Blob
 
@@ -16,19 +16,19 @@ Namespace Documents
 #Region "Constructors"
 
         'New BO attaching to a BO family
-        Friend Sub New(ByVal pDataTable As DataTable)
+        Friend Sub New(pDataTable As DataTable)
             MyBase.New(False)
-            Me.Dataset = pDataTable.DataSet
+            Dataset = pDataTable.DataSet
             Dim newRow As DataRow = pDataTable.NewRow
             pDataTable.Rows.Add(newRow)
-            Me.Row = newRow
+            Row = newRow
             SetValue(RepositoryDAL.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         End Sub
 
-        Friend Sub New(ByVal row As DataRow)
+        Friend Sub New(row As DataRow)
             MyBase.New(False)
-            Me.Dataset = row.Table.DataSet
+            Dataset = row.Table.DataSet
             Me.Row = row
         End Sub
 
@@ -45,13 +45,13 @@ Namespace Documents
             Return New Document()
         End Function
 
-        Public Sub Upload(ByVal pDocument As Document)
-            pDocument.RepositoryCode = Me.Code
-            If (Not pDocument.FileName Is Nothing) AndAlso (pDocument.FileType.Length > 0) Then
+        Public Sub Upload(pDocument As Document)
+            pDocument.RepositoryCode = Code
+            If (pDocument.FileName IsNot Nothing) AndAlso (pDocument.FileType.Length > 0) Then
                 pDocument.FileType = pDocument.FileName.Split(New Char() {"."}).Last().ToUpper()
             End If
-            If (Not pDocument.Data Is Nothing) AndAlso (pDocument.Data.Length > 0) Then
-                pDocument.HashValue = Convert.ToBase64String(System.Security.Cryptography.SHA256Managed.Create().ComputeHash(pDocument.Data))
+            If (pDocument.Data IsNot Nothing) AndAlso (pDocument.Data.Length > 0) Then
+                pDocument.HashValue = Convert.ToBase64String(New SHA256CryptoServiceProvider().ComputeHash(pDocument.Data))
             End If
 
             pDocument.Validate()
@@ -68,7 +68,7 @@ Namespace Documents
             pDocument.Save()
         End Sub
 
-        Private Sub AzureBlobUpload(ByVal pDocument As Document)
+        Private Sub AzureBlobUpload(pDocument As Document)
             Dim storeageConnectionString As String = ConfigurationManager.AppSettings("AzureBlobConnectionString")
             Dim storageAccount As CloudStorageAccount
             If (Not CloudStorageAccount.TryParse(storeageConnectionString, storageAccount)) Then
@@ -76,16 +76,16 @@ Namespace Documents
             End If
 
             Dim cloudBlobClient As CloudBlobClient = storageAccount.CreateCloudBlobClient()
-            Dim cloudBlobContainer As CloudBlobContainer = cloudBlobClient.GetContainerReference(Me.StoragePath)
+            Dim cloudBlobContainer As CloudBlobContainer = cloudBlobClient.GetContainerReference(StoragePath)
             Dim cloudBlockBlob As CloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(pDocument.Id.ToString() + ".file")
             cloudBlockBlob.UploadFromByteArray(pDocument.Data, 0, pDocument.Data.Length)
         End Sub
-        Private Sub FileSystemUpload(ByVal pDocument As Document)
+        Private Sub FileSystemUpload(pDocument As Document)
             Dim fileName As String = pDocument.AbsoluteFileName
-            System.IO.File.WriteAllBytes(fileName, pDocument.Data)
+            IO.File.WriteAllBytes(fileName, pDocument.Data)
         End Sub
 
-        Public Function Download(ByVal pDocumentId As Guid) As Document
+        Public Function Download(pDocumentId As Guid) As Document
             Dim oDocument As Document = New Document(pDocumentId)
             Return oDocument
         End Function
@@ -95,7 +95,7 @@ Namespace Documents
 #Region "Properties"
 
         'Key Property
-        Public ReadOnly Property Id() As Guid
+        Public ReadOnly Property Id As Guid
             Get
                 If Row(RepositoryDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                     Return Nothing
@@ -106,7 +106,7 @@ Namespace Documents
         End Property
 
         <ValueMandatory(""), ValidStringLength("", Max:=50), CheckDuplicateCode("")>
-        Public Property Code() As String
+        Public Property Code As String
             Get
                 CheckDeleted()
                 If Row(RepositoryDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -115,15 +115,15 @@ Namespace Documents
                     Return CType(Row(RepositoryDAL.COL_NAME_CODE), String)
                 End If
             End Get
-            Set(ByVal Value As String)
+            Set
                 CheckDeleted()
-                Me.SetValue(RepositoryDAL.COL_NAME_CODE, Value)
+                SetValue(RepositoryDAL.COL_NAME_CODE, Value)
             End Set
         End Property
 
 
         <ValueMandatory(""), ValidStringLength("", Max:=500)>
-        Public Property Description() As String
+        Public Property Description As String
             Get
                 CheckDeleted()
                 If Row(RepositoryDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -132,16 +132,16 @@ Namespace Documents
                     Return CType(Row(RepositoryDAL.COL_NAME_DESCRIPTION), String)
                 End If
             End Get
-            Set(ByVal Value As String)
+            Set
                 CheckDeleted()
-                Me.SetValue(RepositoryDAL.COL_NAME_DESCRIPTION, Value)
+                SetValue(RepositoryDAL.COL_NAME_DESCRIPTION, Value)
             End Set
         End Property
 
 
         <ValueMandatory(""), ValidStringLength("", Max:=100), CheckDuplicateStoragePath(""),
             CheckReadWriteTest("")>
-        Public Property StoragePath() As String
+        Public Property StoragePath As String
             Get
                 CheckDeleted()
                 If Row(RepositoryDAL.COL_NAME_STORAGE_PATH) Is DBNull.Value Then
@@ -150,14 +150,14 @@ Namespace Documents
                     Return CType(Row(RepositoryDAL.COL_NAME_STORAGE_PATH), String)
                 End If
             End Get
-            Set(ByVal Value As String)
+            Set
                 CheckDeleted()
-                Me.SetValue(RepositoryDAL.COL_NAME_STORAGE_PATH, Value)
+                SetValue(RepositoryDAL.COL_NAME_STORAGE_PATH, Value)
             End Set
         End Property
 
         <ValidStringLength("", Max:=50)>
-        Public Property RepositoryTypeXcd() As String
+        Public Property RepositoryTypeXcd As String
             Get
                 CheckDeleted()
                 If Row(RepositoryDAL.COL_NAME_REPOSITORY_TYPE_XCD) Is DBNull.Value Then
@@ -166,9 +166,9 @@ Namespace Documents
                     Return CType(Row(RepositoryDAL.COL_NAME_REPOSITORY_TYPE_XCD), String)
                 End If
             End Get
-            Set(ByVal Value As String)
+            Set
                 CheckDeleted()
-                Me.SetValue(RepositoryDAL.COL_NAME_REPOSITORY_TYPE_XCD, Value)
+                SetValue(RepositoryDAL.COL_NAME_REPOSITORY_TYPE_XCD, Value)
             End Set
         End Property
 
@@ -179,14 +179,14 @@ Namespace Documents
         Public Overrides Sub Save()
             Try
                 MyBase.Save()
-                If Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+                If IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                     Dim dal As New RepositoryDAL
-                    dal.Update(Me.Row)
+                    dal.Update(Row)
                     'Reload the Data from the DB
-                    If Me.Row.RowState <> DataRowState.Detached Then
-                        Dim objId As Guid = Me.Id
-                        Me.Dataset = New DataSet
-                        Me.Row = Nothing
+                    If Row.RowState <> DataRowState.Detached Then
+                        Dim objId As Guid = Id
+                        Dataset = New DataSet
+                        Row = Nothing
                     End If
                 End If
             Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -203,11 +203,11 @@ Namespace Documents
         Public NotInheritable Class CheckDuplicateCode
             Inherits ValidBaseAttribute
 
-            Public Sub New(ByVal fieldDisplayName As String)
+            Public Sub New(fieldDisplayName As String)
                 MyBase.New(fieldDisplayName, DUPLICATE_REPOSITORY_CODE)
             End Sub
 
-            Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
                 Dim obj As Repository = CType(objectToValidate, Repository)
                 If (DocumentManager.Current.Repositories.Where(Function(r) r.Code = obj.Code AndAlso r.Id <> obj.Id).Count() = 0) Then
                     Return True
@@ -221,11 +221,11 @@ Namespace Documents
         Public NotInheritable Class CheckDuplicateStoragePath
             Inherits ValidBaseAttribute
 
-            Public Sub New(ByVal fieldDisplayName As String)
+            Public Sub New(fieldDisplayName As String)
                 MyBase.New(fieldDisplayName, DUPLICATE_REPOSITORY_STORAGE_PATH)
             End Sub
 
-            Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
                 Dim obj As Repository = CType(objectToValidate, Repository)
                 If (DocumentManager.Current.Repositories.Where(Function(r) r.StoragePath = obj.StoragePath AndAlso r.Id <> obj.Id).Count() = 0) Then
                     Return True
@@ -239,42 +239,39 @@ Namespace Documents
         Public NotInheritable Class CheckReadWriteTest
             Inherits ValidBaseAttribute
 
-            Public Sub New(ByVal fieldDisplayName As String)
+            Public Sub New(fieldDisplayName As String)
                 MyBase.New(fieldDisplayName, REPOSITORY_STORAGE_PHYSICAL_PATH_READ_WRITE_FAILED)
             End Sub
 
-            Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
                 Dim obj As Repository = CType(objectToValidate, Repository)
                 If (obj.StoragePath Is Nothing) OrElse (obj.StoragePath.Trim().Length = 0) Then
                     Return False
                 End If
 
-                If (Not System.IO.Directory.Exists(obj.StoragePath)) Then
+                If (Not IO.Directory.Exists(obj.StoragePath)) Then
                     Return False
                 End If
 
-                Dim buffer() As Byte = New Byte(100) {}
+                Dim buffer = New Byte(100) {}
                 Dim rnd As New Random
                 rnd.NextBytes(buffer)
-                Dim fileName As String = String.Format("{0}{1}Dummy.bin", obj.StoragePath, System.IO.Path.DirectorySeparatorChar)
+                Dim fileName As String = String.Format("{0}{1}Dummy.bin", obj.StoragePath, IO.Path.DirectorySeparatorChar)
 
                 Try
-                    If (System.IO.File.Exists(fileName)) Then
-                        System.IO.File.Delete(fileName)
+                    If (IO.File.Exists(fileName)) Then
+                        IO.File.Delete(fileName)
                     End If
 
-                    System.IO.File.WriteAllBytes(fileName, buffer)
+                    IO.File.WriteAllBytes(fileName, buffer)
 
                     Dim newBuffer As Byte() = New Byte(100) {}
-                    newBuffer = System.IO.File.ReadAllBytes(fileName)
+                    newBuffer = IO.File.ReadAllBytes(fileName)
 
                     Return buffer.SequenceEqual(newBuffer)
                 Catch ex As Exception
                     Return False
                 End Try
-
-                Return True
-
             End Function
         End Class
 

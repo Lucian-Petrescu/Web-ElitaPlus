@@ -1,6 +1,10 @@
 Option Strict On
 Option Explicit On
 
+Imports System.Diagnostics
+Imports System.Threading
+Imports Assurant.ElitaPlus.DALObjects
+
 Partial Class PartsInfoForm
     Inherits ElitaPlusSearchPage
 
@@ -26,7 +30,7 @@ Partial Class PartsInfoForm
 
     Public ReadOnly Property IsEditing() As Boolean
         Get
-            IsEditing = (Me.Grid.EditItemIndex > NO_ROW_SELECTED_INDEX)
+            IsEditing = (Grid.EditItemIndex > NO_ROW_SELECTED_INDEX)
         End Get
     End Property
 
@@ -35,7 +39,7 @@ Partial Class PartsInfoForm
 #Region "Page Parameters"
     Public Class Parameters
         Public ClaimBO As ClaimBase
-        Public Sub New(ByVal claimBO As ClaimBase)
+        Public Sub New(claimBO As ClaimBase)
             Me.ClaimBO = claimBO
         End Sub
     End Class
@@ -75,10 +79,10 @@ Partial Class PartsInfoForm
     Protected Shadows ReadOnly Property State() As MyState
         Get
             'Return CType(MyBase.State, MyState)
-            If Me.NavController.State Is Nothing Then
-                Me.NavController.State = New MyState
+            If NavController.State Is Nothing Then
+                NavController.State = New MyState
             End If
-            Return CType(Me.NavController.State, MyState)
+            Return CType(NavController.State, MyState)
         End Get
     End Property
 #End Region
@@ -86,16 +90,16 @@ Partial Class PartsInfoForm
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
-    Protected WithEvents SearchDescriptionLabel As System.Web.UI.WebControls.Label
+    Protected WithEvents SearchDescriptionLabel As Label
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -125,71 +129,71 @@ Partial Class PartsInfoForm
 
 #Region "Button Click Handlers"
 
-    Private Sub NewButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles NewButton_WRITE.Click
+    Private Sub NewButton_WRITE_Click(sender As Object, e As EventArgs) Handles NewButton_WRITE.Click
 
         Try
             Dim desc As DropDownList = New DropDownList
-            Me.BindListControlToDataView(desc, PartsInfo.getAvailList(Me.State.RiskGroupID, Me.State.ClaimBO.Id), LookupListNew.COL_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME, False)
+            BindListControlToDataView(desc, PartsInfo.getAvailList(State.RiskGroupID, State.ClaimBO.Id), LookupListNew.COL_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME, False)
             If desc.Items.Count > 0 Then
-                Me.State.IsEditMode = True
+                State.IsEditMode = True
                 AddNewPartsInfo()
             Else
-                If Me.State.PartsAdded Then
-                    Me.DisplayMessage(Message.MSG_NO_MORE_PARTSDESC_FOUND, "", ElitaPlusPage.MSG_BTN_OK, ElitaPlusPage.MSG_TYPE_ALERT)
+                If State.PartsAdded Then
+                    DisplayMessage(Message.MSG_NO_MORE_PARTSDESC_FOUND, "", MSG_BTN_OK, MSG_TYPE_ALERT)
                 Else
-                    Me.DisplayMessage(Message.MSG_NO_PARTSDESC_FOUND, "", ElitaPlusPage.MSG_BTN_OK, ElitaPlusPage.MSG_TYPE_ALERT)
+                    DisplayMessage(Message.MSG_NO_PARTSDESC_FOUND, "", MSG_BTN_OK, MSG_TYPE_ALERT)
                 End If
-                Me.ReturnFromEditing()
+                ReturnFromEditing()
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
 
     End Sub
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         Try
             'Me.ReturnToCallingPage()
-            Me.NavController.Navigate(Me, "back")
-        Catch exT As System.Threading.ThreadAbortException
+            NavController.Navigate(Me, "back")
+        Catch exT As ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
     End Sub
 
-    Private Sub SaveButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SaveButton_WRITE.Click
+    Private Sub SaveButton_WRITE_Click(sender As Object, e As EventArgs) Handles SaveButton_WRITE.Click
 
         Try
             PopulateBOFromForm()
-            If (Me.State.PartsInfoBO.IsDirty) Then
-                Me.State.PartsInfoBO.Save()
-                Me.State.IsAfterSave = True
-                Me.DisplayMessage(Message.RECORD_ADDED_OK, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                Me.ReturnFromEditing()
+            If (State.PartsInfoBO.IsDirty) Then
+                State.PartsInfoBO.Save()
+                State.IsAfterSave = True
+                DisplayMessage(Message.RECORD_ADDED_OK, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                ReturnFromEditing()
             Else
-                Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                Me.ReturnFromEditing()
+                DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                ReturnFromEditing()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
 
     End Sub
 
-    Private Sub CancelButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CancelButton.Click
+    Private Sub CancelButton_Click(sender As Object, e As EventArgs) Handles CancelButton.Click
         Try
             CancelEditing()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
     End Sub
 
     Private Sub CancelEditing()
         Try
-            Me.Grid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
+            Grid.SelectedIndex = NO_ITEM_SELECTED_INDEX
             ReturnFromEditing()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
     End Sub
 
@@ -197,52 +201,52 @@ Partial Class PartsInfoForm
 #End Region
 
 #Region "Private Methods"
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
-                Me.State.ClaimBO = CType(Me.CallingParameters, Claim)
-                Me.SetStateProperties()
+            If CallingParameters IsNot Nothing Then
+                State.ClaimBO = CType(CallingParameters, Claim)
+                SetStateProperties()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
 
     End Sub
 
     Private Sub CheckifComingFromBackEndClaim()
-        If Me.NavController Is Nothing Then
+        If NavController Is Nothing Then
             Exit Sub
         End If
-        If Me.NavController.CurrentNavState.Name = "PARTS_INFO" Then
-            Dim params As Parameters = CType(Me.NavController.ParametersPassed, Parameters)
-            If Not params.ClaimBO Is Nothing Then
-                Me.State.ClaimBO = params.ClaimBO
+        If NavController.CurrentNavState.Name = "PARTS_INFO" Then
+            Dim params As Parameters = CType(NavController.ParametersPassed, Parameters)
+            If params.ClaimBO IsNot Nothing Then
+                State.ClaimBO = params.ClaimBO
                 SetStateProperties()
             End If
         End If
     End Sub
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         'Put user code to initialize the page here
         ErrController.Clear_Hide()
         Try
             If Not Page.IsPostBack Then
                 CheckifComingFromBackEndClaim()
-                Me.MenuEnabled = False
-                Me.TextboxClaimNumber.Text = Me.State.ClaimBO.ClaimNumber
-                Me.TextboxCustomerName.Text = Me.State.ClaimBO.CustomerName
-                Me.TextboxRiskGroup.Text = Me.State.RiskGroup
-                Me.SetGridItemStyleColor(Grid)
-                Me.ShowMissingTranslations(ErrController)
-                Me.State.PageIndex = 0
+                MenuEnabled = False
+                TextboxClaimNumber.Text = State.ClaimBO.ClaimNumber
+                TextboxCustomerName.Text = State.ClaimBO.CustomerName
+                TextboxRiskGroup.Text = State.RiskGroup
+                SetGridItemStyleColor(Grid)
+                ShowMissingTranslations(ErrController)
+                State.PageIndex = 0
                 SetButtonsState()
                 PopulateGrid()
             End If
-            Me.SetStateProperties()
+            SetStateProperties()
             BindBoPropertiesToGridHeaders()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
     End Sub
 
@@ -253,26 +257,26 @@ Partial Class PartsInfoForm
             'Refresh the DataView and Call SetPageAndSelectedIndexFromGuid() to go to the Page 
             'where the most recently saved Record exists in the DataView
             dv = GetDV()
-            If (Me.State.IsAfterSave) Then
-                Me.State.IsAfterSave = False
-                Me.SetPageAndSelectedIndexFromGuid(dv, Me.State.PartsInfoID, Me.Grid, Me.State.PageIndex)
-            ElseIf (Me.State.IsEditMode) Then
-                Me.SetPageAndSelectedIndexFromGuid(dv, Me.State.PartsInfoID, Me.Grid, Me.State.PageIndex, Me.State.IsEditMode)
+            If (State.IsAfterSave) Then
+                State.IsAfterSave = False
+                SetPageAndSelectedIndexFromGuid(dv, State.PartsInfoID, Grid, State.PageIndex)
+            ElseIf (State.IsEditMode) Then
+                SetPageAndSelectedIndexFromGuid(dv, State.PartsInfoID, Grid, State.PageIndex, State.IsEditMode)
             Else
-                Me.SetPageAndSelectedIndexFromGuid(dv, Guid.Empty, Me.Grid, Me.State.PageIndex)
+                SetPageAndSelectedIndexFromGuid(dv, Guid.Empty, Grid, State.PageIndex)
             End If
 
-            Me.TranslateGridControls(Grid)
+            TranslateGridControls(Grid)
             Grid.DataSource = dv
-            Me.Grid.DataBind()
+            Grid.DataBind()
 
-            Me.State.PartsAdded = (dv.Count > 0)
+            State.PartsAdded = (dv.Count > 0)
 
-            Me.PopulateControlFromBOProperty(Me.TextTotalCost, PartsInfo.getTotalCost(Me.State.ClaimBO.Id).Value)
+            PopulateControlFromBOProperty(TextTotalCost, PartsInfo.getTotalCost(State.ClaimBO.Id).Value)
 
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
 
     End Sub
@@ -290,15 +294,15 @@ Partial Class PartsInfoForm
 
     Private Function GetGridDataView() As DataView
         With State
-            Return (PartsInfo.getSelectedList(Me.State.ClaimBO.Id))
+            Return (PartsInfo.getSelectedList(State.ClaimBO.Id))
         End With
     End Function
 
     Private Sub SetStateProperties()
-        Me.State.CompanyId = Me.State.ClaimBO.CompanyId
-        Dim riskTypeBO As RiskType = New RiskType(Me.State.ClaimBO.RiskTypeId)
-        Me.State.RiskGroupID = riskTypeBO.RiskGroupId
-        Me.State.RiskGroup = LookupListNew.GetDescriptionFromId(LookupListNew.GetRiskGroupsLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), Me.State.RiskGroupID)
+        State.CompanyId = State.ClaimBO.CompanyId
+        Dim riskTypeBO As RiskType = New RiskType(State.ClaimBO.RiskTypeId)
+        State.RiskGroupID = riskTypeBO.RiskGroupId
+        State.RiskGroup = LookupListNew.GetDescriptionFromId(LookupListNew.GetRiskGroupsLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), State.RiskGroupID)
     End Sub
 
     Private Sub AddNewPartsInfo()
@@ -308,73 +312,73 @@ Partial Class PartsInfoForm
         Try
             dv = GetGridDataView()
 
-            Me.State.PartsInfoBO = New PartsInfo
-            Me.State.PartsInfoID = Me.State.PartsInfoBO.Id
-            Me.State.PartsInfoBO.ClaimId = Me.State.ClaimBO.Id
+            State.PartsInfoBO = New PartsInfo
+            State.PartsInfoID = State.PartsInfoBO.Id
+            State.PartsInfoBO.ClaimId = State.ClaimBO.Id
 
-            dv = Me.State.PartsInfoBO.GetNewDataViewRow(dv, Me.State.PartsInfoID, Me.State.ClaimBO.Id)
+            dv = State.PartsInfoBO.GetNewDataViewRow(dv, State.PartsInfoID, State.ClaimBO.Id)
 
             Grid.DataSource = dv
 
-            Me.SetPageAndSelectedIndexFromGuid(dv, Me.State.PartsInfoID, Me.Grid, Me.State.PageIndex, Me.State.IsEditMode)
+            SetPageAndSelectedIndexFromGuid(dv, State.PartsInfoID, Grid, State.PageIndex, State.IsEditMode)
 
             Grid.DataBind()
 
-            Me.State.PageIndex = Grid.CurrentPageIndex
+            State.PageIndex = Grid.CurrentPageIndex
 
-            SetGridControls(Me.Grid, False)
+            SetGridControls(Grid, False)
 
             'Set focus on the Description TextBox for the EditItemIndex row
-            Me.SetFocusOnEditableFieldInGrid(Me.Grid, Me.DESCRIPTION_COL, Me.DESCRIPTION_CONTROL_NAME, Me.Grid.EditItemIndex, True)
+            SetFocusOnEditableFieldInGrid(Grid, DESCRIPTION_COL, DESCRIPTION_CONTROL_NAME, Grid.EditItemIndex, True)
 
-            Me.PopulateFormFromBO()
+            PopulateFormFromBO()
 
-            Me.TranslateGridControls(Grid)
-            Me.SetButtonsState()
+            TranslateGridControls(Grid)
+            SetButtonsState()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
     End Sub
 
     Private Sub PopulateBOFromForm()
 
         Try
-            With Me.State.PartsInfoBO
-                .PartsDescriptionId = New Guid(CType(Me.Grid.Items(Me.Grid.EditItemIndex).Cells(Me.DESCRIPTION_COL).FindControl(Me.DESCRIPTION_CONTROL_NAME), DropDownList).SelectedValue)
+            With State.PartsInfoBO
+                .PartsDescriptionId = New Guid(CType(Grid.Items(Grid.EditItemIndex).Cells(DESCRIPTION_COL).FindControl(DESCRIPTION_CONTROL_NAME), DropDownList).SelectedValue)
                 Try
-                    .Cost = New DecimalType(CType(CType(Me.Grid.Items(Me.Grid.EditItemIndex).Cells(Me.COST_COL).FindControl(Me.COST_CONTROL_NAME), TextBox).Text, Decimal))
+                    .Cost = New DecimalType(CType(CType(Grid.Items(Grid.EditItemIndex).Cells(COST_COL).FindControl(COST_CONTROL_NAME), TextBox).Text, Decimal))
                 Catch
                     .Cost = Nothing
                 End Try
-                If Me.State.PartsInfoBO.InStockID.Equals(Guid.Empty) Then
+                If State.PartsInfoBO.InStockID.Equals(Guid.Empty) Then
                     Dim YESNOdv As DataView = LookupListNew.DropdownLookupList(YESNO, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True)
-                    YESNOdv.RowFilter = DALObjects.LookupListDALNew.COL_NAME_CODE & "='Y'"
-                    If Not YESNOdv Is Nothing AndAlso YESNOdv.Count > 0 Then
-                        Me.State.PartsInfoBO.InStockID = New Guid(CType(YESNOdv(0)(DALObjects.LookupListDALNew.COL_NAME_ID), Byte()))
+                    YESNOdv.RowFilter = LookupListDALNew.COL_NAME_CODE & "='Y'"
+                    If YESNOdv IsNot Nothing AndAlso YESNOdv.Count > 0 Then
+                        State.PartsInfoBO.InStockID = New Guid(CType(YESNOdv(0)(LookupListDALNew.COL_NAME_ID), Byte()))
                     End If
                 End If
             End With
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
 
     End Sub
 
     Private Sub PopulateFormFromBO()
 
-        Dim gridRowIdx As Integer = Me.Grid.EditItemIndex
+        Dim gridRowIdx As Integer = Grid.EditItemIndex
         Try
-            With Me.State.PartsInfoBO
+            With State.PartsInfoBO
                 If Not .PartsDescriptionId.Equals(Guid.Empty) Then
-                    CType(Me.Grid.Items(gridRowIdx).Cells(Me.DESCRIPTION_COL).FindControl(Me.DESCRIPTION_CONTROL_NAME), DropDownList).SelectedValue = .PartsDescriptionId.ToString()
+                    CType(Grid.Items(gridRowIdx).Cells(DESCRIPTION_COL).FindControl(DESCRIPTION_CONTROL_NAME), DropDownList).SelectedValue = .PartsDescriptionId.ToString()
                 End If
-                If Not .Cost Is Nothing Then
-                    Me.PopulateControlFromBOProperty(CType(Me.Grid.Items(gridRowIdx).Cells(Me.COST_COL).FindControl(Me.COST_CONTROL_NAME), TextBox), .Cost.Value)
+                If .Cost IsNot Nothing Then
+                    PopulateControlFromBOProperty(CType(Grid.Items(gridRowIdx).Cells(COST_COL).FindControl(COST_CONTROL_NAME), TextBox), .Cost.Value)
                 End If
-                CType(Me.Grid.Items(gridRowIdx).Cells(Me.ID_COL).FindControl(Me.ID_CONTROL_NAME), Label).Text = .Id.ToString
+                CType(Grid.Items(gridRowIdx).Cells(ID_COL).FindControl(ID_CONTROL_NAME), Label).Text = .Id.ToString
             End With
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
 
     End Sub
@@ -383,23 +387,23 @@ Partial Class PartsInfoForm
 
         Grid.EditItemIndex = NO_ROW_SELECTED_INDEX
 
-        If Me.Grid.PageCount = 0 Then
+        If Grid.PageCount = 0 Then
             'if returning to the "1st time in" screen
             ControlMgr.SetVisibleControl(Me, Grid, False)
         Else
             ControlMgr.SetVisibleControl(Me, Grid, True)
         End If
 
-        Me.State.IsEditMode = False
-        Me.PopulateGrid()
-        Me.State.PageIndex = Grid.CurrentPageIndex
+        State.IsEditMode = False
+        PopulateGrid()
+        State.PageIndex = Grid.CurrentPageIndex
         SetButtonsState()
 
     End Sub
 
     Private Sub SetButtonsState()
 
-        If (Me.State.IsEditMode) Then
+        If (State.IsEditMode) Then
             ControlMgr.SetVisibleControl(Me, SaveButton_WRITE, True)
             ControlMgr.SetVisibleControl(Me, CancelButton, True)
             ControlMgr.SetVisibleControl(Me, NewButton_WRITE, False)
@@ -419,134 +423,134 @@ Partial Class PartsInfoForm
 
 #Region "Datagrid Related "
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
 
         Try
-            If (Not (Me.State.IsEditMode)) Then
-                Me.State.PageIndex = e.NewPageIndex
-                Me.Grid.CurrentPageIndex = Me.State.PageIndex
-                Me.PopulateGrid()
-                Me.Grid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
+            If (Not (State.IsEditMode)) Then
+                State.PageIndex = e.NewPageIndex
+                Grid.CurrentPageIndex = State.PageIndex
+                PopulateGrid()
+                Grid.SelectedIndex = NO_ITEM_SELECTED_INDEX
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
 
     End Sub
 
-    Protected Sub ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+    Protected Sub ItemCommand(source As Object, e As DataGridCommandEventArgs)
 
         Try
             Dim index As Integer = e.Item.ItemIndex
 
-            If (e.CommandName = Me.EDIT_COMMAND) Then
+            If (e.CommandName = EDIT_COMMAND) Then
                 'Do the Edit here
 
                 'Set the IsEditMode flag to TRUE
-                Me.State.IsEditMode = True
+                State.IsEditMode = True
 
-                Me.State.PartsInfoID = New Guid(Me.Grid.Items(e.Item.ItemIndex).Cells(Me.ID_COL).Text)
+                State.PartsInfoID = New Guid(Grid.Items(e.Item.ItemIndex).Cells(ID_COL).Text)
 
-                Me.State.PartsInfoBO = New PartsInfo(Me.State.PartsInfoID)
+                State.PartsInfoBO = New PartsInfo(State.PartsInfoID)
 
-                Me.PopulateGrid()
+                PopulateGrid()
                 'Me.
 
-                Me.State.PageIndex = Grid.CurrentPageIndex
+                State.PageIndex = Grid.CurrentPageIndex
 
                 'Disable all Edit and Delete icon buttons on the Grid
-                SetGridControls(Me.Grid, False)
+                SetGridControls(Grid, False)
 
                 'Set focus on the Description dropdown for the EditItemIndex row
-                Me.SetFocusOnEditableFieldInGrid(Me.Grid, Me.DESCRIPTION_COL, Me.DESCRIPTION_CONTROL_NAME, index, False)
+                SetFocusOnEditableFieldInGrid(Grid, DESCRIPTION_COL, DESCRIPTION_CONTROL_NAME, index, False)
 
-                Me.PopulateFormFromBO()
+                PopulateFormFromBO()
 
-                Me.SetButtonsState()
+                SetButtonsState()
 
-            ElseIf (e.CommandName = Me.DELETE_COMMAND) Then
+            ElseIf (e.CommandName = DELETE_COMMAND) Then
                 'Do the delete here
 
                 'Clear the SelectedItemStyle to remove the highlight from the previously saved row
-                Grid.SelectedIndex = Me.NO_ROW_SELECTED_INDEX
+                Grid.SelectedIndex = NO_ROW_SELECTED_INDEX
 
                 'Save the Id in the Session
 
-                Me.State.PartsInfoID = New Guid(Me.Grid.Items(e.Item.ItemIndex).Cells(Me.ID_COL).Text)
+                State.PartsInfoID = New Guid(Grid.Items(e.Item.ItemIndex).Cells(ID_COL).Text)
 
-                Me.State.PartsInfoBO = New PartsInfo(Me.State.PartsInfoID)
+                State.PartsInfoBO = New PartsInfo(State.PartsInfoID)
 
                 Try
-                    Me.State.PartsInfoBO.Delete()
+                    State.PartsInfoBO.Delete()
                     'Call the Save() method in the Region Business Object here
-                    Me.State.PartsInfoBO.Save()
+                    State.PartsInfoBO.Save()
                 Catch ex As Exception
-                    Me.State.PartsInfoBO.RejectChanges()
+                    State.PartsInfoBO.RejectChanges()
                     Throw ex
                 End Try
 
-                Me.State.PageIndex = Grid.CurrentPageIndex
+                State.PageIndex = Grid.CurrentPageIndex
 
                 'Set the IsAfterSave flag to TRUE so that the Paging logic gets invoked
-                Me.State.IsAfterSave = True
+                State.IsAfterSave = True
 
                 PopulateGrid()
-                Me.State.PageIndex = Grid.CurrentPageIndex
+                State.PageIndex = Grid.CurrentPageIndex
 
-            ElseIf ((e.CommandName = Me.SORT_COMMAND) AndAlso Not (Me.IsEditing)) Then
+            ElseIf ((e.CommandName = SORT_COMMAND) AndAlso Not (IsEditing)) Then
 
                 Grid.DataMember = e.CommandArgument.ToString
                 PopulateGrid()
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
 
     End Sub
 
-    Protected Sub ItemBound(ByVal source As Object, ByVal e As DataGridItemEventArgs) Handles Grid.ItemDataBound
+    Protected Sub ItemBound(source As Object, e As DataGridItemEventArgs) Handles Grid.ItemDataBound
         Try
             BaseItemBound(source, e)
 
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
-                Me.PopulateControlFromBOProperty(e.Item.Cells(Me.ID_COL), dvRow(PartsInfo.PartsInfoDV.COL_NAME_PARTS_INFO_ID))
-                Me.PopulateControlFromBOProperty(e.Item.Cells(Me.DESCRIPTION_COL), dvRow(PartsInfo.PartsInfoDV.COL_NAME_PARTS_DESCRIPTION))
-                Me.PopulateControlFromBOProperty(e.Item.Cells(Me.COST_COL), dvRow(PartsInfo.PartsInfoDV.COL_NAME_COST))
+                PopulateControlFromBOProperty(e.Item.Cells(ID_COL), dvRow(PartsInfo.PartsInfoDV.COL_NAME_PARTS_INFO_ID))
+                PopulateControlFromBOProperty(e.Item.Cells(DESCRIPTION_COL), dvRow(PartsInfo.PartsInfoDV.COL_NAME_PARTS_DESCRIPTION))
+                PopulateControlFromBOProperty(e.Item.Cells(COST_COL), dvRow(PartsInfo.PartsInfoDV.COL_NAME_COST))
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
     End Sub
 
-    Protected Sub ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs)
+    Protected Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
     End Sub
 
     Protected Sub BindBoPropertiesToGridHeaders()
-        Me.BindBOPropertyToGridHeader(Me.State.PartsInfoBO, "DescriptionId", Me.Grid.Columns(Me.DESCRIPTION_COL))
-        Me.BindBOPropertyToGridHeader(Me.State.PartsInfoBO, "COST", Me.Grid.Columns(Me.COST_COL))
+        BindBOPropertyToGridHeader(State.PartsInfoBO, "DescriptionId", Grid.Columns(DESCRIPTION_COL))
+        BindBOPropertyToGridHeader(State.PartsInfoBO, "COST", Grid.Columns(COST_COL))
         'Me.BindBOPropertyToGridHeader(Me.State.Region, "RiskTypeEnglish", Me.Grid.Columns(Me.CODE_COL))
-        Me.ClearGridHeadersAndLabelsErrSign()
+        ClearGridHeadersAndLabelsErrSign()
     End Sub
 
-    Private Sub SetFocusOnEditableFieldInGrid(ByVal grid As DataGrid, ByVal cellPosition As Integer, ByVal controlName As String, ByVal itemIndex As Integer, ByVal newRow As Boolean)
+    Private Sub SetFocusOnEditableFieldInGrid(grid As DataGrid, cellPosition As Integer, controlName As String, itemIndex As Integer, newRow As Boolean)
         'Set focus on the Description TextBox for the EditItemIndex row
         Dim desc As DropDownList = CType(grid.Items(itemIndex).Cells(cellPosition).FindControl(controlName), DropDownList)
         If newRow Then
-            Me.BindListControlToDataView(desc, _
-                PartsInfo.getAvailList(Me.State.RiskGroupID, Me.State.ClaimBO.Id), LookupListNew.COL_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME, False)
+            BindListControlToDataView(desc, _
+                PartsInfo.getAvailList(State.RiskGroupID, State.ClaimBO.Id), LookupListNew.COL_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME, False)
         Else
-            Me.BindListControlToDataView(desc, PartsInfo.getAvailListWithCurrentPart(Me.State.RiskGroupID, Me.State.ClaimBO.Id, Me.State.PartsInfoBO.PartsDescriptionId), LookupListNew.COL_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME, False)
+            BindListControlToDataView(desc, PartsInfo.getAvailListWithCurrentPart(State.RiskGroupID, State.ClaimBO.Id, State.PartsInfoBO.PartsDescriptionId), LookupListNew.COL_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME, False)
         End If
         SetFocus(desc)
     End Sub

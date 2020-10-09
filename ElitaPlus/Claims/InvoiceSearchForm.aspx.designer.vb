@@ -20,7 +20,7 @@ Partial Public Class InvoiceSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents searchGrid As Global.System.Web.UI.HtmlControls.HtmlTable
+    Protected WithEvents searchGrid As HtmlTable
 
     '''<summary>
     '''moServiceCenterLabel control.
@@ -29,7 +29,7 @@ Partial Public Class InvoiceSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moServiceCenterLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moServiceCenterLabel As Label
 
     '''<summary>
     '''moServiceCenter control.
@@ -38,7 +38,7 @@ Partial Public Class InvoiceSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moServiceCenter As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moServiceCenter As TextBox
 
     '''<summary>
     '''moDateCreated control.
@@ -47,7 +47,7 @@ Partial Public Class InvoiceSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moDateCreated As Global.Assurant.ElitaPlus.ElitaPlusWebApp.FieldSearchCriteriaControl
+    Protected WithEvents moDateCreated As FieldSearchCriteriaControl
 
     '''<summary>
     '''moInvoiceNumber control.
@@ -56,7 +56,7 @@ Partial Public Class InvoiceSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moInvoiceNumber As Global.Assurant.ElitaPlus.ElitaPlusWebApp.FieldSearchCriteriaControl
+    Protected WithEvents moInvoiceNumber As FieldSearchCriteriaControl
 
     '''<summary>
     '''moInvoiceAmount control.
@@ -65,7 +65,7 @@ Partial Public Class InvoiceSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moInvoiceAmount As Global.Assurant.ElitaPlus.ElitaPlusWebApp.FieldSearchCriteriaControl
+    Protected WithEvents moInvoiceAmount As FieldSearchCriteriaControl
 
     '''<summary>
     '''moInvoiceDate control.
@@ -74,7 +74,7 @@ Partial Public Class InvoiceSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moInvoiceDate As Global.Assurant.ElitaPlus.ElitaPlusWebApp.FieldSearchCriteriaControl
+    Protected WithEvents moInvoiceDate As FieldSearchCriteriaControl
 
     '''<summary>
     '''moBatchNumber control.
@@ -83,7 +83,7 @@ Partial Public Class InvoiceSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moBatchNumber As Global.Assurant.ElitaPlus.ElitaPlusWebApp.FieldSearchCriteriaControl
+    Protected WithEvents moBatchNumber As FieldSearchCriteriaControl
 
     '''<summary>
     '''moClaimNumber control.
@@ -92,7 +92,7 @@ Partial Public Class InvoiceSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moClaimNumber As Global.Assurant.ElitaPlus.ElitaPlusWebApp.FieldSearchCriteriaControl
+    Protected WithEvents moClaimNumber As FieldSearchCriteriaControl
 
     '''<summary>
     '''moAuthorizationNumber control.
@@ -101,7 +101,7 @@ Partial Public Class InvoiceSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moAuthorizationNumber As Global.Assurant.ElitaPlus.ElitaPlusWebApp.FieldSearchCriteriaControl
+    Protected WithEvents moAuthorizationNumber As FieldSearchCriteriaControl
 
     '''<summary>
     '''btnSearch control.
@@ -110,7 +110,7 @@ Partial Public Class InvoiceSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSearch As Button
 
     '''<summary>
     '''btnClear control.
@@ -119,7 +119,7 @@ Partial Public Class InvoiceSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnClear As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnClear As Button
 
     '''<summary>
     '''moSearchResults control.
@@ -128,7 +128,7 @@ Partial Public Class InvoiceSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moSearchResults As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents moSearchResults As HtmlGenericControl
 
     '''<summary>
     '''moSearchResultsHeader control.
@@ -137,7 +137,7 @@ Partial Public Class InvoiceSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moSearchResultsHeader As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moSearchResultsHeader As Label
 
     '''<summary>
     '''lblPageSize control.
@@ -146,7 +146,7 @@ Partial Public Class InvoiceSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPageSize As Label
 
     '''<summary>
     '''cboPageSize control.
@@ -155,7 +155,7 @@ Partial Public Class InvoiceSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboPageSize As DropDownList
 
     '''<summary>
     '''lblRecordCount control.
@@ -164,7 +164,7 @@ Partial Public Class InvoiceSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblRecordCount As Label
 
     '''<summary>
     '''moInvoiceRepeater control.
@@ -173,7 +173,7 @@ Partial Public Class InvoiceSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moInvoiceRepeater As Global.System.Web.UI.WebControls.Repeater
+    Protected WithEvents moInvoiceRepeater As Repeater
 
     '''<summary>
     '''btnAdd_WRITE control.
@@ -182,5 +182,5 @@ Partial Public Class InvoiceSearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnAdd_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnAdd_WRITE As Button
 End Class

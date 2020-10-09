@@ -11,7 +11,7 @@ Imports Assurant.ElitaPlus.BusinessObjectsNew.Doc
 
 Public Class PdfCreator
 
-    Public Function GetPdfDocument(ByVal id As Guid) As Document
+    Public Function GetPdfDocument(id As Guid) As Document
         Dim varDoc As Document
 
         Return varDoc

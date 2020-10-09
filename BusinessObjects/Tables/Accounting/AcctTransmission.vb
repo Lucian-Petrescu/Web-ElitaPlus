@@ -6,43 +6,43 @@ Public Class AcctTransmission
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid, ByVal OmitText As Boolean)
+    Public Sub New(id As Guid, OmitText As Boolean)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id, OmitText)
+        Dataset = New DataSet
+        Load(id, OmitText)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
@@ -50,14 +50,14 @@ Public Class AcctTransmission
         Try
             Dim dal As New AcctTransmissionDAL
 
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
 
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
 
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
 
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
@@ -66,28 +66,28 @@ Public Class AcctTransmission
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid, Optional ByVal OmitText As Boolean = True)
+    Protected Sub Load(id As Guid, Optional ByVal OmitText As Boolean = True)
         Try
             Dim dal As New AcctTransmissionDAL
 
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
 
-            Me.Row = Nothing
+            Row = Nothing
 
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
 
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id, OmitText)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id, OmitText)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
 
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -116,7 +116,7 @@ Public Class AcctTransmission
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(AcctTransmissionDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -127,7 +127,7 @@ Public Class AcctTransmission
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1000)> _
-    Public Property FileName() As String
+    Public Property FileName As String
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_FILE_NAME) Is DBNull.Value Then
@@ -136,13 +136,13 @@ Public Class AcctTransmission
                 Return CType(Row(AcctTransmissionDAL.COL_NAME_FILE_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransmissionDAL.COL_NAME_FILE_NAME, Value)
+            SetValue(AcctTransmissionDAL.COL_NAME_FILE_NAME, Value)
         End Set
     End Property
 
-    Public Property FileText() As String
+    Public Property FileText As String
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_FILE_TEXT) Is DBNull.Value Then
@@ -151,14 +151,14 @@ Public Class AcctTransmission
                 Return Row(AcctTransmissionDAL.COL_NAME_FILE_TEXT).ToString()
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransmissionDAL.COL_NAME_FILE_TEXT, Value)
+            SetValue(AcctTransmissionDAL.COL_NAME_FILE_TEXT, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)> _
-    Public Property JournalType() As String
+    Public Property JournalType As String
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_JOURNAL_TYPE) Is DBNull.Value Then
@@ -167,14 +167,14 @@ Public Class AcctTransmission
                 Return (CType(Row(AcctTransmissionDAL.COL_NAME_JOURNAL_TYPE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransmissionDAL.COL_NAME_JOURNAL_TYPE, Value)
+            SetValue(AcctTransmissionDAL.COL_NAME_JOURNAL_TYPE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property TransmissionDate() As DateType
+    Public Property TransmissionDate As DateType
         Get
             CheckDeleted()
             If row(AcctTransmissionDAL.COL_NAME_TRANSMISSION_DATE) Is DBNull.Value Then
@@ -183,13 +183,13 @@ Public Class AcctTransmission
                 Return New DateType(CType(row(AcctTransmissionDAL.COL_NAME_TRANSMISSION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransmissionDAL.COL_NAME_TRANSMISSION_DATE, Value)
+            SetValue(AcctTransmissionDAL.COL_NAME_TRANSMISSION_DATE, Value)
         End Set
     End Property
 
-    Public Property TransmissionReceived() As DateType
+    Public Property TransmissionReceived As DateType
         Get
             CheckDeleted()
             If row(AcctTransmissionDAL.COL_NAME_TRANSMISSION_RECEIVED) Is DBNull.Value Then
@@ -198,14 +198,14 @@ Public Class AcctTransmission
                 Return New DateType(CType(row(AcctTransmissionDAL.COL_NAME_TRANSMISSION_RECEIVED), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransmissionDAL.COL_NAME_TRANSMISSION_RECEIVED, Value)
+            SetValue(AcctTransmissionDAL.COL_NAME_TRANSMISSION_RECEIVED, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property TransmissionCount() As LongType
+    Public Property TransmissionCount As LongType
         Get
             CheckDeleted()
             If row(AcctTransmissionDAL.COL_NAME_TRANSMISSION_COUNT) Is DBNull.Value Then
@@ -214,14 +214,14 @@ Public Class AcctTransmission
                 Return New LongType(CType(row(AcctTransmissionDAL.COL_NAME_TRANSMISSION_COUNT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransmissionDAL.COL_NAME_TRANSMISSION_COUNT, Value)
+            SetValue(AcctTransmissionDAL.COL_NAME_TRANSMISSION_COUNT, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-      Public Property CompanyId() As Guid
+      Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -230,14 +230,14 @@ Public Class AcctTransmission
                 Return New Guid(CType(Row(AcctTransmissionDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransmissionDAL.COL_NAME_COMPANY_ID, Value)
+            SetValue(AcctTransmissionDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property DebitAmount() As Decimal
+    Public Property DebitAmount As Decimal
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_DEBIT_AMOUNT) Is DBNull.Value Then
@@ -246,14 +246,14 @@ Public Class AcctTransmission
                 Return CType(Row(AcctTransmissionDAL.COL_NAME_DEBIT_AMOUNT), Decimal)
             End If
         End Get
-        Set(ByVal Value As Decimal)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransmissionDAL.COL_NAME_DEBIT_AMOUNT, Value)
+            SetValue(AcctTransmissionDAL.COL_NAME_DEBIT_AMOUNT, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CreditAmount() As Decimal
+    Public Property CreditAmount As Decimal
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_CREDIT_AMOUNT) Is DBNull.Value Then
@@ -262,14 +262,14 @@ Public Class AcctTransmission
                 Return CType(Row(AcctTransmissionDAL.COL_NAME_CREDIT_AMOUNT), Decimal)
             End If
         End Get
-        Set(ByVal Value As Decimal)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransmissionDAL.COL_NAME_CREDIT_AMOUNT, Value)
+            SetValue(AcctTransmissionDAL.COL_NAME_CREDIT_AMOUNT, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=250)> _
-    Public Property RejectReason() As String
+    Public Property RejectReason As String
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_REJECT_REASON) Is DBNull.Value Then
@@ -278,13 +278,13 @@ Public Class AcctTransmission
                 Return (CType(Row(AcctTransmissionDAL.COL_NAME_REJECT_REASON), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransmissionDAL.COL_NAME_REJECT_REASON, Value)
+            SetValue(AcctTransmissionDAL.COL_NAME_REJECT_REASON, Value)
         End Set
     End Property
 
-    Public Property FileTypeFlag() As Integer
+    Public Property FileTypeFlag As Integer
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_FILE_TYPE_FLAG) Is DBNull.Value Then
@@ -293,13 +293,13 @@ Public Class AcctTransmission
                 Return CType(Row(AcctTransmissionDAL.COL_NAME_FILE_TYPE_FLAG), Integer)
             End If
         End Get
-        Set(ByVal value As Integer)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransmissionDAL.COL_NAME_FILE_TYPE_FLAG, value)
+            SetValue(AcctTransmissionDAL.COL_NAME_FILE_TYPE_FLAG, value)
         End Set
     End Property
 
-    Public Property FileSubTypeFlag() As Integer
+    Public Property FileSubTypeFlag As Integer
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_FILE_SUB_TYPE_FLAG) Is DBNull.Value Then
@@ -308,13 +308,13 @@ Public Class AcctTransmission
                 Return CType(Row(AcctTransmissionDAL.COL_NAME_FILE_SUB_TYPE_FLAG), Integer)
             End If
         End Get
-        Set(ByVal value As Integer)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransmissionDAL.COL_NAME_FILE_SUB_TYPE_FLAG, value)
+            SetValue(AcctTransmissionDAL.COL_NAME_FILE_SUB_TYPE_FLAG, value)
         End Set
     End Property
 
-    Public Property NumTransactionsSent() As Integer
+    Public Property NumTransactionsSent As Integer
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_NUM_TRANSACTIONS_SENT) Is DBNull.Value Then
@@ -323,13 +323,13 @@ Public Class AcctTransmission
                 Return CType(Row(AcctTransmissionDAL.COL_NAME_NUM_TRANSACTIONS_SENT), Integer)
             End If
         End Get
-        Set(ByVal value As Integer)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransmissionDAL.COL_NAME_NUM_TRANSACTIONS_SENT, value)
+            SetValue(AcctTransmissionDAL.COL_NAME_NUM_TRANSACTIONS_SENT, value)
         End Set
     End Property
 
-    Public Property NumTransactionsReceived() As Integer
+    Public Property NumTransactionsReceived As Integer
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_NUM_TRANSACTIONS_RECEIVED) Is DBNull.Value Then
@@ -338,13 +338,13 @@ Public Class AcctTransmission
                 Return CType(Row(AcctTransmissionDAL.COL_NAME_NUM_TRANSACTIONS_RECEIVED), Integer)
             End If
         End Get
-        Set(ByVal value As Integer)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransmissionDAL.COL_NAME_NUM_TRANSACTIONS_RECEIVED, value)
+            SetValue(AcctTransmissionDAL.COL_NAME_NUM_TRANSACTIONS_RECEIVED, value)
         End Set
     End Property
 
-    Public Property DebitAmountReceived() As Decimal
+    Public Property DebitAmountReceived As Decimal
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_DEBIT_AMOUNT_RECEIVED) Is DBNull.Value Then
@@ -353,13 +353,13 @@ Public Class AcctTransmission
                 Return CType(Row(AcctTransmissionDAL.COL_NAME_DEBIT_AMOUNT_RECEIVED), Decimal)
             End If
         End Get
-        Set(ByVal Value As Decimal)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransmissionDAL.COL_NAME_DEBIT_AMOUNT_RECEIVED, Value)
+            SetValue(AcctTransmissionDAL.COL_NAME_DEBIT_AMOUNT_RECEIVED, Value)
         End Set
     End Property
 
-    Public Property CreditAmountReceived() As Decimal
+    Public Property CreditAmountReceived As Decimal
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_CREDIT_AMOUNT_RECEIVED) Is DBNull.Value Then
@@ -368,13 +368,13 @@ Public Class AcctTransmission
                 Return CType(Row(AcctTransmissionDAL.COL_NAME_CREDIT_AMOUNT_RECEIVED), Decimal)
             End If
         End Get
-        Set(ByVal Value As Decimal)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransmissionDAL.COL_NAME_CREDIT_AMOUNT_RECEIVED, Value)
+            SetValue(AcctTransmissionDAL.COL_NAME_CREDIT_AMOUNT_RECEIVED, Value)
         End Set
     End Property
 
-    Public Property DateReceived() As DateType
+    Public Property DateReceived As DateType
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_DATE_RECEIVED) Is DBNull.Value Then
@@ -383,13 +383,13 @@ Public Class AcctTransmission
                 Return New DateType(CType(Row(AcctTransmissionDAL.COL_NAME_DATE_RECEIVED), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransmissionDAL.COL_NAME_DATE_RECEIVED, Value)
+            SetValue(AcctTransmissionDAL.COL_NAME_DATE_RECEIVED, Value)
         End Set
     End Property
 
-    Public Property BatchNumber() As String
+    Public Property BatchNumber As String
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_BATCH_NUMBER) Is DBNull.Value Then
@@ -398,13 +398,13 @@ Public Class AcctTransmission
                 Return (CType(Row(AcctTransmissionDAL.COL_NAME_BATCH_NUMBER), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransmissionDAL.COL_NAME_BATCH_NUMBER, Value)
+            SetValue(AcctTransmissionDAL.COL_NAME_BATCH_NUMBER, Value)
         End Set
     End Property
 
-    Public Property RejectReasonDetail() As String
+    Public Property RejectReasonDetail As String
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_REJECT_REASON_DETAIL) Is DBNull.Value Then
@@ -413,14 +413,14 @@ Public Class AcctTransmission
                 Return (CType(Row(AcctTransmissionDAL.COL_NAME_REJECT_REASON_DETAIL), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransmissionDAL.COL_NAME_REJECT_REASON_DETAIL, Value)
+            SetValue(AcctTransmissionDAL.COL_NAME_REJECT_REASON_DETAIL, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-      Public Property StatusId() As Guid
+      Public Property StatusId As Guid
         Get
             CheckDeleted()
             If Row(AcctTransmissionDAL.COL_NAME_STATUS_ID) Is DBNull.Value Then
@@ -429,9 +429,9 @@ Public Class AcctTransmission
                 Return New Guid(CType(Row(AcctTransmissionDAL.COL_NAME_STATUS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransmissionDAL.COL_NAME_STATUS_ID, Value)
+            SetValue(AcctTransmissionDAL.COL_NAME_STATUS_ID, Value)
         End Set
     End Property
 
@@ -447,27 +447,27 @@ Public Class AcctTransmission
             ' paramters in the DAL
             If Me.Row.RowState = DataRowState.Added Then
                 dal = New AcctTransmissionDAL
-                dal.InsertCustom(Me.Row, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
+                dal.InsertCustom(Row, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
                 'Reload the Data from the DB
-                Dim objId As Guid = Me.Id
-                Me.Dataset = New DataSet
-                Me.Row = Nothing
-                Me.Load(objId)
-            ElseIf Me.Row.RowState = DataRowState.Deleted Or Me.Row.RowState = DataRowState.Detached Then
+                Dim objId As Guid = Id
+                Dataset = New DataSet
+                Row = Nothing
+                Load(objId)
+            ElseIf Me.Row.RowState = DataRowState.Deleted OrElse Me.Row.RowState = DataRowState.Detached Then
                 dal = New AcctTransmissionDAL
                 Dim objId As Guid = New Guid(CType(Row(AcctTransmissionDAL.COL_NAME_ACCT_TRANSMISSION_ID, DataRowVersion.Original), Byte()))
-                dal.DeleteCustom(objId, LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), STATUS_CODE_DELETED))
+                dal.DeleteCustom(objId, LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), STATUS_CODE_DELETED))
             Else
                 MyBase.Save()
-                If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+                If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                     dal = New AcctTransmissionDAL
-                    dal.UpdateWithParam(Me.Row)
+                    dal.UpdateWithParam(Row)
                     'Reload the Data from the DB
-                    If Me.Row.RowState <> DataRowState.Detached Then
-                        Dim objId As Guid = Me.Id
-                        Me.Dataset = New DataSet
-                        Me.Row = Nothing
-                        Me.Load(objId)
+                    If Row.RowState <> DataRowState.Detached Then
+                        Dim objId As Guid = Id
+                        Dataset = New DataSet
+                        Row = Nothing
+                        Load(objId)
                     End If
                 End If
             End If
@@ -490,9 +490,9 @@ Public Class AcctTransmission
             ds = GetDataSet()
 
             If ds Is Nothing Then
-                Me.CreditAmount = 0
-                Me.DebitAmount = 0
-                Me.NumTransactionsSent = 0
+                CreditAmount = 0
+                DebitAmount = 0
+                NumTransactionsSent = 0
                 Exit Sub
             End If
 
@@ -502,7 +502,7 @@ Public Class AcctTransmission
                             OrElse ds.Tables(i).Columns.Contains(XML_FIELD_TOTALAMOUNT) Then
                     tblName = ds.Tables(i).TableName
 
-                    If Me.FileSubTypeFlag = FelitaEngine.FileSubType.CONTROL Then
+                    If FileSubTypeFlag = FelitaEngine.FileSubType.CONTROL Then
                         Exit For
                     Else
 
@@ -514,7 +514,7 @@ Public Class AcctTransmission
                         ElseIf ds.Tables(tblName).TableName = AcctTransLogDAL.Table_AP_INVOICE Then
                             _apFile = True
                         Else
-                            Me.RejectReason = TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.FILE_OUT_OF_BALANCE)
+                            RejectReason = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.FILE_OUT_OF_BALANCE)
                             Exit Sub
                         End If
 
@@ -525,54 +525,54 @@ Public Class AcctTransmission
             Next
 
             tbl = ds.Tables(tblName)
-            If Not tbl Is Nothing Then
+            If tbl IsNot Nothing Then
 
                 If tbl.Rows.Count = 0 Then
-                    Me.CreditAmount = 0
-                    Me.DebitAmount = 0
-                    Me.NumTransactionsSent = 0
+                    CreditAmount = 0
+                    DebitAmount = 0
+                    NumTransactionsSent = 0
                     Exit Sub
                 End If
 
                 tbl.Columns.Add(AcctTransLogDAL.COL_NAME_PAYMENT_AMOUNT, GetType(Decimal), If(_apFile, XML_FIELD_LINEAMOUNT, If(tblName.Equals("ControlRecord"), XML_FIELD_TOTALAMOUNT, XML_FIELD_TRANSACTIONAMOUNT)))
 
-                Me.NumTransactionsSent = tbl.Rows.Count
+                NumTransactionsSent = tbl.Rows.Count
 
                 If _apFile Then
-                    Me.DebitAmount = Math.Round(CType(tbl.Compute("sum(" & AcctTransLogDAL.COL_NAME_PAYMENT_AMOUNT & ")", ""), Decimal), 2)
-                    Me.CreditAmount = Me.DebitAmount
+                    DebitAmount = Math.Round(CType(tbl.Compute("sum(" & AcctTransLogDAL.COL_NAME_PAYMENT_AMOUNT & ")", ""), Decimal), 2)
+                    CreditAmount = DebitAmount
                     Exit Sub
-                ElseIf Me.FileSubTypeFlag = FelitaEngine.FileSubType.CONTROL Then
-                    Me.DebitAmount = Math.Round(CType(tbl.Compute("sum(" & AcctTransLogDAL.COL_NAME_PAYMENT_AMOUNT & ")", ""), Decimal), 2)
-                    Me.CreditAmount = Me.DebitAmount
+                ElseIf FileSubTypeFlag = FelitaEngine.FileSubType.CONTROL Then
+                    DebitAmount = Math.Round(CType(tbl.Compute("sum(" & AcctTransLogDAL.COL_NAME_PAYMENT_AMOUNT & ")", ""), Decimal), 2)
+                    CreditAmount = DebitAmount
                     Exit Sub
                 ElseIf tbl.Compute(String.Format("Count({0})", dcField), String.Format("{0} = 'C'", dcField)) Is DBNull.Value OrElse tbl.Compute(String.Format("Count({0})", dcField), String.Format("{0} = 'C'", dcField)) = 0 Then
-                    Me.CreditAmount = 0
+                    CreditAmount = 0
                 Else
-                    Me.CreditAmount = Math.Round(CType(tbl.Compute("sum(" & AcctTransLogDAL.COL_NAME_PAYMENT_AMOUNT & ")", String.Format("{0} = 'C'", dcField)), Decimal), 2)
+                    CreditAmount = Math.Round(CType(tbl.Compute("sum(" & AcctTransLogDAL.COL_NAME_PAYMENT_AMOUNT & ")", String.Format("{0} = 'C'", dcField)), Decimal), 2)
                     If _smartStream Then
-                        Me.CreditAmount = Math.Abs(Me.CreditAmount)
+                        CreditAmount = Math.Abs(CreditAmount)
                     End If
                 End If
 
                 If tbl.Compute(String.Format("Count({0})", dcField), String.Format("{0} = 'D'", dcField)) Is DBNull.Value OrElse tbl.Compute(String.Format("Count({0})", dcField), String.Format("{0} = 'D'", dcField)) = 0 Then
-                    Me.DebitAmount = 0
+                    DebitAmount = 0
                 Else
-                    Me.DebitAmount = Math.Round(CType(tbl.Compute("sum(" & AcctTransLogDAL.COL_NAME_PAYMENT_AMOUNT & ")", String.Format("{0} = 'D'", dcField)), Decimal), 2)
+                    DebitAmount = Math.Round(CType(tbl.Compute("sum(" & AcctTransLogDAL.COL_NAME_PAYMENT_AMOUNT & ")", String.Format("{0} = 'D'", dcField)), Decimal), 2)
                 End If
 
-                If Me.CreditAmount <> Me.DebitAmount Then
-                    Me.RejectReason = TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.FILE_OUT_OF_BALANCE)
+                If CreditAmount <> DebitAmount Then
+                    RejectReason = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.FILE_OUT_OF_BALANCE)
                 End If
 
             Else
-                Me.CreditAmount = 0
-                Me.DebitAmount = 0
-                Me.NumTransactionsSent = 0
+                CreditAmount = 0
+                DebitAmount = 0
+                NumTransactionsSent = 0
             End If
 
         Catch ex As Exception
-            Me.RejectReason = TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.FILE_OUT_OF_BALANCE)
+            RejectReason = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.FILE_OUT_OF_BALANCE)
         End Try
 
     End Sub
@@ -582,12 +582,12 @@ Public Class AcctTransmission
         Dim ds As New DataSet
 
         'If xml is found, fill the dataset with 
-        If Me.FileText.ToString.ToLower.Contains(String.Format("<{0}>", XML_FIELD_TRANSACTIONAMOUNT)) _
-            OrElse Me.FileText.ToString.ToLower.Contains(String.Format("<{0}>", XML_FIELD_LINEAMOUNT)) _
-            OrElse Me.FileText.ToString.ToLower.Contains(String.Format("<{0}>", XML_FIELD_TOTALAMOUNT.ToLower)) Then
+        If FileText.ToString.ToLower.Contains(String.Format("<{0}>", XML_FIELD_TRANSACTIONAMOUNT)) _
+            OrElse FileText.ToString.ToLower.Contains(String.Format("<{0}>", XML_FIELD_LINEAMOUNT)) _
+            OrElse FileText.ToString.ToLower.Contains(String.Format("<{0}>", XML_FIELD_TOTALAMOUNT.ToLower)) Then
 
-            Dim txtRead As System.IO.TextReader = New System.IO.StringReader(Me.FileText)
-            Dim xlr As System.Xml.XmlReader = System.Xml.XmlReader.Create(txtRead)
+            Dim txtRead As System.IO.TextReader = New System.IO.StringReader(FileText)
+            Dim xlr As System.Xml.XmlReader = Xml.XmlReader.Create(txtRead)
 
             ds.ReadXml(xlr)
 
@@ -624,20 +624,20 @@ Public Class AcctTransmission
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
 
-    Public Shared Function GetFailures(ByVal CompanyId As Guid) As AcctTransmissionSearchDV
+    Public Shared Function GetFailures(CompanyId As Guid) As AcctTransmissionSearchDV
 
         Try
             Dim _acctTransDAL As New AcctTransmissionDAL
             Dim _arrStatus As New ArrayList
 
-            _arrStatus.Add(LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), AcctTransmission.STATUS_CODE_PENDING))
-            _arrStatus.Add(LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), AcctTransmission.STATUS_CODE_FAILED))
+            _arrStatus.Add(LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), STATUS_CODE_PENDING))
+            _arrStatus.Add(LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), STATUS_CODE_FAILED))
 
             Return New AcctTransmissionSearchDV(_acctTransDAL.LoadList(CompanyId, _arrStatus, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False).Tables(0))
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -646,43 +646,43 @@ Public Class AcctTransmission
 
     End Function
 
-    Public Shared Function GetAssociatedFailures(ByVal ParentFileName As String, ByVal ParentBatchNumber As String) As AcctTransmissionSearchDV
+    Public Shared Function GetAssociatedFailures(ParentFileName As String, ParentBatchNumber As String) As AcctTransmissionSearchDV
 
         Try
             Dim _acctTransDAL As New AcctTransmissionDAL
-            Return New AcctTransmissionSearchDV(_acctTransDAL.LoadList(ParentFileName, ParentBatchNumber, TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.FTP_FAILURE), LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), STATUS_CODE_DELETED), ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
+            Return New AcctTransmissionSearchDV(_acctTransDAL.LoadList(ParentFileName, ParentBatchNumber, TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.FTP_FAILURE), LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), STATUS_CODE_DELETED), ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
 
     End Function
 
-    Public Shared Function GetFilesForReversal(ByVal CompanyId As Guid, ByRef StartDate As Date, ByRef EndDate As Date) As AcctTransmissionSearchDV
+    Public Shared Function GetFilesForReversal(CompanyId As Guid, ByRef StartDate As Date, ByRef EndDate As Date) As AcctTransmissionSearchDV
 
         Try
             Dim _acctTransDAL As New AcctTransmissionDAL
-            Return New AcctTransmissionSearchDV(_acctTransDAL.LoadList(CompanyId, StartDate, EndDate, String.Empty, LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), STATUS_CODE_DELETED), ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
+            Return New AcctTransmissionSearchDV(_acctTransDAL.LoadList(CompanyId, StartDate, EndDate, String.Empty, LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), STATUS_CODE_DELETED), ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
 
     End Function
 
-    Public Shared Function GetFilesForReversal(ByVal CompanyId As Guid, _
+    Public Shared Function GetFilesForReversal(CompanyId As Guid, _
                                                 ByRef BatchNumber As String) As AcctTransmissionSearchDV
 
         Try
             Dim _acctTransDAL As New AcctTransmissionDAL
-            Return New AcctTransmissionSearchDV(_acctTransDAL.LoadList(CompanyId, Date.MinValue, Date.MinValue, BatchNumber, LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), STATUS_CODE_DELETED), ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
+            Return New AcctTransmissionSearchDV(_acctTransDAL.LoadList(CompanyId, Date.MinValue, Date.MinValue, BatchNumber, LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), STATUS_CODE_DELETED), ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
 
     End Function
 
-    Public Shared Function GetTransmissionsForReport(ByVal CompanyId As Guid, _
-                                                     ByVal FileName As String, _
-                                                     ByVal AcctTransmissionId As Guid) As AcctTransmissionSearchDV
+    Public Shared Function GetTransmissionsForReport(CompanyId As Guid, _
+                                                     FileName As String, _
+                                                     AcctTransmissionId As Guid) As AcctTransmissionSearchDV
 
         Try
             Dim _acctTransDAL As New AcctTransmissionDAL
@@ -697,7 +697,7 @@ Public Class AcctTransmission
 
 #Region "XML Migration Methods"
 
-    Public Shared Sub MigrateTransmissions(ByVal rowcount As Integer, ByVal modified_by As String)
+    Public Shared Sub MigrateTransmissions(rowcount As Integer, modified_by As String)
         Try
             Dim _acctTransDAL As New AcctTransmissionDAL
             _acctTransDAL.MigrateXML(rowcount, modified_by)

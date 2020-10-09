@@ -47,27 +47,27 @@ Public Class DealerPmtReconWrkDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("dealer_pmt_recon_wrk_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal dealerfileProcessedID As Guid, ByVal languageID As Guid, ByVal recordMode As String, _
-                                        ByVal parentFile As String) As DataSet
+    Public Function LoadList(dealerfileProcessedID As Guid, languageID As Guid, recordMode As String, _
+                                        parentFile As String) As DataSet
 
         Dim selectStmt As String
         Dim parameters() As OracleParameter
         If parentFile = "N" Then
-            selectStmt = Me.Config("/SQL/LOAD_LIST")
+            selectStmt = Config("/SQL/LOAD_LIST")
             parameters = New OracleParameter() {New OracleParameter("language_id", languageID.ToByteArray), _
                                                 New OracleParameter(COL_NAME_DEALERFILE_PROCESSED_ID, dealerfileProcessedID.ToByteArray), _
                                                 New OracleParameter("p_recordMode", recordMode), _
@@ -75,7 +75,7 @@ Public Class DealerPmtReconWrkDAL
                                                 New OracleParameter("p_recordMode", recordMode), _
                                                 New OracleParameter("p_recordMode", recordMode)}
         Else
-            selectStmt = Me.Config("/SQL/LOAD_LIST_FOR_PARENT")
+            selectStmt = Config("/SQL/LOAD_LIST_FOR_PARENT")
             parameters = New OracleParameter() {New OracleParameter("language_id", languageID.ToByteArray), _
                                                 New OracleParameter(COL_NAME_DEALERFILE_PROCESSED_ID, dealerfileProcessedID.ToByteArray), _
                                                 New OracleParameter(COL_NAME_DEALERFILE_PROCESSED_ID, dealerfileProcessedID.ToByteArray), _
@@ -86,21 +86,21 @@ Public Class DealerPmtReconWrkDAL
         End If
  
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Function LoadRejectList(ByVal dealerfileProcessedID As Guid) As DataSet
+    Public Function LoadRejectList(dealerfileProcessedID As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_REJECT_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_REJECT_LIST")
         Dim parameters() As OracleParameter
         parameters = New OracleParameter() _
                                     {New OracleParameter(COL_NAME_DEALERFILE_PROCESSED_ID, dealerfileProcessedID.ToByteArray)}
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -111,9 +111,9 @@ Public Class DealerPmtReconWrkDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

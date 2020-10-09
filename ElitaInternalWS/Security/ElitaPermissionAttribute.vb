@@ -13,7 +13,7 @@ Namespace Security
             End Get
         End Property
 
-        Public Sub New(ByVal permissionCode As String)
+        Public Sub New(permissionCode As String)
 
             If ((permissionCode Is Nothing) OrElse (permissionCode.Trim().Length = 0)) Then
                 Throw New ArgumentNullException("permissionCode")

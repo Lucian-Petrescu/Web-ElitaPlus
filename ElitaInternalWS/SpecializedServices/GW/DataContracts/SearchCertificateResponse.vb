@@ -13,7 +13,7 @@ Namespace SpecializedServices.GW
         <DataMember(Name:="Certificates")>
         Public Property Certificates As IEnumerable(Of SearchResultCertificateInfo)
 
-        Friend Sub Populate(ByVal pSearchResult As Collections.Generic.IEnumerable(Of Certificate),
+        Friend Sub Populate(pSearchResult As Collections.Generic.IEnumerable(Of Certificate),
                             ByRef pCertManager As ICertificateManager,
                             ByRef pCompanyGroupManager As ICompanyGroupManager,
                             ByRef pcompanyManager As ICompanyManager,
@@ -22,13 +22,13 @@ Namespace SpecializedServices.GW
                             ByRef pCountryManager As ICountryManager,
                             ByRef pEquipmentManager As EquipmentManager,
                             ByRef pCommonManager As ICommonManager,
-                            ByVal pLanguage As String,
+                            pLanguage As String,
                             Optional ByVal pCurrency As Currency = Nothing)
 
-            Me.Certificates = New List(Of SearchResultCertificateInfo)()
+            Certificates = New List(Of SearchResultCertificateInfo)()
 
             For Each cert As Certificate In pSearchResult
-                DirectCast(Me.Certificates, IList(Of SearchResultCertificateInfo)).Add(New SearchResultCertificateInfo(cert, pCertManager, pCompanyGroupManager, pcompanyManager, pDealerManager, pCountryManager, pAddressManager, pCommonManager, pEquipmentManager, pLanguage))
+                DirectCast(Certificates, IList(Of SearchResultCertificateInfo)).Add(New SearchResultCertificateInfo(cert, pCertManager, pCompanyGroupManager, pcompanyManager, pDealerManager, pCountryManager, pAddressManager, pCommonManager, pEquipmentManager, pLanguage))
             Next
 
         End Sub

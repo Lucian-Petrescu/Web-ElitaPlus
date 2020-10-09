@@ -1,15 +1,15 @@
 ﻿Public Class OcTemplateList
     Inherits BusinessObjectListBase
 
-    Public Sub New(ByVal parent As OcTemplateGroup)
+    Public Sub New(parent As OcTemplateGroup)
         MyBase.New(LoadTable(parent), GetType(OcTemplate), parent)
     End Sub
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, OcTemplate).OcTemplateGroupId.Equals(CType(Parent, OcTemplateGroup).Id)
     End Function
 
-    Public Function Find(ByVal templateId As Guid) As OcTemplate
+    Public Function Find(templateId As Guid) As OcTemplate
         Dim bo As OcTemplate
         For Each bo In Me
             If bo.Id.Equals(templateId) Then Return bo
@@ -18,7 +18,7 @@
     End Function
 
 #Region "Class Methods"
-    Private Shared Function LoadTable(ByVal parent As OcTemplateGroup) As DataTable
+    Private Shared Function LoadTable(parent As OcTemplateGroup) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(OcTemplateList)) Then
                 Dim dal As New OcTemplateDAL

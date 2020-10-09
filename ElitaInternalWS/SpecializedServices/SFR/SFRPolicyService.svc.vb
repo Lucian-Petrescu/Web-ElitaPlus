@@ -10,13 +10,13 @@ Namespace SpecializedServices.SFR
 
          Private Property CertificateManager As ICertificateManager
        
-        Public Sub New(ByVal pCertificateManager As ICertificateManager)
+        Public Sub New(pCertificateManager As ICertificateManager)
 
             If (pCertificateManager Is Nothing) Then
                 Throw New ArgumentNullException("pCertificateManager")
             End If
            
-            Me.CertificateManager = pCertificateManager
+            CertificateManager = pCertificateManager
            
         End Sub
 

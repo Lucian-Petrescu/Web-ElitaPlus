@@ -3,7 +3,7 @@ Imports Assurant.ElitaPlus.Common
 
 
 
-<Serializable()> Public NotInheritable Class BOValidationException
+<Serializable> Public NotInheritable Class BOValidationException
     Inherits ElitaPlusException
 
     Private errorList() As ValidationError
@@ -15,7 +15,7 @@ Imports Assurant.ElitaPlus.Common
 #Region " Constructors "
 
 
-    Public Sub New(ByVal validationErrors() As ValidationError, ByVal businessObjectName As String, _
+    Public Sub New(validationErrors() As ValidationError, businessObjectName As String, _
     Optional ByVal sUniqueId As String = "")
         MyBase.New("Validation Errors Found at BO: " & businessObjectName, ErrorCodes.BO_INVALID_DATA)
         Dim err As Assurant.Common.Validation.ValidationError
@@ -24,11 +24,11 @@ Imports Assurant.ElitaPlus.Common
         UniqueId = sUniqueId
         For Each err In validationErrors
             sProperties &= " Property: " & err.PropertyName()
-            If Not err.OffendingValue Is Nothing Then
+            If err.OffendingValue IsNot Nothing Then
                 sProperties &= " Value =" & err.OffendingValue.ToString & "="
             End If
         Next
-        Me.Header &= sProperties
+        Header &= sProperties
         errorList = validationErrors
         boName = businessObjectName
 
@@ -40,16 +40,16 @@ Imports Assurant.ElitaPlus.Common
     End Sub
 
 
-    Public Sub New(ByVal message As String, Optional ByVal innerException As Exception = Nothing)
+    Public Sub New(message As String, Optional ByVal innerException As Exception = Nothing)
         MyBase.New("Validation Errors Found at BO", ErrorCodes.BO_INVALID_DATA, innerException)
     End Sub
 
 
-    Protected Sub New(ByVal info As SerializationInfo, ByVal context As StreamingContext)
+    Protected Sub New(info As SerializationInfo, context As StreamingContext)
         MyBase.New(info, context)
     End Sub
 
-    Public Sub New(ByVal message As String, ByVal errorCode As String, Optional ByVal innerException As Exception = Nothing)
+    Public Sub New(message As String, errorCode As String, Optional ByVal innerException As Exception = Nothing)
         MyBase.New(message, errorCode, innerException)
     End Sub
 
@@ -58,18 +58,18 @@ Imports Assurant.ElitaPlus.Common
 
 
 
-    Public ReadOnly Property BusinessObjectName() As String
+    Public ReadOnly Property BusinessObjectName As String
         Get
-            Return Me.boName
+            Return boName
         End Get
     End Property
 
 
-    Public Property UniqueId() As String
+    Public Property UniqueId As String
         Get
             Return sUniqueId
         End Get
-        Set(ByVal Value As String)
+        Set
             sUniqueId = Value
         End Set
     End Property

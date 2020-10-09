@@ -8,7 +8,7 @@ Namespace Interfaces
 
 #Region "Page State"
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
            
             TheDealerController.SetErrorController(UserControlMessageController)
             TheDealerController.Page_PageReturn(ReturnFromUrl, ReturnPar)
@@ -42,7 +42,7 @@ Namespace Interfaces
         Public ReadOnly Property UserControlMessageController() As MessageController
             Get
                 If MessageController Is Nothing Then
-                    MessageController = DirectCast(Me.MasterPage.MessageController, MessageController)
+                    MessageController = DirectCast(MasterPage.MessageController, MessageController)
                 End If
                 Return MessageController
             End Get
@@ -73,7 +73,7 @@ Namespace Interfaces
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -82,25 +82,25 @@ Namespace Interfaces
 #End Region
 
 #Region "Handlers-Init"
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-            Me.UserControlMessageController.Clear_Hide()
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+            UserControlMessageController.Clear_Hide()
             TheDealerController.SetErrorController(UserControlMessageController)
 
             GetDealerUserControlElements()
 
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     If mbIsPageReturn = False Then
-                        If Not moDealerFileRadio Is Nothing Then
+                        If moDealerFileRadio IsNot Nothing Then
                             moDealerFileRadio.Checked = True
                         End If
-                        If Not moParentFileRadio Is Nothing Then
+                        If moParentFileRadio IsNot Nothing Then
                             moParentFileRadio.Checked = False
                         End If
                     End If
-                    Me.MasterPage.MessageController.Clear()
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Interfaces")
+                    MasterPage.MessageController.Clear()
+                    MasterPage.UsePageTabTitleInBreadCrum = False
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Interfaces")
                     UpdateBreadCrum()
 
                     If mbIsPageReturn = False Then
@@ -110,16 +110,16 @@ Namespace Interfaces
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            If mbIsPageReturn = False Then Me.ShowMissingTranslations(Me.MessageController)
+            If mbIsPageReturn = False Then ShowMissingTranslations(MessageController)
             TheDealerController.InstallInterfaceProgressBar()
         End Sub
 #End Region
 
 #Region "Events-Handlers"
 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As MultipleColumnDDLabelControl_New) _
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As MultipleColumnDDLabelControl_New) _
                 Handles moDealerMultipleDrop.SelectedDropChanged
             Try
                 TheDealerController.ClearDealerGroupSelection()
@@ -130,21 +130,21 @@ Namespace Interfaces
                 'End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Private Sub OnParentFileRadio_Checked(ByVal dlrfile As DealerFileProcessedController_New) Handles moDealerController.CheckedChanged
+        Private Sub OnParentFileRadio_Checked(dlrfile As DealerFileProcessedController_New) Handles moDealerController.CheckedChanged
             Try
                 TheDealerController.ClearDealerGroupSelection()
                 TheDealerController.ClearDealerSelection()
                 TheDealerController.PopulateDealerInterface()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
      
-        Private Sub OnDealerGrpDrop_Changed(ByVal fromMultipleDrop As MultipleColumnDDLabelControl_New) _
+        Private Sub OnDealerGrpDrop_Changed(fromMultipleDrop As MultipleColumnDDLabelControl_New) _
                 Handles moDealerGroupMultipleDrop.SelectedDropChanged
             Try
                 TheDealerController.ClearDealerSelection()
@@ -155,7 +155,7 @@ Namespace Interfaces
                 'End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -166,8 +166,8 @@ Namespace Interfaces
         Private Sub UpdateBreadCrum()
             '  If (Not Me.State Is Nothing) Then
             'If (Not Me.State Is Nothing) Then
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("DEALER_FILE")
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("DEALER_FILE")
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("DEALER_FILE")
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("DEALER_FILE")
             'End If
             'End If
         End Sub

@@ -34,8 +34,8 @@ Public Class CancelCreditCardAuthVSCBrazil
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As CancelCreditCardAuthVSCBrazilDs, ByVal xml As String, _
-                   ByVal functionToProcess As String)
+    Public Sub New(ds As CancelCreditCardAuthVSCBrazilDs, xml As String, _
+                   functionToProcess As String)
         MyBase.New()
         InputXml = xml
         FuncToProc = functionToProcess
@@ -56,20 +56,20 @@ Public Class CancelCreditCardAuthVSCBrazil
 
 #Region "Properties"
 
-    Private Property InputXml() As String
+    Private Property InputXml As String
         Get
             Return msInputXml
         End Get
-        Set(ByVal value As String)
+        Set
             msInputXml = value
         End Set
     End Property
 
-    Private Property FuncToProc() As String
+    Private Property FuncToProc As String
         Get
             Return msFunctionToProcess
         End Get
-        Set(ByVal value As String)
+        Set
             msFunctionToProcess = value
         End Set
     End Property
@@ -94,7 +94,7 @@ Public Class CancelCreditCardAuthVSCBrazil
         bind.MaxBufferPoolSize = 524288
         bind.MaxReceivedMessageSize = 65536
         bind.MessageEncoding = WSMessageEncoding.Text
-        bind.TextEncoding = Text.Encoding.UTF8
+        bind.TextEncoding = Encoding.UTF8
         bind.TransferMode = TransferMode.Buffered
         bind.UseDefaultWebProxy = True
         ' readerQuotas
@@ -114,7 +114,7 @@ Public Class CancelCreditCardAuthVSCBrazil
 
         Return bind
     End Function
-    Private Shared Function Get_EndPoint(ByVal url As String) As EndpointAddress
+    Private Shared Function Get_EndPoint(url As String) As EndpointAddress
         Dim eab As EndpointAddressBuilder
 
         eab = New EndpointAddressBuilder
@@ -123,7 +123,7 @@ Public Class CancelCreditCardAuthVSCBrazil
         Return eab.ToEndpointAddress
     End Function
 
-    Private Shared Function Get_ServiceClient(ByVal url As String) As VSCBrazilCreditCardAuth.ServicoCobrancaAssurantClient
+    Private Shared Function Get_ServiceClient(url As String) As VSCBrazilCreditCardAuth.ServicoCobrancaAssurantClient
         Dim bind As BasicHttpBinding
         Dim ea As EndpointAddress
         Dim sc As VSCBrazilCreditCardAuth.ServicoCobrancaAssurantClient
@@ -160,7 +160,7 @@ Public Class CancelCreditCardAuthVSCBrazil
             If Not tempTransId.Equals(Guid.Empty) Then
                 Dim transObj As TransactionLogHeader = New TransactionLogHeader(tempTransId)
                 InputXml = transObj.TransactionXml
-                If Not InputXml Is Nothing Then
+                If InputXml IsNot Nothing Then
                     InputXml = InputXml.Replace("<?xml version='1.0' encoding='utf-8' ?>", "")
                 End If
             End If
@@ -206,7 +206,7 @@ Public Class CancelCreditCardAuthVSCBrazil
 
     End Function
 
-    Private Shared Function CreateArrayFromXMLInpout(ByVal xmlinput As String) As ArrayList
+    Private Shared Function CreateArrayFromXMLInpout(xmlinput As String) As ArrayList
         Dim xmlDoc As XmlDocument
         Dim reader As XmlTextReader
         Dim Inputarray As New ArrayList
@@ -230,8 +230,8 @@ Public Class CancelCreditCardAuthVSCBrazil
 
     End Function
 
-    Private Function GetResponseXML(ByVal blnSuccess As Boolean, ByVal strAuthNum As String, _
-                                   ByVal strRejectCode As String, ByVal strRejectMsg As String) As String
+    Private Function GetResponseXML(blnSuccess As Boolean, strAuthNum As String, _
+                                   strRejectCode As String, strRejectMsg As String) As String
 
         Dim objDoc As New Xml.XmlDocument
         Dim objRoot As Xml.XmlElement

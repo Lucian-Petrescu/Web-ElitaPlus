@@ -11,7 +11,7 @@ Namespace Generic
         Implements Generic.IGenericWcf
 
 #Region "Operations"
-        Public Function Hello(ByVal name As String) As String Implements IGenericWcf.Hello
+        Public Function Hello(name As String) As String Implements IGenericWcf.Hello
             Dim sRet As String
 
             sRet = MyBase.Hello(name)
@@ -25,17 +25,17 @@ Namespace Generic
             Return sRet
         End Function
 
-        Public Function LoginBody(ByVal networkID As String, ByVal password As String, _
-                        ByVal group As String) As String Implements IGenericWcf.LoginBody
+        Public Function LoginBody(networkID As String, password As String, _
+                        group As String) As String Implements IGenericWcf.LoginBody
             Dim sRet As String
 
             sRet = MyBase.LoginBody(networkID, password, group)
             Return sRet
         End Function
 
-        Public Function ProcessRequest(ByVal token As String, _
-                                    ByVal functionToProcess As String, _
-                                    ByVal xmlStringDataIn As String) As String _
+        Public Function ProcessRequest(token As String, _
+                                    functionToProcess As String, _
+                                    xmlStringDataIn As String) As String _
                                         Implements IGenericWcf.ProcessRequest
             Dim sRet As String
 

@@ -24,7 +24,7 @@ Partial Public Class WcfTestForm
 
 #Region "State"
 
-    Private Sub SetState(ByVal elitaToken As String)
+    Private Sub SetState(elitaToken As String)
         moState = New MyState
         moState.elitaToken = elitaToken
         Session(VSC_TEST_SESSION) = moState
@@ -40,8 +40,8 @@ Partial Public Class WcfTestForm
 
 #Region "Handlers-Init"
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If Not Me.IsPostBack Then
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        If Not IsPostBack Then
             InstallValidateCert()
         End If
     End Sub
@@ -50,7 +50,7 @@ Partial Public Class WcfTestForm
 
 #Region "Handler-Buttons"
 
-    Protected Sub helloBtn_Click(ByVal sender As Object, ByVal e As EventArgs) Handles helloBtn.Click
+    Protected Sub helloBtn_Click(sender As Object, e As EventArgs) Handles helloBtn.Click
         ' Dim wcfTestServer As New OlitaWcfRef.OlitaWcfClient
         ' Dim wcfTestServer As New GalaxyWcfRef.GalaxyWcfClient
         Dim wcfTestServer As New TestWcfRef.WcfTestClient
@@ -77,7 +77,7 @@ Partial Public Class WcfTestForm
 
     End Sub
 
-    Private Shared Function Get_EndPoint(ByVal url As String) As EndpointAddress
+    Private Shared Function Get_EndPoint(url As String) As EndpointAddress
         Dim eab As EndpointAddressBuilder
 
         eab = New EndpointAddressBuilder
@@ -87,7 +87,7 @@ Partial Public Class WcfTestForm
     End Function
 
     ' LoginBody
-    Protected Sub LoginButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles LoginButton.Click
+    Protected Sub LoginButton_Click(sender As Object, e As EventArgs) Handles LoginButton.Click
         ' Dim wcfTestServer As New OlitaWcfRef.OlitaWcfClient
         ' Dim wcfTestServer As New GalaxyWcfRef.GalaxyWcfClient
         Dim wcfTestServer As New TestWcfRef.WcfTestClient
@@ -140,13 +140,13 @@ Partial Public Class WcfTestForm
     'End Sub
 
 
-    Protected Sub ProcessReqBtn_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ProcessReqBtn.Click
+    Protected Sub ProcessReqBtn_Click(sender As Object, e As EventArgs) Handles ProcessReqBtn.Click
         '  Dim wcfTestServer As New OlitaWcfRef.OlitaWcfClient
         '  Dim wcfTestServer As New GalaxyWcfRef.GalaxyWcfClient
         Dim wcfTestServer As New TestWcfRef.WcfTestClient
         Dim elitaToken, funcToProc, dataIn, serviceName, result As String
 
-        Me.GetState()
+        GetState()
         elitaToken = moState.elitaToken
         'funcToProc = "GetCertUsingTranNo"
         'dataIn = "<OlitaGetCert><dealer>V0001</dealer><cert_number>*</cert_number></OlitaGetCert>"
@@ -177,7 +177,7 @@ Partial Public Class WcfTestForm
 
 #Region "Soap Header"
 
-    Private Sub ConfigureLoginHeader(ByVal wcfTestServer As TestWcfRef.WcfTestClient)
+    Private Sub ConfigureLoginHeader(wcfTestServer As TestWcfRef.WcfTestClient)
         Dim complexUsername As String
         ' Dim passwordEquivalent As String
         Dim group As String = "InternalUsers"
@@ -189,8 +189,8 @@ Partial Public Class WcfTestForm
         wcfTestServer.ClientCredentials.UserName.Password = passwordTextBox.Text
     End Sub
 
-    Private Sub ConfigureProcHeader(ByVal wcfTestServer As TestWcfRef.WcfTestClient, _
-                                        ByVal elitaToken As String)
+    Private Sub ConfigureProcHeader(wcfTestServer As TestWcfRef.WcfTestClient, _
+                                        elitaToken As String)
 
         wcfTestServer.ClientCredentials.UserName.UserName = "Token"
         wcfTestServer.ClientCredentials.UserName.Password = elitaToken
@@ -210,10 +210,10 @@ Partial Public Class WcfTestForm
                                     AddressOf WcfTestForm.validateCertificate)
     End Sub
 
-    Public Shared Function validateCertificate(ByVal sender As Object, _
-        ByVal cert As System.Security.Cryptography.X509Certificates.X509Certificate, _
-        ByVal chain As System.Security.Cryptography.X509Certificates.X509Chain, _
-        ByVal oError As System.Net.Security.SslPolicyErrors) As Boolean
+    Public Shared Function validateCertificate(sender As Object, _
+        cert As System.Security.Cryptography.X509Certificates.X509Certificate, _
+        chain As System.Security.Cryptography.X509Certificates.X509Chain, _
+        oError As System.Net.Security.SslPolicyErrors) As Boolean
 
         Dim isValid As Boolean = False
         If (oError = Net.Security.SslPolicyErrors.None) Then

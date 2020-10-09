@@ -12,48 +12,48 @@ Public Class VSCRateVersion
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load(id)
+        Dataset = New Dataset
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load()
+        Dataset = New Dataset
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New VSCRateVersionDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -61,23 +61,23 @@ Public Class VSCRateVersion
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New VSCRateVersionDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -96,7 +96,7 @@ Public Class VSCRateVersion
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(VSCRateVersionDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -107,7 +107,7 @@ Public Class VSCRateVersion
     End Property
 
     <ValueMandatory("")> _
-    Public Property VscPlanId() As Guid
+    Public Property VscPlanId As Guid
         Get
             CheckDeleted()
             If Row(VSCRateVersionDAL.COL_NAME_VSC_PLAN_ID) Is DBNull.Value Then
@@ -116,13 +116,13 @@ Public Class VSCRateVersion
                 Return New Guid(CType(Row(VSCRateVersionDAL.COL_NAME_VSC_PLAN_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCRateVersionDAL.COL_NAME_VSC_PLAN_ID, Value)
+            SetValue(VSCRateVersionDAL.COL_NAME_VSC_PLAN_ID, Value)
         End Set
     End Property
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(VSCRateVersionDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -131,13 +131,13 @@ Public Class VSCRateVersion
                 Return New Guid(CType(Row(VSCRateVersionDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCRateVersionDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(VSCRateVersionDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
-    Public Property DealerGroupId() As Guid
+    Public Property DealerGroupId As Guid
         Get
             CheckDeleted()
             If Row(VSCRateVersionDAL.COL_NAME_DEALER_GROUP_ID) Is DBNull.Value Then
@@ -146,14 +146,14 @@ Public Class VSCRateVersion
                 Return New Guid(CType(Row(VSCRateVersionDAL.COL_NAME_DEALER_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCRateVersionDAL.COL_NAME_DEALER_GROUP_ID, Value)
+            SetValue(VSCRateVersionDAL.COL_NAME_DEALER_GROUP_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property VersionNumber() As LongType
+    Public Property VersionNumber As LongType
         Get
             CheckDeleted()
             If Row(VSCRateVersionDAL.COL_NAME_VERSION_NUMBER) Is DBNull.Value Then
@@ -162,14 +162,14 @@ Public Class VSCRateVersion
                 Return New LongType(CType(Row(VSCRateVersionDAL.COL_NAME_VERSION_NUMBER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCRateVersionDAL.COL_NAME_VERSION_NUMBER, Value)
+            SetValue(VSCRateVersionDAL.COL_NAME_VERSION_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property EffectiveDate() As DateType
+    Public Property EffectiveDate As DateType
         Get
             CheckDeleted()
             If Row(VSCRateVersionDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -178,14 +178,14 @@ Public Class VSCRateVersion
                 Return New DateType(CType(Row(VSCRateVersionDAL.COL_NAME_EFFECTIVE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCRateVersionDAL.COL_NAME_EFFECTIVE_DATE, Value)
+            SetValue(VSCRateVersionDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNewExpirationDate("")> _
-    Public Property ExpirationDate() As DateType
+    Public Property ExpirationDate As DateType
         Get
             CheckDeleted()
             If Row(VSCRateVersionDAL.COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
@@ -194,9 +194,9 @@ Public Class VSCRateVersion
                 Return New DateType(CType(Row(VSCRateVersionDAL.COL_NAME_EXPIRATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCRateVersionDAL.COL_NAME_EXPIRATION_DATE, Value)
+            SetValue(VSCRateVersionDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set
     End Property
 
@@ -206,15 +206,15 @@ Public Class VSCRateVersion
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New VSCRateVersionDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New Dataset
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New Dataset
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -224,9 +224,9 @@ Public Class VSCRateVersion
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getList(ByVal SearchBy As VSCRateVersionDAL.SearchByType, ByVal companyGroupID As Guid,
-                                ByVal PlanID As Guid, ByVal Code As String, ByVal Name As String,
-                                ByVal EffectiveDate As Date, Optional ByVal HighestVersionOnly As Boolean = True,
+    Public Shared Function getList(SearchBy As VSCRateVersionDAL.SearchByType, companyGroupID As Guid,
+                                PlanID As Guid, Code As String, Name As String,
+                                EffectiveDate As Date, Optional ByVal HighestVersionOnly As Boolean = True,
                                 Optional ByVal iVersionNumber As Integer = 0) As DataView
         Try
             Dim dal As New VSCRateVersionDAL
@@ -253,11 +253,11 @@ Public Class VSCRateVersion
     Public NotInheritable Class ValidNewExpirationDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, MSG_INVALID_EXPIRATION_DATE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As VSCRateVersion = CType(objectToValidate, VSCRateVersion)
 
             If obj.EffectiveDate.Value > obj.ExpirationDate.Value Then

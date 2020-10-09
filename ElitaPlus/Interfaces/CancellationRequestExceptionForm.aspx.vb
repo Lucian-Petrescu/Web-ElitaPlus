@@ -95,51 +95,51 @@ Partial Public Class CancellationRequestExceptionForm
 
     Public ReadOnly Property IsGridInEditMode() As Boolean
         Get
-            Return Me.Grid.EditIndex > Me.NO_ITEM_SELECTED_INDEX
+            Return Grid.EditIndex > NO_ITEM_SELECTED_INDEX
         End Get
     End Property
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.MenuEnabled = True
+            MenuEnabled = True
             If ReturnFromUrl = Interfaces.TransExceptionDetail.RETURN_URL Then
 
                 Dim retObj As Interfaces.TransExceptionDetail.ReturnType = CType(ReturnPar, Interfaces.TransExceptionDetail.ReturnType)
-                Me.State.HasDataChanged = retObj.HasDataChanged
-                If Not retObj Is Nothing AndAlso retObj.HasDataChanged Then
-                    Me.State.searchDV = Nothing
+                State.HasDataChanged = retObj.HasDataChanged
+                If retObj IsNot Nothing AndAlso retObj.HasDataChanged Then
+                    State.searchDV = Nothing
                 End If
-                Me.State.IsGridVisible = True
+                State.IsGridVisible = True
                 Select Case retObj.LastOperation
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        If Not retObj Is Nothing Then
-                            Me.State.TransactionLogHeaderId = New Guid(GuidControl.HexToByteArray(retObj.EditingBo))
+                        If retObj IsNot Nothing Then
+                            State.TransactionLogHeaderId = New Guid(GuidControl.HexToByteArray(retObj.EditingBo))
                         End If
                 End Select
             Else
                 Dim retObj As ReturnType = CType(ReturnPar, ReturnType)
-                Me.State.HasDataChanged = retObj.HasDataChanged
-                If Not retObj Is Nothing AndAlso retObj.HasDataChanged Then
-                    Me.State.searchDV = Nothing
+                State.HasDataChanged = retObj.HasDataChanged
+                If retObj IsNot Nothing AndAlso retObj.HasDataChanged Then
+                    State.searchDV = Nothing
                 End If
-                Me.State.IsGridVisible = True
+                State.IsGridVisible = True
                 Select Case retObj.LastOperation
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        If Not retObj Is Nothing Then
+                        If retObj IsNot Nothing Then
                             ''Me.State.searchTransactionType = retObj.searchTra
                             ''Me.State.searchMobileNumber = retObj.search
-                            Me.State.searchServiceCenterCode = retObj.searchServiceCenterCode
-                            Me.State.searchFrom = retObj.searchFrom
-                            Me.State.searchTo = retObj.searchTo
-                            Me.State.searchErrorCode = retObj.searchErrorCode
-                            Me.State.PageIndex = retObj.page_index
+                            State.searchServiceCenterCode = retObj.searchServiceCenterCode
+                            State.searchFrom = retObj.searchFrom
+                            State.searchTo = retObj.searchTo
+                            State.searchErrorCode = retObj.searchErrorCode
+                            State.PageIndex = retObj.page_index
                         End If
                 End Select
 
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
@@ -155,15 +155,15 @@ Partial Public Class CancellationRequestExceptionForm
         Public page_index As Integer
         Public HasDataChanged As Boolean = False
 
-        Public Sub New(ByVal LastOp As ElitaPlusPage.DetailPageCommand, ByVal returnPar As Object)
-            Me.LastOperation = LastOp
+        Public Sub New(LastOp As ElitaPlusPage.DetailPageCommand, returnPar As Object)
+            LastOperation = LastOp
             'DirectCast(returnPar, Assurant.ElitaPlus.ElitaPlusWebApp.Reports.ExceptionsEnhancementReportForm.MyState)
-            Me.searchTransactionType = CType(returnPar, CancellationsRequestReportForm.MyState).TRANSACTION_TYPE.ToString
-            Me.searchMobileNumber = CType(returnPar, CancellationsRequestReportForm.MyState).MOBILE_NUMBER.ToString
-            Me.searchFrom = CType(returnPar, CancellationsRequestReportForm.MyState).TRANS_DATE_FROM.ToString
-            Me.searchTo = CType(returnPar, CancellationsRequestReportForm.MyState).TRANS_DATE_TO.ToString
-            Me.searchErrorCode = CType(returnPar, CancellationsRequestReportForm.MyState).ERROR_CODE.ToString
-            Me.page_index = CType(returnPar, CancellationsRequestReportForm.MyState).Page_Index
+            searchTransactionType = CType(returnPar, CancellationsRequestReportForm.MyState).TRANSACTION_TYPE.ToString
+            searchMobileNumber = CType(returnPar, CancellationsRequestReportForm.MyState).MOBILE_NUMBER.ToString
+            searchFrom = CType(returnPar, CancellationsRequestReportForm.MyState).TRANS_DATE_FROM.ToString
+            searchTo = CType(returnPar, CancellationsRequestReportForm.MyState).TRANS_DATE_TO.ToString
+            searchErrorCode = CType(returnPar, CancellationsRequestReportForm.MyState).ERROR_CODE.ToString
+            page_index = CType(returnPar, CancellationsRequestReportForm.MyState).Page_Index
 
         End Sub
 
@@ -171,32 +171,32 @@ Partial Public Class CancellationRequestExceptionForm
 #End Region
 
 #Region "Page Events"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.ErrControllerMaster.Clear_Hide()
-        Me.Form.DefaultButton = btnSearch.UniqueID
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        ErrControllerMaster.Clear_Hide()
+        Form.DefaultButton = btnSearch.UniqueID
         Try
             ''GetLastSuccessfulDateTime()
-            If Not Me.IsPostBack Then
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
-                Me.AddCalendar(Me.imgBtnFrom, Me.txtFrom)
-                Me.AddCalendar(Me.imgBtnTo, Me.txtTo)
-                SetFocus(Me.cboTrasnsactionType)
+            If Not IsPostBack Then
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
+                AddCalendar(imgBtnFrom, txtFrom)
+                AddCalendar(imgBtnTo, txtTo)
+                SetFocus(cboTrasnsactionType)
                 PopulateDropdown()
                 TranslateGridHeader(Grid)
-                If Me.State.IsGridVisible Then
-                    If Not (Me.State.PageSize = DEFAULT_PAGE_SIZE) Then
-                        cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
-                        Grid.PageSize = Me.State.PageSize
+                If State.IsGridVisible Then
+                    If Not (State.PageSize = DEFAULT_PAGE_SIZE) Then
+                        cboPageSize.SelectedValue = CType(State.PageSize, String)
+                        Grid.PageSize = State.PageSize
                     End If
                 End If
 
                 If IsReturnFromChild Then
                     With State
-                        Me.cboTrasnsactionType.Text = .searchTransactionType
-                        Me.txtMobNumber.Text = .searchMobileNumber
-                        Me.txtFrom.Text = .searchFrom
-                        Me.txtTo.Text = .searchTo
+                        cboTrasnsactionType.Text = .searchTransactionType
+                        txtMobNumber.Text = .searchMobileNumber
+                        txtFrom.Text = .searchFrom
+                        txtTo.Text = .searchTo
                         .searchDV = Nothing
                         PopulateGrid()
                     End With
@@ -212,60 +212,60 @@ Partial Public Class CancellationRequestExceptionForm
 
             CheckIfComingFromSaveConfirm()
 
-            If (Not checkRecords Is Nothing AndAlso Not checkRecords.Value Is Nothing AndAlso checkRecords.Value.Length > 0) Then
+            If (checkRecords IsNot Nothing AndAlso checkRecords.Value IsNot Nothing AndAlso checkRecords.Value.Length > 0) Then
                 btnProcessRecords.Enabled = True
             Else
                 btnProcessRecords.Enabled = False
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
-        Me.ShowMissingTranslations(Me.ErrControllerMaster)
+        ShowMissingTranslations(ErrControllerMaster)
     End Sub
 
     Protected Sub PopulateDropdown()
         ' Me.BindListControlToDataView(Me.cboTrasnsactionType, LookupListNew.GetTransactionTypeList(Authentication.LangId, True), , , True) 'CNTRTYPE
-        Me.cboTrasnsactionType.Populate(CommonConfigManager.Current.ListManager.GetList("CNTRTYPE", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+        cboTrasnsactionType.Populate(CommonConfigManager.Current.ListManager.GetList("CNTRTYPE", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
             {
               .AddBlankItem = True
             })
     End Sub
 
 
-    Private Sub TransExceptionManagementForm_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles Me.PageReturn
+    Private Sub TransExceptionManagementForm_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles Me.PageReturn
         Try
-            Me.MenuEnabled = True
+            MenuEnabled = True
             IsReturnFromChild = True
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 #End Region
 
 #Region "Grid Handler"
 
-    Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = Grid.PageIndex
-            Me.State.TransactionLogHeaderId = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = Grid.PageIndex
+            State.TransactionLogHeaderId = Guid.Empty
+            PopulateGrid()
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
             'BindData()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+    Private Sub Grid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
         Try
             If e.CommandName = "SelectAction" Then
                 Dim lblCtrl As Label
@@ -273,52 +273,52 @@ Partial Public Class CancellationRequestExceptionForm
                 Dim reprocess As String = "N"
                 Dim row As GridViewRow = CType(CType(e.CommandSource, Control).Parent.Parent, GridViewRow)
                 Dim RowInd As Integer = row.RowIndex
-                lblCtrl = CType(Grid.Rows(RowInd).Cells(GRID_COL_TRANS_ID_IDX).FindControl(Me.GRID_CTRL_NAME_TRANS_ID), Label)
-                chkBox = CType(Grid.Rows(RowInd).Cells(GRID_COL_TRANS_ID_IDX).FindControl(Me.GRID_CTRL_NAME_CHECKBOX), CheckBox)
-                If Not chkBox Is Nothing AndAlso chkBox.Visible = True Then
+                lblCtrl = CType(Grid.Rows(RowInd).Cells(GRID_COL_TRANS_ID_IDX).FindControl(GRID_CTRL_NAME_TRANS_ID), Label)
+                chkBox = CType(Grid.Rows(RowInd).Cells(GRID_COL_TRANS_ID_IDX).FindControl(GRID_CTRL_NAME_CHECKBOX), CheckBox)
+                If chkBox IsNot Nothing AndAlso chkBox.Visible = True Then
                     reprocess = "Y"
                 End If
-                Me.State.TransactionLogHeaderId = New Guid(lblCtrl.Text)
+                State.TransactionLogHeaderId = New Guid(lblCtrl.Text)
 
                 Dim params As ArrayList = New ArrayList
-                params.Add(Me.State.TransactionLogHeaderId)
+                params.Add(State.TransactionLogHeaderId)
                 params.Add(reprocess)
 
-                Me.callPage(Interfaces.TransExceptionDetail.URL, params)
+                callPage(Interfaces.TransExceptionDetail.URL, params)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Private Sub Grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Try
             BaseItemBound(sender, e)
 
-            If e.Row.RowType = ListItemType.Item Or e.Row.RowType = ListItemType.AlternatingItem Or e.Row.RowType = ListItemType.EditItem Then
+            If e.Row.RowType = ListItemType.Item OrElse e.Row.RowType = ListItemType.AlternatingItem OrElse e.Row.RowType = ListItemType.EditItem Then
                 Dim drv As DataRowView = CType(e.Row.DataItem, DataRowView)
                 Dim transIdStr As String = String.Empty
 
-                If Not e.Row.Cells(Me.GRID_COL_CHECKBOX_IDX).FindControl(Me.GRID_CTRL_NAME_CHECKBOX) Is Nothing Then
-                    If Not e.Row.Cells(Me.GRID_COL_SHOW_CHECKBOX_IDX).FindControl(Me.GRID_CTRL_NAME_SHOW_CHECKBOX) Is Nothing Then
-                        Dim showCheckbox As String = CType(e.Row.Cells(Me.GRID_COL_SHOW_CHECKBOX_IDX).FindControl(Me.GRID_CTRL_NAME_SHOW_CHECKBOX), Label).Text
+                If e.Row.Cells(GRID_COL_CHECKBOX_IDX).FindControl(GRID_CTRL_NAME_CHECKBOX) IsNot Nothing Then
+                    If e.Row.Cells(GRID_COL_SHOW_CHECKBOX_IDX).FindControl(GRID_CTRL_NAME_SHOW_CHECKBOX) IsNot Nothing Then
+                        Dim showCheckbox As String = CType(e.Row.Cells(GRID_COL_SHOW_CHECKBOX_IDX).FindControl(GRID_CTRL_NAME_SHOW_CHECKBOX), Label).Text
 
-                        If Not showCheckbox Is Nothing AndAlso showCheckbox = "Y" Then
+                        If showCheckbox IsNot Nothing AndAlso showCheckbox = "Y" Then
                             Dim checkBox As CheckBox = New CheckBox
-                            checkBox = CType(e.Row.Cells(Me.GRID_COL_CHECKBOX_IDX).FindControl(Me.GRID_CTRL_NAME_CHECKBOX), CheckBox)
+                            checkBox = CType(e.Row.Cells(GRID_COL_CHECKBOX_IDX).FindControl(GRID_CTRL_NAME_CHECKBOX), CheckBox)
                             checkBox.Attributes.Add("onclick", "CheckboxAction('" & transIdStr & "','" & checkBox.ClientID & "','" & btnProcessRecords.ClientID & "','" & btnHide.ClientID & "','" & checkRecords.ClientID & "') ; ChangeHeaderAsNeeded();")
                             ControlMgr.SetVisibleControl(Me, checkBox, True)
                         Else
-                            ControlMgr.SetVisibleControl(Me, e.Row.Cells(Me.GRID_COL_CHECKBOX_IDX).FindControl(Me.GRID_CTRL_NAME_CHECKBOX), False)
+                            ControlMgr.SetVisibleControl(Me, e.Row.Cells(GRID_COL_CHECKBOX_IDX).FindControl(GRID_CTRL_NAME_CHECKBOX), False)
                         End If
                     End If
                 End If
@@ -327,7 +327,7 @@ Partial Public Class CancellationRequestExceptionForm
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
@@ -353,7 +353,7 @@ Partial Public Class CancellationRequestExceptionForm
             'cb.Attributes("onclick") = "ChangeHeaderAsNeeded();"
 
             'Add the CheckBox's ID to the client-side CheckBoxIDs array
-            If Not cb Is Nothing Then ArrayValues.Add(String.Concat("'", cb.ClientID, "'"))
+            If cb IsNot Nothing Then ArrayValues.Add(String.Concat("'", cb.ClientID, "'"))
         Next
 
         'Output the array to the Literal control (CheckBoxIDsArray)
@@ -364,7 +364,7 @@ Partial Public Class CancellationRequestExceptionForm
                                 "</script>"
     End Sub
 
-    Private Sub Grid_Sorting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_Sorting(sender As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
         Try
             Dim strSort As String = e.SortExpression
             With State
@@ -377,18 +377,18 @@ Partial Public Class CancellationRequestExceptionForm
             End With
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Protected Sub cboPageSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Protected Sub cboPageSize_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
-            Me.State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
-            Me.Grid.PageIndex = Me.State.PageIndex
-            Me.PopulateGrid()
+            State.PageSize = CType(cboPageSize.SelectedValue, Integer)
+            State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
+            Grid.PageIndex = State.PageIndex
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 #End Region
@@ -414,7 +414,7 @@ Partial Public Class CancellationRequestExceptionForm
                     .searchDV = CancellationReqException.GetExceptionList(.searchTransactionType, .searchMobileNumber, Authentication.LangId, fromDate, toDate, .searchErrorCode)
 
                     If .searchClick Then
-                        Me.ValidSearchResultCount(.searchDV.Count, True)
+                        ValidSearchResultCount(.searchDV.Count, True)
                         .searchClick = False
                     End If
                 End If
@@ -429,22 +429,22 @@ Partial Public Class CancellationRequestExceptionForm
             Grid.PageSize = State.PageSize
             If State.searchDV.Count = 0 Then
                 Dim dv As CancellationReqException.ExceptionSearchDV = State.searchDV.AddNewRowToEmptyDV()
-                SetPageAndSelectedIndexFromGuid(dv, Me.State.TransactionLogHeaderId, Me.Grid, Me.State.PageIndex, (Me.IsGridInEditMode OrElse State.IsGridAddNew))
-                Me.Grid.DataSource = dv
+                SetPageAndSelectedIndexFromGuid(dv, State.TransactionLogHeaderId, Grid, State.PageIndex, (IsGridInEditMode OrElse State.IsGridAddNew))
+                Grid.DataSource = dv
             Else
-                SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.TransactionLogHeaderId, Me.Grid, Me.State.PageIndex, (Me.IsGridInEditMode OrElse State.IsGridAddNew))
-                Me.Grid.DataSource = Me.State.searchDV
+                SetPageAndSelectedIndexFromGuid(State.searchDV, State.TransactionLogHeaderId, Grid, State.PageIndex, (IsGridInEditMode OrElse State.IsGridAddNew))
+                Grid.DataSource = State.searchDV
             End If
 
-            Me.State.PageIndex = Me.Grid.PageIndex
-            Me.Grid.DataBind()
+            State.PageIndex = Grid.PageIndex
+            Grid.DataBind()
 
             HighLightGridViewSortColumnoOverRide(Grid, State.SortExpression)
             ControlMgr.SetVisibleControl(Me, Grid, True)
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-            If Me.Grid.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
             If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
 
@@ -458,12 +458,12 @@ Partial Public Class CancellationRequestExceptionForm
             BuildCheckBoxIDsArray()
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub HighLightGridViewSortColumnoOverRide(ByVal grid As GridView, ByVal sortExp As String)
-        If Not grid.HeaderRow Is Nothing Then
+    Private Sub HighLightGridViewSortColumnoOverRide(grid As GridView, sortExp As String)
+        If grid.HeaderRow IsNot Nothing Then
             Dim img As New System.Web.UI.WebControls.Image()
             img.CssClass = "SORTARROW"
             If sortExp.ToUpper.EndsWith("DESC") Then
@@ -475,10 +475,10 @@ Partial Public Class CancellationRequestExceptionForm
             Dim cellCount As Integer = 0
             For Each tc As TableCell In grid.HeaderRow.Cells
 
-                If tc.HasControls And cellCount > 2 Then
+                If tc.HasControls AndAlso cellCount > 2 Then
 
                     lnk = CType(tc.Controls(0), LinkButton)
-                    If Not lnk Is Nothing Then
+                    If lnk IsNot Nothing Then
                         If sortExp.ToUpper.EndsWith("DESC") OrElse sortExp.ToUpper.EndsWith("ASC") Then
                             If sortExp.ToUpper.StartsWith(lnk.CommandArgument.ToUpper & " ") Then
                                 tc.Controls.Add(img)
@@ -496,19 +496,19 @@ Partial Public Class CancellationRequestExceptionForm
         End If
     End Sub
     Private Sub SetControlState()
-        If (Me.IsGridInEditMode) Then
+        If (IsGridInEditMode) Then
             ControlMgr.SetEnableControl(Me, btnSearch, False)
             ControlMgr.SetEnableControl(Me, btnClearSearch, False)
-            Me.MenuEnabled = False
-            If (Me.cboPageSize.Enabled) Then
+            MenuEnabled = False
+            If (cboPageSize.Enabled) Then
                 ControlMgr.SetEnableControl(Me, cboPageSize, False)
             End If
         Else
             ControlMgr.SetEnableControl(Me, btnSearch, True)
             ControlMgr.SetEnableControl(Me, btnClearSearch, True)
-            Me.MenuEnabled = True
-            If Not (Me.cboPageSize.Enabled) Then
-                ControlMgr.SetEnableControl(Me, Me.cboPageSize, True)
+            MenuEnabled = True
+            If Not (cboPageSize.Enabled) Then
+                ControlMgr.SetEnableControl(Me, cboPageSize, True)
             End If
         End If
         cboPageSize.Visible = Grid.Visible
@@ -522,10 +522,10 @@ Partial Public Class CancellationRequestExceptionForm
         Return blnSuccess
     End Function
 
-    Private Function GetRowIndexFromSearchDVByID(ByVal MSGCodeID As Guid) As Integer
+    Private Function GetRowIndexFromSearchDVByID(MSGCodeID As Guid) As Integer
         Dim rowind As Integer = NO_ITEM_SELECTED_INDEX
         With State
-            If Not .searchDV Is Nothing Then
+            If .searchDV IsNot Nothing Then
                 rowind = FindSelectedRowIndexFromGuid(.searchDV, MSGCodeID)
             End If
         End With
@@ -536,19 +536,19 @@ Partial Public Class CancellationRequestExceptionForm
 
 #Region "Button click handlers"
 
-    Protected Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClearSearch.Click
+    Protected Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         Try
-            Me.cboTrasnsactionType.SelectedValue = Nothing
-            Me.txtMobNumber.Text = String.Empty
-            Me.txtFrom.Text = String.Empty
-            Me.txtTo.Text = String.Empty
-            Grid.EditIndex = Me.NO_ITEM_SELECTED_INDEX
+            cboTrasnsactionType.SelectedValue = Nothing
+            txtMobNumber.Text = String.Empty
+            txtFrom.Text = String.Empty
+            txtTo.Text = String.Empty
+            Grid.EditIndex = NO_ITEM_SELECTED_INDEX
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Protected Sub btnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSearch.Click
+    Protected Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
             With State
                 .PageIndex = 0
@@ -556,48 +556,48 @@ Partial Public Class CancellationRequestExceptionForm
                 .searchDV = Nothing
                 .HasDataChanged = False
                 .searchClick = True
-                .searchTransactionType = Me.cboTrasnsactionType.Text.Trim
+                .searchTransactionType = cboTrasnsactionType.Text.Trim
                 .searchMobileNumber = txtMobNumber.Text.Trim
                 .searchFrom = txtFrom.Text.Trim
                 .searchTo = txtTo.Text.Trim
             End With
 
-            Me.PopulateGrid()
+            PopulateGrid()
             checkRecords.Value = ""
             btnProcessRecords.Enabled = False
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub btnProcessRecords_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnProcessRecords.Click
+    Private Sub btnProcessRecords_Click(sender As System.Object, e As System.EventArgs) Handles btnProcessRecords.Click
         Try
             'Resend confirmation
-            Me.DisplayMessage(Message.MSG_PROMPT_FOR_PROCESS_RECORDS, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
-            Me.State.cmdProcessRecord = DALObjects.CancellationReqExceptionDAL.CMD_RESEND
+            DisplayMessage(Message.MSG_PROMPT_FOR_PROCESS_RECORDS, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
+            State.cmdProcessRecord = DALObjects.CancellationReqExceptionDAL.CMD_RESEND
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub btnHide_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnHide.Click
+    Private Sub btnHide_Click(sender As System.Object, e As System.EventArgs) Handles btnHide.Click
         Try
             'Resend confirmation
-            Me.DisplayMessage(Message.MSG_PROMPT_FOR_HIDE_TRANSACTION, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
-            Me.State.cmdProcessRecord = DALObjects.CancellationReqExceptionDAL.CMD_HIDE
+            DisplayMessage(Message.MSG_PROMPT_FOR_HIDE_TRANSACTION, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
+            State.cmdProcessRecord = DALObjects.CancellationReqExceptionDAL.CMD_HIDE
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Public Sub btnExportResults_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExportResults.Click
+    Public Sub btnExportResults_Click(sender As System.Object, e As System.EventArgs) Handles btnExportResults.Click
         Try
             With State
-                .searchTransactionType = Me.cboTrasnsactionType.Text.Trim
+                .searchTransactionType = cboTrasnsactionType.Text.Trim
                 .searchMobileNumber = txtMobNumber.Text.Trim
                 .searchFrom = txtFrom.Text.Trim
                 .searchTo = txtTo.Text.Trim
@@ -607,16 +607,16 @@ Partial Public Class CancellationRequestExceptionForm
 
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
 
     Protected Sub CheckIfComingFromSaveConfirm()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
         Try
-            If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
-                Select Case Me.State.ActionInProgress
+            If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Accept
                         'Process transaction
                         Dim checkValues As String = String.Empty
@@ -624,24 +624,24 @@ Partial Public Class CancellationRequestExceptionForm
                         checkValueArray = checkRecords.Value.Split(":"c)
 
                         For i = 0 To checkValueArray.Length - 1
-                            If (Not checkValueArray(i) Is Nothing And checkValueArray(i) <> "") Then
+                            If (checkValueArray(i) IsNot Nothing AndAlso checkValueArray(i) <> "") Then
                                 checkValues = checkValueArray(i).ToString & ":" & checkValues
                             End If
                         Next
                         checkRecords.Value = GetCheckedItemsValues()
 
-                        If Me.State.cmdProcessRecord = DALObjects.CancellationReqExceptionDAL.CMD_RESEND Then
+                        If State.cmdProcessRecord = DALObjects.CancellationReqExceptionDAL.CMD_RESEND Then
                             ProcessRecords()
-                        ElseIf Me.State.cmdProcessRecord = DALObjects.CancellationReqExceptionDAL.CMD_hide Then
+                        ElseIf State.cmdProcessRecord = DALObjects.CancellationReqExceptionDAL.CMD_hide Then
                             HideRecords()
                         End If
 
                         checkRecords.Value = ""
-                        Me.State.searchDV = Nothing
+                        State.searchDV = Nothing
                         PopulateGrid()
                 End Select
-            ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-                Select Case Me.State.ActionInProgress
+            ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Accept
                         btnProcessRecords.Enabled = True
                         btnExportResults.Enabled = True
@@ -649,20 +649,20 @@ Partial Public Class CancellationRequestExceptionForm
             End If
 
             'Clean after consuming the action
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-            Me.HiddenSaveChangesPromptResponse.Value = ""
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            HiddenSaveChangesPromptResponse.Value = ""
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
     Private Function GetCheckedItemsValues() As String
         Dim checkedValues As String = String.Empty
         For Each gvrow As GridViewRow In Grid.Rows
-            Dim CheckBox1 As CheckBox = DirectCast(gvrow.FindControl(Me.GRID_CTRL_NAME_CHECKBOX), CheckBox)
+            Dim CheckBox1 As CheckBox = DirectCast(gvrow.FindControl(GRID_CTRL_NAME_CHECKBOX), CheckBox)
 
             If CheckBox1.Checked Then
-                Dim lblTransID As Label = DirectCast(gvrow.FindControl(Me.GRID_CTRL_NAME_TRANS_ID), Label)
+                Dim lblTransID As Label = DirectCast(gvrow.FindControl(GRID_CTRL_NAME_TRANS_ID), Label)
                 Dim transId As Guid = GetGuidFromString(lblTransID.Text)
                 'transIdStr = GuidControl.GuidToHexString(transId)
 
@@ -676,22 +676,22 @@ Partial Public Class CancellationRequestExceptionForm
     Protected Function ProcessRecords() As Boolean
         Try
             Dim outputParameters() As DALObjects.DBHelper.DBHelperParameter
-            outputParameters = CancellationReqException.ProcessRecords(Me.State.cmdProcessRecord, checkRecords.Value)
+            outputParameters = CancellationReqException.ProcessRecords(State.cmdProcessRecord, checkRecords.Value)
 
             If CType(outputParameters(0).Value, Integer) = 0 Then
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
-                Me.HiddenSaveChangesPromptResponse.Value = Me.MSG_BTN_OK
-                Me.DisplayMessageWithSubmit(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
+                HiddenSaveChangesPromptResponse.Value = MSG_BTN_OK
+                DisplayMessageWithSubmit(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
             Else
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
-                Me.HiddenSaveChangesPromptResponse.Value = Me.MSG_BTN_OK
-                Me.DisplayMessageWithSubmit(CType(outputParameters(1).Value, String), "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
+                HiddenSaveChangesPromptResponse.Value = MSG_BTN_OK
+                DisplayMessageWithSubmit(CType(outputParameters(1).Value, String), "", MSG_BTN_OK, MSG_TYPE_INFO)
             End If
 
             PopulateGrid()
             Return True
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
             Return False
         End Try
     End Function
@@ -699,22 +699,22 @@ Partial Public Class CancellationRequestExceptionForm
     Protected Function HideRecords() As Boolean
         Try
             Dim outputParameters() As DALObjects.DBHelper.DBHelperParameter
-            outputParameters = CancellationReqException.HideRecords(Me.State.cmdProcessRecord, checkRecords.Value)
+            outputParameters = CancellationReqException.HideRecords(State.cmdProcessRecord, checkRecords.Value)
 
             If CType(outputParameters(0).Value, Integer) = 0 Then
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
-                Me.HiddenSaveChangesPromptResponse.Value = Me.MSG_BTN_OK
-                Me.DisplayMessageWithSubmit(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
+                HiddenSaveChangesPromptResponse.Value = MSG_BTN_OK
+                DisplayMessageWithSubmit(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
             Else
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
-                Me.HiddenSaveChangesPromptResponse.Value = Me.MSG_BTN_OK
-                Me.DisplayMessageWithSubmit(CType(outputParameters(1).Value, String), "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
+                HiddenSaveChangesPromptResponse.Value = MSG_BTN_OK
+                DisplayMessageWithSubmit(CType(outputParameters(1).Value, String), "", MSG_BTN_OK, MSG_TYPE_INFO)
             End If
 
             PopulateGrid()
             Return True
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
             Return False
         End Try
     End Function

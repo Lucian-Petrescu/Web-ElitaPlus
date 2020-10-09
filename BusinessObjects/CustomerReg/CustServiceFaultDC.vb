@@ -20,7 +20,7 @@ Public Class CustServiceFaultDC
         Get
             Return __faultDetail
         End Get
-        Set(ByVal value As String)
+        Set
             __faultDetail = value
         End Set
     End Property

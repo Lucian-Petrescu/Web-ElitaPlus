@@ -125,7 +125,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -135,34 +135,34 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load, Me.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load, Me.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                     moReportCeInputControl.populateReportLanguages(RPT_FILENAME)
                 End If
                 '    Me.DisplayProgressBarOnClick(Me.btnGenRpt, "Loading_Claims")
                 EnableOrDisableControls()
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
         Private Sub InitializeForm()
             PopulateCountryDropDown()
             PopulateDealerDropDown()
             PopulateServiceCenterDropDown()
-            Me.rCountry.Checked = True
-            Me.rsvccenter.Checked = True
-            Me.rdealer.Checked = True
-            Me.rAllUsers.Checked = True
-            Me.RadiobuttonAllClaims.Checked = True
-            Me.rdReportSortOrder.Items(0).Selected = True
-            Me.PopulateControlFromBOProperty(Me.txtActiveDays, Me.DEFAULT_NUMBER_ACTIVE_DAYS)
+            rCountry.Checked = True
+            rsvccenter.Checked = True
+            rdealer.Checked = True
+            rAllUsers.Checked = True
+            RadiobuttonAllClaims.Checked = True
+            rdReportSortOrder.Items(0).Selected = True
+            PopulateControlFromBOProperty(txtActiveDays, DEFAULT_NUMBER_ACTIVE_DAYS)
             'Dim re As RadioButton = CType(Me.moReportCeInputControl.FindControl("RadiobuttonEXCEL"), RadioButton)
             'me.rbEXCEL.
         End Sub
@@ -181,7 +181,7 @@ Namespace Reports
                                                             Where ElitaPlusIdentity.Current.ActiveUser.Countries.Contains(Country.ListItemId)
                                                             Select Country).ToArray()
 
-            Me.cboCountry.Populate(UserCountries.ToArray(),
+            cboCountry.Populate(UserCountries.ToArray(),
                                     New PopulateOptions() With
                                     {
                                         .AddBlankItem = True
@@ -226,7 +226,7 @@ Namespace Reports
                                                                     })
 
                 If ServiceCenters.Count > 0 Then
-                    If Not ServiceCenterList Is Nothing Then
+                    If ServiceCenterList IsNot Nothing Then
                         ServiceCenterList.AddRange(ServiceCenters)
                     Else
                         ServiceCenterList = ServiceCenters.Clone()
@@ -234,7 +234,7 @@ Namespace Reports
                 End If
             Next
 
-            Me.cboSvcCenter.Populate(ServiceCenterList.ToArray(),
+            cboSvcCenter.Populate(ServiceCenterList.ToArray(),
                                     New PopulateOptions() With
                                     {
                                         .AddBlankItem = True
@@ -245,7 +245,7 @@ Namespace Reports
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 Dim userId As Guid = ElitaPlusIdentity.Current.ActiveUser.Id
                 Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
@@ -254,12 +254,12 @@ Namespace Reports
                 Dim selectedDealerId As Guid = DealerMultipleDrop.SelectedGuid
                 Dim dealerDV As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies, False, "CODE")
                 Dim dealerCode As String = LookupListNew.GetCodeFromId(dealerDV, selectedDealerId)
-                Dim selectedServiceCenterId As Guid = Me.GetSelectedItem(Me.cboSvcCenter)
+                Dim selectedServiceCenterId As Guid = GetSelectedItem(cboSvcCenter)
                 Dim svcCenterDV As DataView = LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Country(ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID).Id)
                 Dim svcCenterCode As String = LookupListNew.GetCodeFromId(svcCenterDV, selectedServiceCenterId)
                 Dim svcCenterName As String = LookupListNew.GetDescriptionFromId(svcCenterDV, selectedServiceCenterId)
                 Dim numberActiveDays As Integer
-                selectedCountryId = Me.GetSelectedItem(Me.cboCountry)
+                selectedCountryId = GetSelectedItem(cboCountry)
                 Dim dvCountry As DataView = LookupListNew.GetUserCountriesLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
                 Dim countryCode As String = LookupListNew.GetDescriptionFromId(dvCountry, selectedCountryId)
                 Dim sortOrder As String
@@ -268,7 +268,7 @@ Namespace Reports
                 Dim createdby As String
 
                 If rCountry.Visible = True Then
-                    If Me.rCountry.Checked Then
+                    If rCountry.Checked Then
                         countryCode = ALL
                     Else
                         If selectedCountryId.Equals(Guid.Empty) Then
@@ -280,7 +280,7 @@ Namespace Reports
                     countryCode = ALL
                 End If
 
-                If Me.rdealer.Checked Then
+                If rdealer.Checked Then
                     dealerCode = ALL
                 Else
                     If selectedDealerId.Equals(Guid.Empty) Then
@@ -288,12 +288,12 @@ Namespace Reports
                     End If
                 End If
 
-                If Me.rsvccenter.Checked Then
+                If rsvccenter.Checked Then
                     svcCenterCode = ALL
                 Else
                     If selectedServiceCenterId.Equals(Guid.Empty) Then
                         Throw New GUIException(Message.MSG_INVALID_SERVICE_CENTER, Assurant.ElitaPlus.Common.ErrorCodes.GUI_SERVICE_CENTER_MUST_BE_SELECTED_ERR)
-                    ElseIf cboCountry.Visible = True And selectedCountryId.Equals(Guid.Empty) Then
+                    ElseIf cboCountry.Visible = True AndAlso selectedCountryId.Equals(Guid.Empty) Then
                         'ElitaPlusPage.SetLabelError(moCountryLabel)
                         Throw New GUIException(Message.MSG_INVALID_COUNTRY, Assurant.ElitaPlus.Common.ErrorCodes.GUI_COUNTRY_MUST_BE_SELECTED_ERR)
                     End If
@@ -302,18 +302,18 @@ Namespace Reports
                 If txtActiveDays.Text.Trim.ToString = String.Empty Then
                     Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_NUMBER_OF_ACTIVE_DAYS_ERR)
                 Else
-                    numberActiveDays = CType(Me.txtActiveDays.Text, Integer)
+                    numberActiveDays = CType(txtActiveDays.Text, Integer)
                     If ((numberActiveDays < 0) OrElse (numberActiveDays > 999)) Then
                         Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_NUMBER_OF_ACTIVE_DAYS_ERR)
                     End If
                 End If
 
-                If Me.RadiobuttonExcludeRepairedClaims.Checked Then
+                If RadiobuttonExcludeRepairedClaims.Checked Then
                     includeAllClaims = YES
                 End If
 
 
-                If Me.rAllUsers.Checked Then
+                If rAllUsers.Checked Then
                     createdby = ALL
                 Else
                     createdby = txtUserId.Text.Trim.ToString()
@@ -325,7 +325,7 @@ Namespace Reports
 
                 ReportCeBase.EnableReportCe(Me, TheRptCeInputControl)
 
-                Select Case Me.rdReportSortOrder.SelectedValue()
+                Select Case rdReportSortOrder.SelectedValue()
                     Case BY_NUMBER_ACTIVE_DAYS
                         sortOrder = SORT_BY_NUMBER_ACTIVE_DAYS
                     Case BY_CLAIM_NUMBER
@@ -351,7 +351,7 @@ Namespace Reports
                 Session(ReportCeBaseForm.SESSION_PARAMETERS_KEY) = params
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -359,8 +359,8 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Sub SetReportParams(ByVal oReportParams As ReportParams, ByVal repParams() As ReportCeBaseForm.RptParam,
-                            ByVal reportName As String, ByVal startIndex As Integer)
+        Sub SetReportParams(oReportParams As ReportParams, repParams() As ReportCeBaseForm.RptParam,
+                            reportName As String, startIndex As Integer)
             With oReportParams
                 repParams(startIndex) = New ReportCeBaseForm.RptParam("V_USER_ID", .userId, reportName)
                 repParams(startIndex + 1) = New ReportCeBaseForm.RptParam("V_DEALER_CODE", .dealerCode, reportName)
@@ -377,17 +377,17 @@ Namespace Reports
             End With
         End Sub
 
-        Function SetParameters(ByVal userId As String, ByVal countryCode As String, ByVal dealerCode As String, ByVal svcCenterCode As String,
-                                 ByVal svcCenterName As String,
-                                 ByVal numberActiveDays As Integer, ByVal includeAllClaims As String, ByVal sortOrder As String,
-                                 ByVal langCode As String, ByVal langCultureValue As String, ByVal createdby As String) As ReportCeBaseForm.Params
+        Function SetParameters(userId As String, countryCode As String, dealerCode As String, svcCenterCode As String,
+                                 svcCenterName As String,
+                                 numberActiveDays As Integer, includeAllClaims As String, sortOrder As String,
+                                 langCode As String, langCultureValue As String, createdby As String) As ReportCeBaseForm.Params
 
             Dim reportFormat As ReportCeBaseForm.RptFormat
             reportName = moReportCeInputControl.getReportName(RPT_FILENAME, False)
             Dim params As New ReportCeBaseForm.Params
             Dim repParams(TOTALPARAMS) As ReportCeBaseForm.RptParam
             Dim oReportParams As ReportParams
-            Me.rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
+            rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
 
 
             With oReportParams
@@ -419,17 +419,17 @@ Namespace Reports
             Return params
         End Function
 
-        Function SetExpParameters(ByVal userId As String, ByVal countryCode As String, ByVal dealerCode As String, ByVal svcCenterCode As String,
-                                 ByVal svcCenterName As String,
-                                 ByVal numberActiveDays As Integer, ByVal includeAllClaims As String, ByVal sortOrder As String,
-                                 ByVal langCode As String, ByVal langCultureValue As String, ByVal createdby As String) As ReportCeBaseForm.Params
+        Function SetExpParameters(userId As String, countryCode As String, dealerCode As String, svcCenterCode As String,
+                                 svcCenterName As String,
+                                 numberActiveDays As Integer, includeAllClaims As String, sortOrder As String,
+                                 langCode As String, langCultureValue As String, createdby As String) As ReportCeBaseForm.Params
 
             Dim reportFormat As ReportCeBaseForm.RptFormat
             ' rptLangSelected = moReportCeInputControl.LanguageCodeSelected
             reportName = moReportCeInputControl.getReportName(RPT_FILENAME_EXPORT, True)
             Dim params As New ReportCeBaseForm.Params
             Dim repParams(TOTALEXPPARAMS) As ReportCeBaseForm.RptParam
-            Me.rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
+            rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
             Dim oReportParams As ReportParams
 
             With oReportParams
@@ -463,23 +463,23 @@ Namespace Reports
 
 #Region "Handlers-Dropdowns"
 
-        Private Sub cboCountry_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboCountry.SelectedIndexChanged
+        Private Sub cboCountry_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboCountry.SelectedIndexChanged
 
             Try
-                selectedCountryId = Me.GetSelectedItem(Me.cboCountry)
+                selectedCountryId = GetSelectedItem(cboCountry)
                 If selectedCountryId.Equals(Guid.Empty) Then
                     'ElitaPlusPage.SetLabelError(moCountryLabel)
                     Throw New GUIException(Message.MSG_INVALID_COUNTRY, Assurant.ElitaPlus.Common.ErrorCodes.GUI_COUNTRY_MUST_BE_SELECTED_ERR)
                 Else
-                    Me.BindListControlToDataView(Me.cboSvcCenter, LookupListNew.GetServiceCenterLookupList(selectedCountryId), , , True)
+                    BindListControlToDataView(cboSvcCenter, LookupListNew.GetServiceCenterLookupList(selectedCountryId), , , True)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
 
         End Sub
 
-        Private Sub rCountry_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles rCountry.CheckedChanged
+        Private Sub rCountry_CheckedChanged(sender As Object, e As System.EventArgs) Handles rCountry.CheckedChanged
             If rCountry.Checked = True Then
                 cboCountry.SelectedIndex = None
                 PopulateServiceCenterDropDown()
@@ -488,7 +488,7 @@ Namespace Reports
 
         Private Sub EnableOrDisableControls()
 
-            If Me.rdealer.Checked = True Then
+            If rdealer.Checked = True Then
                 DealerMultipleDrop.SelectedIndex = -1
             End If
 

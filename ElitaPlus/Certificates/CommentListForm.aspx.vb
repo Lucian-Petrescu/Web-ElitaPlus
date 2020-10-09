@@ -12,7 +12,7 @@ Partial Class CommentListForm
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -38,9 +38,9 @@ Partial Class CommentListForm
     Public Class Parameters
         Public CertId As Guid
         Public ClaimId As Guid
-        Public Sub New(ByVal certId As Guid, Optional ByVal claimId As Object = Nothing)
+        Public Sub New(certId As Guid, Optional ByVal claimId As Object = Nothing)
             Me.CertId = certId
-            If Not claimId Is Nothing Then
+            If claimId IsNot Nothing Then
                 Me.ClaimId = CType(claimId, Guid)
             End If
         End Sub
@@ -68,32 +68,32 @@ Partial Class CommentListForm
 
     Protected Shadows ReadOnly Property State() As MyState
         Get
-            If Me.NavController.State Is Nothing Then
-                Me.NavController.State = New MyState
-                Me.State.InputParameters = CType(Me.NavController.ParametersPassed, Parameters)
+            If NavController.State Is Nothing Then
+                NavController.State = New MyState
+                Me.State.InputParameters = CType(NavController.ParametersPassed, Parameters)
             End If
-            Return CType(Me.NavController.State, MyState)
+            Return CType(NavController.State, MyState)
         End Get
     End Property
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.MenuEnabled = True
-            Me.IsReturningFromChild = True
+            MenuEnabled = True
+            IsReturningFromChild = True
             Dim retObj As CommentForm.ReturnType = CType(ReturnPar, CommentForm.ReturnType)
             Select Case retObj.LastOperation
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    If Not retObj Is Nothing Then
+                    If retObj IsNot Nothing Then
                         If Not retObj.EditingBo.IsNew Then
-                            Me.State.SelectedCommentId = retObj.EditingBo.Id
+                            State.SelectedCommentId = retObj.EditingBo.Id
                         End If
-                        Me.State.IsGridVisible = True
+                        State.IsGridVisible = True
                     End If
                 Case ElitaPlusPage.DetailPageCommand.Delete
-                    Me.DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
             End Select
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
@@ -106,29 +106,29 @@ Partial Class CommentListForm
 #End Region
 
 #Region "Page_Events"
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
-        Me.ErrorCtrl.Clear_Hide()
+        ErrorCtrl.Clear_Hide()
         'If Me.NavController.PrevNavState.Name = "CLAIM_DETAIL" Then
         '    Me.LabelTables.Text = Me.TranslateLabelOrMessage("CLAIMS")
         'End If
         Try
-            If Not Me.IsPostBack Then
-                Me.RestoreGuiState()
-                Trace(Me, "Cert Id =" & GuidControl.GuidToHexString(Me.State.InputParameters.CertId))
-                If Me.State.IsGridVisible Then
-                    Me.PopulateGrid()
-                    Me.PopulateExtGrid()
+            If Not IsPostBack Then
+                RestoreGuiState()
+                Trace(Me, "Cert Id =" & GuidControl.GuidToHexString(State.InputParameters.CertId))
+                If State.IsGridVisible Then
+                    PopulateGrid()
+                    PopulateExtGrid()
                 End If
-                Me.SetGridItemStyleColor(Me.Grid)
-                Me.SetGridItemStyleColor(Me.ExtGrid)
+                SetGridItemStyleColor(Grid)
+                SetGridItemStyleColor(ExtGrid)
             Else
-                Me.SaveGuiState()
+                SaveGuiState()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
-        Me.ShowMissingTranslations(Me.ErrorCtrl)
+        ShowMissingTranslations(ErrorCtrl)
     End Sub
 #End Region
 
@@ -136,56 +136,56 @@ Partial Class CommentListForm
 
     Public Sub PopulateGrid()
         Try
-            Dim cert As New Certificate(Me.State.InputParameters.CertId)
-            Me.TextboxCertificate.Text = cert.CertNumber
-            Dim dv As Comment.CommentSearchDV = Comment.getList(Me.State.InputParameters.CertId)
-            dv.Sort = Me.State.SortExpression
+            Dim cert As New Certificate(State.InputParameters.CertId)
+            TextboxCertificate.Text = cert.CertNumber
+            Dim dv As Comment.CommentSearchDV = Comment.getList(State.InputParameters.CertId)
+            dv.Sort = State.SortExpression
 
-            Me.Grid.AutoGenerateColumns = False
-            Me.Grid.Columns(Me.GRID_COL_ADDED_BY).SortExpression = Comment.CommentSearchDV.COL_ADDED_BY
-            Me.Grid.Columns(Me.GRID_COL_CALLER_NAME).SortExpression = Comment.CommentSearchDV.COL_CALLER_NAME
-            Me.Grid.Columns(Me.GRID_COL_TIME_STAMP).SortExpression = Comment.CommentSearchDV.COL_CREATED_DATE
+            Grid.AutoGenerateColumns = False
+            Grid.Columns(GRID_COL_ADDED_BY).SortExpression = Comment.CommentSearchDV.COL_ADDED_BY
+            Grid.Columns(GRID_COL_CALLER_NAME).SortExpression = Comment.CommentSearchDV.COL_CALLER_NAME
+            Grid.Columns(GRID_COL_TIME_STAMP).SortExpression = Comment.CommentSearchDV.COL_CREATED_DATE
 
-            SetPageAndSelectedIndexFromGuid(dv, Me.State.SelectedCommentId, Me.Grid, Me.State.PageIndex)
-            Me.State.PageIndex = Me.Grid.CurrentPageIndex
-            Me.Grid.DataSource = dv
-            Me.Grid.DataBind()
+            SetPageAndSelectedIndexFromGuid(dv, State.SelectedCommentId, Grid, State.PageIndex)
+            State.PageIndex = Grid.CurrentPageIndex
+            Grid.DataSource = dv
+            Grid.DataBind()
 
-            ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
 
             'Dim i As Integer
             'For i = 0 To Grid.Columns.Count - 1
             '    Grid.Columns.Item(3)..Attributes.Add("OnClick", "return ValidateInsertUpdate();")
             'Next
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
     Public Sub PopulateExtGrid()
         Try
-            Dim dv As Comment.ExtCommentSearchDV = Comment.getExtList(Me.State.InputParameters.ClaimId)
-            dv.Sort = Me.State.SortExpression
+            Dim dv As Comment.ExtCommentSearchDV = Comment.getExtList(State.InputParameters.ClaimId)
+            dv.Sort = State.SortExpression
 
-            Me.ExtGrid.AutoGenerateColumns = False
-            Me.ExtGrid.Columns(Me.EXT_GRID_COL_ADDED_BY).SortExpression = Comment.ExtCommentSearchDV.COL_EXT_ADDED_BY
-            Me.ExtGrid.Columns(Me.EXT_GRID_COL_CALLER_NAME).SortExpression = Comment.ExtCommentSearchDV.COL_EXT_CALLER_NAME
-            Me.ExtGrid.Columns(Me.EXT_GRID_COL_TIME_STAMP).SortExpression = Comment.ExtCommentSearchDV.COL_EXT_CREATED_DATE
+            ExtGrid.AutoGenerateColumns = False
+            ExtGrid.Columns(EXT_GRID_COL_ADDED_BY).SortExpression = Comment.ExtCommentSearchDV.COL_EXT_ADDED_BY
+            ExtGrid.Columns(EXT_GRID_COL_CALLER_NAME).SortExpression = Comment.ExtCommentSearchDV.COL_EXT_CALLER_NAME
+            ExtGrid.Columns(EXT_GRID_COL_TIME_STAMP).SortExpression = Comment.ExtCommentSearchDV.COL_EXT_CREATED_DATE
 
-            SetPageAndSelectedIndexFromGuid(dv, Me.State.SelectedCommentId, Me.ExtGrid, Me.State.PageIndex)
-            Me.State.PageIndex = Me.ExtGrid.CurrentPageIndex
-            Me.ExtGrid.DataSource = dv
-            Me.ExtGrid.DataBind()
+            SetPageAndSelectedIndexFromGuid(dv, State.SelectedCommentId, ExtGrid, State.PageIndex)
+            State.PageIndex = ExtGrid.CurrentPageIndex
+            ExtGrid.DataSource = dv
+            ExtGrid.DataBind()
 
             Dim str As String = dv.Table.Columns(1).ToString()
-            ControlMgr.SetVisibleControl(Me, ExtGrid, Me.State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, ExtGrid, State.IsGridVisible)
 
             'Dim i As Integer
             'For i = 0 To Grid.Columns.Count - 1
             '    Grid.Columns.Item(3)..Attributes.Add("OnClick", "return ValidateInsertUpdate();")
             'Next
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
@@ -198,61 +198,61 @@ Partial Class CommentListForm
 #Region " Datagrid Related "
 
     'The Binding LOgic is here  
-    Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+    Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
         Try
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                e.Item.Cells(Me.GRID_COL_COMMENT_ID).Text = New Guid(CType(dvRow(Comment.CommentSearchDV.COL_COMMENT_ID), Byte())).ToString
-                e.Item.Cells(Me.GRID_COL_ADDED_BY).Text = dvRow(Comment.CommentSearchDV.COL_ADDED_BY).ToString
-                e.Item.Cells(Me.GRID_COL_CALLER_NAME).Text = dvRow(Comment.CommentSearchDV.COL_CALLER_NAME).ToString
-                e.Item.Cells(Me.GRID_COL_COMMENT_TEXT).Text = dvRow(Comment.CommentSearchDV.COL_COMMENTS).ToString
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
+                e.Item.Cells(GRID_COL_COMMENT_ID).Text = New Guid(CType(dvRow(Comment.CommentSearchDV.COL_COMMENT_ID), Byte())).ToString
+                e.Item.Cells(GRID_COL_ADDED_BY).Text = dvRow(Comment.CommentSearchDV.COL_ADDED_BY).ToString
+                e.Item.Cells(GRID_COL_CALLER_NAME).Text = dvRow(Comment.CommentSearchDV.COL_CALLER_NAME).ToString
+                e.Item.Cells(GRID_COL_COMMENT_TEXT).Text = dvRow(Comment.CommentSearchDV.COL_COMMENTS).ToString
                 Dim createdDate As Date = CType(dvRow(Comment.CommentSearchDV.COL_CREATED_DATE), Date)
-                e.Item.Cells(Me.GRID_COL_TIME_STAMP).Text = GetLongDateFormattedString(createdDate)
+                e.Item.Cells(GRID_COL_TIME_STAMP).Text = GetLongDateFormattedString(createdDate)
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
+    Private Sub Grid_SortCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
-            Me.State.SelectedCommentId = Nothing
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
-            Me.PopulateExtGrid()
+            State.SelectedCommentId = Nothing
+            State.PageIndex = 0
+            PopulateGrid()
+            PopulateExtGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Public Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+    Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
         Try
             If e.CommandName = "SelectAction" Then
-                Me.State.SelectedCommentId = New Guid(e.Item.Cells(Me.GRID_COL_COMMENT_ID).Text)
-                Dim originalComment As Comment = New Comment(Me.State.SelectedCommentId)
+                State.SelectedCommentId = New Guid(e.Item.Cells(GRID_COL_COMMENT_ID).Text)
+                Dim originalComment As Comment = New Comment(State.SelectedCommentId)
                 Dim newComment As Comment = Comment.GetNewComment(originalComment)
-                Me.NavController.Navigate(Me, FlowEvents.EVENT_COMMENT_SELECTED, New CommentForm.Parameters(newComment))
+                NavController.Navigate(Me, FlowEvents.EVENT_COMMENT_SELECTED, New CommentForm.Parameters(newComment))
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
 
-    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs)
+    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
         BaseItemCreated(sender, e)
         ''-------------------------------------
         ''Name:ReasorbTranslation
@@ -333,14 +333,14 @@ Partial Class CommentListForm
         'End If
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = e.NewPageIndex
-            Me.State.SelectedCommentId = Guid.Empty
-            Me.PopulateGrid()
-            Me.PopulateExtGrid()
+            State.PageIndex = e.NewPageIndex
+            State.SelectedCommentId = Guid.Empty
+            PopulateGrid()
+            PopulateExtGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
@@ -349,19 +349,19 @@ Partial Class CommentListForm
 
 #Region " Buttons Clicks "
 
-    Private Sub btnAdd_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd_WRITE.Click
+    Private Sub btnAdd_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnAdd_WRITE.Click
         Try
-            Me.NavController.Navigate(Me, FlowEvents.EVENT_COMMENT_SELECTED, New CommentForm.Parameters(Comment.GetNewComment(Me.State.InputParameters.CertId, Me.State.InputParameters.ClaimId)))
+            NavController.Navigate(Me, FlowEvents.EVENT_COMMENT_SELECTED, New CommentForm.Parameters(Comment.GetNewComment(State.InputParameters.CertId, State.InputParameters.ClaimId)))
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            Me.NavController.Navigate(Me, FlowEvents.EVENT_BACK)
+            NavController.Navigate(Me, FlowEvents.EVENT_BACK)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 #End Region

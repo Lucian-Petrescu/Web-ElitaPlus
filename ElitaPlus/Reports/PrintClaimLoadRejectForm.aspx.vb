@@ -100,14 +100,14 @@ Namespace Reports
         End Property
 
         Private Sub SetStateProperties()
-            Me.State.moInterfaceTypeCode = CType(CType(Me.CallingParameters, MyState).moInterfaceTypeCode, ClaimFileProcessedData.InterfaceTypeCode)
-            Me.State.reportType = CType(Me.CallingParameters, MyState).reportType
+            State.moInterfaceTypeCode = CType(CType(CallingParameters, MyState).moInterfaceTypeCode, ClaimFileProcessedData.InterfaceTypeCode)
+            State.reportType = CType(CallingParameters, MyState).reportType
             If Me.State.moInterfaceTypeCode = ClaimFileProcessedData.InterfaceTypeCode.CLAIM_SUSPENSE Then
-                Me.State.SearchCertificate = CType(CType(Me.CallingParameters, MyState).SearchCertificate, String).Replace(ALL, PARSED_ALL)
-                Me.State.SearchAuthorization = CType(CType(Me.CallingParameters, MyState).SearchAuthorization, String).Replace(ALL, PARSED_ALL)
-                Me.State.SearchFilename = CType(CType(Me.CallingParameters, MyState).SearchFilename, String).Replace(ALL, PARSED_ALL)
+                State.SearchCertificate = CType(CType(CallingParameters, MyState).SearchCertificate, String).Replace(ALL, PARSED_ALL)
+                State.SearchAuthorization = CType(CType(CallingParameters, MyState).SearchAuthorization, String).Replace(ALL, PARSED_ALL)
+                State.SearchFilename = CType(CType(CallingParameters, MyState).SearchFilename, String).Replace(ALL, PARSED_ALL)
             Else
-                Me.State.ClaimfileProcessedId = CType(CType(Me.CallingParameters, MyState).ClaimfileProcessedId, Guid)
+                State.ClaimfileProcessedId = CType(CType(CallingParameters, MyState).ClaimfileProcessedId, Guid)
             End If
         End Sub
 
@@ -159,7 +159,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -171,89 +171,89 @@ Namespace Reports
 
         Private Sub InitializeForm()
             SetStateProperties()
-            Dim InterfaceTypeCode As ClaimFileProcessedData.InterfaceTypeCode = Me.State.moInterfaceTypeCode
+            Dim InterfaceTypeCode As ClaimFileProcessedData.InterfaceTypeCode = State.moInterfaceTypeCode
             TheRptCeInputControl.SetExportOnly()
             TheRptCeInputControl.DestinationVisible = False
-            If Me.State.reportType.Equals(PROCESSED_EXPORT) Then
+            If State.reportType.Equals(PROCESSED_EXPORT) Then
                 Select Case InterfaceTypeCode
                     Case ClaimFileProcessedData.InterfaceTypeCode.CLOSE_CLAIM_SUNCOM
                     Case ClaimFileProcessedData.InterfaceTypeCode.CLOSE_CLAIM
-                        Me.moTitleCloseClaims.Visible = True
+                        moTitleCloseClaims.Visible = True
                         'TheRptCeInputControl.populateReportLanguages(RPT_PROCESSED_CLOSE_CLAIMS_SUNCOM)
                         'reportName = TheRptCeInputControl.getReportName(RPT_PROCESSED_CLOSE_CLAIMS_SUNCOM, True)
                         'Me.HeadTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(RPT_FILENAME_WINDOW_PROCESSED_EXPORT)
                         LabelReports.Text = RPT_FILENAME_WINDOW_PROCESSED_EXPORT
                 End Select
             Else
-                Me.HeadTitle.InnerText = RPT_FILENAME_WINDOW_REJECT_REPORT
+                HeadTitle.InnerText = RPT_FILENAME_WINDOW_REJECT_REPORT
                 Select Case InterfaceTypeCode
                     Case ClaimFileProcessedData.InterfaceTypeCode.NEW_CLAIM
-                        Me.moTitleNewClaims.Visible = True
+                        moTitleNewClaims.Visible = True
                         reportName = RPT_REJECTED_NEW_CLAIMS_FILENAME
                     Case ClaimFileProcessedData.InterfaceTypeCode.NEW_CLAIM_HP
-                        Me.moTitleNewClaims.Visible = True
+                        moTitleNewClaims.Visible = True
                         reportName = RPT_REJECTED_NEW_CLAIMS_HP
                     Case ClaimFileProcessedData.InterfaceTypeCode.CLOSE_CLAIM
-                        Me.moTitleCloseClaims.Visible = True
+                        moTitleCloseClaims.Visible = True
                         reportName = RPT_REJECTED_CLOSE_CLAIMS_FILENAME
                     Case ClaimFileProcessedData.InterfaceTypeCode.CLOSE_CLAIM_SUNCOM
-                        Me.moTitleCloseClaims.Visible = True
+                        moTitleCloseClaims.Visible = True
                         reportName = RPT_REJECTED_CLOSE_CLAIMS_SUNCOM
                     Case ClaimFileProcessedData.InterfaceTypeCode.CLAIM_SUSPENSE
-                        Me.moTitleClaims.Visible = True
+                        moTitleClaims.Visible = True
                         reportName = RPT_REJECTED_SUSPENSE
                     Case ClaimFileProcessedData.InterfaceTypeCode.CLAIM_LOAD_COMMON
-                        Me.moTitleClaimFile.Visible = True
+                        moTitleClaimFile.Visible = True
                         reportName = RPT_FILENAME_REJECTED_CLAIMLOAD
                     Case ClaimFileProcessedData.InterfaceTypeCode.INVOICE_LOAD_COMMON
-                        Me.moTitleInvoiceFile.Visible = True
+                        moTitleInvoiceFile.Visible = True
                         reportName = RPT_FILENAME_REJECTED_INVOICELOAD
                 End Select
             End If
         End Sub
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             Try
-                Me.ErrorCtrl.Clear_Hide()
+                ErrorCtrl.Clear_Hide()
                 If Not IsPostBack Then
                     InitializeForm()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             If Me.State.moInterfaceTypeCode = ClaimFileProcessedData.InterfaceTypeCode.CLAIM_SUSPENSE Then
-                Dim retType As New ClaimSuspenseReconForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.SearchAuthorization, Me.State.SearchFilename, Me.State.SearchCertificate)
-                Me.ReturnToCallingPage(retType)
-            ElseIf State.moInterfaceTypeCode = ClaimFileProcessedData.InterfaceTypeCode.CLAIM_LOAD_COMMON Or State.moInterfaceTypeCode = ClaimFileProcessedData.InterfaceTypeCode.INVOICE_LOAD_COMMON Then
+                Dim retType As New ClaimSuspenseReconForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.SearchAuthorization, State.SearchFilename, State.SearchCertificate)
+                ReturnToCallingPage(retType)
+            ElseIf State.moInterfaceTypeCode = ClaimFileProcessedData.InterfaceTypeCode.CLAIM_LOAD_COMMON OrElse State.moInterfaceTypeCode = ClaimFileProcessedData.InterfaceTypeCode.INVOICE_LOAD_COMMON Then
                 Dim retType As New ClaimLoadForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ClaimfileProcessedId)
-                Me.ReturnToCallingPage(retType)
+                ReturnToCallingPage(retType)
             Else
-                Dim retType As New ClaimFileProcessedController.ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.ClaimfileProcessedId)
-                Me.ReturnToCallingPage(retType)
+                Dim retType As New ClaimFileProcessedController.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.ClaimfileProcessedId)
+                ReturnToCallingPage(retType)
             End If
 
         End Sub
 
 #Region "Handlers-DroDown"
-        Protected Sub OnFromDrop_Changed(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Protected Sub OnFromDrop_Changed(sender As Object, e As System.EventArgs) _
                      Handles moReportCeInputControl.SelectedDestOptionChanged
 
             moReportCeInputControl.UpdateFileNameControlVisible(False)
@@ -267,16 +267,16 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Private Sub SetReportName(ByVal rptFormat As ReportCeBaseForm.RptFormat)
+        Private Sub SetReportName(rptFormat As ReportCeBaseForm.RptFormat)
             Dim isExportRptFormat As Boolean = (rptFormat = ReportCeBase.RptFormat.TEXT_TAB) OrElse (rptFormat = ReportCeBase.RptFormat.TEXT_CSV)
-            Dim InterfaceTypeCode As ClaimFileProcessedData.InterfaceTypeCode = Me.State.moInterfaceTypeCode
-            If Me.State.reportType.Equals(PROCESSED_EXPORT) Then
+            Dim InterfaceTypeCode As ClaimFileProcessedData.InterfaceTypeCode = State.moInterfaceTypeCode
+            If State.reportType.Equals(PROCESSED_EXPORT) Then
                 Select Case InterfaceTypeCode
                     Case ClaimFileProcessedData.InterfaceTypeCode.CLOSE_CLAIM_SUNCOM
                     Case ClaimFileProcessedData.InterfaceTypeCode.CLOSE_CLAIM
                         reportName = TheRptCeInputControl.getReportName(RPT_PROCESSED_CLOSE_CLAIMS_SUNCOM, True)
                 End Select
-                Me.State.iscultureImplemented = True
+                State.iscultureImplemented = True
                 reportFileNameWindow = RPT_FILENAME_WINDOW_PROCESSED_CLOSE_CLAIMS_SUNCOM
             Else
                 Select Case InterfaceTypeCode
@@ -333,7 +333,7 @@ Namespace Reports
             End If
         End Sub
 
-        Function setparameters(ByVal claimfileprocessedid As Guid) As ReportCeBaseForm.Params
+        Function setparameters(claimfileprocessedid As Guid) As ReportCeBaseForm.Params
 
             Dim reportformat As ReportCeBaseForm.RptFormat
             Dim params As New ReportCeBaseForm.Params
@@ -341,12 +341,12 @@ Namespace Reports
 
             reportformat = ReportCeBase.GetReportFormat(Me)
             SetReportName(reportformat)
-            If (Me.State.iscultureImplemented) Then
+            If (State.iscultureImplemented) Then
 
-                If reportformat = ReportCeBase.RptFormat.TEXT_CSV Or reportformat = ReportCeBase.RptFormat.TEXT_TAB Then
-                    Me.culturevalue = TheRptCeInputControl.getCultureValue(True)
+                If reportformat = ReportCeBase.RptFormat.TEXT_CSV OrElse reportformat = ReportCeBase.RptFormat.TEXT_TAB Then
+                    culturevalue = TheRptCeInputControl.getCultureValue(True)
                 Else
-                    Me.culturevalue = TheRptCeInputControl.getCultureValue(False)
+                    culturevalue = TheRptCeInputControl.getCultureValue(False)
                 End If
 
                 repparams = New ReportCeBaseForm.RptParam() _
@@ -364,7 +364,7 @@ Namespace Reports
                 End With
 
             Else
-                If State.moInterfaceTypeCode = ClaimFileProcessedData.InterfaceTypeCode.CLAIM_LOAD_COMMON Or State.moInterfaceTypeCode = ClaimFileProcessedData.InterfaceTypeCode.INVOICE_LOAD_COMMON Then
+                If State.moInterfaceTypeCode = ClaimFileProcessedData.InterfaceTypeCode.CLAIM_LOAD_COMMON OrElse State.moInterfaceTypeCode = ClaimFileProcessedData.InterfaceTypeCode.INVOICE_LOAD_COMMON Then
                     repparams = New ReportCeBaseForm.RptParam() {New ReportCeBaseForm.RptParam("v_claimload_file_processed_id", DALBase.GuidToSQLString(claimfileprocessedid))}
                 Else
                     repparams = New ReportCeBaseForm.RptParam() {New ReportCeBaseForm.RptParam("v_claimfile_processed_id", DALBase.GuidToSQLString(claimfileprocessedid))}
@@ -418,86 +418,86 @@ Namespace Reports
         Private Sub GenerateReport()
 
             Dim reportParams As New System.Text.StringBuilder
-            Me.State.MyBO = New ReportRequests
+            State.MyBO = New ReportRequests
             Dim _maxrows As String
 
-            Dim InterfaceTypeCode As ClaimFileProcessedData.InterfaceTypeCode = Me.State.moInterfaceTypeCode
+            Dim InterfaceTypeCode As ClaimFileProcessedData.InterfaceTypeCode = State.moInterfaceTypeCode
 
             Select Case InterfaceTypeCode
                 Case ClaimFileProcessedData.InterfaceTypeCode.CLOSE_CLAIM
-                    reportParams.AppendFormat("v_claimfile_processed_id=> '{0}',", DALBase.GuidToSQLString(Me.State.ClaimfileProcessedId))
-                    If Me.State.reportType.Equals(REJECT_REPORT) Then
+                    reportParams.AppendFormat("v_claimfile_processed_id=> '{0}',", DALBase.GuidToSQLString(State.ClaimfileProcessedId))
+                    If State.reportType.Equals(REJECT_REPORT) Then
                         'Rejectedcloseclaims-Exp_EN
                         reportParams.AppendFormat("V_REPORT_TYPE => '{0}'", "CLOSED_CLAIM_REJECT_EXPORT")
-                        Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "CLOSED_CLAIM_REJECT_EXPORT")
-                        Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "REJECTEDCLOSECLAIMSRPT.Oracle_Export")
+                        PopulateBOProperty(State.MyBO, "ReportType", "CLOSED_CLAIM_REJECT_EXPORT")
+                        PopulateBOProperty(State.MyBO, "ReportProc", "REJECTEDCLOSECLAIMSRPT.Oracle_Export")
 
                     End If
 
                 Case ClaimFileProcessedData.InterfaceTypeCode.CLOSE_CLAIM_SUNCOM
-                    reportParams.AppendFormat("v_claimfile_processed_id=> '{0}',", DALBase.GuidToSQLString(Me.State.ClaimfileProcessedId))
-                    Select Case Me.State.reportType
+                    reportParams.AppendFormat("v_claimfile_processed_id=> '{0}',", DALBase.GuidToSQLString(State.ClaimfileProcessedId))
+                    Select Case State.reportType
                         Case REJECT_REPORT
                             'RejectedSuncomcloseclaims-Exp_EN
                             reportParams.AppendFormat("V_REPORT_TYPE => '{0}'", "CLOSE_CALIM_SUNCOM_REJECT_EXPORT")
-                            Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "CLOSE_CALIM_SUNCOM_REJECT_EXPORT")
-                            Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "R_REJSUNCOMCLOSECLAIMS.Oracle_Export")
+                            PopulateBOProperty(State.MyBO, "ReportType", "CLOSE_CALIM_SUNCOM_REJECT_EXPORT")
+                            PopulateBOProperty(State.MyBO, "ReportProc", "R_REJSUNCOMCLOSECLAIMS.Oracle_Export")
 
                         Case PROCESSED_EXPORT
                             'ProcessedSuncomcloseclaims-processed-Exp    
                             reportParams.AppendFormat("V_REPORT_TYPE => '{0}'", "CLOSE_CALIM_SUNCOM_PROCESSED_EXPORT")
-                            Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "CLOSE_CALIM_SUNCOM_PROCESSED_EXPORT")
-                            Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "R_PROCESSEDCLOSEDCLAIMS.Oracle_Export")
+                            PopulateBOProperty(State.MyBO, "ReportType", "CLOSE_CALIM_SUNCOM_PROCESSED_EXPORT")
+                            PopulateBOProperty(State.MyBO, "ReportProc", "R_PROCESSEDCLOSEDCLAIMS.Oracle_Export")
                     End Select
 
                 Case ClaimFileProcessedData.InterfaceTypeCode.NEW_CLAIM
-                    reportParams.AppendFormat("v_claimfile_processed_id=> '{0}',", DALBase.GuidToSQLString(Me.State.ClaimfileProcessedId))
-                    If Me.State.reportType.Equals(REJECT_REPORT) Then
+                    reportParams.AppendFormat("v_claimfile_processed_id=> '{0}',", DALBase.GuidToSQLString(State.ClaimfileProcessedId))
+                    If State.reportType.Equals(REJECT_REPORT) Then
                         'RejectedNewclaims-Exp 
                         reportParams.AppendFormat("V_REPORT_TYPE => '{0}'", "NEW_CLAIM_REJECT_EXPORT")
-                        Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "NEW_CLAIM_REJECT_EXPORT")
-                        Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "REJECTEDNEWCLAIMSRPT.Oracle_Export")
+                        PopulateBOProperty(State.MyBO, "ReportType", "NEW_CLAIM_REJECT_EXPORT")
+                        PopulateBOProperty(State.MyBO, "ReportProc", "REJECTEDNEWCLAIMSRPT.Oracle_Export")
                     End If
 
                 Case ClaimFileProcessedData.InterfaceTypeCode.CLAIM_SUSPENSE
-                    If Me.State.reportType.Equals(REJECT_REPORT) Then
+                    If State.reportType.Equals(REJECT_REPORT) Then
                         'Claimsuspence-Exp
-                        If Me.State.SearchFilename IsNot Nothing AndAlso Me.State.SearchFilename.Trim.Length > 0 Then
+                        If State.SearchFilename IsNot Nothing AndAlso State.SearchFilename.Trim.Length > 0 Then
                             _maxrows = MAX_ROW_OVERRIDE
                         Else
                             _maxrows = MAX_ROWS
                         End If
                         reportParams.AppendFormat("V_USER_ID => '{0}',", DALBase.GuidToSQLString(ElitaPlusIdentity.Current.ActiveUser.Id))
-                        reportParams.AppendFormat("V_CERTIFICATE_NUMBER => '{0}',", Me.State.SearchCertificate)
-                        reportParams.AppendFormat("V_AUTHORIZATION_NUMBER => '{0}',", Me.State.SearchAuthorization)
-                        reportParams.AppendFormat("V_FILENAME => '{0}',", Me.State.SearchFilename)
+                        reportParams.AppendFormat("V_CERTIFICATE_NUMBER => '{0}',", State.SearchCertificate)
+                        reportParams.AppendFormat("V_AUTHORIZATION_NUMBER => '{0}',", State.SearchAuthorization)
+                        reportParams.AppendFormat("V_FILENAME => '{0}',", State.SearchFilename)
                         reportParams.AppendFormat("V_MAX_ROWS => '{0}',", _maxrows)
                         reportParams.AppendFormat("V_REPORT_TYPE => '{0}'", "CLAIM_SUSPENSE_REJECT_EXPORT")
-                        Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "CLAIM_SUSPENSE_REJECT_EXPORT")
-                        Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "ELP_CLAIM_SUSPENSE.Oracle_Export")
+                        PopulateBOProperty(State.MyBO, "ReportType", "CLAIM_SUSPENSE_REJECT_EXPORT")
+                        PopulateBOProperty(State.MyBO, "ReportProc", "ELP_CLAIM_SUSPENSE.Oracle_Export")
                     End If
 
                 Case ClaimFileProcessedData.InterfaceTypeCode.CLAIM_LOAD_COMMON
-                    reportParams.AppendFormat("v_claimload_file_processed_id=> '{0}',", DALBase.GuidToSQLString(Me.State.ClaimfileProcessedId))
-                    If Me.State.reportType.Equals(REJECT_REPORT) Then
+                    reportParams.AppendFormat("v_claimload_file_processed_id=> '{0}',", DALBase.GuidToSQLString(State.ClaimfileProcessedId))
+                    If State.reportType.Equals(REJECT_REPORT) Then
 
                         reportParams.AppendFormat("V_REPORT_TYPE => '{0}'", "CLAIM_LOAD_COMMON_REJECT_EXPORT")
-                        Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "CLAIM_LOAD_COMMON_REJECT_EXPORT")
-                        Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "REJECTEDCLAIMLOADRPT.Oracle_Export")
+                        PopulateBOProperty(State.MyBO, "ReportType", "CLAIM_LOAD_COMMON_REJECT_EXPORT")
+                        PopulateBOProperty(State.MyBO, "ReportProc", "REJECTEDCLAIMLOADRPT.Oracle_Export")
                     End If
 
                 Case ClaimFileProcessedData.InterfaceTypeCode.INVOICE_LOAD_COMMON
-                    reportParams.AppendFormat("v_claimload_file_processed_id=> '{0}',", DALBase.GuidToSQLString(Me.State.ClaimfileProcessedId))
-                    If Me.State.reportType.Equals(REJECT_REPORT) Then
+                    reportParams.AppendFormat("v_claimload_file_processed_id=> '{0}',", DALBase.GuidToSQLString(State.ClaimfileProcessedId))
+                    If State.reportType.Equals(REJECT_REPORT) Then
 
                         reportParams.AppendFormat("V_REPORT_TYPE => '{0}'", "INVOICE_LOAD_COMMON_REJECT_EXPORT")
-                        Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "INVOICE_LOAD_COMMON_REJECT_EXPORT")
-                        Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "R_REJECTEDINVOICE.Oracle_Export")
+                        PopulateBOProperty(State.MyBO, "ReportType", "INVOICE_LOAD_COMMON_REJECT_EXPORT")
+                        PopulateBOProperty(State.MyBO, "ReportProc", "R_REJECTEDINVOICE.Oracle_Export")
                     End If
             End Select
 
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportParameters", reportParams.ToString())
-            Me.PopulateBOProperty(Me.State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
+            PopulateBOProperty(State.MyBO, "ReportParameters", reportParams.ToString())
+            PopulateBOProperty(State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
 
             ScheduleReport()
 
@@ -506,19 +506,19 @@ Namespace Reports
         Private Sub ScheduleReport()
             Try
                 Dim scheduleDate As DateTime = TheRptCeInputControl.GetSchedDate()
-                If Me.State.MyBO.IsDirty Then
-                    Me.State.MyBO.Save()
-                    Me.State.IsNew = False
-                    Me.State.HasDataChanged = True
-                    Me.State.MyBO.CreateJob(scheduleDate)
+                If State.MyBO.IsDirty Then
+                    State.MyBO.Save()
+                    State.IsNew = False
+                    State.HasDataChanged = True
+                    State.MyBO.CreateJob(scheduleDate)
                     If String.IsNullOrEmpty(ElitaPlusIdentity.Current.EmailAddress) Then
-                        Me.DisplayMessage(Message.MSG_Email_not_configured, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_Email_not_configured, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     Else
-                        Me.DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 

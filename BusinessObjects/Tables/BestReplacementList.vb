@@ -1,17 +1,17 @@
 ﻿Public Class BestReplacementList
     Inherits BusinessObjectListBase
 
-    Public Sub New(ByVal parent As BestReplacementGroup)
+    Public Sub New(parent As BestReplacementGroup)
         MyBase.New(LoadTable(parent), GetType(BestReplacement), parent)
     End Sub
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, BestReplacement).MigrationPathId.Equals(CType(Parent, BestReplacementGroup).Id)
     End Function
 
 
 #Region "Class Methods"
-    Private Shared Function LoadTable(ByVal parent As BestReplacementGroup) As DataTable
+    Private Shared Function LoadTable(parent As BestReplacementGroup) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(BestReplacementList)) Then
                 Dim dal As New BestReplacementDAL

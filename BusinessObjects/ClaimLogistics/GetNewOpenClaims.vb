@@ -17,7 +17,7 @@ Public Class GetNewOpenClaims
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetNewOpenClaimsDs)
+    Public Sub New(ds As GetNewOpenClaimsDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -28,7 +28,7 @@ Public Class GetNewOpenClaims
 
 #Region "Private Members"
 
-    Private Sub MapDataSet(ByVal ds As GetNewOpenClaimsDs)
+    Private Sub MapDataSet(ds As GetNewOpenClaimsDs)
         Dim schema As String = ds.GetXmlSchema
         Dim t As Integer
         Dim i As Integer
@@ -39,21 +39,21 @@ Public Class GetNewOpenClaims
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
     End Sub
 
     'Initialization code for new objects
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetNewOpenClaimsDs)
+    Private Sub Load(ds As GetNewOpenClaimsDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
         Catch ex As BOValidationException
             Throw ex
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -65,11 +65,11 @@ Public Class GetNewOpenClaims
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetNewOpenClaimsDs)
+    Private Sub PopulateBOFromWebService(ds As GetNewOpenClaimsDs)
         Try
             If ds.GetNewOpenClaims.Count = 0 Then Exit Sub
             With ds.GetNewOpenClaims.Item(0)
-                Me.RouteCode = .ROUTE_NUMBER
+                RouteCode = .ROUTE_NUMBER
             End With
         Catch ex As BOValidationException
             Throw ex
@@ -87,19 +87,19 @@ Public Class GetNewOpenClaims
 
     Public Overrides Function ProcessWSRequest() As String
         Try
-            Me.Validate()
+            Validate()
 
-            Dim dsRoute As DataSet = Route.GetRouteByCode(Me.RouteCode)
-            If dsRoute Is Nothing Or dsRoute.Tables.Count <= 0 Or dsRoute.Tables(0).Rows.Count <> 1 Then
+            Dim dsRoute As DataSet = Route.GetRouteByCode(RouteCode)
+            If dsRoute Is Nothing OrElse dsRoute.Tables.Count <= 0 OrElse dsRoute.Tables(0).Rows.Count <> 1 Then
                 Throw New BOValidationException("GetNewOpenClaims Error: ", Common.ErrorCodes.WS_ROUTE_NOT_FOUND)
             Else
                 RouteId = New Guid(CType(dsRoute.Tables(0).Rows(0)(RouteDAL.TABLE_KEY_NAME), Byte()))
             End If
 
             Dim headerBO As New PickupListHeader
-            Dim dsHeader As DataSet = headerBO.GetNewOpenClaims(Me.RouteId)
+            Dim dsHeader As DataSet = headerBO.GetNewOpenClaims(RouteId)
 
-            dsHeader.DataSetName = Me.DATASET_NAME
+            dsHeader.DataSetName = DATASET_NAME
 
             Dim excludeTags As ArrayList = New ArrayList()
             excludeTags.Add("/GetNewOpenClaims/PICKLIST/ROUTE_ID")
@@ -130,7 +130,7 @@ Public Class GetNewOpenClaims
 #Region "Properties"
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property RouteCode() As String
+    Public Property RouteCode As String
         Get
             CheckDeleted()
             If Row(COL_ROUTE_NUMBER) Is DBNull.Value Then
@@ -139,9 +139,9 @@ Public Class GetNewOpenClaims
                 Return CType(Row(COL_ROUTE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(COL_ROUTE_NUMBER, Value)
+            SetValue(COL_ROUTE_NUMBER, Value)
         End Set
     End Property
 

@@ -43,10 +43,10 @@ Namespace Certificates
 
         Protected Shadows ReadOnly Property State() As MyState
             Get                
-                If Me.NavController.State Is Nothing Then
-                    Me.NavController.State = New MyState
+                If NavController.State Is Nothing Then
+                    NavController.State = New MyState
                 End If
-                Return CType(Me.NavController.State, MyState)
+                Return CType(NavController.State, MyState)
             End Get
         End Property
 
@@ -55,153 +55,153 @@ Namespace Certificates
 #Region "Page Events"
 
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                If (Not Me.State.MyBO Is Nothing) Then
-                    Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & CERTIFICATES & " " & Me.State.MyBO.CertNumber & ElitaBase.Sperator & _
+            If (State IsNot Nothing) Then
+                If (State.MyBO IsNot Nothing) Then
+                    MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & CERTIFICATES & " " & State.MyBO.CertNumber & ElitaBase.Sperator & _
                         "File New Claim"
                 End If
             End If
         End Sub
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
-            Me.MasterPage.MessageController.Clear()
+            MasterPage.MessageController.Clear()
 
             Try
-                Me.SetDefaultButton(Me.moDateOfLossText, btnSearch)
+                SetDefaultButton(moDateOfLossText, btnSearch)
                 If cboRiskType.SelectedIndex.Equals(NO_ITEM_SELECTED_INDEX) Then
                     EnableControls(False)
                 End If
-                Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(CERTIFICATES)
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PROTECTION_AND_EVENT_DETAILS)
+                MasterPage.UsePageTabTitleInBreadCrum = False
+                MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(CERTIFICATES)
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PROTECTION_AND_EVENT_DETAILS)
                 UpdateBreadCrum()
 
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
 
                     Dim objTemp As Object
                     objTemp = NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE)
-                    If Not objTemp Is Nothing Then
-                        Me.State.MyBO = CType(objTemp, Certificate)
-                    ElseIf Not Navigator.CallingParameters Is Nothing Then
-                        Me.State.MyBO = New Certificate(CType(Me.Navigator.CallingParameters, Guid))
+                    If objTemp IsNot Nothing Then
+                        State.MyBO = CType(objTemp, Certificate)
+                    ElseIf Navigator.CallingParameters IsNot Nothing Then
+                        State.MyBO = New Certificate(CType(Navigator.CallingParameters, Guid))
                     End If
 
                     objTemp = NavController.FlowSession(FlowSessionKeys.SESSION_DATE_OF_LOSS)
-                    If Not objTemp Is Nothing Then
+                    If objTemp IsNot Nothing Then
                         State.DateOfLoss = CType(objTemp, Date)
                     End If
 
                     objTemp = NavController.FlowSession(FlowSessionKeys.SESSION_DATE_CLAIM_REPORTED)
-                    If Not objTemp Is Nothing Then
+                    If objTemp IsNot Nothing Then
                         State.DateReported = CType(objTemp, Date)
                     Else
                         State.DateReported = Date.Today
                     End If
 
-                    Dim companyBO As Assurant.ElitaPlus.BusinessObjectsNew.Company = New Assurant.ElitaPlus.BusinessObjectsNew.Company(Me.State.MyBO.CompanyId)
+                    Dim companyBO As Assurant.ElitaPlus.BusinessObjectsNew.Company = New Assurant.ElitaPlus.BusinessObjectsNew.Company(State.MyBO.CompanyId)
                     UpdateBreadCrum()
 
                     ControlMgr.SetVisibleControl(Me, BtnDateOfLoss, True)
                     RiskTypeTR.Visible = False
 
-                    Me.moDateOfLossText.Text = Nothing
-                    Me.AddCalendar_New(Me.BtnDateOfLoss, Me.moDateOfLossText)
-                    Me.AddCalendar_New(Me.BtnDateReported, txtDateReported)
+                    moDateOfLossText.Text = Nothing
+                    AddCalendar_New(BtnDateOfLoss, moDateOfLossText)
+                    AddCalendar_New(BtnDateReported, txtDateReported)
 
                     If State.DateReported > Date.MinValue Then PopulateControlFromBOProperty(txtDateReported, GetDateFormattedStringNullable(New DateType(State.DateReported)))
                     If State.DateOfLoss > Date.MinValue Then PopulateControlFromBOProperty(moDateOfLossText, GetDateFormattedStringNullable(New DateType(State.DateOfLoss)))
 
-                    Me.PopulateProtectionAndEventDetail()
+                    PopulateProtectionAndEventDetail()
 
                     If DirectCast(NavController, Assurant.Common.AppNavigationControl.NavControllerBase).PrevNavState.Url.Contains("CertItemForm") Then
-                        Me.RestorePageState()
+                        RestorePageState()
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
 #End Region
 
 #Region "New Look And Feel"
         Private Sub RestorePageState()
-            If Not NavController.FlowSession(FlowSessionKeys.SESSION_CALLER_NAME) Is Nothing Then
-                If Not Me.NavController.FlowSession(FlowSessionKeys.SESSION_CALLER_NAME).ToString.Equals(String.Empty) Then
-                    TextCallerName.Text = Me.NavController.FlowSession(FlowSessionKeys.SESSION_CALLER_NAME).ToString
+            If NavController.FlowSession(FlowSessionKeys.SESSION_CALLER_NAME) IsNot Nothing Then
+                If Not NavController.FlowSession(FlowSessionKeys.SESSION_CALLER_NAME).ToString.Equals(String.Empty) Then
+                    TextCallerName.Text = NavController.FlowSession(FlowSessionKeys.SESSION_CALLER_NAME).ToString
                 End If
             End If
-            If Not Me.NavController.FlowSession(FlowSessionKeys.SESSION_PROBLEM_DESCRIPTION) Is Nothing Then
-                If Not Me.NavController.FlowSession(FlowSessionKeys.SESSION_PROBLEM_DESCRIPTION).ToString.Equals(String.Empty) Then
-                    TextProblemDescription.Text = Me.NavController.FlowSession(FlowSessionKeys.SESSION_PROBLEM_DESCRIPTION).ToString
+            If NavController.FlowSession(FlowSessionKeys.SESSION_PROBLEM_DESCRIPTION) IsNot Nothing Then
+                If Not NavController.FlowSession(FlowSessionKeys.SESSION_PROBLEM_DESCRIPTION).ToString.Equals(String.Empty) Then
+                    TextProblemDescription.Text = NavController.FlowSession(FlowSessionKeys.SESSION_PROBLEM_DESCRIPTION).ToString
                 End If
             End If
-            If Not Me.NavController.FlowSession(FlowSessionKeys.SESSION_RISK_TYPE) Is Nothing Then
-                If Not Me.NavController.FlowSession(FlowSessionKeys.SESSION_RISK_TYPE).ToString.Equals(String.Empty) Then
+            If NavController.FlowSession(FlowSessionKeys.SESSION_RISK_TYPE) IsNot Nothing Then
+                If Not NavController.FlowSession(FlowSessionKeys.SESSION_RISK_TYPE).ToString.Equals(String.Empty) Then
                     If PopulateAndValidateInputs() Then
                         'Me.BindListControlToDataView(Me.cboRiskType, LookupListNew.LoadRiskTypes(State.MyBO.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId, State.DateOfLoss))
                         Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
                         oListContext.CertId = State.MyBO.Id
                         oListContext.DateOfLoss = State.DateOfLoss
                         oListContext.LanguageId = Thread.CurrentPrincipal.GetLanguageId()
-                        Me.cboRiskType.Populate(CommonConfigManager.Current.ListManager.GetList("RiskTypeByCertificate", Thread.CurrentPrincipal.GetLanguageCode(), oListContext), New PopulateOptions() With
+                        cboRiskType.Populate(CommonConfigManager.Current.ListManager.GetList("RiskTypeByCertificate", Thread.CurrentPrincipal.GetLanguageCode(), oListContext), New PopulateOptions() With
                         {
                             .AddBlankItem = True
                         })
-                        ElitaPlusPage.BindSelectItem(CStr(Me.NavController.FlowSession(FlowSessionKeys.SESSION_RISK_TYPE)), cboRiskType)
+                        ElitaPlusPage.BindSelectItem(CStr(NavController.FlowSession(FlowSessionKeys.SESSION_RISK_TYPE)), cboRiskType)
                     End If
                 End If
             End If
-            If Not Me.NavController.FlowSession(FlowSessionKeys.SESSION_COVERAGE_TYPE) Is Nothing Then
-                If Not Me.NavController.FlowSession(FlowSessionKeys.SESSION_COVERAGE_TYPE).ToString.Equals(String.Empty) Then
+            If NavController.FlowSession(FlowSessionKeys.SESSION_COVERAGE_TYPE) IsNot Nothing Then
+                If Not NavController.FlowSession(FlowSessionKeys.SESSION_COVERAGE_TYPE).ToString.Equals(String.Empty) Then
                     If PopulateAndValidateInputs() Then
-                        Me.PopulateDropdown()
+                        PopulateDropdown()
                         'Me.BindListControlToDataView(Me.cboCoverageType, LookupListNew.LoadCoverageTypes(State.MyBO.Id, New Guid(Me.NavController.FlowSession(FlowSessionKeys.SESSION_RISK_TYPE).ToString), ElitaPlusIdentity.Current.ActiveUser.LanguageId, State.DateOfLoss))
                         Dim listcontextForcoveragetypes As ListContext = New ListContext()
                         listcontextForcoveragetypes.CertId = State.MyBO.Id
-                        listcontextForcoveragetypes.CertItemId = New Guid(Me.NavController.FlowSession(FlowSessionKeys.SESSION_RISK_TYPE).ToString)
+                        listcontextForcoveragetypes.CertItemId = New Guid(NavController.FlowSession(FlowSessionKeys.SESSION_RISK_TYPE).ToString)
                         listcontextForcoveragetypes.LanguageId = Thread.CurrentPrincipal.GetLanguageId()
                         listcontextForcoveragetypes.DateOfLoss = State.DateOfLoss
                         Dim CoverageTypeList As ListItem() = CommonConfigManager.Current.ListManager.GetList("CoverageTypeByCertificate", Thread.CurrentPrincipal.GetLanguageCode(), listcontextForcoveragetypes)
-                        Me.cboCoverageType.Populate(CoverageTypeList, New PopulateOptions() With
+                        cboCoverageType.Populate(CoverageTypeList, New PopulateOptions() With
                             {
                                 .AddBlankItem = True
                             })
-                        Me.DisableControls()
-                        ElitaPlusPage.BindSelectItem(CStr(Me.NavController.FlowSession(FlowSessionKeys.SESSION_COVERAGE_TYPE)), cboCoverageType)
-                        If Not Me.NavController.FlowSession(FlowSessionKeys.SESSION_RISK_TYPE).ToString.Equals(String.Empty) Then
-                            ElitaPlusPage.BindSelectItem(CStr(Me.NavController.FlowSession(FlowSessionKeys.SESSION_RISK_TYPE)), cboRiskType)
+                        DisableControls()
+                        ElitaPlusPage.BindSelectItem(CStr(NavController.FlowSession(FlowSessionKeys.SESSION_COVERAGE_TYPE)), cboCoverageType)
+                        If Not NavController.FlowSession(FlowSessionKeys.SESSION_RISK_TYPE).ToString.Equals(String.Empty) Then
+                            ElitaPlusPage.BindSelectItem(CStr(NavController.FlowSession(FlowSessionKeys.SESSION_RISK_TYPE)), cboRiskType)
                         End If
                     End If
                 End If
             End If
         End Sub
 
-        Private Sub EnableControls(ByVal bToggle As Boolean)
-            ControlMgr.SetVisibleControl(Me, Me.SearchResultPanel, bToggle)
-            ControlMgr.SetVisibleControl(Me, Me.btnContinue, bToggle)
+        Private Sub EnableControls(bToggle As Boolean)
+            ControlMgr.SetVisibleControl(Me, SearchResultPanel, bToggle)
+            ControlMgr.SetVisibleControl(Me, btnContinue, bToggle)
         End Sub
 
         Private Sub DisableControls()
-            If cboRiskType.Items.Count = NO_RECORD_FOUND_DEFAULT_BLANK And Me.cboCoverageType.Items.Count = NO_RECORD_FOUND_DEFAULT_BLANK Then
-                Me.HandleGridMessages(NO_RECORD_FOUND, True)
-                ControlMgr.SetVisibleControl(Me, Me.SearchResultPanel, False)
-                ControlMgr.SetVisibleControl(Me, Me.btnContinue, False)
+            If cboRiskType.Items.Count = NO_RECORD_FOUND_DEFAULT_BLANK AndAlso cboCoverageType.Items.Count = NO_RECORD_FOUND_DEFAULT_BLANK Then
+                HandleGridMessages(NO_RECORD_FOUND, True)
+                ControlMgr.SetVisibleControl(Me, SearchResultPanel, False)
+                ControlMgr.SetVisibleControl(Me, btnContinue, False)
             End If
         End Sub
 
         Public Sub PopulateDropdown()
             Try
-                Me.EnableControls(True)
+                EnableControls(True)
                 Dim listcontextForRiskTypeList As ListContext = New ListContext()
                 listcontextForRiskTypeList.CertId = State.MyBO.Id
                 listcontextForRiskTypeList.LanguageId = ElitaPlusIdentity.Current.ActiveUser.LanguageId
                 listcontextForRiskTypeList.DateOfLoss = State.DateOfLoss
                 Dim risktypeList As ListItem() = CommonConfigManager.Current.ListManager.GetList("RiskTypeByCertificate", , listcontextForRiskTypeList)
 
-                Me.cboRiskType.Populate(risktypeList, New PopulateOptions() With
+                cboRiskType.Populate(risktypeList, New PopulateOptions() With
                     {
                        .AddBlankItem = True
                     })
@@ -222,22 +222,22 @@ Namespace Certificates
                     listcontextForcoveragetypes.DateOfLoss = State.DateOfLoss
                     Dim CoverageTypeList As ListItem() = CommonConfigManager.Current.ListManager.GetList("CoverageTypeByCertificate", Thread.CurrentPrincipal.GetLanguageCode(), listcontextForcoveragetypes)
 
-                    Me.cboCoverageType.Populate(CoverageTypeList, New PopulateOptions() With
+                    cboCoverageType.Populate(CoverageTypeList, New PopulateOptions() With
                                                  {
                                                    .AddBlankItem = True
                                                   })
                     'Me.BindListControlToDataView(Me.cboCoverageType, LookupListNew.LoadCoverageTypes(State.MyBO.Id, New Guid(cboRiskType.SelectedValue), ElitaPlusIdentity.Current.ActiveUser.LanguageId, State.DateOfLoss))
-                    Me.DisableControls()
+                    DisableControls()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Protected Sub cboRiskType_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cboRiskType.SelectedIndexChanged
+        Protected Sub cboRiskType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboRiskType.SelectedIndexChanged
             Try
                 If Not cboRiskType.SelectedValue.Equals(Guid.Empty.ToString) Then
-                    Me.NavController.FlowSession(FlowSessionKeys.SESSION_RISK_TYPE) = cboRiskType.SelectedValue
+                    NavController.FlowSession(FlowSessionKeys.SESSION_RISK_TYPE) = cboRiskType.SelectedValue
                     Dim listcontextForcoveragetypes As ListContext = New ListContext()
                     listcontextForcoveragetypes.CertId = State.MyBO.Id
                     listcontextForcoveragetypes.CertItemId = New Guid(cboRiskType.SelectedValue)
@@ -245,23 +245,23 @@ Namespace Certificates
                     listcontextForcoveragetypes.DateOfLoss = State.DateOfLoss
                     Dim CoverageTypeList As ListItem() = CommonConfigManager.Current.ListManager.GetList("CoverageTypeByCertificate", Thread.CurrentPrincipal.GetLanguageCode(), listcontextForcoveragetypes)
 
-                    Me.cboCoverageType.Populate(CoverageTypeList, New PopulateOptions() With
+                    cboCoverageType.Populate(CoverageTypeList, New PopulateOptions() With
                                                  {
                                                    .AddBlankItem = True
                                                   })
                     'Me.BindListControlToDataView(Me.cboCoverageType, LookupListNew.LoadCoverageTypes(State.MyBO.Id, New Guid(cboRiskType.SelectedValue), ElitaPlusIdentity.Current.ActiveUser.LanguageId, State.DateOfLoss))
-                    Me.DisableControls()
+                    DisableControls()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Protected Sub cboCoverageType_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cboCoverageType.SelectedIndexChanged
+        Protected Sub cboCoverageType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboCoverageType.SelectedIndexChanged
             Try
-                Me.NavController.FlowSession(FlowSessionKeys.SESSION_COVERAGE_TYPE) = cboCoverageType.SelectedValue
+                NavController.FlowSession(FlowSessionKeys.SESSION_COVERAGE_TYPE) = cboCoverageType.SelectedValue
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -272,22 +272,22 @@ Namespace Certificates
         Private Sub PopulateProtectionAndEventDetail()
             Dim cssClassName As String
             Try
-                moProtectionAndEventDetails.CustomerName = Me.State.MyBO.CustomerName
+                moProtectionAndEventDetails.CustomerName = State.MyBO.CustomerName
                 moProtectionAndEventDetails.EnrolledMake = NO_DATA
                 moProtectionAndEventDetails.ClaimNumber = NO_DATA
-                moProtectionAndEventDetails.DealerName = Me.State.MyBO.getDealerDescription
+                moProtectionAndEventDetails.DealerName = State.MyBO.getDealerDescription
                 moProtectionAndEventDetails.EnrolledModel = NO_DATA
                 moProtectionAndEventDetails.ClaimStatus = NO_DATA
-                If Me.NavController.FlowSession(FlowSessionKeys.SESSION_CALLER_NAME) Is Nothing Then
-                    moProtectionAndEventDetails.CallerName = Me.State.MyBO.CustomerName
-                    TextCallerName.Text = Me.State.MyBO.CustomerName
-                ElseIf Not (Me.NavController.FlowSession(FlowSessionKeys.SESSION_CALLER_NAME).ToString.Equals(String.Empty)) Then
-                    moProtectionAndEventDetails.CallerName = Me.NavController.FlowSession(FlowSessionKeys.SESSION_CALLER_NAME).ToString
-                    TextCallerName.Text = Me.NavController.FlowSession(FlowSessionKeys.SESSION_CALLER_NAME).ToString
+                If NavController.FlowSession(FlowSessionKeys.SESSION_CALLER_NAME) Is Nothing Then
+                    moProtectionAndEventDetails.CallerName = State.MyBO.CustomerName
+                    TextCallerName.Text = State.MyBO.CustomerName
+                ElseIf Not (NavController.FlowSession(FlowSessionKeys.SESSION_CALLER_NAME).ToString.Equals(String.Empty)) Then
+                    moProtectionAndEventDetails.CallerName = NavController.FlowSession(FlowSessionKeys.SESSION_CALLER_NAME).ToString
+                    TextCallerName.Text = NavController.FlowSession(FlowSessionKeys.SESSION_CALLER_NAME).ToString
                 End If
                 If State.DateOfLoss > Date.MinValue Then moProtectionAndEventDetails.DateOfLoss = GetDateFormattedStringNullable(State.DateOfLoss)
-                moProtectionAndEventDetails.ProtectionStatus = LookupListNew.GetDescriptionFromId("SUBSTAT", Me.State.MyBO.SubscriberStatus)
-                If (LookupListNew.GetCodeFromId("SUBSTAT", Me.State.MyBO.SubscriberStatus) = Codes.SUBSCRIBER_STATUS__ACTIVE) Then
+                moProtectionAndEventDetails.ProtectionStatus = LookupListNew.GetDescriptionFromId("SUBSTAT", State.MyBO.SubscriberStatus)
+                If (LookupListNew.GetCodeFromId("SUBSTAT", State.MyBO.SubscriberStatus) = Codes.SUBSCRIBER_STATUS__ACTIVE) Then
                     cssClassName = "StatActive"
                 Else
                     cssClassName = "StatClosed"
@@ -298,7 +298,7 @@ Namespace Certificates
                 moProtectionAndEventDetails.TypeOfLoss = NO_DATA
                 moProtectionAndEventDetails.DateOfLoss = NO_DATA
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -346,7 +346,7 @@ Namespace Certificates
             End If
 
             If blnValid = False Then
-                Me.MasterPage.MessageController.AddError(errMsg.ToArray, False)
+                MasterPage.MessageController.AddError(errMsg.ToArray, False)
             End If
 
             Return blnValid
@@ -393,26 +393,26 @@ Namespace Certificates
             End If
 
             If RiskTypeTR.Visible Then
-                If cboRiskType.Text.Equals(String.Empty) Or cboRiskType.Text.Equals(Guid.Empty.ToString) Then
+                If cboRiskType.Text.Equals(String.Empty) OrElse cboRiskType.Text.Equals(Guid.Empty.ToString) Then
                     errMsg.Add(RiskTypeLabel.Text & " : " & TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR))
                     blnValid = False
                 End If
             End If
-            If cboCoverageType.Text.Equals(String.Empty) Or cboCoverageType.Text.Equals(Guid.Empty.ToString) Then
+            If cboCoverageType.Text.Equals(String.Empty) OrElse cboCoverageType.Text.Equals(Guid.Empty.ToString) Then
                 errMsg.Add(CoverageTypeLabel.Text & " : " & TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR))
                 blnValid = False
             End If
-            If Me.TextCallerName.Text.Equals(String.Empty) Then
+            If TextCallerName.Text.Equals(String.Empty) Then
                 errMsg.Add(CallerNameLabel.Text & " : " & TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR))
                 blnValid = False
             End If
-            If Me.TextProblemDescription.Text.Equals(String.Empty) Then
+            If TextProblemDescription.Text.Equals(String.Empty) Then
                 errMsg.Add(ProblemDescriptionLabel.Text & " : " & TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR))
                 blnValid = False
             End If
 
             If blnValid = False Then
-                Me.MasterPage.MessageController.AddError(errMsg.ToArray, False)
+                MasterPage.MessageController.AddError(errMsg.ToArray, False)
             End If
 
             Return blnValid
@@ -422,31 +422,31 @@ Namespace Certificates
 
 #Region " Buttons Clicks "
 
-        Private Sub btnSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+        Private Sub btnSearch_Click(sender As Object, e As System.EventArgs) Handles btnSearch.Click
             Try
                 If PopulateAndValidateInputs() Then
                     PopulateDropdown()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
             Try
-                Me.NavController.Navigate(Me, "back")
+                NavController.Navigate(Me, "back")
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
+        Protected Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
             Try
-                Me.NavController.Navigate(Me, "back")
+                NavController.Navigate(Me, "back")
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -456,9 +456,9 @@ Namespace Certificates
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Sub btnContinue_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnContinue.Click
-            Me.State.CallerName = TextCallerName.Text
-            Me.State.ProblemDescription = TextProblemDescription.Text
+        Protected Sub btnContinue_Click(sender As Object, e As EventArgs) Handles btnContinue.Click
+            State.CallerName = TextCallerName.Text
+            State.ProblemDescription = TextProblemDescription.Text
             Dim guidCICID As Guid
             Try
                 If ValidateDropdowns() Then
@@ -477,42 +477,42 @@ Namespace Certificates
                         guidCICID = New Guid(cboCoverageType.SelectedValue.ToString)
                     End If
                     If Not guidCICID.Equals(Guid.Empty) Then
-                        Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_COVERAGE_ID) = guidCICID
-                        Me.NavController.FlowSession(FlowSessionKeys.SESSION_DATE_OF_LOSS) = State.DateOfLoss
-                        Me.NavController.FlowSession(FlowSessionKeys.SESSION_DATE_CLAIM_REPORTED) = State.DateReported
-                        Me.NavController.FlowSession(FlowSessionKeys.SESSION_CALLER_NAME) = State.CallerName
-                        Me.NavController.FlowSession(FlowSessionKeys.SESSION_PROBLEM_DESCRIPTION) = State.ProblemDescription
-                        Me.NavController.FlowSession(FlowSessionKeys.SESSION_RISK_TYPE) = cboRiskType.SelectedValue
-                        Me.NavController.FlowSession(FlowSessionKeys.SESSION_COVERAGE_TYPE) = cboCoverageType.SelectedValue
+                        NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_COVERAGE_ID) = guidCICID
+                        NavController.FlowSession(FlowSessionKeys.SESSION_DATE_OF_LOSS) = State.DateOfLoss
+                        NavController.FlowSession(FlowSessionKeys.SESSION_DATE_CLAIM_REPORTED) = State.DateReported
+                        NavController.FlowSession(FlowSessionKeys.SESSION_CALLER_NAME) = State.CallerName
+                        NavController.FlowSession(FlowSessionKeys.SESSION_PROBLEM_DESCRIPTION) = State.ProblemDescription
+                        NavController.FlowSession(FlowSessionKeys.SESSION_RISK_TYPE) = cboRiskType.SelectedValue
+                        NavController.FlowSession(FlowSessionKeys.SESSION_COVERAGE_TYPE) = cboCoverageType.SelectedValue
                         Dim oCountry As Country
 
-                        moProtectionAndEventDetails.CallerName = Me.NavController.FlowSession(FlowSessionKeys.SESSION_CALLER_NAME).ToString
+                        moProtectionAndEventDetails.CallerName = NavController.FlowSession(FlowSessionKeys.SESSION_CALLER_NAME).ToString
 
-                        If Me.State.MyBO.getMasterclaimProcFlag = Codes.MasterClmProc_BYDOL Then
-                            Dim dv As Claim.MaterClaimDV = Claim.getRepairedMasterClaimsList(guidCICID, Me.State.DateOfLoss)
+                        If State.MyBO.getMasterclaimProcFlag = Codes.MasterClmProc_BYDOL Then
+                            Dim dv As Claim.MaterClaimDV = Claim.getRepairedMasterClaimsList(guidCICID, State.DateOfLoss)
                             If dv.Count > 0 Then
                                 Throw New GUIException(Message.MSG_COVERAGE_TYPE_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_REPAIRED_MASTERCLAIM_EXISTS)
                             End If
                         End If
 
-                        If Me.State.MyBO.StatusCode = Codes.CERTIFICATE_STATUS__CANCELLED AndAlso Me.State.MyBO.Dealer.IsGracePeriodSpecified Then
-                            Me.NavController.State = Nothing
-                            Me.NavController.Navigate(Me, COVERAGE_SELECTED, New CertItemForm.Parameters("NEW_CLAIM"))
+                        If State.MyBO.StatusCode = Codes.CERTIFICATE_STATUS__CANCELLED AndAlso State.MyBO.Dealer.IsGracePeriodSpecified Then
+                            NavController.State = Nothing
+                            NavController.Navigate(Me, COVERAGE_SELECTED, New CertItemForm.Parameters("NEW_CLAIM"))
                         Else
                             If Claim.IsClaimReportedWithinPeriod(State.MyBO.Id, State.DateOfLoss, State.DateReported) Then
-                                Me.NavController.State = Nothing
-                                Me.NavController.Navigate(Me, COVERAGE_SELECTED, New CertItemForm.Parameters("NEW_CLAIM"))
+                                NavController.State = Nothing
+                                NavController.Navigate(Me, COVERAGE_SELECTED, New CertItemForm.Parameters("NEW_CLAIM"))
                             Else
                                 oCountry = New Country(State.MyBO.AddressChild.CountryId)
                                 If Not (oCountry.DefaultScForDeniedClaims.Equals(Guid.Empty)) Then
                                     'Set the Service Center to the Default Service Center for Claims Not reported within Period.                            
-                                    Me.NavController.FlowSession(FlowSessionKeys.SESSION_SERVICE_CENTER) = New ServiceCenter(oCountry.DefaultScForDeniedClaims)
-                                    Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_COVERAGE) = New CertItemCoverage(guidCICID)
-                                    Me.NavController.State = Nothing
-                                    Me.NavController.Navigate(Me, COVERAGE_SELECTED_LATE_REPORTED, guidCICID)
+                                    NavController.FlowSession(FlowSessionKeys.SESSION_SERVICE_CENTER) = New ServiceCenter(oCountry.DefaultScForDeniedClaims)
+                                    NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_COVERAGE) = New CertItemCoverage(guidCICID)
+                                    NavController.State = Nothing
+                                    NavController.Navigate(Me, COVERAGE_SELECTED_LATE_REPORTED, guidCICID)
                                 Else
                                     Dim errMsg As String = TranslationBase.TranslateLabelOrMessage(Message.MSG_DEFAULT_SVC_CENTER_NOT_SETUP)
-                                    Me.MasterPage.MessageController.AddError(errMsg, False)
+                                    MasterPage.MessageController.AddError(errMsg, False)
                                 End If
                             End If
                         End If
@@ -521,7 +521,7 @@ Namespace Certificates
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region

@@ -23,7 +23,7 @@
         End Get
     End Property
 
-    Public Sub New(ByVal pRepositoryCode As String, ByVal pStoragePath As String, ByVal pAbsoluteFileName As String, ByVal ex As Exception)
+    Public Sub New(pRepositoryCode As String, pStoragePath As String, pAbsoluteFileName As String, ex As Exception)
         MyBase.New(String.Format("Document Download Failed for Repository : {0}, Storage Path : {1}, Absolute Path : {2}", pRepositoryCode, pStoragePath, pAbsoluteFileName), "DOCUMENT_DOWNLOAD_FAILED", ex)
         oRepositoryCode = pRepositoryCode
         oStoragePath = pStoragePath

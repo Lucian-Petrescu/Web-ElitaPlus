@@ -1,8 +1,11 @@
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+﻿<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+<%@ Import Namespace="Assurant.ElitaPlus.BusinessObjectsNew" %>
+<%@ Import Namespace="Assurant.ElitaPlus.Common" %>
 
 <%@ Page Language="vb" AutoEventWireup="false" MasterPageFile="../Navigation/masters/ElitaBase.Master"
     CodeBehind="PayBatchClaimForm.aspx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.PayBatchClaimForm"
     Theme="Default" %>
+<%@ Import Namespace="System.Globalization" %>
 
 <%@ Register TagPrefix="Elita" TagName="UserControlInvoiceRegionTaxes" Src="../Common/UserControlInvoiceRegionTaxes.ascx" %>
 <asp:Content ID="MessageContent" ContentPlaceHolderID="MessagePlaceHolder" runat="server"> 
@@ -133,12 +136,12 @@
             <div id="tabs" class="style-tabs">
                 <ul>
                     <li>
-                        <a href="#tabsSearchInvoice">
+                        <a href="#tabsSearchInvoice" rel="noopener noreferrer">
                             <asp:Label ID="lblsearchInvoice" runat="server" CssClass="tabHeaderText">Claim Details</asp:Label>
                         </a>
                     </li>
                     <li>
-                        <a href="#tabsIIBBtaxes">
+                        <a href="#tabsIIBBtaxes" rel="noopener noreferrer">
                             <asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">REGION_TAXES</asp:Label>
                         </a>
                     </li>
@@ -297,8 +300,8 @@
 
         // debugger;
         var curAmt;
-        var curSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
-        var groupSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
+        var curSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
+        var groupSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
         function chkamt(fld, t, type) {
             var ctrl = document.getElementById(fld);
             var f = parseFloat(setJsFormat(ctrl.value, curSep));
@@ -307,7 +310,7 @@
                 document.getElementById(fld).focus();
                 document.getElementById(fld).innerText = convertNumberToCulture(t, curSep, groupSep);
                 updTot(fld, t);
-                alert('<%=Assurant.ElitaPlus.BusinessObjectsNew.TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>');
+                alert('<%=TranslationBase.TranslateLabelOrMessage(ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>');
                     return false;
                 }
                 if (document.getElementById(fld) != document.getElementById(Tax1Amt) && document.getElementById(fld) != document.getElementById(Tax2Amt)) {
@@ -315,7 +318,7 @@
                     if (isNaN(f) || document.getElementById(fld).value == null || document.getElementById(fld).value == '') {
                         document.getElementById(fld).focus();
                         document.getElementById(fld).innerText = convertNumberToCulture(curAmt, curSep, groupSep);
-                        alert('<%=Assurant.ElitaPlus.BusinessObjectsNew.TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>');
+                        alert('<%=TranslationBase.TranslateLabelOrMessage(ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>');
                         return false;
                     }
                     if (parseFloat(document.getElementById(fld).value) < 0) {
@@ -333,7 +336,7 @@
                     if (isNaN(f) && document.getElementById(fld).value.length > 0) {
                         document.getElementById(fld).value = 0;
                         updTot(fld, 0);
-                        alert('<%=Assurant.ElitaPlus.BusinessObjectsNew.TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>');
+                        alert('<%=TranslationBase.TranslateLabelOrMessage(ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>');
                     return false;
                 }
                 if (document.getElementById(fld).value == null || document.getElementById(fld).value == '') {
@@ -433,7 +436,7 @@
 
 
             if (newSal > r) {
-                alert('<%=Assurant.ElitaPlus.BusinessObjectsNew.TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>');
+                alert('<%=TranslationBase.TranslateLabelOrMessage(ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>');
                     document.getElementById(sID).innerText = convertNumberToCulture(s, curSep, groupSep);
                     if (r >= 0) {
                         calcAmountToBePaid(sID, aID, r * 100, s * 100);
@@ -443,7 +446,7 @@
                     return false;
                 }
                 if (isNaN(newSal) || document.getElementById(sID).value == null || document.getElementById(sID).value == '') {
-                    alert('<%=Assurant.ElitaPlus.BusinessObjectsNew.TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>');
+                    alert('<%=TranslationBase.TranslateLabelOrMessage(ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>');
                 document.getElementById(sID).innerText = convertNumberToCulture(s, curSep, groupSep);
 
                 if (r >= 0) {

@@ -21,13 +21,13 @@
         Public EditingBo As CaseBase
         Public BoChanged As Boolean = False
         Public IsCallerAuthenticated As Boolean = False
-        Public Sub New(ByVal lastOp As DetailPageCommand, ByVal curEditingBo As CaseBase, Optional ByVal boChanged As Boolean = False,Optional Byval IsCallerAuthenticated As Boolean = False)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(lastOp As DetailPageCommand, curEditingBo As CaseBase, Optional ByVal boChanged As Boolean = False,Optional Byval IsCallerAuthenticated As Boolean = False)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
             Me.BoChanged = boChanged
             Me.IsCallerAuthenticated = IsCallerAuthenticated
         End Sub
-        Public Sub New(ByVal lastOp As DetailPageCommand)
+        Public Sub New(lastOp As DetailPageCommand)
             LastOperation = LastOp
         End Sub
     End Class
@@ -57,10 +57,10 @@
 #End Region
 
 #Region "Page Events"
-    Private Sub Page_PageCall(ByVal callFromUrl As String, ByVal callingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(callFromUrl As String, callingPar As Object) Handles MyBase.PageCall
         Try
 
-            If Not CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
 
                 'If CallingPar(0).GetType Is GetType(Claim) Then
                 State.ClaimBO = ClaimFacade.Instance.GetClaim(Of ClaimBase)(CType(CType(CallingParameters, ArrayList)(0), ClaimBase).Id)
@@ -70,7 +70,7 @@
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
 
         Try
             MasterPage.UsePageTabTitleInBreadCrum = False
@@ -95,17 +95,17 @@
 
         ShowMissingTranslations(MasterPage.MessageController)
     End Sub
-    Private Sub Page_PageReturn(ByVal returnFromUrl As String, ByVal returnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(returnFromUrl As String, returnPar As Object) Handles MyBase.PageReturn
         Try
             MenuEnabled = True
             Dim retObj As CaseDetailsForm.ReturnType = CType(ReturnPar, CaseDetailsForm.ReturnType)
-            If Not retObj Is Nothing AndAlso retObj.BoChanged Then
+            If retObj IsNot Nothing AndAlso retObj.BoChanged Then
                 State.ClaimCaseListDV = Nothing
                 State.ClaimActionListDV = Nothing
             End If
             Select Case retObj.LastOperation
                 Case DetailPageCommand.Back
-                    If Not retObj Is Nothing Then
+                    If retObj IsNot Nothing Then
                         If Not retObj.EditingBo.IsNew Then
                             State.selectedCaseId = retObj.EditingBo.Id
                         End If
@@ -121,7 +121,7 @@
 
 #Region "Controlling Logic"
     Private Sub UpdateBreadCrum()
-        If (Not State Is Nothing) Then
+        If (State IsNot Nothing) Then
             MasterPage.BreadCrum = MasterPage.BreadCrum & TranslationBase.TranslateLabelOrMessage("CLAIM") & ElitaBase.Sperator & MasterPage.PageTab
         End If
     End Sub
@@ -191,7 +191,7 @@
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub ClaimActionGrid_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles ClaimActionGrid.RowDataBound
+    Private Sub ClaimActionGrid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles ClaimActionGrid.RowDataBound
         Try
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             If (e.Row.RowType = DataControlRowType.DataRow) _
@@ -227,13 +227,13 @@
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub ClaimCaseListGrid_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles ClaimCaseListGrid.RowDataBound
+    Private Sub ClaimCaseListGrid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles ClaimCaseListGrid.RowDataBound
         Try
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim btnSelectCase As LinkButton
             If (e.Row.RowType = DataControlRowType.DataRow) _
                OrElse (e.Row.RowType = DataControlRowType.Separator) Then
-                If (Not e.Row.Cells(ClaimCaseGridColCaseIdIdx).FindControl(ClaimCaseGridColCaseNumberCtrl) Is Nothing) Then
+                If (e.Row.Cells(ClaimCaseGridColCaseIdIdx).FindControl(ClaimCaseGridColCaseNumberCtrl) IsNot Nothing) Then
                     btnSelectCase = CType(e.Row.Cells(ClaimCaseGridColCaseIdIdx).FindControl(ClaimCaseGridColCaseNumberCtrl), LinkButton)
                     btnSelectCase.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(CaseBase.CaseSearchDV.ColCaseId), Byte()))
                     btnSelectCase.CommandName = SelectActionCommand
@@ -255,7 +255,7 @@
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub ClaimCaseListGrid_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles ClaimCaseListGrid.RowCommand
+    Private Sub ClaimCaseListGrid_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles ClaimCaseListGrid.RowCommand
         Try
             If e.CommandName = SelectActionCommand Then
                 If Not e.CommandArgument.ToString().Equals(String.Empty) Then
@@ -273,7 +273,7 @@
 #End Region
 
 #Region "Button Click"
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As System.Object, e As EventArgs) Handles btnBack.Click
         Try
             Back(DetailPageCommand.Back)
         Catch ex As Threading.ThreadAbortException
@@ -282,7 +282,7 @@
         End Try
     End Sub
 
-    Protected Sub Back(ByVal cmd As DetailPageCommand)
+    Protected Sub Back(cmd As DetailPageCommand)
         Dim retType As New ClaimForm.ReturnType(cmd, State.ClaimBO)
         ReturnToCallingPage(retType)
     End Sub

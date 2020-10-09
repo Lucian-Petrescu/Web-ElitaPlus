@@ -13,9 +13,9 @@ Namespace Translation
             Public EditingBo As NewDictionaryItem
             Public HasDataChanged As Boolean
 
-            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As NewDictionaryItem, ByVal hasDataChanged As Boolean)
-                Me.LastOperation = LastOp
-                Me.EditingBo = curEditingBo
+            Public Sub New(LastOp As DetailPageCommand, curEditingBo As NewDictionaryItem, hasDataChanged As Boolean)
+                LastOperation = LastOp
+                EditingBo = curEditingBo
                 Me.HasDataChanged = hasDataChanged
             End Sub
         End Class
@@ -95,7 +95,7 @@ Namespace Translation
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -105,34 +105,34 @@ Namespace Translation
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
 
             'Put user code to initialize the page here
             ''Me.ErrControllerMaster.Clear_Hide()
-            Me.MasterPage.MessageController.Clear()
+            MasterPage.MessageController.Clear()
             If Not Page.IsPostBack Then
                 ''Def-25721:Added UpdateBreadCrum to display page header
                 UpdateBreadCrum()
-                Me.MenuEnabled = False
+                MenuEnabled = False
                 If EnvironmentContext.Current.Environment = Environments.Development OrElse EnvironmentContext.Current.Environment <> Environments.Test Then
-                    Me.State.isTestEnvironment = True
+                    State.isTestEnvironment = True
                 End If
-                If Not Me.State.isTestEnvironment Then
-                    Me.btnWipeout.Visible = False
+                If Not State.isTestEnvironment Then
+                    btnWipeout.Visible = False
                 End If
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
-                If ((Me.State.searchDV Is Nothing) OrElse (Me.State.HasDataChanged)) Then
-                    Me.State.Mybo = New NewDictionaryItem
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
+                If ((State.searchDV Is Nothing) OrElse (State.HasDataChanged)) Then
+                    State.Mybo = New NewDictionaryItem
                 End If
-                Me.PopulateGrid()
+                PopulateGrid()
 
                 If (ElitaPlusIdentity.Current.ActiveUser.NetworkId = "OS0807") OrElse _
                 (ElitaPlusIdentity.Current.ActiveUser.NetworkId = "OS02JD") OrElse _
                 (ElitaPlusIdentity.Current.ActiveUser.NetworkId = "AI0549") Then
-                    ControlMgr.SetEnableControl(Me, Me.btnWipeout, True)
+                    ControlMgr.SetEnableControl(Me, btnWipeout, True)
                 Else
-                    ControlMgr.SetEnableControl(Me, Me.btnWipeout, False)
+                    ControlMgr.SetEnableControl(Me, btnWipeout, False)
                 End If
             Else
                 CheckIfComingFromSaveConfirm()
@@ -143,7 +143,7 @@ Namespace Translation
 
 #Region "Controlling Logic"
 
-        Private Function PopulateBOFromForm(ByVal index As Integer, ByRef errMsg As Collections.Generic.List(Of String)) As Boolean
+        Private Function PopulateBOFromForm(index As Integer, ByRef errMsg As Collections.Generic.List(Of String)) As Boolean
 
             Dim hasErr As Boolean = False, strUICode As String, strEngText As String
 
@@ -151,29 +151,29 @@ Namespace Translation
             grdLabels.EditItemIndex = index
             Dim oguid As String = "00000000-0000-0000-0000-000000000001"
 
-            With Me.State.Mybo
-                strUICode = CType(grdLabels.Items(index).Cells(Me.GRID_COL_UI_PROG_CODE).FindControl(Me.UI_PROG_CODE_CONTROL_NAME), TextBox).Text.ToUpper
-                strEngText = CType(grdLabels.Items(index).Cells(Me.GRID_COL_ENG_TRANSLATION).FindControl(Me.ENG_TRANSLATION_CONTROL_NAME), TextBox).Text.Replace("_", " ")
+            With State.Mybo
+                strUICode = CType(grdLabels.Items(index).Cells(GRID_COL_UI_PROG_CODE).FindControl(UI_PROG_CODE_CONTROL_NAME), TextBox).Text.ToUpper
+                strEngText = CType(grdLabels.Items(index).Cells(GRID_COL_ENG_TRANSLATION).FindControl(ENG_TRANSLATION_CONTROL_NAME), TextBox).Text.Replace("_", " ")
 
 
                 Dim strMSGCode As String, strMsgType As String, strTemp As String, lngTemp As Long
-                strMSGCode = CType(grdLabels.Items(index).Cells(Me.GRID_COL_MSG_CODE).FindControl(Me.GRID_CONTROL_MSG_CODE), TextBox).Text.Trim.ToUpper
+                strMSGCode = CType(grdLabels.Items(index).Cells(GRID_COL_MSG_CODE).FindControl(GRID_CONTROL_MSG_CODE), TextBox).Text.Trim.ToUpper
                 If strMSGCode <> String.Empty Then 'New message code
-                    strMsgType = CType(grdLabels.Items(index).Cells(Me.GRID_COL_MSG_TYPE).FindControl(Me.GRID_CONTROL_MSG_TYPE), DropDownList).SelectedValue.Trim
-                    strTemp = CType(grdLabels.Items(index).Cells(Me.GRID_COL_MSG_PARAM_CNT).FindControl(Me.GRID_CONTROL_MSG_PARAM_COUNT), DropDownList).SelectedValue.Trim
+                    strMsgType = CType(grdLabels.Items(index).Cells(GRID_COL_MSG_TYPE).FindControl(GRID_CONTROL_MSG_TYPE), DropDownList).SelectedValue.Trim
+                    strTemp = CType(grdLabels.Items(index).Cells(GRID_COL_MSG_PARAM_CNT).FindControl(GRID_CONTROL_MSG_PARAM_COUNT), DropDownList).SelectedValue.Trim
 
                     If .IsNew OrElse .Imported = "N" Then
-                        Me.PopulateBOProperty(Me.State.Mybo, "UiProgCode", strUICode)
-                        Me.PopulateBOProperty(Me.State.Mybo, "EnglishTranslation", strEngText)
-                        Me.PopulateBOProperty(State.Mybo, "MsgCode", strMSGCode)
+                        PopulateBOProperty(State.Mybo, "UiProgCode", strUICode)
+                        PopulateBOProperty(State.Mybo, "EnglishTranslation", strEngText)
+                        PopulateBOProperty(State.Mybo, "MsgCode", strMSGCode)
                         If Long.TryParse(strTemp, lngTemp) Then
                             .MsgParameterCount = lngTemp
                         End If
                         If strMsgType = String.Empty Then
                             hasErr = True
-                            errMsg.Add(grdLabels.Columns(Me.GRID_COL_MSG_TYPE).HeaderText & ":" & TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR))
+                            errMsg.Add(grdLabels.Columns(GRID_COL_MSG_TYPE).HeaderText & ":" & TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR))
                         Else
-                            Me.PopulateBOProperty(Me.State.Mybo, "MsgType", strMsgType)
+                            PopulateBOProperty(State.Mybo, "MsgType", strMsgType)
                         End If
                     Else 'No change allowed if 
                         If .MsgCode <> strMSGCode OrElse .MsgType <> strMsgType Then
@@ -185,54 +185,54 @@ Namespace Translation
                     hasErr = True
                     errMsg.Add(TranslationBase.TranslateLabelOrMessage("MSG_CODE") & " " & .MsgCode & ":" & TranslationBase.TranslateLabelOrMessage(MSG_CHANGE_NOT_ALLOWED))
                 Else
-                    Me.PopulateBOProperty(Me.State.Mybo, "UiProgCode", strUICode)
-                    Me.PopulateBOProperty(Me.State.Mybo, "EnglishTranslation", strEngText)
+                    PopulateBOProperty(State.Mybo, "UiProgCode", strUICode)
+                    PopulateBOProperty(State.Mybo, "EnglishTranslation", strEngText)
                     If .MsgCode <> String.Empty Then .MsgCode = String.Empty
                     If .MsgType <> String.Empty Then .MsgType = String.Empty
-                    If Not .MsgParameterCount Is Nothing And .MsgParameterCount <> 0 Then .MsgParameterCount = 0
+                    If .MsgParameterCount IsNot Nothing AndAlso .MsgParameterCount <> 0 Then .MsgParameterCount = 0
                 End If
                 If .IsNew AndAlso .IsDirty Then
-                    Me.PopulateBOProperty(Me.State.Mybo, "DictItemId", New Guid(oguid))
-                    Me.PopulateBOProperty(Me.State.Mybo, "Imported", "N")
+                    PopulateBOProperty(State.Mybo, "DictItemId", New Guid(oguid))
+                    PopulateBOProperty(State.Mybo, "Imported", "N")
                 End If
 
             End With
 
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
 
-            If Me.State.Mybo.IsDirty Then
-                Me.State.isDirty = True
+            If State.Mybo.IsDirty Then
+                State.isDirty = True
             End If
 
             Return Not hasErr
         End Function
         Protected Sub CheckIfComingFromSaveConfirm()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-            If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
-                Select Case Me.State.ActionInProgress
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+            If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Delete
-                        Me.State.Mybo.Delete()
-                        Me.State.Mybo.Save()
-                        Me.DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                        State.Mybo.Delete()
+                        State.Mybo.Save()
+                        DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                     Case ElitaPlusPage.DetailPageCommand.Back
                         SaveNewDictItem()
-                        Me.ReturnToTabHomePage()
+                        ReturnToTabHomePage()
                     Case ElitaPlusPage.DetailPageCommand.Accept
                         SaveNewDictItem()
                         Import()
                     Case ElitaPlusPage.DetailPageCommand.New_
                     Case ElitaPlusPage.DetailPageCommand.NewAndCopy
                     Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                        Me.ReturnToTabHomePage()
+                        ReturnToTabHomePage()
                 End Select
-            ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-                Select Case Me.State.ActionInProgress
+            ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Delete
                         'Me.DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        Me.ReturnToTabHomePage()
+                        ReturnToTabHomePage()
                     Case ElitaPlusPage.DetailPageCommand.New_
                         'Me.CreateNew()
                     Case ElitaPlusPage.DetailPageCommand.NewAndCopy
@@ -243,8 +243,8 @@ Namespace Translation
                 End Select
             End If
             'Clean after consuming the action
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-            Me.HiddenSaveChangesPromptResponse.Value = ""
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            HiddenSaveChangesPromptResponse.Value = ""
         End Sub
 
         Public Sub PopulateGrid()
@@ -255,32 +255,32 @@ Namespace Translation
             Dim oVisible As Boolean = False
             Dim oImpotedCtl As String
 
-            If (Me.State.searchDV Is Nothing) Then 'OrElse (Me.State.HasDataChanged)) Then
+            If (State.searchDV Is Nothing) Then 'OrElse (Me.State.HasDataChanged)) Then
                 'Me.State.Mybo = New NewDictionaryItem
-                Me.State.searchDV = Me.State.Mybo.getList()
+                State.searchDV = State.Mybo.getList()
             End If
 
             'Me.State.searchDV.Sort = Me.State.SortExpression
 
-            Me.grdLabels.AutoGenerateColumns = False
-            SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.SelectedEXDNId, Me.grdLabels, Me.State.PageIndex)
-            Me.SortAndBindGrid()
+            grdLabels.AutoGenerateColumns = False
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.SelectedEXDNId, grdLabels, State.PageIndex)
+            SortAndBindGrid()
 
             If grdLabels.Items.Count < 1 Then
-                ControlMgr.SetVisibleControl(Me, Me.btnAppend, False)
-                ControlMgr.SetVisibleControl(Me, Me.moBtnSave_WRITE, False)
-                ControlMgr.SetVisibleControl(Me, Me.moBtnCancel, False)
+                ControlMgr.SetVisibleControl(Me, btnAppend, False)
+                ControlMgr.SetVisibleControl(Me, moBtnSave_WRITE, False)
+                ControlMgr.SetVisibleControl(Me, moBtnCancel, False)
             Else
-                ControlMgr.SetVisibleControl(Me, Me.btnAppend, True)
-                ControlMgr.SetVisibleControl(Me, Me.moBtnSave_WRITE, True)
-                ControlMgr.SetVisibleControl(Me, Me.moBtnCancel, True)
+                ControlMgr.SetVisibleControl(Me, btnAppend, True)
+                ControlMgr.SetVisibleControl(Me, moBtnSave_WRITE, True)
+                ControlMgr.SetVisibleControl(Me, moBtnCancel, True)
             End If
 
-            If Not Me.State.isTestEnvironment Then
+            If Not State.isTestEnvironment Then
                 oVisible = True
-                ControlMgr.SetVisibleControl(Me, Me.moBtnSave_WRITE, False)
-                ControlMgr.SetVisibleControl(Me, Me.moBtnCancel, False)
-                ControlMgr.SetVisibleControl(Me, Me.btnNew_WRITE, False)
+                ControlMgr.SetVisibleControl(Me, moBtnSave_WRITE, False)
+                ControlMgr.SetVisibleControl(Me, moBtnCancel, False)
+                ControlMgr.SetVisibleControl(Me, btnNew_WRITE, False)
             End If
 
             grdLabels.Columns(GRID_COL_CREATED_DATE).Visible = oVisible
@@ -288,34 +288,34 @@ Namespace Translation
             grdLabels.Columns(GRID_COL_CREATED_BY).Visible = oVisible
             grdLabels.Columns(GRID_COL_MODIFIED_BY).Visible = oVisible
 
-            ControlMgr.SetEnableControl(Me, Me.btnAppend, False)
+            ControlMgr.SetEnableControl(Me, btnAppend, False)
 
             For i = 0 To (grdLabels.Items.Count - 1)
                 grdLabels.SelectedIndex = i
-                oImpotedCtl = grdLabels.Items(i).Cells(Me.GRID_COL_IMPORTED).Text
-                del = CType(grdLabels.Items(i).Cells(Me.GRID_COL_DELETE_TRANSLATION).FindControl(Me.DELETE_CONTROL_NAME), ImageButton)
+                oImpotedCtl = grdLabels.Items(i).Cells(GRID_COL_IMPORTED).Text
+                del = CType(grdLabels.Items(i).Cells(GRID_COL_DELETE_TRANSLATION).FindControl(DELETE_CONTROL_NAME), ImageButton)
                 If oVisible Then
                     ControlMgr.SetVisibleControl(Me, del, False)
-                    ControlMgr.SetEnableControl(Me, Me.btnAppend, True)
-                    ControlMgr.SetEnableControl(Me, Me.grdLabels, False)
-                ElseIf Me.State.isNew Then
-                    txtCtl = CType(grdLabels.Items(i).Cells(Me.GRID_COL_UI_PROG_CODE).FindControl(Me.UI_PROG_CODE_CONTROL_NAME), TextBox)
-                    del = CType(grdLabels.Items(i).Cells(Me.GRID_COL_DELETE_TRANSLATION).FindControl(Me.DELETE_CONTROL_NAME), ImageButton)
+                    ControlMgr.SetEnableControl(Me, btnAppend, True)
+                    ControlMgr.SetEnableControl(Me, grdLabels, False)
+                ElseIf State.isNew Then
+                    txtCtl = CType(grdLabels.Items(i).Cells(GRID_COL_UI_PROG_CODE).FindControl(UI_PROG_CODE_CONTROL_NAME), TextBox)
+                    del = CType(grdLabels.Items(i).Cells(GRID_COL_DELETE_TRANSLATION).FindControl(DELETE_CONTROL_NAME), ImageButton)
                     ControlMgr.SetVisibleControl(Me, del, False)
-                    If Not txtCtl Is Nothing AndAlso Not oImpotedCtl = "" Then
+                    If txtCtl IsNot Nothing AndAlso Not oImpotedCtl = "" Then
                         ControlMgr.SetEnableControl(Me, txtCtl, False)
                     End If
-                    txtCtl = CType(grdLabels.Items(i).Cells(Me.GRID_COL_ENG_TRANSLATION).FindControl(Me.ENG_TRANSLATION_CONTROL_NAME), TextBox)
-                    If Not txtCtl Is Nothing AndAlso Not oImpotedCtl = "" Then
+                    txtCtl = CType(grdLabels.Items(i).Cells(GRID_COL_ENG_TRANSLATION).FindControl(ENG_TRANSLATION_CONTROL_NAME), TextBox)
+                    If txtCtl IsNot Nothing AndAlso Not oImpotedCtl = "" Then
                         ControlMgr.SetEnableControl(Me, txtCtl, False)
                     End If
                 Else
                     If oImpotedCtl = "" Then
-                        If Not del Is Nothing Then
+                        If del IsNot Nothing Then
                             ControlMgr.SetVisibleControl(Me, del, False)
                         End If
                     Else
-                        ControlMgr.SetEnableControl(Me, Me.btnAppend, True)
+                        ControlMgr.SetEnableControl(Me, btnAppend, True)
                         ControlMgr.SetVisibleControl(Me, del, True)
                     End If
                 End If
@@ -324,19 +324,19 @@ Namespace Translation
 
         End Sub
         Private Sub SortAndBindGrid()
-            Me.State.PageIndex = Me.grdLabels.CurrentPageIndex
-            Me.grdLabels.DataSource = Me.State.searchDV
-            HighLightSortColumn(grdLabels, Me.State.SortExpression)
-            Me.grdLabels.DataBind()
+            State.PageIndex = grdLabels.CurrentPageIndex
+            grdLabels.DataSource = State.searchDV
+            HighLightSortColumn(grdLabels, State.SortExpression)
+            grdLabels.DataBind()
         End Sub
 
 #End Region
 
 #Region " Datagrid Related "
 
-        Public Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+        Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
             Try
-                Me.State.Mybo = New NewDictionaryItem(New Guid(e.Item.Cells(Me.GRID_COL_ID).Text))
+                State.Mybo = New NewDictionaryItem(New Guid(e.Item.Cells(GRID_COL_ID).Text))
                 If e.CommandName = "DeleteRecord" Then
                     With State.Mybo
                         If .MsgCode <> String.Empty Then
@@ -348,42 +348,42 @@ Namespace Translation
                             End If
                         End If
                     End With
-                    Me.State.Mybo.RemoveLabels(Me.State.Mybo.DictItemId)
-                    Me.State.Mybo.Delete()
-                    Me.State.Mybo.Save()
-                    Me.State.isNew = False
-                    Me.State.isDirty = False
-                    Me.State.searchDV = Nothing
-                    Me.PopulateGrid()
+                    State.Mybo.RemoveLabels(State.Mybo.DictItemId)
+                    State.Mybo.Delete()
+                    State.Mybo.Save()
+                    State.isNew = False
+                    State.isDirty = False
+                    State.searchDV = Nothing
+                    PopulateGrid()
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
                 'Me.HandleErrors(ex, Me.ErrControllerMaster)
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs)
+        Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub grdLabels_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles grdLabels.ItemDataBound
+        Private Sub grdLabels_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles grdLabels.ItemDataBound
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-            If (Not dvRow Is Nothing) AndAlso dvRow.Row.RowState = DataRowState.Added Then
+            If (dvRow IsNot Nothing) AndAlso dvRow.Row.RowState = DataRowState.Added Then
                 grdLabels.EditItemIndex = e.Item.ItemIndex
             End If
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 Try
-                    Dim ddl As DropDownList = CType(e.Item.Cells(Me.GRID_COL_MSG_TYPE).FindControl(GRID_CONTROL_MSG_TYPE), DropDownList)
-                    If Not ddl Is Nothing Then
+                    Dim ddl As DropDownList = CType(e.Item.Cells(GRID_COL_MSG_TYPE).FindControl(GRID_CONTROL_MSG_TYPE), DropDownList)
+                    If ddl IsNot Nothing Then
                         Dim dvList As DataView = LookupListNew.DropdownLookupList(LookupListNew.LK_MSG_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True)
                         Dim i As Integer
                         ddl.Items.Clear()
                         ddl.Items.Add(New ListItem("", ""))
-                        If Not dvList Is Nothing Then
+                        If dvList IsNot Nothing Then
                             For i = 0 To dvList.Count - 1
                                 ddl.Items.Add(New ListItem(dvList(i)("DESCRIPTION").ToString, dvList(i)("CODE").ToString))
                             Next
@@ -391,35 +391,35 @@ Namespace Translation
                         ddl.SelectedValue = dvRow(NewDictionaryItem.NewDictItemSearchDV.COL_NAME_MSG_TYPE).ToString
                     End If
 
-                    ddl = CType(e.Item.Cells(Me.GRID_COL_MSG_PARAM_CNT).FindControl(GRID_CONTROL_MSG_PARAM_COUNT), DropDownList)
-                    If Not ddl Is Nothing Then
+                    ddl = CType(e.Item.Cells(GRID_COL_MSG_PARAM_CNT).FindControl(GRID_CONTROL_MSG_PARAM_COUNT), DropDownList)
+                    If ddl IsNot Nothing Then
                         'PopulateControlFromBOProperty(ddl, dvRow(NewDictionaryItem.NewDictItemSearchDV.COL_NAME_MSG_PARAM_COUNT))
                         ddl.SelectedValue = dvRow(NewDictionaryItem.NewDictItemSearchDV.COL_NAME_MSG_PARAM_COUNT).ToString
                     End If
                 Catch ex As Exception
                 End Try
 
-                Me.PopulateControlFromBOProperty(e.Item.Cells(Me.GRID_COL_ID), dvRow(NewDictionaryItem.NewDictItemSearchDV.COL_NAME_NEW_DICT_ITEM_ID))
-                Me.PopulateControlFromBOProperty(e.Item.Cells(Me.GRID_COL_IMPORTED), dvRow(NewDictionaryItem.NewDictItemSearchDV.COL_NAME_IMPORTED))
+                PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_ID), dvRow(NewDictionaryItem.NewDictItemSearchDV.COL_NAME_NEW_DICT_ITEM_ID))
+                PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_IMPORTED), dvRow(NewDictionaryItem.NewDictItemSearchDV.COL_NAME_IMPORTED))
             End If
         End Sub
 
-        Private Sub Grid_SortCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles grdLabels.SortCommand
+        Private Sub Grid_SortCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles grdLabels.SortCommand
             Try
-                If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                    If Me.State.SortExpression.EndsWith(" DESC") Then
-                        Me.State.SortExpression = e.SortExpression
+                If State.SortExpression.StartsWith(e.SortExpression) Then
+                    If State.SortExpression.EndsWith(" DESC") Then
+                        State.SortExpression = e.SortExpression
                     Else
-                        Me.State.SortExpression &= " DESC"
+                        State.SortExpression &= " DESC"
                     End If
                 Else
-                    Me.State.SortExpression = e.SortExpression
+                    State.SortExpression = e.SortExpression
                 End If
-                Me.State.PageIndex = 0
-                Me.PopulateGrid()
+                State.PageIndex = 0
+                PopulateGrid()
             Catch ex As Exception
                 ''Me.HandleErrors(ex, Me.ErrControllerMaster)
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -429,14 +429,14 @@ Namespace Translation
             For i As Integer = 0 To (grdLabels.Items.Count - 1)
                 Try
                     grdLabels.SelectedIndex = i
-                    oImpotedCtl = grdLabels.Items(i).Cells(Me.GRID_COL_IMPORTED).Text
+                    oImpotedCtl = grdLabels.Items(i).Cells(GRID_COL_IMPORTED).Text
                     If Not oImpotedCtl = "" Then
-                        Me.State.Mybo = New NewDictionaryItem(New Guid(Me.grdLabels.Items(i).Cells(Me.GRID_COL_ID).Text))
+                        State.Mybo = New NewDictionaryItem(New Guid(grdLabels.Items(i).Cells(GRID_COL_ID).Text))
 
                         If oImpotedCtl = "N" Then
-                            Me.State.Mybo.GenerateNewLabels(labelID)
-                            If (Me.State.Mybo.IsFamilyDirty) Then
-                                Me.State.Mybo.Save()
+                            State.Mybo.GenerateNewLabels(labelID)
+                            If (State.Mybo.IsFamilyDirty) Then
+                                State.Mybo.Save()
                                 'load the message code if any
                                 If State.Mybo.MsgCode <> String.Empty Then
                                     Dim objMsgCode As New MessageCode
@@ -448,12 +448,12 @@ Namespace Translation
                                         .Save()
                                     End With
                                 End If
-                                Me.State.oLabelCount += 1
+                                State.oLabelCount += 1
                             End If
                         ElseIf oImpotedCtl = "Y" Then
-                            Me.State.Mybo.ChangeLabels(Me.State.Mybo.DictItemId)
-                            If (Me.State.Mybo.IsFamilyDirty) Then
-                                Me.State.Mybo.Save()
+                            State.Mybo.ChangeLabels(State.Mybo.DictItemId)
+                            If (State.Mybo.IsFamilyDirty) Then
+                                State.Mybo.Save()
                             End If
                         End If
                     End If
@@ -461,35 +461,35 @@ Namespace Translation
                 End Try
             Next
 
-            ControlMgr.SetVisibleControl(Me, Me.pnlLabelCount, True)
+            ControlMgr.SetVisibleControl(Me, pnlLabelCount, True)
             'End If
-            Me.PopulateControlFromBOProperty(Me.txtMessageCount, Me.State.oLabelCount)
-            Me.State.oLabelCount = 0
-            Me.State.searchDV = NewDictionaryItem.getList()
-            Me.PopulateGrid()
+            PopulateControlFromBOProperty(txtMessageCount, State.oLabelCount)
+            State.oLabelCount = 0
+            State.searchDV = NewDictionaryItem.getList()
+            PopulateGrid()
 
         End Sub
 
         Private Function IsGridDirty() As Boolean
             Dim errMsg As Collections.Generic.List(Of String) = New Collections.Generic.List(Of String)
             Dim oImpotedCtl As String
-            Me.State.isDirty = False
+            State.isDirty = False
 
             For i As Integer = 0 To (grdLabels.Items.Count - 1)
                 grdLabels.SelectedIndex = i
-                oImpotedCtl = grdLabels.Items(i).Cells(Me.GRID_COL_IMPORTED).Text
-                If Not oImpotedCtl Is Nothing Then
+                oImpotedCtl = grdLabels.Items(i).Cells(GRID_COL_IMPORTED).Text
+                If oImpotedCtl IsNot Nothing Then
                     Select Case oImpotedCtl
                         Case ""
-                            Me.State.Mybo = New NewDictionaryItem
+                            State.Mybo = New NewDictionaryItem
                         Case Else
-                            Me.State.Mybo = New NewDictionaryItem(New Guid(Me.grdLabels.Items(i).Cells(Me.GRID_COL_ID).Text))
+                            State.Mybo = New NewDictionaryItem(New Guid(grdLabels.Items(i).Cells(GRID_COL_ID).Text))
                     End Select
                 End If
                 PopulateBOFromForm(i, errMsg)
             Next
 
-            Return Me.State.isDirty
+            Return State.isDirty
 
         End Function
 
@@ -504,18 +504,18 @@ Namespace Translation
             For i = 0 To (grdLabels.Items.Count - 1)
                 Try
                     grdLabels.EditItemIndex = i
-                    oImpotedCtl = grdLabels.Items(i).Cells(Me.GRID_COL_IMPORTED).Text
-                    If Not oImpotedCtl Is Nothing Then
+                    oImpotedCtl = grdLabels.Items(i).Cells(GRID_COL_IMPORTED).Text
+                    If oImpotedCtl IsNot Nothing Then
                         Select Case oImpotedCtl
                             Case ""
-                                Me.State.Mybo = New NewDictionaryItem
+                                State.Mybo = New NewDictionaryItem
                             Case Else
-                                Me.State.Mybo = New NewDictionaryItem(New Guid(Me.grdLabels.Items(i).Cells(Me.GRID_COL_ID).Text))
+                                State.Mybo = New NewDictionaryItem(New Guid(grdLabels.Items(i).Cells(GRID_COL_ID).Text))
                         End Select
                         If PopulateBOFromForm(i, errMsg) Then
-                            If Me.State.Mybo.IsDirty Then
-                                Me.State.Mybo.Save()
-                                Me.State.HasDataChanged = True
+                            If State.Mybo.IsDirty Then
+                                State.Mybo.Save()
+                                State.HasDataChanged = True
                             End If
                         Else
                             popHasErr = True
@@ -524,30 +524,30 @@ Namespace Translation
                 Catch ex As Exception
                     oError = True
                     ''Me.HandleErrors(ex, Me.ErrControllerMaster)
-                    Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                    HandleErrors(ex, MasterPage.MessageController)
                 End Try
             Next
 
             If popHasErr Then
                 'Me.ErrControllerMaster.AddErrorAndShow(errMsg.ToArray, False)
-                Me.MasterPage.MessageController.AddErrorAndShow(errMsg.ToArray, False)
+                MasterPage.MessageController.AddErrorAndShow(errMsg.ToArray, False)
             End If
 
             If Not oError Then
-                Me.State.isNew = False
-                Me.State.isDirty = False
-                Me.State.searchDV = Nothing
-                ControlMgr.SetEnableControl(Me, Me.btnNew_WRITE, True)
+                State.isNew = False
+                State.isDirty = False
+                State.searchDV = Nothing
+                ControlMgr.SetEnableControl(Me, btnNew_WRITE, True)
             End If
             oError = False
         End Sub
         ''Def-25721: Added function to display page label
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                If (Not Me.State Is Nothing) Then
-                    Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
+            If (State IsNot Nothing) Then
+                If (State IsNot Nothing) Then
+                    MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
                         TranslationBase.TranslateLabelOrMessage("Add New Dictionary Labels")
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Add New Dictionary Labels")
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Add New Dictionary Labels")
                 End If
             End If
         End Sub
@@ -555,108 +555,108 @@ Namespace Translation
 
 #Region "Button Management"
 
-        Private Sub btnNew_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+        Private Sub btnNew_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnNew_WRITE.Click
             Try
-                Me.State.Mybo = New NewDictionaryItem
-                Me.State.searchDV = State.Mybo.GetNewDataViewRow(Me.State.searchDV, State.Mybo)
-                Me.State.isNew = True
-                ControlMgr.SetEnableControl(Me, Me.btnNew_WRITE, False)
+                State.Mybo = New NewDictionaryItem
+                State.searchDV = State.Mybo.GetNewDataViewRow(State.searchDV, State.Mybo)
+                State.isNew = True
+                ControlMgr.SetEnableControl(Me, btnNew_WRITE, False)
                 PopulateGrid()
             Catch ex As Exception
                 ''Me.HandleErrors(ex, Me.ErrControllerMaster)
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
             
         End Sub
 
-        Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
 
             Dim oImpotedCtl As String
-            Me.State.isDirty = False
+            State.isDirty = False
 
             Try
                 If IsGridDirty() Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
-                    Me.ReturnToTabHomePage() '(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.Mybo, Me.State.HasDataChanged))
+                    ReturnToTabHomePage() '(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.Mybo, Me.State.HasDataChanged))
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
                 ''Me.HandleErrors(ex, Me.ErrControllerMaster)
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+                HandleErrors(ex, MasterPage.MessageController)
+                DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
                 ''Me.State.LastErrMsg = Me.ErrControllerMaster.Text
-                Me.State.LastErrMsg = Me.MasterPage.MessageController.Text
+                State.LastErrMsg = MasterPage.MessageController.Text
             End Try
         End Sub
 
-        Private Sub moBtnCancel_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles moBtnCancel.Click
+        Private Sub moBtnCancel_Click(sender As Object, e As System.EventArgs) Handles moBtnCancel.Click
             Try
-                Me.State.isNew = False
-                Me.State.isDirty = False
-                Me.State.searchDV = Nothing
-                ControlMgr.SetEnableControl(Me, Me.btnNew_WRITE, True)
+                State.isNew = False
+                State.isDirty = False
+                State.searchDV = Nothing
+                ControlMgr.SetEnableControl(Me, btnNew_WRITE, True)
                 PopulateGrid()
             Catch ex As Exception
                 ''Me.HandleErrors(ex, Me.ErrControllerMaster)
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub moBtnSave_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles moBtnSave_WRITE.Click
+        Private Sub moBtnSave_WRITE_Click(sender As Object, e As System.EventArgs) Handles moBtnSave_WRITE.Click
             Try
                 If State.isNew Then
                     Dim errMsg As Collections.Generic.List(Of String) = New Collections.Generic.List(Of String)
                     If PopulateBOFromForm(grdLabels.EditItemIndex, errMsg) Then
-                        If (Me.State.Mybo.IsDirty) Then
+                        If (State.Mybo.IsDirty) Then
                             If State.Mybo.MsgCode = String.Empty OrElse MessageCode.IsNewMsgCode(State.Mybo.MsgCode, State.Mybo.MsgType, State.Mybo.UiProgCode) Then
-                                Me.State.Mybo.Save()
-                                Me.State.searchDV = Nothing
-                                Me.State.isDirty = False
-                                Me.State.isNew = False
+                                State.Mybo.Save()
+                                State.searchDV = Nothing
+                                State.isDirty = False
+                                State.isNew = False
                                 PopulateGrid()
-                                ControlMgr.SetEnableControl(Me, Me.btnNew_WRITE, True)
+                                ControlMgr.SetEnableControl(Me, btnNew_WRITE, True)
                             Else
-                                Me.DisplayMessage(MessageCode.Err_MSG_CODE_EXISTS, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                                DisplayMessage(MessageCode.Err_MSG_CODE_EXISTS, "", MSG_BTN_OK, MSG_TYPE_INFO)
                             End If
                         End If
                     Else
                         '' Me.ErrControllerMaster.AddErrorAndShow(errMsg.ToArray, False)
-                        Me.MasterPage.MessageController.AddErrorAndShow(errMsg.ToArray, False)
+                        MasterPage.MessageController.AddErrorAndShow(errMsg.ToArray, False)
 
                     End If
                 Else
                     SaveNewDictItem()
-                    Me.PopulateGrid()
+                    PopulateGrid()
                 End If
             Catch ex As Exception
-                Me.PopulateGrid()
+                PopulateGrid()
                 ''Me.HandleErrors(ex, Me.ErrControllerMaster)
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Private Sub btnAppend_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnAppend.Click
+        Private Sub btnAppend_Click(sender As Object, e As System.EventArgs) Handles btnAppend.Click
             If IsGridDirty() Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
             Else
                 Import()
             End If
 
         End Sub
 
-        Private Sub btnWipeout_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnWipeout.Click
+        Private Sub btnWipeout_Click(sender As Object, e As System.EventArgs) Handles btnWipeout.Click
             Try
-                Me.State.Mybo.DeleteAll()
-                Me.State.searchDV = NewDictionaryItem.getList()
-                Me.PopulateGrid()
+                State.Mybo.DeleteAll()
+                State.searchDV = NewDictionaryItem.getList()
+                PopulateGrid()
             Catch ex As Exception
                 ''Me.HandleErrors(ex, Me.ErrControllerMaster)
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region

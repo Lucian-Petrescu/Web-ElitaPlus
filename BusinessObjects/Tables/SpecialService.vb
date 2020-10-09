@@ -7,48 +7,48 @@ Public Class SpecialService
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New SpecialServiceDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -56,23 +56,23 @@ Public Class SpecialService
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New SpecialServiceDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -97,7 +97,7 @@ Public Class SpecialService
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(SpecialServiceDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -108,7 +108,7 @@ Public Class SpecialService
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=10)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(SpecialServiceDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -117,15 +117,15 @@ Public Class SpecialService
                 Return CType(Row(SpecialServiceDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(SpecialServiceDAL.COL_NAME_CODE, Value)
+            SetValue(SpecialServiceDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(SpecialServiceDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -134,15 +134,15 @@ Public Class SpecialService
                 Return CType(Row(SpecialServiceDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(SpecialServiceDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(SpecialServiceDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
 
     <ValueMandatoryCovergeLoss(""), ValidCovergeLoss("")> _
-    Public Property CoverageLossId() As Guid
+    Public Property CoverageLossId As Guid
         Get
             CheckDeleted()
             If Row(SpecialServiceDAL.COL_NAME_COVERAGE_LOSS_ID) Is DBNull.Value Then
@@ -151,15 +151,15 @@ Public Class SpecialService
                 Return New Guid(CType(Row(SpecialServiceDAL.COL_NAME_COVERAGE_LOSS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(SpecialServiceDAL.COL_NAME_COVERAGE_LOSS_ID, Value)
+            SetValue(SpecialServiceDAL.COL_NAME_COVERAGE_LOSS_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(SpecialServiceDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -168,15 +168,15 @@ Public Class SpecialService
                 Return New Guid(CType(Row(SpecialServiceDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(SpecialServiceDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(SpecialServiceDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidateAvailableSvcCenter("")> _
-    Public Property AvailableForServCenterId() As Guid
+    Public Property AvailableForServCenterId As Guid
         Get
             CheckDeleted()
             If Row(SpecialServiceDAL.COL_NAME_AVAILABLE_FOR_SERV_CENTER_ID) Is DBNull.Value Then
@@ -185,15 +185,15 @@ Public Class SpecialService
                 Return New Guid(CType(Row(SpecialServiceDAL.COL_NAME_AVAILABLE_FOR_SERV_CENTER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(SpecialServiceDAL.COL_NAME_AVAILABLE_FOR_SERV_CENTER_ID, Value)
+            SetValue(SpecialServiceDAL.COL_NAME_AVAILABLE_FOR_SERV_CENTER_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property AddItemAllowed() As Guid
+    Public Property AddItemAllowed As Guid
         Get
             CheckDeleted()
             If Row(SpecialServiceDAL.COL_NAME_ADD_ITEM_ALLOWED) Is DBNull.Value Then
@@ -202,15 +202,15 @@ Public Class SpecialService
                 Return New Guid(CType(Row(SpecialServiceDAL.COL_NAME_ADD_ITEM_ALLOWED), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(SpecialServiceDAL.COL_NAME_ADD_ITEM_ALLOWED, Value)
+            SetValue(SpecialServiceDAL.COL_NAME_ADD_ITEM_ALLOWED, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property AddItemAfterExpired() As Guid
+    Public Property AddItemAfterExpired As Guid
         Get
             CheckDeleted()
             If Row(SpecialServiceDAL.COL_NAME_ADD_ITEM_AFTER_EXPIRED) Is DBNull.Value Then
@@ -219,15 +219,15 @@ Public Class SpecialService
                 Return New Guid(CType(Row(SpecialServiceDAL.COL_NAME_ADD_ITEM_AFTER_EXPIRED), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(SpecialServiceDAL.COL_NAME_ADD_ITEM_AFTER_EXPIRED, Value)
+            SetValue(SpecialServiceDAL.COL_NAME_ADD_ITEM_AFTER_EXPIRED, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidateAuthorizedAmountFrom("")> _
-    Public Property PriceGroupFieldId() As Guid
+    Public Property PriceGroupFieldId As Guid
         Get
             CheckDeleted()
             If Row(SpecialServiceDAL.COL_NAME_PRICE_GROUP_FIELD_ID) Is DBNull.Value Then
@@ -236,15 +236,15 @@ Public Class SpecialService
                 Return New Guid(CType(Row(SpecialServiceDAL.COL_NAME_PRICE_GROUP_FIELD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(SpecialServiceDAL.COL_NAME_PRICE_GROUP_FIELD_ID, Value)
+            SetValue(SpecialServiceDAL.COL_NAME_PRICE_GROUP_FIELD_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property AllowedOccurrencesId() As Guid
+    Public Property AllowedOccurrencesId As Guid
         Get
             CheckDeleted()
             If Row(SpecialServiceDAL.COL_NAME_ALLOWED_OCCURRENCES_ID) Is DBNull.Value Then
@@ -253,15 +253,15 @@ Public Class SpecialService
                 Return New Guid(CType(Row(SpecialServiceDAL.COL_NAME_ALLOWED_OCCURRENCES_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(SpecialServiceDAL.COL_NAME_ALLOWED_OCCURRENCES_ID, Value)
+            SetValue(SpecialServiceDAL.COL_NAME_ALLOWED_OCCURRENCES_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property CombinedWithRepair() As Guid
+    Public Property CombinedWithRepair As Guid
         Get
             CheckDeleted()
             If Row(SpecialServiceDAL.COL_NAME_COMBINED_WITH_REPAIR) Is DBNull.Value Then
@@ -270,14 +270,14 @@ Public Class SpecialService
                 Return New Guid(CType(Row(SpecialServiceDAL.COL_NAME_COMBINED_WITH_REPAIR), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(SpecialServiceDAL.COL_NAME_COMBINED_WITH_REPAIR, Value)
+            SetValue(SpecialServiceDAL.COL_NAME_COMBINED_WITH_REPAIR, Value)
         End Set
     End Property
 
     '<ValueMandatory("")> _
-    Public Property ServiceClassId() As Guid
+    Public Property ServiceClassId As Guid
         Get
             CheckDeleted()
             If Row(SpecialServiceDAL.DB_COL_NAME_SERVICE_CLASS_ID) Is DBNull.Value Then
@@ -286,14 +286,14 @@ Public Class SpecialService
                 Return New Guid(CType(Row(SpecialServiceDAL.DB_COL_NAME_SERVICE_CLASS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(SpecialServiceDAL.DB_COL_NAME_SERVICE_CLASS_ID, Value)
+            SetValue(SpecialServiceDAL.DB_COL_NAME_SERVICE_CLASS_ID, Value)
         End Set
     End Property
 
     '<ValueMandatory("")> _
-    Public Property ServiceTypeId() As Guid
+    Public Property ServiceTypeId As Guid
         Get
             CheckDeleted()
             If Row(SpecialServiceDAL.DB_COL_NAME_SERVICE_TYPE_ID) Is DBNull.Value Then
@@ -302,9 +302,9 @@ Public Class SpecialService
                 Return New Guid(CType(Row(SpecialServiceDAL.DB_COL_NAME_SERVICE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(SpecialServiceDAL.DB_COL_NAME_SERVICE_TYPE_ID, Value)
+            SetValue(SpecialServiceDAL.DB_COL_NAME_SERVICE_TYPE_ID, Value)
         End Set
     End Property
 #End Region
@@ -313,17 +313,17 @@ Public Class SpecialService
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New SpecialServiceDAL
                 'dal.Update(Me.Row)
-                MyBase.UpdateFamily(Me.Dataset)
-                dal.UpdateFamily(Me.Dataset)
+                UpdateFamily(Dataset)
+                dal.UpdateFamily(Dataset)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -331,11 +331,11 @@ Public Class SpecialService
         End Try
     End Sub
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Dim bDirty As Boolean
 
-            bDirty = MyBase.IsDirty OrElse Me.IsChildrenDirty
+            bDirty = MyBase.IsDirty OrElse IsChildrenDirty
 
             Return bDirty
         End Get
@@ -345,8 +345,8 @@ Public Class SpecialService
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getList(ByVal LanguageId As Guid, ByVal compIds As ArrayList, _
-                           ByVal dealerId As Guid, ByVal CoverageTypeId As Guid) As SpecialServiceSearchDV
+    Public Shared Function getList(LanguageId As Guid, compIds As ArrayList, _
+                           dealerId As Guid, CoverageTypeId As Guid) As SpecialServiceSearchDV
         Try
             Dim dal As New SpecialServiceDAL
             Return New SpecialServiceSearchDV(dal.LoadList(LanguageId, compIds, dealerId, _
@@ -357,7 +357,7 @@ Public Class SpecialService
         End Try
     End Function
 
-    Public Shared Function ValidateCoverageLoss(ByVal DealerId As Guid, ByVal CoverageLossId As Guid) As DataSet
+    Public Shared Function ValidateCoverageLoss(DealerId As Guid, CoverageLossId As Guid) As DataSet
         Try
             Dim dal As New SpecialServiceDAL
             'Dim ds As DataSet
@@ -368,7 +368,7 @@ Public Class SpecialService
         End Try
     End Function
 
-    Public Shared Function ChkIfSplSvcConfigured(ByVal CompanyGroupId As Guid, ByVal CoverageTypeId As Guid, ByVal DealerId As Guid, ByVal language_id As Guid, ByVal ProductCode As String, Optional ByVal LoadNoneActive As Boolean = False) As Boolean
+    Public Shared Function ChkIfSplSvcConfigured(CompanyGroupId As Guid, CoverageTypeId As Guid, DealerId As Guid, language_id As Guid, ProductCode As String, Optional ByVal LoadNoneActive As Boolean = False) As Boolean
         Try
             Dim dal As New SpecialServiceDAL
             Dim ds As DataSet
@@ -384,7 +384,7 @@ Public Class SpecialService
     End Function
 
     'Req-603 For Web Service Request Process
-    Public Shared Function getSpecialServices(ByVal ClaimNumber As String, ByVal CertificateNumber As String, ByVal CoverageTypeId As Guid) As DataSet
+    Public Shared Function getSpecialServices(ClaimNumber As String, CertificateNumber As String, CoverageTypeId As Guid) As DataSet
         Try
             Dim dal As New SpecialServiceDAL
             Dim ds As DataSet
@@ -403,7 +403,7 @@ Public Class SpecialService
         End Try
     End Function
 
-    Public Shared Function getServiceTypesForServiceClass(ByVal ServiceClassId As Guid, ByVal LanguageId As Guid) As DataSet
+    Public Shared Function getServiceTypesForServiceClass(ServiceClassId As Guid, LanguageId As Guid) As DataSet
         Try
             Dim dal As New SpecialServiceDAL
             Dim ds As DataSet
@@ -415,7 +415,7 @@ Public Class SpecialService
         End Try
     End Function
 
-    Public Shared Function getPriceGroupsList(ByVal LanguageId As Guid) As DataSet
+    Public Shared Function getPriceGroupsList(LanguageId As Guid) As DataSet
         Try
             Dim dal As New SpecialServiceDAL
             Dim ds As DataSet
@@ -449,7 +449,7 @@ Public Class SpecialService
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -462,19 +462,19 @@ Public Class SpecialService
 #Region "ProductCodes"
 
 
-    Public ReadOnly Property ProductSpecialServiceChildren() As ProductSpecialServiceList
+    Public ReadOnly Property ProductSpecialServiceChildren As ProductSpecialServiceList
         Get
             Return New ProductSpecialServiceList(Me)
         End Get
     End Property
 
-    Public Sub UpdateProductCodes(ByVal selectedProductCodeGuidStrCollection As Hashtable)
+    Public Sub UpdateProductCodes(selectedProductCodeGuidStrCollection As Hashtable)
         If selectedProductCodeGuidStrCollection.Count = 0 Then
-            If Not Me.IsDeleted Then Me.Delete()
+            If Not IsDeleted Then Delete()
         Else
             'first Pass
             Dim bo As ProductSpecialService
-            For Each bo In Me.ProductSpecialServiceChildren
+            For Each bo In ProductSpecialServiceChildren
                 If Not selectedProductCodeGuidStrCollection.Contains(bo.ProductCodeId.ToString) Then
                     'delete
                     bo.Delete()
@@ -484,36 +484,36 @@ Public Class SpecialService
             'Second Pass
             Dim entry As DictionaryEntry
             For Each entry In selectedProductCodeGuidStrCollection
-                If Me.ProductSpecialServiceChildren.Find(New Guid(entry.Key.ToString)) Is Nothing Then
+                If ProductSpecialServiceChildren.Find(New Guid(entry.Key.ToString)) Is Nothing Then
                     'add
                     Dim PSplSvcBO As ProductSpecialService = ProductSpecialServiceChildren.GetNewChild()
                     PSplSvcBO.ProductCodeId = New Guid(entry.Key.ToString)
-                    PSplSvcBO.SpecialServiceId = Me.Id
+                    PSplSvcBO.SpecialServiceId = Id
                     PSplSvcBO.Save()
                 End If
             Next
         End If
     End Sub
-    Public Sub AttachProductCodes(ByVal selectedProductCodeGuidStrCollection As ArrayList)
+    Public Sub AttachProductCodes(selectedProductCodeGuidStrCollection As ArrayList)
         Dim PSplSvcIdStr As String
         For Each PSplSvcIdStr In selectedProductCodeGuidStrCollection
-            Dim PSplSvcBO As ProductSpecialService = Me.ProductSpecialServiceChildren.GetNewChild
+            Dim PSplSvcBO As ProductSpecialService = ProductSpecialServiceChildren.GetNewChild
             PSplSvcBO.ProductCodeId = New Guid(PSplSvcIdStr)
-            PSplSvcBO.SpecialServiceId = Me.Id
+            PSplSvcBO.SpecialServiceId = Id
             PSplSvcBO.Save()
         Next
     End Sub
 
-    Public Sub DetachProductCodes(ByVal selectedProductCodeGuidStrCollection As ArrayList)
+    Public Sub DetachProductCodes(selectedProductCodeGuidStrCollection As ArrayList)
         Dim PSplSvcIdStr As String
         For Each PSplSvcIdStr In selectedProductCodeGuidStrCollection
-            Dim PSplSvcBO As ProductSpecialService = Me.ProductSpecialServiceChildren.Find(New Guid(PSplSvcIdStr))
+            Dim PSplSvcBO As ProductSpecialService = ProductSpecialServiceChildren.Find(New Guid(PSplSvcIdStr))
             PSplSvcBO.Delete()
             PSplSvcBO.Save()
         Next
     End Sub
 
-    Public Function GetAvailableProductCodes(ByVal dealerid As Guid) As DataView
+    Public Function GetAvailableProductCodes(dealerid As Guid) As DataView
         'Dim dv As DataView = LookupListNew.GetProductCodeByCompanyLookupList(ElitaPlusIdentity.Current.'ActiveUser.Companies)
         '       Dim sequenceCondition As String = GetProductCodesLookupListSelectedSequenceFilter(dv, False)
         Dim dv As DataView                
@@ -534,7 +534,7 @@ Public Class SpecialService
         Return dv
     End Function
 
-    Public Function GetSelectedProductCodes(ByVal dealerid As Guid) As DataView
+    Public Function GetSelectedProductCodes(dealerid As Guid) As DataView
 
         Dim dv As DataView
         Dim sequenceCondition As String
@@ -552,15 +552,15 @@ Public Class SpecialService
         Return dv
     End Function
 
-    Protected Function GetProductCodesLookupListSelectedSequenceFilter(ByVal dv As DataView, ByVal isFilterInclusive As Boolean) As String
+    Protected Function GetProductCodesLookupListSelectedSequenceFilter(dv As DataView, isFilterInclusive As Boolean) As String
 
         Dim PSplSvcBO As ProductSpecialService
         Dim inClause As String = "(-1"
-        For Each PSplSvcBO In Me.ProductSpecialServiceChildren
+        For Each PSplSvcBO In ProductSpecialServiceChildren
             inClause &= "," & LookupListNew.GetSequenceFromId(dv, PSplSvcBO.ProductCodeId)
         Next
         inClause &= ")"
-        Dim rowFilter As String = BusinessObjectBase.SYSTEM_SEQUENCE_COL_NAME
+        Dim rowFilter As String = SYSTEM_SEQUENCE_COL_NAME
         If isFilterInclusive Then
             rowFilter &= " IN " & inClause
         Else
@@ -581,11 +581,11 @@ Public Class SpecialService
         Public NotInheritable Class ValueMandatoryCovergeLoss
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_COV_LOSSCAUSE_COMB_IS_NOT_VALID_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As SpecialService = CType(objectToValidate, SpecialService)
 
             If obj.CoverageLossId = Guid.Empty Then
@@ -601,11 +601,11 @@ Public Class SpecialService
      Public NotInheritable Class ValidCovergeLoss
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_COV_LOSSCAUSE_COMB_EXISTS_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As SpecialService = CType(objectToValidate, SpecialService)
             Dim ds As DataSet
 
@@ -628,14 +628,14 @@ Public Class SpecialService
     Public NotInheritable Class ValidateAvailableSvcCenter
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_AVAILABLE_SVC_CNTR_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As SpecialService = CType(objectToValidate, SpecialService)
             Dim ds As DataSet, strAvailableServiceCenter As String
-            strAvailableServiceCenter = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, New Guid(valueToCheck.ToString))
+            strAvailableServiceCenter = LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, New Guid(valueToCheck.ToString))
             If strAvailableServiceCenter = Codes.YESNO_N Then
                 'Return True
             ElseIf strAvailableServiceCenter = Codes.YESNO_Y Then
@@ -651,17 +651,17 @@ Public Class SpecialService
     Public NotInheritable Class ValidateAuthorizedAmountFrom
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_AUTHORIZED_AMOUNT_FROM_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As SpecialService = CType(objectToValidate, SpecialService)
             Dim ds As DataSet, strAvailableServiceCenter As String
 
             If LookupListNew.GetCodeFromId(LookupListNew.GetPriceGroupDPLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), _
                    obj.PriceGroupFieldId) = Codes.PRICEGROUP_SPL_SVC_PRICE_LIST Then
-                If GuidControl.Equals(obj.ServiceClassId, Guid.Empty) Or GuidControl.Equals(obj.ServiceTypeId, Guid.Empty) Then Return False
+                If Equals(obj.ServiceClassId, Guid.Empty) Or Equals(obj.ServiceTypeId, Guid.Empty) Then Return False
 
             End If
             Return True

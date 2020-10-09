@@ -1,5 +1,6 @@
 ﻿Imports Microsoft.VisualBasic
 Imports System.Globalization
+Imports Assurant.ElitaPlus.DALObjects
 
 
 Partial Public Class ClaimHistoryForm
@@ -56,7 +57,7 @@ Partial Public Class ClaimHistoryForm
     Public Class Parameters
         Public moClaimId As Guid
 
-        Public Sub New(ByVal oClaimId As Guid)
+        Public Sub New(oClaimId As Guid)
             moClaimId = oClaimId
         End Sub
 
@@ -87,27 +88,27 @@ Partial Public Class ClaimHistoryForm
         End Get
     End Property
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
-                Me.State.masterClaimNumber = CType(CType(CallingPar, ArrayList)(0), String)
-                Me.State.claimId = CType(CType(CallingPar, ArrayList)(1), Guid)
+            If CallingParameters IsNot Nothing Then
+                State.masterClaimNumber = CType(CType(CallingPar, ArrayList)(0), String)
+                State.claimId = CType(CType(CallingPar, ArrayList)(1), Guid)
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
 #Region "Page Events"
 
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         Try
 
 
 
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
                 PopulateGrid()
                 BackupLabelsTranslation()
                 myPageInit()
@@ -117,50 +118,50 @@ Partial Public Class ClaimHistoryForm
             RetrieveTranslation()
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
     Public Sub myPageInit()
 
         Grid.PageSize = CType(cboPageSize.SelectedValue, Integer)
-        Me.State.BeginningPageIndex = Me.Grid.CurrentPageIndex
+        State.BeginningPageIndex = Grid.CurrentPageIndex
 
-        If Not (Me.State.selectedPageSize = DEFAULT_NEW_UI_TAB_PAGE_SIZE) Then
-            cboPageSize.SelectedValue = CType(Me.State.selectedPageSize, String)
-            Grid.PageSize = Me.State.selectedPageSize
+        If Not (State.selectedPageSize = DEFAULT_NEW_UI_TAB_PAGE_SIZE) Then
+            cboPageSize.SelectedValue = CType(State.selectedPageSize, String)
+            Grid.PageSize = State.selectedPageSize
         End If
 
         PanelHistoryDetails.Height = 175
-        TextBoxSearchClaimNumber.Text = Me.State.masterClaimNumber.ToString
+        TextBoxSearchClaimNumber.Text = State.masterClaimNumber.ToString
 
-        Me.PanelHistoryDetails.Attributes.Add("onResize", "resizePanel();")
+        PanelHistoryDetails.Attributes.Add("onResize", "resizePanel();")
 
-        If (Me.MasterPage.MessageController.Text.Trim = "") Then
-            Me.MasterPage.MessageController.Clear()
+        If (MasterPage.MessageController.Text.Trim = "") Then
+            MasterPage.MessageController.Clear()
         End If
 
-        Me.SetFormTab(CLAIM_TAB)
-        Me.SetFormTitle(PAGETITLE)
+        SetFormTab(CLAIM_TAB)
+        SetFormTitle(PAGETITLE)
 
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
 
-        ControlMgr.SetEnableControl(Me, Me.LabelStatusCode, False)
-        ControlMgr.SetEnableControl(Me, Me.LabelAuthorizedAmount, False)
-        ControlMgr.SetEnableControl(Me, Me.LabelClaimClosedDate, False)
-        ControlMgr.SetEnableControl(Me, Me.LabelRepairDate, False)
-        ControlMgr.SetEnableControl(Me, Me.LabelLiabilityLimit, False)
-        ControlMgr.SetEnableControl(Me, Me.LabelCertID, False)
-        ControlMgr.SetEnableControl(Me, Me.mLabelDeductible, False)
-        ControlMgr.SetEnableControl(Me, Me.mLabelServiceCenter, False)
-        ControlMgr.SetEnableControl(Me, Me.mLabelBatchNumber, False)
-        ControlMgr.SetEnableControl(Me, Me.mLabelClaimModifyDateNew, False)
-        ControlMgr.SetEnableControl(Me, Me.mLabelClaimModifyByNew, False)
-        ControlMgr.SetEnableControl(Me, Me.mLabelNew, False)
-        ControlMgr.SetEnableControl(Me, Me.mLabelOld, False)
-        ControlMgr.SetEnableControl(Me, Me.mLabelLawsuit, False)
-        ControlMgr.SetEnableControl(Me, Me.mLabelRecordCount, False)
-        ControlMgr.SetVisibleControl(Me, Me.PanelHistoryDetails, False)
+        ControlMgr.SetEnableControl(Me, LabelStatusCode, False)
+        ControlMgr.SetEnableControl(Me, LabelAuthorizedAmount, False)
+        ControlMgr.SetEnableControl(Me, LabelClaimClosedDate, False)
+        ControlMgr.SetEnableControl(Me, LabelRepairDate, False)
+        ControlMgr.SetEnableControl(Me, LabelLiabilityLimit, False)
+        ControlMgr.SetEnableControl(Me, LabelCertID, False)
+        ControlMgr.SetEnableControl(Me, mLabelDeductible, False)
+        ControlMgr.SetEnableControl(Me, mLabelServiceCenter, False)
+        ControlMgr.SetEnableControl(Me, mLabelBatchNumber, False)
+        ControlMgr.SetEnableControl(Me, mLabelClaimModifyDateNew, False)
+        ControlMgr.SetEnableControl(Me, mLabelClaimModifyByNew, False)
+        ControlMgr.SetEnableControl(Me, mLabelNew, False)
+        ControlMgr.SetEnableControl(Me, mLabelOld, False)
+        ControlMgr.SetEnableControl(Me, mLabelLawsuit, False)
+        ControlMgr.SetEnableControl(Me, mLabelRecordCount, False)
+        ControlMgr.SetVisibleControl(Me, PanelHistoryDetails, False)
 
     End Sub
 #End Region
@@ -212,39 +213,39 @@ Partial Public Class ClaimHistoryForm
         Dim dv As DataView
         Try
 
-            Dim myDALBusObject As New Assurant.ElitaPlus.DALObjects.ClaimHistoryDAL
+            Dim myDALBusObject As New ClaimHistoryDAL
             Dim defaultSelectedCodeId As New Guid
 
-            defaultSelectedCodeId = Me.State.claimId
+            defaultSelectedCodeId = State.claimId
             dv = myDALBusObject.GetClaimHistoryDetails(defaultSelectedCodeId, Authentication.LangId)
 
             Grid.PageSize = Convert.ToInt32(cboPageSize.SelectedItem.ToString)
             'SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.claimId, Me.Grid, Me.State.PageIndex)
-            Me.Grid.DataSource = Me.State.searchDV
+            Grid.DataSource = State.searchDV
 
-            Me.State.PageIndex = Me.Grid.CurrentPageIndex
+            State.PageIndex = Grid.CurrentPageIndex
 
             If (dv.Count > 0) Then
-                Me.Grid.DataSource = dv
-                Me.Grid.DataBind()
+                Grid.DataSource = dv
+                Grid.DataBind()
             End If
 
-            ControlMgr.SetVisibleControl(Me, Me.Grid, True)
+            ControlMgr.SetVisibleControl(Me, Grid, True)
 
-            Me.lblRecordCount.Text = dv.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            lblRecordCount.Text = dv.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Private Sub CommentsGrid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+    Private Sub CommentsGrid_ItemDataBound(sender As Object, e As DataGridItemEventArgs) Handles Grid.ItemDataBound
         Dim btnEditItem As LinkButton
         Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
-        If (Not e.Item.Cells(Me.GRID_COL_CREATED_DATE).FindControl(GRID_COL_EDIT_CTRL) Is Nothing) Then
-            btnEditItem = CType(e.Item.Cells(Me.GRID_COL_CREATED_DATE).FindControl(GRID_COL_EDIT_CTRL), LinkButton)
+        If (e.Item.Cells(GRID_COL_CREATED_DATE).FindControl(GRID_COL_EDIT_CTRL) IsNot Nothing) Then
+            btnEditItem = CType(e.Item.Cells(GRID_COL_CREATED_DATE).FindControl(GRID_COL_EDIT_CTRL), LinkButton)
             btnEditItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow("CLAIM_HISTORY_ID"), Byte()))
             btnEditItem.CommandName = SELECT_ACTION_COMMAND
             Dim date1 As Date
@@ -252,25 +253,25 @@ Partial Public Class ClaimHistoryForm
             btnEditItem.Text = GetLongDate12FormattedString(date1)
         End If
 
-        If (e.Item.ItemType <> ListItemType.Header And e.Item.ItemType <> ListItemType.Footer) Then
+        If (e.Item.ItemType <> ListItemType.Header AndAlso e.Item.ItemType <> ListItemType.Footer) Then
             Dim d As Decimal = CType(dvRow("AUTHORIZED_AMOUNT_NEW"), Decimal)
 
-            e.Item.Cells(GRID_COL_AUTHORIZED_AMOUNT_NEW).Text = Me.GetAmountFormattedString(d)
+            e.Item.Cells(GRID_COL_AUTHORIZED_AMOUNT_NEW).Text = GetAmountFormattedString(d)
 
             d = CType(dvRow("AUTHORIZED_AMOUNT_OLD"), Decimal)
-            e.Item.Cells(GRID_COL_AUTHORIZED_AMOUNT_OLD).Text = Me.GetAmountFormattedString(d)
+            e.Item.Cells(GRID_COL_AUTHORIZED_AMOUNT_OLD).Text = GetAmountFormattedString(d)
         End If
 
     End Sub
-    Public Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+    Public Sub ItemCommand(source As Object, e As DataGridCommandEventArgs)
         Try
             If e.CommandName = "SelectAction" Then
 
                 Dim date1 As Date, d As Decimal
                 Dim btnEditItem As LinkButton
 
-                If (Not e.Item.Cells(Me.GRID_COL_CREATED_DATE).FindControl(GRID_COL_EDIT_CTRL) Is Nothing) Then
-                    btnEditItem = CType(e.Item.Cells(Me.GRID_COL_CREATED_DATE).FindControl(GRID_COL_EDIT_CTRL), LinkButton)
+                If (e.Item.Cells(GRID_COL_CREATED_DATE).FindControl(GRID_COL_EDIT_CTRL) IsNot Nothing) Then
+                    btnEditItem = CType(e.Item.Cells(GRID_COL_CREATED_DATE).FindControl(GRID_COL_EDIT_CTRL), LinkButton)
                     TextboxModifiedDate.Text = btnEditItem.Text
                 End If
 
@@ -285,12 +286,12 @@ Partial Public Class ClaimHistoryForm
                 Else
                     d = CType(TextboxAuthorizedAmountOld.Text, Decimal)
                 End If
-                TextboxAuthorizedAmountOld.Text = Me.GetAmountFormattedString(d)
+                TextboxAuthorizedAmountOld.Text = GetAmountFormattedString(d)
 
                 TextboxAuthorizedAmountNew.Text = e.Item.Cells(GRID_COL_AUTHORIZED_AMOUNT_NEW).Text.ToString.Replace("&nbsp;", " ")
 
                 d = CType(TextboxAuthorizedAmountNew.Text, Decimal)
-                TextboxAuthorizedAmountNew.Text = Me.GetAmountFormattedString(d)
+                TextboxAuthorizedAmountNew.Text = GetAmountFormattedString(d)
 
                 If IsDate(e.Item.Cells(GRID_COL_CLAIM_CLOSED_DATE_OLD).Text.ToString.Replace("&nbsp;", " ").ToString.Trim()) Then
                     date1 = CDate(e.Item.Cells(GRID_COL_CLAIM_CLOSED_DATE_OLD).Text.ToString.Replace("&nbsp;", " "))
@@ -318,7 +319,7 @@ Partial Public Class ClaimHistoryForm
                 Else
                     d = CType(TextboxLiabilityLimitOld.Text, Decimal)
                 End If
-                TextboxLiabilityLimitOld.Text = Me.GetAmountFormattedString(d)
+                TextboxLiabilityLimitOld.Text = GetAmountFormattedString(d)
 
                 TextboxLiabilityLimitNew.Text = e.Item.Cells(GRID_COL_LIABILITY_LIMIT_NEW).Text.ToString.Replace("&nbsp;", " ").Trim
                 If TextboxLiabilityLimitNew.Text = String.Empty Then
@@ -326,7 +327,7 @@ Partial Public Class ClaimHistoryForm
                 Else
                     d = CType(TextboxLiabilityLimitNew.Text, Decimal)
                 End If
-                TextboxLiabilityLimitNew.Text = Me.GetAmountFormattedString(d)
+                TextboxLiabilityLimitNew.Text = GetAmountFormattedString(d)
 
 
                 If IsDate(e.Item.Cells(GRID_COL_CLAIM_MODIFIED_DATE_NEW).Text.ToString.Replace("&nbsp;", " ").ToString.Trim()) Then
@@ -348,7 +349,7 @@ Partial Public Class ClaimHistoryForm
                 Else
                     d = CType(TextboxDeductibleNew.Text, Decimal)
                 End If
-                TextboxDeductibleNew.Text = Me.GetAmountFormattedString(d)
+                TextboxDeductibleNew.Text = GetAmountFormattedString(d)
 
                 TextboxDeductibleOld.Text = e.Item.Cells(GRID_COL_DEDUCTIBLE_OLD).Text.ToString.Replace("&nbsp;", " ").Trim
                 If TextboxDeductibleOld.Text = String.Empty Then
@@ -356,7 +357,7 @@ Partial Public Class ClaimHistoryForm
                 Else
                     d = CType(TextboxDeductibleOld.Text, Decimal)
                 End If
-                TextboxDeductibleOld.Text = Me.GetAmountFormattedString(d)
+                TextboxDeductibleOld.Text = GetAmountFormattedString(d)
 
                 TextboxCertItemCoverageIDOld.Text = e.Item.Cells(GRID_COL_DESCRIPTION_OLD).Text.ToString.Replace("&nbsp;", " ")
                 TextboxCertItemCoverageIDNew.Text = e.Item.Cells(GRID_COL_DESCRIPTION_NEW).Text.ToString.Replace("&nbsp;", " ")
@@ -383,18 +384,18 @@ Partial Public Class ClaimHistoryForm
                 LabelClaimModifyDateNew.Text = LabelClaimModifyDateNew.Text + ":"
                 LabelClaimModifyByNew.Text = LabelClaimModifyByNew.Text + ":"
 
-                Me.FlagPanel.Text = "y"
-                ControlMgr.SetVisibleControl(Me, Me.LabelCreatedDate, True)
-                ControlMgr.SetVisibleControl(Me, Me.LabelCreatedBy, True)
-                ControlMgr.SetVisibleControl(Me, Me.TextboxModifiedDate, True)
-                ControlMgr.SetVisibleControl(Me, Me.TextboxModifiedBy, True)
+                FlagPanel.Text = "y"
+                ControlMgr.SetVisibleControl(Me, LabelCreatedDate, True)
+                ControlMgr.SetVisibleControl(Me, LabelCreatedBy, True)
+                ControlMgr.SetVisibleControl(Me, TextboxModifiedDate, True)
+                ControlMgr.SetVisibleControl(Me, TextboxModifiedBy, True)
                 ControlMgr.SetVisibleControl(Me, PanelHistoryDetails, True)
 
-                ControlMgr.SetVisibleControl(Me, Me.Grid, False)
-                ControlMgr.SetVisibleControl(Me, Me.lblPageSize, False)
-                ControlMgr.SetVisibleControl(Me, Me.cboPageSize, False)
-                ControlMgr.SetVisibleControl(Me, Me.lblRecordCount, False)
-                ControlMgr.SetVisibleControl(Me, Me.pnlPageSize, False)
+                ControlMgr.SetVisibleControl(Me, Grid, False)
+                ControlMgr.SetVisibleControl(Me, lblPageSize, False)
+                ControlMgr.SetVisibleControl(Me, cboPageSize, False)
+                ControlMgr.SetVisibleControl(Me, lblRecordCount, False)
+                ControlMgr.SetVisibleControl(Me, pnlPageSize, False)
 
 
                 Dim sJavaScript As String = "<script type ='text/jscript' language='JavaScript'>resizePanel();</script>"
@@ -403,79 +404,79 @@ Partial Public Class ClaimHistoryForm
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
-    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
 
 
             Grid.PageSize = Convert.ToInt32(cboPageSize.SelectedItem.ToString)
-            Me.Grid.CurrentPageIndex = Me.State.BeginningPageIndex
+            Grid.CurrentPageIndex = State.BeginningPageIndex
             PopulateGrid()
 
-            ControlMgr.SetVisibleControl(Me, Me.PanelHistoryDetails, False)
+            ControlMgr.SetVisibleControl(Me, PanelHistoryDetails, False)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
         Try
-            ControlMgr.SetVisibleControl(Me, Me.PanelHistoryDetails, False)
+            ControlMgr.SetVisibleControl(Me, PanelHistoryDetails, False)
 
-            Me.Grid.CurrentPageIndex = e.NewPageIndex
+            Grid.CurrentPageIndex = e.NewPageIndex
             PopulateGrid()
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
 #End Region
 
 #Region "Button Clicks"
-    Protected Sub ImgCloseButton_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles ImgCloseButton.Click
-        ControlMgr.SetVisibleControl(Me, Me.Grid, True)
-        ControlMgr.SetVisibleControl(Me, Me.lblPageSize, True)
-        ControlMgr.SetVisibleControl(Me, Me.cboPageSize, True)
-        ControlMgr.SetVisibleControl(Me, Me.lblRecordCount, True)
-        ControlMgr.SetVisibleControl(Me, Me.pnlPageSize, True)
-        ControlMgr.SetVisibleControl(Me, Me.PanelHistoryDetails, False)
-        ControlMgr.SetVisibleControl(Me, Me.LabelCreatedDate, False)
-        ControlMgr.SetVisibleControl(Me, Me.LabelCreatedBy, False)
-        ControlMgr.SetVisibleControl(Me, Me.TextboxModifiedDate, False)
-        ControlMgr.SetVisibleControl(Me, Me.TextboxModifiedBy, False)
-        Me.FlagPanel.Text = "n"
+    Protected Sub ImgCloseButton_Click(sender As Object, e As ImageClickEventArgs) Handles ImgCloseButton.Click
+        ControlMgr.SetVisibleControl(Me, Grid, True)
+        ControlMgr.SetVisibleControl(Me, lblPageSize, True)
+        ControlMgr.SetVisibleControl(Me, cboPageSize, True)
+        ControlMgr.SetVisibleControl(Me, lblRecordCount, True)
+        ControlMgr.SetVisibleControl(Me, pnlPageSize, True)
+        ControlMgr.SetVisibleControl(Me, PanelHistoryDetails, False)
+        ControlMgr.SetVisibleControl(Me, LabelCreatedDate, False)
+        ControlMgr.SetVisibleControl(Me, LabelCreatedBy, False)
+        ControlMgr.SetVisibleControl(Me, TextboxModifiedDate, False)
+        ControlMgr.SetVisibleControl(Me, TextboxModifiedBy, False)
+        FlagPanel.Text = "n"
 
 
     End Sub
-    Protected Sub btnBack_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnBack.Click
+    Protected Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         Try
-            If (Me.FlagPanel.Text = "y") Then
-                ControlMgr.SetVisibleControl(Me, Me.Grid, True)
-                ControlMgr.SetVisibleControl(Me, Me.lblPageSize, True)
-                ControlMgr.SetVisibleControl(Me, Me.cboPageSize, True)
-                ControlMgr.SetVisibleControl(Me, Me.lblRecordCount, True)
-                ControlMgr.SetVisibleControl(Me, Me.pnlPageSize, True)
-                ControlMgr.SetVisibleControl(Me, Me.PanelHistoryDetails, False)
-                ControlMgr.SetVisibleControl(Me, Me.LabelCreatedDate, False)
-                ControlMgr.SetVisibleControl(Me, Me.LabelCreatedBy, False)
-                ControlMgr.SetVisibleControl(Me, Me.TextboxModifiedDate, False)
-                ControlMgr.SetVisibleControl(Me, Me.TextboxModifiedBy, False)
+            If (FlagPanel.Text = "y") Then
+                ControlMgr.SetVisibleControl(Me, Grid, True)
+                ControlMgr.SetVisibleControl(Me, lblPageSize, True)
+                ControlMgr.SetVisibleControl(Me, cboPageSize, True)
+                ControlMgr.SetVisibleControl(Me, lblRecordCount, True)
+                ControlMgr.SetVisibleControl(Me, pnlPageSize, True)
+                ControlMgr.SetVisibleControl(Me, PanelHistoryDetails, False)
+                ControlMgr.SetVisibleControl(Me, LabelCreatedDate, False)
+                ControlMgr.SetVisibleControl(Me, LabelCreatedBy, False)
+                ControlMgr.SetVisibleControl(Me, TextboxModifiedDate, False)
+                ControlMgr.SetVisibleControl(Me, TextboxModifiedBy, False)
 
-                Me.FlagPanel.Text = "n"
+                FlagPanel.Text = "n"
             Else
-                Dim retType As New ClaimForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back)
-                Me.ReturnToCallingPage(retType)
+                Dim retType As New ClaimForm.ReturnType(DetailPageCommand.Back)
+                ReturnToCallingPage(retType)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Protected Sub Back(ByVal cmd As ElitaPlusPage.DetailPageCommand)
-        Me.NavController = Nothing
-        Me.ReturnToCallingPage(True)
+    Protected Sub Back(cmd As DetailPageCommand)
+        NavController = Nothing
+        ReturnToCallingPage(True)
     End Sub
 #End Region
 #Region "Page Return Type"
@@ -483,13 +484,13 @@ Partial Public Class ClaimHistoryForm
         Public LastOperation As DetailPageCommand
         Public EditingBo As Claim
         Public BoChanged As Boolean = False
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As Claim, Optional ByVal boChanged As Boolean = False)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(LastOp As DetailPageCommand, curEditingBo As Claim, Optional ByVal boChanged As Boolean = False)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
             Me.BoChanged = boChanged
         End Sub
-        Public Sub New(ByVal LastOp As DetailPageCommand)
-            Me.LastOperation = LastOp
+        Public Sub New(LastOp As DetailPageCommand)
+            LastOperation = LastOp
         End Sub
     End Class
 #End Region

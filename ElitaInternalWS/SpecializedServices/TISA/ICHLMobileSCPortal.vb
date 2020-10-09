@@ -12,7 +12,7 @@ Namespace SpecializedServices
         <OperationContract(Name:="GetCertClaimInfo"), _
             ElitaPermission(PermissionCodes.WS_CHLMobileSCPortal_GetCertClaimInfo), _
             FaultContract(GetType(CHLMobileSCPortalFault))> _
-        Function GetCertClaimInfo(ByVal CertClaimInfo As CertClaimInfoRequestDC) As CertClaimInfoResponseDC
+        Function GetCertClaimInfo(CertClaimInfo As CertClaimInfoRequestDC) As CertClaimInfoResponseDC
 #End Region
 
     End Interface

@@ -8,48 +8,48 @@ Public Class CertCancelRequest
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New CertCancelRequestDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -57,23 +57,23 @@ Public Class CertCancelRequest
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CertCancelRequestDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -95,7 +95,7 @@ Public Class CertCancelRequest
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(CertCancelRequestDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -106,7 +106,7 @@ Public Class CertCancelRequest
     End Property
 
     <ValueMandatory("")> _
-    Public Property CertId() As Guid
+    Public Property CertId As Guid
         Get
             CheckDeleted()
             If row(CertCancelRequestDAL.COL_NAME_CERT_ID) Is DBNull.Value Then
@@ -115,15 +115,15 @@ Public Class CertCancelRequest
                 Return New Guid(CType(row(CertCancelRequestDAL.COL_NAME_CERT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertCancelRequestDAL.COL_NAME_CERT_ID, Value)
+            SetValue(CertCancelRequestDAL.COL_NAME_CERT_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property CancellationReasonId() As Guid
+    Public Property CancellationReasonId As Guid
         Get
             CheckDeleted()
             If row(CertCancelRequestDAL.COL_NAME_CANCELLATION_REASON_ID) Is DBNull.Value Then
@@ -132,15 +132,15 @@ Public Class CertCancelRequest
                 Return New Guid(CType(row(CertCancelRequestDAL.COL_NAME_CANCELLATION_REASON_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertCancelRequestDAL.COL_NAME_CANCELLATION_REASON_ID, Value)
+            SetValue(CertCancelRequestDAL.COL_NAME_CANCELLATION_REASON_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property CancellationRequestDate() As DateType
+    Public Property CancellationRequestDate As DateType
         Get
             CheckDeleted()
             If row(CertCancelRequestDAL.COL_NAME_CANCELLATION_REQUEST_DATE) Is DBNull.Value Then
@@ -149,15 +149,15 @@ Public Class CertCancelRequest
                 Return New DateType(CType(row(CertCancelRequestDAL.COL_NAME_CANCELLATION_REQUEST_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertCancelRequestDAL.COL_NAME_CANCELLATION_REQUEST_DATE, Value)
+            SetValue(CertCancelRequestDAL.COL_NAME_CANCELLATION_REQUEST_DATE, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property CancellationDate() As DateType
+    Public Property CancellationDate As DateType
         Get
             CheckDeleted()
             If row(CertCancelRequestDAL.COL_NAME_CANCELLATION_DATE) Is DBNull.Value Then
@@ -166,13 +166,13 @@ Public Class CertCancelRequest
                 Return New DateType(CType(row(CertCancelRequestDAL.COL_NAME_CANCELLATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertCancelRequestDAL.COL_NAME_CANCELLATION_DATE, Value)
+            SetValue(CertCancelRequestDAL.COL_NAME_CANCELLATION_DATE, Value)
         End Set
     End Property
 
-    Public ReadOnly Property Status() As String
+    Public ReadOnly Property Status As String
         Get
             CheckDeleted()
             If Row(CertCancelRequestDAL.COL_NAME_STATUS) Is DBNull.Value Then
@@ -183,7 +183,7 @@ Public Class CertCancelRequest
         End Get
     End Property
 
-    Public ReadOnly Property StatusDescription() As String
+    Public ReadOnly Property StatusDescription As String
         Get
             CheckDeleted()
             If Row(CertCancelRequestDAL.COL_NAME_STATUS_DESCRIPTION) Is DBNull.Value Then
@@ -194,7 +194,7 @@ Public Class CertCancelRequest
         End Get
     End Property
 
-    Public ReadOnly Property StatusDate() As DateType
+    Public ReadOnly Property StatusDate As DateType
         Get
             CheckDeleted()
             If Row(CertCancelRequestDAL.COL_NAME_STATUS_DATE) Is DBNull.Value Then
@@ -205,7 +205,7 @@ Public Class CertCancelRequest
         End Get
     End Property
 
-    Public Property ProofOfDocumentation() As String
+    Public Property ProofOfDocumentation As String
         Get
             CheckDeleted()
             If Row(CertCancelRequestDAL.COL_NAME_PROOF_OF_DOCUMENTATION) Is DBNull.Value Then
@@ -214,13 +214,13 @@ Public Class CertCancelRequest
                 Return New String(CType(Row(CertCancelRequestDAL.COL_NAME_PROOF_OF_DOCUMENTATION), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CertCancelRequestDAL.COL_NAME_PROOF_OF_DOCUMENTATION, Value)
+            SetValue(CertCancelRequestDAL.COL_NAME_PROOF_OF_DOCUMENTATION, Value)
         End Set
     End Property
 
-    Public Property BankInfoId() As Guid
+    Public Property BankInfoId As Guid
         Get
             CheckDeleted()
             If Row(CertCancelRequestDAL.COL_NAME_BANK_INFO_ID) Is DBNull.Value Then
@@ -229,9 +229,9 @@ Public Class CertCancelRequest
                 Return New Guid(CType(Row(CertCancelRequestDAL.COL_NAME_BANK_INFO_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertCancelRequestDAL.COL_NAME_BANK_INFO_ID, Value)
+            SetValue(CertCancelRequestDAL.COL_NAME_BANK_INFO_ID, Value)
         End Set
     End Property
 #End Region
@@ -240,15 +240,15 @@ Public Class CertCancelRequest
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CertCancelRequestDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -258,7 +258,7 @@ Public Class CertCancelRequest
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetCertCancelRequestData(ByVal certId As Guid) As Dataset
+    Public Shared Function GetCertCancelRequestData(certId As Guid) As Dataset
         Try
             Dim dal As New CertCancelRequestDAL
             Dim ds As DataSet
@@ -274,7 +274,7 @@ Public Class CertCancelRequest
 
 #Region "Shared Methods"
 
-    Public Shared Sub SetProcessCancelRequestData(ByVal oCertCancelRequestBO As CertCancelRequest, ByVal useExistingBankInfo As String, ByVal oCRequestBankInfoBO As BankInfo, ByVal oCancReqCommentBO As Comment, ByVal oCertCancelRequestData As CertCancelRequestData)
+    Public Shared Sub SetProcessCancelRequestData(oCertCancelRequestBO As CertCancelRequest, useExistingBankInfo As String, oCRequestBankInfoBO As BankInfo, oCancReqCommentBO As Comment, oCertCancelRequestData As CertCancelRequestData)
         With oCertCancelRequestData
             .cancellationReasonId = oCertCancelRequestBO.CancellationReasonId
             .cancelRequestDate = oCertCancelRequestBO.CancellationRequestDate
@@ -297,7 +297,7 @@ Public Class CertCancelRequest
 
 #Region "StoreProcedures Control"
 
-    Public Shared Function CertCancelRequest(ByVal oCertCancelRequestData As CertCancelRequestData, ByRef dblRefundAmount As Double, ByRef strMsg As String) As CertCancelRequestData
+    Public Shared Function CertCancelRequest(oCertCancelRequestData As CertCancelRequestData, ByRef dblRefundAmount As Double, ByRef strMsg As String) As CertCancelRequestData
         Try
             Dim dal As New CertCancelRequestDAL
 

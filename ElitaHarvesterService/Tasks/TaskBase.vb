@@ -8,7 +8,7 @@ Public MustInherit Class TaskBase
     Private ReadOnly _processThreadName As String
     Private _failReason As String
 
-    Public Sub New(ByVal machineName As String, ByVal processThreadName As String)
+    Public Sub New(machineName As String, processThreadName As String)
         _machineName = machineName
         _processThreadName = processThreadName
     End Sub
@@ -17,7 +17,7 @@ Public MustInherit Class TaskBase
         Get
             Return _failReason
         End Get
-        Protected Set(ByVal value As String)
+        Protected Set(value As String)
             _failReason = value
         End Set
     End Property
@@ -38,7 +38,7 @@ Public MustInherit Class TaskBase
         Get
             Return _publishedTask
         End Get
-        Set(ByVal value As PublishedTask)
+        Set(value As PublishedTask)
             _publishedTask = value
         End Set
     End Property
@@ -46,11 +46,11 @@ Public MustInherit Class TaskBase
     Protected Friend MustOverride Sub Execute()
 
     Private Sub CompleteTask()
-        Me.PublishedTask.CompleteTask(Me.MachineName, Me.ProcessThreadName)
+        PublishedTask.CompleteTask(MachineName, ProcessThreadName)
     End Sub
 
     Private Sub FailedTask()
-        Me.PublishedTask.FailedTask(Me.MachineName, Me.ProcessThreadName, Me.FailReason)
+        PublishedTask.FailedTask(MachineName, ProcessThreadName, FailReason)
     End Sub
 
     Public Sub Process() Implements ITask.Process
@@ -59,7 +59,7 @@ Public MustInherit Class TaskBase
             CompleteTask()
             Logger.AddInfo("Task executed successfully")
         Catch ex As Exception
-            Me.FailReason = Me.FailReason + String.Format("|Exception Message: {0} ", ex.Message)
+            FailReason = FailReason & String.Format("|Exception Message: {0} ", ex.Message)
             FailedTask()
             Logger.AddError("Task failed.", ex)
         End Try

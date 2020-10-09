@@ -15,7 +15,7 @@ Partial Class SoftQuestionGroupList
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -68,44 +68,44 @@ Partial Class SoftQuestionGroupList
 
 #Region "Page_Events"
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
-        Me.ErrorCtrl.Clear_Hide()
-        Me.SetStateProperties()
+        ErrorCtrl.Clear_Hide()
+        SetStateProperties()
         Try
-            If Not Me.IsPostBack Then
-                Me.SetDefaultButton(Me.SearchDescriptionTextBox, btnSearch)
+            If Not IsPostBack Then
+                SetDefaultButton(SearchDescriptionTextBox, btnSearch)
                 ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                If Me.State.IsGridVisible Then
-                    If Not (Me.State.selectedPageSize = DEFAULT_PAGE_SIZE) Then
-                        cboPageSize.SelectedValue = CType(Me.State.selectedPageSize, String)
-                        Grid.PageSize = Me.State.selectedPageSize
+                If State.IsGridVisible Then
+                    If Not (State.selectedPageSize = DEFAULT_PAGE_SIZE) Then
+                        cboPageSize.SelectedValue = CType(State.selectedPageSize, String)
+                        Grid.PageSize = State.selectedPageSize
                     End If
-                    Me.PopulateGrid()
+                    PopulateGrid()
                 End If
-                Me.SetGridItemStyleColor(Me.Grid)
+                SetGridItemStyleColor(Grid)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
-        Me.ShowMissingTranslations(Me.ErrorCtrl)
+        ShowMissingTranslations(ErrorCtrl)
     End Sub
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
-        Me.MenuEnabled = True
-        Me.IsReturningFromChild = True
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
+        MenuEnabled = True
+        IsReturningFromChild = True
         Dim retObj As SoftQuestionGroupForm.ReturnType = CType(ReturnPar, SoftQuestionGroupForm.ReturnType)
-        Me.State.HasDataChanged = retObj.HasDataChanged
+        State.HasDataChanged = retObj.HasDataChanged
         Select Case retObj.LastOperation
             Case ElitaPlusPage.DetailPageCommand.Back
-                If Not retObj Is Nothing Then
+                If retObj IsNot Nothing Then
                     If Not retObj.EditingBo.IsNew Then
-                        Me.State.SoftQuestionGroupId = retObj.EditingBo.Id
+                        State.SoftQuestionGroupId = retObj.EditingBo.Id
                     End If
-                    Me.State.IsGridVisible = True
+                    State.IsGridVisible = True
                 End If
             Case ElitaPlusPage.DetailPageCommand.Delete
-                Me.AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
+                AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
         End Select
     End Sub
 
@@ -114,41 +114,41 @@ Partial Class SoftQuestionGroupList
 #Region "Controlling Logic"
 
     Public Sub PopulateGrid()
-        If ((Me.State.searchDV Is Nothing) OrElse (Me.State.HasDataChanged)) Then
-            Me.State.searchDV = SoftQuestionGroup.getList(Me.State.DescriptionMask, Me.State.CompanyGroupId)
+        If ((State.searchDV Is Nothing) OrElse (State.HasDataChanged)) Then
+            State.searchDV = SoftQuestionGroup.getList(State.DescriptionMask, State.CompanyGroupId)
             'Ticket # 748479 - Search grids in Tables tab should not show pop-up message when number of retrieved record is over 1,000
             'If (Not (Me.State.HasDataChanged)) Then
             '    Me.ValidSearchResultCount(Me.State.searchDV.Count, True)
             'End If
         End If
-        Me.State.searchDV.Sort = Me.State.SortExpression
-        Me.Grid.AutoGenerateColumns = False
-        Me.Grid.Columns(Me.GRID_COL_DESCRIPTION_IDX).SortExpression = SoftQuestionGroup.SoftQuestionGroupDV.COL_DESCRIPTION
-        SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.SoftQuestionGroupId, Me.Grid, Me.State.PageIndex)
+        State.searchDV.Sort = State.SortExpression
+        Grid.AutoGenerateColumns = False
+        Grid.Columns(GRID_COL_DESCRIPTION_IDX).SortExpression = SoftQuestionGroup.SoftQuestionGroupDV.COL_DESCRIPTION
+        SetPageAndSelectedIndexFromGuid(State.searchDV, State.SoftQuestionGroupId, Grid, State.PageIndex)
 
-        Me.SortAndBindGrid()
+        SortAndBindGrid()
     End Sub
 
     Private Sub SortAndBindGrid()
-        Me.State.PageIndex = Me.Grid.CurrentPageIndex
-        Me.Grid.DataSource = Me.State.searchDV
-        HighLightSortColumn(Grid, Me.State.SortExpression)
-        Me.Grid.DataBind()
+        State.PageIndex = Grid.CurrentPageIndex
+        Grid.DataSource = State.searchDV
+        HighLightSortColumn(Grid, State.SortExpression)
+        Grid.DataBind()
 
-        ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
 
-        ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+        ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-        Session("recCount") = Me.State.searchDV.Count
+        Session("recCount") = State.searchDV.Count
 
-        If Me.State.searchDV.Count > 0 Then
+        If State.searchDV.Count > 0 Then
 
-            If Me.Grid.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         Else
-            If Me.Grid.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         End If
     End Sub
@@ -160,70 +160,70 @@ Partial Class SoftQuestionGroupList
 #Region " Datagrid Related "
 
     'The Binding Logic is here
-    Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+    Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
         Try
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                e.Item.Cells(Me.GRID_COL_DESCRIPTION_IDX).Text = dvRow(SoftQuestionGroup.SoftQuestionGroupDV.COL_DESCRIPTION).ToString
-                e.Item.Cells(Me.GRID_COL_SOFTQUESTION_GROUP_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(SoftQuestionGroup.SoftQuestionGroupDV.COL_SOFT_QUESTION_GROUP_ID), Byte()))
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
+                e.Item.Cells(GRID_COL_DESCRIPTION_IDX).Text = dvRow(SoftQuestionGroup.SoftQuestionGroupDV.COL_DESCRIPTION).ToString
+                e.Item.Cells(GRID_COL_SOFTQUESTION_GROUP_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(SoftQuestionGroup.SoftQuestionGroupDV.COL_SOFT_QUESTION_GROUP_ID), Byte()))
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Public Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+    Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
         Try
             If e.CommandName = "SelectAction" Then
-                Me.State.SoftQuestionGroupId = New Guid(e.Item.Cells(Me.GRID_COL_SOFTQUESTION_GROUP_IDX).Text)
-                Me.callPage(SoftQuestionGroupForm.URL, Me.State.SoftQuestionGroupId)
+                State.SoftQuestionGroupId = New Guid(e.Item.Cells(GRID_COL_SOFTQUESTION_GROUP_IDX).Text)
+                callPage(SoftQuestionGroupForm.URL, State.SoftQuestionGroupId)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
 
-    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs)
+    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.CurrentPageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-            Me.PopulateGrid()
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
+    Private Sub Grid_SortCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = e.NewPageIndex
-            Me.State.SoftQuestionGroupId = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = e.NewPageIndex
+            State.SoftQuestionGroupId = Guid.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 #End Region
@@ -231,33 +231,33 @@ Partial Class SoftQuestionGroupList
 #Region " Button Clicks "
     Private Sub SetStateProperties()
 
-        Me.State.DescriptionMask = SearchDescriptionTextBox.Text
-        Me.State.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
+        State.DescriptionMask = SearchDescriptionTextBox.Text
+        State.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
 
     End Sub
 
-    Private Sub btnSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As System.EventArgs) Handles btnSearch.Click
         Try
-            Me.State.PageIndex = 0
-            Me.State.SoftQuestionGroupId = Guid.Empty
-            Me.State.IsGridVisible = True
-            Me.State.searchDV = Nothing
-            Me.State.HasDataChanged = False
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            State.SoftQuestionGroupId = Guid.Empty
+            State.IsGridVisible = True
+            State.searchDV = Nothing
+            State.HasDataChanged = False
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnAdd_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd_WRITE.Click
+    Private Sub btnAdd_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnAdd_WRITE.Click
         Try
-            Me.callPage(SoftQuestionGroupForm.URL)
+            callPage(SoftQuestionGroupForm.URL)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnClearSearch_Click1(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click1(sender As Object, e As System.EventArgs) Handles btnClearSearch.Click
         ClearSearchCriteria()
     End Sub
     Private Sub ClearSearchCriteria()
@@ -266,11 +266,11 @@ Partial Class SoftQuestionGroupList
             SearchDescriptionTextBox.Text = String.Empty
 
             'Update Page State
-            With Me.State
+            With State
                 .DescriptionMask = SearchDescriptionTextBox.Text
             End With
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub

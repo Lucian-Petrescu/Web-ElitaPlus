@@ -6,48 +6,48 @@ Public Class ClaimIssueResponse
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ClaimIssueResponseDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class ClaimIssueResponse
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ClaimIssueResponseDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -90,7 +90,7 @@ Public Class ClaimIssueResponse
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ClaimIssueResponseDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class ClaimIssueResponse
     End Property
 
     <ValueMandatory("")> _
-    Public Property ClaimIssueId() As Guid
+    Public Property ClaimIssueId As Guid
         Get
             CheckDeleted()
             If row(ClaimIssueResponseDAL.COL_NAME_CLAIM_ISSUE_ID) Is DBNull.Value Then
@@ -110,15 +110,15 @@ Public Class ClaimIssueResponse
                 Return New Guid(CType(row(ClaimIssueResponseDAL.COL_NAME_CLAIM_ISSUE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimIssueResponseDAL.COL_NAME_CLAIM_ISSUE_ID, Value)
+            SetValue(ClaimIssueResponseDAL.COL_NAME_CLAIM_ISSUE_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property AnswerId() As Guid
+    Public Property AnswerId As Guid
         Get
             CheckDeleted()
             If row(ClaimIssueResponseDAL.COL_NAME_ANSWER_ID) Is DBNull.Value Then
@@ -127,15 +127,15 @@ Public Class ClaimIssueResponse
                 Return New Guid(CType(row(ClaimIssueResponseDAL.COL_NAME_ANSWER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimIssueResponseDAL.COL_NAME_ANSWER_ID, Value)
+            SetValue(ClaimIssueResponseDAL.COL_NAME_ANSWER_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property SupportsClaimId() As Guid
+    Public Property SupportsClaimId As Guid
         Get
             CheckDeleted()
             If row(ClaimIssueResponseDAL.COL_NAME_SUPPORTS_CLAIM_ID) Is DBNull.Value Then
@@ -144,15 +144,15 @@ Public Class ClaimIssueResponse
                 Return New Guid(CType(row(ClaimIssueResponseDAL.COL_NAME_SUPPORTS_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimIssueResponseDAL.COL_NAME_SUPPORTS_CLAIM_ID, Value)
+            SetValue(ClaimIssueResponseDAL.COL_NAME_SUPPORTS_CLAIM_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1020)> _
-    Public Property AnswerDescription() As String
+    Public Property AnswerDescription As String
         Get
             CheckDeleted()
             If row(ClaimIssueResponseDAL.COL_NAME_ANSWER_DESCRIPTION) Is DBNull.Value Then
@@ -161,15 +161,15 @@ Public Class ClaimIssueResponse
                 Return CType(row(ClaimIssueResponseDAL.COL_NAME_ANSWER_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimIssueResponseDAL.COL_NAME_ANSWER_DESCRIPTION, Value)
+            SetValue(ClaimIssueResponseDAL.COL_NAME_ANSWER_DESCRIPTION, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=1020)> _
-    Public Property AnswerValue() As String
+    Public Property AnswerValue As String
         Get
             CheckDeleted()
             If row(ClaimIssueResponseDAL.COL_NAME_ANSWER_VALUE) Is DBNull.Value Then
@@ -178,9 +178,9 @@ Public Class ClaimIssueResponse
                 Return CType(row(ClaimIssueResponseDAL.COL_NAME_ANSWER_VALUE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimIssueResponseDAL.COL_NAME_ANSWER_VALUE, Value)
+            SetValue(ClaimIssueResponseDAL.COL_NAME_ANSWER_VALUE, Value)
         End Set
     End Property
 
@@ -193,15 +193,15 @@ Public Class ClaimIssueResponse
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ClaimIssueResponseDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -218,15 +218,15 @@ Public Class ClaimIssueResponse
     Public Class ClaimIssueResponseList
         Inherits BusinessObjectListBase
 
-        Public Sub New(ByVal parent As ClaimIssue)
+        Public Sub New(parent As ClaimIssue)
             MyBase.New(LoadTable(parent), GetType(ClaimIssueResponse), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return CType(bo, ClaimIssueResponse).ClaimIssueId.Equals(CType(Parent, ClaimIssue).ClaimIssueId)
         End Function
 
-        Private Shared Function LoadTable(ByVal parent As ClaimIssue) As DataTable
+        Private Shared Function LoadTable(parent As ClaimIssue) As DataTable
             Try
                 If Not parent.IsChildrenCollectionLoaded(GetType(ClaimIssueResponseList)) Then
                     Dim dal As New ClaimIssueResponseDAL

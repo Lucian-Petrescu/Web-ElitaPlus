@@ -62,47 +62,47 @@ Public Class ClaimSuspenseDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("claim_recon_wrk_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal certificateNumber As String, ByVal authorizationNumber As String, ByVal fileName As String, ByVal userId As Guid, Optional ByVal MaxRows As Integer = MAX_NUMBER_OF_ROWS) As DataSet
+    Public Function LoadList(certificateNumber As String, authorizationNumber As String, fileName As String, userId As Guid, Optional ByVal MaxRows As Integer = MAX_NUMBER_OF_ROWS) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim inParameters As New ArrayList
-        Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.P_CLAIM_RECON_LIST, GetType(DataSet))}
+        Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(P_CLAIM_RECON_LIST, GetType(DataSet))}
         Dim whereClauseConditions As String
         Dim _param As DBHelper.DBHelperParameter
         Dim ds As New DataSet("CLAIM_SUSPENSE")
 
         Try
 
-            _param = New DBHelper.DBHelperParameter(Me.P_USER_ID, userId.ToByteArray)
+            _param = New DBHelper.DBHelperParameter(P_USER_ID, userId.ToByteArray)
             inParameters.Add(_param)
 
-            _param = New DBHelper.DBHelperParameter(Me.P_CERTIFICATE, certificateNumber.ToUpper.Replace("*", "%"))
+            _param = New DBHelper.DBHelperParameter(P_CERTIFICATE, certificateNumber.ToUpper.Replace("*", "%"))
             inParameters.Add(_param)
 
-            _param = New DBHelper.DBHelperParameter(Me.P_AUTHORIZATION, authorizationNumber.ToUpper.Replace("*", "%"))
+            _param = New DBHelper.DBHelperParameter(P_AUTHORIZATION, authorizationNumber.ToUpper.Replace("*", "%"))
             inParameters.Add(_param)
 
-            _param = New DBHelper.DBHelperParameter(Me.P_FILENAME, fileName.ToUpper.Replace("*", "%"))
+            _param = New DBHelper.DBHelperParameter(P_FILENAME, fileName.ToUpper.Replace("*", "%"))
             inParameters.Add(_param)
 
-            _param = New DBHelper.DBHelperParameter(Me.P_MAX_ROWS, MaxRows)
+            _param = New DBHelper.DBHelperParameter(P_MAX_ROWS, MaxRows)
             inParameters.Add(_param)
 
-            DBHelper.FetchSp(selectStmt, inParameters.ToArray(GetType(DBHelper.DBHelperParameter)), outParameters, ds, Me.TABLE_NAME)
+            DBHelper.FetchSp(selectStmt, inParameters.ToArray(GetType(DBHelper.DBHelperParameter)), outParameters, ds, TABLE_NAME)
             Return ds
 
         Catch ex As Exception
@@ -115,17 +115,17 @@ Public Class ClaimSuspenseDAL
 
 #Region "Public Methods"
 
-    Public Function Process(ByVal ds As DataSet, ByVal UserName As String) As Integer
+    Public Function Process(ds As DataSet, UserName As String) As Integer
 
-        Dim selectStmt As String = Me.Config("/SQL/PROCESS")
+        Dim selectStmt As String = Config("/SQL/PROCESS")
 
         'Ticket # 1054112 - Remove the problem descriptio ncolumn from the dataset prior to passing back to oracle.
         If Not ds.Tables(0).Columns(COL_NAME_PROBLEM_DESCRIPTION) Is Nothing Then
             ds.Tables(0).Columns.Remove(COL_NAME_PROBLEM_DESCRIPTION)
         End If
 
-        Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.P_XMLSET, ds.GetXml, GetType(Xml.XmlDocument)), New DBHelper.DBHelperParameter(Me.P_USER_NAME, UserName)}
-        Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.P_RETURN, GetType(Integer))}
+        Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(P_XMLSET, ds.GetXml, GetType(Xml.XmlDocument)), New DBHelper.DBHelperParameter(P_USER_NAME, UserName)}
+        Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(P_RETURN, GetType(Integer))}
 
         Try
 

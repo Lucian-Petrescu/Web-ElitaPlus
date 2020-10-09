@@ -1,5 +1,9 @@
+Imports System.Diagnostics
+Imports System.Text
 Imports Assurant.Elita.CommonConfiguration
+Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
+Imports Assurant.ElitaPlus.DALObjects
 Imports Microsoft.VisualBasic
 
 Partial Class PayBatchClaimForm
@@ -8,15 +12,15 @@ Partial Class PayBatchClaimForm
 #Region "Web Form Designer Generated Code"
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -133,22 +137,22 @@ Partial Class PayBatchClaimForm
     Public Property isInvoiceTaxType() As String
 
         Get
-            Return Me.State.InvoiceTaxType
+            Return State.InvoiceTaxType
         End Get
-        Set(ByVal Value As String)
-            Me.State.InvoiceTaxType = Value
+        Set(Value As String)
+            State.InvoiceTaxType = Value
         End Set
 
     End Property
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
-                Me.State.MyBO = New InvoiceTrans(New Guid(CType(Me.CallingParameters, String)))
+            If CallingParameters IsNot Nothing Then
+                State.MyBO = New InvoiceTrans(New Guid(CType(CallingParameters, String)))
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
@@ -158,8 +162,8 @@ Partial Class PayBatchClaimForm
 #Region "Page Return Type"
     Public Class ReturnType
         Public InvoiceTransId As Guid
-        Public Sub New(ByVal CurrentInvoiceTransId As Guid)
-            Me.InvoiceTransId = CurrentInvoiceTransId
+        Public Sub New(CurrentInvoiceTransId As Guid)
+            InvoiceTransId = CurrentInvoiceTransId
         End Sub
     End Class
 #End Region
@@ -168,12 +172,12 @@ Partial Class PayBatchClaimForm
     Private Sub LoadRegionList()
         Dim companyid As Guid = ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID
         Dim countryID As Guid
-        Me.State.companyBO = New Company(companyid)
-        countryID = Me.State.companyBO.BusinessCountryId
-        Me.State.countryid = countryID
-        Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
+        State.companyBO = New Company(companyid)
+        countryID = State.companyBO.BusinessCountryId
+        State.countryid = countryID
+        Dim oListContext As New ListContext
         oListContext.CountryId = countryID
-        Dim oRegionList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RegionsByCountry", context:=oListContext)
+        Dim oRegionList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RegionsByCountry", context:=oListContext)
         DropDownState.Populate(oRegionList, New PopulateOptions() With
                                            {
                                            .AddBlankItem = True
@@ -186,31 +190,31 @@ Partial Class PayBatchClaimForm
 
     Protected Sub PopulateFormFromBOs()
         Dim RegionDesc As String
-        With Me.State.MyBO
+        With State.MyBO
 
-            Me.PopulateControlFromBOProperty(Me.TextBoxInvoiceAmount, .SvcControlAmount)
-            Me.PopulateControlFromBOProperty(Me.TextBoxInvoiceNumber, .SvcControlNumber)
-            Me.PopulateControlFromBOProperty(Me.TextBoxServiceCenter, .ServiceCenterName)
-            Me.PopulateControlFromBOProperty(Me.TextBoxInvoiceDate, .InvoiceDate)
-            Me.PopulateControlFromBOProperty(Me.txtInvTyp, .InvoiceTypeName)
+            PopulateControlFromBOProperty(TextBoxInvoiceAmount, .SvcControlAmount)
+            PopulateControlFromBOProperty(TextBoxInvoiceNumber, .SvcControlNumber)
+            PopulateControlFromBOProperty(TextBoxServiceCenter, .ServiceCenterName)
+            PopulateControlFromBOProperty(TextBoxInvoiceDate, .InvoiceDate)
+            PopulateControlFromBOProperty(txtInvTyp, .InvoiceTypeName)
 
             Dim dectax As Decimal = 0
 
 
-            If Me.State.InvoiceTaxType = Invoice_Tax_Type Then
-                Me.PopulateControlFromBOProperty(Me.TextBoxBatchNumber, .BatchNumber)
+            If State.InvoiceTaxType = Invoice_Tax_Type Then
+                PopulateControlFromBOProperty(TextBoxBatchNumber, .BatchNumber)
                 If Not .RegionId.Equals(Guid.Empty) Then
-                    Me.SetSelectedItem(Me.DropDownState, .RegionId)
+                    SetSelectedItem(DropDownState, .RegionId)
                 Else
-                    Dim sc As ServiceCenter = New ServiceCenter(Me.State.MyBO.ServiceCenterId)
+                    Dim sc As ServiceCenter = New ServiceCenter(State.MyBO.ServiceCenterId)
                     Dim payeeAddress As Address = New Address(sc.AddressId)
                     If Not payeeAddress.RegionId.Equals(Guid.Empty) Then
-                        Me.SetSelectedItem(Me.DropDownState, payeeAddress.RegionId)
+                        SetSelectedItem(DropDownState, payeeAddress.RegionId)
                     End If
                 End If
 
-                Me.PopulateControlFromBOProperty(Me.TextBoxPerceptionIVA, .Tax1Amount)
-                Me.PopulateControlFromBOProperty(Me.TextBoxPerceptionIIBB, .Tax2Amount)
+                PopulateControlFromBOProperty(TextBoxPerceptionIVA, .Tax1Amount)
+                PopulateControlFromBOProperty(TextBoxPerceptionIIBB, .Tax2Amount)
                 TextBoxPerceptionIVA.Text = CType((IIf(.Tax1Amount = 0, String.Empty, .Tax1Amount)), String)
                 TextBoxPerceptionIIBB.Text = CType((IIf(.Tax2Amount = 0, String.Empty, .Tax2Amount)), String)
 
@@ -226,38 +230,38 @@ Partial Class PayBatchClaimForm
     End Sub
 
     Protected Sub PopulateBOsFromForm()
-        With Me.State.MyBO
-            Me.PopulateBOProperty(Me.State.MyBO, "SvcControlAmount", Me.TextBoxInvoiceAmount)
-            Me.PopulateBOProperty(Me.State.MyBO, "SvcControlNumber", Me.TextBoxInvoiceNumber)
-            Me.PopulateBOProperty(Me.State.MyBO, "ServiceCenterName", Me.TextBoxServiceCenter)
-            Me.PopulateBOProperty(Me.State.MyBO, "InvoiceTypeName", Me.txtInvTyp)
+        With State.MyBO
+            PopulateBOProperty(State.MyBO, "SvcControlAmount", TextBoxInvoiceAmount)
+            PopulateBOProperty(State.MyBO, "SvcControlNumber", TextBoxInvoiceNumber)
+            PopulateBOProperty(State.MyBO, "ServiceCenterName", TextBoxServiceCenter)
+            PopulateBOProperty(State.MyBO, "InvoiceTypeName", txtInvTyp)
             'following logic is only when its Perception Tax
-            If Not Me.State.InvoiceTaxType Is Nothing Then
+            If State.InvoiceTaxType IsNot Nothing Then
 
-                Me.PopulateBOProperty(Me.State.MyBO, "Tax1Amount", Me.TextBoxPerceptionIVA)
-                Me.PopulateBOProperty(Me.State.MyBO, "Tax2Amount", Me.TextBoxPerceptionIIBB)
-                Me.PopulateBOProperty(Me.State.MyBO, "BatchNumber", Me.TextBoxBatchNumber)
-                Me.PopulateBOProperty(Me.State.MyBO, "RegionId", Me.DropDownState)
+                PopulateBOProperty(State.MyBO, "Tax1Amount", TextBoxPerceptionIVA)
+                PopulateBOProperty(State.MyBO, "Tax2Amount", TextBoxPerceptionIIBB)
+                PopulateBOProperty(State.MyBO, "BatchNumber", TextBoxBatchNumber)
+                PopulateBOProperty(State.MyBO, "RegionId", DropDownState)
 
             End If
 
-            If Not Me.inpCurrentAmt.Value.Trim.ToString = String.Empty Then
-                Me.TextBoxCurrentAmount.Text = inpCurrentAmt.Value
+            If Not inpCurrentAmt.Value.Trim.ToString = String.Empty Then
+                TextBoxCurrentAmount.Text = inpCurrentAmt.Value
             End If
-            If Not Me.inpDifference.Value.Trim.ToString = String.Empty Then
-                Me.TextBoxDifference.Text = inpDifference.Value
+            If Not inpDifference.Value.Trim.ToString = String.Empty Then
+                TextBoxDifference.Text = inpDifference.Value
             End If
 
         End With
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Sub
 
     Protected Sub CheckGetBatchClosedClaims()
         Dim str As String
-        If Me.TextBoxDifference.Text <> "0.00" Then
-            str = InvoiceTrans.GetBatchClosedClaims(Me.State.MyBO.ServiceCenterId, Me.State.MyBO.BatchNumber, Me.State.MyBO.Id)
+        If TextBoxDifference.Text <> "0.00" Then
+            str = InvoiceTrans.GetBatchClosedClaims(State.MyBO.ServiceCenterId, State.MyBO.BatchNumber, State.MyBO.Id)
             If Not String.IsNullOrEmpty(str) Then
                 Dim strErrorMess As String = TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.GUI_BATCH_CLAIMS_ALREADY_CLOSED_ERR)
                 Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.GUI_BATCH_CLAIMS_ALREADY_CLOSED_ERR, strErrorMess & " " & str)
@@ -290,21 +294,21 @@ Partial Class PayBatchClaimForm
 
                 If taxcolumnscnt <> MAX_MANUALLY_ENTERED_TAXES Then
                     boolErr = True
-                    Me.MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.ERR_TWO_TAXES_FOR_INVOICE_TAX_TYPE, True)
-                    Me.State.InvoiceTaxType = Invoice_Tax_Type
+                    MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.ERR_TWO_TAXES_FOR_INVOICE_TAX_TYPE, True)
+                    State.InvoiceTaxType = Invoice_Tax_Type
 
-                    ControlMgr.SetVisibleControl(Me, Me.btnPay_WRITE, False)
-                    ControlMgr.SetVisibleControl(Me, Me.btnSave_WRITE, False)
+                    ControlMgr.SetVisibleControl(Me, btnPay_WRITE, False)
+                    ControlMgr.SetVisibleControl(Me, btnSave_WRITE, False)
                 End If
 
                 'Means Error Exists
                 If boolErr Then
-                    Me.MasterPage.MessageController.Show()
+                    MasterPage.MessageController.Show()
                     Exit Sub
                 End If
 
-                Me.State.InvoiceTaxType = Invoice_Tax_Type
-                Me.State.InvoiceTaxTypeID = taxtypeID
+                State.InvoiceTaxType = Invoice_Tax_Type
+                State.InvoiceTaxTypeID = taxtypeID
 
             Next
         Else
@@ -313,20 +317,20 @@ Partial Class PayBatchClaimForm
     End Sub
     Protected Sub EnableOrDisableControls()
 
-        If Me.State.InvoiceTaxType = Invoice_Tax_Type Then
+        If State.InvoiceTaxType = Invoice_Tax_Type Then
 
-            ControlMgr.SetVisibleControl(Me, Me.LabelPerceptionIVA, True)
-            ControlMgr.SetVisibleControl(Me, Me.TextBoxPerceptionIVA, True)
-            ControlMgr.SetEnableControl(Me, Me.TextBoxPerceptionIVA, True)
-            ControlMgr.SetVisibleControl(Me, Me.LabelState, True)
-            ControlMgr.SetVisibleControl(Me, Me.DropDownState, True)
-            ControlMgr.SetEnableControl(Me, Me.DropDownState, True)
-            ControlMgr.SetVisibleControl(Me, Me.LabelBatchNumber, True)
-            ControlMgr.SetVisibleControl(Me, Me.TextBoxBatchNumber, True)
-            ControlMgr.SetEnableControl(Me, Me.TextBoxBatchNumber, True)
-            ControlMgr.SetVisibleControl(Me, Me.LabeLPerceptionIIBB, True)
-            ControlMgr.SetVisibleControl(Me, Me.TextBoxPerceptionIIBB, True)
-            ControlMgr.SetEnableControl(Me, Me.TextBoxPerceptionIIBB, True)
+            ControlMgr.SetVisibleControl(Me, LabelPerceptionIVA, True)
+            ControlMgr.SetVisibleControl(Me, TextBoxPerceptionIVA, True)
+            ControlMgr.SetEnableControl(Me, TextBoxPerceptionIVA, True)
+            ControlMgr.SetVisibleControl(Me, LabelState, True)
+            ControlMgr.SetVisibleControl(Me, DropDownState, True)
+            ControlMgr.SetEnableControl(Me, DropDownState, True)
+            ControlMgr.SetVisibleControl(Me, LabelBatchNumber, True)
+            ControlMgr.SetVisibleControl(Me, TextBoxBatchNumber, True)
+            ControlMgr.SetEnableControl(Me, TextBoxBatchNumber, True)
+            ControlMgr.SetVisibleControl(Me, LabeLPerceptionIIBB, True)
+            ControlMgr.SetVisibleControl(Me, TextBoxPerceptionIIBB, True)
+            ControlMgr.SetEnableControl(Me, TextBoxPerceptionIIBB, True)
 
             ControlMgr.SetVisibleControl(Me, tdlblbatch, True)
             ControlMgr.SetVisibleControl(Me, tdlblstate, True)
@@ -338,18 +342,18 @@ Partial Class PayBatchClaimForm
             ControlMgr.SetVisibleControl(Me, tdtxttax2, True)
         Else
 
-            ControlMgr.SetVisibleControl(Me, Me.LabelState, False)
-            ControlMgr.SetVisibleControl(Me, Me.DropDownState, False)
-            ControlMgr.SetEnableControl(Me, Me.DropDownState, False)
-            ControlMgr.SetVisibleControl(Me, Me.LabelBatchNumber, False)
-            ControlMgr.SetVisibleControl(Me, Me.TextBoxBatchNumber, False)
-            ControlMgr.SetEnableControl(Me, Me.TextBoxBatchNumber, False)
-            ControlMgr.SetVisibleControl(Me, Me.LabelPerceptionIVA, False)
-            ControlMgr.SetVisibleControl(Me, Me.TextBoxPerceptionIVA, False)
-            ControlMgr.SetEnableControl(Me, Me.TextBoxPerceptionIVA, False)
-            ControlMgr.SetVisibleControl(Me, Me.LabeLPerceptionIIBB, False)
-            ControlMgr.SetVisibleControl(Me, Me.TextBoxPerceptionIIBB, False)
-            ControlMgr.SetEnableControl(Me, Me.TextBoxPerceptionIIBB, False)
+            ControlMgr.SetVisibleControl(Me, LabelState, False)
+            ControlMgr.SetVisibleControl(Me, DropDownState, False)
+            ControlMgr.SetEnableControl(Me, DropDownState, False)
+            ControlMgr.SetVisibleControl(Me, LabelBatchNumber, False)
+            ControlMgr.SetVisibleControl(Me, TextBoxBatchNumber, False)
+            ControlMgr.SetEnableControl(Me, TextBoxBatchNumber, False)
+            ControlMgr.SetVisibleControl(Me, LabelPerceptionIVA, False)
+            ControlMgr.SetVisibleControl(Me, TextBoxPerceptionIVA, False)
+            ControlMgr.SetEnableControl(Me, TextBoxPerceptionIVA, False)
+            ControlMgr.SetVisibleControl(Me, LabeLPerceptionIIBB, False)
+            ControlMgr.SetVisibleControl(Me, TextBoxPerceptionIIBB, False)
+            ControlMgr.SetEnableControl(Me, TextBoxPerceptionIIBB, False)
 
             ControlMgr.SetVisibleControl(Me, tdlblbatch, False)
             ControlMgr.SetVisibleControl(Me, tdlblstate, False)
@@ -370,49 +374,49 @@ Partial Class PayBatchClaimForm
         Dim dv As InvoiceTrans.InvoiceTransDetailDV
         Dim epsp As New ElitaPlusSearchPage
 
-        If Me.State.searchInvoiceTransDetailDV Is Nothing Then
-            dv = InvoiceTrans.GetInvoiceTransDetail(Me.State.MyBO.Id)
-            Me.State.searchInvoiceTransDetailDV = dv
+        If State.searchInvoiceTransDetailDV Is Nothing Then
+            dv = InvoiceTrans.GetInvoiceTransDetail(State.MyBO.Id)
+            State.searchInvoiceTransDetailDV = dv
         Else
-            dv = Me.State.searchInvoiceTransDetailDV
+            dv = State.searchInvoiceTransDetailDV
         End If
 
-        If Not Me.BOOL_VALID_DATES Then
-            GridClaims.PageIndex = Me.CURRENT_PAGE
-            GridClaims.PageSize = Me.CURRENT_PAGE_SIZE
+        If Not BOOL_VALID_DATES Then
+            GridClaims.PageIndex = CURRENT_PAGE
+            GridClaims.PageSize = CURRENT_PAGE_SIZE
         End If
 
         'Me.GridClaims.DataSource = dv
         'Me.GridClaims.DataBind()
 
-        If Me.BOOL_ERR_ADDED Then
-            Me.MasterPage.MessageController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.ANOTHER_USER_HAS_MODIFIED_THIS_CLAIM)
+        If BOOL_ERR_ADDED Then
+            MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.ANOTHER_USER_HAS_MODIFIED_THIS_CLAIM)
         End If
 
-        Me.lblRecordCount.Text = dv.Count.ToString & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+        lblRecordCount.Text = dv.Count.ToString & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
 
         If dv.Count > 0 Then
 
-            If Me.GridClaims.Visible Then
-                Me.lblRecordCount.Text = dv.Count.ToString & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
-                Me.State.bnoRow = False
+            If GridClaims.Visible Then
+                lblRecordCount.Text = dv.Count.ToString & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                State.bnoRow = False
             End If
-            Me.GridClaims.DataSource = dv
-            Me.GridClaims.AllowSorting = False
-            Me.GridClaims.DataBind()
+            GridClaims.DataSource = dv
+            GridClaims.AllowSorting = False
+            GridClaims.DataBind()
         Else
-            If Me.GridClaims.Visible Then
-                Me.State.bnoRow = True
-                epsp.CreateHeaderForEmptyGrid(GridClaims, Me.State.SortExpression)
-                Me.lblRecordCount.Text = dv.Count.ToString & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If GridClaims.Visible Then
+                State.bnoRow = True
+                epsp.CreateHeaderForEmptyGrid(GridClaims, State.SortExpression)
+                lblRecordCount.Text = dv.Count.ToString & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         End If
 
         If Not GridClaims.BottomPagerRow.Visible Then GridClaims.BottomPagerRow.Visible = True
 
         If dv.Count = 0 Then
-            ControlMgr.SetVisibleControl(Me, Me.btnPay_WRITE, False)
-            ControlMgr.SetVisibleControl(Me, Me.btnSave_WRITE, False)
+            ControlMgr.SetVisibleControl(Me, btnPay_WRITE, False)
+            ControlMgr.SetVisibleControl(Me, btnSave_WRITE, False)
         End If
 
     End Sub
@@ -425,26 +429,26 @@ Partial Class PayBatchClaimForm
         Dim dif As Decimal = 0
         Dim boolerr As Boolean = False
 
-        dt = Me.State.searchInvoiceTransDetailDV.Table
+        dt = State.searchInvoiceTransDetailDV.Table
 
         If dt.Rows.Count > 0 Then
-            If Not dt.Rows(0)("TOTAL_REGION_PERCEPTION_IIBB") Is Nothing Then
+            If dt.Rows(0)("TOTAL_REGION_PERCEPTION_IIBB") IsNot Nothing Then
                 If Not IsDBNull(dt.Rows(0)("TOTAL_REGION_PERCEPTION_IIBB")) Then
-                    Me.TextBoxPerceptionIIBB.Text = Me.GetAmountFormattedString(CType(dt.Rows(0)("TOTAL_REGION_PERCEPTION_IIBB"), Decimal))
+                    TextBoxPerceptionIIBB.Text = GetAmountFormattedString(CType(dt.Rows(0)("TOTAL_REGION_PERCEPTION_IIBB"), Decimal))
 
                 End If
             End If
-            total = CType(dt.Compute("sum(" + Me.State.searchInvoiceTransDetailDV.COL_Payment_Amount_Total + ")", ""), Decimal)
+            total = CType(dt.Compute("sum(" + State.searchInvoiceTransDetailDV.COL_Payment_Amount_Total + ")", ""), Decimal)
             'total = CType(dt.Compute("sum(" + Me.State.searchInvoiceTransDetailDV.COL_RESERVE_AMOUNT + ")-sum(" + Me.State.searchInvoiceTransDetailDV.COL_SALVAGE_AMOUNT + ")", ""), Decimal)
         End If
 
-        If Me.State.InvoiceTaxType = Invoice_Tax_Type Then
+        If State.InvoiceTaxType = Invoice_Tax_Type Then
             'total = CType(dt.Compute("sum(" + Me.State.searchInvoiceTransDetailDV.COL_PAYMENT_AMOUNT + ")", ""), Decimal)
-            dif = CType(Me.State.MyBO.SvcControlAmount, Decimal) - CType(Me.State.MyBO.Tax1Amount, Decimal) _
-                    - CType(Me.State.MyBO.Tax2Amount, Decimal) - total
+            dif = CType(State.MyBO.SvcControlAmount, Decimal) - CType(State.MyBO.Tax1Amount, Decimal) _
+                    - CType(State.MyBO.Tax2Amount, Decimal) - total
 
-            If Me.TextBoxPerceptionIVA.Text <> String.Empty Then
-                Me.TextBoxPerceptionIVA.Text = IIf(CType(TextBoxPerceptionIVA.Text, Decimal) = 0, "0.00", CType(TextBoxPerceptionIVA.Text, Decimal).ToString("0.00")).ToString
+            If TextBoxPerceptionIVA.Text <> String.Empty Then
+                TextBoxPerceptionIVA.Text = IIf(CType(TextBoxPerceptionIVA.Text, Decimal) = 0, "0.00", CType(TextBoxPerceptionIVA.Text, Decimal).ToString("0.00")).ToString
             End If
 
             'If Me.TextBoxPerceptionIIBB.Text <> String.Empty Then
@@ -453,34 +457,34 @@ Partial Class PayBatchClaimForm
 
         Else
             ' total = CType(dt.Compute("sum(" + Me.State.searchInvoiceTransDetailDV.COL_PAYMENT_AMOUNT + ")", ""), Decimal)
-            dif = CType(Me.State.MyBO.SvcControlAmount, Decimal) - total
+            dif = CType(State.MyBO.SvcControlAmount, Decimal) - total
 
         End If
 
-        Me.TextBoxCurrentAmount.Text = IIf(total = 0, "0.00", total.ToString("0.00")).ToString
-        Me.TextBoxDifference.Text = IIf(dif = 0, "0.00", dif.ToString("0.00")).ToString
+        TextBoxCurrentAmount.Text = IIf(total = 0, "0.00", total.ToString("0.00")).ToString
+        TextBoxDifference.Text = IIf(dif = 0, "0.00", dif.ToString("0.00")).ToString
 
         ' Me.inpCurrentAmt.Value = IIf(total = 0, "0.00", total.ToString("0.00")).ToString
         ' Me.inpDifference.Value = IIf(dif = 0, "0.00", dif.ToString("0.00")).ToString
 
-        If Math.Round(total, 2) <> 0 And Math.Round(dif, 2) = 0 Then
+        If Math.Round(total, 2) <> 0 AndAlso Math.Round(dif, 2) = 0 Then
             'REQ-5565
-            If (Me.State.isBatchInPreInvoiceAndPending) Then
+            If (State.isBatchInPreInvoiceAndPending) Then
                 ' If PreInvoice is in Pending Status
-                ControlMgr.SetEnableControl(Me, Me.btnPay_WRITE, False)
+                ControlMgr.SetEnableControl(Me, btnPay_WRITE, False)
             Else
                 ' If PreInvoice is in Approved Status
-                ControlMgr.SetEnableControl(Me, Me.btnPay_WRITE, True)
+                ControlMgr.SetEnableControl(Me, btnPay_WRITE, True)
             End If
         Else
-            ControlMgr.SetEnableControl(Me, Me.btnPay_WRITE, False)
+            ControlMgr.SetEnableControl(Me, btnPay_WRITE, False)
         End If
 
     End Sub
 
     Public Sub RegisterClientServerIds()
 
-        Dim onloadScript As New System.Text.StringBuilder()
+        Dim onloadScript As New StringBuilder()
         onloadScript.Append("<script type='text/javascript'>")
         onloadScript.Append(Environment.NewLine)
         onloadScript.Append("var CurrentAmt = '" + TextBoxCurrentAmount.ClientID + "';")
@@ -496,17 +500,17 @@ Partial Class PayBatchClaimForm
         onloadScript.Append(Environment.NewLine)
         onloadScript.Append("</script>")
         ' Register script with page
-        Page.ClientScript.RegisterStartupScript(Me.GetType(), "onLoadCall", onloadScript.ToString())
+        Page.ClientScript.RegisterStartupScript([GetType](), "onLoadCall", onloadScript.ToString())
 
     End Sub
 
     Private Function SaveClaims() As Boolean
 
         Dim dgItem As GridViewRow
-        Dim dsBCI As New DALObjects.BatchClaimInvoice
+        Dim dsBCI As New BatchClaimInvoice
         Dim dsReturn As DataSet
         Dim dt As DataTable = dsBCI.INVOICE_TRANS_DETAIL
-        Dim dr As DALObjects.BatchClaimInvoice.INVOICE_TRANS_DETAILRow
+        Dim dr As BatchClaimInvoice.INVOICE_TRANS_DETAILRow
         Dim chkClose, chkSpareParts As CheckBox
         Dim txtPickup, txtRepair, txtPayment, txtSalvageAmt As TextBox
         Dim lossDate As Date
@@ -522,42 +526,42 @@ Partial Class PayBatchClaimForm
 
 
         ' Figure out the current row number based on the page index
-        If Me.CURRENT_PAGE = 0 Then
+        If CURRENT_PAGE = 0 Then
             intRowNum = 0
         Else
-            intRowNum = Me.CURRENT_PAGE * Me.CURRENT_PAGE_SIZE
+            intRowNum = CURRENT_PAGE * CURRENT_PAGE_SIZE
         End If
 
         Dim boolErr As Boolean = False
 
-        If Me.State.InvoiceTaxType = Invoice_Tax_Type Then
+        If State.InvoiceTaxType = Invoice_Tax_Type Then
 
             'Validate PerceptionIVA
-            If Me.TextBoxPerceptionIVA.Text.Trim.Length > 0 Then
+            If TextBoxPerceptionIVA.Text.Trim.Length > 0 Then
 
-                If Not Microsoft.VisualBasic.IsNumeric(Me.TextBoxPerceptionIVA.Text) Then
-                    Me.MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR, True)
+                If Not IsNumeric(TextBoxPerceptionIVA.Text) Then
+                    MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR, True)
                     boolErr = True
                 End If
             End If
 
-            If Me.TextBoxPerceptionIIBB.Text.Trim.Length > 0 Then
+            If TextBoxPerceptionIIBB.Text.Trim.Length > 0 Then
 
                 'Validate PerceptionIIBB
-                If Not Microsoft.VisualBasic.IsNumeric(Me.TextBoxPerceptionIIBB.Text) Then
-                    Me.MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR, True)
+                If Not IsNumeric(TextBoxPerceptionIIBB.Text) Then
+                    MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR, True)
                     boolErr = True
                 End If
 
-                If CType(Me.TextBoxPerceptionIIBB.Text, Decimal) > CType(0, Decimal) Then
+                If CType(TextBoxPerceptionIIBB.Text, Decimal) > CType(0, Decimal) Then
                     'Region
-                    If (DropDownState.SelectedIndex = -1 Or DropDownState.SelectedIndex = 0) Then
-                        Me.MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_REGION_CODE, True)
-                        If Not Me.inpCurrentAmt.Value.Trim.ToString = String.Empty Then
-                            Me.TextBoxCurrentAmount.Text = inpCurrentAmt.Value
+                    If (DropDownState.SelectedIndex = -1 OrElse DropDownState.SelectedIndex = 0) Then
+                        MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_REGION_CODE, True)
+                        If Not inpCurrentAmt.Value.Trim.ToString = String.Empty Then
+                            TextBoxCurrentAmount.Text = inpCurrentAmt.Value
                         End If
-                        If Not Me.inpDifference.Value.Trim.ToString = String.Empty Then
-                            Me.TextBoxDifference.Text = inpDifference.Value
+                        If Not inpDifference.Value.Trim.ToString = String.Empty Then
+                            TextBoxDifference.Text = inpDifference.Value
                         End If
                         boolErr = True
                     End If
@@ -569,39 +573,39 @@ Partial Class PayBatchClaimForm
 
         'Means Error Exists
         If boolErr Then
-            Me.MasterPage.MessageController.Show()
+            MasterPage.MessageController.Show()
             Exit Function
         End If
 
         PopulateBOsFromForm()
 
-        Array.Resize(arraySalvage, Me.State.searchInvoiceTransDetailDV.Count)
+        Array.Resize(arraySalvage, State.searchInvoiceTransDetailDV.Count)
 
         'Loop through the visible items in the grid and update the claim record based on the values entered.
         'If checked, create a new row record in the datatable and then pass to add the items to the set
         For Each dgItem In GridClaims.Rows
             'Find the current row we are working on in the dataset that we have (in case we fail validation and need to rebind)
-            If (intRowNum + dgItem.RowIndex) < Me.State.searchInvoiceTransDetailDV.Count Then
-                drCurrRow = Me.State.searchInvoiceTransDetailDV.Table.Rows(dgItem.RowIndex + intRowNum)
+            If (intRowNum + dgItem.RowIndex) < State.searchInvoiceTransDetailDV.Count Then
+                drCurrRow = State.searchInvoiceTransDetailDV.Table.Rows(dgItem.RowIndex + intRowNum)
             Else
                 Exit For
             End If
             'set the loss date
-            lossDate = DateHelper.GetDateValue(dgItem.Cells(Me.GRID_CLAIM_COL_LOSS_DATE_IDX).Text)
+            lossDate = DateHelper.GetDateValue(dgItem.Cells(GRID_CLAIM_COL_LOSS_DATE_IDX).Text)
 
             dr = dsBCI.INVOICE_TRANS_DETAIL.NewINVOICE_TRANS_DETAILRow
-            dr.ACTION = Me.CLAIM_STATUS_UPDATE
-            dr.INVOICE_TRANS_DETAIL_ID = GuidControl.GuidToHexString(New Guid(dgItem.Cells(Me.GRID_CLAIM_COL_INVOICE_TRANS_DETAIL_IDX).Text))
-            dr.CLAIM_ID = GuidControl.GuidToHexString(New Guid(dgItem.Cells(Me.GRID_CLAIM_COL_CLAIM_ID_IDX).Text))
-            dr.CLAIM_MODIFIED_DATE = DateHelper.GetDateValue(dgItem.Cells(Me.GRID_CLAIM_COL_CLAIM_MODIFIED_DATE_IDX).Text)
+            dr.ACTION = CLAIM_STATUS_UPDATE
+            dr.INVOICE_TRANS_DETAIL_ID = GuidControl.GuidToHexString(New Guid(dgItem.Cells(GRID_CLAIM_COL_INVOICE_TRANS_DETAIL_IDX).Text))
+            dr.CLAIM_ID = GuidControl.GuidToHexString(New Guid(dgItem.Cells(GRID_CLAIM_COL_CLAIM_ID_IDX).Text))
+            dr.CLAIM_MODIFIED_DATE = DateHelper.GetDateValue(dgItem.Cells(GRID_CLAIM_COL_CLAIM_MODIFIED_DATE_IDX).Text)
 
-            dr.INVOICE_TRANS_ID = GuidControl.GuidToHexString(Me.State.MyBO.Id)
+            dr.INVOICE_TRANS_ID = GuidControl.GuidToHexString(State.MyBO.Id)
             dr.USER_ID = GuidControl.GuidToHexString(ElitaPlusIdentity.Current.ActiveUser.Id)
 
-            bonusAmt = Decimal.Parse(dgItem.Cells(Me.GRID_CLAIM_COL_TOTAL_BONUS_IDX).Text)
+            bonusAmt = Decimal.Parse(dgItem.Cells(GRID_CLAIM_COL_TOTAL_BONUS_IDX).Text)
 
-            txtPayment = CType(dgItem.Cells(Me.GRID_CLAIM_COL_PAYMENT_AMOUNT_IDX).FindControl(Me.GRID_CLAIM_CTL_PAYMENT_AMOUNT), TextBox)
-            If Not txtPayment Is Nothing Then
+            txtPayment = CType(dgItem.Cells(GRID_CLAIM_COL_PAYMENT_AMOUNT_IDX).FindControl(GRID_CLAIM_CTL_PAYMENT_AMOUNT), TextBox)
+            If txtPayment IsNot Nothing Then
                 If IsNumeric(txtPayment.Text) Then
                     pmt = CType(txtPayment.Text, Decimal)
                 End If
@@ -615,8 +619,8 @@ Partial Class PayBatchClaimForm
             drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_PAYMENT_AMOUNT) = dr.PAYMENT_AMOUNT
             drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_Payment_Amount_Total) = dr.PAYMENT_AMOUNT_TOTAL
 
-            txtSalvageAmt = CType(dgItem.Cells(Me.GRID_CLAIM_COL_SALVAGE_AMOUNT_IDX).FindControl(Me.GRID_CLAIM_CTL_SALVAGE_AMOUNT), TextBox)
-            If Not txtSalvageAmt Is Nothing Then
+            txtSalvageAmt = CType(dgItem.Cells(GRID_CLAIM_COL_SALVAGE_AMOUNT_IDX).FindControl(GRID_CLAIM_CTL_SALVAGE_AMOUNT), TextBox)
+            If txtSalvageAmt IsNot Nothing Then
                 If IsNumeric(txtSalvageAmt.Text) Then sal = CType(txtSalvageAmt.Text, Decimal)
             End If
             dr.SALVAGE_AMOUNT = sal
@@ -624,8 +628,8 @@ Partial Class PayBatchClaimForm
             'arraySalvage(dgItem.RowIndex + intRowNum) = sal
 
 
-            txtRepair = CType(dgItem.Cells(Me.GRID_CLAIM_COL_REPAIR_DATE_IDX).FindControl(Me.GRID_CLAIM_CTL_REPAIR_DATE), TextBox)
-            If Not txtRepair Is Nothing Then
+            txtRepair = CType(dgItem.Cells(GRID_CLAIM_COL_REPAIR_DATE_IDX).FindControl(GRID_CLAIM_CTL_REPAIR_DATE), TextBox)
+            If txtRepair IsNot Nothing Then
                 If txtRepair.Text.Trim = String.Empty Then
                     'BOOL_VALID_DATES = False
                     bool_RepairEntered = False
@@ -634,30 +638,30 @@ Partial Class PayBatchClaimForm
                     If DateHelper.IsDate(txtRepair.Text) Then
                         dr.REPAIR_DATE = DateHelper.GetDateValue(txtRepair.Text)
                         drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_REPAIR_DATE) = dr.REPAIR_DATE
-                        If dr.REPAIR_DATE < lossDate Or dr.REPAIR_DATE > Today Then
-                            If Not drCurrRow Is Nothing Then
-                                Me.BOOL_VALID_DATES = False
+                        If dr.REPAIR_DATE < lossDate OrElse dr.REPAIR_DATE > Today Then
+                            If drCurrRow IsNot Nothing Then
+                                BOOL_VALID_DATES = False
                                 bool_RepairValid = False
                                 If arrRepair Is Nothing Then arrRepair = New ArrayList
                                 arrRepair.Add(dgItem.RowIndex)
                             End If
                         End If
                     Else
-                        Me.BOOL_VALID_DATES = False
-                        Me.MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DATE_ERR, True)
+                        BOOL_VALID_DATES = False
+                        MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DATE_ERR, True)
                         drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_REPAIR_DATE) = DBNull.Value
                     End If
                 End If
             End If
 
-            txtPickup = CType(dgItem.Cells(Me.GRID_CLAIM_COL_PICKUP_DATE_IDX).FindControl(Me.GRID_CLAIM_CTL_PICKUP_DATE), TextBox)
-            If Not txtPickup Is Nothing Then
+            txtPickup = CType(dgItem.Cells(GRID_CLAIM_COL_PICKUP_DATE_IDX).FindControl(GRID_CLAIM_CTL_PICKUP_DATE), TextBox)
+            If txtPickup IsNot Nothing Then
                 If DateHelper.IsDate(txtPickup.Text) Then
                     dr.PICKUP_DATE = DateHelper.GetDateValue(txtPickup.Text)
                     drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_PICKUP_DATE) = dr.PICKUP_DATE
-                    If (Not DateHelper.IsDate(txtRepair.Text)) OrElse (dr.PICKUP_DATE < dr.REPAIR_DATE Or dr.PICKUP_DATE > Today) Then
-                        If Not drCurrRow Is Nothing Then
-                            Me.BOOL_VALID_DATES = False
+                    If (Not DateHelper.IsDate(txtRepair.Text)) OrElse (dr.PICKUP_DATE < dr.REPAIR_DATE OrElse dr.PICKUP_DATE > Today) Then
+                        If drCurrRow IsNot Nothing Then
+                            BOOL_VALID_DATES = False
                             bool_PickUpValid = False
                             If arrPickUp Is Nothing Then arrPickUp = New ArrayList
                             arrPickUp.Add(dgItem.RowIndex)
@@ -665,30 +669,30 @@ Partial Class PayBatchClaimForm
                     End If
                 Else
                     If txtPickup.Text.Trim <> String.Empty Then
-                        Me.BOOL_VALID_DATES = False
-                        Me.MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DATE_ERR, True)
+                        BOOL_VALID_DATES = False
+                        MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DATE_ERR, True)
                     End If
                     drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_PICKUP_DATE) = DBNull.Value
                 End If
             End If
 
-            If Decimal.Parse(dgItem.Cells(Me.GRID_CLAIM_COL_RESERVE_AMOUNT_IDX).Text) = pmt Then
-                dr.CLOSE_CLAIM = Me.YES_VALUE
+            If Decimal.Parse(dgItem.Cells(GRID_CLAIM_COL_RESERVE_AMOUNT_IDX).Text) = pmt Then
+                dr.CLOSE_CLAIM = YES_VALUE
             Else
-                chkClose = CType(dgItem.Cells(Me.GRID_CLAIM_COL_CLOSE_CLAIM_IDX).FindControl(Me.GRID_CLAIM_CTL_CLOSE_CLAIM), CheckBox)
-                If Not chkClose Is Nothing Then
-                    If chkClose.Checked Then dr.CLOSE_CLAIM = Me.YES_VALUE Else dr.CLOSE_CLAIM = Me.NO_VALUE
+                chkClose = CType(dgItem.Cells(GRID_CLAIM_COL_CLOSE_CLAIM_IDX).FindControl(GRID_CLAIM_CTL_CLOSE_CLAIM), CheckBox)
+                If chkClose IsNot Nothing Then
+                    If chkClose.Checked Then dr.CLOSE_CLAIM = YES_VALUE Else dr.CLOSE_CLAIM = NO_VALUE
                 Else
-                    dr.CLOSE_CLAIM = Me.NO_VALUE
+                    dr.CLOSE_CLAIM = NO_VALUE
                 End If
             End If
             drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_CLOSE_CLAIM) = dr.CLOSE_CLAIM
 
-            chkSpareParts = CType(dgItem.Cells(Me.GRID_CLAIM_COL_SPARE_PARTS_IDX).FindControl(Me.GRID_CLAIM_CTL_SPARE_PARTS), CheckBox)
-            If Not chkSpareParts Is Nothing Then
-                If chkSpareParts.Checked Then dr.SPARE_PARTS = Me.YES_VALUE Else dr.SPARE_PARTS = Me.NO_VALUE
+            chkSpareParts = CType(dgItem.Cells(GRID_CLAIM_COL_SPARE_PARTS_IDX).FindControl(GRID_CLAIM_CTL_SPARE_PARTS), CheckBox)
+            If chkSpareParts IsNot Nothing Then
+                If chkSpareParts.Checked Then dr.SPARE_PARTS = YES_VALUE Else dr.SPARE_PARTS = NO_VALUE
             Else
-                dr.SPARE_PARTS = Me.NO_VALUE
+                dr.SPARE_PARTS = NO_VALUE
             End If
             drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_SPARE_PARTS) = dr.SPARE_PARTS
 
@@ -700,30 +704,30 @@ Partial Class PayBatchClaimForm
             If dt.Rows.Count > 0 Then
                 Dim _invoiceTrans As New InvoiceTrans
 
-                If (Not Me.BOOL_VALID_DATES) Then
+                If (Not BOOL_VALID_DATES) Then
 
                     'If Not bool_RepairEntered Then
                     '    Me.MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_REPAIR_DATE_MISSING, True)
                     'End If
                     If Not bool_RepairValid Then
-                        Me.MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_REPAIR_DATE_ERR2, True)
+                        MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_REPAIR_DATE_ERR2, True)
                     End If
                     If Not bool_PickUpValid Then
-                        Me.MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR2, True)
+                        MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR2, True)
                     End If
-                    If Not Me.BOOL_VALID_DATES Then
-                        Me.MasterPage.MessageController.Show()
+                    If Not BOOL_VALID_DATES Then
+                        MasterPage.MessageController.Show()
                     End If
 
-                    Me.PopulateGrid()
-                    Me.PopulateCalculatedFields()
+                    PopulateGrid()
+                    PopulateCalculatedFields()
                     Return False
                 Else
-                    If Me.State.InvoiceTaxType = Invoice_Tax_Type Then
-                        If (_invoiceTrans.SaveBatchTax(Me.State.MyBO.Id, Me.State.MyBO.Tax1Amount, Me.State.MyBO.Tax2Amount,
-                                                   TextBoxBatchNumber.Text.ToString, Me.State.MyBO.RegionId)) Then
+                    If State.InvoiceTaxType = Invoice_Tax_Type Then
+                        If (_invoiceTrans.SaveBatchTax(State.MyBO.Id, State.MyBO.Tax1Amount, State.MyBO.Tax2Amount,
+                                                   TextBoxBatchNumber.Text.ToString, State.MyBO.RegionId)) Then
                         Else
-                            Me.MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.DB_WRITE_ERROR, True)
+                            MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.DB_WRITE_ERROR, True)
                             Return False
                         End If
                     End If
@@ -736,12 +740,12 @@ Partial Class PayBatchClaimForm
                     '    ' _claim.Save()
                     'Next
 
-                    _invoiceTrans.SaveBatch(dsBCI, Me.State.MyBO.Id)
+                    _invoiceTrans.SaveBatch(dsBCI, State.MyBO.Id)
 
-                    If (Not Me.BOOL_PAY_CLAIMS) Then
-                        Me.State.searchInvoiceTransDetailDV = Nothing
-                        Me.PopulateGrid()
-                        Me.PopulateCalculatedFields()
+                    If (Not BOOL_PAY_CLAIMS) Then
+                        State.searchInvoiceTransDetailDV = Nothing
+                        PopulateGrid()
+                        PopulateCalculatedFields()
                         Return False
 
                     End If
@@ -750,16 +754,16 @@ Partial Class PayBatchClaimForm
 
             'make sure all repair dates are set before paying claims
             If BOOL_PAY_CLAIMS Then
-                For Each drCurrRow In Me.State.searchInvoiceTransDetailDV.Table.Rows
+                For Each drCurrRow In State.searchInvoiceTransDetailDV.Table.Rows
                     If drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_REPAIR_DATE) Is DBNull.Value Then
-                        Me.MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_REPAIR_DATE_MISSING, True)
+                        MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_REPAIR_DATE_MISSING, True)
                         Return False
                     End If
                 Next
             End If
 
         Catch ex As Exception
-            Me.MasterPage.MessageController.AddErrorAndShow(ex.Message, False)
+            MasterPage.MessageController.AddErrorAndShow(ex.Message, False)
             Return False
         End Try
 
@@ -777,8 +781,8 @@ Partial Class PayBatchClaimForm
             BOOL_PAY_CLAIMS = True
             If SaveClaims() Then
 
-                If _invoiceTrans.ProcessBatch(Me.State.MyBO.Id, Me.State.InvoiceTaxTypeID) Then
-                    Me.callPage(PayBatchClaimListForm.URL, "P")
+                If _invoiceTrans.ProcessBatch(State.MyBO.Id, State.InvoiceTaxTypeID) Then
+                    callPage(PayBatchClaimListForm.URL, "P")
                 Else
                     PopulateGrid()
                     PopulateCalculatedFields()
@@ -786,7 +790,7 @@ Partial Class PayBatchClaimForm
             End If
 
         Catch ex As Exception
-            Me.MasterPage.MessageController.AddErrorAndShow(ex.Message, False)
+            MasterPage.MessageController.AddErrorAndShow(ex.Message, False)
         End Try
 
     End Sub
@@ -795,8 +799,8 @@ Partial Class PayBatchClaimForm
 
     Private Function IsRepairDateEmpty() As Boolean
         Dim drCurrRow As DataRow, blnResult As Boolean = False
-        If Not State.searchInvoiceTransDetailDV Is Nothing Then
-            For Each drCurrRow In Me.State.searchInvoiceTransDetailDV.Table.Rows
+        If State.searchInvoiceTransDetailDV IsNot Nothing Then
+            For Each drCurrRow In State.searchInvoiceTransDetailDV.Table.Rows
                 If drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_REPAIR_DATE) Is DBNull.Value Then
                     blnResult = True
                     Exit For
@@ -808,15 +812,15 @@ Partial Class PayBatchClaimForm
     'REQ-5565
     Private Sub CheckBatchNumberInPreInvoiceAndApproved()
         Dim objInvoiceTrans As New InvoiceTrans
-        Me.State.isBatchInPreInvoiceAndPending = False ''Enable the pay claim button
+        State.isBatchInPreInvoiceAndPending = False ''Enable the pay claim button
         Dim ds As DataSet
 
-        If (Me.State.companyBO.UsePreInvoiceProcessId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, "Y")) Then
-            If (Me.TextBoxBatchNumber.Text <> String.Empty) Then
-                ds = objInvoiceTrans.CheckForPreInvoice(Me.TextBoxBatchNumber.Text.Trim)
+        If (State.companyBO.UsePreInvoiceProcessId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, "Y")) Then
+            If (TextBoxBatchNumber.Text <> String.Empty) Then
+                ds = objInvoiceTrans.CheckForPreInvoice(TextBoxBatchNumber.Text.Trim)
                 If ds.Tables(0).Rows.Count > 0 Then
                     If (New Guid(CType(ds.Tables(0).Rows(0)(0), Byte())) = LookupListNew.GetIdFromCode("PREINVSTAT", "P")) Then
-                        Me.State.isBatchInPreInvoiceAndPending = True  ''disable the pay claim button
+                        State.isBatchInPreInvoiceAndPending = True  ''disable the pay claim button
                     End If
 
                 End If
@@ -827,7 +831,7 @@ Partial Class PayBatchClaimForm
 
 #Region " Datagrid Related "
 
-    Private Sub GridClaims_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridClaims.RowDataBound
+    Private Sub GridClaims_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles GridClaims.RowDataBound
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
@@ -842,20 +846,20 @@ Partial Class PayBatchClaimForm
         Dim dscBonusTotal As Decimal
 
         Try
-            If Not dvRow Is Nothing And Not Me.State.bnoRow And Me.State.searchInvoiceTransDetailDV.Count > 0 Then
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If dvRow IsNot Nothing AndAlso Not State.bnoRow AndAlso State.searchInvoiceTransDetailDV.Count > 0 Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_CLAIM_COL_CLAIM_ID_IDX), dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_CLAIM_ID))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_CLAIM_COL_CLAIM_NUMBER_IDX), dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_CLAIM_NUMBER))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_CLAIM_COL_CLAIM_MODIFIED_DATE_IDX), dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_CLAIM_MODIFIED_DATE).ToString)
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_CLAIM_COL_AUTHORIZATION_NUMBER_IDX), dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_NAME_AUTHORIZATION_NUMBER))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_CLAIM_COL_CUSTOMER_NAME_IDX), dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_CONTACT_NAME))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_CLAIM_COL_INVOICE_TRANS_NUMBER_IDX), dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_INVOICE_TRANS_ID))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_CLAIM_COL_INVOICE_TRANS_DETAIL_IDX), dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_INVOICE_TRANS_DETAIL_ID))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_CLAIM_COL_RESERVE_AMOUNT_IDX), dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_RESERVE_AMOUNT))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_CLAIM_COL_TOTAL_BONUS_IDX), dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_Total_BONUS))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_CLAIM_COL_LOSS_DATE_IDX), dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_LOSS_DATE))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_CLAIM_COL_DEDUCTIBLE_IDX), dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_DEDUCTIBLE))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_CLAIM_COL_CLAIM_ID_IDX), dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_CLAIM_ID))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_CLAIM_COL_CLAIM_NUMBER_IDX), dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_CLAIM_NUMBER))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_CLAIM_COL_CLAIM_MODIFIED_DATE_IDX), dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_CLAIM_MODIFIED_DATE).ToString)
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_CLAIM_COL_AUTHORIZATION_NUMBER_IDX), dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_NAME_AUTHORIZATION_NUMBER))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_CLAIM_COL_CUSTOMER_NAME_IDX), dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_CONTACT_NAME))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_CLAIM_COL_INVOICE_TRANS_NUMBER_IDX), dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_INVOICE_TRANS_ID))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_CLAIM_COL_INVOICE_TRANS_DETAIL_IDX), dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_INVOICE_TRANS_DETAIL_ID))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_CLAIM_COL_RESERVE_AMOUNT_IDX), dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_RESERVE_AMOUNT))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_CLAIM_COL_TOTAL_BONUS_IDX), dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_Total_BONUS))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_CLAIM_COL_LOSS_DATE_IDX), dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_LOSS_DATE))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_CLAIM_COL_DEDUCTIBLE_IDX), dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_DEDUCTIBLE))
 
                     excludeDeductible = dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_EXCLUDE_DEDUCTIBLE).ToString
 
@@ -867,15 +871,15 @@ Partial Class PayBatchClaimForm
 
 
 
-                    txtSalvage = CType(e.Row.Cells(Me.GRID_CLAIM_COL_SALVAGE_AMOUNT_IDX).FindControl(Me.GRID_CLAIM_CTL_SALVAGE_AMOUNT), TextBox)
-                    txtAmount = CType(e.Row.Cells(Me.GRID_CLAIM_COL_PAYMENT_AMOUNT_IDX).FindControl(Me.GRID_CLAIM_CTL_PAYMENT_AMOUNT), TextBox)
+                    txtSalvage = CType(e.Row.Cells(GRID_CLAIM_COL_SALVAGE_AMOUNT_IDX).FindControl(GRID_CLAIM_CTL_SALVAGE_AMOUNT), TextBox)
+                    txtAmount = CType(e.Row.Cells(GRID_CLAIM_COL_PAYMENT_AMOUNT_IDX).FindControl(GRID_CLAIM_CTL_PAYMENT_AMOUNT), TextBox)
 
                     'txtTotalBonus = CType(e.Row.Cells(Me.GRID_CLAIM_COL_TOTAL_BONUS_IDX).FindControl(Me.GRID_CLAIM_CTL_TOTAL_BONUS), TextBox)
                     'If Not txtTotalBonus Is Nothing Then
                     '    txtTotalBonus.Text = CType(IIf(dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_Total_BONUS) Is DBNull.Value, New Decimal(0D), dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_Total_BONUS)), Double).ToString("0.00")
                     'End If
 
-                    If Not txtSalvage Is Nothing Then
+                    If txtSalvage IsNot Nothing Then
                         If excludeDeductible = "Y" Then
                             txtSalvage.Attributes("onchange") = "calcAmountToBePaid('" + txtSalvage.ClientID + "','" + txtAmount.ClientID + "'," + ((decReserve + dscBonusTotal - decDeductible) * 100).ToString + "," + (decSalvage * 100).ToString + ");" 'chkamt('" + txtAmount.ClientID + "'," + (decReserve * 100).ToString + ");"
                         Else
@@ -887,7 +891,7 @@ Partial Class PayBatchClaimForm
                     End If
 
 
-                    If Not txtAmount Is Nothing Then
+                    If txtAmount IsNot Nothing Then
                         If decReserve = 0 Then
                             txtAmount.Text = "0.00"
                             txtAmount.Enabled = False
@@ -896,7 +900,7 @@ Partial Class PayBatchClaimForm
                             'txtAmount.Attributes("onfocus") = "setCur('" + txtAmount.ClientID + "');"
                             txtAmount.Attributes("onchange") = "chkamt('" + txtAmount.ClientID + "'," + ((decReserve + dscBonusTotal) * 100).ToString + ");"
                             txtAmount.Attributes("onfocus") = "setCur('" + txtAmount.ClientID + "');"
-                            If Not IsPostBack And Not decAmount >= 0 Then
+                            If Not IsPostBack AndAlso Not decAmount >= 0 Then
                                 If excludeDeductible = "Y" Then
                                     txtAmount.Text = CType((decReserve + dscBonusTotal - decSalvage - decDeductible), Double).ToString("0.00")
                                 Else
@@ -917,40 +921,40 @@ Partial Class PayBatchClaimForm
 
                 End If
 
-                txtRepairDt = CType(e.Row.Cells(Me.GRID_CLAIM_COL_REPAIR_DATE_IDX).FindControl(Me.GRID_CLAIM_CTL_REPAIR_DATE), TextBox)
-                If Not txtRepairDt Is Nothing Then
-                    If DateHelper.IsDate(dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_REPAIR_DATE)) Then txtRepairDt.Text = Me.GetDateFormattedString(CType(dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_REPAIR_DATE), Date))
-                    If Not arrRepair Is Nothing Then
+                txtRepairDt = CType(e.Row.Cells(GRID_CLAIM_COL_REPAIR_DATE_IDX).FindControl(GRID_CLAIM_CTL_REPAIR_DATE), TextBox)
+                If txtRepairDt IsNot Nothing Then
+                    If DateHelper.IsDate(dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_REPAIR_DATE)) Then txtRepairDt.Text = GetDateFormattedString(CType(dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_REPAIR_DATE), Date))
+                    If arrRepair IsNot Nothing Then
                         If arrRepair.IndexOf(e.Row.RowIndex) >= 0 Then
-                            txtRepairDt.CssClass = Me.CSS_ERROR_CLASS
+                            txtRepairDt.CssClass = CSS_ERROR_CLASS
                         End If
                     End If
 
-                    imgbtnRepairDt = CType(e.Row.Cells(Me.GRID_CLAIM_COL_REPAIR_DATE_IDX).FindControl("ImageButtonRepairDate"), ImageButton)
-                    If Not imgbtnRepairDt Is Nothing Then
-                        Me.AddCalendar(imgbtnRepairDt, txtRepairDt)
+                    imgbtnRepairDt = CType(e.Row.Cells(GRID_CLAIM_COL_REPAIR_DATE_IDX).FindControl("ImageButtonRepairDate"), ImageButton)
+                    If imgbtnRepairDt IsNot Nothing Then
+                        AddCalendar(imgbtnRepairDt, txtRepairDt)
                     End If
                 End If
 
-                txtPickupDt = CType(e.Row.Cells(Me.GRID_CLAIM_COL_PICKUP_DATE_IDX).FindControl(Me.GRID_CLAIM_CTL_PICKUP_DATE), TextBox)
-                If Not txtPickupDt Is Nothing Then
-                    If DateHelper.IsDate(dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_PICKUP_DATE)) Then txtPickupDt.Text = Me.GetDateFormattedString(CType(dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_PICKUP_DATE), Date))
-                    If Not arrPickUp Is Nothing Then
+                txtPickupDt = CType(e.Row.Cells(GRID_CLAIM_COL_PICKUP_DATE_IDX).FindControl(GRID_CLAIM_CTL_PICKUP_DATE), TextBox)
+                If txtPickupDt IsNot Nothing Then
+                    If DateHelper.IsDate(dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_PICKUP_DATE)) Then txtPickupDt.Text = GetDateFormattedString(CType(dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_PICKUP_DATE), Date))
+                    If arrPickUp IsNot Nothing Then
                         If arrPickUp.IndexOf(e.Row.RowIndex) >= 0 Then
-                            txtPickupDt.CssClass = Me.CSS_ERROR_CLASS
+                            txtPickupDt.CssClass = CSS_ERROR_CLASS
                         End If
                     End If
 
-                    imgbtnPickUpDt = CType(e.Row.Cells(Me.GRID_CLAIM_COL_PICKUP_DATE_IDX).FindControl("ImageButtonPickupDate"), ImageButton)
-                    If Not imgbtnPickUpDt Is Nothing Then
-                        Me.AddCalendar(imgbtnPickUpDt, txtPickupDt)
+                    imgbtnPickUpDt = CType(e.Row.Cells(GRID_CLAIM_COL_PICKUP_DATE_IDX).FindControl("ImageButtonPickupDate"), ImageButton)
+                    If imgbtnPickUpDt IsNot Nothing Then
+                        AddCalendar(imgbtnPickUpDt, txtPickupDt)
                     End If
                 End If
 
-                chkClose = CType(e.Row.Cells(Me.GRID_CLAIM_COL_CLOSE_CLAIM_IDX).FindControl(Me.GRID_CLAIM_CTL_CLOSE_CLAIM), CheckBox)
-                If Not chkClose Is Nothing Then
+                chkClose = CType(e.Row.Cells(GRID_CLAIM_COL_CLOSE_CLAIM_IDX).FindControl(GRID_CLAIM_CTL_CLOSE_CLAIM), CheckBox)
+                If chkClose IsNot Nothing Then
                     If (dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_CLOSE_CLAIM).ToString = String.Empty) _
-                        OrElse (dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_CLOSE_CLAIM).ToString = Me.YES_VALUE) _
+                        OrElse (dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_CLOSE_CLAIM).ToString = YES_VALUE) _
                         OrElse decReserve = 0 Then
                         chkClose.Checked = True
                         If decReserve = 0 Then chkClose.Enabled = False
@@ -959,10 +963,10 @@ Partial Class PayBatchClaimForm
                     End If
                 End If
 
-                chkSpareParts = CType(e.Row.Cells(Me.GRID_CLAIM_COL_SPARE_PARTS_IDX).FindControl(Me.GRID_CLAIM_CTL_SPARE_PARTS), CheckBox)
-                If Not chkSpareParts Is Nothing Then
+                chkSpareParts = CType(e.Row.Cells(GRID_CLAIM_COL_SPARE_PARTS_IDX).FindControl(GRID_CLAIM_CTL_SPARE_PARTS), CheckBox)
+                If chkSpareParts IsNot Nothing Then
                     If (dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_SPARE_PARTS).ToString = String.Empty) _
-                        OrElse (dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_SPARE_PARTS).ToString = Me.NO_VALUE) Then
+                        OrElse (dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_SPARE_PARTS).ToString = NO_VALUE) Then
                         chkSpareParts.Checked = False
                     Else
                         chkSpareParts.Checked = True
@@ -975,9 +979,9 @@ Partial Class PayBatchClaimForm
                 End If
 
                 If dvRow(InvoiceTrans.InvoiceTransDetailDV.COL_STATUS).ToString.Equals("F") Then
-                    e.Row.CssClass = Me.CSS_ERROR_CLASS
-                    If txtAmount.Text <> "0.00" Then txtAmount.CssClass = Me.CSS_ERROR_CLASS
-                    Me.BOOL_ERR_ADDED = True
+                    e.Row.CssClass = CSS_ERROR_CLASS
+                    If txtAmount.Text <> "0.00" Then txtAmount.CssClass = CSS_ERROR_CLASS
+                    BOOL_ERR_ADDED = True
                 End If
 
                 'REQ-5578, Amount to be paid not allowed to be changed if claim is part of pre-invoice, to avoid partial payment
@@ -988,30 +992,30 @@ Partial Class PayBatchClaimForm
 
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Private Sub GridClaims_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridClaims.PageIndexChanged
+    Private Sub GridClaims_PageIndexChanged(sender As Object, e As EventArgs) Handles GridClaims.PageIndexChanged
 
         'Me.CURRENT_PAGE = GridClaims.PageIndex
-        Me.CURRENT_PAGE_SIZE = GridClaims.PageSize
+        CURRENT_PAGE_SIZE = GridClaims.PageSize
         SaveClaims()
-        Me.CURRENT_PAGE = GridClaims.PageIndex
+        CURRENT_PAGE = GridClaims.PageIndex
     End Sub
 
-    Private Sub GridClaims_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GridClaims.PageIndexChanging
+    Private Sub GridClaims_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles GridClaims.PageIndexChanging
         Try
-            Me.CURRENT_PAGE = GridClaims.PageIndex
+            CURRENT_PAGE = GridClaims.PageIndex
             GridClaims.PageIndex = e.NewPageIndex
             State.PageIndex = GridClaims.PageIndex
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub GridClaims_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridClaims.RowCreated
+    Private Sub GridClaims_RowCreated(sender As Object, e As GridViewRowEventArgs) Handles GridClaims.RowCreated
         Dim epsp As New ElitaPlusSearchPage
         epsp.BaseItemCreated(sender, e)
     End Sub
@@ -1021,97 +1025,97 @@ Partial Class PayBatchClaimForm
 
 #Region " Button clicks "
 
-    Private Sub btnPay_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPay_WRITE.Click
+    Private Sub btnPay_WRITE_Click(sender As Object, e As EventArgs) Handles btnPay_WRITE.Click
 
-        Me.CURRENT_PAGE = GridClaims.PageIndex
-        Me.CURRENT_PAGE_SIZE = GridClaims.PageSize
+        CURRENT_PAGE = GridClaims.PageIndex
+        CURRENT_PAGE_SIZE = GridClaims.PageSize
 
         PayClaims()
     End Sub
 
-    Private Sub btnReject_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnReject_WRITE.Click
+    Private Sub btnReject_WRITE_Click(sender As Object, e As EventArgs) Handles btnReject_WRITE.Click
 
-        ControlMgr.SetVisibleControl(Me, Me.txtareaRejectReason, True)
-        ControlMgr.SetVisibleControl(Me, Me.btnRejectSave, True)
-        ControlMgr.SetVisibleControl(Me, Me.btnRejectCancel, True)
-        ControlMgr.SetVisibleControl(Me, Me.lblRejectReason, True)
-        ControlMgr.SetVisibleControl(Me, Me.btnCancel, False)
-        ControlMgr.SetVisibleControl(Me, Me.btnPay_WRITE, False)
-        ControlMgr.SetVisibleControl(Me, Me.btnSave_WRITE, False)
-        ControlMgr.SetVisibleControl(Me, Me.btnReject_WRITE, False)
+        ControlMgr.SetVisibleControl(Me, txtareaRejectReason, True)
+        ControlMgr.SetVisibleControl(Me, btnRejectSave, True)
+        ControlMgr.SetVisibleControl(Me, btnRejectCancel, True)
+        ControlMgr.SetVisibleControl(Me, lblRejectReason, True)
+        ControlMgr.SetVisibleControl(Me, btnCancel, False)
+        ControlMgr.SetVisibleControl(Me, btnPay_WRITE, False)
+        ControlMgr.SetVisibleControl(Me, btnSave_WRITE, False)
+        ControlMgr.SetVisibleControl(Me, btnReject_WRITE, False)
     End Sub
 
-    Private Sub btnRejectSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRejectSave.Click
+    Private Sub btnRejectSave_Click(sender As Object, e As EventArgs) Handles btnRejectSave.Click
 
         Dim _invoiceTrans As New InvoiceTrans
 
-        ControlMgr.SetVisibleControl(Me, Me.txtareaRejectReason, False)
-        ControlMgr.SetVisibleControl(Me, Me.btnRejectSave, False)
-        ControlMgr.SetVisibleControl(Me, Me.btnRejectCancel, False)
-        ControlMgr.SetVisibleControl(Me, Me.lblRejectReason, False)
-        ControlMgr.SetVisibleControl(Me, Me.btnCancel, True)
-        ControlMgr.SetVisibleControl(Me, Me.btnPay_WRITE, True)
-        ControlMgr.SetVisibleControl(Me, Me.btnSave_WRITE, True)
-        ControlMgr.SetVisibleControl(Me, Me.btnReject_WRITE, True)
+        ControlMgr.SetVisibleControl(Me, txtareaRejectReason, False)
+        ControlMgr.SetVisibleControl(Me, btnRejectSave, False)
+        ControlMgr.SetVisibleControl(Me, btnRejectCancel, False)
+        ControlMgr.SetVisibleControl(Me, lblRejectReason, False)
+        ControlMgr.SetVisibleControl(Me, btnCancel, True)
+        ControlMgr.SetVisibleControl(Me, btnPay_WRITE, True)
+        ControlMgr.SetVisibleControl(Me, btnSave_WRITE, True)
+        ControlMgr.SetVisibleControl(Me, btnReject_WRITE, True)
 
-        If _invoiceTrans.UpdateRejectReason(Me.State.MyBO.Id, Me.txtareaRejectReason.Text.ToString()) Then
-            Me.callPage(PayBatchClaimListForm.URL, "R")
+        If _invoiceTrans.UpdateRejectReason(State.MyBO.Id, txtareaRejectReason.Text.ToString()) Then
+            callPage(PayBatchClaimListForm.URL, "R")
         Else
-            Me.MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVOICE_COMMENTS_UPDATE_ERR, True)
+            MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVOICE_COMMENTS_UPDATE_ERR, True)
         End If
 
     End Sub
-    Private Sub btnRejectCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRejectCancel.Click
+    Private Sub btnRejectCancel_Click(sender As Object, e As EventArgs) Handles btnRejectCancel.Click
 
-        ControlMgr.SetVisibleControl(Me, Me.txtareaRejectReason, False)
-        ControlMgr.SetVisibleControl(Me, Me.btnRejectSave, False)
-        ControlMgr.SetVisibleControl(Me, Me.btnRejectCancel, False)
-        ControlMgr.SetVisibleControl(Me, Me.lblRejectReason, False)
-        ControlMgr.SetVisibleControl(Me, Me.btnCancel, True)
-        ControlMgr.SetVisibleControl(Me, Me.btnPay_WRITE, True)
-        ControlMgr.SetVisibleControl(Me, Me.btnSave_WRITE, True)
-        ControlMgr.SetVisibleControl(Me, Me.btnReject_WRITE, True)
+        ControlMgr.SetVisibleControl(Me, txtareaRejectReason, False)
+        ControlMgr.SetVisibleControl(Me, btnRejectSave, False)
+        ControlMgr.SetVisibleControl(Me, btnRejectCancel, False)
+        ControlMgr.SetVisibleControl(Me, lblRejectReason, False)
+        ControlMgr.SetVisibleControl(Me, btnCancel, True)
+        ControlMgr.SetVisibleControl(Me, btnPay_WRITE, True)
+        ControlMgr.SetVisibleControl(Me, btnSave_WRITE, True)
+        ControlMgr.SetVisibleControl(Me, btnReject_WRITE, True)
 
     End Sub
-    Private Sub btnSave_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As Object, e As EventArgs) Handles btnSave_WRITE.Click
 
-        Me.CURRENT_PAGE = GridClaims.PageIndex
-        Me.CURRENT_PAGE_SIZE = GridClaims.PageSize
+        CURRENT_PAGE = GridClaims.PageIndex
+        CURRENT_PAGE_SIZE = GridClaims.PageSize
 
         SaveClaims()
     End Sub
 
-    Private Sub btnCancel_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCancel.Click
-        Me.ReturnToCallingPage(New ReturnType(Me.State.MyBO.Id))
+    Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
+        ReturnToCallingPage(New ReturnType(State.MyBO.Id))
     End Sub
 
-    Private Sub btnAddRepairDate_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnAddRepairDate_WRITE.Click
+    Private Sub btnAddRepairDate_WRITE_Click(sender As Object, e As EventArgs) Handles btnAddRepairDate_WRITE.Click
 
         Dim strRepairDt As String = TextBoxRepairDate.Text.Trim
         Dim dtRepair As Date, drCurrRow As DataRow, blnValid As Boolean = True
         Dim dtLoss As Date, dtPickUp As Date
         If strRepairDt = String.Empty Then
-            Me.MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_REPAIR_DATE_MISSING, True)
+            MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_REPAIR_DATE_MISSING, True)
         Else
             If DateHelper.IsDate(strRepairDt) Then
                 dtRepair = DateHelper.GetDateValue(strRepairDt)
                 If dtRepair > Today Then
-                    Me.MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_REPAIR_DATE_ERR2, True)
+                    MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_REPAIR_DATE_ERR2, True)
                     blnValid = False
                 Else
-                    If Not State.searchInvoiceTransDetailDV Is Nothing Then
-                        For Each drCurrRow In Me.State.searchInvoiceTransDetailDV.Table.Rows
+                    If State.searchInvoiceTransDetailDV IsNot Nothing Then
+                        For Each drCurrRow In State.searchInvoiceTransDetailDV.Table.Rows
                             If drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_REPAIR_DATE) Is DBNull.Value Then
                                 dtLoss = DateHelper.GetDateValue(drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_LOSS_DATE).ToString)
                                 If dtRepair < dtLoss Then
-                                    Me.MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_REPAIR_DATE_ERR2, True)
+                                    MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_REPAIR_DATE_ERR2, True)
                                     blnValid = False
                                     Exit For
                                 End If
-                                If Not drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_PICKUP_DATE) Is DBNull.Value Then
+                                If drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_PICKUP_DATE) IsNot DBNull.Value Then
                                     dtPickUp = DateHelper.GetDateValue(drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_PICKUP_DATE).ToString)
                                     If dtRepair > dtPickUp Then
-                                        Me.MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR2, True)
+                                        MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR2, True)
                                         blnValid = False
                                         Exit For
                                     End If
@@ -1125,24 +1129,24 @@ Partial Class PayBatchClaimForm
                     'save changes if there is any
                     SaveClaims()
 
-                    Dim dsBCI As New DALObjects.BatchClaimInvoice
+                    Dim dsBCI As New BatchClaimInvoice
                     Dim dt As DataTable = dsBCI.INVOICE_TRANS_DETAIL
-                    Dim dr As DALObjects.BatchClaimInvoice.INVOICE_TRANS_DETAILRow
+                    Dim dr As BatchClaimInvoice.INVOICE_TRANS_DETAILRow
 
-                    For Each drCurrRow In Me.State.searchInvoiceTransDetailDV.Table.Rows
+                    For Each drCurrRow In State.searchInvoiceTransDetailDV.Table.Rows
                         If drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_REPAIR_DATE) Is DBNull.Value Then
                             drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_REPAIR_DATE) = dtRepair
 
                             dr = dsBCI.INVOICE_TRANS_DETAIL.NewINVOICE_TRANS_DETAILRow
-                            dr.ACTION = Me.CLAIM_STATUS_UPDATE
+                            dr.ACTION = CLAIM_STATUS_UPDATE
                             dr.INVOICE_TRANS_DETAIL_ID = GuidControl.GuidToHexString(New Guid(CType(drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_INVOICE_TRANS_DETAIL_ID), Byte())))
                             dr.CLAIM_ID = GuidControl.GuidToHexString(New Guid(CType(drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_CLAIM_ID), Byte())))
                             dr.CLAIM_MODIFIED_DATE = DateHelper.GetDateValue(drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_CLAIM_MODIFIED_DATE).ToString)
-                            dr.INVOICE_TRANS_ID = GuidControl.GuidToHexString(Me.State.MyBO.Id)
+                            dr.INVOICE_TRANS_ID = GuidControl.GuidToHexString(State.MyBO.Id)
                             dr.USER_ID = GuidControl.GuidToHexString(ElitaPlusIdentity.Current.ActiveUser.Id)
                             dr.PAYMENT_AMOUNT = Double.Parse(drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_PAYMENT_AMOUNT).ToString)
                             dr.REPAIR_DATE = dtRepair
-                            If Not drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_PICKUP_DATE) Is DBNull.Value Then dr.PICKUP_DATE = DateHelper.GetDateValue(drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_PICKUP_DATE).ToString)
+                            If drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_PICKUP_DATE) IsNot DBNull.Value Then dr.PICKUP_DATE = DateHelper.GetDateValue(drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_PICKUP_DATE).ToString)
                             dr.SPARE_PARTS = drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_SPARE_PARTS).ToString
                             dr.CLOSE_CLAIM = drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_CLOSE_CLAIM).ToString
                             dr.SALVAGE_AMOUNT = Double.Parse(drCurrRow(InvoiceTrans.InvoiceTransDetailDV.COL_SALVAGE_AMOUNT).ToString)
@@ -1152,16 +1156,16 @@ Partial Class PayBatchClaimForm
                     Next
                     If dt.Rows.Count > 0 Then
                         Dim _invoiceTrans As New InvoiceTrans
-                        _invoiceTrans.SaveBatch(dsBCI, Me.State.MyBO.Id)
+                        _invoiceTrans.SaveBatch(dsBCI, State.MyBO.Id)
                     End If
                     State.searchInvoiceTransDetailDV = Nothing
                     PopulateGrid()
                     TextBoxRepairDate.Text = String.Empty
                 Else
-                    Me.MasterPage.MessageController.Show()
+                    MasterPage.MessageController.Show()
                 End If
             Else
-                Me.MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DATE_ERR, True)
+                MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DATE_ERR, True)
             End If
         End If
     End Sub
@@ -1169,44 +1173,44 @@ Partial Class PayBatchClaimForm
 
 #Region "Invoice Region Taxes"
 
-    Private Sub IIBBTaxes_RequestIIBBTaxes(ByVal sender As Object, ByRef e As UserControlInvoiceRegionTaxes.RequestDataEventArgs) Handles IIBBTaxes.RequestIIBBTaxesData
+    Private Sub IIBBTaxes_RequestIIBBTaxes(sender As Object, ByRef e As UserControlInvoiceRegionTaxes.RequestDataEventArgs) Handles IIBBTaxes.RequestIIBBTaxesData
         Dim iibbregion As New InvoiceRegionTax
-        iibbregion.InvoiceRegionTaxId = Me.State.MyBO.Id
+        iibbregion.InvoiceRegionTaxId = State.MyBO.Id
         e.Data = iibbregion.GetInvoiceRegionTax()
     End Sub
 
 #End Region
 
 #Region " Page Events "
-    Private Sub cboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
 
-        Me.CURRENT_PAGE = GridClaims.PageIndex
-        Me.CURRENT_PAGE_SIZE = GridClaims.PageSize
+        CURRENT_PAGE = GridClaims.PageIndex
+        CURRENT_PAGE_SIZE = GridClaims.PageSize
 
         GridClaims.PageIndex = 0
         GridClaims.PageSize = Integer.Parse(cboPageSize.SelectedValue)
         If Not SaveClaims() Then
-            If Not cboPageSize.Items.FindByValue(Me.CURRENT_PAGE_SIZE.ToString) Is Nothing Then cboPageSize.SelectedValue = Me.CURRENT_PAGE_SIZE.ToString
+            If cboPageSize.Items.FindByValue(CURRENT_PAGE_SIZE.ToString) IsNot Nothing Then cboPageSize.SelectedValue = CURRENT_PAGE_SIZE.ToString
         End If
 
     End Sub
 
-    Private Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Me.InvoiceTabs.Visible = True
-        Me.MasterPage.MessageController.Clear()
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        InvoiceTabs.Visible = True
+        MasterPage.MessageController.Clear()
 
         Try
             RegisterClientServerIds()
-            Me.AddCalendar(ImageButtonRepirDate, TextBoxRepairDate)
+            AddCalendar(ImageButtonRepirDate, TextBoxRepairDate)
             Dim msg As String = TranslationBase.TranslateLabelOrMessage("PROCESS_RECORDS")
-            Me.AddConfirmationAndDisplayNewProgressBar(Me.btnPay_WRITE, msg + "?", msg, False)
+            AddConfirmationAndDisplayNewProgressBar(btnPay_WRITE, msg + "?", msg, False)
 
-            If Not Me.IsPostBack Then
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
-                Me.TranslateGridHeader(Me.GridClaims)
-                Me.TranslateGridControls(Me.GridClaims)
-                Me.State.searchInvoiceTransDetailDV = Nothing
+            If Not IsPostBack Then
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
+                TranslateGridHeader(GridClaims)
+                TranslateGridControls(GridClaims)
+                State.searchInvoiceTransDetailDV = Nothing
                 ChkInvoiceTaxTypeAndValidate()
                 EnableOrDisableControls()
                 LoadRegionList()
@@ -1215,22 +1219,22 @@ Partial Class PayBatchClaimForm
                 CheckBatchNumberInPreInvoiceAndApproved()
                 PopulateCalculatedFields()
                 CheckGetBatchClosedClaims()
-                Me.IIBBTaxes.InvoicetransId = Me.State.MyBO.Id
-                Me.IIBBTaxes.Populate()
-                Dim statusId As String = LookupListNew.GetCodeFromId(LookupListNew.LK_INVSTAT, Me.State.MyBO.InvoiceStatusId)
-                Me.IIBBTaxes.InvoiceStatus = statusId
-                Me.IIBBTaxes.IsGridEditable = True
-                Me.IIBBTaxes.SetControlState()
+                IIBBTaxes.InvoicetransId = State.MyBO.Id
+                IIBBTaxes.Populate()
+                Dim statusId As String = LookupListNew.GetCodeFromId(LookupListNew.LK_INVSTAT, State.MyBO.InvoiceStatusId)
+                IIBBTaxes.InvoiceStatus = statusId
+                IIBBTaxes.IsGridEditable = True
+                IIBBTaxes.SetControlState()
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
 
     End Sub
 
-    Private Sub Page_LoadComplete(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.LoadComplete
+    Private Sub Page_LoadComplete(sender As Object, e As EventArgs) Handles Me.LoadComplete
         Try
             If IsRepairDateEmpty() Then
                 TextBoxRepairDate.Enabled = True
@@ -1242,9 +1246,9 @@ Partial Class PayBatchClaimForm
                 btnAddRepairDate_WRITE.Enabled = False
             End If
             Dim dv As InvoiceTrans.InvoiceTransDetailDV
-            dv = InvoiceTrans.GetInvoiceTransDetail(Me.State.MyBO.Id)
-            Me.State.searchInvoiceTransDetailDV = dv
-            Me.PopulateCalculatedFields()
+            dv = InvoiceTrans.GetInvoiceTransDetail(State.MyBO.Id)
+            State.searchInvoiceTransDetailDV = dv
+            PopulateCalculatedFields()
         Catch ex As Exception
         End Try
     End Sub

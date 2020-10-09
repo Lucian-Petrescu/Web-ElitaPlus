@@ -80,170 +80,170 @@
 
 #End Region
 #Region "Page Events"
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-            Me.ErrControllerMaster.Clear_Hide()
-            Me.Form.DefaultButton = Me.btnSearch.UniqueID
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+            ErrControllerMaster.Clear_Hide()
+            Form.DefaultButton = btnSearch.UniqueID
             Try
-                If Not Me.IsPostBack Then
-                    Me.SortDirection = Currency.CurrencySearchDV.COL_NAME_CODE
+                If Not IsPostBack Then
+                    SortDirection = Currency.CurrencySearchDV.COL_NAME_CODE
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
                     SetControlState()
-                    Me.State.PageIndex = 0
-                    Me.TranslateGridHeader(Grid)
-                    Me.TranslateGridControls(Grid)
+                    State.PageIndex = 0
+                    TranslateGridHeader(Grid)
+                    TranslateGridControls(Grid)
                 Else
                     BindBoPropertiesToGridHeaders()
                     CheckIfComingFromDeleteConfirm()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
 #End Region
 
 #Region "Grid Handler"
 
-        Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+        Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
             Try
-                If (Not (Me.State.IsEditMode)) Then
-                    Me.State.PageIndex = Grid.PageIndex
-                    Me.State.CurrencyID = Guid.Empty
-                    Me.PopulateGrid()
+                If (Not (State.IsEditMode)) Then
+                    State.PageIndex = Grid.PageIndex
+                    State.CurrencyID = Guid.Empty
+                    PopulateGrid()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+        Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
             Try
                 Grid.PageIndex = e.NewPageIndex
                 State.PageIndex = Grid.PageIndex
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Public Sub RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+        Public Sub RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
 
             Try
                 Dim index As Integer
 
-                If (e.CommandName = Me.EDIT_COMMAND) Then
+                If (e.CommandName = EDIT_COMMAND) Then
                     index = CInt(e.CommandArgument)
                     'Do the Edit here
 
                     'Set the IsEditMode flag to TRUE
-                    Me.State.IsEditMode = True
+                    State.IsEditMode = True
 
-                    Me.State.CurrencyID = New Guid(CType(Me.Grid.Rows(index).Cells(Me.GRID_COL_CURRENCY_ID_IDX).FindControl(Me.GRID_CTRL_NAME_CURRENCY_CODE_ID), Label).Text)
-                    Me.State.MyBO = New Currency(Me.State.CurrencyID)
+                    State.CurrencyID = New Guid(CType(Grid.Rows(index).Cells(GRID_COL_CURRENCY_ID_IDX).FindControl(GRID_CTRL_NAME_CURRENCY_CODE_ID), Label).Text)
+                    State.MyBO = New Currency(State.CurrencyID)
 
-                    Me.PopulateGrid()
+                    PopulateGrid()
 
-                    Me.State.PageIndex = Grid.PageIndex
+                    State.PageIndex = Grid.PageIndex
 
                     'Me.SetGridControls(Me.Grid, False)
 
                     'Set focus on the Code TextBox for the EditItemIndex row
-                    Me.SetFocusOnEditableFieldInGrid(Me.Grid, Me.GRID_COL_CURRENCY_CODE_IDX, Me.GRID_CTRL_NAME_CURRENCY_CODE_TXT, index)
+                    SetFocusOnEditableFieldInGrid(Grid, GRID_COL_CURRENCY_CODE_IDX, GRID_CTRL_NAME_CURRENCY_CODE_TXT, index)
 
-                    Me.PopulateFormFromBO()
+                    PopulateFormFromBO()
 
-                    Me.SetControlState()
+                    SetControlState()
 
-                ElseIf (e.CommandName = Me.DELETE_COMMAND) Then
+                ElseIf (e.CommandName = DELETE_COMMAND) Then
                     index = CInt(e.CommandArgument)
-                    Me.State.CurrencyID = New Guid(CType(Me.Grid.Rows(index).Cells(Me.GRID_COL_CURRENCY_ID_IDX).FindControl(Me.GRID_CTRL_NAME_CURRENCY_CODE_ID), Label).Text)
-                    Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenDeletePromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+                    State.CurrencyID = New Guid(CType(Grid.Rows(index).Cells(GRID_COL_CURRENCY_ID_IDX).FindControl(GRID_CTRL_NAME_CURRENCY_CODE_ID), Label).Text)
+                    DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenDeletePromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
 
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
 
         'Private Sub Grid_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
-        Public Sub RowCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+        Public Sub RowCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+        Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-                If Not dvRow Is Nothing And Not State.searchDV.Count > 0 Then
+                If dvRow IsNot Nothing AndAlso Not State.searchDV.Count > 0 Then
 
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                        CType(e.Row.Cells(Me.GRID_COL_CURRENCY_ID_IDX).FindControl(Me.GRID_CTRL_NAME_CURRENCY_CODE_ID), Label).Text = GetGuidStringFromByteArray(CType(dvRow(Currency.CurrencySearchDV.COL_NAME_CURRENCY_ID), Byte()))
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
+                        CType(e.Row.Cells(GRID_COL_CURRENCY_ID_IDX).FindControl(GRID_CTRL_NAME_CURRENCY_CODE_ID), Label).Text = GetGuidStringFromByteArray(CType(dvRow(Currency.CurrencySearchDV.COL_NAME_CURRENCY_ID), Byte()))
 
-                        If (Me.State.IsEditMode = True _
-                                AndAlso Me.State.CurrencyID.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(Currency.CurrencySearchDV.COL_NAME_CURRENCY_ID), Byte())))) Then
-                            CType(e.Row.Cells(Me.GRID_COL_CURRENCY_CODE_IDX).FindControl(Me.GRID_CTRL_NAME_CURRENCY_CODE_TXT), TextBox).Text = dvRow(Currency.CurrencySearchDV.COL_NAME_DESCRIPTION).ToString
-                            CType(e.Row.Cells(Me.GRID_COL_DESCRIPTION_IDX).FindControl(Me.GRID_CTRL_NAME_CURRENCY_DESCRIPTION_TXT), TextBox).Text = dvRow(Currency.CurrencySearchDV.COL_NAME_CODE).ToString
-                            CType(e.Row.Cells(Me.GRID_COL_NOTATION_IDX).FindControl(Me.GRID_CTRL_NAME_CURRENCY_DESCRIPTION_TXT), TextBox).Text = dvRow(Currency.CurrencySearchDV.COL_NAME_NOTATION).ToString
-                            CType(e.Row.Cells(Me.GRID_COL_ISO_CODE_IDX).FindControl(Me.GRID_CTRL_NAME_CURRENCY_DESCRIPTION_TXT), TextBox).Text = dvRow(Currency.CurrencySearchDV.COL_NAME_ISO_CODE).ToString
+                        If (State.IsEditMode = True _
+                                AndAlso State.CurrencyID.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(Currency.CurrencySearchDV.COL_NAME_CURRENCY_ID), Byte())))) Then
+                            CType(e.Row.Cells(GRID_COL_CURRENCY_CODE_IDX).FindControl(GRID_CTRL_NAME_CURRENCY_CODE_TXT), TextBox).Text = dvRow(Currency.CurrencySearchDV.COL_NAME_DESCRIPTION).ToString
+                            CType(e.Row.Cells(GRID_COL_DESCRIPTION_IDX).FindControl(GRID_CTRL_NAME_CURRENCY_DESCRIPTION_TXT), TextBox).Text = dvRow(Currency.CurrencySearchDV.COL_NAME_CODE).ToString
+                            CType(e.Row.Cells(GRID_COL_NOTATION_IDX).FindControl(GRID_CTRL_NAME_CURRENCY_DESCRIPTION_TXT), TextBox).Text = dvRow(Currency.CurrencySearchDV.COL_NAME_NOTATION).ToString
+                            CType(e.Row.Cells(GRID_COL_ISO_CODE_IDX).FindControl(GRID_CTRL_NAME_CURRENCY_DESCRIPTION_TXT), TextBox).Text = dvRow(Currency.CurrencySearchDV.COL_NAME_ISO_CODE).ToString
 
                         Else
-                            CType(e.Row.Cells(Me.GRID_COL_CURRENCY_CODE_IDX).FindControl(Me.GRID_CTRL_NAME_CURRENCY_CODE_LABLE), Label).Text = dvRow(Currency.CurrencySearchDV.COL_NAME_CODE).ToString
-                            CType(e.Row.Cells(Me.GRID_COL_DESCRIPTION_IDX).FindControl(Me.GRID_CTRL_NAME_CURRENCY_DESCRIPTION_LABEL), Label).Text = dvRow(Currency.CurrencySearchDV.COL_NAME_DESCRIPTION).ToString
-                            CType(e.Row.Cells(Me.GRID_COL_NOTATION_IDX).FindControl(Me.GRID_CTRL_NAME_CURRENCY_DESCRIPTION_LABEL), Label).Text = dvRow(Currency.CurrencySearchDV.COL_NAME_NOTATION).ToString
-                            CType(e.Row.Cells(Me.GRID_COL_ISO_CODE_IDX).FindControl(Me.GRID_CTRL_NAME_CURRENCY_DESCRIPTION_LABEL), Label).Text = dvRow(Currency.CurrencySearchDV.COL_NAME_ISO_CODE).ToString
+                            CType(e.Row.Cells(GRID_COL_CURRENCY_CODE_IDX).FindControl(GRID_CTRL_NAME_CURRENCY_CODE_LABLE), Label).Text = dvRow(Currency.CurrencySearchDV.COL_NAME_CODE).ToString
+                            CType(e.Row.Cells(GRID_COL_DESCRIPTION_IDX).FindControl(GRID_CTRL_NAME_CURRENCY_DESCRIPTION_LABEL), Label).Text = dvRow(Currency.CurrencySearchDV.COL_NAME_DESCRIPTION).ToString
+                            CType(e.Row.Cells(GRID_COL_NOTATION_IDX).FindControl(GRID_CTRL_NAME_CURRENCY_DESCRIPTION_LABEL), Label).Text = dvRow(Currency.CurrencySearchDV.COL_NAME_NOTATION).ToString
+                            CType(e.Row.Cells(GRID_COL_ISO_CODE_IDX).FindControl(GRID_CTRL_NAME_CURRENCY_DESCRIPTION_LABEL), Label).Text = dvRow(Currency.CurrencySearchDV.COL_NAME_ISO_CODE).ToString
                         End If
                         'e.Row.Cells(Me.ACCT_COMPANY_DESCRIPTION_COL).Text = dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_ACCT_COMPANY_DESCRIPTION).ToString
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
 
-        Private Sub Grid_Sorting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+        Private Sub Grid_Sorting(sender As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
             Try
-                Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
+                Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
 
-                If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                    If Me.SortDirection.EndsWith(" ASC") Then
-                        Me.SortDirection = e.SortExpression + " DESC"
+                If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                    If SortDirection.EndsWith(" ASC") Then
+                        SortDirection = e.SortExpression + " DESC"
                     Else
-                        Me.SortDirection = e.SortExpression + " ASC"
+                        SortDirection = e.SortExpression + " ASC"
                     End If
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
 
-                Me.State.PageIndex = 0
-                Me.PopulateGrid()
+                State.PageIndex = 0
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub cboPageSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Protected Sub cboPageSize_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-                Me.State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
-                Me.Grid.PageIndex = Me.State.PageIndex
-                Me.PopulateGrid()
+                State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
+                Grid.PageIndex = State.PageIndex
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub SetFocusOnEditableFieldInGrid(ByVal grid As GridView, ByVal cellPosition As Integer, ByVal controlName As String, ByVal itemIndex As Integer)
+        Private Sub SetFocusOnEditableFieldInGrid(grid As GridView, cellPosition As Integer, controlName As String, itemIndex As Integer)
             'Set focus on the Description TextBox for the EditItemIndex row
             Dim desc As TextBox = CType(grid.Rows(itemIndex).Cells(cellPosition).FindControl(controlName), TextBox)
             SetFocus(desc)
@@ -252,27 +252,27 @@
 #End Region
 
 #Region "Button click Handler"
-        Protected Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClearSearch.Click
+        Protected Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
             Try
-                Me.SearchCodeTextBox.Text = String.Empty
-                Me.SearchDescriptionTextBox.Text = String.Empty
-                Me.SearchNotationTextBox.Text = String.Empty
-                Me.SearchISOCodeTextBox.Text = String.Empty
-                Me.State.searchCurrencyCode = String.Empty
-                Me.State.searchCurrencyDescription = String.Empty
-                Me.State.SearchNotation = String.Empty
-                Me.State.SearchISOCode = String.Empty
-                Me.State.IsGridAddNew = False
-                Grid.EditIndex = Me.NO_ITEM_SELECTED_INDEX
+                SearchCodeTextBox.Text = String.Empty
+                SearchDescriptionTextBox.Text = String.Empty
+                SearchNotationTextBox.Text = String.Empty
+                SearchISOCodeTextBox.Text = String.Empty
+                State.searchCurrencyCode = String.Empty
+                State.searchCurrencyDescription = String.Empty
+                State.SearchNotation = String.Empty
+                State.SearchISOCode = String.Empty
+                State.IsGridAddNew = False
+                Grid.EditIndex = NO_ITEM_SELECTED_INDEX
                 With State
                     .CurrencyID = Guid.Empty
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub btnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSearch.Click
+        Protected Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
             Try
                 With State
                     .PageIndex = 0
@@ -281,54 +281,54 @@
                     .searchDV = Nothing
                     .HasDataChanged = False
                     .IsGridAddNew = False
-                    .searchCurrencyCode = Me.SearchCodeTextBox.Text.Trim
+                    .searchCurrencyCode = SearchCodeTextBox.Text.Trim
                     .searchCurrencyDescription = SearchDescriptionTextBox.Text.Trim
                     .SearchNotation = SearchNotationTextBox.Text.Trim
                     .SearchISOCode = SearchISOCodeTextBox.Text.Trim
                 End With
-                Me.PopulateGrid()
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub btnNew_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnNew.Click
+        Protected Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
 
             Try
-                Me.State.IsEditMode = True
-                Me.State.IsGridVisible = True
-                Me.State.IsGridAddNew = True
+                State.IsEditMode = True
+                State.IsGridVisible = True
+                State.IsGridAddNew = True
                 AddNew()
                 'Me.AddNewRiskType()
-                Me.SetControlState()
+                SetControlState()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
 
-        Protected Sub btnSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSave.Click
+        Protected Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
 
             Try
                 PopulateBOFromForm()
-                If (Me.State.MyBO.IsDirty) Then
-                    Me.State.MyBO.Save()
-                    Me.State.IsAfterSave = True
-                    Me.State.IsGridAddNew = False
-                    Me.AddInfoMsg(Me.MSG_RECORD_SAVED_OK)
-                    Me.State.searchDV = Nothing
-                    Me.ReturnFromEditing()
+                If (State.MyBO.IsDirty) Then
+                    State.MyBO.Save()
+                    State.IsAfterSave = True
+                    State.IsGridAddNew = False
+                    AddInfoMsg(MSG_RECORD_SAVED_OK)
+                    State.searchDV = Nothing
+                    ReturnFromEditing()
                 Else
-                    Me.AddInfoMsg(Me.MSG_RECORD_NOT_SAVED)
-                    Me.ReturnFromEditing()
+                    AddInfoMsg(MSG_RECORD_NOT_SAVED)
+                    ReturnFromEditing()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
 
-        Protected Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
+        Protected Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
             Try
                 With State
                     If .IsGridAddNew Then
@@ -340,11 +340,11 @@
                     .IsEditMode = False
                 End With
                 'Grid.EditIndex = NO_ITEM_SELECTED_INDEX
-                Me.State.searchDV = Nothing
+                State.searchDV = Nothing
                 PopulateGrid()
                 SetControlState()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 #End Region
@@ -355,36 +355,36 @@
 
             Grid.EditIndex = NO_ROW_SELECTED_INDEX
 
-            If (Me.Grid.PageCount = 0) Then
+            If (Grid.PageCount = 0) Then
                 'if returning to the "1st time in" screen
                 ControlMgr.SetVisibleControl(Me, Grid, False)
             Else
                 ControlMgr.SetVisibleControl(Me, Grid, True)
             End If
 
-            Me.State.IsEditMode = False
-            Me.PopulateGrid()
-            Me.State.PageIndex = Grid.PageIndex
+            State.IsEditMode = False
+            PopulateGrid()
+            State.PageIndex = Grid.PageIndex
             SetControlState()
 
         End Sub
 
         Protected Sub CheckIfComingFromDeleteConfirm()
-            Dim confResponse As String = Me.HiddenDeletePromptResponse.Value
-            If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
+            Dim confResponse As String = HiddenDeletePromptResponse.Value
+            If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
                 If Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete Then
                     DoDelete()
                 End If
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Delete
                 End Select
-            ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-                Select Case Me.State.ActionInProgress
+            ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Delete
                 End Select
             End If
             'Clean after consuming the action
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
             'Me.HiddenDeletePromptResponse.Value = ""
         End Sub
 
@@ -394,7 +394,7 @@
 
             'Save the CurrencyId in the Session
 
-            Dim CurrencyBO As Currency = New Currency(Me.State.CurrencyID)
+            Dim CurrencyBO As Currency = New Currency(State.CurrencyID)
 
             CurrencyBO.Delete()
 
@@ -402,14 +402,14 @@
 
             CurrencyBO.Save()
 
-            Me.State.PageIndex = Grid.PageIndex
+            State.PageIndex = Grid.PageIndex
 
             'Set the IsAfterSave flag to TRUE so that the Paging logic gets invoked
-            Me.State.IsAfterSave = True
-            Me.State.searchDV = Nothing
+            State.IsAfterSave = True
+            State.searchDV = Nothing
             PopulateGrid()
-            Me.State.PageIndex = Grid.PageIndex
-            Me.State.IsEditMode = False
+            State.PageIndex = Grid.PageIndex
+            State.IsEditMode = False
             SetControlState()
         End Sub
 #End Region
@@ -417,59 +417,59 @@
 #Region "Helper functions"
 
         Protected Sub BindBoPropertiesToGridHeaders()
-            Me.BindBOPropertyToGridHeader(Me.State.MyBO, "Description", Me.Grid.Columns(Me.GRID_COL_DESCRIPTION_IDX))
-            Me.BindBOPropertyToGridHeader(Me.State.MyBO, "Code", Me.Grid.Columns(Me.GRID_COL_CURRENCY_CODE_IDX))
-            Me.BindBOPropertyToGridHeader(Me.State.MyBO, "Notation", Me.Grid.Columns(Me.GRID_COL_NOTATION_IDX))
-            Me.BindBOPropertyToGridHeader(Me.State.MyBO, "ISOCode", Me.Grid.Columns(Me.GRID_COL_ISO_CODE_IDX))
-            Me.ClearGridViewHeadersAndLabelsErrSign()
+            BindBOPropertyToGridHeader(State.MyBO, "Description", Grid.Columns(GRID_COL_DESCRIPTION_IDX))
+            BindBOPropertyToGridHeader(State.MyBO, "Code", Grid.Columns(GRID_COL_CURRENCY_CODE_IDX))
+            BindBOPropertyToGridHeader(State.MyBO, "Notation", Grid.Columns(GRID_COL_NOTATION_IDX))
+            BindBOPropertyToGridHeader(State.MyBO, "ISOCode", Grid.Columns(GRID_COL_ISO_CODE_IDX))
+            ClearGridViewHeadersAndLabelsErrSign()
         End Sub
 
         Public Property SortDirection() As String
             Get
                 Return ViewState("SortDirection").ToString
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 ViewState("SortDirection") = value
             End Set
         End Property
 
         Private Sub PopulateFormFromBO()
 
-            Dim gridRowIdx As Integer = Me.Grid.EditIndex
+            Dim gridRowIdx As Integer = Grid.EditIndex
             Try
-                With Me.State.MyBO
-                    If (Not .Code Is Nothing) Then
-                        CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_CURRENCY_CODE_IDX).FindControl(Me.GRID_CTRL_NAME_CURRENCY_CODE_TXT), TextBox).Text = .Code
+                With State.MyBO
+                    If (.Code IsNot Nothing) Then
+                        CType(Grid.Rows(gridRowIdx).Cells(GRID_COL_CURRENCY_CODE_IDX).FindControl(GRID_CTRL_NAME_CURRENCY_CODE_TXT), TextBox).Text = .Code
                     End If
-                    If (Not .Description Is Nothing) Then
-                        CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_DESCRIPTION_IDX).FindControl(Me.GRID_CTRL_NAME_CURRENCY_DESCRIPTION_TXT), TextBox).Text = .Description
-                    End If
-
-                    If (Not .Notation Is Nothing) Then
-                        CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_NOTATION_IDX).FindControl(Me.GRID_CTRL_NAME_CURRENCY_NOTATION_TXT), TextBox).Text = .Notation
+                    If (.Description IsNot Nothing) Then
+                        CType(Grid.Rows(gridRowIdx).Cells(GRID_COL_DESCRIPTION_IDX).FindControl(GRID_CTRL_NAME_CURRENCY_DESCRIPTION_TXT), TextBox).Text = .Description
                     End If
 
-                    If (Not .IsoCode Is Nothing) Then
-                        CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_ISO_CODE_IDX).FindControl(Me.GRID_CTRL_NAME_CURRENCY_ISO_CODE_TXT), TextBox).Text = .IsoCode
+                    If (.Notation IsNot Nothing) Then
+                        CType(Grid.Rows(gridRowIdx).Cells(GRID_COL_NOTATION_IDX).FindControl(GRID_CTRL_NAME_CURRENCY_NOTATION_TXT), TextBox).Text = .Notation
                     End If
 
-                    CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_CURRENCY_ID_IDX).FindControl(Me.GRID_CTRL_NAME_CURRENCY_CODE_ID), Label).Text = .Id.ToString
+                    If (.IsoCode IsNot Nothing) Then
+                        CType(Grid.Rows(gridRowIdx).Cells(GRID_COL_ISO_CODE_IDX).FindControl(GRID_CTRL_NAME_CURRENCY_ISO_CODE_TXT), TextBox).Text = .IsoCode
+                    End If
+
+                    CType(Grid.Rows(gridRowIdx).Cells(GRID_COL_CURRENCY_ID_IDX).FindControl(GRID_CTRL_NAME_CURRENCY_CODE_ID), Label).Text = .Id.ToString
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
 
         Private Function PopulateBOFromForm() As Boolean
 
-            With Me.State.MyBO
-                .Code = CType(Grid.Rows((Me.Grid.EditIndex)).Cells(GRID_COL_CURRENCY_CODE_IDX).FindControl(GRID_CTRL_NAME_CURRENCY_CODE_TXT), TextBox).Text.Trim.ToUpper
-                .Description = CType(Grid.Rows((Me.Grid.EditIndex)).Cells(GRID_COL_DESCRIPTION_IDX).FindControl(GRID_CTRL_NAME_CURRENCY_DESCRIPTION_TXT), TextBox).Text.Trim
-                .Notation = CType(Grid.Rows((Me.Grid.EditIndex)).Cells(GRID_COL_NOTATION_IDX).FindControl(GRID_CTRL_NAME_CURRENCY_NOTATION_TXT), TextBox).Text.Trim.ToUpper
-                .IsoCode = CType(Grid.Rows((Me.Grid.EditIndex)).Cells(GRID_COL_ISO_CODE_IDX).FindControl(GRID_CTRL_NAME_CURRENCY_ISO_CODE_TXT), TextBox).Text.Trim
+            With State.MyBO
+                .Code = CType(Grid.Rows((Grid.EditIndex)).Cells(GRID_COL_CURRENCY_CODE_IDX).FindControl(GRID_CTRL_NAME_CURRENCY_CODE_TXT), TextBox).Text.Trim.ToUpper
+                .Description = CType(Grid.Rows((Grid.EditIndex)).Cells(GRID_COL_DESCRIPTION_IDX).FindControl(GRID_CTRL_NAME_CURRENCY_DESCRIPTION_TXT), TextBox).Text.Trim
+                .Notation = CType(Grid.Rows((Grid.EditIndex)).Cells(GRID_COL_NOTATION_IDX).FindControl(GRID_CTRL_NAME_CURRENCY_NOTATION_TXT), TextBox).Text.Trim.ToUpper
+                .IsoCode = CType(Grid.Rows((Grid.EditIndex)).Cells(GRID_COL_ISO_CODE_IDX).FindControl(GRID_CTRL_NAME_CURRENCY_ISO_CODE_TXT), TextBox).Text.Trim
             End With
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Function
@@ -480,40 +480,40 @@
             Try
                 'Refresh the DataView and Call SetPageAndSelectedIndexFromGuid() to go to the Page 
                 'where the most recently saved Record exists in the DataView
-                If (Me.State.searchDV Is Nothing) Then
-                    Me.State.searchDV = GetDV()
+                If (State.searchDV Is Nothing) Then
+                    State.searchDV = GetDV()
                 End If
-                Me.State.searchDV.Sort = Me.SortDirection
-                If (Me.State.IsAfterSave) Then
-                    Me.State.IsAfterSave = False
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.CurrencyID, Me.Grid, Me.State.PageIndex)
-                ElseIf (Me.State.IsEditMode) Then
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.CurrencyID, Me.Grid, Me.State.PageIndex, Me.State.IsEditMode)
+                State.searchDV.Sort = SortDirection
+                If (State.IsAfterSave) Then
+                    State.IsAfterSave = False
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.CurrencyID, Grid, State.PageIndex)
+                ElseIf (State.IsEditMode) Then
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.CurrencyID, Grid, State.PageIndex, State.IsEditMode)
                 Else
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Guid.Empty, Me.Grid, Me.State.PageIndex)
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, Guid.Empty, Grid, State.PageIndex)
                 End If
                 'If Me.State.searchDV.Count > 0 Then
-                Me.Grid.AutoGenerateColumns = False
-                Me.Grid.Columns(Me.GRID_COL_CURRENCY_CODE_IDX).SortExpression = Currency.CurrencySearchDV.COL_NAME_CODE
-                Me.Grid.Columns(Me.GRID_COL_DESCRIPTION_IDX).SortExpression = Currency.CurrencySearchDV.COL_NAME_DESCRIPTION
-                Me.Grid.Columns(Me.GRID_COL_NOTATION_IDX).SortExpression = Currency.CurrencySearchDV.COL_NAME_NOTATION
-                Me.Grid.Columns(Me.GRID_COL_ISO_CODE_IDX).SortExpression = Currency.CurrencySearchDV.COL_NAME_ISO_CODE
+                Grid.AutoGenerateColumns = False
+                Grid.Columns(GRID_COL_CURRENCY_CODE_IDX).SortExpression = Currency.CurrencySearchDV.COL_NAME_CODE
+                Grid.Columns(GRID_COL_DESCRIPTION_IDX).SortExpression = Currency.CurrencySearchDV.COL_NAME_DESCRIPTION
+                Grid.Columns(GRID_COL_NOTATION_IDX).SortExpression = Currency.CurrencySearchDV.COL_NAME_NOTATION
+                Grid.Columns(GRID_COL_ISO_CODE_IDX).SortExpression = Currency.CurrencySearchDV.COL_NAME_ISO_CODE
                 SortAndBindGrid()
                 'End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
 
         Private Function GetDV() As Currency.CurrencySearchDV
 
-            Me.State.searchDV = GetCurrencyGridDataView()
-            Me.State.searchDV.Sort = Grid.DataMember()
-            Grid.DataSource = Me.State.searchDV
+            State.searchDV = GetCurrencyGridDataView()
+            State.searchDV.Sort = Grid.DataMember()
+            Grid.DataSource = State.searchDV
 
-            Return (Me.State.searchDV)
+            Return (State.searchDV)
 
         End Function
 
@@ -527,35 +527,35 @@
 
         Private Sub SortAndBindGrid()
 
-            Me.TranslateGridControls(Grid)
+            TranslateGridControls(Grid)
 
-            If (Me.State.searchDV.Count = 0) Then
-                Me.State.searchDV = Nothing
-                Me.State.MyBO = New Currency
-                State.MyBO.AddNewRowToCurrencySearchDV(Me.State.searchDV, Me.State.MyBO)
-                Me.Grid.DataSource = Me.State.searchDV
-                Me.Grid.DataBind()
-                Me.Grid.Rows(0).Visible = False
-                Me.State.IsGridAddNew = True
+            If (State.searchDV.Count = 0) Then
+                State.searchDV = Nothing
+                State.MyBO = New Currency
+                State.MyBO.AddNewRowToCurrencySearchDV(State.searchDV, State.MyBO)
+                Grid.DataSource = State.searchDV
+                Grid.DataBind()
+                Grid.Rows(0).Visible = False
+                State.IsGridAddNew = True
             Else
-                Me.Grid.Enabled = True
-                Me.Grid.DataSource = Me.State.searchDV
-                HighLightSortColumn(Grid, Me.SortDirection)
-                Me.Grid.DataBind()
+                Grid.Enabled = True
+                Grid.DataSource = State.searchDV
+                HighLightSortColumn(Grid, SortDirection)
+                Grid.DataBind()
             End If
             If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
 
 
-            ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+            ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-            Session("recCount") = Me.State.searchDV.Count
+            Session("recCount") = State.searchDV.Count
 
-            If Me.Grid.Visible Then
-                If (Me.State.IsGridAddNew) Then
-                    Me.lblRecordCount.Text = (Me.State.searchDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                If (State.IsGridAddNew) Then
+                    lblRecordCount.Text = (State.searchDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 Else
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             End If
             ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, Grid)
@@ -564,14 +564,14 @@
 
         Private Sub SetControlState()
 
-            If (Me.State.IsEditMode) Then
+            If (State.IsEditMode) Then
                 ControlMgr.SetVisibleControl(Me, btnNew, False)
                 ControlMgr.SetVisibleControl(Me, btnCancel, True)
                 ControlMgr.SetVisibleControl(Me, btnSave, True)
                 ControlMgr.SetEnableControl(Me, btnSearch, False)
                 ControlMgr.SetEnableControl(Me, btnClearSearch, False)
-                Me.MenuEnabled = False
-                If (Me.cboPageSize.Enabled) Then
+                MenuEnabled = False
+                If (cboPageSize.Enabled) Then
                     ControlMgr.SetEnableControl(Me, cboPageSize, False)
                 End If
             Else
@@ -580,9 +580,9 @@
                 ControlMgr.SetVisibleControl(Me, btnSave, False)
                 ControlMgr.SetEnableControl(Me, btnSearch, True)
                 ControlMgr.SetEnableControl(Me, btnClearSearch, True)
-                Me.MenuEnabled = True
-                If Not (Me.cboPageSize.Enabled) Then
-                    ControlMgr.SetEnableControl(Me, Me.cboPageSize, True)
+                MenuEnabled = True
+                If Not (cboPageSize.Enabled) Then
+                    ControlMgr.SetEnableControl(Me, cboPageSize, True)
                 End If
             End If
 
@@ -590,23 +590,23 @@
 
         Private Sub AddNew()
 
-            Me.State.MyBO = New Currency
-            Me.State.CurrencyID = Me.State.MyBO.Id
-            State.MyBO.AddNewRowToCurrencySearchDV(Me.State.searchDV, Me.State.MyBO)
+            State.MyBO = New Currency
+            State.CurrencyID = State.MyBO.Id
+            State.MyBO.AddNewRowToCurrencySearchDV(State.searchDV, State.MyBO)
             State.IsGridAddNew = True
             'SetGridControls(Me.Grid, False)
             PopulateGrid()
             'Set focus on the Code TextBox for the EditItemIndex row
-            Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.CurrencyID, Me.Grid, _
-                                               Me.State.PageIndex, Me.State.IsEditMode)
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.CurrencyID, Grid, _
+                                               State.PageIndex, State.IsEditMode)
             ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, Grid)
-            SetGridControls(Me.Grid, False)
+            SetGridControls(Grid, False)
         End Sub
 
-        Private Function GetRowIndexFromSearchDVByID(ByVal CurrencyID As Guid) As Integer
+        Private Function GetRowIndexFromSearchDVByID(CurrencyID As Guid) As Integer
             Dim rowind As Integer = NO_ITEM_SELECTED_INDEX
             With State
-                If Not .searchDV Is Nothing Then
+                If .searchDV IsNot Nothing Then
                     rowind = FindSelectedRowIndexFromGuid(.searchDV, CurrencyID)
                 End If
             End With

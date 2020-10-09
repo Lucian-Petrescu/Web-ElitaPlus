@@ -95,7 +95,7 @@ Public Class Enrollment
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As VSCEnrollmentDs)
+    Public Sub New(ds As VSCEnrollmentDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -108,7 +108,7 @@ Public Class Enrollment
 
 #Region "Private Members"
 
-    Private Sub MapDataSet(ByVal ds As VSCEnrollmentDs)
+    Private Sub MapDataSet(ds As VSCEnrollmentDs)
 
         ' Mapping column names
         Dim schema As String = ds.GetXmlSchema
@@ -143,7 +143,7 @@ Public Class Enrollment
     Private Sub Initialize()
     End Sub
 
-    Private Sub ValidateInput(ByVal ds As VSCEnrollmentDs)
+    Private Sub ValidateInput(ds As VSCEnrollmentDs)
 
         ' No customer
         If ds.Customer.Count = 0 Then Throw New BOValidationException("VSC Enrollment Error: ", Common.ErrorCodes.WS_XML_INVALID)
@@ -162,12 +162,12 @@ Public Class Enrollment
             'Ticket # 1,412,358 
             Dim objCompany As New Company(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
             If LookupListNew.GetCodeFromId("COMPANY_TYPE", objCompany.CompanyTypeId) = objCompany.COMPANY_TYPE_INSURANCE AndAlso
-                LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATION_TYPES, oContract.ID_Validation_Id) <> Codes.ID_VALIDATION_FULL Then
+                LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATION_TYPES, oContract.ID_Validation_Id) <> Codes.ID_VALIDATION_FULL Then
                 Throw New BOValidationException("VSC Enrollment Error: ", Common.ErrorCodes.WS_XML_INVALID)
             End If
 
             If LookupListNew.GetCodeFromId("COMPANY_TYPE", objCompany.CompanyTypeId) = objCompany.COMPANY_TYPE_INSURANCE AndAlso
-                LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATION_TYPES, oContract.ID_Validation_Id) = Codes.ID_VALIDATION_FULL Then
+                LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATION_TYPES, oContract.ID_Validation_Id) = Codes.ID_VALIDATION_FULL Then
                 ' Verify RG_No, ID_Type, Issuing Agency, Document_Issue_Date if document type is CPF
                 If (.IsDocument_TypeNull) OrElse (.Document_Type = DOC_TYPE_CPF AndAlso
                   ((.IsRG_NoNull OrElse .RG_No.Trim.Length = 0) _
@@ -236,7 +236,7 @@ Public Class Enrollment
 
     End Sub
 
-    Private Sub Load(ByVal ds As VSCEnrollmentDs)
+    Private Sub Load(ds As VSCEnrollmentDs)
         Try
             Initialize()
             Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
@@ -255,7 +255,7 @@ Public Class Enrollment
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As VSCEnrollmentDs)
+    Private Sub PopulateBOFromWebService(ds As VSCEnrollmentDs)
 
         Try
 
@@ -388,7 +388,7 @@ Public Class Enrollment
 
     End Sub
 
-    Private Sub NewApplicant(ByVal name As String, ByVal CustomerOccupation As String, ByVal PEP As String, ByVal IncomeRangeCode As String)
+    Private Sub NewApplicant(name As String, CustomerOccupation As String, PEP As String, IncomeRangeCode As String)
 
         Dim newRow As DataRow = Dataset.Tables(TABLE_NAME_CUSTOMER).NewRow
         newRow(0) = name
@@ -399,7 +399,7 @@ Public Class Enrollment
 
     End Sub
 
-    Private Sub NewCoverage(ByVal code As String, ByVal price As Double, ByVal quote_item_number As Integer)
+    Private Sub NewCoverage(code As String, price As Double, quote_item_number As Integer)
 
         Dim newRow As DataRow = Dataset.Tables(TABLE_NAME_OPTIONS).NewRow
         newRow(0) = code
@@ -425,7 +425,7 @@ Public Class Enrollment
 #Region "Properties"
 
     <ValidStringLength("", Max:=20)>
-    Public Property CertificateNumber() As String
+    Public Property CertificateNumber As String
         Get
             If Row(DATA_COL_NAME_CERTIFICATE) Is DBNull.Value Then
                 Return Nothing
@@ -433,14 +433,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_CERTIFICATE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CERTIFICATE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)>
-    Public Property Address() As String
+    Public Property Address As String
         Get
             If Row(DATA_COL_NAME_ADDRESS1) Is DBNull.Value Then
                 Return Nothing
@@ -448,14 +448,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_ADDRESS1), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_ADDRESS1, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)>
-    Public Property City() As String
+    Public Property City As String
         Get
             If Row(DATA_COL_NAME_CITY) Is DBNull.Value Then
                 Return Nothing
@@ -463,14 +463,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_CITY), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_CITY, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)>
-    Public Property Region() As String
+    Public Property Region As String
         Get
             If Row(DATA_COL_NAME_REGION) Is DBNull.Value Then
                 Return Nothing
@@ -478,14 +478,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_REGION), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_REGION, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=40)>
-    Public Property PostalCode() As String
+    Public Property PostalCode As String
         Get
             If Row(DATA_COL_NAME_POSTAL_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -493,13 +493,13 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_POSTAL_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_POSTAL_CODE, Value)
         End Set
     End Property
 
-    Public Property CountryCode() As String
+    Public Property CountryCode As String
         Get
             If Row(DATA_COL_NAME_COUNTRY_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -507,14 +507,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_COUNTRY_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_COUNTRY_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=60)>
-    Public Property HomePhone() As String
+    Public Property HomePhone As String
         Get
             If Row(DATA_COL_NAME_HOME_PHONE) Is DBNull.Value Then
                 Return Nothing
@@ -522,14 +522,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_HOME_PHONE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_HOME_PHONE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=800)>
-    Public Property Manufacturer() As String
+    Public Property Manufacturer As String
         Get
             If Row(DATA_COL_NAME_MANUFACTURER) Is DBNull.Value Then
                 Return Nothing
@@ -537,14 +537,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_MANUFACTURER), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_MANUFACTURER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=800)>
-    Public Property Model() As String
+    Public Property Model As String
         Get
             If Row(DATA_COL_NAME_MODEL) Is DBNull.Value Then
                 Return Nothing
@@ -552,14 +552,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_MODEL), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_MODEL, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property ModelYear() As Integer
+    Public Property ModelYear As Integer
         Get
             If Row(DATA_COL_NAME_MODEL_YEAR) Is DBNull.Value Then
                 Return Nothing
@@ -567,14 +567,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_MODEL_YEAR), Integer))
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_MODEL_YEAR, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=800)>
-    Public Property EngineVersion() As String
+    Public Property EngineVersion As String
         Get
             If Row(DATA_COL_NAME_VERSION) Is DBNull.Value Then
                 Return Nothing
@@ -582,14 +582,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_VERSION), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_VERSION, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=480)>
-    Public Property Tag() As String
+    Public Property Tag As String
         Get
             If Row(DATA_COL_NAME_TAG) Is DBNull.Value Then
                 Return Nothing
@@ -597,14 +597,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_TAG), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_TAG, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property Mileage() As Integer
+    Public Property Mileage As Integer
         Get
             If Row(DATA_COL_NAME_ODOMETER) Is DBNull.Value Then
                 Return Nothing
@@ -612,14 +612,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_ODOMETER), Long))
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_ODOMETER, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)>
-    Public Property VIN() As String
+    Public Property VIN As String
         Get
             If Row(DATA_COL_NAME_VIN) Is DBNull.Value Then
                 Return Nothing
@@ -627,14 +627,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_VIN), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_VIN, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property PurchasePrice() As Double
+    Public Property PurchasePrice As Double
         Get
             If Row(DATA_COL_NAME_PURCHASE_PRICE) Is DBNull.Value Then
                 Return Nothing
@@ -642,14 +642,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_PURCHASE_PRICE), Double))
             End If
         End Get
-        Set(ByVal Value As Double)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_PURCHASE_PRICE, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property PurchaseDate() As DateTime
+    Public Property PurchaseDate As DateTime
         Get
             If Row(DATA_COL_NAME_PURCHASE_DATE) Is DBNull.Value Then
                 Return Nothing
@@ -657,14 +657,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_PURCHASE_DATE), DateTime))
             End If
         End Get
-        Set(ByVal value As DateTime)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_PURCHASE_DATE, value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property InServiceDate() As DateTime
+    Public Property InServiceDate As DateTime
         Get
             If Row(DATA_COL_NAME_IN_SERVICE_DATE) Is DBNull.Value Then
                 Return Nothing
@@ -672,14 +672,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_IN_SERVICE_DATE), DateTime))
             End If
         End Get
-        Set(ByVal value As DateTime)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_IN_SERVICE_DATE, value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property DeliveryDate() As DateTime
+    Public Property DeliveryDate As DateTime
         Get
             If Row(DATA_COL_NAME_DELIVERY_DATE) Is DBNull.Value Then
                 Return Nothing
@@ -687,14 +687,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_DELIVERY_DATE), DateTime))
             End If
         End Get
-        Set(ByVal value As DateTime)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_DELIVERY_DATE, value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)>
-    Public Property PlanCode() As String
+    Public Property PlanCode As String
         Get
             If Row(DATA_COL_NAME_PLAN_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -702,13 +702,13 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_PLAN_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_PLAN_CODE, Value)
         End Set
     End Property
 
-    Public Property QuoteItemNumber() As Integer
+    Public Property QuoteItemNumber As Integer
         Get
             If Row(DATA_COL_NAME_QUOTE_ITEM_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -716,14 +716,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_QUOTE_ITEM_NUMBER), Integer))
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_QUOTE_ITEM_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property Deductible() As Double
+    Public Property Deductible As Double
         Get
             If Row(DATA_COL_NAME_DEDUCTIBLE) Is DBNull.Value Then
                 Return Nothing
@@ -731,14 +731,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_DEDUCTIBLE), Double))
             End If
         End Get
-        Set(ByVal Value As Double)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_DEDUCTIBLE, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property TermMonths() As Integer
+    Public Property TermMonths As Integer
         Get
             If Row(DATA_COL_NAME_TERM_MONTHS) Is DBNull.Value Then
                 Return Nothing
@@ -746,14 +746,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_TERM_MONTHS), Integer))
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_TERM_MONTHS, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property TermMiles() As Integer
+    Public Property TermMiles As Integer
         Get
             If Row(DATA_COL_NAME_TERM_KI_MI) Is DBNull.Value Then
                 Return Nothing
@@ -761,14 +761,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_TERM_KI_MI), Integer))
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_TERM_KI_MI, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=120)>
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
             If Row(DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -776,14 +776,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_DEALER_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_DEALER_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)>
-    Public Property AgentNumber() As String
+    Public Property AgentNumber As String
         Get
             If Row(DATA_COL_NAME_AGENT_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -791,14 +791,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_AGENT_NAME), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_AGENT_NAME, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property WarrantyDate() As DateTime
+    Public Property WarrantyDate As DateTime
         Get
             If Row(DATA_COL_NAME_WARRANTY_SALE_DATE) Is DBNull.Value Then
                 Return Nothing
@@ -806,13 +806,13 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_WARRANTY_SALE_DATE), DateTime))
             End If
         End Get
-        Set(ByVal value As DateTime)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_WARRANTY_SALE_DATE, value)
         End Set
     End Property
 
-    Public Property DocIssueDate() As DateTime
+    Public Property DocIssueDate As DateTime
         Get
             If Row(DATA_COL_NAME_DOC_ISSUE_DATE) Is DBNull.Value Then
                 Return Nothing
@@ -820,14 +820,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_DOC_ISSUE_DATE), DateTime))
             End If
         End Get
-        Set(ByVal value As DateTime)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_DOC_ISSUE_DATE, value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property PlanAmount() As Double
+    Public Property PlanAmount As Double
         Get
             If Row(DATA_COL_NAME_PLAN_AMOUNT) Is DBNull.Value Then
                 Return Nothing
@@ -835,14 +835,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_PLAN_AMOUNT), Double))
             End If
         End Get
-        Set(ByVal Value As Double)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_PLAN_AMOUNT, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=16)>
-    Public Property DocType() As String
+    Public Property DocType As String
         Get
             If Row(DATA_COL_NAME_DOC_TYPE) Is DBNull.Value Then
                 Return Nothing
@@ -850,14 +850,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_DOC_TYPE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_DOC_TYPE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=80)>
-    Public Property IdentityDocNo() As String
+    Public Property IdentityDocNo As String
         Get
             If Row(DATA_COL_NAME_IDENTITY_DOC_NO) Is DBNull.Value Then
                 Return Nothing
@@ -865,14 +865,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_IDENTITY_DOC_NO), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_IDENTITY_DOC_NO, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=32)>
-    Public Property RgNo() As String
+    Public Property RgNo As String
         Get
             If Row(DATA_COL_NAME_RG_NO) Is DBNull.Value Then
                 Return Nothing
@@ -880,14 +880,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_RG_NO), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_RG_NO, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=160)>
-    Public Property IdType() As String
+    Public Property IdType As String
         Get
             If Row(DATA_COL_NAME_ID_TYPE) Is DBNull.Value Then
                 Return Nothing
@@ -895,14 +895,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_ID_TYPE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_ID_TYPE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=240)>
-    Public Property DocAgency() As String
+    Public Property DocAgency As String
         Get
             If Row(DATA_COL_NAME_DOC_AGENCY) Is DBNull.Value Then
                 Return Nothing
@@ -910,13 +910,13 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_DOC_AGENCY), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_DOC_AGENCY, Value)
         End Set
     End Property
 
-    Public Property Quote() As String
+    Public Property Quote As String
         Get
 
             If Row(DATA_COL_NAME_QUOTE) Is DBNull.Value Then
@@ -925,7 +925,7 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_QUOTE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
 
             Try
 
@@ -942,7 +942,7 @@ Public Class Enrollment
         End Set
     End Property
 
-    Public Property DateOfBirth() As DateTime
+    Public Property DateOfBirth As DateTime
         Get
             If Row(DATA_COL_NAME_DATE_OF_BIRTH) Is DBNull.Value Then
                 Return Nothing
@@ -950,14 +950,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_DATE_OF_BIRTH), DateTime))
             End If
         End Get
-        Set(ByVal value As DateTime)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_DATE_OF_BIRTH, value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=15)>
-    Public Property WorkPhone() As String
+    Public Property WorkPhone As String
         Get
             If Row(DATA_COL_NAME_WORK_PHONE) Is DBNull.Value Then
                 Return Nothing
@@ -965,7 +965,7 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_WORK_PHONE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_WORK_PHONE, Value)
         End Set
@@ -974,7 +974,7 @@ Public Class Enrollment
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)>
-    Public Property CollectionMethodCode() As String
+    Public Property CollectionMethodCode As String
         Get
             If Row(DATA_COL_NAME_COLLECTION_METHOD_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -982,14 +982,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_COLLECTION_METHOD_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_COLLECTION_METHOD_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)>
-    Public Property PaymentInstrumentCode() As String
+    Public Property PaymentInstrumentCode As String
         Get
             If Row(DATA_COL_NAME_PAYMENT_INSTRUMENT_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -997,14 +997,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_PAYMENT_INSTRUMENT_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_PAYMENT_INSTRUMENT_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property InstallmentsNumber() As Integer
+    Public Property InstallmentsNumber As Integer
         Get
             If Row(DATA_COL_NAME_INSTALLMENTS_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -1012,18 +1012,18 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_INSTALLMENTS_NUMBER), Integer))
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_INSTALLMENTS_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=4)>
-    Public Property CreditCardTypeCode() As String
+    Public Property CreditCardTypeCode As String
         Get
             Return _CreditCardTypeCode
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             _CreditCardTypeCode = Value
         End Set
@@ -1040,11 +1040,11 @@ Public Class Enrollment
     Private _CardSecurityCode As String
 
     <ValidStringLength("", Max:=50)>
-    Public Property NameOnCreditCard() As String
+    Public Property NameOnCreditCard As String
         Get
             Return _NameOnCreditCard
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             _NameOnCreditCard = Value
         End Set
@@ -1052,82 +1052,82 @@ Public Class Enrollment
 
     <ValidStringLength("", Max:=16), ValidCreditCardNumber("")>
     <PciProtect(PciDataType.CreditCardNumber)>
-    Public Property CreditCardNumber() As String
+    Public Property CreditCardNumber As String
         Get
             Return _CreditCardNumber
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             _CreditCardNumber = Value
         End Set
     End Property
 
     <ValidStringLength("", Max:=7)>
-    Public Property ExpirationDate() As String
+    Public Property ExpirationDate As String
         Get
             Return _ExpirationDate
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             _ExpirationDate = Value
         End Set
     End Property
 
     <ValidStringLength("", Max:=10)>
-    Public Property BankID() As String
+    Public Property BankID As String
         Get
             Return _BankID
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             _BankID = Value
         End Set
     End Property
     <ValidStringLength("", Max:=10)>
-    Public Property CardSecurityCode() As String
+    Public Property CardSecurityCode As String
         Get
             Return _CardSecurityCode
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             _CardSecurityCode = Value
         End Set
     End Property
     <ValidStringLength("", Max:=29)>
-    Public Property AccountNumber() As String
+    Public Property AccountNumber As String
         Get
             Return _AccountNumber
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             _AccountNumber = Value
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)>
-    Public Property NameOnAccount() As String
+    Public Property NameOnAccount As String
         Get
             Return _NameOnAccount
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             _NameOnAccount = Value
         End Set
     End Property
 
     <ValidStringLength("", Max:=100)>
-    Public Property PaymentAuthoriztionNum() As String
+    Public Property PaymentAuthoriztionNum As String
         Get
             Return _PaymentAuthoriztionNum
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             _PaymentAuthoriztionNum = Value
         End Set
     End Property
 
     <ValidStringLength("", Max:=10)>
-    Public Property ExternalCarCode() As String
+    Public Property ExternalCarCode As String
         Get
             If Row(DATA_COL_NAME_EXTERNAL_CAR_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -1135,14 +1135,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_EXTERNAL_CAR_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_EXTERNAL_CAR_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1)>
-    Public Property Is_CreditCard_AuthReq() As String
+    Public Property Is_CreditCard_AuthReq As String
         Get
             If Row(DATA_COL_NAME_IS_CREDITCARD_AUTHREQ) Is DBNull.Value Then
                 Return Nothing
@@ -1150,13 +1150,13 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_IS_CREDITCARD_AUTHREQ), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_IS_CREDITCARD_AUTHREQ, Value)
         End Set
     End Property
 
-    Public Property SalesTax() As Double
+    Public Property SalesTax As Double
         Get
             If Row(DATA_COL_NAME_SALES_TAX) Is DBNull.Value Then
                 Return Nothing
@@ -1164,14 +1164,14 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_SALES_TAX), Double))
             End If
         End Get
-        Set(ByVal Value As Double)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_SALES_TAX, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1)>
-    Public Property ValidateOnly() As String
+    Public Property ValidateOnly As String
         Get
             If Row(DATA_COL_NAME_VALIDATE_ONLY) Is DBNull.Value Then
                 Return Nothing
@@ -1179,7 +1179,7 @@ Public Class Enrollment
                 Return (CType(Row(DATA_COL_NAME_VALIDATE_ONLY), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             SetValue(DATA_COL_NAME_VALIDATE_ONLY, Value)
         End Set
@@ -1320,10 +1320,10 @@ Public Class Enrollment
 
             Validate()
 
-            If Me.IsNew AndAlso Not CreditCardNumber Is Nothing Then
+            If IsNew AndAlso CreditCardNumber IsNot Nothing Then
                 Try
                     ' secure the credit card number
-                    Me.Secure()
+                    Secure()
 
                 Catch ex As Exception
                     'If ex.InnerException.GetType() Is GetType(FaultException) Then
@@ -1331,7 +1331,7 @@ Public Class Enrollment
                     '    faultExcep = DirectCast(ex.InnerException,FaultException)
                     '    Throw New ElitaPlusException(faultExcep.Message, faultExcep.Code.Name, ex.InnerException)
                     'End If
-                    Throw New ElitaPlusException(ex.Message, ElitaPlus.Common.ErrorCodes.PCI_SECURE_ERR, ex)
+                    Throw New ElitaPlusException(ex.Message, Common.ErrorCodes.PCI_SECURE_ERR, ex)
                 End Try
 
                 oEnrollmentData.CreditCardNumber = CreditCardNumber
@@ -1347,7 +1347,7 @@ Public Class Enrollment
                 If (CollectionMethodCode.ToUpper.Equals(Codes.COLLECTION_METHOD__ASSURANT_COLLECTS_PRE_AUTH) AndAlso PaymentInstrumentCode.ToUpper.Equals(Codes.PAYMENT_INSTRUMENT__PRE_AUTH_CREDIT_CARD)) Then
                     dal.Certificate(enrollmentId, CollectionMethodCode, PaymentInstrumentCode)
                 Else
-                    Dim t As Thread = New Thread(AddressOf Me.Certificate)
+                    Dim t As Thread = New Thread(AddressOf Certificate)
                     t.Start()
                 End If
 
@@ -1385,14 +1385,14 @@ Public Class Enrollment
     Public NotInheritable Class ValidCreditCardNumber
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.WS_INVALID_CREDIT_CARD_NUMBER)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Enrollment = CType(objectToValidate, Enrollment)
 
-            If Not obj.CreditCardNumber Is Nothing AndAlso Not CreditCardFormat.IsCreditCardValid(obj.CreditCardTypeCode, obj.CreditCardNumber) Then
+            If obj.CreditCardNumber IsNot Nothing AndAlso Not CreditCardFormat.IsCreditCardValid(obj.CreditCardTypeCode, obj.CreditCardNumber) Then
                 Return False
             End If
             Return True

@@ -48,31 +48,31 @@ Public Class ClaimFulfillmentOrderDetailDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
+    Public Sub Load(familyDS As DataSet, id As Guid)
         Try
-            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOAD"))
                 cmd.AddParameter(TABLE_KEY_NAME, OracleDbType.Raw, id.ToByteArray())
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, familyDS)
+                OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal Code As String, ByVal Description As String, ByVal PriceListSource As String, ByVal language_id As Guid) As DataSet
+    Public Function LoadList(Code As String, Description As String, PriceListSource As String, language_id As Guid) As DataSet
         Try
-            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD_LIST"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOAD_LIST"))
                 cmd.AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, Code, direction:=ParameterDirection.Input)
                 cmd.AddParameter(PAR_I_NAME_DESCRIPTION, OracleDbType.Varchar2, Description, direction:=ParameterDirection.Input)
                 cmd.AddParameter(PAR_I_NAME_PRICE_LIST_SOURCE_XCD, OracleDbType.Varchar2, PriceListSource, direction:=ParameterDirection.Input)
                 cmd.AddParameter(PAR_I_NAME_LANGUAGE_ID, OracleDbType.Raw, language_id.ToByteArray, direction:=ParameterDirection.Input)
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME)
+                Return OracleDbHelper.Fetch(cmd, TABLE_NAME)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -83,15 +83,15 @@ Public Class ClaimFulfillmentOrderDetailDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
         If ds Is Nothing Then
             Return
         End If
         If (changesFilter Or (supportChangesFilter)) <> (supportChangesFilter) Then
             Throw New NotSupportedException()
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.UpdateFromSP(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.UpdateFromSP(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
@@ -139,14 +139,14 @@ Public Class ClaimFulfillmentOrderDetailDAL
 
     End Sub
 
-    Public Function CFCodeExists(ByVal CfCode As String) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/CODE_UNIQUE")
+    Public Function CFCodeExists(CfCode As String) As Boolean
+        Dim selectStmt As String = Config("/SQL/CODE_UNIQUE")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                                     New DBHelper.DBHelperParameter("pi_code", CfCode)}
         Dim ds As New DataSet
         Try
             Dim bExists As Boolean = True
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             If CType(ds.Tables(0).Rows(0).Item(0), Integer) = 0 Then
                 bExists = False
             End If

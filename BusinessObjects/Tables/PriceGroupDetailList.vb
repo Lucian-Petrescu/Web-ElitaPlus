@@ -1,24 +1,24 @@
 Public Class PriceGroupDetailList
     Inherits BusinessObjectListBase
 
-    Public Sub New(ByVal parent As PriceGroup)
+    Public Sub New(parent As PriceGroup)
         MyBase.New(LoadTable(parent), GetType(PriceGroupDetail), parent)
     End Sub
 
-    Public Sub New(ByVal parent As PriceGroup, ByVal riskTypeId As Guid)
+    Public Sub New(parent As PriceGroup, riskTypeId As Guid)
         MyBase.New(LoadTable(parent, riskTypeId), GetType(PriceGroupDetail), parent)
     End Sub
-    Public Sub New(ByVal parent As PriceGroup, ByVal company_group_id As Guid, ByVal flag As Boolean)
+    Public Sub New(parent As PriceGroup, company_group_id As Guid, flag As Boolean)
         MyBase.New(LoadTable(parent, company_group_id, flag), GetType(PriceGroupDetail), parent)
     End Sub
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, PriceGroupDetail).PriceGroupId.Equals(CType(Parent, PriceGroup).Id)
     End Function
 
 
 #Region "Class Methods"
-    Private Shared Function LoadTable(ByVal parent As PriceGroup) As DataTable
+    Private Shared Function LoadTable(parent As PriceGroup) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(PriceGroupDetailList)) Then
                 Dim dal As New PriceGroupDetailDAL
@@ -31,7 +31,7 @@ Public Class PriceGroupDetailList
         End Try
     End Function
 
-    Private Shared Function LoadTable(ByVal parent As PriceGroup, ByVal riskTypeId As Guid) As DataTable
+    Private Shared Function LoadTable(parent As PriceGroup, riskTypeId As Guid) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(PriceGroupDetailList)) Then
                 Dim dal As New PriceGroupDetailDAL
@@ -43,7 +43,7 @@ Public Class PriceGroupDetailList
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
-    Private Shared Function LoadTable(ByVal parent As PriceGroup, ByVal company_group_id As Guid, ByVal flag As Boolean) As DataTable
+    Private Shared Function LoadTable(parent As PriceGroup, company_group_id As Guid, flag As Boolean) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(PriceGroupDetailList)) Then
                 Dim dal As New PriceGroupDetailDAL

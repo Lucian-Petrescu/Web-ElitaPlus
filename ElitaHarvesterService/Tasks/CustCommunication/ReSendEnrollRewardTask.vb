@@ -15,7 +15,7 @@ Public Class ReSendEnrollRewardTask
 
 #Region "Constructors"
 
-    Public Sub New(ByVal machineName As String, ByVal processThreadName As String)
+    Public Sub New(machineName As String, processThreadName As String)
         MyBase.New(machineName, processThreadName)
     End Sub
 
@@ -26,7 +26,7 @@ Public Class ReSendEnrollRewardTask
         Get
             Return _exactTargetId
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             _exactTargetId = value
         End Set
     End Property
@@ -34,7 +34,7 @@ Public Class ReSendEnrollRewardTask
         Get
             Return _certificateId
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             _certificateId = value
         End Set
     End Property
@@ -43,7 +43,7 @@ Public Class ReSendEnrollRewardTask
         Get
             Return _oCertificate
         End Get
-        Set(ByVal value As Certificate)
+        Set(value As Certificate)
             _oCertificate = value
         End Set
     End Property

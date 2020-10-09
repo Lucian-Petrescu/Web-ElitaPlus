@@ -6,48 +6,48 @@ Public Class Dropdown
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load(id)
+        Dataset = New Dataset
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load()
+        Dataset = New Dataset
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New DropdownDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class Dropdown
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New DropdownDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -90,7 +90,7 @@ Public Class Dropdown
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(DropdownDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class Dropdown
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property MaintainableByUser() As String
+    Public Property MaintainableByUser As String
         Get
             CheckDeleted()
             If Row(DropdownDAL.COL_NAME_MAINTAINABLE_BY_USER) Is DBNull.Value Then
@@ -110,15 +110,15 @@ Public Class Dropdown
                 Return CType(Row(DropdownDAL.COL_NAME_MAINTAINABLE_BY_USER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DropdownDAL.COL_NAME_MAINTAINABLE_BY_USER, Value)
+            SetValue(DropdownDAL.COL_NAME_MAINTAINABLE_BY_USER, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property DictItemId() As Guid
+    Public Property DictItemId As Guid
         Get
             CheckDeleted()
             If Row(DropdownDAL.COL_NAME_DICT_ITEM_ID) Is DBNull.Value Then
@@ -127,15 +127,15 @@ Public Class Dropdown
                 Return New Guid(CType(Row(DropdownDAL.COL_NAME_DICT_ITEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(DropdownDAL.COL_NAME_DICT_ITEM_ID, Value)
+            SetValue(DropdownDAL.COL_NAME_DICT_ITEM_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=255)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(DropdownDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -144,15 +144,15 @@ Public Class Dropdown
                 Return CType(Row(DropdownDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DropdownDAL.COL_NAME_CODE, Value)
+            SetValue(DropdownDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property ActiveFlag() As String
+    Public Property ActiveFlag As String
         Get
             CheckDeleted()
             If Row(DropdownDAL.COL_NAME_ACTIVE_FLAG) Is DBNull.Value Then
@@ -161,9 +161,9 @@ Public Class Dropdown
                 Return CType(Row(DropdownDAL.COL_NAME_ACTIVE_FLAG), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DropdownDAL.COL_NAME_ACTIVE_FLAG, Value)
+            SetValue(DropdownDAL.COL_NAME_ACTIVE_FLAG, Value)
         End Set
     End Property
 
@@ -176,15 +176,15 @@ Public Class Dropdown
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New DropdownDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New Dataset
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New Dataset
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -192,7 +192,7 @@ Public Class Dropdown
         End Try
     End Sub
 
-    Public Shared Function DGPageLocator(ByVal oDataView As DataView, ByVal sSearchValue As String, ByVal nPageSize As Integer, ByVal sColumnName As String) As Integer
+    Public Shared Function DGPageLocator(oDataView As DataView, sSearchValue As String, nPageSize As Integer, sColumnName As String) As Integer
 
         Dim i As Int16
         Dim nGridPage As Int16
@@ -223,22 +223,22 @@ Public Class Dropdown
 
     End Function
 
-    Public Function AddDropdown(ByVal code As String, ByVal maintainable_by_user As String, ByVal englishTranslation As String, ByVal userId As String) As Integer
+    Public Function AddDropdown(code As String, maintainable_by_user As String, englishTranslation As String, userId As String) As Integer
         Dim dal As New DropdownDAL
         Return dal.AddDropdown(code, maintainable_by_user, englishTranslation, userId)
     End Function
 
-    Public Function UpdateDropdown(ByVal listId As Guid, ByVal code As String, ByVal maintainable_by_user As String, ByVal englishTranslation As String, ByVal userId As String) As Integer
+    Public Function UpdateDropdown(listId As Guid, code As String, maintainable_by_user As String, englishTranslation As String, userId As String) As Integer
         Dim dal As New DropdownDAL
         Return dal.UpdateDropdown(listId, code, maintainable_by_user, englishTranslation, userId)
     End Function
 
-    Public Function UpdateTranslation(ByVal DictItemTranslationId As Guid, ByVal Translation As String, ByVal userId As String) As Integer
+    Public Function UpdateTranslation(DictItemTranslationId As Guid, Translation As String, userId As String) As Integer
         Dim dal As New DropdownDAL
         Return dal.UpdateTranslation(DictItemTranslationId, Translation, userId)
     End Function
 
-    Public Function DeleteDropdown(ByVal listId As Guid) As Integer
+    Public Function DeleteDropdown(listId As Guid) As Integer
         Dim dal As New DropdownDAL
         Return dal.DeleteDropdown(listId)
     End Function
@@ -247,7 +247,7 @@ Public Class Dropdown
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function AdminLoadList(ByVal LanguageId As Guid) As System.Data.DataView
+    Public Shared Function AdminLoadList(LanguageId As Guid) As System.Data.DataView
         Try
             Dim dal As New DropdownDAL
             Dim ds As New DataSet
@@ -258,7 +258,7 @@ Public Class Dropdown
         End Try
     End Function
 
-     Public Shared Function DeviceLoadList(ByVal LanguageId As Guid) As System.Data.DataView
+     Public Shared Function DeviceLoadList(LanguageId As Guid) As System.Data.DataView
         Try
             Dim dal As New DropdownDAL
             Dim ds As New DataSet
@@ -269,7 +269,7 @@ Public Class Dropdown
         End Try
     End Function
 
-    Public Shared Function AdminLoadListTranslation(ByVal ListId As Guid) As System.Data.DataView
+    Public Shared Function AdminLoadListTranslation(ListId As Guid) As System.Data.DataView
         Try
             Dim dal As New DropdownDAL
             Dim ds As New DataSet
@@ -280,7 +280,7 @@ Public Class Dropdown
         End Try
     End Function
 
-    Public Function GetTranslation(ByVal LanguageId As Guid, ByVal DictItemId As Guid) As String
+    Public Function GetTranslation(LanguageId As Guid, DictItemId As Guid) As String
         Dim dal As New DropdownDAL
         Dim ds As New DataSet
         Dim dv As New DataView

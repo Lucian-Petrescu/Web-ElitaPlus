@@ -33,7 +33,7 @@ Public Class CustRegistrationDC
         Get
             Return __token
         End Get
-        Set(ByVal value As String)
+        Set
             __token = value
         End Set
     End Property
@@ -43,7 +43,7 @@ Public Class CustRegistrationDC
         Get
             Return __dealer_Code
         End Get
-        Set(ByVal value As String)
+        Set
             __dealer_Code = value
         End Set
     End Property
@@ -53,7 +53,7 @@ Public Class CustRegistrationDC
         Get
             Return __email_Id
         End Get
-        Set(ByVal value As String)
+        Set
             __email_Id = value
         End Set
     End Property
@@ -63,7 +63,7 @@ Public Class CustRegistrationDC
         Get
             Return __updated_Email_id
         End Get
-        Set(ByVal value As String)
+        Set
             __updated_Email_id = value
         End Set
     End Property
@@ -73,7 +73,7 @@ Public Class CustRegistrationDC
         Get
             Return __tax_Id
         End Get
-        Set(ByVal value As String)
+        Set
             __tax_Id = value
         End Set
     End Property
@@ -83,7 +83,7 @@ Public Class CustRegistrationDC
         Get
             Return __first_Name
         End Get
-        Set(ByVal value As String)
+        Set
             __first_Name = value
         End Set
     End Property
@@ -93,7 +93,7 @@ Public Class CustRegistrationDC
         Get
             Return __last_Name
         End Get
-        Set(ByVal value As String)
+        Set
             __last_Name = value
         End Set
     End Property
@@ -103,7 +103,7 @@ Public Class CustRegistrationDC
         Get
             Return __address1
         End Get
-        Set(ByVal value As String)
+        Set
             __address1 = value
         End Set
     End Property
@@ -113,7 +113,7 @@ Public Class CustRegistrationDC
         Get
             Return __address2
         End Get
-        Set(ByVal value As String)
+        Set
             __address2 = value
         End Set
     End Property
@@ -123,7 +123,7 @@ Public Class CustRegistrationDC
         Get
             Return __city
         End Get
-        Set(ByVal value As String)
+        Set
             __city = value
         End Set
     End Property
@@ -133,7 +133,7 @@ Public Class CustRegistrationDC
         Get
             Return __state
         End Get
-        Set(ByVal value As String)
+        Set
             __state = value
         End Set
     End Property
@@ -143,7 +143,7 @@ Public Class CustRegistrationDC
         Get
             Return __postal_Code
         End Get
-        Set(ByVal value As String)
+        Set
             __postal_Code = value
         End Set
     End Property
@@ -153,7 +153,7 @@ Public Class CustRegistrationDC
         Get
             Return __phone
         End Get
-        Set(ByVal value As String)
+        Set
             __phone = value
         End Set
     End Property
@@ -163,7 +163,7 @@ Public Class CustRegistrationDC
         Get
             Return __country_Code
         End Get
-        Set(ByVal value As String)
+        Set
             __country_Code = value
         End Set
     End Property

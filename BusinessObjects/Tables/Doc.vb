@@ -8,12 +8,12 @@ Namespace DocumentImaging
         Private Shared syncRoot As Object = New Object()
         Private Shared oDocClient As DocumentClient
 
-        Private Shared ReadOnly Property ClientProxy() As DocumentClient
+        Private Shared ReadOnly Property ClientProxy As DocumentClient
             Get
                 Dim oDocClient As DocumentClient
-                If (oDocClient Is Nothing OrElse oDocClient.State <> ServiceModel.CommunicationState.Opened) Then
+                If (oDocClient Is Nothing OrElse oDocClient.State <> CommunicationState.Opened) Then
                     SyncLock syncRoot
-                        If (oDocClient Is Nothing OrElse oDocClient.State <> ServiceModel.CommunicationState.Opened) Then
+                        If (oDocClient Is Nothing OrElse oDocClient.State <> CommunicationState.Opened) Then
                             oDocClient = ServiceHelper.CreateDocumentClient()
                         End If
                     End SyncLock
@@ -24,7 +24,7 @@ Namespace DocumentImaging
 
 #Region "DataView Retrieveing Methods"
 
-        Public Shared Function FindDocument(ByVal fr As FindRequest) As DocumentInfo()
+        Public Shared Function FindDocument(fr As FindRequest) As DocumentInfo()
 
             Dim userName As String = ElitaPlusIdentity.Current.ActiveUser.NetworkId
             Dim resultList() As DocumentInfo = New DocumentInfo() {}
@@ -40,7 +40,7 @@ Namespace DocumentImaging
             Return resultList
         End Function
 
-        Public Shared Function UpdateDocument(ByVal di As DocumentInfo) As DocumentInfo
+        Public Shared Function UpdateDocument(di As DocumentInfo) As DocumentInfo
             Dim userName As String = ElitaPlusIdentity.Current.ActiveUser.NetworkId
             Dim resultList As New DocumentInfo
             Try
@@ -55,7 +55,7 @@ Namespace DocumentImaging
             Return resultList
         End Function
 
-        Public Shared Function DownloadDocument(ByVal id As Guid) As Document
+        Public Shared Function DownloadDocument(id As Guid) As Document
             Dim userName As String = ElitaPlusIdentity.Current.ActiveUser.NetworkId
             Dim resultList As New Document
             Try
@@ -70,7 +70,7 @@ Namespace DocumentImaging
             Return resultList
         End Function
 
-        Public Shared Function UploadDocument(ByVal QueueName As String, ByVal actionCode As String, ByVal activeOn As Nullable(Of Date), ByVal doc As Document) As Document
+        Public Shared Function UploadDocument(QueueName As String, actionCode As String, activeOn As Nullable(Of Date), doc As Document) As Document
             Dim userName As String = ElitaPlusIdentity.Current.ActiveUser.NetworkId
             Dim resultList As New Document
             Try

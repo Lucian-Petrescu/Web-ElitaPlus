@@ -20,7 +20,7 @@ Partial Public Class UserControlAuthorizationInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents AuthItems As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents AuthItems As Label
 
     '''<summary>
     '''BtnNew_WRITE control.
@@ -29,7 +29,7 @@ Partial Public Class UserControlAuthorizationInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents BtnNew_WRITE As Global.System.Web.UI.WebControls.LinkButton
+    Protected WithEvents BtnNew_WRITE As LinkButton
 
     '''<summary>
     '''AuthorizationGrid control.
@@ -38,7 +38,7 @@ Partial Public Class UserControlAuthorizationInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents AuthorizationGrid As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents AuthorizationGrid As GridView
 
     '''<summary>
     '''HiddenDeletePromptResponse control.
@@ -47,5 +47,5 @@ Partial Public Class UserControlAuthorizationInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents HiddenDeletePromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents HiddenDeletePromptResponse As HtmlInputHidden
 End Class

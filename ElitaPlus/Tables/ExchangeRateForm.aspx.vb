@@ -25,7 +25,7 @@ Namespace Tables
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -88,18 +88,18 @@ Namespace Tables
             End Get
         End Property
 
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Try
-                If Not Me.CallingParameters Is Nothing Then
+                If CallingParameters IsNot Nothing Then
                     'Get the id from the parent
-                    Me.State.MyBO = New CurrencyConversion(CType(Me.CallingParameters, Guid))
-                    Dim oDealer As Dealer = New Dealer(Me.State.MyBO.DealerId)
-                    Me.State.DealerName = oDealer.DealerName
+                    State.MyBO = New CurrencyConversion(CType(CallingParameters, Guid))
+                    Dim oDealer As Dealer = New Dealer(State.MyBO.DealerId)
+                    State.DealerName = oDealer.DealerName
                 Else
-                    Me.State.IsNew = True
+                    State.IsNew = True
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
 
         End Sub
@@ -111,48 +111,48 @@ Namespace Tables
             Public LastOperation As DetailPageCommand
             Public EditingBo As CurrencyConversion
             Public HasDataChanged As Boolean
-            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As CurrencyConversion, ByVal hasDataChanged As Boolean)
-                Me.LastOperation = LastOp
-                Me.EditingBo = curEditingBo
+            Public Sub New(LastOp As DetailPageCommand, curEditingBo As CurrencyConversion, hasDataChanged As Boolean)
+                LastOperation = LastOp
+                EditingBo = curEditingBo
                 Me.HasDataChanged = hasDataChanged
             End Sub
         End Class
 #End Region
 
 #Region "Page Events"
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             'hide the user control...since we are doing our ownlist.
             'ControlMgr.SetVisibleControl(Me, PostalCodeFormatLists, False)
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     'Date Calendars
-                    Me.MenuEnabled = False
-                    Me.AddConfirmation(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT)
-                    If Me.State.MyBO Is Nothing Then
-                        Me.State.MyBO = New CurrencyConversion
+                    MenuEnabled = False
+                    AddConfirmation(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT)
+                    If State.MyBO Is Nothing Then
+                        State.MyBO = New CurrencyConversion
                     End If
-                    Me.AddCalendar(Me.btnEffectiveDate, Me.txtEffectiveDate)
-                    Me.AddCalendar(Me.btnExpirationDate, Me.txtExpirationDate)
+                    AddCalendar(btnEffectiveDate, txtEffectiveDate)
+                    AddCalendar(btnExpirationDate, txtExpirationDate)
                     PopulateDropdowns()
-                    If Me.State.IsNew = True Then
+                    If State.IsNew = True Then
                         CreateNew()
                     End If
-                    Me.PopulateFormFromBOs()
-                    Me.EnableDisableFields()
+                    PopulateFormFromBOs()
+                    EnableDisableFields()
                 End If
                 CheckIfComingFromSaveConfirm()
                 BindBoPropertiesToLabels()
                 'CheckIfComingFromSaveConfirm()
-                If Not Me.IsPostBack Then
-                    Me.AddLabelDecorations(Me.State.MyBO)
+                If Not IsPostBack Then
+                    AddLabelDecorations(State.MyBO)
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 #End Region
 
@@ -167,15 +167,15 @@ Namespace Tables
             'ControlMgr.SeteControl(Me, txtDealer, True)     
             TheDealerControl.ChangeEnabledControlProperty(False)
             'ControlMgr.SetEnableControl(Me, TheDealerControl., False)
-            ControlMgr.SetEnableControl(Me, Me.txtToCurrency, False)
+            ControlMgr.SetEnableControl(Me, txtToCurrency, False)
             ControlMgr.SetVisibleControl(Me, lblExchangeTo, True)
-            ControlMgr.SetVisibleControl(Me, Me.txtToCurrency, True)
+            ControlMgr.SetVisibleControl(Me, txtToCurrency, True)
             ControlMgr.SetEnableControl(Me, txtEffectiveDate, False)
             ControlMgr.SetEnableControl(Me, txtExpirationDate, False)
             ControlMgr.SetVisibleControl(Me, btnEffectiveDate, False)
             ControlMgr.SetVisibleControl(Me, btnExpirationDate, False)
 
-            If Me.State.MyBO.IsNew AndAlso Not MyIsNew Then
+            If State.MyBO.IsNew AndAlso Not MyIsNew Then
                 ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
                 ControlMgr.SetEnableControl(Me, btnNew_WRITE, False)
                 ControlMgr.SetEnableControl(Me, btnCopy_WRITE, False)
@@ -189,11 +189,11 @@ Namespace Tables
                 ControlMgr.SetVisibleControl(Me, btnExpirationDate, True)
             End If
 
-            Dim DV As CurrencyConversion.CurrencyRateDV = Me.State.MyBO.FindMaxdate(Me.State.MyBO.DealerId, Me.State.MyBO.Currency1Id, Me.State.MyBO.Currency2Id)
+            Dim DV As CurrencyConversion.CurrencyRateDV = State.MyBO.FindMaxdate(State.MyBO.DealerId, State.MyBO.Currency1Id, State.MyBO.Currency2Id)
             Dim DVRow As DataRow = DV.Table.Rows(0)
 
-            If DVRow(DV.COL_EFFECTIVE) Is DBNull.Value Or DVRow(DV.COL_EFFECTIVE) Is Nothing Then
-            ElseIf CType(DVRow(DV.COL_EFFECTIVE), Date) <> Me.State.MyBO.EffectiveDate.Value Then
+            If DVRow(DV.COL_EFFECTIVE) Is DBNull.Value OrElse DVRow(DV.COL_EFFECTIVE) Is Nothing Then
+            ElseIf CType(DVRow(DV.COL_EFFECTIVE), Date) <> State.MyBO.EffectiveDate.Value Then
                 ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
             End If
             'WRITE YOU OWN CODE HERE
@@ -209,17 +209,17 @@ Namespace Tables
                                         "* " + TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_DEALERCODE),
                                         True, True)
 
-            TheDealerControl.SelectedGuid = Me.State.MyBO.DealerId
+            TheDealerControl.SelectedGuid = State.MyBO.DealerId
 
             'Me.BindSelectItem(Me.State.MyBO.DealerId.ToString, TheDealerControl)
             'Me.BindListControlToDataView(Me.cboFromCurrencyId, LookupListNew.GetCurrencyTypeLookupList(), , , True)
-            Me.cboFromCurrencyId.Populate(CommonConfigManager.Current.ListManager.GetList("CurrencyTypeList", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+            cboFromCurrencyId.Populate(CommonConfigManager.Current.ListManager.GetList("CurrencyTypeList", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
             {
               .AddBlankItem = True
             })
 
             'Me.BindListControlToDataView(Me.cboToCurrencyID, LookupListNew.GetCurrencyTypeLookupList(), , , True)
-            Me.cboToCurrencyID.Populate(CommonConfigManager.Current.ListManager.GetList("CurrencyTypeList", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+            cboToCurrencyID.Populate(CommonConfigManager.Current.ListManager.GetList("CurrencyTypeList", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
            {
              .AddBlankItem = True
            })
@@ -229,40 +229,40 @@ Namespace Tables
 
 
         Protected Sub BindBoPropertiesToLabels()
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "DealerId", Me.TheDealerControl.CaptionLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "Currency1Id", Me.lblFromCurrencyId)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "Currency2Id", Me.lblToCurrencyId)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "EffectiveDate", Me.lblEffectiveDate)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "ExpirationDate", Me.lblExpirationDate)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "Currency1Rate", Me.lblExchangeFrom)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "Currency2Rate", Me.lblExchangeTo)
-            Me.ClearGridHeadersAndLabelsErrSign()
+            BindBOPropertyToLabel(State.MyBO, "DealerId", TheDealerControl.CaptionLabel)
+            BindBOPropertyToLabel(State.MyBO, "Currency1Id", lblFromCurrencyId)
+            BindBOPropertyToLabel(State.MyBO, "Currency2Id", lblToCurrencyId)
+            BindBOPropertyToLabel(State.MyBO, "EffectiveDate", lblEffectiveDate)
+            BindBOPropertyToLabel(State.MyBO, "ExpirationDate", lblExpirationDate)
+            BindBOPropertyToLabel(State.MyBO, "Currency1Rate", lblExchangeFrom)
+            BindBOPropertyToLabel(State.MyBO, "Currency2Rate", lblExchangeTo)
+            ClearGridHeadersAndLabelsErrSign()
 
         End Sub
 
 
         Protected Sub PopulateFormFromBOs()
-            With Me.State.MyBO
+            With State.MyBO
                 'Me.SetSelectedItem(Me.moDealerDrop, .DealerId)      
                 TheDealerControl.SelectedIndex = -1
                 TheDealerControl.NothingSelected = True
                 TheDealerControl.SelectedGuid = .DealerId
-                Me.SetSelectedItem(Me.cboFromCurrencyId, .Currency1Id)
-                Me.SetSelectedItem(Me.cboToCurrencyID, .Currency2Id)
-                If Not .Currency1Rate Is Nothing Then
-                    Me.PopulateControlFromBOProperty(Me.txtFromCurrency, FormatNumber(.Currency1Rate.Value, 9, , TriState.True, TriState.True))
+                SetSelectedItem(cboFromCurrencyId, .Currency1Id)
+                SetSelectedItem(cboToCurrencyID, .Currency2Id)
+                If .Currency1Rate IsNot Nothing Then
+                    PopulateControlFromBOProperty(txtFromCurrency, FormatNumber(.Currency1Rate.Value, 9, , TriState.True, TriState.True))
                 Else
-                    Me.PopulateControlFromBOProperty(Me.txtFromCurrency, .Currency1Rate)
+                    PopulateControlFromBOProperty(txtFromCurrency, .Currency1Rate)
                 End If
 
-                If Not .Currency2Rate Is Nothing Then
-                    Me.PopulateControlFromBOProperty(Me.txtToCurrency, FormatNumber(.Currency2Rate.Value, 9, , TriState.True, TriState.True))
+                If .Currency2Rate IsNot Nothing Then
+                    PopulateControlFromBOProperty(txtToCurrency, FormatNumber(.Currency2Rate.Value, 9, , TriState.True, TriState.True))
                 Else
-                    Me.PopulateControlFromBOProperty(Me.txtToCurrency, .Currency2Rate)
+                    PopulateControlFromBOProperty(txtToCurrency, .Currency2Rate)
                 End If
 
-                Me.PopulateControlFromBOProperty(Me.txtEffectiveDate, .EffectiveDate)
-                Me.PopulateControlFromBOProperty(Me.txtExpirationDate, .EffectiveDate)
+                PopulateControlFromBOProperty(txtEffectiveDate, .EffectiveDate)
+                PopulateControlFromBOProperty(txtExpirationDate, .EffectiveDate)
                 'Me.txtDealer.Text = Me.State.DealerName
             End With
 
@@ -270,98 +270,98 @@ Namespace Tables
 
         Protected Sub PopulateBOsFromForm()
 
-            With Me.State.MyBO
+            With State.MyBO
                 'Me.PopulateBOProperty(Me.State.MyBO, "DealerId", Me.moDealerDrop)
-                Me.PopulateBOProperty(Me.State.MyBO, "DealerId", Me.TheDealerControl.SelectedGuid)
-                Me.PopulateBOProperty(Me.State.MyBO, "EffectiveDate", Me.txtEffectiveDate)
-                Me.PopulateBOProperty(Me.State.MyBO, "ExpirationDate", Me.txtExpirationDate)
-                Me.PopulateBOProperty(Me.State.MyBO, "Currency1Rate", Me.txtFromCurrency)
+                PopulateBOProperty(State.MyBO, "DealerId", TheDealerControl.SelectedGuid)
+                PopulateBOProperty(State.MyBO, "EffectiveDate", txtEffectiveDate)
+                PopulateBOProperty(State.MyBO, "ExpirationDate", txtExpirationDate)
+                PopulateBOProperty(State.MyBO, "Currency1Rate", txtFromCurrency)
                 'Me.PopulateBOProperty(Me.State.MyBO, "Currency2Rate", Me.txtToCurrency)
-                Me.PopulateBOProperty(Me.State.MyBO, "Currency1Id", Me.cboFromCurrencyId)
-                Me.PopulateBOProperty(Me.State.MyBO, "Currency2Id", Me.cboToCurrencyID)
+                PopulateBOProperty(State.MyBO, "Currency1Id", cboFromCurrencyId)
+                PopulateBOProperty(State.MyBO, "Currency2Id", cboToCurrencyID)
             End With
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Sub
 
         Protected Sub CreateNew()
-            Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
+            State.ScreenSnapShotBO = Nothing 'Reset the backup copy
 
-            Me.State.MyBO = New CurrencyConversion
+            State.MyBO = New CurrencyConversion
             ' PopulateDropdowns()
 
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
+            PopulateFormFromBOs()
+            EnableDisableFields()
 
         End Sub
 
         Protected Sub CreateNewWithCopy()
 
             'Me.State.IsACopy = True
-            Me.PopulateBOsFromForm()
+            PopulateBOsFromForm()
 
             Dim newObj As New CurrencyConversion
-            newObj.Copy(Me.State.MyBO)
+            newObj.Copy(State.MyBO)
 
-            Me.State.MyBO = newObj
+            State.MyBO = newObj
             'Me.State.MyBO.Dealer = Nothing
             'Me.State.MyBO.DealerName = Nothing
 
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
+            PopulateFormFromBOs()
+            EnableDisableFields()
 
             'create the backup copy
-            Me.State.ScreenSnapShotBO = New CurrencyConversion
-            Me.State.ScreenSnapShotBO.Clone(Me.State.MyBO)
+            State.ScreenSnapShotBO = New CurrencyConversion
+            State.ScreenSnapShotBO.Clone(State.MyBO)
             'Me.State.IsACopy = False
 
         End Sub
 
         Protected Sub CheckIfComingFromSaveConfirm()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-            If Not confResponse Is Nothing AndAlso confResponse = Me.CONFIRM_MESSAGE_OK Then
-                If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
-                    Me.State.MyBO.Save()
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+            If confResponse IsNot Nothing AndAlso confResponse = CONFIRM_MESSAGE_OK Then
+                If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
+                    State.MyBO.Save()
                 End If
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                        ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                     Case ElitaPlusPage.DetailPageCommand.New_
-                        Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                        Me.CreateNew()
+                        AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                        CreateNew()
                     Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                        Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                        Me.CreateNewWithCopy()
+                        AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                        CreateNewWithCopy()
                     Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                        Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
+                        ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
                 End Select
-            ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-                Select Case Me.State.ActionInProgress
+            ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                        ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                     Case ElitaPlusPage.DetailPageCommand.New_
-                        Me.CreateNew()
+                        CreateNew()
                     Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                        Me.CreateNewWithCopy()
+                        CreateNewWithCopy()
                     Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                        Me.ErrorCtrl.AddErrorAndShow(Me.State.LastErrMsg)
+                        ErrorCtrl.AddErrorAndShow(State.LastErrMsg)
                 End Select
-            ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.CONFIRM_MESSAGE_CANCEL Then
-                Select Case Me.State.ActionInProgress
+            ElseIf confResponse IsNot Nothing AndAlso confResponse = CONFIRM_MESSAGE_CANCEL Then
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                        ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                     Case ElitaPlusPage.DetailPageCommand.New_
-                        Me.CreateNew()
+                        CreateNew()
                     Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                        Me.CreateNewWithCopy()
+                        CreateNewWithCopy()
                     Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                        Me.ErrorCtrl.AddErrorAndShow(Me.State.LastErrMsg)
+                        ErrorCtrl.AddErrorAndShow(State.LastErrMsg)
                 End Select
             End If
             'Clean after consuming the action
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-            Me.HiddenSaveChangesPromptResponse.Value = ""
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            HiddenSaveChangesPromptResponse.Value = ""
         End Sub
 
         'Private Function ConvertRate(ByVal FromCurrency As Double) As DecimalType
@@ -373,112 +373,112 @@ Namespace Tables
 
 #Region "Button Clicks"
 
-        Private Sub btnBack_Click1(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click1(sender As Object, e As System.EventArgs) Handles btnBack.Click
             Try
-                Me.PopulateBOsFromForm()
-                If Me.State.MyBO.IsDirty AndAlso Not Me.State.boIsNew Then
-                    Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                PopulateBOsFromForm()
+                If State.MyBO.IsDirty AndAlso Not State.boIsNew Then
+                    AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
-                Me.AddConfirmMsg(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-                Me.State.LastErrMsg = Me.ErrorCtrl.Text
+                HandleErrors(ex, ErrorCtrl)
+                AddConfirmMsg(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+                State.LastErrMsg = ErrorCtrl.Text
             End Try
         End Sub
 
-        Private Sub btnCopy_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+        Private Sub btnCopy_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
             Try
-                Me.PopulateBOsFromForm()
-                If Me.State.MyBO.IsDirty Then
-                    Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                PopulateBOsFromForm()
+                If State.MyBO.IsDirty Then
+                    AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
                 Else
-                    Me.CreateNewWithCopy()
+                    CreateNewWithCopy()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub btnDelete_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+        Private Sub btnDelete_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
             Try
-                Me.PopulateBOsFromForm()
-                Me.State.MyBO.SP_Delete()
+                PopulateBOsFromForm()
+                State.MyBO.SP_Delete()
                 'Me.State.MyBO.DeleteAndSave()
-                Me.State.HasDataChanged = True
-                Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.MyBO, Me.State.HasDataChanged))
+                State.HasDataChanged = True
+                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, State.MyBO, State.HasDataChanged))
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
 
         End Sub
 
-        Private Sub btnNew_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+        Private Sub btnNew_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnNew_WRITE.Click
             Try
-                Me.PopulateBOsFromForm()
-                If (Me.State.MyBO.IsDirty) Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                PopulateBOsFromForm()
+                If (State.MyBO.IsDirty) Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
-                    Me.CreateNew()
+                    CreateNew()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub btnApply_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnApply_WRITE.Click
+        Private Sub btnApply_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnApply_WRITE.Click
             Try
-                Me.PopulateBOsFromForm()
-                If Me.State.MyBO.IsDirty Then
-                    Me.State.MyBO.Save()
-                    Me.State.HasDataChanged = True
-                    Me.PopulateFormFromBOs()
-                    If Me.State.MyBO.IsNew Then
-                        Me.EnableDisableFields(True)
-                        Me.State.boIsNew = True
+                PopulateBOsFromForm()
+                If State.MyBO.IsDirty Then
+                    State.MyBO.Save()
+                    State.HasDataChanged = True
+                    PopulateFormFromBOs()
+                    If State.MyBO.IsNew Then
+                        EnableDisableFields(True)
+                        State.boIsNew = True
                     Else
-                        Me.EnableDisableFields()
+                        EnableDisableFields()
                     End If
 
-                    Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                    AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
                 Else
-                    Me.AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
+                    AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
                 End If
             Catch ex As ApplicationException
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub btnUndo_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+        Private Sub btnUndo_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
             Try
-                If Not Me.State.MyBO.IsNew Then
+                If Not State.MyBO.IsNew Then
                     'Reload from the DB
-                    Me.State.MyBO = New CurrencyConversion(Me.State.MyBO.Id)
-                ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+                    State.MyBO = New CurrencyConversion(State.MyBO.Id)
+                ElseIf State.ScreenSnapShotBO IsNot Nothing Then
                     'It was a new with copy
-                    Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                    State.MyBO.Clone(State.ScreenSnapShotBO)
                 Else
-                    Me.State.MyBO = New CurrencyConversion
+                    State.MyBO = New CurrencyConversion
                 End If
                 ' TheDealerControl.SelectedIndex = -1
                 'TheDealerControl.NothingSelected = True
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
+                PopulateFormFromBOs()
+                EnableDisableFields()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
 #End Region
 
-        Private Sub btnGetRate_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnGetRate_WRITE.Click
+        Private Sub btnGetRate_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnGetRate_WRITE.Click
 
             'Dim FromSymble As String
             'Dim ToSymble As String
@@ -527,10 +527,10 @@ Namespace Tables
         '    Return CType(i, WS_CurrencyConvertor.Currency)
         'End Function
 
-        Private Sub btnCanvert_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Private Sub btnCanvert_WRITE_Click(sender As System.Object, e As System.EventArgs)
             Dim result As Double
-            result = (1 / CType(Me.txtFromCurrency.Text, Double))
-            Me.txtToCurrency.Text = Math.Round(result, 9).ToString()
+            result = (1 / CType(txtFromCurrency.Text, Double))
+            txtToCurrency.Text = Math.Round(result, 9).ToString()
 
         End Sub
 

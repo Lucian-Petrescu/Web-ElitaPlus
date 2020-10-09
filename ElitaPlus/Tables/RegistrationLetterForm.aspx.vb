@@ -32,15 +32,15 @@ Namespace Tables
         End Property
 
         Private Sub SetStateProperties()
-            Me.State.moRegistrationLetterId = CType(Me.CallingParameters, Guid)
+            State.moRegistrationLetterId = CType(CallingParameters, Guid)
             'Me.State.dealerTypeVSC = LookupListNew.GetIdFromCode(LookupListNew.LK_DEALER_TYPE, VSCCode)
             'Me.State.DealerTypeID = GetDealerTypeID()
-            If Me.State.moRegistrationLetterId.Equals(Guid.Empty) Then
-                Me.State.IsRegistrationLetterNew = True
+            If State.moRegistrationLetterId.Equals(Guid.Empty) Then
+                State.IsRegistrationLetterNew = True
                 ClearAll()
                 SetButtonsState(True)
             Else
-                Me.State.IsRegistrationLetterNew = False
+                State.IsRegistrationLetterNew = False
                 SetButtonsState(False)
             End If
             PopulateAll()
@@ -78,13 +78,13 @@ Namespace Tables
         Private ReadOnly Property TheRegistrationLetter() As RegistrationLetter
             Get
                 If moRegistrationLetter Is Nothing Then
-                    If Me.State.IsRegistrationLetterNew = True Then
+                    If State.IsRegistrationLetterNew = True Then
                         ' For creating, inserting
                         moRegistrationLetter = New RegistrationLetter
-                        Me.State.moRegistrationLetterId = moRegistrationLetter.Id
+                        State.moRegistrationLetterId = moRegistrationLetter.Id
                     Else
                         ' For updating, deleting
-                        moRegistrationLetter = New RegistrationLetter(Me.State.moRegistrationLetterId)
+                        moRegistrationLetter = New RegistrationLetter(State.moRegistrationLetterId)
                     End If
                 End If
 
@@ -107,27 +107,27 @@ Namespace Tables
 
 #Region "Handlers-Init"
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
             Try
-                Me.ErrControllerMaster.Clear_Hide()
+                ErrControllerMaster.Clear_Hide()
                 ClearLabelsErrSign()
                 TranslateGridHeader(gridVariable)
 
                 If Not Page.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
-                    Me.SetStateProperties()
-                    Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, _
-                                                                        Me.MSG_TYPE_CONFIRM, True)
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
+                    SetStateProperties()
+                    AddControlMsg(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, _
+                                                                        MSG_TYPE_CONFIRM, True)
                     '  EnableDisableFields()
                 End If
 
                 BindBoPropertiesToLabels()
                 CheckIfComingFromConfirm()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
         Public Function RenderTextEditor() As String
@@ -144,11 +144,11 @@ Namespace Tables
             Return textEditorCtlStr
         End Function
 
-        Public Function GetOnClickScript(ByVal strCode As String) As String
+        Public Function GetOnClickScript(strCode As String) As String
             Return "return CopyToClipboard(""" & strCode & """);"
         End Function
 
-        Public Function TranlateLabel(ByVal strLabel As String) As String
+        Public Function TranlateLabel(strLabel As String) As String
             If strLabel.Trim <> String.Empty Then
                 Return TranslationBase.TranslateLabelOrMessage(strLabel)
             Else
@@ -159,114 +159,114 @@ Namespace Tables
 
 #Region "Handlers-Buttons"
 
-        Protected Sub btnApply_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnApply_WRITE.Click
+        Protected Sub btnApply_WRITE_Click(sender As Object, e As EventArgs) Handles btnApply_WRITE.Click
             ApplyChanges()
         End Sub
 
         Private Sub GoBack()
             Dim retType As New RegistrationLetterSearchForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, _
-                                                                                Me.State.moRegistrationLetterId, Me.State.boChanged)
-            Me.ReturnToCallingPage(retType)
+                                                                                State.moRegistrationLetterId, State.boChanged)
+            ReturnToCallingPage(retType)
         End Sub
 
-        Protected Sub btnBack_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnBack.Click
+        Protected Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             Try
                 If IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, _
-                                                Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, _
+                                                HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
                     GoBack()
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub btnUndo_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnUndo_WRITE.Click
+        Protected Sub btnUndo_WRITE_Click(sender As Object, e As EventArgs) Handles btnUndo_WRITE.Click
             Try
                 PopulateAll()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
         Private Sub CreateNew()
-            Me.State.moRegistrationLetterId = Guid.Empty
+            State.moRegistrationLetterId = Guid.Empty
             TheRegistrationLetter.AttachmentFileName = ""
-            Me.State.IsRegistrationLetterNew = True
+            State.IsRegistrationLetterNew = True
             ClearAll()
-            Me.SetButtonsState(True)
-            Me.PopulateAll()
+            SetButtonsState(True)
+            PopulateAll()
             TheDealerControl.ChangeEnabledControlProperty(True)
 
         End Sub
 
-        Protected Sub btnNew_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnNew_WRITE.Click
+        Protected Sub btnNew_WRITE_Click(sender As Object, e As EventArgs) Handles btnNew_WRITE.Click
             Try
                 If IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
                     CreateNew()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
         Private Sub CreateNewCopy()
-            Me.State.moRegistrationLetterId = Guid.Empty
+            State.moRegistrationLetterId = Guid.Empty
             TheRegistrationLetter.AttachmentFileName = ""
             txtAttachment.Text = ""
-            Me.State.IsRegistrationLetterNew = True
+            State.IsRegistrationLetterNew = True
 
-            Me.SetButtonsState(True)
+            SetButtonsState(True)
             TheDealerControl.ChangeEnabledControlProperty(True)
 
         End Sub
 
-        Protected Sub btnCopy_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCopy_WRITE.Click
+        Protected Sub btnCopy_WRITE_Click(sender As Object, e As EventArgs) Handles btnCopy_WRITE.Click
             Try
                 If IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
                 Else
                     CreateNewCopy()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub btnDelete_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnDelete_WRITE.Click
+        Protected Sub btnDelete_WRITE_Click(sender As Object, e As EventArgs) Handles btnDelete_WRITE.Click
             Try
                 If DeleteRegistrationLetter() = True Then
-                    Me.State.boChanged = True
+                    State.boChanged = True
                     Dim retType As New RegistrationLetterSearchForm.ReturnType(ElitaPlusPage.DetailPageCommand.Delete, _
-                                    Me.State.moRegistrationLetterId)
+                                    State.moRegistrationLetterId)
                     retType.BoChanged = True
-                    Me.ReturnToCallingPage(retType)
+                    ReturnToCallingPage(retType)
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub btnDeleteAttach_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnDeleteAttach.Click
+        Protected Sub btnDeleteAttach_Click(sender As Object, e As EventArgs) Handles btnDeleteAttach.Click
             Try
                 emailText = Request.Params("EmailText")
                 TheRegistrationLetter.AttachmentFileName = ""
-                Me.TheRegistrationLetter.Save()
+                TheRegistrationLetter.Save()
                 TheRegistrationLetter.UpdateAttachment(TheRegistrationLetter.Id, Nothing)
-                Me.txtAttachment.Text = ""
+                txtAttachment.Text = ""
                 txtAttachment.Visible = False
                 btnDeleteAttach.Visible = False
                 fileAttachment.Visible = True
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -300,7 +300,7 @@ Namespace Tables
             Try
                 Dim dv As DataView = LookupListNew.GetDealerLookupList(oCompanyList, True)
                 TheDealerControl.SetControl(False, TheDealerControl.MODES.NEW_MODE, True, dv, TheDealerControl.NO_CAPTION, True)
-                If Me.State.IsRegistrationLetterNew = True Then
+                If State.IsRegistrationLetterNew = True Then
                     TheDealerControl.SelectedGuid = Guid.Empty
                     TheDealerControl.ChangeEnabledControlProperty(True)
                 Else
@@ -309,14 +309,14 @@ Namespace Tables
                 End If
                 TheDealerControl.Caption = TranslationBase.TranslateLabelOrMessage(LABEL_DEALER)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
         Private Sub PopulateTexts()
             Try
                 With TheRegistrationLetter
-                    If Me.State.IsRegistrationLetterNew = True Then
+                    If State.IsRegistrationLetterNew = True Then
                         emailText = ""
                     Else
                         moLetterTypeText.Text = .LetterType
@@ -330,7 +330,7 @@ Namespace Tables
                     SetButtonsState(State.IsRegistrationLetterNew)
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -343,14 +343,14 @@ Namespace Tables
                 Next
                 State.dvLetterVariable.Table.AcceptChanges()
             End If
-            Me.gridVariable.AutoGenerateColumns = False
-            Me.gridVariable.DataSource = State.dvLetterVariable
-            Me.gridVariable.DataBind()
+            gridVariable.AutoGenerateColumns = False
+            gridVariable.DataSource = State.dvLetterVariable
+            gridVariable.DataBind()
         End Sub
 
         Private Sub PopulateAll()
             PopulateGrid()
-            If Me.State.IsRegistrationLetterNew = True Then
+            If State.IsRegistrationLetterNew = True Then
                 PopulateDealer()
             Else
                 ClearAll()
@@ -360,26 +360,26 @@ Namespace Tables
         End Sub
 
         Protected Sub PopulateBOsFromForm()
-            With Me.TheRegistrationLetter
+            With TheRegistrationLetter
                 .DealerId = TheDealerControl.SelectedGuid
 
                 emailText = Request.Params("EmailText")
-                If Not (Not .EmailText Is Nothing AndAlso Not emailText Is Nothing AndAlso emailText.Replace(Environment.NewLine, "") = .EmailText.Replace(Environment.NewLine, "")) Then
-                    Me.PopulateBOProperty(TheRegistrationLetter, EMAIL_TEXT_PROPERTY, emailText)
+                If Not (.EmailText IsNot Nothing AndAlso emailText IsNot Nothing AndAlso emailText.Replace(Environment.NewLine, "") = .EmailText.Replace(Environment.NewLine, "")) Then
+                    PopulateBOProperty(TheRegistrationLetter, EMAIL_TEXT_PROPERTY, emailText)
                 End If
 
-                If Me.fileAttachment.HasFile Then
+                If fileAttachment.HasFile Then
                     .AttachmentFileName = fileAttachment.FileName
                     '.AttachmentFileData = fileAttachment.FileBytes
                 End If
 
-                Me.PopulateBOProperty(TheRegistrationLetter, LETTER_TYPE_PROPERTY, Me.moLetterTypeText)
-                Me.PopulateBOProperty(TheRegistrationLetter, NUMBER_OF_DAYS_PROPERTY, Me.moNumberOfDaysText)
-                Me.PopulateBOProperty(TheRegistrationLetter, EMAIL_SUBJECT_PROPERTY, Me.moEmailSubjectText)
-                Me.PopulateBOProperty(TheRegistrationLetter, EMAIL_FROM_PROPERTY, Me.txtEmailFrom)
-                Me.PopulateBOProperty(TheRegistrationLetter, EMAIL_TO_PROPERTY, Me.txtEmailTo)
+                PopulateBOProperty(TheRegistrationLetter, LETTER_TYPE_PROPERTY, moLetterTypeText)
+                PopulateBOProperty(TheRegistrationLetter, NUMBER_OF_DAYS_PROPERTY, moNumberOfDaysText)
+                PopulateBOProperty(TheRegistrationLetter, EMAIL_SUBJECT_PROPERTY, moEmailSubjectText)
+                PopulateBOProperty(TheRegistrationLetter, EMAIL_FROM_PROPERTY, txtEmailFrom)
+                PopulateBOProperty(TheRegistrationLetter, EMAIL_TO_PROPERTY, txtEmailTo)
             End With
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
 
@@ -387,7 +387,7 @@ Namespace Tables
 #End Region
 
 #Region "Gui-Validation"
-        Private Sub SetButtonsState(ByVal bIsNew As Boolean)
+        Private Sub SetButtonsState(bIsNew As Boolean)
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, Not bIsNew)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, Not bIsNew)
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, Not bIsNew)
@@ -415,7 +415,7 @@ Namespace Tables
                     bIsDirty = .IsDirty
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
             Return bIsDirty
         End Function
@@ -424,24 +424,24 @@ Namespace Tables
             Dim isOK As Boolean = True
             Try
                 
-                Me.PopulateBOsFromForm()
+                PopulateBOsFromForm()
                 If TheRegistrationLetter.IsDirty() Then
-                    Me.TheRegistrationLetter.Save()
-                    If Me.fileAttachment.HasFile Then
+                    TheRegistrationLetter.Save()
+                    If fileAttachment.HasFile Then
                         TheRegistrationLetter.UpdateAttachment(TheRegistrationLetter.Id, fileAttachment.FileBytes)
                     End If
-                    Me.State.boChanged = True
-                    If Me.State.IsRegistrationLetterNew = True Then
-                        Me.State.IsRegistrationLetterNew = False
+                    State.boChanged = True
+                    If State.IsRegistrationLetterNew = True Then
+                        State.IsRegistrationLetterNew = False
                     End If
                     PopulateAll()
-                    Me.SetButtonsState(Me.State.IsRegistrationLetterNew)
-                    Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    SetButtonsState(State.IsRegistrationLetterNew)
+                    DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 Else
-                    Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
                 isOK = False
             End Try
             Return isOK
@@ -460,7 +460,7 @@ Namespace Tables
             Catch ex As Exception
                 'undo the delete
                 TheRegistrationLetter.RejectChanges()
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
                 bIsOk = False
             End Try
             Return bIsOk
@@ -471,39 +471,39 @@ Namespace Tables
 #Region "Handlers-Labels"
         Private Sub BindBoPropertiesToLabels()
             'Me.BindBOPropertyToLabel(TheRegistrationLetter, DEALER_ID_PROPERTY, Me.moRegistrationDealerLabel)
-            Me.BindBOPropertyToLabel(TheRegistrationLetter, LETTER_TYPE_PROPERTY, Me.moLetterTypeLabel)
-            Me.BindBOPropertyToLabel(TheRegistrationLetter, NUMBER_OF_DAYS_PROPERTY, Me.moNumberOfDaysLabel)
-            Me.BindBOPropertyToLabel(TheRegistrationLetter, EMAIL_SUBJECT_PROPERTY, Me.moEmailSubjectLabel)
-            Me.BindBOPropertyToLabel(TheRegistrationLetter, EMAIL_TEXT_PROPERTY, Me.moEmailTextLabel)
-            Me.BindBOPropertyToLabel(TheRegistrationLetter, EMAIL_FROM_PROPERTY, Me.lblEmailFrom)
-            Me.BindBOPropertyToLabel(TheRegistrationLetter, EMAIL_TO_PROPERTY, Me.lblEmailTo)
+            BindBOPropertyToLabel(TheRegistrationLetter, LETTER_TYPE_PROPERTY, moLetterTypeLabel)
+            BindBOPropertyToLabel(TheRegistrationLetter, NUMBER_OF_DAYS_PROPERTY, moNumberOfDaysLabel)
+            BindBOPropertyToLabel(TheRegistrationLetter, EMAIL_SUBJECT_PROPERTY, moEmailSubjectLabel)
+            BindBOPropertyToLabel(TheRegistrationLetter, EMAIL_TEXT_PROPERTY, moEmailTextLabel)
+            BindBOPropertyToLabel(TheRegistrationLetter, EMAIL_FROM_PROPERTY, lblEmailFrom)
+            BindBOPropertyToLabel(TheRegistrationLetter, EMAIL_TO_PROPERTY, lblEmailTo)
         End Sub
 
         Private Sub ClearLabelsErrSign()
             'Me.ClearLabelErrSign(Me.moRegistrationDealerLabel)
-            Me.ClearLabelErrSign(Me.moLetterTypeLabel)
-            Me.ClearLabelErrSign(Me.moNumberOfDaysLabel)
-            Me.ClearLabelErrSign(Me.moEmailSubjectLabel)
-            Me.ClearLabelErrSign(Me.moEmailTextLabel)
-            Me.ClearLabelErrSign(Me.lblEmailFrom)
-            Me.ClearLabelErrSign(Me.lblEmailTo)
+            ClearLabelErrSign(moLetterTypeLabel)
+            ClearLabelErrSign(moNumberOfDaysLabel)
+            ClearLabelErrSign(moEmailSubjectLabel)
+            ClearLabelErrSign(moEmailTextLabel)
+            ClearLabelErrSign(lblEmailFrom)
+            ClearLabelErrSign(lblEmailTo)
         End Sub
 #End Region
 
 #Region "State-Management"
 
         Protected Sub ComingFromBack()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
             If Not confResponse = String.Empty Then
                 ' Return from the Back Button
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         ' Save and go back to Search Page
                         If ApplyChanges() = True Then
-                            Me.State.boChanged = True
+                            State.boChanged = True
                             GoBack()
                         End If
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
                         GoBack()
                 End Select
             End If
@@ -511,17 +511,17 @@ Namespace Tables
         End Sub
 
         Protected Sub ComingFromNewCopy()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
             If Not confResponse = String.Empty Then
                 ' Return from the New Copy Button
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         ' Save and create a new Copy BO
                         If ApplyChanges() = True Then
-                            Me.State.boChanged = True
+                            State.boChanged = True
                             CreateNewCopy()
                         End If
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
                         ' create a new BO
                         CreateNewCopy()
                 End Select
@@ -530,7 +530,7 @@ Namespace Tables
 
         Protected Sub CheckIfComingFromConfirm()
             Try
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     ' Period
                     Case ElitaPlusPage.DetailPageCommand.Back
                         ComingFromBack()
@@ -541,11 +541,11 @@ Namespace Tables
                 End Select
 
                 'Clean after consuming the action
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                Me.HiddenSaveChangesPromptResponse.Value = String.Empty
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                HiddenSaveChangesPromptResponse.Value = String.Empty
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 

@@ -46,29 +46,29 @@ Public Class QuestionDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("soft_question_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
 
-    Public Function GetMaxChildOrder(ByVal parentID As Guid) As Long
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_MAX_CHILD_ORDER")
+    Public Function GetMaxChildOrder(parentID As Guid) As Long
+        Dim selectStmt As String = Config("/SQL/LOAD_MAX_CHILD_ORDER")
         Dim ds As DataSet = New DataSet
         Try
             Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("parent_id", parentID.ToByteArray)}
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
-            If ds.Tables.Count > 0 AndAlso ds.Tables(Me.TABLE_NAME).Rows.Count > 0 Then
-                Return ds.Tables(Me.TABLE_NAME).Rows(0)(Me.COL_NAME_CHILD_ORDER)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
+            If ds.Tables.Count > 0 AndAlso ds.Tables(TABLE_NAME).Rows.Count > 0 Then
+                Return ds.Tables(TABLE_NAME).Rows(0)(COL_NAME_CHILD_ORDER)
             Else
                 Return Nothing
             End If
@@ -79,15 +79,15 @@ Public Class QuestionDAL
 
     End Function
 
-    Public Function GetSoftQuestionId(ByVal parentID As Guid, ByVal ChildOrder As Long) As Guid
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_SOFTQUESTIONID")
+    Public Function GetSoftQuestionId(parentID As Guid, ChildOrder As Long) As Guid
+        Dim selectStmt As String = Config("/SQL/LOAD_SOFTQUESTIONID")
         Dim ds As DataSet = New DataSet
         Try
             Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("soft_question_id", ChildOrder), _
                                                                                                New DBHelper.DBHelperParameter("parent_id", parentID.ToByteArray)}
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
-            If ds.Tables.Count > 0 AndAlso ds.Tables(Me.TABLE_NAME).Rows.Count > 0 Then
-                Return New Guid(CType(ds.Tables(Me.TABLE_NAME).Rows(0)(Me.COL_NAME_SOFT_QUESTION_ID), Byte()))
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
+            If ds.Tables.Count > 0 AndAlso ds.Tables(TABLE_NAME).Rows.Count > 0 Then
+                Return New Guid(CType(ds.Tables(TABLE_NAME).Rows(0)(COL_NAME_SOFT_QUESTION_ID), Byte()))
             Else
                 Return Nothing
             End If
@@ -101,10 +101,10 @@ Public Class QuestionDAL
     'Author:                     Arnie Lugo
     'Date:                       03/14/2012
     'Modification History:       REQ-860
-    Public Function LoadQuestionList(ByVal Code As String, ByVal Description As String, ByVal QuestionTypeId As Guid, ByVal SearchTags As String, ByVal Issue As String, ByVal ActiveOn As String, ByVal languageId As Guid) As DataSet
+    Public Function LoadQuestionList(Code As String, Description As String, QuestionTypeId As Guid, SearchTags As String, Issue As String, ActiveOn As String, languageId As Guid) As DataSet
         Dim selectStmt As String
         Dim parameters() As DBHelper.DBHelperParameter
-        selectStmt = Me.Config("/SQL/LOAD_QUESTION_LIST")
+        selectStmt = Config("/SQL/LOAD_QUESTION_LIST")
         Dim dynamic_where_clause As String = String.Empty
         parameters = New DBHelper.DBHelperParameter() _
                                     {New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray())}
@@ -186,7 +186,7 @@ Public Class QuestionDAL
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -197,13 +197,13 @@ Public Class QuestionDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim SoftQGroupDal As New SoftQuestionGroupDAL
         Dim AnswerDAL As New AnswerDAL
 
@@ -214,13 +214,13 @@ Public Class QuestionDAL
         Try
             'First Pass updates Deletions
             AnswerDAL.Update(familyDataset, tr, DataRowState.Deleted)
-            MyBase.Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Deleted)
+            MyBase.Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Deleted)
             SoftQGroupDal.Update(familyDataset, tr, DataRowState.Deleted)
 
 
             'Second Pass updates additions and changes
             SoftQGroupDal.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
-            Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
             AnswerDAL.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
 
             If Transaction Is Nothing Then
@@ -236,13 +236,13 @@ Public Class QuestionDAL
         End Try
     End Sub
 
-    Function IsQuestionAssignedtoIssue(ByVal QuestionId As Guid) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/IsQuestionAssignedtoIssue")
+    Function IsQuestionAssignedtoIssue(QuestionId As Guid) As Boolean
+        Dim selectStmt As String = Config("/SQL/IsQuestionAssignedtoIssue")
         Dim ds As New DataSet
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("soft_question_id", QuestionId.ToByteArray)}
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
-            If ds.Tables(Me.TABLE_NAME).Rows.Count > 0 Then Return True Else Return False
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
+            If ds.Tables(TABLE_NAME).Rows.Count > 0 Then Return True Else Return False
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -251,8 +251,8 @@ Public Class QuestionDAL
 #End Region
 
 #Region "Special function"
-    Function GetListItembyCode(ByVal ListCode As String, ByVal DropdownId As Guid) As Guid
-        Dim selectStmt As String = Me.Config("/SQL/GetListItembyCode")
+    Function GetListItembyCode(ListCode As String, DropdownId As Guid) As Guid
+        Dim selectStmt As String = Config("/SQL/GetListItembyCode")
         Dim ds As New DataSet
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                     {New DBHelper.DBHelperParameter("item_code", ListCode.ToUpper), _

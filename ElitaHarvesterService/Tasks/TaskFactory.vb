@@ -1,11 +1,11 @@
 ﻿Imports Assurant.ElitaPlus.BusinessObjectsNew
 
 Public Class TaskFactory
-    Public Shared Function CreateTask(ByVal ptask As PublishedTask, ByVal machineName As String, ByVal processThreadName As String) As ITask
+    Public Shared Function CreateTask(ptask As PublishedTask, machineName As String, processThreadName As String) As ITask
         Return CreateTask(ptask.Task.Code, ptask, machineName, processThreadName)
     End Function
 
-    Friend Shared Function CreateTask(ByVal taskCode As String, ByVal ptask As PublishedTask, ByVal machineName As String, ByVal processThreadName As String) As ITask
+    Friend Shared Function CreateTask(taskCode As String, ptask As PublishedTask, machineName As String, processThreadName As String) As ITask
         Dim task As TaskBase = Nothing
         Select Case taskCode
             Case Codes.TASK_FBL_SLA_MONTR

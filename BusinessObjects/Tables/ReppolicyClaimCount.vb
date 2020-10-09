@@ -6,48 +6,48 @@ Public Class ReppolicyClaimCount
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ReppolicyClaimCountDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class ReppolicyClaimCount
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ReppolicyClaimCountDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -90,7 +90,7 @@ Public Class ReppolicyClaimCount
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ReppolicyClaimCountDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class ReppolicyClaimCount
     End Property
 
     <ValueMandatory("")> _
-    Public Property ContractId() As Guid
+    Public Property ContractId As Guid
         Get
             CheckDeleted()
             If row(ReppolicyClaimCountDAL.COL_NAME_CONTRACT_ID) Is DBNull.Value Then
@@ -110,15 +110,15 @@ Public Class ReppolicyClaimCount
                 Return New Guid(CType(row(ReppolicyClaimCountDAL.COL_NAME_CONTRACT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ReppolicyClaimCountDAL.COL_NAME_CONTRACT_ID, Value)
+            SetValue(ReppolicyClaimCountDAL.COL_NAME_CONTRACT_ID, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=50)> _
-    Public Property ProductCode() As String
+    Public Property ProductCode As String
         Get
             CheckDeleted()
             If Row(ReppolicyClaimCountDAL.COL_NAME_PRODUCT_CODE) Is DBNull.Value Then
@@ -127,14 +127,14 @@ Public Class ReppolicyClaimCount
                 Return CType(Row(ReppolicyClaimCountDAL.COL_NAME_PRODUCT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ReppolicyClaimCountDAL.COL_NAME_PRODUCT_CODE, Value)
+            SetValue(ReppolicyClaimCountDAL.COL_NAME_PRODUCT_CODE, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=1, Max:=9999, MaxExclusive:=False)> _
-    Public Property CertDuration() As LongType
+    Public Property CertDuration As LongType
         Get
             CheckDeleted()
             If Row(ReppolicyClaimCountDAL.COL_NAME_CERT_DURATION) Is DBNull.Value Then
@@ -143,14 +143,14 @@ Public Class ReppolicyClaimCount
                 Return New LongType(CType(Row(ReppolicyClaimCountDAL.COL_NAME_CERT_DURATION), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ReppolicyClaimCountDAL.COL_NAME_CERT_DURATION, Value)
+            SetValue(ReppolicyClaimCountDAL.COL_NAME_CERT_DURATION, Value)
         End Set
     End Property
 
     <Config_Criteria_Valid(""), Duplicate_Config_Exists("")> _
-    Public Property ConverageTypeId() As Guid
+    Public Property ConverageTypeId As Guid
         Get
             CheckDeleted()
             If Row(ReppolicyClaimCountDAL.COL_NAME_CONVERAGE_TYPE_ID) Is DBNull.Value Then
@@ -159,15 +159,15 @@ Public Class ReppolicyClaimCount
                 Return New Guid(CType(Row(ReppolicyClaimCountDAL.COL_NAME_CONVERAGE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ReppolicyClaimCountDAL.COL_NAME_CONVERAGE_TYPE_ID, Value)
+            SetValue(ReppolicyClaimCountDAL.COL_NAME_CONVERAGE_TYPE_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidNumericRange("", Min:=1, Max:=99, MaxExclusive:=False)> _
-    Public Property ReplacementPolicyClaimCount() As LongType
+    Public Property ReplacementPolicyClaimCount As LongType
         Get
             CheckDeleted()
             If Row(ReppolicyClaimCountDAL.COL_NAME_REPLACEMENT_POLICY_CLAIM_COUNT) Is DBNull.Value Then
@@ -176,15 +176,15 @@ Public Class ReppolicyClaimCount
                 Return New LongType(CType(Row(ReppolicyClaimCountDAL.COL_NAME_REPLACEMENT_POLICY_CLAIM_COUNT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ReppolicyClaimCountDAL.COL_NAME_REPLACEMENT_POLICY_CLAIM_COUNT, Value)
+            SetValue(ReppolicyClaimCountDAL.COL_NAME_REPLACEMENT_POLICY_CLAIM_COUNT, Value)
         End Set
     End Property
 
-    Public ReadOnly Property CoverageTypeDescription() As String
+    Public ReadOnly Property CoverageTypeDescription As String
         Get
-            Return LookupListNew.GetDescriptionFromId(LookupListNew.LK_COVERAGE_TYPES, ConverageTypeId, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+            Return LookupListNew.GetDescriptionFromId(LookupListCache.LK_COVERAGE_TYPES, ConverageTypeId, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
         End Get
     End Property
 
@@ -195,15 +195,15 @@ Public Class ReppolicyClaimCount
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ReppolicyClaimCountDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -215,15 +215,15 @@ Public Class ReppolicyClaimCount
     Public Sub SaveWithoutCheckDSCreator()
         Try
             MyBase.Save()
-            If Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ReppolicyClaimCountDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -231,12 +231,12 @@ Public Class ReppolicyClaimCount
         End Try
     End Sub
 
-    Public Shared Function GetReplacementPolicyClaimCntByClaim(ByVal ContractID As Guid, ByVal ClaimID As Guid) As Long
+    Public Shared Function GetReplacementPolicyClaimCntByClaim(ContractID As Guid, ClaimID As Guid) As Long
         Dim dal As New ReppolicyClaimCountDAL
         Return dal.LoadReplacementPolicyClaimCntByClaim(ContractID, ClaimID)
     End Function
 
-    Public Shared Function GetReplacementPolicyClaimCntConfigByContract(ByVal ContractID As Guid) As Collections.Generic.List(Of ReppolicyClaimCount)
+    Public Shared Function GetReplacementPolicyClaimCntConfigByContract(ContractID As Guid) As Collections.Generic.List(Of ReppolicyClaimCount)
         Dim dal As New ReppolicyClaimCountDAL
         Dim ds As DataSet = dal.LoadListByContract(ContractID)
         Dim RPCCList As New Collections.Generic.List(Of ReppolicyClaimCount)
@@ -246,13 +246,13 @@ Public Class ReppolicyClaimCount
         Return RPCCList
     End Function
 
-    Public Shared Function GetCoverageTypeListByDealer(ByVal dealer_id As Guid) As DataView
+    Public Shared Function GetCoverageTypeListByDealer(dealer_id As Guid) As DataView
         Dim dal As New ReppolicyClaimCountDAL
         Dim ds As DataSet = dal.LoadCoverageTypeByDealer(dealer_id, Authentication.CurrentUser.LanguageId)
         Return ds.Tables(0).DefaultView
     End Function
 
-    Public Shared Function GetAvailCertDurationByDealer(ByVal dealer_id As Guid) As DataView
+    Public Shared Function GetAvailCertDurationByDealer(dealer_id As Guid) As DataView
         Dim dal As New ReppolicyClaimCountDAL
         Dim ds As DataSet = dal.LoadAvailCertDurationByDealer(dealer_id)
         Return ds.Tables(0).DefaultView
@@ -261,34 +261,34 @@ Public Class ReppolicyClaimCount
     'Verify that value allows in one and only one of the 3 fields
     Public Function OneAndOnlyOneConfigCriteriaHasValue() As Boolean
         Dim intCnt As Integer = 0
-        If (Not Me.ProductCode Is Nothing) AndAlso Me.ProductCode <> String.Empty Then
+        If (ProductCode IsNot Nothing) AndAlso ProductCode <> String.Empty Then
             intCnt = intCnt + 1
         End If
 
-        If Me.ConverageTypeId <> Guid.Empty Then
+        If ConverageTypeId <> Guid.Empty Then
             intCnt = intCnt + 1
         End If
 
-        If (Not Me.CertDuration Is Nothing) AndAlso Me.CertDuration.Value > 0 Then
+        If (CertDuration IsNot Nothing) AndAlso CertDuration.Value > 0 Then
             intCnt = intCnt + 1
         End If
 
         Return (intCnt = 1)
     End Function
 
-    Public Function DuplicateExists(ByVal ListToCheck As Collections.Generic.List(Of ReppolicyClaimCount)) As Boolean
+    Public Function DuplicateExists(ListToCheck As Collections.Generic.List(Of ReppolicyClaimCount)) As Boolean
         'Dim objInd As Integer = State.RepPolicyList.FindIndex(Function(r) r.Id = State.RepPolicyWorkingItem.Id)
         Dim blnDup As Boolean = False
-        If (Not Me.CertDuration Is Nothing) AndAlso Me.CertDuration.Value > 0 Then
-            If ListToCheck.Exists(Function(r) (Not r.CertDuration Is Nothing) AndAlso r.CertDuration = Me.CertDuration AndAlso r.Id <> Me.Id) Then
+        If (CertDuration IsNot Nothing) AndAlso CertDuration.Value > 0 Then
+            If ListToCheck.Exists(Function(r) (r.CertDuration IsNot Nothing) AndAlso r.CertDuration = CertDuration AndAlso r.Id <> Id) Then
                 blnDup = True
             End If
-        ElseIf (Not Me.ProductCode Is Nothing) AndAlso Me.ProductCode <> String.Empty Then
-            If ListToCheck.Exists(Function(r) (Not r.ProductCode Is Nothing) AndAlso r.ProductCode.Trim.ToUpper = Me.ProductCode.Trim.ToUpper AndAlso r.Id <> Me.Id) Then
+        ElseIf (ProductCode IsNot Nothing) AndAlso ProductCode <> String.Empty Then
+            If ListToCheck.Exists(Function(r) (r.ProductCode IsNot Nothing) AndAlso r.ProductCode.Trim.ToUpper = ProductCode.Trim.ToUpper AndAlso r.Id <> Id) Then
                 blnDup = True
             End If
-        ElseIf Me.ConverageTypeId <> Guid.Empty Then
-            If ListToCheck.Exists(Function(r) r.ConverageTypeId = Me.ConverageTypeId AndAlso r.Id <> Me.Id) Then
+        ElseIf ConverageTypeId <> Guid.Empty Then
+            If ListToCheck.Exists(Function(r) r.ConverageTypeId = ConverageTypeId AndAlso r.Id <> Id) Then
                 blnDup = True
             End If
         End If
@@ -307,11 +307,11 @@ Public Class ReppolicyClaimCount
     Public NotInheritable Class Config_Criteria_Valid
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, "REPLACEMENT_POLICY_CONFIG_CRITERIA_INVALID")
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ReppolicyClaimCount = CType(objectToValidate, ReppolicyClaimCount)
             Return obj.OneAndOnlyOneConfigCriteriaHasValue
         End Function
@@ -321,11 +321,11 @@ Public Class ReppolicyClaimCount
     Public NotInheritable Class Duplicate_Config_Exists
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, "REPLACEMENT_POLICY_DUPLICATE_CONFIG")
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ReppolicyClaimCount = CType(objectToValidate, ReppolicyClaimCount)
             Dim mylist As Collections.Generic.List(Of ReppolicyClaimCount) = obj.GetReplacementPolicyClaimCntConfigByContract(obj.ContractId)
             Return (Not obj.DuplicateExists(mylist))

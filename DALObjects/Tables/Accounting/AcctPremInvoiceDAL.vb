@@ -3,7 +3,7 @@ Public Class AcctPremInvoiceDAL
     Inherits DALBase
 
 #Region "Delegate"
-    Public Delegate Sub AsyncCaller(ByVal DealerID As Guid, ByVal userNetworkId As String, ByVal sqlStmt As String)
+    Public Delegate Sub AsyncCaller(DealerID As Guid, userNetworkId As String, sqlStmt As String)
 #End Region
 
 #Region "Constants"
@@ -51,48 +51,48 @@ Public Class AcctPremInvoiceDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("acct_prem_invoice_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal companyIds As ArrayList, ByVal DealerID As Guid, ByVal InvNum As String, _
-                                ByVal BeginDate As Date, ByVal EndDate As Date) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(companyIds As ArrayList, DealerID As Guid, InvNum As String, _
+                                BeginDate As Date, EndDate As Date) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim whereClauseConditions As String = ""
 
-        whereClauseConditions = MiscUtil.BuildListForSql("i." & Me.COL_NAME_COMPANY_ID, companyIds, False)
+        whereClauseConditions = MiscUtil.BuildListForSql("i." & COL_NAME_COMPANY_ID, companyIds, False)
 
         If DealerID <> Guid.Empty Then
-            whereClauseConditions &= Environment.NewLine & " AND i." & Me.COL_NAME_DEALER_ID & " = '" & Me.GuidToSQLString(DealerID) & "'"
+            whereClauseConditions &= Environment.NewLine & " AND i." & COL_NAME_DEALER_ID & " = '" & GuidToSQLString(DealerID) & "'"
         End If
 
         If InvNum <> "" AndAlso FormatSearchMask(InvNum) Then
-            whereClauseConditions &= Environment.NewLine & " AND (Upper(i." & Me.COL_NAME_INVOICE_NUMBER & ") " & InvNum.ToUpper _
-                                        & " or Upper(i." & Me.COL_NAME_CREDIT_NOTE_NUMBER & ") " & InvNum.ToUpper & ")"
+            whereClauseConditions &= Environment.NewLine & " AND (Upper(i." & COL_NAME_INVOICE_NUMBER & ") " & InvNum.ToUpper _
+                                        & " or Upper(i." & COL_NAME_CREDIT_NOTE_NUMBER & ") " & InvNum.ToUpper & ")"
         End If
 
         If BeginDate > Date.MinValue Then
-            whereClauseConditions &= Environment.NewLine & " AND TRUNC(i." & Me.COL_NAME_CREATED_DATE & ") >= TO_DATE('" & BeginDate.ToString("MM/dd/yyyy") & "','mm/dd/yyyy')"
+            whereClauseConditions &= Environment.NewLine & " AND TRUNC(i." & COL_NAME_CREATED_DATE & ") >= TO_DATE('" & BeginDate.ToString("MM/dd/yyyy") & "','mm/dd/yyyy')"
         End If
 
         If EndDate > Date.MinValue Then
-            whereClauseConditions &= Environment.NewLine & " AND TRUNC(i." & Me.COL_NAME_CREATED_DATE & ") <= TO_DATE('" & EndDate.ToString("MM/dd/yyyy") & "','mm/dd/yyyy')"
+            whereClauseConditions &= Environment.NewLine & " AND TRUNC(i." & COL_NAME_CREATED_DATE & ") <= TO_DATE('" & EndDate.ToString("MM/dd/yyyy") & "','mm/dd/yyyy')"
         End If
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
         Try
-            Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+            Return DBHelper.Fetch(selectStmt, TABLE_NAME)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -101,12 +101,12 @@ Public Class AcctPremInvoiceDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
@@ -123,9 +123,9 @@ Public Class AcctPremInvoiceDAL
     '    aSyncHandler.BeginInvoke(DealerID, userNetworkId, sqlStmt, Nothing, Nothing)
     'End Sub
 
-    Public Sub CreateInvoice(ByVal DealerID As Guid, ByVal userNetworkId As String)
+    Public Sub CreateInvoice(DealerID As Guid, userNetworkId As String)
         Dim sqlStmt As String
-        sqlStmt = Me.Config("/SQL/CREATE_INVOICE")
+        sqlStmt = Config("/SQL/CREATE_INVOICE")
         Try
             Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("v_dealer_id", DealerID.ToByteArray), New DBHelper.DBHelperParameter("v_network_id", userNetworkId)}
             Dim outParameters() As DBHelper.DBHelperParameter

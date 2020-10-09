@@ -57,7 +57,7 @@ Namespace SpecializedServices.GW
         Public Property ItemCoverages As IEnumerable(Of SearchResultCertificateItemCoverageInfo)
 
 
-        Public Sub New(ByVal pCertificateItem As CertificateItem, pCommonManager As CommonManager, pcompanyGroup As CompanyGroup, pEquipmentManager As EquipmentManager, pLanguage As String)
+        Public Sub New(pCertificateItem As CertificateItem, pCommonManager As CommonManager, pcompanyGroup As CompanyGroup, pEquipmentManager As EquipmentManager, pLanguage As String)
             ' Copy properties from Certificate Item to current instance
             With Me
                 .ItemNumber = pCertificateItem.ItemNumber
@@ -88,10 +88,10 @@ Namespace SpecializedServices.GW
 
             End With
 
-            Me.ItemCoverages = New List(Of SearchResultCertificateItemCoverageInfo)
+            ItemCoverages = New List(Of SearchResultCertificateItemCoverageInfo)
 
             For Each cic As CertificateItemCoverage In pCertificateItem.ItemCoverages
-                DirectCast(Me.ItemCoverages, IList(Of SearchResultCertificateItemCoverageInfo)).Add(New SearchResultCertificateItemCoverageInfo(cic, pCommonManager, pLanguage))
+                DirectCast(ItemCoverages, IList(Of SearchResultCertificateItemCoverageInfo)).Add(New SearchResultCertificateItemCoverageInfo(cic, pCommonManager, pLanguage))
             Next
 
         End Sub

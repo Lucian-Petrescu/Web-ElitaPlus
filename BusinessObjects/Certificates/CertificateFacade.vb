@@ -53,42 +53,42 @@ Public NotInheritable Class CertificateFacade
     End Property
 #End Region
 
-    Public Shared Function GetCertificatebyCertNumber(ByVal CertificateNumber As String, ByVal dealerCode As String, ByVal upgradeFlag As String) As Guid
+    Public Shared Function GetCertificatebyCertNumber(CertificateNumber As String, dealerCode As String, upgradeFlag As String) As Guid
         Dim dal As New CertificateDAL
 
         Return dal.GetCertInfo(CertificateNumber, dealerCode, Nothing, upgradeFlag, Nothing, Nothing)
 
     End Function
 
-    Public Shared Function GetCertificatebyAcctNumber(ByVal BillingAccountNumber As String, ByVal dealerCode As String) As Guid
+    Public Shared Function GetCertificatebyAcctNumber(BillingAccountNumber As String, dealerCode As String) As Guid
         Dim dal As New CertificateDAL
 
         Return dal.GetCertInfo(Nothing, dealerCode, BillingAccountNumber, Nothing, Nothing, Nothing)
 
     End Function
 
-    Public Shared Function GetCertificatebyCertNumberAndCompanyCode(ByVal CertificateNumber As String, ByVal CompanyCode As String) As Guid
+    Public Shared Function GetCertificatebyCertNumberAndCompanyCode(CertificateNumber As String, CompanyCode As String) As Guid
         Dim dal As New CertificateDAL
 
         Return dal.GetCertInfo(CertificateNumber, Nothing, Nothing, Nothing, CompanyCode, Nothing)
 
     End Function
 
-    Public Shared Function GetCertificatebySerialNumber(ByVal dealerCode As String, ByVal SerialNumber As String, ByVal upgradeFlag As String) As Guid
+    Public Shared Function GetCertificatebySerialNumber(dealerCode As String, SerialNumber As String, upgradeFlag As String) As Guid
         Dim dal As New CertificateDAL
 
         Return dal.GetCertInfoBySerialNumber(dealerCode, SerialNumber, upgradeFlag)
 
     End Function
 
-    Public Shared Function GetCertAfterUpgrade(ByVal dealerCode As String, ByVal SerialNumber As String, IdentificationNumber As String, UpgradeDate As Date) As Guid
+    Public Shared Function GetCertAfterUpgrade(dealerCode As String, SerialNumber As String, IdentificationNumber As String, UpgradeDate As Date) As Guid
         Dim dal As New CertificateDAL
 
         Return dal.GetCertInfoBySrNrIdentNrUpgrdDate(dealerCode, SerialNumber, IdentificationNumber, UpgradeDate)
 
     End Function
 
-    Public Shared Function GetCertificatebyMobileNumber(ByVal MobileNumber As String, ByVal dealerCode As String, ByVal upgradeFlag As String) As Guid
+    Public Shared Function GetCertificatebyMobileNumber(MobileNumber As String, dealerCode As String, upgradeFlag As String) As Guid
         Dim dal As New CertificateDAL
 
         Return dal.GetCertInfo(Nothing, dealerCode, Nothing, upgradeFlag, Nothing, MobileNumber)

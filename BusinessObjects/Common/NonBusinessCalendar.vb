@@ -6,56 +6,56 @@ Public Class NonbusinessCalendar
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
-    Public Sub New(ByVal companyGroupId As Guid, ByVal nonBusinessDate As String)
+    Public Sub New(companyGroupId As Guid, nonBusinessDate As String)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(companyGroupId, nonBusinessDate)
+        Dataset = New DataSet
+        Load(companyGroupId, nonBusinessDate)
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
-    Protected Sub Load(ByVal companyGroupId As Guid, ByVal nonBusinessDate As String)
+    Protected Sub Load(companyGroupId As Guid, nonBusinessDate As String)
         Try
             Dim dal As New NonBusinessCalendarDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
             newRow(NonBusinessCalendarDAL.COL_NAME_COMPANY_GROUP_ID) = companyGroupId.ToByteArray
             newRow(NonBusinessCalendarDAL.COL_NAME_NONBUSINESS_DATE) = nonBusinessDate
-            Me.Row = newRow
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -67,12 +67,12 @@ Public Class NonbusinessCalendar
     Protected Sub Load()
         Try
             Dim dal As New NonbusinessCalendarDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -80,23 +80,23 @@ Public Class NonbusinessCalendar
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New NonbusinessCalendarDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -120,7 +120,7 @@ Public Class NonbusinessCalendar
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(NonBusinessCalendarDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -131,7 +131,7 @@ Public Class NonbusinessCalendar
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(NonBusinessCalendarDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -140,15 +140,15 @@ Public Class NonbusinessCalendar
                 Return New Guid(CType(Row(NonBusinessCalendarDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(NonBusinessCalendarDAL.COL_NAME_COMPANY_GROUP_ID, Value)
+            SetValue(NonBusinessCalendarDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property NonbusinessDate() As DateType
+    Public Property NonbusinessDate As DateType
         Get
             CheckDeleted()
             If Row(NonBusinessCalendarDAL.COL_NAME_NONBUSINESS_DATE) Is DBNull.Value Then
@@ -157,9 +157,9 @@ Public Class NonbusinessCalendar
                 Return New DateType(CType(Row(NonBusinessCalendarDAL.COL_NAME_NONBUSINESS_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(NonBusinessCalendarDAL.COL_NAME_NONBUSINESS_DATE, Value)
+            SetValue(NonBusinessCalendarDAL.COL_NAME_NONBUSINESS_DATE, Value)
         End Set
     End Property
 
@@ -172,15 +172,15 @@ Public Class NonbusinessCalendar
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New NonBusinessCalendarDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -188,7 +188,7 @@ Public Class NonbusinessCalendar
         End Try
     End Sub
 
-    Public Shared Function LoadList(ByVal companyGroupID As Guid) As DataView
+    Public Shared Function LoadList(companyGroupID As Guid) As DataView
         Try
             Dim dal As New NonbusinessCalendarDAL
             Dim ds As DataSet
@@ -202,7 +202,7 @@ Public Class NonbusinessCalendar
 
     End Function
 
-    Public Shared Function GetNonBusinessDaysCount(ByVal defaultFollowUp As Integer, ByVal companyGroupID As Guid) As Integer
+    Public Shared Function GetNonBusinessDaysCount(defaultFollowUp As Integer, companyGroupID As Guid) As Integer
         Dim ds As DataSet
         Dim nonBusinessCalendarDAL As New NonBusinessCalendarDAL
 
@@ -210,7 +210,7 @@ Public Class NonbusinessCalendar
         Return ds.Tables(nonBusinessCalendarDAL.TABLE_NAME).Rows(0).Item(nonBusinessCalendarDAL.COL_NAME_NONBUSINESS_DAY_COUNT)
     End Function
 
-    Public Shared Function GetSameBusinessDaysCount(ByVal followupDate As Date, ByVal companyGroupID As Guid) As Integer
+    Public Shared Function GetSameBusinessDaysCount(followupDate As Date, companyGroupID As Guid) As Integer
         Dim ds As DataSet
         Dim nonBusinessCalendarDAL As New NonBusinessCalendarDAL
 
@@ -218,13 +218,13 @@ Public Class NonbusinessCalendar
         Return ds.Tables(nonBusinessCalendarDAL.TABLE_NAME).Rows(0).Item(nonBusinessCalendarDAL.COL_NAME_SAMEBUSINESS_DAY_COUNT)
     End Function
 
-    Public Shared Function GetNextBusinessDate(ByVal defaultFollowUp As Integer, ByVal companyGroupID As Guid) As Date
+    Public Shared Function GetNextBusinessDate(defaultFollowUp As Integer, companyGroupID As Guid) As Date
         Dim nonBusinessCalendarDAL As New NonBusinessCalendarDAL
 
         Return nonBusinessCalendarDAL.GetNextBusinessDate(defaultFollowUp, companyGroupID)
     End Function
 
-    Public Shared Function GetNonBusinessDates(ByVal CompanyGroupCode As String, ByVal dtStart As Date, ByVal dtEnd As Date) As DataSet
+    Public Shared Function GetNonBusinessDates(CompanyGroupCode As String, dtStart As Date, dtEnd As Date) As DataSet
         Dim ds As DataSet
         Dim nonBusinessCalendarDAL As New NonBusinessCalendarDAL
         ds = nonBusinessCalendarDAL.GetNonBusinessDates(CompanyGroupCode, dtStart, dtEnd)

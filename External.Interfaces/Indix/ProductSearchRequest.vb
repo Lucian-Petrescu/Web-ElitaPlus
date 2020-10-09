@@ -55,7 +55,7 @@
 
     Public ReadOnly Property IsValid() As Boolean
         Get
-            Return (Not String.IsNullOrEmpty(CountryCode) And Not String.IsNullOrEmpty(SearchTerm) And SearchTerm.Length < (c_maxSearchTermLength + 1))
+            Return (Not String.IsNullOrEmpty(CountryCode) AndAlso Not String.IsNullOrEmpty(SearchTerm) AndAlso SearchTerm.Length < (c_maxSearchTermLength + 1))
         End Get
 
     End Property

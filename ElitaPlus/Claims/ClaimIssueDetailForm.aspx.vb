@@ -1,9 +1,12 @@
 ﻿Imports System.Collections.Generic
+Imports System.Diagnostics
+Imports System.Text
 Imports Assurant.Elita.ClientIntegration
 Imports Assurant.ElitaPlus.BusinessObjectsNew.LegacyBridgeService
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimLegacyBridgeService
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
 Imports System.Threading
+Imports Assurant.Elita.ClientIntegration.Headers
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.Web.Forms
@@ -14,12 +17,12 @@ Partial Class ClaimIssueDetailForm
 
 #Region " Web Form Designer Generated Code "
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()>
+    <DebuggerStepThrough()>
     Private Sub InitializeComponent()
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -96,7 +99,7 @@ Partial Class ClaimIssueDetailForm
         Public ClaimIssueId As Guid
         Public IssueType As String
 
-        Public Sub New(ByVal claimBO As ClaimBase, ByVal claimIssueId As Guid, Optional ByVal issueType As String = "NONE")
+        Public Sub New(claimBO As ClaimBase, claimIssueId As Guid, Optional ByVal issueType As String = "NONE")
             Me.ClaimBO = claimBO
             Me.ClaimIssueId = claimIssueId
             Me.IssueType = issueType
@@ -109,13 +112,13 @@ Partial Class ClaimIssueDetailForm
         Public LastOperation As DetailPageCommand
         Public EditingBo As ClaimBase
         Public BoChanged As Boolean = False
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As ClaimBase, Optional ByVal boChanged As Boolean = False)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(LastOp As DetailPageCommand, curEditingBo As ClaimBase, Optional ByVal boChanged As Boolean = False)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
             Me.BoChanged = boChanged
         End Sub
-        Public Sub New(ByVal LastOp As DetailPageCommand)
-            Me.LastOperation = LastOp
+        Public Sub New(LastOp As DetailPageCommand)
+            LastOperation = LastOp
         End Sub
     End Class
 #End Region
@@ -156,90 +159,90 @@ Partial Class ClaimIssueDetailForm
 
     Protected Shadows ReadOnly Property State() As MyState
         Get
-            If (Me.NavController Is Nothing) Then
+            If (NavController Is Nothing) Then
                 Return CType(MyBase.State, MyState)
             Else
-                If Me.NavController.State Is Nothing Then
-                    Me.NavController.State = New MyState
+                If NavController.State Is Nothing Then
+                    NavController.State = New MyState
                     InitializeFromFlowSession()
                 End If
-                Return CType(Me.NavController.State, MyState)
+                Return CType(NavController.State, MyState)
             End If
 
         End Get
     End Property
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
-                Me.State.InputParameters = CType(CallingPar, Parameters)
-                Me.State.ClaimIssueId = Me.State.InputParameters.ClaimIssueId
+            If CallingParameters IsNot Nothing Then
+                State.InputParameters = CType(CallingPar, Parameters)
+                State.ClaimIssueId = State.InputParameters.ClaimIssueId
 
-                State.MyClaimBO = Me.State.InputParameters.ClaimBO
+                State.MyClaimBO = State.InputParameters.ClaimBO
 
                 ' Need to save the claim issue on this screen itself inplace of sending back to parent for saving it along the claim
                 ' This is valid for callPage - currently called from claim wizard form
                 State.MyBO = New ClaimIssue(State.ClaimIssueId)
 
-                Me.State.MyPrevBO = Me.State.MyBO
-                Me.State.MyCertificateBO = New Certificate(Me.State.MyClaimBO.CertificateId)
-                Me.State.aryCountryId = New ArrayList
-                Me.State.aryCountryId.Add(Me.State.MyCertificateBO.AddressChild.CountryId)
+                State.MyPrevBO = State.MyBO
+                State.MyCertificateBO = New Certificate(State.MyClaimBO.CertificateId)
+                State.aryCountryId = New ArrayList
+                State.aryCountryId.Add(State.MyCertificateBO.AddressChild.CountryId)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Sub SaveGUIState()
-        Me.State.ClaimNumber = Me.Label_ClaimNumber.Text
-        Me.State.IssueCode = Me.Label_IssueCode.Text
-        Me.State.IssueDescription = Me.Label_IssueDescription.Text
-        Me.State.CreatedBy = Me.Label_CreatedBy.Text
-        Me.State.CreatedDate = DateHelper.GetDateValue(Me.Label_CreatedDate.Text)
-        Me.State.ProcessedBy = Me.Label_ProcessedBy.Text
-        Me.State.ProcessedDate = DateHelper.GetDateValue(Me.Label_ProcessedDate.Text)
-        Me.State.IssueStatus = Me.Label_IssueStatus.Text
+        State.ClaimNumber = Label_ClaimNumber.Text
+        State.IssueCode = Label_IssueCode.Text
+        State.IssueDescription = Label_IssueDescription.Text
+        State.CreatedBy = Label_CreatedBy.Text
+        State.CreatedDate = DateHelper.GetDateValue(Label_CreatedDate.Text)
+        State.ProcessedBy = Label_ProcessedBy.Text
+        State.ProcessedDate = DateHelper.GetDateValue(Label_ProcessedDate.Text)
+        State.IssueStatus = Label_IssueStatus.Text
     End Sub
 
     Sub RestoreGUIState()
-        Me.Label_ClaimNumber.Text = Me.State.MyClaimBO.ClaimNumber
-        Me.Label_IssueCode.Text = Me.State.MyBO.IssueCode
-        Me.Label_IssueDescription.Text = Me.State.MyBO.IssueDescription
-        Me.Label_CreatedBy.Text = Me.State.MyBO.CreatedBy
-        Me.Label_CreatedDate.Text = Me.State.MyBO.CreatedDate.ToString()
-        Me.Label_ProcessedBy.Text = Me.State.ProcessedBy
-        Me.Label_ProcessedDate.Text = Me.State.ProcessedDate.ToString()
-        Me.Label_IssueStatus.Text = Me.State.IssueStatus
+        Label_ClaimNumber.Text = State.MyClaimBO.ClaimNumber
+        Label_IssueCode.Text = State.MyBO.IssueCode
+        Label_IssueDescription.Text = State.MyBO.IssueDescription
+        Label_CreatedBy.Text = State.MyBO.CreatedBy
+        Label_CreatedDate.Text = State.MyBO.CreatedDate.ToString()
+        Label_ProcessedBy.Text = State.ProcessedBy
+        Label_ProcessedDate.Text = State.ProcessedDate.ToString()
+        Label_IssueStatus.Text = State.IssueStatus
     End Sub
 
     Protected Sub InitializeFromFlowSession()
 
-        Me.State.InputParameters = CType(Me.NavController.ParametersPassed, Parameters)
+        State.InputParameters = CType(NavController.ParametersPassed, Parameters)
 
         Try
-            If Not Me.State.InputParameters.ClaimBO Is Nothing Then
-                Me.State.ClaimIssueId = Me.State.InputParameters.ClaimIssueId
+            If State.InputParameters.ClaimBO IsNot Nothing Then
+                State.ClaimIssueId = State.InputParameters.ClaimIssueId
 
-                State.MyClaimBO = Me.State.InputParameters.ClaimBO
+                State.MyClaimBO = State.InputParameters.ClaimBO
 
                 ' This is valid for when navigation is used(not callpage) - currently called from new claim form/ claim detail
-                If Me.State.InputParameters.IssueType = Codes.ISSUE_TYPE_CONSEQUENTIAL_DAMAGE Then
+                If State.InputParameters.IssueType = Codes.ISSUE_TYPE_CONSEQUENTIAL_DAMAGE Then
                     ' if the issue type is CD, then we need to save it
-                    Me.State.MyClaimBO = ClaimFacade.Instance.GetClaim(Of ClaimBase)(CType(Me.State.InputParameters.ClaimBO.Id, Guid))
-                    Me.State.MyBO = New ClaimIssue(Me.State.ClaimIssueId)
+                    State.MyClaimBO = ClaimFacade.Instance.GetClaim(Of ClaimBase)(CType(State.InputParameters.ClaimBO.Id, Guid))
+                    State.MyBO = New ClaimIssue(State.ClaimIssueId)
                 Else
-                    Me.State.MyClaimBO = Me.State.InputParameters.ClaimBO
-                    Me.State.MyBO = CType(Me.State.MyClaimBO.ClaimIssuesList.GetChild(Me.State.ClaimIssueId), ClaimIssue)
+                    State.MyClaimBO = State.InputParameters.ClaimBO
+                    State.MyBO = CType(State.MyClaimBO.ClaimIssuesList.GetChild(State.ClaimIssueId), ClaimIssue)
                 End If
 
-                Me.State.MyPrevBO = Me.State.MyBO
-                Me.State.MyCertificateBO = New Certificate(Me.State.MyClaimBO.CertificateId)
-                Me.State.aryCountryId = New ArrayList
-                Me.State.aryCountryId.Add(Me.State.MyCertificateBO.AddressChild.CountryId)
+                State.MyPrevBO = State.MyBO
+                State.MyCertificateBO = New Certificate(State.MyClaimBO.CertificateId)
+                State.aryCountryId = New ArrayList
+                State.aryCountryId.Add(State.MyCertificateBO.AddressChild.CountryId)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -262,7 +265,7 @@ Partial Class ClaimIssueDetailForm
 
 #Region "Page_Events"
 
-    Private Sub Page_load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         If mbIsFirstPass = True Then
             mbIsFirstPass = False
@@ -271,9 +274,9 @@ Partial Class ClaimIssueDetailForm
             Return
         End If
 
-        Me.MasterPage.UsePageTabTitleInBreadCrum = False
-        Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("CLAIM_ISSUE_SUMMARY")
-        Me.MasterPage.PageTitle = String.Format("{0} ", TranslationBase.TranslateLabelOrMessage("CLAIM_ISSUE_SUMMARY"))
+        MasterPage.UsePageTabTitleInBreadCrum = False
+        MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("CLAIM_ISSUE_SUMMARY")
+        MasterPage.PageTitle = String.Format("{0} ", TranslationBase.TranslateLabelOrMessage("CLAIM_ISSUE_SUMMARY"))
         MessageLiteral.Text = TranslationBase.TranslateLabelOrMessage("MSG_SELECT_REASON")
         msgSelectwaiveReason.Text = TranslationBase.TranslateLabelOrMessage("MSG_SELECT_REASON")
         btnReopenContinue.Attributes.Add("onclick", String.Format("return validate('{0}','{1}','{2}');", rdbtlstIssueReopen.ClientID, txtComments.ClientID, modalMessageBoxReopen.ClientID))
@@ -282,10 +285,10 @@ Partial Class ClaimIssueDetailForm
         btnReopenCancel.Attributes.Add("onclick", String.Format("HideErrorAndModal('{0}','{1}','{2}','{3}');", "ModalReopenIssue", rdbtlstIssueReopen.ClientID, modalMessageBoxReopen.ClientID, txtComments.ClientID))
         UpdateBreadCrum()
 
-        Me.MasterPage.MessageController.Clear()
+        MasterPage.MessageController.Clear()
 
-        Me.PopulateLists()
-        Me.PopulateFormFromBOs()
+        PopulateLists()
+        PopulateFormFromBOs()
     End Sub
     Sub EnableDisableFields()
         ControlMgr.SetVisibleControl(Me, Label_ClaimNumber, True)
@@ -299,9 +302,9 @@ Partial Class ClaimIssueDetailForm
     End Sub
 
     Private Sub UpdateBreadCrum()
-        If (Not Me.State Is Nothing) Then
-            If (Not Me.State.MyBO Is Nothing) Then
-                Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & "Claim Issues"
+        If (State IsNot Nothing) Then
+            If (State.MyBO IsNot Nothing) Then
+                MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & "Claim Issues"
             End If
         End If
     End Sub
@@ -310,16 +313,16 @@ Partial Class ClaimIssueDetailForm
 
 #Region "Buttons Clicks "
 
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
-        If (Not Me.NavController Is Nothing) Then
-            Select Case Me.NavController.PrevNavState.Name
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
+        If (NavController IsNot Nothing) Then
+            Select Case NavController.PrevNavState.Name
                 Case "CLAIM_DETAIL"
                     NavController.Navigate(Me, "claimForm", New ClaimForm.Parameters(State.MyClaimBO.Id))
                 Case Else
-                    Me.NavController.Navigate(Me, "back")
+                    NavController.Navigate(Me, "back")
             End Select
         Else
-            Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyClaimBO)
+            Dim retObj As ReturnType = New ReturnType(DetailPageCommand.Back, State.MyClaimBO)
             MyBase.ReturnToCallingPage(retObj)
         End If
 
@@ -335,7 +338,7 @@ Partial Class ClaimIssueDetailForm
         sJavaScript &= "else { objDescDropDown.value = objCodeDropDown.options[objCodeDropDown.selectedIndex].value;}" & Environment.NewLine
         sJavaScript &= "if (lblCaption != '') {document.all.item(lblCaption).style.color = '';}}" & Environment.NewLine
         sJavaScript &= "</SCRIPT>" & Environment.NewLine
-        Me.Page.RegisterStartupScript("ToggleDropDown", sJavaScript)
+        Page.RegisterStartupScript("ToggleDropDown", sJavaScript)
     End Sub
 #End Region
 
@@ -361,28 +364,28 @@ Partial Class ClaimIssueDetailForm
     Protected Sub PopulateFormFromBOs()
         Dim cssClassName As String
         Dim userDv As DataView
-        Me.PopulateControlFromBOProperty(Me.Label_ClaimNumber, Me.State.MyClaimBO.ClaimNumber)
-        With Me.State.MyBO
-            Me.PopulateControlFromBOProperty(Me.Label_IssueCode, .IssueCode)
-            Me.PopulateControlFromBOProperty(Me.Label_IssueDescription, .IssueDescription)
-            Me.PopulateControlFromBOProperty(Me.Label_CreatedBy, .CreatedBy)
-            Me.PopulateControlFromBOProperty(Me.Label_CreatedDate, .CreatedDate)
-            Me.PopulateControlFromBOProperty(Me.Label_ProcessedBy, .ProcessedBy)
-            Me.PopulateControlFromBOProperty(Me.Label_ProcessedDate, .ProcessedDate)
-            Me.PopulateControlFromBOProperty(Me.Label_IssueStatus, LookupListNew.GetDescriptionFromCode(LookupListCache.LK_CLAIM_ISSUE_STATUS, .StatusCode))
+        PopulateControlFromBOProperty(Label_ClaimNumber, State.MyClaimBO.ClaimNumber)
+        With State.MyBO
+            PopulateControlFromBOProperty(Label_IssueCode, .IssueCode)
+            PopulateControlFromBOProperty(Label_IssueDescription, .IssueDescription)
+            PopulateControlFromBOProperty(Label_CreatedBy, .CreatedBy)
+            PopulateControlFromBOProperty(Label_CreatedDate, .CreatedDate)
+            PopulateControlFromBOProperty(Label_ProcessedBy, .ProcessedBy)
+            PopulateControlFromBOProperty(Label_ProcessedDate, .ProcessedDate)
+            PopulateControlFromBOProperty(Label_IssueStatus, LookupListNew.GetDescriptionFromCode(LookupListCache.LK_CLAIM_ISSUE_STATUS, .StatusCode))
 
-            If (Me.State.MyBO.StatusCode = Codes.CLAIMISSUE_STATUS__RESOLVED Or Me.State.MyBO.StatusCode = Codes.CLAIMISSUE_STATUS__WAIVED) Then
+            If (State.MyBO.StatusCode = Codes.CLAIMISSUE_STATUS__RESOLVED OrElse State.MyBO.StatusCode = Codes.CLAIMISSUE_STATUS__WAIVED) Then
                 cssClassName = "StatActive"
             Else
                 cssClassName = "StatClosed"
             End If
 
-            Me.tdLabelIssueStatus.Attributes.Item("Class") = cssClassName
+            tdLabelIssueStatus.Attributes.Item("Class") = cssClassName
 
         End With
 
-        Me.EnableDisableFields()
-        If ((Me.State.MyBO.StatusCode = STATUS_OPEN Or Me.State.MyBO.StatusCode = STATUS_PENDING) AndAlso (Me.State.MyBO.Claim.EvaluatePreConditions(Me.State.MyBO.Issue.PreConditionList))) Then
+        EnableDisableFields()
+        If ((State.MyBO.StatusCode = STATUS_OPEN OrElse State.MyBO.StatusCode = STATUS_PENDING) AndAlso (State.MyBO.Claim.EvaluatePreConditions(State.MyBO.Issue.PreConditionList))) Then
             ControlMgr.SetEnableControl(Me, btnProcess, True)
             ControlMgr.SetEnableControl(Me, btnWaive, True)
             ControlMgr.SetEnableControl(Me, btnUndo, True)
@@ -399,46 +402,46 @@ Partial Class ClaimIssueDetailForm
             ControlMgr.SetEnableControl(Me, btnProcess, False)
             ControlMgr.SetEnableControl(Me, btnWaive, False)
             ControlMgr.SetEnableControl(Me, btnUndo, False)
-            If Me.State.MyClaimBO.CanIssuesReopen() Then
+            If State.MyClaimBO.CanIssuesReopen() Then
                 btnReopen.Visible = True
             End If
         End If
 
         Try
             BindBoPropertiesToLabels()
-            Me.AddLabelDecorations(Me.State.MyBO)
+            AddLabelDecorations(State.MyBO)
 
-            Dim dvQuestions As DataView = Me.State.MyBO.ClaimIssueQuestionListByDealer(Me.State.MyCertificateBO.DealerId).Table.DefaultView
+            Dim dvQuestions As DataView = State.MyBO.ClaimIssueQuestionListByDealer(State.MyCertificateBO.DealerId).Table.DefaultView
             If dvQuestions.Count > 0 Then
                 grdQuestions.DataSource = dvQuestions
                 grdQuestions.DataBind()
             End If
 
-            Dim dvCLaimIssueStatus As DataView = Me.State.MyBO.ClaimIssueStatusList.Table.DefaultView
+            Dim dvCLaimIssueStatus As DataView = State.MyBO.ClaimIssueStatusList.Table.DefaultView
             If dvCLaimIssueStatus.Count > 0 Then
                 dvCLaimIssueStatus.Sort = "created_date desc"
                 grdProcessHistory.DataSource = dvCLaimIssueStatus
                 grdProcessHistory.DataBind()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
     Protected Sub BindBoPropertiesToLabels()
         Try
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "lblIssueCode", Me.lblIssueCode)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "lblIssueDescription", Me.lblIssueDescription)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "lblCreatedBy", Me.lblCreatedBy)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "lblCreatedDate", Me.lblCreatedDate)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "lblProcessedBy", Me.lblProcessedBy)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "lblProcessedDate", Me.lblProcessedDate)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "lblIssueStatus", Me.lblIssueStatus)
+            BindBOPropertyToLabel(State.MyBO, "lblIssueCode", lblIssueCode)
+            BindBOPropertyToLabel(State.MyBO, "lblIssueDescription", lblIssueDescription)
+            BindBOPropertyToLabel(State.MyBO, "lblCreatedBy", lblCreatedBy)
+            BindBOPropertyToLabel(State.MyBO, "lblCreatedDate", lblCreatedDate)
+            BindBOPropertyToLabel(State.MyBO, "lblProcessedBy", lblProcessedBy)
+            BindBOPropertyToLabel(State.MyBO, "lblProcessedDate", lblProcessedDate)
+            BindBOPropertyToLabel(State.MyBO, "lblIssueStatus", lblIssueStatus)
 
-            Me.ClearGridHeadersAndLabelsErrSign()
+            ClearGridHeadersAndLabelsErrSign()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -463,7 +466,7 @@ Partial Class ClaimIssueDetailForm
 #End Region
 
 
-    Private Sub grdQuestions_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles grdQuestions.RowDataBound
+    Private Sub grdQuestions_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles grdQuestions.RowDataBound
         Try
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim bContainsEntityAttribute As Boolean = False
@@ -473,7 +476,7 @@ Partial Class ClaimIssueDetailForm
                 Dim gSoftQuestionID As New Guid(CType(e.Row.Cells(Q_GRID_COL_SOFT_QUESTION_ID_IDX).FindControl(SOFT_QUESTION_ID), Label).Text)
                 Dim oQuestion As New Question(gSoftQuestionID)
 
-                CType(e.Row.Cells(Me.Q_GRID_COL_QUESTION_DESC_IDX).FindControl(QUESTION_DESC), Label).Text = oQuestion.TranslatedDescription 'oQuestion.Description
+                CType(e.Row.Cells(Q_GRID_COL_QUESTION_DESC_IDX).FindControl(QUESTION_DESC), Label).Text = oQuestion.TranslatedDescription 'oQuestion.Description
 
                 Dim oEntityAttribute As EntityAttribute
 
@@ -494,12 +497,12 @@ Partial Class ClaimIssueDetailForm
                         'Dim dv As DataView = LookupListNew.GetYesNoLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                         'Me.BindListControlToDataView(ddl, dv, "DESCRIPTION", "ID", True)
 
-                        Me.BindListControlToDataView(ddl, dv, "ANSWER_VALUE", "LIST_ITEM_ID", True, False)
+                        BindListControlToDataView(ddl, dv, "ANSWER_VALUE", "LIST_ITEM_ID", True, False)
                         ddl.SelectedValue = GetAnswerSelectedId(gSoftQuestionID).ToString()
                         ddl.Enabled = bEdit
-                        e.Row.Cells(Me.Q_GRID_COL_ANSWER_IDX).Controls.Add(ddl)
+                        e.Row.Cells(Q_GRID_COL_ANSWER_IDX).Controls.Add(ddl)
                         If bContainsEntityAttribute Then
-                            e.Row.Cells(Me.Q_GRID_COL_ENTITY_ATTRIBUTE_VALUE_IDX).Controls.Add(GetEntityValue(oEntityAttribute.Entity, oEntityAttribute.Attribute, ddl))
+                            e.Row.Cells(Q_GRID_COL_ENTITY_ATTRIBUTE_VALUE_IDX).Controls.Add(GetEntityValue(oEntityAttribute.Entity, oEntityAttribute.Attribute, ddl))
                         End If
                     Case "PSD"
                         Dim ddlMult As MultipleColumnDDLabelControl
@@ -507,9 +510,9 @@ Partial Class ClaimIssueDetailForm
                         ddlMult.ID = "MultiDrop"
                         AddHandler ddlMult.SelectedDropChanged, AddressOf ddlMult_OnSelectedDropChanged
 
-                        Dim dv As DataView = LookupListNew.GetPoliceLookupList(Me.State.aryCountryId)
+                        Dim dv As DataView = LookupListNew.GetPoliceLookupList(State.aryCountryId)
                         ddlMult.SetControl(True,
-                                          ddlMult.MODES.NEW_MODE,
+                                          MultipleColumnDDLabelControl.MODES.NEW_MODE,
                                           True,
                                           dv,
                                           "Police Station",
@@ -528,20 +531,20 @@ Partial Class ClaimIssueDetailForm
                         'ddlMult.DescDropDown.SelectedValue = sSelected
                         ddlMult.DescDropDown.Enabled = bEdit
 
-                        e.Row.Cells(Me.Q_GRID_COL_ANSWER_IDX).Controls.Add(ddlMult)
+                        e.Row.Cells(Q_GRID_COL_ANSWER_IDX).Controls.Add(ddlMult)
 
 
                         If bContainsEntityAttribute Then
-                            e.Row.Cells(Me.Q_GRID_COL_ENTITY_ATTRIBUTE_VALUE_IDX).Controls.Add(GetEntityValue(oEntityAttribute.Entity, oEntityAttribute.Attribute, ddlMult.CodeDropDown))
+                            e.Row.Cells(Q_GRID_COL_ENTITY_ATTRIBUTE_VALUE_IDX).Controls.Add(GetEntityValue(oEntityAttribute.Entity, oEntityAttribute.Attribute, ddlMult.CodeDropDown))
                         End If
                     Case "NUMBER", "NAME", "DESCRIPTION"
                         Dim txt As New TextBox
                         txt.ID = "txt"
                         txt.Text = GetAnswerTextValue(gSoftQuestionID)
                         txt.Enabled = bEdit
-                        e.Row.Cells(Me.Q_GRID_COL_ANSWER_IDX).Controls.Add(txt)
+                        e.Row.Cells(Q_GRID_COL_ANSWER_IDX).Controls.Add(txt)
                         If bContainsEntityAttribute Then
-                            e.Row.Cells(Me.Q_GRID_COL_ENTITY_ATTRIBUTE_VALUE_IDX).Controls.Add(GetEntityValue(oEntityAttribute.Entity, oEntityAttribute.Attribute))
+                            e.Row.Cells(Q_GRID_COL_ENTITY_ATTRIBUTE_VALUE_IDX).Controls.Add(GetEntityValue(oEntityAttribute.Entity, oEntityAttribute.Attribute))
                         End If
                     Case "DATE"
                         Dim txtDate As New TextBox
@@ -552,13 +555,13 @@ Partial Class ClaimIssueDetailForm
                         btnCalendar.ImageUrl = "~/App_Themes/Default/Images/calendar.png"
                         txtDate.Enabled = bEdit
                         btnCalendar.Enabled = bEdit
-                        e.Row.Cells(Me.Q_GRID_COL_ANSWER_IDX).Controls.Add(txtDate)
-                        e.Row.Cells(Me.Q_GRID_COL_ANSWER_IDX).Controls.Add(btnCalendar)
+                        e.Row.Cells(Q_GRID_COL_ANSWER_IDX).Controls.Add(txtDate)
+                        e.Row.Cells(Q_GRID_COL_ANSWER_IDX).Controls.Add(btnCalendar)
 
                         txtDate.ID = txtDate.ClientID
-                        Me.AddCalendar_New(btnCalendar, txtDate)
+                        AddCalendar_New(btnCalendar, txtDate)
                         If bContainsEntityAttribute Then
-                            e.Row.Cells(Me.Q_GRID_COL_ENTITY_ATTRIBUTE_VALUE_IDX).Controls.Add(GetEntityValue(oEntityAttribute.Entity, oEntityAttribute.Attribute))
+                            e.Row.Cells(Q_GRID_COL_ENTITY_ATTRIBUTE_VALUE_IDX).Controls.Add(GetEntityValue(oEntityAttribute.Entity, oEntityAttribute.Attribute))
                         End If
                     Case "DATE_TIME"
                         Dim txtDateTime As New TextBox
@@ -569,26 +572,26 @@ Partial Class ClaimIssueDetailForm
                         btnCalendar.ImageUrl = "~/App_Themes/Default/Images/calendar.png"
                         txtDateTime.Enabled = bEdit
                         btnCalendar.Enabled = bEdit
-                        e.Row.Cells(Me.Q_GRID_COL_ANSWER_IDX).Controls.Add(txtDateTime)
-                        e.Row.Cells(Me.Q_GRID_COL_ANSWER_IDX).Controls.Add(btnCalendar)
+                        e.Row.Cells(Q_GRID_COL_ANSWER_IDX).Controls.Add(txtDateTime)
+                        e.Row.Cells(Q_GRID_COL_ANSWER_IDX).Controls.Add(btnCalendar)
 
                         txtDateTime.ID = txtDateTime.ClientID
-                        Me.AddCalendarwithTime_New(btnCalendar, txtDateTime)
+                        AddCalendarwithTime_New(btnCalendar, txtDateTime)
                         If bContainsEntityAttribute Then
-                            e.Row.Cells(Me.Q_GRID_COL_ENTITY_ATTRIBUTE_VALUE_IDX).Controls.Add(GetEntityValue(oEntityAttribute.Entity, oEntityAttribute.Attribute))
+                            e.Row.Cells(Q_GRID_COL_ENTITY_ATTRIBUTE_VALUE_IDX).Controls.Add(GetEntityValue(oEntityAttribute.Entity, oEntityAttribute.Attribute))
                         End If
                 End Select
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub grdProcessHistory_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles grdProcessHistory.RowDataBound
+    Private Sub grdProcessHistory_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles grdProcessHistory.RowDataBound
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
         If (e.Row.RowType = DataControlRowType.DataRow) Then
-            Dim gClaimIssueStatusID As New Guid(CType(e.Row.Cells(Me.Q_GRID_COL_CLAIM_ISSUE_STATUS_ID_IDX).FindControl(Me.CLAIM_ISSUE_STATUS_ID), Label).Text)
-            CType(e.Row.Cells(Me.Q_GRID_COL_CLAIM_ISSUE_STATUS_DESC_IDX).FindControl(Me.CLAIM_ISSUE_STATUS_DESC), Label).Text = LookupListNew.GetDescriptionFromId(LookupListCache.LK_CLAIM_ISSUE_STATUS, gClaimIssueStatusID).ToString()
+            Dim gClaimIssueStatusID As New Guid(CType(e.Row.Cells(Q_GRID_COL_CLAIM_ISSUE_STATUS_ID_IDX).FindControl(CLAIM_ISSUE_STATUS_ID), Label).Text)
+            CType(e.Row.Cells(Q_GRID_COL_CLAIM_ISSUE_STATUS_DESC_IDX).FindControl(CLAIM_ISSUE_STATUS_DESC), Label).Text = LookupListNew.GetDescriptionFromId(LookupListCache.LK_CLAIM_ISSUE_STATUS, gClaimIssueStatusID).ToString()
 
             Dim strProcessedDate As String = Convert.ToString(e.Row.Cells(Q_GRID_COL_PROCESSED_DATE_IDX).Text)
             strProcessedDate = strProcessedDate.Replace("&nbsp;", "")
@@ -600,7 +603,7 @@ Partial Class ClaimIssueDetailForm
         End If
     End Sub
 
-    Private Sub btnProcess_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnProcess.Click, btnWaiveContinue.Click
+    Private Sub btnProcess_Click(sender As Object, e As EventArgs) Handles btnProcess.Click, btnWaiveContinue.Click
         'DEF-2862
         Dim policeReportNumber As String = String.Empty
         Dim policeStationId As Guid
@@ -627,9 +630,9 @@ Partial Class ClaimIssueDetailForm
                 Dim oAnswerType As New AnswerType(oQuestion.AnswerTypeId)
                 Dim oClaimIssueResponse As ClaimIssueResponse
                 If Not GetClaimIssueResponseId(gSoftQuestionID) = Guid.Empty Then
-                    oClaimIssueResponse = Me.State.MyBO.GetClaimIssueResponseChild(GetClaimIssueResponseId(gSoftQuestionID))
+                    oClaimIssueResponse = State.MyBO.GetClaimIssueResponseChild(GetClaimIssueResponseId(gSoftQuestionID))
                 Else
-                    oClaimIssueResponse = Me.State.MyBO.GetNewClaimIssueResponseChild()
+                    oClaimIssueResponse = State.MyBO.GetNewClaimIssueResponseChild()
                 End If
 
                 'DEF-2862
@@ -641,7 +644,7 @@ Partial Class ClaimIssueDetailForm
                 'DEF-2862
 
                 With oClaimIssueResponse
-                    .ClaimIssueId = Me.State.MyBO.ClaimIssueId
+                    .ClaimIssueId = State.MyBO.ClaimIssueId
                     Dim c As TableCell = row.Cells(Q_GRID_COL_ANSWER_IDX)
 
                     For Each ctrl As Control In c.Controls
@@ -653,16 +656,16 @@ Partial Class ClaimIssueDetailForm
                                         ' Date validation
                                         If oAnswerType.Code = "DATE" Then
                                             If Not IsValidDate(DateHelper.GetDateValue(CType(ctrl, TextBox).Text), DateHelper.GetDateValue(DateTime.Today.ToString()), "GreaterThanOrEqual") Then
-                                                Me.MasterPage.MessageController.AddErrorAndShow(TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIM_ISSUES_INVALID_DATE))
-                                                If (Not oEntityAttribute Is Nothing) Then
+                                                MasterPage.MessageController.AddErrorAndShow(TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIM_ISSUES_INVALID_DATE))
+                                                If (oEntityAttribute IsNot Nothing) Then
                                                     SetEntityValue(oEntityAttribute.Entity, oEntityAttribute.Attribute, Nothing)
                                                 End If
                                                 .Delete()
                                                 Exit Sub
                                             End If
-                                            If Not IsValidDate(DateHelper.GetDateValue(CType(ctrl, TextBox).Text), Me.State.MyClaimBO.LossDate, "LessThan") Then
-                                                Me.MasterPage.MessageController.AddErrorAndShow(TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIM_ISSUES_DATE_PRIOR_TO_DATE_OF_LOSS))
-                                                If (Not oEntityAttribute Is Nothing) Then
+                                            If Not IsValidDate(DateHelper.GetDateValue(CType(ctrl, TextBox).Text), State.MyClaimBO.LossDate, "LessThan") Then
+                                                MasterPage.MessageController.AddErrorAndShow(TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIM_ISSUES_DATE_PRIOR_TO_DATE_OF_LOSS))
+                                                If (oEntityAttribute IsNot Nothing) Then
                                                     SetEntityValue(oEntityAttribute.Entity, oEntityAttribute.Attribute, Nothing)
                                                 End If
                                                 .Delete()
@@ -673,16 +676,16 @@ Partial Class ClaimIssueDetailForm
                                         ' DateTime validation
                                         If oAnswerType.Code = "DATE_TIME" Then
                                             If Not IsValidDate(DateHelper.GetDateValue(CType(ctrl, TextBox).Text), DateTime.Now, "GreaterThanOrEqual") Then
-                                                Me.MasterPage.MessageController.AddErrorAndShow(TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIM_ISSUES_INVALID_DATE))
-                                                If (Not oEntityAttribute Is Nothing) Then
+                                                MasterPage.MessageController.AddErrorAndShow(TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIM_ISSUES_INVALID_DATE))
+                                                If (oEntityAttribute IsNot Nothing) Then
                                                     SetEntityValue(oEntityAttribute.Entity, oEntityAttribute.Attribute, Nothing)
                                                 End If
                                                 .Delete()
                                                 Exit Sub
                                             End If
-                                            If Not IsValidDate(DateHelper.GetDateValue(CType(ctrl, TextBox).Text), CType(Me.State.MyClaimBO.LossDate, DateTime), "LessThan") Then
-                                                Me.MasterPage.MessageController.AddErrorAndShow(TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIM_ISSUES_DATE_PRIOR_TO_DATE_OF_LOSS))
-                                                If (Not oEntityAttribute Is Nothing) Then
+                                            If Not IsValidDate(DateHelper.GetDateValue(CType(ctrl, TextBox).Text), CType(State.MyClaimBO.LossDate, DateTime), "LessThan") Then
+                                                MasterPage.MessageController.AddErrorAndShow(TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIM_ISSUES_DATE_PRIOR_TO_DATE_OF_LOSS))
+                                                If (oEntityAttribute IsNot Nothing) Then
                                                     SetEntityValue(oEntityAttribute.Entity, oEntityAttribute.Attribute, Nothing)
                                                 End If
                                                 .Delete()
@@ -691,7 +694,7 @@ Partial Class ClaimIssueDetailForm
                                         End If
 
                                         'DEF-2862
-                                        If Not oEntityAttribute Is Nothing AndAlso oEntityAttribute.Attribute = Codes.ENTITY_ATTRIBUTE_REPORT_NUMBER Then
+                                        If oEntityAttribute IsNot Nothing AndAlso oEntityAttribute.Attribute = Codes.ENTITY_ATTRIBUTE_REPORT_NUMBER Then
                                             policeReportNumber = CType(ctrl, TextBox).Text
                                         End If
                                         'DEF-2862
@@ -702,22 +705,22 @@ Partial Class ClaimIssueDetailForm
                                         .AnswerDescription = CType(oQuestion.AnswerChildren(0), Answer).Description
                                         .AnswerValue = CType(ctrl, TextBox).Text
 
-                                        If Not oEntityAttribute Is Nothing AndAlso oEntityAttribute.Attribute = Codes.ENTITY_ATTRIBUTE_REIMBURSEMENT_AMOUNT Then
+                                        If oEntityAttribute IsNot Nothing AndAlso oEntityAttribute.Attribute = Codes.ENTITY_ATTRIBUTE_REIMBURSEMENT_AMOUNT Then
                                             isEntityReimbursementAmount = True
                                             reimbursementAmt = CType(ctrl, TextBox).Text
                                         End If
 
-                                        If Not oEntityAttribute Is Nothing _
+                                        If oEntityAttribute IsNot Nothing _
                                             AndAlso (oEntityAttribute.Attribute = Codes.ENTITY_ATTRIBUTE_BENEFIT_CHECK_IMEI_NUMBER) Then
                                             isEntityAttributeBenefitCheckIMEInumber = True
                                             ImeiNumber = CType(ctrl, TextBox).Text
                                         End If
 
-                                        If (Not oEntityAttribute Is Nothing) AndAlso (oAnswerType.Code = "DATE") Then
+                                        If (oEntityAttribute IsNot Nothing) AndAlso (oAnswerType.Code = "DATE") Then
                                             SetEntityValue(oEntityAttribute.Entity, oEntityAttribute.Attribute, DateHelper.GetDateValue(.AnswerValue))
                                         End If
 
-                                        If (Not oEntityAttribute Is Nothing) AndAlso (oAnswerType.Code = "DATE_TIME") Then
+                                        If (oEntityAttribute IsNot Nothing) AndAlso (oAnswerType.Code = "DATE_TIME") Then
                                             SetEntityValue(oEntityAttribute.Entity, oEntityAttribute.Attribute, DateHelper.GetDateValue(.AnswerValue))
                                         End If
 
@@ -740,7 +743,7 @@ Partial Class ClaimIssueDetailForm
                                                 End If
                                             Next
 
-                                            If Not oEntityAttribute Is Nothing AndAlso oEntityAttribute.Attribute = Codes.ENTITY_ATTRIBUTE_BENEFIT_CHECK_NO_ACTION_IMEI Then
+                                            If oEntityAttribute IsNot Nothing AndAlso oEntityAttribute.Attribute = Codes.ENTITY_ATTRIBUTE_BENEFIT_CHECK_NO_ACTION_IMEI Then
                                                 BenefitCheckNoAction = gSelectedId
                                             End If
 
@@ -770,7 +773,7 @@ Partial Class ClaimIssueDetailForm
                                         ddl.SelectedGuid = gSelectedId
 
                                         'DEF-2862
-                                        If Not oEntityAttribute Is Nothing AndAlso oEntityAttribute.Attribute = "PoliceStationId" Then
+                                        If oEntityAttribute IsNot Nothing AndAlso oEntityAttribute.Attribute = "PoliceStationId" Then
                                             policeStationId = gSelectedId
                                         End If
                                         'DEF-2862
@@ -815,13 +818,13 @@ Partial Class ClaimIssueDetailForm
         Next
 
         'DEF-2862
-        If (policeReportNumber.Trim <> String.Empty And policeStationId <> Nothing AndAlso
+        If (policeReportNumber.Trim <> String.Empty AndAlso policeStationId <> Nothing AndAlso
               Not policeReportNumber.Trim.ToUpper().Equals("N/A") AndAlso
               Not policeReportNumber.Trim.ToUpper().Equals("N-A")) Then
 
-            Dim lstClaim As Collections.Generic.List(Of String)
+            Dim lstClaim As List(Of String)
             If PoliceReport.IsReportNumberInUse(lstClaim, policeReportNumber, policeStationId) Then
-                Dim sbMsg As New System.Text.StringBuilder
+                Dim sbMsg As New StringBuilder
                 'sbMsg.Append("This Police Report# Is Already Used By The Claim#:")
                 sbMsg.Append(TranslationBase.TranslateLabelOrMessage(Message.MSG_DUPLICATE_POLICE_REPORT_NUMBER))
                 sbMsg.Append(" ")
@@ -833,7 +836,7 @@ Partial Class ClaimIssueDetailForm
                         sbMsg.Append(". ")
                     End If
                 Next
-                Me.MasterPage.MessageController.AddError(sbMsg.ToString)
+                MasterPage.MessageController.AddError(sbMsg.ToString)
                 Exit Sub 'don't create the claim yet
 
             End If
@@ -870,7 +873,7 @@ Partial Class ClaimIssueDetailForm
         If Not bWaived AndAlso State.MyBO.IssueCode = "TIC_IP" Then
             Dim intclaimcnt = Claim.GetPreviousInProgressClaimCount(State.MyBO.ClaimId)
             If intclaimcnt > 0 Then
-                Me.MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage("PRE_CLAIM_IN_PROGRESS")) 'Previously Opened Claim(s) Still In Progress
+                MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage("PRE_CLAIM_IN_PROGRESS")) 'Previously Opened Claim(s) Still In Progress
                 Exit Sub 'don't resolve the issue
             End If
         End If
@@ -892,14 +895,14 @@ Partial Class ClaimIssueDetailForm
             End Select
         End If
         If Not String.IsNullOrWhiteSpace(errorCode) Then
-            Me.MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(errorCode))
+            MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(errorCode))
             Exit Sub 'don't resolve the issue
         End If
 
 
-        Dim oClaimIssueStatus As ClaimIssueStatus = Me.State.MyBO.GetNewClaimIssueStatusChild()
+        Dim oClaimIssueStatus As ClaimIssueStatus = State.MyBO.GetNewClaimIssueStatusChild()
         With oClaimIssueStatus
-            .ClaimIssueId = Me.State.MyBO.ClaimIssueId
+            .ClaimIssueId = State.MyBO.ClaimIssueId
             .ProcessedDate = DateTime.Now()
             .ProcessedBy = ElitaPlusIdentity.Current.ActiveUser.UserName
             .ClaimIssueStatusCId = LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_ISSUE_STATUS, claimIssueStatus)
@@ -912,97 +915,97 @@ Partial Class ClaimIssueDetailForm
             .Save()
         End With
 
-        Me.State.MyBO.StatusCode = claimIssueStatus
-        Me.State.MyBO.ProcessedDate = DateTime.Now()
-        Me.State.MyBO.ProcessedBy = ElitaPlusIdentity.Current.ActiveUser.UserName
-        Me.State.MyBO.Save()
+        State.MyBO.StatusCode = claimIssueStatus
+        State.MyBO.ProcessedDate = DateTime.Now()
+        State.MyBO.ProcessedBy = ElitaPlusIdentity.Current.ActiveUser.UserName
+        State.MyBO.Save()
 
 
         Try
-            If (Not Me.NavController Is Nothing) Then
-                Select Case Me.NavController.PrevNavState.Name
+            If (NavController IsNot Nothing) Then
+                Select Case NavController.PrevNavState.Name
                     Case "CLAIM_ISSUES_INFORMATION"
                         Select Case claimIssueStatus
                             Case Codes.CLAIMISSUE_STATUS__OPEN, Codes.CLAIMISSUE_STATUS__PENDING
-                                Me.State.MyClaimBO.StatusCode = Codes.CLAIM_STATUS__PENDING
-                                Dim c As Comment = Me.State.MyClaimBO.AddNewComment()
+                                State.MyClaimBO.StatusCode = Codes.CLAIM_STATUS__PENDING
+                                Dim c As Comment = State.MyClaimBO.AddNewComment()
                                 c.CommentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_SET_TO_PENDING)
                                 c.Comments = TranslationBase.TranslateLabelOrMessage("MSG_CLAIM_PENDING_ISSUE_OPEN")
                             Case Codes.CLAIMISSUE_STATUS__REJECTED, Codes.CLAIMISSUE_STATUS__RESOLVED
-                                Me.State.MyClaimBO.StatusCode = Codes.CLAIM_STATUS__DENIED
+                                State.MyClaimBO.StatusCode = Codes.CLAIM_STATUS__DENIED
                                 Dim oEntityIssue As EntityIssue = New EntityIssue(oClaimIssueStatus.ClaimIssueId)
                                 If Not oEntityIssue.IssueId = Guid.Empty Then
                                     Dim oIssue As Issue = New Issue(oEntityIssue.IssueId)
-                                    If Not oIssue.DeniedReason Is Nothing Then
-                                        Me.State.MyClaimBO.DeniedReasonId = LookupListNew.GetIdFromExtCode(LookupListNew.LK_DENIED_REASON, oIssue.DeniedReason)
+                                    If oIssue.DeniedReason IsNot Nothing Then
+                                        State.MyClaimBO.DeniedReasonId = LookupListNew.GetIdFromExtCode(LookupListNew.LK_DENIED_REASON, oIssue.DeniedReason)
                                     Else
-                                        Me.State.MyClaimBO.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListNew.LK_DENIED_REASON, Codes.REASON_DENIED_CLAIM_ISSUE_REJECTED)
+                                        State.MyClaimBO.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListNew.LK_DENIED_REASON, Codes.REASON_DENIED_CLAIM_ISSUE_REJECTED)
                                     End If
                                 Else
-                                    Me.State.MyClaimBO.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListNew.LK_DENIED_REASON, Codes.REASON_DENIED_CLAIM_ISSUE_REJECTED)
+                                    State.MyClaimBO.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListNew.LK_DENIED_REASON, Codes.REASON_DENIED_CLAIM_ISSUE_REJECTED)
                                 End If
-                                Dim c As Comment = Me.State.MyClaimBO.AddNewComment()
+                                Dim c As Comment = State.MyClaimBO.AddNewComment()
                                 c.CommentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_DENIED)
                                 c.Comments = TranslationBase.TranslateLabelOrMessage("MSG_CLAIM_DENIED_ISSUE_REJECTED")
                         End Select
-                        Me.State.MyClaimBO.Save()
+                        State.MyClaimBO.Save()
                 End Select
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
         PopulateFormFromBOs()
         NavigateNext()
     End Sub
 
-    Private Sub btnUndo_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnUndo.Click
-        Me.State.MyBO = Me.State.MyPrevBO
+    Private Sub btnUndo_Click(sender As Object, e As EventArgs) Handles btnUndo.Click
+        State.MyBO = State.MyPrevBO
         PopulateFormFromBOs()
     End Sub
-    Private Function ConsequentialDamageReimbursementAmount(ByVal reimbursementValue As String) As Boolean
+    Private Function ConsequentialDamageReimbursementAmount(reimbursementValue As String) As Boolean
         Dim isReimbursementAmtUpdated As Boolean = False
         Dim reimbursementAmt As Decimal = New Decimal(0)
         Try
             reimbursementAmt = Decimal.Parse(reimbursementValue)
         Catch ex As Exception
-            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_INVALID_REIMBURSEMENT_AMOUNT, True)
+            MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_REIMBURSEMENT_AMOUNT, True)
             Return isReimbursementAmtUpdated
         End Try
 
         If reimbursementAmt <= 0 Then
-            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_INVALID_REIMBURSEMENT_AMOUNT, True)
+            MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_REIMBURSEMENT_AMOUNT, True)
             Return isReimbursementAmtUpdated
         End If
 
         Dim oCaseConseqDamage As CaseConseqDamage = New CaseConseqDamage(State.MyBO.ClaimId)
 
-        If Not oCaseConseqDamage Is Nothing _
+        If oCaseConseqDamage IsNot Nothing _
             AndAlso Not oCaseConseqDamage.CoverageConseqDamageId.Equals(Guid.Empty) Then
             Dim oCoverageConseqDamage As CoverageConseqDamage = New CoverageConseqDamage(oCaseConseqDamage.CoverageConseqDamageId)
 
-            If Not oCoverageConseqDamage.LiabilityLimitPerIncident Is Nothing Then
+            If oCoverageConseqDamage.LiabilityLimitPerIncident IsNot Nothing Then
                 If oCoverageConseqDamage.LiabilityLimitPerIncident.Value >= reimbursementAmt Then
                     oCaseConseqDamage.RequestedAmount = reimbursementAmt
                     oCaseConseqDamage.ApprovedAmount = reimbursementAmt
                     oCaseConseqDamage.Save()
                     isReimbursementAmtUpdated = True
                 Else
-                    MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.ISSUE_CONSEQUENTIAL_DAMAGE_REIMBURSEMENT_AMOUNT_INCORRECT) _
+                    MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.ISSUE_CONSEQUENTIAL_DAMAGE_REIMBURSEMENT_AMOUNT_INCORRECT) _
                                                           & " " & oCoverageConseqDamage.LiabilityLimitPerIncident.Value.ToString(), False)
                     isReimbursementAmtUpdated = False
                 End If
             Else
-                MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.COVERAGE_CONSEQUENTIAL_DAMAGE_LIABILITY_NOT_FOUND, True)
+                MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.COVERAGE_CONSEQUENTIAL_DAMAGE_LIABILITY_NOT_FOUND, True)
                 isReimbursementAmtUpdated = False
             End If
         Else
-            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.COVERAGE_CONSEQUENTIAL_DAMAGE_LIABILITY_NOT_FOUND, True)
+            MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.COVERAGE_CONSEQUENTIAL_DAMAGE_LIABILITY_NOT_FOUND, True)
             isReimbursementAmtUpdated = False
         End If
         Return isReimbursementAmtUpdated
     End Function
-    Private Function UpdateClaimedEquip(ByVal imeiNumber As String) As Boolean
+    Private Function UpdateClaimedEquip(imeiNumber As String) As Boolean
         Dim blnUpdateSuccess As Boolean = False
 
         If String.IsNullOrWhiteSpace(imeiNumber) Then
@@ -1020,7 +1023,7 @@ Partial Class ClaimIssueDetailForm
 
         Return blnUpdateSuccess
     End Function
-    Private Sub SendSelectDeviceData(ByVal checkBenefit As Boolean, ByVal benefitChkNoAction As Guid)
+    Private Sub SendSelectDeviceData(checkBenefit As Boolean, benefitChkNoAction As Guid)
         Try
             Dim wsResponse As String
             Dim HasBenefitFalseAction As HasBenefitActionEnum = HasBenefitActionEnum.None
@@ -1034,18 +1037,18 @@ Partial Class ClaimIssueDetailForm
             Dim client As LegacyBridgeServiceClient = Claim.GetLegacyBridgeServiceClient()
             wsResponse = WcfClientHelper.Execute(Of LegacyBridgeServiceClient, ILegacyBridgeService, Boolean)(
                                                                             client,
-                                                                            New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                                                                            Function(ByVal c As LegacyBridgeServiceClient)
+                                                                            New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                                                                            Function(c As LegacyBridgeServiceClient)
                                                                                 Return c.ExecuteClaimRecordingRules(State.MyClaimBO.Id.ToString, checkBenefit, HasBenefitFalseAction)
                                                                             End Function)
         Catch ex As Exception
-            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_LEGACY_BRIDGE_SERVICE_ERR, True)
+            MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLAIM_LEGACY_BRIDGE_SERVICE_ERR, True)
             Throw
         End Try
     End Sub
-    Private Function CheckComment(ByVal statusCode As String, Optional ByVal commentText As String = "") As String
+    Private Function CheckComment(statusCode As String, Optional ByVal commentText As String = "") As String
         Dim issueComment As String
-        Dim issue As New Issue(Me.State.MyBO.IssueId)
+        Dim issue As New Issue(State.MyBO.IssueId)
         For Each Item As IssueComment In issue.IssueNotesChildren
             If Item.Code.Trim() = statusCode.Trim() Then
                 issueComment = Item.Text
@@ -1055,13 +1058,13 @@ Partial Class ClaimIssueDetailForm
         Return issueComment
     End Function
 
-    Private Function UpdateComment(ByVal issuecomment As IssueComment, Optional ByVal commentText As String = "") As Guid
+    Private Function UpdateComment(issuecomment As IssueComment, Optional ByVal commentText As String = "") As Guid
         Dim gCommentId As Guid = Guid.Empty
 
         Dim comment As New Comment()
-        comment.CertId = Me.State.MyCertificateBO.Id
-        comment.ClaimId = Me.State.MyBO.ClaimId
-        comment.CallerName = Me.State.MyBO.CreatedBy
+        comment.CertId = State.MyCertificateBO.Id
+        comment.ClaimId = State.MyBO.ClaimId
+        comment.CallerName = State.MyBO.CreatedBy
         comment.CommentTypeId = issuecomment.IssueCommentTypeId
         If commentText.Length > 0 Then
             comment.Comments = commentText
@@ -1073,18 +1076,18 @@ Partial Class ClaimIssueDetailForm
         Return gCommentId
     End Function
 
-    Private Function GetAnswerSelectedId(ByVal gSoftQuestionId As Guid) As Guid
+    Private Function GetAnswerSelectedId(gSoftQuestionId As Guid) As Guid
         Dim gSelectedId As Guid = Guid.Empty
-        For i As Integer = 0 To Me.State.MyBO.ClaimIssueResponseList.Table.Rows.Count - 1
+        For i As Integer = 0 To State.MyBO.ClaimIssueResponseList.Table.Rows.Count - 1
             'DEF-4069
             If Not Me.State.MyBO.ClaimIssueResponseList.Table.Rows(i).RowState = DataRowState.Deleted Then
-                Dim gAnswerId As New Guid(CType(Me.State.MyBO.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_ANSWER_ID), Byte()))
+                Dim gAnswerId As New Guid(CType(State.MyBO.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_ANSWER_ID), Byte()))
                 Dim oAnswer As New Answer(gAnswerId)
                 If oAnswer.QuestionId = gSoftQuestionId Then
                     'If Not oAnswer.ListItemId = Guid.Empty Then
                     '    gSelectedId = oAnswer.ListItemId
                     'Else
-                    Dim b As Byte() = GuidControl.HexToByteArray(Me.State.MyBO.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_ANSWER_VALUE).ToString())
+                    Dim b As Byte() = GuidControl.HexToByteArray(State.MyBO.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_ANSWER_VALUE).ToString())
                     gSelectedId = New Guid(b)
                     'End If
                     Exit For
@@ -1094,15 +1097,15 @@ Partial Class ClaimIssueDetailForm
         Return gSelectedId
     End Function
 
-    Private Function GetAnswerTextValue(ByVal gSoftQuestionId As Guid) As String
+    Private Function GetAnswerTextValue(gSoftQuestionId As Guid) As String
         Dim sTextValue As String = String.Empty
-        For i As Integer = 0 To Me.State.MyBO.ClaimIssueResponseList.Table.Rows.Count - 1
+        For i As Integer = 0 To State.MyBO.ClaimIssueResponseList.Table.Rows.Count - 1
             'DEF-4069
             If Not (Me.State.MyBO.ClaimIssueResponseList.Table.Rows(i).RowState = DataRowState.Deleted) Then
-                Dim gAnswerId As New Guid(CType(Me.State.MyBO.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_ANSWER_ID), Byte()))
+                Dim gAnswerId As New Guid(CType(State.MyBO.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_ANSWER_ID), Byte()))
                 Dim oAnswer As New Answer(gAnswerId)
                 If oAnswer.QuestionId = gSoftQuestionId Then
-                    sTextValue = Me.State.MyBO.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_ANSWER_VALUE).ToString()
+                    sTextValue = State.MyBO.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_ANSWER_VALUE).ToString()
                     Exit For
                 End If
             End If
@@ -1110,17 +1113,17 @@ Partial Class ClaimIssueDetailForm
         Return sTextValue
     End Function
 
-    Private Function GetClaimIssueResponseId(ByVal gSoftQuestionId As Guid) As Guid
+    Private Function GetClaimIssueResponseId(gSoftQuestionId As Guid) As Guid
         Dim gClaimIssueResponseId As Guid = Guid.Empty
         Dim gAnswerId As Guid = Guid.Empty
-        For i As Integer = 0 To Me.State.MyBO.ClaimIssueResponseList.Table.Rows.Count - 1
+        For i As Integer = 0 To State.MyBO.ClaimIssueResponseList.Table.Rows.Count - 1
             'DEF-4069
             If Not (Me.State.MyBO.ClaimIssueResponseList.Table.Rows(i).RowState = DataRowState.Deleted) Then
-                If Not Me.State.MyBO.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_ANSWER_ID) Is System.DBNull.Value Then
-                    gAnswerId = New Guid(CType(Me.State.MyBO.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_ANSWER_ID), Byte()))
+                If State.MyBO.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_ANSWER_ID) IsNot DBNull.Value Then
+                    gAnswerId = New Guid(CType(State.MyBO.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_ANSWER_ID), Byte()))
                     Dim oAnswer As New Answer(gAnswerId)
                     If oAnswer.QuestionId = gSoftQuestionId Then
-                        gClaimIssueResponseId = New Guid(CType(Me.State.MyBO.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_CLAIM_ISSUE_RESPONSE_ID), Byte()))
+                        gClaimIssueResponseId = New Guid(CType(State.MyBO.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_CLAIM_ISSUE_RESPONSE_ID), Byte()))
                         Exit For
                     End If
                 End If
@@ -1139,13 +1142,13 @@ Partial Class ClaimIssueDetailForm
         If bWaived = True Then
             sStatus = STATUS_WAIVED
         Else
-            For i As Integer = 0 To Me.State.MyBO.ClaimIssueResponseList.Table.Rows.Count - 1
+            For i As Integer = 0 To State.MyBO.ClaimIssueResponseList.Table.Rows.Count - 1
                 'DEF-4069
                 If Not Me.State.MyBO.ClaimIssueResponseList.Table.Rows(i).RowState = DataRowState.Deleted Then
-                    If Me.State.ClaimIssueId.Equals(New Guid(CType(Me.State.MyBO.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_CLAIM_ISSUE_ID), Byte()))) Then
-                        If Not Me.State.MyBO.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_SUPPORTS_CLAIM_ID) Is System.DBNull.Value Then
+                    If State.ClaimIssueId.Equals(New Guid(CType(State.MyBO.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_CLAIM_ISSUE_ID), Byte()))) Then
+                        If State.MyBO.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_SUPPORTS_CLAIM_ID) IsNot DBNull.Value Then
                             iQuestionCount = iQuestionCount + 1
-                            gSupportsClaimId = New Guid(CType(Me.State.MyBO.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_SUPPORTS_CLAIM_ID), Byte()))
+                            gSupportsClaimId = New Guid(CType(State.MyBO.ClaimIssueResponseList.Table.Rows(i)(COL_NAME_SUPPORTS_CLAIM_ID), Byte()))
                             sSupportsClaim = LookupListNew.GetCodeFromId(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, gSupportsClaimId).ToString()
                             Select Case sSupportsClaim
                                 Case "Y"
@@ -1159,7 +1162,7 @@ Partial Class ClaimIssueDetailForm
                     End If
                 End If
             Next
-            If sOutcome.Contains("Y") And iQuestionCount = grdQuestions.Rows.Count Then
+            If sOutcome.Contains("Y") AndAlso iQuestionCount = grdQuestions.Rows.Count Then
                 sStatus = STATUS_RESOLVED
             End If
             If sOutcome.Contains("P") Then
@@ -1172,12 +1175,12 @@ Partial Class ClaimIssueDetailForm
         Return sStatus 'LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_ISSUE_STATUS, sStatus)
     End Function
 
-    Private Function SetEntityValue(ByVal sEntity As String, ByVal sAttribute As String, ByVal value As Object) As Label
+    Private Function SetEntityValue(sEntity As String, sAttribute As String, value As Object) As Label
         Dim oObject As Object
         Dim _typeObj As Type
         If (sEntity = EntityAttribute.EntityClaim) Then
-            oObject = Me.State.MyClaimBO
-            _typeObj = Me.State.MyClaimBO.GetType()
+            oObject = State.MyClaimBO
+            _typeObj = State.MyClaimBO.GetType()
             If (value Is Nothing) Then
                 _typeObj.GetProperty(sAttribute).SetValue(oObject, value, Nothing)
             ElseIf _typeObj.GetProperty(sAttribute).PropertyType = GetType(DateType) Then
@@ -1193,27 +1196,27 @@ Partial Class ClaimIssueDetailForm
 
     End Function
 
-    Private Function GetEntityValue(ByVal sEntity As String, ByVal sAttribute As String, Optional ByVal ddl As DropDownList = Nothing) As Label
+    Private Function GetEntityValue(sEntity As String, sAttribute As String, Optional ByVal ddl As DropDownList = Nothing) As Label
         Dim oObject As Object
         Dim _typeObj As Type
         If (sEntity = EntityAttribute.EntityClaim) Then
-            oObject = Me.State.MyClaimBO
-            _typeObj = Me.State.MyClaimBO.GetType()
+            oObject = State.MyClaimBO
+            _typeObj = State.MyClaimBO.GetType()
         Else
             Dim sAssembly As String = "Assurant.ElitaPlus.BusinessObjectsNew." + sEntity + ", Assurant.ElitaPlus.BusinessObjectsNew"
             _typeObj = Type.GetType(sAssembly)
-            oObject = Activator.CreateInstance(_typeObj, Me.State.MyClaimBO.Id, True)
+            oObject = Activator.CreateInstance(_typeObj, State.MyClaimBO.Id, True)
         End If
         Dim sValue As String = ""
         Dim lblCompareValue As New Label
         'If Not _typeObj.GetProperty(sAttribute).GetValue(oObject, Nothing) Is Nothing Then
-        If (Not _typeObj.GetProperty(sAttribute) Is Nothing) AndAlso (Not _typeObj.GetProperty(sAttribute).GetValue(oObject, Nothing) Is Nothing) Then
+        If (_typeObj.GetProperty(sAttribute) IsNot Nothing) AndAlso (_typeObj.GetProperty(sAttribute).GetValue(oObject, Nothing) IsNot Nothing) Then
             lblCompareValue.ID = "lblCompareValue"
-            If Not ddl Is Nothing Then
+            If ddl IsNot Nothing Then
                 If ddl.Items.Count > 0 Then
-                    Dim listItem As System.Web.UI.WebControls.ListItem
+                    Dim listItem As WebControls.ListItem
                     listItem = ddl.Items.FindByValue(CType(_typeObj.GetProperty(sAttribute).GetValue(oObject, Nothing), Guid).ToString())
-                    If Not listItem Is Nothing Then
+                    If listItem IsNot Nothing Then
                         sValue = listItem.Text
                     End If
                 End If
@@ -1227,33 +1230,33 @@ Partial Class ClaimIssueDetailForm
 
     Private Sub NavigateNext()
         Try
-            If (Not Me.NavController Is Nothing) Then
-                Select Case Me.NavController.PrevNavState.Name
+            If (NavController IsNot Nothing) Then
+                Select Case NavController.PrevNavState.Name
                     Case "CREATE_NEW_CLAIM"
-                        Me.NavController.Navigate(Me, "next", New NewClaimForm.Parameters(CType(Me.State.MyClaimBO, Claim), Nothing, Nothing))
+                        NavController.Navigate(Me, "next", New NewClaimForm.Parameters(CType(State.MyClaimBO, Claim), Nothing, Nothing))
                     Case "NEW_CLAIM_DETAIL"
-                        Me.NavController.Navigate(Me, "claimDetail", New NewClaimForm.Parameters(CType(Me.State.MyClaimBO, Claim), Nothing, Nothing))
+                        NavController.Navigate(Me, "claimDetail", New NewClaimForm.Parameters(CType(State.MyClaimBO, Claim), Nothing, Nothing))
                     Case "CLAIM_ISSUES_INFORMATION"
-                        Me.NavController.Navigate(Me, "claimIssues", New ClaimIssueForm.Parameters(CType(Me.State.MyClaimBO, MultiAuthClaim)))
+                        NavController.Navigate(Me, "claimIssues", New ClaimIssueForm.Parameters(CType(State.MyClaimBO, MultiAuthClaim)))
                     Case "CLAIM_DETAIL"
                         NavController.Navigate(Me, "claimForm", New ClaimForm.Parameters(State.MyClaimBO.Id))
                 End Select
             Else
-                Me.ReturnToCallingPage()
+                ReturnToCallingPage()
                 'Me.callPage(ClaimWizardForm.URL, New ClaimWizardForm.Parameters(ClaimWizardForm.ClaimWizardSteps.Step3, Nothing, Nothing, Me.State.MyClaimBO, True, False))
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnReopen_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnReopenContinue.Click
+    Private Sub btnReopen_Click(sender As Object, e As EventArgs) Handles btnReopenContinue.Click
 
-        Me.State.MyBO.StatusCode = Codes.CLAIMISSUE_STATUS__OPEN
-        Dim oClaimIssueStatus As ClaimIssueStatus = Me.State.MyBO.GetNewClaimIssueStatusChild()
+        State.MyBO.StatusCode = Codes.CLAIMISSUE_STATUS__OPEN
+        Dim oClaimIssueStatus As ClaimIssueStatus = State.MyBO.GetNewClaimIssueStatusChild()
         With oClaimIssueStatus
-            .ClaimIssueId = Me.State.MyBO.ClaimIssueId
+            .ClaimIssueId = State.MyBO.ClaimIssueId
             .ProcessedDate = DateTime.Now()
             .ProcessedBy = ElitaPlusIdentity.Current.ActiveUser.UserName
             .ClaimIssueStatusCId = LookupListNew.GetIdFromCode(LookupListCache.LK_CLAIM_ISSUE_STATUS, STATUS_OPEN)
@@ -1261,47 +1264,47 @@ Partial Class ClaimIssueDetailForm
             .IssueProcessReasonId = New Guid(hdnSelectedReason.Value)
             .Save()
         End With
-        Me.State.MyBO.Save()
+        State.MyBO.Save()
         Try
-            If (Not Me.NavController Is Nothing) Then
-                Select Case Me.NavController.PrevNavState.Name
+            If (NavController IsNot Nothing) Then
+                Select Case NavController.PrevNavState.Name
                     Case "CLAIM_ISSUES_INFORMATION"
                         Select Case LookupListNew.GetCodeFromId(LookupListCache.LK_CLAIM_ISSUE_STATUS, oClaimIssueStatus.ClaimIssueStatusCId)
                             Case Codes.CLAIMISSUE_STATUS__OPEN, Codes.CLAIMISSUE_STATUS__PENDING
-                                Me.State.MyClaimBO.StatusCode = Codes.CLAIM_STATUS__PENDING
-                                Dim c As Comment = Me.State.MyClaimBO.AddNewComment()
+                                State.MyClaimBO.StatusCode = Codes.CLAIM_STATUS__PENDING
+                                Dim c As Comment = State.MyClaimBO.AddNewComment()
                                 c.CommentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_SET_TO_PENDING)
                                 c.Comments = TranslationBase.TranslateLabelOrMessage("MSG_CLAIM_PENDING_ISSUE_OPEN")
                             Case Codes.CLAIMISSUE_STATUS__REJECTED, Codes.CLAIMISSUE_STATUS__RESOLVED
-                                Me.State.MyClaimBO.StatusCode = Codes.CLAIM_STATUS__DENIED
+                                State.MyClaimBO.StatusCode = Codes.CLAIM_STATUS__DENIED
                                 Dim oEntityIssue As EntityIssue = New EntityIssue(oClaimIssueStatus.ClaimIssueId)
                                 If Not oEntityIssue.IssueId = Guid.Empty Then
                                     Dim oIssue As Issue = New Issue(oEntityIssue.IssueId)
-                                    If Not oIssue.DeniedReason Is Nothing Then
-                                        Me.State.MyClaimBO.DeniedReasonId = LookupListNew.GetIdFromExtCode(LookupListNew.LK_DENIED_REASON, oIssue.DeniedReason)
+                                    If oIssue.DeniedReason IsNot Nothing Then
+                                        State.MyClaimBO.DeniedReasonId = LookupListNew.GetIdFromExtCode(LookupListNew.LK_DENIED_REASON, oIssue.DeniedReason)
                                     Else
-                                        Me.State.MyClaimBO.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListNew.LK_DENIED_REASON, Codes.REASON_DENIED_CLAIM_ISSUE_REJECTED)
+                                        State.MyClaimBO.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListNew.LK_DENIED_REASON, Codes.REASON_DENIED_CLAIM_ISSUE_REJECTED)
                                     End If
                                 Else
-                                    Me.State.MyClaimBO.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListNew.LK_DENIED_REASON, Codes.REASON_DENIED_CLAIM_ISSUE_REJECTED)
+                                    State.MyClaimBO.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListNew.LK_DENIED_REASON, Codes.REASON_DENIED_CLAIM_ISSUE_REJECTED)
                                 End If
-                                Dim c As Comment = Me.State.MyClaimBO.AddNewComment()
+                                Dim c As Comment = State.MyClaimBO.AddNewComment()
                                 c.CommentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_DENIED)
                                 c.Comments = TranslationBase.TranslateLabelOrMessage("MSG_CLAIM_DENIED_ISSUE_REJECTED")
                         End Select
-                        Me.State.MyClaimBO.Save()
-                        Me.State.MyBO = CType(Me.State.MyClaimBO.ClaimIssuesList.GetChild(Me.State.ClaimIssueId), ClaimIssue)
+                        State.MyClaimBO.Save()
+                        State.MyBO = CType(State.MyClaimBO.ClaimIssuesList.GetChild(State.ClaimIssueId), ClaimIssue)
                 End Select
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
         PopulateFormFromBOs()
       
     End Sub
 
-    Private Function IsValidDate(ByVal DateToCheck As DateTime, ByVal DateToCompare As DateTime, ByVal sOperation As String) As Boolean
+    Private Function IsValidDate(DateToCheck As DateTime, DateToCompare As DateTime, sOperation As String) As Boolean
         Dim bReturn As Boolean = True
         Select Case sOperation
             Case "GreaterThanOrEqual"
@@ -1316,7 +1319,7 @@ Partial Class ClaimIssueDetailForm
         Return bReturn
     End Function
 
-    Private Function IsValidDate(ByVal DateToCheck As DateType, ByVal DateToCompare As DateType, ByVal sOperation As String) As Boolean
+    Private Function IsValidDate(DateToCheck As DateType, DateToCompare As DateType, sOperation As String) As Boolean
         Dim bReturn As Boolean = True
         Select Case sOperation
             Case "GreaterThanOrEqual"
@@ -1331,7 +1334,7 @@ Partial Class ClaimIssueDetailForm
         Return bReturn
     End Function
 
-    Private Sub ddlMult_OnSelectedDropChanged(ByVal aSrc As MultipleColumnDDLabelControl)
+    Private Sub ddlMult_OnSelectedDropChanged(aSrc As MultipleColumnDDLabelControl)
 
     End Sub
 

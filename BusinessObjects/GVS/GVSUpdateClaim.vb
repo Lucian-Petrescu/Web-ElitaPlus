@@ -24,8 +24,8 @@ Public Class GVSUpdateClaim
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GVSUpdateClaimDs, ByVal xml As String, _
-                   ByVal functionToProcess As String)
+    Public Sub New(ds As GVSUpdateClaimDs, xml As String, _
+                   functionToProcess As String)
         MyBase.New()
         InputXml = xml
         FuncToProc = functionToProcess
@@ -46,20 +46,20 @@ Public Class GVSUpdateClaim
 
 #Region "Properties"
 
-    Private Property InputXml() As String
+    Private Property InputXml As String
         Get
             Return msInputXml
         End Get
-        Set(ByVal value As String)
+        Set
             msInputXml = value
         End Set
     End Property
 
-    Private Property FuncToProc() As String
+    Private Property FuncToProc As String
         Get
             Return msFunctionToProcess
         End Get
-        Set(ByVal value As String)
+        Set
             msFunctionToProcess = value
         End Set
     End Property

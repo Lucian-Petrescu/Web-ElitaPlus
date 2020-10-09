@@ -22,15 +22,15 @@
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_PRODUCT_GROUP_DETAIL_ID, id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -42,51 +42,51 @@
     'End Function
 
     'This Method's body was added manually
-    Public Sub LoadList(ByVal ds As DataSet, ByVal productGroupPrcId As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Sub LoadList(ds As DataSet, productGroupPrcId As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters As New DBHelper.DBHelperParameter(TABLE_KEY_NAME, productGroupPrcId.ToByteArray)
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, New DBHelper.DBHelperParameter() {parameters})
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME, New DBHelper.DBHelperParameter() {parameters})
     End Sub
 
-    Public Sub LoadProductGroupList(ByVal ds As DataSet, ByVal productCode As String)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_PRODUCT_GROUP_LIST")
+    Public Sub LoadProductGroupList(ds As DataSet, productCode As String)
+        Dim selectStmt As String = Config("/SQL/LOAD_PRODUCT_GROUP_LIST")
         Dim parameters As New DBHelper.DBHelperParameter(TABLE_KEY_NAME, productCode)
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, New DBHelper.DBHelperParameter() {parameters})
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME, New DBHelper.DBHelperParameter() {parameters})
     End Sub
 
-    Public Sub LoadByProductGroupIdProductCodeId(ByVal familyDS As DataSet, ByVal productGroupId As Guid, ByVal productCodeId As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_BY_PRODUCTGROUPID_PRODUCTCODEID")
+    Public Sub LoadByProductGroupIdProductCodeId(familyDS As DataSet, productGroupId As Guid, productCodeId As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_BY_PRODUCTGROUPID_PRODUCTCODEID")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-                    New DBHelper.DBHelperParameter(Me.COL_NAME_PRODUCT_GROUP_ID, productGroupId.ToByteArray), _
-                    New DBHelper.DBHelperParameter(Me.COL_NAME_PRODUCT_CODE_ID, productCodeId.ToByteArray)}
+                    New DBHelper.DBHelperParameter(COL_NAME_PRODUCT_GROUP_ID, productGroupId.ToByteArray), _
+                    New DBHelper.DBHelperParameter(COL_NAME_PRODUCT_CODE_ID, productCodeId.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadGroupProductCodeIDs(ByVal productGroupId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_GROUP_PRODUCT_CODE_IDs")
+    Public Function LoadGroupProductCodeIDs(productGroupId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_GROUP_PRODUCT_CODE_IDs")
         Dim parameters() As OracleParameter
 
         parameters = New OracleParameter() _
                                     {New OracleParameter(COL_NAME_PRODUCT_GROUP_ID, productGroupId.ToByteArray)}
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadAllGroupProductCodeIDs(ByVal dealerID As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_ALL_GROUP_PRODUCT_CODE_IDs")
+    Public Function LoadAllGroupProductCodeIDs(dealerID As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_ALL_GROUP_PRODUCT_CODE_IDs")
         Dim parameters() As OracleParameter
 
         parameters = New OracleParameter() _
                                       {New OracleParameter("company_group_id", dealerID.ToByteArray)}
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -94,12 +94,12 @@
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

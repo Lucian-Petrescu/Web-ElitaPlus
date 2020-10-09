@@ -23,7 +23,7 @@ Namespace Generic
             Next
         End Sub
 
-        Public Shared Function FromNameToType(ByVal name As String) As Type
+        Public Shared Function FromNameToType(name As String) As Type
             Dim oType As Type
 
             If Not moAllTypes.Contains(name.ToUpper) Then Return Nothing
@@ -32,7 +32,7 @@ Namespace Generic
 
         End Function
 
-        Public Shared Function GetControlsByFormName(ByVal formName As String) As System.Collections.Generic.List(Of String)
+        Public Shared Function GetControlsByFormName(formName As String) As System.Collections.Generic.List(Of String)
             Dim oControlNames As New System.Collections.Generic.List(Of String)
             Dim oControlType As Type, blnIsWebControl As Boolean
 
@@ -54,7 +54,7 @@ Namespace Generic
             Return oControlNames
         End Function
 
-        Private Shared Sub GetChildrenControls(ByVal userControlName As String, ByVal userControlType As Type, ByVal controlNames As System.Collections.Generic.List(Of String))
+        Private Shared Sub GetChildrenControls(userControlName As String, userControlType As Type, controlNames As System.Collections.Generic.List(Of String))
             Dim oControlType As Type = userControlType
             Dim oControls As FieldInfo() = oControlType.GetFields(Reflection.BindingFlags.DeclaredOnly Or Reflection.BindingFlags.NonPublic Or Reflection.BindingFlags.Instance)
             Dim oControlField As FieldInfo

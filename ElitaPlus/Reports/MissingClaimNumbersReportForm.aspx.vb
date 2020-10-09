@@ -57,7 +57,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -67,21 +67,21 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     PopulateCompaniesDropdown()
                     'TheReportCeInputControl.SetExportOnly()
                 Else
                     ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
 
         End Sub
 
@@ -89,12 +89,12 @@ Namespace Reports
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -105,8 +105,8 @@ Namespace Reports
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(moBeginClaimLabel)
-            Me.ClearLabelErrSign(moEndClaimLabel)
+            ClearLabelErrSign(moBeginClaimLabel)
+            ClearLabelErrSign(moEndClaimLabel)
         End Sub
 #End Region
 
@@ -126,7 +126,7 @@ Namespace Reports
             UserCompanyMultipleDrop.NothingSelected = True
             UserCompanyMultipleDrop.SetControl(False, UserCompanyMultipleDrop.MODES.NEW_MODE, True, dv, TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY), True)
             If dv.Count.Equals(ONE_ITEM) Then
-                UserCompanyMultipleDrop.SelectedIndex = Me.ONE_ITEM
+                UserCompanyMultipleDrop.SelectedIndex = ONE_ITEM
                 UserCompanyMultipleDrop.Visible = False
             End If
         End Sub
@@ -134,8 +134,8 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal companyCode As String, ByVal strStartClaim As String,
-                                  ByVal strEndClaim As String) As ReportCeBaseForm.Params
+        Function SetParameters(companyCode As String, strStartClaim As String,
+                                  strEndClaim As String) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim reportName As String = RPT_FILENAME
@@ -174,44 +174,44 @@ Namespace Reports
 
             'Start and End claim numbers must be 8 digits long.
             Try
-                If Me.moStartClaimText.Text.Length < 8 Or Me.moEndClaimText.Text.Length < 8 Then
+                If moStartClaimText.Text.Length < 8 OrElse moEndClaimText.Text.Length < 8 Then
                     Throw New Exception
                 End If
             Catch ex As Exception
-                If Me.moStartClaimText.Text.Length < 8 Then ElitaPlusPage.SetLabelError(Me.moBeginClaimLabel)
-                If Me.moEndClaimText.Text.Length < 8 Then ElitaPlusPage.SetLabelError(Me.moEndClaimLabel)
+                If moStartClaimText.Text.Length < 8 Then ElitaPlusPage.SetLabelError(moBeginClaimLabel)
+                If moEndClaimText.Text.Length < 8 Then ElitaPlusPage.SetLabelError(moEndClaimLabel)
                 Throw New GUIException(Message.MSG_INVALID_NUMBER, Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLAIM_NUMBER_MUST_BE_8_CHAR)
             End Try
 
             'End claim number and start claim number must a valid integer.
             Try
-                intStartClaim = Integer.Parse(Me.moStartClaimText.Text)
-                intEndClaim = Integer.Parse(Me.moEndClaimText.Text)
+                intStartClaim = Integer.Parse(moStartClaimText.Text)
+                intEndClaim = Integer.Parse(moEndClaimText.Text)
             Catch ex As Exception
                 If intStartClaim = -1 Then
-                    ElitaPlusPage.SetLabelError(Me.moBeginClaimLabel)
+                    ElitaPlusPage.SetLabelError(moBeginClaimLabel)
                     Try
-                        intEndClaim = Integer.Parse(Me.moEndClaimText.Text)
+                        intEndClaim = Integer.Parse(moEndClaimText.Text)
                     Catch ex1 As Exception
-                        ElitaPlusPage.SetLabelError(Me.moEndClaimLabel)
+                        ElitaPlusPage.SetLabelError(moEndClaimLabel)
                     End Try
                 Else
-                    ElitaPlusPage.SetLabelError(Me.moEndClaimLabel)
+                    ElitaPlusPage.SetLabelError(moEndClaimLabel)
                 End If
                 Throw New GUIException(Message.MSG_INVALID_NUMBER, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_NUMBER)
             End Try
 
             'End claim number must be higher than start claim number.
             If intEndClaim - intStartClaim <= 0 Then
-                ElitaPlusPage.SetLabelError(Me.moEndClaimLabel)
-                ElitaPlusPage.SetLabelError(Me.moBeginClaimLabel)
+                ElitaPlusPage.SetLabelError(moEndClaimLabel)
+                ElitaPlusPage.SetLabelError(moBeginClaimLabel)
                 Throw New GUIException(Message.MSG_INVALID_NUMBER, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_RANGE)
             End If
 
             'Start and End claim numbers must be within the same year, first 2 digits must be the same.
-            If String.Compare(Me.moStartClaimText.Text.Substring(0, 2), Me.moEndClaimText.Text.Substring(0, 2)) <> 0 Then
-                ElitaPlusPage.SetLabelError(Me.moEndClaimLabel)
-                ElitaPlusPage.SetLabelError(Me.moBeginClaimLabel)
+            If String.Compare(moStartClaimText.Text.Substring(0, 2), moEndClaimText.Text.Substring(0, 2)) <> 0 Then
+                ElitaPlusPage.SetLabelError(moEndClaimLabel)
+                ElitaPlusPage.SetLabelError(moBeginClaimLabel)
                 Throw New GUIException(Message.MSG_INVALID_NUMBER, Assurant.ElitaPlus.Common.ErrorCodes.GUI_RANGE_MUST_BE_IN_SAME_YEAR)
             End If
 

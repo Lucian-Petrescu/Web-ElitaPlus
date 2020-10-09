@@ -1,4 +1,4 @@
-<%@ Page Language="vb" AutoEventWireup="false" Codebehind="EarningPatternForm.aspx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Tables.EarningPatternForm"%>
+﻿<%@ Page Language="vb" AutoEventWireup="false" Codebehind="EarningPatternForm.aspx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Tables.EarningPatternForm"%>
 <%@ Register TagPrefix="uc1" TagName="ErrorController" Src="../Common/ErrorController.ascx" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML>
@@ -123,7 +123,7 @@
 												<TD align="left" width="100%">
 													<div id="tabs" class="style-tabs-old style-tabs-oldBG">
                                                     <ul>
-                                                        <li style="background:#d5d6e4"><a href="#tabsPercentages">
+                                                        <li style="background:#d5d6e4"><a href="#tabsPercentages" rel="noopener noreferrer">
                                                             <asp:Label ID="Label4" runat="server" CssClass="tabHeaderTextOld">Percentages</asp:Label></a></li>
                                                     </ul>
 

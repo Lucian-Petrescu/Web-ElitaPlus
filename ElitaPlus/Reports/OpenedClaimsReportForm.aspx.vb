@@ -69,7 +69,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -82,35 +82,35 @@ Namespace Reports
         Private Sub InitializeForm()
             PopulateDropDowns()
             Dim t As Date = Date.Now.AddDays(-1)
-            Me.moBeginDateText.Text = GetDateFormattedString(t)
-            Me.moEndDateText.Text = GetDateFormattedString(Date.Now)
+            moBeginDateText.Text = GetDateFormattedString(t)
+            moEndDateText.Text = GetDateFormattedString(Date.Now)
             'Me.rCountry.Checked = True
-            Me.rDealer.Checked = True
-            Me.rSvcCtr.Checked = True
-            Me.rRiskType.Checked = True
-            Me.rMethodofRepair.Checked = True
-            Me.rAllUsers.Checked = True
-            Me.rCoverageType.Checked = True
+            rDealer.Checked = True
+            rSvcCtr.Checked = True
+            rRiskType.Checked = True
+            rMethodofRepair.Checked = True
+            rAllUsers.Checked = True
+            rCoverageType.Checked = True
         End Sub
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                     TheRptCeInputControl.populateReportLanguages(RPT_FILENAME)
                     'Date Calendars
-                    Me.AddCalendar(Me.BtnBeginDate, Me.moBeginDateText)
-                    Me.AddCalendar(Me.BtnEndDate, Me.moEndDateText)
+                    AddCalendar(BtnBeginDate, moBeginDateText)
+                    AddCalendar(BtnEndDate, moEndDateText)
                 Else
                     ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
 
         End Sub
 
@@ -118,12 +118,12 @@ Namespace Reports
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -131,9 +131,9 @@ Namespace Reports
 
 #Region "Handlers-DropDowns"
 
-        Private Sub cboCountry_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboCountry.SelectedIndexChanged
+        Private Sub cboCountry_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboCountry.SelectedIndexChanged
             Try
-                selectedCountryId = Me.GetSelectedItem(Me.cboCountry)
+                selectedCountryId = GetSelectedItem(cboCountry)
                 If selectedCountryId.Equals(Guid.Empty) Then
                     'ElitaPlusPage.SetLabelError(moCountryLabel)
                     Throw New GUIException(Message.MSG_INVALID_COUNTRY, Assurant.ElitaPlus.Common.ErrorCodes.GUI_COUNTRY_MUST_BE_SELECTED_ERR)
@@ -146,18 +146,18 @@ Namespace Reports
                                                           .CountryId = selectedCountryId
                                                         })
 
-                    Me.cboSvcCtr.Populate(ServiceCenters.ToArray(),
+                    cboSvcCtr.Populate(ServiceCenters.ToArray(),
                         New PopulateOptions() With
                         {
                             .AddBlankItem = True
                         })
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub rCountry_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles rCountry.CheckedChanged
+        Private Sub rCountry_CheckedChanged(sender As Object, e As System.EventArgs) Handles rCountry.CheckedChanged
             If rCountry.Checked = True Then
                 cboCountry.SelectedIndex = None
                 PopulateSvcCtrDropDown()
@@ -170,13 +170,13 @@ Namespace Reports
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(moBeginDateLabel)
-            Me.ClearLabelErrSign(moEndDateLabel)
-            Me.ClearLabelErrSign(moDealerLabel)
-            Me.ClearLabelErrSign(SvcCtrLabel)
-            Me.ClearLabelErrSign(RiskTypeLabel)
-            Me.ClearLabelErrSign(lblMethodofRepair)
-            Me.ClearLabelErrSign(lblCoverageType)
+            ClearLabelErrSign(moBeginDateLabel)
+            ClearLabelErrSign(moEndDateLabel)
+            ClearLabelErrSign(moDealerLabel)
+            ClearLabelErrSign(SvcCtrLabel)
+            ClearLabelErrSign(RiskTypeLabel)
+            ClearLabelErrSign(lblMethodofRepair)
+            ClearLabelErrSign(lblCoverageType)
 
         End Sub
 
@@ -201,13 +201,13 @@ Namespace Reports
                                                             Where ElitaPlusIdentity.Current.ActiveUser.Countries.Contains(Country.ListItemId)
                                                             Select Country).ToArray()
 
-            Me.cboCountry.Populate(UserCountries.ToArray(),
+            cboCountry.Populate(UserCountries.ToArray(),
                                     New PopulateOptions() With
                                     {
                                         .AddBlankItem = True
                                     })
             If cboCountry.Items.Count < 3 Then
-                Me.rCountry.Checked = False
+                rCountry.Checked = False
                 ' Me.BindListControlToDataView(Me.cboCountry, LookupListNew.GetUserCountriesLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies), , , False)
                 CountryList = CommonConfigManager.Current.ListManager.GetList(listCode:=ListCodes.Country)
 
@@ -215,10 +215,10 @@ Namespace Reports
                                  Where ElitaPlusIdentity.Current.ActiveUser.Countries.Contains(Country.ListItemId)
                                  Select Country).ToArray()
 
-                Me.cboCountry.Populate(UserCountries.ToArray(), New PopulateOptions())
+                cboCountry.Populate(UserCountries.ToArray(), New PopulateOptions())
 
             Else
-                Me.rCountry.Checked = True
+                rCountry.Checked = True
             End If
             'If cboCountry.Items.Count < 3 Then
             '    HideHtmlElement("ddHideRow")
@@ -242,7 +242,7 @@ Namespace Reports
                                                         })
 
                 If Dealers.Count > 0 Then
-                    If Not DealerList Is Nothing Then
+                    If DealerList IsNot Nothing Then
                         DealerList.AddRange(Dealers)
                     Else
                         DealerList = Dealers.Clone()
@@ -274,7 +274,7 @@ Namespace Reports
                                                                     })
 
                 If ServiceCenters.Count > 0 Then
-                    If Not ServiceCenterList Is Nothing Then
+                    If ServiceCenterList IsNot Nothing Then
                         ServiceCenterList.AddRange(ServiceCenters)
                     Else
                         ServiceCenterList = ServiceCenters.Clone()
@@ -282,7 +282,7 @@ Namespace Reports
                 End If
             Next
 
-            Me.cboSvcCtr.Populate(ServiceCenterList.ToArray(),
+            cboSvcCtr.Populate(ServiceCenterList.ToArray(),
                                     New PopulateOptions() With
                                     {
                                         .AddBlankItem = True
@@ -298,7 +298,7 @@ Namespace Reports
                                                                       .CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
                                                                     })
 
-            Me.cboRiskType.Populate(RiskTypes.ToArray(),
+            cboRiskType.Populate(RiskTypes.ToArray(),
                                      New PopulateOptions() With
                                      {
                                        .AddBlankItem = True
@@ -312,7 +312,7 @@ Namespace Reports
                 CommonConfigManager.Current.ListManager.GetList(listCode:="METHR",
                                                                 languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
 
-            Me.cboMethodofRepair.Populate(Methods.ToArray(),
+            cboMethodofRepair.Populate(Methods.ToArray(),
                                             New PopulateOptions() With
                                             {
                                                 .AddBlankItem = True
@@ -330,7 +330,7 @@ Namespace Reports
                                                                   .CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
                                                                 })
 
-            Me.cboCoverageType.Populate(CoverageTypes.ToArray(),
+            cboCoverageType.Populate(CoverageTypes.ToArray(),
                                     New PopulateOptions() With
                                     {
                                         .AddBlankItem = True
@@ -340,8 +340,8 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal userId As String, ByVal langCode As String, ByVal countryCode As String, ByVal dealerCode As String, ByVal svcCtrCode As String, ByVal riskTypeDescription As String, ByVal RepairTypeDesc As String, ByVal CoverageTypeDesc As String, ByVal beginDate As String,
-                                  ByVal endDate As String, ByVal createdby As String, ByVal svcCtrName As String, ByVal sortBy As String) As ReportCeBaseForm.Params
+        Function SetParameters(userId As String, langCode As String, countryCode As String, dealerCode As String, svcCtrCode As String, riskTypeDescription As String, RepairTypeDesc As String, CoverageTypeDesc As String, beginDate As String,
+                                  endDate As String, createdby As String, svcCtrName As String, sortBy As String) As ReportCeBaseForm.Params
 
             Dim reportFormat As ReportCeBaseForm.RptFormat
             Dim params As New ReportCeBaseForm.Params
@@ -356,7 +356,7 @@ Namespace Reports
                 culturecode = TheRptCeInputControl.getCultureValue(True)
             End If
 
-            Me.rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
+            rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
 
             Dim repParams() As ReportCeBaseForm.RptParam = New ReportCeBaseForm.RptParam() _
                     {
@@ -398,11 +398,11 @@ Namespace Reports
             Dim userId As String = GuidControl.GuidToHexString(ElitaPlusIdentity.Current.ActiveUser.Id)
             Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
             Dim langCode As String = LookupListNew.GetCodeFromId("LANGUAGES", langId)
-            Dim selectedDealerId As Guid = Me.GetSelectedItem(Me.cboDealer)
+            Dim selectedDealerId As Guid = GetSelectedItem(cboDealer)
             Dim dvDealer As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies, False, "CODE")
             Dim dealerCode As String = LookupListNew.GetCodeFromId(dvDealer, selectedDealerId)
-            Dim selectedSvcCtrId As Guid = Me.GetSelectedItem(Me.cboSvcCtr)
-            selectedCountryId = Me.GetSelectedItem(Me.cboCountry)
+            Dim selectedSvcCtrId As Guid = GetSelectedItem(cboSvcCtr)
+            selectedCountryId = GetSelectedItem(cboCountry)
             Dim dvSvcCtr As DataView
             If selectedCountryId.Equals(Guid.Empty) Then
                 dvSvcCtr = LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Country(ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID).Id)
@@ -413,20 +413,20 @@ Namespace Reports
             'Dim dvSvcCtr As DataView = LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Country(ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID).Id)
             Dim svcCtrCode As String = LookupListNew.GetCodeFromId(dvSvcCtr, selectedSvcCtrId)
             Dim svcCtrName As String = LookupListNew.GetDescriptionFromId(dvSvcCtr, selectedSvcCtrId)
-            Dim selectedRiskTypeId As Guid = Me.GetSelectedItem(Me.cboRiskType)
+            Dim selectedRiskTypeId As Guid = GetSelectedItem(cboRiskType)
             Dim dvRiskType As DataView = LookupListNew.GetRiskTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
             Dim riskTypeDescription As String = LookupListNew.GetDescriptionFromId(dvRiskType, selectedRiskTypeId)
             ' Dim selectedClaimTypeId As Guid = Me.GetSelectedItem(Me.cboClaimType)
             'Dim dvClaimType As DataView = LookupListNew.GetClaimTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
             'Dim claimTypeCode As String = LookupListNew.GetCodeFromId(dvClaimType, selectedClaimTypeId)
-            Dim selectedRepairTypeId As Guid = Me.GetSelectedItem(Me.cboMethodofRepair)
+            Dim selectedRepairTypeId As Guid = GetSelectedItem(cboMethodofRepair)
             Dim dvRepairType As DataView = LookupListNew.GetMethodOfRepairLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
             Dim RepairTypeDesc As String = LookupListNew.GetDescriptionFromId(dvRepairType, selectedRepairTypeId)
-            Dim sortBy As String = Me.rdReportSortOrder.SelectedValue
-            selectedCountryId = Me.GetSelectedItem(Me.cboCountry)
+            Dim sortBy As String = rdReportSortOrder.SelectedValue
+            selectedCountryId = GetSelectedItem(cboCountry)
             Dim dvCountry As DataView = LookupListNew.GetUserCountriesLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
             Dim countryCode As String = LookupListNew.GetDescriptionFromId(dvCountry, selectedCountryId)
-            Dim selectedCoverageTypeId As Guid = Me.GetSelectedItem(Me.cboCoverageType)
+            Dim selectedCoverageTypeId As Guid = GetSelectedItem(cboCoverageType)
             Dim dvCoverageType As DataView = LookupListNew.GetCoverageTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
             Dim CoverageTypeDesc As String = LookupListNew.GetDescriptionFromId(dvCoverageType, selectedCoverageTypeId)
 
@@ -441,7 +441,7 @@ Namespace Reports
             beginDate = ReportCeBase.FormatDate(moBeginDateLabel, moBeginDateText.Text)
 
 
-            If Me.rCountry.Checked Then
+            If rCountry.Checked Then
                 countryCode = ALL
             Else
                 If selectedCountryId.Equals(Guid.Empty) Then
@@ -450,7 +450,7 @@ Namespace Reports
                 End If
             End If
 
-            If Me.rDealer.Checked Then
+            If rDealer.Checked Then
                 dealerCode = ALL
             Else
                 If selectedDealerId.Equals(Guid.Empty) Then
@@ -459,20 +459,20 @@ Namespace Reports
                 End If
             End If
 
-            If Me.rSvcCtr.Checked Then
+            If rSvcCtr.Checked Then
                 svcCtrCode = ALL
             Else
                 If selectedSvcCtrId.Equals(Guid.Empty) Then
                     ElitaPlusPage.SetLabelError(SvcCtrLabel)
                     Throw New GUIException(Message.MSG_INVALID_SERVICE_CENTER, Assurant.ElitaPlus.Common.ErrorCodes.GUI_SERVICE_CENTER_MUST_BE_SELECTED_ERR)
-                ElseIf cboCountry.Visible = True And selectedCountryId.Equals(Guid.Empty) Then
+                ElseIf cboCountry.Visible = True AndAlso selectedCountryId.Equals(Guid.Empty) Then
                     'ElitaPlusPage.SetLabelError(moCountryLabel)
                     Throw New GUIException(Message.MSG_INVALID_COUNTRY, Assurant.ElitaPlus.Common.ErrorCodes.GUI_COUNTRY_MUST_BE_SELECTED_ERR)
                 End If
             End If
             'End If
 
-            If Me.rRiskType.Checked Then
+            If rRiskType.Checked Then
                 riskTypeDescription = ALL
             Else
                 If selectedRiskTypeId.Equals(Guid.Empty) Then
@@ -481,7 +481,7 @@ Namespace Reports
                 End If
             End If
 
-            If Me.rMethodofRepair.Checked Then
+            If rMethodofRepair.Checked Then
                 RepairTypeDesc = ALL
             Else
                 If selectedRepairTypeId.Equals(Guid.Empty) Then
@@ -491,7 +491,7 @@ Namespace Reports
             End If
 
 
-            If Me.rAllUsers.Checked Then
+            If rAllUsers.Checked Then
                 createdby = ALL
             Else
                 createdby = txtUserId.Text.Trim.ToString()
@@ -501,7 +501,7 @@ Namespace Reports
                 End If
             End If
 
-            If Me.rCoverageType.Checked Then
+            If rCoverageType.Checked Then
                 CoverageTypeDesc = ALL
             Else
                 If selectedCoverageTypeId.Equals(Guid.Empty) Then

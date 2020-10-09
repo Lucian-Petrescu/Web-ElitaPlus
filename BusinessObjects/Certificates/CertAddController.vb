@@ -109,7 +109,7 @@ Public Class CertAddController
         _PaymentType = "1"
     End Sub
 
-    Public Sub New(ByVal pDealerID As Guid)
+    Public Sub New(pDealerID As Guid)
         _TransID = New Guid
         _PaymentType = "1"
         DealerID = pDealerID
@@ -118,23 +118,23 @@ Public Class CertAddController
 #End Region
 
 #Region "Properties"
-    Public ReadOnly Property TransID() As Guid
+    Public ReadOnly Property TransID As Guid
         Get
             Return _TransID
         End Get
     End Property
 
-    Public Property DealerID() As Guid
+    Public Property DealerID As Guid
         Get
             Return _DealerID
         End Get
-        Set(ByVal Value As Guid)
+        Set
             _DealerID = Value
             SetProductConversion()
         End Set
     End Property
 
-    Public Readonly Property CertDealer() As Dealer
+    Public Readonly Property CertDealer As Dealer
         Get
             if _CertDealer is Nothing Then
                 _CertDealer = New Dealer(DealerID)
@@ -143,466 +143,466 @@ Public Class CertAddController
         End Get
     End Property
 
-    Public ReadOnly Property ProductConversion() As Boolean
+    Public ReadOnly Property ProductConversion As Boolean
         Get
             Return _ProductConversion
         End Get
     End Property
 
-    Public Property CertNum() As String
+    Public Property CertNum As String
         Get
             Return _CertNum
         End Get
-        Set(ByVal Value As String)
+        Set
             _CertNum = Left(Value, 20)
         End Set
     End Property
 
-    Public Property ProductCode() As String
+    Public Property ProductCode As String
         Get
             Return _ProdCode
         End Get
-        Set(ByVal Value As String)
+        Set
             _ProdCode = Left(Value, 20)
         End Set
     End Property
 
-    Public Property CertDuration() As Integer
+    Public Property CertDuration As Integer
         Get
             Return _CertDuration
         End Get
-        Set(ByVal Value As Integer)
+        Set
             _CertDuration = Value
         End Set
     End Property
 
-    Public Property ManufacturerDuration() As Integer
+    Public Property ManufacturerDuration As Integer
         Get
             Return _MfgWarranty
         End Get
-        Set(ByVal Value As Integer)
+        Set
             _MfgWarranty = Value
         End Set
     End Property
 
-    Public Property WarrantySalesDate() As Date
+    Public Property WarrantySalesDate As Date
         Get
             Return _WarrantySalesDate
         End Get
-        Set(ByVal Value As Date)
+        Set
             _WarrantySalesDate = Value
         End Set
     End Property
 
-    Public Property ProductSalesDate() As Date
+    Public Property ProductSalesDate As Date
         Get
             Return _ProductSalesDate
         End Get
-        Set(ByVal Value As Date)
+        Set
             _ProductSalesDate = Value
         End Set
     End Property
 
-    Public Property DateOfBirth() As Date
+    Public Property DateOfBirth As Date
         Get
             Return _DateOfBirth
         End Get
-        Set(ByVal Value As Date)
+        Set
             _DateOfBirth = Value
         End Set
     End Property
 
-    Public Property WarrantyPrice() As Double
+    Public Property WarrantyPrice As Double
         Get
             Return _WarrantyPrice
         End Get
-        Set(ByVal Value As Double)
+        Set
             _WarrantyPrice = Value
         End Set
     End Property
 
-    Public Property ProductRetailPrice() As Double
+    Public Property ProductRetailPrice As Double
         Get
             Return _RetailPrice
         End Get
-        Set(ByVal Value As Double)
+        Set
             _RetailPrice = Value
         End Set
     End Property
 
-    Public Property InvoiceNumber() As String
+    Public Property InvoiceNumber As String
         Get
             Return _InvoiceNumber
         End Get
-        Set(ByVal Value As String)
+        Set
             _InvoiceNumber = Left(Value, 50)
         End Set
     End Property
 
-    Public Property BranchCode() As String
+    Public Property BranchCode As String
         Get
             Return _BranchCode
         End Get
-        Set(ByVal Value As String)
+        Set
             _BranchCode = Left(Value, 10)
         End Set
     End Property
 
-    Public Property SalesRepNumber() As String
+    Public Property SalesRepNumber As String
         Get
             Return _SalesRepNumber
         End Get
-        Set(ByVal Value As String)
+        Set
             _SalesRepNumber = Left(Value, 30)
         End Set
     End Property
 
-    Public Property Make() As String
+    Public Property Make As String
         Get
             Return _Make
         End Get
-        Set(ByVal Value As String)
+        Set
             _Make = Left(Value, 50)
         End Set
     End Property
 
-    Public Property Model() As String
+    Public Property Model As String
         Get
             Return _Model
         End Get
-        Set(ByVal Value As String)
+        Set
             _Model = Left(Value, 30)
         End Set
     End Property
 
-    Public Property SerialNumber() As String
+    Public Property SerialNumber As String
         Get
             Return _SerialNumber
         End Get
-        Set(ByVal Value As String)
+        Set
             _SerialNumber = Left(Value, 30)
         End Set
     End Property
 
-    Public Property ItemCode() As String
+    Public Property ItemCode As String
         Get
             Return _ItemCode
         End Get
-        Set(ByVal Value As String)
+        Set
             _ItemCode = Left(Value, 10)
         End Set
     End Property
 
-    Public Property ItemDescription() As String
+    Public Property ItemDescription As String
         Get
             Return _ItemDesc
         End Get
-        Set(ByVal Value As String)
+        Set
             _ItemDesc = Left(Value, 50)
         End Set
     End Property
-    Public Property Salutation() As String
+    Public Property Salutation As String
         Get
             Return _Salutation
         End Get
-        Set(ByVal Value As String)
+        Set
             _Salutation = Value
         End Set
     End Property
-    Public Property CustomerName() As String
+    Public Property CustomerName As String
         Get
             Return _CustName
         End Get
-        Set(ByVal Value As String)
+        Set
             _CustName = Left(Value, 50)
         End Set
     End Property
-    Public Property FirstName() As String
+    Public Property FirstName As String
         Get
             Return _FirstName
         End Get
-        Set(ByVal Value As String)
+        Set
             _FirstName = Left(Value, 50)
         End Set
     End Property
-    Public Property MiddleName() As String
+    Public Property MiddleName As String
         Get
             Return _MiddleName
         End Get
-        Set(ByVal Value As String)
+        Set
             _MiddleName = Left(Value, 50)
         End Set
     End Property
-    Public Property LastName() As String
+    Public Property LastName As String
         Get
             Return _LastName
         End Get
-        Set(ByVal Value As String)
+        Set
             _LastName = Left(Value, 50)
         End Set
     End Property
-    Public Property CustomerTaxID() As String
+    Public Property CustomerTaxID As String
         Get
             Return _CustTaxID
         End Get
-        Set(ByVal Value As String)
+        Set
             _CustTaxID = Left(Value, 50)
         End Set
     End Property
 
-    Public Property CustomerHomePhone() As String
+    Public Property CustomerHomePhone As String
         Get
             Return _CustHomePhone
         End Get
-        Set(ByVal Value As String)
+        Set
             _CustHomePhone = Left(Value, 20)
         End Set
     End Property
 
-    Public Property CustomerWorkPhone() As String
+    Public Property CustomerWorkPhone As String
         Get
             Return _CustWorkPhone
         End Get
-        Set(ByVal Value As String)
+        Set
             _CustWorkPhone = Left(Value, 20)
         End Set
     End Property
 
-    Public Property CustomerEmail() As String
+    Public Property CustomerEmail As String
         Get
             Return _CustEmail
         End Get
-        Set(ByVal Value As String)
+        Set
             _CustEmail = Left(Value, 50)
         End Set
     End Property
 
-    Public Property CustomerAddress1() As String
+    Public Property CustomerAddress1 As String
         Get
             Return _CustAddress1
         End Get
-        Set(ByVal Value As String)
+        Set
             _CustAddress1 = Left(Value, 50)
         End Set
     End Property
 
-    Public Property CustomerAddress2() As String
+    Public Property CustomerAddress2 As String
         Get
             Return _CustAddress2
         End Get
-        Set(ByVal Value As String)
+        Set
             _CustAddress2 = Left(Value, 50)
         End Set
     End Property
 
-    Public Property CustomerCity() As String
+    Public Property CustomerCity As String
         Get
             Return _CustCity
         End Get
-        Set(ByVal Value As String)
+        Set
             _CustCity = Left(Value, 50)
         End Set
     End Property
 
-    Public Property CustomerState() As String
+    Public Property CustomerState As String
         Get
             Return _CustState
         End Get
-        Set(ByVal Value As String)
+        Set
             _CustState = Left(Value, 50)
         End Set
     End Property
 
-    Public Property CustomerZIP() As String
+    Public Property CustomerZIP As String
         Get
             Return _CustZip
         End Get
-        Set(ByVal Value As String)
+        Set
             _CustZip = Left(Value, 10)
         End Set
     End Property
 
-    Public Property CustomerCountryISOCode() As String
+    Public Property CustomerCountryISOCode As String
         Get
             Return _CustCountry
         End Get
-        Set(ByVal Value As String)
+        Set
             _CustCountry = Left(Value, 2)
         End Set
     End Property
 
-    Public Property PurchaseCountryISOCode() As String
+    Public Property PurchaseCountryISOCode As String
         Get
             Return _PurchaseCountry
         End Get
-        Set(ByVal Value As String)
+        Set
             _PurchaseCountry = Left(Value, 2)
         End Set
     End Property
 
-    Public Property CurrencyISOCode() As String
+    Public Property CurrencyISOCode As String
         Get
             Return _CurrencyCode
         End Get
-        Set(ByVal Value As String)
+        Set
             _CurrencyCode = Left(Value, 3)
         End Set
     End Property
 
-    Public ReadOnly Property BundledItems() As Generic.List(Of BundledItem)
+    Public ReadOnly Property BundledItems As Generic.List(Of BundledItem)
         Get
             Return _BundledItems
         End Get
     End Property
 
-    Public Property BillingFrequency() As Integer
+    Public Property BillingFrequency As Integer
         Get
             Return _BillingFrequency
         End Get
-        Set(ByVal Value As Integer)
+        Set
             _BillingFrequency = Value
         End Set
     End Property
 
-    Public Property NumOfInstallments() As Integer
+    Public Property NumOfInstallments As Integer
         Get
             Return _NumOfInstallments
         End Get
-        Set(ByVal Value As Integer)
+        Set
             _NumOfInstallments = Value
         End Set
     End Property
 
-    Public Property InstallmentAmount() As Double
+    Public Property InstallmentAmount As Double
         Get
             Return _InstallmentAmt
         End Get
-        Set(ByVal Value As Double)
+        Set
             _InstallmentAmt = Value
         End Set
     End Property
 
-    Public Property BankAcctOwnerName() As String
+    Public Property BankAcctOwnerName As String
         Get
             Return _BankAcctOwnerName
         End Get
-        Set(ByVal Value As String)
+        Set
             _BankAcctOwnerName = Left(Value, 50)
         End Set
     End Property
 
-    Public Property BankAcctNumber() As String
+    Public Property BankAcctNumber As String
         Get
             Return _BankAcctNum
         End Get
-        Set(ByVal Value As String)
+        Set
             _BankAcctNum = Left(Value, 29)
         End Set
     End Property
 
-    Public Property BankRoutingNumber() As String
+    Public Property BankRoutingNumber As String
         Get
             Return _BankRoutingNum
         End Get
-        Set(ByVal Value As String)
+        Set
             _BankRoutingNum = Left(Value, 10)
         End Set
     End Property
 
-    Public Property PaymentType() As String
+    Public Property PaymentType As String
         Get
             Return _PaymentType
         End Get
-        Set(ByVal Value As String)
+        Set
             _PaymentType = Left(Value, 1)
         End Set
     End Property
-    Public Property Occupation() As String
+    Public Property Occupation As String
         Get
             Return _Occupation
         End Get
-        Set(ByVal Value As String)
+        Set
             _Occupation = Left(Value, 80)
         End Set
     End Property
-    Public Property MembershipNum() As String
+    Public Property MembershipNum As String
         Get
             Return _MembershipNum
         End Get
-        Set(ByVal Value As String)
+        Set
             _MembershipNum = Left(Value, 30)
         End Set
     End Property
 
-    Public Property MembershipType() As String
+    Public Property MembershipType As String
         Get
             Return _MembershipType
         End Get
-        Set(ByVal Value As String)
+        Set
             _MembershipType = Left(Value, 50)
         End Set
     End Property
 
-    Public Property SkuNumber() As String
+    Public Property SkuNumber As String
         Get
             Return _SkuNumber
         End Get
-        Set(ByVal Value As String)
+        Set
             _SkuNumber = Left(Value, 50)
         End Set
     End Property
 
-    Public Property SubscriberStatus() As String
+    Public Property SubscriberStatus As String
         Get
             Return _SubscriberStatus
         End Get
-        Set(ByVal Value As String)
+        Set
             _SubscriberStatus = Left(Value, 5)
         End Set
     End Property
 
-    Public Property PostPrePaid() As String
+    Public Property PostPrePaid As String
         Get
             Return _PostPrePaid
         End Get
-        Set(ByVal Value As String)
+        Set
             _PostPrePaid = Left(Value, 10)
         End Set
     End Property
 
-    Public Property BillingPlan() As String
+    Public Property BillingPlan As String
         Get
             Return _BillingPlan
         End Get
-        Set(ByVal Value As String)
+        Set
             _BillingPlan = Left(Value, 10)
         End Set
     End Property
 
-    Public Property RecordType() As String
+    Public Property RecordType As String
         Get
             Return _RecordType
         End Get
-        Set(ByVal Value As String)
+        Set
             _RecordType = Left(Value, 2)
         End Set
     End Property
 
-    Public Property BillingCycle() As String
+    Public Property BillingCycle As String
         Get
             Return _BillingCycle
         End Get
-        Set(ByVal Value As String)
+        Set
             _BillingCycle = Left(Value, 10)
         End Set
     End Property
 
     '_KeepEnrollmentFileWhenErr
-    Public Property KeepEnrollmentFileWhenErr() As Boolean
+    Public Property KeepEnrollmentFileWhenErr As Boolean
         Get
             Return _KeepEnrollmentFileWhenErr = 1
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             If Value = True Then
                 _KeepEnrollmentFileWhenErr = 1
             Else
@@ -611,99 +611,99 @@ Public Class CertAddController
         End Set
     End Property
 
-    Public Property PersonType() As String
+    Public Property PersonType As String
         Get
             Return _PersonType
         End Get
-        Set(ByVal Value As String)
+        Set
             _PersonType = Left(Value, 50)
         End Set
     End Property
 
-    Public Property Gender() As String
+    Public Property Gender As String
         Get
             Return _Gender
         End Get
-        Set(ByVal Value As String)
+        Set
             _Gender = Left(Value, 50)
         End Set
     End Property
 
-    Public Property Nationality() As String
+    Public Property Nationality As String
         Get
             Return _Nationality
         End Get
-        Set(ByVal Value As String)
+        Set
             _Nationality = Left(Value, 50)
         End Set
     End Property
 
-    Public Property PlaceOfBirth() As String
+    Public Property PlaceOfBirth As String
         Get
             Return _PlaceOfBirth
         End Get
-        Set(ByVal Value As String)
+        Set
             _PlaceOfBirth = Left(Value, 50)
         End Set
     End Property
 
-    Public Property CUIT_CUIL() As String
+    Public Property CUIT_CUIL As String
         Get
             Return _CUIT_CUIL
         End Get
-        Set(ByVal Value As String)
+        Set
             _CUIT_CUIL = Left(Value, 50)
         End Set
     End Property
 
-    Public Property MaritalStatus() As String
+    Public Property MaritalStatus As String
         Get
             Return _MaritalStatus
         End Get
-        Set(ByVal Value As String)
+        Set
             _MaritalStatus = Left(Value, 50)
         End Set
     End Property
 
-    Public Property MarketingPromoSer() As String
+    Public Property MarketingPromoSer As String
         Get
             Return _MarketingPromoSer
         End Get
-        Set(value As String)
+        Set
             _MarketingPromoSer = value
         End Set
     End Property
 
-    Public Property MarketingPromoNum() As String
+    Public Property MarketingPromoNum As String
         Get
             Return _MarketingPromoNum
         End Get
-        Set(value As String)
+        Set
             _MarketingPromoNum = value
         End Set
     End Property
 
-    Public Property SalesChannel() As String
+    Public Property SalesChannel As String
         Get
             Return _salesChannel
         End Get
-        Set(ByVal Value As String)
+        Set
             _salesChannel = Left(Value, 50)
         End Set
     End Property
 
-    Public Property ServiceLineNumber() As String
+    Public Property ServiceLineNumber As String
         Get
             Return _serviceLineNumber
         End Get
-        Set(ByVal Value As String)
+        Set
             _serviceLineNumber = Left(Value, 50)
         End Set
     End Property
 #End Region
 
 #Region "Policy Service Enum values"
-    Public ReadOnly Property PolicyServicePaymentInstrument() As PaymentInstrumentTypes
+    Public ReadOnly Property PolicyServicePaymentInstrument As PaymentInstrumentTypes
         Get
             If PaymentType = "1" Then
                 Return PaymentInstrumentTypes.C
@@ -715,7 +715,7 @@ Public Class CertAddController
         End Get
     End Property
 
-    Public ReadOnly Property PolicyServicePaymentType() As PaymentTypes
+    Public ReadOnly Property PolicyServicePaymentType As PaymentTypes
         Get
             If PaymentType = "1" Then
                 Return PaymentTypes.DealerCollects
@@ -727,7 +727,7 @@ Public Class CertAddController
         End Get
     End Property
 
-    Public ReadOnly Property PolicyServiceSalution() As Salutations
+    Public ReadOnly Property PolicyServiceSalution As Salutations
         Get
             Select Case SalutationCode
                 Case "1"
@@ -756,7 +756,7 @@ Public Class CertAddController
         End Get
     End Property
 
-    Public ReadOnly Property PolicyServiceMaritalStatus() As PolicyService.MaritalStatus
+    Public ReadOnly Property PolicyServiceMaritalStatus As PolicyService.MaritalStatus
         Get
             Select Case MaritalStatus
                 Case "DIVORCED"
@@ -785,7 +785,7 @@ Public Class CertAddController
         End Get
     End Property
 
-    Public ReadOnly Property PolicyServiceGender() As PolicyService.Gender
+    Public ReadOnly Property PolicyServiceGender As PolicyService.Gender
         Get
             Select Case Gender
                 Case "F"
@@ -798,7 +798,7 @@ Public Class CertAddController
         End Get
     End Property
 
-    Public ReadOnly Property PolicyServiceSubscribeStatus() As SubscriberStatusType
+    Public ReadOnly Property PolicyServiceSubscribeStatus As SubscriberStatusType
         Get
             Select Case SubscriberStatus
                 Case "A"
@@ -828,7 +828,7 @@ Public Class CertAddController
 #Region "Private methods"
     Private Sub SetProductConversion()
         Dim objDealer As Dealer = New Dealer(DealerID)
-        Dim strConvertProdCode As String = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_TRANSLATE_PRODUCT_CODE, Authentication.CurrentUser.LanguageId), objDealer.ConvertProductCodeId)
+        Dim strConvertProdCode As String = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListCache.LK_TRANSLATE_PRODUCT_CODE, Authentication.CurrentUser.LanguageId), objDealer.ConvertProductCodeId)
         If strConvertProdCode = "N" Then 'Get Assurant Product Code
             _ProductConversion = False
         Else 'external product code
@@ -842,7 +842,7 @@ Public Class CertAddController
 
     Private Function SetCustomerProfile() As String
         Dim attvalue As AttributeValue = CertDealer.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = "MANUAL_CERT_USE_CUSTOMER_PROFILE").FirstOrDefault
-        If Not attvalue Is Nothing AndAlso attvalue.Value = Codes.YESNO_Y Then
+        If attvalue IsNot Nothing AndAlso attvalue.Value = Codes.YESNO_Y Then
             return Codes.YESNO_Y
         Else
             return Codes.YESNO_N
@@ -851,7 +851,7 @@ Public Class CertAddController
 #End Region
 
 #Region "Public methods"
-    Public Shared Function GetDealerCertAddEnabled(ByVal companyIds As ArrayList) As DataView
+    Public Shared Function GetDealerCertAddEnabled(companyIds As ArrayList) As DataView
         Return Dealer.GetDealerCertAddEnabled(companyIds)
     End Function
 
@@ -859,7 +859,7 @@ Public Class CertAddController
         Return ProductCodeConversion.GetExternalProdCodeListWithDesc(DealerID)
     End Function
 
-    Public Shared Sub GetDealerDetailsForCertADD(ByVal DealerID As Guid, ByRef CurrencyCode As String, ByRef CountryCode As String,
+    Public Shared Sub GetDealerDetailsForCertADD(DealerID As Guid, ByRef CurrencyCode As String, ByRef CountryCode As String,
                                                     ByRef MailAddressFormat As String, ByRef InstallmentAllowed As String,
                                                     ByRef UseInstallmentDef As String)
 
@@ -898,24 +898,24 @@ Public Class CertAddController
         Dim blnSuccess As Boolean = True, strErrMsg As String = ""
         Dim strErrMsgUIProgCode As String = "", strErrMsgParamList As String = "", intParamCnt As Integer = 0
         If blnValidateFirst Then
-            blnSuccess = Me.Validate(ErrMsg)
+            blnSuccess = Validate(ErrMsg)
         End If
         If blnSuccess Then
-            blnSuccess = Certificate.InsertCertificate(Me.TransID, Me.DealerID, Me.CertNum, Me.ProductCode, Me.WarrantySalesDate,
-                                    Me.ProductSalesDate, Me.WarrantyPrice, Me.ItemCode,
-                                    Me.ItemDescription, Me.ProductRetailPrice, Me.CertDuration, Me.ManufacturerDuration,
-                                    Me.SalesRepNumber, Me.BranchCode, Me.InvoiceNumber, Me.CustomerTaxID, Me.Salutation,
-                                    Me.CustomerName, Me.CustomerAddress1, Me.CustomerAddress2, Me.CustomerCity,
-                                    Me.CustomerZIP, Me.CustomerState, Me.CustomerHomePhone, Me.CustomerWorkPhone,
-                                    Me.CustomerEmail, Me.Make, Me.Model, Me.SerialNumber,
-                                    Me.CustomerCountryISOCode, Me.PurchaseCountryISOCode, Me.CurrencyISOCode, Me.PaymentType,
-                                    Me.BillingFrequency, Me.NumOfInstallments, Me.InstallmentAmount,
-                                    Me.BankAcctOwnerName, Me.BankAcctNumber, Me.BankRoutingNumber, Me.MembershipNum, Me._KeepEnrollmentFileWhenErr,
-                                    strErrMsg, CertID, strErrMsgUIProgCode, strErrMsgParamList, intParamCnt, Me.BundledItems,
-                                    Me.RecordType, Me.SkuNumber, Me.SubscriberStatus, Me.PostPrePaid, Me.MembershipNum, Me.MembershipType,
-                                    Me.BillingPlan, Me.BillingCycle, Me.MaritalStatus, Me.PersonType,
-                                    Me.Gender, Me.Nationality, Me.PlaceOfBirth, Me.CUIT_CUIL, Me.DateOfBirth,
-                                    Me.MarketingPromoSer, Me.MarketingPromoNum, Me.SalesChannel)
+            blnSuccess = Certificate.InsertCertificate(TransID, DealerID, CertNum, ProductCode, WarrantySalesDate,
+                                    ProductSalesDate, WarrantyPrice, ItemCode,
+                                    ItemDescription, ProductRetailPrice, CertDuration, ManufacturerDuration,
+                                    SalesRepNumber, BranchCode, InvoiceNumber, CustomerTaxID, Salutation,
+                                    CustomerName, CustomerAddress1, CustomerAddress2, CustomerCity,
+                                    CustomerZIP, CustomerState, CustomerHomePhone, CustomerWorkPhone,
+                                    CustomerEmail, Make, Model, SerialNumber,
+                                    CustomerCountryISOCode, PurchaseCountryISOCode, CurrencyISOCode, PaymentType,
+                                    BillingFrequency, NumOfInstallments, InstallmentAmount,
+                                    BankAcctOwnerName, BankAcctNumber, BankRoutingNumber, MembershipNum, _KeepEnrollmentFileWhenErr,
+                                    strErrMsg, CertID, strErrMsgUIProgCode, strErrMsgParamList, intParamCnt, BundledItems,
+                                    RecordType, SkuNumber, SubscriberStatus, PostPrePaid, MembershipNum, MembershipType,
+                                    BillingPlan, BillingCycle, MaritalStatus, PersonType,
+                                    Gender, Nationality, PlaceOfBirth, CUIT_CUIL, DateOfBirth,
+                                    MarketingPromoSer, MarketingPromoNum, SalesChannel)
             If Not blnSuccess Then
                 'Translate the error message
                 If strErrMsgUIProgCode <> "" Then
@@ -937,7 +937,7 @@ Public Class CertAddController
         Dim blnSuccess As Boolean = True, strErrMsg As String = ""
 
         If blnValidateFirst Then
-            blnSuccess = Me.Validate(ErrMsg)
+            blnSuccess = Validate(ErrMsg)
         End If
 
         If blnSuccess Then
@@ -986,7 +986,7 @@ Public Class CertAddController
                                  .Code = ItemCode
                                  })
                 ' Add bundle item
-                If Not BundledItems Is Nothing Then
+                If BundledItems IsNot Nothing Then
                     For Each o As BundledItem In BundledItems
                         certItems.Add(New ItemInfo With {
                                          .ManufacturerWarrantyMonths = o.MfgWarranty,
@@ -1064,7 +1064,7 @@ Public Class CertAddController
                         }
                 End If
 
-                If LookupListNew.GetCodeFromId(LookupListNew.LK_DEALER_TYPE, CertDealer.DealerTypeId) = "3" Then 'Mobile dealer
+                If LookupListNew.GetCodeFromId(LookupListCache.LK_DEALER_TYPE, CertDealer.DealerTypeId) = "3" Then 'Mobile dealer
                     .DealerReferenceData = New MobileDealerReferenceDataInfo() With {
                         .DealerSourceSystem = "ElitaWeb",
                         .MarketingPromotionNumber = MarketingPromoNum,
@@ -1088,7 +1088,7 @@ Public Class CertAddController
                 wsResponse = WcfClientHelper.Execute(Of PolicyServiceClient, IPolicyService, EnrollResponse)(
                     GetClient(),
                     New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                    Function(ByVal c As PolicyServiceClient)
+                    Function(c As PolicyServiceClient)
                         Return c.Enroll(wsRequest)
                     End Function)
 
@@ -1115,7 +1115,7 @@ Public Class CertAddController
         End If
         Return blnSuccess
     End Function
-    Private Function TranslateFaultErrorMessage(ByVal errCode As String, ByVal errDescription As String) As String
+    Private Function TranslateFaultErrorMessage(errCode As String, errDescription As String) As String
         Dim strErrorMessage As String = String.Empty
         strErrorMessage = TranslationBase.TranslateLabelOrMessage(errCode)
         If StrComp(strErrorMessage,errCode,CompareMethod.Text) = 0 Then
@@ -1136,55 +1136,55 @@ Public Class CertAddController
     Public Function Validate(ByRef ErrMsg As Collections.Generic.List(Of String)) As Boolean
         Dim isValid As Boolean = True, strErrMsg As String = "", strAddressRequiredFields As String = ""
         'active contract required
-        Dim objContract As Contract = Contract.GetContract(Me.DealerID, Me.WarrantySalesDate)
+        Dim objContract As Contract = Contract.GetContract(DealerID, WarrantySalesDate)
         If objContract Is Nothing Then
             isValid = False
             strErrMsg = TranslationBase.TranslateLabelOrMessage(ERR_CONTRACT_NOT_FOUND)
             ErrMsg.Add(strErrMsg)
         End If
 
-        Dim isAutoGenFlagOn As Boolean = Dealer.GetCertAutoGenFlag(Me.DealerID)
+        Dim isAutoGenFlagOn As Boolean = Dealer.GetCertAutoGenFlag(DealerID)
         If Not isAutoGenFlagOn Then
-            If Me.CertNum.Trim = String.Empty Then
+            If CertNum.Trim = String.Empty Then
                 isValid = False
-                strErrMsg = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CERTIFICATE_NUMBER_IS_REQUIRED_ERRR)
+                strErrMsg = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.GUI_CERTIFICATE_NUMBER_IS_REQUIRED_ERRR)
                 ErrMsg.Add(strErrMsg)
             End If
         End If
 
         Dim yesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y")
         If objContract IsNot Nothing AndAlso objContract.MarketingPromotionId.Equals(yesId) Then
-            If String.IsNullOrEmpty(Me.MarketingPromoNum) Then
+            If String.IsNullOrEmpty(MarketingPromoNum) Then
                 isValid = False
-                strErrMsg = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.ERR_MARKETING_PROMO_NUM_IS_REQUIRED)
+                strErrMsg = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.ERR_MARKETING_PROMO_NUM_IS_REQUIRED)
                 ErrMsg.Add(strErrMsg)
             End If
-            If String.IsNullOrEmpty(Me.MarketingPromoSer) Then
+            If String.IsNullOrEmpty(MarketingPromoSer) Then
                 isValid = False
-                strErrMsg = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.ERR_MARKETING_PROMO_SER_IS_REQUIRED)
+                strErrMsg = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.ERR_MARKETING_PROMO_SER_IS_REQUIRED)
                 ErrMsg.Add(strErrMsg)
             End If
         End If
 
-        If (Not String.IsNullOrEmpty(Me.MarketingPromoNum)) AndAlso Me.MarketingPromoNum.Length > 6 Then
+        If (Not String.IsNullOrEmpty(MarketingPromoNum)) AndAlso MarketingPromoNum.Length > 6 Then
             isValid = False
-            strErrMsg = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.ERR_INVALID_MARKETING_PROMO_NUM)
+            strErrMsg = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.ERR_INVALID_MARKETING_PROMO_NUM)
             ErrMsg.Add(strErrMsg)
         End If
 
-        If (Not String.IsNullOrEmpty(Me.MarketingPromoSer)) AndAlso Me.MarketingPromoSer.Length > 3 Then
+        If (Not String.IsNullOrEmpty(MarketingPromoSer)) AndAlso MarketingPromoSer.Length > 3 Then
             isValid = False
-            strErrMsg = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.ERR_INVALID_MARKETING_PROMO_SER)
+            strErrMsg = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.ERR_INVALID_MARKETING_PROMO_SER)
             ErrMsg.Add(strErrMsg)
         End If
 
-        If Me.ProductCode.Trim = String.Empty Then
+        If ProductCode.Trim = String.Empty Then
             isValid = False
-            strErrMsg = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.ERR_PRODUCT_CODE_IS_REQUIRED)
+            strErrMsg = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.ERR_PRODUCT_CODE_IS_REQUIRED)
             ErrMsg.Add(strErrMsg)
         End If
 
-        If (Not Me.BundledItems Is Nothing) AndAlso (Me.BundledItems.Count) > 10 Then
+        If (BundledItems IsNot Nothing) AndAlso (BundledItems.Count) > 10 Then
             isValid = False
             strErrMsg = TranslationBase.TranslateLabelOrMessage(ERR_TOO_MANY_BUNDLED_ITEMS)
             ErrMsg.Add(strErrMsg)
@@ -1193,31 +1193,31 @@ Public Class CertAddController
         Dim AddressRequiredFields As String = String.Empty
         Dim objCtry As Country = GetDealerCountry()
 
-        If (Not objCtry Is Nothing AndAlso Not objCtry.AddressInfoReqFields Is Nothing) Then
+        If (objCtry IsNot Nothing AndAlso objCtry.AddressInfoReqFields IsNot Nothing) Then
             AddressRequiredFields = objCtry.AddressInfoReqFields.ToUpper()
         End If
 
         If AddressRequiredFields.Length > 0 Then
             ' Validating Salutation
-            If AddressRequiredFields.Contains("[SALU]") AndAlso Me.Salutation.Trim().Length <= 0 Then
+            If AddressRequiredFields.Contains("[SALU]") AndAlso Salutation.Trim().Length <= 0 Then
                 isValid = False
                 strErrMsg = TranslationBase.TranslateLabelOrMessage(ERR_SALU_MISSING)
                 ErrMsg.Add(strErrMsg)
             End If
             ' Validating Customer Name
-            If AddressRequiredFields.Contains("[NAME]") AndAlso Me.CustomerName.Trim().Length <= 0 Then
+            If AddressRequiredFields.Contains("[NAME]") AndAlso CustomerName.Trim().Length <= 0 Then
                 isValid = False
                 strErrMsg = TranslationBase.TranslateLabelOrMessage(ERR_CUST_NAME_MISSING)
                 ErrMsg.Add(strErrMsg)
             End If
             ' Validating Address1
-            If AddressRequiredFields.Contains("[ADR1]") AndAlso Me.CustomerAddress1.Trim().Length <= 0 Then
+            If AddressRequiredFields.Contains("[ADR1]") AndAlso CustomerAddress1.Trim().Length <= 0 Then
                 isValid = False
                 strErrMsg = TranslationBase.TranslateLabelOrMessage(ERR_ADR1_MISSING)
                 ErrMsg.Add(strErrMsg)
             End If
             ' Validating Address2
-            If AddressRequiredFields.Contains("[ADR2]") AndAlso Me.CustomerAddress2.Trim().Length <= 0 Then
+            If AddressRequiredFields.Contains("[ADR2]") AndAlso CustomerAddress2.Trim().Length <= 0 Then
                 isValid = False
                 strErrMsg = TranslationBase.TranslateLabelOrMessage(ERR_ADR2_MISSING)
                 ErrMsg.Add(strErrMsg)
@@ -1229,43 +1229,43 @@ Public Class CertAddController
                 ErrMsg.Add(strErrMsg)
             End If
             ' Validating City
-            If AddressRequiredFields.Contains("[CITY]") AndAlso Me.CustomerCity.Trim().Length <= 0 Then
+            If AddressRequiredFields.Contains("[CITY]") AndAlso CustomerCity.Trim().Length <= 0 Then
                 isValid = False
                 strErrMsg = TranslationBase.TranslateLabelOrMessage(ERR_CITY_MISSING)
                 ErrMsg.Add(strErrMsg)
             End If
             ' Validating Zip
-            If AddressRequiredFields.Contains("[ZIP]") AndAlso Me.CustomerZIP.Trim().Length <= 0 Then
+            If AddressRequiredFields.Contains("[ZIP]") AndAlso CustomerZIP.Trim().Length <= 0 Then
                 isValid = False
                 strErrMsg = TranslationBase.TranslateLabelOrMessage(ERR_ZIP_MISSING)
                 ErrMsg.Add(strErrMsg)
             End If
             ' Validating State / Province
-            If AddressRequiredFields.Contains("[PRO]") AndAlso Me.CustomerState.Trim().Length <= 0 Then
+            If AddressRequiredFields.Contains("[PRO]") AndAlso CustomerState.Trim().Length <= 0 Then
                 isValid = False
                 strErrMsg = TranslationBase.TranslateLabelOrMessage(ERR_STATE_MISSING)
                 ErrMsg.Add(strErrMsg)
             End If
             ' Validating Country
-            If AddressRequiredFields.Contains("[COU]") AndAlso Me.CustomerCountryISOCode.Trim().Length <= 0 Then
+            If AddressRequiredFields.Contains("[COU]") AndAlso CustomerCountryISOCode.Trim().Length <= 0 Then
                 isValid = False
                 strErrMsg = TranslationBase.TranslateLabelOrMessage(ERR_COUNTRY_MISSING)
                 ErrMsg.Add(strErrMsg)
             End If
             ' Validating Email
-            If AddressRequiredFields.Contains("[EMAIL]") AndAlso Me.CustomerEmail.Trim().Length <= 0 Then
+            If AddressRequiredFields.Contains("[EMAIL]") AndAlso CustomerEmail.Trim().Length <= 0 Then
                 isValid = False
                 strErrMsg = TranslationBase.TranslateLabelOrMessage(ERR_EMAIL_MISSING)
                 ErrMsg.Add(strErrMsg)
             End If
             ' Validating Work Phone
-            If AddressRequiredFields.Contains("[WPHONE]") AndAlso Me.CustomerWorkPhone.Trim().Length <= 0 Then
+            If AddressRequiredFields.Contains("[WPHONE]") AndAlso CustomerWorkPhone.Trim().Length <= 0 Then
                 isValid = False
                 strErrMsg = TranslationBase.TranslateLabelOrMessage(ERR_WORK_PHONE_MISSING)
                 ErrMsg.Add(strErrMsg)
             End If
             ' Validating Home Phone
-            If AddressRequiredFields.Contains("[HPHONE]") AndAlso Me.CustomerHomePhone.Trim().Length <= 0 Then
+            If AddressRequiredFields.Contains("[HPHONE]") AndAlso CustomerHomePhone.Trim().Length <= 0 Then
                 isValid = False
                 strErrMsg = TranslationBase.TranslateLabelOrMessage(ERR_HOME_PHONE_MISSING)
                 ErrMsg.Add(strErrMsg)
@@ -1281,7 +1281,7 @@ Public Class CertAddController
         Return isValid
     End Function
 
-    Public Function AddBundledItem(ByVal objBundledItem As BundledItem, ByRef Errmsg As String) As Boolean
+    Public Function AddBundledItem(objBundledItem As BundledItem, ByRef Errmsg As String) As Boolean
         Errmsg = String.Empty
         Dim blnSuccess As Boolean = False
         If _BundledItems Is Nothing Then
@@ -1289,7 +1289,7 @@ Public Class CertAddController
         End If
 
         If _BundledItems.Count = 10 Then
-            Errmsg = TranslationBase.TranslateLabelOrMessage(Me.ERR_TOO_MANY_BUNDLED_ITEMS)
+            Errmsg = TranslationBase.TranslateLabelOrMessage(ERR_TOO_MANY_BUNDLED_ITEMS)
         Else
             _BundledItems.Add(objBundledItem)
             blnSuccess = True
@@ -1297,15 +1297,15 @@ Public Class CertAddController
         Return blnSuccess
     End Function
 
-    Public Function DeleteBundledItem(ByVal index As Integer) As BundledItem
+    Public Function DeleteBundledItem(index As Integer) As BundledItem
         Dim objItem As BundledItem = GetBundledItem(index)
-        If Not objItem Is Nothing Then
+        If objItem IsNot Nothing Then
             BundledItems.RemoveAt(index - 1)
         End If
     End Function
 
     '1-based index
-    Public Function GetBundledItem(ByVal index As Integer) As BundledItem
+    Public Function GetBundledItem(index As Integer) As BundledItem
         If (_BundledItems Is Nothing) OrElse (index > _BundledItems.Count) Then
             Return Nothing
         Else
@@ -1348,7 +1348,7 @@ Public Class CertAddController
             _ProductCode = String.Empty
         End Sub
 
-        Public Sub New(ByVal strMake As String, ByVal strModel As String, ByVal strSerialNum As String, ByVal strDesc As String, ByVal dblPrice As Double, ByVal intMfgWarranty As Integer, ByVal strProdCode As String)
+        Public Sub New(strMake As String, strModel As String, strSerialNum As String, strDesc As String, dblPrice As Double, intMfgWarranty As Integer, strProdCode As String)
             _Make = strMake
             _Model = strModel
             _SerialNumber = strSerialNum
@@ -1358,65 +1358,65 @@ Public Class CertAddController
             _ProductCode = strProdCode
         End Sub
 
-        Public Property Make() As String
+        Public Property Make As String
             Get
                 Return _Make
             End Get
-            Set(ByVal Value As String)
+            Set
                 _Make = Left(Value, 50)
             End Set
         End Property
 
-        Public Property Model() As String
+        Public Property Model As String
             Get
                 Return _Model
             End Get
-            Set(ByVal Value As String)
+            Set
                 _Model = Left(Value, 30)
             End Set
         End Property
 
-        Public Property SerialNumber() As String
+        Public Property SerialNumber As String
             Get
                 Return _SerialNumber
             End Get
-            Set(ByVal Value As String)
+            Set
                 _SerialNumber = Left(Value, 30)
             End Set
         End Property
 
-        Public Property Description() As String
+        Public Property Description As String
             Get
                 Return _Description
             End Get
-            Set(ByVal Value As String)
+            Set
                 _Description = Left(Value, 50)
             End Set
         End Property
 
-        Public Property Price() As Double
+        Public Property Price As Double
             Get
                 Return _Price
             End Get
-            Set(ByVal Value As Double)
+            Set
                 _Price = Value
             End Set
         End Property
 
-        Public Property MfgWarranty() As Integer
+        Public Property MfgWarranty As Integer
             Get
                 Return _MfgWarranty
             End Get
-            Set(ByVal Value As Integer)
+            Set
                 _MfgWarranty = Value
             End Set
         End Property
 
-        Public Property ProductCode() As String
+        Public Property ProductCode As String
             Get
                 Return _ProductCode
             End Get
-            Set(ByVal Value As String)
+            Set
                 _ProductCode = Left(Trim(Value), 5)
             End Set
         End Property

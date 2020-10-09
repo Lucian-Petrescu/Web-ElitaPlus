@@ -13,7 +13,7 @@ Partial Class _default
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -21,7 +21,7 @@ Partial Class _default
 
 #End Region
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         If Not IsPostBack Then
             For Each key As String In Request.ServerVariables
@@ -47,7 +47,7 @@ Partial Class _default
 
             Try
 
-                If Not CType(System.Threading.Thread.CurrentPrincipal, Object).GetType Is GetType(ElitaPlusPrincipal) Then
+                If CType(System.Threading.Thread.CurrentPrincipal, Object).GetType IsNot GetType(ElitaPlusPrincipal) Then
                     If EnvironmentContext.Current.Environment = Environments.Development Then
                         '    Dim networkID As String = Assurant.Assurnet.Services.AuthenticationMgr.AuthenticatedUser(HttpContext.Current.Request)
                         '    PopulateUserSession(networkID, Request.UserHostAddress)

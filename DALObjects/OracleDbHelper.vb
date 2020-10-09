@@ -22,7 +22,7 @@ Friend Module OracleDbHelper
     ''' <returns></returns>
     ''' <remarks></remarks>
     ''' <exception cref="System.ArgumentException">When parameter sql is null or contains only white spaces.</exception>
-    Public Function Fetch(ByVal sql As String, _
+    Public Function Fetch(sql As String, _
                           Optional ByVal tableName As String = Nothing, _
                           Optional ByVal familyDs As DataSet = Nothing, _
                           Optional ByVal dataSetName As String = Nothing) As DataSet
@@ -50,7 +50,7 @@ Friend Module OracleDbHelper
     ''' <returns></returns>
     ''' <remarks></remarks>
     ''' <exception cref="System.ArgumentException">When parameter command is null.</exception>
-    Public Function Fetch(ByVal command As OracleCommand, _
+    Public Function Fetch(command As OracleCommand, _
                           Optional ByVal tableName As String = Nothing, _
                           Optional ByVal familyDs As DataSet = Nothing, _
                           Optional ByVal dataSetName As String = Nothing) As DataSet
@@ -100,8 +100,8 @@ Friend Module OracleDbHelper
     ''' <returns></returns>
     ''' <remarks></remarks>
     ''' <exception cref="System.ArgumentException">When parameter command is null.</exception>
-    Public Function Fetch(ByVal command As OracleCommand, _
-                          ByVal tableName() As String, _
+    Public Function Fetch(command As OracleCommand, _
+                          tableName() As String, _
                           Optional ByVal familyDs As DataSet = Nothing, _
                           Optional ByVal dataSetName As String = Nothing) As DataSet
 
@@ -153,7 +153,7 @@ Friend Module OracleDbHelper
     ''' <param name="command"><see cref="Oracle.DataAccess.Client.OracleCommand" object to be exeucted as execute scalar opration.</param>
     ''' <remarks></remarks>
     ''' <exception cref="System.ArgumentException">When parameter command is null.</exception>
-    Public Sub ExecuteNonQuery(ByVal command As OracleCommand)
+    Public Sub ExecuteNonQuery(command As OracleCommand)
 
         ' Validate Mandatory Parameters
         If (command Is Nothing) Then
@@ -186,7 +186,7 @@ Friend Module OracleDbHelper
     ''' <param name="sql">SQL String to be executed against database.</param>
     ''' <remarks></remarks>
     ''' <exception cref="System.ArgumentException">When parameter sql is null or contains only white spaces.</exception>
-    Public Sub ExecuteNonQuery(ByVal sql As String)
+    Public Sub ExecuteNonQuery(sql As String)
 
         If (sql Is Nothing OrElse sql.Trim().Length = 0) Then
             Throw New ArgumentNullException("sql")
@@ -212,7 +212,7 @@ Friend Module OracleDbHelper
     ''' <returns></returns>
     ''' <remarks></remarks>
     ''' <exception cref="System.ArgumentException">When parameter command is null.</exception>
-    Public Function ExecuteScalar(ByVal command As OracleCommand) As Object
+    Public Function ExecuteScalar(command As OracleCommand) As Object
 
         ' Validate Mandatory Parameters
         If (command Is Nothing) Then
@@ -244,7 +244,7 @@ Friend Module OracleDbHelper
     ''' <returns></returns>
     ''' <remarks></remarks>
     ''' <exception cref="System.ArgumentException">When parameter sql is null or contains only white spaces.</exception>
-    Public Function ExecuteScalar(ByVal sql As String) As Object
+    Public Function ExecuteScalar(sql As String) As Object
 
         If (sql Is Nothing OrElse sql.Trim().Length = 0) Then
             Throw New ArgumentNullException("sql")
@@ -267,7 +267,7 @@ Friend Module OracleDbHelper
     ''' <returns></returns>
     ''' <remarks></remarks>
     ''' <exception cref="System.ArgumentException">When parameter command is null.</exception>
-    Public Function ExecuteScalar(Of T As Structure)(ByVal command As OracleCommand) As Nullable(Of T)
+    Public Function ExecuteScalar(Of T As Structure)(command As OracleCommand) As Nullable(Of T)
         Return New Nullable(Of T)(DirectCast(ExecuteScalar(command), T))
     End Function
 
@@ -279,7 +279,7 @@ Friend Module OracleDbHelper
     ''' <returns></returns>
     ''' <remarks></remarks>
     ''' <exception cref="System.ArgumentException">When parameter sql is null or contains only white spaces.</exception>
-    Public Function ExecuteScalar(Of T As Structure)(ByVal sql As String) As Nullable(Of T)
+    Public Function ExecuteScalar(Of T As Structure)(sql As String) As Nullable(Of T)
         Return New Nullable(Of T)(DirectCast(ExecuteScalar(sql), T))
     End Function
 
@@ -322,7 +322,7 @@ Friend Module OracleDbHelper
     ''' <remarks></remarks>
     ''' <exception cref="System.ArgumentNullException">When parameter transaction is null.</exception>
     <DebuggerNonUserCode()> _
-    Public Sub Commit(ByVal transaction As OracleTransaction)
+    Public Sub Commit(transaction As OracleTransaction)
 
         If (transaction Is Nothing) Then Throw New ArgumentNullException("transaction")
 
@@ -344,7 +344,7 @@ Friend Module OracleDbHelper
     ''' <remarks></remarks>
     ''' <exception cref="System.ArgumentNullException">When parameter transaction is null.</exception>
     <DebuggerNonUserCode()> _
-    Public Sub Rollback(ByVal transaction As OracleTransaction)
+    Public Sub Rollback(transaction As OracleTransaction)
 
         If (transaction Is Nothing) Then Throw New ArgumentNullException("transaction")
 
@@ -374,7 +374,7 @@ Friend Module OracleDbHelper
     ''' <remarks>Transaction and Connection property of command is set to default value (null) when both connection and transaction parameters are nothing. This function does
     ''' not create new instance of connection if the values for connection and/or transaction are not supplied.</remarks>
     ''' <exception cref="System.InvalidOperationException">When both connection & transaction parameters are supplied and transaction.Connection is not same as connection.</exception>
-    Public Function CreateCommand(ByVal sql As String, _
+    Public Function CreateCommand(sql As String, _
                                   Optional ByVal commandType As CommandType = CommandType.StoredProcedure, _
                                   Optional ByVal connection As OracleConnection = Nothing, _
                                   Optional ByVal transaction As OracleTransaction = Nothing) As OracleCommand
@@ -423,10 +423,10 @@ Friend Module OracleDbHelper
     ''' <exception cref="System.ArgumentNullException">When command parameter is null</exception>
     ''' <exception cref="System.ArgumentNullException">When parameterName parameter is null</exception>
     <Extension()> _
-    Public Function AddParameter(ByVal command As OracleCommand, _
-                                 ByVal parameterName As String, _
-                                 ByVal dbType As OracleDbType, _
-                                 ByVal size As Nullable(Of Integer), _
+    Public Function AddParameter(command As OracleCommand, _
+                                 parameterName As String, _
+                                 dbType As OracleDbType, _
+                                 size As Nullable(Of Integer), _
                                  Optional ByVal value As Object = Nothing, _
                                  Optional ByVal direction As ParameterDirection = ParameterDirection.Input, _
                                  Optional ByVal sourceColumn As String = Nothing) As OracleCommand
@@ -449,11 +449,11 @@ Friend Module OracleDbHelper
     ''' <exception cref="System.ArgumentNullException">When command parameter is null</exception>
     ''' <exception cref="System.ArgumentNullException">When parameterName parameter is null</exception>
     <Extension()> _
-    Public Function AddParameter(ByVal command As OracleCommand, _
-                                 ByVal parameterName As String, _
-                                 ByVal dbType As OracleDbType, _
-                                 ByVal scale As Nullable(Of Byte), _
-                                 ByVal precision As Nullable(Of Byte), _
+    Public Function AddParameter(command As OracleCommand, _
+                                 parameterName As String, _
+                                 dbType As OracleDbType, _
+                                 scale As Nullable(Of Byte), _
+                                 precision As Nullable(Of Byte), _
                                  Optional ByVal value As Object = Nothing, _
                                  Optional ByVal direction As ParameterDirection = ParameterDirection.Input, _
                                  Optional ByVal sourceColumn As String = Nothing) As OracleCommand
@@ -474,9 +474,9 @@ Friend Module OracleDbHelper
     ''' <exception cref="System.ArgumentNullException">When command parameter is null</exception>
     ''' <exception cref="System.ArgumentNullException">When parameterName parameter is null</exception>
     <Extension()> _
-    Public Function AddParameter(ByVal command As OracleCommand, _
-                                 ByVal parameterName As String, _
-                                 ByVal dbType As OracleDbType, _
+    Public Function AddParameter(command As OracleCommand, _
+                                 parameterName As String, _
+                                 dbType As OracleDbType, _
                                  Optional ByVal value As Object = Nothing, _
                                  Optional ByVal direction As ParameterDirection = ParameterDirection.Input, _
                                  Optional ByVal sourceColumn As String = Nothing) As OracleCommand
@@ -500,12 +500,12 @@ Friend Module OracleDbHelper
     ''' <exception cref="System.ArgumentNullException">When command parameter is null</exception>
     ''' <exception cref="System.ArgumentNullException">When parameterName parameter is null</exception>
     <Extension()> _
-    Public Function AddParameter(ByVal command As OracleCommand, _
-                                 ByVal parameterName As String, _
-                                 ByVal dbType As OracleDbType, _
-                                 ByVal size As Nullable(Of Integer), _
-                                 ByVal scale As Nullable(Of Byte), _
-                                 ByVal precision As Nullable(Of Byte), _
+    Public Function AddParameter(command As OracleCommand, _
+                                 parameterName As String, _
+                                 dbType As OracleDbType, _
+                                 size As Nullable(Of Integer), _
+                                 scale As Nullable(Of Byte), _
+                                 precision As Nullable(Of Byte), _
                                  Optional ByVal value As Object = Nothing, _
                                  Optional ByVal direction As ParameterDirection = ParameterDirection.Input, _
                                  Optional ByVal sourceColumn As String = Nothing) As OracleCommand
@@ -536,7 +536,7 @@ Friend Module OracleDbHelper
 #End Region
 
 #Region "Utility Helper Methods"
-    Public Function FormatWildCard(ByVal inputString As String) As String
+    Public Function FormatWildCard(inputString As String) As String
         If (Not inputString Is Nothing) AndAlso (Not (inputString.Equals(String.Empty))) Then
             Dim replacementString As String = "%"
             Dim matchPattern As String = "[*]{1,}"
@@ -545,11 +545,11 @@ Friend Module OracleDbHelper
             Return inputString
         End If
     End Function
-    Public Function ReplaceParameter(ByVal inputString As String, ByVal inputParameter As String, ByVal inputValue As Guid) As String
+    Public Function ReplaceParameter(inputString As String, inputParameter As String, inputValue As Guid) As String
 
         Return inputString.Replace(":" & inputParameter, "hextoraw('" & DALBase.GuidToSQLString(inputValue) & "')")
     End Function
-    Public Function ReplaceParameter(ByVal inputString As String, ByVal inputParameter As String, ByVal inputValue As String) As String
+    Public Function ReplaceParameter(inputString As String, inputParameter As String, inputValue As String) As String
 
         Return inputString.Replace(":" & inputParameter, "'" & inputValue & "'")
     End Function

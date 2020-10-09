@@ -52,30 +52,30 @@ Public Class DeniedClaimsDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("denied_claims_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Public Function LoadLetterList(ByVal rdClaimId As Guid, ByVal rdLangID As Guid) As DataSet
+    Public Function LoadLetterList(rdClaimId As Guid, rdLangID As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LETTER_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LETTER_LIST")
 
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-                         New DBHelper.DBHelperParameter(Me.COL_NAME_CLAIM_ID, rdClaimId.ToByteArray), _
-                         New DBHelper.DBHelperParameter(Me.COL_NAME_LANGUAGE_ID, rdLangID.ToByteArray)}
+                         New DBHelper.DBHelperParameter(COL_NAME_CLAIM_ID, rdClaimId.ToByteArray), _
+                         New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, rdLangID.ToByteArray)}
         Dim ds As New DataSet
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
 
         Catch ex As Exception
@@ -89,43 +89,43 @@ Public Class DeniedClaimsDAL
     End Function
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
-    Public Sub LoadAuthorizedApprover(ByVal ds As DataSet, ByVal rdClaimId As Guid)
+    Public Sub LoadAuthorizedApprover(ds As DataSet, rdClaimId As Guid)
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_AUTHORIZED_APPROVER_LIST")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_CLAIM_ID, rdClaimId.ToByteArray)}
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Dim selectStmt As String = Config("/SQL/LOAD_AUTHORIZED_APPROVER_LIST")
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_CLAIM_ID, rdClaimId.ToByteArray)}
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
     End Sub
 
-    Public Sub LoadAvailableDRs(ByVal ds As DataSet, ByVal rdClaimId As Guid, ByVal rdLangID As Guid)
+    Public Sub LoadAvailableDRs(ds As DataSet, rdClaimId As Guid, rdLangID As Guid)
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_AVAILABLE_DENIED_REASONS_LIST")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_LANGUAGE_ID, rdLangID.ToByteArray)}
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Dim selectStmt As String = Config("/SQL/LOAD_AVAILABLE_DENIED_REASONS_LIST")
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, rdLangID.ToByteArray)}
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
 
         '
     End Sub
-    Public Sub LoadSelectedDRs(ByVal ds As DataSet, ByVal rdClaimId As Guid, ByVal rdLangID As Guid)
+    Public Sub LoadSelectedDRs(ds As DataSet, rdClaimId As Guid, rdLangID As Guid)
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_SELECTED_DENIED_REASONS_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_SELECTED_DENIED_REASONS_LIST")
         
         Dim parameters = New OracleParameter() {New OracleParameter(COL_NAME_LANGUAGE_ID, rdLangID.ToByteArray), _
                                                New OracleParameter(COL_NAME_DENIED_CLAIMS_ID, rdClaimId.ToByteArray)}
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Sub
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

@@ -5,25 +5,25 @@ Imports Assurant.ElitaPlus.DataEntities
 Public Class CompanyCacheManager
     Implements ICacheManager
     Private Property CompanyRepository As ICompanyRepository(Of Company)
-    Friend Sub New(ByVal pCompanyRepository As ICompanyRepository(Of Company))
-        Me.CompanyRepository = pCompanyRepository
+    Friend Sub New(pCompanyRepository As ICompanyRepository(Of Company))
+        CompanyRepository = pCompanyRepository
     End Sub
 
     Private Const CacheKeyValue As String = "Companies"
 
-    Friend Function CacheKey(ByVal pCompanyCode As String) As String
+    Friend Function CacheKey(pCompanyCode As String) As String
         Return String.Format("{0}#{1}", CacheKeyValue, pCompanyCode.ToUpperInvariant())
     End Function
 
-    Friend Function CacheKey(ByVal pCompanyId As Guid) As String
+    Friend Function CacheKey(pCompanyId As Guid) As String
         Return String.Format("{0}#{1}", CacheKeyValue, pCompanyId)
     End Function
 
-    Friend Function BuildCache(ByVal pCompanyCode As String) As Company
+    Friend Function BuildCache(pCompanyCode As String) As Company
         Return CompanyRepository.Get(Function(c) c.Code = pCompanyCode, Nothing, "CancellationReasons").FirstOrDefault()
     End Function
 
-    Friend Function BuildCache(ByVal pCompanyId As Guid) As Company
+    Friend Function BuildCache(pCompanyId As Guid) As Company
         Return CompanyRepository.Get(Function(c) c.CompanyId = pCompanyId, Nothing, "CancellationReasons").FirstOrDefault()
     End Function
 

@@ -22,14 +22,14 @@ Namespace SpecializedServices.Goow
         Private Property AddressManager As IAddressManager
 
 
-        Public Sub New(ByVal pCertificateManager As ICertificateManager,
-                       ByVal pDealerManager As IDealerManager,
-                       ByVal pCommonManager As ICommonManager,
-                       ByVal pClaimManager As IClaimManager,
-                       ByVal pCountryManager As ICountryManager,
-                       ByVal pCompanyManager As ICompanyManager,
-                       ByVal pCompanyGroupManager As ICompanyGroupManager,
-                       ByVal pAddressManager As IAddressManager)
+        Public Sub New(pCertificateManager As ICertificateManager,
+                       pDealerManager As IDealerManager,
+                       pCommonManager As ICommonManager,
+                       pClaimManager As IClaimManager,
+                       pCountryManager As ICountryManager,
+                       pCompanyManager As ICompanyManager,
+                       pCompanyGroupManager As ICompanyGroupManager,
+                       pAddressManager As IAddressManager)
 
             If (pCertificateManager Is Nothing) Then
                 Throw New ArgumentNullException("pCertificateManager")
@@ -55,14 +55,14 @@ Namespace SpecializedServices.Goow
             If (pAddressManager Is Nothing) Then
                 Throw New ArgumentNullException("pAddressManager")
             End If
-            Me.CertificateManager = pCertificateManager
-            Me.DealerManager = pDealerManager
-            Me.CommonManager = pCommonManager
-            Me.ClaimManager = pClaimManager
-            Me.CountryManager = pCountryManager
-            Me.CompanyManager = pCompanyManager
-            Me.CompanyGroupManager = pCompanyGroupManager
-            Me.AddressManager = pAddressManager
+            CertificateManager = pCertificateManager
+            DealerManager = pDealerManager
+            CommonManager = pCommonManager
+            ClaimManager = pClaimManager
+            CountryManager = pCountryManager
+            CompanyManager = pCompanyManager
+            CompanyGroupManager = pCompanyGroupManager
+            AddressManager = pAddressManager
         End Sub
         Public Function CreateClaim(request As CreateClaimRequest) As CreateClaimResponse Implements IGoogleService.CreateClaim
 
@@ -81,7 +81,7 @@ Namespace SpecializedServices.Goow
                 End Try
 
                 ''''Locate Certificate
-                Dim oCert As Certificate = Me.CertificateManager.GetCertificate(request.DealerCode, request.CertificateNumber)
+                Dim oCert As Certificate = CertificateManager.GetCertificate(request.DealerCode, request.CertificateNumber)
             If (oCert Is Nothing) Then
                 'Throw New FaultException(Of ElitaFault)(New ElitaFault(ElitaFault.EnumFaultType.CertificateNotFound), "Certificate Not found")
                 Throw New FaultException(Of CertificateNotFoundFault)(New CertificateNotFoundFault(), "Certificate not found")
@@ -92,7 +92,7 @@ Namespace SpecializedServices.Goow
             '''''Locate Coverage
             Dim cic As CertificateItemCoverage
                 Try
-                    cic = Me.ClaimManager.LocateCoverage(oCert, request.DateOfLoss, request.CoverageTypeCode, Nothing)
+                    cic = ClaimManager.LocateCoverage(oCert, request.DateOfLoss, request.CoverageTypeCode, Nothing)
                 Catch cnf As CoverageNotFoundException
                     Throw New FaultException(Of CoverageNotFoundFault)(New CoverageNotFoundFault(), "Coverage Not found")
                     'Throw New FaultException(Of ElitaFault)(New ElitaFault(ElitaFault.EnumFaultType.CoverageNotFound), "Coverage Not found")
@@ -112,7 +112,7 @@ Namespace SpecializedServices.Goow
 
             ''''validate service center
             Try
-                    If (Me.CountryManager.GetServiceCenterByCode(oDealer.GetCompany(Me.CompanyManager).BusinessCountryId, request.ServiceCenterCode) Is Nothing) Then
+                    If (CountryManager.GetServiceCenterByCode(oDealer.GetCompany(CompanyManager).BusinessCountryId, request.ServiceCenterCode) Is Nothing) Then
                         'Throw New FaultException(Of ElitaFault)(New ElitaFault(ElitaFault.EnumFaultType.ServiceCenterNotFound), "Service Center not found")
                         Throw New FaultException(Of ServiceCenterNotFoundFault)(New ServiceCenterNotFoundFault(), "Service Center not found")
                     End If
@@ -137,7 +137,7 @@ Namespace SpecializedServices.Goow
                 End If
 
                 Try
-                oClaim = Me.ClaimManager.CreateClaim(cic,
+                oClaim = ClaimManager.CreateClaim(cic,
                                                          oClaim,
                                                          oDealer,
                                                          request.CoverageTypeCode,
@@ -197,7 +197,7 @@ Namespace SpecializedServices.Goow
             End Try
         End Sub
 
-        Public Function ComputeTax(ByVal request As ComputeTaxRequest) As ComputeTaxResponse Implements IGoogleService.ComputeTax
+        Public Function ComputeTax(request As ComputeTaxRequest) As ComputeTaxResponse Implements IGoogleService.ComputeTax
 
             request.Validate("request").HandleFault()
 
@@ -332,7 +332,7 @@ Namespace SpecializedServices.Goow
             End If
 
             Try
-                If (Me.CountryManager.GetServiceCenterByCode(oDealer.GetCompany(Me.CompanyManager).BusinessCountryId, request.ServiceCenterCode) Is Nothing) Then
+                If (CountryManager.GetServiceCenterByCode(oDealer.GetCompany(CompanyManager).BusinessCountryId, request.ServiceCenterCode) Is Nothing) Then
                     Throw New FaultException(Of ServiceCenterNotFoundFault)(New ServiceCenterNotFoundFault(), "Service Center not found")
                 End If
             Catch ex As Exception
@@ -423,7 +423,7 @@ Namespace SpecializedServices.Goow
             End Try
 
             ''''Locate Certificate
-            Dim oCert As Certificate = Me.CertificateManager.GetCertificate(request.DealerCode, request.CertificateNumber)
+            Dim oCert As Certificate = CertificateManager.GetCertificate(request.DealerCode, request.CertificateNumber)
             If (oCert Is Nothing) Then
                 'Throw New FaultException(Of ElitaFault)(New ElitaFault(ElitaFault.EnumFaultType.CertificateNotFound), "Certificate Not found")
                 Throw New FaultException(Of CertificateNotFoundFault)(New CertificateNotFoundFault(), "Certificate not found")
@@ -463,7 +463,7 @@ Namespace SpecializedServices.Goow
             End Try
 
             ''''Locate Certificate
-            Dim oCert As Certificate = Me.CertificateManager.GetCertificate(request.DealerCode, request.CertificateNumber)
+            Dim oCert As Certificate = CertificateManager.GetCertificate(request.DealerCode, request.CertificateNumber)
             If (oCert Is Nothing) Then
                 'Throw New FaultException(Of ElitaFault)(New ElitaFault(ElitaFault.EnumFaultType.CertificateNotFound), "Certificate Not found")
                 Throw New FaultException(Of CertificateNotFoundFault)(New CertificateNotFoundFault(), "Certificate not found")
@@ -486,7 +486,7 @@ Namespace SpecializedServices.Goow
 
         End Sub
 
-        Public Function GetClaimInfo(ByVal request As GetClaimInfoRequest) As GetClaimInfoResponse Implements IGoogleService.GetClaimInfo
+        Public Function GetClaimInfo(request As GetClaimInfoRequest) As GetClaimInfoResponse Implements IGoogleService.GetClaimInfo
 
             Dim response As New GetClaimInfoResponse
             request.Validate("request").HandleFault()
@@ -504,7 +504,7 @@ Namespace SpecializedServices.Goow
             End Try
 
             ''''Locate Certificate
-            Dim oCert As Certificate = Me.CertificateManager.GetCertificate(request.DealerCode, request.CertificateNumber)
+            Dim oCert As Certificate = CertificateManager.GetCertificate(request.DealerCode, request.CertificateNumber)
             If (oCert Is Nothing) Then
                 'Throw New FaultException(Of ElitaFault)(New ElitaFault(ElitaFault.EnumFaultType.CertificateNotFound), "Certificate Not found")
                 Throw New FaultException(Of CertificateNotFoundFault)(New CertificateNotFoundFault(), "Certificate not found")

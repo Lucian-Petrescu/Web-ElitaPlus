@@ -74,7 +74,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -87,40 +87,40 @@ Namespace Reports
         Private Sub InitializeForm()
             PopulateManufacturerDropDown()
             Dim t As Date = Date.Now.AddDays(-1)
-            Me.moBeginDateText.Text = String.Empty ' GetDateFormattedString(t)
-            Me.moEndDateText.Text = String.Empty 'GetDateFormattedString(Date.Now)
+            moBeginDateText.Text = String.Empty ' GetDateFormattedString(t)
+            moEndDateText.Text = String.Empty 'GetDateFormattedString(Date.Now)
             TheRptCeInputControl.populateReportLanguages(RPT_FILENAME)
         End Sub
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                     'Date Calendars
-                    Me.AddCalendar(Me.BtnBeginDate, Me.moBeginDateText)
-                    Me.AddCalendar(Me.BtnEndDate, Me.moEndDateText)
+                    AddCalendar(BtnBeginDate, moBeginDateText)
+                    AddCalendar(BtnEndDate, moEndDateText)
                 Else
                     ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -131,9 +131,9 @@ Namespace Reports
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(moBeginDateLabel)
-            Me.ClearLabelErrSign(moEndDateLabel)
-            Me.ClearLabelErrSign(moManufacturerLabel)
+            ClearLabelErrSign(moBeginDateLabel)
+            ClearLabelErrSign(moEndDateLabel)
+            ClearLabelErrSign(moManufacturerLabel)
         End Sub
 
 #End Region
@@ -150,7 +150,7 @@ Namespace Reports
                                                                   .CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
                                                                 })
 
-            Me.cboManufacturer.Populate(Manufacturer.ToArray(),
+            cboManufacturer.Populate(Manufacturer.ToArray(),
                                         New PopulateOptions() With
                                         {
                                          .AddBlankItem = True
@@ -161,8 +161,8 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal userId As String, ByVal manufacturerIdParam As String, ByVal beginDate As String,
-                                      ByVal endDate As String, ByVal selectedManufacturerName As String) As ReportCeBaseForm.Params
+        Function SetParameters(userId As String, manufacturerIdParam As String, beginDate As String,
+                                      endDate As String, selectedManufacturerName As String) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim culturecode As String = TheRptCeInputControl.getCultureValue(False)
@@ -176,7 +176,7 @@ Namespace Reports
                 culturecode = TheRptCeInputControl.getCultureValue(True)
             End If
 
-            Me.rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
+            rptWindowTitle.InnerText = TheRptCeInputControl.getReportWindowTitle(TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW))
 
             Dim repParams() As ReportCeBaseForm.RptParam = New ReportCeBaseForm.RptParam() _
                     {
@@ -199,7 +199,7 @@ Namespace Reports
 
         Private Sub GenerateReport()
             Dim userId As Guid = ElitaPlusIdentity.Current.ActiveUser.Id
-            Dim selectedManufacturerId As Guid = Me.GetSelectedItem(Me.cboManufacturer)
+            Dim selectedManufacturerId As Guid = GetSelectedItem(cboManufacturer)
             Dim dv As DataView = LookupListNew.GetManufacturerLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
             Dim selectedManufacturerName As String = LookupListNew.GetDescriptionFromId(dv, selectedManufacturerId)
             Dim manufacturerIdParam As String
@@ -207,7 +207,7 @@ Namespace Reports
             Dim beginDate As String = moBeginDateText.Text
 
             'Dates
-            If (endDate = String.Empty And beginDate = String.Empty) Then
+            If (endDate = String.Empty AndAlso beginDate = String.Empty) Then
                 endDate = String.Empty
                 beginDate = String.Empty
             Else

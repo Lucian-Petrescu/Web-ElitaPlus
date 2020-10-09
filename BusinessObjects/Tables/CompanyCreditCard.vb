@@ -6,55 +6,55 @@ Public Class CompanyCreditCard
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'Exiting BO by CreditCardFormatId and companyId
-    Public Sub New(ByVal CreditCardFormatId As Guid, ByVal CompanyId As Guid)
+    Public Sub New(CreditCardFormatId As Guid, CompanyId As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(CreditCardFormatId, CompanyId)
+        Dataset = New DataSet
+        Load(CreditCardFormatId, CompanyId)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New CompanyCreditCardDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -62,23 +62,23 @@ Public Class CompanyCreditCard
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CompanyCreditCardDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -86,23 +86,23 @@ Public Class CompanyCreditCard
         End Try
     End Sub
 
-    Protected Sub Load(ByVal CreditCardFormatId As Guid, ByVal CompanyId As Guid)
+    Protected Sub Load(CreditCardFormatId As Guid, CompanyId As Guid)
         Try
             Dim dal As New CompanyCreditCardDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, CreditCardFormatId, CompanyId)
-                Me.Row = Me.FindRow(CreditCardFormatId, dal.COL_NAME_CREDIT_CARD_FORMAT_ID, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, CreditCardFormatId, CompanyId)
+                Row = FindRow(CreditCardFormatId, dal.COL_NAME_CREDIT_CARD_FORMAT_ID, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -121,7 +121,7 @@ Public Class CompanyCreditCard
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(CompanyCreditCardDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -132,7 +132,7 @@ Public Class CompanyCreditCard
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If row(CompanyCreditCardDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -141,15 +141,15 @@ Public Class CompanyCreditCard
                 Return New Guid(CType(row(CompanyCreditCardDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CompanyCreditCardDAL.COL_NAME_COMPANY_ID, Value)
+            SetValue(CompanyCreditCardDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property CreditCardFormatId() As Guid
+    Public Property CreditCardFormatId As Guid
         Get
             CheckDeleted()
             If row(CompanyCreditCardDAL.COL_NAME_CREDIT_CARD_FORMAT_ID) Is DBNull.Value Then
@@ -158,14 +158,14 @@ Public Class CompanyCreditCard
                 Return New Guid(CType(row(CompanyCreditCardDAL.COL_NAME_CREDIT_CARD_FORMAT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CompanyCreditCardDAL.COL_NAME_CREDIT_CARD_FORMAT_ID, Value)
+            SetValue(CompanyCreditCardDAL.COL_NAME_CREDIT_CARD_FORMAT_ID, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=31), ValueMandatory("")> _
-    Public Property BillingDate() As LongType
+    Public Property BillingDate As LongType
         Get
             CheckDeleted()
             If Row(CompanyCreditCardDAL.COL_NAME_BILLING_DATE) Is DBNull.Value Then
@@ -174,9 +174,9 @@ Public Class CompanyCreditCard
                 Return New LongType(CType(Row(CompanyCreditCardDAL.COL_NAME_BILLING_DATE), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(CompanyCreditCardDAL.COL_NAME_BILLING_DATE, Value)
+            SetValue(CompanyCreditCardDAL.COL_NAME_BILLING_DATE, Value)
         End Set
     End Property
 
@@ -189,15 +189,15 @@ Public Class CompanyCreditCard
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CompanyCreditCardDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -225,19 +225,19 @@ Public Class CompanyCreditCard
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
         Public Function AddNewRowToEmptyDV() As CompanyCreditCardSearchDV
-            Dim dt As DataTable = Me.Table.Clone()
+            Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(CompanyCreditCardSearchDV.COL_COMPANY_CREDIT_CARD_ID) = (New Guid()).ToByteArray
-            row(CompanyCreditCardSearchDV.COL_CREDIT_CARD_FORMAT_ID) = Guid.Empty.ToByteArray
-            row(CompanyCreditCardSearchDV.COL_COMPANY_ID) = Guid.Empty.ToByteArray
-            row(CompanyCreditCardSearchDV.COL_COMPANY_CODE) = ""
-            row(CompanyCreditCardSearchDV.COL_CREDIT_CARD_TYPE) = ""
-            row(CompanyCreditCardSearchDV.COL_BILLING_DATE) = Long.MinValue
+            row(COL_COMPANY_CREDIT_CARD_ID) = (New Guid()).ToByteArray
+            row(COL_CREDIT_CARD_FORMAT_ID) = Guid.Empty.ToByteArray
+            row(COL_COMPANY_ID) = Guid.Empty.ToByteArray
+            row(COL_COMPANY_CODE) = ""
+            row(COL_CREDIT_CARD_TYPE) = ""
+            row(COL_BILLING_DATE) = Long.MinValue
             dt.Rows.Add(row)
             Return New CompanyCreditCardSearchDV(dt)
         End Function
@@ -259,7 +259,7 @@ Public Class CompanyCreditCard
         End Try
     End Function
 
-    Public Shared Sub AddNewRowToSearchDV(ByRef dv As CompanyCreditCardSearchDV, ByVal NewCompanyCreditCardBO As CompanyCreditCard)
+    Public Shared Sub AddNewRowToSearchDV(ByRef dv As CompanyCreditCardSearchDV, NewCompanyCreditCardBO As CompanyCreditCard)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         dv.Sort = ""
@@ -286,7 +286,7 @@ Public Class CompanyCreditCard
         End If
     End Sub
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid, ByVal bo As CompanyCreditCard) As CompanyCreditCardSearchDV
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid, bo As CompanyCreditCard) As CompanyCreditCardSearchDV
 
         Dim dt As DataTable
         dt = dv.Table

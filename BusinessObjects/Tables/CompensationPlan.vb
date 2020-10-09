@@ -21,48 +21,48 @@ Public Class CompensationPlan
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New CompensationPlanDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -70,23 +70,23 @@ Public Class CompensationPlan
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CompensationPlanDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -119,7 +119,7 @@ Public Class CompensationPlan
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CompensationPlanDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -130,7 +130,7 @@ Public Class CompensationPlan
     End Property
 
     <ValueMandatory("")>
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(CompensationPlanDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -139,15 +139,15 @@ Public Class CompensationPlan
                 Return New Guid(CType(Row(CompensationPlanDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CompensationPlanDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(CompensationPlanDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=100), CheckDuplicate("")> 
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(CompensationPlanDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -157,14 +157,14 @@ Public Class CompensationPlan
             End If
         End Get
 
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CompensationPlanDAL.COL_NAME_CODE, value)
+            SetValue(CompensationPlanDAL.COL_NAME_CODE, value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)>
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(CompensationPlanDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -174,9 +174,9 @@ Public Class CompensationPlan
             End If
         End Get
 
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CompensationPlanDAL.COL_NAME_DESCRIPTION, value)
+            SetValue(CompensationPlanDAL.COL_NAME_DESCRIPTION, value)
         End Set
     End Property
 
@@ -184,7 +184,7 @@ Public Class CompensationPlan
     <ValueMandatory(""), ValidIntervalDate("", Common.ErrorCodes.INVALID_EFFECTIVE_BIGGER_EXPIRATION_ERR,
                         Common.ErrorCodes.INVALID_EFFECTIVE_SMALLER_MAX_EXPIRATION_ERR1,
                         Common.ErrorCodes.INVALID_DELETE_SMALLER_MAXEXPIRATION_ERR)>
-    Public Property EffectiveDate() As DateType
+    Public Property EffectiveDate As DateType
         Get
             CheckDeleted()
             If Row(CompensationPlanDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -193,9 +193,9 @@ Public Class CompensationPlan
                 Return New DateType(CType(Row(CompensationPlanDAL.COL_NAME_EFFECTIVE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CompensationPlanDAL.COL_NAME_EFFECTIVE_DATE, Value)
+            SetValue(CompensationPlanDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
     End Property
 
@@ -203,7 +203,7 @@ Public Class CompensationPlan
     <ValueMandatory(""), ValidIntervalDate("", Common.ErrorCodes.INVALID_EFFECTIVE_BIGGER_EXPIRATION_ERR,
                         Common.ErrorCodes.INVALID_EFFECTIVE_SMALLER_MAX_EXPIRATION_ERR1,
                         Common.ErrorCodes.INVALID_DELETE_SMALLER_MAXEXPIRATION_ERR)>
-    Public Property ExpirationDate() As DateType
+    Public Property ExpirationDate As DateType
         Get
             CheckDeleted()
             If Row(CompensationPlanDAL.COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
@@ -212,21 +212,21 @@ Public Class CompensationPlan
                 Return New DateType(CType(Row(CompensationPlanDAL.COL_NAME_EXPIRATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CompensationPlanDAL.COL_NAME_EXPIRATION_DATE, Value)
+            SetValue(CompensationPlanDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set
     End Property
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
-            Return MyBase.IsDirty OrElse Me.IsChildrenDirty 'OrElse IsFamilyDirty
+            Return MyBase.IsDirty OrElse IsChildrenDirty 'OrElse IsFamilyDirty
         End Get
     End Property
 
 #Region "Properties-Expiration"
 
-    Public ReadOnly Property MaxExpiration(ByVal oData As Object) As Date
+    Public ReadOnly Property MaxExpiration(oData As Object) As Date
         Get
             Dim ds As DataSet
             Dim oExpiration As Date
@@ -247,7 +247,7 @@ Public Class CompensationPlan
         End Get
     End Property
 
-    Public ReadOnly Property ExpirationCount(ByVal oData As Object) As Integer
+    Public ReadOnly Property ExpirationCount(oData As Object) As Integer
         Get
             Dim ds As DataSet
             Dim nExpiration As Integer
@@ -272,12 +272,12 @@ Public Class CompensationPlan
 #End Region
 
 #Region "Public Members"
-    Public Sub Copy(ByVal original As CompensationPlan)
-        If Not Me.IsNew Then
+    Public Sub Copy(original As CompensationPlan)
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Dealer")
         End If
         'Copy myself
-        Me.CopyFrom(original)
+        CopyFrom(original)
         'copy the children 
     End Sub
 
@@ -285,14 +285,14 @@ Public Class CompensationPlan
         Try
             MyBase.Save()
             'If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
-            If Me._isDSCreator AndAlso Me.IsFamilyDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsFamilyDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CompensationPlanDAL
-                dal.update(Me.Dataset)
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                dal.update(Dataset)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                     'Me._address = Nothing
                 End If
             End If
@@ -306,7 +306,7 @@ Public Class CompensationPlan
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getList(ByVal oCompensationPlanData As CompensationPlanData) As CompensationPlanSearchDV
+    Public Shared Function getList(oCompensationPlanData As CompensationPlanData) As CompensationPlanSearchDV
         Try
             Dim dal As New CompensationPlanDAL
             Return New CompensationPlanSearchDV(dal.LoadList(oCompensationPlanData).Tables(0))
@@ -320,49 +320,49 @@ Public Class CompensationPlan
 
 #Region "Validation"
 
-    ReadOnly Property IEffective() As DateType Implements IValidateIntervalDate.IEffective
+    ReadOnly Property IEffective As DateType Implements IValidateIntervalDate.IEffective
         Get
             Return EffectiveDate
         End Get
     End Property
 
-    ReadOnly Property ICode() As String
+    ReadOnly Property ICode As String
         Get
             Return Code
         End Get
 
     End Property
-    ReadOnly Property IDescription() As String
+    ReadOnly Property IDescription As String
         Get
             Return Description
         End Get
 
     End Property
-    ReadOnly Property IExpiration() As DateType Implements IValidateIntervalDate.IExpiration
+    ReadOnly Property IExpiration As DateType Implements IValidateIntervalDate.IExpiration
         Get
             Return ExpirationDate
         End Get
     End Property
 
-    ReadOnly Property IMaxExpiration() As DateType Implements IValidateIntervalDate.IMaxExpiration
+    ReadOnly Property IMaxExpiration As DateType Implements IValidateIntervalDate.IMaxExpiration
         Get
             Dim oCompensationPlanData As New CompensationPlanData
             With oCompensationPlanData
-                .dealerId = Me.DealerId
+                .dealerId = DealerId
             End With
             Return New DateType(MaxExpiration(oCompensationPlanData))
         End Get
     End Property
 
-    Public ReadOnly Property IIsNew() As Boolean Implements IValidateIntervalDate.IIsNew
+    Public ReadOnly Property IIsNew As Boolean Implements IValidateIntervalDate.IIsNew
         Get
-            Return Me.IsNew
+            Return IsNew
         End Get
     End Property
 
-    ReadOnly Property IIsDeleted() As Boolean Implements IValidateIntervalDate.IIsDeleted
+    ReadOnly Property IIsDeleted As Boolean Implements IValidateIntervalDate.IIsDeleted
         Get
-            Return Me.IsDeleted
+            Return IsDeleted
         End Get
     End Property
 
@@ -387,7 +387,7 @@ Public Class CompensationPlan
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -399,11 +399,11 @@ Public Class CompensationPlan
         Inherits ValidBaseAttribute
         Private Const DUPLICATE_CODE As String = "DUPLICATE_COMMISSION_CODE"
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, DUPLICATE_CODE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
 
             Dim obj As CompensationPlan = CType(objectToValidate, CompensationPlan)
             Dim dal As New CompensationPlanDAL

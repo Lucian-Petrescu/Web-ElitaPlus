@@ -4,55 +4,55 @@ Public Class RoleAuthCtrlExclusion
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'Exiting BO
-    Public Sub New(ByVal oFormId As Guid, ByVal oRoleId As Guid, ByVal sControlName As String)
+    Public Sub New(oFormId As Guid, oRoleId As Guid, sControlName As String)
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load(oFormId, oRoleId, sControlName)
+        Dataset = New Dataset
+        Load(oFormId, oRoleId, sControlName)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load()
+        Dataset = New Dataset
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New RoleAuthCtrlExclusionDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -60,23 +60,23 @@ Public Class RoleAuthCtrlExclusion
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New RoleAuthCtrlExclusionDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -84,27 +84,27 @@ Public Class RoleAuthCtrlExclusion
         End Try
     End Sub
 
-    Protected Sub Load(ByVal oFormId As Guid, ByVal oRoleId As Guid, ByVal sControlName As String)
+    Protected Sub Load(oFormId As Guid, oRoleId As Guid, sControlName As String)
         Try
             Dim dal As New RoleAuthCtrlExclusionDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(oFormId, dal.COL_NAME_FORM_ID, oRoleId, dal.COL_NAME_ROLE_ID, _
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(oFormId, dal.COL_NAME_FORM_ID, oRoleId, dal.COL_NAME_ROLE_ID, _
                             sControlName, dal.COL_NAME_CONTROL_NAME, _
-                           Me.Dataset.Tables(dal.TABLE_NAME))
+                           Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, oFormId, oRoleId, sControlName)
-                Me.Row = Me.FindRow(oFormId, dal.COL_NAME_FORM_ID, oRoleId, dal.COL_NAME_ROLE_ID, _
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, oFormId, oRoleId, sControlName)
+                Row = FindRow(oFormId, dal.COL_NAME_FORM_ID, oRoleId, dal.COL_NAME_ROLE_ID, _
                             sControlName, dal.COL_NAME_CONTROL_NAME, _
-                            Me.Dataset.Tables(dal.TABLE_NAME))
+                            Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -123,7 +123,7 @@ Public Class RoleAuthCtrlExclusion
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(RoleAuthCtrlExclusionDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -134,7 +134,7 @@ Public Class RoleAuthCtrlExclusion
     End Property
 
     <ValueMandatory("")> _
-    Public Property RoleId() As Guid
+    Public Property RoleId As Guid
         Get
             CheckDeleted()
             If row(RoleAuthCtrlExclusionDAL.COL_NAME_ROLE_ID) Is DBNull.Value Then
@@ -143,15 +143,15 @@ Public Class RoleAuthCtrlExclusion
                 Return New Guid(CType(row(RoleAuthCtrlExclusionDAL.COL_NAME_ROLE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(RoleAuthCtrlExclusionDAL.COL_NAME_ROLE_ID, Value)
+            SetValue(RoleAuthCtrlExclusionDAL.COL_NAME_ROLE_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property FormId() As Guid
+    Public Property FormId As Guid
         Get
             CheckDeleted()
             If row(RoleAuthCtrlExclusionDAL.COL_NAME_FORM_ID) Is DBNull.Value Then
@@ -160,15 +160,15 @@ Public Class RoleAuthCtrlExclusion
                 Return New Guid(CType(row(RoleAuthCtrlExclusionDAL.COL_NAME_FORM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(RoleAuthCtrlExclusionDAL.COL_NAME_FORM_ID, Value)
+            SetValue(RoleAuthCtrlExclusionDAL.COL_NAME_FORM_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)> _
-    Public Property ControlName() As String
+    Public Property ControlName As String
         Get
             CheckDeleted()
             If row(RoleAuthCtrlExclusionDAL.COL_NAME_CONTROL_NAME) Is DBNull.Value Then
@@ -177,14 +177,14 @@ Public Class RoleAuthCtrlExclusion
                 Return CType(row(RoleAuthCtrlExclusionDAL.COL_NAME_CONTROL_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(RoleAuthCtrlExclusionDAL.COL_NAME_CONTROL_NAME, Value)
+            SetValue(RoleAuthCtrlExclusionDAL.COL_NAME_CONTROL_NAME, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1)> _
-    Public Property PermissionType() As String
+    Public Property PermissionType As String
         Get
             CheckDeleted()
             If Row(RoleAuthCtrlExclusionDAL.COL_NAME_PERMISSION_TYPE) Is DBNull.Value Then
@@ -193,9 +193,9 @@ Public Class RoleAuthCtrlExclusion
                 Return CType(Row(RoleAuthCtrlExclusionDAL.COL_NAME_PERMISSION_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(RoleAuthCtrlExclusionDAL.COL_NAME_PERMISSION_TYPE, Value)
+            SetValue(RoleAuthCtrlExclusionDAL.COL_NAME_PERMISSION_TYPE, Value)
         End Set
     End Property
 #End Region
@@ -204,15 +204,15 @@ Public Class RoleAuthCtrlExclusion
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New RoleAuthCtrlExclusionDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -223,7 +223,7 @@ Public Class RoleAuthCtrlExclusion
 
 #Region "DATA ACCESS ROUTINES"
 
-    Public Shared Function PopulateList(ByVal oLanguageID As Guid) As DataView
+    Public Shared Function PopulateList(oLanguageID As Guid) As DataView
         Dim oDs As Dataset
 
         Try
@@ -236,7 +236,7 @@ Public Class RoleAuthCtrlExclusion
         End Try
     End Function
 
-    Public Shared Function ObtainControlPermissions(ByVal sFormId As String, ByVal oControlNames As ArrayList) As DataView
+    Public Shared Function ObtainControlPermissions(sFormId As String, oControlNames As ArrayList) As DataView
         Dim oDv As DataView
 
         Try
@@ -249,7 +249,7 @@ Public Class RoleAuthCtrlExclusion
         End Try
     End Function
 
-    Public Shared Function GetControlPermissionList(ByVal sFormCode As String, ByVal oControlName As String) As DataView
+    Public Shared Function GetControlPermissionList(sFormCode As String, oControlName As String) As DataView
         Try
             Dim dal As New RoleAuthCtrlExclusionDAL
             Return dal.GetControlPermissionAllRoles(sFormCode, oControlName).Tables(0).DefaultView

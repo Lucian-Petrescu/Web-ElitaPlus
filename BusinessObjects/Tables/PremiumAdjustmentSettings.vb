@@ -5,43 +5,43 @@ Public Class PremiumAdjustmentSettings
 #Region "Constructors"
 
     'Existing BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
 
     End Sub
 
     'Existing BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New PremiumAdjustmentSettingsDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -49,18 +49,18 @@ Public Class PremiumAdjustmentSettings
 
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
-            Me.Row = Nothing
+            Row = Nothing
             Dim dal As New PremiumAdjustmentSettingsDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -79,7 +79,7 @@ Public Class PremiumAdjustmentSettings
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(PremiumAdjustmentSettingsDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -91,7 +91,7 @@ Public Class PremiumAdjustmentSettings
 
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(PremiumAdjustmentSettingsDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -100,15 +100,15 @@ Public Class PremiumAdjustmentSettings
                 Return New Guid(CType(Row(PremiumAdjustmentSettingsDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(PremiumAdjustmentSettingsDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(PremiumAdjustmentSettingsDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property AdjustmentBy() As Guid
+    Public Property AdjustmentBy As Guid
         Get
             CheckDeleted()
             If Row(PremiumAdjustmentSettingsDAL.COL_NAME_ADJUSTMENT_BY) Is DBNull.Value Then
@@ -117,15 +117,15 @@ Public Class PremiumAdjustmentSettings
                 Return New Guid(CType(Row(PremiumAdjustmentSettingsDAL.COL_NAME_ADJUSTMENT_BY), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(PremiumAdjustmentSettingsDAL.COL_NAME_ADJUSTMENT_BY, Value)
+            SetValue(PremiumAdjustmentSettingsDAL.COL_NAME_ADJUSTMENT_BY, Value)
         End Set
     End Property
 
 
 
-    Public Property AdjustmentBasedOn() As Guid
+    Public Property AdjustmentBasedOn As Guid
         Get
             CheckDeleted()
             If Row(PremiumAdjustmentSettingsDAL.COL_NAME_ADJUSTMENT_BASED_ON) Is DBNull.Value Then
@@ -134,15 +134,15 @@ Public Class PremiumAdjustmentSettings
                 Return New Guid(CType(Row(PremiumAdjustmentSettingsDAL.COL_NAME_ADJUSTMENT_BASED_ON), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(PremiumAdjustmentSettingsDAL.COL_NAME_ADJUSTMENT_BASED_ON, Value)
+            SetValue(PremiumAdjustmentSettingsDAL.COL_NAME_ADJUSTMENT_BASED_ON, Value)
         End Set
     End Property
 
 
 
-    Public Property EffectiveDate() As DateType
+    Public Property EffectiveDate As DateType
         Get
             CheckDeleted()
             If Row(PremiumAdjustmentSettingsDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -151,13 +151,13 @@ Public Class PremiumAdjustmentSettings
                 Return New DateType(CType(Row(PremiumAdjustmentSettingsDAL.COL_NAME_EFFECTIVE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(PremiumAdjustmentSettingsDAL.COL_NAME_EFFECTIVE_DATE, Value)
+            SetValue(PremiumAdjustmentSettingsDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
     End Property
 
-    Public Property ExpirationDate() As DateType
+    Public Property ExpirationDate As DateType
         Get
             CheckDeleted()
             If Row(PremiumAdjustmentSettingsDAL.COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
@@ -166,14 +166,14 @@ Public Class PremiumAdjustmentSettings
                 Return New DateType(CType(Row(PremiumAdjustmentSettingsDAL.COL_NAME_EXPIRATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(PremiumAdjustmentSettingsDAL.COL_NAME_EXPIRATION_DATE, Value)
+            SetValue(PremiumAdjustmentSettingsDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Max:=NEW_MAX_PERCENTAGE)> _
-    Public Property AdjustmentPercentage() As DecimalType
+    Public Property AdjustmentPercentage As DecimalType
         Get
             CheckDeleted()
             If Row(PremiumAdjustmentSettingsDAL.COL_NAME_ADJUSTMENT_PERCENTAGE) Is DBNull.Value Then
@@ -182,14 +182,14 @@ Public Class PremiumAdjustmentSettings
                 Return New DecimalType(CType(Row(PremiumAdjustmentSettingsDAL.COL_NAME_ADJUSTMENT_PERCENTAGE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(PremiumAdjustmentSettingsDAL.COL_NAME_ADJUSTMENT_PERCENTAGE, Value)
+            SetValue(PremiumAdjustmentSettingsDAL.COL_NAME_ADJUSTMENT_PERCENTAGE, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Max:=NEW_MAX_DOUBLE)> _
-    Public Property AdjustmentAmount() As DecimalType
+    Public Property AdjustmentAmount As DecimalType
         Get
             CheckDeleted()
             If Row(PremiumAdjustmentSettingsDAL.COL_NAME_ADJUSTMENT_AMOUNT) Is DBNull.Value Then
@@ -198,9 +198,9 @@ Public Class PremiumAdjustmentSettings
                 Return New DecimalType(CType(Row(PremiumAdjustmentSettingsDAL.COL_NAME_ADJUSTMENT_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(PremiumAdjustmentSettingsDAL.COL_NAME_ADJUSTMENT_AMOUNT, Value)
+            SetValue(PremiumAdjustmentSettingsDAL.COL_NAME_ADJUSTMENT_AMOUNT, Value)
         End Set
     End Property
 
@@ -214,11 +214,11 @@ Public Class PremiumAdjustmentSettings
         Try
             MyBase.Save()
             Dim dal As New PremiumAdjustmentSettingsDAL
-            dal.Update(Me.Dataset)
+            dal.Update(Dataset)
             'Reload the Data
-            If Me._isDSCreator AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso Row.RowState <> DataRowState.Detached Then
                 'Reload the Data from the DB
-                Me.Load(Me.Id)
+                Load(Id)
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
@@ -239,7 +239,7 @@ Public Class PremiumAdjustmentSettings
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getList(ByVal DealerId As Guid) As PremiumAdjustnmentSettingSearchDV
+    Public Shared Function getList(DealerId As Guid) As PremiumAdjustnmentSettingSearchDV
         Try
             Dim dal As New PremiumAdjustmentSettingsDAL
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -267,7 +267,7 @@ Public Class PremiumAdjustmentSettings
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

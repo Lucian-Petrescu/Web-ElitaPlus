@@ -22,7 +22,7 @@ Partial Public Class RedoListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Form1 As Global.System.Web.UI.HtmlControls.HtmlForm
+    Protected WithEvents Form1 As HtmlForm
 
     '''<summary>
     '''LabelTables control.
@@ -31,7 +31,7 @@ Partial Public Class RedoListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelTables As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelTables As Label
 
     '''<summary>
     '''Label7 control.
@@ -40,7 +40,7 @@ Partial Public Class RedoListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label7 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label7 As Label
 
     '''<summary>
     '''WorkingPanel control.
@@ -49,7 +49,7 @@ Partial Public Class RedoListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents WorkingPanel As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents WorkingPanel As Panel
 
     '''<summary>
     '''Label1 control.
@@ -58,7 +58,7 @@ Partial Public Class RedoListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label1 As Label
 
     '''<summary>
     '''txtCustomerName control.
@@ -67,7 +67,7 @@ Partial Public Class RedoListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtCustomerName As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtCustomerName As TextBox
 
     '''<summary>
     '''Label2 control.
@@ -76,7 +76,7 @@ Partial Public Class RedoListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label2 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label2 As Label
 
     '''<summary>
     '''txtCertificateNumber control.
@@ -85,7 +85,7 @@ Partial Public Class RedoListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtCertificateNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtCertificateNumber As TextBox
 
     '''<summary>
     '''Label4 control.
@@ -94,7 +94,7 @@ Partial Public Class RedoListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label4 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label4 As Label
 
     '''<summary>
     '''txtRedoClaimNumber control.
@@ -103,7 +103,7 @@ Partial Public Class RedoListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtRedoClaimNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtRedoClaimNumber As TextBox
 
     '''<summary>
     '''Label5 control.
@@ -112,7 +112,7 @@ Partial Public Class RedoListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label5 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label5 As Label
 
     '''<summary>
     '''txtServiceCenter control.
@@ -121,7 +121,7 @@ Partial Public Class RedoListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtServiceCenter As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtServiceCenter As TextBox
 
     '''<summary>
     '''Label3 control.
@@ -130,7 +130,7 @@ Partial Public Class RedoListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label3 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label3 As Label
 
     '''<summary>
     '''txtExtendedStatus control.
@@ -139,7 +139,7 @@ Partial Public Class RedoListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtExtendedStatus As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtExtendedStatus As TextBox
 
     '''<summary>
     '''HiddenSaveChangesPromptResponse control.
@@ -148,7 +148,7 @@ Partial Public Class RedoListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents HiddenSaveChangesPromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents HiddenSaveChangesPromptResponse As HtmlInputHidden
 
     '''<summary>
     '''trPageSize control.
@@ -157,7 +157,7 @@ Partial Public Class RedoListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trPageSize As HtmlTableRow
 
     '''<summary>
     '''lblPageSize control.
@@ -166,7 +166,7 @@ Partial Public Class RedoListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPageSize As Label
 
     '''<summary>
     '''cboPageSize control.
@@ -175,7 +175,7 @@ Partial Public Class RedoListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboPageSize As DropDownList
 
     '''<summary>
     '''lblRecordCount control.
@@ -184,7 +184,7 @@ Partial Public Class RedoListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblRecordCount As Label
 
     '''<summary>
     '''Grid control.
@@ -193,7 +193,7 @@ Partial Public Class RedoListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Grid As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents Grid As GridView
 
     '''<summary>
     '''btnBack control.
@@ -202,7 +202,7 @@ Partial Public Class RedoListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnBack As Button
 
     '''<summary>
     '''btnSave_WRITE control.
@@ -211,5 +211,5 @@ Partial Public Class RedoListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnSave_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSave_WRITE As Button
 End Class

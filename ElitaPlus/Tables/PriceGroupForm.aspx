@@ -1,4 +1,4 @@
-<%@ Register TagPrefix="uc1" TagName="UserControlAvailableSelected" Src="../Common/UserControlAvailableSelected.ascx" %>
+﻿<%@ Register TagPrefix="uc1" TagName="UserControlAvailableSelected" Src="../Common/UserControlAvailableSelected.ascx" %>
 
 <%@ Page Language="vb" AutoEventWireup="false" CodeBehind="PriceGroupForm.aspx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.PriceGroupForm" %>
@@ -129,7 +129,7 @@
                                             <td valign="middle" align="left" colspan="4">
                                                 <div id="tabs" class="style-tabs-old style-tabs-oldBG">
                                                   <ul>
-                                                    <li style="background:#d5d6e4"><a href="#tabPriceGroupDetail"><asp:Label ID="Label4" runat="server" CssClass="tabHeaderTextOld">Price_Group_Detail</asp:Label></a></li>
+                                                    <li style="background:#d5d6e4"><a href="#tabPriceGroupDetail" rel="noopener noreferrer"><asp:Label ID="Label4" runat="server" CssClass="tabHeaderTextOld">Price_Group_Detail</asp:Label></a></li>
                                                   </ul>
           
                                                   <div id="tabPriceGroupDetail" style="background:#d5d6e4">

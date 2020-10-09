@@ -114,20 +114,20 @@ Public Class InvoiceRateForm
 
     Public ReadOnly Property IsGridInEditMode() As Boolean
         Get
-            Return Me.Grid.EditIndex > Me.NO_ITEM_SELECTED_INDEX
+            Return Grid.EditIndex > NO_ITEM_SELECTED_INDEX
         End Get
     End Property
 
     Public Property SortDirection() As String
         Get
-            If Not ViewState("SortDirection") Is Nothing Then
+            If ViewState("SortDirection") IsNot Nothing Then
                 Return ViewState("SortDirection").ToString
             Else
                 Return String.Empty
             End If
 
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             ViewState("SortDirection") = value
         End Set
     End Property
@@ -136,47 +136,47 @@ Public Class InvoiceRateForm
 
 #Region "Page Parameters"
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
-                Me.State.selectedAFAProductId = CType(Me.CallingParameters, Guid)
+            If CallingParameters IsNot Nothing Then
+                State.selectedAFAProductId = CType(CallingParameters, Guid)
 
-                If Not Me.State.selectedAFAProductId.Equals(Guid.Empty) Then
-                    Me.State.MyProductBO = New AfAProduct(Me.State.selectedAFAProductId)
+                If Not State.selectedAFAProductId.Equals(Guid.Empty) Then
+                    State.MyProductBO = New AfAProduct(State.selectedAFAProductId)
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
 
 #Region "Bread Crum"
     Private Sub UpdateBreadCrum()
-        Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
-        Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(SUMMARYTITLE)
-        Me.MasterPage.UsePageTabTitleInBreadCrum = False
-        Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+        MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
+        MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(SUMMARYTITLE)
+        MasterPage.UsePageTabTitleInBreadCrum = False
+        MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
     End Sub
 #End Region
 
 #Region "Page Events"
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.MasterPage.MessageController.Clear()
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        MasterPage.MessageController.Clear()
         Try
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
                 UpdateBreadCrum()
 
                 ControlMgr.SetVisibleControl(Me, moSearchResults, False)
                 'SetControlState()
                 'Me.AddCalendar_New(Me.imgExpectedPymntDate, Me.moExpectedPaymentDate)
-                Me.State.PageIndex = 0
-                Me.TranslateGridHeader(Grid)
-                Me.TranslateGridControls(Grid)
+                State.PageIndex = 0
+                TranslateGridHeader(Grid)
+                TranslateGridControls(Grid)
                 PopulateHeader()
-                Me.State.searchDV = Nothing
-                If Not Me.State.selectedAFAProductId.Equals(Guid.Empty) Then
+                State.searchDV = Nothing
+                If Not State.selectedAFAProductId.Equals(Guid.Empty) Then
                     PopulateGrid()
                 End If
             Else
@@ -185,7 +185,7 @@ Public Class InvoiceRateForm
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
         'Me.ShowMissingTranslations(Me.MasterPage.MessageController)
     End Sub
@@ -194,29 +194,29 @@ Public Class InvoiceRateForm
 
 #Region "Helper functions"
     Protected Sub CheckIfComingFromDeleteConfirm()
-        Dim confResponse As String = Me.HiddenDeletePromptResponse.Value
-        If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
+        Dim confResponse As String = HiddenDeletePromptResponse.Value
+        If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
             If Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete Then
                 DoDelete()
             End If
-            Select Case Me.State.ActionInProgress
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Delete
             End Select
-        ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-            Select Case Me.State.ActionInProgress
+        ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Delete
             End Select
         End If
         'Clean after consuming the action
-        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-        Me.HiddenDeletePromptResponse.Value = ""
+        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        HiddenDeletePromptResponse.Value = ""
     End Sub
 
     Private Sub DoDelete()
         'Do the delete here
-        Me.State.ActionInProgress = DetailPageCommand.Nothing_
+        State.ActionInProgress = DetailPageCommand.Nothing_
 
-        Dim obj As AfaInvoiceRate = New AfaInvoiceRate(Me.State.InvoiceRateID)
+        Dim obj As AfaInvoiceRate = New AfaInvoiceRate(State.InvoiceRateID)
 
         obj.Delete()
 
@@ -224,72 +224,72 @@ Public Class InvoiceRateForm
 
         obj.Save()
 
-        Me.MasterPage.MessageController.AddSuccess(Me.MSG_RECORD_DELETED_OK, True)
+        MasterPage.MessageController.AddSuccess(MSG_RECORD_DELETED_OK, True)
 
-        Me.State.PageIndex = Grid.PageIndex
+        State.PageIndex = Grid.PageIndex
 
         'Set the IsAfterSave flag to TRUE so that the Paging logic gets invoked
-        Me.State.IsAfterSave = True
-        Me.State.searchDV = Nothing
+        State.IsAfterSave = True
+        State.searchDV = Nothing
         PopulateGrid()
-        Me.State.PageIndex = Grid.PageIndex
-        Me.State.IsEditMode = False
+        State.PageIndex = Grid.PageIndex
+        State.IsEditMode = False
         SetControlState()
     End Sub
 
     Private Sub SetControlState()
-        If (Me.State.IsEditMode) Then
+        If (State.IsEditMode) Then
             ControlMgr.SetVisibleControl(Me, btnNew, False)
-            Me.MenuEnabled = False
-            If (Me.cboPageSize.Enabled) Then
+            MenuEnabled = False
+            If (cboPageSize.Enabled) Then
                 ControlMgr.SetEnableControl(Me, cboPageSize, False)
             End If
         Else
             ControlMgr.SetVisibleControl(Me, btnNew, True)
-            Me.MenuEnabled = True
-            If Not (Me.cboPageSize.Enabled) Then
-                ControlMgr.SetEnableControl(Me, Me.cboPageSize, True)
+            MenuEnabled = True
+            If Not (cboPageSize.Enabled) Then
+                ControlMgr.SetEnableControl(Me, cboPageSize, True)
             End If
         End If
     End Sub
 
     Protected Sub BindBoPropertiesToGridHeaders()
-        Me.BindBOPropertyToGridHeader(Me.State.MyInvoiceRateBO, "InsuranceCode", Me.Grid.Columns(Me.GRID_COL_INS_CODE_IDX))
-        Me.BindBOPropertyToGridHeader(Me.State.MyInvoiceRateBO, "Tier", Me.Grid.Columns(Me.GRID_COL_HAND_TIER_IDX))
-        Me.BindBOPropertyToGridHeader(Me.State.MyInvoiceRateBO, "RegulatoryState", Me.Grid.Columns(Me.GRID_COL_REGULATORY_STATE_IDX))
-        Me.BindBOPropertyToGridHeader(Me.State.MyInvoiceRateBO, "LossType", Me.Grid.Columns(Me.GRID_COL_LOSS_TYPE_IDX))
-        Me.BindBOPropertyToGridHeader(Me.State.MyInvoiceRateBO, "RetailAmt", Me.Grid.Columns(Me.GRID_COL_RETAIL_AMT_IDX))
-        Me.BindBOPropertyToGridHeader(Me.State.MyInvoiceRateBO, "PremiumAmt", Me.Grid.Columns(Me.GRID_COL_PREMIUM_AMT_IDX))
-        Me.BindBOPropertyToGridHeader(Me.State.MyInvoiceRateBO, "CommAmt", Me.Grid.Columns(Me.GRID_COL_COMM_AMT_IDX))
-        Me.BindBOPropertyToGridHeader(Me.State.MyInvoiceRateBO, "AdminAmt", Me.Grid.Columns(Me.GRID_COL_ADMIN_AMT_IDX))
-        Me.BindBOPropertyToGridHeader(Me.State.MyInvoiceRateBO, "AncillaryAmt", Me.Grid.Columns(Me.GRID_COL_ANCIL_AMT_IDX))
-        Me.BindBOPropertyToGridHeader(Me.State.MyInvoiceRateBO, "OtherAmt", Me.Grid.Columns(Me.GRID_COL_OTHER_AMT_IDX))
-        Me.BindBOPropertyToGridHeader(Me.State.MyInvoiceRateBO, "Effective", Me.Grid.Columns(Me.GRID_COL_EFF_DATE_IDX))
-        Me.BindBOPropertyToGridHeader(Me.State.MyInvoiceRateBO, "Expiration", Me.Grid.Columns(Me.GRID_COL_EXP_DATE_IDX))
-        Me.ClearGridViewHeadersAndLabelsErrSign()
+        BindBOPropertyToGridHeader(State.MyInvoiceRateBO, "InsuranceCode", Grid.Columns(GRID_COL_INS_CODE_IDX))
+        BindBOPropertyToGridHeader(State.MyInvoiceRateBO, "Tier", Grid.Columns(GRID_COL_HAND_TIER_IDX))
+        BindBOPropertyToGridHeader(State.MyInvoiceRateBO, "RegulatoryState", Grid.Columns(GRID_COL_REGULATORY_STATE_IDX))
+        BindBOPropertyToGridHeader(State.MyInvoiceRateBO, "LossType", Grid.Columns(GRID_COL_LOSS_TYPE_IDX))
+        BindBOPropertyToGridHeader(State.MyInvoiceRateBO, "RetailAmt", Grid.Columns(GRID_COL_RETAIL_AMT_IDX))
+        BindBOPropertyToGridHeader(State.MyInvoiceRateBO, "PremiumAmt", Grid.Columns(GRID_COL_PREMIUM_AMT_IDX))
+        BindBOPropertyToGridHeader(State.MyInvoiceRateBO, "CommAmt", Grid.Columns(GRID_COL_COMM_AMT_IDX))
+        BindBOPropertyToGridHeader(State.MyInvoiceRateBO, "AdminAmt", Grid.Columns(GRID_COL_ADMIN_AMT_IDX))
+        BindBOPropertyToGridHeader(State.MyInvoiceRateBO, "AncillaryAmt", Grid.Columns(GRID_COL_ANCIL_AMT_IDX))
+        BindBOPropertyToGridHeader(State.MyInvoiceRateBO, "OtherAmt", Grid.Columns(GRID_COL_OTHER_AMT_IDX))
+        BindBOPropertyToGridHeader(State.MyInvoiceRateBO, "Effective", Grid.Columns(GRID_COL_EFF_DATE_IDX))
+        BindBOPropertyToGridHeader(State.MyInvoiceRateBO, "Expiration", Grid.Columns(GRID_COL_EXP_DATE_IDX))
+        ClearGridViewHeadersAndLabelsErrSign()
     End Sub
 
     Private Sub ReturnFromEditing()
 
         Grid.EditIndex = NO_ROW_SELECTED_INDEX
 
-        If (Me.Grid.PageCount = 0) Then
+        If (Grid.PageCount = 0) Then
             'if returning to the "1st time in" screen
             ControlMgr.SetVisibleControl(Me, Grid, False)
         Else
             ControlMgr.SetVisibleControl(Me, Grid, True)
         End If
 
-        Me.State.IsEditMode = False
-        Me.PopulateGrid()
-        Me.State.PageIndex = Grid.PageIndex
+        State.IsEditMode = False
+        PopulateGrid()
+        State.PageIndex = Grid.PageIndex
         SetControlState()
     End Sub
 
     Private Sub RemoveNewRowFromSearchDV()
         Dim rowind As Integer = NO_ITEM_SELECTED_INDEX
         With State
-            If Not .searchDV Is Nothing Then
+            If .searchDV IsNot Nothing Then
                 rowind = FindSelectedRowIndexFromGuid(.searchDV, .InvoiceRateID)
             End If
         End With
@@ -300,41 +300,41 @@ Public Class InvoiceRateForm
         Dim objtxt As TextBox
         Dim ddlLossType As DropDownList
         Dim ddlRegulatoryState As DropDownList
-        With Me.State.MyInvoiceRateBO
-            objtxt = CType(Grid.Rows((Me.Grid.EditIndex)).Cells(GRID_COL_INS_CODE_IDX).FindControl(GRID_CTRL_NAME_EDIT_INS_CODE), TextBox)
+        With State.MyInvoiceRateBO
+            objtxt = CType(Grid.Rows((Grid.EditIndex)).Cells(GRID_COL_INS_CODE_IDX).FindControl(GRID_CTRL_NAME_EDIT_INS_CODE), TextBox)
             objtxt.Text = objtxt.Text.ToUpper.Trim
             PopulateBOProperty(State.MyInvoiceRateBO, "InsuranceCode", objtxt)
-            objtxt = CType(Grid.Rows((Me.Grid.EditIndex)).Cells(GRID_COL_HAND_TIER_IDX).FindControl(GRID_CTRL_NAME_EDIT_HANDSET_TIER), TextBox)
+            objtxt = CType(Grid.Rows((Grid.EditIndex)).Cells(GRID_COL_HAND_TIER_IDX).FindControl(GRID_CTRL_NAME_EDIT_HANDSET_TIER), TextBox)
             objtxt.Text = objtxt.Text.Trim
             PopulateBOProperty(State.MyInvoiceRateBO, "Tier", objtxt)
 
-            ddlRegulatoryState = CType(Grid.Rows((Me.Grid.EditIndex)).Cells(GRID_COL_REGULATORY_STATE_IDX).FindControl(GRID_CTRL_NAME_EDIT_REGULATORY_STATE_LIST), DropDownList)
+            ddlRegulatoryState = CType(Grid.Rows((Grid.EditIndex)).Cells(GRID_COL_REGULATORY_STATE_IDX).FindControl(GRID_CTRL_NAME_EDIT_REGULATORY_STATE_LIST), DropDownList)
             REM Me.State.MyInvoiceRateBO.RegulatoryState = Me.GetSelectedValue(ddlRegulatoryState)
 
             PopulateBOProperty(State.MyInvoiceRateBO, "RegulatoryState", ddlRegulatoryState, isGuidValue:=False, isStringValue:=True)
 
-            ddlLossType = CType(Grid.Rows((Me.Grid.EditIndex)).Cells(GRID_COL_LOSS_TYPE_IDX).FindControl(GRID_CTRL_NAME_EDIT_LOSS_TYPE_LIST), DropDownList)
+            ddlLossType = CType(Grid.Rows((Grid.EditIndex)).Cells(GRID_COL_LOSS_TYPE_IDX).FindControl(GRID_CTRL_NAME_EDIT_LOSS_TYPE_LIST), DropDownList)
             'PopulateBOProperty(State.MyInvoiceRateBO, "LossType", ddlLossType, False)
-            Me.State.MyInvoiceRateBO.LossType = Me.GetSelectedValue(ddlLossType)
+            State.MyInvoiceRateBO.LossType = GetSelectedValue(ddlLossType)
 
-            objtxt = CType(Grid.Rows((Me.Grid.EditIndex)).Cells(GRID_COL_RETAIL_AMT_IDX).FindControl(GRID_CTRL_NAME_EDIT_RETAIL_AMT), TextBox)
+            objtxt = CType(Grid.Rows((Grid.EditIndex)).Cells(GRID_COL_RETAIL_AMT_IDX).FindControl(GRID_CTRL_NAME_EDIT_RETAIL_AMT), TextBox)
             PopulateBOProperty(State.MyInvoiceRateBO, "RetailAmt", objtxt)
-            objtxt = CType(Grid.Rows((Me.Grid.EditIndex)).Cells(GRID_COL_PREMIUM_AMT_IDX).FindControl(GRID_CTRL_NAME_EDIT_PREM_AMT), TextBox)
+            objtxt = CType(Grid.Rows((Grid.EditIndex)).Cells(GRID_COL_PREMIUM_AMT_IDX).FindControl(GRID_CTRL_NAME_EDIT_PREM_AMT), TextBox)
             PopulateBOProperty(State.MyInvoiceRateBO, "PremiumAmt", objtxt)
-            objtxt = CType(Grid.Rows((Me.Grid.EditIndex)).Cells(GRID_COL_COMM_AMT_IDX).FindControl(GRID_CTRL_NAME_EDIT_COMM_AMT), TextBox)
+            objtxt = CType(Grid.Rows((Grid.EditIndex)).Cells(GRID_COL_COMM_AMT_IDX).FindControl(GRID_CTRL_NAME_EDIT_COMM_AMT), TextBox)
             PopulateBOProperty(State.MyInvoiceRateBO, "CommAmt", objtxt)
-            objtxt = CType(Grid.Rows((Me.Grid.EditIndex)).Cells(GRID_COL_ADMIN_AMT_IDX).FindControl(GRID_CTRL_NAME_EDIT_ADMIN_AMT), TextBox)
+            objtxt = CType(Grid.Rows((Grid.EditIndex)).Cells(GRID_COL_ADMIN_AMT_IDX).FindControl(GRID_CTRL_NAME_EDIT_ADMIN_AMT), TextBox)
             PopulateBOProperty(State.MyInvoiceRateBO, "AdminAmt", objtxt)
-            objtxt = CType(Grid.Rows((Me.Grid.EditIndex)).Cells(GRID_COL_ANCIL_AMT_IDX).FindControl(GRID_CTRL_NAME_EDIT_ANCILL_AMT), TextBox)
+            objtxt = CType(Grid.Rows((Grid.EditIndex)).Cells(GRID_COL_ANCIL_AMT_IDX).FindControl(GRID_CTRL_NAME_EDIT_ANCILL_AMT), TextBox)
             PopulateBOProperty(State.MyInvoiceRateBO, "AncillaryAmt", objtxt)
-            objtxt = CType(Grid.Rows((Me.Grid.EditIndex)).Cells(GRID_COL_OTHER_AMT_IDX).FindControl(GRID_CTRL_NAME_EDIT_OTHER_AMT), TextBox)
+            objtxt = CType(Grid.Rows((Grid.EditIndex)).Cells(GRID_COL_OTHER_AMT_IDX).FindControl(GRID_CTRL_NAME_EDIT_OTHER_AMT), TextBox)
             PopulateBOProperty(State.MyInvoiceRateBO, "OtherAmt", objtxt)
-            objtxt = CType(Grid.Rows((Me.Grid.EditIndex)).Cells(GRID_COL_EFF_DATE_IDX).FindControl(GRID_CTRL_NAME_EDIT_EFF_DATE), TextBox)
+            objtxt = CType(Grid.Rows((Grid.EditIndex)).Cells(GRID_COL_EFF_DATE_IDX).FindControl(GRID_CTRL_NAME_EDIT_EFF_DATE), TextBox)
             PopulateBOProperty(State.MyInvoiceRateBO, "Effective", objtxt)
-            objtxt = CType(Grid.Rows((Me.Grid.EditIndex)).Cells(GRID_COL_EXP_DATE_IDX).FindControl(GRID_CTRL_NAME_EDIT_EXP_DATE), TextBox)
+            objtxt = CType(Grid.Rows((Grid.EditIndex)).Cells(GRID_COL_EXP_DATE_IDX).FindControl(GRID_CTRL_NAME_EDIT_EXP_DATE), TextBox)
             PopulateBOProperty(State.MyInvoiceRateBO, "Expiration", objtxt)
         End With
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Function
@@ -357,123 +357,123 @@ Public Class InvoiceRateForm
                 End If
             End With
 
-            Me.State.searchDV.Sort = Me.SortDirection
-            If (Me.State.IsAfterSave) Then
-                Me.State.IsAfterSave = False
-                Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.InvoiceRateID, Me.Grid, Me.State.PageIndex)
-            ElseIf (Me.State.IsEditMode) Then
-                Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.InvoiceRateID, Me.Grid, Me.State.PageIndex, Me.State.IsEditMode)
+            State.searchDV.Sort = SortDirection
+            If (State.IsAfterSave) Then
+                State.IsAfterSave = False
+                SetPageAndSelectedIndexFromGuid(State.searchDV, State.InvoiceRateID, Grid, State.PageIndex)
+            ElseIf (State.IsEditMode) Then
+                SetPageAndSelectedIndexFromGuid(State.searchDV, State.InvoiceRateID, Grid, State.PageIndex, State.IsEditMode)
             Else
-                Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Guid.Empty, Me.Grid, Me.State.PageIndex)
+                SetPageAndSelectedIndexFromGuid(State.searchDV, Guid.Empty, Grid, State.PageIndex)
             End If
 
-            Me.Grid.AutoGenerateColumns = False
+            Grid.AutoGenerateColumns = False
             'Me.Grid.Columns(Me.GRID_COL_CODE_IDX).SortExpression = AfaInvoiceRate.InvoiceSearchDV.COL_CODE
             'Me.Grid.Columns(Me.GRID_COL_DESC_IDX).SortExpression = AfaInvoiceRate.InvoiceSearchDV.COL_DESCRIPTION
             SortAndBindGrid(blnNewSearch)
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
     Private Sub SortAndBindGrid(Optional ByVal blnShowErr As Boolean = True)
 
-        Me.TranslateGridControls(Grid)
+        TranslateGridControls(Grid)
 
-        If (Me.State.searchDV.Count = 0) Then
-            Me.State.searchDV = Nothing
-            Me.State.MyInvoiceRateBO = New AfaInvoiceRate
-            Me.State.MyInvoiceRateBO.AddNewRowToSearchDV(Me.State.searchDV, Me.State.MyInvoiceRateBO)
-            Me.Grid.DataSource = Me.State.searchDV
-            Me.Grid.DataBind()
-            Me.Grid.Rows(0).Visible = False
-            Me.State.IsGridAddNew = True
-            Me.State.IsGridVisible = False
+        If (State.searchDV.Count = 0) Then
+            State.searchDV = Nothing
+            State.MyInvoiceRateBO = New AfaInvoiceRate
+            State.MyInvoiceRateBO.AddNewRowToSearchDV(State.searchDV, State.MyInvoiceRateBO)
+            Grid.DataSource = State.searchDV
+            Grid.DataBind()
+            Grid.Rows(0).Visible = False
+            State.IsGridAddNew = True
+            State.IsGridVisible = False
             If blnShowErr Then
-                Me.MasterPage.MessageController.AddInformation(ElitaPlus.ElitaPlusWebApp.Message.MSG_NO_RECORDS_FOUND, True)
+                MasterPage.MessageController.AddInformation(ElitaPlus.ElitaPlusWebApp.Message.MSG_NO_RECORDS_FOUND, True)
             End If
         Else
-            Me.Grid.Enabled = True
-            Me.Grid.PageSize = Me.State.PageSize
-            Me.Grid.DataSource = Me.State.searchDV
-            Me.State.IsGridVisible = True
-            HighLightSortColumn(Grid, Me.SortDirection)
-            Me.Grid.DataBind()
+            Grid.Enabled = True
+            Grid.PageSize = State.PageSize
+            Grid.DataSource = State.searchDV
+            State.IsGridVisible = True
+            HighLightSortColumn(Grid, SortDirection)
+            Grid.DataBind()
         End If
 
-        ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
-        ControlMgr.SetVisibleControl(Me, moSearchResults, Me.State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, moSearchResults, State.IsGridVisible)
 
-        Session("recCount") = Me.State.searchDV.Count
+        Session("recCount") = State.searchDV.Count
 
-        If Me.Grid.Visible Then
-            If (Me.State.IsGridAddNew) Then
-                Me.lblRecordCount.Text = (Me.State.searchDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+        If Grid.Visible Then
+            If (State.IsGridAddNew) Then
+                lblRecordCount.Text = (State.searchDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             Else
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         End If
         ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, Grid)
 
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
         Try
-            If (Not (Me.State.IsEditMode)) Then
-                Me.State.PageIndex = Grid.PageIndex
-                Me.State.InvoiceRateID = Guid.Empty
-                Me.PopulateGrid()
+            If (Not (State.IsEditMode)) Then
+                State.PageIndex = Grid.PageIndex
+                State.InvoiceRateID = Guid.Empty
+                PopulateGrid()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_Sorting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_Sorting(sender As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
         Try
-            Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
+            Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
 
-            If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                If Me.SortDirection.EndsWith(" ASC") Then
-                    Me.SortDirection = e.SortExpression + " DESC"
+            If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                If SortDirection.EndsWith(" ASC") Then
+                    SortDirection = e.SortExpression + " DESC"
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
             Else
-                Me.SortDirection = e.SortExpression + " ASC"
+                SortDirection = e.SortExpression + " ASC"
             End If
 
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub cboPageSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Protected Sub cboPageSize_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
-            Me.Grid.PageIndex = Me.State.PageIndex
-            Me.PopulateGrid()
+            State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
+            Grid.PageIndex = State.PageIndex
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Try
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
@@ -487,16 +487,16 @@ Public Class InvoiceRateForm
             Dim ddlLossType As DropDownList = CType(e.Row.FindControl(GRID_CTRL_NAME_EDIT_LOSS_TYPE_LIST), DropDownList)
             Dim ddlRegulatoryState As DropDownList = CType(e.Row.FindControl(GRID_CTRL_NAME_EDIT_REGULATORY_STATE_LIST), DropDownList)
 
-            If Not dvRow Is Nothing Then
+            If dvRow IsNot Nothing Then
                 strID = GetGuidStringFromByteArray(CType(dvRow(AfaInvoiceRate.InvRateSearchDV.COL_AFA_INVOICE_RATE_ID), Byte()))
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                    CType(e.Row.Cells(Me.GRID_COL_INV_RATE_ID_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_INV_RATE_ID), Label).Text = strID
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
+                    CType(e.Row.Cells(GRID_COL_INV_RATE_ID_IDX).FindControl(GRID_CTRL_NAME_LABEL_INV_RATE_ID), Label).Text = strID
 
-                    If (Me.State.IsEditMode = True AndAlso Me.State.InvoiceRateID.ToString.Equals(strID)) Then
+                    If (State.IsEditMode = True AndAlso State.InvoiceRateID.ToString.Equals(strID)) Then
 
-                        CType(e.Row.Cells(Me.GRID_COL_INS_CODE_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_INS_CODE), TextBox).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_INSURANCE_CODE).ToString
+                        CType(e.Row.Cells(GRID_COL_INS_CODE_IDX).FindControl(GRID_CTRL_NAME_EDIT_INS_CODE), TextBox).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_INSURANCE_CODE).ToString
 
-                        CType(e.Row.Cells(Me.GRID_COL_HAND_TIER_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_HANDSET_TIER), TextBox).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_TIER).ToString
+                        CType(e.Row.Cells(GRID_COL_HAND_TIER_IDX).FindControl(GRID_CTRL_NAME_EDIT_HANDSET_TIER), TextBox).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_TIER).ToString
 
                         'REGULATORY_STATE
                         Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
@@ -506,147 +506,147 @@ Public Class InvoiceRateForm
 
                         Dim regulatoryStateList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(ListCodes.RegionsByCountry, Thread.CurrentPrincipal.GetLanguageCode(), oListContext)
                         ddlRegulatoryState.Populate(regulatoryStateList, New PopulateOptions() With {.AddBlankItem = True, .BlankItemValue = String.Empty, .ValueFunc = AddressOf PopulateOptions.GetCode})
-                        If (Me.State.IsGridAddNew Or dvRow(AfaInvoiceRate.InvRateSearchDV.COL_REGULATORY_STATE) Is Nothing) Then
-                            ddlRegulatoryState.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
+                        If (State.IsGridAddNew OrElse dvRow(AfaInvoiceRate.InvRateSearchDV.COL_REGULATORY_STATE) Is Nothing) Then
+                            ddlRegulatoryState.SelectedIndex = NO_ITEM_SELECTED_INDEX
                         Else
-                            Me.SetSelectedItem(ddlRegulatoryState, dvRow(AfaInvoiceRate.InvRateSearchDV.COL_REGULATORY_STATE).ToString)
+                            SetSelectedItem(ddlRegulatoryState, dvRow(AfaInvoiceRate.InvRateSearchDV.COL_REGULATORY_STATE).ToString)
                         End If
 
                         'LOSS_TYPE
-                        lossTypeDv = ReppolicyClaimCount.GetCoverageTypeListByDealer(Me.State.MyProductBO.DealerId)
-                        Me.BindCodeToListControl(ddlLossType, lossTypeDv, , , True)
+                        lossTypeDv = ReppolicyClaimCount.GetCoverageTypeListByDealer(State.MyProductBO.DealerId)
+                        BindCodeToListControl(ddlLossType, lossTypeDv, , , True)
 
-                        If (Me.State.IsGridAddNew) Then
-                            ddlLossType.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
+                        If (State.IsGridAddNew) Then
+                            ddlLossType.SelectedIndex = NO_ITEM_SELECTED_INDEX
                         Else
-                            Me.SetSelectedItem(ddlLossType, dvRow(AfaInvoiceRate.InvRateSearchDV.COL_LOSS_TYPE).ToString)
+                            SetSelectedItem(ddlLossType, dvRow(AfaInvoiceRate.InvRateSearchDV.COL_LOSS_TYPE).ToString)
                         End If
 
-                        CType(e.Row.Cells(Me.GRID_COL_RETAIL_AMT_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_RETAIL_AMT), TextBox).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_RETAIL_AMT).ToString
-                        CType(e.Row.Cells(Me.GRID_COL_PREMIUM_AMT_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_PREM_AMT), TextBox).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_PREMIUM_AMT).ToString
-                        CType(e.Row.Cells(Me.GRID_COL_COMM_AMT_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_COMM_AMT), TextBox).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_COMM_AMT).ToString
-                        CType(e.Row.Cells(Me.GRID_COL_ADMIN_AMT_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_ADMIN_AMT), TextBox).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_ADMIN_AMT).ToString
-                        CType(e.Row.Cells(Me.GRID_COL_ANCIL_AMT_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_ANCILL_AMT), TextBox).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_ANCILLARY_AMT).ToString
-                        CType(e.Row.Cells(Me.GRID_COL_OTHER_AMT_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_OTHER_AMT), TextBox).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_OTHER_AMT).ToString
+                        CType(e.Row.Cells(GRID_COL_RETAIL_AMT_IDX).FindControl(GRID_CTRL_NAME_EDIT_RETAIL_AMT), TextBox).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_RETAIL_AMT).ToString
+                        CType(e.Row.Cells(GRID_COL_PREMIUM_AMT_IDX).FindControl(GRID_CTRL_NAME_EDIT_PREM_AMT), TextBox).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_PREMIUM_AMT).ToString
+                        CType(e.Row.Cells(GRID_COL_COMM_AMT_IDX).FindControl(GRID_CTRL_NAME_EDIT_COMM_AMT), TextBox).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_COMM_AMT).ToString
+                        CType(e.Row.Cells(GRID_COL_ADMIN_AMT_IDX).FindControl(GRID_CTRL_NAME_EDIT_ADMIN_AMT), TextBox).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_ADMIN_AMT).ToString
+                        CType(e.Row.Cells(GRID_COL_ANCIL_AMT_IDX).FindControl(GRID_CTRL_NAME_EDIT_ANCILL_AMT), TextBox).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_ANCILLARY_AMT).ToString
+                        CType(e.Row.Cells(GRID_COL_OTHER_AMT_IDX).FindControl(GRID_CTRL_NAME_EDIT_OTHER_AMT), TextBox).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_OTHER_AMT).ToString
 
                         'Effective Date
-                        moTextBox = CType(e.Row.Cells(Me.GRID_COL_EFF_DATE_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_EFF_DATE), TextBox)
+                        moTextBox = CType(e.Row.Cells(GRID_COL_EFF_DATE_IDX).FindControl(GRID_CTRL_NAME_EDIT_EFF_DATE), TextBox)
                         moTextBox.Visible = True
                         Dim effectiveDate As DateTime = DateTime.Now
-                        If (Not dvRow(AfaInvoiceRate.InvRateSearchDV.COL_EFFECTIVE_DATE) Is DBNull.Value) Then
+                        If (dvRow(AfaInvoiceRate.InvRateSearchDV.COL_EFFECTIVE_DATE) IsNot DBNull.Value) Then
                             effectiveDate = DirectCast(dvRow(AfaInvoiceRate.InvRateSearchDV.COL_EFFECTIVE_DATE), DateTime)
                         End If
-                        moTextBox.Text = Me.GetDateFormattedString(effectiveDate)
-                        moImageButton = CType(e.Row.Cells(Me.GRID_COL_EFF_DATE_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_EFF_IMAGE), ImageButton)
+                        moTextBox.Text = GetDateFormattedString(effectiveDate)
+                        moImageButton = CType(e.Row.Cells(GRID_COL_EFF_DATE_IDX).FindControl(GRID_CTRL_NAME_EDIT_EFF_IMAGE), ImageButton)
                         moImageButton.Visible = True
-                        Me.AddCalendar_New(moImageButton, moTextBox)
+                        AddCalendar_New(moImageButton, moTextBox)
 
                         'Expiration Date
-                        moTextBox = CType(e.Row.Cells(Me.GRID_COL_EXP_DATE_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_EXP_DATE), TextBox)
+                        moTextBox = CType(e.Row.Cells(GRID_COL_EXP_DATE_IDX).FindControl(GRID_CTRL_NAME_EDIT_EXP_DATE), TextBox)
                         moTextBox.Visible = True
                         Dim expirationDate As DateTime = New DateTime(2099, 12, 31) 'DateTime.MaxValue 'DEF-24564
-                        If (Not dvRow(AfaInvoiceRate.InvRateSearchDV.COL_EXPIRATION_DATE) Is DBNull.Value) Then
+                        If (dvRow(AfaInvoiceRate.InvRateSearchDV.COL_EXPIRATION_DATE) IsNot DBNull.Value) Then
                             expirationDate = DirectCast(dvRow(AfaInvoiceRate.InvRateSearchDV.COL_EXPIRATION_DATE), DateTime)
                         End If
-                        moTextBox.Text = Me.GetDateFormattedString(expirationDate)
-                        moImageButton = CType(e.Row.Cells(Me.GRID_COL_EXP_DATE_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_EXP_IMAGE), ImageButton)
+                        moTextBox.Text = GetDateFormattedString(expirationDate)
+                        moImageButton = CType(e.Row.Cells(GRID_COL_EXP_DATE_IDX).FindControl(GRID_CTRL_NAME_EDIT_EXP_IMAGE), ImageButton)
                         moImageButton.Visible = True
-                        Me.AddCalendar_New(moImageButton, moTextBox)
+                        AddCalendar_New(moImageButton, moTextBox)
 
                     Else
 
                         'If (Not e.Row.Cells(Me.GRID_COL_RPTRATE_CODE_IDX).FindControl(Me.GRID_CTRL_NAME_LINKBTN_CODE) Is Nothing) Then
-                        If (Not e.Row.Cells(Me.GRID_COL_LOSS_TYPE_IDX).FindControl(Me.GRID_CTRL_NAME_LINKBTN_LOSS_TYPE) Is Nothing) Then
-                            btnEditItem = CType(e.Row.Cells(Me.GRID_COL_LOSS_TYPE_IDX).FindControl(GRID_CTRL_NAME_LINKBTN_LOSS_TYPE), LinkButton)
+                        If (e.Row.Cells(GRID_COL_LOSS_TYPE_IDX).FindControl(GRID_CTRL_NAME_LINKBTN_LOSS_TYPE) IsNot Nothing) Then
+                            btnEditItem = CType(e.Row.Cells(GRID_COL_LOSS_TYPE_IDX).FindControl(GRID_CTRL_NAME_LINKBTN_LOSS_TYPE), LinkButton)
                             btnEditItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(AfaInvoiceRate.InvRateSearchDV.COL_AFA_INVOICE_RATE_ID), Byte()))
                             btnEditItem.CommandName = EDIT_RPTRATE_COMMAND
                             btnEditItem.Text = LookupListNew.GetDescrionFromListCode("CTYP", dvRow(AfaInvoiceRate.InvRateSearchDV.COL_LOSS_TYPE).ToString) '"RptRate"
                         End If
 
-                        CType(e.Row.Cells(Me.GRID_COL_INS_CODE_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_INS_CODE), Label).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_INSURANCE_CODE).ToString
+                        CType(e.Row.Cells(GRID_COL_INS_CODE_IDX).FindControl(GRID_CTRL_NAME_LABEL_INS_CODE), Label).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_INSURANCE_CODE).ToString
 
-                        CType(e.Row.Cells(Me.GRID_COL_HAND_TIER_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_HAND_TIER), Label).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_TIER).ToString
+                        CType(e.Row.Cells(GRID_COL_HAND_TIER_IDX).FindControl(GRID_CTRL_NAME_LABEL_HAND_TIER), Label).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_TIER).ToString
 
-                        If Not dvRow(AfaInvoiceRate.InvRateSearchDV.COL_REGULATORY_STATE) Is Nothing Then
-                            CType(e.Row.Cells(Me.GRID_COL_REGULATORY_STATE_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_REGULATORY_STATE), Label).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_REGULATORY_STATE).ToString
+                        If dvRow(AfaInvoiceRate.InvRateSearchDV.COL_REGULATORY_STATE) IsNot Nothing Then
+                            CType(e.Row.Cells(GRID_COL_REGULATORY_STATE_IDX).FindControl(GRID_CTRL_NAME_LABEL_REGULATORY_STATE), Label).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_REGULATORY_STATE).ToString
                         Else
-                            CType(e.Row.Cells(Me.GRID_COL_REGULATORY_STATE_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_REGULATORY_STATE), Label).Text = String.Empty
+                            CType(e.Row.Cells(GRID_COL_REGULATORY_STATE_IDX).FindControl(GRID_CTRL_NAME_LABEL_REGULATORY_STATE), Label).Text = String.Empty
                         End If
                         'CType(e.Row.Cells(Me.GRID_COL_LOSS_TYPE_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_LOSS_TYPE), Label).Text = _
                         'LookupListNew.GetDescrionFromListCode("CTYP", dvRow(AfaInvoiceRate.InvRateSearchDV.COL_LOSS_TYPE).ToString)
 
-                        CType(e.Row.Cells(Me.GRID_COL_RETAIL_AMT_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_RETAIL_AMT), Label).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_RETAIL_AMT).ToString
-                        CType(e.Row.Cells(Me.GRID_COL_PREMIUM_AMT_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_PREM_AMT), Label).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_PREMIUM_AMT).ToString
-                        CType(e.Row.Cells(Me.GRID_COL_COMM_AMT_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_COMM_AMT), Label).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_COMM_AMT).ToString
-                        CType(e.Row.Cells(Me.GRID_COL_ADMIN_AMT_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_ADMIN_AMT), Label).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_ADMIN_AMT).ToString
-                        CType(e.Row.Cells(Me.GRID_COL_ANCIL_AMT_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_ANCILL_AMT), Label).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_ANCILLARY_AMT).ToString
-                        CType(e.Row.Cells(Me.GRID_COL_OTHER_AMT_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_OTHER_AMT), Label).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_OTHER_AMT).ToString
+                        CType(e.Row.Cells(GRID_COL_RETAIL_AMT_IDX).FindControl(GRID_CTRL_NAME_LABEL_RETAIL_AMT), Label).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_RETAIL_AMT).ToString
+                        CType(e.Row.Cells(GRID_COL_PREMIUM_AMT_IDX).FindControl(GRID_CTRL_NAME_LABEL_PREM_AMT), Label).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_PREMIUM_AMT).ToString
+                        CType(e.Row.Cells(GRID_COL_COMM_AMT_IDX).FindControl(GRID_CTRL_NAME_LABEL_COMM_AMT), Label).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_COMM_AMT).ToString
+                        CType(e.Row.Cells(GRID_COL_ADMIN_AMT_IDX).FindControl(GRID_CTRL_NAME_LABEL_ADMIN_AMT), Label).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_ADMIN_AMT).ToString
+                        CType(e.Row.Cells(GRID_COL_ANCIL_AMT_IDX).FindControl(GRID_CTRL_NAME_LABEL_ANCILL_AMT), Label).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_ANCILLARY_AMT).ToString
+                        CType(e.Row.Cells(GRID_COL_OTHER_AMT_IDX).FindControl(GRID_CTRL_NAME_LABEL_OTHER_AMT), Label).Text = dvRow(AfaInvoiceRate.InvRateSearchDV.COL_OTHER_AMT).ToString
 
-                        moLabel = CType(e.Row.Cells(Me.GRID_COL_EFF_DATE_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_EFF_DATE), Label)
+                        moLabel = CType(e.Row.Cells(GRID_COL_EFF_DATE_IDX).FindControl(GRID_CTRL_NAME_LABEL_EFF_DATE), Label)
                         moLabel.Visible = True
-                        If (Not dvRow(AfaInvoiceRate.InvRateSearchDV.COL_EFFECTIVE_DATE) Is DBNull.Value) Then
-                            moLabel.Text = Me.GetDateFormattedString(DirectCast(dvRow(AfaInvoiceRate.InvRateSearchDV.COL_EFFECTIVE_DATE), Date))
+                        If (dvRow(AfaInvoiceRate.InvRateSearchDV.COL_EFFECTIVE_DATE) IsNot DBNull.Value) Then
+                            moLabel.Text = GetDateFormattedString(DirectCast(dvRow(AfaInvoiceRate.InvRateSearchDV.COL_EFFECTIVE_DATE), Date))
                         End If
 
-                        moLabel = CType(e.Row.Cells(Me.GRID_COL_EXP_DATE_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_EXP_DATE), Label)
+                        moLabel = CType(e.Row.Cells(GRID_COL_EXP_DATE_IDX).FindControl(GRID_CTRL_NAME_LABEL_EXP_DATE), Label)
                         moLabel.Visible = True
-                        If (Not dvRow(AfaInvoiceRate.InvRateSearchDV.COL_EXPIRATION_DATE) Is DBNull.Value) Then
-                            moLabel.Text = Me.GetDateFormattedString(DirectCast(dvRow(AfaInvoiceRate.InvRateSearchDV.COL_EXPIRATION_DATE), Date))
+                        If (dvRow(AfaInvoiceRate.InvRateSearchDV.COL_EXPIRATION_DATE) IsNot DBNull.Value) Then
+                            moLabel.Text = GetDateFormattedString(DirectCast(dvRow(AfaInvoiceRate.InvRateSearchDV.COL_EXPIRATION_DATE), Date))
                         End If
 
                     End If
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Public Sub RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+    Public Sub RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
 
         Try
             Dim index As Integer
-            If (e.CommandName = Me.EDIT_COMMAND) Then
+            If (e.CommandName = EDIT_COMMAND) Then
                 index = CInt(e.CommandArgument)
                 'Do the Edit here
 
                 'Set the IsEditMode flag to TRUE
-                Me.State.IsEditMode = True
+                State.IsEditMode = True
 
-                Me.State.InvoiceRateID = New Guid(CType(Me.Grid.Rows(index).Cells(Me.GRID_COL_INV_RATE_ID_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_INV_RATE_ID), Label).Text)
-                Me.State.MyInvoiceRateBO = New AfaInvoiceRate(Me.State.InvoiceRateID)
+                State.InvoiceRateID = New Guid(CType(Grid.Rows(index).Cells(GRID_COL_INV_RATE_ID_IDX).FindControl(GRID_CTRL_NAME_LABEL_INV_RATE_ID), Label).Text)
+                State.MyInvoiceRateBO = New AfaInvoiceRate(State.InvoiceRateID)
 
-                Me.PopulateGrid()
+                PopulateGrid()
 
-                Me.State.PageIndex = Grid.PageIndex
+                State.PageIndex = Grid.PageIndex
 
-                Me.SetControlState()
+                SetControlState()
 
             ElseIf e.CommandName = EDIT_RPTRATE_COMMAND Then
                 If Not e.CommandArgument.ToString().Equals(String.Empty) Then
-                    Me.State.InvoiceRateID = New Guid(e.CommandArgument.ToString())
-                    Me.callPage(ReportingRatesForm.URL, Me.State.InvoiceRateID)
+                    State.InvoiceRateID = New Guid(e.CommandArgument.ToString())
+                    callPage(ReportingRatesForm.URL, State.InvoiceRateID)
                 End If
 
-            ElseIf (e.CommandName = Me.DELETE_COMMAND) Then
+            ElseIf (e.CommandName = DELETE_COMMAND) Then
                 index = CInt(e.CommandArgument)
-                Me.State.InvoiceRateID = New Guid(CType(Me.Grid.Rows(index).Cells(Me.GRID_COL_INV_RATE_ID_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_INV_RATE_ID), Label).Text)
-                Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenDeletePromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+                State.InvoiceRateID = New Guid(CType(Grid.Rows(index).Cells(GRID_COL_INV_RATE_ID_IDX).FindControl(GRID_CTRL_NAME_LABEL_INV_RATE_ID), Label).Text)
+                DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenDeletePromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Public Sub RowCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+    Public Sub RowCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -657,68 +657,68 @@ Public Class InvoiceRateForm
 
     Private Sub PopulateHeader()
         Try
-            If Not Me.State.selectedAFAProductId.Equals(Guid.Empty) Then
-                txtProductCode.Text = Me.State.MyProductBO.Code
-                txtProductDesc.Text = Me.State.MyProductBO.Description
+            If Not State.selectedAFAProductId.Equals(Guid.Empty) Then
+                txtProductCode.Text = State.MyProductBO.Code
+                txtProductDesc.Text = State.MyProductBO.Description
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Protected Sub btnNew_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnNew.Click
+    Protected Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
 
         Try
-            Me.State.IsEditMode = True
-            Me.State.IsGridVisible = True
-            Me.State.IsGridAddNew = True
+            State.IsEditMode = True
+            State.IsGridVisible = True
+            State.IsGridAddNew = True
             AddNew()
-            Me.SetControlState()
+            SetControlState()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
     Private Sub AddNew()
         'If Me.State.MyInvoiceRateBO Is Nothing OrElse Me.State.MyInvoiceRateBO.IsNew = False Then
-        Me.State.MyInvoiceRateBO = New AfaInvoiceRate
-        Me.State.MyInvoiceRateBO.AfaProductId = Me.State.MyProductBO.Id
-        State.MyInvoiceRateBO.AddNewRowToSearchDV(Me.State.searchDV, Me.State.MyInvoiceRateBO)
+        State.MyInvoiceRateBO = New AfaInvoiceRate
+        State.MyInvoiceRateBO.AfaProductId = State.MyProductBO.Id
+        State.MyInvoiceRateBO.AddNewRowToSearchDV(State.searchDV, State.MyInvoiceRateBO)
         'End If
-        Me.State.InvoiceRateID = Me.State.MyInvoiceRateBO.Id
+        State.InvoiceRateID = State.MyInvoiceRateBO.Id
         State.IsGridAddNew = True
         PopulateGrid()
         'Set focus on the Code TextBox for the EditItemIndex row
-        Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.InvoiceRateID, Me.Grid,
-                                           Me.State.PageIndex, Me.State.IsEditMode)
+        SetPageAndSelectedIndexFromGuid(State.searchDV, State.InvoiceRateID, Grid,
+                                           State.PageIndex, State.IsEditMode)
         ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, Grid)
-        SetGridControls(Me.Grid, False)
+        SetGridControls(Grid, False)
     End Sub
 
-    Protected Sub btnSave_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Protected Sub btnSave_Click(sender As Object, e As EventArgs)
 
         Try
             PopulateBOFromForm()
-            If (Me.State.MyInvoiceRateBO.IsDirty) Then
-                Me.State.MyInvoiceRateBO.Save()
-                Me.State.IsAfterSave = True
-                Me.State.IsGridAddNew = False
-                Me.MasterPage.MessageController.AddSuccess(Me.MSG_RECORD_SAVED_OK, True)
-                Me.State.searchDV = Nothing
-                Me.State.MyInvoiceRateBO = Nothing
-                Me.ReturnFromEditing()
+            If (State.MyInvoiceRateBO.IsDirty) Then
+                State.MyInvoiceRateBO.Save()
+                State.IsAfterSave = True
+                State.IsGridAddNew = False
+                MasterPage.MessageController.AddSuccess(MSG_RECORD_SAVED_OK, True)
+                State.searchDV = Nothing
+                State.MyInvoiceRateBO = Nothing
+                ReturnFromEditing()
             Else
-                Me.MasterPage.MessageController.AddWarning(Me.MSG_RECORD_NOT_SAVED, True)
-                Me.ReturnFromEditing()
+                MasterPage.MessageController.AddWarning(MSG_RECORD_NOT_SAVED, True)
+                ReturnFromEditing()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Protected Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Protected Sub btnCancel_Click(sender As Object, e As EventArgs)
         Try
             With State
                 If .IsGridAddNew Then
@@ -727,7 +727,7 @@ Public Class InvoiceRateForm
                     Grid.PageIndex = .PageIndex
                 End If
                 .InvoiceRateID = Guid.Empty
-                Me.State.MyInvoiceRateBO = Nothing
+                State.MyInvoiceRateBO = Nothing
                 .IsEditMode = False
             End With
             Grid.EditIndex = NO_ITEM_SELECTED_INDEX
@@ -735,7 +735,7 @@ Public Class InvoiceRateForm
             PopulateGrid()
             SetControlState()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
@@ -744,11 +744,11 @@ Public Class InvoiceRateForm
 
 #Region "Button Click Handlers"
 
-    Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            Me.ReturnToCallingPage()
+            ReturnToCallingPage()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 

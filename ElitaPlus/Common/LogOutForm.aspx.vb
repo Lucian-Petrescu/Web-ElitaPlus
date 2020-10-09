@@ -15,7 +15,7 @@ Partial Class LogOutForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -23,10 +23,10 @@ Partial Class LogOutForm
 
 #End Region
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         CleanUp()
-        Me.ReconnectToTheSite()
+        ReconnectToTheSite()
         '   AppConfig.Debug("User Logged Out")
     End Sub
 
@@ -34,8 +34,8 @@ Partial Class LogOutForm
     Private Sub DeleteAllSiteMinderCookies()
         Dim cookie As HttpCookie
         Dim i As Integer
-        For i = 0 To Me.Request.Cookies.Count - 1
-            cookie = Me.Request.Cookies.Item(i)
+        For i = 0 To Request.Cookies.Count - 1
+            cookie = Request.Cookies.Item(i)
             'If cookie.Name.ToUpper.StartsWith("SM") OrElse cookie.Name.ToUpper.StartsWith("FORMCRED") Then
             'remove the cookie
             cookie.Expires = DateTime.Now.AddYears(-30)
@@ -74,7 +74,7 @@ Partial Class LogOutForm
         '    sJavaScript &= "window.open(" & newLocation & ");window.close();" & Environment.NewLine
 
         sJavaScript &= "</SCRIPT>" & Environment.NewLine
-        Me.RegisterStartupScript("LogOut", sJavaScript)
+        RegisterStartupScript("LogOut", sJavaScript)
     End Sub
 #End Region
 

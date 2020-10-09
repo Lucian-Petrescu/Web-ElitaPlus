@@ -44,42 +44,42 @@ Public Class BestReplacementReconDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("best_replacement_recon_wrk_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal fileProcessedID As Guid, ByVal languageID As Guid) As DataSet
+    Public Function LoadList(fileProcessedID As Guid, languageID As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As OracleParameter
         parameters = New OracleParameter() {New OracleParameter("language_id", languageID.ToByteArray), _
                                             New OracleParameter(COL_NAME_FILE_PROCESSED_ID, fileProcessedID.ToByteArray)}
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Function LoadRejectList(ByVal fileProcessedID As Guid) As DataSet
+    Public Function LoadRejectList(fileProcessedID As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_REJECT_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_REJECT_LIST")
         Dim parameters() As OracleParameter
         parameters = New OracleParameter() _
                                     {New OracleParameter(COL_NAME_FILE_PROCESSED_ID, fileProcessedID.ToByteArray)}
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -90,8 +90,8 @@ Public Class BestReplacementReconDAL
 
 #Region "Best Replacement Recon Work"
 
-    Public Sub ValidateFile(ByVal fileProcessedId As Guid, ByVal interfaceStatusId As Guid)
-        Dim sqlStmt As String = Me.Config("/SQL/VALIDATE_FILE")
+    Public Sub ValidateFile(fileProcessedId As Guid, interfaceStatusId As Guid)
+        Dim sqlStmt As String = Config("/SQL/VALIDATE_FILE")
         Dim dal As New FileProcessedDAL
         Try
             dal.ExecuteSP(fileProcessedId, interfaceStatusId, sqlStmt)
@@ -100,8 +100,8 @@ Public Class BestReplacementReconDAL
         End Try
     End Sub
 
-    Public Sub ProcessFile(ByVal fileProcessedId As Guid, ByVal interfaceStatusId As Guid)
-        Dim sqlStmt As String = Me.Config("/SQL/PROCESS_FILE")
+    Public Sub ProcessFile(fileProcessedId As Guid, interfaceStatusId As Guid)
+        Dim sqlStmt As String = Config("/SQL/PROCESS_FILE")
         Dim dal As New FileProcessedDAL
         Try
             dal.ExecuteSP(fileProcessedId, interfaceStatusId, sqlStmt)
@@ -110,8 +110,8 @@ Public Class BestReplacementReconDAL
         End Try
     End Sub
 
-    Public Sub DeleteFile(ByVal fileProcessedId As Guid, ByVal interfaceStatusId As Guid)
-        Dim sqlStmt As String = Me.Config("/SQL/DELETE_FILE")
+    Public Sub DeleteFile(fileProcessedId As Guid, interfaceStatusId As Guid)
+        Dim sqlStmt As String = Config("/SQL/DELETE_FILE")
         Dim dal As New FileProcessedDAL
         Try
             dal.ExecuteSP(fileProcessedId, interfaceStatusId, sqlStmt)
@@ -122,8 +122,8 @@ Public Class BestReplacementReconDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+        MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
     End Sub
 #End Region
 

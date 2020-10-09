@@ -87,46 +87,46 @@ Public Class TransactionLogHeaderDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("transaction_log_header_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
 
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
             'MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
-            MyBase.UpdateWithParam(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+            MyBase.UpdateWithParam(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
-    Public Function IsTransactionExist(ByVal gvsOriginalTransID As String) As DataSet
+    Public Function IsTransactionExist(gvsOriginalTransID As String) As DataSet
         Dim ds As DataSet = New DataSet("IS_TRANSACTION_EXIST")
-        Dim selectStmt As String = Me.Config("/SQL/IS_TRANSACTION_EXIST")
+        Dim selectStmt As String = Config("/SQL/IS_TRANSACTION_EXIST")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("gvs_original_trans_no", gvsOriginalTransID)}
         Try
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
             Return ds
 
@@ -136,24 +136,24 @@ Public Class TransactionLogHeaderDAL
 
     End Function
 
-    Public Function GetTransactionExceptionHeader(ByVal compGroupId As Guid) As DataSet
+    Public Function GetTransactionExceptionHeader(compGroupId As Guid) As DataSet
         Dim ds As DataSet = New DataSet("TRANSACTION_EXCEPTION_MANAGEMENT_HEADER")
-        Dim selectStmt As String = Me.Config("/SQL/TRANSACTION_EXCEPTION_MANAGEMENT_HEADER")
+        Dim selectStmt As String = Config("/SQL/TRANSACTION_EXCEPTION_MANAGEMENT_HEADER")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_COMPANY_GROUP_ID, compGroupId.ToByteArray)}
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetLastSuccessfulTransmissionTime(ByVal compGroupId As Guid) As DateTimeType
+    Public Function GetLastSuccessfulTransmissionTime(compGroupId As Guid) As DateTimeType
         Dim ds As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LAST_SUCCESSFUL_TRANSMISSION_TIME")
+        Dim selectStmt As String = Config("/SQL/LAST_SUCCESSFUL_TRANSMISSION_TIME")
         Try
             selectStmt = selectStmt.Replace("--replace_company_group_id", " AND h.company_group_id = hextoraw('" & GuidControl.GuidToHexString(compGroupId) & "') ")
-            ds = DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+            ds = DBHelper.Fetch(selectStmt, TABLE_NAME)
 
             If Not ds Is Nothing AndAlso ds.Tables.Count > 0 _
                 AndAlso ds.Tables(0).Rows.Count > 0 _
@@ -167,12 +167,12 @@ Public Class TransactionLogHeaderDAL
         End Try
     End Function
 
-    Public Function GetLastSuccessfulTransmissionTimeByType(ByVal compGroupId As Guid) As DataView
+    Public Function GetLastSuccessfulTransmissionTimeByType(compGroupId As Guid) As DataView
         Dim ds As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LAST_SUCCESSFUL_TRANSMISSION_TIME_BY_TYPE")
+        Dim selectStmt As String = Config("/SQL/LAST_SUCCESSFUL_TRANSMISSION_TIME_BY_TYPE")
         Try
             selectStmt = selectStmt.Replace("--replace_company_group_id", " AND h.company_group_id = hextoraw('" & GuidControl.GuidToHexString(compGroupId) & "') ")
-            ds = DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+            ds = DBHelper.Fetch(selectStmt, TABLE_NAME)
 
             If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
                 Return ds.Tables(0).DefaultView
@@ -184,14 +184,14 @@ Public Class TransactionLogHeaderDAL
         End Try
     End Function
 
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim tr As IDbTransaction = Transaction
         If tr Is Nothing Then
             tr = DBHelper.GetNewTransaction
         End If
         Try
-            Me.Update(familyDataset, tr, DataRowState.Deleted)
-            Me.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset, tr, DataRowState.Deleted)
+            Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
 
             If Not familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim oTransactionLogHeaderDAL As New TransactionLogHeaderDAL
@@ -211,27 +211,27 @@ Public Class TransactionLogHeaderDAL
         End Try
     End Sub
 
-    Public Sub InsertCustom(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Sub InsertCustom(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim conn As OracleConnection = DBHelper.GetConnection
         Dim tr As IDbTransaction = DBHelper.GetNewTransaction(conn)
-        Dim selectStmt As String = Me.Config("/SQL/INSERT")
+        Dim selectStmt As String = Config("/SQL/INSERT")
 
         Try
             For Each dr As DataRow In familyDataset.Tables(0).Rows
 
                 Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                                    {New DBHelper.DBHelperParameter(Me.COL_NAME_COMPANY_GROUP_ID, CType(dr(Me.COL_NAME_COMPANY_GROUP_ID), Byte())), _
-                                    New DBHelper.DBHelperParameter(Me.COL_NAME_FUNCTION_TYPE_ID, CType(dr(Me.COL_NAME_FUNCTION_TYPE_ID), Byte())), _
-                                    New DBHelper.DBHelperParameter(Me.COL_NAME_TRANSACTION_XML, dr(Me.COL_NAME_TRANSACTION_XML).ToString, GetType(System.Text.StringBuilder)), _
-                                    New DBHelper.DBHelperParameter(Me.COL_NAME_TRANSACTION_PROCESSED_DATE, IIf(IsDate(dr(Me.COL_NAME_TRANSACTION_PROCESSED_DATE)), dr(Me.COL_NAME_TRANSACTION_PROCESSED_DATE), Date.MinValue)), _
-                                    New DBHelper.DBHelperParameter(Me.COL_NAME_TRANSACTION_STATUS_ID, CType(dr(Me.COL_NAME_TRANSACTION_STATUS_ID), Byte())), _
-                                    New DBHelper.DBHelperParameter(Me.COL_NAME_CREATED_BY, CType(dr(Me.COL_NAME_CREATED_BY), String)), _
-                                    New DBHelper.DBHelperParameter(Me.COL_NAME_TRANSACTION_LOG_HEADER_ID, CType(dr(Me.COL_NAME_TRANSACTION_LOG_HEADER_ID), Byte())), _
-                                    New DBHelper.DBHelperParameter(Me.COL_NAME_ORIGINAL_TRANS_LOG_HDR_ID, IIf(IsDBNull(dr(Me.COL_NAME_ORIGINAL_TRANS_LOG_HDR_ID)), Guid.Empty, dr(Me.COL_NAME_ORIGINAL_TRANS_LOG_HDR_ID))), _
-                                    New DBHelper.DBHelperParameter(Me.COL_NAME_GVS_ORIGINAL_TRANS_NO, IIf(IsDBNull(dr(Me.COL_NAME_GVS_ORIGINAL_TRANS_NO)), "", dr(Me.COL_NAME_GVS_ORIGINAL_TRANS_NO))), _
-                                    New DBHelper.DBHelperParameter(Me.COL_NAME_KEY_ID, IIf(IsDBNull(dr(Me.COL_NAME_KEY_ID)), Guid.Empty, dr(Me.COL_NAME_KEY_ID))), _
-                                    New DBHelper.DBHelperParameter(Me.COL_NAME_HIDE, IIf(IsDBNull(dr(Me.COL_NAME_HIDE)), "", dr(Me.COL_NAME_HIDE))), _
-                                    New DBHelper.DBHelperParameter(Me.COL_NAME_RESEND, IIf(IsDBNull(dr(Me.COL_NAME_RESEND)), "", dr(Me.COL_NAME_RESEND)))}
+                                    {New DBHelper.DBHelperParameter(COL_NAME_COMPANY_GROUP_ID, CType(dr(COL_NAME_COMPANY_GROUP_ID), Byte())), _
+                                    New DBHelper.DBHelperParameter(COL_NAME_FUNCTION_TYPE_ID, CType(dr(COL_NAME_FUNCTION_TYPE_ID), Byte())), _
+                                    New DBHelper.DBHelperParameter(COL_NAME_TRANSACTION_XML, dr(COL_NAME_TRANSACTION_XML).ToString, GetType(System.Text.StringBuilder)), _
+                                    New DBHelper.DBHelperParameter(COL_NAME_TRANSACTION_PROCESSED_DATE, IIf(IsDate(dr(COL_NAME_TRANSACTION_PROCESSED_DATE)), dr(COL_NAME_TRANSACTION_PROCESSED_DATE), Date.MinValue)), _
+                                    New DBHelper.DBHelperParameter(COL_NAME_TRANSACTION_STATUS_ID, CType(dr(COL_NAME_TRANSACTION_STATUS_ID), Byte())), _
+                                    New DBHelper.DBHelperParameter(COL_NAME_CREATED_BY, CType(dr(COL_NAME_CREATED_BY), String)), _
+                                    New DBHelper.DBHelperParameter(COL_NAME_TRANSACTION_LOG_HEADER_ID, CType(dr(COL_NAME_TRANSACTION_LOG_HEADER_ID), Byte())), _
+                                    New DBHelper.DBHelperParameter(COL_NAME_ORIGINAL_TRANS_LOG_HDR_ID, IIf(IsDBNull(dr(COL_NAME_ORIGINAL_TRANS_LOG_HDR_ID)), Guid.Empty, dr(COL_NAME_ORIGINAL_TRANS_LOG_HDR_ID))), _
+                                    New DBHelper.DBHelperParameter(COL_NAME_GVS_ORIGINAL_TRANS_NO, IIf(IsDBNull(dr(COL_NAME_GVS_ORIGINAL_TRANS_NO)), "", dr(COL_NAME_GVS_ORIGINAL_TRANS_NO))), _
+                                    New DBHelper.DBHelperParameter(COL_NAME_KEY_ID, IIf(IsDBNull(dr(COL_NAME_KEY_ID)), Guid.Empty, dr(COL_NAME_KEY_ID))), _
+                                    New DBHelper.DBHelperParameter(COL_NAME_HIDE, IIf(IsDBNull(dr(COL_NAME_HIDE)), "", dr(COL_NAME_HIDE))), _
+                                    New DBHelper.DBHelperParameter(COL_NAME_RESEND, IIf(IsDBNull(dr(COL_NAME_RESEND)), "", dr(COL_NAME_RESEND)))}
 
                 DBHelper.ExecuteWithParam(selectStmt, parameters, tr)
             Next
@@ -249,26 +249,26 @@ Public Class TransactionLogHeaderDAL
         End Try
     End Sub
 
-    Public Sub UpdateCustom(ByVal dr As DataRow, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Sub UpdateCustom(dr As DataRow, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim conn As OracleConnection = DBHelper.GetConnection
         Dim tr As IDbTransaction = DBHelper.GetNewTransaction(conn)
-        Dim selectStmt As String = Me.Config("/SQL/UPDATE")
+        Dim selectStmt As String = Config("/SQL/UPDATE")
 
         Try
             Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                                {New DBHelper.DBHelperParameter(Me.COL_NAME_COMPANY_GROUP_ID, CType(dr(Me.COL_NAME_COMPANY_GROUP_ID), Byte())), _
-                                New DBHelper.DBHelperParameter(Me.COL_NAME_FUNCTION_TYPE_ID, CType(dr(Me.COL_NAME_FUNCTION_TYPE_ID), Byte())), _
-                                New DBHelper.DBHelperParameter(Me.COL_NAME_TRANSACTION_XML, dr(Me.COL_NAME_TRANSACTION_XML).ToString, GetType(System.Text.StringBuilder)), _
-                                New DBHelper.DBHelperParameter(Me.COL_NAME_TRANSACTION_PROCESSED_DATE, IIf(IsDate(dr(Me.COL_NAME_TRANSACTION_PROCESSED_DATE)), dr(Me.COL_NAME_TRANSACTION_PROCESSED_DATE), Date.MinValue)), _
-                                New DBHelper.DBHelperParameter(Me.COL_NAME_TRANSACTION_STATUS_ID, CType(dr(Me.COL_NAME_TRANSACTION_STATUS_ID), Byte())), _
-                                New DBHelper.DBHelperParameter(Me.COL_NAME_MODIFIED_BY, CType(dr(Me.COL_NAME_MODIFIED_BY), String)), _
-                                New DBHelper.DBHelperParameter(Me.COL_NAME_ORIGINAL_TRANS_LOG_HDR_ID, IIf(IsDBNull(dr(Me.COL_NAME_ORIGINAL_TRANS_LOG_HDR_ID)), Guid.Empty, dr(Me.COL_NAME_ORIGINAL_TRANS_LOG_HDR_ID))), _
-                                New DBHelper.DBHelperParameter(Me.COL_NAME_GVS_ORIGINAL_TRANS_NO, IIf(IsDBNull(dr(Me.COL_NAME_GVS_ORIGINAL_TRANS_NO)), "", dr(Me.COL_NAME_GVS_ORIGINAL_TRANS_NO))), _
-                                New DBHelper.DBHelperParameter(Me.COL_NAME_KEY_ID, IIf(IsDBNull(dr(Me.COL_NAME_ORIGINAL_TRANS_LOG_HDR_ID)), Guid.Empty, dr(Me.COL_NAME_KEY_ID))), _
-                                New DBHelper.DBHelperParameter(Me.COL_NAME_HIDE, IIf(IsDBNull(dr(Me.COL_NAME_HIDE)), "", dr(Me.COL_NAME_HIDE))), _
-                                New DBHelper.DBHelperParameter(Me.COL_NAME_RESEND, IIf(IsDBNull(dr(Me.COL_NAME_RESEND)), "", dr(Me.COL_NAME_RESEND))), _
-                                New DBHelper.DBHelperParameter(Me.COL_NAME_OUT_TRANS_GVS_RESPONSED, IIf(IsDBNull(dr(Me.COL_NAME_OUT_TRANS_GVS_RESPONSED)), "", dr(Me.COL_NAME_OUT_TRANS_GVS_RESPONSED))), _
-                                New DBHelper.DBHelperParameter(Me.COL_NAME_TRANSACTION_LOG_HEADER_ID, CType(dr(Me.COL_NAME_TRANSACTION_LOG_HEADER_ID), Byte()))}
+                                {New DBHelper.DBHelperParameter(COL_NAME_COMPANY_GROUP_ID, CType(dr(COL_NAME_COMPANY_GROUP_ID), Byte())), _
+                                New DBHelper.DBHelperParameter(COL_NAME_FUNCTION_TYPE_ID, CType(dr(COL_NAME_FUNCTION_TYPE_ID), Byte())), _
+                                New DBHelper.DBHelperParameter(COL_NAME_TRANSACTION_XML, dr(COL_NAME_TRANSACTION_XML).ToString, GetType(System.Text.StringBuilder)), _
+                                New DBHelper.DBHelperParameter(COL_NAME_TRANSACTION_PROCESSED_DATE, IIf(IsDate(dr(COL_NAME_TRANSACTION_PROCESSED_DATE)), dr(COL_NAME_TRANSACTION_PROCESSED_DATE), Date.MinValue)), _
+                                New DBHelper.DBHelperParameter(COL_NAME_TRANSACTION_STATUS_ID, CType(dr(COL_NAME_TRANSACTION_STATUS_ID), Byte())), _
+                                New DBHelper.DBHelperParameter(COL_NAME_MODIFIED_BY, CType(dr(COL_NAME_MODIFIED_BY), String)), _
+                                New DBHelper.DBHelperParameter(COL_NAME_ORIGINAL_TRANS_LOG_HDR_ID, IIf(IsDBNull(dr(COL_NAME_ORIGINAL_TRANS_LOG_HDR_ID)), Guid.Empty, dr(COL_NAME_ORIGINAL_TRANS_LOG_HDR_ID))), _
+                                New DBHelper.DBHelperParameter(COL_NAME_GVS_ORIGINAL_TRANS_NO, IIf(IsDBNull(dr(COL_NAME_GVS_ORIGINAL_TRANS_NO)), "", dr(COL_NAME_GVS_ORIGINAL_TRANS_NO))), _
+                                New DBHelper.DBHelperParameter(COL_NAME_KEY_ID, IIf(IsDBNull(dr(COL_NAME_ORIGINAL_TRANS_LOG_HDR_ID)), Guid.Empty, dr(COL_NAME_KEY_ID))), _
+                                New DBHelper.DBHelperParameter(COL_NAME_HIDE, IIf(IsDBNull(dr(COL_NAME_HIDE)), "", dr(COL_NAME_HIDE))), _
+                                New DBHelper.DBHelperParameter(COL_NAME_RESEND, IIf(IsDBNull(dr(COL_NAME_RESEND)), "", dr(COL_NAME_RESEND))), _
+                                New DBHelper.DBHelperParameter(COL_NAME_OUT_TRANS_GVS_RESPONSED, IIf(IsDBNull(dr(COL_NAME_OUT_TRANS_GVS_RESPONSED)), "", dr(COL_NAME_OUT_TRANS_GVS_RESPONSED))), _
+                                New DBHelper.DBHelperParameter(COL_NAME_TRANSACTION_LOG_HEADER_ID, CType(dr(COL_NAME_TRANSACTION_LOG_HEADER_ID), Byte()))}
 
             DBHelper.ExecuteWithParam(selectStmt, parameters, tr)
 
@@ -286,8 +286,8 @@ Public Class TransactionLogHeaderDAL
         End Try
     End Sub
 
-    Public Function GetExceptionList(ByVal compGroupId As Guid, ByVal claimNumber As String, ByVal authNumber As String, ByVal svcCode As String, ByVal transDateFrom As Date, ByVal transDateTo As Date, ByVal errorCode As String, Optional ByVal transLogHeaderId As String = "") As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function GetExceptionList(compGroupId As Guid, claimNumber As String, authNumber As String, svcCode As String, transDateFrom As Date, transDateTo As Date, errorCode As String, Optional ByVal transLogHeaderId As String = "") As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim ds As DataSet = New DataSet
         Dim whereClauseConditions As String = ""
 
@@ -297,93 +297,93 @@ Public Class TransactionLogHeaderDAL
         parameters(0) = New DBHelper.DBHelperParameter(COL_NAME_COMPANY_GROUP_ID, compGroupId.ToByteArray, GetType(Byte()))
         parameters(1) = New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, 101, GetType(Integer))
 
-        If Me.FormatSearchMask(claimNumber) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & Me.COL_NAME_CLAIM_NUMBER & ") " & claimNumber.ToUpper
+        If FormatSearchMask(claimNumber) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & COL_NAME_CLAIM_NUMBER & ") " & claimNumber.ToUpper
         End If
 
-        If Me.FormatSearchMask(authNumber) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & Me.COL_NAME_AUTHORIZATION_NUMBER & ") " & authNumber.ToUpper
+        If FormatSearchMask(authNumber) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & COL_NAME_AUTHORIZATION_NUMBER & ") " & authNumber.ToUpper
         End If
 
-        If Me.FormatSearchMask(svcCode) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & Me.COL_NAME_SERVICE_CENTER_CODE & ") " & svcCode.ToUpper
+        If FormatSearchMask(svcCode) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & COL_NAME_SERVICE_CENTER_CODE & ") " & svcCode.ToUpper
         End If
 
-        If Me.FormatSearchMask(errorCode) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & Me.COL_NAME_ERROR_CODE & ") " & errorCode.ToUpper
+        If FormatSearchMask(errorCode) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & COL_NAME_ERROR_CODE & ") " & errorCode.ToUpper
         End If
 
         If Not (Date.MinValue.Equals(transDateFrom)) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & " trunc(" & Me.COL_NAME_TRANSACTION_DATE & ")" & " >=  to_date('" & transDateFrom.ToString("MM/dd/yyyy HH:mm:ss") & "', 'mm-dd-yyyy hh24:mi:ss')"
+            whereClauseConditions &= " AND " & Environment.NewLine & " trunc(" & COL_NAME_TRANSACTION_DATE & ")" & " >=  to_date('" & transDateFrom.ToString("MM/dd/yyyy HH:mm:ss") & "', 'mm-dd-yyyy hh24:mi:ss')"
         End If
 
         If Not (Date.MinValue.Equals(transDateTo)) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & " trunc(" & Me.COL_NAME_TRANSACTION_DATE & ")" & " <=  to_date('" & transDateTo.ToString("MM/dd/yyyy HH:mm:ss") & "', 'mm-dd-yyyy hh24:mi:ss')"
+            whereClauseConditions &= " AND " & Environment.NewLine & " trunc(" & COL_NAME_TRANSACTION_DATE & ")" & " <=  to_date('" & transDateTo.ToString("MM/dd/yyyy HH:mm:ss") & "', 'mm-dd-yyyy hh24:mi:ss')"
         End If
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TRANSACTION_DATA_TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TRANSACTION_DATA_TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetStatusList(ByVal transactionLogHeaderId As String, ByVal languageId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/TRANSACTION_STATUS")
+    Public Function GetStatusList(transactionLogHeaderId As String, languageId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/TRANSACTION_STATUS")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
             New DBHelper.DBHelperParameter(DALBase.PAR_NAME_ROW_NUMBER, DALBase.MAX_NUMBER_OF_ROWS, GetType(Integer))}
         Dim whereClauseConditions As String = ""
         Dim ds As DataSet = New DataSet
 
         selectStmt = selectStmt.Replace("--dynamic_language_id", "'" & GuidControl.GuidToHexString(languageId) & "'")
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, " AND transaction_log_header_id = hextoraw('" & transactionLogHeaderId & "') ")
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, " AND transaction_log_header_id = hextoraw('" & transactionLogHeaderId & "') ")
 
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.STATUS_TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, STATUS_TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetPartList(ByVal transactionLogHeaderId As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/TRANSACTION_PART")
+    Public Function GetPartList(transactionLogHeaderId As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/TRANSACTION_PART")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(DALBase.PAR_NAME_ROW_NUMBER, DALBase.MAX_NUMBER_OF_ROWS, GetType(Integer))}
         Dim whereClauseConditions As String = ""
         Dim ds As DataSet = New DataSet
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, " AND transaction_log_header_id = hextoraw('" & transactionLogHeaderId & "') ")
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, " AND transaction_log_header_id = hextoraw('" & transactionLogHeaderId & "') ")
 
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.PART_TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, PART_TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetFollowUpList(ByVal transactionLogHeaderId As String, ByVal languageId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/TRANSACTION_FOLLOWUP")
+    Public Function GetFollowUpList(transactionLogHeaderId As String, languageId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/TRANSACTION_FOLLOWUP")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(DALBase.PAR_NAME_ROW_NUMBER, DALBase.MAX_NUMBER_OF_ROWS, GetType(Integer))}
         Dim whereClauseConditions As String = ""
         Dim ds As DataSet = New DataSet
 
         selectStmt = selectStmt.Replace("--dynamic_language_id", "'" & GuidControl.GuidToHexString(languageId) & "'")
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, " AND transaction_log_header_id = hextoraw('" & transactionLogHeaderId & "') ")
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, " AND transaction_log_header_id = hextoraw('" & transactionLogHeaderId & "') ")
 
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.FOLLOWUP_TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, FOLLOWUP_TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetTransactionData(ByVal transactionLogHeaderId As String, ByVal languageId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/TRANSACTION_DATA")
+    Public Function GetTransactionData(transactionLogHeaderId As String, languageId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/TRANSACTION_DATA")
         Dim ds As DataSet = New DataSet
 
         Dim parameters(1) As DBHelper.DBHelperParameter
@@ -393,7 +393,7 @@ Public Class TransactionLogHeaderDAL
         parameters(1) = New DBHelper.DBHelperParameter(PAR_NAME_LANGUAGE_ID, languageId.ToByteArray)
 
         Try
-            DBHelper.FetchSp(selectStmt, parameters, outParameters, ds, Me.TRANSACTION_DATA_TABLE_NAME)
+            DBHelper.FetchSp(selectStmt, parameters, outParameters, ds, TRANSACTION_DATA_TABLE_NAME)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -405,16 +405,16 @@ Public Class TransactionLogHeaderDAL
     '    Dim selectStmt As String = Me.Config("/SQL/LOAD")
     'End Sub
 
-    Public Function ResendOrHideTransaction(ByVal cmd As String, ByVal transLogHeaderId As Guid, Optional ByVal newComunaValue As String = Nothing, Optional ByVal newServiceTypeValue As String = Nothing) As DBHelper.DBHelperParameter()
-        Dim selectStmt As String = Me.Config("/SQL/RESEND_OR_HIDE_TRANSACTION")
+    Public Function ResendOrHideTransaction(cmd As String, transLogHeaderId As Guid, Optional ByVal newComunaValue As String = Nothing, Optional ByVal newServiceTypeValue As String = Nothing) As DBHelper.DBHelperParameter()
+        Dim selectStmt As String = Config("/SQL/RESEND_OR_HIDE_TRANSACTION")
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_CMD, cmd), _
+                            New DBHelper.DBHelperParameter(PAR_NAME_CMD, cmd), _
                             New DBHelper.DBHelperParameter(PAR_NAME_TRANS_ID, transLogHeaderId.ToByteArray), _
                             New DBHelper.DBHelperParameter(PAR_NAME_NEW_COMUNA, newComunaValue), _
                             New DBHelper.DBHelperParameter(PAR_NAME_NEW_SERVICE_TYPE, newServiceTypeValue)}
         Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_RETURN, GetType(Integer)), _
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_EXCEPTION_MSG, GetType(String))}
+                            New DBHelper.DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)), _
+                            New DBHelper.DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String))}
 
         ' Call DBHelper Store Procedure
         DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameters)
@@ -423,14 +423,14 @@ Public Class TransactionLogHeaderDAL
 
     End Function
 
-    Public Function ProcessRecords(ByVal cmd, ByVal transLogHeaderIds) As DBHelper.DBHelperParameter()
-        Dim selectStmt As String = Me.Config("/SQL/PROCESS_RECORDS")
+    Public Function ProcessRecords(cmd, transLogHeaderIds) As DBHelper.DBHelperParameter()
+        Dim selectStmt As String = Config("/SQL/PROCESS_RECORDS")
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_CMD, cmd), _
+                            New DBHelper.DBHelperParameter(PAR_NAME_CMD, cmd), _
                             New DBHelper.DBHelperParameter(PAR_NAME_TRANS_IDS, transLogHeaderIds)}
         Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_RETURN, GetType(Integer)), _
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_EXCEPTION_MSG, GetType(String))}
+                            New DBHelper.DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)), _
+                            New DBHelper.DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String))}
 
         ' Call DBHelper Store Procedure
         DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameters)
@@ -438,12 +438,12 @@ Public Class TransactionLogHeaderDAL
         Return outputParameters
     End Function
 
-    Public Function GetRejectionMessage(ByVal compGroupId As Guid, ByVal transLogHeaderId As Guid) As String
+    Public Function GetRejectionMessage(compGroupId As Guid, transLogHeaderId As Guid) As String
         Dim retVal As String = String.Empty
         Dim ds As DataSet = New DataSet
 
         Try
-            ds = Me.GetExceptionList(compGroupId, Nothing, Nothing, Nothing, Date.MinValue, Date.MinValue, Nothing, GuidControl.GuidToHexString(transLogHeaderId))
+            ds = GetExceptionList(compGroupId, Nothing, Nothing, Nothing, Date.MinValue, Date.MinValue, Nothing, GuidControl.GuidToHexString(transLogHeaderId))
 
             If Not ds Is Nothing AndAlso ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0 Then
                 retVal = If(ds.Tables(0).Rows(0)("error_code") Is DBNull.Value, "", CType(ds.Tables(0).Rows(0)("error_code"), String))

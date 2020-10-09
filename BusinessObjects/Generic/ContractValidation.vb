@@ -28,7 +28,7 @@ Public Class ContractValidation
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As ContractValidationDs)
+    Public Sub New(ds As ContractValidationDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -37,7 +37,7 @@ Public Class ContractValidation
         dsMyContractValidation = ds
     End Sub
 
-    Public Sub New(ByVal ds As ContractValidationDs, ByVal xml As String)
+    Public Sub New(ds As ContractValidationDs, xml As String)
         MyBase.New()
 
         MapDataSet(ds)
@@ -58,7 +58,7 @@ Public Class ContractValidation
     Dim claimBO As Claim
     Dim claimFamilyBO As Claim
 
-    Private Sub MapDataSet(ByVal ds As ContractValidationDs)
+    Private Sub MapDataSet(ds As ContractValidationDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -71,8 +71,8 @@ Public Class ContractValidation
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -80,11 +80,11 @@ Public Class ContractValidation
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As ContractValidationDs)
+    Private Sub Load(ds As ContractValidationDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
             'Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
@@ -99,11 +99,11 @@ Public Class ContractValidation
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As ContractValidationDs)
+    Private Sub PopulateBOFromWebService(ds As ContractValidationDs)
         Try
             If ds.ContractValidation.Count = 0 Then Exit Sub
             With ds.ContractValidation.Item(0)
-                Me.uploadSessionId = .UPLOAD_SESSION_ID
+                uploadSessionId = .UPLOAD_SESSION_ID
             End With
 
         Catch ex As Exception
@@ -118,11 +118,11 @@ Public Class ContractValidation
 
 #Region "Properties"
 
-    Public Property UploadSessionId() As String
+    Public Property UploadSessionId As String
         Get
             Return _uploadSessionId
         End Get
-        Set(ByVal Value As String)
+        Set
             _uploadSessionId = Value
         End Set
     End Property
@@ -134,8 +134,8 @@ Public Class ContractValidation
     Public Overrides Function ProcessWSRequest() As String
         Try
             'Load the pre-validated Contract records
-            Dim dsPreValidatedContractRecords As DataSet = ContractUpload.GetPreValidatedContractsForUpload(Me.UploadSessionId)
-            If Not dsPreValidatedContractRecords Is Nothing AndAlso Not dsPreValidatedContractRecords.Tables(0) Is Nothing AndAlso dsPreValidatedContractRecords.Tables(0).Rows.Count > 0 Then
+            Dim dsPreValidatedContractRecords As DataSet = ContractUpload.GetPreValidatedContractsForUpload(UploadSessionId)
+            If dsPreValidatedContractRecords IsNot Nothing AndAlso dsPreValidatedContractRecords.Tables(0) IsNot Nothing AndAlso dsPreValidatedContractRecords.Tables(0).Rows.Count > 0 Then
                 Dim preValidatedContractRow As DataRow
                 Dim objContract As Contract
 
@@ -149,7 +149,7 @@ Public Class ContractValidation
 
                     BuildContract(objContract, objContractUpload)
 
-                    If Not objContract Is Nothing Then
+                    If objContract IsNot Nothing Then
                         contractErrors = objContract.ValidationErrors()
                         If contractErrors.Length > 0 Then
                             strValidationErrors = "Record Number " & preValidatedContractRow.Item("record_number").ToString & ": "
@@ -185,7 +185,7 @@ Public Class ContractValidation
 
     End Function
 
-    Public Function CheckDBNull(ByVal obj As Object) As Object
+    Public Function CheckDBNull(obj As Object) As Object
         If DBNull.Value.Equals(obj) Then
             If obj.GetType Is GetType(DecimalType) Then
                 Return 0
@@ -197,7 +197,7 @@ Public Class ContractValidation
         End If
     End Function
 
-    Private Sub ComposeResult(ByRef outputXml As XElement, ByVal parentItemNumber As String, ByVal itemNumber As String, ByVal claimNumber As String, Optional ByVal errorCode As String = "", Optional ByVal propertyName As String = "")
+    Private Sub ComposeResult(ByRef outputXml As XElement, parentItemNumber As String, itemNumber As String, claimNumber As String, Optional ByVal errorCode As String = "", Optional ByVal propertyName As String = "")
         Dim result As String = ""
         Dim errXml As XElement
         Dim userInfo As String
@@ -206,7 +206,7 @@ Public Class ContractValidation
         If errorCode Is Nothing Or errorCode = "" Then
             result = "OK"
         Else
-            If Not propertyName Is Nothing AndAlso propertyName <> "" Then
+            If propertyName IsNot Nothing AndAlso propertyName <> "" Then
                 propertyName = propertyName & ": "
             End If
 
@@ -234,16 +234,16 @@ Public Class ContractValidation
                                          </TRANSACTION_DATA_RECORD>
 
 
-        If Not errXml Is Nothing AndAlso errXml.HasElements Then
+        If errXml IsNot Nothing AndAlso errXml.HasElements Then
             tranDataRecXml.Add(errXml)
         End If
 
         outputXml.Add(tranDataRecXml)
     End Sub
 
-    Public Sub BuildContract(ByRef objContract As Contract, ByVal objContractUpload As ContractUpload)
+    Public Sub BuildContract(ByRef objContract As Contract, objContractUpload As ContractUpload)
 
-        If Not objContractUpload Is Nothing Then
+        If objContractUpload IsNot Nothing Then
             objContract = New Contract
             With objContract
 

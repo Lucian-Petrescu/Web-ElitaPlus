@@ -40,8 +40,8 @@ Public Class FormAuthorizationDAL
     'Input Values:
     'Uses:
     '-------------------------------------
-    Public Function Load(ByVal oFormAuthorizationData As FormAuthorizationData) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_FORM_AUTH_BY_USER")
+    Public Function Load(oFormAuthorizationData As FormAuthorizationData) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_FORM_AUTH_BY_USER")
         Dim ds As New DataSet
         With oFormAuthorizationData
             Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
@@ -51,7 +51,7 @@ Public Class FormAuthorizationDAL
                          New DBHelper.DBHelperParameter(COL_NAME_COMPANY_ID, .company_id.ToByteArray) _
                         }
             Try
-                DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+                DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Catch ex As Exception
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
             End Try
@@ -59,9 +59,9 @@ Public Class FormAuthorizationDAL
         Return ds
     End Function
 
-    Public Function LoadMultipleCompanies(ByVal compIds As ArrayList, ByVal oFormAuthorizationData As FormAuthorizationData) As DataSet
+    Public Function LoadMultipleCompanies(compIds As ArrayList, oFormAuthorizationData As FormAuthorizationData) As DataSet
         Dim whereClauseConditions As String = ""
-        Dim selectStmt As String = Me.Config("/SQL/GET_FORM_AUTH_BY_USER_MULTIPLE_COMPANIES")
+        Dim selectStmt As String = Config("/SQL/GET_FORM_AUTH_BY_USER_MULTIPLE_COMPANIES")
         Dim ds As New DataSet
 
         whereClauseConditions &= MiscUtil.BuildListForSql(COL_NAME_COMPANY_ID, compIds)
@@ -75,7 +75,7 @@ Public Class FormAuthorizationDAL
                          New DBHelper.DBHelperParameter(COL_NAME_NUM_COMPANIES, .companies_count) _
                         }
             Try
-                DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+                DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Catch ex As Exception
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
             End Try
@@ -84,8 +84,8 @@ Public Class FormAuthorizationDAL
     End Function
 
 
-    Public Function LoadSubMenu(ByVal oFormAuthorizationData As FormAuthorizationData) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_FORM_AUTH_BY_USER_ALL_TABS")
+    Public Function LoadSubMenu(oFormAuthorizationData As FormAuthorizationData) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_FORM_AUTH_BY_USER_ALL_TABS")
         Dim ds As New DataSet
         With oFormAuthorizationData
             Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
@@ -99,7 +99,7 @@ Public Class FormAuthorizationDAL
                          New DBHelper.DBHelperParameter(COL_NAME_NETWORK_ID, .network_id) _
                        }
             Try
-                DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+                DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Catch ex As Exception
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
             End Try
@@ -107,9 +107,9 @@ Public Class FormAuthorizationDAL
         Return ds
     End Function
 
-    Public Function LoadSubMenuMultipleCompanies(ByVal compIds As ArrayList, ByVal oFormAuthorizationData As FormAuthorizationData) As DataSet
+    Public Function LoadSubMenuMultipleCompanies(compIds As ArrayList, oFormAuthorizationData As FormAuthorizationData) As DataSet
         Dim whereClauseConditions As String = ""
-        Dim selectStmt As String = Me.Config("/SQL/GET_FORM_AUTH_BY_USER_MULTIPLE_COMPANIES_ALL_TABS")
+        Dim selectStmt As String = Config("/SQL/GET_FORM_AUTH_BY_USER_MULTIPLE_COMPANIES_ALL_TABS")
         Dim ds As New DataSet
 
         whereClauseConditions &= MiscUtil.BuildListForSql(COL_NAME_COMPANY_ID, compIds, True)
@@ -126,7 +126,7 @@ Public Class FormAuthorizationDAL
                          New DBHelper.DBHelperParameter(COL_NAME_NETWORK_ID, .network_id) _
                         }
             Try
-                DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+                DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Catch ex As Exception
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
             End Try
@@ -134,15 +134,15 @@ Public Class FormAuthorizationDAL
         Return ds
     End Function
 
-    Public Function LoadNavigation(ByVal oFormAuthorizationData As FormAuthorizationData) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_FORM_NAV")
+    Public Function LoadNavigation(oFormAuthorizationData As FormAuthorizationData) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_FORM_NAV")
         Dim ds As New DataSet
         With oFormAuthorizationData
             Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                         {New DBHelper.DBHelperParameter(COL_NAME_CODE, .code.ToUpper) _
                         }
             Try
-                DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+                DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Catch ex As Exception
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
             End Try
@@ -151,8 +151,8 @@ Public Class FormAuthorizationDAL
     End Function
 
     
-    Public Function FormPermissions(ByVal oFormAuthorizationData As FormAuthorizationData) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_FORM_AUTH_BY_SINGLE_FORM")
+    Public Function FormPermissions(oFormAuthorizationData As FormAuthorizationData) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_FORM_AUTH_BY_SINGLE_FORM")
         Dim ds As New DataSet
         With oFormAuthorizationData
             Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
@@ -161,7 +161,7 @@ Public Class FormAuthorizationDAL
                          New DBHelper.DBHelperParameter(COL_NAME_COMPANY_ID, .company_id.ToByteArray) _
                         }
             Try
-                DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+                DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Catch ex As Exception
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
             End Try
@@ -170,9 +170,9 @@ Public Class FormAuthorizationDAL
 
     End Function
 
-    Public Function FormPermissionsMultipleCompanies(ByVal compIds As ArrayList, ByVal oFormAuthorizationData As FormAuthorizationData) As DataSet
+    Public Function FormPermissionsMultipleCompanies(compIds As ArrayList, oFormAuthorizationData As FormAuthorizationData) As DataSet
         Dim whereClauseConditions As String = ""
-        Dim selectStmt As String = Me.Config("/SQL/GET_FORM_AUTH_BY_SINGLE_FORM_MULTIPLE_COMPANIES")
+        Dim selectStmt As String = Config("/SQL/GET_FORM_AUTH_BY_SINGLE_FORM_MULTIPLE_COMPANIES")
         Dim ds As New DataSet
 
         whereClauseConditions &= MiscUtil.BuildListForSql(COL_NAME_COMPANY_ID, compIds)
@@ -185,7 +185,7 @@ Public Class FormAuthorizationDAL
                          New DBHelper.DBHelperParameter(COL_NAME_NUM_COMPANIES, .companies_count) _
                         }
             Try
-                DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+                DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Catch ex As Exception
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
             End Try
@@ -199,9 +199,9 @@ Public Class FormAuthorizationDAL
 
 #Region "Control Authorization"
 
-    Public Function GetControlAuthorization(ByVal oFormAuthorizationData As FormAuthorizationData) As DataSet
+    Public Function GetControlAuthorization(oFormAuthorizationData As FormAuthorizationData) As DataSet
         'Dim selectStmt As String = Me.Config("/SQL/GET_CONTROL_AUTHORIZATION")
-        Dim selectStmt As StringBuilder = New StringBuilder(Me.Config("/SQL/GET_CONTROL_AUTHORIZATION"))
+        Dim selectStmt As StringBuilder = New StringBuilder(Config("/SQL/GET_CONTROL_AUTHORIZATION"))
         Dim ds As New DataSet
         With oFormAuthorizationData
             selectStmt.Replace("#USER_NETWORK_ID", .network_id.ToUpper).Replace("#FORM_CODE", .code.ToUpper)
@@ -211,7 +211,7 @@ Public Class FormAuthorizationDAL
             '             New DBHelper.DBHelperParameter(COL_NAME_NETWORK_ID, .network_id.ToUpper) _
             '            }
             Try
-                ds = DBHelper.Fetch(selectStmt.ToString, Me.TABLE_NAME)
+                ds = DBHelper.Fetch(selectStmt.ToString, TABLE_NAME)
             Catch ex As Exception
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
             End Try
@@ -225,8 +225,8 @@ Public Class FormAuthorizationDAL
 
 #Region "Tab Authorization"
 
-    Public Function GetTabAuthorization(ByVal oFormAuthorizationData As FormAuthorizationData) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_USER_TAB_AUTH")
+    Public Function GetTabAuthorization(oFormAuthorizationData As FormAuthorizationData) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_USER_TAB_AUTH")
         Dim ds As New DataSet
         With oFormAuthorizationData
             Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
@@ -235,7 +235,7 @@ Public Class FormAuthorizationDAL
                          New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, .language_id.ToByteArray) _
                         }
             Try
-                DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME_TAB, parameters)
+                DBHelper.Fetch(ds, selectStmt, TABLE_NAME_TAB, parameters)
             Catch ex As Exception
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
             End Try

@@ -20,7 +20,7 @@ Public Class AccountingEngine
         Get
             Return _CompanyCode
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             _CompanyCode = value
         End Set
     End Property
@@ -29,7 +29,7 @@ Public Class AccountingEngine
         Get
             Return _IncludeVendors
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             _IncludeVendors = value
         End Set
     End Property
@@ -38,7 +38,7 @@ Public Class AccountingEngine
         Get
             Return _AccountingEvents
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             _AccountingEvents = value
         End Set
     End Property
@@ -69,7 +69,7 @@ Public Class AccountingEngine
             Instrumentation.WriteLog("FAILED WITH STACK TRACE : " & ex.StackTrace)
             Instrumentation.WriteLog("--------------------------------------------")
 
-            WriteLogs(String.Format("Error in Batch Services: {0}", GetErrorMessages(ex)), Me.ToString, EventLogEntryType.Error)
+            WriteLogs(String.Format("Error in Batch Services: {0}", GetErrorMessages(ex)), ToString, EventLogEntryType.Error)
             Throw ex
 
         Finally
@@ -86,7 +86,7 @@ Public Class AccountingEngine
         Try
             Instrumentation.WriteLog("STARTED")
 
-            WriteLogs(String.Format("Beginning ExecuteAsync"), Me.ToString, EventLogEntryType.Information)
+            WriteLogs(String.Format("Beginning ExecuteAsync"), ToString, EventLogEntryType.Information)
 
             Dim t As New Thread(AddressOf AsyncMethodSub)
             t.Start()
@@ -99,7 +99,7 @@ Public Class AccountingEngine
             Instrumentation.WriteLog("--------------------------------------------")
             'Clear the processing flag
             SetIsProcessing(False)
-            WriteLogs(String.Format("Error in Batch Services: {0}", GetErrorMessages(ex)), Me.ToString, EventLogEntryType.Error)
+            WriteLogs(String.Format("Error in Batch Services: {0}", GetErrorMessages(ex)), ToString, EventLogEntryType.Error)
             Throw ex
         End Try
 
@@ -115,7 +115,7 @@ Public Class AccountingEngine
 
             SetIsProcessing(True)
             _FelitaEngine.ProcessWSRequest()
-            WriteLogs(String.Format("Completed ExecuteAsync"), Me.ToString, EventLogEntryType.SuccessAudit)
+            WriteLogs(String.Format("Completed ExecuteAsync"), ToString, EventLogEntryType.SuccessAudit)
             Instrumentation.WriteLog("FINISHED")
 
         Catch ex As Exception
@@ -123,7 +123,7 @@ Public Class AccountingEngine
             Instrumentation.WriteLog("FAILED WITH EXCEPTION : " & ex.Message)
             Instrumentation.WriteLog("FAILED WITH STACK TRACE : " & ex.StackTrace)
             Instrumentation.WriteLog("--------------------------------------------")
-            WriteLogs(String.Format("Error in Batch Services: {0}", GetErrorMessages(ex)), Me.ToString, EventLogEntryType.Error)
+            WriteLogs(String.Format("Error in Batch Services: {0}", GetErrorMessages(ex)), ToString, EventLogEntryType.Error)
         Finally
             'Clear the processing flag
             SetIsProcessing(False)
@@ -145,16 +145,16 @@ Public Class AccountingEngine
         End If
 
         dr = CType(_FelitaEngineDs.Tables(0).NewRow, FelitaEngineDs.FelitaEngineRow)
-        dr.CompanyId = Me.CompanyCode
-        dr.VendorFiles = Me.IncludeVendors
-        dr.AccountingEventId = Me.AccountingEvents
+        dr.CompanyId = CompanyCode
+        dr.VendorFiles = IncludeVendors
+        dr.AccountingEventId = AccountingEvents
 
         _FelitaEngineDs.Tables(0).Rows.Add(dr)
         _FelitaEngine = New FelitaEngine(_FelitaEngineDs)
 
     End Sub
 
-    Public Overrides Sub SetDS(ByVal xmlData As String)
+    Public Overrides Sub SetDS(xmlData As String)
 
         _FelitaEngineDs = New FelitaEngineDs
         _FelitaEngineDs.ReadXml(XMLHelper.GetXMLStream(xmlData))

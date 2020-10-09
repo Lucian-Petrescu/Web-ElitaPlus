@@ -20,7 +20,7 @@ Partial Public Class InventorySearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ScriptManager1 As Global.System.Web.UI.ScriptManager
+    Protected WithEvents ScriptManager1 As ScriptManager
     
     '''<summary>
     '''searchTable control.
@@ -29,7 +29,7 @@ Partial Public Class InventorySearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents searchTable As Global.System.Web.UI.HtmlControls.HtmlTable
+    Protected WithEvents searchTable As HtmlTable
     
     '''<summary>
     '''Label2 control.
@@ -38,7 +38,7 @@ Partial Public Class InventorySearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label2 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label2 As Label
     
     '''<summary>
     '''ddlDealer control.
@@ -47,7 +47,7 @@ Partial Public Class InventorySearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlDealer As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlDealer As DropDownList
     
     '''<summary>
     '''LabelServiceCenter control.
@@ -56,7 +56,7 @@ Partial Public Class InventorySearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelServiceCenter As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelServiceCenter As Label
     
     '''<summary>
     '''ddlServiceCenter control.
@@ -65,7 +65,7 @@ Partial Public Class InventorySearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlServiceCenter As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlServiceCenter As DropDownList
     
     '''<summary>
     '''LabelVendorSkuNumber control.
@@ -74,7 +74,7 @@ Partial Public Class InventorySearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelVendorSkuNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelVendorSkuNumber As Label
     
     '''<summary>
     '''TextBoxVendorSkuNumber control.
@@ -83,7 +83,7 @@ Partial Public Class InventorySearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxVendorSkuNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxVendorSkuNumber As TextBox
     
     '''<summary>
     '''LabelDeviceMake control.
@@ -92,7 +92,7 @@ Partial Public Class InventorySearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelDeviceMake As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelDeviceMake As Label
     
     '''<summary>
     '''ddlDeviceMake control.
@@ -101,7 +101,7 @@ Partial Public Class InventorySearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlDeviceMake As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlDeviceMake As DropDownList
     
     '''<summary>
     '''LabelDeviceModel control.
@@ -110,7 +110,7 @@ Partial Public Class InventorySearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelDeviceModel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelDeviceModel As Label
     
     '''<summary>
     '''TextBoxDeviceModel control.
@@ -119,7 +119,7 @@ Partial Public Class InventorySearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxDeviceModel As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxDeviceModel As TextBox
     
     '''<summary>
     '''trElitaInventory control.
@@ -128,7 +128,7 @@ Partial Public Class InventorySearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trElitaInventory As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trElitaInventory As HtmlTableRow
     
     '''<summary>
     '''LabelDeviceMemory control.
@@ -137,7 +137,7 @@ Partial Public Class InventorySearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelDeviceMemory As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelDeviceMemory As Label
     
     '''<summary>
     '''TextBoxDeviceMemory control.
@@ -146,7 +146,7 @@ Partial Public Class InventorySearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxDeviceMemory As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxDeviceMemory As TextBox
     
     '''<summary>
     '''LabelDeviceColor control.
@@ -155,7 +155,7 @@ Partial Public Class InventorySearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelDeviceColor As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelDeviceColor As Label
     
     '''<summary>
     '''TextBoxDeviceColor control.
@@ -164,7 +164,7 @@ Partial Public Class InventorySearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBoxDeviceColor As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextBoxDeviceColor As TextBox
     
     '''<summary>
     '''Label1 control.
@@ -173,7 +173,7 @@ Partial Public Class InventorySearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label1 As Label
     
     '''<summary>
     '''ddlSortBy control.
@@ -182,7 +182,7 @@ Partial Public Class InventorySearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlSortBy As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlSortBy As DropDownList
     
     '''<summary>
     '''btnClearSearch control.
@@ -191,7 +191,7 @@ Partial Public Class InventorySearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnClearSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnClearSearch As Button
     
     '''<summary>
     '''btnSearch control.
@@ -200,7 +200,7 @@ Partial Public Class InventorySearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSearch As Button
     
     '''<summary>
     '''lblSearchResults control.
@@ -209,7 +209,7 @@ Partial Public Class InventorySearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblSearchResults As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblSearchResults As Label
     
     '''<summary>
     '''trPageSize control.
@@ -218,7 +218,7 @@ Partial Public Class InventorySearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trPageSize As HtmlTableRow
     
     '''<summary>
     '''lblPageSize control.
@@ -227,7 +227,7 @@ Partial Public Class InventorySearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPageSize As Label
     
     '''<summary>
     '''colonSepertor control.
@@ -236,7 +236,7 @@ Partial Public Class InventorySearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents colonSepertor As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents colonSepertor As Label
     
     '''<summary>
     '''cboPageSize control.
@@ -245,7 +245,7 @@ Partial Public Class InventorySearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboPageSize As DropDownList
     
     '''<summary>
     '''lblRecordCount control.
@@ -254,7 +254,7 @@ Partial Public Class InventorySearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblRecordCount As Label
     
     '''<summary>
     '''Grid control.
@@ -263,5 +263,5 @@ Partial Public Class InventorySearchForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Grid As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents Grid As GridView
 End Class

@@ -107,7 +107,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -118,47 +118,47 @@ Namespace Reports
 
         Private Sub InitializeForm()
             Dim t As Date = Date.Now.AddDays(-1)
-            Me.BeginDateText.Text = GetDateFormattedString(t)
-            Me.EndDateText.Text = GetDateFormattedString(Date.Now)
+            BeginDateText.Text = GetDateFormattedString(t)
+            EndDateText.Text = GetDateFormattedString(Date.Now)
             PopulateSvcCtrDropDown()
             PopulateDealerDropDown()
-            Me.rbAllSvcCenters.Checked = True
-            Me.rdealer.Checked = True
-            Me.rbAllUsers.Checked = True
+            rbAllSvcCenters.Checked = True
+            rdealer.Checked = True
+            rbAllUsers.Checked = True
             TheReportCeInputControl.populateReportLanguages(RPT_FILENAME)
         End Sub
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-            Me.ErrControllerMaster.Clear_Hide()
-            Me.Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+            ErrControllerMaster.Clear_Hide()
+            Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
             Try
-                If Not Me.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
+                If Not IsPostBack Then
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
                     JavascriptCalls()
                     InitializeForm()
-                    Me.AddCalendar(Me.BtnBeginDate, Me.BeginDateText)
-                    Me.AddCalendar(Me.BtnEndDate, Me.EndDateText)
+                    AddCalendar(BtnBeginDate, BeginDateText)
+                    AddCalendar(BtnEndDate, EndDateText)
                 Else
                     ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -172,8 +172,8 @@ Namespace Reports
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(BeginDateLabel)
-            Me.ClearLabelErrSign(EndDateLabel)
+            ClearLabelErrSign(BeginDateLabel)
+            ClearLabelErrSign(EndDateLabel)
         End Sub
 
 #End Region
@@ -191,7 +191,7 @@ Namespace Reports
                 oListContext.CountryId = UserCountries(Index)
                 Dim oServiceCenter As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ServiceCenterListByCountry", context:=oListContext)
                 If oServiceCenter.Count > 0 Then
-                    If Not serviceCenterListLkl Is Nothing Then
+                    If serviceCenterListLkl IsNot Nothing Then
                         serviceCenterListLkl.AddRange(oServiceCenter)
                     Else
                         serviceCenterListLkl = oServiceCenter.Clone()
@@ -199,7 +199,7 @@ Namespace Reports
 
                 End If
             Next
-            Me.cboSvcCenter.Populate(serviceCenterListLkl.ToArray(), New PopulateOptions() With
+            cboSvcCenter.Populate(serviceCenterListLkl.ToArray(), New PopulateOptions() With
         {
           .AddBlankItem = True
         })
@@ -218,9 +218,9 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal userId As String, ByVal begindate As String, ByVal enddate As String, _
-                               ByVal svcCtrCode As String, ByVal dealerCode As String, ByVal createdby As String, _
-                               ByVal sortBy As String) As ReportCeBaseForm.Params
+        Function SetParameters(userId As String, begindate As String, enddate As String, _
+                               svcCtrCode As String, dealerCode As String, createdby As String, _
+                               sortBy As String) As ReportCeBaseForm.Params
 
 
             Dim params As New ReportCeBaseForm.Params
@@ -264,8 +264,8 @@ Namespace Reports
             Return params
         End Function
 
-        Sub SetReportParams(ByVal rptParams As ReportParams, ByVal repParams() As ReportCeBaseForm.RptParam, _
-                          ByVal rptName As String, ByVal startIndex As Integer)
+        Sub SetReportParams(rptParams As ReportParams, repParams() As ReportCeBaseForm.RptParam, _
+                          rptName As String, startIndex As Integer)
 
             With rptParams
                 repParams(startIndex) = New ReportCeBaseForm.RptParam("V_USER_KEY", .userid, rptName)
@@ -290,7 +290,7 @@ Namespace Reports
             Dim selectedDealerId As Guid = DealerMultipleDrop.SelectedGuid
             Dim dealerCode As String = DealerMultipleDrop.SelectedCode
             Dim dealerDesc As String = DealerMultipleDrop.SelectedDesc
-            Dim sortBy As String = Me.rdReportSortOrder.SelectedValue
+            Dim sortBy As String = rdReportSortOrder.SelectedValue
 
             'Dates
             ReportCeBase.ValidateBeginEndDate(BeginDateLabel, BeginDateText.Text, EndDateLabel, EndDateText.Text)
@@ -300,7 +300,7 @@ Namespace Reports
 
 
             'Dealer
-            If Me.rdealer.Checked Then
+            If rdealer.Checked Then
                 dealerCode = ALL
             Else
                 If selectedDealerId.Equals(Guid.Empty) Then
@@ -310,16 +310,16 @@ Namespace Reports
             End If
 
             'SvcCenter
-            If Me.rbAllSvcCenters.Checked Then
+            If rbAllSvcCenters.Checked Then
                 svcCtrCode = ALL
             Else
-                Dim selectedSvcCtrId As Guid = Me.GetSelectedItem(Me.cboSvcCenter)
+                Dim selectedSvcCtrId As Guid = GetSelectedItem(cboSvcCenter)
                 Dim dvSvcCtr As DataView = LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Country(ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID).Id)
                 svcCtrCode = LookupListNew.GetCodeFromId(dvSvcCtr, selectedSvcCtrId)
             End If
 
             'User
-            If Me.rbAllUsers.Checked Then
+            If rbAllUsers.Checked Then
                 createdby = ALL
             Else
                 createdby = txtUserId.Text.Trim.ToString()

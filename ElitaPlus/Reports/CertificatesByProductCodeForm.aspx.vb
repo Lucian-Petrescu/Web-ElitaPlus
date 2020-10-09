@@ -116,7 +116,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -124,21 +124,21 @@ Namespace Reports
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                 Else
                     ClearErrLabels()
                 End If
                 '    Me.DisplayProgressBarOnClick(Me.btnGenRpt, "Loading_Claims")
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
         Sub PopulateDealerDropDown()
@@ -155,7 +155,7 @@ Namespace Reports
                 oListContext.CompanyId = company_id
                 Dim productcodeListForCompany As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ProductCodeByCompany", context:=oListContext)
                 If productcodeListForCompany.Count > 0 Then
-                    If Not productcodeList Is Nothing Then
+                    If productcodeList IsNot Nothing Then
                         productcodeList.AddRange(productcodeListForCompany)
                     Else
                         productcodeList = productcodeListForCompany.Clone()
@@ -163,7 +163,7 @@ Namespace Reports
                 End If
             Next
 
-            Me.cboProduct.Populate(productcodeList.ToArray(), New PopulateOptions() With
+            cboProduct.Populate(productcodeList.ToArray(), New PopulateOptions() With
                 {
                    .AddBlankItem = True,
                    .TextFunc = AddressOf .GetCode,
@@ -174,14 +174,14 @@ Namespace Reports
             'Me.BindListControlToDataView(Me.cboProduct, LookupListNew.GetProductCodeByCompanyLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies), "CODE")
         End Sub
 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
          Handles multipleDropControl.SelectedDropChanged
             Try
                 If DealerMultipleDrop.SelectedIndex > 0 Then
                     PopulateCampaignNumbersDropdown()
                 End If
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -189,11 +189,11 @@ Namespace Reports
             Dim dv As DataView
             Dim i As Integer
             dv = LookupListNew.GetCampaignNumberLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
-            Me.cboCampaignNumber.Items.Clear()
-            Me.cboCampaignNumber.Items.Add(New ListItem("", ""))
-            If Not dv Is Nothing Then
+            cboCampaignNumber.Items.Clear()
+            cboCampaignNumber.Items.Add(New ListItem("", ""))
+            If dv IsNot Nothing Then
                 For i = 0 To dv.Count - 1
-                    Me.cboCampaignNumber.Items.Add(New ListItem(dv(i)("campaign_number").ToString, dv(i)("campaign_number").ToString))
+                    cboCampaignNumber.Items.Add(New ListItem(dv(i)("campaign_number").ToString, dv(i)("campaign_number").ToString))
                 Next
             End If
         End Sub
@@ -202,36 +202,36 @@ Namespace Reports
             PopulateDealerDropDown()
             PopulateProductCodeDropDown()
             PopulateCampaignNumbersDropdown()
-            Me.rbProduct.Checked = True
-            Me.rdealer.Checked = True
-            Me.rbCampaignNumber.Checked = True
+            rbProduct.Checked = True
+            rdealer.Checked = True
+            rbCampaignNumber.Checked = True
             RadiobuttonTotalsOnly.Checked = True
-            Me.rdReportSortOrder.Items(0).Selected = True
+            rdReportSortOrder.Items(0).Selected = True
         End Sub
 
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(moProductLabel)
-            Me.ClearLabelErrSign(moCampaignNumberLabel)
-            Me.ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
-            If Me.rdealer.Checked Then DealerMultipleDrop.SelectedIndex = -1
+            ClearLabelErrSign(moProductLabel)
+            ClearLabelErrSign(moCampaignNumberLabel)
+            ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
+            If rdealer.Checked Then DealerMultipleDrop.SelectedIndex = -1
         End Sub
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Function SetParameters(ByVal userId As String,
-                               ByVal dealerCode As String,
-                               ByVal productCode As String,
-                               ByVal campaign As String,
-                               ByVal isSummary As String,
-                               ByVal sortOrder As String) As ReportCeBaseForm.Params
+        Function SetParameters(userId As String,
+                               dealerCode As String,
+                               productCode As String,
+                               campaign As String,
+                               isSummary As String,
+                               sortOrder As String) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim reportName As String = RPT_FILENAME
@@ -281,15 +281,15 @@ Namespace Reports
         Private Sub GenerateReport()
             Dim userID As Guid = ElitaPlusIdentity.Current.ActiveUser.Id
             Dim dealerID As Guid = DealerMultipleDrop.SelectedGuid 'Me.GetSelectedItem(Me.cboDealer)
-            Dim selectedProduct As String = Me.GetSelectedDescription(Me.cboProduct)
-            Dim selectedCampaign As String = Me.GetSelectedDescription(Me.cboCampaignNumber)
+            Dim selectedProduct As String = GetSelectedDescription(cboProduct)
+            Dim selectedCampaign As String = GetSelectedDescription(cboCampaignNumber)
             'Dim dv As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies, False, "CODE")
             Dim dealerCode As String = DealerMultipleDrop.SelectedCode 'LookupListNew.GetCodeFromId(dv, dealerID)
             Dim selectedDealer As String = DealerMultipleDrop.SelectedDesc
             Dim isSummary As String = NO
             Dim sortOrder As String
 
-            If Me.rdealer.Checked Then
+            If rdealer.Checked Then
                 dealerCode = ALL
             Else
                 If dealerID.Equals(Guid.Empty) Then
@@ -298,7 +298,7 @@ Namespace Reports
                 End If
             End If
 
-            If Me.rbProduct.Checked Then
+            If rbProduct.Checked Then
                 selectedProduct = ALL
             Else
                 If selectedProduct.Equals(String.Empty) Then
@@ -307,7 +307,7 @@ Namespace Reports
                 End If
             End If
 
-            If Me.rbCampaignNumber.Checked Then
+            If rbCampaignNumber.Checked Then
                 selectedCampaign = ALL
             Else
                 If selectedCampaign.Equals(String.Empty) Then
@@ -316,14 +316,14 @@ Namespace Reports
                 End If
             End If
 
-            Select Case Me.rdReportSortOrder.SelectedValue()
+            Select Case rdReportSortOrder.SelectedValue()
                 Case BY_DEALER
                     sortOrder = SORT_BY_DEALER
                 Case BY_PRODUCT_CODE
                     sortOrder = SORT_BY_PRODUCT_CODE
             End Select
 
-            If Me.RadiobuttonTotalsOnly.Checked() Then
+            If RadiobuttonTotalsOnly.Checked() Then
                 isSummary = YES
             End If
 

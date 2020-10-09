@@ -13,7 +13,7 @@ Partial Class PostalCodeRegExFormatForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -24,7 +24,7 @@ Partial Class PostalCodeRegExFormatForm
     'Private Shared PostalCodeRegEx As New Collection
     Private Shared ListItemValue As Integer
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         If Not Page.IsPostBack Then
             lblPreview.Text = ""
@@ -92,12 +92,12 @@ Partial Class PostalCodeRegExFormatForm
         End If
     End Sub
 
-    Private Sub chkOptional_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptional.CheckedChanged
+    Private Sub chkOptional_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkOptional.CheckedChanged
         MinLen.Text = "0"
         EnableDisableValues()
     End Sub
 
-    Private Sub RegExTypeList_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RegExTypeList.SelectedIndexChanged
+    Private Sub RegExTypeList_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles RegExTypeList.SelectedIndexChanged
         chkOptional.Checked = False
         MinLen.Text = "0"
         MaxLen.Text = "0"
@@ -118,10 +118,10 @@ Partial Class PostalCodeRegExFormatForm
         CaseLabel.Visible = RegExTypeList.SelectedValue.StartsWith("Alpha")
         DisallowedValues.Visible = Not (RegExTypeList.SelectedValue = "Space") 'Or RegExTypeList.SelectedValue = "SpecialChar")
         DisallowLabel.Visible = Not (RegExTypeList.SelectedValue = "Space")
-        ExampleLabel.Visible = Not (RegExTypeList.SelectedValue = "Space" Or RegExTypeList.SelectedValue = "SpecialChar")
+        ExampleLabel.Visible = Not (RegExTypeList.SelectedValue = "Space" OrElse RegExTypeList.SelectedValue = "SpecialChar")
     End Sub
 
-    Private Sub btnGenerate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenerate.Click
+    Private Sub btnGenerate_Click(sender As System.Object, e As System.EventArgs) Handles btnGenerate.Click
         ErrorLabel.Visible = False
         Dim tempCaseValue As CaseValues
         Select Case CaseList.SelectedValue
@@ -206,7 +206,7 @@ Partial Class PostalCodeRegExFormatForm
         'RegExBox.Text = RegExBox.Text + "$"
     End Sub
 
-    Private Sub btnTest_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTest.Click
+    Private Sub btnTest_Click(sender As System.Object, e As System.EventArgs) Handles btnTest.Click
         lblTest.Visible = True
         If RegExBox.Text.Trim().Length = 0 Then
             lblTest.ForeColor = Color.Red
@@ -229,7 +229,7 @@ Partial Class PostalCodeRegExFormatForm
         End If
     End Sub
 
-    Private Sub ClearRegEx_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ClearRegEx.Click
+    Private Sub ClearRegEx_Click(sender As System.Object, e As System.EventArgs) Handles ClearRegEx.Click
         RegExBox.Text = ""
         lblPreview.Text = ""
         'For iRegExCount As Integer = 1 To PostalCodeRegEx.Count
@@ -238,7 +238,7 @@ Partial Class PostalCodeRegExFormatForm
         lblTest.Text = ""
     End Sub
 
-    Private Sub AddRegex_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddRegex.Click
+    Private Sub AddRegex_Click(sender As System.Object, e As System.EventArgs) Handles AddRegex.Click
         InitializeEditValues()
         SegmentList.Enabled = False
         DetailPanel.Visible = True
@@ -249,7 +249,7 @@ Partial Class PostalCodeRegExFormatForm
         RegExTypeList_SelectedIndexChanged(sender, e)
     End Sub
 
-    Private Sub EditRegex_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EditRegex.Click
+    Private Sub EditRegex_Click(sender As System.Object, e As System.EventArgs) Handles EditRegex.Click
         If SegmentList.SelectedIndex > -1 Then
             SegmentList.Enabled = False
             DetailPanel.Visible = True
@@ -289,7 +289,7 @@ Partial Class PostalCodeRegExFormatForm
     End Sub
 
 
-    Private Sub DeleteRegex_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteRegex.Click
+    Private Sub DeleteRegex_Click(sender As System.Object, e As System.EventArgs) Handles DeleteRegex.Click
         lblTest.Visible = False
         If SegmentList.SelectedIndex > -1 Then
             SegmentList.Items.Remove(SegmentList.SelectedItem)
@@ -303,7 +303,7 @@ Partial Class PostalCodeRegExFormatForm
         End If
     End Sub
 
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
         GenerateRegEx()
         SegmentList.Enabled = True
         DetailPanel.Visible = False
@@ -312,11 +312,11 @@ Partial Class PostalCodeRegExFormatForm
     End Sub
 
     
-    Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
         Dim sJavaScript As String
         sJavaScript = "<SCRIPT>" & Environment.NewLine
         sJavaScript &= "parent.SavePostalCodeFormat('" & RegExBox.Text.Replace("\", "\\") & "','" & lblPreview.Text.Trim() & "');" & Environment.NewLine
         sJavaScript &= "</SCRIPT>" & Environment.NewLine
-        Me.RegisterStartupScript("SavePostalCodeFormat", sJavaScript)
+        RegisterStartupScript("SavePostalCodeFormat", sJavaScript)
     End Sub
 End Class

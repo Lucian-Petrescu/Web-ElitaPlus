@@ -7,48 +7,48 @@ Public Class AfaInvoiceRate
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New AFAInvoiceRateDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -56,23 +56,23 @@ Public Class AfaInvoiceRate
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New AFAInvoiceRateDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -95,7 +95,7 @@ Public Class AfaInvoiceRate
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid Implements IExpirable.ID
+    Public ReadOnly Property Id As Guid Implements IExpirable.ID
         Get
             If Row(AFAInvoiceRateDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -106,7 +106,7 @@ Public Class AfaInvoiceRate
     End Property
 
     <ValueMandatory("")>
-    Public Property AfaProductId() As Guid
+    Public Property AfaProductId As Guid
         Get
             CheckDeleted()
             If Row(AFAInvoiceRateDAL.COL_NAME_AFA_PRODUCT_ID) Is DBNull.Value Then
@@ -115,15 +115,15 @@ Public Class AfaInvoiceRate
                 Return New Guid(CType(Row(AFAInvoiceRateDAL.COL_NAME_AFA_PRODUCT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(AFAInvoiceRateDAL.COL_NAME_AFA_PRODUCT_ID, Value)
+            SetValue(AFAInvoiceRateDAL.COL_NAME_AFA_PRODUCT_ID, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=100)>
-    Public Property InsuranceCode() As String
+    Public Property InsuranceCode As String
         Get
             CheckDeleted()
             If Row(AFAInvoiceRateDAL.COL_NAME_INSURANCE_CODE) Is DBNull.Value Then
@@ -132,15 +132,15 @@ Public Class AfaInvoiceRate
                 Return CType(Row(AFAInvoiceRateDAL.COL_NAME_INSURANCE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AFAInvoiceRateDAL.COL_NAME_INSURANCE_CODE, Value)
+            SetValue(AFAInvoiceRateDAL.COL_NAME_INSURANCE_CODE, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=10)>
-    Public Property Tier() As String
+    Public Property Tier As String
         Get
             CheckDeleted()
             If Row(AFAInvoiceRateDAL.COL_NAME_TIER) Is DBNull.Value Then
@@ -149,13 +149,13 @@ Public Class AfaInvoiceRate
                 Return CType(Row(AFAInvoiceRateDAL.COL_NAME_TIER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AFAInvoiceRateDAL.COL_NAME_TIER, Value)
+            SetValue(AFAInvoiceRateDAL.COL_NAME_TIER, Value)
         End Set
     End Property
 
-    Public Property RegulatoryState() As String
+    Public Property RegulatoryState As String
         Get
             CheckDeleted()
             If Row(AFAInvoiceRateDAL.COL_NAME_REGULATORY_STATE) Is DBNull.Value Then
@@ -164,13 +164,13 @@ Public Class AfaInvoiceRate
                 Return CType(Row(AFAInvoiceRateDAL.COL_NAME_REGULATORY_STATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AFAInvoiceRateDAL.COL_NAME_REGULATORY_STATE, Value)
+            SetValue(AFAInvoiceRateDAL.COL_NAME_REGULATORY_STATE, Value)
         End Set
     End Property
     <ValueMandatory(""), ValidStringLength("", Max:=50), IsRateDefinitionUnique("LossType")>
-    Public Property LossType() As String
+    Public Property LossType As String
         Get
             CheckDeleted()
             If Row(AFAInvoiceRateDAL.COL_NAME_LOSS_TYPE) Is DBNull.Value Then
@@ -179,15 +179,15 @@ Public Class AfaInvoiceRate
                 Return CType(Row(AFAInvoiceRateDAL.COL_NAME_LOSS_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AFAInvoiceRateDAL.COL_NAME_LOSS_TYPE, Value)
+            SetValue(AFAInvoiceRateDAL.COL_NAME_LOSS_TYPE, Value)
         End Set
     End Property
 
 
 
-    Public Property RetailAmt() As DecimalType
+    Public Property RetailAmt As DecimalType
         Get
             CheckDeleted()
             If Row(AFAInvoiceRateDAL.COL_NAME_RETAIL_AMT) Is DBNull.Value Then
@@ -196,15 +196,15 @@ Public Class AfaInvoiceRate
                 Return New DecimalType(CType(Row(AFAInvoiceRateDAL.COL_NAME_RETAIL_AMT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(AFAInvoiceRateDAL.COL_NAME_RETAIL_AMT, Value)
+            SetValue(AFAInvoiceRateDAL.COL_NAME_RETAIL_AMT, Value)
         End Set
     End Property
 
 
 
-    Public Property PremiumAmt() As DecimalType
+    Public Property PremiumAmt As DecimalType
         Get
             CheckDeleted()
             If Row(AFAInvoiceRateDAL.COL_NAME_PREMIUM_AMT) Is DBNull.Value Then
@@ -213,15 +213,15 @@ Public Class AfaInvoiceRate
                 Return New DecimalType(CType(Row(AFAInvoiceRateDAL.COL_NAME_PREMIUM_AMT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(AFAInvoiceRateDAL.COL_NAME_PREMIUM_AMT, Value)
+            SetValue(AFAInvoiceRateDAL.COL_NAME_PREMIUM_AMT, Value)
         End Set
     End Property
 
 
 
-    Public Property CommAmt() As DecimalType
+    Public Property CommAmt As DecimalType
         Get
             CheckDeleted()
             If Row(AFAInvoiceRateDAL.COL_NAME_COMM_AMT) Is DBNull.Value Then
@@ -230,15 +230,15 @@ Public Class AfaInvoiceRate
                 Return New DecimalType(CType(Row(AFAInvoiceRateDAL.COL_NAME_COMM_AMT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(AFAInvoiceRateDAL.COL_NAME_COMM_AMT, Value)
+            SetValue(AFAInvoiceRateDAL.COL_NAME_COMM_AMT, Value)
         End Set
     End Property
 
 
 
-    Public Property AdminAmt() As DecimalType
+    Public Property AdminAmt As DecimalType
         Get
             CheckDeleted()
             If Row(AFAInvoiceRateDAL.COL_NAME_ADMIN_AMT) Is DBNull.Value Then
@@ -247,15 +247,15 @@ Public Class AfaInvoiceRate
                 Return New DecimalType(CType(Row(AFAInvoiceRateDAL.COL_NAME_ADMIN_AMT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(AFAInvoiceRateDAL.COL_NAME_ADMIN_AMT, Value)
+            SetValue(AFAInvoiceRateDAL.COL_NAME_ADMIN_AMT, Value)
         End Set
     End Property
 
 
 
-    Public Property AncillaryAmt() As DecimalType
+    Public Property AncillaryAmt As DecimalType
         Get
             CheckDeleted()
             If Row(AFAInvoiceRateDAL.COL_NAME_ANCILLARY_AMT) Is DBNull.Value Then
@@ -264,15 +264,15 @@ Public Class AfaInvoiceRate
                 Return New DecimalType(CType(Row(AFAInvoiceRateDAL.COL_NAME_ANCILLARY_AMT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(AFAInvoiceRateDAL.COL_NAME_ANCILLARY_AMT, Value)
+            SetValue(AFAInvoiceRateDAL.COL_NAME_ANCILLARY_AMT, Value)
         End Set
     End Property
 
 
 
-    Public Property OtherAmt() As DecimalType
+    Public Property OtherAmt As DecimalType
         Get
             CheckDeleted()
             If Row(AFAInvoiceRateDAL.COL_NAME_OTHER_AMT) Is DBNull.Value Then
@@ -281,15 +281,15 @@ Public Class AfaInvoiceRate
                 Return New DecimalType(CType(Row(AFAInvoiceRateDAL.COL_NAME_OTHER_AMT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(AFAInvoiceRateDAL.COL_NAME_OTHER_AMT, Value)
+            SetValue(AFAInvoiceRateDAL.COL_NAME_OTHER_AMT, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), NonPastDateValidation(Codes.EFFECTIVE), RejectOverlapsOrGaps("")>
-    Public Property Effective() As DateTimeType Implements IExpirable.Effective
+    Public Property Effective As DateTimeType Implements IExpirable.Effective
         Get
             CheckDeleted()
             If Row(AFAInvoiceRateDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -298,15 +298,15 @@ Public Class AfaInvoiceRate
                 Return New DateTimeType(CType(Row(AFAInvoiceRateDAL.COL_NAME_EFFECTIVE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
-            Me.SetValue(AFAInvoiceRateDAL.COL_NAME_EFFECTIVE_DATE, Value)
+            SetValue(AFAInvoiceRateDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), NonPastDateValidation(Codes.EXPIRATION), EffectiveExpirationDateValidation(Codes.EXPIRATION)>
-    Public Property Expiration() As DateTimeType Implements IExpirable.Expiration
+    Public Property Expiration As DateTimeType Implements IExpirable.Expiration
         Get
             CheckDeleted()
             If Row(AFAInvoiceRateDAL.COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
@@ -315,9 +315,9 @@ Public Class AfaInvoiceRate
                 Return New DateTimeType(CType(Row(AFAInvoiceRateDAL.COL_NAME_EXPIRATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
-            Me.SetValue(AFAInvoiceRateDAL.COL_NAME_EXPIRATION_DATE, Value)
+            SetValue(AFAInvoiceRateDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set
     End Property
 
@@ -330,15 +330,15 @@ Public Class AfaInvoiceRate
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New AFAInvoiceRateDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -348,7 +348,7 @@ Public Class AfaInvoiceRate
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getList(ByVal afaProdcutId As Guid) As InvRateSearchDV
+    Public Shared Function getList(afaProdcutId As Guid) As InvRateSearchDV
         Try
             Dim dal As New AFAInvoiceRateDAL
             Return New InvRateSearchDV(dal.LoadList(afaProdcutId).Tables(0))
@@ -383,13 +383,13 @@ Public Class AfaInvoiceRate
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
 
-    Public Shared Sub AddNewRowToSearchDV(ByRef dv As InvRateSearchDV, ByVal NewBO As AfaInvoiceRate)
+    Public Shared Sub AddNewRowToSearchDV(ByRef dv As InvRateSearchDV, NewBO As AfaInvoiceRate)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         If NewBO.IsNew Then
@@ -421,35 +421,35 @@ Public Class AfaInvoiceRate
             row(InvRateSearchDV.COL_INSURANCE_CODE) = NewBO.InsuranceCode
             row(InvRateSearchDV.COL_TIER) = NewBO.Tier
 
-            If Not NewBO.RegulatoryState Is Nothing Then
+            If NewBO.RegulatoryState IsNot Nothing Then
                 row(InvRateSearchDV.COL_REGULATORY_STATE) = NewBO.RegulatoryState
             End If
 
-            If Not NewBO.LossType Is Nothing Then
+            If NewBO.LossType IsNot Nothing Then
                 row(InvRateSearchDV.COL_LOSS_TYPE) = NewBO.LossType
             End If
-            If Not NewBO.RetailAmt Is Nothing Then
+            If NewBO.RetailAmt IsNot Nothing Then
                 row(InvRateSearchDV.COL_RETAIL_AMT) = NewBO.RetailAmt.Value
             End If
-            If Not NewBO.PremiumAmt Is Nothing Then
+            If NewBO.PremiumAmt IsNot Nothing Then
                 row(InvRateSearchDV.COL_RETAIL_AMT) = NewBO.PremiumAmt.Value
             End If
-            If Not NewBO.CommAmt Is Nothing Then
+            If NewBO.CommAmt IsNot Nothing Then
                 row(InvRateSearchDV.COL_RETAIL_AMT) = NewBO.CommAmt.Value
             End If
-            If Not NewBO.AdminAmt Is Nothing Then
+            If NewBO.AdminAmt IsNot Nothing Then
                 row(InvRateSearchDV.COL_RETAIL_AMT) = NewBO.AdminAmt.Value
             End If
-            If Not NewBO.AncillaryAmt Is Nothing Then
+            If NewBO.AncillaryAmt IsNot Nothing Then
                 row(InvRateSearchDV.COL_RETAIL_AMT) = NewBO.AncillaryAmt.Value
             End If
-            If Not NewBO.OtherAmt Is Nothing Then
+            If NewBO.OtherAmt IsNot Nothing Then
                 row(InvRateSearchDV.COL_RETAIL_AMT) = NewBO.OtherAmt.Value
             End If
-            If Not NewBO.Effective Is Nothing Then
+            If NewBO.Effective IsNot Nothing Then
                 row(InvRateSearchDV.COL_RETAIL_AMT) = NewBO.Effective.Value
             End If
-            If Not NewBO.Expiration Is Nothing Then
+            If NewBO.Expiration IsNot Nothing Then
                 row(InvRateSearchDV.COL_RETAIL_AMT) = NewBO.Expiration.Value
             End If
 
@@ -470,7 +470,7 @@ Public Class AfaInvoiceRate
         Get
 
         End Get
-        Set(ByVal value As String)
+        Set
 
         End Set
     End Property
@@ -479,7 +479,7 @@ Public Class AfaInvoiceRate
         Get
 
         End Get
-        Set(ByVal value As System.Guid)
+        Set
 
         End Set
     End Property
@@ -492,19 +492,19 @@ Public Class AfaInvoiceRate
 
 #End Region
 
-    Public ReadOnly Property OriginalEffectiveDate() As DateType
+    Public ReadOnly Property OriginalEffectiveDate As DateType
         Get
-            Return New DateType(CType(Me.Row(AFAInvoiceRateDAL.COL_NAME_EFFECTIVE_DATE, DataRowVersion.Original), Date))
+            Return New DateType(CType(Row(AFAInvoiceRateDAL.COL_NAME_EFFECTIVE_DATE, DataRowVersion.Original), Date))
         End Get
     End Property
 
-    Public ReadOnly Property OriginalExpirationDate() As DateType
+    Public ReadOnly Property OriginalExpirationDate As DateType
         Get
-            Return New DateType(CType(Me.Row(AFAInvoiceRateDAL.COL_NAME_EXPIRATION_DATE, DataRowVersion.Original), Date))
+            Return New DateType(CType(Row(AFAInvoiceRateDAL.COL_NAME_EXPIRATION_DATE, DataRowVersion.Original), Date))
         End Get
     End Property
 
-    Public ReadOnly Property OriginalLossType() As String
+    Public ReadOnly Property OriginalLossType As String
         Get
             If Row(AFAInvoiceRateDAL.COL_NAME_LOSS_TYPE) Is DBNull.Value Then
                 Return Nothing
@@ -514,7 +514,7 @@ Public Class AfaInvoiceRate
         End Get
     End Property
 
-    Public ReadOnly Property OriginalTier() As String
+    Public ReadOnly Property OriginalTier As String
         Get
             If Row(AFAInvoiceRateDAL.COL_NAME_TIER) Is DBNull.Value Then
                 Return Nothing
@@ -524,7 +524,7 @@ Public Class AfaInvoiceRate
         End Get
     End Property
 
-    Public ReadOnly Property OriginalInsuranceCode() As String
+    Public ReadOnly Property OriginalInsuranceCode As String
         Get
             If Row(AFAInvoiceRateDAL.COL_NAME_INSURANCE_CODE) Is DBNull.Value Then
                 Return Nothing
@@ -541,11 +541,11 @@ Public Class AfaInvoiceRate
     Public NotInheritable Class IsRateDefinitionUnique
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.RATE_DEFINITION_NOT_UNIQUE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As AfaInvoiceRate = CType(objectToValidate, AfaInvoiceRate)
             Dim dal As New AFAInvoiceRateDAL
 
@@ -572,11 +572,11 @@ Public Class AfaInvoiceRate
     Public NotInheritable Class RejectOverlapsOrGaps
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_GAP_OR_OVERLAP_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As AfaInvoiceRate = CType(objectToValidate, AfaInvoiceRate)
             If obj.AfaProductId.Equals(Guid.Empty) Then Return True
             If obj.Effective Is Nothing OrElse obj.Expiration Is Nothing Then Return True
@@ -632,12 +632,12 @@ Public Class AfaInvoiceRate
 
     Public Overrides Sub Delete()
         Try
-            Me.CheckDeleted()
-            If Not Me.IsNew Then
+            CheckDeleted()
+            If Not IsNew Then
                 Dim minMax As New MinEffDateMaxExpDate(Me)
                 If Not minMax.IsLast Then
-                    Dim err As New ValidationError(Common.ErrorCodes.INVALID_GAP_OR_OVERLAP_ERR, Me.GetType, GetType(RejectOverlapsOrGaps), "Effective", Me.Effective)
-                    Throw New BOValidationException(New ValidationError() {err}, Me.GetType.Name, Me.UniqueId)
+                    Dim err As New ValidationError(Common.ErrorCodes.INVALID_GAP_OR_OVERLAP_ERR, [GetType], GetType(RejectOverlapsOrGaps), "Effective", Effective)
+                    Throw New BOValidationException(New ValidationError() {err}, [GetType].Name, UniqueId)
                 End If
             End If
             MyBase.Delete()
@@ -655,13 +655,13 @@ Public Class AfaInvoiceRate
         Public HasGap As Boolean = False
         Public HasOverlap As Boolean = False
 
-        Public Sub New(ByVal obj As AfaInvoiceRate)
+        Public Sub New(obj As AfaInvoiceRate)
             Dim tempEffective As Date
             Dim tempExpiration As Date
             Try
                 Dim dal As New AFAInvoiceRateDAL
                 Dim minMaxDs As DataSet = dal.LoadMinEffectiveMaxExpiration(obj.AfaProductId, obj.InsuranceCode, obj.LossType, obj.Tier, obj.RegulatoryState)
-                If minMaxDs.Tables(0).Rows.Count > 0 AndAlso (Not minMaxDs.Tables(0).Rows(0)(dal.COL_MIN_EFECTIVE) Is DBNull.Value) AndAlso (Not minMaxDs.Tables(0).Rows(0)(dal.COL_MAX_EXPIRATION) Is DBNull.Value) Then
+                If minMaxDs.Tables(0).Rows.Count > 0 AndAlso (minMaxDs.Tables(0).Rows(0)(dal.COL_MIN_EFECTIVE) IsNot DBNull.Value) AndAlso (minMaxDs.Tables(0).Rows(0)(dal.COL_MAX_EXPIRATION) IsNot DBNull.Value) Then
                     MinEffective = CType(minMaxDs.Tables(0).Rows(0)(dal.COL_MIN_EFECTIVE), Date)
                     MaxExpiration = CType(minMaxDs.Tables(0).Rows(0)(dal.COL_MAX_EXPIRATION), Date)
 

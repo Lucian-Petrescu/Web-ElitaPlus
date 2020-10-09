@@ -37,9 +37,9 @@ Partial Public Class ComunaStandardizationForm
         Public LastOperation As DetailPageCommand
         Public EditingBo As String
         Public HasDataChanged As Boolean
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As String, ByVal hasDataChanged As Boolean)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(LastOp As DetailPageCommand, curEditingBo As String, hasDataChanged As Boolean)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
             Me.HasDataChanged = hasDataChanged
         End Sub
     End Class
@@ -79,7 +79,7 @@ Partial Public Class ComunaStandardizationForm
 
     Public ReadOnly Property IsGridInEditMode() As Boolean
         Get
-            Return Me.Grid.EditIndex > Me.NO_ITEM_SELECTED_INDEX
+            Return Grid.EditIndex > NO_ITEM_SELECTED_INDEX
         End Get
     End Property
 
@@ -92,28 +92,28 @@ Partial Public Class ComunaStandardizationForm
         End Get
     End Property
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
             If CallFromUrl.ToUpper.Contains("TRANSEXCEPTIONDETAIL") Then
-                Me.btnBack.Visible = True
-                Me.State.IsCalledFromOtherForm = True
-                Me.MenuEnabled = False
+                btnBack.Visible = True
+                State.IsCalledFromOtherForm = True
+                MenuEnabled = False
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub
 #End Region
 
 #Region "Page Events"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.ErrControllerMaster.Clear_Hide()
-        Me.Form.DefaultButton = btnSearch.UniqueID
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        ErrControllerMaster.Clear_Hide()
+        Form.DefaultButton = btnSearch.UniqueID
         Try
-            If Not Me.IsPostBack Then
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
+            If Not IsPostBack Then
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
                 TranslateGridHeader(Grid)
                 If IsReturnFromChild Then
                     With State
@@ -123,101 +123,101 @@ Partial Public Class ComunaStandardizationForm
                         PopulateGrid()
                     End With
                 End If
-                If Not Me.State.IsCalledFromOtherForm Then
-                    Me.MenuEnabled = True
+                If Not State.IsCalledFromOtherForm Then
+                    MenuEnabled = True
                 Else
-                    Me.MenuEnabled = False
+                    MenuEnabled = False
                 End If
             Else
                 CheckIfComingFromDeleteConfirm()
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
-        Me.ShowMissingTranslations(Me.ErrControllerMaster)
+        ShowMissingTranslations(ErrControllerMaster)
     End Sub
     Protected Sub CheckIfComingFromDeleteConfirm()
-        Dim confResponse As String = Me.HiddenDeletePromptResponse.Value
-        If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
+        Dim confResponse As String = HiddenDeletePromptResponse.Value
+        If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
             If Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete Then
                 DoDelete()
             End If
-            Select Case Me.State.ActionInProgress
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Delete
             End Select
-        ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-            Select Case Me.State.ActionInProgress
+        ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Delete
             End Select
         End If
         'Clean after consuming the action
-        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-        Me.HiddenDeletePromptResponse.Value = ""
+        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        HiddenDeletePromptResponse.Value = ""
     End Sub
     Private Sub DoDelete()
-        Me.State.MyBO = New ComunaStandardization(Me.State.ComunaAliasID)
+        State.MyBO = New ComunaStandardization(State.ComunaAliasID)
         Try
-            Me.State.MyBO.Delete()
-            Me.State.MyBO.Save()
+            State.MyBO.Delete()
+            State.MyBO.Save()
             'Me.AddInfoMsg(Me.MSG_RECORD_DELETED_OK)
         Catch ex As Exception
-            Me.State.MyBO.RejectChanges()
+            State.MyBO.RejectChanges()
             Throw ex
         End Try
 
-        Me.State.PageIndex = Grid.PageIndex
+        State.PageIndex = Grid.PageIndex
 
         'Set the IsAfterSave flag to TRUE so that the Paging logic gets invoked
-        Me.State.searchDV = Nothing
+        State.searchDV = Nothing
         PopulateGrid()
-        Me.State.PageIndex = Grid.PageIndex
+        State.PageIndex = Grid.PageIndex
     End Sub
-    Private Sub ComunaCodeForm_LoadComplete(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.LoadComplete
+    Private Sub ComunaCodeForm_LoadComplete(sender As Object, e As System.EventArgs) Handles Me.LoadComplete
         SetControlState()
         If ErrControllerMaster.Visible Then
-            If Grid.Visible And Grid.Rows.Count < 10 Then
+            If Grid.Visible AndAlso Grid.Rows.Count < 10 Then
                 Dim fillerHight As Integer = 200
                 fillerHight = fillerHight - Grid.Rows.Count * 20
-                Me.spanFiller.Text = "<tr><td colspan=""2"" style=""height:" & fillerHight & "px"">&nbsp;</td></tr>"
+                spanFiller.Text = "<tr><td colspan=""2"" style=""height:" & fillerHight & "px"">&nbsp;</td></tr>"
             End If
         Else
-            Me.spanFiller.Text = ""
+            spanFiller.Text = ""
         End If
     End Sub
 
-    Private Sub ComunaCodeForm_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles Me.PageReturn
+    Private Sub ComunaCodeForm_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles Me.PageReturn
         Try
-            Me.MenuEnabled = True
+            MenuEnabled = True
             IsReturnFromChild = True
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 #End Region
 
 #Region "Grid Handler"
 
-    Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = Grid.PageIndex
-            Me.State.ComunaAliasID = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = Grid.PageIndex
+            State.ComunaAliasID = Guid.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+    Private Sub Grid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
         Try
             'ignore other commands
             If e.CommandName = "SelectAction" OrElse e.CommandName = "DeleteAction" Then
@@ -225,49 +225,49 @@ Partial Public Class ComunaStandardizationForm
                 Dim row As GridViewRow = CType(CType(e.CommandSource, Control).Parent.Parent, GridViewRow)
                 Dim RowInd As Integer = row.RowIndex
                 lblCtrl = CType(Grid.Rows(RowInd).Cells(GRID_COL_ID_IDX).FindControl(GRID_CTRL_NAME_COMUNA_ALIAS_ID), Label)
-                Me.State.ComunaAliasID = New Guid(lblCtrl.Text)
-                Me.State.MyBO = New ComunaStandardization(Me.State.ComunaAliasID)
+                State.ComunaAliasID = New Guid(lblCtrl.Text)
+                State.MyBO = New ComunaStandardization(State.ComunaAliasID)
                 lblCtrl = Nothing
                 lblCtrl = CType(Grid.Rows(RowInd).Cells(GRID_COL_COMUNA_ALIAS_IDX).FindControl(GRID_CTRL_NAME_COMUNA_ALIAS), Label)
-                If Not lblCtrl Is Nothing Then Me.State.MyBO.ComunaAlias = lblCtrl.Text
+                If lblCtrl IsNot Nothing Then State.MyBO.ComunaAlias = lblCtrl.Text
                 lblCtrl = Nothing
                 If e.CommandName = "SelectAction" Then
                     Grid.EditIndex = RowInd
                     PopulateGrid()
                     'Disable all Edit and Delete icon buttons on the Grid
-                    SetGridControls(Me.Grid, False)
+                    SetGridControls(Grid, False)
                 ElseIf e.CommandName = "DeleteAction" Then
                     'Clear the SelectedItemStyle to remove the highlight from the previously saved row
-                    Grid.SelectedIndex = Me.GRID_NO_SELECTEDITEM_INX
+                    Grid.SelectedIndex = GRID_NO_SELECTEDITEM_INX
 
-                    Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenDeletePromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+                    DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenDeletePromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Private Sub Grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Try
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim lblTemp As Label, ddl As DropDownList, txt As TextBox
 
-            If (itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
+            If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
                 With e.Row
                     If .RowIndex = Grid.EditIndex Then
                         ddl = CType(e.Row.FindControl(GRID_CTRL_NAME_COMUNA), DropDownList)
-                        If Not ddl Is Nothing Then
+                        If ddl IsNot Nothing Then
                             Try
                                 'Me.BindListControlToDataView(ddl, COMUNALIST, "Description", "id", True) 'dll
 
@@ -276,14 +276,14 @@ Partial Public Class ComunaStandardizationForm
                                   .AddBlankItem = True
                              })
 
-                                Me.SetSelectedItem(ddl, Me.State.MyBO.ComunaCodeId)
+                                SetSelectedItem(ddl, State.MyBO.ComunaCodeId)
                             Catch ex As Exception
                             End Try
                         End If
                         ddl = Nothing
 
                         txt = CType(e.Row.FindControl(GRID_CTRL_NAME_COMUNA_ALIAS), TextBox)
-                        If Not txt Is Nothing Then
+                        If txt IsNot Nothing Then
                             If State.IsGridAddNew Then
                                 txt.Text = State.MyBO.ComunaAlias
                             End If
@@ -294,7 +294,7 @@ Partial Public Class ComunaStandardizationForm
             End If
             BaseItemBound(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
     Private Function GetComunaList() As Assurant.Elita.CommonConfiguration.DataElements.ListItem()
@@ -309,7 +309,7 @@ Partial Public Class ComunaStandardizationForm
             oListContext.CountryId = usercountries(Index)
             Dim oComunaByCountry As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(ListCodes.ComunaCodeByCountry, context:=oListContext)
             If oComunaByCountry.Count > 0 Then
-                If Not oComuna Is Nothing Then
+                If oComuna IsNot Nothing Then
                     oComuna.AddRange(oComunaByCountry)
                 Else
                     oComuna = oComunaByCountry.Clone()
@@ -321,7 +321,7 @@ Partial Public Class ComunaStandardizationForm
         Return oComuna.ToArray()
 
     End Function
-    Private Sub Grid_Sorting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_Sorting(sender As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
         Try
             Dim strSort As String = e.SortExpression
             With State
@@ -334,18 +334,18 @@ Partial Public Class ComunaStandardizationForm
             End With
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Protected Sub cboPageSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Protected Sub cboPageSize_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
-            Me.Grid.PageIndex = Me.State.PageIndex
-            Me.PopulateGrid()
+            State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
+            Grid.PageIndex = State.PageIndex
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 #End Region
@@ -368,22 +368,22 @@ Partial Public Class ComunaStandardizationForm
             Grid.PageSize = State.PageSize
             If State.searchDV.Count = 0 Then
                 Dim dv As ComunaStandardization.ComunaStdSearchDV = State.searchDV.AddNewRowToEmptyDV()
-                SetPageAndSelectedIndexFromGuid(dv, Me.State.ComunaAliasID, Me.Grid, Me.State.PageIndex, (Me.IsGridInEditMode OrElse State.IsGridAddNew))
-                Me.Grid.DataSource = dv
+                SetPageAndSelectedIndexFromGuid(dv, State.ComunaAliasID, Grid, State.PageIndex, (IsGridInEditMode OrElse State.IsGridAddNew))
+                Grid.DataSource = dv
             Else
-                SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.ComunaAliasID, Me.Grid, Me.State.PageIndex, (Me.IsGridInEditMode OrElse State.IsGridAddNew))
-                Me.Grid.DataSource = Me.State.searchDV
+                SetPageAndSelectedIndexFromGuid(State.searchDV, State.ComunaAliasID, Grid, State.PageIndex, (IsGridInEditMode OrElse State.IsGridAddNew))
+                Grid.DataSource = State.searchDV
             End If
 
-            Me.State.PageIndex = Me.Grid.PageIndex
-            Me.Grid.DataBind()
+            State.PageIndex = Grid.PageIndex
+            Grid.DataBind()
 
             HighLightGridViewSortColumn(Grid, State.SortExpression)
             ControlMgr.SetVisibleControl(Me, Grid, True)
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-            If Me.Grid.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
             If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
 
@@ -392,22 +392,22 @@ Partial Public Class ComunaStandardizationForm
                     gvRow.Visible = False
                     gvRow.Controls.Clear()
                 Next
-                Me.DisplayMessage(Message.MSG_NO_RECORDS_FOUND, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                DisplayMessage(Message.MSG_NO_RECORDS_FOUND, "", MSG_BTN_OK, MSG_TYPE_INFO)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
     Private Sub SetControlState()
-        If (Me.IsGridInEditMode) Then
+        If (IsGridInEditMode) Then
             ControlMgr.SetVisibleControl(Me, btnNew, False)
             ControlMgr.SetVisibleControl(Me, btnCancel, True)
             ControlMgr.SetVisibleControl(Me, btnSave, True)
             ControlMgr.SetEnableControl(Me, btnSearch, False)
             ControlMgr.SetEnableControl(Me, btnClearSearch, False)
-            Me.MenuEnabled = False
-            If (Me.cboPageSize.Enabled) Then
+            MenuEnabled = False
+            If (cboPageSize.Enabled) Then
                 ControlMgr.SetEnableControl(Me, cboPageSize, False)
             End If
         Else
@@ -416,9 +416,9 @@ Partial Public Class ComunaStandardizationForm
             ControlMgr.SetVisibleControl(Me, btnSave, False)
             ControlMgr.SetEnableControl(Me, btnSearch, True)
             ControlMgr.SetEnableControl(Me, btnClearSearch, True)
-            If Not Me.State.IsCalledFromOtherForm Then Me.MenuEnabled = True
-            If Not (Me.cboPageSize.Enabled) Then
-                ControlMgr.SetEnableControl(Me, Me.cboPageSize, True)
+            If Not State.IsCalledFromOtherForm Then MenuEnabled = True
+            If Not (cboPageSize.Enabled) Then
+                ControlMgr.SetEnableControl(Me, cboPageSize, True)
             End If
         End If
         cboPageSize.Visible = Grid.Visible
@@ -428,9 +428,9 @@ Partial Public Class ComunaStandardizationForm
     Private Function PopulateBOFromForm(ByRef errMsg As Collections.Generic.List(Of String)) As Boolean
         Dim blnSuccess As Boolean = True
         Dim ind As Integer = Grid.EditIndex
-        With Me.State.MyBO
+        With State.MyBO
             Dim ddl As DropDownList = CType(Grid.Rows(ind).Cells(GRID_COL_COMUNA_IDX).FindControl(GRID_CTRL_NAME_COMUNA), DropDownList)
-            Me.PopulateBOProperty(Me.State.MyBO, "ComunaCodeId", ddl)
+            PopulateBOProperty(State.MyBO, "ComunaCodeId", ddl)
             If .ComunaCodeId = Guid.Empty Then
                 blnSuccess = False
                 errMsg.Add(TranslationBase.TranslateLabelOrMessage("Comuna") & ":" & TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR))
@@ -449,8 +449,8 @@ Partial Public Class ComunaStandardizationForm
     Private Sub RemoveNewRowFromSearchDV()
         Dim rowind As Integer = NO_ITEM_SELECTED_INDEX
         With State
-            If Not .searchDV Is Nothing Then
-                rowind = FindSelectedRowIndexFromGuid(.searchDV, Me.State.ComunaAliasID)
+            If .searchDV IsNot Nothing Then
+                rowind = FindSelectedRowIndexFromGuid(.searchDV, State.ComunaAliasID)
             End If
         End With
         If rowind <> NO_ITEM_SELECTED_INDEX Then State.searchDV.Delete(rowind)
@@ -458,55 +458,55 @@ Partial Public Class ComunaStandardizationForm
 #End Region
 
 #Region "Button click handlers"
-    Protected Sub btnNew_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnNew.Click
+    Protected Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
         Try
             State.IsGridVisible = True
-            Me.State.MyBO = New ComunaStandardization
-            Me.State.ComunaAliasID = Me.State.MyBO.Id
+            State.MyBO = New ComunaStandardization
+            State.ComunaAliasID = State.MyBO.Id
             If State.searchDV Is Nothing Then State.searchDV = ComunaStandardization.LoadList("", "")
-            State.MyBO.AddNewRowToSearchDV(Me.State.searchDV, Me.State.MyBO)
+            State.MyBO.AddNewRowToSearchDV(State.searchDV, State.MyBO)
             State.IsGridAddNew = True
             PopulateGrid()
             'Disable all Edit and Delete icon buttons on the Grid
-            SetGridControls(Me.Grid, False)
+            SetGridControls(Grid, False)
             'Set focus on the code TextBox for the EditItemIndex row
             Dim objCtrl As WebControl = CType(Grid.Rows(Grid.EditIndex).Cells(GRID_COL_COMUNA_ALIAS_IDX).FindControl(GRID_CTRL_NAME_COMUNA_ALIAS), WebControl)
-            If Not objCtrl Is Nothing Then SetFocus(objCtrl)
+            If objCtrl IsNot Nothing Then SetFocus(objCtrl)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Protected Sub btnSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSave.Click
+    Protected Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
         Try
             Dim ErrMsg As New Collections.Generic.List(Of String)
             If PopulateBOFromForm(ErrMsg) Then
                 With State
                     If (.MyBO.IsDirty) Then
                         .MyBO.Save()
-                        If .IsGridAddNew And .searchDV.Count = 1 Then
+                        If .IsGridAddNew AndAlso .searchDV.Count = 1 Then
                             Dim oCom As New ComunaCode(.MyBO.ComunaCodeId)
                             .searchComunaAlias = .MyBO.ComunaAlias
                             .searchComuna = oCom.Comuna
                         End If
-                        Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                        AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
                         State.searchDV = Nothing
                     Else
-                        Me.AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
+                        AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
                     End If
-                    Grid.EditIndex = Me.NO_ITEM_SELECTED_INDEX
+                    Grid.EditIndex = NO_ITEM_SELECTED_INDEX
                     .IsGridAddNew = False
                 End With
             Else
-                Me.ErrControllerMaster.AddErrorAndShow(ErrMsg.ToArray, False)
+                ErrControllerMaster.AddErrorAndShow(ErrMsg.ToArray, False)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
-        Me.PopulateGrid()
+        PopulateGrid()
     End Sub
 
-    Protected Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
+    Protected Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
         Try
             With State
                 If .IsGridAddNew Then
@@ -520,25 +520,25 @@ Partial Public Class ComunaStandardizationForm
             Grid.EditIndex = NO_ITEM_SELECTED_INDEX
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Protected Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClearSearch.Click
+    Protected Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         Try
-            Me.moComunaAliasTextBox.Text = String.Empty
-            Me.moComunaTextBox.Text = String.Empty
+            moComunaAliasTextBox.Text = String.Empty
+            moComunaTextBox.Text = String.Empty
 
-            Grid.EditIndex = Me.NO_ITEM_SELECTED_INDEX
+            Grid.EditIndex = NO_ITEM_SELECTED_INDEX
             With State
                 .ComunaAliasID = Guid.Empty
             End With
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Protected Sub btnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSearch.Click
+    Protected Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
             With State
                 .PageIndex = 0
@@ -546,21 +546,21 @@ Partial Public Class ComunaStandardizationForm
                 .IsGridVisible = True
                 .searchDV = Nothing
                 .HasDataChanged = False
-                .searchComunaAlias = Me.moComunaAliasTextBox.Text.Trim
+                .searchComunaAlias = moComunaAliasTextBox.Text.Trim
                 .searchComuna = moComunaTextBox.Text.Trim
             End With
-            Me.PopulateGrid()
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.transactionLogHeaderId, False))
+            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.transactionLogHeaderId, False))
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 

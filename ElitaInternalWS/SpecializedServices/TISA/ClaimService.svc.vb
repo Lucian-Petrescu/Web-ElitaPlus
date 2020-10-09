@@ -21,13 +21,13 @@ Namespace SpecializedServices.Tisa
         Private Property CompanyManager As ICompanyManager
         Private Property CompanyGroupManager As ICompanyGroupManager
 
-        Public Sub New(ByVal pCertificateManager As ICertificateManager,
-                       ByVal pDealerManager As IDealerManager,
-                       ByVal pCommonManager As ICommonManager,
-                       ByVal pClaimManager As IClaimManager,
-                       ByVal pCountryManager As ICountryManager,
-                       ByVal pCompanyManager As ICompanyManager,
-                       ByVal pCompanyGroupManager As ICompanyGroupManager)
+        Public Sub New(pCertificateManager As ICertificateManager,
+                       pDealerManager As IDealerManager,
+                       pCommonManager As ICommonManager,
+                       pClaimManager As IClaimManager,
+                       pCountryManager As ICountryManager,
+                       pCompanyManager As ICompanyManager,
+                       pCompanyGroupManager As ICompanyGroupManager)
 
             If (pCertificateManager Is Nothing) Then
                 Throw New ArgumentNullException("pCertificateManager")
@@ -50,13 +50,13 @@ Namespace SpecializedServices.Tisa
             If (pCompanyGroupManager Is Nothing) Then
                 Throw New ArgumentNullException("pCompanyGroupManager")
             End If
-            Me.CertificateManager = pCertificateManager
-            Me.DealerManager = pDealerManager
-            Me.CommonManager = pCommonManager
-            Me.ClaimManager = pClaimManager
-            Me.CountryManager = pCountryManager
-            Me.CompanyManager = pCompanyManager
-            Me.CompanyGroupManager = pCompanyGroupManager
+            CertificateManager = pCertificateManager
+            DealerManager = pDealerManager
+            CommonManager = pCommonManager
+            ClaimManager = pClaimManager
+            CountryManager = pCountryManager
+            CompanyManager = pCompanyManager
+            CompanyGroupManager = pCompanyGroupManager
         End Sub
 
         Public Sub DenyClaim(request As DenyClaimRequest) Implements IClaimService.DenyClaim
@@ -104,7 +104,7 @@ Namespace SpecializedServices.Tisa
 
         End Sub
 
-        Private Function HasCoverageChanged(ByVal pClaim As Claim, ByVal pCert As Certificate, pCoverageTypeCode As String) As Boolean
+        Private Function HasCoverageChanged(pClaim As Claim, pCert As Certificate, pCoverageTypeCode As String) As Boolean
 
             Dim claimCertItemCovg As CertificateItemCoverage = pCert.ItemCoverages.Where(Function(cic) cic.CertItemCoverageId = pClaim.CertItemCoverageId).FirstOrDefault()
 
@@ -149,7 +149,7 @@ Namespace SpecializedServices.Tisa
             Dim oCompany As Company
             Try
                 oCompany = CompanyManager.GetCompany(request.CompanyCode)
-                oClaim = Me.ClaimManager.GetClaim(request.ClaimNumber.ToUpperInvariant, oCompany.CompanyId)
+                oClaim = ClaimManager.GetClaim(request.ClaimNumber.ToUpperInvariant, oCompany.CompanyId)
             Catch conf As CompanyNotFoundException
                 Throw New FaultException(Of CompanyNotFoundFault)(New CompanyNotFoundFault(), businessObj.TranslationBase.TranslateLabelOrMessage(ErrorCodes.ERR_COMPANY_NOT_FOUND,
                                                                      businessObj.ElitaPlusIdentity.Current.ActiveUser.LanguageId) & " : " & request.CompanyCode)
@@ -180,16 +180,16 @@ Namespace SpecializedServices.Tisa
             'If the incoming Request has Auth Amount value, do we update it or check for the least value with Price List
 
             'Change in Coverage : When the incoming Coverage Type is different than on the existing Claim
-            Dim oCert As Certificate = Me.CertificateManager.GetCertifcateByItemCoverage(oClaim.CertItemCoverageId)
-            bHasCoverageChanged = Me.HasCoverageChanged(oClaim, oCert, request.CoverageTypeCode)
+            Dim oCert As Certificate = CertificateManager.GetCertifcateByItemCoverage(oClaim.CertItemCoverageId)
+            bHasCoverageChanged = HasCoverageChanged(oClaim, oCert, request.CoverageTypeCode)
 
             'Change the Service Center if there is a Valid Change! 
-            Dim oClaimSvcCenter As ServiceCenter = Me.CountryManager.GetServiceCenterById(oCompany.BusinessCountryId, oClaim.ServiceCenterId)
+            Dim oClaimSvcCenter As ServiceCenter = CountryManager.GetServiceCenterById(oCompany.BusinessCountryId, oClaim.ServiceCenterId)
             If request.ServiceCenterCode <> oClaimSvcCenter.CODE Then
                 bHasSvcCenterChanged = True
                 'validate service center code
                 Try
-                    Dim testSvc As ServiceCenter = Me.CountryManager.GetServiceCenterByCode(oCert.GetDealer(Me.DealerManager).GetCompany(Me.CompanyManager).BusinessCountryId, request.ServiceCenterCode)
+                    Dim testSvc As ServiceCenter = CountryManager.GetServiceCenterByCode(oCert.GetDealer(DealerManager).GetCompany(CompanyManager).BusinessCountryId, request.ServiceCenterCode)
                 Catch svcnf As ServiceCenterNotFoundException
                     Throw New FaultException(Of ServiceCenterNotFoundFault)(New ServiceCenterNotFoundFault(),
                                                                             businessObj.TranslationBase.TranslateLabelOrMessage(ErrorCodes.ERR_INVALID_SERVICE_CENTER_CODE,
@@ -215,7 +215,7 @@ Namespace SpecializedServices.Tisa
 
             'After all the Validations call the UpdateRepairableClaim Function 
             Try
-                Me.ClaimManager.UpdateRepairableClaim(oClaim, oCert, oCompany, request.CoverageTypeCode,
+                ClaimManager.UpdateRepairableClaim(oClaim, oCert, oCompany, request.CoverageTypeCode,
                                                  request.ServiceCenterCode, request.ServiceLevel,
                                                  bHasCoverageChanged, bHasSvcCenterChanged,
                                                  isSvcWarrantyClaim,
@@ -238,7 +238,7 @@ Namespace SpecializedServices.Tisa
 
         End Sub
 
-        Private Sub PopulateIrreparableClaim(ByVal pRequest As UpdateClaimReplacedWithRefubishedRequest,
+        Private Sub PopulateIrreparableClaim(pRequest As UpdateClaimReplacedWithRefubishedRequest,
                                              ByRef pRepairClaim As Claim,
                                              ByRef pCompany As Company,
                                              ByRef pCert As Certificate,
@@ -250,10 +250,10 @@ Namespace SpecializedServices.Tisa
                                              ByRef pBasicUpdateFields As IClaimManager.ClaimBasicUpdateFields
                                              )
 
-            pCompany = Me.CompanyManager.GetCompany(pRequest.CompanyCode)
+            pCompany = CompanyManager.GetCompany(pRequest.CompanyCode)
 
             Try
-                pRepairClaim = Me.ClaimManager.GetClaim(pRequest.ClaimNumber, pCompany.CompanyId)
+                pRepairClaim = ClaimManager.GetClaim(pRequest.ClaimNumber, pCompany.CompanyId)
             Catch cnf As ClaimNotFoundException
                 Throw New FaultException(Of ClaimNotFoundFault)(New ClaimNotFoundFault(),
                                                                     businessObj.TranslationBase.TranslateLabelOrMessage(ErrorCodes.ERR_REPAIR_CLAIM_NOT_FOUND,
@@ -274,15 +274,15 @@ Namespace SpecializedServices.Tisa
                 pIsSvcWarrantyClaim = True
             End If
 
-            pCert = Me.CertificateManager.GetCertifcateByItemCoverage(pRepairClaim.CertItemCoverageId)
+            pCert = CertificateManager.GetCertifcateByItemCoverage(pRepairClaim.CertItemCoverageId)
             '''''if Coveragetypecode is supplied , check it otherwise default to false "coverage has not changed"
             If Not pRequest.CoverageTypeCode Is Nothing Then
-                pHasCoverageChanged = Me.HasCoverageChanged(pRepairClaim, pCert, pRequest.CoverageTypeCode)
+                pHasCoverageChanged = HasCoverageChanged(pRepairClaim, pCert, pRequest.CoverageTypeCode)
             Else
                 pHasCoverageChanged = False
             End If
             'Change the Service Center if there is a Valid Change! 
-            Dim oClaimSvcCenter As ServiceCenter = Me.CountryManager.GetServiceCenterById(pCompany.BusinessCountryId, pRepairClaim.ServiceCenterId)
+            Dim oClaimSvcCenter As ServiceCenter = CountryManager.GetServiceCenterById(pCompany.BusinessCountryId, pRepairClaim.ServiceCenterId)
             'validate service center code if sent in request.
             If (Not pRequest.ServiceCenterCode Is Nothing) Then
                 If pRequest.ServiceCenterCode <> oClaimSvcCenter.CODE Then
@@ -290,7 +290,7 @@ Namespace SpecializedServices.Tisa
 
                     Try
 
-                        If (Me.CountryManager.GetServiceCenterByCode(pCert.GetDealer(Me.DealerManager).GetCompany(Me.CompanyManager).BusinessCountryId, pRequest.ServiceCenterCode) Is Nothing) Then
+                        If (CountryManager.GetServiceCenterByCode(pCert.GetDealer(DealerManager).GetCompany(CompanyManager).BusinessCountryId, pRequest.ServiceCenterCode) Is Nothing) Then
                             Throw New FaultException(Of ServiceCenterNotFoundFault)(New ServiceCenterNotFoundFault(),
                                                                     businessObj.TranslationBase.TranslateLabelOrMessage(ErrorCodes.ERR_INVALID_SERVICE_CENTER_CODE,
                                                                             businessObj.ElitaPlusIdentity.Current.ActiveUser.LanguageId) & " : " & pRequest.ServiceCenterCode)
@@ -323,7 +323,7 @@ Namespace SpecializedServices.Tisa
         End Sub
 
 
-        Public Sub UpdateIrrepairableWithReplacement(ByVal request As UpdateClaimReplacedWithRefubishedRequest) Implements IClaimService.UpdateIrrepairableWithReplacement
+        Public Sub UpdateIrrepairableWithReplacement(request As UpdateClaimReplacedWithRefubishedRequest) Implements IClaimService.UpdateIrrepairableWithReplacement
 
             Dim oCompany As Company
             Dim oRepairClaim As Claim
@@ -364,7 +364,7 @@ Namespace SpecializedServices.Tisa
 
             Try
                 'After all the Validations call the UpdateClaimReplacedWithRefurbished Function 
-                Me.ClaimManager.UpdateClaimReplacedWithRefubished(oRepairClaim, oCert, oCompany, request.CoverageTypeCode,
+                ClaimManager.UpdateClaimReplacedWithRefubished(oRepairClaim, oCert, oCompany, request.CoverageTypeCode,
                                                         request.ServiceCenterCode, request.ServiceLevel, bHasCoverageChanged,
                                                         bHasSvcCenterChanged, isSvcWarrantyClaim, request.AuthorizedAmount, If(request.SimCardAmount Is Nothing, 0, request.SimCardAmount),
                                                         request.SerialNumber, request.Model, request.Manufacturer, request.UpdateAction,
@@ -430,8 +430,8 @@ Namespace SpecializedServices.Tisa
 
         'End Sub
 
-        Private Sub ValidateAndMapExtendedStatuses(ByVal pCompany As Company,
-                                                   ByVal pReqExtStatuses As List(Of ExtendedStatus),
+        Private Sub ValidateAndMapExtendedStatuses(pCompany As Company,
+                                                   pReqExtStatuses As List(Of ExtendedStatus),
                                                    ByRef pClaimExtendedStatuses As List(Of IClaimManager.ExtendedStatus))
             Dim extStatus As ExtendedStatus
             Dim extStatId As Guid
@@ -607,7 +607,7 @@ Namespace SpecializedServices.Tisa
             End Try
 
             ''''Locate Certificate
-            Dim oCert As Certificate = Me.CertificateManager.GetCertificate(request.DealerCode, request.CertificateNumber)
+            Dim oCert As Certificate = CertificateManager.GetCertificate(request.DealerCode, request.CertificateNumber)
             If (oCert Is Nothing) Then
                 Throw New FaultException(Of CertificateNotFoundFault)(New CertificateNotFoundFault(),
                                                                       businessObj.TranslationBase.TranslateLabelOrMessage(ErrorCodes.ERR_CERTIFICATE_NOT_FOUND,
@@ -617,7 +617,7 @@ Namespace SpecializedServices.Tisa
             '''Locate Coverage
             Dim cic As CertificateItemCoverage
             Try
-                cic = Me.ClaimManager.LocateCoverage(oCert, request.DateOfLoss, request.CoverageTypeCode, Nothing)
+                cic = ClaimManager.LocateCoverage(oCert, request.DateOfLoss, request.CoverageTypeCode, Nothing)
             Catch cnf As CoverageNotFoundException
                 Throw New FaultException(Of CoverageNotFoundFault)(New CoverageNotFoundFault(),
                                                                    businessObj.TranslationBase.TranslateLabelOrMessage(ErrorCodes.ERR_COVERAGE_NOT_FOUND,
@@ -662,7 +662,7 @@ Namespace SpecializedServices.Tisa
 
             ''''validate service center
             Try
-                If (Me.CountryManager.GetServiceCenterByCode(oDealer.GetCompany(Me.CompanyManager).BusinessCountryId, request.ServiceCenterCode) Is Nothing) Then
+                If (CountryManager.GetServiceCenterByCode(oDealer.GetCompany(CompanyManager).BusinessCountryId, request.ServiceCenterCode) Is Nothing) Then
                     Throw New FaultException(Of ServiceCenterNotFoundFault)(New ServiceCenterNotFoundFault(),
                                                                             businessObj.TranslationBase.TranslateLabelOrMessage(ErrorCodes.ERR_SERVICE_CENTER_NOT_FOUND,
                                                                                         businessObj.ElitaPlusIdentity.Current.ActiveUser.LanguageId))
@@ -698,7 +698,7 @@ Namespace SpecializedServices.Tisa
 
 
             Try
-                oClaim = Me.ClaimManager.CreateClaim(cic,
+                oClaim = ClaimManager.CreateClaim(cic,
                                                      oClaim,
                                                      oDealer,
                                                      request.CoverageTypeCode,
@@ -840,7 +840,7 @@ Namespace SpecializedServices.Tisa
                 End If
 
                 'After all the Validations call the UpdateRepairableClaim Function 
-                Me.ClaimManager.UpdateTheftClaim(oReplacementClaim, oCert, oCompany, bHasSvcCenterChanged, request.CoverageTypeCode,
+                ClaimManager.UpdateTheftClaim(oReplacementClaim, oCert, oCompany, bHasSvcCenterChanged, request.CoverageTypeCode,
                                                         request.ServiceCenterCode, request.ServiceLevel,
                                                          request.AuthorizedAmount,
                                                         request.SerialNumber, request.Model, request.Manufacturer,
@@ -862,9 +862,9 @@ Namespace SpecializedServices.Tisa
             End Try
         End Sub
 
-        Private Sub PopulateTheftClaim(ByVal pRequest As UpdateTheftClaimRequest,
-                                       ByVal pMake As String,
-                                       ByVal pModel As String,
+        Private Sub PopulateTheftClaim(pRequest As UpdateTheftClaimRequest,
+                                       pMake As String,
+                                       pModel As String,
                                             ByRef pReplacementClaim As Claim,
                                             ByRef pCompany As Company,
                                             ByRef pCert As Certificate,
@@ -875,10 +875,10 @@ Namespace SpecializedServices.Tisa
                                             ByRef pBasicUpdateFields As IClaimManager.ClaimBasicUpdateFields
                                             )
 
-            pCompany = Me.CompanyManager.GetCompany(pRequest.CompanyCode)
+            pCompany = CompanyManager.GetCompany(pRequest.CompanyCode)
 
             Try
-                pReplacementClaim = Me.ClaimManager.GetClaim(pRequest.ClaimNumber, pCompany.CompanyId)
+                pReplacementClaim = ClaimManager.GetClaim(pRequest.ClaimNumber, pCompany.CompanyId)
             Catch cnf As ClaimNotFoundException
                 Throw New FaultException(Of ClaimNotFoundFault)(New ClaimNotFoundFault(),
                                                                 businessObj.TranslationBase.TranslateLabelOrMessage(ErrorCodes.ERR_REPLACEMENT_CLAIM_NOT_FOUND,
@@ -887,15 +887,15 @@ Namespace SpecializedServices.Tisa
             End Try
 
 
-            pCert = Me.CertificateManager.GetCertifcateByItemCoverage(pReplacementClaim.CertItemCoverageId)
+            pCert = CertificateManager.GetCertifcateByItemCoverage(pReplacementClaim.CertItemCoverageId)
             '''''if Coveragetypecode is supplied , check it otherwise default to false "coverage has not changed"
             If Not pRequest.CoverageTypeCode Is Nothing Then
-                pHasCoverageChanged = Me.HasCoverageChanged(pReplacementClaim, pCert, pRequest.CoverageTypeCode)
+                pHasCoverageChanged = HasCoverageChanged(pReplacementClaim, pCert, pRequest.CoverageTypeCode)
             Else
                 pHasCoverageChanged = False
             End If
             'Change the Service Center if there is a Valid Change! 
-            Dim oClaimSvcCenter As ServiceCenter = Me.CountryManager.GetServiceCenterById(pCompany.BusinessCountryId, pReplacementClaim.ServiceCenterId)
+            Dim oClaimSvcCenter As ServiceCenter = CountryManager.GetServiceCenterById(pCompany.BusinessCountryId, pReplacementClaim.ServiceCenterId)
             'validate service center code if sent in request.
             If (Not pRequest.ServiceCenterCode Is Nothing) Then
                 If pRequest.ServiceCenterCode <> oClaimSvcCenter.CODE Then
@@ -903,7 +903,7 @@ Namespace SpecializedServices.Tisa
 
                     Try
 
-                        If (Me.CountryManager.GetServiceCenterByCode(pCert.GetDealer(Me.DealerManager).GetCompany(Me.CompanyManager).BusinessCountryId, pRequest.ServiceCenterCode) Is Nothing) Then
+                        If (CountryManager.GetServiceCenterByCode(pCert.GetDealer(DealerManager).GetCompany(CompanyManager).BusinessCountryId, pRequest.ServiceCenterCode) Is Nothing) Then
                             Throw New FaultException(Of ServiceCenterNotFoundFault)(New ServiceCenterNotFoundFault(),
                                                                                     businessObj.TranslationBase.TranslateLabelOrMessage(ErrorCodes.ERR_INVALID_SERVICE_CENTER_CODE,
                                                                                     businessObj.ElitaPlusIdentity.Current.ActiveUser.LanguageId) & " : " & pRequest.ServiceCenterCode)

@@ -13,7 +13,7 @@ Public Class SendCancelRequestTMX
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As SendCancelRequestTMXDs)
+    Public Sub New(ds As SendCancelRequestTMXDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -32,7 +32,7 @@ Public Class SendCancelRequestTMX
     Protected Shadows Sub CheckDeleted()
     End Sub
 
-    Private Sub MapDataSet(ByVal ds As SendCancelRequestTMXDs)
+    Private Sub MapDataSet(ds As SendCancelRequestTMXDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -45,17 +45,17 @@ Public Class SendCancelRequestTMX
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
-    Private Sub Load(ByVal ds As SendCancelRequestTMXDs)
+    Private Sub Load(ds As SendCancelRequestTMXDs)
         Try
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw ex
         Catch ex As BOValidationException
@@ -67,7 +67,7 @@ Public Class SendCancelRequestTMX
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As SendCancelRequestTMXDs)
+    Private Sub PopulateBOFromWebService(ds As SendCancelRequestTMXDs)
         Try
             If ds.SendCancelRequestTMX.Count = 0 Then Exit Sub
 
@@ -89,55 +89,55 @@ Public Class SendCancelRequestTMX
 #End Region
 
 #Region "Properties"
-    Public Property MobileNum() As String
+    Public Property MobileNum As String
         Get
-            If Row(Me.DATA_COL_NAME_MOBILE_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_MOBILE_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_MOBILE_NUMBER), String)
+                Return CType(Row(DATA_COL_NAME_MOBILE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
-            Me.SetValue(Me.DATA_COL_NAME_MOBILE_NUMBER, Value)
+        Set
+            SetValue(DATA_COL_NAME_MOBILE_NUMBER, Value)
         End Set
     End Property
 
-    Public Property SupplementaryServiceCode() As String
+    Public Property SupplementaryServiceCode As String
         Get
-            If Row(Me.DATA_COL_NAME_SUPL_SERVICE_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_SUPL_SERVICE_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_SUPL_SERVICE_CODE), String)
+                Return CType(Row(DATA_COL_NAME_SUPL_SERVICE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
-            Me.SetValue(Me.DATA_COL_NAME_SUPL_SERVICE_CODE, Value)
+        Set
+            SetValue(DATA_COL_NAME_SUPL_SERVICE_CODE, Value)
         End Set
     End Property
 
-    Public Property CommercialServiceCode() As String
+    Public Property CommercialServiceCode As String
         Get
-            If Row(Me.DATA_COL_NAME_COMM_SERVICE_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_COMM_SERVICE_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_COMM_SERVICE_CODE), String)
+                Return CType(Row(DATA_COL_NAME_COMM_SERVICE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
-            Me.SetValue(Me.DATA_COL_NAME_COMM_SERVICE_CODE, Value)
+        Set
+            SetValue(DATA_COL_NAME_COMM_SERVICE_CODE, Value)
         End Set
     End Property
 
-    Public Property UserName() As String
+    Public Property UserName As String
         Get
-            If Row(Me.DATA_COL_NAME_USER_NAME) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_USER_NAME) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_USER_NAME), String)
+                Return CType(Row(DATA_COL_NAME_USER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
-            Me.SetValue(Me.DATA_COL_NAME_USER_NAME, Value)
+        Set
+            SetValue(DATA_COL_NAME_USER_NAME, Value)
         End Set
     End Property
 #End Region
@@ -155,13 +155,13 @@ Public Class SendCancelRequestTMX
         sb.Append("<idTranCliente>0</idTranCliente>")
         sb.Append("<Parametros>")
         sb.Append("<Par><Nom>EN_num_celular</Nom><Val>")
-        sb.Append(Me.MobileNum)
+        sb.Append(MobileNum)
         sb.Append("</Val></Par><Par><Nom>EV_servsupl</Nom><Val>|")
-        sb.Append(Me.SupplementaryServiceCode)
+        sb.Append(SupplementaryServiceCode)
         sb.Append("|</Val></Par><Par><Nom>EV_cadena_servicio</Nom><Val>|")
-        sb.Append(Me.CommercialServiceCode)
+        sb.Append(CommercialServiceCode)
         sb.Append("|</Val></Par><Par><Nom>EV_usuario</Nom><Val>")
-        sb.Append(Me.UserName)
+        sb.Append(UserName)
         sb.Append("</Val></Par></Parametros></Peticion>")
 
         Dim data As String = sb.ToString
@@ -175,7 +175,7 @@ Public Class SendCancelRequestTMX
         Else
             url = New Uri("http://201.131.4.180:8080")
         End If
-            Dim request As HttpWebRequest = HttpWebRequest.Create(url)
+            Dim request As HttpWebRequest = WebRequest.Create(url)
             request.Method = WebRequestMethods.Http.Post
             request.ContentLength = data.Length
             request.ContentType = "text/xml"

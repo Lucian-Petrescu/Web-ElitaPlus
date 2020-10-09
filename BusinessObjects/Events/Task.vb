@@ -6,48 +6,48 @@ Public Class Task
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New TaskDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class Task
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New TaskDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -94,7 +94,7 @@ Public Class Task
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(TaskDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -105,7 +105,7 @@ Public Class Task
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If row(TaskDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -114,15 +114,15 @@ Public Class Task
                 Return CType(row(TaskDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TaskDAL.COL_NAME_CODE, Value)
+            SetValue(TaskDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1020)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If row(TaskDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -131,15 +131,15 @@ Public Class Task
                 Return CType(row(TaskDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TaskDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(TaskDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
 
-    <ValueMandatory(""), ValidNumericRange("", Min:=0, MinExclusive:=False, Max:=99, MaxExclusive:=False, Message:=Assurant.ElitaPlus.Common.ErrorCodes.GUI_TASK_RETRY_COUNT_RANGE)> _
-    Public Property RetryCount() As LongType
+    <ValueMandatory(""), ValidNumericRange("", Min:=0, MinExclusive:=False, Max:=99, MaxExclusive:=False, Message:=Common.ErrorCodes.GUI_TASK_RETRY_COUNT_RANGE)> _
+    Public Property RetryCount As LongType
         Get
             CheckDeleted()
             If row(TaskDAL.COL_NAME_RETRY_COUNT) Is DBNull.Value Then
@@ -148,15 +148,15 @@ Public Class Task
                 Return New LongType(CType(row(TaskDAL.COL_NAME_RETRY_COUNT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(TaskDAL.COL_NAME_RETRY_COUNT, Value)
+            SetValue(TaskDAL.COL_NAME_RETRY_COUNT, Value)
         End Set
     End Property
 
 
-    <ValueMandatory(""), ValidNumericRange("", Min:=0, MinExclusive:=False, Max:=999999, MaxExclusive:=False, Message:=Assurant.ElitaPlus.Common.ErrorCodes.GUI_TASK_RETRY_DELAY_RANGE)> _
-    Public Property RetryDelaySeconds() As LongType
+    <ValueMandatory(""), ValidNumericRange("", Min:=0, MinExclusive:=False, Max:=999999, MaxExclusive:=False, Message:=Common.ErrorCodes.GUI_TASK_RETRY_DELAY_RANGE)> _
+    Public Property RetryDelaySeconds As LongType
         Get
             CheckDeleted()
             If row(TaskDAL.COL_NAME_RETRY_DELAY_SECONDS) Is DBNull.Value Then
@@ -165,15 +165,15 @@ Public Class Task
                 Return New LongType(CType(row(TaskDAL.COL_NAME_RETRY_DELAY_SECONDS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(TaskDAL.COL_NAME_RETRY_DELAY_SECONDS, Value)
+            SetValue(TaskDAL.COL_NAME_RETRY_DELAY_SECONDS, Value)
         End Set
     End Property
 
 
-    <ValueMandatory(""), ValidNumericRange("", Min:=0, MinExclusive:=False, Max:=999999, MaxExclusive:=False, Message:=Assurant.ElitaPlus.Common.ErrorCodes.GUI_TASK_TIMEOUT_RANGE)> _
-    Public Property TimeoutSeconds() As LongType
+    <ValueMandatory(""), ValidNumericRange("", Min:=0, MinExclusive:=False, Max:=999999, MaxExclusive:=False, Message:=Common.ErrorCodes.GUI_TASK_TIMEOUT_RANGE)> _
+    Public Property TimeoutSeconds As LongType
         Get
             CheckDeleted()
             If row(TaskDAL.COL_NAME_TIMEOUT_SECONDS) Is DBNull.Value Then
@@ -182,19 +182,19 @@ Public Class Task
                 Return New LongType(CType(row(TaskDAL.COL_NAME_TIMEOUT_SECONDS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(TaskDAL.COL_NAME_TIMEOUT_SECONDS, Value)
+            SetValue(TaskDAL.COL_NAME_TIMEOUT_SECONDS, Value)
         End Set
     End Property
 
-    Default Public ReadOnly Property TaskParameter(ByVal key As String) As String
+    Default Public ReadOnly Property TaskParameter(key As String) As String
         Get
             Dim returnValue As String = String.Empty
             If (_arguments Is Nothing) Then
                 SyncLock (_syncRoot)
                     If (_arguments Is Nothing) Then
-                        _arguments = New KeyValueDictionary(Me.TaskParameters)
+                        _arguments = New KeyValueDictionary(TaskParameters)
                     End If
                 End SyncLock
             End If
@@ -206,7 +206,7 @@ Public Class Task
     End Property
 
     <ValidStringLength("", Max:=4000)> _
-    Public Property TaskParameters() As String
+    Public Property TaskParameters As String
         Get
             CheckDeleted()
             If row(TaskDAL.COL_NAME_TASK_PARAMETERS) Is DBNull.Value Then
@@ -215,9 +215,9 @@ Public Class Task
                 Return CType(row(TaskDAL.COL_NAME_TASK_PARAMETERS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TaskDAL.COL_NAME_TASK_PARAMETERS, Value)
+            SetValue(TaskDAL.COL_NAME_TASK_PARAMETERS, Value)
         End Set
     End Property
 
@@ -230,15 +230,15 @@ Public Class Task
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New TaskDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -248,7 +248,7 @@ Public Class Task
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getList(ByVal strCode As String, ByVal strDesc As String) As TaskSearchDV
+    Public Shared Function getList(strCode As String, strDesc As String) As TaskSearchDV
         Try
             Dim dal As New TaskDAL
             Return New TaskSearchDV(dal.LoadList(strCode, strDesc).Tables(0))
@@ -275,13 +275,13 @@ Public Class Task
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
 
-    Public Shared Sub AddNewRowToSearchDV(ByRef dv As TaskSearchDV, ByVal NewBO As Task)
+    Public Shared Sub AddNewRowToSearchDV(ByRef dv As TaskSearchDV, NewBO As Task)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         If NewBO.IsNew Then
@@ -305,15 +305,15 @@ Public Class Task
             row(TaskSearchDV.COL_TASK_ID) = NewBO.Id.ToByteArray
             row(TaskSearchDV.COL_CODE) = NewBO.Code
             row(TaskSearchDV.COL_DESCRIPTION) = NewBO.Description
-            If Not NewBO.RetryCount Is Nothing Then
+            If NewBO.RetryCount IsNot Nothing Then
                 row(TaskSearchDV.COL_RETRY_COUNT) = NewBO.RetryCount.Value
             End If
 
-            If Not NewBO.RetryDelaySeconds Is Nothing Then
+            If NewBO.RetryDelaySeconds IsNot Nothing Then
                 row(TaskSearchDV.COL_RETRY_DELAY) = NewBO.RetryDelaySeconds.Value
             End If
 
-            If Not NewBO.TimeoutSeconds Is Nothing Then
+            If NewBO.TimeoutSeconds IsNot Nothing Then
                 row(TaskSearchDV.COL_TIMEOUT) = NewBO.TimeoutSeconds.Value
             End If
 

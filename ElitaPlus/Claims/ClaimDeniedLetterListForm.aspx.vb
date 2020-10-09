@@ -1,4 +1,6 @@
-﻿Namespace Claims
+﻿Imports System.Threading
+
+Namespace Claims
     Partial Public Class ClaimDeniedLetterListForm
         Inherits ElitaPlusSearchPage
         'Implements IStateController
@@ -16,14 +18,14 @@
 
         Public Class Parameters
             Public moClaimbo As ClaimBase
-            Public moClaimDenielLetters As Claims.LetterSearchDV
+            Public moClaimDenielLetters As LetterSearchDV
             Public moCliamID As Guid
             Public moClaimNumber As String
             Public moCertificate As String
             Public moCertItemCoverage As Guid
 
 
-            Public Sub New(ByVal oClaimbo As ClaimBase, ByVal oClaimDenielLetters As claims.LetterSearchDV, ByVal oClaimID As Guid, ByVal oClaimNumber As String, ByVal oCertificate As String, ByVal oCertItemCoverage As Guid)
+            Public Sub New(oClaimbo As ClaimBase, oClaimDenielLetters As LetterSearchDV, oClaimID As Guid, oClaimNumber As String, oCertificate As String, oCertItemCoverage As Guid)
                 ' If oClaimDenielLetters.Count < 0 Then
                 moClaimbo = oClaimbo
                 moClaimDenielLetters = oClaimDenielLetters
@@ -64,7 +66,7 @@
             Public moParams As Parameters
             Public denialReasonCode As String
             Public selectedSortById As Guid = Guid.Empty
-            Public selectedPageSize As Int32 = ElitaPlusSearchPage.DEFAULT_PAGE_SIZE
+            Public selectedPageSize As Int32 = DEFAULT_PAGE_SIZE
             Public IsGridVisible As Boolean = False
             Public SearchClicked As Boolean
             Public bnoRow As Boolean = False
@@ -83,29 +85,29 @@
         Protected Shadows ReadOnly Property State() As MyState
             Get
                 'Return CType(MyBase.State, MyState)
-                If Me.NavController.State Is Nothing Then
-                    Me.NavController.State = New MyState
+                If NavController.State Is Nothing Then
+                    NavController.State = New MyState
                 Else
-                    If Me.NavController.IsFlowEnded Then
+                    If NavController.IsFlowEnded Then
                         'restart flow
-                        Dim s As MyState = CType(Me.NavController.State, MyState)
+                        Dim s As MyState = CType(NavController.State, MyState)
                         'Me.StartNavControl()
-                        Me.NavController.State = s
+                        NavController.State = s
                     End If
                 End If
-                Return CType(Me.NavController.State, MyState)
+                Return CType(NavController.State, MyState)
             End Get
         End Property
 
         
         Private Sub SetStateProperties()
             Try
-                Me.State.moParams = CType(Me.NavController.ParametersPassed, Parameters)
-                If (Me.State.moParams Is Nothing) OrElse (Me.State.moParams.moCliamID.Equals(Guid.Empty)) Then
+                State.moParams = CType(NavController.ParametersPassed, Parameters)
+                If (State.moParams Is Nothing) OrElse (State.moParams.moCliamID.Equals(Guid.Empty)) Then
                     Throw New DataNotFoundException
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 #End Region
@@ -114,47 +116,47 @@
 #Region "Page_Events"
 
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
             'Page.RegisterHiddenField("__EVENTTARGET", Me.btnSearch.ClientID)
-            Me.ErrControllerMaster.Clear_Hide()
+            ErrControllerMaster.Clear_Hide()
 
 
 
-            Me.SetStateProperties()
+            SetStateProperties()
 
             Try
-                If Not Me.IsPostBack Then
-                    Me.State.SearchClicked = True
-                    Me.State.PageIndex = 0
-                    Me.State.selectedClaimId = Guid.Empty
-                    Me.State.IsGridVisible = True
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
+                If Not IsPostBack Then
+                    State.SearchClicked = True
+                    State.PageIndex = 0
+                    State.selectedClaimId = Guid.Empty
+                    State.IsGridVisible = True
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
 
 
-                    Me.TranslateGridHeader(Grid)
-                    Me.TranslateGridControls(Grid)
-                    Me.PopulateGrid()
+                    TranslateGridHeader(Grid)
+                    TranslateGridControls(Grid)
+                    PopulateGrid()
 
-                    Me.SetGridItemStyleColor(Me.Grid)
+                    SetGridItemStyleColor(Grid)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.MenuEnabled = True
-                Me.IsReturningFromChild = True
-                Dim retObj As ClaimForm.ReturnType = CType(Me.ReturnedValues, ClaimForm.ReturnType)
-                If Not retObj Is Nothing AndAlso retObj.BoChanged Then
+                MenuEnabled = True
+                IsReturningFromChild = True
+                Dim retObj As ClaimForm.ReturnType = CType(ReturnedValues, ClaimForm.ReturnType)
+                If retObj IsNot Nothing AndAlso retObj.BoChanged Then
                     ' Me.State.LetterSearchDV = Nothing
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
@@ -166,18 +168,18 @@
 
             Try
 
-                Me.Grid.AutoGenerateColumns = False
-                Me.State.PageIndex = Me.Grid.PageIndex
+                Grid.AutoGenerateColumns = False
+                State.PageIndex = Grid.PageIndex
 
-                ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+                ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
 
-                ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+                ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-                Me.State.IsGridVisible = True
-                Me.State.bnoRow = False
-                Me.Grid.DataSource = Me.State.moParams.moClaimDenielLetters
-                Me.Grid.AllowSorting = False
-                Me.Grid.DataBind()
+                State.IsGridVisible = True
+                State.bnoRow = False
+                Grid.DataSource = State.moParams.moClaimDenielLetters
+                Grid.AllowSorting = False
+                Grid.DataBind()
 
                 If Not Grid.BottomPagerRow.Visible Then
                     Grid.BottomPagerRow.Visible = True
@@ -185,7 +187,7 @@
 
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
@@ -193,8 +195,8 @@
         Function GetSortByColumn() As String
             Dim sortbyCode As String
             Try
-                If (Not (Me.State.selectedSortById.Equals(Guid.Empty))) Then
-                    sortbyCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PENDING_CLAIM_SEARCH_FIELDS, Me.State.selectedSortById)
+                If (Not (State.selectedSortById.Equals(Guid.Empty))) Then
+                    sortbyCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PENDING_CLAIM_SEARCH_FIELDS, State.selectedSortById)
                 End If
                 Select Case sortbyCode
                     Case Codes.PENDING_CLAIM_SORT_COLUMN__CLAIM_NUMBER
@@ -209,7 +211,7 @@
                         Return Nothing
                 End Select
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Function
 
@@ -223,66 +225,66 @@
 #Region " Datagrid Related "
 
         'The Binding LOgic is here
-        Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+        Private Sub Grid_ItemDataBound(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
             Try
-                If Not dvRow Is Nothing And Not Me.State.bnoRow Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                        Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_DATE_IDX), dvRow(2))
-                        Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_DENIAL_RESON_CODE_IDX), dvRow(1))
-                        Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_DENIAL_RESON_IDX), dvRow(3))
-                        Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_EDIT_IDX), dvRow(4))
+                If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
+                        PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_DATE_IDX), dvRow(2))
+                        PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_DENIAL_RESON_CODE_IDX), dvRow(1))
+                        PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_DENIAL_RESON_IDX), dvRow(3))
+                        PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_EDIT_IDX), dvRow(4))
                         
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.State.selectedPageSize = CType(cboPageSize.SelectedValue, Int32)
-                Me.PopulateGrid()
+                State.selectedPageSize = CType(cboPageSize.SelectedValue, Int32)
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
 
-        Public Sub ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+        Public Sub ItemCommand(source As Object, e As GridViewCommandEventArgs)
 
             Try
                 Dim index As Integer = Nothing
-                If (Not e.CommandArgument Is Nothing) AndAlso (CType(e.CommandArgument, String)).Length > 0 Then
+                If (e.CommandArgument IsNot Nothing) AndAlso (CType(e.CommandArgument, String)).Length > 0 Then
                     index = Integer.Parse(CType(e.CommandArgument, String))
                 End If
                 If e.CommandName = "Select" Then
-                    Dim row As GridViewRow = Me.Grid.Rows(index)
-                    Me.State.selectedClaimId = New Guid(row.Cells(Me.GRID_COL_EDIT_IDX).Text)
-                    Me.NavController.Navigate(Me, "denied_claims_next", New Claims.DeniedClaimsForm.Parameters(Me.State.moParams.moClaimbo, Me.State.selectedClaimId, Me.State.moParams.moClaimNumber, Me.State.moParams.moCertificate, Me.State.moParams.moCertItemCoverage, False, Me.State.moParams.moClaimDenielLetters))
+                    Dim row As GridViewRow = Grid.Rows(index)
+                    State.selectedClaimId = New Guid(row.Cells(GRID_COL_EDIT_IDX).Text)
+                    NavController.Navigate(Me, "denied_claims_next", New DeniedClaimsForm.Parameters(State.moParams.moClaimbo, State.selectedClaimId, State.moParams.moClaimNumber, State.moParams.moCertificate, State.moParams.moCertItemCoverage, False, State.moParams.moClaimDenielLetters))
                 End If
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
 
-        Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+        Public Sub ItemCreated(sender As Object, e As GridViewRowEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+        Private Sub Grid_PageIndexChanged(source As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
             Try
-                Me.State.PageIndex = e.NewPageIndex
-                Me.State.selectedClaimId = Guid.Empty
-                Me.PopulateGrid()
+                State.PageIndex = e.NewPageIndex
+                State.selectedClaimId = Guid.Empty
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 #End Region
@@ -307,15 +309,15 @@
         
 #End Region
 
-        Private Sub btnNew_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+        Private Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew_WRITE.Click
 
-            Me.NavController.Navigate(Me, "new", New Claims.DeniedClaimsForm.Parameters(Me.State.moParams.moClaimbo, Me.State.moParams.moCliamID, Me.State.moParams.moClaimNumber, Me.State.moParams.moCertificate, Me.State.moParams.moCertItemCoverage, True, Me.State.moParams.moClaimDenielLetters))
+            NavController.Navigate(Me, "new", New DeniedClaimsForm.Parameters(State.moParams.moClaimbo, State.moParams.moCliamID, State.moParams.moClaimNumber, State.moParams.moCertificate, State.moParams.moCertItemCoverage, True, State.moParams.moClaimDenielLetters))
         End Sub
 
-        Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack_WRITE.Click
+        Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack_WRITE.Click
 
 
-            Me.NavController.Navigate(Me, "back", New Claims.ClaimDeniedInformationForm.Parameters(Me.State.moParams.moClaimbo, Me.State.moParams.moClaimbo.Id, Me.State.moParams.moCertItemCoverage))
+            NavController.Navigate(Me, "back", New ClaimDeniedInformationForm.Parameters(State.moParams.moClaimbo, State.moParams.moClaimbo.Id, State.moParams.moCertItemCoverage))
 
 
         End Sub

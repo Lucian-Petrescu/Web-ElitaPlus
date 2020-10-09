@@ -7,48 +7,48 @@ Public Class DelayFactor
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New DelayFactorDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -56,23 +56,23 @@ Public Class DelayFactor
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New DelayFactorDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -80,7 +80,7 @@ Public Class DelayFactor
         End Try
     End Sub
 
-    Public Shared Function LoadList(ByVal DealerId As Guid, ByVal effective As Date, ByVal expiration As Date) As DataView
+    Public Shared Function LoadList(DealerId As Guid, effective As Date, expiration As Date) As DataView
         Try
             Dim dal As New DelayFactorDAL
             Dim ds As DataSet
@@ -94,7 +94,7 @@ Public Class DelayFactor
 
     End Function
 
-    Public Shared Function GetDelayFactorList(ByVal DealerId As Guid, ByVal effective As Date, ByVal expiration As Date) As DataSet
+    Public Shared Function GetDelayFactorList(DealerId As Guid, effective As Date, expiration As Date) As DataSet
         Try
             Dim dal As New DelayFactorDAL
             Dim ds As DataSet
@@ -108,7 +108,7 @@ Public Class DelayFactor
 
     End Function
 
-    Public Shared Function LoadListByDealer(ByVal DealerId As Guid) As DataSet
+    Public Shared Function LoadListByDealer(DealerId As Guid) As DataSet
         Try
             Dim dal As New DelayFactorDAL
             Dim ds As DataSet
@@ -133,7 +133,7 @@ Public Class DelayFactor
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(DelayFactorDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -144,7 +144,7 @@ Public Class DelayFactor
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If row(DelayFactorDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -153,14 +153,14 @@ Public Class DelayFactor
                 Return New Guid(CType(row(DelayFactorDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(DelayFactorDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(DelayFactorDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidDelayFactorPeriod("")> _
-    Public Property EffectiveDate() As DateType
+    Public Property EffectiveDate As DateType
         Get
             CheckDeleted()
             If Row(DelayFactorDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -169,14 +169,14 @@ Public Class DelayFactor
                 Return New DateType(CType(Row(DelayFactorDAL.COL_NAME_EFFECTIVE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(DelayFactorDAL.COL_NAME_EFFECTIVE_DATE, Value)
+            SetValue(DelayFactorDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ExpirationDate() As DateType
+    Public Property ExpirationDate As DateType
         Get
             CheckDeleted()
             If row(DelayFactorDAL.COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
@@ -185,14 +185,14 @@ Public Class DelayFactor
                 Return New DateType(CType(row(DelayFactorDAL.COL_NAME_EXPIRATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(DelayFactorDAL.COL_NAME_EXPIRATION_DATE, Value)
+            SetValue(DelayFactorDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("LowNumberOfDays", MIN:=MIN_DAY, Max:=MAX_DAY, Message:=ERR_LOW_DAY_OUT_OF_BOUND), ValidDelayFactor("")> _
-    Public Property LowNumberOfDays() As LongType
+    Public Property LowNumberOfDays As LongType
         Get
             CheckDeleted()
             If Row(DelayFactorDAL.COL_NAME_LOW_NUMBER_OF_DAYS) Is DBNull.Value Then
@@ -201,14 +201,14 @@ Public Class DelayFactor
                 Return New LongType(CType(Row(DelayFactorDAL.COL_NAME_LOW_NUMBER_OF_DAYS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(DelayFactorDAL.COL_NAME_LOW_NUMBER_OF_DAYS, Value)
+            SetValue(DelayFactorDAL.COL_NAME_LOW_NUMBER_OF_DAYS, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", MIN:=MIN_DAY, Max:=MAX_DAY, Message:=ERR_HIGH_DAY_OUT_OF_BOUND)> _
-    Public Property HighNumberOfDays() As LongType
+    Public Property HighNumberOfDays As LongType
         Get
             CheckDeleted()
             If Row(DelayFactorDAL.COL_NAME_HIGH_NUMBER_OF_DAYS) Is DBNull.Value Then
@@ -217,14 +217,14 @@ Public Class DelayFactor
                 Return New LongType(CType(Row(DelayFactorDAL.COL_NAME_HIGH_NUMBER_OF_DAYS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(DelayFactorDAL.COL_NAME_HIGH_NUMBER_OF_DAYS, Value)
+            SetValue(DelayFactorDAL.COL_NAME_HIGH_NUMBER_OF_DAYS, Value)
         End Set
     End Property
 
     <ValidNumericRange("", MIN:=MIN_FACTOR, Max:=MAX_FACTOR, Message:=ERR_DELAY_FACTOR_OUT_OF_BOUND), ValidDelayFactorPercent("")> _
-    Public Property Factor() As DecimalType
+    Public Property Factor As DecimalType
         Get
             CheckDeleted()
             If Row(DelayFactorDAL.COL_NAME_FACTOR) Is DBNull.Value Then
@@ -233,9 +233,9 @@ Public Class DelayFactor
                 Return New DecimalType(CType(Row(DelayFactorDAL.COL_NAME_FACTOR), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(DelayFactorDAL.COL_NAME_FACTOR, Value)
+            SetValue(DelayFactorDAL.COL_NAME_FACTOR, Value)
         End Set
     End Property
 
@@ -245,15 +245,15 @@ Public Class DelayFactor
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New DelayFactorDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -264,11 +264,11 @@ Public Class DelayFactor
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function GetDelayFactorByDealer(ByVal dealerID As Guid, ByVal compId As ArrayList) As DelayFactorSearchDV
+    Public Shared Function GetDelayFactorByDealer(dealerID As Guid, compId As ArrayList) As DelayFactorSearchDV
         Try
             Dim dal As New DelayFactorDAL
             Dim dv As New DelayFactorSearchDV(dal.GetDelayFactorByDealer(dealerID, compId).Tables(0))
-            dv.Sort = DelayFactor.DelayFactorSearchDV.COL_EFFECTIVE_DATE & " DESC"
+            dv.Sort = DelayFactorSearchDV.COL_EFFECTIVE_DATE & " DESC"
 
             Return dv
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -276,7 +276,7 @@ Public Class DelayFactor
         End Try
     End Function
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid, ByVal bo As DelayFactor) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid, bo As DelayFactor) As DataView
 
         Dim dt As DataTable
         dt = dv.Table
@@ -285,37 +285,37 @@ Public Class DelayFactor
             Dim row As DataRow = dt.NewRow
 
             If bo.Factor Is Nothing Then
-                row(DelayFactor.DelayFactorSearchDV.COL_FACTOR) = DBNull.Value
+                row(DelayFactorSearchDV.COL_FACTOR) = DBNull.Value
             Else
-                row(DelayFactor.DelayFactorSearchDV.COL_FACTOR) = bo.Factor
+                row(DelayFactorSearchDV.COL_FACTOR) = bo.Factor
             End If
 
             If bo.HighNumberOfDays Is Nothing Then
-                row(DelayFactor.DelayFactorSearchDV.COL_HIGH_NUMBER_OF_DAYS) = DBNull.Value
+                row(DelayFactorSearchDV.COL_HIGH_NUMBER_OF_DAYS) = DBNull.Value
             Else
-                row(DelayFactor.DelayFactorSearchDV.COL_HIGH_NUMBER_OF_DAYS) = bo.HighNumberOfDays
+                row(DelayFactorSearchDV.COL_HIGH_NUMBER_OF_DAYS) = bo.HighNumberOfDays
             End If
 
             If bo.LowNumberOfDays Is Nothing Then
-                row(DelayFactor.DelayFactorSearchDV.COL_LOW_NUMBER_OF_DAYS) = DBNull.Value
+                row(DelayFactorSearchDV.COL_LOW_NUMBER_OF_DAYS) = DBNull.Value
             Else
-                row(DelayFactor.DelayFactorSearchDV.COL_LOW_NUMBER_OF_DAYS) = bo.LowNumberOfDays
+                row(DelayFactorSearchDV.COL_LOW_NUMBER_OF_DAYS) = bo.LowNumberOfDays
             End If
 
             If bo.EffectiveDate Is Nothing Then
-                row(DelayFactor.DelayFactorSearchDV.COL_EFFECTIVE_DATE) = Date.MinValue
+                row(DelayFactorSearchDV.COL_EFFECTIVE_DATE) = Date.MinValue
             Else
-                row(DelayFactor.DelayFactorSearchDV.COL_EFFECTIVE_DATE) = bo.EffectiveDate
+                row(DelayFactorSearchDV.COL_EFFECTIVE_DATE) = bo.EffectiveDate
             End If
 
             If bo.ExpirationDate Is Nothing Then
-                row(DelayFactor.DelayFactorSearchDV.COL_EXPIRATION_DATE) = Date.MinValue
+                row(DelayFactorSearchDV.COL_EXPIRATION_DATE) = Date.MinValue
             Else
-                row(DelayFactor.DelayFactorSearchDV.COL_EXPIRATION_DATE) = bo.ExpirationDate
+                row(DelayFactorSearchDV.COL_EXPIRATION_DATE) = bo.ExpirationDate
             End If
 
-            row(DelayFactor.DelayFactorSearchDV.COL_DELAY_FACTOR_ID) = bo.Id.ToByteArray
-            row(DelayFactor.DelayFactorSearchDV.COL_DEALER_ID) = bo.DealerId.ToByteArray
+            row(DelayFactorSearchDV.COL_DELAY_FACTOR_ID) = bo.Id.ToByteArray
+            row(DelayFactorSearchDV.COL_DEALER_ID) = bo.DealerId.ToByteArray
 
             dt.Rows.Add(row)
         End If
@@ -369,7 +369,7 @@ Public Class DelayFactor
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -382,23 +382,23 @@ Public Class DelayFactor
     Public NotInheritable Class ValidDelayFactor
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, ERR_LOW_DAY_MORE_THAN_HIGH_DAY)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As DelayFactor = CType(objectToValidate, DelayFactor)
             Dim bValid As Boolean = True
 
             If obj.DealerId.Equals(Guid.Empty) OrElse obj.EffectiveDate Is Nothing OrElse obj.ExpirationDate Is Nothing Then
                 bValid = True
             Else
-                If Not obj.LowNumberOfDays Is Nothing And Not obj.HighNumberOfDays Is Nothing Then
+                If obj.LowNumberOfDays IsNot Nothing And obj.HighNumberOfDays IsNot Nothing Then
                     If obj.LowNumberOfDays.Value > obj.HighNumberOfDays.Value Then
-                        Me.Message = ERR_LOW_DAY_MORE_THAN_HIGH_DAY
+                        Message = ERR_LOW_DAY_MORE_THAN_HIGH_DAY
                         bValid = False
                     ElseIf ValidateRange(obj.LowNumberOfDays, obj.HighNumberOfDays, obj) = False Then
-                        Me.Message = ERR_LOW_DAY_AND_HIGH_DAY_OVERLAPS
+                        Message = ERR_LOW_DAY_AND_HIGH_DAY_OVERLAPS
                         bValid = False
                     End If
                 End If
@@ -408,7 +408,7 @@ Public Class DelayFactor
 
         End Function
 
-        Private Function ValidateRange(ByVal sNewLow As Assurant.Common.Types.LongType, ByVal sNewHigh As Assurant.Common.Types.LongType, ByVal oDelayFactor As DelayFactor) As Boolean
+        Private Function ValidateRange(sNewLow As Assurant.Common.Types.LongType, sNewHigh As Assurant.Common.Types.LongType, oDelayFactor As DelayFactor) As Boolean
             Dim bValid As Boolean = False
             Dim oNewLow As Long = sNewLow.Value
             Dim oNewHigh As Long = sNewHigh.Value
@@ -465,11 +465,11 @@ Public Class DelayFactor
 Public NotInheritable Class ValidDelayFactorPeriod
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, INVALID_DELAY_FACTOR_PERIOD)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
 
             Dim obj As DelayFactor = CType(objectToValidate, DelayFactor)
             Dim bValid As Boolean = True
@@ -489,9 +489,9 @@ Public NotInheritable Class ValidDelayFactorPeriod
                 Dim lastRowId As Guid
                 Dim currRowPos As Integer = 0
                 If recCount > 0 Then
-                    lastRowId = New Guid(CType(ds.Tables(0).Rows(recCount - 1)(DelayFactor.DelayFactorSearchDV.COL_DELAY_FACTOR_ID), Byte()))
-                    Dim minEffective As Date = ds.Tables(0).Rows(0)(DelayFactor.DelayFactorSearchDV.COL_EFFECTIVE_DATE)
-                    Dim maxExpiration As Date = ds.Tables(0).Rows(recCount - 1)(DelayFactor.DelayFactorSearchDV.COL_EXPIRATION_DATE)
+                    lastRowId = New Guid(CType(ds.Tables(0).Rows(recCount - 1)(DelayFactorSearchDV.COL_DELAY_FACTOR_ID), Byte()))
+                    Dim minEffective As Date = ds.Tables(0).Rows(0)(DelayFactorSearchDV.COL_EFFECTIVE_DATE)
+                    Dim maxExpiration As Date = ds.Tables(0).Rows(recCount - 1)(DelayFactorSearchDV.COL_EXPIRATION_DATE)
                     ' Same period allowed since validation is on the day range
                     If obj.EffectiveDate = minEffective AndAlso obj.ExpirationDate = maxExpiration Then
                         Return True
@@ -506,14 +506,14 @@ Public NotInheritable Class ValidDelayFactorPeriod
                     End If
                     ' Find a spot in the middle
                     For Each currRow In ds.Tables(0).Rows
-                        If obj.ExpirationDate.Value = currRow(DelayFactor.DelayFactorSearchDV.COL_EXPIRATION_DATE) And _
-                            obj.EffectiveDate.Value = currRow(DelayFactor.DelayFactorSearchDV.COL_EFFECTIVE_DATE) Then
+                        If obj.ExpirationDate.Value = currRow(DelayFactorSearchDV.COL_EXPIRATION_DATE) And _
+                            obj.EffectiveDate.Value = currRow(DelayFactorSearchDV.COL_EFFECTIVE_DATE) Then
                             ' Trying to insert a Duplicate - Reject!
                             Return False
-                        ElseIf Not prevRow Is Nothing Then
+                        ElseIf prevRow IsNot Nothing Then
                             ' Inserting in the middle (Allow to fix any GAPS)
-                            If obj.EffectiveDate.Value.AddDays(-1) = prevRow(DelayFactor.DelayFactorSearchDV.COL_EXPIRATION_DATE) And _
-                               obj.ExpirationDate.Value.AddDays(1) = currRow(DelayFactor.DelayFactorSearchDV.COL_EFFECTIVE_DATE) Then
+                            If obj.EffectiveDate.Value.AddDays(-1) = prevRow(DelayFactorSearchDV.COL_EXPIRATION_DATE) And _
+                               obj.ExpirationDate.Value.AddDays(1) = currRow(DelayFactorSearchDV.COL_EFFECTIVE_DATE) Then
                                 Return True
                             End If
                         End If
@@ -536,17 +536,17 @@ Public NotInheritable Class ValidDelayFactorPeriod
         Dim ar As New ArrayList
         Dim bValidFactor As Boolean = False
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, INVALID_DELAY_FACTOR_PERCENT)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As DelayFactor = CType(objectToValidate, DelayFactor)
             Dim bValid As Boolean = True
 
-            If Not obj.LowNumberOfDays Is Nothing And Not obj.HighNumberOfDays Is Nothing Then
+            If obj.LowNumberOfDays IsNot Nothing And obj.HighNumberOfDays IsNot Nothing Then
                 If (obj.Factor Is Nothing) Then
-                    Me.Message = ERR_DELAY_FACTOR_REQUIRED
+                    Message = ERR_DELAY_FACTOR_REQUIRED
                     bValid = False
                 Else
                     If obj.DealerId.Equals(Guid.Empty) OrElse obj.EffectiveDate Is Nothing OrElse obj.ExpirationDate Is Nothing Then
@@ -554,8 +554,8 @@ Public NotInheritable Class ValidDelayFactorPeriod
                     Else
                         bValid = ValidateRange(obj)
                         If bValidFactor = True Then
-                            If Not ar Is Nothing And ar.Count > 0 Then
-                                Me.Message = CType(ar(0), String)
+                            If ar IsNot Nothing And ar.Count > 0 Then
+                                Message = CType(ar(0), String)
                             End If
                         Else
                             bValid = True
@@ -568,7 +568,7 @@ Public NotInheritable Class ValidDelayFactorPeriod
 
         End Function
 
-        Private Function ValidateRange(ByVal oDelayFactor As DelayFactor) As Boolean
+        Private Function ValidateRange(oDelayFactor As DelayFactor) As Boolean
             Dim bValid As Boolean = False
             Dim oNewLow As Long = oDelayFactor.LowNumberOfDays
             Dim oNewHigh As Long = oDelayFactor.HighNumberOfDays
@@ -635,10 +635,10 @@ Public NotInheritable Class ValidDelayFactorPeriod
 
         End Function
 
-        Public Function ValidateDelayFactorSequence(ByVal oNewFactor As DecimalType, ByVal oFactor As DecimalType) As Boolean
+        Public Function ValidateDelayFactorSequence(oNewFactor As DecimalType, oFactor As DecimalType) As Boolean
             Dim bValid As Boolean = False
 
-            If (Not oNewFactor Is Nothing AndAlso Not oFactor Is Nothing) Then
+            If (oNewFactor IsNot Nothing AndAlso oFactor IsNot Nothing) Then
                 If CType(oNewFactor, Double) > 0 Then
                     If (CType(oNewFactor, Double) >= CType(oFactor, Double)) Then
                         bValid = True

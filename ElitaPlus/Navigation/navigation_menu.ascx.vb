@@ -64,7 +64,7 @@
 
 
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
 
         Try
             'Put user code to initialize the page here
@@ -85,7 +85,7 @@
 
                 imgDisplayMode.Attributes.Add("onclick", "toggleHeaderView();")
                 'imgDisplayMode.Attributes.Add("style", "CURSOR: hand")
-                Me.LoadTabs()
+                LoadTabs()
             End If
 
             If ELPWebConstants.GetMenuState = ELPWebConstants.enumMenu_State.Editing_Page_Mode Then
@@ -98,18 +98,18 @@
                 Session("DisplayMode") = "visible"
             End If
 
-            If Not Session("DisplayMode") Is Nothing Then
-                Me.displayMode.Value = CType(Session("DisplayMode"), String)
+            If Session("DisplayMode") IsNot Nothing Then
+                displayMode.Value = CType(Session("DisplayMode"), String)
             End If
 
         Catch ex As DataNotFoundException
-            ELPWebConstants.ShowPopup(ex.Message, Me.Page)
+            ELPWebConstants.ShowPopup(ex.Message, Page)
 
         Catch ex As ApplicationException
-            ELPWebConstants.ShowPopup(ex.Message, Me.Page)
+            ELPWebConstants.ShowPopup(ex.Message, Page)
 
         Catch ex As NullReferenceException
-            ELPWebConstants.ShowPopup(ex.Message, Me.Page)
+            ELPWebConstants.ShowPopup(ex.Message, Page)
 
         End Try
 
@@ -132,32 +132,32 @@
                 Session(ELPWebConstants.SELECTED_TAB) = Application(ELPWebConstants.HOME_PAGE_TAB_ID)
             End If
 
-            If Not moDS Is Nothing Then
+            If moDS IsNot Nothing Then
                 xmlSource.Data = moDS.GetXml
             End If
 
             If Not String.IsNullOrEmpty(xmlSource.Data) Then
                 xmlSource.Transform = ElitaPlus.Common.XMLHelper.GetXMLElementsToAttributesTransformScript
-                Me.mnu.DataSource = xmlSource
-                Me.mnu.DataBind()
+                mnu.DataSource = xmlSource
+                mnu.DataBind()
             End If
 
-            If Me.mnu.Items.Count <= 0 Then
+            If mnu.Items.Count <= 0 Then
                 System.Threading.Thread.Sleep(3000)
                 LoadTabs("retry")
             End If
 
         Catch ex As NullReferenceException
-            ELPWebConstants.ShowPopup(ex.Message, Me.Page)
+            ELPWebConstants.ShowPopup(ex.Message, Page)
 
         Catch ex As DataNotFoundException
-            ELPWebConstants.ShowPopup(ex.Message, Me.Page)
+            ELPWebConstants.ShowPopup(ex.Message, Page)
 
         Catch ex As ApplicationException
-            ELPWebConstants.ShowPopup(ex.Message, Me.Page)
+            ELPWebConstants.ShowPopup(ex.Message, Page)
 
         Catch ex As Exception
-            ELPWebConstants.ShowPopup(ex.Message, Me.Page)
+            ELPWebConstants.ShowPopup(ex.Message, Page)
 
         End Try
     End Sub
@@ -174,14 +174,14 @@
                 Session(ELPWebConstants.SELECTED_TAB) = Application(ELPWebConstants.HOME_PAGE_TAB_ID)
             End If
 
-            If Not moDS Is Nothing Then
+            If moDS IsNot Nothing Then
                 xmlSource.Data = moDS.GetXml
             End If
 
             If Not String.IsNullOrEmpty(xmlSource.Data) Then
                 xmlSource.Transform = ElitaPlus.Common.XMLHelper.GetXMLElementsToAttributesTransformScript
-                Me.mnu.DataSource = xmlSource
-                Me.mnu.DataBind()
+                mnu.DataSource = xmlSource
+                mnu.DataBind()
             End If
 
         Catch ex As NullReferenceException
@@ -199,7 +199,7 @@
         End Try
     End Sub
 
-    Public Function GetTabIcon(ByVal CODE As String) As String
+    Public Function GetTabIcon(CODE As String) As String
         '-------------------------------------
         'Name:GetTabIcon
         'Purpose:Retrieve the icon for a specific imageid.
@@ -211,7 +211,7 @@
         Return moTabMgr.TabIconPath(CODE, sIconPath)
     End Function
 
-    Public Function GetTabTitle(ByVal CODE As String) As String
+    Public Function GetTabTitle(CODE As String) As String
         '-------------------------------------
         'Name:GetTabTitle
         'Purpose:Return the text for the title of the tab for a specific imageid.
@@ -222,7 +222,7 @@
         Return moTabMgr.TabTitle(CODE, ElitaPlusIdentity.Current.ActiveUser.LanguageId).ToUpper
     End Function
 
-    Public Function GetTabImage(ByVal nAlignment As Long, ByVal CODE As String) As String
+    Public Function GetTabImage(nAlignment As Long, CODE As String) As String
         '-------------------------------------
         'Name:GetTabImage
         'Purpose:build the left center and right outlines for the rounded tabs.
@@ -235,7 +235,7 @@
         Return Request.ApplicationPath & PATH_TO_IMAGES & sTabImage
     End Function
 
-    Private Sub DisableLinks(ByVal bEnabled As Boolean)
+    Private Sub DisableLinks(bEnabled As Boolean)
         'make all the navigation links either enabled or disabled.
 
         'dlstTabs.Enabled = bEnabled

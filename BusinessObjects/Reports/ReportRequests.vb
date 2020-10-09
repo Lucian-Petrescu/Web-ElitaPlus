@@ -6,48 +6,48 @@ Public Class ReportRequests
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ReportRequestsDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class ReportRequests
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ReportRequestsDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -91,7 +91,7 @@ Public Class ReportRequests
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ReportRequestsDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -102,7 +102,7 @@ Public Class ReportRequests
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=800)> _
-    Public Property ReportType() As String
+    Public Property ReportType As String
         Get
             CheckDeleted()
             If row(ReportRequestsDAL.COL_NAME_REPORT_TYPE) Is DBNull.Value Then
@@ -111,15 +111,15 @@ Public Class ReportRequests
                 Return CType(row(ReportRequestsDAL.COL_NAME_REPORT_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ReportRequestsDAL.COL_NAME_REPORT_TYPE, Value)
+            SetValue(ReportRequestsDAL.COL_NAME_REPORT_TYPE, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=800)> _
-    Public Property FtpFilename() As String
+    Public Property FtpFilename As String
         Get
             CheckDeleted()
             If row(ReportRequestsDAL.COL_NAME_FTP_FILENAME) Is DBNull.Value Then
@@ -128,15 +128,15 @@ Public Class ReportRequests
                 Return CType(row(ReportRequestsDAL.COL_NAME_FTP_FILENAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ReportRequestsDAL.COL_NAME_FTP_FILENAME, Value)
+            SetValue(ReportRequestsDAL.COL_NAME_FTP_FILENAME, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=4000)> _
-    Public Property ReportParameters() As String
+    Public Property ReportParameters As String
         Get
             CheckDeleted()
             If row(ReportRequestsDAL.COL_NAME_REPORT_PARAMETERS) Is DBNull.Value Then
@@ -145,15 +145,15 @@ Public Class ReportRequests
                 Return CType(row(ReportRequestsDAL.COL_NAME_REPORT_PARAMETERS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ReportRequestsDAL.COL_NAME_REPORT_PARAMETERS, Value)
+            SetValue(ReportRequestsDAL.COL_NAME_REPORT_PARAMETERS, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=200)> _
-    Public Property Status() As String
+    Public Property Status As String
         Get
             CheckDeleted()
             If row(ReportRequestsDAL.COL_NAME_STATUS) Is DBNull.Value Then
@@ -162,15 +162,15 @@ Public Class ReportRequests
                 Return CType(row(ReportRequestsDAL.COL_NAME_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ReportRequestsDAL.COL_NAME_STATUS, Value)
+            SetValue(ReportRequestsDAL.COL_NAME_STATUS, Value)
         End Set
     End Property
 
 
 
-    Public Property StartDate() As DateType
+    Public Property StartDate As DateType
         Get
             CheckDeleted()
             If row(ReportRequestsDAL.COL_NAME_START_DATE) Is DBNull.Value Then
@@ -179,15 +179,15 @@ Public Class ReportRequests
                 Return New DateType(CType(row(ReportRequestsDAL.COL_NAME_START_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(ReportRequestsDAL.COL_NAME_START_DATE, Value)
+            SetValue(ReportRequestsDAL.COL_NAME_START_DATE, Value)
         End Set
     End Property
 
 
 
-    Public Property EndDate() As DateType
+    Public Property EndDate As DateType
         Get
             CheckDeleted()
             If row(ReportRequestsDAL.COL_NAME_END_DATE) Is DBNull.Value Then
@@ -196,15 +196,15 @@ Public Class ReportRequests
                 Return New DateType(CType(row(ReportRequestsDAL.COL_NAME_END_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(ReportRequestsDAL.COL_NAME_END_DATE, Value)
+            SetValue(ReportRequestsDAL.COL_NAME_END_DATE, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=800)> _
-    Public Property ErrorMessage() As String
+    Public Property ErrorMessage As String
         Get
             CheckDeleted()
             If row(ReportRequestsDAL.COL_NAME_ERROR_MESSAGE) Is DBNull.Value Then
@@ -213,15 +213,15 @@ Public Class ReportRequests
                 Return CType(row(ReportRequestsDAL.COL_NAME_ERROR_MESSAGE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ReportRequestsDAL.COL_NAME_ERROR_MESSAGE, Value)
+            SetValue(ReportRequestsDAL.COL_NAME_ERROR_MESSAGE, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=200)> _
-    Public Property UserEmailAddress() As String
+    Public Property UserEmailAddress As String
         Get
             CheckDeleted()
             If row(ReportRequestsDAL.COL_NAME_USER_EMAIL_ADDRESS) Is DBNull.Value Then
@@ -230,15 +230,15 @@ Public Class ReportRequests
                 Return CType(row(ReportRequestsDAL.COL_NAME_USER_EMAIL_ADDRESS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ReportRequestsDAL.COL_NAME_USER_EMAIL_ADDRESS, Value)
+            SetValue(ReportRequestsDAL.COL_NAME_USER_EMAIL_ADDRESS, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=800)> _
-    Public Property ReportProc() As String
+    Public Property ReportProc As String
         Get
             CheckDeleted()
             If row(ReportRequestsDAL.COL_NAME_REPORT_PROC) Is DBNull.Value Then
@@ -247,15 +247,15 @@ Public Class ReportRequests
                 Return CType(row(ReportRequestsDAL.COL_NAME_REPORT_PROC), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ReportRequestsDAL.COL_NAME_REPORT_PROC, Value)
+            SetValue(ReportRequestsDAL.COL_NAME_REPORT_PROC, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=800)> _
-    Public Property Sourceurl() As String
+    Public Property Sourceurl As String
         Get
             CheckDeleted()
             If row(ReportRequestsDAL.COL_NAME_SOURCEURL) Is DBNull.Value Then
@@ -264,13 +264,13 @@ Public Class ReportRequests
                 Return CType(row(ReportRequestsDAL.COL_NAME_SOURCEURL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ReportRequestsDAL.COL_NAME_SOURCEURL, Value)
+            SetValue(ReportRequestsDAL.COL_NAME_SOURCEURL, Value)
         End Set
     End Property
 
-    Public ReadOnly Property Requester() As String
+    Public ReadOnly Property Requester As String
         Get
             Return ElitaPlusIdentity.Current.ActiveUser.NetworkId
         End Get
@@ -282,15 +282,15 @@ Public Class ReportRequests
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ReportRequestsDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -311,7 +311,7 @@ Public Class ReportRequests
         End Try
     End Sub
 
-    Public Sub CreateReportRequest(ByVal ScheduledDate As DateTime)
+    Public Sub CreateReportRequest(ScheduledDate As DateTime)
         Try
             Dim dal As New ReportRequestsDAL
             dal.CreateReportRequest(ReportType, Requester, FtpFilename, ReportParameters, UserEmailAddress, ReportProc, ScheduledDate)
@@ -320,7 +320,7 @@ Public Class ReportRequests
         End Try
     End Sub
 
-    Public Shared Function GetAccessCountByUser(ByVal userId As String) As Integer
+    Public Shared Function GetAccessCountByUser(userId As String) As Integer
 
         Try
             Dim dal As New ReportRequestsDAL
@@ -333,7 +333,7 @@ Public Class ReportRequests
 
     End Function
 
-    Public Shared Function GetReportsByUser(ByVal userId As String) As DataTable
+    Public Shared Function GetReportsByUser(userId As String) As DataTable
 
         Try
             Dim dal As New ReportRequestsDAL
@@ -345,7 +345,7 @@ Public Class ReportRequests
         End Try
 
     End Function
-    Public Shared Function LoadRequestsByUser(ByVal userId As String, ByVal reportType As String) As DataTable
+    Public Shared Function LoadRequestsByUser(userId As String, reportType As String) As DataTable
 
         Try
             Dim dal As New ReportRequestsDAL
@@ -357,7 +357,7 @@ Public Class ReportRequests
         End Try
 
     End Function
-    Public Shared Function LoadRequestsByReportKey(ByVal userId As String, ByVal requestId As String) As DataTable
+    Public Shared Function LoadRequestsByReportKey(userId As String, requestId As String) As DataTable
 
         Try
             Dim dal As New ReportRequestsDAL
@@ -370,7 +370,7 @@ Public Class ReportRequests
 
     End Function
 
-    Public Shared Function LoadRequests(ByVal requestId As String, ByVal userId As String) As DataTable
+    Public Shared Function LoadRequests(requestId As String, userId As String) As DataTable
 
         Try
             Dim dal As New ReportRequestsDAL
@@ -386,18 +386,18 @@ Public Class ReportRequests
     Public Class ReportRequestsDV
         Inherits DataView
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
 
-    Public Shared Function CheckExchaneRate(ByVal reprortingmonthyear As String,
-                                            ByVal companyCode As String,
-                                            ByVal dealerCode As String,
-                                            ByVal groupid As String,
-                                            ByVal dealerwithcurrency As String,
-                                            ByVal currencyid As String) As String
+    Public Shared Function CheckExchaneRate(reprortingmonthyear As String,
+                                            companyCode As String,
+                                            dealerCode As String,
+                                            groupid As String,
+                                            dealerwithcurrency As String,
+                                            currencyid As String) As String
         Try
             Dim dal As New ReportRequestsDAL
 
@@ -408,7 +408,7 @@ Public Class ReportRequests
         End Try
     End Function
 
-    Public Shared Function GetReportParams(ByVal reporttype As String) As DataTable
+    Public Shared Function GetReportParams(reporttype As String) As DataTable
 
         Try
             Dim dal As New ReportRequestsDAL

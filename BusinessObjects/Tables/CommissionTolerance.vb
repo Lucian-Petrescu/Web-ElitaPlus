@@ -11,48 +11,48 @@ Public Class CommissionTolerance
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New CommissionToleranceDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -60,23 +60,23 @@ Public Class CommissionTolerance
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CommissionToleranceDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -84,23 +84,23 @@ Public Class CommissionTolerance
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid, ByVal commMarkup As Decimal)
+    Protected Sub Load(id As Guid, commMarkup As Decimal)
         Try
             Dim dal As New CommissionToleranceDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -119,7 +119,7 @@ Public Class CommissionTolerance
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(CommissionToleranceDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -130,7 +130,7 @@ Public Class CommissionTolerance
     End Property
 
     <ValueMandatory("")> _
-    Public Property CommissionPeriodId() As Guid
+    Public Property CommissionPeriodId As Guid
         Get
             CheckDeleted()
             If row(CommissionToleranceDAL.COL_NAME_COMMISSION_PERIOD_ID) Is DBNull.Value Then
@@ -139,14 +139,14 @@ Public Class CommissionTolerance
                 Return New Guid(CType(row(CommissionToleranceDAL.COL_NAME_COMMISSION_PERIOD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CommissionToleranceDAL.COL_NAME_COMMISSION_PERIOD_ID, Value)
+            SetValue(CommissionToleranceDAL.COL_NAME_COMMISSION_PERIOD_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Max:=100, Min:=0), ValidMarkup("")> _
-    Public Property AllowedMarkupPct() As DecimalType
+    Public Property AllowedMarkupPct As DecimalType
         Get
             CheckDeleted()
             If Row(CommissionToleranceDAL.COL_NAME_ALLOWED_MARKUP_PCT) Is DBNull.Value Then
@@ -155,15 +155,15 @@ Public Class CommissionTolerance
                 Return New DecimalType(CType(Row(CommissionToleranceDAL.COL_NAME_ALLOWED_MARKUP_PCT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CommissionToleranceDAL.COL_NAME_ALLOWED_MARKUP_PCT, Value)
+            SetValue(CommissionToleranceDAL.COL_NAME_ALLOWED_MARKUP_PCT, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property Tolerance() As DecimalType
+    Public Property Tolerance As DecimalType
         Get
             CheckDeleted()
             If row(CommissionToleranceDAL.COL_NAME_TOLERANCE) Is DBNull.Value Then
@@ -172,24 +172,24 @@ Public Class CommissionTolerance
                 Return New DecimalType(CType(row(CommissionToleranceDAL.COL_NAME_TOLERANCE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CommissionToleranceDAL.COL_NAME_TOLERANCE, Value)
+            SetValue(CommissionToleranceDAL.COL_NAME_TOLERANCE, Value)
         End Set
     End Property
 
-    Public ReadOnly Property AssociatedAssocComm() As AssociateCommissions.AssocCommList
+    Public ReadOnly Property AssociatedAssocComm As AssociateCommissions.AssocCommList
         Get
-            Return New AssociateCommissions.AssocCommList(Me, Me.Id)
+            Return New AssociateCommissions.AssocCommList(Me, Id)
         End Get
     End Property
 
-    Public Sub AttachAsscComm(ByVal familyDS As DataSet, ByVal NewObject As AssociateCommissions)
+    Public Sub AttachAsscComm(familyDS As DataSet, NewObject As AssociateCommissions)
 
         Dim newBO As AssociateCommissions = New AssociateCommissions(familyDS)
 
-        If Not newBO Is Nothing Then
-            newBO.CommissionToleranceId = Me.Id
+        If newBO IsNot Nothing Then
+            newBO.CommissionToleranceId = Id
             newBO.CommissionPercent = NewObject.CommissionPercent
             newBO.MarkupPercent = NewObject.MarkupPercent
             newBO.Position = NewObject.Position
@@ -201,12 +201,12 @@ Public Class CommissionTolerance
 #End Region
 
 #Region "Public Members"
-    Public Sub Copy(ByVal original As CommissionTolerance, ByVal familyDS As DataSet)
-        If Not Me.IsNew Then
+    Public Sub Copy(original As CommissionTolerance, familyDS As DataSet)
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Dealer")
         End If
         'Copy myself
-        Me.CopyFrom(original)
+        CopyFrom(original)
 
         'copy the children 
         Dim ocount As Integer = 0
@@ -226,15 +226,15 @@ Public Class CommissionTolerance
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CommissionToleranceDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -257,7 +257,7 @@ Public Class CommissionTolerance
     'End Function
 
 
-    Public Shared Function getList(ByVal periodId As Guid) As DataView
+    Public Shared Function getList(periodId As Guid) As DataView
         Try
             Dim dal As New CommissionToleranceDAL
 
@@ -267,7 +267,7 @@ Public Class CommissionTolerance
         End Try
     End Function
 
-    Public Shared Function getList(ByVal periodId As Guid, ByVal AllowedMarkup As DecimalType) As DataView
+    Public Shared Function getList(periodId As Guid, AllowedMarkup As DecimalType) As DataView
         Try
             Dim dal As New CommissionToleranceDAL
 
@@ -277,7 +277,7 @@ Public Class CommissionTolerance
         End Try
     End Function
 
-    Private Shared Function GetToleranceList(ByVal parent As CommissionPeriod) As DataTable
+    Private Shared Function GetToleranceList(parent As CommissionPeriod) As DataTable
 
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(ToleranceList)) Then
@@ -308,41 +308,41 @@ Public Class CommissionTolerance
 
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property CommissionPeriodId(ByVal row) As Guid
+        Public Shared ReadOnly Property CommissionPeriodId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_COMMISSION_TOLERANCE_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property CommissionPeriodId(ByVal row As DataRow) As Guid
+        Public Shared ReadOnly Property CommissionPeriodId(row As DataRow) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_COMMISSION_PERIOD_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property AllowedMarkupPct(ByVal row As DataRow) As LongType
+        Public Shared ReadOnly Property AllowedMarkupPct(row As DataRow) As LongType
             Get
                 Return CType(row(COL_NAME_ALLOWED_MARKUP_PCT), LongType)
             End Get
         End Property
 
-        Public Shared ReadOnly Property Tolerance(ByVal row As DataRow) As LongType
+        Public Shared ReadOnly Property Tolerance(row As DataRow) As LongType
             Get
                 Return CType(row(COL_NAME_TOLERANCE), LongType)
             End Get
         End Property
 
-        Public Shared ReadOnly Property DealerMarkupPct(ByVal row As DataRow) As LongType
+        Public Shared ReadOnly Property DealerMarkupPct(row As DataRow) As LongType
             Get
                 Return CType(row(COL_NAME_DEALER_MARKUP_PCT), LongType)
             End Get
         End Property
 
-        Public Shared ReadOnly Property DealerCommPct(ByVal row As DataRow) As LongType
+        Public Shared ReadOnly Property DealerCommPct(row As DataRow) As LongType
             Get
                 Return CType(row(COL_NAME_DEALER_COMM_PCT), LongType)
             End Get
@@ -354,15 +354,15 @@ Public Class CommissionTolerance
 #Region "List Methods"
     Public Class ToleranceList
         Inherits BusinessObjectListBase
-        Public Sub New(ByVal parent As CommissionPeriod)
+        Public Sub New(parent As CommissionPeriod)
             MyBase.New(GetToleranceList(parent), GetType(CommissionTolerance), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return True
         End Function
 
-        Public Function FindById(ByVal commToleranceId As Guid) As CommissionTolerance
+        Public Function FindById(commToleranceId As Guid) As CommissionTolerance
             Dim bo As CommissionTolerance
             For Each bo In Me
                 If bo.Id.Equals(commToleranceId) Then Return bo
@@ -378,11 +378,11 @@ Public Class CommissionTolerance
     Public NotInheritable Class ValidMarkup
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, ONE_ENTRY_PER_MARKUP_ONLY)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CommissionTolerance = CType(objectToValidate, CommissionTolerance)
 
             Dim commToleranceView As DataView = obj.getList(obj.CommissionPeriodId, obj.AllowedMarkupPct)

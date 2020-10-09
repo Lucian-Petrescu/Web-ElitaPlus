@@ -58,7 +58,7 @@ Namespace Tables
 
         Public ReadOnly Property IsEditing() As Boolean
             Get
-                IsEditing = (Me.moRegionGrid.EditItemIndex > NO_ROW_SELECTED_INDEX)
+                IsEditing = (moRegionGrid.EditItemIndex > NO_ROW_SELECTED_INDEX)
             End Get
         End Property
 
@@ -81,7 +81,7 @@ Namespace Tables
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -154,7 +154,7 @@ Namespace Tables
 
 #Region "Handlers"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
                 'moErrorController.Clear_Hide()
@@ -165,13 +165,13 @@ Namespace Tables
                 '    PopulateRegionDropdown(moDropdownRegion, True)
                 '    SetButtonsState()
                 moErrorController.Clear_Hide()
-                Me.SetStateProperties()
+                SetStateProperties()
                 If Not Page.IsPostBack Then
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                    Me.SetDefaultButton(Me.moTxtRegionStandardSearch, Me.moBtnSearch)
-                    Me.SetGridItemStyleColor(Me.moRegionGrid)
-                    If Me.State.RegionAliasBO Is Nothing Then
-                        Me.State.RegionAliasBO = New RegionStandardization
+                    SetDefaultButton(moTxtRegionStandardSearch, moBtnSearch)
+                    SetGridItemStyleColor(moRegionGrid)
+                    If State.RegionAliasBO Is Nothing Then
+                        State.RegionAliasBO = New RegionStandardization
                     End If
                     'DEF-1692
                     Dim compCount As Integer
@@ -182,60 +182,60 @@ Namespace Tables
                         moCountryDrop.AutoPostBack = True
                     End If
                     'End of DEF-1692
-                    Me.State.PageIndex = 0
+                    State.PageIndex = 0
                     SetButtonsState()
                     PopulateCountry(moCountryDrop)
                 End If
                 BindBoPropertiesToGridHeaders()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
-            Me.ShowMissingTranslations(moErrorController)
+            ShowMissingTranslations(moErrorController)
         End Sub
 
-        Private Sub moBtnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moBtnSearch.Click
+        Private Sub moBtnSearch_Click(sender As System.Object, e As System.EventArgs) Handles moBtnSearch.Click
             Try
-                Me.State.IsGridVisible = True
-                Me.State.searchDV = Nothing
+                State.IsGridVisible = True
+                State.searchDV = Nothing
                 PopulateRegionGrid()
-                Me.State.PageIndex = moRegionGrid.CurrentPageIndex
+                State.PageIndex = moRegionGrid.CurrentPageIndex
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub moBtnClearSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moBtnClearSearch.Click
+        Private Sub moBtnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles moBtnClearSearch.Click
             Try
                 moTxtRegionStandardSearch.Text = String.Empty
-                moDropdownRegion.SelectedIndex = Me.BLANK_ITEM_SELECTED
-                moCountryDrop.SelectedIndex = Me.BLANK_ITEM_SELECTED
+                moDropdownRegion.SelectedIndex = BLANK_ITEM_SELECTED
+                moCountryDrop.SelectedIndex = BLANK_ITEM_SELECTED
 
                 'Update Page State
-                With Me.State
+                With State
                     .DescriptionMask = moTxtRegionStandardSearch.Text
                     .RegionIdSearch = Nothing
                     .SearchCountryId = Nothing
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub moBtnAdd_WITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moBtnAdd_WRITE.Click
+        Private Sub moBtnAdd_WITE_Click(sender As System.Object, e As System.EventArgs) Handles moBtnAdd_WRITE.Click
             'AddRegionAlias()
             'EditModeButtonsControl(IsEdit, False)
             Try
-                Me.State.IsEditMode = True
-                Me.State.IsGridVisible = True
-                Me.State.AddingNewRow = True
-                Me.AddRegionAlias()
-                Me.SetButtonsState()
+                State.IsEditMode = True
+                State.IsGridVisible = True
+                State.AddingNewRow = True
+                AddRegionAlias()
+                SetButtonsState()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub moBtnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moBtnSave_WRITE.Click
+        Private Sub moBtnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles moBtnSave_WRITE.Click
             'Try
             '    If ApplyDataChanges() = True Then
             '        Me.AddInfoMsg(MSG_RECORD_SAVED_OK)
@@ -250,33 +250,33 @@ Namespace Tables
             'End Try
             Try
                 PopulateBOFromForm()
-                If (Me.State.RegionAliasBO.IsDirty) Then
-                    Me.State.RegionAliasBO.Save()
-                    Me.State.IsAfterSave = True
-                    Me.State.AddingNewRow = False
-                    Me.AddInfoMsg(Me.MSG_RECORD_SAVED_OK)
-                    Me.State.searchDV = Nothing
-                    Me.ReturnFromEditing()
+                If (State.RegionAliasBO.IsDirty) Then
+                    State.RegionAliasBO.Save()
+                    State.IsAfterSave = True
+                    State.AddingNewRow = False
+                    AddInfoMsg(MSG_RECORD_SAVED_OK)
+                    State.searchDV = Nothing
+                    ReturnFromEditing()
                 Else
-                    Me.AddInfoMsg(Me.MSG_RECORD_NOT_SAVED)
-                    Me.ReturnFromEditing()
+                    AddInfoMsg(MSG_RECORD_NOT_SAVED)
+                    ReturnFromEditing()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub moBtnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moBtnCancel.Click
+        Private Sub moBtnCancel_Click(sender As System.Object, e As System.EventArgs) Handles moBtnCancel.Click
             Try
-                Me.moRegionGrid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
-                Me.State.Canceling = True
-                If (Me.State.AddingNewRow) Then
-                    Me.State.AddingNewRow = False
-                    Me.State.searchDV = Nothing
+                moRegionGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
+                State.Canceling = True
+                If (State.AddingNewRow) Then
+                    State.AddingNewRow = False
+                    State.searchDV = Nothing
                 End If
                 ReturnFromEditing()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
@@ -287,50 +287,50 @@ Namespace Tables
         Private Sub PopulateRegionGrid()
             Dim dv As DataView
             Try
-                If (Me.State.searchDV Is Nothing) Then
-                    Me.State.searchDV = GetRegionGridDataView()
+                If (State.searchDV Is Nothing) Then
+                    State.searchDV = GetRegionGridDataView()
                 End If
                 'Ticket # 748479 - Search grids in Tables tab should not show pop-up message when number of retrieved record is over 1,000
                 'Me.ValidSearchResultCount(Me.State.searchDV.Count, True)
-                If (Me.State.IsAfterSave) Then
-                    Me.State.IsAfterSave = False
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.RegionAliasId, Me.moRegionGrid, Me.State.PageIndex)
-                ElseIf (Me.State.IsEditMode) Then
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.RegionAliasId, Me.moRegionGrid, Me.State.PageIndex, Me.State.IsEditMode)
+                If (State.IsAfterSave) Then
+                    State.IsAfterSave = False
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.RegionAliasId, moRegionGrid, State.PageIndex)
+                ElseIf (State.IsEditMode) Then
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.RegionAliasId, moRegionGrid, State.PageIndex, State.IsEditMode)
                 Else
                     'For a rare Delete scenario...
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Guid.Empty, Me.moRegionGrid, Me.State.PageIndex)
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, Guid.Empty, moRegionGrid, State.PageIndex)
                 End If
 
-                Me.moRegionGrid.AutoGenerateColumns = False
-                Me.moRegionGrid.Columns(Me.GRID_COL_COUNTRY).SortExpression = RegionStandardization.RegionStandardizationSearchDV.COL_COUNTRY_NAME
-                Me.moRegionGrid.Columns(Me.GRID_COL_REGION_ALIAS).SortExpression = RegionStandardization.COL_NAME_DESCRIPTION
-                Me.moRegionGrid.Columns(Me.GRID_COL_REGION).SortExpression = RegionStandardization.COL_NAME_REGION
+                moRegionGrid.AutoGenerateColumns = False
+                moRegionGrid.Columns(GRID_COL_COUNTRY).SortExpression = RegionStandardization.RegionStandardizationSearchDV.COL_COUNTRY_NAME
+                moRegionGrid.Columns(GRID_COL_REGION_ALIAS).SortExpression = RegionStandardization.COL_NAME_DESCRIPTION
+                moRegionGrid.Columns(GRID_COL_REGION).SortExpression = RegionStandardization.COL_NAME_REGION
 
                 SortAndBindGrid()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
         Private Sub SortAndBindGrid()
-            Me.State.PageIndex = Me.moRegionGrid.CurrentPageIndex
-            Me.TranslateGridControls(moRegionGrid)
-            moRegionGrid.DataSource = Me.State.searchDV
-            HighLightSortColumn(moRegionGrid, Me.State.SortExpression)
-            Me.moRegionGrid.DataBind()
+            State.PageIndex = moRegionGrid.CurrentPageIndex
+            TranslateGridControls(moRegionGrid)
+            moRegionGrid.DataSource = State.searchDV
+            HighLightSortColumn(moRegionGrid, State.SortExpression)
+            moRegionGrid.DataBind()
 
-            ControlMgr.SetVisibleControl(Me, moRegionGrid, Me.State.IsGridVisible)
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.moRegionGrid.Visible)
+            ControlMgr.SetVisibleControl(Me, moRegionGrid, State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, moRegionGrid.Visible)
 
-            Session("recCount") = Me.State.searchDV.Count
+            Session("recCount") = State.searchDV.Count
 
-            If Me.moRegionGrid.Visible Then
-                If (Me.State.AddingNewRow) Then
-                    Me.lblRecordCount.Text = (Me.State.searchDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If moRegionGrid.Visible Then
+                If (State.AddingNewRow) Then
+                    lblRecordCount.Text = (State.searchDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 Else
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             End If
             ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, moRegionGrid)
@@ -339,45 +339,45 @@ Namespace Tables
         Private Function GetRegionGridDataView() As DataView
             With State
                 If .SearchCountryId.Equals(Guid.Empty) Then
-                    Me.State.searchDV = RegionStandardization.GetRegionAliasList(Me.State.DescriptionMask,
-                                                                                 Me.State.RegionIdSearch,
+                    State.searchDV = RegionStandardization.GetRegionAliasList(State.DescriptionMask,
+                                                                                 State.RegionIdSearch,
                                                                                  ElitaPlusIdentity.Current.ActiveUser.Companies)
                 Else
-                    Me.State.searchDV = RegionStandardization.GetRegionAliasList(Me.State.DescriptionMask,
-                                                                                Me.State.RegionIdSearch,
-                                                                                Me.State.SearchCountryId)
+                    State.searchDV = RegionStandardization.GetRegionAliasList(State.DescriptionMask,
+                                                                                State.RegionIdSearch,
+                                                                                State.SearchCountryId)
                 End If
             End With
 
-            Me.State.searchDV.Sort = moRegionGrid.DataMember()
-            moRegionGrid.DataSource = Me.State.searchDV
+            State.searchDV.Sort = moRegionGrid.DataMember()
+            moRegionGrid.DataSource = State.searchDV
 
-            Return (Me.State.searchDV)
+            Return (State.searchDV)
         End Function
 
         Private Sub SetStateProperties()
             Dim company As New ElitaPlus.BusinessObjectsNew.Company(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
             Dim countryId As Guid = company.BusinessCountryId
 
-            Me.State.DescriptionMask = moTxtRegionStandardSearch.Text
-            If (Not moDropdownRegion.SelectedItem Is Nothing AndAlso moDropdownRegion.SelectedItem.Value <> Me.NOTHING_SELECTED_TEXT) Then
-                Me.State.RegionIdSearch = Me.GetGuidFromString(moDropdownRegion.SelectedItem.Value)
+            State.DescriptionMask = moTxtRegionStandardSearch.Text
+            If (moDropdownRegion.SelectedItem IsNot Nothing AndAlso moDropdownRegion.SelectedItem.Value <> NOTHING_SELECTED_TEXT) Then
+                State.RegionIdSearch = GetGuidFromString(moDropdownRegion.SelectedItem.Value)
             Else
-                Me.State.RegionIdSearch = Nothing
+                State.RegionIdSearch = Nothing
             End If
-            Me.State.CompanyId = ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID
-            Me.State.SearchCountryId = Me.GetSelectedItem(moCountryDrop)
+            State.CompanyId = ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID
+            State.SearchCountryId = GetSelectedItem(moCountryDrop)
 
         End Sub
 
         Private Sub PopulateFormFromBO()
 
-            Dim gridRowIdx As Integer = Me.moRegionGrid.EditItemIndex
+            Dim gridRowIdx As Integer = moRegionGrid.EditItemIndex
             Try
-                With Me.State.RegionAliasBO
-                    Dim ctrCountryDropDown As DropDownList = CType(moRegionGrid.Items(gridRowIdx).Cells(Me.GRID_COL_COUNTRY_ID).FindControl(Me.COUNTRY_IN_GRID_CONTROL_NAME), DropDownList)
+                With State.RegionAliasBO
+                    Dim ctrCountryDropDown As DropDownList = CType(moRegionGrid.Items(gridRowIdx).Cells(GRID_COL_COUNTRY_ID).FindControl(COUNTRY_IN_GRID_CONTROL_NAME), DropDownList)
                     If (Not .CountryId.Equals(Guid.Empty)) Then
-                        Me.SetSelectedItem(ctrCountryDropDown, .CountryId)
+                        SetSelectedItem(ctrCountryDropDown, .CountryId)
                     End If
 
                     If moCountryDrop.Items.Count < 3 Then ' there is only one country
@@ -385,36 +385,36 @@ Namespace Tables
                     End If
                     ControlMgr.SetEnableControl(Me, ctrCountryDropDown, moCountryDrop.Items.Count > 2)
 
-                    If (Not .Description Is Nothing) Then
-                        CType(Me.moRegionGrid.Items(gridRowIdx).Cells(Me.GRID_COL_REGION_ALIAS).FindControl(Me.DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text = .Description
+                    If (.Description IsNot Nothing) Then
+                        CType(moRegionGrid.Items(gridRowIdx).Cells(GRID_COL_REGION_ALIAS).FindControl(DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text = .Description
                     End If
                     If (Not .RegionId.Equals(Guid.Empty)) Then
-                        Me.SetSelectedItem(CType(moRegionGrid.Items(gridRowIdx).Cells(Me.GRID_COL_REGION).FindControl(Me.REGION_LIST_IN_GRID_CONTROL_NAME), DropDownList), .RegionId)
+                        SetSelectedItem(CType(moRegionGrid.Items(gridRowIdx).Cells(GRID_COL_REGION).FindControl(REGION_LIST_IN_GRID_CONTROL_NAME), DropDownList), .RegionId)
                     End If
-                    CType(Me.moRegionGrid.Items(gridRowIdx).Cells(Me.GRID_COL_REGION_ALIAS_ID).FindControl(Me.REGION_ALIAS_ID_IN_GRID_CONTROL_NAME), Label).Text = .Id.ToString
+                    CType(moRegionGrid.Items(gridRowIdx).Cells(GRID_COL_REGION_ALIAS_ID).FindControl(REGION_ALIAS_ID_IN_GRID_CONTROL_NAME), Label).Text = .Id.ToString
 
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
 
         Private Sub PopulateBOFromForm()
             Try
-                With Me.State.RegionAliasBO
-                    .CountryId = Me.GetSelectedItem(CType(moRegionGrid.Items(moRegionGrid.EditItemIndex).Cells(Me.GRID_COL_COUNTRY).FindControl(COUNTRY_IN_GRID_CONTROL_NAME), DropDownList))
-                    .Description = CType(Me.moRegionGrid.Items(Me.moRegionGrid.EditItemIndex).Cells(Me.GRID_COL_REGION_ALIAS).FindControl(Me.DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text
-                    .RegionId = Me.GetSelectedItem(CType(moRegionGrid.Items(moRegionGrid.EditItemIndex).Cells(Me.GRID_COL_REGION).FindControl(Me.REGION_LIST_IN_GRID_CONTROL_NAME), DropDownList))
+                With State.RegionAliasBO
+                    .CountryId = GetSelectedItem(CType(moRegionGrid.Items(moRegionGrid.EditItemIndex).Cells(GRID_COL_COUNTRY).FindControl(COUNTRY_IN_GRID_CONTROL_NAME), DropDownList))
+                    .Description = CType(moRegionGrid.Items(moRegionGrid.EditItemIndex).Cells(GRID_COL_REGION_ALIAS).FindControl(DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text
+                    .RegionId = GetSelectedItem(CType(moRegionGrid.Items(moRegionGrid.EditItemIndex).Cells(GRID_COL_REGION).FindControl(REGION_LIST_IN_GRID_CONTROL_NAME), DropDownList))
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
 
         'DEF-1692
-        Private Sub PopulateRegionDropdown(ByVal oDropDownList As DropDownList, Optional ByVal edmode As Boolean = False, Optional ByVal myCountry As ArrayList = Nothing)
+        Private Sub PopulateRegionDropdown(oDropDownList As DropDownList, Optional ByVal edmode As Boolean = False, Optional ByVal myCountry As ArrayList = Nothing)
             Try
                 'Dim oRegionList As DataView = LookupListNew.GetRegionLookupList(myCountry)
                 'End of DEF-1692
@@ -431,7 +431,7 @@ Namespace Tables
                                                                             })
 
                     If Regions.Count > 0 Then
-                        If Not RegionList Is Nothing Then
+                        If RegionList IsNot Nothing Then
                             RegionList.AddRange(Regions)
                         Else
                             RegionList = Regions.Clone()
@@ -450,7 +450,7 @@ Namespace Tables
             End Try
         End Sub
         'DEF-1692
-        Private Sub PopulateRegionDropdown(ByVal oDropDownList As DropDownList, ByVal myCountry As Guid, Optional ByVal edmode As Boolean = False)
+        Private Sub PopulateRegionDropdown(oDropDownList As DropDownList, myCountry As Guid, Optional ByVal edmode As Boolean = False)
             Try
                 'Dim oRegionList As DataView = LookupListNew.GetRegionLookupList(myCountry)
                 'Me.BindListControlToDataView(oDropDownList, oRegionList)
@@ -475,69 +475,69 @@ Namespace Tables
 
         Private Sub AddRegionAlias()
 
-            Me.State.searchDV = GetRegionGridDataView()
+            State.searchDV = GetRegionGridDataView()
 
-            Me.State.RegionAliasBO = New RegionStandardization
-            Me.State.RegionAliasId = Me.State.RegionAliasBO.Id
+            State.RegionAliasBO = New RegionStandardization
+            State.RegionAliasId = State.RegionAliasBO.Id
 
-            GetNewDataViewRow(Me.State.searchDV, Me.State.RegionAliasId)
+            GetNewDataViewRow(State.searchDV, State.RegionAliasId)
 
-            moRegionGrid.DataSource = Me.State.searchDV
-            SetGridControls(Me.moRegionGrid, False)
-            Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.RegionAliasId, Me.moRegionGrid, Me.State.PageIndex, Me.State.IsEditMode)
+            moRegionGrid.DataSource = State.searchDV
+            SetGridControls(moRegionGrid, False)
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.RegionAliasId, moRegionGrid, State.PageIndex, State.IsEditMode)
 
-            Me.moRegionGrid.AutoGenerateColumns = False
-            Me.moRegionGrid.Columns(Me.GRID_COL_COUNTRY).SortExpression = RegionStandardization.RegionStandardizationSearchDV.COL_COUNTRY_NAME
-            Me.moRegionGrid.Columns(Me.GRID_COL_REGION_ALIAS).SortExpression = RegionStandardization.COL_NAME_DESCRIPTION
-            Me.moRegionGrid.Columns(Me.GRID_COL_REGION).SortExpression = RegionStandardization.COL_NAME_REGION
+            moRegionGrid.AutoGenerateColumns = False
+            moRegionGrid.Columns(GRID_COL_COUNTRY).SortExpression = RegionStandardization.RegionStandardizationSearchDV.COL_COUNTRY_NAME
+            moRegionGrid.Columns(GRID_COL_REGION_ALIAS).SortExpression = RegionStandardization.COL_NAME_DESCRIPTION
+            moRegionGrid.Columns(GRID_COL_REGION).SortExpression = RegionStandardization.COL_NAME_REGION
 
-            Me.SortAndBindGrid()
+            SortAndBindGrid()
 
             'Set focus on the Description TextBox for the EditItemIndex row
             If moCountryDrop.Items.Count < 3 Then   'Only one country.
-                Me.SetFocusOnEditableFieldInGrid(Me.moRegionGrid, Me.GRID_COL_REGION_ALIAS, moRegionGrid.EditItemIndex, Me.State.AddingNewRow And True)
+                SetFocusOnEditableFieldInGrid(moRegionGrid, GRID_COL_REGION_ALIAS, moRegionGrid.EditItemIndex, State.AddingNewRow AndAlso True)
             Else
-                Me.SetFocusOnEditableFieldInGrid(Me.moRegionGrid, Me.GRID_COL_COUNTRY_ID, moRegionGrid.EditItemIndex, Me.State.AddingNewRow And False)
+                SetFocusOnEditableFieldInGrid(moRegionGrid, GRID_COL_COUNTRY_ID, moRegionGrid.EditItemIndex, State.AddingNewRow AndAlso False)
             End If
 
-            Dim regionList As DropDownList = CType(moRegionGrid.Items(moRegionGrid.EditItemIndex).Cells(Me.GRID_COL_REGION).FindControl(Me.REGION_LIST_IN_GRID_CONTROL_NAME), DropDownList)
+            Dim regionList As DropDownList = CType(moRegionGrid.Items(moRegionGrid.EditItemIndex).Cells(GRID_COL_REGION).FindControl(REGION_LIST_IN_GRID_CONTROL_NAME), DropDownList)
             'Invoke the RiskGroupFactoryLookup with NotingSelected = False
             'DEF-1692
-            Dim myCountry As DropDownList = CType(moRegionGrid.Items(moRegionGrid.EditItemIndex).Cells(Me.GRID_COL_COUNTRY).FindControl(Me.COUNTRY_IN_GRID_CONTROL_NAME), DropDownList)
+            Dim myCountry As DropDownList = CType(moRegionGrid.Items(moRegionGrid.EditItemIndex).Cells(GRID_COL_COUNTRY).FindControl(COUNTRY_IN_GRID_CONTROL_NAME), DropDownList)
             PopulateRegionDropdown(regionList, New Guid(myCountry.SelectedItem.Value), True)
             'End of DEF-1692
 
-            Me.TranslateGridControls(moRegionGrid)
+            TranslateGridControls(moRegionGrid)
 
-            Me.SetButtonsState()
+            SetButtonsState()
         End Sub
 
         Private Sub ReturnFromEditing(Optional ByVal cancel As Boolean = False)
 
             moRegionGrid.EditItemIndex = NO_ROW_SELECTED_INDEX
 
-            If (Me.moRegionGrid.PageCount = 0) Then
+            If (moRegionGrid.PageCount = 0) Then
                 'if returning to the "1st time in" screen
                 ControlMgr.SetVisibleControl(Me, moRegionGrid, False)
             Else
                 ControlMgr.SetVisibleControl(Me, moRegionGrid, True)
             End If
 
-            Me.State.IsEditMode = False
-            Me.PopulateRegionGrid()
-            Me.State.PageIndex = moRegionGrid.CurrentPageIndex
+            State.IsEditMode = False
+            PopulateRegionGrid()
+            State.PageIndex = moRegionGrid.CurrentPageIndex
             SetButtonsState()
         End Sub
 
-        Private Sub SetFocusOnEditableFieldInGrid(ByVal grid As DataGrid, ByVal cellPosition As Integer, ByVal itemIndex As Integer, ByVal IsNewRowAndSingleCountry As Boolean)
+        Private Sub SetFocusOnEditableFieldInGrid(grid As DataGrid, cellPosition As Integer, itemIndex As Integer, IsNewRowAndSingleCountry As Boolean)
             'Set focus on the Description TextBox for the EditItemIndex row
-            Dim ctrlCountry As DropDownList = CType(grid.Items(itemIndex).Cells(Me.GRID_COL_COUNTRY_ID).FindControl(Me.COUNTRY_IN_GRID_CONTROL_NAME), DropDownList)
+            Dim ctrlCountry As DropDownList = CType(grid.Items(itemIndex).Cells(GRID_COL_COUNTRY_ID).FindControl(COUNTRY_IN_GRID_CONTROL_NAME), DropDownList)
             SetFocus(ctrlCountry)
-            If cellPosition = Me.GRID_COL_COUNTRY_ID Then
+            If cellPosition = GRID_COL_COUNTRY_ID Then
                 SetFocus(ctrlCountry)
                 ctrlCountry.Enabled = True
             Else
-                Dim ctrlDescription As TextBox = CType(grid.Items(itemIndex).Cells(Me.GRID_COL_REGION_ALIAS).FindControl(DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox)
+                Dim ctrlDescription As TextBox = CType(grid.Items(itemIndex).Cells(GRID_COL_REGION_ALIAS).FindControl(DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox)
                 SetFocus(ctrlDescription)
                 ctrlCountry.Enabled = False
             End If
@@ -549,10 +549,10 @@ Namespace Tables
         End Sub
 
         Protected Sub BindBoPropertiesToGridHeaders()
-            Me.BindBOPropertyToGridHeader(Me.State.RegionAliasBO, "description", Me.moRegionGrid.Columns(Me.GRID_COL_REGION_ALIAS))
-            Me.BindBOPropertyToGridHeader(Me.State.RegionAliasBO, "CountryId", Me.moRegionGrid.Columns(Me.GRID_COL_COUNTRY))
-            Me.BindBOPropertyToGridHeader(Me.State.RegionAliasBO, "RegionId", Me.moRegionGrid.Columns(Me.GRID_COL_REGION))
-            Me.ClearGridHeadersAndLabelsErrSign()
+            BindBOPropertyToGridHeader(State.RegionAliasBO, "description", moRegionGrid.Columns(GRID_COL_REGION_ALIAS))
+            BindBOPropertyToGridHeader(State.RegionAliasBO, "CountryId", moRegionGrid.Columns(GRID_COL_COUNTRY))
+            BindBOPropertyToGridHeader(State.RegionAliasBO, "RegionId", moRegionGrid.Columns(GRID_COL_REGION))
+            ClearGridHeadersAndLabelsErrSign()
         End Sub
 
 #End Region
@@ -561,15 +561,15 @@ Namespace Tables
 
         Private Sub SetButtonsState()
 
-            If (Me.State.IsEditMode) Then
-                ControlMgr.SetVisibleControl(Me, Me.moBtnSave_WRITE, True)
+            If (State.IsEditMode) Then
+                ControlMgr.SetVisibleControl(Me, moBtnSave_WRITE, True)
                 ControlMgr.SetVisibleControl(Me, moBtnCancel, True)
                 ControlMgr.SetVisibleControl(Me, moBtnAdd_WRITE, False)
                 ControlMgr.SetEnableControl(Me, moBtnSearch, False)
                 ControlMgr.SetEnableControl(Me, moBtnClearSearch, False)
                 ControlMgr.SetEnableControl(Me, moDropdownRegion, False)
-                Me.MenuEnabled = False
-                If (Me.cboPageSize.Visible) Then
+                MenuEnabled = False
+                If (cboPageSize.Visible) Then
                     ControlMgr.SetEnableControl(Me, cboPageSize, False)
                 End If
             Else
@@ -579,26 +579,26 @@ Namespace Tables
                 ControlMgr.SetEnableControl(Me, moBtnSearch, True)
                 ControlMgr.SetEnableControl(Me, moBtnClearSearch, True)
                 ControlMgr.SetEnableControl(Me, moDropdownRegion, True)
-                Me.MenuEnabled = True
-                If (Me.cboPageSize.Visible) Then
+                MenuEnabled = True
+                If (cboPageSize.Visible) Then
                     ControlMgr.SetEnableControl(Me, cboPageSize, True)
                 End If
             End If
 
         End Sub
-        Private Sub moBtnDelete_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles moBtnDelete.Click
+        Private Sub moBtnDelete_Click(sender As Object, e As System.Web.UI.ImageClickEventArgs) Handles moBtnDelete.Click
             Try
                 'Place code here
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub moBtnDelete_Command(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.CommandEventArgs) Handles moBtnDelete.Command
+        Private Sub moBtnDelete_Command(sender As Object, e As System.Web.UI.WebControls.CommandEventArgs) Handles moBtnDelete.Command
             Try
                 'Place code here
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
@@ -628,29 +628,29 @@ Namespace Tables
 
 #Region " Datagrid Related "
 
-        Private Sub moRegionGrid_PageIndexChanged(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moRegionGrid.PageIndexChanged
+        Private Sub moRegionGrid_PageIndexChanged(source As System.Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moRegionGrid.PageIndexChanged
             Try
-                If (Not (Me.State.IsEditMode)) Then
-                    Me.State.PageIndex = e.NewPageIndex
-                    Me.moRegionGrid.CurrentPageIndex = Me.State.PageIndex
-                    Me.PopulateRegionGrid()
-                    Me.moRegionGrid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
+                If (Not (State.IsEditMode)) Then
+                    State.PageIndex = e.NewPageIndex
+                    moRegionGrid.CurrentPageIndex = State.PageIndex
+                    PopulateRegionGrid()
+                    moRegionGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 moRegionGrid.CurrentPageIndex = NewCurrentPageIndex(moRegionGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.PopulateRegionGrid()
+                PopulateRegionGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moRegionGrid.ItemDataBound
+        Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moRegionGrid.ItemDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
@@ -659,144 +659,144 @@ Namespace Tables
                     itemType = ListItemType.AlternatingItem OrElse
                     itemType = ListItemType.SelectedItem) Then
 
-                    e.Item.Cells(Me.GRID_COL_REGION_ALIAS_ID).Text = GetGuidStringFromByteArray(CType(dvRow(RegionStandardization.RegionStandardizationSearchDV.COL_REGION_STANDARDIZATION_ID), Byte()))
+                    e.Item.Cells(GRID_COL_REGION_ALIAS_ID).Text = GetGuidStringFromByteArray(CType(dvRow(RegionStandardization.RegionStandardizationSearchDV.COL_REGION_STANDARDIZATION_ID), Byte()))
 
-                    e.Item.Cells(Me.GRID_COL_COUNTRY).Text = GetGuidStringFromByteArray(CType(dvRow(RegionStandardization.RegionStandardizationSearchDV.COL_COUNTRY_ID), Byte()))
-                    e.Item.Cells(Me.GRID_COL_COUNTRY).Text = dvRow(RegionStandardization.RegionStandardizationSearchDV.COL_COUNTRY_NAME).ToString
+                    e.Item.Cells(GRID_COL_COUNTRY).Text = GetGuidStringFromByteArray(CType(dvRow(RegionStandardization.RegionStandardizationSearchDV.COL_COUNTRY_ID), Byte()))
+                    e.Item.Cells(GRID_COL_COUNTRY).Text = dvRow(RegionStandardization.RegionStandardizationSearchDV.COL_COUNTRY_NAME).ToString
 
-                    e.Item.Cells(Me.GRID_COL_REGION_ALIAS).Text = dvRow(RegionStandardization.RegionStandardizationSearchDV.COL_REGION_ALIAS).ToString
-                    e.Item.Cells(Me.GRID_COL_REGION).Text = dvRow(RegionStandardization.RegionStandardizationSearchDV.COL_REGION).ToString
+                    e.Item.Cells(GRID_COL_REGION_ALIAS).Text = dvRow(RegionStandardization.RegionStandardizationSearchDV.COL_REGION_ALIAS).ToString
+                    e.Item.Cells(GRID_COL_REGION).Text = dvRow(RegionStandardization.RegionStandardizationSearchDV.COL_REGION).ToString
 
                 ElseIf (itemType = ListItemType.EditItem) Then
-                    e.Item.Cells(Me.GRID_COL_REGION_ALIAS_ID).Text = GetGuidStringFromByteArray(CType(dvRow(RegionStandardization.RegionStandardizationSearchDV.COL_REGION_STANDARDIZATION_ID), Byte()))
+                    e.Item.Cells(GRID_COL_REGION_ALIAS_ID).Text = GetGuidStringFromByteArray(CType(dvRow(RegionStandardization.RegionStandardizationSearchDV.COL_REGION_STANDARDIZATION_ID), Byte()))
 
                     'Me.BindListControlToDataView(CType(e.Item.Cells(Me.GRID_COL_COUNTRY).FindControl(COUNTRY_IN_GRID_CONTROL_NAME), DropDownList),LookupListNew.GetUserCountriesLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies))
-                    PopulateCountry(CType(e.Item.Cells(Me.GRID_COL_COUNTRY).FindControl(COUNTRY_IN_GRID_CONTROL_NAME), DropDownList))
+                    PopulateCountry(CType(e.Item.Cells(GRID_COL_COUNTRY).FindControl(COUNTRY_IN_GRID_CONTROL_NAME), DropDownList))
 
-                    Me.SetSelectedItem(CType(e.Item.Cells(Me.GRID_COL_COUNTRY).FindControl(COUNTRY_IN_GRID_CONTROL_NAME), DropDownList), Me.State.RegionAliasBO.CountryId)
+                    SetSelectedItem(CType(e.Item.Cells(GRID_COL_COUNTRY).FindControl(COUNTRY_IN_GRID_CONTROL_NAME), DropDownList), State.RegionAliasBO.CountryId)
 
-                    CType(e.Item.Cells(Me.GRID_COL_REGION_ALIAS).FindControl(DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text = dvRow(RegionStandardization.RegionStandardizationSearchDV.COL_REGION_ALIAS).ToString
+                    CType(e.Item.Cells(GRID_COL_REGION_ALIAS).FindControl(DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text = dvRow(RegionStandardization.RegionStandardizationSearchDV.COL_REGION_ALIAS).ToString
 
-                    Dim regionList As DropDownList = CType(e.Item.Cells(Me.GRID_COL_REGION).FindControl(Me.REGION_LIST_IN_GRID_CONTROL_NAME), DropDownList)
+                    Dim regionList As DropDownList = CType(e.Item.Cells(GRID_COL_REGION).FindControl(REGION_LIST_IN_GRID_CONTROL_NAME), DropDownList)
                     'DEF-1692
-                    Dim myCountry As DropDownList = CType(e.Item.Cells(Me.GRID_COL_COUNTRY).FindControl(Me.COUNTRY_IN_GRID_CONTROL_NAME), DropDownList)
+                    Dim myCountry As DropDownList = CType(e.Item.Cells(GRID_COL_COUNTRY).FindControl(COUNTRY_IN_GRID_CONTROL_NAME), DropDownList)
                     myCountry.AutoPostBack = True
-                    Me.PopulateRegionDropdown(regionList, New Guid(myCountry.SelectedItem.Value), True)
+                    PopulateRegionDropdown(regionList, New Guid(myCountry.SelectedItem.Value), True)
                     'End of DEF-1692
-                    Me.SetSelectedItem(regionList, Me.State.RegionAliasBO.RegionId) 'New Guid(CType(dvRow(RegionStandardization.RegionStandardizationSearchDV.COL_REGION_STANDARDIZATION_ID), Byte())))
+                    SetSelectedItem(regionList, State.RegionAliasBO.RegionId) 'New Guid(CType(dvRow(RegionStandardization.RegionStandardizationSearchDV.COL_REGION_STANDARDIZATION_ID), Byte())))
 
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles moRegionGrid.SortCommand
+        Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles moRegionGrid.SortCommand
             Try
-                If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                    If Me.State.SortExpression.EndsWith(" DESC") Then
-                        Me.State.SortExpression = e.SortExpression
+                If State.SortExpression.StartsWith(e.SortExpression) Then
+                    If State.SortExpression.EndsWith(" DESC") Then
+                        State.SortExpression = e.SortExpression
                     Else
-                        Me.State.SortExpression &= " DESC"
+                        State.SortExpression &= " DESC"
                     End If
                 Else
-                    Me.State.SortExpression = e.SortExpression
+                    State.SortExpression = e.SortExpression
                 End If
                 'To handle the requirement of always going to the FIRST page on the Grid whenever the user switches the sorting criterion
                 'Set the Me.State.selectedClaimId = Guid.Empty and set Me.State.PageIndex = 0
-                Me.State.RegionAliasId = Guid.Empty
-                Me.State.PageIndex = 0
+                State.RegionAliasId = Guid.Empty
+                State.PageIndex = 0
 
-                Me.PopulateRegionGrid()
+                PopulateRegionGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
 
-        Public Sub ItemBound(ByVal source As Object, ByVal e As DataGridItemEventArgs) Handles moRegionGrid.ItemDataBound
+        Public Sub ItemBound(source As Object, e As DataGridItemEventArgs) Handles moRegionGrid.ItemDataBound
             Try
                 BaseItemBound(source, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
         'The pencil or the trash icon was clicked
-        Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+        Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
             Try
                 Dim index As Integer = e.Item.ItemIndex
 
-                If (e.CommandName = Me.EDIT_COMMAND) Then
+                If (e.CommandName = EDIT_COMMAND) Then
 
                     'Do the Edit here
 
                     'Set the IsEditMode flag to TRUE
-                    Me.State.IsEditMode = True
+                    State.IsEditMode = True
 
-                    Me.State.RegionAliasId = New Guid(Me.moRegionGrid.Items(e.Item.ItemIndex).Cells(Me.GRID_COL_REGION_ALIAS_ID).Text)
+                    State.RegionAliasId = New Guid(moRegionGrid.Items(e.Item.ItemIndex).Cells(GRID_COL_REGION_ALIAS_ID).Text)
 
-                    Me.State.RegionAliasBO = New RegionStandardization(Me.State.RegionAliasId)
+                    State.RegionAliasBO = New RegionStandardization(State.RegionAliasId)
 
-                    Me.PopulateRegionGrid()
+                    PopulateRegionGrid()
 
-                    Me.State.PageIndex = moRegionGrid.CurrentPageIndex
+                    State.PageIndex = moRegionGrid.CurrentPageIndex
 
-                    Me.SetGridControls(Me.moRegionGrid, False)
+                    SetGridControls(moRegionGrid, False)
 
                     'Set focus on the Description TextBox for the EditItemIndex row
                     If moCountryDrop.Items.Count < 3 Then
-                        Me.SetFocusOnEditableFieldInGrid(Me.moRegionGrid, Me.GRID_COL_REGION_ALIAS, index, Me.State.AddingNewRow And True)
+                        SetFocusOnEditableFieldInGrid(moRegionGrid, GRID_COL_REGION_ALIAS, index, State.AddingNewRow AndAlso True)
                     Else
-                        Me.SetFocusOnEditableFieldInGrid(Me.moRegionGrid, Me.GRID_COL_COUNTRY_ID, index, Me.State.AddingNewRow And False)
+                        SetFocusOnEditableFieldInGrid(moRegionGrid, GRID_COL_COUNTRY_ID, index, State.AddingNewRow AndAlso False)
                     End If
 
-                    Me.SetButtonsState()
+                    SetButtonsState()
 
-                ElseIf (e.CommandName = Me.DELETE_COMMAND) Then
+                ElseIf (e.CommandName = DELETE_COMMAND) Then
                     'Do the delete here
 
                     'Save the RegionAliasId in the Session
-                    moRegionGrid.SelectedIndex = Me.NO_ROW_SELECTED_INDEX
-                    Me.State.RegionAliasId = New Guid(Me.moRegionGrid.Items(e.Item.ItemIndex).Cells(Me.GRID_COL_REGION_ALIAS_ID).Text)
-                    Me.State.RegionAliasBO = New RegionStandardization(Me.State.RegionAliasId)
+                    moRegionGrid.SelectedIndex = NO_ROW_SELECTED_INDEX
+                    State.RegionAliasId = New Guid(moRegionGrid.Items(e.Item.ItemIndex).Cells(GRID_COL_REGION_ALIAS_ID).Text)
+                    State.RegionAliasBO = New RegionStandardization(State.RegionAliasId)
 
-                    Me.State.RegionAliasBO.Delete()
+                    State.RegionAliasBO.Delete()
 
                     'Call the Save() method in the RegionAlias Business Object here
 
-                    Me.State.RegionAliasBO.Save()
+                    State.RegionAliasBO.Save()
 
-                    Me.State.PageIndex = moRegionGrid.CurrentPageIndex
+                    State.PageIndex = moRegionGrid.CurrentPageIndex
 
                     'Set the IsAfterSave flag to TRUE so that the Paging logic gets invoked
-                    Me.State.IsAfterSave = True
-                    Me.State.searchDV = Nothing
+                    State.IsAfterSave = True
+                    State.searchDV = Nothing
                     PopulateRegionGrid()
-                    Me.State.PageIndex = moRegionGrid.CurrentPageIndex
+                    State.PageIndex = moRegionGrid.CurrentPageIndex
 
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
 
-        Public Sub ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs)
+        Public Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 #End Region
 
         'DEF-1692
-        Protected Sub moCountryDrop_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles moCountryDrop.SelectedIndexChanged
+        Protected Sub moCountryDrop_SelectedIndexChanged(sender As Object, e As EventArgs) Handles moCountryDrop.SelectedIndexChanged
             Dim selectCountry As String
             selectCountry = moCountryDrop.SelectedItem.Value
             PopulateRegionDropdown(moDropdownRegion, New Guid(selectCountry), True)
         End Sub
-        Protected Sub cboCountryInGrid_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs)
+        Protected Sub cboCountryInGrid_SelectedIndexChanged(sender As Object, e As EventArgs)
 
-            Dim regionList As DropDownList = CType(moRegionGrid.Items(moRegionGrid.EditItemIndex).Cells(Me.GRID_COL_REGION).FindControl(Me.REGION_LIST_IN_GRID_CONTROL_NAME), DropDownList)
-            Dim myCountry As DropDownList = CType(moRegionGrid.Items(moRegionGrid.EditItemIndex).Cells(Me.GRID_COL_COUNTRY).FindControl(Me.COUNTRY_IN_GRID_CONTROL_NAME), DropDownList)
+            Dim regionList As DropDownList = CType(moRegionGrid.Items(moRegionGrid.EditItemIndex).Cells(GRID_COL_REGION).FindControl(REGION_LIST_IN_GRID_CONTROL_NAME), DropDownList)
+            Dim myCountry As DropDownList = CType(moRegionGrid.Items(moRegionGrid.EditItemIndex).Cells(GRID_COL_COUNTRY).FindControl(COUNTRY_IN_GRID_CONTROL_NAME), DropDownList)
             PopulateRegionDropdown(regionList, New Guid(myCountry.SelectedItem.Value), True)
         End Sub
         'End of DEF-1692

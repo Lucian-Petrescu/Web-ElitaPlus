@@ -18,8 +18,8 @@ Public Class GVSUpdateSVC
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GVSUpdateSVCDs, ByVal xml As String, _
-                   ByVal functionToProcess As String)
+    Public Sub New(ds As GVSUpdateSVCDs, xml As String, _
+                   functionToProcess As String)
         MyBase.New()
         InputXml = Xml
         FuncToProc = functionToProcess
@@ -39,20 +39,20 @@ Public Class GVSUpdateSVC
 #End Region
 
 #Region "Properties"
-    Private Property InputXml() As String
+    Private Property InputXml As String
         Get
             Return msInputXml
         End Get
-        Set(ByVal value As String)
+        Set
             msInputXml = value
         End Set
     End Property
 
-    Private Property FuncToProc() As String
+    Private Property FuncToProc As String
         Get
             Return msFunctionToProcess
         End Get
-        Set(ByVal value As String)
+        Set
             msFunctionToProcess = value
         End Set
     End Property
@@ -77,31 +77,31 @@ Public Class GVSUpdateSVC
 
 #Region "Extended Properties"
 
-    Public Property TransactionId() As String
+    Public Property TransactionId As String
         Get
-            If Row(Me.DATA_COL_NAME_TRANSACTION_ID) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_TRANSACTION_ID) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_TRANSACTION_ID), String))
+                Return (CType(Row(DATA_COL_NAME_TRANSACTION_ID), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_TRANSACTION_ID, Value)
+            SetValue(DATA_COL_NAME_TRANSACTION_ID, Value)
         End Set
     End Property
 
-    Public Property FunctionType() As String
+    Public Property FunctionType As String
         Get
-            If Row(Me.DATA_COL_NAME_FUNCTION_TYPE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_FUNCTION_TYPE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_FUNCTION_TYPE), String))
+                Return (CType(Row(DATA_COL_NAME_FUNCTION_TYPE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_FUNCTION_TYPE, Value)
+            SetValue(DATA_COL_NAME_FUNCTION_TYPE, Value)
         End Set
     End Property
 

@@ -16,7 +16,7 @@ Public Class ScheduleDetail
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -24,61 +24,61 @@ Public Class ScheduleDetail
 
     Public ReadOnly Property DataTable As DataTable
         Get
-            Return Me.Row.Table
+            Return Row.Table
         End Get
     End Property
 
     Public ReadOnly Property DataRow As DataRow
         Get
-            Return Me.Row
+            Return Row
         End Get
     End Property
 
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ScheduleDetailDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -86,23 +86,23 @@ Public Class ScheduleDetail
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ScheduleDetailDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -110,29 +110,29 @@ Public Class ScheduleDetail
         End Try
     End Sub
 
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet, ByVal SecondaryKeyName As String)
+    Public Sub New(id As Guid, familyDS As DataSet, SecondaryKeyName As String)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id, SecondaryKeyName)
+        Dataset = familyDS
+        Load(id, SecondaryKeyName)
     End Sub
 
-    Protected Sub Load(ByVal id As Guid, ByVal SecondaryKeyName As String)
+    Protected Sub Load(id As Guid, SecondaryKeyName As String)
         Try
             Dim dal As New ScheduleDetailDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, SecondaryKeyName, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, SecondaryKeyName, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, SecondaryKeyName, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, SecondaryKeyName, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -140,7 +140,7 @@ Public Class ScheduleDetail
         End Try
     End Sub
 
-    Public Shared Function LoadScheduleDetail(ByVal ScheduleId As Guid) As DataView
+    Public Shared Function LoadScheduleDetail(ScheduleId As Guid) As DataView
         Try
             Dim dal As New ScheduleDetailDAL
             Dim ds As DataSet
@@ -154,7 +154,7 @@ Public Class ScheduleDetail
 
     End Function
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid, ByVal bo As ScheduleDetail) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid, bo As ScheduleDetail) As DataView
 
         Dim dt As DataTable
         dt = dv.Table
@@ -163,20 +163,20 @@ Public Class ScheduleDetail
             Dim row As DataRow = dt.NewRow
 
             If bo.FromTime Is Nothing Then
-                row(ScheduleDetail.ScheduleDetailSearchDV.COL_FROM_TIME) = DBNull.Value
+                row(ScheduleDetailSearchDV.COL_FROM_TIME) = DBNull.Value
             Else
-                row(ScheduleDetail.ScheduleDetailSearchDV.COL_FROM_TIME) = bo.FromTime
+                row(ScheduleDetailSearchDV.COL_FROM_TIME) = bo.FromTime
             End If
 
             If bo.ToTime Is Nothing Then
-                row(ScheduleDetail.ScheduleDetailSearchDV.COL_TO_TIME) = DBNull.Value
+                row(ScheduleDetailSearchDV.COL_TO_TIME) = DBNull.Value
             Else
-                row(ScheduleDetail.ScheduleDetailSearchDV.COL_TO_TIME) = bo.ToTime
+                row(ScheduleDetailSearchDV.COL_TO_TIME) = bo.ToTime
             End If
 
-            row(ScheduleDetail.ScheduleDetailSearchDV.COL_DAY_OF_WEEK_ID) = bo.DayOfWeekId.ToByteArray
-            row(ScheduleDetail.ScheduleDetailSearchDV.COL_SCHEDULE_DETAIL_ID) = bo.Id.ToByteArray
-            row(ScheduleDetail.ScheduleDetailSearchDV.COL_SCHEDULE_ID) = bo.ScheduleId.ToByteArray
+            row(ScheduleDetailSearchDV.COL_DAY_OF_WEEK_ID) = bo.DayOfWeekId.ToByteArray
+            row(ScheduleDetailSearchDV.COL_SCHEDULE_DETAIL_ID) = bo.Id.ToByteArray
+            row(ScheduleDetailSearchDV.COL_SCHEDULE_ID) = bo.ScheduleId.ToByteArray
 
             dt.Rows.Add(row)
         End If
@@ -198,7 +198,7 @@ Public Class ScheduleDetail
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ScheduleDetailDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -209,7 +209,7 @@ Public Class ScheduleDetail
     End Property
 
     <ValueMandatory("")> _
-    Public Property ScheduleId() As Guid
+    Public Property ScheduleId As Guid
         Get
             CheckDeleted()
             If Row(ScheduleDetailDAL.COL_NAME_SCHEDULE_ID) Is DBNull.Value Then
@@ -218,15 +218,15 @@ Public Class ScheduleDetail
                 Return New Guid(CType(Row(ScheduleDetailDAL.COL_NAME_SCHEDULE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ScheduleDetailDAL.COL_NAME_SCHEDULE_ID, Value)
+            SetValue(ScheduleDetailDAL.COL_NAME_SCHEDULE_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property DayOfWeekId() As Guid
+    Public Property DayOfWeekId As Guid
         Get
             CheckDeleted()
             If Row(ScheduleDetailDAL.COL_NAME_DAY_OF_WEEK_ID) Is DBNull.Value Then
@@ -235,14 +235,14 @@ Public Class ScheduleDetail
                 Return New Guid(CType(Row(ScheduleDetailDAL.COL_NAME_DAY_OF_WEEK_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ScheduleDetailDAL.COL_NAME_DAY_OF_WEEK_ID, Value)
+            SetValue(ScheduleDetailDAL.COL_NAME_DAY_OF_WEEK_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property FromTime() As DateType
+    Public Property FromTime As DateType
         Get
             CheckDeleted()
             If Row(ScheduleDetailDAL.COL_NAME_FROM_TIME) Is DBNull.Value Then
@@ -251,16 +251,16 @@ Public Class ScheduleDetail
                 Return New DateType(DateHelper.GetDateValue(Row(ScheduleDetailDAL.COL_NAME_FROM_TIME).ToString()))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(ScheduleDetailDAL.COL_NAME_FROM_TIME, Value)
+            SetValue(ScheduleDetailDAL.COL_NAME_FROM_TIME, Value)
         End Set
     End Property
 
-    <ValueMandatory(""), DateCompareValidator("", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_FROM_TIME_HIGHER_THAN_TO_TIME, "FromTime", DateCompareValidatorAttribute.CompareType.GreaterThan), _
+    <ValueMandatory(""), DateCompareValidator("", Common.ErrorCodes.INVALID_FROM_TIME_HIGHER_THAN_TO_TIME, "FromTime", DateCompareValidatorAttribute.CompareType.GreaterThan), _
          OverlapValidator("", DataRowPropertyName:="DataRow", DataTablePropertyName:="DataTable", EffectiveDateColumnName:=ScheduleDetailDAL.COL_NAME_FROM_TIME, ExpirationDateColumnName:=ScheduleDetailDAL.COL_NAME_TO_TIME, _
         KeyColumns:=New String() {ScheduleDetailDAL.COL_NAME_DAY_OF_WEEK_ID})> _
-    Public Property ToTime() As DateType
+    Public Property ToTime As DateType
         Get
             CheckDeleted()
             If Row(ScheduleDetailDAL.COL_NAME_TO_TIME) Is DBNull.Value Then
@@ -269,9 +269,9 @@ Public Class ScheduleDetail
                 Return New DateType(DateHelper.GetDateValue(Row(ScheduleDetailDAL.COL_NAME_TO_TIME).ToString()))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(ScheduleDetailDAL.COL_NAME_TO_TIME, Value)
+            SetValue(ScheduleDetailDAL.COL_NAME_TO_TIME, Value)
         End Set
     End Property
 
@@ -283,15 +283,15 @@ Public Class ScheduleDetail
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ScheduleDetailDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -303,15 +303,15 @@ Public Class ScheduleDetail
     Public Class ScheduleDetailList
         Inherits BusinessObjectListBase
 
-        Public Sub New(ByVal parent As Schedule)
+        Public Sub New(parent As Schedule)
             MyBase.New(LoadTable(parent), GetType(ScheduleDetail), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return CType(bo, ScheduleDetail).ScheduleId.Equals(CType(Parent, Schedule).Id)
         End Function
 
-        Private Shared Function LoadTable(ByVal parent As Schedule) As DataTable
+        Private Shared Function LoadTable(parent As Schedule) As DataTable
             Try
                 If Not parent.IsChildrenCollectionLoaded(GetType(ScheduleDetailList)) Then
                     Dim dal As New ScheduleDetailDAL

@@ -6,92 +6,92 @@ Public Class ProductEquipment
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
-    Public Sub New(ByVal familyDS As DataSet, ByVal id As Guid, ByVal tableName As String)
+    Public Sub New(familyDS As DataSet, id As Guid, tableName As String)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(tableName)
+        Dataset = familyDS
+        Load(tableName)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ProductEquipmentDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Protected Sub Load(ByVal tableName As String)
+    Protected Sub Load(tableName As String)
         Try
             Dim dal As New ProductEquipmentDAL
-            If Me.Dataset.Tables.IndexOf(tableName) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(tableName) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(tableName).NewRow
-            Me.Dataset.Tables(tableName).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(tableName).NewRow
+            Dataset.Tables(tableName).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ProductEquipmentDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -123,7 +123,7 @@ Public Class ProductEquipment
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ProductEquipmentDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -133,7 +133,7 @@ Public Class ProductEquipment
         End Get
     End Property
     <ValueMandatory("")>
-    Public Property ProductCodeId() As Guid
+    Public Property ProductCodeId As Guid
         Get
             CheckDeleted()
             If Row(ProductEquipmentDAL.COL_NAME_PRODUCT_CODE_ID) Is DBNull.Value Then
@@ -142,12 +142,12 @@ Public Class ProductEquipment
                 Return New Guid(CType(Row(ProductEquipmentDAL.COL_NAME_PRODUCT_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductEquipmentDAL.COL_NAME_PRODUCT_CODE_ID, Value)
+            SetValue(ProductEquipmentDAL.COL_NAME_PRODUCT_CODE_ID, Value)
         End Set
     End Property
-    Public Property ItemId() As Guid
+    Public Property ItemId As Guid
         Get
             CheckDeleted()
             If Row(ProductEquipmentDAL.COL_NAME_ITEM_ID) Is DBNull.Value Then
@@ -156,13 +156,13 @@ Public Class ProductEquipment
                 Return New Guid(CType(Row(ProductEquipmentDAL.COL_NAME_ITEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductEquipmentDAL.COL_NAME_ITEM_ID, Value)
+            SetValue(ProductEquipmentDAL.COL_NAME_ITEM_ID, Value)
         End Set
     End Property
 
-    Public Property ManufacturerId() As Guid
+    Public Property ManufacturerId As Guid
         Get
             CheckDeleted()
             If Row(ProductEquipmentDAL.COL_NAME_MANUFACTURER_ID) Is DBNull.Value Then
@@ -171,13 +171,13 @@ Public Class ProductEquipment
                 Return New Guid(CType(Row(ProductEquipmentDAL.COL_NAME_MANUFACTURER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductEquipmentDAL.COL_NAME_MANUFACTURER_ID, Value)
+            SetValue(ProductEquipmentDAL.COL_NAME_MANUFACTURER_ID, Value)
         End Set
     End Property
     <EquipmentRequired("Make/Model"), EquipmentOverlappingValidation("")>
-    Public Property EquipmentId() As Guid
+    Public Property EquipmentId As Guid
         Get
             CheckDeleted()
             If Row(ProductEquipmentDAL.COL_NAME_EQUIPMENT_ID) Is DBNull.Value Then
@@ -186,13 +186,13 @@ Public Class ProductEquipment
                 Return New Guid(CType(Row(ProductEquipmentDAL.COL_NAME_EQUIPMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductEquipmentDAL.COL_NAME_EQUIPMENT_ID, Value)
+            SetValue(ProductEquipmentDAL.COL_NAME_EQUIPMENT_ID, Value)
         End Set
     End Property
     <ValueMandatory(""), ValidEffectiveDate("")>
-    Public Property EffectiveDateProductEquip() As DateType
+    Public Property EffectiveDateProductEquip As DateType
         Get
             CheckDeleted()
             If Row(ProductEquipmentDAL.COL_NAME_EFFECTIVE_DATE_PRODUCT_EQUIP) Is DBNull.Value Then
@@ -201,13 +201,13 @@ Public Class ProductEquipment
                 Return New DateType(CType(Row(ProductEquipmentDAL.COL_NAME_EFFECTIVE_DATE_PRODUCT_EQUIP), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductEquipmentDAL.COL_NAME_EFFECTIVE_DATE_PRODUCT_EQUIP, Value)
+            SetValue(ProductEquipmentDAL.COL_NAME_EFFECTIVE_DATE_PRODUCT_EQUIP, Value)
         End Set
     End Property
     <ValueMandatory(""), ValidExpirationDate("")>
-    Public Property ExpirationDateProductEquip() As DateType
+    Public Property ExpirationDateProductEquip As DateType
         Get
             CheckDeleted()
             If Row(ProductEquipmentDAL.COL_NAME_EXPIRATION_DATE_PRODUCT_EQUIP) Is DBNull.Value Then
@@ -216,12 +216,12 @@ Public Class ProductEquipment
                 Return New DateType(CType(Row(ProductEquipmentDAL.COL_NAME_EXPIRATION_DATE_PRODUCT_EQUIP), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductEquipmentDAL.COL_NAME_EXPIRATION_DATE_PRODUCT_EQUIP, Value)
+            SetValue(ProductEquipmentDAL.COL_NAME_EXPIRATION_DATE_PRODUCT_EQUIP, Value)
         End Set
     End Property
-    Public Property DeviceTypeId() As Guid
+    Public Property DeviceTypeId As Guid
         Get
             CheckDeleted()
             If Row(ProductEquipmentDAL.COL_NAME_DEVICE_TYPE_ID) Is DBNull.Value Then
@@ -230,12 +230,12 @@ Public Class ProductEquipment
                 Return New Guid(CType(Row(ProductEquipmentDAL.COL_NAME_DEVICE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductEquipmentDAL.COL_NAME_DEVICE_TYPE_ID, Value)
+            SetValue(ProductEquipmentDAL.COL_NAME_DEVICE_TYPE_ID, Value)
         End Set
     End Property
-    Public Property MethodOfRepairXcd() As String
+    Public Property MethodOfRepairXcd As String
         Get
             CheckDeleted()
             If Row(ProductEquipmentDAL.COL_NAME_METHOD_OF_REPAIR_XCD) Is DBNull.Value Then
@@ -244,12 +244,12 @@ Public Class ProductEquipment
                 Return CType(Row(ProductEquipmentDAL.COL_NAME_METHOD_OF_REPAIR_XCD), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductEquipmentDAL.COL_NAME_METHOD_OF_REPAIR_XCD, value)
+            SetValue(ProductEquipmentDAL.COL_NAME_METHOD_OF_REPAIR_XCD, value)
         End Set
     End Property
-    Public Property ConfigPurposeXcd() As String
+    Public Property ConfigPurposeXcd As String
         Get
             CheckDeleted()
             If Row(ProductEquipmentDAL.COL_NAME_CONFIG_PURPOSE_XCD) Is DBNull.Value Then
@@ -258,9 +258,9 @@ Public Class ProductEquipment
                 Return CType(Row(ProductEquipmentDAL.COL_NAME_CONFIG_PURPOSE_XCD), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductEquipmentDAL.COL_NAME_CONFIG_PURPOSE_XCD, value)
+            SetValue(ProductEquipmentDAL.COL_NAME_CONFIG_PURPOSE_XCD, value)
         End Set
     End Property
 
@@ -273,9 +273,9 @@ Public Class ProductEquipment
                 Return CType(Row(ProductEquipmentDAL.COL_NAME_EQUIPMENT_MAKE), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductEquipmentDAL.COL_NAME_EQUIPMENT_MAKE, value)
+            SetValue(ProductEquipmentDAL.COL_NAME_EQUIPMENT_MAKE, value)
         End Set
     End Property
     Public Property EquipmentModel As String
@@ -287,9 +287,9 @@ Public Class ProductEquipment
                 Return CType(Row(ProductEquipmentDAL.COL_NAME_EQUIPMENT_MODEL), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductEquipmentDAL.COL_NAME_EQUIPMENT_MODEL, value)
+            SetValue(ProductEquipmentDAL.COL_NAME_EQUIPMENT_MODEL, value)
         End Set
     End Property
 #End Region
@@ -298,15 +298,15 @@ Public Class ProductEquipment
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ProductEquipmentDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -316,7 +316,7 @@ Public Class ProductEquipment
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetList(ByVal ProductCodeId As Guid) As DataView
+    Public Shared Function GetList(ProductCodeId As Guid) As DataView
         Try
             Dim dal As New ProductEquipmentDAL
             Return New DataView(dal.LoadList(ProductCodeId).Tables(0))
@@ -324,7 +324,7 @@ Public Class ProductEquipment
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function GetBenefitsList(ByVal ProductCodeId As Guid) As ProductEquipmentSearchDV
+    Public Shared Function GetBenefitsList(ProductCodeId As Guid) As ProductEquipmentSearchDV
         Try
             Dim dal As New ProductEquipmentDAL
 
@@ -335,7 +335,7 @@ Public Class ProductEquipment
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Private Function GetProdManuEquipList(ByVal ProductCodeId As Guid, ByVal ManufacturerId As Guid, ByVal EquipmentId As Guid) As DataView
+    Private Function GetProdManuEquipList(ProductCodeId As Guid, ManufacturerId As Guid, EquipmentId As Guid) As DataView
         Try
             Dim dal As New ProductEquipmentDAL
             Return New DataView(dal.LoadProdManuEquipList(ProductCodeId, ManufacturerId, EquipmentId).Tables(0))
@@ -350,20 +350,20 @@ Public Class ProductEquipment
     Public NotInheritable Class ValidEffectiveDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, PRODUCT_EQUIPMENT_FORM003)
         End Sub
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductEquipment = CType(objectToValidate, ProductEquipment)
 
             Dim bValid As Boolean = True
 
 
-            If Not obj Is Nothing AndAlso obj.ConfigPurposeXcd = ProductEquipmentDAL.BENEFITS_PURPOSE Then
+            If obj IsNot Nothing AndAlso obj.ConfigPurposeXcd = ProductEquipmentDAL.BENEFITS_PURPOSE Then
                 ' This should be always greater than Today's date in case of new record, 
                 ' but for edit record if effective date is passed then no changes should be allowed
                 If obj.IsNew AndAlso
-                    Not obj.EffectiveDateProductEquip Is Nothing AndAlso
+obj.EffectiveDateProductEquip IsNot Nothing AndAlso
                     Not Convert.ToDateTime(obj.EffectiveDateProductEquip.Value) > Date.Today Then
                     Return False
                 End If
@@ -377,13 +377,13 @@ Public Class ProductEquipment
     Public NotInheritable Class EquipmentRequired
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, PRODUCT_EQUIPMENT_FORM004)
         End Sub
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductEquipment = CType(objectToValidate, ProductEquipment)
 
-            If Not obj Is Nothing AndAlso obj.ConfigPurposeXcd = ProductEquipmentDAL.BENEFITS_PURPOSE Then
+            If obj IsNot Nothing AndAlso obj.ConfigPurposeXcd = ProductEquipmentDAL.BENEFITS_PURPOSE Then
                 If obj.EquipmentId.IsEmpty Then
                     Return False
                 End If
@@ -397,16 +397,16 @@ Public Class ProductEquipment
     Public NotInheritable Class EquipmentOverlappingValidation
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, PRODUCT_EQUIPMENT_FORM005)
         End Sub
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductEquipment = CType(objectToValidate, ProductEquipment)
 
-            If Not obj Is Nothing AndAlso obj.ConfigPurposeXcd = ProductEquipmentDAL.BENEFITS_PURPOSE Then
+            If obj IsNot Nothing AndAlso obj.ConfigPurposeXcd = ProductEquipmentDAL.BENEFITS_PURPOSE Then
 
                 Dim equipmentTable As DataTable = obj.Dataset.Tables(ProductEquipmentDAL.TABLE_NAME_BENEFITS)
-                If Not equipmentTable Is Nothing Then
+                If equipmentTable IsNot Nothing Then
                     For Each dataRowEquipment As DataRow In equipmentTable.Rows
 
                         Dim prodEquipmentID As Guid = New Guid(CType(dataRowEquipment(ProductEquipmentDAL.COL_NAME_PROD_ITEM_MANUF_EQUIP_ID), Byte()))
@@ -444,21 +444,21 @@ Public Class ProductEquipment
     Public NotInheritable Class ValidExpirationDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, PRODUCT_EQUIPMENT_FORM001)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductEquipment = CType(objectToValidate, ProductEquipment)
 
             Dim bValid As Boolean = True
 
-            If Not obj.ExpirationDateProductEquip Is Nothing And Not obj.EffectiveDateProductEquip Is Nothing Then
+            If obj.ExpirationDateProductEquip IsNot Nothing And obj.EffectiveDateProductEquip IsNot Nothing Then
                 If Convert.ToDateTime(obj.EffectiveDateProductEquip.Value) > Convert.ToDateTime(obj.ExpirationDateProductEquip.Value) Then
-                    Me.Message = PRODUCT_EQUIPMENT_FORM001
+                    Message = PRODUCT_EQUIPMENT_FORM001
                     bValid = False
                 ElseIf ValidateExpirationRange(obj.EffectiveDateProductEquip, obj.ExpirationDateProductEquip, obj) = False Then
-                    Me.Message = PRODUCT_EQUIPMENT_FORM002
+                    Message = PRODUCT_EQUIPMENT_FORM002
                     bValid = False
                 End If
             End If
@@ -467,7 +467,7 @@ Public Class ProductEquipment
 
         End Function
 
-        Private Function ValidateExpirationRange(ByVal NewEffectiveDateProductEquip As Assurant.Common.Types.DateType, ByVal NewExpirationDateProductEquip As Assurant.Common.Types.DateType, ByVal oProductEquipment As ProductEquipment) As Boolean
+        Private Function ValidateExpirationRange(NewEffectiveDateProductEquip As Assurant.Common.Types.DateType, NewExpirationDateProductEquip As Assurant.Common.Types.DateType, oProductEquipment As ProductEquipment) As Boolean
 
             Dim bValid As Boolean = True
             Dim bChangeRec As Boolean = False
@@ -528,18 +528,18 @@ Public Class ProductEquipment
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
         Public Function AddNewRowToEmptyDV() As ProductEquipmentSearchDV
-            Dim dt As DataTable = Me.Table.Clone()
+            Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(ProductEquipmentSearchDV.COL_NAME_PROD_ITEM_MANUF_EQUIP_ID) = Guid.NewGuid.ToByteArray
-            row(ProductEquipmentSearchDV.COL_NAME_PRODUCT_CODE_ID) = Guid.Empty.ToByteArray
-            row(ProductEquipmentSearchDV.COL_NAME_MANUFACTURER_ID) = DBNull.Value
-            row(ProductEquipmentSearchDV.COL_NAME_EFFECTIVE_DATE) = DBNull.Value
-            row(ProductEquipmentSearchDV.COL_NAME_EXPIRATION_DATE) = DBNull.Value
+            row(COL_NAME_PROD_ITEM_MANUF_EQUIP_ID) = Guid.NewGuid.ToByteArray
+            row(COL_NAME_PRODUCT_CODE_ID) = Guid.Empty.ToByteArray
+            row(COL_NAME_MANUFACTURER_ID) = DBNull.Value
+            row(COL_NAME_EFFECTIVE_DATE) = DBNull.Value
+            row(COL_NAME_EXPIRATION_DATE) = DBNull.Value
             dt.Rows.Add(row)
             Return New ProductEquipmentSearchDV(dt)
         End Function
@@ -577,18 +577,18 @@ Public Class ProductEquipment
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
         Public Function AddNewRowToEmptyDV() As ProductBenefitsSearchDV
-            Dim dt As DataTable = Me.Table.Clone()
+            Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(ProductBenefitsSearchDV.COL_NAME_PROD_ITEM_MANUF_EQUIP_ID) = Guid.NewGuid.ToByteArray
-            row(ProductBenefitsSearchDV.COL_NAME_PRODUCT_CODE_ID) = Guid.Empty.ToByteArray
-            row(ProductBenefitsSearchDV.COL_NAME_MANUFACTURER_ID) = DBNull.Value
-            row(ProductBenefitsSearchDV.COL_NAME_EFFECTIVE_DATE) = DBNull.Value
-            row(ProductBenefitsSearchDV.COL_NAME_EXPIRATION_DATE) = DBNull.Value
+            row(COL_NAME_PROD_ITEM_MANUF_EQUIP_ID) = Guid.NewGuid.ToByteArray
+            row(COL_NAME_PRODUCT_CODE_ID) = Guid.Empty.ToByteArray
+            row(COL_NAME_MANUFACTURER_ID) = DBNull.Value
+            row(COL_NAME_EFFECTIVE_DATE) = DBNull.Value
+            row(COL_NAME_EXPIRATION_DATE) = DBNull.Value
             dt.Rows.Add(row)
             Return New ProductBenefitsSearchDV(dt)
         End Function
@@ -599,11 +599,11 @@ Public Class ProductEquipment
     Public Class ProductBenefitsDetailList
         Inherits BusinessObjectListBase
 
-        Public Sub New(ByVal parent As ProductCode)
+        Public Sub New(parent As ProductCode)
             MyBase.New(LoadTable(parent), GetType(ProductEquipment), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return CType(bo, ProductEquipment).ProductCodeId.Equals(CType(Parent, ProductCode).Id)
         End Function
 
@@ -613,11 +613,11 @@ Public Class ProductEquipment
             '                                                  Reflection.BindingFlags.Public, Nothing,
             '                                                  New Type() {GetType(DataSet)}, Nothing).Invoke(New Object() {Me._table.DataSet})
             'Return bo
-            Dim bo As BusinessObjectBase = Me.GetNewChild(CType(Parent, ProductCode).Id, ProductEquipmentDAL.TABLE_NAME_BENEFITS)
+            Dim bo As BusinessObjectBase = GetNewChild(CType(Parent, ProductCode).Id, ProductEquipmentDAL.TABLE_NAME_BENEFITS)
             Return bo
         End Function
 
-        Public Function Find(ByVal ProductBenefitsId As Guid) As ProductEquipment
+        Public Function Find(ProductBenefitsId As Guid) As ProductEquipment
             Dim bo As ProductEquipment
             For Each bo In Me
                 If bo.Id.Equals(ProductBenefitsId) Then Return bo
@@ -625,7 +625,7 @@ Public Class ProductEquipment
             Return Nothing
         End Function
 
-        Public Function Delete(ByVal ProductBenefitsId As Guid)
+        Public Function Delete(ProductBenefitsId As Guid)
             Dim bo As ProductEquipment
             Dim dr As DataRow
 
@@ -637,7 +637,7 @@ Public Class ProductEquipment
 
         End Function
 
-        Private Shared Function LoadTable(ByVal parent As ProductCode) As DataTable
+        Private Shared Function LoadTable(parent As ProductCode) As DataTable
             Try
                 If Not parent.IsChildrenCollectionLoaded(GetType(ProductBenefitsDetailList)) Then
                     parent.LoadProductBenefits()

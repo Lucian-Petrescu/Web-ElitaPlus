@@ -61,40 +61,40 @@ Public Class CertificateInfo
 
     End Sub
 
-    Friend Sub New(ByVal pCertificate As Certificate, UpgradeFlag As String, UpgradeDate As Date)
-        Me.CertificateNumber = pCertificate.CertNumber
-        Me.ProductCode = pCertificate.ProductCode
-        Me.WorkPhone = pCertificate.WorkPhone
+    Friend Sub New(pCertificate As Certificate, UpgradeFlag As String, UpgradeDate As Date)
+        CertificateNumber = pCertificate.CertNumber
+        ProductCode = pCertificate.ProductCode
+        WorkPhone = pCertificate.WorkPhone
         If UpgradeFlag = Codes.YESNO_N Then
-            Me.CertificateStatus = pCertificate.StatusCode
+            CertificateStatus = pCertificate.StatusCode
         ElseIf UpgradeFlag = Codes.YESNO_Y Then
             If pCertificate.StatusCode = Codes.CERTIFICATE_STATUS__CANCELLED Then
                 If UpgradeDate > pCertificate.getCertCancellationDate() Then
-                    Me.CertificateStatus = pCertificate.StatusCode
+                    CertificateStatus = pCertificate.StatusCode
                 Else
-                    Me.CertificateStatus = Codes.CERTIFICATE_STATUS__ACTIVE
+                    CertificateStatus = Codes.CERTIFICATE_STATUS__ACTIVE
                 End If
             Else
-                Me.CertificateStatus = pCertificate.StatusCode
+                CertificateStatus = pCertificate.StatusCode
             End If
         End If
-        Me.WarrantySalesDate = pCertificate.WarrantySalesDate
+        WarrantySalesDate = pCertificate.WarrantySalesDate
         If Not pCertificate.UpgradeFixedTerm Is Nothing Then
-            Me.UpgradeFixedTerm = pCertificate.UpgradeFixedTerm.Value
+            UpgradeFixedTerm = pCertificate.UpgradeFixedTerm.Value
         End If
-        Me.UpgradeProduct = pCertificate.getProdUpgradeProgramCode
-        Me.UpgradeTermUOM = pCertificate.getUpgradeTermUOMCode
+        UpgradeProduct = pCertificate.getProdUpgradeProgramCode
+        UpgradeTermUOM = pCertificate.getUpgradeTermUOMCode
         If Not pCertificate.UpgradeTermFrom Is Nothing Then
-            Me.UpgradeTermFrom = pCertificate.UpgradeTermFrom.Value
+            UpgradeTermFrom = pCertificate.UpgradeTermFrom.Value
         End If
         If Not pCertificate.UpgradeTermTo Is Nothing Then
-            Me.UpgradeTermTo = pCertificate.UpgradeTermTo.Value
+            UpgradeTermTo = pCertificate.UpgradeTermTo.Value
         End If
-        Me.LoanCode = pCertificate.LoanCode
-        Me.PenaltyFee = pCertificate.PenaltyFee
-        Me.PremiumAmount = pCertificate.PremiumAmount
-        Me.AppleCareFee = pCertificate.AppleCareFee
-        Me.SalesPrice = pCertificate.SalesPrice
+        LoanCode = pCertificate.LoanCode
+        PenaltyFee = pCertificate.PenaltyFee
+        PremiumAmount = pCertificate.PremiumAmount
+        AppleCareFee = pCertificate.AppleCareFee
+        SalesPrice = pCertificate.SalesPrice
 
     End Sub
 

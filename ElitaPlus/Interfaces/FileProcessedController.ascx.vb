@@ -57,10 +57,10 @@ Namespace Interfaces
         Protected ReadOnly Property TheState() As MyState
             Get
                 Try
-                    If Me.moState Is Nothing Then
-                        Me.moState = CType(Session(SESSION_LOCALSTATE_KEY), MyState)
+                    If moState Is Nothing Then
+                        moState = CType(Session(SESSION_LOCALSTATE_KEY), MyState)
                     End If
-                    Return Me.moState
+                    Return moState
                 Catch ex As Exception
                     'When we are in design mode there is no session object
                     Return Nothing
@@ -79,7 +79,7 @@ Namespace Interfaces
             Get
                 Return BtnProcessedExport.Visible
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 BtnProcessedExport.Visible = value
             End Set
         End Property
@@ -89,7 +89,7 @@ Namespace Interfaces
             Get
                 Return BtnRejectReport.Visible
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 BtnRejectReport.Visible = value
             End Set
         End Property
@@ -99,7 +99,7 @@ Namespace Interfaces
             Get
                 Return mFileType
             End Get
-            Set(ByVal value As FileProcessedData.FileTypeCode)
+            Set(value As FileProcessedData.FileTypeCode)
                 mFileType = value
             End Set
         End Property
@@ -109,7 +109,7 @@ Namespace Interfaces
             Get
                 Return mFileNameCaption
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 mFileNameCaption = value
             End Set
         End Property
@@ -119,7 +119,7 @@ Namespace Interfaces
             Get
                 Return mReferenceCaption
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 mReferenceCaption = value
             End Set
         End Property
@@ -129,7 +129,7 @@ Namespace Interfaces
             Get
                 Return moRejectReportFileName
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 moRejectReportFileName = value
             End Set
         End Property
@@ -139,7 +139,7 @@ Namespace Interfaces
             Get
                 Return moProcessedReportFileName
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 moProcessedReportFileName = value
             End Set
         End Property
@@ -149,7 +149,7 @@ Namespace Interfaces
             Get
                 Return moCompanyGroup.Visible
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 moCompanyGroup.Visible = value
                 If mIsLoaded Then PopulateCompanyGroup(True, False)
             End Set
@@ -160,7 +160,7 @@ Namespace Interfaces
             Get
                 Return moCompany.Visible
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 moCompany.Visible = value
                 If mIsLoaded Then PopulateCompany(True, False)
             End Set
@@ -171,7 +171,7 @@ Namespace Interfaces
             Get
                 Return moDealer.Visible
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 moDealer.Visible = value
                 If mIsLoaded Then PopulateDealer(True, False)
             End Set
@@ -182,7 +182,7 @@ Namespace Interfaces
             Get
                 Return moReference.Visible()
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 moReference.Visible = value
                 If mIsLoaded Then PopulateReference(False)
             End Set
@@ -193,7 +193,7 @@ Namespace Interfaces
             Get
                 Return bAllowCompanyGroup
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 bAllowCompanyGroup = value
                 If mIsLoaded Then PopulateCompanyGroup(True, False)
             End Set
@@ -201,9 +201,9 @@ Namespace Interfaces
 
         Public ReadOnly Property CompanyGroupId As Guid
             Get
-                If (Me.ShowComapnyGroup And Not Me.moCompanyGroup.SelectedGuid = Guid.Empty) Then
-                    Return Me.moCompanyGroup.SelectedGuid
-                ElseIf Not Me.ShowComapnyGroup Then
+                If (ShowComapnyGroup AndAlso Not moCompanyGroup.SelectedGuid = Guid.Empty) Then
+                    Return moCompanyGroup.SelectedGuid
+                ElseIf Not ShowComapnyGroup Then
                     Return ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
                 Else
                     Return Nothing
@@ -213,7 +213,7 @@ Namespace Interfaces
 
         Public ReadOnly Property CompanyId As Guid
             Get
-                If (Me.ShowComapny) Then
+                If (ShowComapny) Then
                     If (moCompany.SelectedGuid = Guid.Empty) Then
                         Return Nothing
                     Else
@@ -227,7 +227,7 @@ Namespace Interfaces
 
         Public ReadOnly Property DealerId As Guid
             Get
-                If (Me.ShowDealer) Then
+                If (ShowDealer) Then
                     If (moDealer.SelectedGuid = Guid.Empty) Then
                         Return Nothing
                     Else
@@ -241,7 +241,7 @@ Namespace Interfaces
 
         Public Property ReferenceId As Guid
             Get
-                If (Me.ShowReference) Then
+                If (ShowReference) Then
                     If (moReference.SelectedGuid = Guid.Empty) Then
                         Return Nothing
                     Else
@@ -251,15 +251,15 @@ Namespace Interfaces
                     Return Nothing
                 End If
             End Get
-            Set(ByVal value As Guid)
+            Set(value As Guid)
 
             End Set
         End Property
 
         Public ReadOnly Property CompanyGroupCode As String
             Get
-                If (Not Me.CompanyGroupId = Guid.Empty) Then
-                    Return Me.moCompanyGroup.SelectedCode
+                If (Not CompanyGroupId = Guid.Empty) Then
+                    Return moCompanyGroup.SelectedCode
                 Else
                     Return Nothing
                 End If
@@ -268,8 +268,8 @@ Namespace Interfaces
 
         Public ReadOnly Property CompanyGroupDescription As String
             Get
-                If (Not Me.CompanyGroupId = Guid.Empty) Then
-                    Return Me.moCompanyGroup.SelectedDesc
+                If (Not CompanyGroupId = Guid.Empty) Then
+                    Return moCompanyGroup.SelectedDesc
                 Else
                     Return Nothing
                 End If
@@ -278,8 +278,8 @@ Namespace Interfaces
 
         Public ReadOnly Property CompanyCode As String
             Get
-                If (Not Me.CompanyId = Guid.Empty) Then
-                    Return Me.moCompany.SelectedCode
+                If (Not CompanyId = Guid.Empty) Then
+                    Return moCompany.SelectedCode
                 Else
                     Return Nothing
                 End If
@@ -288,8 +288,8 @@ Namespace Interfaces
 
         Public ReadOnly Property CompanyDescription As String
             Get
-                If (Not Me.CompanyId = Guid.Empty) Then
-                    Return Me.moCompany.SelectedDesc
+                If (Not CompanyId = Guid.Empty) Then
+                    Return moCompany.SelectedDesc
                 Else
                     Return Nothing
                 End If
@@ -298,8 +298,8 @@ Namespace Interfaces
 
         Public ReadOnly Property DealerCode As String
             Get
-                If (Not Me.DealerId = Guid.Empty) Then
-                    Return Me.moDealer.SelectedCode
+                If (Not DealerId = Guid.Empty) Then
+                    Return moDealer.SelectedCode
                 Else
                     Return Nothing
                 End If
@@ -308,8 +308,8 @@ Namespace Interfaces
 
         Public ReadOnly Property DealerDescription As String
             Get
-                If (Not Me.DealerId = Guid.Empty) Then
-                    Return Me.moDealer.SelectedDesc
+                If (Not DealerId = Guid.Empty) Then
+                    Return moDealer.SelectedDesc
                 Else
                     Return Nothing
                 End If
@@ -318,8 +318,8 @@ Namespace Interfaces
 
         Public ReadOnly Property ReferenceCode As String
             Get
-                If (Not Me.ReferenceId = Guid.Empty) Then
-                    Return Me.moReference.SelectedCode
+                If (Not ReferenceId = Guid.Empty) Then
+                    Return moReference.SelectedCode
                 Else
                     Return Nothing
                 End If
@@ -328,8 +328,8 @@ Namespace Interfaces
 
         Public ReadOnly Property ReferenceDescription As String
             Get
-                If (Not Me.ReferenceId = Guid.Empty) Then
-                    Return Me.moReference.SelectedDesc
+                If (Not ReferenceId = Guid.Empty) Then
+                    Return moReference.SelectedDesc
                 Else
                     Return Nothing
                 End If
@@ -358,10 +358,10 @@ Namespace Interfaces
             Public ReferenceCode As String
             Public ReferenceDescription As String
 
-            Public Sub New(ByVal LastOp As ElitaPlusPage.DetailPageCommand, ByVal selectedFileProcessedId As Guid,
-                           ByVal oFileProcessedController As FileProcessedController)
-                Me.LastOperation = LastOp
-                Me.FileProcessedId = selectedFileProcessedId
+            Public Sub New(LastOp As ElitaPlusPage.DetailPageCommand, selectedFileProcessedId As Guid,
+                           oFileProcessedController As FileProcessedController)
+                LastOperation = LastOp
+                FileProcessedId = selectedFileProcessedId
                 With oFileProcessedController
                     CompanyGroupId = .CompanyGroupId
                     CompanyGroupCode = .CompanyGroupCode
@@ -386,7 +386,7 @@ Namespace Interfaces
                 Get
                     Return mSelectedFileProcessedId
                 End Get
-                Set(ByVal value As Guid)
+                Set(value As Guid)
                     mSelectedFileProcessedId = value
                 End Set
             End Property
@@ -398,7 +398,7 @@ Namespace Interfaces
 
             Public intStatusId As Guid
 
-            Public Sub New(ByVal UrlDetailPage As String)
+            Public Sub New(UrlDetailPage As String)
                 msUrlDetailPage = UrlDetailPage
             End Sub
         End Class
@@ -426,11 +426,11 @@ Namespace Interfaces
                 ReferenceCode = Nothing
             End Sub
 
-            Friend Sub New(ByVal pObject As FileProcessedController)
+            Friend Sub New(pObject As FileProcessedController)
 
                 Me.New()
 
-                If (Not pObject Is Nothing) Then
+                If (pObject IsNot Nothing) Then
                     With pObject
                         CompanyGroupId = .CompanyGroupId
                         CompanyGroupCode = .CompanyGroupCode
@@ -448,7 +448,7 @@ Namespace Interfaces
                 Get
                     Return mCompanyGroupId
                 End Get
-                Set(ByVal value As Guid)
+                Set(value As Guid)
                     mCompanyGroupId = value
                 End Set
             End Property
@@ -457,7 +457,7 @@ Namespace Interfaces
                 Get
                     Return mCompanyId
                 End Get
-                Set(ByVal value As Guid)
+                Set(value As Guid)
                     mCompanyId = value
                 End Set
             End Property
@@ -466,7 +466,7 @@ Namespace Interfaces
                 Get
                     Return mDealerId
                 End Get
-                Set(ByVal value As Guid)
+                Set(value As Guid)
                     mDealerId = value
                 End Set
             End Property
@@ -475,7 +475,7 @@ Namespace Interfaces
                 Get
                     Return mReferenceId
                 End Get
-                Set(ByVal value As Guid)
+                Set(value As Guid)
                     mReferenceId = value
                 End Set
             End Property
@@ -484,7 +484,7 @@ Namespace Interfaces
                 Get
                     Return mCompanyGroupCode
                 End Get
-                Set(ByVal value As String)
+                Set(value As String)
                     mCompanyGroupCode = value
                 End Set
             End Property
@@ -493,7 +493,7 @@ Namespace Interfaces
                 Get
                     Return mCompanyCode
                 End Get
-                Set(ByVal value As String)
+                Set(value As String)
                     mCompanyCode = value
                 End Set
             End Property
@@ -502,7 +502,7 @@ Namespace Interfaces
                 Get
                     Return mDealerCode
                 End Get
-                Set(ByVal value As String)
+                Set(value As String)
                     mDealerCode = value
                 End Set
             End Property
@@ -511,7 +511,7 @@ Namespace Interfaces
                 Get
                     Return mReferenceCode
                 End Get
-                Set(ByVal value As String)
+                Set(value As String)
                     mReferenceCode = value
                 End Set
             End Property
@@ -526,7 +526,7 @@ Namespace Interfaces
                 Me.New(Nothing)
             End Sub
 
-            Friend Sub New(ByVal pObject As FileProcessedController)
+            Friend Sub New(pObject As FileProcessedController)
                 MyBase.New(pObject)
                 mReferenceDV = Nothing
             End Sub
@@ -535,7 +535,7 @@ Namespace Interfaces
                 Get
                     Return mReferenceDV
                 End Get
-                Set(ByVal value As DataView)
+                Set(value As DataView)
                     mReferenceDV = value
                 End Set
             End Property
@@ -550,7 +550,7 @@ Namespace Interfaces
                 Me.New(Nothing)
             End Sub
 
-            Friend Sub New(ByVal pObject As FileProcessedController)
+            Friend Sub New(pObject As FileProcessedController)
                 MyBase.New(pObject)
                 mFileName = Nothing
             End Sub
@@ -559,7 +559,7 @@ Namespace Interfaces
                 Get
                     Return mFileName
                 End Get
-                Set(ByVal value As String)
+                Set(value As String)
                     mFileName = value
                 End Set
             End Property
@@ -576,7 +576,7 @@ Namespace Interfaces
                 Me.New(Nothing)
             End Sub
 
-            Friend Sub New(ByVal pFileProcessedId As Guid)
+            Friend Sub New(pFileProcessedId As Guid)
                 mFileProcessedId = pFileProcessedId
             End Sub
 
@@ -590,7 +590,7 @@ Namespace Interfaces
                 Get
                     Return mInterfaceStatusId
                 End Get
-                Set(ByVal value As Guid)
+                Set(value As Guid)
                     mInterfaceStatusId = value
                 End Set
             End Property
@@ -601,7 +601,7 @@ Namespace Interfaces
 
             Private mFileProcessedData As FileProcessedData
 
-            Public Sub New(ByVal pFileProcessedData As FileProcessedData)
+            Public Sub New(pFileProcessedData As FileProcessedData)
                 mFileProcessedData = pFileProcessedData
             End Sub
 
@@ -614,10 +614,10 @@ Namespace Interfaces
 #End Region
 
 #Region "Events and Delegates"
-        Public Delegate Sub PopulateReferenceEventHandler(ByVal sender As Object, ByVal e As PopulateReferenceEventArgs)
-        Public Delegate Sub SetExpectedFileNameEventHandler(ByVal sender As Object, ByVal e As SetExpectedFileNameEventArgs)
-        Public Delegate Sub ExecuteActionEventHandler(ByVal sender As Object, ByVal e As ExecuteActionEventArgs)
-        Public Delegate Sub FileProcessedEventHandler(ByVal sender As Object, ByVal e As FileProcessedDataEventArgs)
+        Public Delegate Sub PopulateReferenceEventHandler(sender As Object, e As PopulateReferenceEventArgs)
+        Public Delegate Sub SetExpectedFileNameEventHandler(sender As Object, e As SetExpectedFileNameEventArgs)
+        Public Delegate Sub ExecuteActionEventHandler(sender As Object, e As ExecuteActionEventArgs)
+        Public Delegate Sub FileProcessedEventHandler(sender As Object, e As FileProcessedDataEventArgs)
         Public Event PopulateReferenceDataView As PopulateReferenceEventHandler
         Public Event SetExpectedFileName As SetExpectedFileNameEventHandler
         Public Event OnValidate As ExecuteActionEventHandler
@@ -629,21 +629,21 @@ Namespace Interfaces
 
 #Region "Methods"
         Private Sub SetButtonCaptions()
-            btnCopyFile_WRITE.Text = TranslationBase.TranslateLabelOrMessage("COPY") & " " & TranslationBase.TranslateLabelOrMessage(Me.FileNameCaption)
-            BtnDeleteFile_WRITE.Text = TranslationBase.TranslateLabelOrMessage("DELETE") & " " & TranslationBase.TranslateLabelOrMessage(Me.FileNameCaption)
+            btnCopyFile_WRITE.Text = TranslationBase.TranslateLabelOrMessage("COPY") & " " & TranslationBase.TranslateLabelOrMessage(FileNameCaption)
+            BtnDeleteFile_WRITE.Text = TranslationBase.TranslateLabelOrMessage("DELETE") & " " & TranslationBase.TranslateLabelOrMessage(FileNameCaption)
         End Sub
 
-        Private Sub PopulateCompanyGroup(ByVal cascade As Boolean, ByVal clearSelectedValue As Boolean)
+        Private Sub PopulateCompanyGroup(cascade As Boolean, clearSelectedValue As Boolean)
             Dim companyGroupDV As DataView
             Dim assignedCompanyGroupDV As DataView
             Dim selectedValue As Guid = Guid.Empty
             Dim tempGuid As Guid
             Dim tempGuid1 As Guid
             Dim removeCompanyGroup As Boolean
-            If (Me.ShowComapnyGroup) Then
+            If (ShowComapnyGroup) Then
                 companyGroupDV = LookupListNew.GetCompanyGroupLookupList()
                 companyGroupDV = companyGroupDV.ToTable().Copy().DefaultView
-                If (Me.AllowCompanyGroup) Then
+                If (AllowCompanyGroup) Then
                     assignedCompanyGroupDV = BusinessObjectsNew.User.GetAvailableCompanyGroup(ElitaPlusIdentity.Current.ActiveUser.Id)
                     For i As Integer = (companyGroupDV.Count - 1) To 0 Step -1
                         tempGuid = New Guid(CType(companyGroupDV(i)("id"), Byte()))
@@ -670,77 +670,77 @@ Namespace Interfaces
                 End If
                 moCompanyGroup.NothingSelected = True
                 moCompanyGroup.SetControl(True, MultipleColumnDDLabelControl.MODES.NEW_MODE, True, companyGroupDV, "* " & TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY_GROUP), True, True)
-                If (Not clearSelectedValue And selectedValue <> Guid.Empty) Then
+                If (Not clearSelectedValue AndAlso selectedValue <> Guid.Empty) Then
                     moCompanyGroup.SelectedGuid = selectedValue
                 End If
-                clearSelectedValue = clearSelectedValue Or moCompanyGroup.SelectedGuid <> selectedValue
+                clearSelectedValue = clearSelectedValue OrElse moCompanyGroup.SelectedGuid <> selectedValue
             Else
                 moCompanyGroup.ClearMultipleDrop()
             End If
             If cascade Then PopulateCompany(cascade, clearSelectedValue)
         End Sub
 
-        Private Sub PopulateCompany(ByVal cascade As Boolean, ByVal clearSelectedValue As Boolean)
+        Private Sub PopulateCompany(cascade As Boolean, clearSelectedValue As Boolean)
             Dim selectedValue As Guid
             Dim companyDV As DataView = Nothing
-            If (Me.ShowComapny) Then
+            If (ShowComapny) Then
                 If Not (moCompany.NothingSelected) Then
                     selectedValue = moCompany.SelectedGuid
                 End If
-                companyDV = ElitaPlusIdentity.Current.ActiveUser.LoadUserCompanyAssigned(Me.CompanyGroupId, ElitaPlusIdentity.Current.ActiveUser.Id)
+                companyDV = ElitaPlusIdentity.Current.ActiveUser.LoadUserCompanyAssigned(CompanyGroupId, ElitaPlusIdentity.Current.ActiveUser.Id)
                 moCompany.NothingSelected = True
                 moCompany.SetControl(True, MultipleColumnDDLabelControl.MODES.NEW_MODE, True, companyDV, "* " & TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY), True, True)
-                If (Not clearSelectedValue And selectedValue <> Guid.Empty) Then
+                If (Not clearSelectedValue AndAlso selectedValue <> Guid.Empty) Then
                     moCompany.SelectedGuid = selectedValue
                 End If
-                clearSelectedValue = clearSelectedValue Or moCompany.SelectedGuid <> selectedValue
+                clearSelectedValue = clearSelectedValue OrElse moCompany.SelectedGuid <> selectedValue
             Else
                 moCompany.ClearMultipleDrop()
             End If
             If cascade Then PopulateDealer(cascade, clearSelectedValue)
         End Sub
 
-        Private Sub PopulateDealer(ByVal cascade As Boolean, ByVal clearSelectedValue As Boolean)
+        Private Sub PopulateDealer(cascade As Boolean, clearSelectedValue As Boolean)
             Dim selectedValue As Guid
             Dim dealerDV As DataView = Nothing
-            If (Me.ShowDealer) Then
+            If (ShowDealer) Then
                 If Not (moDealer.NothingSelected) Then
                     selectedValue = moDealer.SelectedGuid
                 End If
-                dealerDV = LookupListNew.GetDealerLookupList(Me.CompanyId)
+                dealerDV = LookupListNew.GetDealerLookupList(CompanyId)
                 moDealer.NothingSelected = True
                 moDealer.SetControl(True, MultipleColumnDDLabelControl.MODES.NEW_MODE, True, dealerDV, "* " + TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_DEALER), True, True)
-                If (Not clearSelectedValue And selectedValue <> Guid.Empty) Then
+                If (Not clearSelectedValue AndAlso selectedValue <> Guid.Empty) Then
                     moDealer.SelectedGuid = selectedValue
                 End If
-                clearSelectedValue = clearSelectedValue Or moDealer.SelectedGuid <> selectedValue
+                clearSelectedValue = clearSelectedValue OrElse moDealer.SelectedGuid <> selectedValue
             Else
                 moDealer.ClearMultipleDrop()
             End If
             If cascade Then PopulateReference(clearSelectedValue)
         End Sub
 
-        Private Sub PopulateReference(ByVal clearSelectedValue As Boolean)
+        Private Sub PopulateReference(clearSelectedValue As Boolean)
             Try
                 Dim selectedValue As Guid
                 Dim e As PopulateReferenceEventArgs
-                If (Me.ShowReference) Then
+                If (ShowReference) Then
                     If Not (moReference.NothingSelected) Then
                         selectedValue = moDealer.SelectedGuid
                     End If
                     e = New PopulateReferenceEventArgs(Me)
                     RaiseEvent PopulateReferenceDataView(Me, e)
-                    moReference.SetControl(True, MultipleColumnDDLabelControl.MODES.NEW_MODE, True, e.ReferenceDV, "* " + TranslationBase.TranslateLabelOrMessage(Me.ReferenceCaption), True, True)
-                    If (Not clearSelectedValue And selectedValue <> Guid.Empty) Then
+                    moReference.SetControl(True, MultipleColumnDDLabelControl.MODES.NEW_MODE, True, e.ReferenceDV, "* " + TranslationBase.TranslateLabelOrMessage(ReferenceCaption), True, True)
+                    If (Not clearSelectedValue AndAlso selectedValue <> Guid.Empty) Then
                         moReference.SelectedGuid = selectedValue
                     End If
-                    clearSelectedValue = clearSelectedValue Or moReference.SelectedGuid <> selectedValue
+                    clearSelectedValue = clearSelectedValue OrElse moReference.SelectedGuid <> selectedValue
                 Else
                     moReference.ClearMultipleDrop()
                 End If
                 PopulateInterface()
             Catch ex As Exception
-                ThePage.HandleErrors(ex, Me.ErrorCtrl)
+                ThePage.HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -749,11 +749,11 @@ Namespace Interfaces
             Dim oDataView As DataView
 
             With oFileData
-                .CompanyGroupId = Me.CompanyGroupId
-                .CompanyId = Me.CompanyId
-                .DealerId = Me.DealerId
-                .ReferenceId = Me.ReferenceId
-                .FileType = Me.FileType
+                .CompanyGroupId = CompanyGroupId
+                .CompanyId = CompanyId
+                .DealerId = DealerId
+                .ReferenceId = ReferenceId
+                .FileType = FileType
                 Dim e As New FileProcessedDataEventArgs(oFileData)
                 RaiseEvent BeforeGetDataView(Me, e)
                 oDataView = FileProcessed.LoadList(oFileData)
@@ -774,12 +774,12 @@ Namespace Interfaces
             moExpectedFileLabel_NO_TRANSLATE.Text = sbFileName.ToString()
         End Sub
 
-        Private Sub PopulateGrid(ByVal oAction As String)
+        Private Sub PopulateGrid(oAction As String)
             Try
                 SetExpectedFile()
-                Me.TheState.DataView = GetDataView()
-                ThePage.BasePopulateGrid(moDataGrid, Me.TheState.DataView, TheState.SelectedFileProcessedId, oAction)
-                ThePage.SetPageAndSelectedIndexFromGuid(Me.TheState.DataView, TheState.SelectedFileProcessedId, moDataGrid, TheState.PageIndex)
+                TheState.DataView = GetDataView()
+                ThePage.BasePopulateGrid(moDataGrid, TheState.DataView, TheState.SelectedFileProcessedId, oAction)
+                ThePage.SetPageAndSelectedIndexFromGuid(TheState.DataView, TheState.SelectedFileProcessedId, moDataGrid, TheState.PageIndex)
                 EnableDisableEditControl()
             Catch ex As Exception
                 ThePage.HandleErrors(ex, ErrorCtrl)
@@ -787,10 +787,10 @@ Namespace Interfaces
         End Sub
 
         Private Function IsSelectionValid() As Boolean
-            If (Me.CompanyGroupId = Guid.Empty) Then Return False
-            If (Me.ShowComapny And Me.CompanyId = Guid.Empty) Then Return False
-            If (Me.ShowDealer And Me.DealerId = Guid.Empty) Then Return False
-            If (Me.ShowReference And Me.ReferenceId = Guid.Empty) Then Return False
+            If (CompanyGroupId = Guid.Empty) Then Return False
+            If (ShowComapny AndAlso CompanyId = Guid.Empty) Then Return False
+            If (ShowDealer AndAlso DealerId = Guid.Empty) Then Return False
+            If (ShowReference AndAlso ReferenceId = Guid.Empty) Then Return False
             Return True
         End Function
 
@@ -798,19 +798,19 @@ Namespace Interfaces
             Try
                 ClearAll()
                 If IsSelectionValid() Then
-                    Me.PopulateGrid(ThePage.POPULATE_ACTION_NONE)
+                    PopulateGrid(ThePage.POPULATE_ACTION_NONE)
                     ControlMgr.SetVisibleForControlFamily(ThePage, moButtonPanel, True, True)
                     ControlMgr.SetVisibleForControlFamily(ThePage, moUpLoadPanel, True, True)
                     ControlMgr.SetVisibleForControlFamily(ThePage, moUpLoadPanel, True, True)
                 End If
             Catch ex As Exception
-                ThePage.HandleErrors(ex, Me.ErrorCtrl)
+                ThePage.HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
         Private Sub ClearAll()
             moDataGrid.CurrentPageIndex = ThePage.NO_PAGE_INDEX
-            Me.TheState.DataView = Nothing
+            TheState.DataView = Nothing
             moDataGrid.DataSource = Nothing
             moDataGrid.DataBind()
             moExpectedFileLabel_NO_TRANSLATE.Text = String.Empty
@@ -821,14 +821,14 @@ Namespace Interfaces
             ControlMgr.SetVisibleForControlFamily(ThePage, moUpLoadPanel, False, True)
         End Sub
 
-        Private Sub ClearSelectedFile(ByVal oAction As String)
+        Private Sub ClearSelectedFile(oAction As String)
             moDataGrid.SelectedIndex = ThePage.NO_ITEM_SELECTED_INDEX
             DisableButtons()
             TheState.SelectedFileProcessedId = Guid.Empty
-            Me.PopulateGrid(oAction)
+            PopulateGrid(oAction)
         End Sub
 
-        Public Sub SetErrorController(ByVal oErrorCtrl As ErrorController)
+        Public Sub SetErrorController(oErrorCtrl As ErrorController)
             ErrorCtrl = oErrorCtrl
         End Sub
 
@@ -860,9 +860,9 @@ Namespace Interfaces
             layoutFileName = webServerPath & "\" &
                 System.IO.Path.GetFileNameWithoutExtension(webServerFile) & AppConfig.UnixServer.FtpTriggerExtension
             CreateFolder(webServerPath)
-            If Not FileProcessedDAL.GetFileLayout(Me.FileType) Is Nothing Then
+            If FileProcessedDAL.GetFileLayout(FileType) IsNot Nothing Then
                 File.WriteAllBytes(webServerFile, fileBytes)
-                File.WriteAllBytes(layoutFileName, System.Text.Encoding.ASCII.GetBytes(FileProcessedDAL.GetFileLayout(Me.FileType)))
+                File.WriteAllBytes(layoutFileName, System.Text.Encoding.ASCII.GetBytes(FileProcessedDAL.GetFileLayout(FileType)))
             Else
                 Throw New GUIException("Missing File Layout Code", Assurant.ElitaPlus.Common.ErrorCodes.GUI_MISSING_FILE_LAYOUT_CODE)
             End If
@@ -882,7 +882,7 @@ Namespace Interfaces
 
                 Return fileName
             Catch ex As Exception
-                ThePage.HandleErrors(ex, Me.ErrorCtrl)
+                ThePage.HandleErrors(ex, ErrorCtrl)
             Finally
                 '' ''objUnixFTP.CloseConnection()
             End Try
@@ -913,7 +913,7 @@ Namespace Interfaces
                         ControlMgr.SetEnableControl(ThePage, BtnValidate_WRITE, False)
                     End If
 
-                    If (.Loaded.Value = .Counted.Value) Or (.Loaded.Value = 0) Then
+                    If (.Loaded.Value = .Counted.Value) OrElse (.Loaded.Value = 0) Then
                         ControlMgr.SetEnableControl(ThePage, BtnDeleteFile_WRITE, True)
                     End If
                 End With
@@ -927,15 +927,15 @@ Namespace Interfaces
             Dim i As Integer
             Dim edt As ImageButton
 
-            For i = 0 To (Me.moDataGrid.Items.Count - 1)
-                edt = CType(Me.moDataGrid.Items(i).Cells(ThePage.EDIT_COL).FindControl(ThePage.EDIT_CONTROL_NAME), ImageButton)
-                If Not edt Is Nothing Then
-                    edt.Enabled = (Me.moDataGrid.Items(i).Cells(Me.GRID_COL_REJECTED_IDX).Text.Trim() <> "0")
+            For i = 0 To (moDataGrid.Items.Count - 1)
+                edt = CType(moDataGrid.Items(i).Cells(ThePage.EDIT_COL).FindControl(ThePage.EDIT_CONTROL_NAME), ImageButton)
+                If edt IsNot Nothing Then
+                    edt.Enabled = (moDataGrid.Items(i).Cells(GRID_COL_REJECTED_IDX).Text.Trim() <> "0")
                 End If
             Next
         End Sub
 
-        Private Sub ExecuteSp(ByVal oSP As Integer)
+        Private Sub ExecuteSp(oSP As Integer)
             Dim oInterfaceStatusWrk As New InterfaceStatusWrk
             Dim e As New ExecuteActionEventArgs(TheState.SelectedFileProcessedId)
             If Not TheState.SelectedFileProcessedId.Equals(Guid.Empty) Then
@@ -961,67 +961,67 @@ Namespace Interfaces
 
 #Region "Drop-Down Event Handlers"
 
-        Private Sub moCompanyGroup_SelectedDropChanged(ByVal fromMultipleDrop As MultipleColumnDDLabelControl) _
+        Private Sub moCompanyGroup_SelectedDropChanged(fromMultipleDrop As MultipleColumnDDLabelControl) _
                 Handles moCompanyGroup.SelectedDropChanged
             PopulateCompany(True, True)
         End Sub
 
-        Private Sub moCompany_SelectedDropChanged(ByVal fromMultipleDrop As MultipleColumnDDLabelControl) _
+        Private Sub moCompany_SelectedDropChanged(fromMultipleDrop As MultipleColumnDDLabelControl) _
                 Handles moCompany.SelectedDropChanged
             PopulateDealer(True, True)
         End Sub
 
-        Private Sub moDealer_SelectedDropChanged(ByVal fromMultipleDrop As MultipleColumnDDLabelControl) _
+        Private Sub moDealer_SelectedDropChanged(fromMultipleDrop As MultipleColumnDDLabelControl) _
                 Handles moDealer.SelectedDropChanged
             PopulateReference(True)
         End Sub
 
-        Private Sub moReference_SelectedDropChanged(ByVal fromMultipleDrop As MultipleColumnDDLabelControl) _
+        Private Sub moReference_SelectedDropChanged(fromMultipleDrop As MultipleColumnDDLabelControl) _
             Handles moReference.SelectedDropChanged
             PopulateInterface()
         End Sub
 #End Region
 
 #Region "Grid Event Handlers"
-        Private Sub moDataGrid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) _
+        Private Sub moDataGrid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) _
             Handles moDataGrid.ItemDataBound
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 With e.Item
-                    ThePage.PopulateControlFromBOProperty(.Cells(Me.GRID_COL_FILE_PROCESSED_ID_IDX), dvRow(FileProcessed.COL_NAME_FILE_PROCESSED_ID))
-                    ThePage.PopulateControlFromBOProperty(.Cells(Me.GRID_COL_FILENAME_IDX), dvRow(FileProcessed.COL_NAME_FILENAME))
-                    ThePage.PopulateControlFromBOProperty(.Cells(Me.GRID_COL_RECEIVED_IDX), dvRow(FileProcessed.COL_NAME_RECEIVED))
-                    ThePage.PopulateControlFromBOProperty(.Cells(Me.GRID_COL_COUNTED_IDX), dvRow(FileProcessed.COL_NAME_COUNTED))
-                    ThePage.PopulateControlFromBOProperty(.Cells(Me.GRID_COL_REJECTED_IDX), dvRow(FileProcessed.COL_NAME_REJECTED))
-                    ThePage.PopulateControlFromBOProperty(.Cells(Me.GRID_COL_VALIDATED_IDX), dvRow(FileProcessed.COL_NAME_VALIDATED))
-                    ThePage.PopulateControlFromBOProperty(.Cells(Me.GRID_COL_BYPASSED_IDX), dvRow(FileProcessed.COL_NAME_BYPASSED))
-                    ThePage.PopulateControlFromBOProperty(.Cells(Me.GRID_COL_LOADED_IDX), dvRow(FileProcessed.COL_NAME_LOADED))
-                    ThePage.PopulateControlFromBOProperty(.Cells(Me.GRID_COL_LAYOUT_IDX), dvRow(FileProcessed.COL_NAME_LAYOUT))
+                    ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_FILE_PROCESSED_ID_IDX), dvRow(FileProcessed.COL_NAME_FILE_PROCESSED_ID))
+                    ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_FILENAME_IDX), dvRow(FileProcessed.COL_NAME_FILENAME))
+                    ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_RECEIVED_IDX), dvRow(FileProcessed.COL_NAME_RECEIVED))
+                    ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_COUNTED_IDX), dvRow(FileProcessed.COL_NAME_COUNTED))
+                    ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_REJECTED_IDX), dvRow(FileProcessed.COL_NAME_REJECTED))
+                    ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_VALIDATED_IDX), dvRow(FileProcessed.COL_NAME_VALIDATED))
+                    ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_BYPASSED_IDX), dvRow(FileProcessed.COL_NAME_BYPASSED))
+                    ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_LOADED_IDX), dvRow(FileProcessed.COL_NAME_LOADED))
+                    ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_LAYOUT_IDX), dvRow(FileProcessed.COL_NAME_LAYOUT))
                 End With
             End If
         End Sub
 
-        Private Sub moDataGrid_PageIndexChanged(ByVal source As System.Object,
-                ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moDataGrid.PageIndexChanged
+        Private Sub moDataGrid_PageIndexChanged(source As System.Object,
+                e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moDataGrid.PageIndexChanged
             Try
                 moDataGrid.CurrentPageIndex = e.NewPageIndex
                 TheState.PageIndex = moDataGrid.CurrentPageIndex
                 ClearSelectedFile(ThePage.POPULATE_ACTION_NO_EDIT)
             Catch ex As Exception
-                ThePage.HandleErrors(ex, Me.ErrorCtrl)
+                ThePage.HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Public Sub ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs) Handles moDataGrid.ItemCreated
+        Public Sub ItemCreated(sender As Object, e As DataGridItemEventArgs) Handles moDataGrid.ItemCreated
             ThePage.BaseItemCreated(sender, e)
         End Sub
 
-        Protected Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles moDataGrid.ItemCommand
+        Protected Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles moDataGrid.ItemCommand
             Try
                 If e.CommandName = ThePage.EDIT_COMMAND_NAME Then
-                    TheState.SelectedFileProcessedId = New Guid(e.Item.Cells(Me.GRID_COL_FILE_PROCESSED_ID_IDX).Text)
+                    TheState.SelectedFileProcessedId = New Guid(e.Item.Cells(GRID_COL_FILE_PROCESSED_ID_IDX).Text)
                     TheState.PageIndex = moDataGrid.CurrentPageIndex
                     ThePage.callPage(TheState.msUrlDetailPage, New ReturnType(DetailPageCommand.Nothing_, TheState.SelectedFileProcessedId, Me))
                 ElseIf e.CommandName = ThePage.SELECT_COMMAND_NAME Then
@@ -1031,51 +1031,51 @@ Namespace Interfaces
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                ThePage.HandleErrors(ex, Me.ErrorCtrl)
+                ThePage.HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 #End Region
 
 #Region "Error-Management"
-        Private Sub ShowError(ByVal msg As String)
-            Me.ErrorCtrl.AddError(msg)
-            Me.ErrorCtrl.Show()
+        Private Sub ShowError(msg As String)
+            ErrorCtrl.AddError(msg)
+            ErrorCtrl.Show()
             AppConfig.Log(New Exception(msg))
         End Sub
 #End Region
 
 #Region "Web Form Designer Generated Code and Page Handlers"
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load, Me.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load, Me.Load
             SetButtonCaptions()
             mIsLoaded = True
-            If (Not Me.IsPostBack) Then
+            If (Not IsPostBack) Then
                 If (IsReturningFromChild) Then
-                    If (Me.ShowComapnyGroup AndAlso Me.AllowCompanyGroup AndAlso Not mReturnType.CompanyGroupId = Guid.Empty) Then
+                    If (ShowComapnyGroup AndAlso AllowCompanyGroup AndAlso Not mReturnType.CompanyGroupId = Guid.Empty) Then
                         PopulateCompanyGroup(False, True)
                         moCompanyGroup.SelectedGuid = mReturnType.CompanyGroupId
                     End If
-                    moDataGrid.CurrentPageIndex = Me.TheState.PageIndex
-                    If (Me.ShowComapny AndAlso Not mReturnType.CompanyId = Guid.Empty) Then
+                    moDataGrid.CurrentPageIndex = TheState.PageIndex
+                    If (ShowComapny AndAlso Not mReturnType.CompanyId = Guid.Empty) Then
                         PopulateCompany(False, True)
                         moCompany.SelectedGuid = mReturnType.CompanyId
                     End If
-                    If (Me.ShowDealer AndAlso Not mReturnType.DealerId = Guid.Empty) Then
+                    If (ShowDealer AndAlso Not mReturnType.DealerId = Guid.Empty) Then
                         PopulateDealer(False, True)
                         moDealer.SelectedGuid = mReturnType.DealerId
                     End If
-                    If (Me.ShowReference AndAlso Not mReturnType.ReferenceId = Guid.Empty) Then
+                    If (ShowReference AndAlso Not mReturnType.ReferenceId = Guid.Empty) Then
                         PopulateReference(True)
                         moReference.SelectedGuid = mReturnType.ReferenceId
                     End If
-                    Me.TheState.SelectedFileProcessedId = mReturnType.FileProcessedId
+                    TheState.SelectedFileProcessedId = mReturnType.FileProcessedId
                 Else
                     PopulateCompanyGroup(True, True)
                 End If
             End If
-            ThePage.SetGridItemStyleColor(Me.moDataGrid)
+            ThePage.SetGridItemStyleColor(moDataGrid)
             If IsReturningFromChild Then
                 If IsSelectionValid() Then
-                    Me.PopulateGrid(ThePage.POPULATE_ACTION_SAVE)
+                    PopulateGrid(ThePage.POPULATE_ACTION_SAVE)
                     EnableDisableButtons()
                     ControlMgr.SetVisibleForControlFamily(ThePage, moButtonPanel, True, True)
                     ControlMgr.SetEnableControl(ThePage, BtnProcessedExport, False)
@@ -1090,25 +1090,25 @@ Namespace Interfaces
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
         End Sub
 
-        Public Sub InitController(ByVal UrlDetailPage As String)
-            Me.moState = New MyState(UrlDetailPage)
-            Session(SESSION_LOCALSTATE_KEY) = Me.moState
+        Public Sub InitController(UrlDetailPage As String)
+            moState = New MyState(UrlDetailPage)
+            Session(SESSION_LOCALSTATE_KEY) = moState
             PopulateCompanyGroup(True, True)
-            ThePage.SetGridItemStyleColor(Me.moDataGrid)
+            ThePage.SetGridItemStyleColor(moDataGrid)
         End Sub
 
-        Public Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object)
-            Me.IsReturningFromChild = True
+        Public Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object)
+            IsReturningFromChild = True
             Dim retObj As ReturnType = CType(ReturnPar, ReturnType)
             Select Case retObj.LastOperation
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    If Not retObj Is Nothing Then
+                    If retObj IsNot Nothing Then
                         Try
                             mReturnType = retObj
                         Catch ex As Exception
@@ -1120,7 +1120,7 @@ Namespace Interfaces
 #End Region
 
 #Region "Progress Bar"
-        Private Sub btnAfterProgressBar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAfterProgressBar.Click
+        Private Sub btnAfterProgressBar_Click(sender As System.Object, e As System.EventArgs) Handles btnAfterProgressBar.Click
             AfterProgressBar()
         End Sub
 
@@ -1128,22 +1128,22 @@ Namespace Interfaces
             ThePage.InstallDisplayProgressBar()
         End Sub
 
-        Private Sub ExecuteAndWait(ByVal oSP As Integer, Optional ByVal filename As String = "")
+        Private Sub ExecuteAndWait(oSP As Integer, Optional ByVal filename As String = "")
             Dim intStatus As InterfaceStatusWrk
             Dim params As InterfaceBaseForm.Params
 
             Try
                 ExecuteSp(oSP)
-                params = SetParameters(Me.TheState.intStatusId, FILE_VARIABLE_NAME)
+                params = SetParameters(TheState.intStatusId, FILE_VARIABLE_NAME)
                 Session(InterfaceBaseForm.SESSION_PARAMETERS_KEY) = params
                 moInterfaceProgressControl.EnableInterfaceProgress(FILE_VARIABLE_NAME)
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                ThePage.HandleErrors(ex, Me.ErrorCtrl)
+                ThePage.HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Function SetParameters(ByVal intStatusId As Guid, ByVal baseController As String) As InterfaceBaseForm.Params
+        Function SetParameters(intStatusId As Guid, baseController As String) As InterfaceBaseForm.Params
             Dim params As New InterfaceBaseForm.Params
 
             With params
@@ -1160,28 +1160,28 @@ Namespace Interfaces
 #End Region
 
 #Region "Handlers-Buttons"
-        Private Sub btnCopyFile_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub btnCopyFile_WRITE_Click(sender As System.Object, e As System.EventArgs) _
             Handles btnCopyFile_WRITE.Click
             Dim filename As String
             Try
                 filename = UploadFile()
                 ThePage.DisplayMessage(Message.MSG_THE_FILE_TRANSFER_HAS_COMPLETED, "", ThePage.MSG_BTN_OK, ThePage.MSG_TYPE_INFO)
             Catch ex As Exception
-                ThePage.HandleErrors(ex, Me.ErrorCtrl)
+                ThePage.HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub BtnValidate_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub BtnValidate_WRITE_Click(sender As System.Object, e As System.EventArgs) _
             Handles BtnValidate_WRITE.Click
             ExecuteAndWait(SP_VALIDATE)
         End Sub
 
-        Private Sub BtnLoad_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub BtnLoad_WRITE_Click(sender As System.Object, e As System.EventArgs) _
             Handles BtnLoad_WRITE.Click
             ExecuteAndWait(SP_PROCESS)
         End Sub
 
-        Private Sub BtnDeleteFile_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub BtnDeleteFile_WRITE_Click(sender As System.Object, e As System.EventArgs) _
             Handles BtnDeleteFile_WRITE.Click
             ExecuteAndWait(SP_DELETE)
         End Sub
@@ -1191,26 +1191,26 @@ Namespace Interfaces
 
 #Region "Handlers"
 
-        Private Sub BtnRejectReport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnRejectReport.Click
+        Private Sub BtnRejectReport_Click(sender As System.Object, e As System.EventArgs) Handles BtnRejectReport.Click
             RejectReport(PrintDealerLoadRejectForm.REJECT_REPORT)
         End Sub
 
-        Private Sub BtnProcessedExport_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtnProcessedExport.Click
+        Private Sub BtnProcessedExport_Click(sender As Object, e As System.EventArgs) Handles BtnProcessedExport.Click
             RejectReport(PrintDealerLoadRejectForm.PROCESSED_EXPORT)
         End Sub
 
-        Private Sub RejectReport(ByVal reportType As Integer)
+        Private Sub RejectReport(reportType As Integer)
             Try
                 If Not TheState.SelectedFileProcessedId.Equals(Guid.Empty) Then
                     Dim param As New ExportFileProcessedForm.MyState
                     param.FileProcessedId = TheState.SelectedFileProcessedId
-                    param.ReportWindowName = Me.FileNameCaption
+                    param.ReportWindowName = FileNameCaption
                     If (reportType = PrintDealerLoadRejectForm.PROCESSED_EXPORT) Then
-                        param.ReportFileName = Me.ProcessedReportFileName
+                        param.ReportFileName = ProcessedReportFileName
                         param.LoadStatus = "L"
                     Else
                         If (reportType = PrintDealerLoadRejectForm.REJECT_REPORT) Then
-                            param.ReportFileName = Me.RejectReportFileName
+                            param.ReportFileName = RejectReportFileName
                             param.LoadStatus = "R"
                         End If
                     End If
@@ -1221,7 +1221,7 @@ Namespace Interfaces
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                ThePage.HandleErrors(ex, Me.ErrorCtrl)
+                ThePage.HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 

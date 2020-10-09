@@ -19,7 +19,7 @@ Public Class RepairLogisticAuthorizationFileLoad
         Get
             Return _claimloadFileProcessed
         End Get
-        Set(ByVal value As ClaimloadFileProcessed)
+        Set
             _claimloadFileProcessed = value
         End Set
     End Property
@@ -28,29 +28,29 @@ Public Class RepairLogisticAuthorizationFileLoad
         Get
             Return _claim
         End Get
-        Set(ByVal value As MultiAuthClaim)
+        Set
             _claim = value
         End Set
     End Property
 #End Region
 
-    Protected Overrides Function CreateFileLoadHeader(ByVal fileLoadHeaderId As System.Guid) As ClaimloadFileProcessed
-        Me.ClaimLoadFileProcessed = New ClaimloadFileProcessed(fileLoadHeaderId)
-        Return Me.ClaimLoadFileProcessed
+    Protected Overrides Function CreateFileLoadHeader(fileLoadHeaderId As System.Guid) As ClaimloadFileProcessed
+        ClaimLoadFileProcessed = New ClaimloadFileProcessed(fileLoadHeaderId)
+        Return ClaimLoadFileProcessed
     End Function
 
-    Protected Overrides Function CreateFileLoadDetail(ByVal fileLoadDetailId As System.Guid, ByVal headerRecord As ClaimloadFileProcessed) As ClaimloadReconWrk
+    Protected Overrides Function CreateFileLoadDetail(fileLoadDetailId As System.Guid, headerRecord As ClaimloadFileProcessed) As ClaimloadReconWrk
         Dim returnValue As ClaimloadReconWrk
         returnValue = New ClaimloadReconWrk(fileLoadDetailId, headerRecord.Dataset)
         Return returnValue
     End Function
 
-    Protected Overrides Sub CustomSave(ByVal headerRecord As ClaimloadFileProcessed)
+    Protected Overrides Sub CustomSave(headerRecord As ClaimloadFileProcessed)
         MyBase.CustomSave(headerRecord)
-        headerRecord.Save(Me.Claim)
+        headerRecord.Save(Claim)
     End Sub
 
-    Protected Overrides Function ProcessDetailRecord(ByVal reconRecord As ClaimloadReconWrk, ByVal familyDataSet As DataSet) As ProcessResult
+    Protected Overrides Function ProcessDetailRecord(reconRecord As ClaimloadReconWrk, familyDataSet As DataSet) As ProcessResult
         Try
             Dim claim As MultiAuthClaim
             Dim claimAuthorization As ClaimAuthorization
@@ -60,12 +60,12 @@ Public Class RepairLogisticAuthorizationFileLoad
             familyDataSet = claim.Dataset
             claimAuthorization = claim.ClaimAuthorizationChildren.GetChild(reconRecord.ClaimAuthorizationId)
 
-            If (Not reconRecord.BatchNumber Is Nothing AndAlso reconRecord.BatchNumber.Trim().Length > 0) Then
+            If (reconRecord.BatchNumber IsNot Nothing AndAlso reconRecord.BatchNumber.Trim().Length > 0) Then
                 claimAuthorization.BatchNumber = reconRecord.BatchNumber.Trim()
                 claimAuthorization.Save()
             End If
 
-            If (Not reconRecord.DeductibleCollected Is Nothing) Then
+            If (reconRecord.DeductibleCollected IsNot Nothing) Then
                 If (claimAuthorization.ContainsDeductible) Then
                     claimAuthorization.Claim.Deductible = reconRecord.DeductibleCollected
                 End If
@@ -75,7 +75,7 @@ Public Class RepairLogisticAuthorizationFileLoad
 
             Return ProcessResult.Loaded
         Catch ex As DataBaseAccessException
-            Common.AppConfig.Log(DirectCast(ex, Exception))
+            AppConfig.Log(DirectCast(ex, Exception))
             If (ex.ErrorType = DataBaseAccessException.DatabaseAccessErrorType.BusinessErr) Then
                 If (ex.Code Is Nothing OrElse ex.Code.Trim().Length = 0) Then
                     reconRecord.RejectReason = "Rejected During Load process"
@@ -89,13 +89,13 @@ Public Class RepairLogisticAuthorizationFileLoad
             reconRecord.RejectCode = "000"
             Return ProcessResult.Rejected
         Catch ex As BOValidationException
-            Common.AppConfig.Log(DirectCast(ex, Exception))
+            AppConfig.Log(DirectCast(ex, Exception))
             reconRecord.RejectCode = "000"
             reconRecord.RejectReason = ex.ToRejectReason()
             reconRecord.RejectReason = reconRecord.RejectReason.Substring(0, Math.Min(60, reconRecord.RejectReason.Length))
             Return ProcessResult.Rejected
         Catch ex As Exception
-            Common.AppConfig.Log(ex)
+            AppConfig.Log(ex)
             reconRecord.RejectCode = "000"
             reconRecord.RejectReason = "Rejected During Load process"
             Return ProcessResult.Rejected

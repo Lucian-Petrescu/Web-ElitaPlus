@@ -27,20 +27,20 @@ Public Class GVSTransactionUpdate
 
 #Region "Properties"
 
-    Private Property InputXml() As String
+    Private Property InputXml As String
         Get
             Return msInputXml
         End Get
-        Set(ByVal value As String)
+        Set
             msInputXml = value
         End Set
     End Property
 
-    Private Property FuncToProc() As String
+    Private Property FuncToProc As String
         Get
             Return msFunctionToProcess
         End Get
-        Set(ByVal value As String)
+        Set
             msFunctionToProcess = value
         End Set
     End Property
@@ -49,14 +49,14 @@ Public Class GVSTransactionUpdate
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GVSTransactionUpdateDs, ByVal xml As String, _
-                   ByVal functionToProcess As String)
+    Public Sub New(ds As GVSTransactionUpdateDs, xml As String, _
+                   functionToProcess As String)
         MyBase.New()
         InputXml = xml
         FuncToProc = functionToProcess
     End Sub
 
-    Public Sub New(ByVal ds As GVSTransactionUpdateDs)
+    Public Sub New(ds As GVSTransactionUpdateDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -74,7 +74,7 @@ Public Class GVSTransactionUpdate
     Dim _functionTypeCode As String
     Dim _transactionId As String
 
-    Private Sub MapDataSet(ByVal ds As GVSTransactionUpdateDs)
+    Private Sub MapDataSet(ds As GVSTransactionUpdateDs)
 
         Dim schema As String = ds.GetXmlSchema '.Replace(SOURCE_COL_MAKE, DATA_COL_NAME_MANUFACTURER).Replace(SOURCE_COL_MILEAGE, DATA_COL_NAME_ODOMETER).Replace(SOURCE_COL_NEWUSED, DATA_COL_NAME_CONDITION)
 
@@ -87,8 +87,8 @@ Public Class GVSTransactionUpdate
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -96,13 +96,13 @@ Public Class GVSTransactionUpdate
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GVSTransactionUpdateDs)
+    Private Sub Load(ds As GVSTransactionUpdateDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -115,13 +115,13 @@ Public Class GVSTransactionUpdate
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GVSTransactionUpdateDs)
+    Private Sub PopulateBOFromWebService(ds As GVSTransactionUpdateDs)
         Try
-            If ds.TRANSACTION_HEADER.Count = 0 Or ds.TRANSACTION_DATA_RECORD.Count = 0 Then Exit Sub
+            If ds.TRANSACTION_HEADER.Count = 0 OrElse ds.TRANSACTION_DATA_RECORD.Count = 0 Then Exit Sub
             With ds.TRANSACTION_HEADER.Item(0)
-                Me.TransactionId = .TRANSACTION_ID
-                Me.GVSOriginalTransNo = .GVS_ORIGINAL_TRANS_NO
-                Me.FunctionTypeCode = .FUNCTION_TYPE
+                TransactionId = .TRANSACTION_ID
+                GVSOriginalTransNo = .GVS_ORIGINAL_TRANS_NO
+                FunctionTypeCode = .FUNCTION_TYPE
             End With
 
         Catch ex As BOValidationException
@@ -218,29 +218,29 @@ Public Class GVSTransactionUpdate
 #End Region
 
 #Region "Properties"
-    Public Property TransactionId() As String
+    Public Property TransactionId As String
         Get
             Return _transactionId
         End Get
-        Set(ByVal Value As String)
+        Set
             _transactionId = Value
         End Set
     End Property
 
-    Public Property GVSOriginalTransNo() As String
+    Public Property GVSOriginalTransNo As String
         Get
             Return _GVSOriginalTransNo
         End Get
-        Set(ByVal Value As String)
+        Set
             _GVSOriginalTransNo = Value
         End Set
     End Property
 
-    Public Property FunctionTypeCode() As String
+    Public Property FunctionTypeCode As String
         Get
             Return _functionTypeCode
         End Get
-        Set(ByVal Value As String)
+        Set
             _functionTypeCode = Value
         End Set
     End Property

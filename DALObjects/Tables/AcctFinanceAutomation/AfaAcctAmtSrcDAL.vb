@@ -30,21 +30,21 @@ Public Class AfaAcctAmtSrcDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("acct_amt_src_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal dealerID As Guid, ByVal languageID As Guid) As DataSet
+    Public Function LoadList(dealerID As Guid, languageID As Guid) As DataSet
         Dim selectStmt As String
         Dim paraMapped() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("language_id", languageID.ToByteArray), _
                                                                                            New DBHelper.DBHelperParameter("dealer_id", dealerID.ToByteArray)}
@@ -55,10 +55,10 @@ Public Class AfaAcctAmtSrcDAL
         Dim ds As New DataSet
 
         Try
-            selectStmt = Me.Config("/SQL/LOAD_LIST_BY_DEALER_MAPPED")
+            selectStmt = Config("/SQL/LOAD_LIST_BY_DEALER_MAPPED")
             ds = DBHelper.Fetch(ds, selectStmt, TABLE_NAME_LIST_MAPPED, paraMapped)
 
-            selectStmt = Me.Config("/SQL/LOAD_LIST_BY_DEALER_NOT_MAPPED")
+            selectStmt = Config("/SQL/LOAD_LIST_BY_DEALER_NOT_MAPPED")
             ds = DBHelper.Fetch(ds, selectStmt, TABLE_NAME_LIST_NOT_MAPPED, paraNotMapped)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -66,7 +66,7 @@ Public Class AfaAcctAmtSrcDAL
         Return ds
     End Function
 
-    Public Function LoadDuplicateClipFormula(ByVal dealerID As Guid, ByVal AmtSourceID As Guid) As DataSet
+    Public Function LoadDuplicateClipFormula(dealerID As Guid, AmtSourceID As Guid) As DataSet
         Dim selectStmt As String
         Dim paraMapped() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("dealer_id", dealerID.ToByteArray), _
                                                                                            New DBHelper.DBHelperParameter("acct_amt_src_field_type_id", AmtSourceID.ToByteArray)}
@@ -75,7 +75,7 @@ Public Class AfaAcctAmtSrcDAL
         Dim ds As New DataSet
 
         Try
-            selectStmt = Me.Config("/SQL/CheckDuplicateCLIPFormula")
+            selectStmt = Config("/SQL/CheckDuplicateCLIPFormula")
             ds = DBHelper.Fetch(ds, selectStmt, TABLE_NAME, paraMapped)
 
         Catch ex As Exception
@@ -87,12 +87,12 @@ Public Class AfaAcctAmtSrcDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

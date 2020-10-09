@@ -24,57 +24,57 @@ Partial Public Class DenyClaimForm
 
     Protected Shadows ReadOnly Property State() As MyState
         Get
-            If Me.NavController.State Is Nothing Then
-                Me.NavController.State = New MyState
+            If NavController.State Is Nothing Then
+                NavController.State = New MyState
                 InitializeFromFlowSession()
             End If
-            Return CType(Me.NavController.State, MyState)
+            Return CType(NavController.State, MyState)
         End Get
     End Property
 
     Protected Sub InitializeFromFlowSession()
         Try
-            Me.State.MyBO = CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_CLAIM), ClaimBase)
+            State.MyBO = CType(NavController.FlowSession(FlowSessionKeys.SESSION_CLAIM), ClaimBase)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 #End Region
 
 #Region "Page Events"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.ErrorCtrl.Clear_Hide()
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
+        ErrorCtrl.Clear_Hide()
         Try
 
-            If Me.NavController.CurrentNavState.Name <> "DENY_CLAIM" Then
+            If NavController.CurrentNavState.Name <> "DENY_CLAIM" Then
                 Return
             End If
 
-            If Not Me.IsPostBack Then
-                If Me.State.MyBO Is Nothing Then
+            If Not IsPostBack Then
+                If State.MyBO Is Nothing Then
                     Return
                 End If
-                Trace(Me, "Claim Id=" & GuidControl.GuidToHexString(Me.State.MyBO.Id))
+                Trace(Me, "Claim Id=" & GuidControl.GuidToHexString(State.MyBO.Id))
                 PopulateDropdowns()
             End If
             BindBoPropertiesToLabels()
-            If Not Me.IsPostBack Then
-                Me.AddLabelDecorations(Me.State.MyBO)
+            If Not IsPostBack Then
+                AddLabelDecorations(State.MyBO)
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
-        Me.ShowMissingTranslations(Me.ErrorCtrl)
+        ShowMissingTranslations(ErrorCtrl)
     End Sub
 #End Region
 
 #Region "Controlling Logic"
 
     Protected Sub BindBoPropertiesToLabels()
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "DeniedReasonId", Me.lblDeniedReason)
+        BindBOPropertyToLabel(State.MyBO, "DeniedReasonId", lblDeniedReason)
         If (Me.State.MyBO.ClaimAuthorizationType = ClaimAuthorizationType.Single) Then
-            Me.BindBOPropertyToLabel(CType(Me.State.MyBO, Claim), "AuthorizationNumber", Me.lblInvoiceNumber)
+            BindBOPropertyToLabel(CType(State.MyBO, Claim), "AuthorizationNumber", lblInvoiceNumber)
         End If
     End Sub
 
@@ -83,9 +83,9 @@ Partial Public Class DenyClaimForm
         'Me.BindListControlToDataView(Me.cboDeniedReason, LookupListNew.GetDeniedReasonLookupList(Authentication.LangId))
         'KDDI CHANGES
         Dim listcontextForMgList As ListContext = New ListContext()
-        listcontextForMgList.CompanyGroupId = Me.State.MyBO.Company.CompanyGroupId
-        listcontextForMgList.DealerId = Me.State.MyBO.Dealer.Id
-        listcontextForMgList.CompanyId = Me.State.MyBO.CompanyId
+        listcontextForMgList.CompanyGroupId = State.MyBO.Company.CompanyGroupId
+        listcontextForMgList.DealerId = State.MyBO.Dealer.Id
+        listcontextForMgList.CompanyId = State.MyBO.CompanyId
         'listcontextForMgList.DealerGroupId = Me.State.MyBO.Dealer.DealerGroupId
 
 
@@ -116,41 +116,41 @@ Partial Public Class DenyClaimForm
 
     Protected Sub PopulateBOsFromForm()
 
-        Me.State.MyBO.CalculateFollowUpDate()
-        Me.PopulateBOProperty(Me.State.MyBO, "DeniedReasonId", Me.cboDeniedReason)
-        Me.PopulateBOProperty(Me.State.MyBO, "Fraudulent", Me.cboFraudulent)
-        Me.PopulateBOProperty(Me.State.MyBO, "Complaint", Me.cboComplaint)
+        State.MyBO.CalculateFollowUpDate()
+        PopulateBOProperty(State.MyBO, "DeniedReasonId", cboDeniedReason)
+        PopulateBOProperty(State.MyBO, "Fraudulent", cboFraudulent)
+        PopulateBOProperty(State.MyBO, "Complaint", cboComplaint)
 
         If (Me.State.MyBO.ClaimAuthorizationType = ClaimAuthorizationType.Single) Then
-            Me.PopulateBOProperty(CType(Me.State.MyBO, Claim), "AuthorizationNumber", Me.txtInvoiceNumber)
+            PopulateBOProperty(CType(State.MyBO, Claim), "AuthorizationNumber", txtInvoiceNumber)
         End If
 
     End Sub
 #End Region
 
 #Region "Button Clicks"
-    Protected Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
-        Me.NavController.Navigate(Me, FlowEvents.EVENT_CANCEL)
+    Protected Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
+        NavController.Navigate(Me, FlowEvents.EVENT_CANCEL)
     End Sub
 
-    Protected Sub btnApply_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply_WRITE.Click
+    Protected Sub btnApply_Click(sender As Object, e As EventArgs) Handles btnApply_WRITE.Click
         Try
             PopulateBOsFromForm()
-            If Me.State.MyBO.DeniedReasonId.Equals(Guid.Empty) Then
-                ElitaPlusPage.SetLabelError(Me.lblDeniedReason)
+            If State.MyBO.DeniedReasonId.Equals(Guid.Empty) Then
+                SetLabelError(lblDeniedReason)
                 Throw New GUIException(Message.MSG_INVOICE_NUMBER_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_DENIED_REASON_IS_REQUIRED_ERR)
             End If
 
-            Select Case Me.State.MyBO.ClaimAuthorizationType
+            Select Case State.MyBO.ClaimAuthorizationType
                 Case ClaimAuthorizationType.Single
-                    Dim claim As Claim = CType(Me.State.MyBO, Claim)
+                    Dim claim As Claim = CType(State.MyBO, Claim)
                     claim.AuthorizedAmount = New DecimalType(0D)
                     claim.Deductible = New DecimalType(0D)
                     claim.DenyClaim()
                     claim.IsUpdatedComment = True
                     claim.Save()
                 Case ClaimAuthorizationType.Multiple
-                    Dim claim As MultiAuthClaim = CType(Me.State.MyBO, MultiAuthClaim)
+                    Dim claim As MultiAuthClaim = CType(State.MyBO, MultiAuthClaim)
                     claim.Deductible = New DecimalType(0D)
                     claim.VoidAuthorizations()
                     claim.DenyClaim()
@@ -159,14 +159,14 @@ Partial Public Class DenyClaimForm
             End Select
 
 
-            If Me.NavController.Context = "CLAIM_DETAIL-DENY_CLAIM" Then
-                Me.NavController.Navigate(Me, FlowEvents.EVENT_NEXT, Message.MSG_CLAIM_UPDATED)
+            If NavController.Context = "CLAIM_DETAIL-DENY_CLAIM" Then
+                NavController.Navigate(Me, FlowEvents.EVENT_NEXT, Message.MSG_CLAIM_UPDATED)
             Else
-                Me.NavController.Navigate(Me, FlowEvents.EVENT_NEXT, Message.MSG_CLAIM_ADDED)
+                NavController.Navigate(Me, FlowEvents.EVENT_NEXT, Message.MSG_CLAIM_ADDED)
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 #End Region

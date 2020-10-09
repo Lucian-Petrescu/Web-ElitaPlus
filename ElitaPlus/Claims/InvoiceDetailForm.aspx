@@ -3,7 +3,8 @@
     Theme="Default" %>
 
 <%@ Register TagPrefix="Elita" TagName="MessageController" Src="~/Common/MessageController.ascx" %>
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="Ajax" %>
+ <%@ Import Namespace="System.Globalization" %>
+ <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="Ajax" %>
 <%@ Register TagPrefix="Microsoft" Namespace="Microsoft.Web.UI.WebControls" Assembly="Microsoft.Web.UI.WebControls, Version=1.0.2.226, Culture=neutral, PublicKeyToken=31bf3856ad364e35" %>
 <asp:Content ContentPlaceHolderID="HeadPlaceHolder" runat="server">
     <script language="javascript" type="text/javascript">   
@@ -378,8 +379,8 @@
         </div>
     </asp:Panel>
     <script type="text/javascript" language="javascript">
-        var decSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
-        var groupSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
+        var decSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
+        var groupSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
         var differenceAmountId = '<%= moDifferenceAmount.ClientId %>';
         var invoiceAmountId = '<%=moInvoiceAmount.ClientId%>';
         var perceptionIvaId = '<%=moPerceptionIva.ClientId%>';

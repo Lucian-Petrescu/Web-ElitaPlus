@@ -5,11 +5,11 @@ Public NotInheritable Class NonPastDateValidation
     Inherits ValidBaseAttribute
     Implements IValidatorAttribute
 
-    Public Sub New(ByVal FieldDisplayName As String)
+    Public Sub New(FieldDisplayName As String)
         MyBase.New(FieldDisplayName, Messages.NO_PAST_DATE)
 
     End Sub
-    Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal context As Object) As Boolean
+    Public Overrides Function IsValid(objectToCheck As Object, context As Object) As Boolean
 
         Dim TodaysDate As DateTime = DateTime.Today
 
@@ -20,12 +20,12 @@ Public NotInheritable Class NonPastDateValidation
             'For New records date must be greater or equal to todays date(with out time)
             If Iface.IsNew Then
                 Dim objDate As DateTimeType = DateTime.Parse(CType(objectToCheck, DateTimeType), LocalizationMgr.CurrentFormatProvider)
-                If Not objDate Is Nothing Then
+                If objDate IsNot Nothing Then
                     If objDate.Value.Date < Date.Today.Date Then Return False
                 End If
             End If
             'For Old records Expiration date must be greater or equal to todays date(with out time)
-            If Iface.IsNew = False And Me.DisplayName = Codes.EXPIRATION Then
+            If Iface.IsNew = False AndAlso DisplayName = Codes.EXPIRATION Then
                 If Iface.Expiration < Date.Today.Date Then Return False
             End If
 

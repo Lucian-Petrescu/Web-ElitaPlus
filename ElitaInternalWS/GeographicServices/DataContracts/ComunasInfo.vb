@@ -11,7 +11,7 @@ Namespace GeographicServices
         Public Property ComunaCode As String
 
         Public Sub New(pComunaCode As String)
-            Me.ComunaCode = pComunaCode
+            ComunaCode = pComunaCode
 
         End Sub
     End Class

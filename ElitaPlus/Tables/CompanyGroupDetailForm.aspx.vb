@@ -19,9 +19,9 @@ Partial Class CompanyGroupDetailForm
         Public CompanyGroupBO As CompanyGroup
         Public CompanyGroupID As Guid
 
-        Public Sub New(ByVal CompanygrpID As Guid)
+        Public Sub New(CompanygrpID As Guid)
 
-            Me.CompanyGroupID = CompanygrpID
+            CompanyGroupID = CompanygrpID
         End Sub
     End Class
 #End Region
@@ -30,13 +30,13 @@ Partial Class CompanyGroupDetailForm
         Public LastOperation As DetailPageCommand
         Public EditingBo As CompanyGroup
         Public BoChanged As Boolean = False
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As CompanyGroup, Optional ByVal boChanged As Boolean = False)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(LastOp As DetailPageCommand, curEditingBo As CompanyGroup, Optional ByVal boChanged As Boolean = False)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
             Me.BoChanged = boChanged
         End Sub
-        Public Sub New(ByVal LastOp As DetailPageCommand)
-            Me.LastOperation = LastOp
+        Public Sub New(LastOp As DetailPageCommand)
+            LastOperation = LastOp
         End Sub
     End Class
 #End Region
@@ -68,15 +68,15 @@ Partial Class CompanyGroupDetailForm
         End Get
     End Property
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 'Get the id from the parent
-                Me.State.Pageparameters = CType(Me.CallingParameters, Parameters)
-                Me.State.MyBO = New CompanyGroup(Me.State.Pageparameters.CompanyGroupID)
+                State.Pageparameters = CType(CallingParameters, Parameters)
+                State.MyBO = New CompanyGroup(State.Pageparameters.CompanyGroupID)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
@@ -84,24 +84,24 @@ Partial Class CompanyGroupDetailForm
 #End Region
 
 #Region "Page Events"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
         Try
-            Me.MasterPage.MessageController.Clear()
-            Me.MasterPage.UsePageTabTitleInBreadCrum = False
-            Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(ADMIN)
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(COMPANY_GROUP_DETAIL)
-            Me.UpdateBreadCrum()
+            MasterPage.MessageController.Clear()
+            MasterPage.UsePageTabTitleInBreadCrum = False
+            MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(ADMIN)
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(COMPANY_GROUP_DETAIL)
+            UpdateBreadCrum()
 
 
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
 
 
-                If Me.State.MyBO Is Nothing Then
-                    Me.State.MyBO = New CompanyGroup
-                    Me.State.IsNew = True
+                If State.MyBO Is Nothing Then
+                    State.MyBO = New CompanyGroup
+                    State.IsNew = True
                 End If
 
-                If Me.State.IsNew Then
+                If State.IsNew Then
                     ControlMgr.SetEnableControl(Me, ddlInvoicegrpnumbering, True)
                     ControlMgr.SetEnableControl(Me, ddlpmtgrpnumbering, True)
                 Else
@@ -110,32 +110,32 @@ Partial Class CompanyGroupDetailForm
                 End If
 
 
-                Me.PopulateDropdowns()
-                Me.PopulateFormFromBOs()
+                PopulateDropdowns()
+                PopulateFormFromBOs()
                 EnableDisableFields()
 
             End If
-            Me.CheckIfComingFromSaveConfirm()
+            CheckIfComingFromSaveConfirm()
             BindBoPropertiesToLabels()
 
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
                 'BindBoPropertiesToLabels()
-                Me.AddLabelDecorations(Me.State.MyBO)
+                AddLabelDecorations(State.MyBO)
             End If
 
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
 
     End Sub
 #End Region
 
     Private Sub UpdateBreadCrum()
 
-        If (Not Me.State Is Nothing) Then
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
+        If (State IsNot Nothing) Then
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
                 TranslationBase.TranslateLabelOrMessage(COMPANY_GROUP_DETAIL)
         End If
 
@@ -144,29 +144,29 @@ Partial Class CompanyGroupDetailForm
     Protected Sub PopulateFormFromBOs()
         Try
             Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
-            With Me.State.MyBO
-                Me.PopulateControlFromBOProperty(Me.TextboxCompanyGroupName, .Description)
-                Me.PopulateControlFromBOProperty(Me.TextboxCompanyGroupCode, .Code)
-                Me.SetSelectedItem(Me.ddlClaimNumbering, .ClaimNumberingById)
-                Me.SetSelectedItem(Me.ddlinvoicenumbering, .InvoiceNumberingById)
-                Me.SetSelectedItem(Me.ddlInvoicegrpnumbering, .InvoiceGrpNumberingById)
-                Me.SetSelectedItem(Me.ddlAuthorizationNumbering, .AuthorizationNumberingById)
-                Me.SetSelectedItem(Me.ddlftpsite, .FtpSiteId)
-                Me.SetSelectedItem(Me.ddlpmtgrpnumbering, .PaymentGrpNumberingById)
+            With State.MyBO
+                PopulateControlFromBOProperty(TextboxCompanyGroupName, .Description)
+                PopulateControlFromBOProperty(TextboxCompanyGroupCode, .Code)
+                SetSelectedItem(ddlClaimNumbering, .ClaimNumberingById)
+                SetSelectedItem(ddlinvoicenumbering, .InvoiceNumberingById)
+                SetSelectedItem(ddlInvoicegrpnumbering, .InvoiceGrpNumberingById)
+                SetSelectedItem(ddlAuthorizationNumbering, .AuthorizationNumberingById)
+                SetSelectedItem(ddlftpsite, .FtpSiteId)
+                SetSelectedItem(ddlpmtgrpnumbering, .PaymentGrpNumberingById)
                 Dim yesnoid As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, .AccountingByCompany)
-                Me.SetSelectedItem(Me.ddlacctbycomp, yesnoid)
-                Me.PopulateControlFromBOProperty(Me.txtyrstoinactiveusedvehicles, .InactiveUsedVehiclesOlderThan)
-                Me.SetSelectedItem(Me.ddlinactivenewvehiclesbasedon, .InactiveNewVehiclesBasedOn)
+                SetSelectedItem(ddlacctbycomp, yesnoid)
+                PopulateControlFromBOProperty(txtyrstoinactiveusedvehicles, .InactiveUsedVehiclesOlderThan)
+                SetSelectedItem(ddlinactivenewvehiclesbasedon, .InactiveNewVehiclesBasedOn)
                 'req 5547
-                Me.SetSelectedItem(Me.ddlFastApproval, .ClaimFastApprovalId)
-                If .IsNew Or .ClaimFastApprovalId.Equals(Guid.Empty) Then
-                    Me.SetSelectedItem(ddlFastApproval, LookupListNew.GetIdFromCode(LookupListNew.LK_FAST_APPROVAL_TYPE, "N"))
+                SetSelectedItem(ddlFastApproval, .ClaimFastApprovalId)
+                If .IsNew OrElse .ClaimFastApprovalId.Equals(Guid.Empty) Then
+                    SetSelectedItem(ddlFastApproval, LookupListNew.GetIdFromCode(LookupListNew.LK_FAST_APPROVAL_TYPE, "N"))
                 End If
                 'REQ-5773
                 If .UseCommEntityTypeId.Equals(System.Guid.Empty) Then
-                    Me.SetSelectedItem(Me.ddlUseCommEntityTypeId, LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList("YESNO", ElitaPlusIdentity.Current.ActiveUser.LanguageId), ""))
+                    SetSelectedItem(ddlUseCommEntityTypeId, LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList("YESNO", ElitaPlusIdentity.Current.ActiveUser.LanguageId), ""))
                 Else
-                    Me.SetSelectedItem(Me.ddlUseCommEntityTypeId, .UseCommEntityTypeId)
+                    SetSelectedItem(ddlUseCommEntityTypeId, .UseCommEntityTypeId)
                 End If
 
 
@@ -174,50 +174,50 @@ Partial Class CompanyGroupDetailForm
                 ' BindSelectItem(Me.State.MyBO.InteractionNumberingByXcd, Me.ddlInteractionNumbering)
 
                 'REQ - 6155
-                If .IsNew Or .CaseNumberingByXcd Is Nothing Then
-                    Me.SetSelectedItem(Me.ddlCaseNumbering, "CASENUM-CMP") '"CASENUM-CMP"
+                If .IsNew OrElse .CaseNumberingByXcd Is Nothing Then
+                    SetSelectedItem(ddlCaseNumbering, "CASENUM-CMP") '"CASENUM-CMP"
                 Else
-                    Me.SetSelectedItem(Me.ddlCaseNumbering, .CaseNumberingByXcd)
+                    SetSelectedItem(ddlCaseNumbering, .CaseNumberingByXcd)
                 End If
 
-                If .IsNew Or .InteractionNumberingByXcd Is Nothing Then
-                    Me.SetSelectedItem(Me.ddlInteractionNumbering, "INTNUM-CMP")
+                If .IsNew OrElse .InteractionNumberingByXcd Is Nothing Then
+                    SetSelectedItem(ddlInteractionNumbering, "INTNUM-CMP")
                 Else
-                    Me.SetSelectedItem(Me.ddlInteractionNumbering, .InteractionNumberingByXcd)
+                    SetSelectedItem(ddlInteractionNumbering, .InteractionNumberingByXcd)
                 End If
 
 
 
             End With
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Protected Sub BindBoPropertiesToLabels()
         Try
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "Description", Me.LabelCompanyGroupName)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "Code", Me.LabelCompanyGroupCode)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "ClaimNumberingById", Me.LabelClaimNumbering)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "InvoiceNumberingById", Me.LabelInvoiceNumbering)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "InvoiceGrpNumberingById", Me.lblInvoicegrpnumbering)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "AuthorizationNumberingById", Me.LabelAuthorizationNumbering)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "FtpSiteId", Me.lblftpsite)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "PaymentGrpNumberingById", Me.lblpmtgrpnumbering)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "AccountingByCompany", Me.lblAccountingbycompany)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "InactiveUsedVehiclesOlderThan", Me.lblyrstoinactiveusedvehicles)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "InactiveNewVehiclesBasedOn", Me.lblinactivenewvehiclesbasedon)
+            BindBOPropertyToLabel(State.MyBO, "Description", LabelCompanyGroupName)
+            BindBOPropertyToLabel(State.MyBO, "Code", LabelCompanyGroupCode)
+            BindBOPropertyToLabel(State.MyBO, "ClaimNumberingById", LabelClaimNumbering)
+            BindBOPropertyToLabel(State.MyBO, "InvoiceNumberingById", LabelInvoiceNumbering)
+            BindBOPropertyToLabel(State.MyBO, "InvoiceGrpNumberingById", lblInvoicegrpnumbering)
+            BindBOPropertyToLabel(State.MyBO, "AuthorizationNumberingById", LabelAuthorizationNumbering)
+            BindBOPropertyToLabel(State.MyBO, "FtpSiteId", lblftpsite)
+            BindBOPropertyToLabel(State.MyBO, "PaymentGrpNumberingById", lblpmtgrpnumbering)
+            BindBOPropertyToLabel(State.MyBO, "AccountingByCompany", lblAccountingbycompany)
+            BindBOPropertyToLabel(State.MyBO, "InactiveUsedVehiclesOlderThan", lblyrstoinactiveusedvehicles)
+            BindBOPropertyToLabel(State.MyBO, "InactiveNewVehiclesBasedOn", lblinactivenewvehiclesbasedon)
             'req 5547
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "ClaimFastApprovalId", Me.lblClaimFastApprovalId)
+            BindBOPropertyToLabel(State.MyBO, "ClaimFastApprovalId", lblClaimFastApprovalId)
             'REQ-5773
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "UseCommEntityTypeId", Me.LabelUseCommEntityTypeId)
+            BindBOPropertyToLabel(State.MyBO, "UseCommEntityTypeId", LabelUseCommEntityTypeId)
 
             'REQ - 6155
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "CaseNumberingByXcd", Me.LabelCaseNumbering)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "InteractionNumberingByXcd", Me.LabelInteractionNumbering)
+            BindBOPropertyToLabel(State.MyBO, "CaseNumberingByXcd", LabelCaseNumbering)
+            BindBOPropertyToLabel(State.MyBO, "InteractionNumberingByXcd", LabelInteractionNumbering)
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
@@ -225,28 +225,28 @@ Partial Class CompanyGroupDetailForm
     Protected Sub PopulateBosFromForm()
         Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
         Try
-            Me.PopulateBOProperty(Me.State.MyBO, "Description", Me.TextboxCompanyGroupName)
-            Me.PopulateBOProperty(Me.State.MyBO, "Code", Me.TextboxCompanyGroupCode)
-            Me.PopulateBOProperty(Me.State.MyBO, "ClaimNumberingById", Me.ddlClaimNumbering)
-            Me.PopulateBOProperty(Me.State.MyBO, "InvoiceNumberingById", Me.ddlinvoicenumbering)
-            Me.PopulateBOProperty(Me.State.MyBO, "InvoiceGrpNumberingById", Me.ddlInvoicegrpnumbering)
-            Me.PopulateBOProperty(Me.State.MyBO, "AuthorizationNumberingById", Me.ddlAuthorizationNumbering)
-            Me.PopulateBOProperty(Me.State.MyBO, "FtpSiteId", Me.ddlftpsite)
-            Me.PopulateBOProperty(Me.State.MyBO, "PaymentGrpNumberingById", Me.ddlpmtgrpnumbering)
-            Dim acctbycomp As String = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, New Guid(Me.ddlacctbycomp.SelectedValue))
-            Me.PopulateBOProperty(Me.State.MyBO, "AccountingByCompany", acctbycomp)
-            Me.PopulateBOProperty(Me.State.MyBO, "InactiveUsedVehiclesOlderThan", Me.txtyrstoinactiveusedvehicles)
-            Me.PopulateBOProperty(Me.State.MyBO, "InactiveNewVehiclesBasedOn", Me.ddlinactivenewvehiclesbasedon)
+            PopulateBOProperty(State.MyBO, "Description", TextboxCompanyGroupName)
+            PopulateBOProperty(State.MyBO, "Code", TextboxCompanyGroupCode)
+            PopulateBOProperty(State.MyBO, "ClaimNumberingById", ddlClaimNumbering)
+            PopulateBOProperty(State.MyBO, "InvoiceNumberingById", ddlinvoicenumbering)
+            PopulateBOProperty(State.MyBO, "InvoiceGrpNumberingById", ddlInvoicegrpnumbering)
+            PopulateBOProperty(State.MyBO, "AuthorizationNumberingById", ddlAuthorizationNumbering)
+            PopulateBOProperty(State.MyBO, "FtpSiteId", ddlftpsite)
+            PopulateBOProperty(State.MyBO, "PaymentGrpNumberingById", ddlpmtgrpnumbering)
+            Dim acctbycomp As String = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, New Guid(ddlacctbycomp.SelectedValue))
+            PopulateBOProperty(State.MyBO, "AccountingByCompany", acctbycomp)
+            PopulateBOProperty(State.MyBO, "InactiveUsedVehiclesOlderThan", txtyrstoinactiveusedvehicles)
+            PopulateBOProperty(State.MyBO, "InactiveNewVehiclesBasedOn", ddlinactivenewvehiclesbasedon)
             'req 5547
-            Me.PopulateBOProperty(Me.State.MyBO, "ClaimFastApprovalId", Me.ddlFastApproval)
+            PopulateBOProperty(State.MyBO, "ClaimFastApprovalId", ddlFastApproval)
             'REQ-5773
-            Me.PopulateBOProperty(Me.State.MyBO, "UseCommEntityTypeId", Me.ddlUseCommEntityTypeId)
+            PopulateBOProperty(State.MyBO, "UseCommEntityTypeId", ddlUseCommEntityTypeId)
             'REQ - 6155
-            Me.PopulateBOProperty(Me.State.MyBO, "CaseNumberingByXcd", Me.ddlCaseNumbering, False, True)
-            Me.PopulateBOProperty(Me.State.MyBO, "InteractionNumberingByXcd", Me.ddlInteractionNumbering, False, True)
+            PopulateBOProperty(State.MyBO, "CaseNumberingByXcd", ddlCaseNumbering, False, True)
+            PopulateBOProperty(State.MyBO, "InteractionNumberingByXcd", ddlInteractionNumbering, False, True)
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
@@ -331,35 +331,35 @@ Partial Class CompanyGroupDetailForm
                       .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
                           })
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Protected Sub CreateNew()
         Try
-            Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
-            Me.State.MyBO = New CompanyGroup
-            Me.State.IsNew = True
-            Me.PopulateFormFromBOs()
+            State.ScreenSnapShotBO = Nothing 'Reset the backup copy
+            State.MyBO = New CompanyGroup
+            State.IsNew = True
+            PopulateFormFromBOs()
             EnableDisableFields()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
     Protected Sub DoDelete()
         Try
-            Me.State.MyBO.Delete()
+            State.MyBO.Delete()
 
-            Me.State.MyBO.Save()
-            Me.State.HasDataChanged = True
-            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.MyBO, Me.State.HasDataChanged))
+            State.MyBO.Save()
+            State.HasDataChanged = True
+            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, State.MyBO, State.HasDataChanged))
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Protected Sub EnableDisableFields()
-        If Me.State.IsNew Then
+        If State.IsNew Then
             ControlMgr.SetVisibleControl(Me, btnNew_WRITE, False)
             ControlMgr.SetVisibleControl(Me, btnDelete_WRITE, False)
             ControlMgr.SetVisibleControl(Me, btnUndo_Write, False)
@@ -368,117 +368,117 @@ Partial Class CompanyGroupDetailForm
     End Sub
 
     Protected Sub CheckIfComingFromSaveConfirm()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-        If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
-            If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Accept Then
-                Me.BindBoPropertiesToLabels()
-                Me.State.MyBO.Save()
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+        If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
+            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr AndAlso State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.Accept Then
+                BindBoPropertiesToLabels()
+                State.MyBO.Save()
             End If
-            Select Case Me.State.ActionInProgress
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SAVE_RECORD_CONFIRMATION)
-                    Me.CreateNew()
+                    MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SAVE_RECORD_CONFIRMATION)
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SAVE_RECORD_CONFIRMATION)
+                    MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SAVE_RECORD_CONFIRMATION)
                 'Me.CreateNewWithCopy()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.Delete
-                    Me.DoDelete()
+                    DoDelete()
             End Select
-        ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-            Select Case Me.State.ActionInProgress
+        ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.CreateNew()
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
                     'Me.CreateNewWithCopy()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.MasterPage.MessageController.AddErrorAndShow(Me.State.LastErrMsg)
+                    MasterPage.MessageController.AddErrorAndShow(State.LastErrMsg)
                 Case ElitaPlusPage.DetailPageCommand.Accept
-                    Me.EnableDisableFields()
+                    EnableDisableFields()
                 Case ElitaPlusPage.DetailPageCommand.Delete
             End Select
         End If
-        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-        Me.HiddenSaveChangesPromptResponse.Value = ""
+        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        HiddenSaveChangesPromptResponse.Value = ""
     End Sub
 #End Region
 
 #Region "Button Click"
 
-    Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
         Try
-            Me.State.ForEdit = True
-            Me.PopulateBosFromForm()
+            State.ForEdit = True
+            PopulateBosFromForm()
 
-            If Me.State.MyBO.IsDirty Then
-                Me.State.MyBO.Save()
-                Me.State.IsNew = False
-                Me.State.HasDataChanged = True
-                Me.PopulateFormFromBOs()
-                Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+            If State.MyBO.IsDirty Then
+                State.MyBO.Save()
+                State.IsNew = False
+                State.HasDataChanged = True
+                PopulateFormFromBOs()
+                MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
 
 
             Else
-                Me.MasterPage.MessageController.AddError(Message.MSG_RECORD_NOT_SAVED, True)
+                MasterPage.MessageController.AddError(Message.MSG_RECORD_NOT_SAVED, True)
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnUndo_Write_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_Write.Click
+    Private Sub btnUndo_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_Write.Click
         Try
-            If Not Me.State.MyBO.IsNew Then
+            If Not State.MyBO.IsNew Then
                 'Reload from the DB
-                Me.State.MyBO = New CompanyGroup(Me.State.MyBO.Id)
-            ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+                State.MyBO = New CompanyGroup(State.MyBO.Id)
+            ElseIf State.ScreenSnapShotBO IsNot Nothing Then
                 'It was a new with copy
-                Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                State.MyBO.Clone(State.ScreenSnapShotBO)
             Else
-                Me.State.MyBO = New CompanyGroup
+                State.MyBO = New CompanyGroup
 
             End If
-            Me.PopulateFormFromBOs()
+            PopulateFormFromBOs()
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+    Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
 
 
-        Me.State.MyBO = New CompanyGroup(Me.State.MyBO.Id)
+        State.MyBO = New CompanyGroup(State.MyBO.Id)
         Try
-            Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+            DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
 
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            Me.State.MyBO.RejectChanges()
+            HandleErrors(ex, MasterPage.MessageController)
+            State.MyBO.RejectChanges()
         End Try
     End Sub
 
-    Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+    Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
         Try
-            Me.PopulateBosFromForm()
-            If (Me.State.MyBO.IsDirty) Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+            PopulateBosFromForm()
+            If (State.MyBO.IsDirty) Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
             Else
-                Me.CreateNew()
+                CreateNew()
                 ControlMgr.SetEnableControl(Me, ddlInvoicegrpnumbering, True)
                 ControlMgr.SetEnableControl(Me, ddlpmtgrpnumbering, True)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -496,23 +496,23 @@ Partial Class CompanyGroupDetailForm
     '        Me.HandleErrors(ex, Me.MasterPage.MessageController)
     '    End Try
     'End Sub
-    Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            Me.PopulateBosFromForm()
-            If (Me.State.MyBO.IsDirty) Then
+            PopulateBosFromForm()
+            If (State.MyBO.IsDirty) Then
 
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
             Else
-                Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
 
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.LastErrMsg = Me.MasterPage.MessageController.Text
-            Me.MasterPage.MessageController.AddErrorAndShow(Me.State.LastErrMsg)
+            HandleErrors(ex, MasterPage.MessageController)
+            DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.LastErrMsg = MasterPage.MessageController.Text
+            MasterPage.MessageController.AddErrorAndShow(State.LastErrMsg)
         End Try
     End Sub
 #End Region

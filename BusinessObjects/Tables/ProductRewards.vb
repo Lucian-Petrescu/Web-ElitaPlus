@@ -13,48 +13,48 @@
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ProductRewardsDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -62,23 +62,23 @@
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ProductRewardsDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -88,15 +88,15 @@
 
 
     Public Sub InitTable()
-        Me.Dataset.Tables(ProductRewardsDAL.TABLE_NAME).Rows.Clear()
+        Dataset.Tables(ProductRewardsDAL.TABLE_NAME).Rows.Clear()
     End Sub
 
-    Public Sub AddRowsToTable(ByVal rowval As DataRow, Optional ByVal updateRowVal As Boolean = False)
+    Public Sub AddRowsToTable(rowval As DataRow, Optional ByVal updateRowVal As Boolean = False)
         Dim dal As New ProductRewardsDAL
-        Me.Row = Me.FindRow(Id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
-        Me.Row(1) = rowval(1)
-        Me.Row(2) = rowval(2)
-        Me.Row(3) = rowval(3)
+        Row = FindRow(Id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
+        Row(1) = rowval(1)
+        Row(2) = rowval(2)
+        Row(3) = rowval(3)
 
     End Sub
 
@@ -113,7 +113,7 @@
 
     'Key Property
     <ValidUniqueCombination(""), ValidateOverlapping("")>
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ProductRewardsDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -124,7 +124,7 @@
     End Property
 
     <ValueMandatory("")>
-    Public Property ProductCodeId() As Guid
+    Public Property ProductCodeId As Guid
         Get
             CheckDeleted()
             If Row(ProductRewardsDAL.COL_NAME_PRODUCT_CODE_ID) Is DBNull.Value Then
@@ -133,15 +133,15 @@
                 Return New Guid(CType(Row(ProductRewardsDAL.COL_NAME_PRODUCT_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductRewardsDAL.COL_NAME_PRODUCT_CODE_ID, Value)
+            SetValue(ProductRewardsDAL.COL_NAME_PRODUCT_CODE_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)>
-    Public Property RewardName() As String
+    Public Property RewardName As String
         Get
             CheckDeleted()
             If Row(ProductRewardsDAL.COL_NAME_REWARD_NAME) Is DBNull.Value Then
@@ -150,15 +150,15 @@
                 Return CType(Row(ProductRewardsDAL.COL_NAME_REWARD_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductRewardsDAL.COL_NAME_REWARD_NAME, Value)
+            SetValue(ProductRewardsDAL.COL_NAME_REWARD_NAME, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)>
-    Public Property RewardType() As String
+    Public Property RewardType As String
         Get
             CheckDeleted()
             If Row(ProductRewardsDAL.COL_NAME_REWARD_TYPE) Is DBNull.Value Then
@@ -167,13 +167,13 @@
                 Return CType(Row(ProductRewardsDAL.COL_NAME_REWARD_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductRewardsDAL.COL_NAME_REWARD_TYPE, Value)
+            SetValue(ProductRewardsDAL.COL_NAME_REWARD_TYPE, Value)
         End Set
     End Property
     <ValueMandatory(""), ValidNumericRange("", Min:=0, Max:=NEW_MAX_DOUBLE)>
-    Public Property RewardAmount() As DecimalType
+    Public Property RewardAmount As DecimalType
         Get
             CheckDeleted()
             If Row(ProductRewardsDAL.COL_NAME_REWARD_AMOUNT) Is DBNull.Value Then
@@ -182,14 +182,14 @@
                 Return New DecimalType(CType(Row(ProductRewardsDAL.COL_NAME_REWARD_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductRewardsDAL.COL_NAME_REWARD_AMOUNT, Value)
+            SetValue(ProductRewardsDAL.COL_NAME_REWARD_AMOUNT, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=NEW_MAX_DOUBLE)>
-    Public Property MinPurchasePrice() As DecimalType
+    Public Property MinPurchasePrice As DecimalType
         Get
             CheckDeleted()
             If Row(ProductRewardsDAL.COL_NAME_MIN_PURCHASE_PRICE) Is DBNull.Value Then
@@ -198,14 +198,14 @@
                 Return New DecimalType(CType(Row(ProductRewardsDAL.COL_NAME_MIN_PURCHASE_PRICE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductRewardsDAL.COL_NAME_MIN_PURCHASE_PRICE, Value)
+            SetValue(ProductRewardsDAL.COL_NAME_MIN_PURCHASE_PRICE, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=9999, MaxExclusive:=False)>
-    Public Property DaysToRedeem() As LongType
+    Public Property DaysToRedeem As LongType
         Get
             CheckDeleted()
             If Row(ProductRewardsDAL.COL_NAME_DAYS_TO_REDEEM) Is DBNull.Value Then
@@ -214,14 +214,14 @@
                 Return New LongType(CType(Row(ProductRewardsDAL.COL_NAME_DAYS_TO_REDEEM), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductRewardsDAL.COL_NAME_DAYS_TO_REDEEM, Value)
+            SetValue(ProductRewardsDAL.COL_NAME_DAYS_TO_REDEEM, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidEffectiveDate("")>
-    Public Property EffectiveDate() As DateType
+    Public Property EffectiveDate As DateType
         Get
             CheckDeleted()
             If Row(ProductRewardsDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -230,13 +230,13 @@
                 Return New DateType(CType(Row(ProductRewardsDAL.COL_NAME_EFFECTIVE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductRewardsDAL.COL_NAME_EFFECTIVE_DATE, Value)
+            SetValue(ProductRewardsDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
     End Property
     <ValueMandatory(""), ValidExpirationDate("")>
-    Public Property ExpirationDate() As DateType
+    Public Property ExpirationDate As DateType
         Get
             CheckDeleted()
             If Row(ProductRewardsDAL.COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
@@ -245,14 +245,14 @@
                 Return New DateType(CType(Row(ProductRewardsDAL.COL_NAME_EXPIRATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductRewardsDAL.COL_NAME_EXPIRATION_DATE, Value)
+            SetValue(ProductRewardsDAL.COL_NAME_EXPIRATION_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Min:=0, Max:=99), ValidateFromRenewal("")>
-    Public Property FromRenewal() As LongType
+    Public Property FromRenewal As LongType
         Get
             CheckDeleted()
             If Row(ProductRewardsDAL.COL_NAME_FROM_RENEWAL) Is DBNull.Value Then
@@ -261,14 +261,14 @@
                 Return CType(Row(ProductRewardsDAL.COL_NAME_FROM_RENEWAL), Long)
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductRewardsDAL.COL_NAME_FROM_RENEWAL, Value)
+            SetValue(ProductRewardsDAL.COL_NAME_FROM_RENEWAL, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Min:=0, Max:=99), ValidateToRenewal("")>
-    Public Property ToRenewal() As LongType
+    Public Property ToRenewal As LongType
         Get
             CheckDeleted()
             If Row(ProductRewardsDAL.COL_NAME_TO_RENEWAL) Is DBNull.Value Then
@@ -277,9 +277,9 @@
                 Return CType(Row(ProductRewardsDAL.COL_NAME_TO_RENEWAL), Long)
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductRewardsDAL.COL_NAME_TO_RENEWAL, Value)
+            SetValue(ProductRewardsDAL.COL_NAME_TO_RENEWAL, Value)
         End Set
     End Property
 
@@ -309,24 +309,24 @@
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
         Public Function AddNewRowToEmptyDV() As ProductRewardsSearchDV
-            Dim dt As DataTable = Me.Table.Clone()
+            Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(ProductRewardsSearchDV.COL_PRODUCT_REWARD_ID) = (New Guid()).ToByteArray
-            row(ProductRewardsSearchDV.COL_PRODUCT_CODE_ID) = Guid.Empty.ToByteArray
-            row(ProductRewardsSearchDV.COL_NAME_REWARD_NAME) = DBNull.Value
-            row(ProductRewardsSearchDV.COL_NAME_REWARD_TYPE) = DBNull.Value
-            row(ProductRewardsSearchDV.COL_NAME_REWARD_AMOUNT) = DBNull.Value
-            row(ProductRewardsSearchDV.COL_NAME_MIN_PURCHASE_PRICE) = DBNull.Value
-            row(ProductRewardsSearchDV.COL_NAME_DAYS_TO_REDEEM) = DBNull.Value
-            row(ProductRewardsSearchDV.COL_NAME_FROM_RENEWAL) = DBNull.Value
-            row(ProductRewardsSearchDV.COL_NAME_TO_RENEWAL) = DBNull.Value
-            row(ProductRewardsSearchDV.COL_NAME_EFFECTIVE_DATE) = DBNull.Value
-            row(ProductRewardsSearchDV.COL_NAME_EXPIRATION_DATE) = DBNull.Value
+            row(COL_PRODUCT_REWARD_ID) = (New Guid()).ToByteArray
+            row(COL_PRODUCT_CODE_ID) = Guid.Empty.ToByteArray
+            row(COL_NAME_REWARD_NAME) = DBNull.Value
+            row(COL_NAME_REWARD_TYPE) = DBNull.Value
+            row(COL_NAME_REWARD_AMOUNT) = DBNull.Value
+            row(COL_NAME_MIN_PURCHASE_PRICE) = DBNull.Value
+            row(COL_NAME_DAYS_TO_REDEEM) = DBNull.Value
+            row(COL_NAME_FROM_RENEWAL) = DBNull.Value
+            row(COL_NAME_TO_RENEWAL) = DBNull.Value
+            row(COL_NAME_EFFECTIVE_DATE) = DBNull.Value
+            row(COL_NAME_EXPIRATION_DATE) = DBNull.Value
             dt.Rows.Add(row)
             Return New ProductRewardsSearchDV(dt)
         End Function
@@ -338,15 +338,15 @@
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ProductRewardsDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -356,7 +356,7 @@
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function LoadList(ByVal ProductCodeId As Guid) As ProductRewardsSearchDV
+    Public Shared Function LoadList(ProductCodeId As Guid) As ProductRewardsSearchDV
         Try
             Dim dal As New ProductRewardsDAL
             Dim BOProd As ProductCode
@@ -367,7 +367,7 @@
         End Try
     End Function
 
-    Private Function ValidateUniqueCombination(ByVal ProductId As Guid, ByVal RewardType As String, ByVal EffectiveDate As Date, ByVal ExpirationDate As Date) As DataView
+    Private Function ValidateUniqueCombination(ProductId As Guid, RewardType As String, EffectiveDate As Date, ExpirationDate As Date) As DataView
         Try
             Dim dal As New ProductRewardsDAL
             Return New DataView(dal.ValidateUniqueCombination(ProductId, RewardType, EffectiveDate, ExpirationDate).Tables(0))
@@ -376,7 +376,7 @@
         End Try
     End Function
 
-    Private Function ValidateOverlap(ByVal ProductId As Guid, ByVal RewardType As String, ByVal EffectiveDate As Date, ByVal ExpirationDate As Date) As DataView
+    Private Function ValidateOverlap(ProductId As Guid, RewardType As String, EffectiveDate As Date, ExpirationDate As Date) As DataView
         Try
             Dim dal As New ProductRewardsDAL
             Return New DataView(dal.ValidateOverlap(ProductId, RewardType, EffectiveDate, ExpirationDate).Tables(0))
@@ -385,7 +385,7 @@
         End Try
     End Function
 
-    Private Function ValidateRenewalOverlap(ByVal ProductId As Guid, ByVal ProductRewardId As Guid) As DataView
+    Private Function ValidateRenewalOverlap(ProductId As Guid, ProductRewardId As Guid) As DataView
         Try
             Dim dal As New ProductRewardsDAL
             Return New DataView(dal.ValidateRenewalOverlap(ProductId, ProductRewardId).Tables(0))
@@ -398,15 +398,15 @@
     Public Class ProductRewardsDetailList
         Inherits BusinessObjectListBase
 
-        Public Sub New(ByVal parent As ProductCode)
+        Public Sub New(parent As ProductCode)
             MyBase.New(LoadTable(parent), GetType(ProductRewards), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return CType(bo, ProductRewards).ProductCodeId.Equals(CType(Parent, ProductCode).Id)
         End Function
 
-        Public Function Find(ByVal ProductRewardsId As Guid) As ProductRewards
+        Public Function Find(ProductRewardsId As Guid) As ProductRewards
             Dim bo As ProductRewards
             For Each bo In Me
                 If bo.Id.Equals(ProductRewardsId) Then Return bo
@@ -414,7 +414,7 @@
             Return Nothing
         End Function
 
-        Public Function Delete(ByVal ProductRewardsId As Guid)
+        Public Function Delete(ProductRewardsId As Guid)
             Dim bo As ProductRewards
             Dim dr As DataRow
 
@@ -427,7 +427,7 @@
 
         End Function
 
-        Private Shared Function LoadTable(ByVal parent As ProductCode) As DataTable
+        Private Shared Function LoadTable(parent As ProductCode) As DataTable
             Try
                 If Not parent.IsChildrenCollectionLoaded(GetType(ProductRewardsDetailList)) Then
                     Dim dal As New ProductRewardsDAL
@@ -448,18 +448,18 @@
     Public NotInheritable Class ValidExpirationDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, PRODUCT_EQUIPMENT_FORM001)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductRewards = CType(objectToValidate, ProductRewards)
 
             Dim bValid As Boolean = True
 
-            If Not obj.ExpirationDate Is Nothing And Not obj.EffectiveDate Is Nothing Then
+            If obj.ExpirationDate IsNot Nothing And obj.EffectiveDate IsNot Nothing Then
                 If Convert.ToDateTime(obj.EffectiveDate.Value) > Convert.ToDateTime(obj.ExpirationDate.Value) Then
-                    Me.Message = PRODUCT_EQUIPMENT_FORM001
+                    Message = PRODUCT_EQUIPMENT_FORM001
                     bValid = False
 
                 End If
@@ -474,18 +474,18 @@
     Public NotInheritable Class ValidEffectiveDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, PRODUCT_EQUIPMENT_FORM003)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductRewards = CType(objectToValidate, ProductRewards)
 
             Dim bValid As Boolean = True
 
-            If Not obj.EffectiveDate Is Nothing Then
+            If obj.EffectiveDate IsNot Nothing Then
                 If obj.EffectiveDate <= DateTime.Now.Date Then
-                    Me.Message = PRODUCT_EQUIPMENT_FORM003
+                    Message = PRODUCT_EQUIPMENT_FORM003
                     bValid = False
 
                 End If
@@ -501,17 +501,17 @@
     Public NotInheritable Class ValidUniqueCombination
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, PRODUCT_REWARDS_FORM002)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductRewards = CType(objectToValidate, ProductRewards)
             Dim bValid As Boolean = True
 
             If Not obj.ProductCodeId = Guid.Empty Then
 
-                If Not obj.RewardType Is Nothing AndAlso Not obj.EffectiveDate Is Nothing AndAlso Not obj.ExpirationDate Is Nothing Then
+                If obj.RewardType IsNot Nothing AndAlso obj.EffectiveDate IsNot Nothing AndAlso obj.ExpirationDate IsNot Nothing Then
                     Dim oProductRewards As DataView = obj.ValidateUniqueCombination(obj.ProductCodeId, obj.RewardType, obj.EffectiveDate, obj.ExpirationDate)
                     Dim ProductRewardsRows As DataRowCollection = oProductRewards.Table.Rows
                     Dim ProductRewardsRow As DataRow
@@ -532,17 +532,17 @@
     Public NotInheritable Class ValidateOverlapping
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, PRODUCT_REWARDS_FORM004)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductRewards = CType(objectToValidate, ProductRewards)
             Dim bValid As Boolean = True
 
             If Not obj.ProductCodeId = Guid.Empty Then
 
-                If Not obj.RewardType Is Nothing AndAlso Not obj.EffectiveDate Is Nothing AndAlso Not obj.ExpirationDate Is Nothing Then
+                If obj.RewardType IsNot Nothing AndAlso obj.EffectiveDate IsNot Nothing AndAlso obj.ExpirationDate IsNot Nothing Then
                     Dim oProductRewards As DataView = obj.ValidateOverlap(obj.ProductCodeId, obj.RewardType, obj.EffectiveDate, obj.ExpirationDate)
                     Dim ProductRewardsRows As DataRowCollection = oProductRewards.Table.Rows
                     Dim ProductRewardsRow As DataRow
@@ -565,18 +565,18 @@
     Public NotInheritable Class ValidateToRenewal
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, PRODUCT_REWARDS_FORM005)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductRewards = CType(objectToValidate, ProductRewards)
 
             Dim bValid As Boolean = True
 
-            If Not obj.FromRenewal Is Nothing And Not obj.ToRenewal Is Nothing Then
+            If obj.FromRenewal IsNot Nothing And obj.ToRenewal IsNot Nothing Then
                 If obj.FromRenewal.Value > obj.ToRenewal.Value Then
-                    Me.Message = PRODUCT_REWARDS_FORM005
+                    Message = PRODUCT_REWARDS_FORM005
                     bValid = False
 
                 End If
@@ -591,11 +591,11 @@
     Public NotInheritable Class ValidateFromRenewal
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, PRODUCT_REWARDS_FORM006)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductRewards = CType(objectToValidate, ProductRewards)
 
             Dim bValid As Boolean = True
@@ -603,7 +603,7 @@
             Dim ProductRewardsRows As DataRowCollection = oProductRewards.Table.Rows
             Dim ProductRewardsRow As DataRow
 
-            If oProductRewards.Count = 1 And Not obj.FromRenewal Is Nothing Then
+            If oProductRewards.Count = 1 And obj.FromRenewal IsNot Nothing Then
                 If oProductRewards.Item(0)(0).ToString = String.Empty Then
                     bValid = True
                 Else

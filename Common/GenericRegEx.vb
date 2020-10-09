@@ -38,7 +38,7 @@ Public Class GenericRegEx
 
 
 
-    Public Sub New(ByVal rExType As Integer, ByVal isOptional As Boolean, ByVal minLen As Integer, ByVal maxLen As Integer, Optional ByVal disallowedValueList As String = "")
+    Public Sub New(rExType As Integer, isOptional As Boolean, minLen As Integer, maxLen As Integer, Optional ByVal disallowedValueList As String = "")
         RegularExType = rExType
         OptionalValue = isOptional
         MinimumLength = minLen
@@ -53,7 +53,7 @@ Public Class GenericRegEx
             Throw New Exception("Maximum Length Cannot be Zero")
         End If
     End Sub
-    Public Sub New(ByVal rExType As Integer, ByVal isOptional As Boolean, ByVal maxLen As Integer, Optional ByVal disallowedValueList As String = "")
+    Public Sub New(rExType As Integer, isOptional As Boolean, maxLen As Integer, Optional ByVal disallowedValueList As String = "")
         RegularExType = rExType
         OptionalValue = isOptional
         MinimumLength = 0
@@ -73,7 +73,7 @@ Public Class GenericRegEx
         Get
             Return regExType
         End Get
-        Set(ByVal Value As Integer)
+        Set(Value As Integer)
             regExType = Value
         End Set
     End Property
@@ -82,7 +82,7 @@ Public Class GenericRegEx
         Get
             Return optionalVal
         End Get
-        Set(ByVal Value As Boolean)
+        Set(Value As Boolean)
             optionalVal = Value
         End Set
     End Property
@@ -91,7 +91,7 @@ Public Class GenericRegEx
         Get
             Return minLength
         End Get
-        Set(ByVal Value As Integer)
+        Set(Value As Integer)
             minLength = Value
         End Set
     End Property
@@ -100,7 +100,7 @@ Public Class GenericRegEx
         Get
             Return maxLength
         End Get
-        Set(ByVal Value As Integer)
+        Set(Value As Integer)
             maxLength = Value
         End Set
     End Property
@@ -109,7 +109,7 @@ Public Class GenericRegEx
         Get
             Return disallowedVal
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             disallowedVal = Value
         End Set
     End Property
@@ -136,7 +136,7 @@ End Class
 
 Public Class SpaceRegEx
     Inherits GenericRegEx
-    Sub New(ByVal isOptional As Boolean, ByVal minLen As Integer, ByVal maxLen As Integer)
+    Sub New(isOptional As Boolean, minLen As Integer, maxLen As Integer)
         MyBase.New(RegExTypeValues.SpaceRegEx, isOptional, minLen, maxLen)
     End Sub
     Public Overrides ReadOnly Property RegExString() As String
@@ -155,8 +155,8 @@ Public Class NumericRegEx
 
     Private numericString As String = "0,1,2,3,4,5,6,7,8,9"
 
-    Sub New(ByVal isOptional As Boolean, ByVal minLen As Integer, _
-                      ByVal maxLen As Integer, Optional ByVal disallowedValueList As String = "")
+    Sub New(isOptional As Boolean, minLen As Integer, _
+                      maxLen As Integer, Optional ByVal disallowedValueList As String = "")
         MyBase.New(RegExTypeValues.NumericRegEx, isOptional, minLen, maxLen, disallowedValueList)
     End Sub
 
@@ -260,17 +260,17 @@ Public Class AlphaRegEx
         Get
             Return iCase
         End Get
-        Set(ByVal Value As Integer)
+        Set(Value As Integer)
             iCase = Value
         End Set
     End Property
 
-    Sub New(ByVal isOptional As Boolean, ByVal minLen As Integer, _
-                      ByVal maxLen As Integer, Optional ByVal iCaseType As CaseValues = CaseValues.Both, Optional ByVal disallowedValueList As String = "")
+    Sub New(isOptional As Boolean, minLen As Integer, _
+                      maxLen As Integer, Optional ByVal iCaseType As CaseValues = CaseValues.Both, Optional ByVal disallowedValueList As String = "")
         MyBase.New(RegExTypeValues.AlphaRegEx, isOptional, minLen, maxLen, disallowedValueList)
         CaseType = iCaseType
     End Sub
-    Private Function GetAllowedCharSet(ByVal charString As String) As String
+    Private Function GetAllowedCharSet(charString As String) As String
         'CHR(65) = A
         'CHR(97) = a
         Dim charArray As String() = charString.Split(",".Chars(0))
@@ -363,8 +363,8 @@ Public Class AlphaNumericRegEx
     Private iCase As Integer
     Private numericString As String = "0,1,2,3,4,5,6,7,8,9"
 
-    Sub New(ByVal isOptional As Boolean, ByVal minLen As Integer, _
-                         ByVal maxLen As Integer, Optional ByVal iCaseType As CaseValues = CaseValues.Both, Optional ByVal disallowedValueList As String = "")
+    Sub New(isOptional As Boolean, minLen As Integer, _
+                         maxLen As Integer, Optional ByVal iCaseType As CaseValues = CaseValues.Both, Optional ByVal disallowedValueList As String = "")
         MyBase.New(RegExTypeValues.AlphaNumericRegEx, isOptional, minLen, maxLen, disallowedValueList)
         CaseType = iCaseType
     End Sub
@@ -423,12 +423,12 @@ Public Class AlphaNumericRegEx
         Get
             Return iCase
         End Get
-        Set(ByVal Value As Integer)
+        Set(Value As Integer)
             iCase = Value
         End Set
     End Property
 
-    Private Function GetAllowedCharSet(ByVal charString As String) As String
+    Private Function GetAllowedCharSet(charString As String) As String
         'CHR(65) = A
         'CHR(97) = a
         Dim charArray As String() = charString.Split(",".Chars(0))
@@ -527,12 +527,12 @@ Public Class SpecialCharRegEx
         Get
             Return sSpecialChar
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             sSpecialChar = Value
         End Set
     End Property
 
-    Sub New(ByVal isOptional As Boolean, ByVal minLen As Integer, ByVal maxLen As Integer, ByVal specialCharVal As String)
+    Sub New(isOptional As Boolean, minLen As Integer, maxLen As Integer, specialCharVal As String)
         MyBase.New(RegExTypeValues.SpecialCharRegEx, isOptional, maxLen)
         SpecialChar = specialCharVal
     End Sub
@@ -564,7 +564,7 @@ Public Class GenericRegExFactory
         End Get
     End Property
 
-    Public Sub New(ByVal regExStr As String)
+    Public Sub New(regExStr As String)
         If regExStr.Trim().Length > 0 Then
             ' determine the type...
             GetLengths(regExStr)
@@ -593,7 +593,7 @@ Public Class GenericRegExFactory
         End If
     End Sub
 
-    Private Sub GetLengths(ByVal strVal As String)
+    Private Sub GetLengths(strVal As String)
         Dim openBracketStart As Integer = strVal.IndexOf("{")
         Dim closeBracketStart As Integer = strVal.IndexOf("}")
 
@@ -614,7 +614,7 @@ Public Class GenericRegExFactory
             End If
         End If
     End Sub
-    Private Sub GetDisallowedValues(ByVal strVal As String, ByVal regExType As Integer)
+    Private Sub GetDisallowedValues(strVal As String, regExType As Integer)
         Dim upperAlphaString As String = "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z"
         Dim lowerAlphaString As String = "a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z"
         Dim numericString As String = "0,1,2,3,4,5,6,7,8,9"
@@ -675,7 +675,7 @@ Public Class GenericRegExFactory
             End If
         End If
     End Sub
-    Private Function HasNumbers(ByVal strVal As String) As Boolean
+    Private Function HasNumbers(strVal As String) As Boolean
         Dim openBracketStart As Integer = strVal.IndexOf("[")
         Dim closeBracketStart As Integer = strVal.IndexOf("]")
 
@@ -690,7 +690,7 @@ Public Class GenericRegExFactory
 
         Return False
     End Function
-    Private Function HasAlphaVal(ByVal strVal As String) As Boolean
+    Private Function HasAlphaVal(strVal As String) As Boolean
         Dim openBracketStart As Integer = strVal.IndexOf("[")
         Dim closeBracketStart As Integer = strVal.IndexOf("]")
 
@@ -704,7 +704,7 @@ Public Class GenericRegExFactory
         End If
         Return False
     End Function
-    Private Function HasAlphaNumericVal(ByVal strVal As String) As Boolean
+    Private Function HasAlphaNumericVal(strVal As String) As Boolean
         Return HasNumbers(strVal) And HasAlphaVal(strVal)
     End Function
 
@@ -723,7 +723,7 @@ Public Class RegExValidator
     Private _reformattedString As String
 
 
-    Public Sub New(ByVal regExFormat As String, ByVal regExVal As String, Optional ByVal reformatFlag As Boolean = False)
+    Public Sub New(regExFormat As String, regExVal As String, Optional ByVal reformatFlag As Boolean = False)
         _regExFormat = regExFormat
         _regExVal = regExVal
         _reformatFlag = reformatFlag

@@ -32,46 +32,46 @@ Public Class RegionDAL
 
 #Region "CRUD Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("region_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Try
-            Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+            Return DBHelper.Fetch(selectStmt, TABLE_NAME)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadList(ByVal countryID As Guid) As DataSet
+    Public Function LoadList(countryID As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_DYNAMIC")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_DYNAMIC")
         Dim parameters() As OracleParameter
         parameters = New OracleParameter() _
                             {New OracleParameter(COL_NAME_COUNTRY_ID, countryID.ToByteArray)}
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Function GetRegionsAndComunas(ByVal countryID As Guid, Optional regionCode As String = "") As DataSet
+    Public Function GetRegionsAndComunas(countryID As Guid, Optional regionCode As String = "") As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_REGIONS_AND_COMUNAS")
+        Dim selectStmt As String = Config("/SQL/LOAD_REGIONS_AND_COMUNAS")
         Dim parameters() As OracleParameter
         parameters = New OracleParameter() _
                             {New OracleParameter(COL_NAME_COUNTRY_ID, countryID.ToByteArray)}
@@ -80,23 +80,23 @@ Public Class RegionDAL
 
         If Not regionCode = "" Then
             whereClauseConditions = " and upper(r.short_desc) = '" & regionCode.ToUpper & "'"
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
 
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Function LoadList(ByVal description As String, ByVal code As String, ByVal countryID As Guid) As DataSet
+    Public Function LoadList(description As String, code As String, countryID As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As OracleParameter
         description = GetFormattedSearchStringForSQL(description)
         code = GetFormattedSearchStringForSQL(code)
@@ -105,17 +105,17 @@ Public Class RegionDAL
                                      New OracleParameter(COL_NAME_SHORT_DESC, code), _
                                      New OracleParameter(COL_NAME_DESCRIPTION, description)}
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
-    Public Function LoadList(ByVal description As String, ByVal code As String, ByVal userCountries As ArrayList) As DataSet
+    Public Function LoadList(description As String, code As String, userCountries As ArrayList) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_FOR_USER_COUNTRIES")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_FOR_USER_COUNTRIES")
         Dim inClausecondition As String = ""
-        inClausecondition &= "And r." & MiscUtil.BuildListForSql(Me.COL_NAME_COUNTRY_ID, userCountries, False)
+        inClausecondition &= "And r." & MiscUtil.BuildListForSql(COL_NAME_COUNTRY_ID, userCountries, False)
 
         Dim parameters() As OracleParameter
         description = GetFormattedSearchStringForSQL(description)
@@ -125,55 +125,55 @@ Public Class RegionDAL
                                      New OracleParameter(COL_NAME_SHORT_DESC, code)}
 
         If Not inClausecondition = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClausecondition)
+            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClausecondition)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Function LoadListForWS(ByVal oCountriesIds As ArrayList) As DataSet
+    Public Function LoadListForWS(oCountriesIds As ArrayList) As DataSet
         If oCountriesIds.Count = 0 Then Return Nothing
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_FOR_WS")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_FOR_WS")
 
         Dim whereClauseConditions As String = ""
 
-        whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql(Me.COL_NAME_COUNTRY_ID, oCountriesIds, False)
+        whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql(COL_NAME_COUNTRY_ID, oCountriesIds, False)
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
-            Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+            Return DBHelper.Fetch(selectStmt, TABLE_NAME)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal transaction As IDbTransaction = Nothing)
-        DBHelper.ExecuteWithParam(ds.Tables(Me.TABLE_NAME), Config("/SQL/INSERT"), Config("/SQL/UPDATE"), Config("/SQL/DELETE"), Nothing, transaction)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal transaction As IDbTransaction = Nothing)
+        DBHelper.ExecuteWithParam(ds.Tables(TABLE_NAME), Config("/SQL/INSERT"), Config("/SQL/UPDATE"), Config("/SQL/DELETE"), Nothing, transaction)
     End Sub
 
-    Public Function LoadRegionsByUserCountries(ByVal CountryId As Guid) As DataSet
+    Public Function LoadRegionsByUserCountries(CountryId As Guid) As DataSet
 
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/REGION_BY_COUNTRY")
+        Dim selectStmt As String = Config("/SQL/REGION_BY_COUNTRY")
         Dim parameters() As OracleParameter
         parameters = New OracleParameter() _
                                     {New OracleParameter(COL_NAME_COUNTRY_ID, CountryId.ToByteArray)}
         Try
             
-                ds = DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters)
+                ds = DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters)
                 AddSequenceColumn(ds.Tables(TABLE_NAME))
                 Return ds
             Catch ex As Exception
@@ -182,17 +182,17 @@ Public Class RegionDAL
 
     End Function
 
-    Public Function IsRegionCodeUnique(ByVal CountryId As Guid, ByVal ShortDesc As String, ByVal RegionId As Guid) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/IS_REGION_CODE_UNIQUE")
+    Public Function IsRegionCodeUnique(CountryId As Guid, ShortDesc As String, RegionId As Guid) As Boolean
+        Dim selectStmt As String = Config("/SQL/IS_REGION_CODE_UNIQUE")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("Country_Id", CountryId.ToByteArray), _
                                                                                            New DBHelper.DBHelperParameter("Short_Desc", ShortDesc), _
                                                                                            New DBHelper.DBHelperParameter("region_Id", RegionId.ToByteArray)}
         Try
             Dim ds As DataSet = New DataSet
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
-            If ds.Tables(Me.TABLE_NAME).Rows.Count >= 1 Then
+            If ds.Tables(TABLE_NAME).Rows.Count >= 1 Then
                 Return False
             Else
                 Return True
@@ -204,17 +204,17 @@ Public Class RegionDAL
         End Try
     End Function
 
-    Public Function IsRegionDescriptionUnique(ByVal CountryId As Guid, ByVal Description As String, ByVal RegionId As Guid) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/IS_REGION_DESCRIPTION_UNIQUE")
+    Public Function IsRegionDescriptionUnique(CountryId As Guid, Description As String, RegionId As Guid) As Boolean
+        Dim selectStmt As String = Config("/SQL/IS_REGION_DESCRIPTION_UNIQUE")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("Country_Id", CountryId.ToByteArray), _
                                                                                            New DBHelper.DBHelperParameter("Description", Description), _
                                                                                             New DBHelper.DBHelperParameter("region_Id", RegionId.ToByteArray)}
         Try
             Dim ds As DataSet = New DataSet
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
-            If ds.Tables(Me.TABLE_NAME).Rows.Count >= 1 Then
+            If ds.Tables(TABLE_NAME).Rows.Count >= 1 Then
                 Return False
             Else
                 Return True

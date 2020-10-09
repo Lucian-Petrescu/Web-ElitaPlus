@@ -320,7 +320,7 @@ Namespace Interfaces
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -335,7 +335,7 @@ Namespace Interfaces
 
         Public ReadOnly Property IsEditing() As Boolean
             Get
-                IsEditing = (Me.moDataGrid.EditIndex > Me.NO_ITEM_SELECTED_INDEX)
+                IsEditing = (moDataGrid.EditIndex > NO_ITEM_SELECTED_INDEX)
             End Get
         End Property
 
@@ -349,7 +349,7 @@ Namespace Interfaces
             Get
                 Return ViewState("SortDirection").ToString
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 ViewState("SortDirection") = value
             End Set
         End Property
@@ -398,16 +398,16 @@ Namespace Interfaces
         End Property
 
         Private Sub SetStateProperties()
-            Me.State.DealerfileProcessedId = CType(Me.CallingParameters, Guid)
+            State.DealerfileProcessedId = CType(CallingParameters, Guid)
         End Sub
 
         Private Sub SetQueryStringParam()
             Try
-                If Not Request.QueryString("RECORDMODE") Is Nothing Then
-                    Me.State.RecordMode = Request.QueryString("RECORDMODE")
+                If Request.QueryString("RECORDMODE") IsNot Nothing Then
+                    State.RecordMode = Request.QueryString("RECORDMODE")
                 End If
-                If Not Request.QueryString("PARENTFILE") Is Nothing Then
-                    Me.State.ParentFile = Request.QueryString("PARENTFILE")
+                If Request.QueryString("PARENTFILE") IsNot Nothing Then
+                    State.ParentFile = Request.QueryString("PARENTFILE")
                 End If
             Catch ex As Exception
 
@@ -420,33 +420,33 @@ Namespace Interfaces
 
 #Region "Page Events"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.MasterPage.MessageController.Clear_Hide()
+            MasterPage.MessageController.Clear_Hide()
             'Me.ErrController2.Clear_Hide()
-            Me.SetStateProperties()
+            SetStateProperties()
 
             'moDataGrid.VirtualItemCount = CType(Session("TotalRecords"), Double)
             PopulateCancellationReasonDropDown()
             If Not Page.IsPostBack Then
-                Me.MasterPage.MessageController.Clear()
-                Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Interfaces")
+                MasterPage.MessageController.Clear()
+                MasterPage.UsePageTabTitleInBreadCrum = False
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Interfaces")
                 UpdateBreadCrum()
                 SetQueryStringParam()
                 PopulateRecordTypeDrop(moRecordTypeSearchDrop, True)
-                Me.SortDirection = EMPTY
-                Me.SetGridItemStyleColor(moDataGrid)
-                Me.ShowMissingTranslations(MasterPage.MessageController)
-                Me.State.PageIndex = 0
-                Me.TranslateGridHeader(moDataGrid)
-                Me.TranslateGridHeader(gvPop)
-                Me.TranslateGridControls(moDataGrid)
+                SortDirection = EMPTY
+                SetGridItemStyleColor(moDataGrid)
+                ShowMissingTranslations(MasterPage.MessageController)
+                State.PageIndex = 0
+                TranslateGridHeader(moDataGrid)
+                TranslateGridHeader(gvPop)
+                TranslateGridControls(moDataGrid)
                 PopulateReadOnly()
                 PopulateGrid()
                 CheckFileTypeColums()
                 'Set page size
-                cboPageSize.SelectedValue = Me.State.selectedPageSize.ToString()
+                cboPageSize.SelectedValue = State.selectedPageSize.ToString()
             Else
                 CheckIfComingFromSaveConfirm()
                 'CheckIfComingFromBundlesScreen()
@@ -457,7 +457,7 @@ Namespace Interfaces
 
 #Region "Controlling Logic"
 
-        Protected Sub AssignDropDownToCtr(ByVal control As System.Web.UI.WebControls.WebControl, ByVal textbox As System.Web.UI.WebControls.WebControl, Optional ByVal caller As String = "")
+        Protected Sub AssignDropDownToCtr(control As System.Web.UI.WebControls.WebControl, textbox As System.Web.UI.WebControls.WebControl, Optional ByVal caller As String = "")
             Dim AppPath As String = Request.ApplicationPath
             Dim ServerName As String = Request.ServerVariables("SERVER_NAME")
             Dim url As String = ELPWebConstants.APPLICATION_PATH & "/Common/CalendarForm.aspx"
@@ -466,39 +466,39 @@ Namespace Interfaces
         End Sub
 
         Protected Sub CheckIfComingFromSaveConfirm()
-            Dim confResponse As String = Me.HiddenSavePagePromptResponse.Value
+            Dim confResponse As String = HiddenSavePagePromptResponse.Value
             Try
                 If Not confResponse.Equals(EMPTY) Then
-                    If confResponse = Me.MSG_VALUE_YES Then
+                    If confResponse = MSG_VALUE_YES Then
                         SavePage()
                         Select Case SaveBundles()
                             Case 1, 2
                                 Exit Select
                         End Select
-                        Me.HiddenIsBundlesPageDirty.Value = EMPTY
+                        HiddenIsBundlesPageDirty.Value = EMPTY
                         'Me.HiddenIfComingFromBundlesScreen.Value = EMPTY
-                    ElseIf confResponse = Me.MSG_VALUE_NO Then
-                        Me.State.BundlesHashTable = Nothing
+                    ElseIf confResponse = MSG_VALUE_NO Then
+                        State.BundlesHashTable = Nothing
                     End If
-                    Me.HiddenSavePagePromptResponse.Value = EMPTY
-                    Me.HiddenIsPageDirty.Value = EMPTY
+                    HiddenSavePagePromptResponse.Value = EMPTY
+                    HiddenIsPageDirty.Value = EMPTY
 
-                    Select Case Me.State.ActionInProgress
+                    Select Case State.ActionInProgress
                         Case ElitaPlusPage.DetailPageCommand.Back
-                            Dim retType As New DealerFileProcessedController_New.ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.DealerfileProcessedId)
-                            Me.ReturnToCallingPage(retType)
+                            Dim retType As New DealerFileProcessedController_New.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.DealerfileProcessedId)
+                            ReturnToCallingPage(retType)
                         Case ElitaPlusPage.DetailPageCommand.GridPageSize
-                            Me.moDataGrid.PageIndex = NewCurrentPageIndex(moDataGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                            Me.State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
+                            moDataGrid.PageIndex = NewCurrentPageIndex(moDataGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
+                            State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
                         Case ElitaPlusPage.DetailPageCommand.GridColSort
                             'Me.State.sortBy = CType(e.CommandArgument, String)
                         Case Else
-                            Me.moDataGrid.PageIndex = Me.State.selectedPageIndex
+                            moDataGrid.PageIndex = State.selectedPageIndex
                     End Select
                     PopulateGrid()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
         'Protected Sub CheckIfComingFromBundlesScreen()
@@ -512,14 +512,14 @@ Namespace Interfaces
         '    End If
         'End Sub
 
-        Private Function CreateBoFromGrid(ByVal index As Integer) As DealerReconWrk
+        Private Function CreateBoFromGrid(index As Integer) As DealerReconWrk
             Dim DealerReconWrkId As Guid
             Dim dealerReconWrkInfo As DealerReconWrk
             Dim sModifiedDate As String
 
             moDataGrid.SelectedIndex = index
             DealerReconWrkId = New Guid(CType(moDataGrid.Rows(index).FindControl("moDealerReconWrkIdLabel"), Label).Text)
-            sModifiedDate = Me.GetGridText(moDataGrid, index, Me.MODIFIED_DATE_COL)
+            sModifiedDate = GetGridText(moDataGrid, index, MODIFIED_DATE_COL)
             dealerReconWrkInfo = New DealerReconWrk(DealerReconWrkId, sModifiedDate)
             Return dealerReconWrkInfo
         End Function
@@ -539,7 +539,7 @@ Namespace Interfaces
             'Dim totc As Integer = Me.moDataGrid.Columns.Count()
             Dim index As Integer = 0
             Dim dealerReconWrkInfo As DealerReconWrk
-            Dim totItems As Integer = Me.moDataGrid.Rows.Count
+            Dim totItems As Integer = moDataGrid.Rows.Count
 
             If totItems > 0 Then
                 dealerReconWrkInfo = CreateBoFromGrid(0)
@@ -565,9 +565,9 @@ Namespace Interfaces
             For i As Integer = 0 To moDataGrid.Rows.Count - 1
                 Dim moDealerReconWrkIdLabel As String = CType(moDataGrid.Rows(i).FindControl("moDealerReconWrkIdLabel"), Label).Text.Trim
                 Dim moDealerReconWrkIdLabelID As Guid = GetGuidFromString(moDealerReconWrkIdLabel)
-                If Not Me.State.BundlesHashTable Is Nothing Then
-                    If Me.State.BundlesHashTable.ContainsKey(moDealerReconWrkIdLabelID) Then
-                        ds = CType(Me.State.BundlesHashTable.Item(moDealerReconWrkIdLabelID), DataSet)
+                If State.BundlesHashTable IsNot Nothing Then
+                    If State.BundlesHashTable.ContainsKey(moDealerReconWrkIdLabelID) Then
+                        ds = CType(State.BundlesHashTable.Item(moDealerReconWrkIdLabelID), DataSet)
                         If ds.HasChanges Then
                             For Each row As DataRow In ds.Tables(DealerReconWrkBundlesDAL.TABLE_NAME).Rows
                                 If row.RowState = DataRowState.Unchanged Then
@@ -579,10 +579,10 @@ Namespace Interfaces
                             Dim ret As Integer = dealerReconWrkBundlesInfo.SaveBundles(ds)
                             If ret = 0 Then
                                 ds = GetBundlesDataSet()
-                                Me.State.BundlesHashTable.Item(moDealerReconWrkIdLabelID) = ds
+                                State.BundlesHashTable.Item(moDealerReconWrkIdLabelID) = ds
                                 Return 2
                             Else
-                                Me.ErrController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.DB_WRITE_ERROR)
+                                ErrController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.DB_WRITE_ERROR)
                             End If
                         End If
                     End If
@@ -608,42 +608,42 @@ Namespace Interfaces
                     End With
                 Next
 
-                If Me.State.BundlesHashTable Is Nothing Then
-                    Me.State.BundlesHashTable = New Hashtable
+                If State.BundlesHashTable Is Nothing Then
+                    State.BundlesHashTable = New Hashtable
                 End If
-                If Me.State.BundlesHashTable.Contains(Me.State.DealerReconWrkId) Then
-                    Me.State.BundlesHashTable.Item(Me.State.DealerReconWrkId) = ds
+                If State.BundlesHashTable.Contains(State.DealerReconWrkId) Then
+                    State.BundlesHashTable.Item(State.DealerReconWrkId) = ds
                 Else
-                    Me.State.BundlesHashTable.Add(Me.State.DealerReconWrkId, ds)
+                    State.BundlesHashTable.Add(State.DealerReconWrkId, ds)
                 End If
 
-                Me.updPnlBundles.Update()
+                updPnlBundles.Update()
                 'hide the modal popup
-                Me.mdlPopup.Hide()
+                mdlPopup.Hide()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
                 ' Me.HandleErrors(ex, Me.ErrController2)
-                Me.mdlPopup.Show()
+                mdlPopup.Show()
 
             End Try
         End Sub
 
         Function IsDataGPageDirty() As Boolean
-            Dim Result As String = Me.HiddenIsPageDirty.Value
+            Dim Result As String = HiddenIsPageDirty.Value
             Return Result.Equals("YES")
         End Function
 
         Function IsDataGBundlesPageDirty() As Boolean
-            Dim Result As String = Me.HiddenIsBundlesPageDirty.Value
+            Dim Result As String = HiddenIsBundlesPageDirty.Value
             Return Result.Equals("YES")
         End Function
 
-        Private Sub SetColumnState(ByVal column As Byte, ByVal state As Boolean)
-            Me.moDataGrid.Columns(column).Visible = state
+        Private Sub SetColumnState(column As Byte, state As Boolean)
+            moDataGrid.Columns(column).Visible = state
         End Sub
 
-        Function IsCancellationsFileType(ByVal fileName As String) As Boolean
+        Function IsCancellationsFileType(fileName As String) As Boolean
             Return fileName.Substring(4, 1).Equals(CANCELLATIONS_TYPE)
         End Function
 
@@ -713,16 +713,16 @@ Namespace Interfaces
 
         Private Sub UpdateBreadCrum()
 
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("DEALER_FILE")
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("DEALER_FILE")
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("DEALER_FILE")
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("DEALER_FILE")
 
         End Sub
 
-        Private Sub EnableDisableControl(ByVal oWebControl As WebControl, ByVal grid As GridView)
+        Private Sub EnableDisableControl(oWebControl As WebControl, grid As GridView)
             Try
-                Dim oDealerFile As DealerFileProcessed = New DealerFileProcessed(Me.State.DealerfileProcessedId)
+                Dim oDealerFile As DealerFileProcessed = New DealerFileProcessed(State.DealerfileProcessedId)
 
-                Select Case Me.State.RecordMode
+                Select Case State.RecordMode
                     Case RECORD_MODE__REJECTED
                         If oDealerFile.IsChildFile Then
                             ControlMgr.SetEnableControl(Me, oWebControl, False)
@@ -760,11 +760,11 @@ Namespace Interfaces
                 End Select
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub EnableAGridControl(ByVal oControl As Control, ByVal enable As Boolean)
+        Private Sub EnableAGridControl(oControl As Control, enable As Boolean)
             Dim oWebControl As WebControl
 
             If TypeOf oControl Is Button Then Return
@@ -774,7 +774,7 @@ Namespace Interfaces
             End If
         End Sub
 
-        Private Sub EnableAllGridControls(ByVal grid As GridView, ByVal enable As Boolean)
+        Private Sub EnableAllGridControls(grid As GridView, enable As Boolean)
             Dim row, column As Integer
             Dim oControl As Control
 
@@ -794,14 +794,14 @@ Namespace Interfaces
 
 #Region "Populate"
         Private Sub SaveGuiState()
-            With Me.State
-                .srchRejectCode = Me.moRejectCodeText.Text.Trim
-                .srchRejectReason = Me.moRejectReasonText.Text.Trim
-                .srchRecordType = Me.moRecordTypeSearchDrop.SelectedItem.Text.Trim
+            With State
+                .srchRejectCode = moRejectCodeText.Text.Trim
+                .srchRejectReason = moRejectReasonText.Text.Trim
+                .srchRecordType = moRecordTypeSearchDrop.SelectedItem.Text.Trim
             End With
         End Sub
 
-        Sub PopulateRecordTypeDrop(ByVal recordTypeDrop As DropDownList, Optional ByVal AddNothingSelected As Boolean = False)
+        Sub PopulateRecordTypeDrop(recordTypeDrop As DropDownList, Optional ByVal AddNothingSelected As Boolean = False)
             Try
                 Dim oLangId As Guid = Authentication.LangId
                 Dim recordTypeList As DataView = LookupListNew.GetRecordTypeLookupList(oLangId)
@@ -811,26 +811,26 @@ Namespace Interfaces
                   .AddBlankItem = AddNothingSelected
                  })
             Catch ex As Exception
-                ThePage.HandleErrors(ex, Me.ErrController)
+                ThePage.HandleErrors(ex, ErrController)
             End Try
         End Sub
 
         Sub PopulateCancellationReasonDropDown()
             Try
-                Dim oCompanyId As Guid = DealerReconWrk.CompanyId(Me.State.DealerfileProcessedId)
+                Dim oCompanyId As Guid = DealerReconWrk.CompanyId(State.DealerfileProcessedId)
                 TempDataView = LookupListNew.GetCancellationReasonDealerFileLookupList(oCompanyId)
                 TempDataView.Sort = "DESCRIPTION"
                 TempDataView.AddNew()
             Catch ex As Exception
-                ThePage.HandleErrors(ex, Me.ErrController)
+                ThePage.HandleErrors(ex, ErrController)
             End Try
         End Sub
 
         Private Sub PopulateReadOnly()
             Try
-                Dim oDealerFile As DealerFileProcessed = New DealerFileProcessed(Me.State.DealerfileProcessedId)
+                Dim oDealerFile As DealerFileProcessed = New DealerFileProcessed(State.DealerfileProcessedId)
                 With oDealerFile
-                    If Me.State.ParentFile = "N" Then
+                    If State.ParentFile = "N" Then
                         moDealerNameText.Text = .DealerNameLoad
                     Else
                         moDealerNameText.Text = EMPTY
@@ -838,7 +838,7 @@ Namespace Interfaces
                     moFileNameText.Text = .Filename
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -850,91 +850,91 @@ Namespace Interfaces
             Try
                 dv = GetDV()
                 'dv.Sort = Me.State.sortBy
-                If Not Me.SortDirection.Equals(EMPTY) Then
+                If Not SortDirection.Equals(EMPTY) Then
                     'dv.Sort = Me.SortDirection
-                    HighLightSortColumn(moDataGrid, Me.SortDirection)
+                    HighLightSortColumn(moDataGrid, SortDirection)
                 End If
 
-                Me.moDataGrid.PageSize = Me.State.selectedPageSize
+                moDataGrid.PageSize = State.selectedPageSize
 
-                If Not Me.State.ParentFile = "Y" Then
-                    searchtotal = objdealerreconwrk.CountSearch(Me.State.DealerfileProcessedId,
-                                                                Me.State.RecordMode,
-                                                                Me.State.srchRecordType,
-                                                                Me.State.srchRejectCode,
-                                                                Me.State.srchRejectReason,
-                                                                Me.State.srchRecordType,
-                                                                Me.State.srchRejectCode,
-                                                                Me.State.srchRejectReason)
-                    Me.lblRecordCount.Text = CType(searchtotal, String) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If Not State.ParentFile = "Y" Then
+                    searchtotal = objdealerreconwrk.CountSearch(State.DealerfileProcessedId,
+                                                                State.RecordMode,
+                                                                State.srchRecordType,
+                                                                State.srchRejectCode,
+                                                                State.srchRejectReason,
+                                                                State.srchRecordType,
+                                                                State.srchRejectCode,
+                                                                State.srchRejectReason)
+                    lblRecordCount.Text = CType(searchtotal, String) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                     moDataGrid.VirtualItemCount = CType(searchtotal, String)
                 Else
-                    searchtotal = objdealerreconwrk.ParentCount(Me.State.DealerfileProcessedId,
-                                                                    Me.State.RecordMode,
-                                                                    Me.State.srchRecordType,
-                                                                    Me.State.srchRejectCode,
-                                                                    Me.State.srchRejectReason,
-                                                                    Me.State.srchRecordType,
-                                                                    Me.State.srchRejectCode,
-                                                                    Me.State.srchRejectReason)
-                    Me.lblRecordCount.Text = CType(searchtotal, String) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                    searchtotal = objdealerreconwrk.ParentCount(State.DealerfileProcessedId,
+                                                                    State.RecordMode,
+                                                                    State.srchRecordType,
+                                                                    State.srchRejectCode,
+                                                                    State.srchRejectReason,
+                                                                    State.srchRecordType,
+                                                                    State.srchRejectCode,
+                                                                    State.srchRejectReason)
+                    lblRecordCount.Text = CType(searchtotal, String) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                     moDataGrid.VirtualItemCount = CType(searchtotal, String)
                 End If
 
 
                 'Check if Reconciliation flag is on for the dealer
-                Me.moDataGrid.DataSource = dv.ToTable
-                Me.moDataGrid.DataBind()
+                moDataGrid.DataSource = dv.ToTable
+                moDataGrid.DataBind()
                 ControlMgr.DisableAllGridControlsIfNotEditAuth(Me, moDataGrid)
 
                 'Check if Reconciliation flag is on for the dealer
-                Dim oDealerFile As DealerFileProcessed = New DealerFileProcessed(Me.State.DealerfileProcessedId)
+                Dim oDealerFile As DealerFileProcessed = New DealerFileProcessed(State.DealerfileProcessedId)
 
                 With oDealerFile
                     Dim objDealer As New Dealer(.DealerId)
 
                     If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, objDealer.ReconRejRecTypeId) = Codes.YESNO_Y Then
-                        If Me.State.RecordMode = RECORD_MODE__REMAINING_REJECTED Then
+                        If State.RecordMode = RECORD_MODE__REMAINING_REJECTED Then
                             If oDealerFile.IsChildFile Then
-                                EnableAllGridControls(Me.moDataGrid, False)
+                                EnableAllGridControls(moDataGrid, False)
                             Else
-                                EnableAllGridControls(Me.moDataGrid, True)
+                                EnableAllGridControls(moDataGrid, True)
                             End If
                         Else
-                            EnableAllGridControls(Me.moDataGrid, False)
+                            EnableAllGridControls(moDataGrid, False)
                         End If
                     End If
                 End With
-                EnableDisableControl(Me.SaveButton_WRITE, Me.moDataGrid)
-                EnableDisableControl(Me.btnUndo_WRITE, Me.moDataGrid)
+                EnableDisableControl(SaveButton_WRITE, moDataGrid)
+                EnableDisableControl(btnUndo_WRITE, moDataGrid)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Private Sub PopulateBundlesGrid(ByVal guid As Guid)
+        Private Sub PopulateBundlesGrid(guid As Guid)
 
             Dim dv As DataView
 
             Try
-                If Me.State.BundlesHashTable Is Nothing Then
+                If State.BundlesHashTable Is Nothing Then
                     dv = GetBundlesDV()
                 Else
-                    If Me.State.BundlesHashTable.Contains(guid) Then
-                        dv = CType(Me.State.BundlesHashTable.Item(guid), DataSet).Tables(DealerReconWrkBundlesDAL.TABLE_NAME).DefaultView
+                    If State.BundlesHashTable.Contains(guid) Then
+                        dv = CType(State.BundlesHashTable.Item(guid), DataSet).Tables(DealerReconWrkBundlesDAL.TABLE_NAME).DefaultView
                     Else
                         dv = GetBundlesDV()
                     End If
                 End If
 
-                Me.gvPop.DataSource = dv
-                Me.gvPop.DataBind()
+                gvPop.DataSource = dv
+                gvPop.DataBind()
                 ControlMgr.DisableAllGridControlsIfNotEditAuth(Me, gvPop)
 
-                EnableDisableControl(Me.btnApply, Me.gvPop)
+                EnableDisableControl(btnApply, gvPop)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
@@ -981,22 +981,22 @@ Namespace Interfaces
             End With
         End Function
 
-        Private Sub PopulateBOItem(ByVal dealerReconWrkInfo As DealerReconWrk, ByVal oPropertyName As String, ByVal oCellPosition As Integer)
-            Me.PopulateBOProperty(dealerReconWrkInfo, oPropertyName,
-                                            CType(Me.GetSelectedGridControl(moDataGrid, oCellPosition), TextBox))
+        Private Sub PopulateBOItem(dealerReconWrkInfo As DealerReconWrk, oPropertyName As String, oCellPosition As Integer)
+            PopulateBOProperty(dealerReconWrkInfo, oPropertyName,
+                                            CType(GetSelectedGridControl(moDataGrid, oCellPosition), TextBox))
         End Sub
 
-        Private Sub PopulateBODrop(ByVal dealerReconWrkInfo As DealerReconWrk, ByVal oPropertyName As String, ByVal oCellPosition As Integer)
-            Me.PopulateBOProperty(dealerReconWrkInfo, oPropertyName,
-                                CType(Me.GetSelectedGridControl(moDataGrid, oCellPosition), DropDownList), False)
+        Private Sub PopulateBODrop(dealerReconWrkInfo As DealerReconWrk, oPropertyName As String, oCellPosition As Integer)
+            PopulateBOProperty(dealerReconWrkInfo, oPropertyName,
+                                CType(GetSelectedGridControl(moDataGrid, oCellPosition), DropDownList), False)
         End Sub
 
-        Private Sub PopulateBundlesBOItem(ByVal dealerReconWrkBundlesInfo As DealerReconWrkBundles, ByVal oPropertyName As String, ByVal oCellPosition As Integer)
-            Me.PopulateBundlesBOProperty(dealerReconWrkBundlesInfo, oPropertyName,
-                                            CType(Me.GetSelectedGridControl(gvPop, oCellPosition), TextBox))
+        Private Sub PopulateBundlesBOItem(dealerReconWrkBundlesInfo As DealerReconWrkBundles, oPropertyName As String, oCellPosition As Integer)
+            PopulateBundlesBOProperty(dealerReconWrkBundlesInfo, oPropertyName,
+                                            CType(GetSelectedGridControl(gvPop, oCellPosition), TextBox))
         End Sub
 
-        Private Sub PopulateBOFromForm(ByVal dealerReconWrkInfo As DealerReconWrk)
+        Private Sub PopulateBOFromForm(dealerReconWrkInfo As DealerReconWrk)
 
             PopulateBODrop(dealerReconWrkInfo, RECORD_TYPE_PROPERTY, RECORD_TYPE_COL)
             'PopulateBOItem(dealerReconWrkInfo, REJECT_CODE_PROPERTY, REJECT_CODE_COL)
@@ -1092,7 +1092,7 @@ Namespace Interfaces
                 PopulateBOItem(dealerReconWrkInfo, CUIT_CUIL_PROPERTY, CUIT_CUIL_COL)
                 PopulateBOItem(dealerReconWrkInfo, PERSON_TYPE_PROPERTY, PERSON_TYPE_COL)
 
-                Dim strNumOfConsecutivePayments As String = CType(Me.GetSelectedGridControl(moDataGrid, NUM_OF_CONSECUTIVE_PAYMENTS_COL), TextBox).Text
+                Dim strNumOfConsecutivePayments As String = CType(GetSelectedGridControl(moDataGrid, NUM_OF_CONSECUTIVE_PAYMENTS_COL), TextBox).Text
                 If strNumOfConsecutivePayments.Equals(String.Empty) Then
                     dealerReconWrkInfo.Num_Of_Consecutive_Payments = Nothing
                 Else
@@ -1119,12 +1119,12 @@ Namespace Interfaces
                 'SetColumnState(CANCELLATION_CODE_COL, False)
                 PopulateBOItem(dealerReconWrkInfo, CANCELLATION_CODE_PROPERTY, CANCELLATION_CODE_COL)
             End If
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Sub
 
-        Private Sub PopulateBOFromBundlesForm(ByVal dealerReconWrkBundlesInfo As DealerReconWrkBundles)
+        Private Sub PopulateBOFromBundlesForm(dealerReconWrkBundlesInfo As DealerReconWrkBundles)
             PopulateBundlesBOItem(dealerReconWrkBundlesInfo, ITEM_NUMBER, ITEM_NUMBER_COL)
             PopulateBundlesBOItem(dealerReconWrkBundlesInfo, ITEM_MANUFACTURER, ITEM_MANUFACTURER_COL)
             PopulateBundlesBOItem(dealerReconWrkBundlesInfo, ITEM_MODEL, ITEM_MODEL_COL)
@@ -1134,51 +1134,51 @@ Namespace Interfaces
             PopulateBundlesBOItem(dealerReconWrkBundlesInfo, ITEM_BUNDLE_VALUE, ITEM_BUNDLE_VALUE_COL)
             PopulateBundlesBOItem(dealerReconWrkBundlesInfo, ITEM_MAN_WARRANTY, ITEM_MAN_WARRANTY_COL)
 
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Sub
 
-        Private Sub PopulateFormItem(ByVal oCellPosition As Integer, ByVal oPropertyValue As Object)
-            Me.PopulateControlFromBOProperty(Me.GetSelectedGridControl(moDataGrid, oCellPosition), oPropertyValue)
+        Private Sub PopulateFormItem(oCellPosition As Integer, oPropertyValue As Object)
+            PopulateControlFromBOProperty(GetSelectedGridControl(moDataGrid, oCellPosition), oPropertyValue)
         End Sub
 
 #End Region
 
 #Region "GridHandlers"
 
-        Private Sub moDataGrid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles moDataGrid.PageIndexChanging
+        Private Sub moDataGrid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles moDataGrid.PageIndexChanging
             Try
-                Me.State.selectedPageIndex = e.NewPageIndex
+                State.selectedPageIndex = e.NewPageIndex
                 If IsDataGPageDirty() Then
-                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSavePagePromptResponse)
+                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
                 Else
-                    Me.moDataGrid.PageIndex = e.NewPageIndex
+                    moDataGrid.PageIndex = e.NewPageIndex
                     PopulateGrid()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub moDataGrid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub moDataGrid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 If IsDataGPageDirty() Then
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.GridPageSize
-                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSavePagePromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.GridPageSize
+                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
                 Else
                     'moDataGrid.PageIndex = NewCurrentPageIndex(moDataGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                    Me.State.selectedPageIndex = 0
-                    Me.State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
-                    Me.PopulateGrid()
+                    State.selectedPageIndex = 0
+                    State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
+                    PopulateGrid()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
 
-        Protected Sub ItemBound(ByVal source As Object, ByVal e As GridViewRowEventArgs) Handles moDataGrid.RowDataBound
+        Protected Sub ItemBound(source As Object, e As GridViewRowEventArgs) Handles moDataGrid.RowDataBound
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim oTextBox As TextBox
@@ -1186,15 +1186,15 @@ Namespace Interfaces
 
             'translate the reject message
             Dim strMsg As String, dr As DataRow, intParamCnt As Integer = 0, strParamList As String = String.Empty
-            If Not dvRow Is Nothing Then
+            If dvRow IsNot Nothing Then
                 dr = dvRow.Row
                 strMsg = dr(DealerReconWrkDAL.COL_TRANSLATED_MSG).ToString.Trim
                 If strMsg <> String.Empty Then
-                    If Not dr(DealerReconWrkDAL.COL_MSG_PARAMETER_COUNT) Is DBNull.Value Then
+                    If dr(DealerReconWrkDAL.COL_MSG_PARAMETER_COUNT) IsNot DBNull.Value Then
                         intParamCnt = CType(dr(DealerReconWrkDAL.COL_MSG_PARAMETER_COUNT), Integer)
                     End If
                     If intParamCnt > 0 Then
-                        If Not dr(DealerReconWrkDAL.COL_REJECT_MSG_PARMS) Is DBNull.Value Then
+                        If dr(DealerReconWrkDAL.COL_REJECT_MSG_PARMS) IsNot DBNull.Value Then
                             strParamList = dr(DealerReconWrkDAL.COL_REJECT_MSG_PARMS).ToString.Trim
                         End If
                         strMsg = TranslationBase.TranslateParameterizedMsg(strMsg, intParamCnt, strParamList).Trim
@@ -1214,7 +1214,7 @@ Namespace Interfaces
             End If
             'Freeze Headers - Start
 
-            If (itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
+            If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
                 With e.Row
                     .Attributes("onclick") = "setHighlighter(this)"
                     'Freeze Columns - Start
@@ -1234,26 +1234,26 @@ Namespace Interfaces
                     ' Retrieve the foreign key value
                     oTextBox = CType(.FindControl("moCancelCodeTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_CANCELLATION_CODE))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_CANCELLATION_CODE))
 
                     Dim ddl As DropDownList = CType(e.Row.FindControl("ddl1"), DropDownList)
                     ddl.SelectedIndex = ddl.Items.IndexOf(ddl.Items.FindByValue(oTextBox.Text))
                     AssignDropDownToCtr(ddl, oTextBox)
-                    Me.PopulateControlFromBOProperty(.FindControl("moDealerReconWrkIdLabel"), dvRow(DealerReconWrk.COL_NAME_DEALER_RECON_WRK_ID))
+                    PopulateControlFromBOProperty(.FindControl("moDealerReconWrkIdLabel"), dvRow(DealerReconWrk.COL_NAME_DEALER_RECON_WRK_ID))
                     Dim oDrop As DropDownList = CType(e.Row.FindControl("moRecordTypeDrop"), DropDownList)
                     oDrop.Attributes.Add("onchange", "setDirty()")
                     PopulateRecordTypeDrop(oDrop)
                     Dim oValue As String = CType(dvRow(DealerReconWrk.COL_NAME_RECORD_TYPE), String)
-                    Me.SetSelectedItemByText(oDrop, oValue)
+                    SetSelectedItemByText(oDrop, oValue)
                     oTextBox = CType(.FindControl("moRejectCode"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_REJECT_CODE))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_REJECT_CODE))
                     oTextBox = CType(.FindControl("RejectReasonTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_REJECT_REASON))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_REJECT_REASON))
 
                     oTextBox = CType(.Cells(DEALER_COL).FindControl("moDealerTextGrid"), TextBox)
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_DEALER))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_DEALER))
 
                     oTextBox = CType(.FindControl("moProductCodeTextGrid"), TextBox)
                     If dvRow(DealerReconWrk.COL_NAME_IS_RECON_RECORD_PARENT).ToString.ToUpper = "T" Then
@@ -1261,71 +1261,71 @@ Namespace Interfaces
                     Else
                         oTextBox.Attributes.Add("onchange", "setDirty()")
                     End If
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_PRODUCT_CODE))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_PRODUCT_CODE))
 
                     oTextBox = CType(.FindControl("moProductPriceTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_PRODUCT_PRICE))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_PRODUCT_PRICE))
                     oTextBox = CType(.FindControl("moManWarrantyTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_MAN_WARRANTY))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_MAN_WARRANTY))
                     oTextBox = CType(.FindControl("moExtWarrantyTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_EXT_WARRANTY))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_EXT_WARRANTY))
                     oTextBox = CType(.FindControl("moPricePolTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_PRICE_POL))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_PRICE_POL))
                     oTextBox = CType(.FindControl("moNumberCompTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_NUMBER_COMP))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_NUMBER_COMP))
                     oTextBox = CType(.FindControl("moDateCompTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
                     Dim oDateCompImage As ImageButton = CType(.FindControl("moDateCompImageGrid"), ImageButton)
-                    If (Not oDateCompImage Is Nothing) Then
-                        Me.AddCalendar(oDateCompImage, oTextBox)
+                    If (oDateCompImage IsNot Nothing) Then
+                        AddCalendar(oDateCompImage, oTextBox)
                     End If
                     If (Not String.IsNullOrEmpty(dvRow(DealerReconWrk.COL_NAME_DATE_COMP).ToString())) Then
-                        Me.PopulateControlFromBOProperty(oTextBox, GetDateFormattedString(dvRow(DealerReconWrk.COL_NAME_DATE_COMP)))
+                        PopulateControlFromBOProperty(oTextBox, GetDateFormattedString(dvRow(DealerReconWrk.COL_NAME_DATE_COMP)))
                     End If
                     oTextBox = CType(.FindControl("moCertificateTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_CERTIFICATE))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_CERTIFICATE))
                     oTextBox = CType(.FindControl("moSalutationTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_SALUTATION))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_SALUTATION))
                     oTextBox = CType(.FindControl("moCustNameTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_CUSTOMER_NAME))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_CUSTOMER_NAME))
                     oTextBox = CType(.FindControl("moLangPrefTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_LANGUAGE_PREF))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_LANGUAGE_PREF))
                     oTextBox = CType(.FindControl("moZipTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_ZIP))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_ZIP))
                     oTextBox = CType(.FindControl("moStateProvTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_STATE_PROVINCE))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_STATE_PROVINCE))
                     'oTextBox = CType(e.Row.Cells(CURRENCY_COL).FindControl("moCurrencyTextGrid"), TextBox)
                     oTextBox = CType(.FindControl("moCurrencyTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
                     'Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_CURRENCY))
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_ISO_CODE))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_ISO_CODE))
                     oTextBox = CType(.FindControl("moExtWarrSaleDateTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
                     Dim oExtWarrSaleDateImage As ImageButton = CType(.FindControl("moExtWarrSaleDateImageGrid"), ImageButton)
-                    If (Not oExtWarrSaleDateImage Is Nothing) Then
-                        Me.AddCalendar(oExtWarrSaleDateImage, oTextBox)
+                    If (oExtWarrSaleDateImage IsNot Nothing) Then
+                        AddCalendar(oExtWarrSaleDateImage, oTextBox)
                     End If
                     If (Not String.IsNullOrEmpty(dvRow(DealerReconWrk.COL_NAME_EXTWARR_SALEDATE).ToString())) Then
-                        Me.PopulateControlFromBOProperty(oTextBox, GetDateFormattedString(dvRow(DealerReconWrk.COL_NAME_EXTWARR_SALEDATE)))
+                        PopulateControlFromBOProperty(oTextBox, GetDateFormattedString(dvRow(DealerReconWrk.COL_NAME_EXTWARR_SALEDATE)))
                     End If
                     oTextBox = CType(.FindControl("moTypePaymentTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_TYPE_PAYMENT))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_TYPE_PAYMENT))
 
                     oTextBox = CType(.FindControl("moServiceLineNumberTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_SERVICE_LINE_NUMBER))
+                    PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_SERVICE_LINE_NUMBER))
 
 
 
@@ -1342,50 +1342,50 @@ Namespace Interfaces
                         '  Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_RECORD_TYPE))
                         oTextBox = CType(.FindControl("moItemCodeTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_ITEM_CODE))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_ITEM_CODE))
                         oTextBox = CType(.FindControl("moItemTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_ITEM))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_ITEM))
                         'Req 846
                         oTextBox = CType(.FindControl("moSkuNumberTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_SKU_NUMBER))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_SKU_NUMBER))
                         oTextBox = CType(.FindControl("moSrTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_SR))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_SR))
                         oTextBox = CType(.FindControl("moBranchCodeTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_BRANCH_CODE))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_BRANCH_CODE))
                         oTextBox = CType(.FindControl("moIdNumTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_IDENTIFICATION_NUMBER))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_IDENTIFICATION_NUMBER))
                         oTextBox = CType(.FindControl("moAddressTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_ADDRESS1))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_ADDRESS1))
                         oTextBox = CType(.FindControl("moCityTextGrid"), TextBox)
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_CITY))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_CITY))
                         oTextBox = CType(.FindControl("moHomePhoneTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_HOME_PHONE))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_HOME_PHONE))
                         'SetColumnState(WORK_PHONE_COL, False)
                         oTextBox = CType(.FindControl("moWorkPhoneTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_WORK_PHONE))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_WORK_PHONE))
                         'SetColumnState(MANUFACTURER_COL, False)
                         oTextBox = CType(.FindControl("moManufacturerTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_MANUFACTURER))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_MANUFACTURER))
                         'SetColumnState(MODEL_COL, False)
                         oTextBox = CType(.FindControl("moModelTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_MODEL))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_MODEL))
                         'SetColumnState(SERIAL_NUMBER_COL, False)
                         oTextBox = CType(.FindControl("moSerialNumTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_SERIAL_NUMBER))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_SERIAL_NUMBER))
                         oTextBox = CType(.FindControl("moIMEINumTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_IMEI_NUMBER))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_IMEI_NUMBER))
                         'SetColumnState(NEW_PRODUCT_CODE_COL, False)
                         oTextBox = CType(.FindControl("moNewProdCodeTextGrid"), TextBox)
                         If dvRow(DealerReconWrk.COL_NAME_IS_RECON_RECORD_PARENT).ToString.ToUpper = "T" Then
@@ -1393,316 +1393,316 @@ Namespace Interfaces
                         Else
                             oTextBox.Attributes.Add("onchange", "setDirty()")
                         End If
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_NEW_PRODUCT_CODE))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_NEW_PRODUCT_CODE))
                         oTextBox = CType(.FindControl("moDocumentTypeTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_DOCUMENT_TYPE))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_DOCUMENT_TYPE))
                         oTextBox = CType(.FindControl("moDocumentAgencyTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_DOCUMENT_AGENCY))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_DOCUMENT_AGENCY))
                         oTextBox = CType(.FindControl("moDocumentIssueDateTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
                         Dim oDocumentIssueDateImage As ImageButton = CType(.FindControl("moDocumentIssueDateImageGrid"), ImageButton)
-                        If (Not oDocumentIssueDateImage Is Nothing) Then
-                            Me.AddCalendar(oDocumentIssueDateImage, oTextBox)
+                        If (oDocumentIssueDateImage IsNot Nothing) Then
+                            AddCalendar(oDocumentIssueDateImage, oTextBox)
                         End If
                         If (Not String.IsNullOrEmpty(dvRow(DealerReconWrk.COL_NAME_DOCUMENT_ISSUE_DATE).ToString())) Then
-                            Me.PopulateControlFromBOProperty(oTextBox, GetDateFormattedString(dvRow(DealerReconWrk.COL_NAME_DOCUMENT_ISSUE_DATE)))
+                            PopulateControlFromBOProperty(oTextBox, GetDateFormattedString(dvRow(DealerReconWrk.COL_NAME_DOCUMENT_ISSUE_DATE)))
                         End If
                         oTextBox = CType(.FindControl("moRGNumberTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_RG_NUMBER))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_RG_NUMBER))
                         oTextBox = CType(.FindControl("moIDTypeTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_ID_TYPE))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_ID_TYPE))
 
                         oTextBox = CType(.FindControl("moSalesTaxTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_SALES_TAX))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_SALES_TAX))
 
                         oTextBox = CType(.FindControl("moEmailTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_EMAIL))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_EMAIL))
 
                         oTextBox = CType(.FindControl("moAddress2TextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_ADDRESS2))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_ADDRESS2))
 
                         oTextBox = CType(.FindControl("moAddress3TextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_ADDRESS3))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_ADDRESS3))
 
                         oTextBox = CType(.FindControl("moCustCountryTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_CUST_COUNTRY))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_CUST_COUNTRY))
 
                         oTextBox = CType(.FindControl("moCountryPurchTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_COUNTRY_PURCH))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_COUNTRY_PURCH))
 
                         oTextBox = CType(.FindControl("moNewBranchCodeTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_NEW_BRANCH_CODE))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_NEW_BRANCH_CODE))
 
                         oTextBox = CType(.FindControl("moBillFreqTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_BILLING_FREQUENCY))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_BILLING_FREQUENCY))
 
                         oTextBox = CType(.FindControl("moTextNoOfInstGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_NUMBER_OF_INSTALLMENTS))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_NUMBER_OF_INSTALLMENTS))
 
                         oTextBox = CType(.FindControl("moInstAmtTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_INSTALLMENT_AMOUNT))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_INSTALLMENT_AMOUNT))
 
                         oTextBox = CType(.FindControl("moBnkRtnNoTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_BANK_RTN_NUMBER))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_BANK_RTN_NUMBER))
 
                         oTextBox = CType(.FindControl("moBnkAcctNoTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_BANK_ACCOUNT_NUMBER))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_BANK_ACCOUNT_NUMBER))
 
                         oTextBox = CType(.FindControl("moBnkAcctOwnerNameTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_BANK_ACCT_OWNER_NAME))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_BANK_ACCT_OWNER_NAME))
 
                         oTextBox = CType(.FindControl("moBnkBranchNumberTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_BANK_BRANCH_NUMBER))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_BANK_BRANCH_NUMBER))
 
                         oTextBox = CType(.FindControl("moPostPrePaidTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_POST_PRE_PAID))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_POST_PRE_PAID))
 
                         oTextBox = CType(.FindControl("moDatePaidForTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
                         Dim oDatePaidForImage As ImageButton = CType(.FindControl("moDatePaidForImageGrid"), ImageButton)
-                        If (Not oDateCompImage Is Nothing) Then
-                            Me.AddCalendar(oDatePaidForImage, oTextBox)
+                        If (oDateCompImage IsNot Nothing) Then
+                            AddCalendar(oDatePaidForImage, oTextBox)
                         End If
                         If (Not String.IsNullOrEmpty(dvRow(DealerReconWrk.COL_NAME_DATE_PAID_FOR).ToString())) Then
-                            Me.PopulateControlFromBOProperty(oTextBox, GetDateFormattedString(dvRow(DealerReconWrk.COL_NAME_DATE_PAID_FOR)))
+                            PopulateControlFromBOProperty(oTextBox, GetDateFormattedString(dvRow(DealerReconWrk.COL_NAME_DATE_PAID_FOR)))
                         End If
                         oTextBox = CType(.FindControl("moMembershipNumTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_MEMBERSHIP_NUMBER))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_MEMBERSHIP_NUMBER))
 
                         oTextBox = CType(.FindControl("moOriginalRetailPriceTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_ORIGINAL_RETAIL_PRICE))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_ORIGINAL_RETAIL_PRICE))
 
                         oTextBox = CType(.FindControl("moBillingPlanTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_BILLING_PLAN))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_BILLING_PLAN))
 
                         oTextBox = CType(.FindControl("moBillingCycleTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_BILLING_CYCLE))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_BILLING_CYCLE))
 
                         oTextBox = CType(.FindControl("moSubscriberStatusTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_SUBSCRIBER_STATUS))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_SUBSCRIBER_STATUS))
 
                         oTextBox = CType(.FindControl("moSuspendedReasonTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_SUSPENDED_REASON))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_SUSPENDED_REASON))
 
                         oTextBox = CType(.FindControl("moMobileTypeTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_MOBILE_TYPE))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_MOBILE_TYPE))
 
                         oTextBox = CType(.FindControl("moFirstUseDateTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
                         Dim oFirstUseDateImage As ImageButton = CType(.FindControl("moFirstUseDateImageGrid"), ImageButton)
-                        If (Not oDateCompImage Is Nothing) Then
-                            Me.AddCalendar(oFirstUseDateImage, oTextBox)
+                        If (oDateCompImage IsNot Nothing) Then
+                            AddCalendar(oFirstUseDateImage, oTextBox)
                         End If
                         If (Not String.IsNullOrEmpty(dvRow(DealerReconWrk.COL_NAME_FIRST_USE_DATE).ToString())) Then
-                            Me.PopulateControlFromBOProperty(oTextBox, GetDateFormattedString(dvRow(DealerReconWrk.COL_NAME_FIRST_USE_DATE)))
+                            PopulateControlFromBOProperty(oTextBox, GetDateFormattedString(dvRow(DealerReconWrk.COL_NAME_FIRST_USE_DATE)))
                         End If
                         oTextBox = CType(.FindControl("moLastUseDateTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
                         Dim oLastUseDateImage As ImageButton = CType(.FindControl("moLastUseDateImageGrid"), ImageButton)
-                        If (Not oDateCompImage Is Nothing) Then
-                            Me.AddCalendar(oLastUseDateImage, oTextBox)
+                        If (oDateCompImage IsNot Nothing) Then
+                            AddCalendar(oLastUseDateImage, oTextBox)
                         End If
                         If (Not String.IsNullOrEmpty(dvRow(DealerReconWrk.COL_NAME_LAST_USE_DATE).ToString())) Then
-                            Me.PopulateControlFromBOProperty(oTextBox, GetDateFormattedString(dvRow(DealerReconWrk.COL_NAME_LAST_USE_DATE)))
+                            PopulateControlFromBOProperty(oTextBox, GetDateFormattedString(dvRow(DealerReconWrk.COL_NAME_LAST_USE_DATE)))
                         End If
                         oTextBox = CType(.FindControl("moSimCardNumTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_SIM_CARD_NUMBER))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_SIM_CARD_NUMBER))
 
                         oTextBox = CType(.FindControl("moRegionTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_REGION))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_REGION))
 
                         oTextBox = CType(.FindControl("moMembershipTypeTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_MEMBERSHIP_TYPE))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_MEMBERSHIP_TYPE))
 
                         oTextBox = CType(.FindControl("moCessOfficeTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_CESS_OFFICE))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_CESS_OFFICE))
 
                         oTextBox = CType(.FindControl("moCessSalesrepTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_CESS_SALESREP))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_CESS_SALESREP))
 
                         oTextBox = CType(.FindControl("moBusinesslineTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_BUSINESSLINE))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_BUSINESSLINE))
 
                         oTextBox = CType(.FindControl("moSalesDepartmentTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_SALES_DEPARTMENT))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_SALES_DEPARTMENT))
 
                         oTextBox = CType(.FindControl("moLinkedCertNumberTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_LINKED_CERT_NUMBER))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_LINKED_CERT_NUMBER))
 
                         oTextBox = CType(.FindControl("moAdditionalInfoTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_ADDITIONAL_INFO))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_ADDITIONAL_INFO))
 
                         oTextBox = CType(.FindControl("moCreditCardLast4DigitTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_CREDITCARD_LAST_FOUR_DIGIT))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_CREDITCARD_LAST_FOUR_DIGIT))
 
                         oTextBox = CType(.FindControl("moFinanceAmount"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_FINANCED_AMOUNT))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_FINANCED_AMOUNT))
 
                         oTextBox = CType(.FindControl("moFinanceFrequency"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_FINANCED_FREQUENCY))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_FINANCED_FREQUENCY))
 
                         oTextBox = CType(.FindControl("moFinanceInstallmentNum"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_FINANCED_INSTALLMENT_NUMBER))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_FINANCED_INSTALLMENT_NUMBER))
 
                         oTextBox = CType(.FindControl("moFinanceInstallmentAmount"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_FINANCED_INSTALLMENT_AMOUNT))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_FINANCED_INSTALLMENT_AMOUNT))
 
                         oTextBox = CType(.FindControl("moGenderTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_GENDER))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_GENDER))
 
                         oTextBox = CType(.FindControl("moPlaceOfBirthTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_PLACE_OF_BIRTH))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_PLACE_OF_BIRTH))
 
                         oTextBox = CType(.FindControl("moPersonTypeTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_PERSON_TYPE))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_PERSON_TYPE))
 
                         oTextBox = CType(.FindControl("moNumOfConsecutivePaymentsTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_NUM_OF_CONSECUTIVE_PAYMENTS))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_NUM_OF_CONSECUTIVE_PAYMENTS))
 
                         oTextBox = CType(.FindControl("moDealerCurrentPlanCodeTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_DEALER_CURRENT_PLAN_CODE))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_DEALER_CURRENT_PLAN_CODE))
 
                         oTextBox = CType(.FindControl("moDealerScheduledPlanCodeTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_DEALER_SCHEDULED_PLAN_CODE))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_DEALER_SCHEDULED_PLAN_CODE))
 
                         oTextBox = CType(.FindControl("moDealerUpdateReasonTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_DEALER_UPDATE_REASON))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_DEALER_UPDATE_REASON))
 
                         oTextBox = CType(.FindControl("moCUIT_CUILTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_CUIT_CUIL))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_CUIT_CUIL))
 
                         oTextBox = CType(.FindControl("momaritalstatusTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_MARITAL_STATUS))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_MARITAL_STATUS))
 
                         oTextBox = CType(.FindControl("moNationalityTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_NATIONALITY))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_NATIONALITY))
 
                         oTextBox = CType(.FindControl("moDateOfBirthTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
                         Dim oDateofbirthImage As ImageButton = CType(.FindControl("moDateOfBirthImageGrid"), ImageButton)
-                        If (Not oDateofbirthImage Is Nothing) Then
-                            Me.AddCalendar(oDateofbirthImage, oTextBox)
+                        If (oDateofbirthImage IsNot Nothing) Then
+                            AddCalendar(oDateofbirthImage, oTextBox)
                         End If
                         If (Not String.IsNullOrEmpty(dvRow(DealerReconWrk.COL_NAME_BIRTH_DATE).ToString())) Then
-                            Me.PopulateControlFromBOProperty(oTextBox, GetDateFormattedString(dvRow(DealerReconWrk.COL_NAME_BIRTH_DATE)))
+                            PopulateControlFromBOProperty(oTextBox, GetDateFormattedString(dvRow(DealerReconWrk.COL_NAME_BIRTH_DATE)))
                         End If
                         oTextBox = CType(.FindControl("moFinanceDateTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_FINANCED_DATE))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_FINANCED_DATE))
 
                         oTextBox = CType(.FindControl("moDownPaymentTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_DOWN_PAYMENT))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_DOWN_PAYMENT))
 
                         oTextBox = CType(.FindControl("moAdvancePaymentTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_ADVANCE_PAYMENT))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_ADVANCE_PAYMENT))
 
                         oTextBox = CType(.FindControl("moUpgradeTermTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_UPGRADE_TERM))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_UPGRADE_TERM))
 
                         oTextBox = CType(.FindControl("moBillingAccountNumberTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_BILLING_ACCOUNT_NUMBER))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_BILLING_ACCOUNT_NUMBER))
 
                         oTextBox = CType(.FindControl("moLoanCodeTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_LOAN_CODE))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_LOAN_CODE))
 
                         oTextBox = CType(.FindControl("moPaymentShiftNumberTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_PAYMENT_SHIFT_NUMBER))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_PAYMENT_SHIFT_NUMBER))
 
                         oTextBox = CType(.FindControl("moVoucherNumberTextGrid"), TextBox)
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_VOUCHER_NUMBER))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_VOUCHER_NUMBER))
 
                         oTextBox = CType(.FindControl("moRMATextGrid"), TextBox)
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_RMA))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_RMA))
 
                         oTextBox = CType(.FindControl("moOutstandingBalanceAmountTextGrid"), TextBox)
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_OUTSTANDING_BALANCE_AMOUNT))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_OUTSTANDING_BALANCE_AMOUNT))
 
                         oTextBox = CType(.FindControl("moOutstandingBalanceDueDateTextGrid"), TextBox)
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_OUTSTANDING_BALANCE_DUE_DATE))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_OUTSTANDING_BALANCE_DUE_DATE))
 
                         oTextBox = CType(.FindControl("moRefundAmountTextGrid"), TextBox)
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_REFUND_AMOUNT))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_REFUND_AMOUNT))
 
                         oTextBox = CType(.FindControl("moDeviceTYpeTextGrid"), TextBox)
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_DEVICE_TYPE))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_DEVICE_TYPE))
 
                         oTextBox = CType(.FindControl("moUpgradeDateTextGrid"), TextBox)
                         Dim oUpgradeDateImage As ImageButton = CType(.FindControl("moUpgradeDateImageGrid"), ImageButton)
 
-                        If (Not oUpgradeDateImage Is Nothing) Then
-                            Me.AddCalendar(oUpgradeDateImage, oTextBox)
+                        If (oUpgradeDateImage IsNot Nothing) Then
+                            AddCalendar(oUpgradeDateImage, oTextBox)
                         End If
                         If (Not String.IsNullOrEmpty(dvRow(DealerReconWrk.COL_NAME_UPGRADE_DATE).ToString())) Then
-                            Me.PopulateControlFromBOProperty(oTextBox, GetDateFormattedString(dvRow(DealerReconWrk.COL_NAME_UPGRADE_DATE)))
+                            PopulateControlFromBOProperty(oTextBox, GetDateFormattedString(dvRow(DealerReconWrk.COL_NAME_UPGRADE_DATE)))
                         End If
 
                         oTextBox = CType(.FindControl("moAppleCareFeeTextGrid"), TextBox)
-                            Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_APPLECARE_FEE))
+                            PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_APPLECARE_FEE))
 
                             oTextBox = CType(.FindControl("moOccupationTextGrid"), TextBox)
-                            Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_OCCUPATION))
+                            PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_OCCUPATION))
 
                         Else
                             'SetColumnState(CANCELLATION_CODE_COL, False)
                             oTextBox = CType(.FindControl("moCancelCodeTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_CANCELLATION_CODE))
+                        PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_CANCELLATION_CODE))
                     End If
 
                 End With
@@ -1711,7 +1711,7 @@ Namespace Interfaces
 
         End Sub
 
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles moDataGrid.Sorting
+        Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles moDataGrid.Sorting
             Try
                 'If Me.State.sortBy.StartsWith(e.SortExpression) Then
                 'If Me.SortDirection = " ASC" Then
@@ -1727,14 +1727,14 @@ Namespace Interfaces
                 'Me.State.sortBy = e.SortExpression
                 'End If
                 'Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
                 'Me.SortDirection = e.SortDirection.ToString()
-                If Me.SortDirection = "Ascending" Then
-                    Me.SortDirection = "Descending"
-                    Me.State.SortExpression = e.SortExpression + " DESC"
+                If SortDirection = "Ascending" Then
+                    SortDirection = "Descending"
+                    State.SortExpression = e.SortExpression + " DESC"
                 Else
-                    Me.SortDirection = "Ascending"
-                    Me.State.SortExpression = e.SortExpression + " ASC"
+                    SortDirection = "Ascending"
+                    State.SortExpression = e.SortExpression + " ASC"
                 End If
                 'If Me.SortDirection = "Ascending" Then
                 '    Me.State.SortDirection = " ASC"
@@ -1759,256 +1759,256 @@ Namespace Interfaces
                 'End If
 
 
-                Me.State.PageIndex = 0
-                Me.PopulateGrid()
+                State.PageIndex = 0
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Protected Overloads Sub ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs)
+        Protected Overloads Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Protected Overloads Sub ItemCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs)
+        Protected Overloads Sub ItemCreated(sender As Object, e As GridViewRowEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Protected Sub BindBoPropertiesToGridHeaders(ByVal dealerReconWrkInfo As DealerReconWrk)
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "RecordType", Me.moDataGrid.Columns(RECORD_TYPE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, SKU_NUMBER_PROPERTY, Me.moDataGrid.Columns(SKU_Number))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "RejectReason", Me.moDataGrid.Columns(REJECT_REASON_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "Dealer", Me.moDataGrid.Columns(DEALER_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "ProductCode", Me.moDataGrid.Columns(PRODUCT_CODE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "ProductPrice", Me.moDataGrid.Columns(PRODUCT_PRICE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "ManWarranty", Me.moDataGrid.Columns(MAN_WARRANTY_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "ItemCode", Me.moDataGrid.Columns(ITEM_CODE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "Item", Me.moDataGrid.Columns(ITEM_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "ExtWarranty", Me.moDataGrid.Columns(EXT_WARRANTY_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "PricePol", Me.moDataGrid.Columns(PRICE_POL_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "Sr", Me.moDataGrid.Columns(SR_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "BranchCode", Me.moDataGrid.Columns(BRANCH_CODE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "NewBranchCode", Me.moDataGrid.Columns(NEW_BRANCH_CODE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "NumberComp", Me.moDataGrid.Columns(NUMBER_COMP_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "DateComp", Me.moDataGrid.Columns(DATE_COMP_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "Certificate", Me.moDataGrid.Columns(CERTIFICATE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "IdentificationNumber", Me.moDataGrid.Columns(IDENTIFICATION_NUMBER_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "Salutation", Me.moDataGrid.Columns(SALUTATION_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "CustomerName", Me.moDataGrid.Columns(CUSTOMER_NAME_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "LanguagePref", Me.moDataGrid.Columns(LANGUAGE_PREF_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "Address1", Me.moDataGrid.Columns(ADDRESS1_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "City", Me.moDataGrid.Columns(CITY_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "Zip", Me.moDataGrid.Columns(ZIP_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "StateProvince", Me.moDataGrid.Columns(STATE_PROVINCE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "HomePhone", Me.moDataGrid.Columns(HOME_PHONE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "WorkPhone", Me.moDataGrid.Columns(WORK_PHONE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "IsoCode", Me.moDataGrid.Columns(ISO_CODE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "ExtwarrSaledate", Me.moDataGrid.Columns(EXTWARR_SALEDATE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "TypePayment", Me.moDataGrid.Columns(TYPE_PAYMENT_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "CancellationCode", Me.moDataGrid.Columns(CANCELLATION_CODE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "Manufacturer", Me.moDataGrid.Columns(MANUFACTURER_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "Model", Me.moDataGrid.Columns(MODEL_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "SerialNumber", Me.moDataGrid.Columns(SERIAL_NUMBER_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "IMEINumber", Me.moDataGrid.Columns(IMEI_NUMBER_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "PostPrePaid", Me.moDataGrid.Columns(POST_PRE_PAID_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "NewProductCode", Me.moDataGrid.Columns(NEW_PRODUCT_CODE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "DocumentType", Me.moDataGrid.Columns(DOCUMENT_TYPE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "DocumentAgency", Me.moDataGrid.Columns(DOCUMENT_AGENCY_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "DocumentIssueDate", Me.moDataGrid.Columns(DOCUMENT_ISSUE_DATE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "RGNumber", Me.moDataGrid.Columns(RG_NUMBER_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "IDType", Me.moDataGrid.Columns(ID_TYPE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "BillingFrequency", Me.moDataGrid.Columns(BILLING_FREQUENCY_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "NumberOfInstallments", Me.moDataGrid.Columns(NUMBER_OF_INSTALLMENTS_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "InstallmentAmount", Me.moDataGrid.Columns(INSTALLMENT_AMOUNT_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "BankRtnNumber", Me.moDataGrid.Columns(BANK_RTN_NUMBER_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "BankAccountNumber", Me.moDataGrid.Columns(BANK_ACCOUNT_NUMBER_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "BankAcctOwnerName", Me.moDataGrid.Columns(BANK_ACCT_OWNER_NAME_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "BankBranchNumber", Me.moDataGrid.Columns(BANK_BRANCH_NUMBER_COL))
+        Protected Sub BindBoPropertiesToGridHeaders(dealerReconWrkInfo As DealerReconWrk)
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "RecordType", moDataGrid.Columns(RECORD_TYPE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, SKU_NUMBER_PROPERTY, moDataGrid.Columns(SKU_Number))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "RejectReason", moDataGrid.Columns(REJECT_REASON_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "Dealer", moDataGrid.Columns(DEALER_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "ProductCode", moDataGrid.Columns(PRODUCT_CODE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "ProductPrice", moDataGrid.Columns(PRODUCT_PRICE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "ManWarranty", moDataGrid.Columns(MAN_WARRANTY_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "ItemCode", moDataGrid.Columns(ITEM_CODE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "Item", moDataGrid.Columns(ITEM_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "ExtWarranty", moDataGrid.Columns(EXT_WARRANTY_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "PricePol", moDataGrid.Columns(PRICE_POL_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "Sr", moDataGrid.Columns(SR_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "BranchCode", moDataGrid.Columns(BRANCH_CODE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "NewBranchCode", moDataGrid.Columns(NEW_BRANCH_CODE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "NumberComp", moDataGrid.Columns(NUMBER_COMP_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "DateComp", moDataGrid.Columns(DATE_COMP_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "Certificate", moDataGrid.Columns(CERTIFICATE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "IdentificationNumber", moDataGrid.Columns(IDENTIFICATION_NUMBER_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "Salutation", moDataGrid.Columns(SALUTATION_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "CustomerName", moDataGrid.Columns(CUSTOMER_NAME_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "LanguagePref", moDataGrid.Columns(LANGUAGE_PREF_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "Address1", moDataGrid.Columns(ADDRESS1_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "City", moDataGrid.Columns(CITY_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "Zip", moDataGrid.Columns(ZIP_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "StateProvince", moDataGrid.Columns(STATE_PROVINCE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "HomePhone", moDataGrid.Columns(HOME_PHONE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "WorkPhone", moDataGrid.Columns(WORK_PHONE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "IsoCode", moDataGrid.Columns(ISO_CODE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "ExtwarrSaledate", moDataGrid.Columns(EXTWARR_SALEDATE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "TypePayment", moDataGrid.Columns(TYPE_PAYMENT_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "CancellationCode", moDataGrid.Columns(CANCELLATION_CODE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "Manufacturer", moDataGrid.Columns(MANUFACTURER_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "Model", moDataGrid.Columns(MODEL_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "SerialNumber", moDataGrid.Columns(SERIAL_NUMBER_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "IMEINumber", moDataGrid.Columns(IMEI_NUMBER_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "PostPrePaid", moDataGrid.Columns(POST_PRE_PAID_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "NewProductCode", moDataGrid.Columns(NEW_PRODUCT_CODE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "DocumentType", moDataGrid.Columns(DOCUMENT_TYPE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "DocumentAgency", moDataGrid.Columns(DOCUMENT_AGENCY_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "DocumentIssueDate", moDataGrid.Columns(DOCUMENT_ISSUE_DATE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "RGNumber", moDataGrid.Columns(RG_NUMBER_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "IDType", moDataGrid.Columns(ID_TYPE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "BillingFrequency", moDataGrid.Columns(BILLING_FREQUENCY_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "NumberOfInstallments", moDataGrid.Columns(NUMBER_OF_INSTALLMENTS_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "InstallmentAmount", moDataGrid.Columns(INSTALLMENT_AMOUNT_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "BankRtnNumber", moDataGrid.Columns(BANK_RTN_NUMBER_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "BankAccountNumber", moDataGrid.Columns(BANK_ACCOUNT_NUMBER_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "BankAcctOwnerName", moDataGrid.Columns(BANK_ACCT_OWNER_NAME_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "BankBranchNumber", moDataGrid.Columns(BANK_BRANCH_NUMBER_COL))
 
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "SalesTax", Me.moDataGrid.Columns(SALES_TAX_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "Address2", Me.moDataGrid.Columns(ADDRESS2_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "Email", Me.moDataGrid.Columns(EMAIL_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "SalesTax", moDataGrid.Columns(SALES_TAX_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "Address2", moDataGrid.Columns(ADDRESS2_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "Email", moDataGrid.Columns(EMAIL_COL))
 
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "CustCountry", Me.moDataGrid.Columns(CUST_COUNTRY_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "CountryPurch", Me.moDataGrid.Columns(COUNTRY_PURCH_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "CustCountry", moDataGrid.Columns(CUST_COUNTRY_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "CountryPurch", moDataGrid.Columns(COUNTRY_PURCH_COL))
 
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "DatePaidFor", Me.moDataGrid.Columns(DATE_PAID_FOR_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, MEMBERSHIP_NUMBER_PROPERTY, Me.moDataGrid.Columns(MEMBERSHIP_NUMBER_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "DatePaidFor", moDataGrid.Columns(DATE_PAID_FOR_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, MEMBERSHIP_NUMBER_PROPERTY, moDataGrid.Columns(MEMBERSHIP_NUMBER_COL))
 
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "Address3", Me.moDataGrid.Columns(ADDRESS3_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "OriginalRetailPrice", Me.moDataGrid.Columns(ORIGINAL_RETAIL_PRICE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "BillingPlan", Me.moDataGrid.Columns(BILLING_PLAN_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "BillingCycle", Me.moDataGrid.Columns(BILLING_CYCLE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "SubscriberStatus", Me.moDataGrid.Columns(SUBSCRIBER_STATUS_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "SuspendedReason", Me.moDataGrid.Columns(SUSPENDED_REASON_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "Address3", moDataGrid.Columns(ADDRESS3_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "OriginalRetailPrice", moDataGrid.Columns(ORIGINAL_RETAIL_PRICE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "BillingPlan", moDataGrid.Columns(BILLING_PLAN_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "BillingCycle", moDataGrid.Columns(BILLING_CYCLE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "SubscriberStatus", moDataGrid.Columns(SUBSCRIBER_STATUS_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "SuspendedReason", moDataGrid.Columns(SUSPENDED_REASON_COL))
 
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "MobileType", Me.moDataGrid.Columns(MOBILE_TYPE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "FirstUseDate", Me.moDataGrid.Columns(FIRST_USE_DATE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "LastUseDate", Me.moDataGrid.Columns(LAST_USE_DATE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "SimCardNumber", Me.moDataGrid.Columns(SIM_CARD_NUMBER_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, "Region", Me.moDataGrid.Columns(REGION_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, MEMBERSHIP_TYPE_PROPERTY, Me.moDataGrid.Columns(MEMBERSHIP_TYPE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, CESS_OFFICE_PROPERTY, Me.moDataGrid.Columns(CESS_OFFICE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, CESS_SALESREP_PROPERTY, Me.moDataGrid.Columns(CESS_SALESREP_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, BUSINESSLINE_PROPERTY, Me.moDataGrid.Columns(BUSINESSLINE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, SALES_DEPARTMENT_PROPERTY, Me.moDataGrid.Columns(SALES_DEPARTMENT_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, LINKED_CERT_NUMBER_PROPERTY, Me.moDataGrid.Columns(LINKED_CERT_NUMBER_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, ADDITIONAL_INFO_PROPERTY, Me.moDataGrid.Columns(ADDITIONAL_INFO_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, CREDITCARD_LASTFOURDIGIT_PROPERTY, Me.moDataGrid.Columns(CREDITCARD_LAST_FOUR_DIGIT_COL)) 'REQ-1169
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "MobileType", moDataGrid.Columns(MOBILE_TYPE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "FirstUseDate", moDataGrid.Columns(FIRST_USE_DATE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "LastUseDate", moDataGrid.Columns(LAST_USE_DATE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "SimCardNumber", moDataGrid.Columns(SIM_CARD_NUMBER_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, "Region", moDataGrid.Columns(REGION_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, MEMBERSHIP_TYPE_PROPERTY, moDataGrid.Columns(MEMBERSHIP_TYPE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, CESS_OFFICE_PROPERTY, moDataGrid.Columns(CESS_OFFICE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, CESS_SALESREP_PROPERTY, moDataGrid.Columns(CESS_SALESREP_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, BUSINESSLINE_PROPERTY, moDataGrid.Columns(BUSINESSLINE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, SALES_DEPARTMENT_PROPERTY, moDataGrid.Columns(SALES_DEPARTMENT_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, LINKED_CERT_NUMBER_PROPERTY, moDataGrid.Columns(LINKED_CERT_NUMBER_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, ADDITIONAL_INFO_PROPERTY, moDataGrid.Columns(ADDITIONAL_INFO_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, CREDITCARD_LASTFOURDIGIT_PROPERTY, moDataGrid.Columns(CREDITCARD_LAST_FOUR_DIGIT_COL)) 'REQ-1169
 
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, FINANCED_AMOUNT, Me.moDataGrid.Columns(FINANCED_AMOUNT_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, FINANCED_FREQUENCY, Me.moDataGrid.Columns(FINANCED_FREQUENCY_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, FINANCED_INSTALLMENT_NUMBER, Me.moDataGrid.Columns(FINANCED_INSTALLMENT_NUMBER_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, FINANCED_INSTALLMENT_AMOUNT, Me.moDataGrid.Columns(FINANCED_INSTALLMENT_AMOUNT_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, GENDER_PROPERTY, Me.moDataGrid.Columns(GENDER_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, PLACE_OF_BIRTH_PROPERTY, Me.moDataGrid.Columns(PLACE_OF_BIRTH_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, CUIT_CUIL_PROPERTY, Me.moDataGrid.Columns(CUIT_CUIL_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, PERSON_TYPE_PROPERTY, Me.moDataGrid.Columns(PERSON_TYPE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, FINANCED_AMOUNT, moDataGrid.Columns(FINANCED_AMOUNT_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, FINANCED_FREQUENCY, moDataGrid.Columns(FINANCED_FREQUENCY_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, FINANCED_INSTALLMENT_NUMBER, moDataGrid.Columns(FINANCED_INSTALLMENT_NUMBER_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, FINANCED_INSTALLMENT_AMOUNT, moDataGrid.Columns(FINANCED_INSTALLMENT_AMOUNT_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, GENDER_PROPERTY, moDataGrid.Columns(GENDER_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, PLACE_OF_BIRTH_PROPERTY, moDataGrid.Columns(PLACE_OF_BIRTH_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, CUIT_CUIL_PROPERTY, moDataGrid.Columns(CUIT_CUIL_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, PERSON_TYPE_PROPERTY, moDataGrid.Columns(PERSON_TYPE_COL))
 
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, NUM_OF_CONSECUTIVE_PAYMENTS_PROPERTY, Me.moDataGrid.Columns(NUM_OF_CONSECUTIVE_PAYMENTS_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, NUM_OF_CONSECUTIVE_PAYMENTS_PROPERTY, moDataGrid.Columns(NUM_OF_CONSECUTIVE_PAYMENTS_COL))
 
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, DEALER_CURRENT_PLAN_CODE_PROPERTY, Me.moDataGrid.Columns(DEALER_CURRENT_PLAN_CODE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, DEALER_SCHEDULED_PLAN_CODE_PROPERTY, Me.moDataGrid.Columns(DEALER_SCHEDULED_PLAN_CODE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, DEALER_UPDATE_REASON_PROPERTY, Me.moDataGrid.Columns(DEALER_UPDATE_REASON_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, DEALER_CURRENT_PLAN_CODE_PROPERTY, moDataGrid.Columns(DEALER_CURRENT_PLAN_CODE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, DEALER_SCHEDULED_PLAN_CODE_PROPERTY, moDataGrid.Columns(DEALER_SCHEDULED_PLAN_CODE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, DEALER_UPDATE_REASON_PROPERTY, moDataGrid.Columns(DEALER_UPDATE_REASON_COL))
 
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, MARITAL_STATUS_PROPERTY, Me.moDataGrid.Columns(MARITAL_STATUS_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, NATIONALITY_PROPERTY, Me.moDataGrid.Columns(NATIONALITY_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, BIRTH_DATE_PROPERTY, Me.moDataGrid.Columns(BIRTH_DATE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, FINANCE_DATE_PROPERTY, Me.moDataGrid.Columns(FINANCE_DATE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, DOWN_PAYMENT_PROPERTY, Me.moDataGrid.Columns(DOWN_PAYMENT_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, ADVANCE_PAYMENT_PROPERTY, Me.moDataGrid.Columns(ADVANCE_PAYMENT_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, UPGRADE_TERM_PROPERTY, Me.moDataGrid.Columns(UPGRADE_TERM_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, BILLING_ACCOUNT_NUMBER_PROPERTY, Me.moDataGrid.Columns(BILLING_ACCOUNT_NUMBER_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, SERVICE_LINE_NUMBER_PROPERTY, Me.moDataGrid.Columns(SERVICE_LINE_NUMBER_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, MARITAL_STATUS_PROPERTY, moDataGrid.Columns(MARITAL_STATUS_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, NATIONALITY_PROPERTY, moDataGrid.Columns(NATIONALITY_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, BIRTH_DATE_PROPERTY, moDataGrid.Columns(BIRTH_DATE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, FINANCE_DATE_PROPERTY, moDataGrid.Columns(FINANCE_DATE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, DOWN_PAYMENT_PROPERTY, moDataGrid.Columns(DOWN_PAYMENT_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, ADVANCE_PAYMENT_PROPERTY, moDataGrid.Columns(ADVANCE_PAYMENT_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, UPGRADE_TERM_PROPERTY, moDataGrid.Columns(UPGRADE_TERM_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, BILLING_ACCOUNT_NUMBER_PROPERTY, moDataGrid.Columns(BILLING_ACCOUNT_NUMBER_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, SERVICE_LINE_NUMBER_PROPERTY, moDataGrid.Columns(SERVICE_LINE_NUMBER_COL))
 
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, LOAN_CODE_PROPERTY, Me.moDataGrid.Columns(LOAN_CODE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, PAYMENT_SHIFT_NUMBER_PROPERTY, Me.moDataGrid.Columns(PAYMENT_SHIFT_NUMBER_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, UPGRADE_DATE_PROPERTY, Me.moDataGrid.Columns(UPGRADE_DATE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, VOUCHER_NUMBER_PROPERTY, Me.moDataGrid.Columns(VOUCHER_NUMBER_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, RMA_PROPERTY, Me.moDataGrid.Columns(RMA_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, REFUND_AMONT_PROPERTY, Me.moDataGrid.Columns(REFUND_AMOUNT_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, DEVICE_TYPE_PROPERTY, Me.moDataGrid.Columns(DEVICE_TYPE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkInfo, APPLECARE_FEE_PROPERTY, Me.moDataGrid.Columns(APPLECARE_FEE))
-            Me.ClearGridViewHeadersAndLabelsErrSign()
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, LOAN_CODE_PROPERTY, moDataGrid.Columns(LOAN_CODE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, PAYMENT_SHIFT_NUMBER_PROPERTY, moDataGrid.Columns(PAYMENT_SHIFT_NUMBER_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, UPGRADE_DATE_PROPERTY, moDataGrid.Columns(UPGRADE_DATE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, VOUCHER_NUMBER_PROPERTY, moDataGrid.Columns(VOUCHER_NUMBER_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, RMA_PROPERTY, moDataGrid.Columns(RMA_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, REFUND_AMONT_PROPERTY, moDataGrid.Columns(REFUND_AMOUNT_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, DEVICE_TYPE_PROPERTY, moDataGrid.Columns(DEVICE_TYPE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkInfo, APPLECARE_FEE_PROPERTY, moDataGrid.Columns(APPLECARE_FEE))
+            ClearGridViewHeadersAndLabelsErrSign()
         End Sub
 
-        Protected Sub BindBoPropertiesToBundlesGridHeaders(ByVal dealerReconWrkBundlesInfo As DealerReconWrkBundles)
-            Me.BindBOPropertyToGridHeader(dealerReconWrkBundlesInfo, "ItemNumber", Me.gvPop.Columns(ITEM_NUMBER_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkBundlesInfo, "ItemManufacturer", Me.gvPop.Columns(ITEM_MANUFACTURER_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkBundlesInfo, "ItemModel", Me.gvPop.Columns(ITEM_MODEL_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkBundlesInfo, "ItemSerialNumber", Me.gvPop.Columns(ITEM_SERIAL_NUMBER_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkBundlesInfo, "ItemDescription", Me.gvPop.Columns(ITEM_DESCRIPTION_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkBundlesInfo, "ItemPrice", Me.gvPop.Columns(ITEM_PRICE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkBundlesInfo, "ItemBundleValue", Me.gvPop.Columns(ITEM_BUNDLE_VALUE_COL))
-            Me.BindBOPropertyToGridHeader(dealerReconWrkBundlesInfo, "ItemManWarranty", Me.gvPop.Columns(ITEM_MAN_WARRANTY_COL))
-            Me.ClearGridViewHeadersAndLabelsErrSign()
+        Protected Sub BindBoPropertiesToBundlesGridHeaders(dealerReconWrkBundlesInfo As DealerReconWrkBundles)
+            BindBOPropertyToGridHeader(dealerReconWrkBundlesInfo, "ItemNumber", gvPop.Columns(ITEM_NUMBER_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkBundlesInfo, "ItemManufacturer", gvPop.Columns(ITEM_MANUFACTURER_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkBundlesInfo, "ItemModel", gvPop.Columns(ITEM_MODEL_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkBundlesInfo, "ItemSerialNumber", gvPop.Columns(ITEM_SERIAL_NUMBER_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkBundlesInfo, "ItemDescription", gvPop.Columns(ITEM_DESCRIPTION_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkBundlesInfo, "ItemPrice", gvPop.Columns(ITEM_PRICE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkBundlesInfo, "ItemBundleValue", gvPop.Columns(ITEM_BUNDLE_VALUE_COL))
+            BindBOPropertyToGridHeader(dealerReconWrkBundlesInfo, "ItemManWarranty", gvPop.Columns(ITEM_MAN_WARRANTY_COL))
+            ClearGridViewHeadersAndLabelsErrSign()
         End Sub
 
-        Private Sub SetFocusOnEditableFieldInGrid(ByVal grid As DataGrid, ByVal cellPosition As Integer, ByVal controlName As String, ByVal itemIndex As Integer)
+        Private Sub SetFocusOnEditableFieldInGrid(grid As DataGrid, cellPosition As Integer, controlName As String, itemIndex As Integer)
             'Set focus on the Description TextBox for the EditItemIndex row
             Dim desc As TextBox = CType(grid.Items(itemIndex).Cells(cellPosition).FindControl(controlName), TextBox)
             SetFocus(desc)
         End Sub
 
-        Protected Sub BtnViewBundles_Click(ByVal sender As Object, ByVal e As System.EventArgs)
-            Dim reconWorkIDForm As String = CType(Me.moDataGrid.Rows(Me.moDataGrid.SelectedIndex).FindControl("moDealerReconWrkIdLabel"), Label).Text
+        Protected Sub BtnViewBundles_Click(sender As Object, e As System.EventArgs)
+            Dim reconWorkIDForm As String = CType(moDataGrid.Rows(moDataGrid.SelectedIndex).FindControl("moDealerReconWrkIdLabel"), Label).Text
             Dim reconWorkIDFormGUID As Guid = GetGuidFromString(reconWorkIDForm)
-            Me.State.DealerReconWrkId = reconWorkIDFormGUID
+            State.DealerReconWrkId = reconWorkIDFormGUID
             PopulateBundlesGrid(reconWorkIDFormGUID)
 
             'update the contents in the detail panel
-            Me.updPnlBundles.Update()
+            updPnlBundles.Update()
             'show the modal popup
-            Me.mdlPopup.Show()
+            mdlPopup.Show()
         End Sub
 
 #End Region
 
 #Region "Button Click Events"
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
-                If IsDataGPageDirty() Or (Not Me.State.BundlesHashTable Is Nothing AndAlso Me.State.BundlesHashTable.Count > 0) Then
-                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSavePagePromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                If IsDataGPageDirty() OrElse (State.BundlesHashTable IsNot Nothing AndAlso State.BundlesHashTable.Count > 0) Then
+                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
-                    Dim retType As New DealerFileProcessedController_New.ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.DealerfileProcessedId)
-                    Me.ReturnToCallingPage(retType)
+                    Dim retType As New DealerFileProcessedController_New.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.DealerfileProcessedId)
+                    ReturnToCallingPage(retType)
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub SaveButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SaveButton_WRITE.Click
+        Private Sub SaveButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles SaveButton_WRITE.Click
             Try
                 SavePage()
                 Select Case SaveBundles()
                     Case 1, 2
-                        Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                        DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 End Select
-                Me.HiddenIsPageDirty.Value = EMPTY
+                HiddenIsPageDirty.Value = EMPTY
                 PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnUndo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+        Private Sub btnUndo_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
             Try
-                Me.State.BundlesHashTable = Nothing
+                State.BundlesHashTable = Nothing
                 PopulateGrid()
-                Me.HiddenIsPageDirty.Value = EMPTY
+                HiddenIsPageDirty.Value = EMPTY
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Protected Sub btnApply_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply.Click
+        Protected Sub btnApply_Click(sender As System.Object, e As System.EventArgs) Handles btnApply.Click
             Dim hashTable As New Hashtable
             ApplyBundles()
         End Sub
 
-        Protected Sub btnClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Protected Sub btnClose_Click(sender As System.Object, e As System.EventArgs)
             If IsDataGBundlesPageDirty() Then
                 ApplyBundles()
             End If
             'Me.ErrController2.Clear_Hide()
-            Me.mdlPopup.Hide()
-            Me.ClearGridViewHeadersAndLabelsErrSign()
+            mdlPopup.Hide()
+            ClearGridViewHeadersAndLabelsErrSign()
             'Me.ClearGridHeaders(gvPop)
         End Sub
 
-        Private Sub btnSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+        Private Sub btnSearch_Click(sender As Object, e As System.EventArgs) Handles btnSearch.Click
             Try
-                Me.SaveGuiState()
-                Me.SortDirection = EMPTY
-                Me.SetGridItemStyleColor(moDataGrid)
-                Me.ShowMissingTranslations(MasterPage.MessageController)
-                Me.State.PageIndex = 0
+                SaveGuiState()
+                SortDirection = EMPTY
+                SetGridItemStyleColor(moDataGrid)
+                ShowMissingTranslations(MasterPage.MessageController)
+                State.PageIndex = 0
                 'Me.TranslateGridHeader(moDataGrid)
                 'Me.TranslateGridHeader(gvPop)
                 'Me.TranslateGridControls(moDataGrid)
                 PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+        Private Sub btnClearSearch_Click(sender As Object, e As System.EventArgs) Handles btnClearSearch.Click
             Try
-                Me.State.srchRecordType = String.Empty
-                Me.State.srchRejectCode = String.Empty
-                Me.State.srchRejectReason = String.Empty
+                State.srchRecordType = String.Empty
+                State.srchRejectCode = String.Empty
+                State.srchRejectReason = String.Empty
 
-                Me.moRecordTypeSearchDrop.SelectedIndex = 0
-                Me.moRejectCodeText.Text = String.Empty
-                Me.moRejectReasonText.Text = String.Empty
+                moRecordTypeSearchDrop.SelectedIndex = 0
+                moRejectCodeText.Text = String.Empty
+                moRejectReasonText.Text = String.Empty
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 

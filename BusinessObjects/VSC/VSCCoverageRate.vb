@@ -6,48 +6,48 @@ Public Class VscCoverageRate
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New VscCoverageRateDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class VscCoverageRate
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New VscCoverageRateDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -90,7 +90,7 @@ Public Class VscCoverageRate
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(VscCoverageRateDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class VscCoverageRate
     End Property
 
     <ValueMandatory("")> _
-    Public Property VscRateVersionId() As Guid
+    Public Property VscRateVersionId As Guid
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_VSC_RATE_VERSION_ID) Is DBNull.Value Then
@@ -110,15 +110,15 @@ Public Class VscCoverageRate
                 Return New Guid(CType(row(VscCoverageRateDAL.COL_NAME_VSC_RATE_VERSION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_VSC_RATE_VERSION_ID, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_VSC_RATE_VERSION_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property VscCoverageId() As Guid
+    Public Property VscCoverageId As Guid
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_VSC_COVERAGE_ID) Is DBNull.Value Then
@@ -127,15 +127,15 @@ Public Class VscCoverageRate
                 Return New Guid(CType(row(VscCoverageRateDAL.COL_NAME_VSC_COVERAGE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_VSC_COVERAGE_ID, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_VSC_COVERAGE_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property ClassCodeId() As Guid
+    Public Property ClassCodeId As Guid
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_CLASS_CODE_ID) Is DBNull.Value Then
@@ -144,15 +144,15 @@ Public Class VscCoverageRate
                 Return New Guid(CType(row(VscCoverageRateDAL.COL_NAME_CLASS_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_CLASS_CODE_ID, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_CLASS_CODE_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property OdometerLowRange() As LongType
+    Public Property OdometerLowRange As LongType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_ODOMETER_LOW_RANGE) Is DBNull.Value Then
@@ -161,15 +161,15 @@ Public Class VscCoverageRate
                 Return New LongType(CType(row(VscCoverageRateDAL.COL_NAME_ODOMETER_LOW_RANGE), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_ODOMETER_LOW_RANGE, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_ODOMETER_LOW_RANGE, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property OdometerHighRange() As LongType
+    Public Property OdometerHighRange As LongType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_ODOMETER_HIGH_RANGE) Is DBNull.Value Then
@@ -178,15 +178,15 @@ Public Class VscCoverageRate
                 Return New LongType(CType(row(VscCoverageRateDAL.COL_NAME_ODOMETER_HIGH_RANGE), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_ODOMETER_HIGH_RANGE, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_ODOMETER_HIGH_RANGE, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property Deductible() As DecimalType
+    Public Property Deductible As DecimalType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_DEDUCTIBLE) Is DBNull.Value Then
@@ -195,15 +195,15 @@ Public Class VscCoverageRate
                 Return New DecimalType(CType(row(VscCoverageRateDAL.COL_NAME_DEDUCTIBLE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_DEDUCTIBLE, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_DEDUCTIBLE, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property DiscountedDeductibleAmt() As DecimalType
+    Public Property DiscountedDeductibleAmt As DecimalType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_DISCOUNTED_DEDUCTIBLE_AMT) Is DBNull.Value Then
@@ -212,15 +212,15 @@ Public Class VscCoverageRate
                 Return New DecimalType(CType(row(VscCoverageRateDAL.COL_NAME_DISCOUNTED_DEDUCTIBLE_AMT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_DISCOUNTED_DEDUCTIBLE_AMT, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_DISCOUNTED_DEDUCTIBLE_AMT, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property DiscountedDeductiblePcnt() As DecimalType
+    Public Property DiscountedDeductiblePcnt As DecimalType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_DISCOUNTED_DEDUCTIBLE_PCNT) Is DBNull.Value Then
@@ -229,15 +229,15 @@ Public Class VscCoverageRate
                 Return New DecimalType(CType(row(VscCoverageRateDAL.COL_NAME_DISCOUNTED_DEDUCTIBLE_PCNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_DISCOUNTED_DEDUCTIBLE_PCNT, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_DISCOUNTED_DEDUCTIBLE_PCNT, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property TermMonths() As LongType
+    Public Property TermMonths As LongType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_TERM_MONTHS) Is DBNull.Value Then
@@ -246,15 +246,15 @@ Public Class VscCoverageRate
                 Return New LongType(CType(row(VscCoverageRateDAL.COL_NAME_TERM_MONTHS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_TERM_MONTHS, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_TERM_MONTHS, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property TermKmMi() As LongType
+    Public Property TermKmMi As LongType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_TERM_KM_MI) Is DBNull.Value Then
@@ -263,15 +263,15 @@ Public Class VscCoverageRate
                 Return New LongType(CType(row(VscCoverageRateDAL.COL_NAME_TERM_KM_MI), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_TERM_KM_MI, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_TERM_KM_MI, Value)
         End Set
     End Property
 
 
 
-    Public Property CommissionsPercent() As DecimalType
+    Public Property CommissionsPercent As DecimalType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_COMMISSIONS_PERCENT) Is DBNull.Value Then
@@ -280,15 +280,15 @@ Public Class VscCoverageRate
                 Return New DecimalType(CType(row(VscCoverageRateDAL.COL_NAME_COMMISSIONS_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_COMMISSIONS_PERCENT, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_COMMISSIONS_PERCENT, Value)
         End Set
     End Property
 
 
 
-    Public Property MarketingPercent() As DecimalType
+    Public Property MarketingPercent As DecimalType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_MARKETING_PERCENT) Is DBNull.Value Then
@@ -297,15 +297,15 @@ Public Class VscCoverageRate
                 Return New DecimalType(CType(row(VscCoverageRateDAL.COL_NAME_MARKETING_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_MARKETING_PERCENT, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_MARKETING_PERCENT, Value)
         End Set
     End Property
 
 
 
-    Public Property AdminExpense() As DecimalType
+    Public Property AdminExpense As DecimalType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_ADMIN_EXPENSE) Is DBNull.Value Then
@@ -314,15 +314,15 @@ Public Class VscCoverageRate
                 Return New DecimalType(CType(row(VscCoverageRateDAL.COL_NAME_ADMIN_EXPENSE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_ADMIN_EXPENSE, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_ADMIN_EXPENSE, Value)
         End Set
     End Property
 
 
 
-    Public Property ProfitExpense() As DecimalType
+    Public Property ProfitExpense As DecimalType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_PROFIT_EXPENSE) Is DBNull.Value Then
@@ -331,15 +331,15 @@ Public Class VscCoverageRate
                 Return New DecimalType(CType(row(VscCoverageRateDAL.COL_NAME_PROFIT_EXPENSE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_PROFIT_EXPENSE, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_PROFIT_EXPENSE, Value)
         End Set
     End Property
 
 
 
-    Public Property LossCostPercent() As DecimalType
+    Public Property LossCostPercent As DecimalType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_LOSS_COST_PERCENT) Is DBNull.Value Then
@@ -348,15 +348,15 @@ Public Class VscCoverageRate
                 Return New DecimalType(CType(row(VscCoverageRateDAL.COL_NAME_LOSS_COST_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_LOSS_COST_PERCENT, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_LOSS_COST_PERCENT, Value)
         End Set
     End Property
 
 
 
-    Public Property Wp() As DecimalType
+    Public Property Wp As DecimalType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_WP) Is DBNull.Value Then
@@ -365,15 +365,15 @@ Public Class VscCoverageRate
                 Return New DecimalType(CType(row(VscCoverageRateDAL.COL_NAME_WP), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_WP, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_WP, Value)
         End Set
     End Property
 
 
 
-    Public Property TaxesPercent() As DecimalType
+    Public Property TaxesPercent As DecimalType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_TAXES_PERCENT) Is DBNull.Value Then
@@ -382,15 +382,15 @@ Public Class VscCoverageRate
                 Return New DecimalType(CType(row(VscCoverageRateDAL.COL_NAME_TAXES_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_TAXES_PERCENT, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_TAXES_PERCENT, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property Gwp() As DecimalType
+    Public Property Gwp As DecimalType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_GWP) Is DBNull.Value Then
@@ -399,15 +399,15 @@ Public Class VscCoverageRate
                 Return New DecimalType(CType(row(VscCoverageRateDAL.COL_NAME_GWP), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_GWP, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_GWP, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property EngineManufWarrMonths() As LongType
+    Public Property EngineManufWarrMonths As LongType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_ENGINE_MANUF_WARR_MONTHS) Is DBNull.Value Then
@@ -416,15 +416,15 @@ Public Class VscCoverageRate
                 Return New LongType(CType(row(VscCoverageRateDAL.COL_NAME_ENGINE_MANUF_WARR_MONTHS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_ENGINE_MANUF_WARR_MONTHS, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_ENGINE_MANUF_WARR_MONTHS, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property EngineManufWarrKmMi() As LongType
+    Public Property EngineManufWarrKmMi As LongType
         Get
             CheckDeleted()
             If row(VscCoverageRateDAL.COL_NAME_ENGINE_MANUF_WARR_KM_MI) Is DBNull.Value Then
@@ -433,13 +433,13 @@ Public Class VscCoverageRate
                 Return New LongType(CType(row(VscCoverageRateDAL.COL_NAME_ENGINE_MANUF_WARR_KM_MI), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(VscCoverageRateDAL.COL_NAME_ENGINE_MANUF_WARR_KM_MI, Value)
+            SetValue(VscCoverageRateDAL.COL_NAME_ENGINE_MANUF_WARR_KM_MI, Value)
         End Set
     End Property
     <ValueMandatory("")>
-    Public Property VehicleValuerangefrom() As LongType
+    Public Property VehicleValuerangefrom As LongType
         Get
             CheckDeleted()
             If Row(VSCCoverageRateDAL.COL_NAME_VEHICLE_PURCHASE_PRICE_FROM) Is DBNull.Value Then
@@ -448,13 +448,13 @@ Public Class VscCoverageRate
                 Return New LongType(CType(Row(VSCCoverageRateDAL.COL_NAME_VEHICLE_PURCHASE_PRICE_FROM), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCCoverageRateDAL.COL_NAME_VEHICLE_PURCHASE_PRICE_FROM, Value)
+            SetValue(VSCCoverageRateDAL.COL_NAME_VEHICLE_PURCHASE_PRICE_FROM, Value)
         End Set
     End Property
     <ValueMandatory("")>
-    Public Property VehicleValuerangeto() As LongType
+    Public Property VehicleValuerangeto As LongType
         Get
             CheckDeleted()
             If Row(VSCCoverageRateDAL.COL_NAME_VEHICLE_PURCHASE_PRICE_TO) Is DBNull.Value Then
@@ -463,9 +463,9 @@ Public Class VscCoverageRate
                 Return New LongType(CType(Row(VSCCoverageRateDAL.COL_NAME_VEHICLE_PURCHASE_PRICE_TO), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCCoverageRateDAL.COL_NAME_VEHICLE_PURCHASE_PRICE_TO, Value)
+            SetValue(VSCCoverageRateDAL.COL_NAME_VEHICLE_PURCHASE_PRICE_TO, Value)
         End Set
     End Property
 
@@ -476,15 +476,15 @@ Public Class VscCoverageRate
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New VscCoverageRateDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -494,7 +494,7 @@ Public Class VscCoverageRate
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetCoverageRateList(ByVal RateVersionID As Guid, ByVal PlanID As Guid, ByVal EngineWarranty As Guid,
+    Public Shared Function GetCoverageRateList(RateVersionID As Guid, PlanID As Guid, EngineWarranty As Guid,
                             Optional ByVal ClassCode As String = "", Optional ByVal TermMon As Integer = -1,
                             Optional ByVal Deductible As Decimal = -1, Optional ByVal Odometer As Integer = -1,
                             Optional ByVal Vehiclevalue As Decimal = -1) As DataView

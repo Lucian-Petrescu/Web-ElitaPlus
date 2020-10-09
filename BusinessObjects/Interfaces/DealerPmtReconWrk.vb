@@ -7,56 +7,56 @@ Public Class DealerPmtReconWrk
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load(id)
+        Dataset = New Dataset
+        Load(id)
     End Sub
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid, ByVal sModifiedDate As String)
+    Public Sub New(id As Guid, sModifiedDate As String)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
-        Me.VerifyConcurrency(sModifiedDate)
+        Dataset = New DataSet
+        Load(id)
+        VerifyConcurrency(sModifiedDate)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load()
+        Dataset = New Dataset
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New DealerPmtReconWrkDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -64,23 +64,23 @@ Public Class DealerPmtReconWrk
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New DealerPmtReconWrkDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -99,7 +99,7 @@ Public Class DealerPmtReconWrk
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(DealerPmtReconWrkDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -110,7 +110,7 @@ Public Class DealerPmtReconWrk
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerfileProcessedId() As Guid
+    Public Property DealerfileProcessedId As Guid
         Get
             CheckDeleted()
             If Row(DealerPmtReconWrkDAL.COL_NAME_DEALERFILE_PROCESSED_ID) Is DBNull.Value Then
@@ -119,15 +119,15 @@ Public Class DealerPmtReconWrk
                 Return New Guid(CType(Row(DealerPmtReconWrkDAL.COL_NAME_DEALERFILE_PROCESSED_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerPmtReconWrkDAL.COL_NAME_DEALERFILE_PROCESSED_ID, Value)
+            SetValue(DealerPmtReconWrkDAL.COL_NAME_DEALERFILE_PROCESSED_ID, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=50)> _
-    Public Property RejectReason() As String
+    Public Property RejectReason As String
         Get
             CheckDeleted()
             If Row(DealerPmtReconWrkDAL.COL_NAME_REJECT_REASON) Is DBNull.Value Then
@@ -136,15 +136,15 @@ Public Class DealerPmtReconWrk
                 Return CType(Row(DealerPmtReconWrkDAL.COL_NAME_REJECT_REASON), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerPmtReconWrkDAL.COL_NAME_REJECT_REASON, Value)
+            SetValue(DealerPmtReconWrkDAL.COL_NAME_REJECT_REASON, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=1)> _
-    Public Property PaymentLoaded() As String
+    Public Property PaymentLoaded As String
         Get
             CheckDeleted()
             If Row(DealerPmtReconWrkDAL.COL_NAME_PAYMENT_LOADED) Is DBNull.Value Then
@@ -153,15 +153,15 @@ Public Class DealerPmtReconWrk
                 Return CType(Row(DealerPmtReconWrkDAL.COL_NAME_PAYMENT_LOADED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerPmtReconWrkDAL.COL_NAME_PAYMENT_LOADED, Value)
+            SetValue(DealerPmtReconWrkDAL.COL_NAME_PAYMENT_LOADED, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=1)> _
-    Public Property RecordType() As String
+    Public Property RecordType As String
         Get
             CheckDeleted()
             If Row(DealerPmtReconWrkDAL.COL_NAME_RECORD_TYPE) Is DBNull.Value Then
@@ -170,15 +170,15 @@ Public Class DealerPmtReconWrk
                 Return CType(Row(DealerPmtReconWrkDAL.COL_NAME_RECORD_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerPmtReconWrkDAL.COL_NAME_RECORD_TYPE, Value)
+            SetValue(DealerPmtReconWrkDAL.COL_NAME_RECORD_TYPE, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=20)> _
-    Public Property Certificate() As String
+    Public Property Certificate As String
         Get
             CheckDeleted()
             If Row(DealerPmtReconWrkDAL.COL_NAME_CERTIFICATE) Is DBNull.Value Then
@@ -187,15 +187,15 @@ Public Class DealerPmtReconWrk
                 Return CType(Row(DealerPmtReconWrkDAL.COL_NAME_CERTIFICATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerPmtReconWrkDAL.COL_NAME_CERTIFICATE, Value)
+            SetValue(DealerPmtReconWrkDAL.COL_NAME_CERTIFICATE, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=30)> _
-    Public Property SerialNumber() As String
+    Public Property SerialNumber As String
         Get
             CheckDeleted()
             If Row(DealerPmtReconWrkDAL.COL_NAME_SERIAL_NUMBER) Is DBNull.Value Then
@@ -204,15 +204,15 @@ Public Class DealerPmtReconWrk
                 Return CType(Row(DealerPmtReconWrkDAL.COL_NAME_SERIAL_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerPmtReconWrkDAL.COL_NAME_SERIAL_NUMBER, Value)
+            SetValue(DealerPmtReconWrkDAL.COL_NAME_SERIAL_NUMBER, Value)
         End Set
     End Property
 
 
 
-    Public Property PaymentAmount() As DecimalType
+    Public Property PaymentAmount As DecimalType
         Get
             CheckDeleted()
             If Row(DealerPmtReconWrkDAL.COL_NAME_PAYMENT_AMOUNT) Is DBNull.Value Then
@@ -221,15 +221,15 @@ Public Class DealerPmtReconWrk
                 Return New DecimalType(CType(Row(DealerPmtReconWrkDAL.COL_NAME_PAYMENT_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerPmtReconWrkDAL.COL_NAME_PAYMENT_AMOUNT, Value)
+            SetValue(DealerPmtReconWrkDAL.COL_NAME_PAYMENT_AMOUNT, Value)
         End Set
     End Property
 
 
 
-    Public Property DateOfPayment() As DateType
+    Public Property DateOfPayment As DateType
         Get
             CheckDeleted()
             If Row(DealerPmtReconWrkDAL.COL_NAME_DATE_OF_PAYMENT) Is DBNull.Value Then
@@ -238,15 +238,15 @@ Public Class DealerPmtReconWrk
                 Return New DateType(CType(Row(DealerPmtReconWrkDAL.COL_NAME_DATE_OF_PAYMENT), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerPmtReconWrkDAL.COL_NAME_DATE_OF_PAYMENT, Value)
+            SetValue(DealerPmtReconWrkDAL.COL_NAME_DATE_OF_PAYMENT, Value)
         End Set
     End Property
 
 
 
-    Public Property DatePaidFor() As DateType
+    Public Property DatePaidFor As DateType
         Get
             CheckDeleted()
             If Row(DealerPmtReconWrkDAL.COL_NAME_DATE_PAID_FOR) Is DBNull.Value Then
@@ -255,14 +255,14 @@ Public Class DealerPmtReconWrk
                 Return New DateType(CType(Row(DealerPmtReconWrkDAL.COL_NAME_DATE_PAID_FOR), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerPmtReconWrkDAL.COL_NAME_DATE_PAID_FOR, Value)
+            SetValue(DealerPmtReconWrkDAL.COL_NAME_DATE_PAID_FOR, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=20)> _
-    Public Property CampaignNumber() As String
+    Public Property CampaignNumber As String
         Get
             CheckDeleted()
             If Row(DealerPmtReconWrkDAL.COL_NAME_CAMPAIGN_NUMBER) Is DBNull.Value Then
@@ -271,14 +271,14 @@ Public Class DealerPmtReconWrk
                 Return CType(Row(DealerPmtReconWrkDAL.COL_NAME_CAMPAIGN_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerPmtReconWrkDAL.COL_NAME_CAMPAIGN_NUMBER, Value)
+            SetValue(DealerPmtReconWrkDAL.COL_NAME_CAMPAIGN_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=20)> _
-    Public Property MembershipNumber() As String
+    Public Property MembershipNumber As String
         Get
             CheckDeleted()
             If Row(DealerPmtReconWrkDAL.COL_NAME_MEMBESHIP_NUMBER) Is DBNull.Value Then
@@ -287,14 +287,14 @@ Public Class DealerPmtReconWrk
                 Return CType(Row(DealerPmtReconWrkDAL.COL_NAME_MEMBESHIP_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerPmtReconWrkDAL.COL_NAME_MEMBESHIP_NUMBER, Value)
+            SetValue(DealerPmtReconWrkDAL.COL_NAME_MEMBESHIP_NUMBER, Value)
         End Set
     End Property 
 
     <ValidStringLength("", Max:=20)> _
-    Public Property ServiceLineNumber() As String
+    Public Property ServiceLineNumber As String
         Get
             CheckDeleted()
             If Row(DealerPmtReconWrkDAL.COL_NAME_SERVICE_LINE_NUMBER) Is DBNull.Value Then
@@ -303,14 +303,14 @@ Public Class DealerPmtReconWrk
                 Return CType(Row(DealerPmtReconWrkDAL.COL_NAME_SERVICE_LINE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerPmtReconWrkDAL.COL_NAME_SERVICE_LINE_NUMBER, Value)
+            SetValue(DealerPmtReconWrkDAL.COL_NAME_SERVICE_LINE_NUMBER, Value)
         End Set
     End Property 
 
     <ValidStringLength("", Max:=20)> _
-    Public Property PaymentInvoiceNumber() As String
+    Public Property PaymentInvoiceNumber As String
         Get
             CheckDeleted()
             If Row(DealerPmtReconWrkDAL.COL_NAME_PAYMENT_INVOICE_NUMBER) Is DBNull.Value Then
@@ -319,13 +319,13 @@ Public Class DealerPmtReconWrk
                 Return CType(Row(DealerPmtReconWrkDAL.COL_NAME_PAYMENT_INVOICE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerPmtReconWrkDAL.COL_NAME_PAYMENT_INVOICE_NUMBER, Value)
+            SetValue(DealerPmtReconWrkDAL.COL_NAME_PAYMENT_INVOICE_NUMBER, Value)
         End Set
     End Property 
 
-    Public Property CollectedAmount() As DecimalType
+    Public Property CollectedAmount As DecimalType
             Get
                 CheckDeleted()
                 If Row(DealerPmtReconWrkDAL.COL_NAME_COLLECTED_AMOUNT) Is DBNull.Value Then
@@ -334,14 +334,14 @@ Public Class DealerPmtReconWrk
                     Return New DecimalType(CType(Row(DealerPmtReconWrkDAL.COL_NAME_COLLECTED_AMOUNT), Decimal))
                 End If
             End Get
-            Set(ByVal Value As DecimalType)
+            Set
                 CheckDeleted()
-                Me.SetValue(DealerPmtReconWrkDAL.COL_NAME_COLLECTED_AMOUNT, Value)
+                SetValue(DealerPmtReconWrkDAL.COL_NAME_COLLECTED_AMOUNT, Value)
             End Set
         End Property
 
     <ValidStringLength("", Max:=20)> _
-    Public Property Layout() As String
+    Public Property Layout As String
         Get
             CheckDeleted()
             If Row(DealerPmtReconWrkDAL.COL_NAME_LAYOUT) Is DBNull.Value Then
@@ -350,15 +350,15 @@ Public Class DealerPmtReconWrk
                 Return CType(Row(DealerPmtReconWrkDAL.COL_NAME_LAYOUT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerPmtReconWrkDAL.COL_NAME_LAYOUT, Value)
+            SetValue(DealerPmtReconWrkDAL.COL_NAME_LAYOUT, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=5)> _
-    Public Property ProductCode() As String
+    Public Property ProductCode As String
         Get
             CheckDeleted()
             If Row(DealerPmtReconWrkDAL.COL_NAME_PRODUCT_CODE) Is DBNull.Value Then
@@ -367,15 +367,15 @@ Public Class DealerPmtReconWrk
                 Return CType(Row(DealerPmtReconWrkDAL.COL_NAME_PRODUCT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerPmtReconWrkDAL.COL_NAME_PRODUCT_CODE, Value)
+            SetValue(DealerPmtReconWrkDAL.COL_NAME_PRODUCT_CODE, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=20)> _
-    Public Property NewProductCode() As String
+    Public Property NewProductCode As String
         Get
             CheckDeleted()
             If Row(DealerPmtReconWrkDAL.COL_NAME_NEW_PRODUCT_CODE) Is DBNull.Value Then
@@ -384,13 +384,13 @@ Public Class DealerPmtReconWrk
                 Return CType(Row(DealerPmtReconWrkDAL.COL_NAME_NEW_PRODUCT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerPmtReconWrkDAL.COL_NAME_NEW_PRODUCT_CODE, Value)
+            SetValue(DealerPmtReconWrkDAL.COL_NAME_NEW_PRODUCT_CODE, Value)
         End Set
     End Property
 
-    Public Property AdjustmentAmount() As DecimalType
+    Public Property AdjustmentAmount As DecimalType
         Get
             CheckDeleted()
             If Row(DealerPmtReconWrkDAL.COL_NAME_ADJUSTMENT_AMOUNT) Is DBNull.Value Then
@@ -399,13 +399,13 @@ Public Class DealerPmtReconWrk
                 Return New DecimalType(CType(Row(DealerPmtReconWrkDAL.COL_NAME_ADJUSTMENT_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerPmtReconWrkDAL.COL_NAME_ADJUSTMENT_AMOUNT, Value)
+            SetValue(DealerPmtReconWrkDAL.COL_NAME_ADJUSTMENT_AMOUNT, Value)
         End Set
     End Property
 
-    Public Property InstallmentNum() As LongType
+    Public Property InstallmentNum As LongType
         Get
             CheckDeleted()
             If row(DealerPmtReconWrkDAL.COL_NAME_INSTALLMENT_NUM) Is DBNull.Value Then
@@ -414,13 +414,13 @@ Public Class DealerPmtReconWrk
                 Return New LongType(CType(row(DealerPmtReconWrkDAL.COL_NAME_INSTALLMENT_NUM), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerPmtReconWrkDAL.COL_NAME_INSTALLMENT_NUM, Value)
+            SetValue(DealerPmtReconWrkDAL.COL_NAME_INSTALLMENT_NUM, Value)
         End Set
     End Property
 
-    Public Property FeeIncome() As DecimalType
+    Public Property FeeIncome As DecimalType
         Get
             CheckDeleted()
             If Row(DealerPmtReconWrkDAL.COL_NAME_FEE_INCOME) Is DBNull.Value Then
@@ -429,9 +429,9 @@ Public Class DealerPmtReconWrk
                 Return New DecimalType(CType(Row(DealerPmtReconWrkDAL.COL_NAME_FEE_INCOME), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerPmtReconWrkDAL.COL_NAME_FEE_INCOME, Value)
+            SetValue(DealerPmtReconWrkDAL.COL_NAME_FEE_INCOME, Value)
         End Set
     End Property
 #End Region
@@ -440,15 +440,15 @@ Public Class DealerPmtReconWrk
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New DealerPmtReconWrkDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New Dataset
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New Dataset
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -459,7 +459,7 @@ Public Class DealerPmtReconWrk
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function LoadList(ByVal dealerfileProcessedID As Guid, ByVal recordMode As String, ByVal parentFile As String) As DataView
+    Public Shared Function LoadList(dealerfileProcessedID As Guid, recordMode As String, parentFile As String) As DataView
         Try
             Dim dal As New DealerPmtReconWrkDAL
             Dim ds As DataSet
@@ -473,7 +473,7 @@ Public Class DealerPmtReconWrk
 
     End Function
 
-    Public Shared Function LoadRejectList(ByVal dealerfileProcessedID As Guid) As DataView
+    Public Shared Function LoadRejectList(dealerfileProcessedID As Guid) As DataView
         Try
             Dim dal As New DealerPmtReconWrkDAL
             Dim ds As DataSet

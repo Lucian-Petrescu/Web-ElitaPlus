@@ -8,52 +8,52 @@ Public Class ServiceOrder
 
 #Region "Constructors"
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load(id)
+        Dataset = New Dataset
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load()
+        Dataset = New Dataset
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
-    Public Sub New(ByVal claimBO As ClaimBase, Optional ByVal newServiceOrder As Boolean = False)
+    Public Sub New(claimBO As ClaimBase, Optional ByVal newServiceOrder As Boolean = False)
         ' MyBase.New(False)
         '   Me.Dataset = claimBO.Dataset
         MyBase.New()
-        Me.Dataset = New DataSet
+        Dataset = New DataSet
         If newServiceOrder Then
             'just attach the schema 
             'Me.Dataset = New Dataset
-            Me.PurgeServiceOrder(claimBO)
-            Me.Load()
+            PurgeServiceOrder(claimBO)
+            Load()
         Else
             'Me.Dataset = claimBO.Dataset
-            Me.Load(claimBO)
+            Load(claimBO)
         End If
     End Sub
 
@@ -63,17 +63,17 @@ Public Class ServiceOrder
     ' it calls the service order new(claim) again. To make sure the service order(s) created
     ' earlier doesnt get saved, we mark them as deleted. Thus, when the claim BO commits/saves,
     ' service order(s) marked for deletion will be deleted and the active one will be saved.
-    Protected Sub PurgeServiceOrder(ByVal claimBO As ClaimBase)
+    Protected Sub PurgeServiceOrder(claimBO As ClaimBase)
         Try
             Dim dal As New ServiceOrderDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
                 'For Each SORow As DataRow In Me.Dataset.Tables(dal.TABLE_NAME).Rows
                 Dim rowIndex As Integer
-                For rowIndex = 0 To Me.Dataset.Tables(dal.TABLE_NAME).Rows.Count - 1
-                    Row = Me.Dataset.Tables(dal.TABLE_NAME).Rows.Item(rowIndex)
-                    If Not (Row.RowState = DataRowState.Deleted) Or (Row.RowState = DataRowState.Detached) Then
+                For rowIndex = 0 To Dataset.Tables(dal.TABLE_NAME).Rows.Count - 1
+                    Row = Dataset.Tables(dal.TABLE_NAME).Rows.Item(rowIndex)
+                    If Not (Row.RowState = DataRowState.Deleted) OrElse (Row.RowState = DataRowState.Detached) Then
                         Dim serviceOrderBO As ServiceOrder = New ServiceOrder(Row)
-                        If claimBO.Id.Equals(serviceOrderBO.ClaimId) And serviceOrderBO.IsNew Then
+                        If claimBO.Id.Equals(serviceOrderBO.ClaimId) AndAlso serviceOrderBO.IsNew Then
                             serviceOrderBO.Delete()
                         End If
                     End If
@@ -87,12 +87,12 @@ Public Class ServiceOrder
     Protected Sub Load()
         Try
             Dim dal As New ServiceOrderDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
 
@@ -101,23 +101,23 @@ Public Class ServiceOrder
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ServiceOrderDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -125,23 +125,23 @@ Public Class ServiceOrder
         End Try
     End Sub
 
-    Protected Sub Load(ByVal claimBO As ClaimBase)
+    Protected Sub Load(claimBO As ClaimBase)
         Try
             Dim dal As New ServiceOrderDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(claimBO.Id, dal.COL_NAME_CLAIM_ID, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(claimBO.Id, dal.COL_NAME_CLAIM_ID, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.LoadLatest(Me.Dataset, claimBO.Id)
-                Me.Row = Me.FindRow(claimBO.Id, dal.COL_NAME_CLAIM_ID, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.LoadLatest(Dataset, claimBO.Id)
+                Row = FindRow(claimBO.Id, dal.COL_NAME_CLAIM_ID, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -165,7 +165,7 @@ Public Class ServiceOrder
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ServiceOrderDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -176,7 +176,7 @@ Public Class ServiceOrder
     End Property
 
     <ValueMandatory("")>
-    Public Property ClaimId() As Guid
+    Public Property ClaimId As Guid
         Get
             CheckDeleted()
             If Row(ServiceOrderDAL.COL_NAME_CLAIM_ID) Is DBNull.Value Then
@@ -185,14 +185,14 @@ Public Class ServiceOrder
                 Return New Guid(CType(Row(ServiceOrderDAL.COL_NAME_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ServiceOrderDAL.COL_NAME_CLAIM_ID, Value)
+            SetValue(ServiceOrderDAL.COL_NAME_CLAIM_ID, Value)
         End Set
     End Property
 
 
-    Public Property ClaimAuthorizationId() As Guid
+    Public Property ClaimAuthorizationId As Guid
         Get
             CheckDeleted()
             If Row(ServiceOrderDAL.COL_NAME_CLAIM_AUTHORIZATION_ID) Is DBNull.Value Then
@@ -201,15 +201,15 @@ Public Class ServiceOrder
                 Return New Guid(CType(Row(ServiceOrderDAL.COL_NAME_CLAIM_AUTHORIZATION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ServiceOrderDAL.COL_NAME_CLAIM_AUTHORIZATION_ID, Value)
+            SetValue(ServiceOrderDAL.COL_NAME_CLAIM_AUTHORIZATION_ID, Value)
         End Set
     End Property
 
     '08/24/2006 - ALR - Removed Mandatory property
     '                   Modified property to return the byte array from the database if it exists
-    Public ReadOnly Property ServiceOrderImage() As Byte()
+    Public ReadOnly Property ServiceOrderImage As Byte()
         Get
             CheckDeleted()
             If Not ServiceOrderImageId.Equals(Guid.Empty) Then
@@ -221,7 +221,7 @@ Public Class ServiceOrder
     End Property
 
     '08/24/2006 - ALR - Added property for the changing of serviceorder images.  Points to ELP_Service_order_image
-    Public Property ServiceOrderImageId() As Guid
+    Public Property ServiceOrderImageId As Guid
         Get
             CheckDeleted()
             If Row(ServiceOrderDAL.COL_NAME_SERVICE_ORDER_IMAGE_ID) Is DBNull.Value Then
@@ -230,15 +230,15 @@ Public Class ServiceOrder
                 Return New Guid(CType(Row(ServiceOrderDAL.COL_NAME_SERVICE_ORDER_IMAGE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ServiceOrderDAL.COL_NAME_SERVICE_ORDER_IMAGE_ID, Value)
+            SetValue(ServiceOrderDAL.COL_NAME_SERVICE_ORDER_IMAGE_ID, Value)
         End Set
     End Property
 
     '08/24/2006 - ALR - Added property for the changing of serviceorder images.  
     '                   Stores string XML representation of the dataset used to create the service order.
-    Public Property ServiceOrderImageData() As String
+    Public Property ServiceOrderImageData As String
         Get
             CheckDeleted()
             If Row(ServiceOrderDAL.COL_NAME_SERVICE_ORDER_IMAGE_DATA) Is DBNull.Value Then
@@ -247,9 +247,9 @@ Public Class ServiceOrder
                 Return CType(Row(ServiceOrderDAL.COL_NAME_SERVICE_ORDER_IMAGE_DATA), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ServiceOrderDAL.COL_NAME_SERVICE_ORDER_IMAGE_DATA, Value)
+            SetValue(ServiceOrderDAL.COL_NAME_SERVICE_ORDER_IMAGE_DATA, Value)
         End Set
     End Property
 
@@ -259,22 +259,22 @@ Public Class ServiceOrder
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ServiceOrderDAL
-                If Not Me.Dataset.Tables(ClaimStatusDAL.TABLE_NAME) Is Nothing AndAlso Me.Dataset.Tables(ClaimStatusDAL.TABLE_NAME).Rows.Count > 0 Then
-                    dal.UpdateFamily(Me.Dataset)
+                If Dataset.Tables(ClaimStatusDAL.TABLE_NAME) IsNot Nothing AndAlso Dataset.Tables(ClaimStatusDAL.TABLE_NAME).Rows.Count > 0 Then
+                    dal.UpdateFamily(Dataset)
                 ElseIf Not (claimAuthorizationId.Equals(Guid.Empty)) Then
-                    dal.UpdateFamily(Me.Dataset)
+                    dal.UpdateFamily(Dataset)
                 Else
-                    dal.UpdateWithParam(Me.Row)
+                    dal.UpdateWithParam(Row)
                 End If
 
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -282,12 +282,12 @@ Public Class ServiceOrder
         End Try
     End Sub
 
-    Public Function AddExtendedClaimStatus(ByVal claimStatusId As Guid) As ClaimStatus
+    Public Function AddExtendedClaimStatus(claimStatusId As Guid) As ClaimStatus
 
         If Not claimStatusId.Equals(Guid.Empty) Then
-            _claimStatusBO = New ClaimStatus(claimStatusId, Me.Dataset)
+            _claimStatusBO = New ClaimStatus(claimStatusId, Dataset)
         Else
-            _claimStatusBO = New ClaimStatus(Me.Dataset)
+            _claimStatusBO = New ClaimStatus(Dataset)
         End If
 
         Return _claimStatusBO
@@ -299,7 +299,7 @@ Public Class ServiceOrder
     ''' </summary>
     ''' <returns>HTML Service Order Report as <see cref="String"/></returns>
     Public Function GetReportHtmlData() As String
-        Dim claimBO As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(Me.ClaimId)
+        Dim claimBO As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(ClaimId)
         Dim methodOfRepair As String = claimBO.MethodOfRepairCode
         Dim companyCode As String = claimBO.Company.Code
         'TODO -- FIX THIS!!!!!  REMOVE HARD_CODING IN CODE-BEHIND!
@@ -314,7 +314,7 @@ Public Class ServiceOrder
                 End Select
         End Select
 
-        Return GetReportHtml(Me.ServiceOrderImageData, claimBO.ClaimActivityCode, companyCode, methodOfRepair)
+        Return GetReportHtml(ServiceOrderImageData, claimBO.ClaimActivityCode, companyCode, methodOfRepair)
     End Function
 
     ''' <summary>
@@ -325,7 +325,7 @@ Public Class ServiceOrder
     ''' <param name="pCompanyCode">Company Code of Claim</param>
     ''' <param name="pMethodOfRepair">Method of Repair of Claim</param>
     ''' <returns>HTML Service Order</returns>
-    Private Shared Function GetReportHtml(ByVal pServiceOrderXml As String, ByVal pActivityCode As String, ByVal pCompanyCode As String, Optional ByVal pMethodOfRepair As String = "") As String
+    Private Shared Function GetReportHtml(pServiceOrderXml As String, pActivityCode As String, pCompanyCode As String, Optional ByVal pMethodOfRepair As String = "") As String
 
         Dim xsltString As String = GetReportXslt(pActivityCode, pCompanyCode, pMethodOfRepair)
 
@@ -364,7 +364,7 @@ Public Class ServiceOrder
     ''' <remarks>When Resource does not exists for combination of Activity Code, Company Code and Repair Code then Report is returned based on Activity Code and Company Code</remarks>
     ''' <returns>XSLT String read from resource</returns>
     ''' <exception cref="ElitaPlusException">When resource is not found</exception>
-    Private Shared Function GetReportXslt(ByVal pActivityCode As String, ByVal pCompanyCode As String, Optional ByVal pMethodOfRepair As String = "") As String
+    Private Shared Function GetReportXslt(pActivityCode As String, pCompanyCode As String, Optional ByVal pMethodOfRepair As String = "") As String
 
         Dim reportType As String
         Select Case pActivityCode
@@ -402,7 +402,7 @@ Public Class ServiceOrder
             Return xsltString
 
         Finally
-            If (Not resourceStream Is Nothing) Then
+            If (resourceStream IsNot Nothing) Then
                 resourceStream.Dispose()
             End If
         End Try
@@ -414,23 +414,23 @@ Public Class ServiceOrder
 #End Region
 
 #Region "Shared Methods"
-    Public Shared Function GetLatestServiceOrderID(ByVal claimID As Guid, Optional claimAuthID As Guid = Nothing) As Guid
+    Public Shared Function GetLatestServiceOrderID(claimID As Guid, Optional claimAuthID As Guid = Nothing) As Guid
         Dim dal As ServiceOrderDAL = New ServiceOrderDAL
         Return dal.GetLatestID(claimID, claimAuthID)
     End Function
-    Public Shared Function GetSericeOrderEmailContent(ByVal companyid As Guid) As String
+    Public Shared Function GetSericeOrderEmailContent(companyid As Guid) As String
         Dim dal As ServiceOrderDAL = New ServiceOrderDAL
         Return dal.GetSericeOrderEmailContent(companyid)
     End Function
 
 
     '08/24/2006 - ALR - Added method to retrieve the serviceorderimage from the DB  
-    Public Shared Function GetServiceOrderImage(ByVal ServiceOrderImageId As Guid) As Byte()
+    Public Shared Function GetServiceOrderImage(ServiceOrderImageId As Guid) As Byte()
         Dim dal As New ServiceOrderDAL
         Return dal.LoadImage(ServiceOrderImageId)
     End Function
 
-    Public Shared Function GenerateServiceOrder(ByVal claimBO As ClaimBase, Optional tr As IDbTransaction = Nothing, Optional claimAuthId As Guid = Nothing) As ServiceOrder
+    Public Shared Function GenerateServiceOrder(claimBO As ClaimBase, Optional tr As IDbTransaction = Nothing, Optional claimAuthId As Guid = Nothing) As ServiceOrder
 
         Try
 
@@ -452,7 +452,7 @@ Public Class ServiceOrder
             If GetLatestServiceOrderID(claimBO.Id).Equals(Guid.Empty) Then
                 'create a New claim extended status "Work Order Opened"
                 Dim newClaimStatusByGroupId As Guid = Guid.Empty
-                newClaimStatusByGroupId = ClaimStatusByGroup.GetClaimStatusByGroupID(DALObjects.ClaimStatusDAL.WORK_ORDER_OPENED)
+                newClaimStatusByGroupId = ClaimStatusByGroup.GetClaimStatusByGroupID(ClaimStatusDAL.WORK_ORDER_OPENED)
                 If Not newClaimStatusByGroupId.Equals(Guid.Empty) Then
                     Dim objClaimStatusBO As ClaimStatus = oServiceOrder.AddExtendedClaimStatus(Guid.Empty)
                     objClaimStatusBO.ClaimId = claimBO.Id

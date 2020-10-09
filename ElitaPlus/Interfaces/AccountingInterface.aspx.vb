@@ -55,29 +55,29 @@ Partial Public Class AccountingInterface
 
 #Region "Page Init"
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
         'Put user code to initialize the page here
-        Me.ErrControllerMaster.Clear_Hide()
+        ErrControllerMaster.Clear_Hide()
 
         Try
 
-            Me.DisplayProgressBarOnClick(Me.btnExecute, ElitaPlusWebApp.Message.MSG_PERFORMING_REQUEST)
+            DisplayProgressBarOnClick(btnExecute, ElitaPlusWebApp.Message.MSG_PERFORMING_REQUEST)
 
-            If Not Me.IsPostBack Then
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
+            If Not IsPostBack Then
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
 
                 PopulateAll()
 
                 'Add Enable/Disable Code to Radios for the Event List
-                Me.rdoEventAll.Attributes.Add("onclick", "document.getElementById('" & Me.ddlAccountingEvent.ClientID & "').disabled=true;")
-                Me.rdoEventSpecific.Attributes.Add("onclick", "document.getElementById('" & Me.ddlAccountingEvent.ClientID & "').disabled=false;")
+                rdoEventAll.Attributes.Add("onclick", "document.getElementById('" & ddlAccountingEvent.ClientID & "').disabled=true;")
+                rdoEventSpecific.Attributes.Add("onclick", "document.getElementById('" & ddlAccountingEvent.ClientID & "').disabled=false;")
 
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub
@@ -87,21 +87,21 @@ Partial Public Class AccountingInterface
 #Region "Event Handlers"
 
 
-    Private Sub moCompanyDropDown_SelectedIndexChanged(ByVal moUserCompanyMultipleDrop As Common.MultipleColumnDDLabelControl) Handles moUserCompanyMultipleDrop.SelectedDropChanged
+    Private Sub moCompanyDropDown_SelectedIndexChanged(moUserCompanyMultipleDrop As Common.MultipleColumnDDLabelControl) Handles moUserCompanyMultipleDrop.SelectedDropChanged
         Try
-            If Me.UserCompanyMultipleDrop.SelectedIndex = 0 Then
-                Me.ErrControllerMaster.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_COMPANY_IS_REQUIRED)
+            If UserCompanyMultipleDrop.SelectedIndex = 0 Then
+                ErrControllerMaster.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_COMPANY_IS_REQUIRED)
                 Exit Sub
             End If
 
-            Dim _company As New Company(Me.UserCompanyMultipleDrop.SelectedGuid)
+            Dim _company As New Company(UserCompanyMultipleDrop.SelectedGuid)
             'BindListControlToDataView(Me.ddlAccountingEvent, BusinessObjectsNew.LookupListNew.getAccountingEvents(_company.AcctCompanyId, ElitaPlusIdentity.Current.ActiveUser.LanguageId))
             PopulateAccountingEventDropdown(_company.AcctCompanyId)
 
             SetVendorList(_company.AcctCompanyId)
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
@@ -115,18 +115,18 @@ Partial Public Class AccountingInterface
                                                                       .LanguageId = Thread.CurrentPrincipal.GetLanguageId()
                                                                     })
 
-        Me.ddlAccountingEvent.Populate(AccountingEvents.ToArray(),
+        ddlAccountingEvent.Populate(AccountingEvents.ToArray(),
                                          New PopulateOptions() With
                                          {
                                           .AddBlankItem = True
                                          })
     End Sub
 
-    Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
-        Me.ReturnToTabHomePage()
+    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
+        ReturnToTabHomePage()
     End Sub
 
-    Private Sub btnExecute_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnExecute.Click
+    Private Sub btnExecute_Click(sender As Object, e As System.EventArgs) Handles btnExecute.Click
 
         Dim _felitaEngine As FelitaEngine
         Dim dr As FelitaEngineDs.FelitaEngineRow
@@ -143,7 +143,7 @@ Partial Public Class AccountingInterface
 
             dr = CType(_FEDs.Tables(0).NewRow, FelitaEngineDs.FelitaEngineRow)
 
-            dr.CompanyId = Me.UserCompanyMultipleDrop.SelectedCode
+            dr.CompanyId = UserCompanyMultipleDrop.SelectedCode
 
             'If LookupListNew.GetCodeFromId(Me.State.dvYesNo, New Guid(Me.ddlVendorFiles.SelectedValue)) = YES_STRING Then
             '    dr.VendorFiles = "1"
@@ -151,8 +151,8 @@ Partial Public Class AccountingInterface
             '    dr.VendorFiles = "0"
             'End If
 
-            Dim yes_Code As String = (From lst In Me.State.dvYesNo
-                                      Where lst.ListItemId = New Guid(Me.ddlVendorFiles.SelectedValue)
+            Dim yes_Code As String = (From lst In State.dvYesNo
+                                      Where lst.ListItemId = New Guid(ddlVendorFiles.SelectedValue)
                                       Select lst.Code).FirstOrDefault()
 
             If yes_Code = YES_STRING Then
@@ -161,38 +161,38 @@ Partial Public Class AccountingInterface
                 dr.VendorFiles = "0"
             End If
 
-            If Me.rdoEventAll.Checked Then
+            If rdoEventAll.Checked Then
                 dr.AccountingEventId = String.Empty
                 'If LookupListNew.GetCodeFromId(Me.State.dvYesNo, New Guid(Me.ddlIncludePending.SelectedValue)) = YES_STRING Then
                 '    'ALR - run the accounting events behind the scenes
                 '    AcctTransLog.PopulateAccountingEvents(Me.UserCompanyMultipleDrop.SelectedCode, Guid.Empty, CType(If(dr.VendorFiles.Equals(1.ToString), True, False), Boolean))
                 'End If
-                Dim yes_Code1 As String = (From lst In Me.State.dvYesNo
-                                           Where lst.ListItemId = New Guid(Me.ddlIncludePending.SelectedValue)
+                Dim yes_Code1 As String = (From lst In State.dvYesNo
+                                           Where lst.ListItemId = New Guid(ddlIncludePending.SelectedValue)
                                            Select lst.Code).FirstOrDefault()
 
                 If yes_Code1 = YES_STRING Then
                     'ALR - run the accounting events behind the scenes
-                    AcctTransLog.PopulateAccountingEvents(Me.UserCompanyMultipleDrop.SelectedCode, Guid.Empty, CType(If(dr.VendorFiles.Equals(1.ToString), True, False), Boolean))
+                    AcctTransLog.PopulateAccountingEvents(UserCompanyMultipleDrop.SelectedCode, Guid.Empty, CType(If(dr.VendorFiles.Equals(1.ToString), True, False), Boolean))
                 End If
-            ElseIf Me.ddlAccountingEvent.SelectedValue = NOTHING_SELECTED Then
+            ElseIf ddlAccountingEvent.SelectedValue = NOTHING_SELECTED Then
                 dr.AccountingEventId = FelitaEngine.NO_EVENTS
 
             Else
-                dr.AccountingEventId = GuidControl.GuidToHexString(New Guid(Me.ddlAccountingEvent.SelectedValue))
+                dr.AccountingEventId = GuidControl.GuidToHexString(New Guid(ddlAccountingEvent.SelectedValue))
 
                 'If LookupListNew.GetCodeFromId(Me.State.dvYesNo, New Guid(Me.ddlIncludePending.SelectedValue)) = YES_STRING Then
                 '    'ALR - run the accounting events behind the scenes
                 '    AcctTransLog.PopulateAccountingEvents(Me.UserCompanyMultipleDrop.SelectedCode, New Guid(Me.ddlAccountingEvent.SelectedValue), CType(If(dr.VendorFiles.Equals(1.ToString), True, False), Boolean))
                 'End If
 
-                Dim yes_Code2 As String = (From lst In Me.State.dvYesNo
-                                           Where lst.ListItemId = New Guid(Me.ddlIncludePending.SelectedValue)
+                Dim yes_Code2 As String = (From lst In State.dvYesNo
+                                           Where lst.ListItemId = New Guid(ddlIncludePending.SelectedValue)
                                            Select lst.Code).FirstOrDefault()
 
                 If yes_Code2 = YES_STRING Then
                     'ALR - run the accounting events behind the scenes
-                    AcctTransLog.PopulateAccountingEvents(Me.UserCompanyMultipleDrop.SelectedCode, New Guid(Me.ddlAccountingEvent.SelectedValue), CType(If(dr.VendorFiles.Equals(1.ToString), True, False), Boolean))
+                    AcctTransLog.PopulateAccountingEvents(UserCompanyMultipleDrop.SelectedCode, New Guid(ddlAccountingEvent.SelectedValue), CType(If(dr.VendorFiles.Equals(1.ToString), True, False), Boolean))
                 End If
 
             End If
@@ -208,13 +208,13 @@ Partial Public Class AccountingInterface
                 Throw New GUIException(Message.MSG_ACCT_COMPANY_NOT_CONFIGURED, Assurant.ElitaPlus.Common.ErrorCodes.ACCOUNTING_COMPANY_NOT_CONFIGURED_ERR)
             End If
             If strReturn = RETURN_SUCCESS Then
-                Me.AddInfoMsg(ElitaPlusWebApp.Message.MSG_INTERFACES_HAS_COMPLETED)
+                AddInfoMsg(ElitaPlusWebApp.Message.MSG_INTERFACES_HAS_COMPLETED)
             Else
-                Me.ErrControllerMaster.AddErrorAndShow(strReturn)
+                ErrControllerMaster.AddErrorAndShow(strReturn)
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub
@@ -238,15 +238,15 @@ Partial Public Class AccountingInterface
             Dim YesNoList As DataElements.ListItem() =
                CommonConfigManager.Current.ListManager.GetList(listCode:="YESNO",
                                                                languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
-            Me.State.dvYesNo = YesNoList
+            State.dvYesNo = YesNoList
 
-            Me.ddlVendorFiles.Populate(YesNoList, New PopulateOptions() With {.AddBlankItem = True})
-            Me.ddlIncludePending.Populate(YesNoList.ToArray(), New PopulateOptions() With {.AddBlankItem = True})
+            ddlVendorFiles.Populate(YesNoList, New PopulateOptions() With {.AddBlankItem = True})
+            ddlIncludePending.Populate(YesNoList.ToArray(), New PopulateOptions() With {.AddBlankItem = True})
 
             UserCompanyMultipleDrop.NothingSelected = True
             UserCompanyMultipleDrop.SetControl(True, UserCompanyMultipleDrop.MODES.NEW_MODE, True, dv, UserCompanyMultipleDrop.NO_CAPTION, True)
             If dv.Count.Equals(ONE_ITEM) Then
-                UserCompanyMultipleDrop.SelectedIndex = Me.ONE_ITEM
+                UserCompanyMultipleDrop.SelectedIndex = ONE_ITEM
                 UserCompanyMultipleDrop.ChangeEnabledControlProperty(False)
                 Dim _company As New Company(UserCompanyMultipleDrop.SelectedGuid)
                 'BindListControlToDataView(Me.ddlAccountingEvent, BusinessObjectsNew.LookupListNew.getAccountingEvents(_company.AcctCompanyId, ElitaPlusIdentity.Current.ActiveUser.LanguageId))
@@ -258,7 +258,7 @@ Partial Public Class AccountingInterface
                 End If
             End If
         Catch ex As Exception
-            Me.ErrControllerMaster.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR)
+            ErrControllerMaster.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR)
         End Try
 
     End Sub
@@ -273,14 +273,14 @@ Partial Public Class AccountingInterface
 
         Try
 
-            If Me.UserCompanyMultipleDrop.SelectedIndex = 0 Then
-                Me.ErrControllerMaster.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_COMPANY_IS_REQUIRED)
+            If UserCompanyMultipleDrop.SelectedIndex = 0 Then
+                ErrControllerMaster.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_COMPANY_IS_REQUIRED)
                 result = False
             End If
 
-            If Me.rdoEventSpecific.Checked AndAlso (Me.ddlAccountingEvent.SelectedItem Is Nothing OrElse Me.ddlAccountingEvent.SelectedValue = Me.NOTHING_SELECTED) Then
-                Me.rdoEventSpecific.Checked = False
-                Me.rdoEventAll.Checked = True
+            If rdoEventSpecific.Checked AndAlso (ddlAccountingEvent.SelectedItem Is Nothing OrElse ddlAccountingEvent.SelectedValue = NOTHING_SELECTED) Then
+                rdoEventSpecific.Checked = False
+                rdoEventAll.Checked = True
             End If
 
             Return result
@@ -290,22 +290,22 @@ Partial Public Class AccountingInterface
 
     End Function
 
-    Private Sub SetVendorList(ByVal AccountingCompanyId As Guid)
+    Private Sub SetVendorList(AccountingCompanyId As Guid)
 
         Dim _AcctCompany As New AcctCompany(AccountingCompanyId)
         Dim _acctExtension As String
 
-        If Not _AcctCompany Is Nothing Then
+        If _AcctCompany IsNot Nothing Then
             _acctExtension = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), _AcctCompany.AcctSystemId)
             If _acctExtension.Equals(BusinessObjectsNew.FelitaEngine.FELITA_PREFIX) Then
-                ControlMgr.SetEnableControl(Me, Me.ddlVendorFiles, True)
+                ControlMgr.SetEnableControl(Me, ddlVendorFiles, True)
             Else
                 'Me.SetSelectedItem(Me.ddlVendorFiles, LookupListNew.GetIdFromCode(Me.State.dvYesNo, Me.NO_STRING))
-                Dim no_Id As Guid = (From lst In Me.State.dvYesNo
-                                     Where lst.Code = Me.NO_STRING
+                Dim no_Id As Guid = (From lst In State.dvYesNo
+                                     Where lst.Code = NO_STRING
                                      Select lst.ListItemId).FirstOrDefault()
-                Me.SetSelectedItem(Me.ddlVendorFiles, no_Id)
-                ControlMgr.SetEnableControl(Me, Me.ddlVendorFiles, False)
+                SetSelectedItem(ddlVendorFiles, no_Id)
+                ControlMgr.SetEnableControl(Me, ddlVendorFiles, False)
             End If
         End If
     End Sub

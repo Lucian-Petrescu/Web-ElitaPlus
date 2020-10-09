@@ -6,48 +6,48 @@ Public Class AfaAcctAmtSrcMapping
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New AfaAcctAmtSrcMappingDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class AfaAcctAmtSrcMapping
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New AfaAcctAmtSrcMappingDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -83,7 +83,7 @@ Public Class AfaAcctAmtSrcMapping
 #Region "Private Members"
     'Initialization code for new objects
     Private Sub Initialize()
-        Me.Countfieldtouse = "CNTFIELDEPRISM_B" 'set default value
+        Countfieldtouse = "CNTFIELDEPRISM_B" 'set default value
     End Sub
 #End Region
 
@@ -91,7 +91,7 @@ Public Class AfaAcctAmtSrcMapping
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(AfaAcctAmtSrcMappingDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -102,7 +102,7 @@ Public Class AfaAcctAmtSrcMapping
     End Property
 
     <ValueMandatory("")> _
-    Public Property AcctAmtSrcId() As Guid
+    Public Property AcctAmtSrcId As Guid
         Get
             CheckDeleted()
             If row(AfaAcctAmtSrcMappingDAL.COL_NAME_ACCT_AMT_SRC_ID) Is DBNull.Value Then
@@ -111,15 +111,15 @@ Public Class AfaAcctAmtSrcMapping
                 Return New Guid(CType(row(AfaAcctAmtSrcMappingDAL.COL_NAME_ACCT_AMT_SRC_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(AfaAcctAmtSrcMappingDAL.COL_NAME_ACCT_AMT_SRC_ID, Value)
+            SetValue(AfaAcctAmtSrcMappingDAL.COL_NAME_ACCT_AMT_SRC_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property Operation() As String
+    Public Property Operation As String
         Get
             CheckDeleted()
             If row(AfaAcctAmtSrcMappingDAL.COL_NAME_OPERATION) Is DBNull.Value Then
@@ -128,15 +128,15 @@ Public Class AfaAcctAmtSrcMapping
                 Return CType(row(AfaAcctAmtSrcMappingDAL.COL_NAME_OPERATION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AfaAcctAmtSrcMappingDAL.COL_NAME_OPERATION, Value)
+            SetValue(AfaAcctAmtSrcMappingDAL.COL_NAME_OPERATION, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property InvRateBucketId() As Guid
+    Public Property InvRateBucketId As Guid
         Get
             CheckDeleted()
             If row(AfaAcctAmtSrcMappingDAL.COL_NAME_INV_RATE_BUCKET_ID) Is DBNull.Value Then
@@ -145,15 +145,15 @@ Public Class AfaAcctAmtSrcMapping
                 Return New Guid(CType(row(AfaAcctAmtSrcMappingDAL.COL_NAME_INV_RATE_BUCKET_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(AfaAcctAmtSrcMappingDAL.COL_NAME_INV_RATE_BUCKET_ID, Value)
+            SetValue(AfaAcctAmtSrcMappingDAL.COL_NAME_INV_RATE_BUCKET_ID, Value)
         End Set
     End Property
 
 
 
-    Public Property AfaProductId() As Guid
+    Public Property AfaProductId As Guid
         Get
             CheckDeleted()
             If row(AfaAcctAmtSrcMappingDAL.COL_NAME_AFA_PRODUCT_ID) Is DBNull.Value Then
@@ -162,15 +162,15 @@ Public Class AfaAcctAmtSrcMapping
                 Return New Guid(CType(row(AfaAcctAmtSrcMappingDAL.COL_NAME_AFA_PRODUCT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(AfaAcctAmtSrcMappingDAL.COL_NAME_AFA_PRODUCT_ID, Value)
+            SetValue(AfaAcctAmtSrcMappingDAL.COL_NAME_AFA_PRODUCT_ID, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=50)> _
-    Public Property LossType() As String
+    Public Property LossType As String
         Get
             CheckDeleted()
             If Row(AfaAcctAmtSrcMappingDAL.COL_NAME_LOSS_TYPE) Is DBNull.Value Then
@@ -179,18 +179,18 @@ Public Class AfaAcctAmtSrcMapping
                 Return CType(Row(AfaAcctAmtSrcMappingDAL.COL_NAME_LOSS_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
             If Not (Value = String.Empty AndAlso Row(AfaAcctAmtSrcMappingDAL.COL_NAME_LOSS_TYPE) Is DBNull.Value) Then
                 'don't overwrite the null value and trigger the object dirty
-                Me.SetValue(AfaAcctAmtSrcMappingDAL.COL_NAME_LOSS_TYPE, Value)
+                SetValue(AfaAcctAmtSrcMappingDAL.COL_NAME_LOSS_TYPE, Value)
             End If
 
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)> _
-    Public Property Countfieldtouse() As String
+    Public Property Countfieldtouse As String
         Get
             CheckDeleted()
             If Row(AfaAcctAmtSrcMappingDAL.COL_NAME_COUNTFIELDTOUSE) Is DBNull.Value Then
@@ -199,9 +199,9 @@ Public Class AfaAcctAmtSrcMapping
                 Return CType(Row(AfaAcctAmtSrcMappingDAL.COL_NAME_COUNTFIELDTOUSE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AfaAcctAmtSrcMappingDAL.COL_NAME_COUNTFIELDTOUSE, Value)
+            SetValue(AfaAcctAmtSrcMappingDAL.COL_NAME_COUNTFIELDTOUSE, Value)
         End Set
     End Property
 
@@ -212,15 +212,15 @@ Public Class AfaAcctAmtSrcMapping
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New AfaAcctAmtSrcMappingDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -233,15 +233,15 @@ Public Class AfaAcctAmtSrcMapping
         Try
             MyBase.Save()
 
-            If Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New AfaAcctAmtSrcMappingDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -251,13 +251,13 @@ Public Class AfaAcctAmtSrcMapping
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getFormularByProdLossType(ByVal AcctAmtSrcID As Guid, ByVal prodID As Guid, ByVal LossType As String, ByVal CntToUse As String, Optional ByVal blnGetMatchedOnly As Boolean = False) As DataView
+    Public Shared Function getFormularByProdLossType(AcctAmtSrcID As Guid, prodID As Guid, LossType As String, CntToUse As String, Optional ByVal blnGetMatchedOnly As Boolean = False) As DataView
         Dim dal As New AfaAcctAmtSrcMappingDAL
         Dim ds As DataSet = dal.LoadFormularByProdLossType(AcctAmtSrcID, ElitaPlusIdentity.Current.ActiveUser.LanguageId, prodID, LossType, CntToUse, blnGetMatchedOnly)
         Return ds.Tables(0).DefaultView
     End Function
 
-    Public Shared Function getList(ByVal AcctAmtSrcID As Guid, ByVal prodID As Guid, ByVal LossType As String, ByVal CntToUse As String, Optional ByVal blnGetMatchedOnly As Boolean = False) As Collections.Generic.List(Of AfaAcctAmtSrcMapping)
+    Public Shared Function getList(AcctAmtSrcID As Guid, prodID As Guid, LossType As String, CntToUse As String, Optional ByVal blnGetMatchedOnly As Boolean = False) As Collections.Generic.List(Of AfaAcctAmtSrcMapping)
         Dim dal As New AfaAcctAmtSrcMappingDAL
         Dim ds As DataSet = dal.LoadList(AcctAmtSrcID, prodID, LossType, CntToUse, blnGetMatchedOnly)
         Dim mappingList As New Collections.Generic.List(Of AfaAcctAmtSrcMapping)
@@ -268,7 +268,7 @@ Public Class AfaAcctAmtSrcMapping
 
     End Function
 
-    Public Shared Function getProductByDealer(ByVal dealerId As Guid, ByVal productCode As String) As DataView
+    Public Shared Function getProductByDealer(dealerId As Guid, productCode As String) As DataView
         Try
             Dim dal As New AfaAcctAmtSrcMappingDAL
             Return dal.LoadProductByDealer(dealerId, productCode).Tables(0).DefaultView

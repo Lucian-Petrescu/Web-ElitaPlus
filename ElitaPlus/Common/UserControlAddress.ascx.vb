@@ -33,7 +33,7 @@ Partial Class UserControlAddress
         Get
             Return _oCountryID
         End Get
-        Set(ByVal Value As Guid)
+        Set(Value As Guid)
             _oCountryID = Value
         End Set
     End Property
@@ -42,17 +42,17 @@ Partial Class UserControlAddress
         Get
             Return CType(MyGenBO, Address)
         End Get
-        Set(ByVal Value As Address)
+        Set(Value As Address)
             MyGenBO = Value
         End Set
     End Property
 
     Public Property MyGenBO() As BusinessObjectBase
         Get
-            Return CType(Me.Page.StateSession.Item(Me.UniqueID), BusinessObjectBase)
+            Return CType(Page.StateSession.Item(UniqueID), BusinessObjectBase)
         End Get
-        Set(ByVal Value As BusinessObjectBase)
-            Me.Page.StateSession.Item(Me.UniqueID) = Value
+        Set(Value As BusinessObjectBase)
+            Page.StateSession.Item(UniqueID) = Value
         End Set
     End Property
 
@@ -64,10 +64,10 @@ Partial Class UserControlAddress
 
     Public Property RegionText() As String
         Get
-            Return Me.moRegionText.Text
+            Return moRegionText.Text
         End Get
-        Set(ByVal Value As String)
-            Me.moRegionText.Text = Value
+        Set(Value As String)
+            moRegionText.Text = Value
         End Set
     End Property
 #End Region
@@ -86,7 +86,7 @@ Partial Class UserControlAddress
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -94,7 +94,7 @@ Partial Class UserControlAddress
 
 #End Region
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load, Me.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load, Me.Load
         'Put user code to initialize the page here
         'If Not Me.MyGenBO Is Nothing Then
         '    BindBoPropertiesToLabels()
@@ -113,8 +113,8 @@ Partial Class UserControlAddress
             Dim textcontrolname As String = moPostalText.Parent.ID & "_moPostalText"
             moPostalText.Attributes.Add("onkeyup", String.Format("return getList('{0}','{1}')", textcontrolname, controlname))
             'DEF-2173 Start
-            If (Not Me.MyGenBO Is Nothing) Then
-                If Me.MyGenBO.GetType.Name.ToString() = "CommissionEntity" Then
+            If (MyGenBO IsNot Nothing) Then
+                If MyGenBO.GetType.Name.ToString() = "CommissionEntity" Then
                     ControlMgr.SetVisibleControl(Page, moAddress3Label, False)
                     ControlMgr.SetVisibleControl(Page, moAddress3Text, False)
                 End If
@@ -127,7 +127,7 @@ Partial Class UserControlAddress
 
     End Sub
 
-    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.PreRender
+    Private Sub Page_PreRender(sender As Object, e As System.EventArgs) Handles Me.PreRender
         moPostalLabel.Visible = True
         moPostalText.Visible = True
         moRegionLabel.Visible = True
@@ -170,10 +170,10 @@ Partial Class UserControlAddress
         If IsAddressRequired Then
             Dim strAddFmt As String = New Country(oCountryID).MailAddrFormat.ToUpper
             If Address.IsAddressComponentRequired(strAddFmt, "ZIP") AndAlso (Not moPostalLabel.Text.StartsWith("*")) Then
-                moPostalLabel.Text = "* " & Me.moPostalLabel.Text
+                moPostalLabel.Text = "* " & moPostalLabel.Text
             End If
-            If (Address.IsAddressComponentRequired(strAddFmt, "RGCODE") OrElse Address.IsAddressComponentRequired(strAddFmt, "RGNAME")) And (Not moRegionLabel.Text.StartsWith("*")) Then
-                moRegionLabel.Text = "* " & Me.moRegionLabel.Text
+            If (Address.IsAddressComponentRequired(strAddFmt, "RGCODE") OrElse Address.IsAddressComponentRequired(strAddFmt, "RGNAME")) AndAlso (Not moRegionLabel.Text.StartsWith("*")) Then
+                moRegionLabel.Text = "* " & moRegionLabel.Text
             End If
         End If
     End Sub
@@ -181,17 +181,17 @@ Partial Class UserControlAddress
 #End Region
 
 #Region "Control Management"
-    Public Sub ChangeEnabledControlProperty(ByVal bEnable As Boolean)
-        Page.ChangeEnabledControlProperty(Me.moCityText, bEnable)
-        Page.ChangeEnabledControlProperty(Me.moAddress1Text, bEnable)
-        Page.ChangeEnabledControlProperty(Me.moAddress2Text, bEnable)
-        Page.ChangeEnabledControlProperty(Me.moAddress3Text, bEnable)
-        Page.ChangeEnabledControlProperty(Me.moPostalText, bEnable)
-        Page.ChangeEnabledControlProperty(Me.moRegionDrop_WRITE, bEnable)
-        Page.ChangeEnabledControlProperty(Me.moCountryText, bEnable)
+    Public Sub ChangeEnabledControlProperty(bEnable As Boolean)
+        Page.ChangeEnabledControlProperty(moCityText, bEnable)
+        Page.ChangeEnabledControlProperty(moAddress1Text, bEnable)
+        Page.ChangeEnabledControlProperty(moAddress2Text, bEnable)
+        Page.ChangeEnabledControlProperty(moAddress3Text, bEnable)
+        Page.ChangeEnabledControlProperty(moPostalText, bEnable)
+        Page.ChangeEnabledControlProperty(moRegionDrop_WRITE, bEnable)
+        Page.ChangeEnabledControlProperty(moCountryText, bEnable)
     End Sub
     'Req 784
-    Public Sub EnableDisablecontrol(ByVal bvalue As Boolean)
+    Public Sub EnableDisablecontrol(bvalue As Boolean)
 
         moCityText.ReadOnly = bvalue
         moAddress1Text.ReadOnly = bvalue
@@ -207,28 +207,28 @@ Partial Class UserControlAddress
     End Sub
     Public Sub ReAssignTabIndex(Optional ByVal TabIndexStartingNumber As Int16 = 0)
         If TabIndexStartingNumber > 0 Then
-            Me.moAddress1Text.TabIndex = TabIndexStartingNumber
-            Me.moCityText.TabIndex = CType(TabIndexStartingNumber + 1, Int16)
-            Me.moPostalText.TabIndex = CType(TabIndexStartingNumber + 2, Int16)
-            Me.moAddress2Text.TabIndex = CType(TabIndexStartingNumber + 3, Int16)
-            Me.moRegionDrop_WRITE.TabIndex = CType(TabIndexStartingNumber + 6, Int16)
-            Me.moRegionText.TabIndex = CType(TabIndexStartingNumber + 5, Int16)
-            Me.moCountryDrop_WRITE.TabIndex = CType(TabIndexStartingNumber + 4, Int16)
-            Me.moCountryText.TabIndex = CType(TabIndexStartingNumber + 7, Int16)
+            moAddress1Text.TabIndex = TabIndexStartingNumber
+            moCityText.TabIndex = CType(TabIndexStartingNumber + 1, Int16)
+            moPostalText.TabIndex = CType(TabIndexStartingNumber + 2, Int16)
+            moAddress2Text.TabIndex = CType(TabIndexStartingNumber + 3, Int16)
+            moRegionDrop_WRITE.TabIndex = CType(TabIndexStartingNumber + 6, Int16)
+            moRegionText.TabIndex = CType(TabIndexStartingNumber + 5, Int16)
+            moCountryDrop_WRITE.TabIndex = CType(TabIndexStartingNumber + 4, Int16)
+            moCountryText.TabIndex = CType(TabIndexStartingNumber + 7, Int16)
         End If
     End Sub
 
-    Public Sub EnableControls(ByVal bEnable As Boolean, Optional ByVal isNewCompany As Boolean = False)
+    Public Sub EnableControls(bEnable As Boolean, Optional ByVal isNewCompany As Boolean = False)
         Page.EnableDisableControls(Me, bEnable)
 
         If bEnable Then
-            If Not moRegionDrop_WRITE Is Nothing Then
+            If moRegionDrop_WRITE IsNot Nothing Then
                 moRegionText.Text = ElitaPlusPage.GetSelectedDescription(moRegionDrop_WRITE)
             Else
                 moRegionText.Text = ""
             End If
 
-            If Not moCountryDrop_WRITE Is Nothing Then
+            If moCountryDrop_WRITE IsNot Nothing Then
                 moCountryText.Text = ElitaPlusPage.GetSelectedDescription(moCountryDrop_WRITE)
             Else
                 moCountryText.Text = ""
@@ -262,7 +262,7 @@ Partial Class UserControlAddress
         moCountryText.BorderColor = Color.FromArgb(198, 198, 198)
     End Sub
 
-    Private Sub moCountryDrop_WRITE_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles moCountryDrop_WRITE.SelectedIndexChanged
+    Private Sub moCountryDrop_WRITE_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles moCountryDrop_WRITE.SelectedIndexChanged
         oCountryID = New Guid(moCountryDrop_WRITE.SelectedItem.Value)
 
         Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
@@ -296,7 +296,7 @@ Partial Class UserControlAddress
     Private Sub LoadRegionList()
 
         Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
-        oListContext.CountryId = Me.Page.GetGuidValueFromPropertyName(MyGenBO, "CountryId")
+        oListContext.CountryId = Page.GetGuidValueFromPropertyName(MyGenBO, "CountryId")
         Dim oRegionList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RegionsByCountry", context:=oListContext)
         moRegionDrop_WRITE.Populate(oRegionList, New PopulateOptions() With
                                            {
@@ -320,144 +320,144 @@ Partial Class UserControlAddress
 
     End Sub
 
-    Public Sub Bind(ByVal oBusObj As BusinessObjectBase)
+    Public Sub Bind(oBusObj As BusinessObjectBase)
         MyGenBO = oBusObj
-        If Not Me.MyGenBO Is Nothing Then
+        If MyGenBO IsNot Nothing Then
             BindBoPropertiesToLabels()
-            Me.Page.AddLabelDecorations(Me.MyGenBO)
+            Page.AddLabelDecorations(MyGenBO)
         End If
-        Me.PopulateControlFromBO()
+        PopulateControlFromBO()
     End Sub
 
     '' REQ-784
-    Public Sub NewClaimBind(ByVal oBusObj As BusinessObjectBase)
+    Public Sub NewClaimBind(oBusObj As BusinessObjectBase)
         MyGenBO = oBusObj
-        If Not Me.MyGenBO Is Nothing Then
+        If MyGenBO IsNot Nothing Then
             BindBoPropertiesToLabels()
-            Me.Page.AddLabelDecorations(Me.MyGenBO)
+            Page.AddLabelDecorations(MyGenBO)
         End If
         PopulateNewClaimControlFromBO()
 
     End Sub
 
     '' REQ-784
-    Public Sub ClaimDetailsBind(ByVal oBusObj As BusinessObjectBase)
+    Public Sub ClaimDetailsBind(oBusObj As BusinessObjectBase)
         MyGenBO = oBusObj
-        If Not Me.MyGenBO Is Nothing Then
+        If MyGenBO IsNot Nothing Then
             BindBoPropertiesToLabels()
-            Me.Page.AddLabelDecorations(Me.MyGenBO)
+            Page.AddLabelDecorations(MyGenBO)
         End If
         PopulateControlFromBO()
 
     End Sub
 
     Protected Sub BindBoPropertiesToLabels()
-        Me.Page.BindBOPropertyToLabel(Me.MyGenBO, POSTALCODE_PROPERTY, Me.moPostalLabel)
-        Me.Page.BindBOPropertyToLabel(Me.MyGenBO, ADDRESS1_PROPERTY, Me.moAddress1Label)
-        Me.Page.BindBOPropertyToLabel(Me.MyGenBO, ADDRESS2_PROPERTY, Me.moAddress2Label)
-        Me.Page.BindBOPropertyToLabel(Me.MyGenBO, ADDRESS3_PROPERTY, Me.moAddress3Label)
-        Me.Page.BindBOPropertyToLabel(Me.MyGenBO, CITY_PROPERTY, Me.moCityLabel)
-        Me.Page.BindBOPropertyToLabel(Me.MyGenBO, CONTRYID_PROPERTY, Me.moCountryLabel)
-        Me.Page.BindBOPropertyToLabel(Me.MyGenBO, REGIONID_PROPERTY, Me.moRegionLabel)
+        Page.BindBOPropertyToLabel(MyGenBO, POSTALCODE_PROPERTY, moPostalLabel)
+        Page.BindBOPropertyToLabel(MyGenBO, ADDRESS1_PROPERTY, moAddress1Label)
+        Page.BindBOPropertyToLabel(MyGenBO, ADDRESS2_PROPERTY, moAddress2Label)
+        Page.BindBOPropertyToLabel(MyGenBO, ADDRESS3_PROPERTY, moAddress3Label)
+        Page.BindBOPropertyToLabel(MyGenBO, CITY_PROPERTY, moCityLabel)
+        Page.BindBOPropertyToLabel(MyGenBO, CONTRYID_PROPERTY, moCountryLabel)
+        Page.BindBOPropertyToLabel(MyGenBO, REGIONID_PROPERTY, moRegionLabel)
         'Me.Page.ClearGridHeadersAndLabelsErrSign()
     End Sub
 
     '' REQ-784
     Public Sub PopulateNewClaimControlFromBO()
-        If Not Me.MyGenBO Is Nothing Then
+        If MyGenBO IsNot Nothing Then
             BindBoPropertiesToLabels()
-            Me.Page.AddLabelDecorations(Me.MyGenBO)
+            Page.AddLabelDecorations(MyGenBO)
         End If
-        If Not Me.MyGenBO Is Nothing Then
+        If MyGenBO IsNot Nothing Then
             LoadRegionList()
             moCountryText.Text = ""
             moCountryText.Text = ""
-            If Not Me.Page.GetGuidValueFromPropertyName(MyGenBO, "CountryId").Equals(Guid.Empty) Then
+            If Not Page.GetGuidValueFromPropertyName(MyGenBO, "CountryId").Equals(Guid.Empty) Then
                 LoadCountryList(False)
-                moCountryText.Text = LookupListNew.GetDescriptionFromId(LookupListNew.DataView(LookupListNew.LK_COUNTRIES), Me.Page.GetGuidValueFromPropertyName(MyGenBO, "CountryId"))
+                moCountryText.Text = LookupListNew.GetDescriptionFromId(LookupListNew.DataView(LookupListNew.LK_COUNTRIES), Page.GetGuidValueFromPropertyName(MyGenBO, "CountryId"))
             Else
                 LoadCountryList()
             End If
-            Me.Page.SetSelectedItem(moRegionDrop_WRITE, Me.Page.GetGuidValueFromPropertyName(MyGenBO, "RegionId"))
-            Me.Page.SetSelectedItem(moCountryDrop_WRITE, Me.Page.GetGuidValueFromPropertyName(MyGenBO, "CountryId"))
+            Page.SetSelectedItem(moRegionDrop_WRITE, Page.GetGuidValueFromPropertyName(MyGenBO, "RegionId"))
+            Page.SetSelectedItem(moCountryDrop_WRITE, Page.GetGuidValueFromPropertyName(MyGenBO, "CountryId"))
         End If
     End Sub
    
     Public Sub PopulateControlFromBO()
-        If Not Me.MyGenBO Is Nothing Then
+        If MyGenBO IsNot Nothing Then
             LoadRegionList()
             moCountryText.Text = ""
             moCountryText.Text = ""
-            With Me.MyGenBO
-                If Not Me.Page.GetGuidValueFromPropertyName(MyGenBO, "CountryId").Equals(Guid.Empty) Then
+            With MyGenBO
+                If Not Page.GetGuidValueFromPropertyName(MyGenBO, "CountryId").Equals(Guid.Empty) Then
                     LoadCountryList(False)
-                    moCountryText.Text = LookupListNew.GetDescriptionFromId(LookupListNew.DataView(LookupListNew.LK_COUNTRIES), Me.Page.GetGuidValueFromPropertyName(MyGenBO, "CountryId"))
+                    moCountryText.Text = LookupListNew.GetDescriptionFromId(LookupListNew.DataView(LookupListNew.LK_COUNTRIES), Page.GetGuidValueFromPropertyName(MyGenBO, "CountryId"))
                 Else
                     LoadCountryList()
                 End If
-                Me.Page.SetSelectedItem(moRegionDrop_WRITE, Me.Page.GetGuidValueFromPropertyName(MyGenBO, "RegionId"))
-                Me.Page.SetSelectedItem(moCountryDrop_WRITE, Me.Page.GetGuidValueFromPropertyName(MyGenBO, "CountryId"))
-                Me.Page.PopulateControlFromPropertyName(MyGenBO, moAddress1Text, "Address1")
-                Me.Page.PopulateControlFromPropertyName(MyGenBO, moAddress2Text, "Address2")
+                Page.SetSelectedItem(moRegionDrop_WRITE, Page.GetGuidValueFromPropertyName(MyGenBO, "RegionId"))
+                Page.SetSelectedItem(moCountryDrop_WRITE, Page.GetGuidValueFromPropertyName(MyGenBO, "CountryId"))
+                Page.PopulateControlFromPropertyName(MyGenBO, moAddress1Text, "Address1")
+                Page.PopulateControlFromPropertyName(MyGenBO, moAddress2Text, "Address2")
                 'DEF-2173 Start
-                If (Not Me.MyGenBO Is Nothing) Then
-                    If Me.MyGenBO.GetType.Name.ToString() <> "CommissionEntity" Then
-                        Me.Page.PopulateControlFromPropertyName(MyGenBO, moAddress3Text, "Address3")
+                If (MyGenBO IsNot Nothing) Then
+                    If MyGenBO.GetType.Name.ToString() <> "CommissionEntity" Then
+                        Page.PopulateControlFromPropertyName(MyGenBO, moAddress3Text, "Address3")
                     End If
                 End If
                 'DEF-2173 End
 
-                Me.Page.PopulateControlFromPropertyName(MyGenBO, moCityText, "City")
-                Me.Page.PopulateControlFromPropertyName(MyGenBO, moPostalText, "PostalCode")
+                Page.PopulateControlFromPropertyName(MyGenBO, moCityText, "City")
+                Page.PopulateControlFromPropertyName(MyGenBO, moPostalText, "PostalCode")
 
             End With
         End If
     End Sub
 
     Public Sub PopulateBOFromControl(Optional ByVal blnIncludeCountryId As Boolean = False)
-        If Not Me.MyGenBO Is Nothing Then
+        If MyGenBO IsNot Nothing Then
             BindBoPropertiesToLabels()
-            Me.Page.AddLabelDecorations(Me.MyGenBO)
+            Page.AddLabelDecorations(MyGenBO)
         End If
         'If MyBO.IsDeleted Then
         '    Exit Sub
         'End If
-        If Not Me.MyGenBO Is Nothing AndAlso Not MyGenBO.IsDeleted Then
-            With Me.MyGenBO
-                Me.Page.PopulateBOProperty(Me.MyGenBO, "City", moCityText)
-                Me.Page.PopulateBOProperty(Me.MyGenBO, "Address1", moAddress1Text)
-                Me.Page.PopulateBOProperty(Me.MyGenBO, "Address2", moAddress2Text)
+        If MyGenBO IsNot Nothing AndAlso Not MyGenBO.IsDeleted Then
+            With MyGenBO
+                Page.PopulateBOProperty(MyGenBO, "City", moCityText)
+                Page.PopulateBOProperty(MyGenBO, "Address1", moAddress1Text)
+                Page.PopulateBOProperty(MyGenBO, "Address2", moAddress2Text)
                 'DEF-2173 Start
-                If (Not Me.MyGenBO Is Nothing) Then
-                    If Me.MyGenBO.GetType.Name.ToString() <> "CommissionEntity" Then
-                        Me.Page.PopulateBOProperty(Me.MyGenBO, "Address3", moAddress3Text)
+                If (MyGenBO IsNot Nothing) Then
+                    If MyGenBO.GetType.Name.ToString() <> "CommissionEntity" Then
+                        Page.PopulateBOProperty(MyGenBO, "Address3", moAddress3Text)
                     End If
                 End If
                 'DEF-2173 End
 
 
-                Me.Page.PopulateBOProperty(Me.MyGenBO, "PostalCode", moPostalText)
-                Me.Page.PopulateBOProperty(Me.MyGenBO, "RegionId", moRegionDrop_WRITE)
-                If blnIncludeCountryId Then Me.Page.PopulateBOProperty(Me.MyGenBO, "CountryId", moCountryDrop_WRITE)
+                Page.PopulateBOProperty(MyGenBO, "PostalCode", moPostalText)
+                Page.PopulateBOProperty(MyGenBO, "RegionId", moRegionDrop_WRITE)
+                If blnIncludeCountryId Then Page.PopulateBOProperty(MyGenBO, "CountryId", moCountryDrop_WRITE)
                 SetLabelColor(moPostalLabel)
 
-                If TypeOf Me.MyGenBO Is Address Then
+                If TypeOf MyGenBO Is Address Then
                     .Save()
                 End If
             End With
         End If
     End Sub
     '' REQ-784
-    Public Function PopulateBOFromAddressControl(ByVal MyAddressBO As Address) As Address
-        If Not MyAddressBO Is Nothing AndAlso Not MyAddressBO.IsDeleted Then
+    Public Function PopulateBOFromAddressControl(MyAddressBO As Address) As Address
+        If MyAddressBO IsNot Nothing AndAlso Not MyAddressBO.IsDeleted Then
             With MyAddressBO
-                Me.Page.PopulateBOProperty(MyAddressBO, "City", moCityText)
-                Me.Page.PopulateBOProperty(MyAddressBO, "Address1", moAddress1Text)
-                Me.Page.PopulateBOProperty(MyAddressBO, "Address2", moAddress2Text)
-                Me.Page.PopulateBOProperty(MyAddressBO, "Address3", moAddress3Text)
-                Me.Page.PopulateBOProperty(MyAddressBO, "PostalCode", moPostalText)
-                Me.Page.PopulateBOProperty(MyAddressBO, "RegionId", moRegionDrop_WRITE)
-                Me.Page.PopulateBOProperty(MyAddressBO, "CountryId", moCountryDrop_WRITE)
+                Page.PopulateBOProperty(MyAddressBO, "City", moCityText)
+                Page.PopulateBOProperty(MyAddressBO, "Address1", moAddress1Text)
+                Page.PopulateBOProperty(MyAddressBO, "Address2", moAddress2Text)
+                Page.PopulateBOProperty(MyAddressBO, "Address3", moAddress3Text)
+                Page.PopulateBOProperty(MyAddressBO, "PostalCode", moPostalText)
+                Page.PopulateBOProperty(MyAddressBO, "RegionId", moRegionDrop_WRITE)
+                Page.PopulateBOProperty(MyAddressBO, "CountryId", moCountryDrop_WRITE)
             End With
         End If
 
@@ -466,24 +466,24 @@ Partial Class UserControlAddress
 
     Public Function GetCountryValue() As Guid
         If moCountryDrop_WRITE.SelectedItem.Text <> "" Then
-            GetCountryValue = Me.Page.GetSelectedItem(moCountryDrop_WRITE)
+            GetCountryValue = Page.GetSelectedItem(moCountryDrop_WRITE)
         Else
             GetCountryValue = Guid.Empty
         End If
     End Function
 
     Public Sub SetTheRequiredFields()
-        If moAddress1Label.Text.IndexOf("*") <> 0 Then Me.moAddress1Label.Text = "* " & Me.moAddress1Label.Text
-        If moCityLabel.Text.IndexOf("*") <> 0 Then Me.moCityLabel.Text = "* " & Me.moCityLabel.Text
-        If moCountryLabel.Text.IndexOf("*") <> 0 Then Me.moCountryLabel.Text = "* " & Me.moCountryLabel.Text
+        If moAddress1Label.Text.IndexOf("*") <> 0 Then moAddress1Label.Text = "* " & moAddress1Label.Text
+        If moCityLabel.Text.IndexOf("*") <> 0 Then moCityLabel.Text = "* " & moCityLabel.Text
+        If moCountryLabel.Text.IndexOf("*") <> 0 Then moCountryLabel.Text = "* " & moCountryLabel.Text
         IsAddressRequired = True
     End Sub
 
-    Private Sub moPostalText_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles moPostalText.TextChanged
-        Me.moPostalText.Text = Me.moPostalText.Text.Trim
+    Private Sub moPostalText_TextChanged(sender As Object, e As System.EventArgs) Handles moPostalText.TextChanged
+        moPostalText.Text = moPostalText.Text.Trim
     End Sub
 
-    Public Shared Sub SetLabelColor(ByVal lbl As Label)
+    Public Shared Sub SetLabelColor(lbl As Label)
         lbl.ForeColor = Color.Black
     End Sub
 #End Region

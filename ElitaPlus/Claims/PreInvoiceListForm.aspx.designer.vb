@@ -10,6 +10,7 @@
 Option Strict On
 Option Explicit On
 
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
 
 Partial Public Class PreInvoiceListForm
 
@@ -20,7 +21,7 @@ Partial Public Class PreInvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moMultipleColumnDrop As Global.Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl_New
+    Protected WithEvents moMultipleColumnDrop As MultipleColumnDDLabelControl_New
 
     '''<summary>
     '''trSeparator control.
@@ -29,7 +30,7 @@ Partial Public Class PreInvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trSeparator As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trSeparator As HtmlTableRow
 
     '''<summary>
     '''moBatchNumberLabel control.
@@ -38,7 +39,7 @@ Partial Public Class PreInvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moBatchNumberLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moBatchNumberLabel As Label
 
     '''<summary>
     '''txtBatchNumber control.
@@ -47,7 +48,7 @@ Partial Public Class PreInvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtBatchNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtBatchNumber As TextBox
 
     '''<summary>
     '''lblStatus control.
@@ -56,7 +57,7 @@ Partial Public Class PreInvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblStatus As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblStatus As Label
 
     '''<summary>
     '''ddlStatus control.
@@ -65,7 +66,7 @@ Partial Public Class PreInvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlStatus As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlStatus As DropDownList
 
     '''<summary>
     '''moCreatedDateFromLabel control.
@@ -74,7 +75,7 @@ Partial Public Class PreInvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moCreatedDateFromLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moCreatedDateFromLabel As Label
 
     '''<summary>
     '''Label3 control.
@@ -83,7 +84,7 @@ Partial Public Class PreInvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label3 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label3 As Label
 
     '''<summary>
     '''txtCreatedDateFrom control.
@@ -92,7 +93,7 @@ Partial Public Class PreInvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtCreatedDateFrom As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtCreatedDateFrom As TextBox
 
     '''<summary>
     '''btnCreatedDateFromCert control.
@@ -101,7 +102,7 @@ Partial Public Class PreInvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnCreatedDateFromCert As Global.System.Web.UI.WebControls.ImageButton
+    Protected WithEvents btnCreatedDateFromCert As ImageButton
 
     '''<summary>
     '''Label4 control.
@@ -110,7 +111,7 @@ Partial Public Class PreInvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label4 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label4 As Label
 
     '''<summary>
     '''Label5 control.
@@ -119,7 +120,7 @@ Partial Public Class PreInvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label5 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label5 As Label
 
     '''<summary>
     '''txtCreatedDateTo control.
@@ -128,7 +129,7 @@ Partial Public Class PreInvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtCreatedDateTo As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtCreatedDateTo As TextBox
 
     '''<summary>
     '''btnCreatedDateToCert control.
@@ -137,7 +138,7 @@ Partial Public Class PreInvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnCreatedDateToCert As Global.System.Web.UI.WebControls.ImageButton
+    Protected WithEvents btnCreatedDateToCert As ImageButton
 
     '''<summary>
     '''btnClearSearch control.
@@ -146,7 +147,7 @@ Partial Public Class PreInvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnClearSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnClearSearch As Button
 
     '''<summary>
     '''btnSearch control.
@@ -155,7 +156,7 @@ Partial Public Class PreInvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSearch As Button
 
     '''<summary>
     '''trPageSize control.
@@ -164,7 +165,7 @@ Partial Public Class PreInvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trPageSize As HtmlTableRow
 
     '''<summary>
     '''lblPageSize control.
@@ -173,7 +174,7 @@ Partial Public Class PreInvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPageSize As Label
 
     '''<summary>
     '''colonSepertor control.
@@ -182,7 +183,7 @@ Partial Public Class PreInvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents colonSepertor As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents colonSepertor As Label
 
     '''<summary>
     '''cboPageSize control.
@@ -191,7 +192,7 @@ Partial Public Class PreInvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboPageSize As DropDownList
 
     '''<summary>
     '''lblRecordCount control.
@@ -200,7 +201,7 @@ Partial Public Class PreInvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblRecordCount As Label
 
     '''<summary>
     '''Grid control.
@@ -209,7 +210,7 @@ Partial Public Class PreInvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Grid As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents Grid As GridView
 
     '''<summary>
     '''btnNewInvCycle control.
@@ -218,5 +219,5 @@ Partial Public Class PreInvoiceListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnNewInvCycle As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnNewInvCycle As Button
 End Class

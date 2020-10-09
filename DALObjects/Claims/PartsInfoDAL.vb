@@ -32,64 +32,64 @@ Public Class PartsInfoDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("parts_info_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function LoadSelectedList(ByVal claimID As Guid, ByVal languageId As Guid) As DataSet
+    Public Function LoadSelectedList(claimID As Guid, languageId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray), _
                                                                                             New DBHelper.DBHelperParameter(COL_NAME_CLAIM_ID, claimID.ToByteArray)}
         Try
             Dim ds = New DataSet
-            Return (DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Function LoadAvailList(ByVal riskGroupID As Guid, ByVal claimID As Guid, ByVal companyGrpID As Guid) As DataSet
+    Public Function LoadAvailList(riskGroupID As Guid, claimID As Guid, companyGrpID As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_AVAIL_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_AVAIL_LIST")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_RISK_GROUP_ID, riskGroupID.ToByteArray), _
                                                          New DBHelper.DBHelperParameter(FILD_NAME_COMPANY_GROUP_ID, companyGrpID.ToByteArray), _
                                                          New DBHelper.DBHelperParameter(COL_NAME_CLAIM_ID, claimID.ToByteArray)}
         Try
             Dim ds = New DataSet
-            Return (DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Function LoadAvailListWithCurrentPart(ByVal riskGroupID As Guid, ByVal claimID As Guid, ByVal partsDescID As Guid, ByVal companyGrpID As Guid) As DataSet
+    Public Function LoadAvailListWithCurrentPart(riskGroupID As Guid, claimID As Guid, partsDescID As Guid, companyGrpID As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_AVAIL_LIST_WITH_PART")
+        Dim selectStmt As String = Config("/SQL/LOAD_AVAIL_LIST_WITH_PART")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_RISK_GROUP_ID, riskGroupID.ToByteArray), _
                                                                                            New DBHelper.DBHelperParameter(FILD_NAME_COMPANY_GROUP_ID, companyGrpID.ToByteArray), _
                                                                                            New DBHelper.DBHelperParameter(COL_NAME_CLAIM_ID, claimID.ToByteArray), _
                                                                                            New DBHelper.DBHelperParameter(COL_NAME_PARTS_DESCRIPTION_ID, partsDescID.ToByteArray)}
         Try
             Dim ds = New DataSet
-            Return (DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -99,9 +99,9 @@ Public Class PartsInfoDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

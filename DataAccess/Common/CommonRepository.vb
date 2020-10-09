@@ -10,10 +10,10 @@ Public NotInheritable Class CommonRepository(Of TType As {BaseEntity, IRecordCre
     End Sub
 
     Public Function GetList(ByVal listCode As String, ByVal languageCode As String) As IEnumerable(Of ElitaListItem) Implements ICommonRepository(Of TType).GetList
-        Dim QueryForListItems = (From li As ListItem In Me.Context.ListItems
-                                 Join l As List In Me.Context.Lists On l.ListId Equals li.ListId
-                                 Join dit As DictionaryItemTranslation In Me.Context.DictionaryItemTranslations On dit.DictionaryItemId Equals li.DictionaryItemId
-                                 Where dit.Language.Code = languageCode And l.Code = listCode
+        Dim QueryForListItems = (From li As ListItem In Context.ListItems
+                                 Join l As List In Context.Lists On l.ListId Equals li.ListId
+                                 Join dit As DictionaryItemTranslation In Context.DictionaryItemTranslations On dit.DictionaryItemId Equals li.DictionaryItemId
+                                 Where dit.Language.Code = languageCode AndAlso l.Code = listCode
                                  Select li.Code, dit.Translation, li.ListItemId, li.ExtendedCode)
 
         Dim result = New List(Of ElitaListItem)
@@ -38,10 +38,10 @@ Public NotInheritable Class CommonRepository(Of TType As {BaseEntity, IRecordCre
     End Function
 
     Private Function GetTranslation(uiProgCode As String, languageCode As String) As IEnumerable(Of LabelTranslation)
-        Return (From l As Label In Me.Context.Labels
-                Join di As DictionaryItem In Me.Context.DictionaryItems On l.DictionaryItemId Equals di.DictionaryItemId
-                Join dit As DictionaryItemTranslation In Me.Context.DictionaryItemTranslations On dit.DictionaryItemId Equals l.DictionaryItemId
-                Where dit.Language.Code = languageCode And l.UiProgCode = uiProgCode
+        Return (From l As Label In Context.Labels
+                Join di As DictionaryItem In Context.DictionaryItems On l.DictionaryItemId Equals di.DictionaryItemId
+                Join dit As DictionaryItemTranslation In Context.DictionaryItemTranslations On dit.DictionaryItemId Equals l.DictionaryItemId
+                Where dit.Language.Code = languageCode AndAlso l.UiProgCode = uiProgCode
                 Select New LabelTranslation() With
                     {
                     .LabelId = l.LabelId,

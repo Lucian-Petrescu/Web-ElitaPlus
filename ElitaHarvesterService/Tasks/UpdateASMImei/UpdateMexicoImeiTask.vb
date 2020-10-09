@@ -13,7 +13,7 @@ Public Class UpdateMexicoImeiTask
     
 #Region "Constructors"
 
-    Public Sub New(ByVal machineName As String, ByVal processThreadName As String)
+    Public Sub New(machineName As String, processThreadName As String)
         MyBase.New(machineName, processThreadName)
     End Sub
 
@@ -40,7 +40,7 @@ Public Class UpdateMexicoImeiTask
         Get
             Return _certificateId
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             _certificateId = value
         End Set
     End Property
@@ -48,7 +48,7 @@ Public Class UpdateMexicoImeiTask
         Get
             Return _oCertificate
         End Get
-        Set(ByVal value As Certificate)
+        Set(value As Certificate)
             _oCertificate = value
         End Set
     End Property
@@ -58,7 +58,7 @@ Public Class UpdateMexicoImeiTask
         Get
             Return _certItemId
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             _certItemId = value
         End Set
     End Property
@@ -67,7 +67,7 @@ Public Class UpdateMexicoImeiTask
         Get
             Return _oCertItem
         End Get
-        Set(ByVal value As CertItem)
+        Set(value As CertItem)
             _oCertItem = value
         End Set
     End Property

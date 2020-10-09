@@ -30,47 +30,47 @@ Public Class DealerFileProcessed
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load(id)
+        Dataset = New Dataset
+        Load(id)
     End Sub
 
-    Public Sub New(ByVal id As Guid, ByVal parentfile As Boolean)
+    Public Sub New(id As Guid, parentfile As Boolean)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id, parentfile)
+        Dataset = New DataSet
+        Load(id, parentfile)
     End Sub
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load()
+        Dataset = New Dataset
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New DealerFileProcessedDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -78,23 +78,23 @@ Public Class DealerFileProcessed
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New DealerFileProcessedDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -102,23 +102,23 @@ Public Class DealerFileProcessed
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid, ByVal IsParentFile As Boolean)
+    Protected Sub Load(id As Guid, IsParentFile As Boolean)
         Try
             Dim dal As New DealerFileProcessedDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id, IsParentFile)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id, IsParentFile)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -136,7 +136,7 @@ Public Class DealerFileProcessed
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(DealerFileProcessedDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -146,7 +146,7 @@ Public Class DealerFileProcessed
         End Get
     End Property
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -155,14 +155,14 @@ Public Class DealerFileProcessed
                 Return New Guid(CType(Row(DealerFileProcessedDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerFileProcessedDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(DealerFileProcessedDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property Filename() As String
+    Public Property Filename As String
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_FILENAME) Is DBNull.Value Then
@@ -171,15 +171,15 @@ Public Class DealerFileProcessed
                 Return CType(Row(DealerFileProcessedDAL.COL_NAME_FILENAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerFileProcessedDAL.COL_NAME_FILENAME, Value)
+            SetValue(DealerFileProcessedDAL.COL_NAME_FILENAME, Value)
         End Set
     End Property
 
 
 
-    Public Property Received() As LongType
+    Public Property Received As LongType
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_RECEIVED) Is DBNull.Value Then
@@ -188,15 +188,15 @@ Public Class DealerFileProcessed
                 Return New LongType(CType(Row(DealerFileProcessedDAL.COL_NAME_RECEIVED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerFileProcessedDAL.COL_NAME_RECEIVED, Value)
+            SetValue(DealerFileProcessedDAL.COL_NAME_RECEIVED, Value)
         End Set
     End Property
 
 
 
-    Public Property Counted() As LongType
+    Public Property Counted As LongType
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_COUNTED) Is DBNull.Value Then
@@ -205,13 +205,13 @@ Public Class DealerFileProcessed
                 Return New LongType(CType(Row(DealerFileProcessedDAL.COL_NAME_COUNTED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerFileProcessedDAL.COL_NAME_COUNTED, Value)
+            SetValue(DealerFileProcessedDAL.COL_NAME_COUNTED, Value)
         End Set
     End Property
 
-    Public Property Bypassed() As LongType
+    Public Property Bypassed As LongType
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_BYPASSED) Is DBNull.Value Then
@@ -220,13 +220,13 @@ Public Class DealerFileProcessed
                 Return New LongType(CType(Row(DealerFileProcessedDAL.COL_NAME_BYPASSED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerFileProcessedDAL.COL_NAME_BYPASSED, Value)
+            SetValue(DealerFileProcessedDAL.COL_NAME_BYPASSED, Value)
         End Set
     End Property
 
-    Public Property Rejected() As LongType
+    Public Property Rejected As LongType
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_REJECTED) Is DBNull.Value Then
@@ -235,13 +235,13 @@ Public Class DealerFileProcessed
                 Return New LongType(CType(Row(DealerFileProcessedDAL.COL_NAME_REJECTED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerFileProcessedDAL.COL_NAME_REJECTED, Value)
+            SetValue(DealerFileProcessedDAL.COL_NAME_REJECTED, Value)
         End Set
     End Property
 
-    Public Property RemainingRejected() As LongType
+    Public Property RemainingRejected As LongType
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_REMAINING_REJECTED) Is DBNull.Value Then
@@ -250,13 +250,13 @@ Public Class DealerFileProcessed
                 Return New LongType(CType(Row(DealerFileProcessedDAL.COL_NAME_REMAINING_REJECTED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerFileProcessedDAL.COL_NAME_REMAINING_REJECTED, Value)
+            SetValue(DealerFileProcessedDAL.COL_NAME_REMAINING_REJECTED, Value)
         End Set
     End Property
 
-    Public Property Validated() As LongType
+    Public Property Validated As LongType
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_VALIDATED) Is DBNull.Value Then
@@ -265,15 +265,15 @@ Public Class DealerFileProcessed
                 Return New LongType(CType(Row(DealerFileProcessedDAL.COL_NAME_VALIDATED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerFileProcessedDAL.COL_NAME_VALIDATED, Value)
+            SetValue(DealerFileProcessedDAL.COL_NAME_VALIDATED, Value)
         End Set
     End Property
 
 
 
-    Public Property Loaded() As LongType
+    Public Property Loaded As LongType
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_LOADED) Is DBNull.Value Then
@@ -282,15 +282,15 @@ Public Class DealerFileProcessed
                 Return New LongType(CType(Row(DealerFileProcessedDAL.COL_NAME_LOADED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerFileProcessedDAL.COL_NAME_LOADED, Value)
+            SetValue(DealerFileProcessedDAL.COL_NAME_LOADED, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=20)> _
-    Public Property Layout() As String
+    Public Property Layout As String
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_LAYOUT) Is DBNull.Value Then
@@ -299,13 +299,13 @@ Public Class DealerFileProcessed
                 Return CType(Row(DealerFileProcessedDAL.COL_NAME_LAYOUT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerFileProcessedDAL.COL_NAME_LAYOUT, Value)
+            SetValue(DealerFileProcessedDAL.COL_NAME_LAYOUT, Value)
         End Set
     End Property
 
-    Public Property FileTypeCode() As String
+    Public Property FileTypeCode As String
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_FILE_TYPE_CODE) Is DBNull.Value Then
@@ -314,13 +314,13 @@ Public Class DealerFileProcessed
                 Return CType(Row(DealerFileProcessedDAL.COL_NAME_FILE_TYPE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerFileProcessedDAL.COL_NAME_FILE_TYPE_CODE, Value)
+            SetValue(DealerFileProcessedDAL.COL_NAME_FILE_TYPE_CODE, Value)
         End Set
     End Property
 
-    Public Property DealerGroupId() As Guid
+    Public Property DealerGroupId As Guid
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_DEALER_GROUP_ID) Is DBNull.Value Then
@@ -329,13 +329,13 @@ Public Class DealerFileProcessed
                 Return New Guid(CType(Row(DealerFileProcessedDAL.COL_NAME_DEALER_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(DealerFileProcessedDAL.COL_NAME_DEALER_GROUP_ID, Value)
+            SetValue(DealerFileProcessedDAL.COL_NAME_DEALER_GROUP_ID, Value)
         End Set
     End Property
 
-    Public ReadOnly Property Status() As String
+    Public ReadOnly Property Status As String
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_STATUS) Is DBNull.Value Then
@@ -346,7 +346,7 @@ Public Class DealerFileProcessed
         End Get
     End Property
 
-    Public ReadOnly Property IsChildFile() As Boolean
+    Public ReadOnly Property IsChildFile As Boolean
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_Is_Child_File) Is DBNull.Value Then
@@ -358,7 +358,7 @@ Public Class DealerFileProcessed
         End Get
     End Property
 
-    Public ReadOnly Property StatusDescription() As String
+    Public ReadOnly Property StatusDescription As String
         Get
             CheckDeleted()
             If Row(DealerFileProcessedDAL.COL_NAME_STATUS_DESC) Is DBNull.Value Then
@@ -371,32 +371,32 @@ Public Class DealerFileProcessed
 
 #Region "Properties External BOs"
 
-    Public ReadOnly Property DealerCode() As String
+    Public ReadOnly Property DealerCode As String
         Get
             If DealerId.Equals(Guid.Empty) Then Return Nothing
-            Return LookupListNew.GetCodeFromId(LookupListNew.LK_DEALERS, DealerId)
+            Return LookupListNew.GetCodeFromId(LookupListCache.LK_DEALERS, DealerId)
         End Get
     End Property
 
-    Public ReadOnly Property DealerNameLoad() As String
+    Public ReadOnly Property DealerNameLoad As String
         Get
             If DealerId.Equals(Guid.Empty) Then Return Nothing
-            Dim dv As DataView = LookupListNew.DataView(LookupListNew.LK_DEALERS)
+            Dim dv As DataView = LookupListNew.DataView(LookupListCache.LK_DEALERS)
             Return LookupListNew.GetDescriptionFromId(dv, DealerId)
         End Get
     End Property
 
-    Public ReadOnly Property DealerGroupCode() As String
+    Public ReadOnly Property DealerGroupCode As String
         Get
             If DealerGroupId.Equals(Guid.Empty) Then Return Nothing
-            Return LookupListNew.GetCodeFromId(LookupListNew.LK_DEALER_GROUPS, DealerGroupId)
+            Return LookupListNew.GetCodeFromId(LookupListCache.LK_DEALER_GROUPS, DealerGroupId)
         End Get
     End Property
 
-    Public ReadOnly Property DealerGroupNameLoad() As String
+    Public ReadOnly Property DealerGroupNameLoad As String
         Get
             If DealerGroupId.Equals(Guid.Empty) Then Return Nothing
-            Dim dv As DataView = LookupListNew.DataView(LookupListNew.LK_DEALER_GROUPS)
+            Dim dv As DataView = LookupListNew.DataView(LookupListCache.LK_DEALER_GROUPS)
             Return LookupListNew.GetDescriptionFromId(dv, DealerGroupId)
         End Get
     End Property
@@ -416,15 +416,15 @@ Public Class DealerFileProcessed
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New DealerFileProcessedDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New Dataset
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New Dataset
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -462,8 +462,8 @@ Public Class DealerFileProcessed
 
 #Region "DealerFile"
 
-    Public Shared Function getDealerFileNamesBwtnDateRange(ByVal CompanyId As Guid, ByVal DealerCode As String, ByVal BeginDate As String, _
-                                                           ByVal EndDate As String, ByVal FileType As String, ByVal rejectionType As String) As DataView
+    Public Shared Function getDealerFileNamesBwtnDateRange(CompanyId As Guid, DealerCode As String, BeginDate As String, _
+                                                           EndDate As String, FileType As String, rejectionType As String) As DataView
         Dim dal As New DealerFileProcessedDAL
         Dim ds As DataSet
         Dim dv As DataView
@@ -481,7 +481,7 @@ Public Class DealerFileProcessed
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function LoadList(ByVal compIds As ArrayList, ByVal oData As Object) As DataView
+    Public Shared Function LoadList(compIds As ArrayList, oData As Object) As DataView
         Try
             Dim oDealerFileProcessedData As DealerFileProcessedData = CType(oData, DealerFileProcessedData)
             Dim dal As New DealerFileProcessedDAL
@@ -503,8 +503,8 @@ Public Class DealerFileProcessed
         Public dealerName As String
     End Structure
 
-    Public Shared Function GetDealerLayout(ByVal dealerID As Guid, _
-    ByVal oInterfaceTypeCode As DealerFileProcessedData.InterfaceTypeCode) As DealerInfo
+    Public Shared Function GetDealerLayout(dealerID As Guid, _
+    oInterfaceTypeCode As DealerFileProcessedData.InterfaceTypeCode) As DealerInfo
         Dim retDealerInfo As DealerInfo
         Dim sLayout As String
         Dim oContract As Contract
@@ -528,7 +528,7 @@ Public Class DealerFileProcessed
 
         oDealer = New Dealer(oContract.DealerId)
         sLayout = oContract.Layout
-        If Not sLayout Is Nothing Then
+        If sLayout IsNot Nothing Then
             If oInterfaceTypeCode = DealerFileProcessedData.InterfaceTypeCode.PAYM Then
                 sLayout = sLayout.Remove(sLayout.Length - 1, 1) & "p"
             End If
@@ -558,7 +558,7 @@ Public Class DealerFileProcessed
     '    intStatus.Save()
     'End Sub
 
-    Public Shared Sub ValidateFile(ByVal oData As Object)
+    Public Shared Sub ValidateFile(oData As Object)
         Try
             Dim oDealerFileProcessedData As DealerFileProcessedData = CType(oData, DealerFileProcessedData)
             Dim dal As New DealerFileProcessedDAL
@@ -571,7 +571,7 @@ Public Class DealerFileProcessed
         End Try
     End Sub
 
-    Public Shared Sub ProcessFileRecords(ByVal oData As Object)
+    Public Shared Sub ProcessFileRecords(oData As Object)
         Try
             Dim oDealerFileProcessedData As DealerFileProcessedData = CType(oData, DealerFileProcessedData)
             Dim dal As New DealerFileProcessedDAL
@@ -584,7 +584,7 @@ Public Class DealerFileProcessed
         End Try
     End Sub
 
-    Public Shared Sub DeleteFile(ByVal oData As Object)
+    Public Shared Sub DeleteFile(oData As Object)
         Try
             Dim oDealerFileProcessedData As DealerFileProcessedData = CType(oData, DealerFileProcessedData)
             Dim dal As New DealerFileProcessedDAL
@@ -597,7 +597,7 @@ Public Class DealerFileProcessed
         End Try
     End Sub
 
-    Public Shared Sub DownloadFile(ByVal oData As Object)
+    Public Shared Sub DownloadFile(oData As Object)
         Try
             Dim oDealerFileProcessedData As DealerFileProcessedData = CType(oData, DealerFileProcessedData)
             Dim dal As New DealerFileProcessedDAL
@@ -610,7 +610,7 @@ Public Class DealerFileProcessed
         End Try
     End Sub
 
-    Public Shared Sub GenerateResponseFile(ByVal oData As Object)
+    Public Shared Sub GenerateResponseFile(oData As Object)
         Try
             Dim oDealerFileProcessedData As DealerFileProcessedData = CType(oData, DealerFileProcessedData)
             Dim dal As New DealerFileProcessedDAL
@@ -627,7 +627,7 @@ Public Class DealerFileProcessed
 
 #Region "Validation"
 
-    Public Shared Sub ValidateFileName(ByVal fileLength As Integer)
+    Public Shared Sub ValidateFileName(fileLength As Integer)
         If fileLength = 0 Then
             Dim errors() As ValidationError = {New ValidationError(DEALERLOADFORM_FORM001, GetType(DealerFileProcessed), Nothing, Nothing, Nothing)}
             Throw New BOValidationException(errors, GetType(DealerFileProcessed).FullName)

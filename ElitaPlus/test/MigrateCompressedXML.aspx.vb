@@ -12,20 +12,20 @@ Public Class MigrateCompressedXML
     Private Shared outputStringBuilder As StringBuilder = New StringBuilder()
 
     Private Sub UpdateBreadCrum()
-        Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-        Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
-        Me.MasterPage.UsePageTabTitleInBreadCrum = True
+        MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+        MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
+        MasterPage.UsePageTabTitleInBreadCrum = True
     End Sub
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
         Try
-            Me.MasterPage.MessageController.Clear()
+            MasterPage.MessageController.Clear()
             UpdateBreadCrum()
             UpdateUI()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
     Private Sub UpdateUI()
@@ -35,15 +35,15 @@ Public Class MigrateCompressedXML
         btnCompressXML.Enabled = Not IsRunning
 
         If IsRunning Then
-            Me.RegisterStartupScript("autoPostBack", "<script type=text/javascript>setInterval(function(){" + Page.GetPostBackEventReference(btnRefresh) + "},10000);</script>")
+            RegisterStartupScript("autoPostBack", "<script type=text/javascript>setInterval(function(){" + Page.GetPostBackEventReference(btnRefresh) + "},10000);</script>")
         End If
     End Sub
 
-    Protected Sub btnRefresh_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Protected Sub btnRefresh_Click(sender As Object, e As EventArgs)
         ' Do nothing
     End Sub
 
-    Protected Sub btnCompressXML_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Protected Sub btnCompressXML_Click(sender As Object, e As EventArgs)
         Dim compressXMLThread As Thread
         compressXMLThread = New Thread(New ThreadStart(AddressOf CompressXML))
         compressXMLThread.Start()
@@ -53,7 +53,7 @@ Public Class MigrateCompressedXML
         UpdateUI()
     End Sub
 
-    Protected Sub btnCheckRemainingRecords_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCheckRemainingRecords.Click
+    Protected Sub btnCheckRemainingRecords_Click(sender As Object, e As EventArgs) Handles btnCheckRemainingRecords.Click
         Dim numberofrecords As Integer = Assurant.ElitaPlus.BusinessObjectsNew.AcctTransmission.TransmissionsToMigrate()
         outputStringBuilder.AddInformation(String.Format("{0} XML Files to Migrate.", If(numberofrecords = 0, "No", numberofrecords.ToString())))
         Output.InnerHtml = "<div><table width=""100%""><tr><td></td></tr></table></div><ul>" & outputStringBuilder.ToString() & "</ul>"

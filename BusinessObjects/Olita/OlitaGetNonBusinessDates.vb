@@ -13,7 +13,7 @@ Public Class OlitaGetNonBusinessDates
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As OlitaGetNonBusinessDatesDs)
+    Public Sub New(ds As OlitaGetNonBusinessDatesDs)
         MyBase.New()
         MapDataSet(ds)
         Load(ds)
@@ -22,7 +22,7 @@ Public Class OlitaGetNonBusinessDates
 #End Region
 
 #Region "Private Members"
-    Private Sub MapDataSet(ByVal ds As OlitaGetNonBusinessDatesDs)
+    Private Sub MapDataSet(ds As OlitaGetNonBusinessDatesDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -35,16 +35,16 @@ Public Class OlitaGetNonBusinessDates
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
     End Sub
 
-    Private Sub Load(ByVal ds As OlitaGetNonBusinessDatesDs)
+    Private Sub Load(ds As OlitaGetNonBusinessDatesDs)
         Try
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -57,7 +57,7 @@ Public Class OlitaGetNonBusinessDates
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As OlitaGetNonBusinessDatesDs)
+    Private Sub PopulateBOFromWebService(ds As OlitaGetNonBusinessDatesDs)
         Try
             If ds.OlitaGetNonBusinessDates.Count = 0 Then Exit Sub
             With ds.OlitaGetNonBusinessDates.Item(0)
@@ -78,49 +78,49 @@ Public Class OlitaGetNonBusinessDates
 #Region "Properties"
 
     <ValueMandatory("")> _
-    Public Property CompanyGroupCode() As String
+    Public Property CompanyGroupCode As String
         Get
-            If Row(Me.DATA_COL_NAME_COMP_GROUP_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_COMP_GROUP_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_COMP_GROUP_CODE), String))
+                Return (CType(Row(DATA_COL_NAME_COMP_GROUP_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_COMP_GROUP_CODE, Value)
+            SetValue(DATA_COL_NAME_COMP_GROUP_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property StartDate() As DateType
+    Public Property StartDate As DateType
         Get
             CheckDeleted()
-            If Row(Me.DATA_COL_NAME_START_DATE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_START_DATE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New DateType(CType(Row(Me.DATA_COL_NAME_START_DATE), Date))
+                Return New DateType(CType(Row(DATA_COL_NAME_START_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_START_DATE, Value)
+            SetValue(DATA_COL_NAME_START_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property EndDate() As DateType
+    Public Property EndDate As DateType
         Get
             CheckDeleted()
-            If Row(Me.DATA_COL_NAME_END_DATE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_END_DATE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New DateType(CType(Row(Me.DATA_COL_NAME_END_DATE), Date))
+                Return New DateType(CType(Row(DATA_COL_NAME_END_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_END_DATE, Value)
+            SetValue(DATA_COL_NAME_END_DATE, Value)
         End Set
     End Property
 
@@ -132,10 +132,10 @@ Public Class OlitaGetNonBusinessDates
 
     Public Overrides Function ProcessWSRequest() As String
         Try
-            Me.Validate()
+            Validate()
 
             Dim ds As DataSet = NonbusinessCalendar.GetNonBusinessDates(CompanyGroupCode, StartDate, EndDate)
-            ds.Tables(0).TableName = Me.TABLE_NAME
+            ds.Tables(0).TableName = TABLE_NAME
             Return XMLHelper.FromDatasetToXML(ds, Nothing, True, True, True, False, True)
         Catch ex As BOValidationException
             Throw ex

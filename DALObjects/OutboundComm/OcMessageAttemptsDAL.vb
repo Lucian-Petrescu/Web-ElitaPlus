@@ -28,8 +28,8 @@
 #End Region
 
 #Region "Public Methods"
-    Public Sub AddMessageAttempt(ByVal message_id As Guid, ByVal recipient_address As String, ByVal description As String, ByVal sender_reason As String, ByRef returnCode As Integer, ByRef returnMessage As String)
-        Dim selectStmt As String = Me.Config("/SQL/ADD_MESSAGE_ATTEMPT")
+    Public Sub AddMessageAttempt(message_id As Guid, recipient_address As String, description As String, sender_reason As String, ByRef returnCode As Integer, ByRef returnMessage As String)
+        Dim selectStmt As String = Config("/SQL/ADD_MESSAGE_ATTEMPT")
         Dim inputParameters() As DBHelper.DBHelperParameter
         Dim outputParameter(1) As DBHelper.DBHelperParameter
 
@@ -45,7 +45,7 @@
         outputParameter(1) = New DBHelper.DBHelperParameter("po_error_msg", GetType(String), 50)
 
         Try
-            DBHelper.FetchSp(selectStmt, inputParameters, outputParameter, New DataSet(), Me.TABLE_NAME)
+            DBHelper.FetchSp(selectStmt, inputParameters, outputParameter, New DataSet(), TABLE_NAME)
 
             If outputParameter(0).Value <> 0 Then
                 returnCode = CType(outputParameter(0).Value, Integer)
@@ -60,33 +60,33 @@
 #End Region
 
 #Region "Load Methods"
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("oc_message_attemps_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function LoadList(ByVal oc_message_id As Guid, ByVal languageId As Guid) As DataSet
+    Public Function LoadList(oc_message_id As Guid, languageId As Guid) As DataSet
         Dim ds As New DataSet
         LoadList(ds, oc_message_id, languageId)
         Return ds
     End Function
 
-    Public Sub LoadList(ByVal ds As DataSet, ByVal ocMessageId As Guid, ByVal languageId As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_BY_MESSAGE_ID")
+    Public Sub LoadList(ds As DataSet, ocMessageId As Guid, languageId As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_BY_MESSAGE_ID")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
             {
@@ -94,7 +94,7 @@
             New DBHelper.DBHelperParameter(COL_NAME_OC_MESSAGE_ID, ocMessageId.ToByteArray)
             }
 
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Sub
 #End Region
 

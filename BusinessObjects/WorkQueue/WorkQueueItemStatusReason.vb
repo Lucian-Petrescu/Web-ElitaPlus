@@ -18,35 +18,35 @@ Public Class WorkQueueItemStatusReason
 #End Region
 
 #Region "Constructors"
-    Public Sub New(ByVal pWorkQueue As WorkQueue, ByVal pWorkQueueItemStatusReason As WrkQueue.WorkQueueItemStatusReason)
+    Public Sub New(pWorkQueue As WorkQueue, pWorkQueueItemStatusReason As WrkQueue.WorkQueueItemStatusReason)
         MyBase.New()
         _isNew = False
         _isDeleted = False
         _workQueue = pWorkQueue
-        Me._workQueueItemStatusReason = pWorkQueueItemStatusReason
+        _workQueueItemStatusReason = pWorkQueueItemStatusReason
         UpdateDescription()
-        AddHandler Me._workQueueItemStatusReason.PropertyChanged, New PropertyChangedEventHandler(AddressOf WorkQueueItemStatusReason_PropertyChanged)
+        AddHandler _workQueueItemStatusReason.PropertyChanged, New PropertyChangedEventHandler(AddressOf WorkQueueItemStatusReason_PropertyChanged)
     End Sub
 
-    Public Sub New(ByVal pWorkQueue As WorkQueue)
+    Public Sub New(pWorkQueue As WorkQueue)
         MyBase.New()
-        Me.Dataset = pWorkQueue.Dataset
+        Dataset = pWorkQueue.Dataset
         _isNew = True
         _isDeleted = False
         _workQueue = pWorkQueue
-        Me._workQueueItemStatusReason = New WrkQueue.WorkQueueItemStatusReason()
-        Me.Id = Guid.NewGuid
-        Me.ItemStatusReason.WorkQueueId = pWorkQueue.Id
-        Me._workQueueItemStatusReason.IsActive = True
-        Me._workQueueItemStatusReason.CreatedBy = ElitaPlusIdentity.Current.ActiveUser.NetworkId
-        AddHandler Me._workQueueItemStatusReason.PropertyChanged, New PropertyChangedEventHandler(AddressOf WorkQueueItemStatusReason_PropertyChanged)
+        _workQueueItemStatusReason = New WrkQueue.WorkQueueItemStatusReason()
+        Id = Guid.NewGuid
+        ItemStatusReason.WorkQueueId = pWorkQueue.Id
+        _workQueueItemStatusReason.IsActive = True
+        _workQueueItemStatusReason.CreatedBy = ElitaPlusIdentity.Current.ActiveUser.NetworkId
+        AddHandler _workQueueItemStatusReason.PropertyChanged, New PropertyChangedEventHandler(AddressOf WorkQueueItemStatusReason_PropertyChanged)
     End Sub
 #End Region
 
 #Region "Public Methods"
     Public Overrides Sub Delete()
-        Me._isDeleted = True
-        Me._workQueueItemStatusReason.IsActive = False
+        _isDeleted = True
+        _workQueueItemStatusReason.IsActive = False
     End Sub
 
     Public Overrides Sub Validate()
@@ -56,16 +56,16 @@ Public Class WorkQueueItemStatusReason
 
 #Region "Friend Methods"
     Private Sub UpdateDescription()
-        If (Me._workQueueItemStatusReason.Reason Is Nothing OrElse String.IsNullOrEmpty(Me._workQueueItemStatusReason.Reason)) Then
+        If (_workQueueItemStatusReason.Reason Is Nothing OrElse String.IsNullOrEmpty(_workQueueItemStatusReason.Reason)) Then
             _description = String.Empty
         Else
-            _description = LookupListNew.GetDescriptionFromCode(LookupListNew.LK_REASON_CODE, Me._workQueueItemStatusReason.Reason)
+            _description = LookupListNew.GetDescriptionFromCode(LookupListCache.LK_REASON_CODE, _workQueueItemStatusReason.Reason)
         End If
     End Sub
 #End Region
 
 #Region "Event Handlers"
-    Private Sub WorkQueueItemStatusReason_PropertyChanged(ByVal sender As Object, ByVal e As PropertyChangedEventArgs)
+    Private Sub WorkQueueItemStatusReason_PropertyChanged(sender As Object, e As PropertyChangedEventArgs)
         If (e.PropertyName = "Reason") Then
             UpdateDescription()
         End If
@@ -81,17 +81,17 @@ Public Class WorkQueueItemStatusReason
 
     Public Property Id As Guid
         Get
-            Return Me.ItemStatusReason.Id
+            Return ItemStatusReason.Id
         End Get
-        Set(ByVal value As Guid)
-            Me.ItemStatusReason.Id = value
+        Set
+            ItemStatusReason.Id = value
         End Set
     End Property
 
     <ValueMandatory(""), ValidateDuplicateReasons("")> _
     Public ReadOnly Property Reason As String
         Get
-            Return Me.ItemStatusReason.Reason
+            Return ItemStatusReason.Reason
         End Get
     End Property
 
@@ -100,7 +100,7 @@ Public Class WorkQueueItemStatusReason
         Get
             Return _description
         End Get
-        Private Set(ByVal value As String)
+        Private Set
             _description = value
         End Set
     End Property
@@ -121,7 +121,7 @@ Public Class WorkQueueItemStatusReason
         Get
             Return _workQueueItemStatusReason
         End Get
-        Friend Set(ByVal value As WrkQueue.WorkQueueItemStatusReason)
+        Friend Set
             _workQueueItemStatusReason = value
         End Set
     End Property
@@ -138,7 +138,7 @@ Namespace WrkQueue
             Get
                 Return String.Empty
             End Get
-            Set(ByVal value As String)
+            Set
 
             End Set
         End Property
@@ -146,11 +146,11 @@ Namespace WrkQueue
 
     Public Class WorkQueueItemStatusReasonTypeDef
         <ValueMandatory("")> _
-        Public Property Reason() As Object
+        Public Property Reason As Object
             Get
                 Throw New NotImplementedException
             End Get
-            Set(ByVal value As Object)
+            Set
                 Throw New NotImplementedException
             End Set
         End Property
@@ -162,11 +162,11 @@ End Namespace
 <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
 Public NotInheritable Class ValidateDuplicateReasons
     Inherits ValidBaseAttribute
-    Public Sub New(ByVal fieldDisplayName As String)
-        MyBase.New(fieldDisplayName, Assurant.ElitaPlus.Common.ErrorCodes.BO_ERROR_WQ_DUPLICATE_STATUS_REASON)
+    Public Sub New(fieldDisplayName As String)
+        MyBase.New(fieldDisplayName, Common.ErrorCodes.BO_ERROR_WQ_DUPLICATE_STATUS_REASON)
     End Sub
 
-    Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+    Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
         Dim obj As WorkQueueItemStatusReason = CType(objectToValidate, WorkQueueItemStatusReason)
         Dim cnt As Integer
         cnt = (From wqisr As WorkQueueItemStatusReason In obj.WorkQueue.StatusReasons _

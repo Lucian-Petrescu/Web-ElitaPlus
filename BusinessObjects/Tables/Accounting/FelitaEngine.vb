@@ -132,7 +132,7 @@ Public Class FelitaEngine
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As FelitaEngineDs)
+    Public Sub New(ds As FelitaEngineDs)
 
         MyBase.New()
         FileSet = New ArrayList
@@ -144,14 +144,14 @@ Public Class FelitaEngine
 
     End Sub
 
-    Public Sub New(ByVal AcctCompanyId As Guid)
+    Public Sub New(AcctCompanyId As Guid)
         MyBase.New()
         FileSet = New ArrayList
         StartDate = Now
         TimeStamp = Now.Ticks
 
         _AcctCompany = New AcctCompany(AcctCompanyId)
-        _acctExtension = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), _AcctCompany.AcctSystemId)
+        _acctExtension = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), _AcctCompany.AcctSystemId)
 
     End Sub
 
@@ -181,37 +181,37 @@ Public Class FelitaEngine
 
             'Set the company based on the company code sent in.
             Try
-                SetCompany(Me.CompanyId)
+                SetCompany(CompanyId)
             Catch ex As Exception
-                AppConfig.DebugMessage.Trace("ACCOUNTING_ENGINE", "PROCESS REQUEST", "Error setting the company Id: " + Me.CompanyId)
-                Throw New Exception("Error setting the company Id: " + Me.CompanyId)
+                AppConfig.DebugMessage.Trace("ACCOUNTING_ENGINE", "PROCESS REQUEST", "Error setting the company Id: " + CompanyId)
+                Throw New Exception("Error setting the company Id: " + CompanyId)
             End Try
 
             With oFelitaEngineData
                 .UserId = ElitaPlusIdentity.Current.ActiveUser.Id
-                .AccountingCompanyId = Me._Company.AcctCompanyId
-                .CompanyId = Me._Company.Id
-                .isVendorFile = Me.VendorFiles
+                .AccountingCompanyId = _Company.AcctCompanyId
+                .CompanyId = _Company.Id
+                .isVendorFile = VendorFiles
 
-                If Me.AccountingEventId = NO_EVENTS Then
+                If AccountingEventId = NO_EVENTS Then
                     .NoEvents = True
                 End If
 
-                If Me.AccountingEventId Is Nothing OrElse Me.AccountingEventId = String.Empty Then
+                If AccountingEventId Is Nothing OrElse AccountingEventId = String.Empty Then
                     .AllEvents = True
                 Else
                     .AllEvents = False
                     If Not .NoEvents Then
-                        If Me.AccountingEventId.Length = 32 Then
-                            .EventId = GuidControl.ByteArrayToGuid(GuidControl.HexToByteArray(Me.AccountingEventId))
+                        If AccountingEventId.Length = 32 Then
+                            .EventId = GuidControl.ByteArrayToGuid(GuidControl.HexToByteArray(AccountingEventId))
                         Else
-                            .EventId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_EVENT_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), Me.AccountingEventId)
+                            .EventId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCOUNTING_EVENT_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), AccountingEventId)
                         End If
                     End If
                 End If
             End With
 
-            Me.Validate()
+            Validate()
             Dim _AcctBO As New AcctTransLog
             Dim dsSet() As DataSet
             Dim RECORDS_EXIST As Boolean = True
@@ -219,14 +219,14 @@ Public Class FelitaEngine
             Try
                 _AcctCompany = New AcctCompany(oFelitaEngineData.AccountingCompanyId)
             Catch ex As Exception
-                AppConfig.Debug("FelitaEngine AcctCompany exceptionAcct Comp ID: " + MiscUtil.GuidToSQLString(oFelitaEngineData.AccountingCompanyId) + " Company id:" + MiscUtil.GuidToSQLString(Me._Company.Id))
-                Throw New Exception("Error loading the accounting company, Acct Comp ID: " + MiscUtil.GuidToSQLString(oFelitaEngineData.AccountingCompanyId) + " Company id:" + MiscUtil.GuidToSQLString(Me._Company.Id) + " DB Server:" + AppConfig.DataBase.Server, ex)
+                AppConfig.Debug("FelitaEngine AcctCompany exceptionAcct Comp ID: " + MiscUtil.GuidToSQLString(oFelitaEngineData.AccountingCompanyId) + " Company id:" + MiscUtil.GuidToSQLString(_Company.Id))
+                Throw New Exception("Error loading the accounting company, Acct Comp ID: " + MiscUtil.GuidToSQLString(oFelitaEngineData.AccountingCompanyId) + " Company id:" + MiscUtil.GuidToSQLString(_Company.Id) + " DB Server:" + AppConfig.DataBase.Server, ex)
             End Try
 
             If _AcctCompany Is Nothing OrElse _AcctCompany.UseAccounting = NO_STRING Then
                 Return "0"
             End If
-            _acctExtension = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), _AcctCompany.AcctSystemId)
+            _acctExtension = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), _AcctCompany.AcctSystemId)
 
             'Retrieve an array of datasets (likely only 1 though).  We will have additional if we have multiple business units
             dsSet = _AcctBO.GetAccountingInterfaceTables(oFelitaEngineData, TimeStamp.ToString)
@@ -234,7 +234,7 @@ Public Class FelitaEngine
 
             If dsSet.Length > 0 Then
                 For Each ds As DataSet In dsSet
-                    If Not ds.Tables(AcctTransLogDAL.Table_HEADER) Is Nothing Then
+                    If ds.Tables(AcctTransLogDAL.Table_HEADER) IsNot Nothing Then
                         ProcessAccountingData(ds, Counter)
                         Counter += 1
                     End If
@@ -262,7 +262,7 @@ Public Class FelitaEngine
 
     End Function
 
-    Public Function ResendFile(ByVal AcctTransmissionId As Guid) As String
+    Public Function ResendFile(AcctTransmissionId As Guid) As String
 
         Try
 
@@ -336,7 +336,7 @@ Public Class FelitaEngine
 
     End Function
 
-    Public Function ReverseAccountingEntries(ByVal AcctTransmissionId As Guid, ByVal AcctEventCode As String, ByVal ReversalDate As Date, ByVal DateMovement As DateFilter, Optional ByVal Comment As String = "") As String
+    Public Function ReverseAccountingEntries(AcctTransmissionId As Guid, AcctEventCode As String, ReversalDate As Date, DateMovement As DateFilter, Optional ByVal Comment As String = "") As String
 
         Try
 
@@ -352,7 +352,7 @@ Public Class FelitaEngine
             'Set the accounting company
             _Company = New Company(_acctTransmission.CompanyId)
             _AcctCompany = New AcctCompany(_Company.AcctCompanyId)
-            _acctExtension = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), _AcctCompany.AcctSystemId)
+            _acctExtension = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), _AcctCompany.AcctSystemId)
 
             'Logic below for Felita only
             If _acctExtension = FELITA_PREFIX Then
@@ -506,11 +506,11 @@ Public Class FelitaEngine
 
 #Region "Private Members"
 
-    Private Function GetJournalType(ByVal inputXML As String, ByVal fileName As String, ByVal fileType As FelitaEngine.FileType, ByVal fileSubType As FelitaEngine.FileSubType) As String
+    Private Function GetJournalType(inputXML As String, fileName As String, fileType As FelitaEngine.FileType, fileSubType As FelitaEngine.FileSubType) As String
         Select Case fileType
-            Case FelitaEngine.FileType.Journal
+            Case FileType.Journal
                 Select Case fileSubType
-                    Case FelitaEngine.FileSubType.CONTROL
+                    Case FileSubType.CONTROL
                         If InStr(1, fileName, "_") = 0 Then
                             Return "-CONTROL"
                         Else
@@ -527,7 +527,7 @@ Public Class FelitaEngine
         End Select
     End Function
 
-    Private Sub MapDataSet(ByVal ds As FelitaEngineDs)
+    Private Sub MapDataSet(ds As FelitaEngineDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -540,8 +540,8 @@ Public Class FelitaEngine
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -553,13 +553,13 @@ Public Class FelitaEngine
     Protected Shadows Sub CheckDeleted()
     End Sub
 
-    Private Sub Load(ByVal ds As FelitaEngineDs)
+    Private Sub Load(ds As FelitaEngineDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(0).Rows.Add(newRow)
+            Dataset.Tables(0).Rows.Add(newRow)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw ex
         Catch ex As ElitaPlusException
@@ -569,17 +569,17 @@ Public Class FelitaEngine
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As FelitaEngineDs)
+    Private Sub PopulateBOFromWebService(ds As FelitaEngineDs)
         Try
             If ds.FelitaEngine.Count = 0 Then Exit Sub
             With ds.FelitaEngine.Item(0)
-                Me.CompanyId = .CompanyId
-                If Not IsNothing(.AccountingEventId) Then Me.AccountingEventId = .AccountingEventId
+                CompanyId = .CompanyId
+                If Not IsNothing(.AccountingEventId) Then AccountingEventId = .AccountingEventId
                 If Not IsNothing(.VendorFiles) Then
                     If .VendorFiles = "0" Then
-                        Me.VendorFiles = Boolean.Parse(False)
+                        VendorFiles = Boolean.Parse(False)
                     Else
-                        Me.VendorFiles = Boolean.Parse(True)
+                        VendorFiles = Boolean.Parse(True)
                     End If
                 End If
             End With
@@ -589,14 +589,14 @@ Public Class FelitaEngine
         End Try
     End Sub
 
-    Private Sub SetCompany(ByVal CompanyCode As String)
+    Private Sub SetCompany(CompanyCode As String)
 
         Dim dv As New Company.CompanySearchDV
 
         dv = Company.getList("", CompanyCode)
         If dv.Count = 1 Then
-            Me._Company = New Company(GuidControl.ByteArrayToGuid(CType(dv(0)(dv.COL_COMPANY_ID), Byte())))
-            If Not Me._Company Is Nothing Then Exit Sub
+            _Company = New Company(GuidControl.ByteArrayToGuid(CType(dv(0)(dv.COL_COMPANY_ID), Byte())))
+            If _Company IsNot Nothing Then Exit Sub
         End If
 
         'If it gets here, we have not gotten a company from the code and need to throw an error
@@ -605,9 +605,9 @@ Public Class FelitaEngine
     End Sub
 
     'This is the routine that builds the actual files and sends the data
-    Private Sub ProcessAccountingData(ByVal AccountingData_Dataset As DataSet, Optional ByVal Counter As Integer = 1)
+    Private Sub ProcessAccountingData(AccountingData_Dataset As DataSet, Optional ByVal Counter As Integer = 1)
 
-        If Not AccountingData_Dataset.Tables(AcctTransLogDAL.Table_HEADER) Is Nothing _
+        If AccountingData_Dataset.Tables(AcctTransLogDAL.Table_HEADER) IsNot Nothing _
             AndAlso AccountingData_Dataset.Tables(AcctTransLogDAL.Table_HEADER).Rows.Count > 0 Then
             BusinessUnit = AccountingData_Dataset.Tables(AcctTransLogDAL.Table_HEADER).Rows(0)(AcctTransLogDAL.COL_TABLE_HEADER_BUSINESS_UNIT).ToString()
         Else
@@ -639,14 +639,14 @@ Public Class FelitaEngine
             BuildFile(FileType.Journal, AccountingData_Dataset, BusinessUnit, beginDate, endDate)
 
             'Now that we are done with the accounting dataset, we clear the variable and call GC in the finallizer
-            If Not xmlDoc Is Nothing Then
+            If xmlDoc IsNot Nothing Then
                 xmlDoc = Nothing
             End If
 
         Else
 
             'Determine if we are building vendor files or journal files.
-            If VendorFiles AndAlso Not AccountingData_Dataset.Tables(AcctTransLogDAL.Table_VENDOR) Is Nothing _
+            If VendorFiles AndAlso AccountingData_Dataset.Tables(AcctTransLogDAL.Table_VENDOR) IsNot Nothing _
                AndAlso AccountingData_Dataset.Tables(AcctTransLogDAL.Table_VENDOR).Rows.Count > 0 Then
                 BuildFile(FileType.Account, AccountingData_Dataset, BusinessUnit, beginDate, endDate)
                 BuildFile(FileType.Supplier, AccountingData_Dataset, BusinessUnit, beginDate, endDate)
@@ -660,7 +660,7 @@ Public Class FelitaEngine
             End If
 
             'Now that we are done with the accounting dataset, we clear the variable and call GC in the finallizer
-            If Not xmlDoc Is Nothing Then
+            If xmlDoc IsNot Nothing Then
                 xmlDoc = Nothing
             End If
 
@@ -687,12 +687,12 @@ Public Class FelitaEngine
             FileSet = Nothing
         End If
 
-        System.GC.Collect()
-        System.GC.WaitForPendingFinalizers()
+        GC.Collect()
+        GC.WaitForPendingFinalizers()
 
     End Sub
 
-    Private Function BuildFile(ByVal _FileType As FileType, ByVal AccountingData_DataSet As DataSet, ByVal BusinessUnit As String, ByVal beginDate As Date, ByVal endDate As Date) As Boolean
+    Private Function BuildFile(_FileType As FileType, AccountingData_DataSet As DataSet, BusinessUnit As String, beginDate As Date, endDate As Date) As Boolean
 
         'If filetype = journal, loop through the dataset and grab all the lineitem tables in case there are failures
         If _FileType = FileType.Journal Then
@@ -702,7 +702,7 @@ Public Class FelitaEngine
 
                 'Add the seq column (smartstream) into the datatable so that it can be used in the journal file
                 If dt.TableName.Contains(AcctTransLogDAL.Table_LINEITEM) OrElse dt.TableName.Contains(AcctTransLogDAL.Table_AP_LINEITEM) Then
-                    If Not dt.Columns(DATA_COL_NAME_SEQUENCE) Is Nothing Then
+                    If dt.Columns(DATA_COL_NAME_SEQUENCE) IsNot Nothing Then
                         dt.Columns.Remove(DATA_COL_NAME_SEQUENCE)
                     End If
                     Dim rnd As New Random(Now.Millisecond)
@@ -759,7 +759,7 @@ Public Class FelitaEngine
                                 ''''dsTemp.Tables(AcctTransLogDAL.TABLE_POSTINGPARAMETERS).Columns(DATA_COL_NAME_DESCRIPTION).Expression = "'" + TimeStamp.ToString + "'"
 
                                 'Add a Journal Header id column to the dataset
-                                If Not dsTemp.Tables(AcctTransLogDAL.TABLE_POSTINGPARAMETERS).Columns(DATA_COL_NAME_JOURNAL_HEADER_ID) Is Nothing Then
+                                If dsTemp.Tables(AcctTransLogDAL.TABLE_POSTINGPARAMETERS).Columns(DATA_COL_NAME_JOURNAL_HEADER_ID) IsNot Nothing Then
                                     dsTemp.Tables(AcctTransLogDAL.TABLE_POSTINGPARAMETERS).Columns.Remove(DATA_COL_NAME_JOURNAL_HEADER_ID)
                                 End If
                                 dsTemp.Tables(AcctTransLogDAL.TABLE_POSTINGPARAMETERS).Columns.Add(New DataColumn(DATA_COL_NAME_JOURNAL_HEADER_ID, GetType(String), "'" + Guid.NewGuid.ToString + "'"))
@@ -782,7 +782,7 @@ Public Class FelitaEngine
                             'ALR - Moved Batch Number logic to it's own routine
                             '    AccountingData_DataSet.Tables(AcctTransLogDAL.TABLE_POSTINGPARAMETERS).Columns(DATA_COL_NAME_DESCRIPTION).Expression = "'" + TimeStamp.ToString + "'"
                             'Add a Journal Header id column to the dataset
-                            If Not AccountingData_DataSet.Tables(AcctTransLogDAL.TABLE_POSTINGPARAMETERS).Columns(DATA_COL_NAME_JOURNAL_HEADER_ID) Is Nothing Then
+                            If AccountingData_DataSet.Tables(AcctTransLogDAL.TABLE_POSTINGPARAMETERS).Columns(DATA_COL_NAME_JOURNAL_HEADER_ID) IsNot Nothing Then
                                 AccountingData_DataSet.Tables(AcctTransLogDAL.TABLE_POSTINGPARAMETERS).Columns.Remove(DATA_COL_NAME_JOURNAL_HEADER_ID)
                             End If
                             AccountingData_DataSet.Tables(AcctTransLogDAL.TABLE_POSTINGPARAMETERS).Columns.Add(New DataColumn(DATA_COL_NAME_JOURNAL_HEADER_ID, GetType(String), "'" + Guid.NewGuid.ToString + "'"))
@@ -802,14 +802,14 @@ Public Class FelitaEngine
                 If dt.TableName.Contains(AcctTransLogDAL.Table_AP_LINEITEM) Then
 
                     'This call is for the SmartStream vendor load file.  Only build if the vendor table exists in the file.
-                    If Not AccountingData_DataSet.Tables(AcctTransLogDAL.Table_AP_VENDORS) Is Nothing Then
+                    If AccountingData_DataSet.Tables(AcctTransLogDAL.Table_AP_VENDORS) IsNot Nothing Then
                         AccountingData_DataSet.Tables(AcctTransLogDAL.Table_AP_VENDORS).DefaultView.RowFilter = "PAYMENT_TO_CUSTOMER = 'Y'"
                         If AccountingData_DataSet.Tables(AcctTransLogDAL.Table_AP_VENDORS).DefaultView.Count > 0 Then
                             BuildFileBody(_FileType, FileSubType.AP2, AccountingData_DataSet, BusinessUnit, beginDate, endDate, dt.TableName, "AP2")
                         End If
                     End If
 
-                    If Not AccountingData_DataSet.Tables(AcctTransLogDAL.Table_AP_LINEITEM) Is Nothing AndAlso AccountingData_DataSet.Tables(AcctTransLogDAL.Table_AP_LINEITEM).Rows.Count > 0 Then
+                    If AccountingData_DataSet.Tables(AcctTransLogDAL.Table_AP_LINEITEM) IsNot Nothing AndAlso AccountingData_DataSet.Tables(AcctTransLogDAL.Table_AP_LINEITEM).Rows.Count > 0 Then
                         'SmartStream AP Invoice File
                         BuildFileBody(_FileType, FileSubType.AP, AccountingData_DataSet, BusinessUnit, beginDate, endDate, dt.TableName, "AP")
                     End If
@@ -823,12 +823,12 @@ Public Class FelitaEngine
 
     End Function
 
-    Private Function BuildFileBody(ByVal _FileType As FileType,
-                                   ByVal _FileSubType As FileSubType,
-                                   ByVal AccountingData_DataSet As DataSet,
-                                   ByVal BusinessUnit As String,
-                                   ByVal beginDate As Date,
-                                   ByVal endDate As Date,
+    Private Function BuildFileBody(_FileType As FileType,
+                                   _FileSubType As FileSubType,
+                                   AccountingData_DataSet As DataSet,
+                                   BusinessUnit As String,
+                                   beginDate As Date,
+                                   endDate As Date,
                                    Optional ByVal TableName As String = "",
                                    Optional ByVal fileExtension As String = "") As Boolean
 
@@ -848,7 +848,7 @@ Public Class FelitaEngine
 
         Try
 
-            str = GetResource(System.Enum.GetName(GetType(FileType), _FileType) + If(_FileType = FileType.Journal, String.Format("_{0}", _acctExtension), String.Empty).ToString + If(fileExtension.Equals(String.Empty), String.Empty, String.Format("_{0}", fileExtension)).ToString + ".xslt")
+            str = GetResource([Enum].GetName(GetType(FileType), _FileType) + If(_FileType = FileType.Journal, String.Format("_{0}", _acctExtension), String.Empty).ToString + If(fileExtension.Equals(String.Empty), String.Empty, String.Format("_{0}", fileExtension)).ToString + ".xslt")
 
             xmlr = XmlReader.Create(str)
 
@@ -914,7 +914,7 @@ Public Class FelitaEngine
             'Get The journalType out of the document
             For Each xn As XmlNode In xmlTempDoc.FirstChild.ChildNodes
                 If xn.Name.Contains(AcctTransLogDAL.TABLE_POSTINGPARAMETERS) Then
-                    If Not xn.Item(AcctTransLogDAL.JOURNAL_COL_NAME_JOURNAL_TYPE) Is Nothing Then
+                    If xn.Item(AcctTransLogDAL.JOURNAL_COL_NAME_JOURNAL_TYPE) IsNot Nothing Then
                         _JournalType = xn.Item(AcctTransLogDAL.JOURNAL_COL_NAME_JOURNAL_TYPE).InnerText
                     End If
                 End If
@@ -926,7 +926,7 @@ Public Class FelitaEngine
             'Create the character array to write the buffer to (process of creating the string)
             chrs = buffer.ToArray
 
-            XMLData = System.Text.Encoding.UTF8.GetString(chrs)
+            XMLData = Encoding.UTF8.GetString(chrs)
 
             _AcctFile.FileType = _FileType
             _AcctFile.FileSubType = _FileSubType
@@ -943,25 +943,25 @@ Public Class FelitaEngine
 
             Return True
         Catch ex As Exception
-            Throw New Exception("ACCOUNTING: ERROR BUILDING FILE: " & System.Enum.GetName(GetType(FileType), _FileType), ex)
+            Throw New Exception("ACCOUNTING: ERROR BUILDING FILE: " & [Enum].GetName(GetType(FileType), _FileType), ex)
         Finally
             'Clean up.  Dispose what you can, set everything else to nothing to clear
-            If Not str Is Nothing Then str.Dispose()
-            If Not buffer Is Nothing Then buffer.Dispose()
-            If Not sw Is Nothing Then sw.Dispose()
-            If Not txtRead Is Nothing Then txtRead.Dispose()
+            If str IsNot Nothing Then str.Dispose()
+            If buffer IsNot Nothing Then buffer.Dispose()
+            If sw IsNot Nothing Then sw.Dispose()
+            If txtRead IsNot Nothing Then txtRead.Dispose()
             xmlr = Nothing
             xlTransform = Nothing
             chrs = Nothing
             XMLData = Nothing
             _AcctFile = Nothing
-            System.GC.Collect()
-            System.GC.WaitForPendingFinalizers()
+            GC.Collect()
+            GC.WaitForPendingFinalizers()
 
         End Try
     End Function
 
-    Private Function BuildFile(ByVal _FileType As FileType, ByVal BusinessUnit As String, ByVal MinDate As Date, ByVal MaxDate As Date, ByVal batchNumber As BatchId) As Boolean
+    Private Function BuildFile(_FileType As FileType, BusinessUnit As String, MinDate As Date, MaxDate As Date, batchNumber As BatchId) As Boolean
 
         Try
 
@@ -981,12 +981,12 @@ Public Class FelitaEngine
 
             Return True
         Catch ex As Exception
-            Throw New Exception("ACCOUNTING: ERROR BUILDING FILE: " & System.Enum.GetName(GetType(FileType), _FileType), ex)
+            Throw New Exception("ACCOUNTING: ERROR BUILDING FILE: " & [Enum].GetName(GetType(FileType), _FileType), ex)
         End Try
     End Function
 
     'Builds trigger file based on Journal file Name
-    Private Function BuildFile(ByVal FileName As String, ByVal BatchNumber As String) As Boolean
+    Private Function BuildFile(FileName As String, BatchNumber As String) As Boolean
 
         Try
 
@@ -1007,12 +1007,12 @@ Public Class FelitaEngine
 
             Return True
         Catch ex As Exception
-            Throw New Exception("ACCOUNTING: ERROR BUILDING FILE: " & System.Enum.GetName(GetType(FileType), FileType.trigger), ex)
+            Throw New Exception("ACCOUNTING: ERROR BUILDING FILE: " & [Enum].GetName(GetType(FileType), FileType.trigger), ex)
         End Try
     End Function
 
 
-    Private Function BuildFile(ByVal _FileType As FileType, ByVal BusinessUnit As String) As Boolean
+    Private Function BuildFile(_FileType As FileType, BusinessUnit As String) As Boolean
 
         Try
 
@@ -1033,7 +1033,7 @@ Public Class FelitaEngine
 
             Return True
         Catch ex As Exception
-            Throw New Exception("ACCOUNTING: ERROR BUILDING FILE: " & System.Enum.GetName(GetType(FileType), _FileType), ex)
+            Throw New Exception("ACCOUNTING: ERROR BUILDING FILE: " & [Enum].GetName(GetType(FileType), _FileType), ex)
         End Try
     End Function
 
@@ -1056,13 +1056,13 @@ Public Class FelitaEngine
                     _acctTransmit = New AcctTransmission
                     _acctTransmit.FileName = CurrentFile.FileName
                     _acctTransmit.FileText = CurrentFile.XMLData
-                    _acctTransmit.CompanyId = Me._Company.Id
+                    _acctTransmit.CompanyId = _Company.Id
                     _acctTransmit.TransmissionCount = 0
                     _acctTransmit.FileTypeFlag = CurrentFile.FileType
                     _acctTransmit.FileSubTypeFlag = CurrentFile.FileSubType
                     _acctTransmit.BatchNumber = CurrentFile.BatchNumber
                     _acctTransmit.JournalType = CurrentFile.JournalType
-                    _acctTransmit.StatusId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), AcctTransmission.STATUS_CODE_PROCESSING)
+                    _acctTransmit.StatusId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), AcctTransmission.STATUS_CODE_PROCESSING)
                     If CurrentFile.FileType = FileType.Journal Then _acctTransmit.ValidateBalance()
 
                     If (Not CurrentFile.FileType = FileType.Journal) OrElse
@@ -1094,7 +1094,7 @@ Public Class FelitaEngine
 
     Private Function SendFiles()
 
-        Dim HoldType As String = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_PROCESS_METHOD, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), Me._AcctCompany.ProcessMethodId)
+        Dim HoldType As String = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCOUNTING_PROCESS_METHOD, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), _AcctCompany.ProcessMethodId)
         Dim _newList As New ArrayList
         Dim _acctTransmission As AcctTransmission
         Dim _boolChanges As Boolean = False
@@ -1107,7 +1107,7 @@ Public Class FelitaEngine
                 For i As Integer = 0 To FileSet.Count - 1
                     If CType(FileSet(i), AccountingFiles).FileSubType = FileSubType.AP Or CType(FileSet(i), AccountingFiles).FileSubType = FileSubType.GL Then
                         _acctTransmission = New AcctTransmission(CType(FileSet(i), AccountingFiles).AcctTransmissionId, True)
-                        _acctTransmission.StatusId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), AcctTransmission.STATUS_CODE_PENDING)
+                        _acctTransmission.StatusId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), AcctTransmission.STATUS_CODE_PENDING)
                         _acctTransmission.Save()
                         _boolChanges = True
                     Else
@@ -1118,7 +1118,7 @@ Public Class FelitaEngine
                 For i As Integer = 0 To FileSet.Count - 1
                     If (CType(FileSet(i), AccountingFiles).FileSubType = FileSubType.AP) OrElse (CType(FileSet(i), AccountingFiles).FileSubType = FileSubType.GL And _acctExtension = FELITA_PREFIX) Then
                         _acctTransmission = New AcctTransmission(CType(FileSet(i), AccountingFiles).AcctTransmissionId, True)
-                        _acctTransmission.StatusId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), AcctTransmission.STATUS_CODE_PENDING)
+                        _acctTransmission.StatusId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), AcctTransmission.STATUS_CODE_PENDING)
                         _acctTransmission.Save()
                         _boolChanges = True
                     Else
@@ -1129,7 +1129,7 @@ Public Class FelitaEngine
                 For i As Integer = 0 To FileSet.Count - 1
                     If (CType(FileSet(i), AccountingFiles).FileSubType = FileSubType.GL) OrElse (CType(FileSet(i), AccountingFiles).FileSubType = FileSubType.AP And _acctExtension = FELITA_PREFIX) Then
                         _acctTransmission = New AcctTransmission(CType(FileSet(i), AccountingFiles).AcctTransmissionId, True)
-                        _acctTransmission.StatusId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), AcctTransmission.STATUS_CODE_PENDING)
+                        _acctTransmission.StatusId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), AcctTransmission.STATUS_CODE_PENDING)
                         _acctTransmission.Save()
                         _boolChanges = True
                     Else
@@ -1213,7 +1213,7 @@ Public Class FelitaEngine
             Next
 
             'For Each CurrentFile In FileSet
-            If Not FileSet Is Nothing Then
+            If FileSet IsNot Nothing Then
 
                 For i As Integer = 0 To FileSet.Count - 1
 
@@ -1241,7 +1241,7 @@ Public Class FelitaEngine
                                 End If
 
                                 buffer = New MemoryStream
-                                xmlData = System.Text.Encoding.UTF8.GetBytes(CType(FileSet(i), AccountingFiles).XMLData)
+                                xmlData = Encoding.UTF8.GetBytes(CType(FileSet(i), AccountingFiles).XMLData)
                                 buffer.Write(xmlData, 0, xmlData.Length)
 
                                 'Upload the file.  
@@ -1284,7 +1284,7 @@ Public Class FelitaEngine
                                 If (fileName.EndsWith(".tmp")) Then
                                     bufferForRecon = New MemoryStream
                                     'format ISO-8859-1
-                                    xmlDataForRecon = System.Text.Encoding.Convert(Encoding.UTF8, Encoding.GetEncoding("ISO-8859-1"), Encoding.UTF8.GetBytes(CType(FileSet(i), AccountingFiles).XMLData))
+                                    xmlDataForRecon = Encoding.Convert(Encoding.UTF8, Encoding.GetEncoding("ISO-8859-1"), Encoding.UTF8.GetBytes(CType(FileSet(i), AccountingFiles).XMLData))
                                     bufferForRecon.Write(xmlDataForRecon, 0, xmlDataForRecon.Length)
                                     'generate the New file name
                                     fileName = fileName.Replace(".tmp", "_iso.tmp")
@@ -1331,7 +1331,7 @@ Public Class FelitaEngine
                                     _acctTransmit.TransmissionCount = Integer.Parse(_acctTransmit.TransmissionCount) + 1
                                     _acctTransmit.RejectReason = ""
                                     _acctTransmit.TransmissionDate = StartDate
-                                    _acctTransmit.StatusId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), AcctTransmission.STATUS_CODE_SUCCESSFUL)
+                                    _acctTransmit.StatusId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), AcctTransmission.STATUS_CODE_SUCCESSFUL)
                                 End If
 
                                 If Not CType(FileSet(i), AccountingFiles).FileType = FileType.trigger Then
@@ -1363,7 +1363,7 @@ Public Class FelitaEngine
                             'Add an error message to the reject reason.  Leave the counter as is
                             If Not FileSet(i).FileType = FileType.trigger Then
                                 _acctTransmit.RejectReason = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.FTP_FAILURE)
-                                _acctTransmit.StatusId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), AcctTransmission.STATUS_CODE_FAILED)
+                                _acctTransmit.StatusId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), AcctTransmission.STATUS_CODE_FAILED)
                                 _acctTransmit.RejectReasonDetail = String.Format("{0} : {1} : {2}", ex.Message, Environment.NewLine, ex.StackTrace)
                             End If
                             'Set the send successful flag to false to inform that the file was processed, but not send
@@ -1379,7 +1379,7 @@ Public Class FelitaEngine
 
                         Finally
                             'Save the updated transmission record
-                            If Not FileSet(i).FileType = FileType.trigger AndAlso Not _acctTransmit Is Nothing Then
+                            If Not FileSet(i).FileType = FileType.trigger AndAlso _acctTransmit IsNot Nothing Then
                                 _acctTransmit.Save()
                             End If
                         End Try
@@ -1438,7 +1438,7 @@ Public Class FelitaEngine
 
         _bind.TransferMode = TransferMode.Streamed
         _bind.TransactionFlow = False
-        _bind.TransactionProtocol = System.ServiceModel.TransactionProtocol.OleTransactions
+        _bind.TransactionProtocol = TransactionProtocol.OleTransactions
         _bind.HostNameComparisonMode = HostNameComparisonMode.StrongWildcard
         _bind.ListenBacklog = 10
         _bind.MaxBufferPoolSize = 524288
@@ -1487,7 +1487,7 @@ Public Class FelitaEngine
                              CType(FileSet(i), AccountingFiles).FileSubType = FileSubType.CONTROL Then
 
                             buffer = New MemoryStream
-                            xmlData = System.Text.Encoding.UTF8.GetBytes(CType(FileSet(i), AccountingFiles).XMLData)
+                            xmlData = Encoding.UTF8.GetBytes(CType(FileSet(i), AccountingFiles).XMLData)
                             buffer.Write(xmlData, 0, xmlData.Length)
 
                             Select Case CType(FileSet(i), AccountingFiles).FileSubType
@@ -1592,7 +1592,7 @@ Public Class FelitaEngine
                             _acctTransmit.RejectReason = ""
                             _acctTransmit.RejectReasonDetail = ""
                             _acctTransmit.TransmissionDate = StartDate
-                            _acctTransmit.StatusId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), AcctTransmission.STATUS_CODE_SUCCESSFUL)
+                            _acctTransmit.StatusId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), AcctTransmission.STATUS_CODE_SUCCESSFUL)
 
                         ElseIf FileSet(i).FileType = FileType.Journal AndAlso _acctTransmit.DebitAmount <> _acctTransmit.CreditAmount Then
                             isBalanced = False
@@ -1602,7 +1602,7 @@ Public Class FelitaEngine
                         'Add an error message to the reject reason.  Leave the counter as is
                         _acctTransmit.RejectReason = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.FTP_FAILURE)
                         _acctTransmit.RejectReasonDetail = String.Format("{0} : {1} : {2}", ex.Message, Environment.NewLine, ex.StackTrace)
-                        _acctTransmit.StatusId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), AcctTransmission.STATUS_CODE_FAILED)
+                        _acctTransmit.StatusId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), AcctTransmission.STATUS_CODE_FAILED)
                         'Set the send successful flag to false to inform that the file was processed, but not send
                         SEND_SUCCESSFUL = False
 
@@ -1616,7 +1616,7 @@ Public Class FelitaEngine
 
                     Finally
                         'Save the updated transmission record
-                        If Not _acctTransmit Is Nothing Then
+                        If _acctTransmit IsNot Nothing Then
                             _acctTransmit.Save()
                         End If
 
@@ -1638,7 +1638,7 @@ Public Class FelitaEngine
 
     Private Sub SendFailures()
 
-        If Not FailureFiles Is Nothing AndAlso FailureFiles.Count > 0 AndAlso Not _AcctCompany.NotifyEmail Is Nothing AndAlso _AcctCompany.NotifyEmail.Trim.Length > 0 Then
+        If FailureFiles IsNot Nothing AndAlso FailureFiles.Count > 0 AndAlso _AcctCompany.NotifyEmail IsNot Nothing AndAlso _AcctCompany.NotifyEmail.Trim.Length > 0 Then
             Try
 
                 Dim _mess As New System.Net.Mail.MailMessage
@@ -1668,8 +1668,8 @@ Public Class FelitaEngine
 
 
                 _mess.From = New System.Net.Mail.MailAddress(ElitaPlusIdentity.Current.ActiveUser.Company.Email)
-                _mess.Subject = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.ACCT_ERR_SENDING_FILES_SUB)
-                _messBody.AppendLine(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.ACCT_ERR_SENDING_FILES_MESS))
+                _mess.Subject = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.ACCT_ERR_SENDING_FILES_SUB)
+                _messBody.AppendLine(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.ACCT_ERR_SENDING_FILES_MESS))
                 _messBody.AppendLine("_____________________________________________________________")
                 _messBody.AppendLine("")
                 _messBody.AppendLine("")
@@ -1680,12 +1680,12 @@ Public Class FelitaEngine
                     _messBody.AppendLine("_____________________________________________________________")
 
                     buffer = New MemoryStream
-                    xmlData = System.Text.Encoding.UTF8.GetBytes(_file.XMLData)
+                    xmlData = Encoding.UTF8.GetBytes(_file.XMLData)
                     buffer.Write(xmlData, 0, xmlData.Length)
                     buffer.Position = 0
 
-                    _attach = New System.Net.Mail.Attachment(buffer, _file.FileName, System.Net.Mime.MediaTypeNames.Text.Plain)
-                    _attach.TransferEncoding = System.Net.Mime.TransferEncoding.QuotedPrintable
+                    _attach = New System.Net.Mail.Attachment(buffer, _file.FileName, Net.Mime.MediaTypeNames.Text.Plain)
+                    _attach.TransferEncoding = Net.Mime.TransferEncoding.QuotedPrintable
                     _attach.ContentDisposition.Inline = False
                     _attach.ContentDisposition.DispositionType = "Attachment"
 
@@ -1705,7 +1705,7 @@ Public Class FelitaEngine
     End Sub
 
     'Gets the transformation xslt file
-    Private Function GetResource(ByVal ResourceName As String) As System.IO.Stream
+    Private Function GetResource(ResourceName As String) As System.IO.Stream
 
         Try
             Dim RName As String
@@ -1724,39 +1724,39 @@ Public Class FelitaEngine
     End Function
 
     'Helper function to build the filename of the current file
-    Private Function GetFileName(ByVal _FileType As FileType, ByVal BusinessUnit As String) As String
-        Return "E-" & System.Enum.GetName(GetType(FileType), _FileType) & "-" & BusinessUnit & "-" & StartDate.ToString("yyyy-MM-dd") & "-" & StartDate.ToString("yyyy-MM-dd") & GetFileNameEntryType() & TimeStamp.ToString & ".xml"
+    Private Function GetFileName(_FileType As FileType, BusinessUnit As String) As String
+        Return "E-" & [Enum].GetName(GetType(FileType), _FileType) & "-" & BusinessUnit & "-" & StartDate.ToString("yyyy-MM-dd") & "-" & StartDate.ToString("yyyy-MM-dd") & GetFileNameEntryType() & TimeStamp.ToString & ".xml"
     End Function
 
     'Helper function to build the filename of the current file
-    Private Function GetFileName(ByVal _FileType As FileType, ByVal BusinessUnit As String, ByVal MinDate As Date, ByVal MaxDate As Date) As String
-        Return "E-" & System.Enum.GetName(GetType(FileType), _FileType) & "-" & BusinessUnit & "-" & MinDate.ToString("yyyy-MM-dd") & "-" & MaxDate.ToString("yyyy-MM-dd") & GetFileNameEntryType() & TimeStamp.ToString & ".xml"
+    Private Function GetFileName(_FileType As FileType, BusinessUnit As String, MinDate As Date, MaxDate As Date) As String
+        Return "E-" & [Enum].GetName(GetType(FileType), _FileType) & "-" & BusinessUnit & "-" & MinDate.ToString("yyyy-MM-dd") & "-" & MaxDate.ToString("yyyy-MM-dd") & GetFileNameEntryType() & TimeStamp.ToString & ".xml"
     End Function
 
     'Helper function to build the filename of the current file
-    Private Function GetFileName(ByVal _FileType As FileType, ByVal BusinessUnit As String, ByVal MinDate As Date, ByVal MaxDate As Date, ByVal IncludeBatch As Boolean, ByVal batchNumber As String) As String
-        Return "E-" & System.Enum.GetName(GetType(FileType), _FileType) & "-" & BusinessUnit & "-" & MinDate.ToString("yyyy-MM-dd") & "-" & MaxDate.ToString("yyyy-MM-dd") & GetFileNameEntryType() & batchNumber & ".xml"
+    Private Function GetFileName(_FileType As FileType, BusinessUnit As String, MinDate As Date, MaxDate As Date, IncludeBatch As Boolean, batchNumber As String) As String
+        Return "E-" & [Enum].GetName(GetType(FileType), _FileType) & "-" & BusinessUnit & "-" & MinDate.ToString("yyyy-MM-dd") & "-" & MaxDate.ToString("yyyy-MM-dd") & GetFileNameEntryType() & batchNumber & ".xml"
     End Function
 
     'Helper function to build the filename of the current file
-    Private Function GetFileName(ByVal _FileType As FileType, ByVal BusinessUnit As String, ByVal MinDate As Date, ByVal MaxDate As Date, ByVal IncludeBatch As Boolean, ByVal batchNumber As BatchId) As String
-        Return "E-" & System.Enum.GetName(GetType(FileType), _FileType) & "-" & BusinessUnit & "-" & MinDate.ToString("yyyy-MM-dd") & "-" & MaxDate.ToString("yyyy-MM-dd") & GetFileNameEntryType(batchNumber.Event_Type) & batchNumber.Batch_Number & ".xml"
+    Private Function GetFileName(_FileType As FileType, BusinessUnit As String, MinDate As Date, MaxDate As Date, IncludeBatch As Boolean, batchNumber As BatchId) As String
+        Return "E-" & [Enum].GetName(GetType(FileType), _FileType) & "-" & BusinessUnit & "-" & MinDate.ToString("yyyy-MM-dd") & "-" & MaxDate.ToString("yyyy-MM-dd") & GetFileNameEntryType(batchNumber.Event_Type) & batchNumber.Batch_Number & ".xml"
     End Function
 
     'Helper function to build the filename of the current file
-    Private Function GetFileName(ByVal _FileType As FileType, ByVal BusinessUnit As String, ByVal MinDate As Date, ByVal MaxDate As Date, ByVal TableName As String) As String
-        Dim _filePrefix As String = System.Enum.GetName(GetType(FileType), _FileType)
+    Private Function GetFileName(_FileType As FileType, BusinessUnit As String, MinDate As Date, MaxDate As Date, TableName As String) As String
+        Dim _filePrefix As String = [Enum].GetName(GetType(FileType), _FileType)
         Return "E-" & _filePrefix & "-" & BusinessUnit & "-" & MinDate.ToString("yyyy-MM-dd") & "-" & MaxDate.ToString("yyyy-MM-dd") & GetFileNameEntryType() & TimeStamp.ToString & ".xml"
     End Function
 
     'Helper function to build the filename of the current file
-    Private Function GetReversalFileName(ByVal FileName As String) As String
+    Private Function GetReversalFileName(FileName As String) As String
         BusinessUnit = FileName.Substring(FileName.IndexOf("-", 3) + 1, (FileName.IndexOf("-", FileName.IndexOf("-", 3) + 1) - FileName.IndexOf("-", 3) - 1))
         Return GetFileName(FileType.Journal, BusinessUnit, Today, Today)
     End Function
 
-    Private Function GetFileName(ByVal _FileType As FileType, ByVal _FileSubType As FileSubType, ByVal BusinessUnit As String, ByVal MinDate As Date, ByVal MaxDate As Date,
-                                 ByVal TableName As String, ByVal _AcctExt As String, ByVal JournalType As String) As String
+    Private Function GetFileName(_FileType As FileType, _FileSubType As FileSubType, BusinessUnit As String, MinDate As Date, MaxDate As Date,
+                                 TableName As String, _AcctExt As String, JournalType As String) As String
 
         If _AcctExt = FELITA_PREFIX Then
             If Not _FileSubType = FileSubType.CONTROL Then
@@ -1805,7 +1805,7 @@ Public Class FelitaEngine
 
     End Function
 
-    Private Function GetFileNameEntryType(ByVal _EventType As EventType) As String
+    Private Function GetFileNameEntryType(_EventType As EventType) As String
 
         Dim strCode As String = ""
 
@@ -1833,7 +1833,7 @@ Public Class FelitaEngine
     ''' <param name="AcctTrans"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Sub ProcessBalancingResponse(ByVal ret As Object, ByVal AcctTrans As AcctTransmission, Optional ByVal _fel As Felita.FelitaConnectServiceClient = Nothing)
+    Private Sub ProcessBalancingResponse(ret As Object, AcctTrans As AcctTransmission, Optional ByVal _fel As Felita.FelitaConnectServiceClient = Nothing)
 
 
         If ret.GetType Is GetType(SmartStream.BatchSummaryTypes) Then
@@ -1881,7 +1881,7 @@ Public Class FelitaEngine
                 AcctTrans.RejectReasonDetail = _errs.ToString
             End If
 
-            If AcctTrans.FileTypeFlag = FelitaEngine.FileType.Journal Then
+            If AcctTrans.FileTypeFlag = FileType.Journal Then
 
                 Dim _felTbl As Felita.dsJournalInfo.JournalInfoDataTable
                 Dim eab As EndpointAddressBuilder
@@ -1899,7 +1899,7 @@ Public Class FelitaEngine
 
                     _felTbl = _fel.GetBatchStatus(AcctTrans.BatchNumber, BusinessUnit)
 
-                    If Not _felTbl Is Nothing AndAlso _felTbl.Rows.Count = 1 Then
+                    If _felTbl IsNot Nothing AndAlso _felTbl.Rows.Count = 1 Then
                         AcctTrans.NumTransactionsReceived = If(IsDBNull(_felTbl(0)(_felTbl.TransactionTotalColumn.Ordinal)), 0, _felTbl(0)(_felTbl.TransactionTotalColumn.Ordinal))
                         AcctTrans.DateReceived = If(IsDBNull(_felTbl(0)(_felTbl.DateProcessedColumn.Ordinal)), Date.MinValue, _felTbl(0)(_felTbl.DateProcessedColumn.Ordinal))
                         AcctTrans.DebitAmountReceived = _felTbl(0)(_felTbl.DebitAmountColumn.Ordinal)
@@ -1919,46 +1919,46 @@ Public Class FelitaEngine
 
 #Region "Public Properties"
 
-    Public Property AccountingEventId() As String
+    Public Property AccountingEventId As String
         Get
-            If Row(Me.DATA_COL_NAME_ACCOUNTING_EVENT_ID) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_ACCOUNTING_EVENT_ID) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_ACCOUNTING_EVENT_ID), String))
+                Return (CType(Row(DATA_COL_NAME_ACCOUNTING_EVENT_ID), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_ACCOUNTING_EVENT_ID, Value)
+            SetValue(DATA_COL_NAME_ACCOUNTING_EVENT_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property CompanyId() As String
+    Public Property CompanyId As String
         Get
-            If Row(Me.DATA_COL_NAME_COMPANY_ID) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_COMPANY_ID) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_COMPANY_ID), String))
+                Return (CType(Row(DATA_COL_NAME_COMPANY_ID), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_COMPANY_ID, Value)
+            SetValue(DATA_COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
-    Public Property VendorFiles() As Boolean
+    Public Property VendorFiles As Boolean
         Get
-            If Row(Me.DATA_COL_NAME_VENDOR_FILES) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_VENDOR_FILES) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_VENDOR_FILES), Boolean))
+                Return (CType(Row(DATA_COL_NAME_VENDOR_FILES), Boolean))
             End If
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_VENDOR_FILES, Value)
+            SetValue(DATA_COL_NAME_VENDOR_FILES, Value)
         End Set
     End Property
 

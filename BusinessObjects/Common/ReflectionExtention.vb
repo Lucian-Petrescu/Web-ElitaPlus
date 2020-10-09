@@ -10,8 +10,8 @@ Public Module ReflectionExtention
     ''' <param name="source"></param>
     ''' <param name="destination"></param>
     ''' <remarks></remarks>
-    <System.Runtime.CompilerServices.Extension()> _
-    Public Sub CopyProperties(ByVal source As Object, ByVal destination As Object)
+    <System.Runtime.CompilerServices.Extension> _
+    Public Sub CopyProperties(source As Object, destination As Object)
         ' If any this null throw an exception 
         If source Is Nothing OrElse destination Is Nothing Then
             Throw New Exception("Source or/and Destination Objects are null")

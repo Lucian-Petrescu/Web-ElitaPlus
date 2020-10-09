@@ -25,25 +25,25 @@ Public Class ProcessDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("process_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal code As String, _
-                                      ByVal description As String, ByVal activeOn As String, _
-                                      ByVal companyIds As ArrayList, ByVal languageId As Guid) As DataSet
+    Public Function LoadList(code As String, _
+                                      description As String, activeOn As String, _
+                                      companyIds As ArrayList, languageId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim whereClauseConditions As String = String.Empty
         Dim ds As New DataSet
         Dim languageIdParam As DBHelper.DBHelperParameter
@@ -52,35 +52,35 @@ Public Class ProcessDAL
 
         bIsLikeClause = IsThereALikeClause(description, code)
 
-        If ((Not (code Is Nothing)) AndAlso (Me.FormatSearchMask(code))) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(EI." & Me.COL_NAME_CODE & ")" & code.ToUpper
+        If ((Not (code Is Nothing)) AndAlso (FormatSearchMask(code))) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(EI." & COL_NAME_CODE & ")" & code.ToUpper
             bIsWhereClause = True
         End If
-        If ((Not (description Is Nothing)) AndAlso (Me.FormatSearchMask(description))) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(EI." & Me.COL_NAME_DESCRIPTION & ")" & description.ToUpper
+        If ((Not (description Is Nothing)) AndAlso (FormatSearchMask(description))) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(EI." & COL_NAME_DESCRIPTION & ")" & description.ToUpper
             bIsWhereClause = True
         End If
         If (Not (activeOn Is String.Empty)) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & " trunc(to_date('" & DateHelper.GetDateValue(activeOn).ToString("MM/dd/yyyy HH:mm:ss") & "', 'mm-dd-yyyy hh24:mi:ss')) BETWEEN EI." & Me.COL_NAME_EFFECTIVE & " AND EI." & Me.COL_NAME_EXPIRATION & ""
+            whereClauseConditions &= " AND " & Environment.NewLine & " trunc(to_date('" & DateHelper.GetDateValue(activeOn).ToString("MM/dd/yyyy HH:mm:ss") & "', 'mm-dd-yyyy hh24:mi:ss')) BETWEEN EI." & COL_NAME_EFFECTIVE & " AND EI." & COL_NAME_EXPIRATION & ""
             bIsWhereClause = True
         End If
 
         If bIsWhereClause Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         End If
 
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, New DBHelper.DBHelperParameter() {})
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, New DBHelper.DBHelperParameter() {})
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Private Function IsThereALikeClause(ByVal description As String, ByVal code As String) As Boolean
+    Private Function IsThereALikeClause(description As String, code As String) As Boolean
         Dim bIsLikeClause As Boolean
 
-        bIsLikeClause = Me.IsLikeClause(description) OrElse Me.IsLikeClause(code)
+        bIsLikeClause = IsLikeClause(description) OrElse IsLikeClause(code)
 
         Return bIsLikeClause
     End Function
@@ -88,12 +88,12 @@ Public Class ProcessDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

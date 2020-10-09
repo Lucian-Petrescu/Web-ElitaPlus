@@ -6,48 +6,48 @@ Public Class DataProtectionHistory
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
     
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()             
         Try
             Dim dal As New DataProtectionHistoryDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize() 
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class DataProtectionHistory
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)               
+    Protected Sub Load(id As Guid)               
         Try
             Dim dal As New DataProtectionHistoryDAL            
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -91,7 +91,7 @@ Public Class DataProtectionHistory
 
 #Region "Properties"
 
-    Public ReadOnly Property Comment() As String
+    Public ReadOnly Property Comment As String
         Get
             If Row(DataProtectionHistoryDAL.COL_NAME_COMMENTS) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class DataProtectionHistory
         End Get
     End Property
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(DataProtectionHistoryDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -112,7 +112,7 @@ Public Class DataProtectionHistory
     End Property
 	
     <ValueMandatory(""),ValidStringLength("", Max:=50)> _
-    Public Property EntityType() As String
+    Public Property EntityType As String
         Get
             CheckDeleted()
             If row(DataProtectionHistoryDAL.COL_NAME_ENTITY_TYPE) Is DBNull.Value Then
@@ -121,15 +121,15 @@ Public Class DataProtectionHistory
                 Return CType(row(DataProtectionHistoryDAL.COL_NAME_ENTITY_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DataProtectionHistoryDAL.COL_NAME_ENTITY_TYPE, Value)
+            SetValue(DataProtectionHistoryDAL.COL_NAME_ENTITY_TYPE, Value)
         End Set
     End Property
 	
 	
     <ValueMandatory("")> _
-    Public Property EntityId() As Guid
+    Public Property EntityId As Guid
         Get
             CheckDeleted()
             If row(DataProtectionHistoryDAL.COL_NAME_ENTITY_ID) Is DBNull.Value Then
@@ -138,15 +138,15 @@ Public Class DataProtectionHistory
                 Return New Guid(CType(row(DataProtectionHistoryDAL.COL_NAME_ENTITY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(DataProtectionHistoryDAL.COL_NAME_ENTITY_ID, Value)
+            SetValue(DataProtectionHistoryDAL.COL_NAME_ENTITY_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)>
-    Public Property RequestId() As String
+    Public Property RequestId As String
         Get
             CheckDeleted()
             If row(DataProtectionHistoryDAL.COL_NAME_REQUEST_ID) Is DBNull.Value Then
@@ -155,16 +155,16 @@ Public Class DataProtectionHistory
                 Return CType(row(DataProtectionHistoryDAL.COL_NAME_REQUEST_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DataProtectionHistoryDAL.COL_NAME_REQUEST_ID, Value)
+            SetValue(DataProtectionHistoryDAL.COL_NAME_REQUEST_ID, Value)
         End Set
     End Property
 
 
 
 
-    Public Property CommentId() As Guid
+    Public Property CommentId As Guid
         Get
             CheckDeleted()
             If Row(DataProtectionHistoryDAL.COL_NAME_COMMENT_ID) Is DBNull.Value Then
@@ -173,15 +173,15 @@ Public Class DataProtectionHistory
                 Return New Guid(CType(Row(DataProtectionHistoryDAL.COL_NAME_COMMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(DataProtectionHistoryDAL.COL_NAME_COMMENT_ID, Value)
+            SetValue(DataProtectionHistoryDAL.COL_NAME_COMMENT_ID, Value)
         End Set
     End Property
 
 
 
-    Public Property Status() As Guid
+    Public Property Status As Guid
         Get
             CheckDeleted()
             If row(DataProtectionHistoryDAL.COL_NAME_STATUS) Is DBNull.Value Then
@@ -190,15 +190,15 @@ Public Class DataProtectionHistory
                 Return New Guid(CType(row(DataProtectionHistoryDAL.COL_NAME_STATUS), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(DataProtectionHistoryDAL.COL_NAME_STATUS, Value)
+            SetValue(DataProtectionHistoryDAL.COL_NAME_STATUS, Value)
         End Set
     End Property
 
 
 
-    Public Property StartDate() As DateType
+    Public Property StartDate As DateType
         Get
             CheckDeleted()
             If row(DataProtectionHistoryDAL.COL_NAME_START_DATE) Is DBNull.Value Then
@@ -207,15 +207,15 @@ Public Class DataProtectionHistory
                 Return New DateType(CType(row(DataProtectionHistoryDAL.COL_NAME_START_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(DataProtectionHistoryDAL.COL_NAME_START_DATE, Value)
+            SetValue(DataProtectionHistoryDAL.COL_NAME_START_DATE, Value)
         End Set
     End Property
 
 
 
-    Public Property EndDate() As DateType
+    Public Property EndDate As DateType
         Get
             CheckDeleted()
             If row(DataProtectionHistoryDAL.COL_NAME_END_DATE) Is DBNull.Value Then
@@ -224,13 +224,13 @@ Public Class DataProtectionHistory
                 Return New DateType(CType(row(DataProtectionHistoryDAL.COL_NAME_END_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(DataProtectionHistoryDAL.COL_NAME_END_DATE, Value)
+            SetValue(DataProtectionHistoryDAL.COL_NAME_END_DATE, Value)
         End Set
     End Property
 
-    Public Property AddedBy() As String
+    Public Property AddedBy As String
         Get
             If Row(DataProtectionHistoryDAL.COL_NAME_CREATED_BY) Is DBNull.Value Then
                 Return Nothing
@@ -238,27 +238,27 @@ Public Class DataProtectionHistory
                 Return CType(Row(DataProtectionHistoryDAL.COL_NAME_CREATED_BY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(DataProtectionHistoryDAL.COL_NAME_CREATED_BY, Value)
+            SetValue(DataProtectionHistoryDAL.COL_NAME_CREATED_BY, Value)
         End Set
 
     End Property
 
-    Public Property RestrictedStatus() As String
+    Public Property RestrictedStatus As String
         Get
             Return _restrict
         End Get
-        Set(ByVal Value As String)
+        Set
             _restrict = Value
         End Set
     End Property
 
-    Public Property IsRequestIdUsed() As String
+    Public Property IsRequestIdUsed As String
         Get
             Return _isRequestIdUsed
         End Get
-        Set(ByVal Value As String)
+        Set
             _isRequestIdUsed = Value
         End Set
     End Property
@@ -266,12 +266,12 @@ Public Class DataProtectionHistory
 
 #Region "Public Members"
 
-    Public Function AddComment(ByVal CommentId As Guid) As Comment
+    Public Function AddComment(CommentId As Guid) As Comment
         If (CommentId.Equals(Guid.Empty)) Then
-            Dim objComment As New Comment(Me.Dataset)
+            Dim objComment As New Comment(Dataset)
             Return objComment
         Else
-            Dim objComment As New Comment(CommentId, Me.Dataset)
+            Dim objComment As New Comment(CommentId, Dataset)
             Return objComment
         End If
     End Function
@@ -279,15 +279,15 @@ Public Class DataProtectionHistory
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New DataProtectionHistoryDAL
-                dal.UpdateFamily(Me.Dataset)
+                dal.UpdateFamily(Dataset)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -300,7 +300,7 @@ Public Class DataProtectionHistory
 
 #Region " Validate Methods"
 
-    Public Shared Function GetRequestIdUsedInfo(ByVal requestId As String, Optional ByVal restrictionCode As String = Nothing, Optional ByVal certId As Guid = Nothing) As Boolean
+    Public Shared Function GetRequestIdUsedInfo(requestId As String, Optional ByVal restrictionCode As String = Nothing, Optional ByVal certId As Guid = Nothing) As Boolean
         Try
             Dim dal As New DataProtectionHistoryDAL
             Return dal.GetRequestIdUsedInfo(requestId, restrictionCode, certId)
@@ -313,7 +313,7 @@ Public Class DataProtectionHistory
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function GetList(ByVal certId As Guid) As DataProtectionCommentDV
+    Public Shared Function GetList(certId As Guid) As DataProtectionCommentDV
         Try
             Dim dal As New DataProtectionHistoryDAL
             Return New DataProtectionCommentDV(dal.LoadList(certId, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
@@ -326,31 +326,31 @@ Public Class DataProtectionHistory
         Inherits DataView
         Public Const COL_COMMENT_ID As String = DataProtectionHistoryDAL.COL_NAME_COMMENT_ID
         Public Const COL_ADDED_BY As String = DataProtectionHistoryDAL.COL_NAME_CREATED_BY
-        Public Const COL_CREATED_DATE As String = DataProtectionHistoryDAL.COL_NAME_CREATED_DATE
+        Public Const COL_CREATED_DATE As String = DALBase.COL_NAME_CREATED_DATE
         Public Const COL_REQUEST_ID As String = DataProtectionHistoryDAL.COL_NAME_REQUEST_ID
         Public Const COL_COMMENTS As String = DataProtectionHistoryDAL.COL_NAME_COMMENTS
         Public Const COL_STATUS As String = DataProtectionHistoryDAL.COL_NAME_STATUS
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
     End Class
 
     Public Function AddComments(Comment_id As Guid) As Comment
         If Comment_id.Equals(Guid.Empty) Then
-            Dim objComment As New Comment(Me.Dataset)
+            Dim objComment As New Comment(Dataset)
             Return objComment
         Else
-            Dim objComment As New Comment(Comment_id, Me.Dataset)
+            Dim objComment As New Comment(Comment_id, Dataset)
             Return objComment
         End If
     End Function
 
     Public Function AddCertificate(Certificate_id As Guid) As Certificate
         If Certificate_id.Equals(Guid.Empty) Then
-            Dim objCertificate As New Certificate(Me.Dataset)
+            Dim objCertificate As New Certificate(Dataset)
             Return objCertificate
         Else
-            Dim objCertificate As New Certificate(Certificate_id, Me.Dataset)
+            Dim objCertificate As New Certificate(Certificate_id, Dataset)
             Return objCertificate
         End If
     End Function

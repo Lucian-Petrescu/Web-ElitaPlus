@@ -11,55 +11,55 @@ Public NotInheritable Class ClaimAuthorization
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
-        Me.OriginalAuthorizedAmount = Me.AuthorizedAmount
+        Dataset = New DataSet
+        Load(id)
+        OriginalAuthorizedAmount = AuthorizedAmount
     End Sub
 
     'New BO
     Friend Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
-        Me.ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__AUTHORIZED)
-        Me.AuthorizationNumber = DEFAULT_AUTH_NUMBER
+        Dataset = New DataSet
+        Load()
+        ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__AUTHORIZED)
+        AuthorizationNumber = DEFAULT_AUTH_NUMBER
     End Sub
 
     'Exiting BO attaching to a BO family
-    Friend Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Friend Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
-        Me.OriginalAuthorizedAmount = Me.AuthorizedAmount
+        Dataset = familyDS
+        Load(id)
+        OriginalAuthorizedAmount = AuthorizedAmount
     End Sub
 
     'New BO attaching to a BO family
-    Friend Sub New(ByVal familyDS As DataSet)
+    Friend Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
-        Me.ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__AUTHORIZED)
-        Me.AuthorizationNumber = DEFAULT_AUTH_NUMBER
+        Dataset = familyDS
+        Load()
+        ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__AUTHORIZED)
+        AuthorizationNumber = DEFAULT_AUTH_NUMBER
     End Sub
 
-    Friend Sub New(ByVal row As DataRow)
+    Friend Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
-        Me.OriginalAuthorizedAmount = Me.AuthorizedAmount
+        OriginalAuthorizedAmount = AuthorizedAmount
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ClaimAuthorizationDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -67,23 +67,23 @@ Public NotInheritable Class ClaimAuthorization
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ClaimAuthorizationDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -104,7 +104,7 @@ Public NotInheritable Class ClaimAuthorization
 
     'Key Property
     <ValidateDuplicateServiceClassType(""), ValidatePayDeductibleLineItem(""), ValidateMultiplePayDeductibleLineItem(""), ValidatePayDeductibleLineItemForContainDedutibleNo("")>
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ClaimAuthorizationDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -115,7 +115,7 @@ Public NotInheritable Class ClaimAuthorization
     End Property
 
     <ValueMandatory("")>
-    Public Property ClaimId() As Guid
+    Public Property ClaimId As Guid
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_CLAIM_ID) Is DBNull.Value Then
@@ -124,15 +124,15 @@ Public NotInheritable Class ClaimAuthorization
                 Return New Guid(CType(Row(ClaimAuthorizationDAL.COL_NAME_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_CLAIM_ID, Value)
-            Me.Claim = Nothing
+            SetValue(ClaimAuthorizationDAL.COL_NAME_CLAIM_ID, Value)
+            Claim = Nothing
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property ServiceCenterId() As Guid Implements IInvoiceable.ServiceCenterId
+    Public Property ServiceCenterId As Guid Implements IInvoiceable.ServiceCenterId
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_SERVICE_CENTER_ID) Is DBNull.Value Then
@@ -141,53 +141,51 @@ Public NotInheritable Class ClaimAuthorization
                 Return New Guid(CType(Row(ClaimAuthorizationDAL.COL_NAME_SERVICE_CENTER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_SERVICE_CENTER_ID, Value)
-            Me.ServiceCenter = Nothing
+            SetValue(ClaimAuthorizationDAL.COL_NAME_SERVICE_CENTER_ID, Value)
+            ServiceCenter = Nothing
         End Set
     End Property
 
-    Public ReadOnly Property ServiceCenterObject() As ServiceCenter Implements IInvoiceable.ServiceCenterObject
+    Public ReadOnly Property ServiceCenterObject As ServiceCenter Implements IInvoiceable.ServiceCenterObject
         Get
-            Return Me.ServiceCenter
+            Return ServiceCenter
         End Get
     End Property
 
-    Public Property LoanerCenterId() As Guid Implements IInvoiceable.LoanerCenterId
+    Public Property LoanerCenterId As Guid Implements IInvoiceable.LoanerCenterId
         Get
             CheckDeleted()
-            Return Me.ServiceCenter.LoanerCenterId
+            Return ServiceCenter.LoanerCenterId
         End Get
-        Private Set(ByVal Value As Guid)
+        Private Set
             CheckDeleted()
-            Me.ServiceCenter.LoanerCenterId = Value
+            ServiceCenter.LoanerCenterId = Value
         End Set
     End Property
 
-    Private _LoanerReturnedDate As DateType
-    Public Property LoanerReturnedDate() As DateType Implements IInvoiceable.LoanerReturnedDate
+    Public Property LoanerReturnedDate As DateType Implements IInvoiceable.LoanerReturnedDate
         Get
             Return Nothing
         End Get
-        Set(ByVal Value As DateType)
-            _LoanerReturnedDate = Value
+        Set
         End Set
     End Property
 
-    Public ReadOnly Property CreatedDate() As DateType Implements IInvoiceable.CreatedDate
+    Public ReadOnly Property CreatedDate As DateType Implements IInvoiceable.CreatedDate
         Get
             Return MyBase.CreatedDate
         End Get
     End Property
 
-    Public ReadOnly Property CreatedDateTime() As DateTimeType Implements IInvoiceable.CreatedDateTime
+    Public ReadOnly Property CreatedDateTime As DateTimeType Implements IInvoiceable.CreatedDateTime
         Get
             Return MyBase.CreatedDateTime
         End Get
     End Property
 
-    Public Property ServiceLevelId() As Guid
+    Public Property ServiceLevelId As Guid
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_SERVICE_LEVEL_ID) Is DBNull.Value Then
@@ -196,14 +194,14 @@ Public NotInheritable Class ClaimAuthorization
                 Return New Guid(CType(Row(ClaimAuthorizationDAL.COL_NAME_SERVICE_LEVEL_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_SERVICE_LEVEL_ID, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_SERVICE_LEVEL_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Friend Property ClaimAuthorizationStatusId() As Guid
+    Friend Property ClaimAuthorizationStatusId As Guid
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_CLAIM_AUTHORIZATION_STATUS_ID) Is DBNull.Value Then
@@ -212,22 +210,22 @@ Public NotInheritable Class ClaimAuthorization
                 Return New Guid(CType(Row(ClaimAuthorizationDAL.COL_NAME_CLAIM_AUTHORIZATION_STATUS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_CLAIM_AUTHORIZATION_STATUS_ID, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_CLAIM_AUTHORIZATION_STATUS_ID, Value)
         End Set
     End Property
 
-    Public ReadOnly Property ClaimAuthorizationStatusCode() As String
+    Public ReadOnly Property ClaimAuthorizationStatusCode As String
         Get
-            If (Not Me.ClaimAuthorizationStatusId.Equals(Guid.Empty)) Then
-                Return LookupListNew.GetCodeFromId(Codes.CLAIM_AUTHORIZATION_STATUS, Me.ClaimAuthorizationStatusId)
+            If (Not ClaimAuthorizationStatusId.Equals(Guid.Empty)) Then
+                Return LookupListNew.GetCodeFromId(Codes.CLAIM_AUTHORIZATION_STATUS, ClaimAuthorizationStatusId)
             End If
         End Get
     End Property
 
     <ValidStringLength("", Max:=2000)>
-    Public Property SpecialInstruction() As String
+    Public Property SpecialInstruction As String
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_SPECIAL_INSTRUCTION) Is DBNull.Value Then
@@ -236,14 +234,14 @@ Public NotInheritable Class ClaimAuthorization
                 Return CType(Row(ClaimAuthorizationDAL.COL_NAME_SPECIAL_INSTRUCTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_SPECIAL_INSTRUCTION, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_SPECIAL_INSTRUCTION, Value)
         End Set
     End Property
 
     <ValidVisitDate("")>
-    Public Property VisitDate() As DateType
+    Public Property VisitDate As DateType
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_VISIT_DATE) Is DBNull.Value Then
@@ -252,13 +250,13 @@ Public NotInheritable Class ClaimAuthorization
                 Return New DateType(CType(Row(ClaimAuthorizationDAL.COL_NAME_VISIT_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_VISIT_DATE, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_VISIT_DATE, Value)
         End Set
     End Property
 
-    Public Property DeviceReceptionDate() As DateType
+    Public Property DeviceReceptionDate As DateType
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_DEVICE_RECEPTION_DATE) Is DBNull.Value Then
@@ -267,13 +265,13 @@ Public NotInheritable Class ClaimAuthorization
                 Return New DateType(CType(Row(ClaimAuthorizationDAL.COL_NAME_DEVICE_RECEPTION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_DEVICE_RECEPTION_DATE, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_DEVICE_RECEPTION_DATE, Value)
         End Set
     End Property
 
-    Public Property ExpectedRepairDate() As DateType
+    Public Property ExpectedRepairDate As DateType
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_EXPECTED_REPAIR_DATE) Is DBNull.Value Then
@@ -282,13 +280,13 @@ Public NotInheritable Class ClaimAuthorization
                 Return New DateType(CType(Row(ClaimAuthorizationDAL.COL_NAME_EXPECTED_REPAIR_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_EXPECTED_REPAIR_DATE, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_EXPECTED_REPAIR_DATE, Value)
         End Set
     End Property
 
-    Public Property DeliveryDate() As DateType
+    Public Property DeliveryDate As DateType
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_DELIVERY_DATE) Is DBNull.Value Then
@@ -297,14 +295,14 @@ Public NotInheritable Class ClaimAuthorization
                 Return New DateType(CType(Row(ClaimAuthorizationDAL.COL_NAME_DELIVERY_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_DELIVERY_DATE, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_DELIVERY_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property WhoPaysId() As Guid
+    Public Property WhoPaysId As Guid
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_WHO_PAYS_ID) Is DBNull.Value Then
@@ -313,14 +311,14 @@ Public NotInheritable Class ClaimAuthorization
                 Return New Guid(CType(Row(ClaimAuthorizationDAL.COL_NAME_WHO_PAYS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_WHO_PAYS_ID, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_WHO_PAYS_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)>
-    Public Property DefectReason() As String
+    Public Property DefectReason As String
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_DEFECT_REASON) Is DBNull.Value Then
@@ -329,14 +327,14 @@ Public NotInheritable Class ClaimAuthorization
                 Return CType(Row(ClaimAuthorizationDAL.COL_NAME_DEFECT_REASON), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_DEFECT_REASON, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_DEFECT_REASON, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=500)>
-    Public Property TechnicalReport() As String
+    Public Property TechnicalReport As String
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_TECHNICAL_REPORT) Is DBNull.Value Then
@@ -345,14 +343,14 @@ Public NotInheritable Class ClaimAuthorization
                 Return CType(Row(ClaimAuthorizationDAL.COL_NAME_TECHNICAL_REPORT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_TECHNICAL_REPORT, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_TECHNICAL_REPORT, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=40)>
-    Public Property BatchNumber() As String
+    Public Property BatchNumber As String
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_BATCH_NUMBER) Is DBNull.Value Then
@@ -361,14 +359,14 @@ Public NotInheritable Class ClaimAuthorization
                 Return CType(Row(ClaimAuthorizationDAL.COL_NAME_BATCH_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_BATCH_NUMBER, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_BATCH_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=60)>
-    Public Property ServiceCenterReferenceNumber() As String
+    Public Property ServiceCenterReferenceNumber As String
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_SVC_REFERENCE_NUMBER) Is DBNull.Value Then
@@ -377,14 +375,14 @@ Public NotInheritable Class ClaimAuthorization
                 Return CType(Row(ClaimAuthorizationDAL.COL_NAME_SVC_REFERENCE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_SVC_REFERENCE_NUMBER, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_SVC_REFERENCE_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)>
-    Public Property VerificationNumber() As String
+    Public Property VerificationNumber As String
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_VERIFICATION_NUMBER) Is DBNull.Value Then
@@ -393,13 +391,13 @@ Public NotInheritable Class ClaimAuthorization
                 Return CType(Row(ClaimAuthorizationDAL.COL_NAME_VERIFICATION_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_VERIFICATION_NUMBER, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_VERIFICATION_NUMBER, Value)
         End Set
     End Property
 
-    Public Property ExternalCreatedDate() As DateType
+    Public Property ExternalCreatedDate As DateType
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_EXTERNAL_CREATED_DATE) Is DBNull.Value Then
@@ -408,14 +406,14 @@ Public NotInheritable Class ClaimAuthorization
                 Return New DateType(CType(Row(ClaimAuthorizationDAL.COL_NAME_EXTERNAL_CREATED_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_EXTERNAL_CREATED_DATE, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_EXTERNAL_CREATED_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property IsSpecialServiceId() As Guid
+    Public Property IsSpecialServiceId As Guid
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_IS_SPECIAL_SERVICE_ID) Is DBNull.Value Then
@@ -424,14 +422,14 @@ Public NotInheritable Class ClaimAuthorization
                 Return New Guid(CType(Row(ClaimAuthorizationDAL.COL_NAME_IS_SPECIAL_SERVICE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_IS_SPECIAL_SERVICE_ID, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_IS_SPECIAL_SERVICE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property ReverseLogisticsId() As Guid
+    Public Property ReverseLogisticsId As Guid
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_REVERSE_LOGISTICS_ID) Is DBNull.Value Then
@@ -440,14 +438,14 @@ Public NotInheritable Class ClaimAuthorization
                 Return New Guid(CType(Row(ClaimAuthorizationDAL.COL_NAME_REVERSE_LOGISTICS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_REVERSE_LOGISTICS_ID, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_REVERSE_LOGISTICS_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=800)>
-    Public Property ProblemFound() As String
+    Public Property ProblemFound As String
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_PROBLEM_FOUND) Is DBNull.Value Then
@@ -456,14 +454,14 @@ Public NotInheritable Class ClaimAuthorization
                 Return CType(Row(ClaimAuthorizationDAL.COL_NAME_PROBLEM_FOUND), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_PROBLEM_FOUND, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_PROBLEM_FOUND, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)>
-    Public Property Source() As String
+    Public Property Source As String
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_SOURCE) Is DBNull.Value Then
@@ -472,22 +470,22 @@ Public NotInheritable Class ClaimAuthorization
                 Return CType(Row(ClaimAuthorizationDAL.COL_NAME_SOURCE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_SOURCE, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_SOURCE, Value)
         End Set
     End Property
     Public _reversed As Boolean = False
-    Public Property Reversed() As Boolean
+    Public Property Reversed As Boolean
         Get
             Return _reversed
         End Get
-        Set(ByVal value As Boolean)
+        Set
             _reversed = value
         End Set
     End Property
 
-    Public ReadOnly Property AuthorizationAmount() As DecimalType
+    Public ReadOnly Property AuthorizationAmount As DecimalType
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_AUTHORIZAION_AMOUNT) Is DBNull.Value Then
@@ -498,7 +496,7 @@ Public NotInheritable Class ClaimAuthorization
         End Get
     End Property
 
-    Public ReadOnly Property ServiceOrderType() As String
+    Public ReadOnly Property ServiceOrderType As String
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_SERVICE_ORDER_TYPE) Is DBNull.Value Then
@@ -509,9 +507,9 @@ Public NotInheritable Class ClaimAuthorization
         End Get
     End Property
 
-    Public Property ClaimAuthStatus() As ClaimAuthorizationStatus
+    Public Property ClaimAuthStatus As ClaimAuthorizationStatus
         Get
-            Select Case Me.ClaimAuthorizationStatusCode
+            Select Case ClaimAuthorizationStatusCode
                 Case Codes.CLAIM_AUTHORIZATION_STATUS__AUTHORIZED
                     Return ClaimAuthorizationStatus.Authorized
                 Case Codes.CLAIM_AUTHORIZATION_STATUS__FULFILLED
@@ -540,32 +538,32 @@ Public NotInheritable Class ClaimAuthorization
                     Throw New InvalidOperationException
             End Select
         End Get
-        Set(ByVal value As ClaimAuthorizationStatus)
+        Set
             Select Case value
                 Case ClaimAuthorizationStatus.Authorized
-                    Me.ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__AUTHORIZED)
+                    ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__AUTHORIZED)
                 Case ClaimAuthorizationStatus.Fulfilled
-                    Me.ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__FULFILLED)
+                    ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__FULFILLED)
                 Case ClaimAuthorizationStatus.Paid
-                    Me.ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__PAID)
+                    ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__PAID)
                 Case ClaimAuthorizationStatus.Pending
-                    Me.ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__PENDING)
+                    ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__PENDING)
                 Case ClaimAuthorizationStatus.Void
-                    Me.ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__VOID)
+                    ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__VOID)
                 Case ClaimAuthorizationStatus.Reconsiled
-                    Me.ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__RECONSILED)
+                    ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__RECONSILED)
                 Case ClaimAuthorizationStatus.ToBePaid
-                    Me.ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__TO_BE_PAID)
+                    ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__TO_BE_PAID)
                 Case ClaimAuthorizationStatus.Sent
-                    Me.ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__SENT)
+                    ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__SENT)
                 Case ClaimAuthorizationStatus.OnHold
-                    Me.ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__ONHOLD)
+                    ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__ONHOLD)
                 Case ClaimAuthorizationStatus.Cancelled
-                    Me.ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__CANCELLED)
+                    ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__CANCELLED)
                 Case ClaimAuthorizationStatus.Collected
-                    Me.ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__COLLECTED)
+                    ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__COLLECTED)
                 Case ClaimAuthorizationStatus.Reversed
-                    Me.ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__REVERSED)
+                    ClaimAuthorizationStatusId = LookupListNew.GetIdFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__REVERSED)
                 Case ClaimAuthorizationStatus.None
                     Throw New NotSupportedException
             End Select
@@ -576,26 +574,26 @@ Public NotInheritable Class ClaimAuthorization
         Get
             Return CalculateAuthorizationAmount()
         End Get
-        Private Set(ByVal value As DecimalType)
+        Private Set
             AuthorizedAmount = value
         End Set
     End Property
     Private _ReimbursementAmount As DecimalType = Nothing
     Public ReadOnly Property ReimbursementAmount As DecimalType
         Get
-            If Me._ReimbursementAmount Is Nothing Then
-                Me._ReimbursementAmount = CalculateReimbursementAmount()
+            If _ReimbursementAmount Is Nothing Then
+                _ReimbursementAmount = CalculateReimbursementAmount()
             End If
-            Return Me._ReimbursementAmount
+            Return _ReimbursementAmount
         End Get
     End Property
     Private _ReplacementAmount As DecimalType = Nothing
     Public ReadOnly Property ReplacementAmount As DecimalType
         Get
-            If Me._ReplacementAmount Is Nothing Then
-                Me._ReplacementAmount = CalculateReplacementAmount()
+            If _ReplacementAmount Is Nothing Then
+                _ReplacementAmount = CalculateReplacementAmount()
             End If
-            Return Me._ReplacementAmount
+            Return _ReplacementAmount
         End Get
     End Property
 
@@ -603,8 +601,8 @@ Public NotInheritable Class ClaimAuthorization
     Public ReadOnly Property PayDeductibleAmount As DecimalType
         Get
             Dim amount As Decimal = New Decimal(0)
-            For Each Item As ClaimAuthItem In Me.ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False _
-                AndAlso (i.ServiceClassCode = Codes.SERVICE_CLASS__DEDUCTIBLE And i.ServiceTypeCode = Codes.SERVICE_TYPE__PAY_DEDUCTIBLE))
+            For Each Item As ClaimAuthItem In ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False _
+                AndAlso (i.ServiceClassCode = Codes.SERVICE_CLASS__DEDUCTIBLE AndAlso i.ServiceTypeCode = Codes.SERVICE_TYPE__PAY_DEDUCTIBLE))
 
                 amount = amount + If(Item.Amount Is Nothing, New Decimal(0D), Item.Amount.Value)
 
@@ -616,7 +614,7 @@ Public NotInheritable Class ClaimAuthorization
     Public ReadOnly Property IsAuthorizationDeductibleRefund As Boolean
 
         Get
-            If (Me.AuthTypeXcd = Codes.CLAIM_EXTENDED_STATUS_AUTH_TYPE_CREDIT_NOTE AndAlso Me.PartyTypeXcd = Codes.CLAIM_EXTENDED_STATUS_PARTY_TYPE_CUSTOMER) Then
+            If (AuthTypeXcd = Codes.CLAIM_EXTENDED_STATUS_AUTH_TYPE_CREDIT_NOTE AndAlso PartyTypeXcd = Codes.CLAIM_EXTENDED_STATUS_PARTY_TYPE_CUSTOMER) Then
                 Return True
             Else
                 Return False
@@ -624,11 +622,11 @@ Public NotInheritable Class ClaimAuthorization
         End Get
     End Property
 
-    Public ReadOnly Property IsSupervisorAuthorizationRequired() As Boolean
+    Public ReadOnly Property IsSupervisorAuthorizationRequired As Boolean
         Get
             Dim bIsReq As Boolean
-            Dim bDaysExceeded As Boolean = Me.IsDaysLimitExceeded
-            Dim bAuthorizationExceeded As Boolean = Me.IsAuthorizationLimitExceeded
+            Dim bDaysExceeded As Boolean = IsDaysLimitExceeded
+            Dim bAuthorizationExceeded As Boolean = IsAuthorizationLimitExceeded
 
             If bAuthorizationExceeded Then
                 bIsReq = True
@@ -648,22 +646,22 @@ Public NotInheritable Class ClaimAuthorization
         End Get
     End Property
 
-    Public ReadOnly Property IsAuthorizationLimitExceeded() As Boolean
+    Public ReadOnly Property IsAuthorizationLimitExceeded As Boolean
         Get
-            If Not Me.AuthorizedAmount Is Nothing AndAlso Me.Claim.AuthorizedAmount.Value > Me.Claim.AuthorizationLimit.Value Then
+            If AuthorizedAmount IsNot Nothing AndAlso Claim.AuthorizedAmount.Value > Claim.AuthorizationLimit.Value Then
                 Return True
             End If
             Return False
         End Get
     End Property
 
-    Private ReadOnly Property IsAuthorizedAmountChanged() As Boolean
+    Private ReadOnly Property IsAuthorizedAmountChanged As Boolean
         Get
-            If Me.OriginalAuthorizedAmount = Me.AuthorizedAmount Then Return False Else Return True
+            If OriginalAuthorizedAmount = AuthorizedAmount Then Return False Else Return True
         End Get
     End Property
 
-    Public ReadOnly Property IsDaysLimitExceeded() As Boolean
+    Public ReadOnly Property IsDaysLimitExceeded As Boolean
         Get
             'For service warranties
             'Since the RepairDate for the new Service Warranty Claim is Blank, we need to get the 
@@ -691,13 +689,13 @@ Public NotInheritable Class ClaimAuthorization
         End Get
     End Property
 
-    Public ReadOnly Property ServiceCenterName() As String
+    Public ReadOnly Property ServiceCenterName As String
         Get
-            Return Me.ServiceCenterObject.Description
+            Return ServiceCenterObject.Description
         End Get
     End Property
 
-    Public ReadOnly Property CanVoidClaimAuthorization() As Boolean
+    Public ReadOnly Property CanVoidClaimAuthorization As Boolean
         Get
             If ClaimAuthStatus = ClaimAuthorizationStatus.Authorized OrElse ClaimAuthStatus = ClaimAuthorizationStatus.Pending OrElse ClaimAuthStatus = ClaimAuthorizationStatus.Sent Then
                 Return True
@@ -708,7 +706,7 @@ Public NotInheritable Class ClaimAuthorization
     End Property
 
     <ValueMandatory("")>
-    Private Property ContainsDeductibleId() As Guid
+    Private Property ContainsDeductibleId As Guid
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_CONTAINS_DEDUCTIBLE_ID) Is DBNull.Value Then
@@ -717,22 +715,22 @@ Public NotInheritable Class ClaimAuthorization
                 Return New Guid(CType(Row(ClaimAuthorizationDAL.COL_NAME_CONTAINS_DEDUCTIBLE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_CONTAINS_DEDUCTIBLE_ID, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_CONTAINS_DEDUCTIBLE_ID, Value)
         End Set
     End Property
 
-    Public Property ContainsDeductible() As Boolean
+    Public Property ContainsDeductible As Boolean
         Get
-            Return If(Me.ContainsDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y"), True, False)
+            Return If(ContainsDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y"), True, False)
         End Get
-        Set(ByVal Value As Boolean)
-            Me.ContainsDeductibleId = If(Value, LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y"), LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "N"))
+        Set
+            ContainsDeductibleId = If(Value, LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y"), LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "N"))
         End Set
     End Property
 
-    Public Property SubStatusReason() As String
+    Public Property SubStatusReason As String
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_SUB_STATUS_REASON) Is DBNull.Value Then
@@ -742,13 +740,13 @@ Public NotInheritable Class ClaimAuthorization
             End If
         End Get
 
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_SUB_STATUS_REASON, Value)
+            SetValue(ClaimAuthorizationDAL.COL_SUB_STATUS_REASON, Value)
         End Set
     End Property
 
-    Public ReadOnly Property LinkedClaimAurthID() As Guid
+    Public ReadOnly Property LinkedClaimAurthID As Guid
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_LINKED_CLAIM_AUTH_ID) Is DBNull.Value Then
@@ -760,18 +758,18 @@ Public NotInheritable Class ClaimAuthorization
 
     End Property
     Public _revAdjReasonId As Guid
-    Public Property RevAdjustmentReasonId() As Guid
+    Public Property RevAdjustmentReasonId As Guid
         Get
-            Return Me._revAdjReasonId
+            Return _revAdjReasonId
         End Get
-        Set(ByVal Value As Guid)
+        Set
             _revAdjReasonId = Value
         End Set
 
     End Property
 
 
-    Public Property AuthSubStatus() As String
+    Public Property AuthSubStatus As String
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_SUB_STATUS_XCD) Is DBNull.Value Then
@@ -780,16 +778,16 @@ Public NotInheritable Class ClaimAuthorization
                 Return CType(Row(ClaimAuthorizationDAL.COL_NAME_SUB_STATUS_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_SUB_STATUS_XCD, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_SUB_STATUS_XCD, Value)
         End Set
     End Property
 
 #Region "Invoiceable properties"
 
     <ValueMandatory(""), ValidStringLength("", Max:=40)>
-    Public Property AuthorizationNumber() As String Implements IInvoiceable.AuthorizationNumber
+    Public Property AuthorizationNumber As String Implements IInvoiceable.AuthorizationNumber
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_AUTHORIZATION_NUMBER) Is DBNull.Value Then
@@ -798,14 +796,14 @@ Public NotInheritable Class ClaimAuthorization
                 Return CType(Row(ClaimAuthorizationDAL.COL_NAME_AUTHORIZATION_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_AUTHORIZATION_NUMBER, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_AUTHORIZATION_NUMBER, Value)
         End Set
     End Property
 
     <ValidRepairDate("")>
-    Public Property RepairDate() As DateType Implements IInvoiceable.RepairDate
+    Public Property RepairDate As DateType Implements IInvoiceable.RepairDate
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_REPAIR_DATE) Is DBNull.Value Then
@@ -814,13 +812,13 @@ Public NotInheritable Class ClaimAuthorization
                 Return New DateType(CType(Row(ClaimAuthorizationDAL.COL_NAME_REPAIR_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_REPAIR_DATE, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_REPAIR_DATE, Value)
         End Set
     End Property
 
-    Public Property PickUpDate() As DateType Implements IInvoiceable.PickUpDate
+    Public Property PickUpDate As DateType Implements IInvoiceable.PickUpDate
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_PICK_UP_DATE) Is DBNull.Value Then
@@ -829,9 +827,9 @@ Public NotInheritable Class ClaimAuthorization
                 Return New DateType(CType(Row(ClaimAuthorizationDAL.COL_NAME_PICK_UP_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_PICK_UP_DATE, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_PICK_UP_DATE, Value)
         End Set
     End Property
 
@@ -841,41 +839,37 @@ Public NotInheritable Class ClaimAuthorization
     '    End Get
     'End Property
 
-    Public Property ClaimNumber() As String Implements IInvoiceable.ClaimNumber
+    Public Property ClaimNumber As String Implements IInvoiceable.ClaimNumber
         Get
-            Return Me.Claim.ClaimNumber
+            Return Claim.ClaimNumber
         End Get
-        Set(ByVal value As String)
-            Me.Claim.ClaimNumber = value
+        Set
+            Claim.ClaimNumber = value
         End Set
     End Property
 
-    Dim _invoiceProcessDate As DateType
-    Public Property InvoiceProcessDate() As DateType Implements IInvoiceable.InvoiceProcessDate
+    Public Property InvoiceProcessDate As DateType Implements IInvoiceable.InvoiceProcessDate
         Get
             Return Nothing
             ' When this is Required we can Get the Created Date from the ClaimInvoice based on Auth Id
         End Get
-        Private Set(ByVal value As DateType)
+        Private Set
             'There is not use of setting this value for Multi Auth Claim
             'Following Code is just for implementing Invoiceable.
-            _invoiceProcessDate = value
         End Set
     End Property
 
-    Dim _invoiceDate As DateType
-    Public Property InvoiceDate() As DateType Implements IInvoiceable.InvoiceDate
+    Public Property InvoiceDate As DateType Implements IInvoiceable.InvoiceDate
         Get
             Return Nothing
             ' When this is Required we can Get the Invoice Date from the ClaimInvoice based on Auth Id
         End Get
-        Private Set(ByVal value As DateType)
+        Private Set
             'There is not use of setting this value for Multi Auth Claim
             'Following Code is just for implementing Invoiceable.
-            _invoiceDate = value
         End Set
     End Property
-    Public Property ClaimAuthfulfillmentTypeXcd() As String
+    Public Property ClaimAuthfulfillmentTypeXcd As String
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_AUTH_FULFILLMENT_TYPE_XCD) Is DBNull.Value Then
@@ -884,13 +878,13 @@ Public NotInheritable Class ClaimAuthorization
                 Return CType(Row(ClaimAuthorizationDAL.COL_NAME_AUTH_FULFILLMENT_TYPE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_AUTH_FULFILLMENT_TYPE_XCD, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_AUTH_FULFILLMENT_TYPE_XCD, Value)
         End Set
     End Property
 
-    Public Property AuthTypeXcd() As String
+    Public Property AuthTypeXcd As String
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_AUTH_TYPE_XCD) Is DBNull.Value Then
@@ -899,13 +893,13 @@ Public NotInheritable Class ClaimAuthorization
                 Return CType(Row(ClaimAuthorizationDAL.COL_NAME_AUTH_TYPE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_AUTH_TYPE_XCD, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_AUTH_TYPE_XCD, Value)
         End Set
     End Property
 
-    Public Property RefundMethodXcd() As String
+    Public Property RefundMethodXcd As String
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_REFUND_METHOD_XCD) Is DBNull.Value Then
@@ -914,13 +908,13 @@ Public NotInheritable Class ClaimAuthorization
                 Return CType(Row(ClaimAuthorizationDAL.COL_NAME_REFUND_METHOD_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_REFUND_METHOD_XCD, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_REFUND_METHOD_XCD, Value)
         End Set
     End Property
 
-    Public Property PartyReferenceId() As Guid
+    Public Property PartyReferenceId As Guid
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_PARTY_REFERENCE_ID) Is DBNull.Value Then
@@ -929,13 +923,13 @@ Public NotInheritable Class ClaimAuthorization
                 Return New Guid(CType(Row(ClaimAuthorizationDAL.COL_NAME_PARTY_REFERENCE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_PARTY_REFERENCE_ID, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_PARTY_REFERENCE_ID, Value)
         End Set
     End Property
 
-    Public Property PartyTypeXcd() As String
+    Public Property PartyTypeXcd As String
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_PARTY_TYPE_XCD) Is DBNull.Value Then
@@ -944,13 +938,13 @@ Public NotInheritable Class ClaimAuthorization
                 Return CType(Row(ClaimAuthorizationDAL.COL_NAME_PARTY_TYPE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_PARTY_TYPE_XCD, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_PARTY_TYPE_XCD, Value)
         End Set
     End Property
 
-    Public ReadOnly Property CashPymtMethodXcd() As String
+    Public ReadOnly Property CashPymtMethodXcd As String
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_CASH_PYMT_METHOD_XCD) Is DBNull.Value Then
@@ -962,46 +956,46 @@ Public NotInheritable Class ClaimAuthorization
     End Property
 #Region "Derived Properties"
 
-    Public ReadOnly Property ClaimAuthInvoiceDate() As DateType
+    Public ReadOnly Property ClaimAuthInvoiceDate As DateType
         Get
-            If Me.ClaimInvoiceId.Equals(Guid.Empty) Then
+            If ClaimInvoiceId.Equals(Guid.Empty) Then
                 Return Nothing
             End If
-            Dim oClaimInvoice As New ClaimInvoice(Me.ClaimInvoiceId, Me.Dataset)
+            Dim oClaimInvoice As New ClaimInvoice(ClaimInvoiceId, Dataset)
             Return oClaimInvoice.InvoiceDate
         End Get
     End Property
 
-    Public ReadOnly Property ClaimAuthInvoiceProcessDate() As DateType
+    Public ReadOnly Property ClaimAuthInvoiceProcessDate As DateType
         Get
-            If Me.ClaimInvoiceId.Equals(Guid.Empty) Then
+            If ClaimInvoiceId.Equals(Guid.Empty) Then
                 Return Nothing
             End If
-            Dim oClaimInvoice As New ClaimInvoice(Me.ClaimInvoiceId, Me.Dataset)
+            Dim oClaimInvoice As New ClaimInvoice(ClaimInvoiceId, Dataset)
             Return oClaimInvoice.CreatedDate
         End Get
     End Property
 
-    Public ReadOnly Property AuthorizationType() As String
+    Public ReadOnly Property AuthorizationType As String
         Get
             If Row(ClaimAuthorizationDAL.COL_NAME_AUTH_TYPE_XCD) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return LookupListNew.GetDescriptionFromExtCode(LookupListNew.LK_AUTH_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, AuthTypeXcd).ToString()
+                Return LookupListNew.GetDescriptionFromExtCode(LookupListCache.LK_AUTH_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, AuthTypeXcd).ToString()
             End If
         End Get
     End Property
 
-    Public ReadOnly Property RefundMethod() As String
+    Public ReadOnly Property RefundMethod As String
         Get
             If Row(ClaimAuthorizationDAL.COL_NAME_REFUND_METHOD_XCD) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return LookupListNew.GetDescriptionFromExtCode(LookupListNew.LK_RFM, ElitaPlusIdentity.Current.ActiveUser.LanguageId, RefundMethodXcd)
+                Return LookupListNew.GetDescriptionFromExtCode(LookupListCache.LK_RFM, ElitaPlusIdentity.Current.ActiveUser.LanguageId, RefundMethodXcd)
             End If
         End Get
     End Property
-    Public ReadOnly Property CreatedBy() As String
+    Public ReadOnly Property CreatedBy As String
         Get
             If Row(ClaimAuthorizationDAL.COL_NAME_USER_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -1011,18 +1005,18 @@ Public NotInheritable Class ClaimAuthorization
         End Get
     End Property
 
-    Public ReadOnly Property ClaimInvoiceId() As Guid
+    Public ReadOnly Property ClaimInvoiceId As Guid
         Get
             Dim row As DataRow = Nothing
             Dim dal As New ClaimInvoiceDAL
-            If Me.Dataset.Tables.IndexOf(ClaimInvoiceDAL.TABLE_NAME) >= 0 Then
-                If Me.Dataset.Tables(ClaimInvoiceDAL.TABLE_NAME).Columns.Contains(ClaimAuthorizationDAL.COL_NAME_CLAIM_AUTHORIZATION_ID) Then
-                    row = FindRow(Me.Id, ClaimAuthorizationDAL.COL_NAME_CLAIM_AUTHORIZATION_ID, Me.Dataset.Tables(ClaimInvoiceDAL.TABLE_NAME))
+            If Dataset.Tables.IndexOf(ClaimInvoiceDAL.TABLE_NAME) >= 0 Then
+                If Dataset.Tables(ClaimInvoiceDAL.TABLE_NAME).Columns.Contains(ClaimAuthorizationDAL.COL_NAME_CLAIM_AUTHORIZATION_ID) Then
+                    row = FindRow(Id, ClaimAuthorizationDAL.COL_NAME_CLAIM_AUTHORIZATION_ID, Dataset.Tables(ClaimInvoiceDAL.TABLE_NAME))
                 End If
             End If
             If row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.LoadByClaimAuthId(Me.Dataset, Me.Claim.Id, Me.Id)
-                row = Me.FindRow(Me.Id, ClaimAuthorizationDAL.COL_NAME_CLAIM_AUTHORIZATION_ID, Me.Dataset.Tables(ClaimInvoiceDAL.TABLE_NAME))
+                dal.LoadByClaimAuthId(Dataset, Claim.Id, Id)
+                row = FindRow(Id, ClaimAuthorizationDAL.COL_NAME_CLAIM_AUTHORIZATION_ID, Dataset.Tables(ClaimInvoiceDAL.TABLE_NAME))
             End If
             If (row Is Nothing) Then
                 Return Guid.Empty
@@ -1035,260 +1029,258 @@ Public NotInheritable Class ClaimAuthorization
 #End Region
 
 
-    Dim _isComingFromPayClaim As Boolean
-    Public Property IsComingFromPayClaim() As Boolean Implements IInvoiceable.IsComingFromPayClaim
+    Public Property IsComingFromPayClaim As Boolean Implements IInvoiceable.IsComingFromPayClaim
         Get
             Return False
         End Get
-        Set(ByVal Value As Boolean)
-            _isComingFromPayClaim = Value
+        Set
         End Set
     End Property
 
-    Public ReadOnly Property ClaimActivityCode() As String Implements IInvoiceable.ClaimActivityCode
+    Public ReadOnly Property ClaimActivityCode As String Implements IInvoiceable.ClaimActivityCode
         Get
-            Return Me.Claim.ClaimActivityCode
+            Return Claim.ClaimActivityCode
         End Get
     End Property
 
-    Public Property ClaimActivityId() As Guid Implements IInvoiceable.ClaimActivityId
+    Public Property ClaimActivityId As Guid Implements IInvoiceable.ClaimActivityId
         Get
-            Return Me.Claim.ClaimActivityId
+            Return Claim.ClaimActivityId
         End Get
-        Set(ByVal value As Guid)
-            Me.Claim.ClaimActivityId = value
+        Set
+            Claim.ClaimActivityId = value
         End Set
     End Property
 
-    Public Property ReasonClosedId() As Guid Implements IInvoiceable.ReasonClosedId
+    Public Property ReasonClosedId As Guid Implements IInvoiceable.ReasonClosedId
         Get
-            Return Me.Claim.ReasonClosedId
+            Return Claim.ReasonClosedId
         End Get
-        Set(ByVal value As Guid)
-            Me.Claim.ReasonClosedId = value
+        Set
+            Claim.ReasonClosedId = value
         End Set
     End Property
 
-    Public Property ClaimClosedDate() As DateType Implements IInvoiceable.ClaimClosedDate
+    Public Property ClaimClosedDate As DateType Implements IInvoiceable.ClaimClosedDate
         Get
-            Return Me.Claim.ClaimClosedDate
+            Return Claim.ClaimClosedDate
         End Get
-        Set(ByVal value As DateType)
-            Me.Claim.ClaimClosedDate = value
+        Set
+            Claim.ClaimClosedDate = value
         End Set
     End Property
 
-    Public ReadOnly Property Claim_Id() As Guid Implements IInvoiceable.Claim_Id
+    Public ReadOnly Property Claim_Id As Guid Implements IInvoiceable.Claim_Id
         Get
-            Return Me.ClaimId
+            Return ClaimId
         End Get
     End Property
 
-    Public ReadOnly Property IsDirty() As Boolean Implements IInvoiceable.IsDirty
+    Public ReadOnly Property IsDirty As Boolean Implements IInvoiceable.IsDirty
         Get
             Return MyBase.IsDirty
         End Get
     End Property
 
-    Public ReadOnly Property PayDeductibleId() As Guid Implements IInvoiceable.PayDeductibleId
+    Public ReadOnly Property PayDeductibleId As Guid Implements IInvoiceable.PayDeductibleId
         Get
-            Return Me.Claim.Dealer.PayDeductibleId
+            Return Claim.Dealer.PayDeductibleId
         End Get
     End Property
 
-    Public Property Deductible() As DecimalType Implements IInvoiceable.Deductible
+    Public Property Deductible As DecimalType Implements IInvoiceable.Deductible
         Get
-            If Me.ContainsDeductible Then
-                Return Me.Claim.Deductible
+            If ContainsDeductible Then
+                Return Claim.Deductible
             Else
                 Return New DecimalType(0D)
             End If
         End Get
-        Private Set(ByVal value As DecimalType)
-            Me.Claim.Deductible = value
+        Private Set
+            Claim.Deductible = value
         End Set
     End Property
 
-    Public Property DiscountAmount() As DecimalType Implements IInvoiceable.DiscountAmount
+    Public Property DiscountAmount As DecimalType Implements IInvoiceable.DiscountAmount
         Get
-            Return Me.Claim.DiscountAmount
+            Return Claim.DiscountAmount
         End Get
-        Set(ByVal value As DecimalType)
-            Me.Claim.DiscountAmount = value
+        Set
+            Claim.DiscountAmount = value
         End Set
     End Property
 
-    Public Property LiabilityLimit() As DecimalType Implements IInvoiceable.LiabilityLimit
+    Public Property LiabilityLimit As DecimalType Implements IInvoiceable.LiabilityLimit
         Get
-            Return Me.Claim.LiabilityLimit
+            Return Claim.LiabilityLimit
         End Get
-        Set(ByVal value As DecimalType)
-            Me.Claim.LiabilityLimit = value
+        Set
+            Claim.LiabilityLimit = value
         End Set
     End Property
 
-    Public ReadOnly Property AboveLiability() As DecimalType Implements IInvoiceable.AboveLiability
+    Public ReadOnly Property AboveLiability As DecimalType Implements IInvoiceable.AboveLiability
         Get
-            Return Me.Claim.AboveLiability
+            Return Claim.AboveLiability
         End Get
 
     End Property
 
-    Public ReadOnly Property ClaimAuthorizationId() As Guid Implements IInvoiceable.ClaimAuthorizationId
+    Public ReadOnly Property ClaimAuthorizationId As Guid Implements IInvoiceable.ClaimAuthorizationId
         Get
-            Return Me.Id
+            Return Id
         End Get
     End Property
 
-    Public ReadOnly Property RiskType() As String Implements IInvoiceable.RiskType
+    Public ReadOnly Property RiskType As String Implements IInvoiceable.RiskType
         Get
             CheckDeleted()
-            Return Me.Claim.RiskType
+            Return Claim.RiskType
         End Get
     End Property
 
-    Public Property RiskTypeId() As Guid Implements IInvoiceable.RiskTypeId
+    Public Property RiskTypeId As Guid Implements IInvoiceable.RiskTypeId
         Get
-            Return Me.Claim.RiskTypeId
+            Return Claim.RiskTypeId
         End Get
-        Set(ByVal Value As Guid)
-            Me.Claim.RiskTypeId = Value
+        Set
+            Claim.RiskTypeId = Value
         End Set
     End Property
 
-    Public Sub VerifyConcurrency(ByVal sModifiedDate As String) Implements IInvoiceable.VerifyConcurrency
-        Me.Claim.VerifyConcurrency(sModifiedDate)
+    Public Sub VerifyConcurrency(sModifiedDate As String) Implements IInvoiceable.VerifyConcurrency
+        Claim.VerifyConcurrency(sModifiedDate)
     End Sub
 
-    Public ReadOnly Property MethodOfRepairCode() As String Implements IInvoiceable.MethodOfRepairCode
+    Public ReadOnly Property MethodOfRepairCode As String Implements IInvoiceable.MethodOfRepairCode
         Get
-            Return Me.Claim.MethodOfRepairCode
+            Return Claim.MethodOfRepairCode
         End Get
     End Property
 
-    Public Property RepairEstimate() As DecimalType Implements IInvoiceable.RepairEstimate
+    Public Property RepairEstimate As DecimalType Implements IInvoiceable.RepairEstimate
         Get
             Return 0D
         End Get
-        Set(ByVal value As DecimalType)
+        Set
 
         End Set
     End Property
 
-    Public Property RepairCodeId() As Guid Implements IInvoiceable.RepairCodeId
+    Public Property RepairCodeId As Guid Implements IInvoiceable.RepairCodeId
         Get
-            Return Me.Claim.RepairCodeId
+            Return Claim.RepairCodeId
         End Get
-        Set(ByVal value As Guid)
-            Me.Claim.RepairCodeId = value
+        Set
+            Claim.RepairCodeId = value
         End Set
     End Property
 
-    Public Property StatusCode() As String Implements IInvoiceable.StatusCode
+    Public Property StatusCode As String Implements IInvoiceable.StatusCode
         Get
-            Return Me.Claim.StatusCode
+            Return Claim.StatusCode
         End Get
-        Set(ByVal value As String)
-            Me.Claim.StatusCode = value
+        Set
+            Claim.StatusCode = value
         End Set
     End Property
 
-    Public Property CauseOfLossId() As Guid Implements IInvoiceable.CauseOfLossId
+    Public Property CauseOfLossId As Guid Implements IInvoiceable.CauseOfLossId
         Get
-            Return Me.Claim.CauseOfLossId
+            Return Claim.CauseOfLossId
         End Get
-        Set(ByVal value As Guid)
-            Me.Claim.CauseOfLossId = value
+        Set
+            Claim.CauseOfLossId = value
         End Set
     End Property
 
-    Public Property CompanyId() As Guid Implements IInvoiceable.CompanyId
+    Public Property CompanyId As Guid Implements IInvoiceable.CompanyId
         Get
-            Return Me.Claim.CompanyId
+            Return Claim.CompanyId
         End Get
-        Set(ByVal value As Guid)
-            Me.Claim.CompanyId = value
+        Set
+            Claim.CompanyId = value
         End Set
     End Property
 
-    Public ReadOnly Property CertificateId() As Guid Implements IInvoiceable.CertificateId
+    Public ReadOnly Property CertificateId As Guid Implements IInvoiceable.CertificateId
         Get
-            Return Me.Claim.CertificateId
+            Return Claim.CertificateId
         End Get
     End Property
 
-    Public ReadOnly Property CustomerName() As String Implements IInvoiceable.CustomerName
+    Public ReadOnly Property CustomerName As String Implements IInvoiceable.CustomerName
         Get
-            Return Me.Claim.Certificate.CustomerName
+            Return Claim.Certificate.CustomerName
         End Get
     End Property
 
-    Public Property CertItemCoverageId() As Guid Implements IInvoiceable.CertItemCoverageId
+    Public Property CertItemCoverageId As Guid Implements IInvoiceable.CertItemCoverageId
         Get
-            Return Me.Claim.CertItemCoverageId
+            Return Claim.CertItemCoverageId
         End Get
-        Set(ByVal value As Guid)
-            Me.Claim.CertItemCoverageId = value
+        Set
+            Claim.CertItemCoverageId = value
         End Set
     End Property
 
-    Public Property IsRequiredCheckLossDateForCancelledCert() As Boolean Implements IInvoiceable.IsRequiredCheckLossDateForCancelledCert
+    Public Property IsRequiredCheckLossDateForCancelledCert As Boolean Implements IInvoiceable.IsRequiredCheckLossDateForCancelledCert
         Get
-            Return Me.Claim.IsRequiredCheckLossDateForCancelledCert
+            Return Claim.IsRequiredCheckLossDateForCancelledCert
         End Get
-        Set(ByVal value As Boolean)
-            Me.Claim.IsRequiredCheckLossDateForCancelledCert = value
+        Set
+            Claim.IsRequiredCheckLossDateForCancelledCert = value
         End Set
     End Property
 
-    Public ReadOnly Property CanDisplayVisitAndPickUpDates() As Boolean Implements IInvoiceable.CanDisplayVisitAndPickUpDates
+    Public ReadOnly Property CanDisplayVisitAndPickUpDates As Boolean Implements IInvoiceable.CanDisplayVisitAndPickUpDates
         Get
             Return False
         End Get
     End Property
 
     Public Sub SetPickUpDateFromLoanerReturnedDate() Implements IInvoiceable.SetPickUpDateFromLoanerReturnedDate
-        If Not Me.LoanerReturnedDate Is Nothing Then Me.PickUpDate = Me.LoanerReturnedDate
+        If LoanerReturnedDate IsNot Nothing Then PickUpDate = LoanerReturnedDate
     End Sub
 
     'Salvage Amount is currently not supported for Multi Auth Claims
-    Public Property SalvageAmount() As DecimalType Implements IInvoiceable.SalvageAmount
+    Public Property SalvageAmount As DecimalType Implements IInvoiceable.SalvageAmount
         Get
             Return 0D
         End Get
-        Private Set(ByVal value As DecimalType)
+        Private Set
             Throw New NotSupportedException
         End Set
     End Property
 
     'Implementation of Assurant Pays Amount for Multi Auth Claims
-    Public ReadOnly Property AssurantPays() As DecimalType Implements IInvoiceable.AssurantPays
+    Public ReadOnly Property AssurantPays As DecimalType Implements IInvoiceable.AssurantPays
         Get
             Dim assurPays As Decimal = 0D
-            Dim liabLimit As Decimal = Me.LiabilityLimit.Value
+            Dim liabLimit As Decimal = LiabilityLimit.Value
 
-            If Not Me.Claim.DiscountPercent Is Nothing Then
-                Me.DiscountAmount = AuthorizedAmount * (CType(Me.Claim.DiscountPercent, Decimal) / 100)
+            If Claim.DiscountPercent IsNot Nothing Then
+                DiscountAmount = AuthorizedAmount * (CType(Claim.DiscountPercent, Decimal) / 100)
             End If
 
-            If (liabLimit = 0D And CType(Me.Claim.Certificate.ProductLiabilityLimit.ToString, Decimal) = 0 And CType(Me.Claim.CertificateItemCoverage.CoverageLiabilityLimit, Decimal) = 0) Then
+            If (liabLimit = 0D AndAlso CType(Claim.Certificate.ProductLiabilityLimit.ToString, Decimal) = 0 AndAlso CType(Claim.CertificateItemCoverage.CoverageLiabilityLimit, Decimal) = 0) Then
                 liabLimit = 999999999.99
             End If
 
-            If (Me.AuthorizedAmount > liabLimit) Then
-                If Me.ContainsDeductible Then
-                    assurPays = liabLimit - IIf(Me.Deductible Is Nothing, New Decimal(0D), Me.Deductible) - IIf(Me.SalvageAmount, New Decimal(0D), Me.SalvageAmount)
+            If (AuthorizedAmount > liabLimit) Then
+                If ContainsDeductible Then
+                    assurPays = liabLimit - IIf(Deductible Is Nothing, New Decimal(0D), Deductible) - IIf(SalvageAmount, New Decimal(0D), SalvageAmount)
                 Else
-                    assurPays = liabLimit - IIf(Me.SalvageAmount, New Decimal(0D), Me.SalvageAmount)
+                    assurPays = liabLimit - IIf(SalvageAmount, New Decimal(0D), SalvageAmount)
                 End If
             Else
-                If Me.ContainsDeductible Then
-                    assurPays = Me.AuthorizedAmount.Value - IIf(Me.Deductible Is Nothing, New Decimal(0D), Me.Deductible) - IIf(Me.SalvageAmount Is Nothing, New Decimal(0D), Me.SalvageAmount)
+                If ContainsDeductible Then
+                    assurPays = AuthorizedAmount.Value - IIf(Deductible Is Nothing, New Decimal(0D), Deductible) - IIf(SalvageAmount Is Nothing, New Decimal(0D), SalvageAmount)
                 Else
-                    assurPays = Me.AuthorizedAmount.Value - IIf(Me.SalvageAmount Is Nothing, New Decimal(0D), Me.SalvageAmount)
+                    assurPays = AuthorizedAmount.Value - IIf(SalvageAmount Is Nothing, New Decimal(0D), SalvageAmount)
                 End If
             End If
-            If Me.MethodOfRepairCode <> Codes.METHOD_OF_REPAIR__RECOVERY Then
+            If MethodOfRepairCode <> Codes.METHOD_OF_REPAIR__RECOVERY Then
                 If (assurPays < 0D) Then
                     assurPays = 0D
                 End If
@@ -1299,13 +1291,13 @@ Public NotInheritable Class ClaimAuthorization
     End Property
 
     'Implementation of Consumer Pays Amount for Multi Auth Claims
-    Public ReadOnly Property ConsumerPays() As DecimalType Implements IInvoiceable.ConsumerPays
+    Public ReadOnly Property ConsumerPays As DecimalType Implements IInvoiceable.ConsumerPays
         Get
             Dim cPays As Decimal = 0D
-            Dim aPays As Decimal = Me.AssurantPays.Value
-            Dim sal As Decimal = Me.SalvageAmount.Value
-            If Me.AuthorizedAmount.Value > aPays Then
-                cPays = Me.AuthorizedAmount.Value - aPays - sal
+            Dim aPays As Decimal = AssurantPays.Value
+            Dim sal As Decimal = SalvageAmount.Value
+            If AuthorizedAmount.Value > aPays Then
+                cPays = AuthorizedAmount.Value - aPays - sal
             End If
 
             Return New DecimalType(cPays)
@@ -1313,19 +1305,19 @@ Public NotInheritable Class ClaimAuthorization
     End Property
 
     'KDDI Changes
-    Public ReadOnly Property IsReshipmentAllowed() As String Implements IInvoiceable.IsReshipmentAllowed
+    Public ReadOnly Property IsReshipmentAllowed As String Implements IInvoiceable.IsReshipmentAllowed
         Get
-            Return Me.Claim.Dealer.Is_Reshipment_Allowed
+            Return Claim.Dealer.Is_Reshipment_Allowed
         End Get
     End Property
-    Public ReadOnly Property IsCancelShipmentAllowed() As String Implements IInvoiceable.IsCancelShipmentAllowed
+    Public ReadOnly Property IsCancelShipmentAllowed As String Implements IInvoiceable.IsCancelShipmentAllowed
         Get
-            Return Me.Claim.Dealer.Is_Cancel_Shipment_Allowed
+            Return Claim.Dealer.Is_Cancel_Shipment_Allowed
         End Get
     End Property
 
     <ValidStringLength("", Max:=10)>
-    Public Property Locator() As String
+    Public Property Locator As String
         Get
             CheckDeleted()
             If Row(ClaimAuthorizationDAL.COL_NAME_LOCATOR) Is DBNull.Value Then
@@ -1334,9 +1326,9 @@ Public NotInheritable Class ClaimAuthorization
                 Return CType(Row(ClaimAuthorizationDAL.COL_NAME_LOCATOR), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_LOCATOR, Value)
+            SetValue(ClaimAuthorizationDAL.COL_NAME_LOCATOR, Value)
         End Set
     End Property
 #End Region
@@ -1344,29 +1336,29 @@ Public NotInheritable Class ClaimAuthorization
 #Region "Invoiceable Methods"
 
     Public Sub SaveClaim(Optional ByVal Transaction As IDbTransaction = Nothing) Implements IInvoiceable.SaveClaim
-        Me.Claim.Save(Transaction)
+        Claim.Save(Transaction)
     End Sub
 
     Public Sub CloseTheClaim() Implements IInvoiceable.CloseTheClaim
-        Me.Claim.CloseTheClaim()
+        Claim.CloseTheClaim()
     End Sub
 
     Public Sub CalculateFollowUpDate() Implements IInvoiceable.CalculateFollowUpDate
-        Me.Claim.CalculateFollowUpDate()
+        Claim.CalculateFollowUpDate()
     End Sub
 
-    Public Sub HandleGVSTransactionCreation(ByVal commentId As Guid, ByVal pIsNew As Nullable(Of Boolean)) Implements IInvoiceable.HandleGVSTransactionCreation
+    Public Sub HandleGVSTransactionCreation(commentId As Guid, pIsNew As Nullable(Of Boolean)) Implements IInvoiceable.HandleGVSTransactionCreation
         'APR 10th 2013 : GVS transactions have not been handled for Multi Auth Claims at this point of time
         Throw New NotImplementedException
     End Sub
 
     Private _claimStatusBO As ClaimStatus
-    Public Function AddExtendedClaimStatus(ByVal claimStatusId As Guid) As ClaimStatus Implements IInvoiceable.AddExtendedClaimStatus
+    Public Function AddExtendedClaimStatus(claimStatusId As Guid) As ClaimStatus Implements IInvoiceable.AddExtendedClaimStatus
 
         If Not claimStatusId.Equals(Guid.Empty) Then
-            _claimStatusBO = New ClaimStatus(claimStatusId, Me.Dataset)
+            _claimStatusBO = New ClaimStatus(claimStatusId, Dataset)
         Else
-            _claimStatusBO = New ClaimStatus(Me.Dataset)
+            _claimStatusBO = New ClaimStatus(Dataset)
         End If
 
         Return _claimStatusBO
@@ -1379,54 +1371,53 @@ Public NotInheritable Class ClaimAuthorization
 #Region "Instance Methods"
     Public Sub Save()
         'Check Claim AuthorizationItem list should have atleast one Auth item
-        If (Me.ClaimAuthorizationItemChildren.Count = 0) Then
+        If (ClaimAuthorizationItemChildren.Count = 0) Then
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.BusinessErr, Nothing, "CLAIM_AUTH_ITEM_COUNT_CANNOT_BE_ZERO")
         End If
 
-        For Each authItem As ClaimAuthItem In Me.ClaimAuthorizationItemChildren
+        For Each authItem As ClaimAuthItem In ClaimAuthorizationItemChildren
             authItem.Validate()
         Next
-        Me.Validate()
-        Me.Claim.Validate()
+        Validate()
+        Claim.Validate()
 
-        If (Not Me.IsNew And (Me.IsAuthorizedAmountChanged Or Me.ClaimAuthorizationItemChildren.HasCollectionChanged) And
-            (Me.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized Or Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending)) Then
+        If (Not IsNew AndAlso (IsAuthorizedAmountChanged OrElse ClaimAuthorizationItemChildren.HasCollectionChanged) AndAlso (Me.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized OrElse Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending)) Then
             'Create New Auth with line Items in original Auth
-            Dim claimAuth As ClaimAuthorization = CType(Me.Claim.ClaimAuthorizationChildren().GetNewChild(), ClaimAuthorization)
+            Dim claimAuth As ClaimAuthorization = CType(Claim.ClaimAuthorizationChildren().GetNewChild(), ClaimAuthorization)
             claimAuth.CopyClaimAuthFromExiting(Me)
             'Void the existingAuth
-            Me.ClaimAuthStatus = ClaimAuthorizationStatus.Void
+            ClaimAuthStatus = ClaimAuthorizationStatus.Void
             claimAuth.Save()
         End If
         If Not Me.ClaimAuthStatus = ClaimAuthorizationStatus.Void Then
-            If Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending AndAlso Not Me.IsSupervisorAuthorizationRequired Then
-                Me.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized
+            If Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending AndAlso Not IsSupervisorAuthorizationRequired Then
+                ClaimAuthStatus = ClaimAuthorizationStatus.Authorized
             End If
-            If Me.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized AndAlso Me.IsSupervisorAuthorizationRequired Then
-                Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending
+            If Me.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized AndAlso IsSupervisorAuthorizationRequired Then
+                ClaimAuthStatus = ClaimAuthorizationStatus.Pending
             End If
 
-            If (Me.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized AndAlso Not Me.RepairDate Is Nothing) Then
+            If (Me.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized AndAlso RepairDate IsNot Nothing) Then
 
-                Me.ClaimAuthStatus = ClaimAuthorizationStatus.Fulfilled
+                ClaimAuthStatus = ClaimAuthorizationStatus.Fulfilled
             End If
-            If (Me.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized Or Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending) AndAlso Not Me.IsSupervisorAuthorizationRequired AndAlso Me.IsAuthorizationDeductibleRefund() Then
-                Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending
+            If (Me.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized OrElse Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending) AndAlso Not IsSupervisorAuthorizationRequired AndAlso IsAuthorizationDeductibleRefund() Then
+                ClaimAuthStatus = ClaimAuthorizationStatus.Pending
             End If
         End If
 
         Try
 
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsFamilyDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsFamilyDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ClaimAuthorizationDAL
-                dal.UpdateFamily(Me.Dataset, Me.Claim.CompanyId)
+                dal.UpdateFamily(Dataset, Claim.CompanyId)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -1434,30 +1425,30 @@ Public NotInheritable Class ClaimAuthorization
         End Try
     End Sub
 
-    Public Sub Prepopulate(ByVal serviceCenterId As Guid, ByVal claimid As Guid)
+    Public Sub Prepopulate(serviceCenterId As Guid, claimid As Guid)
         Me.ServiceCenterId = serviceCenterId
         Me.ClaimId = claimid
-        Me.WhoPaysId = LookupListNew.GetIdFromCode(LookupListNew.GetWhoPaysLookupList(Authentication.LangId), Codes.ASSURANT_PAYS)
-        Me.IsSpecialServiceId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
-        Me.ReverseLogisticsId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
-        Me.ContainsDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+        WhoPaysId = LookupListNew.GetIdFromCode(LookupListNew.GetWhoPaysLookupList(Authentication.LangId), Codes.ASSURANT_PAYS)
+        IsSpecialServiceId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+        ReverseLogisticsId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+        ContainsDeductibleId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
         Try
-            Dim dv As PriceListDetail.PriceListResultsDV = Me.GetRepairPricesforMethodofRepair(Me.ServiceCenterId)
+            Dim dv As PriceListDetail.PriceListResultsDV = GetRepairPricesforMethodofRepair(Me.ServiceCenterId)
             PopulateClaimAuthItems(dv)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.BusinessErr, ex.InnerException, Messages.PRICE_LIST_NOT_FOUND)
         End Try
 
-        If (Me.IsSupervisorAuthorizationRequired) Then Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending
+        If (IsSupervisorAuthorizationRequired) Then ClaimAuthStatus = ClaimAuthorizationStatus.Pending
 
     End Sub
 
-    Friend Sub Prepopulate(ByVal serviceCenterId As Guid, ByVal claimid As Guid, ByVal dv As PriceListDetail.PriceListResultsDV)
+    Friend Sub Prepopulate(serviceCenterId As Guid, claimid As Guid, dv As PriceListDetail.PriceListResultsDV)
         Me.ServiceCenterId = serviceCenterId
         Me.ClaimId = claimid
-        Me.WhoPaysId = LookupListNew.GetIdFromCode(LookupListNew.GetWhoPaysLookupList(Authentication.LangId), Codes.ASSURANT_PAYS)
-        Me.IsSpecialServiceId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
-        Me.ReverseLogisticsId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+        WhoPaysId = LookupListNew.GetIdFromCode(LookupListNew.GetWhoPaysLookupList(Authentication.LangId), Codes.ASSURANT_PAYS)
+        IsSpecialServiceId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+        ReverseLogisticsId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
 
         Try
             PopulateClaimAuthItems(dv)
@@ -1465,55 +1456,55 @@ Public NotInheritable Class ClaimAuthorization
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.BusinessErr, ex.InnerException, Messages.PRICE_LIST_NOT_FOUND)
         End Try
 
-        If (Me.IsSupervisorAuthorizationRequired) Then Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending
+        If (IsSupervisorAuthorizationRequired) Then ClaimAuthStatus = ClaimAuthorizationStatus.Pending
 
     End Sub
 
-    Friend Sub PopulateClaimAuthItems(ByVal priceListDetailDV As PriceListDetail.PriceListResultsDV)
+    Friend Sub PopulateClaimAuthItems(priceListDetailDV As PriceListDetail.PriceListResultsDV)
         If (priceListDetailDV Is Nothing Or priceListDetailDV.Count = 0) Then
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.BusinessErr, Nothing, Messages.PRICE_LIST_NOT_FOUND)
         End If
-        Me.ContainsDeductible = False
+        ContainsDeductible = False
 
         For Each item As DataRowView In priceListDetailDV
-            Dim claimAuthItem As ClaimAuthItem = CType(Me.ClaimAuthorizationItemChildren.GetNewChild(Me.Id), ClaimAuthItem)
-            claimAuthItem.ClaimAuthorizationId = Me.Id
+            Dim claimAuthItem As ClaimAuthItem = CType(ClaimAuthorizationItemChildren.GetNewChild(Id), ClaimAuthItem)
+            claimAuthItem.ClaimAuthorizationId = Id
             claimAuthItem.ServiceClassId = New Guid(CType(item.Row(PriceListDetail.PriceListResultsDV.COL_NAME_SERVICE_CLASS_ID), Byte()))
             claimAuthItem.ServiceTypeId = New Guid(CType(item.Row(PriceListDetail.PriceListResultsDV.COL_NAME_SERVICE_TYPE_ID), Byte()))
             claimAuthItem.VendorSku = CType(item.Row(PriceListDetail.PriceListResultsDV.COL_NAME_VENDOR_SKU), String)
             claimAuthItem.VendorSkuDescription = CType(item.Row(PriceListDetail.PriceListResultsDV.COL_NAME_VENDOR_SKU_DESC), String)
             claimAuthItem.Amount = CType(item.Row(PriceListDetail.PriceListResultsDV.COL_NAME_PRICE), Decimal)
             If LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y") = New Guid(CType(item.Row(PriceListDetail.PriceListResultsDV.COL_NAME_CONTAINS_DEDUCTIBLE_ID), Byte())) Then
-                Me.ContainsDeductible = True
+                ContainsDeductible = True
             End If
         Next
     End Sub
 
-    Public Sub PrepopulateClaimAuthForDeductibleRefund(ByVal serviceCenterId As Guid, ByVal claimid As Guid, ByVal certid As Guid, ByVal refundMethod As String)
+    Public Sub PrepopulateClaimAuthForDeductibleRefund(serviceCenterId As Guid, claimid As Guid, certid As Guid, refundMethod As String)
         Me.ServiceCenterId = serviceCenterId
         Me.ClaimId = claimid
-        Me.IsSpecialServiceId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
-        Me.ReverseLogisticsId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
-        Me.ContainsDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
-        Me.AuthTypeXcd = Codes.CLAIM_EXTENDED_STATUS_AUTH_TYPE_CREDIT_NOTE
-        Me.PartyTypeXcd = Codes.CLAIM_EXTENDED_STATUS_PARTY_TYPE_CUSTOMER
-        Me.PartyReferenceId = certid
-        Me.WhoPaysId = LookupListNew.GetIdFromCode(LookupListNew.GetWhoPaysLookupList(Authentication.LangId), Codes.ASSURANT_PAYS)
-        Me.RefundMethodXcd = refundMethod
-        Me._isDSCreator = True
-        Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending
+        IsSpecialServiceId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+        ReverseLogisticsId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+        ContainsDeductibleId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
+        AuthTypeXcd = Codes.CLAIM_EXTENDED_STATUS_AUTH_TYPE_CREDIT_NOTE
+        PartyTypeXcd = Codes.CLAIM_EXTENDED_STATUS_PARTY_TYPE_CUSTOMER
+        PartyReferenceId = certid
+        WhoPaysId = LookupListNew.GetIdFromCode(LookupListNew.GetWhoPaysLookupList(Authentication.LangId), Codes.ASSURANT_PAYS)
+        RefundMethodXcd = refundMethod
+        _isDSCreator = True
+        ClaimAuthStatus = ClaimAuthorizationStatus.Pending
 
     End Sub
 
     Public Sub Void()
-        Me.ClaimAuthStatus = ClaimAuthorizationStatus.Void
-        Me.Save()
+        ClaimAuthStatus = ClaimAuthorizationStatus.Void
+        Save()
 
     End Sub
 
     Private Function CalculateAuthorizationAmount() As DecimalType
         Dim amount As Decimal = New Decimal(0)
-        For Each Item As ClaimAuthItem In Me.ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False)
+        For Each Item As ClaimAuthItem In ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False)
             If Item.AdjustmentReasonId.Equals(Guid.Empty) And
                Not ((Item.ServiceClassCode = Codes.SERVICE_CLASS__DEDUCTIBLE AndAlso Item.Amount = 0) Or
                     Item.ServiceClassCode = Codes.SERVICE_CLASS__MISCELLANEOUS) Then
@@ -1525,7 +1516,7 @@ Public NotInheritable Class ClaimAuthorization
     Private Function CalculateReimbursementAmount() As DecimalType
         Dim amount As Decimal = New Decimal(0)
         Dim Item As ClaimAuthItem
-        Item = Me.ClaimAuthorizationItemChildren.Where(Function(i) (i.IsDeleted = False) _
+        Item = ClaimAuthorizationItemChildren.Where(Function(i) (i.IsDeleted = False) _
                                                                          AndAlso (i.AdjustmentReasonId.IsEmpty()) _
                                                                          AndAlso i.ServiceClassCode = Codes.SERVICE_CLASS__REIMBURSEMENT).FirstOrDefault
 
@@ -1536,7 +1527,7 @@ Public NotInheritable Class ClaimAuthorization
     Private Function CalculateReplacementAmount() As DecimalType
         Dim amount As Decimal = New Decimal(0)
         Dim Item As ClaimAuthItem
-        Item = Me.ClaimAuthorizationItemChildren.Where(Function(i) (i.IsDeleted = False) _
+        Item = ClaimAuthorizationItemChildren.Where(Function(i) (i.IsDeleted = False) _
                                                                          AndAlso (i.AdjustmentReasonId.IsEmpty()) _
                                                                          AndAlso (i.ServiceClassCode = Codes.SERVICE_CLASS__REPLACEMENT) _
                                                                          AndAlso (i.ServiceTypeCode = Codes.SERVICE_TYPE__REPLACEMENT_PRICE)).FirstOrDefault
@@ -1548,20 +1539,20 @@ Public NotInheritable Class ClaimAuthorization
 
     Friend Sub AddDeductibleLineItem()
         Dim serviceClassType As ServiceClassType = ServiceCLassTypeList.Instance.GetDetails(Codes.SERVICE_CLASS__DEDUCTIBLE, Codes.SERVICE_TYPE__PAY_DEDUCTIBLE)
-        Dim claimAuthItem As ClaimAuthItem = CType(Me.ClaimAuthorizationItemChildren.GetNewChild(Me.Id), ClaimAuthItem)
-        claimAuthItem.ClaimAuthorizationId = Me.Id
+        Dim claimAuthItem As ClaimAuthItem = CType(ClaimAuthorizationItemChildren.GetNewChild(Id), ClaimAuthItem)
+        claimAuthItem.ClaimAuthorizationId = Id
         claimAuthItem.ServiceClassId = serviceClassType.ServiceClassId
         claimAuthItem.ServiceTypeId = serviceClassType.ServiceTypeId
         claimAuthItem.VendorSku = Codes.VENDOR_SKU_PAY_DEDUCTIBLE
         claimAuthItem.VendorSkuDescription = Codes.VENDOR_SKU_DESC_PAY_DEDUCTIBLE
-        claimAuthItem.Amount = Me.Claim.Deductible
+        claimAuthItem.Amount = Claim.Deductible
 
     End Sub
 
-    Friend Sub AddDeductibleRefundLineItem(ByVal refundAmount As Decimal)
+    Friend Sub AddDeductibleRefundLineItem(refundAmount As Decimal)
         Dim serviceClassType As ServiceClassType = ServiceCLassTypeList.Instance.GetDetails(Codes.SERVICE_CLASS__DEDUCTIBLE, Codes.SERVICE_CLASS__DEDUCTIBLE)
-        Dim claimAuthItem As ClaimAuthItem = CType(Me.ClaimAuthorizationItemChildren.GetNewChild(Me.Id), ClaimAuthItem)
-        claimAuthItem.ClaimAuthorizationId = Me.Id
+        Dim claimAuthItem As ClaimAuthItem = CType(ClaimAuthorizationItemChildren.GetNewChild(Id), ClaimAuthItem)
+        claimAuthItem.ClaimAuthorizationId = Id
         claimAuthItem.ServiceClassId = serviceClassType.ServiceClassId
         claimAuthItem.ServiceTypeId = serviceClassType.ServiceTypeId
         claimAuthItem.VendorSku = Codes.VENDOR_SKU_DEDUCTIBLE
@@ -1570,12 +1561,12 @@ Public NotInheritable Class ClaimAuthorization
 
     End Sub
 
-    Friend Sub CopyClaimAuthFromExiting(ByVal claimauth As ClaimAuthorization)
+    Friend Sub CopyClaimAuthFromExiting(claimauth As ClaimAuthorization)
         For Each item As ClaimAuthItem In claimauth.ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False)
             If Not item.IsDeleted Then
-                Dim claimAuthItem As ClaimAuthItem = CType(Me.ClaimAuthorizationItemChildren.GetNewChild(Me.Id), ClaimAuthItem)
+                Dim claimAuthItem As ClaimAuthItem = CType(ClaimAuthorizationItemChildren.GetNewChild(Id), ClaimAuthItem)
                 claimAuthItem.CopyFrom(item)
-                claimAuthItem.ClaimAuthorizationId = Me.Id
+                claimAuthItem.ClaimAuthorizationId = Id
                 claimAuthItem.Amount = item.Amount
                 claimAuthItem.Save()
                 item.Amount = item.OrginalAmount
@@ -1584,25 +1575,25 @@ Public NotInheritable Class ClaimAuthorization
                 End If
             End If
         Next
-        Me.CopyFrom(claimauth)
+        CopyFrom(claimauth)
 
     End Sub
 
-    Friend Function ReverseClaimAuthFromExiting(ByVal claimauth As ClaimAuthorization) As Guid
+    Friend Function ReverseClaimAuthFromExiting(claimauth As ClaimAuthorization) As Guid
         Dim newAuthItemId As Guid
         Dim oClaimAuthItem As New ClaimAuthItem
-        oClaimAuthItem = (From item As ClaimAuthItem In Me.ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False) Select item Order By item.CreatedDate Descending).FirstOrDefault()
+        oClaimAuthItem = (From item As ClaimAuthItem In ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False) Select item Order By item.CreatedDate Descending).FirstOrDefault()
 
         ' For Each item As ClaimAuthItem In claimauth.ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False)
         If Not oClaimAuthItem.IsDeleted Then
-            Dim newclaimAuthItem As ClaimAuthItem = Me.GetNewAuthorizationItemChild()
+            Dim newclaimAuthItem As ClaimAuthItem = GetNewAuthorizationItemChild()
             newAuthItemId = newclaimAuthItem.Id
             'CType(Me.ClaimAuthorizationItemChildren.GetNewChild(Me.Id), ClaimAuthItem)
             newclaimAuthItem.CopyFrom(oClaimAuthItem)
             newclaimAuthItem.LineItemNumber = CType(oClaimAuthItem.LineItemNumber, Integer) + 1
-            newclaimAuthItem.ClaimAuthorizationId = Me.Id
+            newclaimAuthItem.ClaimAuthorizationId = Id
             newclaimAuthItem.Amount = oClaimAuthItem.Amount * -1D
-            newclaimAuthItem.AdjustmentReasonId = Me.RevAdjustmentReasonId
+            newclaimAuthItem.AdjustmentReasonId = RevAdjustmentReasonId
             newclaimAuthItem.Save()
             oClaimAuthItem.Amount = oClaimAuthItem.OrginalAmount
             If (oClaimAuthItem.IsNew) Then
@@ -1610,7 +1601,7 @@ Public NotInheritable Class ClaimAuthorization
             End If
         End If
         'Next
-        Me.CopyFrom(claimauth)
+        CopyFrom(claimauth)
         Return newAuthItemId
 
     End Function
@@ -1618,21 +1609,21 @@ Public NotInheritable Class ClaimAuthorization
 
 
     Public Sub RejectInvoiceChanges()
-        Me.Row(ClaimAuthorizationDAL.COL_NAME_REPAIR_DATE) = Me.Row(ClaimAuthorizationDAL.COL_NAME_REPAIR_DATE, DataRowVersion.Original)
-        Me.Row(ClaimAuthorizationDAL.COL_NAME_PICK_UP_DATE) = Me.Row(ClaimAuthorizationDAL.COL_NAME_PICK_UP_DATE, DataRowVersion.Original)
+        Row(ClaimAuthorizationDAL.COL_NAME_REPAIR_DATE) = Row(ClaimAuthorizationDAL.COL_NAME_REPAIR_DATE, DataRowVersion.Original)
+        Row(ClaimAuthorizationDAL.COL_NAME_PICK_UP_DATE) = Row(ClaimAuthorizationDAL.COL_NAME_PICK_UP_DATE, DataRowVersion.Original)
     End Sub
 
-    Public Function GetRepairPricesforMethodofRepair(ByVal serviceCenterId As Guid) As DataView
+    Public Function GetRepairPricesforMethodofRepair(serviceCenterId As Guid) As DataView
 
         Dim equipmentId As Guid, equipmentclassId As Guid, conditionId As Guid
 
         Dim ServiceCenter As ServiceCenter = New ServiceCenter(serviceCenterId)
 
-        If (Me.Claim.Dealer.UseEquipmentId = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y")) Then
-            If Not Me.Claim.ClaimedEquipment Is Nothing Or Not Me.Claim.ClaimedEquipment.EquipmentBO Is Nothing Then
-                equipmentId = Me.Claim.ClaimedEquipment.EquipmentId
-                equipmentclassId = Me.Claim.ClaimedEquipment.EquipmentBO.EquipmentClassId
-                conditionId = LookupListNew.GetIdFromCode(LookupListNew.LK_CONDITION, Codes.EQUIPMENT_COND__NEW)
+        If (Claim.Dealer.UseEquipmentId = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y")) Then
+            If Claim.ClaimedEquipment IsNot Nothing Or Claim.ClaimedEquipment.EquipmentBO IsNot Nothing Then
+                equipmentId = Claim.ClaimedEquipment.EquipmentId
+                equipmentclassId = Claim.ClaimedEquipment.EquipmentBO.EquipmentClassId
+                conditionId = LookupListNew.GetIdFromCode(LookupListCache.LK_CONDITION, Codes.EQUIPMENT_COND__NEW)
             Else
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.BusinessErr, Nothing, "NO_CLAIMED_EQUIPMENT_FOUND")
             End If
@@ -1658,18 +1649,18 @@ Public NotInheritable Class ClaimAuthorization
         'End If
 
         Dim dv As PriceListDetail.PriceListResultsDV
-        dv = PriceListDetail.GetRepairPricesforMethodofRepair(Me.Claim.MethodOfRepairId, Me.Claim.CompanyId,
-                                                              ServiceCenter.Code, Me.Claim.RiskTypeId, Me.Claim.LossDate,
-                                                              Me.Claim.Certificate.SalesPrice.Value, equipmentclassId, equipmentId, conditionId,
-                                                              Me.Claim.Dealer.Id, String.Empty)
+        dv = PriceListDetail.GetRepairPricesforMethodofRepair(Claim.MethodOfRepairId, Claim.CompanyId,
+                                                              ServiceCenter.Code, Claim.RiskTypeId, Claim.LossDate,
+                                                              Claim.Certificate.SalesPrice.Value, equipmentclassId, equipmentId, conditionId,
+                                                              Claim.Dealer.Id, String.Empty)
         Return dv
 
     End Function
 
-    Public Function IsPriceListConfigured(ByVal serviceCenterId As Guid) As Boolean
+    Public Function IsPriceListConfigured(serviceCenterId As Guid) As Boolean
         Dim flag As Boolean = True
 
-        Dim dv As PriceListDetail.PriceListResultsDV = Me.GetRepairPricesforMethodofRepair(serviceCenterId)
+        Dim dv As PriceListDetail.PriceListResultsDV = GetRepairPricesforMethodofRepair(serviceCenterId)
         If dv Is Nothing OrElse dv.Count = 0 Then flag = False
 
         Return flag
@@ -1678,7 +1669,7 @@ Public NotInheritable Class ClaimAuthorization
     Public Function ContainsDeductibleLineItem() As Boolean
         Dim flag As Boolean = False
 
-        For Each item As ClaimAuthItem In Me.ClaimAuthorizationItemChildren.Where(Function(i As ClaimAuthItem) i.IsDeleted = False)
+        For Each item As ClaimAuthItem In ClaimAuthorizationItemChildren.Where(Function(i As ClaimAuthItem) i.IsDeleted = False)
             If ServiceCLassTypeList.Instance.IsDeductibleApplicable(item.ServiceClassId, item.ServiceTypeId) Then
                 flag = True
                 Exit For
@@ -1690,11 +1681,11 @@ Public NotInheritable Class ClaimAuthorization
     End Function
 
     Friend Sub EvaluateContainsDeductible()
-        Me.ContainsDeductible = Me.ContainsDeductibleLineItem
-        If Not Me.ContainsDeductible Then
-            Dim item As ClaimAuthItem = Me.ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False AndAlso (i.ServiceClassCode = Codes.SERVICE_CLASS__DEDUCTIBLE And
+        ContainsDeductible = ContainsDeductibleLineItem
+        If Not ContainsDeductible Then
+            Dim item As ClaimAuthItem = ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False AndAlso (i.ServiceClassCode = Codes.SERVICE_CLASS__DEDUCTIBLE And
                                                                   i.ServiceTypeCode = Codes.SERVICE_TYPE__PAY_DEDUCTIBLE)).FirstOrDefault()
-            If Not item Is Nothing Then item.IsDeleted = True
+            If item IsNot Nothing Then item.IsDeleted = True
         End If
     End Sub
 #End Region
@@ -1704,19 +1695,19 @@ Public NotInheritable Class ClaimAuthorization
 #End Region
 
 #Region "Claim Authorization Item"
-    Public ReadOnly Property ClaimAuthorizationItemChildren() As ClaimAuthorizationItemList
+    Public ReadOnly Property ClaimAuthorizationItemChildren As ClaimAuthorizationItemList
         Get
             Return New ClaimAuthorizationItemList(Me)
         End Get
     End Property
 
-    Public Function GetAuthorizationItemChild(ByVal childId As Guid) As ClaimAuthItem
-        Return CType(Me.ClaimAuthorizationItemChildren.GetChild(childId), ClaimAuthItem)
+    Public Function GetAuthorizationItemChild(childId As Guid) As ClaimAuthItem
+        Return CType(ClaimAuthorizationItemChildren.GetChild(childId), ClaimAuthItem)
     End Function
 
     Public Function GetNewAuthorizationItemChild() As ClaimAuthItem
-        Dim newAuthorizationItem As ClaimAuthItem = CType(Me.ClaimAuthorizationItemChildren.GetNewChild, ClaimAuthItem)
-        newAuthorizationItem.ClaimAuthorizationId = Me.Id
+        Dim newAuthorizationItem As ClaimAuthItem = CType(ClaimAuthorizationItemChildren.GetNewChild, ClaimAuthItem)
+        newAuthorizationItem.ClaimAuthorizationId = Id
         newAuthorizationItem.LineItemNumber = newAuthorizationItem.GetNewLineItemNumber()
         Return newAuthorizationItem
     End Function
@@ -1724,7 +1715,7 @@ Public NotInheritable Class ClaimAuthorization
 #End Region
 
 #Region "Claim Authorization History Items"
-    Public ReadOnly Property ClaimAuthorizationHistoryChildren() As ClaimAuthorizationHistoryList
+    Public ReadOnly Property ClaimAuthorizationHistoryChildren As ClaimAuthorizationHistoryList
         Get
             Return New ClaimAuthorizationHistoryList(Me)
         End Get
@@ -1740,13 +1731,13 @@ Public NotInheritable Class ClaimAuthorization
     Public Property Claim As MultiAuthClaim
         Get
             If (_claim Is Nothing) Then
-                If Not Me.ClaimId.Equals(Guid.Empty) Then
-                    Me.Claim = ClaimFacade.Instance.GetClaim(Of MultiAuthClaim)(Me.ClaimId, Me.Dataset)
+                If Not ClaimId.Equals(Guid.Empty) Then
+                    Me.Claim = ClaimFacade.Instance.GetClaim(Of MultiAuthClaim)(ClaimId, Dataset)
                 End If
             End If
             Return _claim
         End Get
-        Private Set(ByVal value As MultiAuthClaim)
+        Private Set
             _claim = value
         End Set
     End Property
@@ -1754,13 +1745,13 @@ Public NotInheritable Class ClaimAuthorization
     Public Property ServiceCenter As ServiceCenter
         Get
             If (_serviceCenter Is Nothing) Then
-                If Not Me.ServiceCenterId.Equals(Guid.Empty) Then
-                    Me.ServiceCenter = New ServiceCenter(Me.ServiceCenterId, Me.Dataset)
+                If Not ServiceCenterId.Equals(Guid.Empty) Then
+                    Me.ServiceCenter = New ServiceCenter(ServiceCenterId, Dataset)
                 End If
             End If
             Return _serviceCenter
         End Get
-        Private Set(ByVal value As ServiceCenter)
+        Private Set
             _serviceCenter = value
         End Set
     End Property
@@ -1769,7 +1760,7 @@ Public NotInheritable Class ClaimAuthorization
 #Region "Derived Properties"
     Public ReadOnly Property IsAddedToInvoiceGroup As Boolean
         Get
-            Return (New ClaimAuthorizationDAL()).IsAddedToInvoiceGroup(Me.ClaimAuthorizationId)
+            Return (New ClaimAuthorizationDAL()).IsAddedToInvoiceGroup(ClaimAuthorizationId)
         End Get
     End Property
 #End Region
@@ -1780,16 +1771,16 @@ Public NotInheritable Class ClaimAuthorization
     Public NotInheritable Class ValidVisitDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_VISIT_DATE_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ClaimAuthorization = CType(objectToValidate, ClaimAuthorization)
             If obj.VisitDate Is Nothing Then Return True
             Dim visitDate As Date = obj.GetShortDate(obj.VisitDate.Value)
             Dim createdDate As Date = Today
-            If Not obj.CreatedDate Is Nothing Then
+            If obj.CreatedDate IsNot Nothing Then
                 createdDate = obj.GetShortDate(obj.CreatedDate.Value)
             End If
 
@@ -1801,19 +1792,19 @@ Public NotInheritable Class ClaimAuthorization
             ' Must be LT or EQ to Pick-Up Date if not NULL. 
 
             If visitDate > Today Then
-                Me.Message = Common.ErrorCodes.INVALID_VISIT_DATE_ERR1 ' "Visit Date Must Be Less Than Or Equal To Today."
+                Message = Common.ErrorCodes.INVALID_VISIT_DATE_ERR1 ' "Visit Date Must Be Less Than Or Equal To Today."
                 Return False
             End If
-            If Not obj.Claim.LossDate Is Nothing AndAlso visitDate < obj.GetShortDate(obj.Claim.LossDate.Value) Then
-                Me.Message = Common.ErrorCodes.INVALID_VISIT_DATE_ERR4 ' "Visit Date Must Be Greater Than Or Equal To Date Of Loss."
+            If obj.Claim.LossDate IsNot Nothing AndAlso visitDate < obj.GetShortDate(obj.Claim.LossDate.Value) Then
+                Message = Common.ErrorCodes.INVALID_VISIT_DATE_ERR4 ' "Visit Date Must Be Greater Than Or Equal To Date Of Loss."
                 Return False
             End If
-            If Not obj.RepairDate Is Nothing AndAlso visitDate > obj.GetShortDate(obj.RepairDate.Value) Then
-                Me.Message = Common.ErrorCodes.INVALID_VISIT_DATE_ERR2 ' "Visit Date Must Be Less Than Or Equal To Repair Date."
+            If obj.RepairDate IsNot Nothing AndAlso visitDate > obj.GetShortDate(obj.RepairDate.Value) Then
+                Message = Common.ErrorCodes.INVALID_VISIT_DATE_ERR2 ' "Visit Date Must Be Less Than Or Equal To Repair Date."
                 Return False
             End If
-            If Not obj.PickUpDate Is Nothing AndAlso visitDate > obj.GetShortDate(obj.PickUpDate.Value) Then
-                Me.Message = Common.ErrorCodes.INVALID_VISIT_DATE_ERR3 ' "Visit Date Must Be Less Than Or Equal To Pick-Up Date."
+            If obj.PickUpDate IsNot Nothing AndAlso visitDate > obj.GetShortDate(obj.PickUpDate.Value) Then
+                Message = Common.ErrorCodes.INVALID_VISIT_DATE_ERR3 ' "Visit Date Must Be Less Than Or Equal To Pick-Up Date."
                 Return False
             End If
 
@@ -1826,11 +1817,11 @@ Public NotInheritable Class ClaimAuthorization
     Public NotInheritable Class ValidRepairDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_REPAIR_DATE_ERR2)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ClaimAuthorization = CType(objectToValidate, ClaimAuthorization)
 
 
@@ -1847,14 +1838,14 @@ Public NotInheritable Class ClaimAuthorization
 
             Dim createdDate As Date = Today
 
-            If Not obj.CreatedDate Is Nothing Then
+            If obj.CreatedDate IsNot Nothing Then
                 createdDate = obj.GetShortDate(obj.CreatedDate.Value)
             End If
 
             ' WR 757668: For a claim that is added from a claim interface:
             ' Repair Date is EQ to or LT the current date and EQ to or GT the Date of Loss
             ' A claim is originated from an interface when the Source field in the Claim record is not null
-            If Not obj.Source Is Nothing Then
+            If obj.Source IsNot Nothing Then
                 If ((repairDate >= obj.GetShortDate(obj.Claim.LossDate.Value)) AndAlso
                 (repairDate <= obj.GetShortDate(Today))) Then
                     Return True
@@ -1865,7 +1856,7 @@ Public NotInheritable Class ClaimAuthorization
                     Return True
                 End If
             End If
-            If Not obj.LoanerReturnedDate Is Nothing AndAlso repairDate <= obj.GetShortDate(obj.LoanerReturnedDate.Value) Then
+            If obj.LoanerReturnedDate IsNot Nothing AndAlso repairDate <= obj.GetShortDate(obj.LoanerReturnedDate.Value) Then
                 Return True
             End If
 
@@ -1878,16 +1869,16 @@ Public NotInheritable Class ClaimAuthorization
     Public NotInheritable Class ValidPickUpDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ClaimAuthorization = CType(objectToValidate, ClaimAuthorization)
             If obj.PickUpDate Is Nothing Then Return True
             Dim pickUpDate As Date = obj.GetShortDate(obj.PickUpDate.Value)
             Dim createdDate As Date = Today
-            If Not obj.CreatedDate Is Nothing Then
+            If obj.CreatedDate IsNot Nothing Then
                 createdDate = obj.GetShortDate(obj.CreatedDate.Value)
             End If
 
@@ -1901,28 +1892,28 @@ Public NotInheritable Class ClaimAuthorization
             'If obj.LoanerTaken Then Return True
 
             If pickUpDate > Today Then
-                Me.Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR1 '"Pick-Up Date Must Be Less Than Or Equal To Today."
+                Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR1 '"Pick-Up Date Must Be Less Than Or Equal To Today."
                 Return False
                 'End If
-            ElseIf Not obj.RepairDate Is Nothing Then
+            ElseIf obj.RepairDate IsNot Nothing Then
                 If pickUpDate < obj.GetShortDate(obj.RepairDate.Value) Then
-                    Me.Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR2  '"Pick-Up Date Must Be Greater Than Or Equal To Repair Date."
+                    Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR2  '"Pick-Up Date Must Be Greater Than Or Equal To Repair Date."
                     Return False
                 End If
                 'ElseIf pickUpDate > Today AndAlso pickUpDate < obj.GetShortDate(obj.RepairDate.Value) Then
                 '    Me.Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR6 '"Pick-Up Date Must Be Between Repair Date and Today."
                 '    Return False
             Else
-                Me.Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR5  '"Pick-Up Date Requires The Entry Of A Repair Date."
+                Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR5  '"Pick-Up Date Requires The Entry Of A Repair Date."
                 Return False
             End If
 
-            If Not obj.LoanerReturnedDate Is Nothing AndAlso pickUpDate < obj.GetShortDate(obj.LoanerReturnedDate.Value) Then
-                Me.Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR4 '"Pick-Up Date Must Be Greater Than Or Equal To Loaner Returned Date."
+            If obj.LoanerReturnedDate IsNot Nothing AndAlso pickUpDate < obj.GetShortDate(obj.LoanerReturnedDate.Value) Then
+                Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR4 '"Pick-Up Date Must Be Greater Than Or Equal To Loaner Returned Date."
                 Return False
             End If
-            If Not obj.VisitDate Is Nothing AndAlso pickUpDate < obj.GetShortDate(obj.VisitDate.Value) Then
-                Me.Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR3 '"Pick-Up Date Must Be Greater Than Or Equal To Visit Date."
+            If obj.VisitDate IsNot Nothing AndAlso pickUpDate < obj.GetShortDate(obj.VisitDate.Value) Then
+                Message = Common.ErrorCodes.INVALID_PICK_UP_DATE_ERR3 '"Pick-Up Date Must Be Greater Than Or Equal To Visit Date."
                 Return False
             End If
 
@@ -1934,11 +1925,11 @@ Public NotInheritable Class ClaimAuthorization
     Public NotInheritable Class ValidateDuplicateServiceClassType
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.DUPLICATE_SERVICE_CLASS_TYPE_IN_CLAIM_AUTHORIZATION)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ClaimAuthorization = CType(objectToValidate, ClaimAuthorization)
             For Each oClaimAuthItem As ClaimAuthItem In obj.ClaimAuthorizationItemChildren.Where(Function(item) item.IsDeleted = False AndAlso item.AdjustmentReasonId.Equals(Guid.Empty))
                 If (obj.ClaimAuthorizationItemChildren.Where(Function(item) _
@@ -1959,11 +1950,11 @@ Public NotInheritable Class ClaimAuthorization
     Public NotInheritable Class ValidatePayDeductibleLineItem
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.CLAIM_AUTH_SHOULD_HAVE_PAY_DEDUCTIBLE_LINE_ITEM)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ClaimAuthorization = CType(objectToValidate, ClaimAuthorization)
             If obj.ClaimAuthStatus <> ClaimAuthorizationStatus.Void Then
                 obj.ContainsDeductible = obj.ContainsDeductibleLineItem
@@ -1981,11 +1972,11 @@ Public NotInheritable Class ClaimAuthorization
     Public NotInheritable Class ValidateMultiplePayDeductibleLineItem
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.CLAIM_AUTH_CANNOT_HAVE__MULTIPLE_PAY_DEDUCTIBLE_LINE_ITEM)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ClaimAuthorization = CType(objectToValidate, ClaimAuthorization)
 
             If obj.ClaimAuthStatus <> ClaimAuthorizationStatus.Void Then
@@ -2005,11 +1996,11 @@ Public NotInheritable Class ClaimAuthorization
     Public NotInheritable Class ValidatePayDeductibleLineItemForContainDedutibleNo
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.CLAIM_AUTH_CANNOT_HAVE_PAY_DEDUCTIBLE_LINE_ITEM)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ClaimAuthorization = CType(objectToValidate, ClaimAuthorization)
             If obj.ClaimAuthStatus <> ClaimAuthorizationStatus.Void Then
                 obj.ContainsDeductible = obj.ContainsDeductibleLineItem
@@ -2026,11 +2017,11 @@ Public NotInheritable Class ClaimAuthorization
 #End Region
 
 #Region "Claim Authorization - Price List Details"
-    Public Function GetPriceListDetails(ByVal serviceClassId As Guid, ByVal serviceTypeId As Guid, ByVal riskTypeId As Guid, ByVal equipmentClassId As Guid, ByVal equipmentId As Guid,
-        ByVal conditionId As Guid, ByVal sku As String, ByVal skuDescription As String) As DataSet
+    Public Function GetPriceListDetails(serviceClassId As Guid, serviceTypeId As Guid, riskTypeId As Guid, equipmentClassId As Guid, equipmentId As Guid,
+        conditionId As Guid, sku As String, skuDescription As String) As DataSet
         Try
             Dim dal As New ClaimAuthorizationDAL
-            Return dal.LoadPriceListDetails(Me.ServiceCenterId, Me.Claim.LossDate, ElitaPlusIdentity.Current.ActiveUser.LanguageId, serviceClassId, serviceTypeId, riskTypeId,
+            Return dal.LoadPriceListDetails(ServiceCenterId, Claim.LossDate, ElitaPlusIdentity.Current.ActiveUser.LanguageId, serviceClassId, serviceTypeId, riskTypeId,
                 equipmentClassId, equipmentId, conditionId, sku, skuDescription)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -2039,7 +2030,7 @@ Public NotInheritable Class ClaimAuthorization
 #End Region
 
 #Region "Claim Authorization -Cancel Shipment"
-    Public Function CancelShipmentRequest(ByVal claimAutorizationId As Guid) As Boolean
+    Public Function CancelShipmentRequest(claimAutorizationId As Guid) As Boolean
         Try
             Dim dal As New ClaimAuthorizationDAL
             Return dal.CancelShipmentRequest(claimAutorizationId)
@@ -2050,7 +2041,7 @@ Public NotInheritable Class ClaimAuthorization
 #End Region
 
 #Region "Claim Authorization -Reshipment"
-    Public Function ReShipmentProcessRequest(ByVal claimAutorizationId As Guid, ByVal cancelStatusReason As String) As Boolean
+    Public Function ReShipmentProcessRequest(claimAutorizationId As Guid, cancelStatusReason As String) As Boolean
         Try
             Dim dal As New ClaimAuthorizationDAL
             Return dal.ReShipmentProcessRequest(claimAutorizationId, cancelStatusReason)
@@ -2058,7 +2049,7 @@ Public NotInheritable Class ClaimAuthorization
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
-    Public Function CheckLinkedAuthItem(ByVal claimAutorizationId As Guid) As Boolean
+    Public Function CheckLinkedAuthItem(claimAutorizationId As Guid) As Boolean
         Try
             Dim dal As New ClaimAuthorizationDAL
             Return dal.CheckLinkedAuthItem(claimAutorizationId)
@@ -2070,7 +2061,7 @@ Public NotInheritable Class ClaimAuthorization
 
 #Region "Claim Authorization -Reshipment"
 
-    Public Function RefundFee(ByVal claimAutorizationId As Guid, ByVal refundReasonId As Guid, ByVal claimAuthItemId As Guid, ByRef errCode As Integer, ByRef errMsg As String) As Boolean
+    Public Function RefundFee(claimAutorizationId As Guid, refundReasonId As Guid, claimAuthItemId As Guid, ByRef errCode As Integer, ByRef errMsg As String) As Boolean
         Try
             Dim dal As New ClaimAuthorizationDAL
             Return dal.RefundFee(claimAutorizationId, refundReasonId, claimAuthItemId, errCode, errMsg)
@@ -2094,14 +2085,14 @@ Public NotInheritable Class ClaimAuthorization
 #Region "Claim Authorization Reversed"
 
     Public Sub RefundAmount()
-        If Me.Reversed = True Then
-            If (Me.ClaimAuthorizationItemChildren.Count > 1) Then
+        If Reversed = True Then
+            If (ClaimAuthorizationItemChildren.Count > 1) Then
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.BusinessErr, Nothing, "CLAIM_AUTH_ITEM_COUNT_CANNOT_BE_MORE_THAN_ONE")
             End If
             Dim newAuthItemId As Guid = ReverseClaimAuthFromExiting(Me)
-            Me.ClaimAuthStatus = ClaimAuthorizationStatus.Reversed
+            ClaimAuthStatus = ClaimAuthorizationStatus.Reversed
             Dim errCode, errMsg As String
-            If Not RefundFee(Me.Id, Me.RevAdjustmentReasonId, newAuthItemId, errCode, errMsg) Then
+            If Not RefundFee(Id, RevAdjustmentReasonId, newAuthItemId, errCode, errMsg) Then
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.BusinessErr, Nothing, errMsg)
             End If
         End If
@@ -2111,7 +2102,7 @@ Public NotInheritable Class ClaimAuthorization
 #End Region
 
 
-    Public Function ManualCashpayRequest(ByVal claimAutorizationId As Guid, ByVal bankInfoId As Guid, ByRef errCode As Integer, ByRef errMsg As String) As Boolean
+    Public Function ManualCashpayRequest(claimAutorizationId As Guid, bankInfoId As Guid, ByRef errCode As Integer, ByRef errMsg As String) As Boolean
         Try
             Dim dal As New ClaimAuthorizationDAL
             Return dal.ManualCashpayRequest(claimAutorizationId, bankInfoId, errCode, errMsg)
@@ -2140,15 +2131,15 @@ End Class
 Public Class ClaimAuthorizationList
     Inherits BusinessObjectListEnumerableBase(Of MultiAuthClaim, ClaimAuthorization)
 
-    Public Sub New(ByVal parent As MultiAuthClaim)
+    Public Sub New(parent As MultiAuthClaim)
         MyBase.New(LoadTable(parent), parent)
     End Sub
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, ClaimAuthorization).ClaimId.Equals(CType(Parent, MultiAuthClaim).Id)
     End Function
 
-    Private Shared Function LoadTable(ByVal parent As MultiAuthClaim) As DataTable
+    Private Shared Function LoadTable(parent As MultiAuthClaim) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(ClaimAuthorizationList)) Then
                 Dim dal As New ClaimAuthorizationDAL

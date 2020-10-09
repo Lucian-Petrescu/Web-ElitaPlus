@@ -18,7 +18,7 @@ Namespace Security
         Inherits ServiceAuthorizationManager
 
 
-        Private Function GetOperationDescription(ByVal operationContext As OperationContext) As OperationDescription
+        Private Function GetOperationDescription(operationContext As OperationContext) As OperationDescription
             Dim od As OperationDescription = Nothing
             Dim bindingName As String = operationContext.EndpointDispatcher.ChannelDispatcher.BindingName
             Dim methodName As String
@@ -42,7 +42,7 @@ Namespace Security
             Return od
         End Function
 
-        Private Function GetPermissionCode(ByVal operationContext As OperationContext) As String
+        Private Function GetPermissionCode(operationContext As OperationContext) As String
             Dim od As OperationDescription = GetOperationDescription(operationContext)
             If (od Is Nothing) Then Return Nothing
 
@@ -57,7 +57,7 @@ Namespace Security
             Return pa.PermissionCode
         End Function
 
-        Private Function GetServiceEndPoint(ByVal operationContext As OperationContext) As ServiceEndpoint
+        Private Function GetServiceEndPoint(operationContext As OperationContext) As ServiceEndpoint
 
             Dim epa As EndpointAddress = operationContext.EndpointDispatcher.EndpointAddress
             Dim hostDesc As ServiceDescription = operationContext.Host.Description
@@ -66,7 +66,7 @@ Namespace Security
 
         End Function
 
-        Private Function GetCertificateThumprint(ByVal serviceEndPoint As ServiceEndpoint, ByVal iwrc As IncomingWebRequestContext) As X509Certificate2
+        Private Function GetCertificateThumprint(serviceEndPoint As ServiceEndpoint, iwrc As IncomingWebRequestContext) As X509Certificate2
 
             If (serviceEndPoint.EndpointBehaviors.Contains(GetType(RequiresX509Attribute))) Then
 
@@ -111,7 +111,7 @@ Namespace Security
         End Function
 
 
-        Protected Overrides Function CheckAccessCore(ByVal operationContext As System.ServiceModel.OperationContext) As Boolean
+        Protected Overrides Function CheckAccessCore(operationContext As System.ServiceModel.OperationContext) As Boolean
             Try
                 Dim warning As Boolean = False
                 Dim X509Certificate As X509Certificate2 = Nothing

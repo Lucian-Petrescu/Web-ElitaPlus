@@ -190,33 +190,33 @@ Public Class ContractDAL
 
 #Region "CRUD Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("contract_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
 
-    Public Function LoadList(ByVal compIds As ArrayList, ByVal dealerId As Guid) As DataSet
+    Public Function LoadList(compIds As ArrayList, dealerId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
 
         If compIds.Count > 0 Then
             Dim inClauseCondition As String
-            inClauseCondition &= MiscUtil.BuildListForSql("AND D." & Me.COL_NAME_COMPANY_ID, compIds, True)
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClauseCondition)
+            inClauseCondition &= MiscUtil.BuildListForSql("AND D." & COL_NAME_COMPANY_ID, compIds, True)
+            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClauseCondition)
         End If
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER,
-                                            Environment.NewLine & "ORDER BY " & Environment.NewLine & Me.COL_NAME_DEALER_NAME & ", " & Me.COL_NAME_EFFECTIVE & " DESC")
+        selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER,
+                                            Environment.NewLine & "ORDER BY " & Environment.NewLine & COL_NAME_DEALER_NAME & ", " & COL_NAME_EFFECTIVE & " DESC")
 
         Try
             Dim ds As New DataSet
@@ -226,7 +226,7 @@ Public Class ContractDAL
             Else
                 parameter = New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray)
             End If
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME,
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
                             New DBHelper.DBHelperParameter() {parameter})
             Return ds
         Catch ex As Exception
@@ -234,15 +234,15 @@ Public Class ContractDAL
         End Try
     End Function
 
-    Public Function LoadMaxExpirationContract(ByVal compId As Guid, ByVal dealerId As Guid) As DataSet
+    Public Function LoadMaxExpirationContract(compId As Guid, dealerId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_MAX_EXPIRATION_CONTRACT")
+        Dim selectStmt As String = Config("/SQL/LOAD_MAX_EXPIRATION_CONTRACT")
 
         Try
             Dim ds As New DataSet
-            Dim dealerIdPar As New DBHelper.DBHelperParameter(Me.PAR_NAME_COMPANY_ID, dealerId)
+            Dim dealerIdPar As New DBHelper.DBHelperParameter(PAR_NAME_COMPANY_ID, dealerId)
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME,
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
                             New DBHelper.DBHelperParameter() {dealerIdPar})
             Return ds
         Catch ex As Exception
@@ -251,39 +251,39 @@ Public Class ContractDAL
     End Function
 
 
-    Function LoadMinEffectiveMaxExpiration(ByVal dealerId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_MIN_EFFECTIVE_MAX_EXPIRATION")
+    Function LoadMinEffectiveMaxExpiration(dealerId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_MIN_EFFECTIVE_MAX_EXPIRATION")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("dealer_id_id", dealerId.ToByteArray)}
         Try
             Dim ds As New DataSet
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Function GetSertificatesCount(ByVal Id As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_SERTIFICATES_COUNT")
+    Function GetSertificatesCount(Id As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_SERTIFICATES_COUNT")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(TABLE_KEY_NAME, Id.ToByteArray)}
         Try
             Dim ds As New DataSet
-            Return DBHelper.Fetch(ds, selectStmt, Me.CERTIFICATE_COUNT_TABLE, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, CERTIFICATE_COUNT_TABLE, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetContract(ByVal compIds As ArrayList, ByVal certId As Guid) As DataSet
+    Public Function GetContract(compIds As ArrayList, certId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/GET_CONTRACT_BY_CERT_ID")
+        Dim selectStmt As String = Config("/SQL/GET_CONTRACT_BY_CERT_ID")
 
         Dim inClauseCondition As String
 
-        inClauseCondition &= MiscUtil.BuildListForSql("AND D." & Me.COL_NAME_COMPANY_ID, compIds, True)
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClauseCondition)
+        inClauseCondition &= MiscUtil.BuildListForSql("AND D." & COL_NAME_COMPANY_ID, compIds, True)
+        selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClauseCondition)
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER,
-                                            Environment.NewLine & "ORDER BY " & Environment.NewLine & Me.COL_NAME_DEALER_NAME & ", " & Me.COL_NAME_EFFECTIVE & " DESC")
+        selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER,
+                                            Environment.NewLine & "ORDER BY " & Environment.NewLine & COL_NAME_DEALER_NAME & ", " & COL_NAME_EFFECTIVE & " DESC")
 
         Try
             Dim ds As New DataSet
@@ -293,7 +293,7 @@ Public Class ContractDAL
             Else
                 parameter = New DBHelper.DBHelperParameter(COL_NAME_CERT_ID, certId.ToByteArray)
             End If
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME,
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
                             New DBHelper.DBHelperParameter() {parameter})
             Return ds
         Catch ex As Exception
@@ -301,11 +301,11 @@ Public Class ContractDAL
         End Try
     End Function
 
-    Public Function GetAutoGenSequenceNumber(ByVal seqSourceId As Guid, ByVal sourceName As String, ByVal sequenceKey As String) As Long
+    Public Function GetAutoGenSequenceNumber(seqSourceId As Guid, sourceName As String, sequenceKey As String) As Long
 
         Dim autoGenSeqNum As Long
 
-        Dim selectStmt As String = Me.Config("/SQL/GET_AUTO_GEN_SEQ_NUM")
+        Dim selectStmt As String = Config("/SQL/GET_AUTO_GEN_SEQ_NUM")
 
         Using command As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure)
 
@@ -334,9 +334,9 @@ Public Class ContractDAL
 
     End Function
 
-    Public Sub ReturnUnUsedAutoGenSequenceNumber(ByVal autoGenSequenceNumber As Long, ByVal seqSourceId As Guid, ByVal sequenceKey As String)
+    Public Sub ReturnUnUsedAutoGenSequenceNumber(autoGenSequenceNumber As Long, seqSourceId As Guid, sequenceKey As String)
 
-        Dim selectStmt As String = Me.Config("/SQL/RETURN_UN_USED_AUTO_GEN_SEQ_NUM")
+        Dim selectStmt As String = Config("/SQL/RETURN_UN_USED_AUTO_GEN_SEQ_NUM")
 
         Using command As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure)
             command.BindByName = True
@@ -359,8 +359,8 @@ Public Class ContractDAL
     End Sub
 
     'This method was added manually to accommodate BO families Save
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet,
-                                      ByVal dealerId As Guid, ByVal expirationDate As Date, ByVal effectiveDate As Date,
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet,
+                                      dealerId As Guid, expirationDate As Date, effectiveDate As Date,
                                       Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim oCoverageDAL As New CoverageDAL
 
@@ -370,17 +370,17 @@ Public Class ContractDAL
         End If
         Try
             'First Pass updates Deletions
-            Me.Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Deleted)
+            Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Deleted)
 
             'Second Pass updates additions and changes
-            Me.Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
 
             oCoverageDAL.ExpireCoverages(dealerId, expirationDate, effectiveDate, tr)
 
             ' Ind Policy change if Data set has Dealer table then update it.
             If familyDataset.Tables.Contains(DEALER_TABLE_NAME) Then
                 Dim dealerDAL As New DealerDAL
-                dealerDAL.Update(familyDataset.Tables(Me.DEALER_TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
+                dealerDAL.Update(familyDataset.Tables(DEALER_TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
             End If
 
             If Transaction Is Nothing Then

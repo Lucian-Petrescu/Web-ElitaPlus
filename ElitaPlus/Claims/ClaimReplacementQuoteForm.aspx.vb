@@ -1,4 +1,5 @@
-﻿Imports Assurant.ElitaPlus.DALObjects
+﻿Imports System.Diagnostics
+Imports Assurant.ElitaPlus.DALObjects
 
 Namespace Claims
     Public Class ClaimReplacementQuoteForm
@@ -15,7 +16,7 @@ Namespace Claims
         Public Class Parameters
             Public moClaimId As Guid
 
-            Public Sub New(ByVal oClaimId As Guid)
+            Public Sub New(oClaimId As Guid)
                 moClaimId = oClaimId
             End Sub
 
@@ -29,12 +30,12 @@ Namespace Claims
             Public Claim As ClaimBase
             Public ReadOnly Property ClaimBO As ClaimBase
                 Get
-                    If (Me.Claim Is Nothing) Then
-                        If (Me.moParams.moClaimId <> Guid.Empty) Then
-                            Me.Claim = ClaimFacade.Instance.GetClaim(Of ClaimBase)(Me.moParams.moClaimId)
+                    If (Claim Is Nothing) Then
+                        If (moParams.moClaimId <> Guid.Empty) Then
+                            Claim = ClaimFacade.Instance.GetClaim(Of ClaimBase)(moParams.moClaimId)
                         End If
                     End If
-                    Return Me.Claim
+                    Return Claim
                 End Get
             End Property
             Public moParams As Parameters
@@ -53,13 +54,13 @@ Namespace Claims
 
         Private Sub SetStateProperties()
             Try
-                Me.State.moParams = CType(Me.CallingParameters, Parameters)
-                If (Me.State.moParams Is Nothing) OrElse (Me.State.moParams.moClaimId.Equals(Guid.Empty)) Then
+                State.moParams = CType(CallingParameters, Parameters)
+                If (State.moParams Is Nothing) OrElse (State.moParams.moClaimId.Equals(Guid.Empty)) Then
                     Throw New DataNotFoundException
                 End If
                 PopulateFormFromBo()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region
@@ -77,15 +78,15 @@ Namespace Claims
 #Region " Web Form Designer Generated Code "
 
         'This call is required by the Web Form Designer.
-        <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+        <DebuggerStepThrough()> Private Sub InitializeComponent()
 
         End Sub
 
         'NOTE: The following placeholder declaration is required by the Web Form Designer.
         'Do not delete or move it.
-        Private designerPlaceholderDeclaration As System.Object
+        Private designerPlaceholderDeclaration As Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -94,13 +95,13 @@ Namespace Claims
 #End Region
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.MasterPage.MessageController.Clear()
+            MasterPage.MessageController.Clear()
             Try
                 ClearAll()
                 If Not Page.IsPostBack Then
-                    Me.SetStateProperties()
+                    SetStateProperties()
                     UpdateBreadCrum()
                     Dim claimStatusByGroupId = ClaimStatusByGroup.GetClaimStatusByGroupID(ClaimExtendedStatusCode)
                     If claimStatusByGroupId = Guid.Empty Then
@@ -109,23 +110,23 @@ Namespace Claims
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
         Private Sub ClearAll()
             Try
-                Me.ClearLabelErrSign(lblNewSCError)
+                ClearLabelErrSign(lblNewSCError)
                 lblNewSCError.Visible = False
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub UpdateBreadCrum()
-            Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-            Me.MasterPage.UsePageTabTitleInBreadCrum = False
+            MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            MasterPage.UsePageTabTitleInBreadCrum = False
         End Sub
 
 
@@ -134,24 +135,24 @@ Namespace Claims
 #Region "Handlers-Buttons"
         Private Sub GoBack()
             ' Claim Detail
-            Dim retType As New ClaimForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back)
-            Me.ReturnToCallingPage(retType)
+            Dim retType As New ClaimForm.ReturnType(DetailPageCommand.Back)
+            ReturnToCallingPage(retType)
         End Sub
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             Try
                 GoBack()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
 
-        Private Sub btnSendQuote_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSend.Click
+        Private Sub btnSendQuote_Click(sender As Object, e As EventArgs) Handles btnSend.Click
             Try
                 SendReplacementQuote()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region
@@ -161,7 +162,7 @@ Namespace Claims
         Private Sub PopulateFormFromBo()
 
             Dim langId As Guid = Authentication.CurrentUser.LanguageId
-            Dim claimInfo As ClaimBase = Me.State.ClaimBO
+            Dim claimInfo As ClaimBase = State.ClaimBO
 
             Try
                 moProtectionEvtDtl.ClaimNumber = claimInfo.ClaimNumber
@@ -180,7 +181,7 @@ Namespace Claims
                 moProtectionEvtDtl.ProtectionStatusCss = If(claimInfo.Status = BasicClaimStatus.Active, "StatActive", "StatClosed")
                 InitNewServiceCenterUserControl()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
@@ -199,15 +200,15 @@ Namespace Claims
                                                         Return TranslationBase.TranslateLabelOrMessage(value)
                                                     End Function
 
-            ucSelectServiceCenter.TranslateGridHeaderFunc = Sub(grid As System.Web.UI.WebControls.GridView)
+            ucSelectServiceCenter.TranslateGridHeaderFunc = Sub(grid As GridView)
                                                                 TranslateGridHeader(grid)
                                                             End Sub
 
-            ucSelectServiceCenter.HighLightSortColumnFunc = Sub(grid As System.Web.UI.WebControls.GridView, sortExp As String)
+            ucSelectServiceCenter.HighLightSortColumnFunc = Sub(grid As GridView, sortExp As String)
                                                                 HighLightSortColumn(grid, sortExp, False)
                                                             End Sub
 
-            ucSelectServiceCenter.NewCurrentPageIndexFunc = Function(grid As System.Web.UI.WebControls.GridView, ByVal intRecordCount As Integer, ByVal intNewPageSize As Integer)
+            ucSelectServiceCenter.NewCurrentPageIndexFunc = Function(grid As GridView, intRecordCount As Integer, intNewPageSize As Integer)
                                                                 Return NewCurrentPageIndex(grid, intRecordCount, intNewPageSize)
                                                             End Function
             'Set up the service center end
@@ -249,7 +250,7 @@ Namespace Claims
 
         Private Sub SendReplacementQuote()
             Dim blnValid As Boolean = True, strErrMsg As String = String.Empty
-            Dim claimDetails As ClaimBase = Me.State.ClaimBO
+            Dim claimDetails As ClaimBase = State.ClaimBO
             Try
                 If ucSelectServiceCenter.SelectedServiceCenter Is Nothing Then
                     blnValid = False
@@ -283,7 +284,7 @@ Namespace Claims
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region

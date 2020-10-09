@@ -15,7 +15,7 @@ Public Class CaseBase
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -29,24 +29,24 @@ Public Class CaseBase
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDs As DataSet)
+    Public Sub New(id As Guid, familyDs As DataSet)
         MyBase.New(False)
         Dataset = familyDs
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDs As DataSet)
+    Public Sub New(familyDs As DataSet)
         MyBase.New(False)
         Dataset = familyDs
         Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
     End Sub
-    Public Sub New(ByVal caseNumber As String, ByVal companyCode As String)
+    Public Sub New(caseNumber As String, companyCode As String)
         MyBase.New()
         Dataset = New DataSet
         Load(caseNumber, companyCode)
@@ -67,10 +67,10 @@ Public Class CaseBase
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(CaseDAL.TableName).Rows.Remove(Row)
                 End If
             End If
@@ -90,10 +90,10 @@ Public Class CaseBase
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Protected Overridable Sub Load(ByVal caseNumber As String, ByVal companyCode As String)
+    Protected Overridable Sub Load(caseNumber As String, companyCode As String)
         Try
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(CaseDAL.TableName).Rows.Remove(Row)
                 End If
             End If
@@ -125,7 +125,7 @@ Public Class CaseBase
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CaseDAL.TableKeyName) Is DBNull.Value Then
                 Return Nothing
@@ -136,7 +136,7 @@ Public Class CaseBase
     End Property
 
     <ValueMandatory("")>
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameCompanyId) Is DBNull.Value Then
@@ -145,13 +145,13 @@ Public Class CaseBase
                 Return New Guid(CType(Row(CaseDAL.ColNameCompanyId), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameCompanyId, value)
         End Set
     End Property
     <ValidStringLength("", Max:=70)>
-    Public Property CompanyDesc() As String
+    Public Property CompanyDesc As String
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameCompanyDesc) Is DBNull.Value Then
@@ -160,14 +160,14 @@ Public Class CaseBase
                 Return CType(Row(CaseDAL.ColNameCompanyDesc), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameCompanyDesc, value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=120)>
-    Public Property CaseNumber() As String
+    Public Property CaseNumber As String
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameCaseNumber) Is DBNull.Value Then
@@ -176,7 +176,7 @@ Public Class CaseBase
                 Return CType(Row(CaseDAL.ColNameCaseNumber), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameCaseNumber, value)
         End Set
@@ -184,7 +184,7 @@ Public Class CaseBase
 
 
     <ValueMandatory("")>
-    Public Property CaseOpenDate() As DateType
+    Public Property CaseOpenDate As DateType
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameCaseOpenDate) Is DBNull.Value Then
@@ -193,14 +193,14 @@ Public Class CaseBase
                 Return New DateType(CType(Row(CaseDAL.ColNameCaseOpenDate), Date))
             End If
         End Get
-        Set(ByVal value As DateType)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameCaseOpenDate, value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)>
-    Public Property CasePurposeCode() As String
+    Public Property CasePurposeCode As String
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameCasePurposeCode) Is DBNull.Value Then
@@ -209,14 +209,14 @@ Public Class CaseBase
                 Return CType(Row(CaseDAL.ColNameCasePurposeCode), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameCasePurposeCode, value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)>
-    Public Property CaseStatusCode() As String
+    Public Property CaseStatusCode As String
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameCaseStatusCode) Is DBNull.Value Then
@@ -225,7 +225,7 @@ Public Class CaseBase
                 Return CType(Row(CaseDAL.ColNameCaseStatusCode), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameCaseStatusCode, value)
         End Set
@@ -233,7 +233,7 @@ Public Class CaseBase
 
 
     <ValueMandatory("")>
-    Public Property InitialInteractionId() As Guid
+    Public Property InitialInteractionId As Guid
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameInitialInteractionId) Is DBNull.Value Then
@@ -242,14 +242,14 @@ Public Class CaseBase
                 Return New Guid(CType(Row(CaseDAL.ColNameInitialInteractionId), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameInitialInteractionId, value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)>
-    Public Property InitialCallerName() As String
+    Public Property InitialCallerName As String
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameInitialCallerName) Is DBNull.Value Then
@@ -258,13 +258,13 @@ Public Class CaseBase
                 Return CType(Row(CaseDAL.ColNameInitialCallerName), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameInitialCallerName, value)
         End Set
     End Property
 
-    Public Property ClaimId() As Guid
+    Public Property ClaimId As Guid
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameClaimId) Is DBNull.Value Then
@@ -273,13 +273,13 @@ Public Class CaseBase
                 Return New Guid(CType(Row(CaseDAL.ColNameClaimId), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameClaimId, value)
         End Set
     End Property
     <ValidStringLength("", Max:=20)>
-    Public Property ClaimNumber() As String
+    Public Property ClaimNumber As String
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameClaimNumber) Is DBNull.Value Then
@@ -288,14 +288,14 @@ Public Class CaseBase
                 Return CType(Row(CaseDAL.ColNameClaimNumber), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameClaimNumber, value)
         End Set
     End Property
 
 
-    Public Property CertId() As Guid
+    Public Property CertId As Guid
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameCertId) Is DBNull.Value Then
@@ -304,13 +304,13 @@ Public Class CaseBase
                 Return New Guid(CType(Row(CaseDAL.ColNameCertId), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameCertId, value)
         End Set
     End Property
     <ValidStringLength("", Max:=20)>
-    Public Property CertNumber() As String
+    Public Property CertNumber As String
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameCertNumber) Is DBNull.Value Then
@@ -319,14 +319,14 @@ Public Class CaseBase
                 Return CType(Row(CaseDAL.ColNameCertNumber), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameCertNumber, value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property LastActivityDate() As DateType
+    Public Property LastActivityDate As DateType
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameLastActivityDate) Is DBNull.Value Then
@@ -335,7 +335,7 @@ Public Class CaseBase
                 Return New DateType(CType(Row(CaseDAL.ColNameLastActivityDate), Date))
             End If
         End Get
-        Set(ByVal value As DateType)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameLastActivityDate, value)
         End Set
@@ -343,7 +343,7 @@ Public Class CaseBase
 
 
 
-    Public Property CaseCloseDate() As DateType
+    Public Property CaseCloseDate As DateType
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameCaseCloseDate) Is DBNull.Value Then
@@ -352,7 +352,7 @@ Public Class CaseBase
                 Return New DateType(CType(Row(CaseDAL.ColNameCaseCloseDate), Date))
             End If
         End Get
-        Set(ByVal value As DateType)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameCaseCloseDate, value)
         End Set
@@ -360,7 +360,7 @@ Public Class CaseBase
 
 
     <ValidStringLength("", Max:=200)>
-    Public Property CaseCloseCode() As String
+    Public Property CaseCloseCode As String
         Get
             CheckDeleted()
             If Row(CaseDAL.ColNameCaseCloseCode) Is DBNull.Value Then
@@ -369,7 +369,7 @@ Public Class CaseBase
                 Return CType(Row(CaseDAL.ColNameCaseCloseCode), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(CaseDAL.ColNameCaseCloseCode, value)
         End Set
@@ -403,8 +403,8 @@ Public Class CaseBase
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetCaseList(ByVal companyId As Guid, ByVal caseNumber As String, ByVal caseStatus As String, ByVal callerFirstName As String, ByVal callerLastName As String, ByVal caseOpenDateFrom As String, ByVal caseOpenDateTo As String, ByVal casePurpose As String, ByVal certificateNumber As String, ByVal caseClosedReason As String,
-                                       ByVal languageId As Guid, ByVal networkId As String) As CaseSearchDv
+    Public Shared Function GetCaseList(companyId As Guid, caseNumber As String, caseStatus As String, callerFirstName As String, callerLastName As String, caseOpenDateFrom As String, caseOpenDateTo As String, casePurpose As String, certificateNumber As String, caseClosedReason As String,
+                                       languageId As Guid, networkId As String) As CaseSearchDv
         Try
             Dim dal As New CaseDAL
             Dim fromdate As Date?
@@ -452,8 +452,8 @@ Public Class CaseBase
                 End If
 
                 If (CultureInfo.CurrentCulture.Name.Equals("ja-JP")) OrElse (CultureInfo.CurrentCulture.Name.Equals("zh-CN")) Then
-                    fromdate = Common.DateHelper.convertDateFrmt(caseOpenDateFrom)
-                    todate = Common.DateHelper.convertDateFrmt(caseOpenDateTo)
+                    fromdate = DateHelper.convertDateFrmt(caseOpenDateFrom)
+                    todate = DateHelper.convertDateFrmt(caseOpenDateTo)
                 Else
                     fromdate = DateTime.Parse(caseOpenDateFrom.ToString(),
                                           Thread.CurrentThread.CurrentCulture,
@@ -469,13 +469,13 @@ Public Class CaseBase
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-   Public Shared Function GetAgentList(ByVal companyId As Guid, ByVal dealerId As Guid, ByVal customerFirstName As String, ByVal customerLastName As String,
-                                        ByVal caseNumber As String, ByVal claimNumber As String, ByVal certificateNumber As String,
-                                        ByVal serialNumber As String, ByVal invoiceNumber As String, ByVal phoneNumber As String, ByVal zipcode As String,
-                                        ByVal certificateStatus As String, ByVal email As String,
-                                        ByVal taxId As String, ByVal serviceLineNumber As String, ByVal accountNumber As String,
-                                        ByVal globalCustomerNumber As String, ByVal dateofbirth As String,
-                                        ByVal languageId As Guid,ByVal branchCode As String,ByVal branchName As String) As AgentSearchDv
+   Public Shared Function GetAgentList(companyId As Guid, dealerId As Guid, customerFirstName As String, customerLastName As String,
+                                        caseNumber As String, claimNumber As String, certificateNumber As String,
+                                        serialNumber As String, invoiceNumber As String, phoneNumber As String, zipcode As String,
+                                        certificateStatus As String, email As String,
+                                        taxId As String, serviceLineNumber As String, accountNumber As String,
+                                        globalCustomerNumber As String, dateofbirth As String,
+                                        languageId As Guid,branchCode As String,branchName As String) As AgentSearchDv
 
         If (customerFirstName.Equals(String.Empty) AndAlso
             customerLastName.Equals(String.Empty) AndAlso
@@ -529,7 +529,7 @@ Public Class CaseBase
         End Try
     End Function
 
-    Public Shared Function GetAgentSearchConfigList(ByVal companyId As Guid, ByVal dealerId As Guid, ByVal searchType As String) As DataSet
+    Public Shared Function GetAgentSearchConfigList(companyId As Guid, dealerId As Guid, searchType As String) As DataSet
         Try
             Dim dal As New CaseDAL
             Return (dal.LoadAgentSearchConfigList(companyId, dealerId, searchType))
@@ -547,19 +547,19 @@ Public Class CaseBase
             Dim lstItm As New ListItem()
             Dim lstItems As List(Of ListItem) = New List(Of ListItem)()
             Dim dlrlist As ListItem()
-            If Not ds Is Nothing Then
-                If Not ds.Tables(0) Is Nothing Then
+            If ds IsNot Nothing Then
+                If ds.Tables(0) IsNot Nothing Then
                     For Each dr As DataRow In ds.Tables(0).Rows
-                        If Not dr("DEALER_ID") Is DBNull.Value Then
+                        If dr("DEALER_ID") IsNot DBNull.Value Then
                             lstItm.ListItemId = New Guid(CType(dr("DEALER_ID"), Byte()))
                         End If
-                        If Not dr("COMPANY_CODE") Is DBNull.Value Then
+                        If dr("COMPANY_CODE") IsNot DBNull.Value Then
                             lstItm.ExtendedCode = dr("COMPANY_CODE").ToString()
                         End If
-                        If Not dr("DEALER") Is DBNull.Value Then
+                        If dr("DEALER") IsNot DBNull.Value Then
                             lstItm.Code = dr("DEALER").ToString()
                         End If
-                        If Not dr("DEALER_NAME") Is DBNull.Value Then
+                        If dr("DEALER_NAME") IsNot DBNull.Value Then
                             lstItm.Translation = dr("DEALER_NAME").ToString()
                         End If
                         lstItems.Add(lstItm)
@@ -574,7 +574,7 @@ Public Class CaseBase
         End Try
     End Function
 
-    Public Shared Function GetExclSecFieldsList(ByVal companyId As Guid, ByVal dealerId As Guid) As DataSet
+    Public Shared Function GetExclSecFieldsList(companyId As Guid, dealerId As Guid) As DataSet
         Try
             Dim dal As New CaseDAL
             Return dal.LoadExclSecFieldsList(companyId, dealerId)
@@ -582,10 +582,10 @@ Public Class CaseBase
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function DisplaySecField(ByVal exclSecFieldsDt As DataTable, ByVal callerAuthenticationNeeded As Boolean,
-                                           ByVal secFieldTableName As String, ByVal secField As String, ByVal isCallerAuthenticated As Boolean) As Boolean
+    Public Shared Function DisplaySecField(exclSecFieldsDt As DataTable, callerAuthenticationNeeded As Boolean,
+                                           secFieldTableName As String, secField As String, isCallerAuthenticated As Boolean) As Boolean
 
-        If Not exclSecFieldsDt Is Nothing AndAlso callerAuthenticationNeeded AndAlso Not isCallerAuthenticated Then
+        If exclSecFieldsDt IsNot Nothing AndAlso callerAuthenticationNeeded AndAlso Not isCallerAuthenticated Then
             If secField Is String.Empty OrElse (exclSecFieldsDt.AsEnumerable().Where(Function(p) p.Field(Of String)("table_name") = secFieldTableName And p.Field(Of String)("column_name") = secField).Count > 0) Then
                 Return False
             End If
@@ -594,12 +594,12 @@ Public Class CaseBase
         Return True
 
     End Function
-    Public Shared Function LoadExclSecFieldsConfig(ByVal companyId As Guid, ByVal dealerId As Guid) As List(Of ExclSecFields)
+    Public Shared Function LoadExclSecFieldsConfig(companyId As Guid, dealerId As Guid) As List(Of ExclSecFields)
         Try
 
             Dim exclSecFieildsDv As DataSet
 
-            exclSecFieildsDv = CaseBase.GetExclSecFieldsList(Guid.Empty, dealerId)
+            exclSecFieildsDv = GetExclSecFieldsList(Guid.Empty, dealerId)
             'Populate User Roles
             Dim oUser As User
             Dim selectedDs As DataView = oUser.GetUserRoles(New User(Authentication.CurrentUser.NetworkId).Id)
@@ -626,7 +626,7 @@ Public Class CaseBase
 
 
 
-    Public Shared Function GetClaimCaseList(ByVal claimId As Guid, ByVal languageId As Guid) As CaseSearchDv
+    Public Shared Function GetClaimCaseList(claimId As Guid, languageId As Guid) As CaseSearchDv
         Try
             Dim dal As New CaseDAL
             Return New CaseSearchDv(dal.LoadClaimCaseList(claimId, languageId).Tables(0))
@@ -635,7 +635,7 @@ Public Class CaseBase
         End Try
     End Function
 
-    Public Shared Function GetCaseDeniedReasonsList(ByVal caseId As Guid, ByVal languageId As Guid) As CaseDeniedReasonsDv
+    Public Shared Function GetCaseDeniedReasonsList(caseId As Guid, languageId As Guid) As CaseDeniedReasonsDv
         Try
             Dim dal As New CaseDAL
 
@@ -671,7 +671,7 @@ Public Class CaseBase
         End Try
     End Function
 
-    Public Shared Function GetCaseFieldsList(ByVal claimId As Guid, ByVal languageId As Guid) As DataSet
+    Public Shared Function GetCaseFieldsList(claimId As Guid, languageId As Guid) As DataSet
         Try
             Dim dal As New CaseDAL
             Return dal.LoadCaseFieldsList(claimId, languageId)
@@ -680,7 +680,7 @@ Public Class CaseBase
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function GetCaseNotesList(ByVal caseId As Guid) As CaseNotesDv
+    Public Shared Function GetCaseNotesList(caseId As Guid) As CaseNotesDv
         Try
             Dim dal As New CaseDAL
             Return New CaseNotesDv(dal.LoadCaseNotesList(caseId).Tables(0))
@@ -689,7 +689,7 @@ Public Class CaseBase
         End Try
     End Function
 
-    Public Shared Sub UpdateCaseFieldValues(ByVal caseId As Guid, ByRef caseFieldXcds() As String, ByRef caseFieldValues() As String)
+    Public Shared Sub UpdateCaseFieldValues(caseId As Guid, ByRef caseFieldXcds() As String, ByRef caseFieldValues() As String)
         Try
             Dim dal As New CaseDAL
             dal.UpdateCaseFieldValues(caseId, caseFieldXcds, caseFieldValues)
@@ -716,7 +716,7 @@ Public Class CaseBase
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -735,7 +735,7 @@ Public Class CaseBase
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -756,7 +756,7 @@ Public Class CaseBase
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -776,7 +776,7 @@ Public Class CaseBase
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

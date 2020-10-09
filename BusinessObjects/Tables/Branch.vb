@@ -7,48 +7,48 @@ Public Class Branch
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New BranchDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -56,23 +56,23 @@ Public Class Branch
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New BranchDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -110,7 +110,7 @@ Public Class Branch
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(BranchDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -121,7 +121,7 @@ Public Class Branch
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=10)> _
-    Public Property BranchCode() As String
+    Public Property BranchCode As String
         Get
             CheckDeleted()
             If Row(BranchDAL.COL_NAME_BRANCH_CODE) Is DBNull.Value Then
@@ -130,15 +130,15 @@ Public Class Branch
                 Return CType(Row(BranchDAL.COL_NAME_BRANCH_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_BRANCH_CODE, Value)
+            SetValue(BranchDAL.COL_NAME_BRANCH_CODE, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(BranchDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -147,15 +147,15 @@ Public Class Branch
                 Return New Guid(CType(Row(BranchDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(BranchDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=100)>
-    Public Property Address1() As String
+    Public Property Address1 As String
         Get
             CheckDeleted()
             If Row(BranchDAL.COL_NAME_ADDRESS1) Is DBNull.Value Then
@@ -164,15 +164,15 @@ Public Class Branch
                 Return CType(Row(BranchDAL.COL_NAME_ADDRESS1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_ADDRESS1, Value)
+            SetValue(BranchDAL.COL_NAME_ADDRESS1, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=100)>
-    Public Property Address2() As String
+    Public Property Address2 As String
         Get
             CheckDeleted()
             If Row(BranchDAL.COL_NAME_ADDRESS2) Is DBNull.Value Then
@@ -181,15 +181,15 @@ Public Class Branch
                 Return CType(Row(BranchDAL.COL_NAME_ADDRESS2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_ADDRESS2, Value)
+            SetValue(BranchDAL.COL_NAME_ADDRESS2, Value)
         End Set
     End Property
 
     ''Def-1574
     <ValidStringLength("", Max:=100)>
-    Public Property Address3() As String
+    Public Property Address3 As String
         Get
             CheckDeleted()
             If Row(BranchDAL.COL_NAME_ADDRESS3) Is DBNull.Value Then
@@ -198,14 +198,14 @@ Public Class Branch
                 Return CType(Row(BranchDAL.COL_NAME_ADDRESS3), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_ADDRESS3, Value)
+            SetValue(BranchDAL.COL_NAME_ADDRESS3, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)> _
-    Public Property City() As String
+    Public Property City As String
         Get
             CheckDeleted()
             If Row(BranchDAL.COL_NAME_CITY) Is DBNull.Value Then
@@ -214,14 +214,14 @@ Public Class Branch
                 Return CType(Row(BranchDAL.COL_NAME_CITY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_CITY, Value)
+            SetValue(BranchDAL.COL_NAME_CITY, Value)
         End Set
     End Property
 
 
-    Public Property RegionId() As Guid
+    Public Property RegionId As Guid
         Get
             CheckDeleted()
             If Row(BranchDAL.COL_NAME_REGION_ID) Is DBNull.Value Then
@@ -230,15 +230,15 @@ Public Class Branch
                 Return New Guid(CType(Row(BranchDAL.COL_NAME_REGION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_REGION_ID, Value)
+            SetValue(BranchDAL.COL_NAME_REGION_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             CheckDeleted()
             If Row(BranchDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -247,14 +247,14 @@ Public Class Branch
                 Return New Guid(CType(Row(BranchDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_COUNTRY_ID, Value)
+            SetValue(BranchDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=40)> _
-     Public Property PostalCode() As String
+     Public Property PostalCode As String
         Get
             CheckDeleted()
             If Row(BranchDAL.COL_NAME_POSTAL_CODE) Is DBNull.Value Then
@@ -263,14 +263,14 @@ Public Class Branch
                 Return CType(Row(BranchDAL.COL_NAME_POSTAL_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_POSTAL_CODE, Value)
+            SetValue(BranchDAL.COL_NAME_POSTAL_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=130)>
-    Public Property BranchName() As String
+    Public Property BranchName As String
         Get
             CheckDeleted()
             If Row(BranchDAL.COL_NAME_BRANCH_NAME) Is DBNull.Value Then
@@ -279,14 +279,14 @@ Public Class Branch
                 Return CType(Row(BranchDAL.COL_NAME_BRANCH_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_BRANCH_NAME, Value)
+            SetValue(BranchDAL.COL_NAME_BRANCH_NAME, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)> _
-    Public Property ContactPhone() As String
+    Public Property ContactPhone As String
         Get
             CheckDeleted()
             If Row(BranchDAL.COL_NAME_CONTACT_PHONE) Is DBNull.Value Then
@@ -295,15 +295,15 @@ Public Class Branch
                 Return CType(Row(BranchDAL.COL_NAME_CONTACT_PHONE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_CONTACT_PHONE, Value)
+            SetValue(BranchDAL.COL_NAME_CONTACT_PHONE, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=5)> _
-    Public Property ContactExt() As String
+    Public Property ContactExt As String
         Get
             CheckDeleted()
             If Row(BranchDAL.COL_NAME_CONTACT_EXT) Is DBNull.Value Then
@@ -312,15 +312,15 @@ Public Class Branch
                 Return CType(Row(BranchDAL.COL_NAME_CONTACT_EXT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_CONTACT_EXT, Value)
+            SetValue(BranchDAL.COL_NAME_CONTACT_EXT, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=15)> _
-    Public Property ContactFax() As String
+    Public Property ContactFax As String
         Get
             CheckDeleted()
             If Row(BranchDAL.COL_NAME_CONTACT_FAX) Is DBNull.Value Then
@@ -329,15 +329,15 @@ Public Class Branch
                 Return CType(Row(BranchDAL.COL_NAME_CONTACT_FAX), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_CONTACT_FAX, Value)
+            SetValue(BranchDAL.COL_NAME_CONTACT_FAX, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=150), EmailAddress("")>
-    Public Property ContactEmail() As String
+    Public Property ContactEmail As String
         Get
             CheckDeleted()
             If Row(BranchDAL.COL_NAME_CONTACT_EMAIL) Is DBNull.Value Then
@@ -346,14 +346,14 @@ Public Class Branch
                 Return CType(Row(BranchDAL.COL_NAME_CONTACT_EMAIL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_CONTACT_EMAIL, Value)
+            SetValue(BranchDAL.COL_NAME_CONTACT_EMAIL, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)> _
-    Public Property Market() As String
+    Public Property Market As String
         Get
             CheckDeleted()
             If row(BranchDAL.COL_NAME_MARKET) Is DBNull.Value Then
@@ -362,13 +362,13 @@ Public Class Branch
                 Return CType(row(BranchDAL.COL_NAME_MARKET), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_MARKET, Value)
+            SetValue(BranchDAL.COL_NAME_MARKET, Value)
         End Set
     End Property
 
-    Public Property BankInfoId() As Guid
+    Public Property BankInfoId As Guid
         Get
             CheckDeleted()
             If Row(BranchDAL.COL_NAME_BANK_INFO_ID) Is DBNull.Value Then
@@ -377,13 +377,13 @@ Public Class Branch
                 Return New Guid(CType(Row(BranchDAL.COL_NAME_BANK_INFO_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_BANK_INFO_ID, Value)
+            SetValue(BranchDAL.COL_NAME_BANK_INFO_ID, Value)
         End Set
     End Property
 
-    Public Property BranchTypeId() As Guid
+    Public Property BranchTypeId As Guid
         Get
             CheckDeleted()
             If row(BranchDAL.COL_NAME_BRANCH_TYPE_ID) Is DBNull.Value Then
@@ -392,15 +392,15 @@ Public Class Branch
                 Return New Guid(CType(row(BranchDAL.COL_NAME_BRANCH_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_BRANCH_TYPE_ID, Value)
+            SetValue(BranchDAL.COL_NAME_BRANCH_TYPE_ID, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=50)> _
-    Public Property StoreManager() As String
+    Public Property StoreManager As String
         Get
             CheckDeleted()
             If Row(BranchDAL.COL_NAME_STORE_MANAGER) Is DBNull.Value Then
@@ -409,15 +409,15 @@ Public Class Branch
                 Return CType(Row(BranchDAL.COL_NAME_STORE_MANAGER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_STORE_MANAGER, Value)
+            SetValue(BranchDAL.COL_NAME_STORE_MANAGER, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=50)>
-    Public Property MarketingRegion() As String
+    Public Property MarketingRegion As String
         Get
             CheckDeleted()
             If Row(BranchDAL.COL_NAME_MARKETING_REGION) Is DBNull.Value Then
@@ -426,13 +426,13 @@ Public Class Branch
                 Return CType(Row(BranchDAL.COL_NAME_MARKETING_REGION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_MARKETING_REGION, Value)
+            SetValue(BranchDAL.COL_NAME_MARKETING_REGION, Value)
         End Set
     End Property
 
-    Public Property OpenDate() As DateType
+    Public Property OpenDate As DateType
         Get
             CheckDeleted()
             If Row(BranchDAL.COL_NAME_OPEN_DATE) Is DBNull.Value Then
@@ -441,13 +441,13 @@ Public Class Branch
                 Return New DateType(CType(Row(BranchDAL.COL_NAME_OPEN_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_OPEN_DATE, Value)
+            SetValue(BranchDAL.COL_NAME_OPEN_DATE, Value)
         End Set
     End Property
 
-    Public Property CloseDate() As DateType
+    Public Property CloseDate As DateType
         Get
             CheckDeleted()
             If Row(BranchDAL.COL_NAME_CLOSE_DATE) Is DBNull.Value Then
@@ -456,9 +456,9 @@ Public Class Branch
                 Return New DateType(CType(Row(BranchDAL.COL_NAME_CLOSE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(BranchDAL.COL_NAME_CLOSE_DATE, Value)
+            SetValue(BranchDAL.COL_NAME_CLOSE_DATE, Value)
         End Set
     End Property
 
@@ -469,15 +469,15 @@ Public Class Branch
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New BranchDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New Dataset
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New Dataset
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -485,30 +485,30 @@ Public Class Branch
         End Try
     End Sub
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty
         End Get
     End Property
 
     Public Sub DeleteAndSave()
-        Me.CheckDeleted()
-        Me.BeginEdit()
+        CheckDeleted()
+        BeginEdit()
         Try
-            Me.Delete()
-            Me.Save()
+            Delete()
+            Save()
         Catch ex As Exception
-            Me.cancelEdit()
+            cancelEdit()
             Throw ex
         End Try
     End Sub
 
-    Public Sub Copy(ByVal original As Branch)
-        If Not Me.IsNew Then
+    Public Sub Copy(original As Branch)
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing branch")
         End If
         'Copy myself
-        Me.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 
 #End Region
@@ -532,14 +532,14 @@ Public Class Branch
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
 #End Region
 
-    Public Shared Function getList(ByVal descriptionMask As String, ByVal codeMask As String, ByVal DealerMask As Guid) As BranchSearchDV
+    Public Shared Function getList(descriptionMask As String, codeMask As String, DealerMask As Guid) As BranchSearchDV
         Try
             Dim dal As New BranchDAL
             Return New BranchSearchDV(dal.LoadList(descriptionMask, codeMask, DealerMask).Tables(0))
@@ -548,7 +548,7 @@ Public Class Branch
         End Try
     End Function
 
-    Public Shared Function getListByDealer(ByVal DealerId As Guid) As BranchSearchDV
+    Public Shared Function getListByDealer(DealerId As Guid) As BranchSearchDV
         Try
             Dim dal As New BranchDAL
             Return New BranchSearchDV(dal.LoadListByDealer(DealerId).Tables(0))
@@ -557,12 +557,12 @@ Public Class Branch
         End Try
     End Function
 
-    Public Shared Function getListByDealerForWS(ByVal DealerId As Guid) As BranchSearchDV
+    Public Shared Function getListByDealerForWS(DealerId As Guid) As BranchSearchDV
         Try
             Dim dal As New BranchDAL
             Dim objDealer As New Dealer(DealerId)
-            Dim EditBranch_Flag As String = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, objDealer.EditBranchId)
-            Dim Branch_Validation_Flag As String = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, objDealer.BranchValidationId)
+            Dim EditBranch_Flag As String = LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, objDealer.EditBranchId)
+            Dim Branch_Validation_Flag As String = LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, objDealer.BranchValidationId)
             If EditBranch_Flag.Equals(Codes.YESNO_Y) Then
                 Return New BranchSearchDV(dal.LoadListFromBranchStandardizationByDealerForWS(DealerId).Tables(0))
             ElseIf EditBranch_Flag.Equals(Codes.YESNO_N) AndAlso Branch_Validation_Flag.Equals(Codes.YESNO_Y) Then
@@ -590,11 +590,11 @@ Public Class Branch
 Public NotInheritable Class EmailAddress
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_EMAIL_IS_INVALID_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Branch = CType(objectToValidate, Branch)
 
             If obj.ContactEmail Is Nothing Then

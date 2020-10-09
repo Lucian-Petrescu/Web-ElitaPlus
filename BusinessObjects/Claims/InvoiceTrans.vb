@@ -1,4 +1,4 @@
-Imports System.Text
+
 Imports System.Collections.Generic
 
 Public Class InvoiceTrans
@@ -11,42 +11,42 @@ Public Class InvoiceTrans
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal ClaimInvoiceBO As ClaimInvoice)
+    Public Sub New(ClaimInvoiceBO As ClaimInvoice)
         MyBase.New(False)
-        Me.Dataset = ClaimInvoiceBO.Dataset
-        Me.Load()
+        Dataset = ClaimInvoiceBO.Dataset
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
@@ -54,39 +54,39 @@ Public Class InvoiceTrans
     Protected Sub Load()
         Try
             Dim dal As New InvoiceTransDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New InvoiceTransDAL(ElitaPlusIdentity.Current.ActiveUser.Id)
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
-                Throw New DataNotFoundException(Assurant.ElitaPlus.Common.ErrorTypes.ERROR_BO)
+            If Row Is Nothing Then
+                Throw New DataNotFoundException(ErrorTypes.ERROR_BO)
             End If
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
@@ -105,7 +105,7 @@ Public Class InvoiceTrans
     Public UserId As Guid
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(InvoiceTransDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -115,7 +115,7 @@ Public Class InvoiceTrans
         End Get
     End Property
     <ValueMandatory("")> _
-    Public Property ServiceCenterId() As Guid
+    Public Property ServiceCenterId As Guid
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_SERVICE_CENTER_ID) Is DBNull.Value Then
@@ -124,13 +124,13 @@ Public Class InvoiceTrans
                 Return New Guid(CType(Row(InvoiceTransDAL.COL_NAME_SERVICE_CENTER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(InvoiceTransDAL.COL_NAME_SERVICE_CENTER_ID, Value)
+            SetValue(InvoiceTransDAL.COL_NAME_SERVICE_CENTER_ID, Value)
         End Set
     End Property
 
-    Public Property ServiceCenterName() As String
+    Public Property ServiceCenterName As String
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_SERVICE_CENTER_NAME) Is DBNull.Value Then
@@ -139,14 +139,14 @@ Public Class InvoiceTrans
                 Return CType(Row(InvoiceTransDAL.COL_NAME_SERVICE_CENTER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(InvoiceTransDAL.COL_NAME_SERVICE_CENTER_NAME, Value)
+            SetValue(InvoiceTransDAL.COL_NAME_SERVICE_CENTER_NAME, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property InvoiceTypeId() As Guid
+    Public Property InvoiceTypeId As Guid
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_INVOICE_TYPE_ID) Is DBNull.Value Then
@@ -155,14 +155,14 @@ Public Class InvoiceTrans
                 Return New Guid(CType(Row(InvoiceTransDAL.COL_NAME_INVOICE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(InvoiceTransDAL.COL_NAME_INVOICE_TYPE_ID, Value)
+            SetValue(InvoiceTransDAL.COL_NAME_INVOICE_TYPE_ID, Value)
         End Set
     End Property
 
 
-    Public Property InvoiceTypeName() As String
+    Public Property InvoiceTypeName As String
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_INVOICE_TYPE_NAME) Is DBNull.Value Then
@@ -171,13 +171,13 @@ Public Class InvoiceTrans
                 Return CType(Row(InvoiceTransDAL.COL_NAME_INVOICE_TYPE_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(InvoiceTransDAL.COL_NAME_INVOICE_TYPE_NAME, Value)
+            SetValue(InvoiceTransDAL.COL_NAME_INVOICE_TYPE_NAME, Value)
         End Set
     End Property
 
-    Public Property InvoiceStatusId() As Guid
+    Public Property InvoiceStatusId As Guid
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_INVOICE_STATUS_ID) Is DBNull.Value Then
@@ -186,13 +186,13 @@ Public Class InvoiceTrans
                 Return New Guid(CType(Row(InvoiceTransDAL.COL_NAME_INVOICE_STATUS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(InvoiceTransDAL.COL_NAME_INVOICE_STATUS_ID, Value)
+            SetValue(InvoiceTransDAL.COL_NAME_INVOICE_STATUS_ID, Value)
         End Set
     End Property
 
-    Public Property InvoiceStatusName() As String
+    Public Property InvoiceStatusName As String
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_INVOICE_STATUS_NAME) Is DBNull.Value Then
@@ -201,14 +201,14 @@ Public Class InvoiceTrans
                 Return CType(Row(InvoiceTransDAL.COL_NAME_INVOICE_STATUS_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(InvoiceTransDAL.COL_NAME_INVOICE_STATUS_NAME, Value)
+            SetValue(InvoiceTransDAL.COL_NAME_INVOICE_STATUS_NAME, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=20)> _
-    Public Property SvcControlNumber() As String
+    Public Property SvcControlNumber As String
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_SVC_CONTROL_NUMBER) Is DBNull.Value Then
@@ -217,14 +217,14 @@ Public Class InvoiceTrans
                 Return CType(Row(InvoiceTransDAL.COL_NAME_SVC_CONTROL_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(InvoiceTransDAL.COL_NAME_SVC_CONTROL_NUMBER, Value)
+            SetValue(InvoiceTransDAL.COL_NAME_SVC_CONTROL_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property SvcControlAmount() As Double
+    Public Property SvcControlAmount As Double
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_SVC_CONTROL_AMOUNT) Is DBNull.Value Then
@@ -233,13 +233,13 @@ Public Class InvoiceTrans
                 Return CType(Row(InvoiceTransDAL.COL_NAME_SVC_CONTROL_AMOUNT), Double)
             End If
         End Get
-        Set(ByVal Value As Double)
+        Set
             CheckDeleted()
-            Me.SetValue(InvoiceTransDAL.COL_NAME_SVC_CONTROL_AMOUNT, Math.Round(Value, 2))
+            SetValue(InvoiceTransDAL.COL_NAME_SVC_CONTROL_AMOUNT, Math.Round(Value, 2))
         End Set
     End Property
 
-    Public ReadOnly Property BatchStatus() As String
+    Public ReadOnly Property BatchStatus As String
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_BATCH_STATUS) Is DBNull.Value Then
@@ -250,7 +250,7 @@ Public Class InvoiceTrans
         End Get
     End Property
 
-    Public ReadOnly Property BatchStartTime() As Date
+    Public ReadOnly Property BatchStartTime As Date
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_BATCH_START_TIME) Is DBNull.Value Then
@@ -261,7 +261,7 @@ Public Class InvoiceTrans
         End Get
     End Property
 
-    Public ReadOnly Property BatchProcessTime() As Double
+    Public ReadOnly Property BatchProcessTime As Double
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_BATCH_PROCESS_TIME) Is DBNull.Value Then
@@ -272,7 +272,7 @@ Public Class InvoiceTrans
         End Get
     End Property
     <ValidStringLength("", Max:=15)>
-    Public Property BatchNumber() As String
+    Public Property BatchNumber As String
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_BATCH_NUMBER) Is DBNull.Value Then
@@ -281,13 +281,13 @@ Public Class InvoiceTrans
                 Return CType(Row(InvoiceTransDAL.COL_NAME_BATCH_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(InvoiceTransDAL.COL_NAME_BATCH_NUMBER, Value)
+            SetValue(InvoiceTransDAL.COL_NAME_BATCH_NUMBER, Value)
         End Set
     End Property
 
-    Public Property RegionId() As Guid
+    Public Property RegionId As Guid
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_REGION_ID) Is DBNull.Value Then
@@ -296,14 +296,14 @@ Public Class InvoiceTrans
                 Return New Guid(CType(Row(InvoiceTransDAL.COL_NAME_REGION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(InvoiceTransDAL.COL_NAME_REGION_ID, Value)
+            SetValue(InvoiceTransDAL.COL_NAME_REGION_ID, Value)
         End Set
     End Property
 
 
-    Public Property Tax1Amount() As Double
+    Public Property Tax1Amount As Double
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_TAX1_AMOUNT) Is DBNull.Value Then
@@ -312,13 +312,13 @@ Public Class InvoiceTrans
                 Return CType(Row(InvoiceTransDAL.COL_NAME_TAX1_AMOUNT), Double)
             End If
         End Get
-        Set(ByVal Value As Double)
+        Set
             CheckDeleted()
-            Me.SetValue(InvoiceTransDAL.COL_NAME_TAX1_AMOUNT, Math.Round(Value, 2))
+            SetValue(InvoiceTransDAL.COL_NAME_TAX1_AMOUNT, Math.Round(Value, 2))
         End Set
     End Property
 
-    Public Property Tax2Amount() As Double
+    Public Property Tax2Amount As Double
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_TAX2_AMOUNT) Is DBNull.Value Then
@@ -327,13 +327,13 @@ Public Class InvoiceTrans
                 Return CType(Row(InvoiceTransDAL.COL_NAME_TAX2_AMOUNT), Double)
             End If
         End Get
-        Set(ByVal Value As Double)
+        Set
             CheckDeleted()
-            Me.SetValue(InvoiceTransDAL.COL_NAME_TAX2_AMOUNT, Math.Round(Value, 2))
+            SetValue(InvoiceTransDAL.COL_NAME_TAX2_AMOUNT, Math.Round(Value, 2))
         End Set
     End Property
     <ValueMandatoryConditionallyForInvDate(""), ValidInvoiceDate("")> _
-    Public Property InvoiceDate() As DateType
+    Public Property InvoiceDate As DateType
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_INVOICE_DATE) Is DBNull.Value Then
@@ -342,13 +342,13 @@ Public Class InvoiceTrans
                 Return New DateType(DateHelper.GetDateValue(Row(InvoiceTransDAL.COL_NAME_INVOICE_DATE).ToString()))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(InvoiceTransDAL.COL_NAME_INVOICE_DATE, Value)
+            SetValue(InvoiceTransDAL.COL_NAME_INVOICE_DATE, Value)
         End Set
     End Property
     <ValidInvoiceDate("")> _
-    Public Property InvoiceReceivedDate() As DateType
+    Public Property InvoiceReceivedDate As DateType
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_INVOICE_RECEIVED_DATE) Is DBNull.Value Then
@@ -357,14 +357,14 @@ Public Class InvoiceTrans
                 Return New DateType(DateHelper.GetDateValue(Row(InvoiceTransDAL.COL_NAME_INVOICE_RECEIVED_DATE).ToString()))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(InvoiceTransDAL.COL_NAME_INVOICE_RECEIVED_DATE, Value)
+            SetValue(InvoiceTransDAL.COL_NAME_INVOICE_RECEIVED_DATE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=100)> _
-    Public Property InvoiceComments() As String
+    Public Property InvoiceComments As String
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_INVOICE_COMMENTS) Is DBNull.Value Then
@@ -373,13 +373,13 @@ Public Class InvoiceTrans
                 Return CType(Row(InvoiceTransDAL.COL_NAME_INVOICE_COMMENTS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(InvoiceTransDAL.COL_NAME_INVOICE_COMMENTS, Value)
+            SetValue(InvoiceTransDAL.COL_NAME_INVOICE_COMMENTS, Value)
         End Set
     End Property
 
-    Public ReadOnly Property InvoiceCreatedDate() As Date
+    Public ReadOnly Property InvoiceCreatedDate As Date
         Get
             CheckDeleted()
             If Row(InvoiceTransDAL.COL_NAME_INVOICE_CREATED_DATE) Is DBNull.Value Then
@@ -398,11 +398,11 @@ Public Class InvoiceTrans
     Public NotInheritable Class ValueMandatoryConditionallyForInvDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVOICE_DATE_REQUIRED_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As InvoiceTrans = CType(objectToValidate, InvoiceTrans)
             Dim oCompaniesDv As DataView
             oCompaniesDv = User.GetUserCompanies(ElitaPlusIdentity.Current.ActiveUser.Id)
@@ -423,16 +423,16 @@ Public Class InvoiceTrans
     Public NotInheritable Class ValidInvoiceDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_INVOICE_DATE_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As InvoiceTrans = CType(objectToValidate, InvoiceTrans)
 
-            If Not obj.InvoiceDate Is Nothing Then
+            If obj.InvoiceDate IsNot Nothing Then
 
-                If obj.InvoiceDate.Value <= System.DateTime.Today Then
+                If obj.InvoiceDate.Value <= DateTime.Today Then
                     Return True
                 Else
                     Return False
@@ -449,48 +449,48 @@ Public Class InvoiceTrans
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
-                Dim dal As New InvoiceTransDAL(Me.UserId)
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
+                Dim dal As New InvoiceTransDAL(UserId)
                 Dim objId As Guid
-                If Me.IsNew Then
-                    objId = dal.CreateBatch(Me.ServiceCenterId, Me.SvcControlNumber, Me.SvcControlAmount, Me.BatchNumber, Me.UserId, Me.InvoiceDate, Me.InvoiceStatusId, Me.InvoiceReceivedDate, Me.InvoiceTypeId)
+                If IsNew Then
+                    objId = dal.CreateBatch(ServiceCenterId, SvcControlNumber, SvcControlAmount, BatchNumber, UserId, InvoiceDate, InvoiceStatusId, InvoiceReceivedDate, InvoiceTypeId)
 
                     If objId = Guid.Empty Then
                         Throw New DataNotFoundException(INVOICE_NUM_ALREADY_EXISTS)
                     End If
                 Else
-                    If dal.UpdateBatch(Me.Id, Me.ServiceCenterId, Me.SvcControlNumber, Me.SvcControlAmount, Me.BatchNumber, Me.UserId, Me.InvoiceDate, Me.InvoiceStatusId, Me.InvoiceReceivedDate, Me.InvoiceTypeId) Then
-                        objId = Me.Id
+                    If dal.UpdateBatch(Id, ServiceCenterId, SvcControlNumber, SvcControlAmount, BatchNumber, UserId, InvoiceDate, InvoiceStatusId, InvoiceReceivedDate, InvoiceTypeId) Then
+                        objId = Id
                     Else
-                        Throw New DatabaseException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, New Exception(ElitaPlus.Common.ErrorCodes.DAL_ERROR))
+                        Throw New DatabaseException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, New Exception(Common.ErrorCodes.DAL_ERROR))
                     End If
                 End If
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
 
     'Returns a list of invoice batch records.
-    Public Shared Function GetList(ByVal svcControlNumber As String, ByVal serviceCenterId As Guid, ByVal userId As Guid, ByVal BatchNumber As String,
-                                   ByVal svcControlAmount As String, ByVal InvoiceDate As String, ByVal invoiceTypeId As Guid, ByVal invoiceStatusId As Guid, ByVal invoiceReceivedDate As String) As InvoiceTransSearchDV
+    Public Shared Function GetList(svcControlNumber As String, serviceCenterId As Guid, userId As Guid, BatchNumber As String,
+                                   svcControlAmount As String, InvoiceDate As String, invoiceTypeId As Guid, invoiceStatusId As Guid, invoiceReceivedDate As String) As InvoiceTransSearchDV
 
         Try
             Dim dal As New InvoiceTransDAL
             Return New InvoiceTransSearchDV(dal.LoadList(Guid.Empty, serviceCenterId, svcControlNumber, userId, BatchNumber, svcControlAmount, InvoiceDate, invoiceTypeId, invoiceStatusId, invoiceReceivedDate).Tables(0))
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
 
     End Function
 
-    Public Shared Function GetInvoiceComments(ByVal invoice_trans_id As String) As String
+    Public Shared Function GetInvoiceComments(invoice_trans_id As String) As String
 
         Dim retVal As String
         Dim dal As New InvoiceTransDAL
@@ -507,89 +507,89 @@ Public Class InvoiceTrans
 
     End Function
 
-    Public Function UpdateRejectReason(ByVal invoiceTransId As Guid, ByVal InvoiceComments As String) As Boolean
+    Public Function UpdateRejectReason(invoiceTransId As Guid, InvoiceComments As String) As Boolean
         Try
 
             Dim dal As New InvoiceTransDAL
             Return dal.UpdateRejectReason(invoiceTransId, InvoiceComments)
 
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Function
 
     'Returns a specific invocie batch record
-    Public Shared Function GetInvoiceTrans(ByVal id As Guid) As InvoiceTransSearchDV
+    Public Shared Function GetInvoiceTrans(id As Guid) As InvoiceTransSearchDV
 
         Try
             Dim dal As New InvoiceTransDAL
             Return New InvoiceTransSearchDV(dal.Load(id).Tables(0))
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
 
     End Function
 
-    Public Shared Function GetInvoiceTransDetail(ByVal invoiceTransId As Guid) As InvoiceTransDetailDV
+    Public Shared Function GetInvoiceTransDetail(invoiceTransId As Guid) As InvoiceTransDetailDV
 
         Try
             Dim dal As New InvoiceTransDAL
             Return New InvoiceTransDetailDV(dal.LoadbatchDetail(invoiceTransId).Tables(0))
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
 
     End Function
 
     'Deletes the batch header and all of the related detail records
-    Public Function DeleteBatch(ByVal id As Guid) As Boolean
+    Public Function DeleteBatch(id As Guid) As Boolean
 
         Try
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New InvoiceTransDAL
                 Return dal.DeleteBatch(id)
             End If
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
 
     End Function
 
-    Public Sub SaveBatch(ByVal ClaimSet As BatchClaimInvoice, ByVal id As Guid)
+    Public Sub SaveBatch(ClaimSet As BatchClaimInvoice, id As Guid)
         Try
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New InvoiceTransDAL
                 dal.SaveClaims(ClaimSet, id)
             End If
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
-    Public Function SaveBatchTax(ByVal id As Guid, ByVal tax1_Amt As Double, ByVal Tax2_amt As Double, ByVal batch_number As String _
-                                , ByVal region_id As Guid) As Boolean
+    Public Function SaveBatchTax(id As Guid, tax1_Amt As Double, Tax2_amt As Double, batch_number As String _
+                                , region_id As Guid) As Boolean
         Try
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New InvoiceTransDAL
-                Return dal.SaveBatchTax(id, region_id, batch_number, tax1_Amt, Tax2_amt, Me.UserId)
+                Return dal.SaveBatchTax(id, region_id, batch_number, tax1_Amt, Tax2_amt, UserId)
             End If
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Function
 
-    Public Function ProcessBatch(ByVal id As Guid, ByVal InvoiceTaxTypeId As Guid) As Boolean
+    Public Function ProcessBatch(id As Guid, InvoiceTaxTypeId As Guid) As Boolean
         Try
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New InvoiceTransDAL
                 Return dal.ProcessBatch(id, InvoiceTaxTypeId)
             End If
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Function
 
     'REQ 1150 added another parameter - dealerId
-    Public Function CheckInvoiceTaxType(ByVal companyId As Guid, ByVal taxtypeID As Guid, ByVal dealerId As Guid) As DataSet
+    Public Function CheckInvoiceTaxType(companyId As Guid, taxtypeID As Guid, dealerId As Guid) As DataSet
         Try
             Dim countryID As Guid
             Dim dal As New InvoiceTransDAL
@@ -597,57 +597,57 @@ Public Class InvoiceTrans
             countryID = companyBO.BusinessCountryId
             'REQ 1150
             Return dal.GetInvoiceTaxTypeDetails(taxtypeID, countryID, dealerId)
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
 
-    Friend Shared Function CheckInvoiceTaxTypeByCountry(ByVal countryID As Guid, ByVal taxtypeID As Guid, ByVal dealerId As Guid) As DataSet
+    Friend Shared Function CheckInvoiceTaxTypeByCountry(countryID As Guid, taxtypeID As Guid, dealerId As Guid) As DataSet
         Try
             Dim dal As New InvoiceTransDAL
             Return dal.GetInvoiceTaxTypeDetails(taxtypeID, countryID, dealerId)
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
 
-    Public Function UpdateExcludeDeductibleFlag(ByVal strExcludeDeductible As String, ByVal invoiceTransDetailId As Guid) As Boolean
+    Public Function UpdateExcludeDeductibleFlag(strExcludeDeductible As String, invoiceTransDetailId As Guid) As Boolean
         Try
 
             Dim dal As New InvoiceTransDAL
 
             Return dal.UpdateExcludeDeductible(strExcludeDeductible, invoiceTransDetailId)
 
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
 
-    Public Function UpdatePaymentAmount(ByVal invoiceTransDetailId As Guid) As Boolean
+    Public Function UpdatePaymentAmount(invoiceTransDetailId As Guid) As Boolean
         Try
 
             Dim dal As New InvoiceTransDAL
 
             Return dal.UpdatePaymentAmount(invoiceTransDetailId)
 
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
 
     'REQ 5565 
-    Public Function CheckForPreInvoice(ByVal BatchNumber As String) As DataSet
+    Public Function CheckForPreInvoice(BatchNumber As String) As DataSet
         Try
             Dim dal As New InvoiceTransDAL
 
             Return dal.CheckforPreInvoice(BatchNumber)
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
 
 
-    Public Shared Function GetBatchClosedClaims(ByVal serviceCenterId As Guid, ByVal batchNumber As String, ByVal InvoiceTransId As Guid) As String
+    Public Shared Function GetBatchClosedClaims(serviceCenterId As Guid, batchNumber As String, InvoiceTransId As Guid) As String
 
         Try
             Dim dal As New InvoiceTransDAL
@@ -662,7 +662,7 @@ Public Class InvoiceTrans
             Return String.Join(",", lstr.ToArray)
 
 
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
 
@@ -695,7 +695,7 @@ Public Class InvoiceTrans
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -737,7 +737,7 @@ Public Class InvoiceTrans
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

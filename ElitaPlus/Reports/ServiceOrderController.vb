@@ -17,7 +17,7 @@ Public Class ServiceOrderController
 
     '08/23/2006 - ALR - Stripped out all of the claim and report processing data as all we have to
     '           do in this step is to create the dataset that forms the service order.
-    Public Function GenerateServiceOrder(ByVal claimBO As ClaimBase, Optional claimAuthId As Guid = Nothing) As Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder
+    Public Function GenerateServiceOrder(claimBO As ClaimBase, Optional claimAuthId As Guid = Nothing) As Assurant.ElitaPlus.BusinessObjectsNew.ServiceOrder
 
         'Dim soHandlerBO As ServiceOrderReportHandler = New ServiceOrderReportHandler(claimBO, claimAuthId)
         'Dim ds As DataSet = soHandlerBO.SODataSet
@@ -54,7 +54,7 @@ Public Class ServiceOrderController
 
     '08/28/2006 - ALR - Added method to get the required report name if we are using an xml transformation
     '                   rather than creating the PDF report
-    Public Function GenerateReportName(ByVal claimId As Guid, ByVal claimAuthorizationId As Guid) As String
+    Public Function GenerateReportName(claimId As Guid, claimAuthorizationId As Guid) As String
 
         Dim claimBO As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(claimId)
         Dim sActivityCode As String
@@ -99,8 +99,8 @@ Public Class ServiceOrderController
 
     End Function
 
-    Private Function GenerateReportName(ByVal sActivityCode As String,
-                                        ByVal compCode As String,
+    Private Function GenerateReportName(sActivityCode As String,
+                                        compCode As String,
                                         Optional ByVal RepairCode As String = "",
                                         Optional ByVal ServiceOrderType As String = Nothing,
                                         Optional ByVal soSuffixRepair As String = Nothing,
@@ -149,7 +149,7 @@ Public Class ServiceOrderController
         Return strReport
     End Function
 
-    Private Function RemoveInvalidChar(ByVal filename As String) As String
+    Private Function RemoveInvalidChar(filename As String) As String
         Dim index As Integer
         For index = 0 To FILE_NAME_INVALID_CHARACTERS.Length - 1
             'replace the invalid character with blank
@@ -159,7 +159,7 @@ Public Class ServiceOrderController
 
     End Function
 
-    Public Function IsFirstServiceOrder(ByVal claimId As Guid) As Boolean
+    Public Function IsFirstServiceOrder(claimId As Guid) As Boolean
         Dim serviceOrderID As Guid = ServiceOrder.GetLatestServiceOrderID(claimId)
         If serviceOrderID.Equals(Guid.Empty) Then
             Return True

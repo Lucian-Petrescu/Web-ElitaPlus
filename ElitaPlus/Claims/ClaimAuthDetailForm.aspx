@@ -1,6 +1,7 @@
-<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="ClaimAuthDetailForm.aspx.vb"
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="ClaimAuthDetailForm.aspx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.ClaimAuthDetailForm" %>
 
+<%@ Import Namespace="System.Globalization" %>
 <%@ Register TagPrefix="mytab" Namespace="Microsoft.Web.UI.WebControls" Assembly="Microsoft.Web.UI.WebControls, Version=1.0.2.226, Culture=neutral, PublicKeyToken=31bf3856ad364e35" %>
 <%@ Register TagPrefix="uc1" TagName="ErrorController" Src="../Common/ErrorController.ascx" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
@@ -170,8 +171,8 @@
 
 				if (bClaimTaxRatesExist) {
 				    //debugger;
-                    var decSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
-                    var groupSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
+                    var decSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
+                    var groupSep = '<%=CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
 
 				    var hdLaborTaxAmt = document.getElementById("hdLaborTaxAmt");
 				    var hdPartsTaxAmt = document.getElementById("hdPartsTaxAmt");
@@ -470,9 +471,9 @@
                                     <div class="dataContainer">
                                         <div id="tabs" class="style-tabs">
                                             <ul>
-                                                <li><a href="#tabPartsInfo">
+                                                <li><a href="#tabPartsInfo" rel="noopener noreferrer">
                                                     <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">PARTS   INFO</asp:Label></a></li>
-                                                <li><a href="#tabsAuthDetaily">
+                                                <li><a href="#tabsAuthDetaily" rel="noopener noreferrer">
                                                     <asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">AUTH_DETAIL</asp:Label></a></li>
                                             </ul>
 

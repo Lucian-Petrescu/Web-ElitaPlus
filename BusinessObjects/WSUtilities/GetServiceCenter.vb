@@ -12,7 +12,7 @@ Public Class GetServiceCenter
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetServiceCenterDs)
+    Public Sub New(ds As GetServiceCenterDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -25,7 +25,7 @@ Public Class GetServiceCenter
 #Region "Private Members"
 
     Private _country_id As Guid = Guid.Empty
-    Private Sub MapDataSet(ByVal ds As GetServiceCenterDs)
+    Private Sub MapDataSet(ds As GetServiceCenterDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -38,8 +38,8 @@ Public Class GetServiceCenter
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -47,13 +47,13 @@ Public Class GetServiceCenter
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetServiceCenterDs)
+    Private Sub Load(ds As GetServiceCenterDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -66,15 +66,15 @@ Public Class GetServiceCenter
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetServiceCenterDs)
+    Private Sub PopulateBOFromWebService(ds As GetServiceCenterDs)
         Try
             If ds.GetServiceCenter.Count = 0 Then Exit Sub
             With ds.GetServiceCenter.Item(0)
 
-                Me.ServiceCenterCode = .Service_Center_Code
+                ServiceCenterCode = .Service_Center_Code
 
                 Dim oCompany As New Company(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
-                Me._country_id = oCompany.CountryId
+                _country_id = oCompany.CountryId
 
 
             End With
@@ -94,21 +94,21 @@ Public Class GetServiceCenter
 #Region "Properties"
 
     <ValueMandatory("")> _
-     Public Property ServiceCenterCode() As String
+     Public Property ServiceCenterCode As String
         Get
-            If Row(Me.DATA_COL_NAME_SERVICE_CENTER_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_SERVICE_CENTER_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_SERVICE_CENTER_CODE), String))
+                Return (CType(Row(DATA_COL_NAME_SERVICE_CENTER_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_SERVICE_CENTER_CODE, Value)
+            SetValue(DATA_COL_NAME_SERVICE_CENTER_CODE, Value)
         End Set
     End Property
 
-    Private ReadOnly Property CountryId() As Guid
+    Private ReadOnly Property CountryId As Guid
         Get
             Return _country_id
         End Get
@@ -122,8 +122,8 @@ Public Class GetServiceCenter
         Dim PartDiscriptionList As DataTable
         Dim ds As DataSet
         Try
-            Me.Validate()
-            ds = ServiceCenter.GetServiceCenterForWS(Me.ServiceCenterCode, Me.CountryId)
+            Validate()
+            ds = ServiceCenter.GetServiceCenterForWS(ServiceCenterCode, CountryId)
             If ds Is Nothing OrElse ds.Tables.Count <= 0 OrElse ds.Tables(0).Rows.Count <= 0 Then
                 '  Throw New BOValidationException("GetServiceCenter Error: ", Common.ErrorCodes.BO_DATA_NOT_FOUND)
             End If

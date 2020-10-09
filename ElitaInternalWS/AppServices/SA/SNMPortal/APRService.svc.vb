@@ -137,7 +137,7 @@ Namespace AppServices.SA
                 WcfClientHelper.Execute(Of PolicyServiceClient, IPolicyService, EndorseResponse)(
                                                                             GetClient(),
                                                                             New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Thread.CurrentPrincipal.GetNetworkId()}},
-                                                                            Function(ByVal c As PolicyServiceClient)
+                                                                            Function(c As PolicyServiceClient)
                                                                                 Return c.Endorse(endorseRequest)
                                                                             End Function)
 
@@ -153,7 +153,7 @@ Namespace AppServices.SA
             End Try
         End Sub
 
-        Private Shared Function GetDealerId(ByVal companyId As Guid, ByVal dealerCode As String) As Guid
+        Private Shared Function GetDealerId(companyId As Guid, dealerCode As String) As Guid
             Dim ds As DataSet
 
             ds = Company.GetDealerFromCompany(companyId, dealerCode)
@@ -165,7 +165,7 @@ Namespace AppServices.SA
 
         End Function
 
-        Private Shared Function GetCompanyId(ByVal companycode As String) As Guid
+        Private Shared Function GetCompanyId(companycode As String) As Guid
             Dim companyId As Guid = Guid.Empty
             Dim objCompaniesAl As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
             Dim i As Integer
@@ -187,7 +187,7 @@ Namespace AppServices.SA
             client.ClientCredentials.UserName.Password = oWebPasswd.Password
             Return client
         End Function
-        Private Function ValidateSku(ByVal id As Guid, ByVal skuNumber As String) As Boolean
+        Private Function ValidateSku(id As Guid, skuNumber As String) As Boolean
 
             Dim dealerBo As Dealer = New Dealer(id)
             Dim wmdal As New WarrantyMasterDAL

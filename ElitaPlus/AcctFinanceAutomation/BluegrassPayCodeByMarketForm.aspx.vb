@@ -70,19 +70,19 @@ Partial Class BluegrassPayCodeByMarketForm
 #Region "Page Events"
 
     Private Sub UpdateBreadCrum()
-        Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
-        Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("SEARCH")
-        Me.MasterPage.UsePageTabTitleInBreadCrum = False
-        Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + PAGETITLE
+        MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
+        MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("SEARCH")
+        MasterPage.UsePageTabTitleInBreadCrum = False
+        MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + PAGETITLE
     End Sub
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.MasterPage.MessageController.Clear()
-        Me.UpdateBreadCrum()
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        MasterPage.MessageController.Clear()
+        UpdateBreadCrum()
         SetBluegrassDearID()
-        If Not Me.IsPostBack Then
+        If Not IsPostBack Then
             PopulateDropdowns()
-            Me.TranslateGridHeader(Me.Grid)
+            TranslateGridHeader(Grid)
             ControlMgr.SetVisibleControl(Me, moSearchResults, False)
         Else
             CheckIfComingFromDeleteConfirm()
@@ -95,7 +95,7 @@ Partial Class BluegrassPayCodeByMarketForm
     Private Sub SetBluegrassDearID()
         If State.BluegrassDealerID = Guid.Empty Then
             Dim dealerdv As Dealer.DealerSearchDV = Dealer.getList(String.Empty, "BLGS", Nothing, ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
-            If Not dealerdv Is Nothing AndAlso dealerdv.Count = 1 Then
+            If dealerdv IsNot Nothing AndAlso dealerdv.Count = 1 Then
                 State.BluegrassDealerID = GuidControl.ByteArrayToGuid(CType(dealerdv(0)(dealerdv.COL_DEALER_ID), Byte()))
             End If
         End If
@@ -120,9 +120,9 @@ Partial Class BluegrassPayCodeByMarketForm
     End Sub
 
     Protected Sub CheckIfComingFromDeleteConfirm()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-        If Not confResponse Is Nothing AndAlso State.gridAction = PageAction.Delete Then
-            If confResponse = Me.MSG_VALUE_YES Then
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+        If confResponse IsNot Nothing AndAlso State.gridAction = PageAction.Delete Then
+            If confResponse = MSG_VALUE_YES Then
                 DeletePayCodeRecord()
                 Grid.EditIndex = -1
                 State.SearchDV = Nothing
@@ -131,7 +131,7 @@ Partial Class BluegrassPayCodeByMarketForm
             'Clean after consuming the action
             State.gridAction = PageAction.None
             SetControlState()
-            Me.HiddenSaveChangesPromptResponse.Value = ""
+            HiddenSaveChangesPromptResponse.Value = ""
         End If
     End Sub
 
@@ -139,7 +139,7 @@ Partial Class BluegrassPayCodeByMarketForm
         Dim recCount As Integer
         Try
 
-            If Me.State.SearchDV Is Nothing Then
+            If State.SearchDV Is Nothing Then
                 State.SearchDV = AfaInvoiceManaulData.GetListByTypeByPeriod(State.BluegrassDealerID, "MKT_PAYCODE", State.searchPeriodYear & State.searchPeriodMonth, "209912")
                 If State.searchMarketCode <> String.Empty Then
                     Dim listMatched As New Collections.Generic.List(Of AfaInvoiceManaulData)
@@ -154,19 +154,19 @@ Partial Class BluegrassPayCodeByMarketForm
 
             recCount = State.SearchDV.Count
 
-            Me.Grid.DataSource = State.SearchDV
-            Me.Grid.DataBind()
+            Grid.DataSource = State.SearchDV
+            Grid.DataBind()
 
             If State.SearchDV.Count > 0 Then
                 ControlMgr.SetVisibleControl(Me, moSearchResults, True)
             Else
                 If State.gridAction = PageAction.None Then
-                    Me.MasterPage.MessageController.AddInformation(Message.MSG_NO_RECORDS_FOUND, True)
+                    MasterPage.MessageController.AddInformation(Message.MSG_NO_RECORDS_FOUND, True)
                 End If
                 ControlMgr.SetVisibleControl(Me, moSearchResults, False)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -276,11 +276,11 @@ Partial Class BluegrassPayCodeByMarketForm
 
             'save the record
             State.myBO.SaveWithoutCheckDSCreator()
-            Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+            MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
 
             Return True
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Function
 
@@ -289,15 +289,15 @@ Partial Class BluegrassPayCodeByMarketForm
             State.myBO.Delete()
             State.myBO.SaveWithoutCheckDSCreator()
             State.myBO = Nothing
-            Me.MasterPage.MessageController.AddSuccess(Message.DELETE_RECORD_CONFIRMATION)
+            MasterPage.MessageController.AddSuccess(Message.DELETE_RECORD_CONFIRMATION)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
 
 #Region "Button events handlers"
-    Protected Sub btnClear_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClear.Click
+    Protected Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
         Try
             'set dropdowns to default values
             ddlAcctPeriodYear.SelectedIndex = -1
@@ -308,31 +308,31 @@ Partial Class BluegrassPayCodeByMarketForm
             State.searchMarketCode = String.Empty
             ControlMgr.SetVisibleControl(Me, moSearchResults, False) ' Hidden the search result grid
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub btnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSearch.Click
+    Protected Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
 
-            Me.State.searchPeriodYear = ddlAcctPeriodYear.SelectedValue
-            Me.State.searchPeriodMonth = ddlAcctPeriodMonth.SelectedValue
-            Me.State.searchMarketCode = txtMarketCodeSearch.Text.Trim
+            State.searchPeriodYear = ddlAcctPeriodYear.SelectedValue
+            State.searchPeriodMonth = ddlAcctPeriodMonth.SelectedValue
+            State.searchMarketCode = txtMarketCodeSearch.Text.Trim
 
-            Me.State.SearchDV = Nothing
+            State.SearchDV = Nothing
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnNew_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+    Private Sub btnNew_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnNew_WRITE.Click
         Try
             State.gridAction = PageAction.AddNew
             AddNew()
-            Me.SetControlState()
+            SetControlState()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -344,15 +344,15 @@ Partial Class BluegrassPayCodeByMarketForm
             Grid.EditIndex = State.SearchDV.Count
         End If
 
-        Me.State.myBO = New AfaInvoiceManaulData
-        Me.State.myBO.DealerId = State.BluegrassDealerID
-        Me.State.myBO.InvoiceMonth = DateTime.Today.Year.ToString & DateTime.Today.Month.ToString.PadLeft(2, CChar("0"))
+        State.myBO = New AfaInvoiceManaulData
+        State.myBO.DealerId = State.BluegrassDealerID
+        State.myBO.InvoiceMonth = DateTime.Today.Year.ToString & DateTime.Today.Month.ToString.PadLeft(2, CChar("0"))
 
         'State.myBO.AddEmptyRowToPONumSearchDV(Me.State.SearchDV, Me.State.myBO)
         If State.SearchDV Is Nothing Then
             State.SearchDV = New Collections.Generic.List(Of AfaInvoiceManaulData)
         End If
-        Me.State.SearchDV.Add(State.myBO)
+        State.SearchDV.Add(State.myBO)
 
         PopulateGrid()
     End Sub
@@ -362,12 +362,12 @@ Partial Class BluegrassPayCodeByMarketForm
             ControlMgr.SetVisibleControl(Me, btnNew_WRITE, False)
             ControlMgr.SetEnableControl(Me, btnSearch, False)
             ControlMgr.SetEnableControl(Me, btnClear, False)
-            Me.MenuEnabled = False
+            MenuEnabled = False
         Else
             ControlMgr.SetVisibleControl(Me, btnNew_WRITE, True)
             ControlMgr.SetEnableControl(Me, btnSearch, True)
             ControlMgr.SetEnableControl(Me, btnClear, True)
-            Me.MenuEnabled = True
+            MenuEnabled = True
         End If
     End Sub
 
@@ -376,14 +376,14 @@ Partial Class BluegrassPayCodeByMarketForm
 
 #Region "Handle grid"
 
-    Private Sub grid_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+    Private Sub grid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
         Try
             Dim index As Integer
 
             Select Case e.CommandName.ToString()
                 Case "EditAction"
                     index = CInt(e.CommandArgument)
-                    Me.State.PayCodeRecordID = New Guid(CType(Me.Grid.Rows(index).Cells(Me.GRID_COL_ROW_ID_IDX).FindControl(Me.GRID_CTRL_NAME_PAYCODE_ROW_ID), Label).Text)
+                    State.PayCodeRecordID = New Guid(CType(Grid.Rows(index).Cells(GRID_COL_ROW_ID_IDX).FindControl(GRID_CTRL_NAME_PAYCODE_ROW_ID), Label).Text)
 
                     Grid.EditIndex = index
                     Grid.SelectedIndex = index
@@ -393,10 +393,10 @@ Partial Class BluegrassPayCodeByMarketForm
                     SetControlState()
                 Case "DeleteRecord"
                     index = CInt(e.CommandArgument)
-                    Me.State.PayCodeRecordID = New Guid(CType(Me.Grid.Rows(index).Cells(Me.GRID_COL_ROW_ID_IDX).FindControl(Me.GRID_CTRL_NAME_PAYCODE_ROW_ID), Label).Text)
+                    State.PayCodeRecordID = New Guid(CType(Grid.Rows(index).Cells(GRID_COL_ROW_ID_IDX).FindControl(GRID_CTRL_NAME_PAYCODE_ROW_ID), Label).Text)
                     State.gridAction = PageAction.Delete
                     State.myBO = New AfaInvoiceManaulData(State.PayCodeRecordID)
-                    Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
+                    DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                 Case "CancelRecord"
                     Grid.EditIndex = -1
                     Grid.SelectedIndex = -1
@@ -421,70 +421,70 @@ Partial Class BluegrassPayCodeByMarketForm
                     End If
             End Select
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub grid_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Private Sub grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Try
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim objRow As AfaInvoiceManaulData = CType(e.Row.DataItem, AfaInvoiceManaulData)
             Dim objDDL As DropDownList, strTemp As String
 
-            If (itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
+            If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
                 With e.Row
                     If .RowIndex = Grid.EditIndex Then
                         objDDL = CType(e.Row.FindControl(GRID_CTRL_NAME_AcctPeriod_Year), DropDownList)
-                        If Not objDDL Is Nothing Then
+                        If objDDL IsNot Nothing Then
                             Dim intYear As Integer = DateTime.Today.Year
                             For i As Integer = (intYear - 7) To intYear
                                 objDDL.Items.Add(New ListItem(i.ToString, i.ToString))
                             Next
-                            Me.SetSelectedItem(objDDL, objRow.InvoiceMonth.Substring(0, 4))
+                            SetSelectedItem(objDDL, objRow.InvoiceMonth.Substring(0, 4))
                         End If
                         objDDL = Nothing
 
                         objDDL = CType(e.Row.FindControl(GRID_CTRL_NAME_AcctPeriod_Month), DropDownList)
-                        If Not objDDL Is Nothing Then
+                        If objDDL IsNot Nothing Then
                             Dim monthName As String
                             For month As Integer = 1 To 12
                                 monthName = DateTimeFormatInfo.CurrentInfo.GetMonthName(month)
                                 objDDL.Items.Add(New ListItem(monthName, month.ToString().PadLeft(2, CChar("0"))))
                             Next
-                            Me.SetSelectedItem(objDDL, objRow.InvoiceMonth.Substring(4))
+                            SetSelectedItem(objDDL, objRow.InvoiceMonth.Substring(4))
                         End If
                         objDDL = Nothing
 
                         Dim objtxt As TextBox
                         objtxt = CType(e.Row.FindControl(GRID_CTRL_NAME_MARKET_CODE), TextBox)
-                        If Not objtxt Is Nothing Then
+                        If objtxt IsNot Nothing Then
                             objtxt.Text = objRow.DataText
                         End If
                         objtxt = Nothing
 
                         objtxt = CType(e.Row.FindControl(GRID_CTRL_NAME_AP_CODE), TextBox)
-                        If Not objtxt Is Nothing Then
+                        If objtxt IsNot Nothing Then
                             objtxt.Text = objRow.DataText2
                         End If
                         objtxt = Nothing
 
                         objtxt = CType(e.Row.FindControl(GRID_CTRL_NAME_BCI_CODE), TextBox)
-                        If Not objtxt Is Nothing Then
+                        If objtxt IsNot Nothing Then
                             objtxt.Text = objRow.DataText3
                         End If
                         objtxt = Nothing
 
                         objtxt = CType(e.Row.FindControl(GRID_CTRL_NAME_KYCODE), TextBox)
-                        If Not objtxt Is Nothing Then
+                        If objtxt IsNot Nothing Then
                             objtxt.Text = objRow.DataText4
                         End If
                         objtxt = Nothing
@@ -493,7 +493,7 @@ Partial Class BluegrassPayCodeByMarketForm
             End If
             BaseItemBound(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region

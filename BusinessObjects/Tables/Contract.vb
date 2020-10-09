@@ -8,42 +8,42 @@ Public Class Contract
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ContractDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize() 'Code added manually
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -51,26 +51,26 @@ Public Class Contract
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ContractDAL
             'This code was added manually. Begin
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(ContractDAL.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(ContractDAL.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
             'This code was added Manually. End
-            Me.Row = Nothing
+            Row = Nothing
 
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -98,29 +98,29 @@ Public Class Contract
 
 
     Private Sub Initialize()
-        Me.AdminExpense = New DecimalType(0)
-        Me.ProfitPercent = New DecimalType(0)
-        Me.MarketingPercent = New DecimalType(0)
-        Me.CommissionsPercent = New DecimalType(0)
-        Me.LossCostPercent = New DecimalType(0)
-        Me.RemainingMFGDays = New LongType(0)
-        Me.WarrantyMaxDelay = New LongType(0)
-        Me.RemainingMFGDays = New LongType(0)
-        Me.WaitingPeriod = New LongType(0)
-        Me.Deductible = New DecimalType(0)
-        Me.DeductiblePercent = New DecimalType(0)
-        Me.MinReplacementCost = New DecimalType(0)
-        Me.RestrictMarkupId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "N")
-        Me.AllowCoverageMarkupDistribution = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "N")
-        Me.ClaimControlID = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "N")
-        Me.IgnoreIncomingPremiumID = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "N")
-        Me.CoinsuranceId = LookupListNew.GetIdFromCode(LookupListNew.LK_COINSURANCE, COINSURANCE_DIRECT)
-        Me.CurrencyConversionId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "N")
-        Me.PayOutstandingPremiumId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "N")
-        Me.DeductibleBasedOnId = LookupListNew.GetIdFromCode(LookupListNew.LK_DEDUCTIBLE_BASED_ON, "FIXED")
-        Me.ProRataMethodId = LookupListNew.GetIdFromCode(LookupListNew.LK_PRO_RATA_METHOD, Codes.PRO_RATA_METHOD_NPR)
-        Me.AllowMultipleRejectionsId = LookupListNew.GetIdFromCode(LookupListNew.LK_ALLOW_CC_REJECTIONS, Codes.ALLOW_CC_REJECTIONS_NO)
-        Me.RdoPercent = New DecimalType(0)
+        AdminExpense = New DecimalType(0)
+        ProfitPercent = New DecimalType(0)
+        MarketingPercent = New DecimalType(0)
+        CommissionsPercent = New DecimalType(0)
+        LossCostPercent = New DecimalType(0)
+        RemainingMFGDays = New LongType(0)
+        WarrantyMaxDelay = New LongType(0)
+        RemainingMFGDays = New LongType(0)
+        WaitingPeriod = New LongType(0)
+        Deductible = New DecimalType(0)
+        DeductiblePercent = New DecimalType(0)
+        MinReplacementCost = New DecimalType(0)
+        RestrictMarkupId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, "N")
+        AllowCoverageMarkupDistribution = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, "N")
+        ClaimControlID = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, "N")
+        IgnoreIncomingPremiumID = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, "N")
+        CoinsuranceId = LookupListNew.GetIdFromCode(LookupListCache.LK_COINSURANCE, COINSURANCE_DIRECT)
+        CurrencyConversionId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, "N")
+        PayOutstandingPremiumId = LookupListNew.GetIdFromCode(LookupListCache.LK_LANG_INDEPENDENT_YES_NO, "N")
+        DeductibleBasedOnId = LookupListNew.GetIdFromCode(LookupListCache.LK_DEDUCTIBLE_BASED_ON, "FIXED")
+        ProRataMethodId = LookupListNew.GetIdFromCode(LookupListCache.LK_PRO_RATA_METHOD, Codes.PRO_RATA_METHOD_NPR)
+        AllowMultipleRejectionsId = LookupListNew.GetIdFromCode(LookupListCache.LK_ALLOW_CC_REJECTIONS, Codes.ALLOW_CC_REJECTIONS_NO)
+        RdoPercent = New DecimalType(0)
 
     End Sub
 
@@ -129,7 +129,7 @@ Public Class Contract
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ContractDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -140,7 +140,7 @@ Public Class Contract
     End Property
 
     <ValueMandatory("")>
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -149,14 +149,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(ContractDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property DeductibleBasedOnId() As Guid
+    Public Property DeductibleBasedOnId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_DEDUCTIBLE_BASED_ON_ID) Is DBNull.Value Then
@@ -165,12 +165,12 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_DEDUCTIBLE_BASED_ON_ID), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_DEDUCTIBLE_BASED_ON_ID, value)
+            SetValue(ContractDAL.COL_NAME_DEDUCTIBLE_BASED_ON_ID, value)
         End Set
     End Property
-    Public Property DeductibleExpressionId() As Guid
+    Public Property DeductibleExpressionId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_DEDUCTIBLE_EXPRESSION_ID) Is DBNull.Value Then
@@ -179,13 +179,13 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_DEDUCTIBLE_EXPRESSION_ID), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_DEDUCTIBLE_EXPRESSION_ID, value)
+            SetValue(ContractDAL.COL_NAME_DEDUCTIBLE_EXPRESSION_ID, value)
         End Set
     End Property
     <ValueMandatory("")>
-    Public Property ContractTypeId() As Guid
+    Public Property ContractTypeId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_CONTRACT_TYPE_ID) Is DBNull.Value Then
@@ -194,15 +194,15 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_CONTRACT_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_CONTRACT_TYPE_ID, Value)
+            SetValue(ContractDAL.COL_NAME_CONTRACT_TYPE_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidEffectiveAndExpirationDate("")>
-    Public Property Effective() As DateType
+    Public Property Effective As DateType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -211,15 +211,15 @@ Public Class Contract
                 Return New DateType(CType(Row(ContractDAL.COL_NAME_EFFECTIVE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_EFFECTIVE, Value)
+            SetValue(ContractDAL.COL_NAME_EFFECTIVE, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")>
-    Public Property Expiration() As DateType
+    Public Property Expiration As DateType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
@@ -228,15 +228,15 @@ Public Class Contract
                 Return New DateType(CType(Row(ContractDAL.COL_NAME_EXPIRATION), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_EXPIRATION, Value)
+            SetValue(ContractDAL.COL_NAME_EXPIRATION, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidNumericRange("", Min:=0, Max:=100, MaxExclusive:=True)>
-    Public Property CommissionsPercent() As DecimalType
+    Public Property CommissionsPercent As DecimalType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_COMMISSIONS_PERCENT) Is DBNull.Value Then
@@ -245,15 +245,15 @@ Public Class Contract
                 Return New DecimalType(CType(Row(ContractDAL.COL_NAME_COMMISSIONS_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_COMMISSIONS_PERCENT, Value)
+            SetValue(ContractDAL.COL_NAME_COMMISSIONS_PERCENT, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidNumericRange("", Min:=0, Max:=100, MaxExclusive:=True)>
-    Public Property MarketingPercent() As DecimalType
+    Public Property MarketingPercent As DecimalType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_MARKETING_PERCENT) Is DBNull.Value Then
@@ -262,15 +262,15 @@ Public Class Contract
                 Return New DecimalType(CType(Row(ContractDAL.COL_NAME_MARKETING_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_MARKETING_PERCENT, Value)
+            SetValue(ContractDAL.COL_NAME_MARKETING_PERCENT, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidNumericRange("", Min:=0, Max:=100, MaxExclusive:=True)>
-    Public Property AdminExpense() As DecimalType
+    Public Property AdminExpense As DecimalType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_ADMIN_EXPENSE) Is DBNull.Value Then
@@ -279,15 +279,15 @@ Public Class Contract
                 Return New DecimalType(CType(Row(ContractDAL.COL_NAME_ADMIN_EXPENSE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_ADMIN_EXPENSE, Value)
+            SetValue(ContractDAL.COL_NAME_ADMIN_EXPENSE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidNumericRange("", Min:=0, Max:=100, MaxExclusive:=True)>
-    Public Property ProfitPercent() As DecimalType
+    Public Property ProfitPercent As DecimalType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_PROFIT_PERCENT) Is DBNull.Value Then
@@ -296,15 +296,15 @@ Public Class Contract
                 Return New DecimalType(CType(Row(ContractDAL.COL_NAME_PROFIT_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_PROFIT_PERCENT, Value)
+            SetValue(ContractDAL.COL_NAME_PROFIT_PERCENT, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidNumericRange("", Min:=0, Max:=100, MaxExclusive:=True)>
-    Public Property LossCostPercent() As DecimalType
+    Public Property LossCostPercent As DecimalType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_LOSS_COST_PERCENT) Is DBNull.Value Then
@@ -313,15 +313,15 @@ Public Class Contract
                 Return New DecimalType(CType(Row(ContractDAL.COL_NAME_LOSS_COST_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_LOSS_COST_PERCENT, Value)
+            SetValue(ContractDAL.COL_NAME_LOSS_COST_PERCENT, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")>
-    Public Property CurrencyId() As Guid
+    Public Property CurrencyId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_CURRENCY_ID) Is DBNull.Value Then
@@ -330,14 +330,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_CURRENCY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_CURRENCY_ID, Value)
+            SetValue(ContractDAL.COL_NAME_CURRENCY_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property TypeOfMarketingId() As Guid
+    Public Property TypeOfMarketingId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_TYPE_OF_MARKETING_ID) Is DBNull.Value Then
@@ -346,15 +346,15 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_TYPE_OF_MARKETING_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_TYPE_OF_MARKETING_ID, Value)
+            SetValue(ContractDAL.COL_NAME_TYPE_OF_MARKETING_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")>
-    Public Property TypeOfEquipmentId() As Guid
+    Public Property TypeOfEquipmentId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_TYPE_OF_EQUIPMENT_ID) Is DBNull.Value Then
@@ -363,15 +363,15 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_TYPE_OF_EQUIPMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_TYPE_OF_EQUIPMENT_ID, Value)
+            SetValue(ContractDAL.COL_NAME_TYPE_OF_EQUIPMENT_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")>
-    Public Property TypeOfInsuranceId() As Guid
+    Public Property TypeOfInsuranceId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_TYPE_OF_INSURANCE_ID) Is DBNull.Value Then
@@ -380,14 +380,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_TYPE_OF_INSURANCE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_TYPE_OF_INSURANCE_ID, Value)
+            SetValue(ContractDAL.COL_NAME_TYPE_OF_INSURANCE_ID, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Max:=NEW_MAX_DOUBLE)>
-    Public Property MinReplacementCost() As DecimalType
+    Public Property MinReplacementCost As DecimalType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_MIN_REPLACEMENT_COST) Is DBNull.Value Then
@@ -396,15 +396,15 @@ Public Class Contract
                 Return New DecimalType(CType(Row(ContractDAL.COL_NAME_MIN_REPLACEMENT_COST), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_MIN_REPLACEMENT_COST, Value)
+            SetValue(ContractDAL.COL_NAME_MIN_REPLACEMENT_COST, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidNumericRange("", Max:=9999)>
-    Public Property WarrantyMaxDelay() As LongType
+    Public Property WarrantyMaxDelay As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_WARRANTY_MAX_DELAY) Is DBNull.Value Then
@@ -413,14 +413,14 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_WARRANTY_MAX_DELAY), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_WARRANTY_MAX_DELAY, Value)
+            SetValue(ContractDAL.COL_NAME_WARRANTY_MAX_DELAY, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=999)>
-    Public Property RemainingMFGDays() As LongType
+    Public Property RemainingMFGDays As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_REMAINING_MFG_DAYS) Is DBNull.Value Then
@@ -429,14 +429,14 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_REMAINING_MFG_DAYS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_REMAINING_MFG_DAYS, Value)
+            SetValue(ContractDAL.COL_NAME_REMAINING_MFG_DAYS, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property NetCommissionsId() As Guid
+    Public Property NetCommissionsId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_NET_COMMISSIONS_ID) Is DBNull.Value Then
@@ -445,15 +445,15 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_NET_COMMISSIONS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_NET_COMMISSIONS_ID, Value)
+            SetValue(ContractDAL.COL_NAME_NET_COMMISSIONS_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")>
-    Public Property NetMarketingId() As Guid
+    Public Property NetMarketingId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_NET_MARKETING_ID) Is DBNull.Value Then
@@ -462,15 +462,15 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_NET_MARKETING_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_NET_MARKETING_ID, Value)
+            SetValue(ContractDAL.COL_NAME_NET_MARKETING_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")>
-    Public Property NetTaxesId() As Guid
+    Public Property NetTaxesId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_NET_TAXES_ID) Is DBNull.Value Then
@@ -479,15 +479,15 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_NET_TAXES_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_NET_TAXES_ID, Value)
+            SetValue(ContractDAL.COL_NAME_NET_TAXES_ID, Value)
         End Set
     End Property
 
 
     <ValidNumericRange("", Min:=0, Max:=NEW_MAX_DOUBLE)>
-    Public Property Deductible() As DecimalType
+    Public Property Deductible As DecimalType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_DEDUCTIBLE) Is DBNull.Value Then
@@ -496,15 +496,15 @@ Public Class Contract
                 Return New DecimalType(CType(Row(ContractDAL.COL_NAME_DEDUCTIBLE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_DEDUCTIBLE, Value)
+            SetValue(ContractDAL.COL_NAME_DEDUCTIBLE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidNumericRange("", Max:=99)>
-    Public Property WaitingPeriod() As LongType
+    Public Property WaitingPeriod As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_WAITING_PERIOD) Is DBNull.Value Then
@@ -513,13 +513,13 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_WAITING_PERIOD), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_WAITING_PERIOD, Value)
+            SetValue(ContractDAL.COL_NAME_WAITING_PERIOD, Value)
         End Set
     End Property
     <ValueMandatory("")>
-    Public Property FundingSourceId() As Guid
+    Public Property FundingSourceId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_FUNDING_SOURCE_ID) Is DBNull.Value Then
@@ -528,14 +528,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_FUNDING_SOURCE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_FUNDING_SOURCE_ID, Value)
+            SetValue(ContractDAL.COL_NAME_FUNDING_SOURCE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("", Message:="Policy Number is required."), ValidStringLength("", Max:=12, Message:="Policy number should be between 1 to 12 chars.")>
-    Public Property Policy() As String
+    Public Property Policy As String
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_POLICY) Is DBNull.Value Then
@@ -544,9 +544,9 @@ Public Class Contract
                 Return CType(Row(ContractDAL.COL_NAME_POLICY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_POLICY, Value)
+            SetValue(ContractDAL.COL_NAME_POLICY, Value)
         End Set
 
     End Property
@@ -569,7 +569,7 @@ Public Class Contract
     'End Property
 
     <ValueMandatory("")>
-    Public Property RecurringPremiumId() As Guid
+    Public Property RecurringPremiumId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_RECURRING_PREMIUM_ID) Is DBNull.Value Then
@@ -578,15 +578,15 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_RECURRING_PREMIUM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_RECURRING_PREMIUM_ID, Value)
+            SetValue(ContractDAL.COL_NAME_RECURRING_PREMIUM_ID, Value)
         End Set
     End Property
     'Req -1016 end
 
     <ValueMandatory("")>
-    Public Property IgnoreCoverageAmtId() As Guid
+    Public Property IgnoreCoverageAmtId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_IGNORE_COVERAGE_AMT_ID) Is DBNull.Value Then
@@ -595,14 +595,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_IGNORE_COVERAGE_AMT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_IGNORE_COVERAGE_AMT_ID, Value)
+            SetValue(ContractDAL.COL_NAME_IGNORE_COVERAGE_AMT_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property BackEndClaimsAllowedId() As Guid
+    Public Property BackEndClaimsAllowedId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_BACKEND_CLAIMS_ALLOWED_ID) Is DBNull.Value Then
@@ -611,14 +611,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_BACKEND_CLAIMS_ALLOWED_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_BACKEND_CLAIMS_ALLOWED_ID, Value)
+            SetValue(ContractDAL.COL_NAME_BACKEND_CLAIMS_ALLOWED_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property EditModelId() As Guid
+    Public Property EditModelId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_EDIT_MODEL_ID) Is DBNull.Value Then
@@ -627,15 +627,15 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_EDIT_MODEL_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_EDIT_MODEL_ID, Value)
+            SetValue(ContractDAL.COL_NAME_EDIT_MODEL_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidDealerMarkup(""), ValidDealerMarkupAndRestrictMarkup("")>
-    Public Property DealerMarkupId() As Guid
+    Public Property DealerMarkupId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_DEALER_MARKUP_ID) Is DBNull.Value Then
@@ -644,14 +644,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_DEALER_MARKUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_DEALER_MARKUP_ID, Value)
+            SetValue(ContractDAL.COL_NAME_DEALER_MARKUP_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property FixedEscDurationFlag() As Guid
+    Public Property FixedEscDurationFlag As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_FIXED_ESC_DURATION_FLAG) Is DBNull.Value Then
@@ -660,14 +660,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_FIXED_ESC_DURATION_FLAG), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_FIXED_ESC_DURATION_FLAG, Value)
+            SetValue(ContractDAL.COL_NAME_FIXED_ESC_DURATION_FLAG, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property AutoMfgCoverageId() As Guid
+    Public Property AutoMfgCoverageId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_AUTO_MFG_COVERAGE_ID) Is DBNull.Value Then
@@ -676,15 +676,15 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_AUTO_MFG_COVERAGE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_AUTO_MFG_COVERAGE_ID, Value)
+            SetValue(ContractDAL.COL_NAME_AUTO_MFG_COVERAGE_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")>
-    Public Property RestrictMarkupId() As Guid
+    Public Property RestrictMarkupId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_RESTRICT_MARKUP_ID) Is DBNull.Value Then
@@ -693,15 +693,15 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_RESTRICT_MARKUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_RESTRICT_MARKUP_ID, Value)
+            SetValue(ContractDAL.COL_NAME_RESTRICT_MARKUP_ID, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=20)>
-    Public Property Layout() As String
+    Public Property Layout As String
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_LAYOUT) Is DBNull.Value Then
@@ -710,16 +710,16 @@ Public Class Contract
                 Return CType(Row(ContractDAL.COL_NAME_LAYOUT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_LAYOUT, Value)
+            SetValue(ContractDAL.COL_NAME_LAYOUT, Value)
         End Set
     End Property
 
 
 
     <MandatoryForMonthlyBillingAttribute(""), ValidNumericRange("", Max:=9999)>
-    Public Property SuspenseDays() As LongType
+    Public Property SuspenseDays As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_SUSPENSE_DAYS) Is DBNull.Value Then
@@ -728,14 +728,14 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_SUSPENSE_DAYS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_SUSPENSE_DAYS, Value)
+            SetValue(ContractDAL.COL_NAME_SUSPENSE_DAYS, Value)
         End Set
     End Property
 
     <MandatoryForMonthlyBillingAttribute(""), ValidNumericRange("", Max:=9999)>
-    Public Property CancellationDays() As LongType
+    Public Property CancellationDays As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_CANCELLATION_DAYS) Is DBNull.Value Then
@@ -744,27 +744,27 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_CANCELLATION_DAYS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_CANCELLATION_DAYS, Value)
+            SetValue(ContractDAL.COL_NAME_CANCELLATION_DAYS, Value)
         End Set
     End Property
 
-    Public ReadOnly Property OriginalEffectiveDate() As DateType
+    Public ReadOnly Property OriginalEffectiveDate As DateType
         Get
-            Return New DateType(CType(Me.Row(ContractDAL.COL_NAME_EFFECTIVE, DataRowVersion.Original), Date))
+            Return New DateType(CType(Row(ContractDAL.COL_NAME_EFFECTIVE, DataRowVersion.Original), Date))
         End Get
     End Property
 
-    Public ReadOnly Property OriginalExpirationDate() As DateType
+    Public ReadOnly Property OriginalExpirationDate As DateType
         Get
-            Return New DateType(CType(Me.Row(ContractDAL.COL_NAME_EXPIRATION, DataRowVersion.Original), Date))
+            Return New DateType(CType(Row(ContractDAL.COL_NAME_EXPIRATION, DataRowVersion.Original), Date))
         End Get
     End Property
 
 
     <ValidStringLength("", Max:=4000)>
-    Public Property Comment1() As String
+    Public Property Comment1 As String
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_COMMENT1) Is DBNull.Value Then
@@ -773,13 +773,13 @@ Public Class Contract
                 Return CType(Row(ContractDAL.COL_NAME_COMMENT1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_COMMENT1, Value)
+            SetValue(ContractDAL.COL_NAME_COMMENT1, Value)
         End Set
     End Property
 
-    Public ReadOnly Property IsLastContract() As Boolean
+    Public ReadOnly Property IsLastContract As Boolean
         Get
             Dim minMax As New MinEffectiveMaxExpiration(Me)
             Return minMax.IsLast
@@ -787,7 +787,7 @@ Public Class Contract
     End Property
 
     <ValueMandatory("")>
-    Public Property ReplacementPolicyId() As Guid
+    Public Property ReplacementPolicyId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_REPLACEMENT_POLICY_ID) Is DBNull.Value Then
@@ -796,14 +796,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_REPLACEMENT_POLICY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_REPLACEMENT_POLICY_ID, Value)
+            SetValue(ContractDAL.COL_NAME_REPLACEMENT_POLICY_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property CancellationReasonId() As Guid
+    Public Property CancellationReasonId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_CONCELLATION_REASON_ID) Is DBNull.Value Then
@@ -812,14 +812,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_CONCELLATION_REASON_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_CONCELLATION_REASON_ID, Value)
+            SetValue(ContractDAL.COL_NAME_CONCELLATION_REASON_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Min:=0, Max:=999)>
-    Public Property FullRefundDays() As LongType
+    Public Property FullRefundDays As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_FULL_REFUND_DAYS) Is DBNull.Value Then
@@ -828,15 +828,15 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_FULL_REFUND_DAYS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_FULL_REFUND_DAYS, Value)
+            SetValue(ContractDAL.COL_NAME_FULL_REFUND_DAYS, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")>
-    Public Property CoinsuranceId() As Guid
+    Public Property CoinsuranceId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_COINSURANCE_ID) Is DBNull.Value Then
@@ -845,14 +845,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_COINSURANCE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_COINSURANCE_ID, Value)
+            SetValue(ContractDAL.COL_NAME_COINSURANCE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Min:=0, Max:=100, MaxExclusive:=False)>
-    Public Property ParticipationPercent() As DecimalType
+    Public Property ParticipationPercent As DecimalType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_PARTICIPATION_PERCENT) Is DBNull.Value Then
@@ -861,14 +861,14 @@ Public Class Contract
                 Return New DecimalType(CType(Row(ContractDAL.COL_NAME_PARTICIPATION_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_PARTICIPATION_PERCENT, Value)
+            SetValue(ContractDAL.COL_NAME_PARTICIPATION_PERCENT, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=99)>
-    Public Property RatingPlan() As LongType
+    Public Property RatingPlan As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_RATING_PLAN) Is DBNull.Value Then
@@ -877,14 +877,14 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_RATING_PLAN), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_RATING_PLAN, Value)
+            SetValue(ContractDAL.COL_NAME_RATING_PLAN, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property ID_Validation_Id() As Guid
+    Public Property ID_Validation_Id As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_ID_VALIDATION_ID) Is DBNull.Value Then
@@ -893,14 +893,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_ID_VALIDATION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_ID_VALIDATION_ID, Value)
+            SetValue(ContractDAL.COL_NAME_ID_VALIDATION_ID, Value)
         End Set
     End Property
 
     <MandatoryAcselProdCodeAttribute("")>
-    Public Property Acsel_Prod_Code_Id() As Guid
+    Public Property Acsel_Prod_Code_Id As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_ACSEL_PROD_CODE_ID) Is DBNull.Value Then
@@ -909,14 +909,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_ACSEL_PROD_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_ACSEL_PROD_CODE_ID, Value)
+            SetValue(ContractDAL.COL_NAME_ACSEL_PROD_CODE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property ClaimControlID() As Guid
+    Public Property ClaimControlID As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_CLAIM_CONTROL_ID) Is DBNull.Value Then
@@ -925,14 +925,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_CLAIM_CONTROL_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_CLAIM_CONTROL_ID, Value)
+            SetValue(ContractDAL.COL_NAME_CLAIM_CONTROL_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property IgnoreIncomingPremiumID() As Guid
+    Public Property IgnoreIncomingPremiumID As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_IGNORE_INCOMING_PREMIUM_ID) Is DBNull.Value Then
@@ -941,14 +941,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_IGNORE_INCOMING_PREMIUM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_IGNORE_INCOMING_PREMIUM_ID, Value)
+            SetValue(ContractDAL.COL_NAME_IGNORE_INCOMING_PREMIUM_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property ProRataMethodId() As Guid
+    Public Property ProRataMethodId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_PRO_RATA_METHOD_ID) Is DBNull.Value Then
@@ -957,14 +957,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_PRO_RATA_METHOD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_PRO_RATA_METHOD_ID, Value)
+            SetValue(ContractDAL.COL_NAME_PRO_RATA_METHOD_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property CurrencyConversionId() As Guid
+    Public Property CurrencyConversionId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_CURRENCY_CONVERSION_ID) Is DBNull.Value Then
@@ -973,14 +973,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_CURRENCY_CONVERSION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_CURRENCY_CONVERSION_ID, Value)
+            SetValue(ContractDAL.COL_NAME_CURRENCY_CONVERSION_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property CurrencyOfCoveragesId() As Guid
+    Public Property CurrencyOfCoveragesId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_CURRENCY_OF_COVERAGES_ID) Is DBNull.Value Then
@@ -989,14 +989,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_CURRENCY_OF_COVERAGES_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_CURRENCY_OF_COVERAGES_ID, Value)
+            SetValue(ContractDAL.COL_NAME_CURRENCY_OF_COVERAGES_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property AutoSetLiabilityId() As Guid
+    Public Property AutoSetLiabilityId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_AUTO_SET_LIABILITY_ID) Is DBNull.Value Then
@@ -1005,13 +1005,13 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_AUTO_SET_LIABILITY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_AUTO_SET_LIABILITY_ID, Value)
+            SetValue(ContractDAL.COL_NAME_AUTO_SET_LIABILITY_ID, Value)
         End Set
     End Property
 
-    Public Property PayOutstandingPremiumId() As Guid
+    Public Property PayOutstandingPremiumId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_PAY_OUTSTANDING_PREMIUM_ID) Is DBNull.Value Then
@@ -1020,14 +1020,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_PAY_OUTSTANDING_PREMIUM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_PAY_OUTSTANDING_PREMIUM_ID, Value)
+            SetValue(ContractDAL.COL_NAME_PAY_OUTSTANDING_PREMIUM_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property InstallmentPaymentId() As Guid
+    Public Property InstallmentPaymentId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_INSTALLMENT_PAYMENT_ID) Is DBNull.Value Then
@@ -1036,14 +1036,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_INSTALLMENT_PAYMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_INSTALLMENT_PAYMENT_ID, Value)
+            SetValue(ContractDAL.COL_NAME_INSTALLMENT_PAYMENT_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Min:=0, Max:=999, MaxExclusive:=False, MinExclusive:=False)>
-    Public Property DaysOfFirstPymt() As LongType
+    Public Property DaysOfFirstPymt As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_DAYS_OF_FIRST_PYMT) Is DBNull.Value Then
@@ -1052,14 +1052,14 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_DAYS_OF_FIRST_PYMT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_DAYS_OF_FIRST_PYMT, Value)
+            SetValue(ContractDAL.COL_NAME_DAYS_OF_FIRST_PYMT, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Min:=0, Max:=99, MaxExclusive:=False)>
-    Public Property DaysToSendLetter() As LongType
+    Public Property DaysToSendLetter As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_DAYS_TO_SEND_LETTER) Is DBNull.Value Then
@@ -1068,14 +1068,14 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_DAYS_TO_SEND_LETTER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_DAYS_TO_SEND_LETTER, Value)
+            SetValue(ContractDAL.COL_NAME_DAYS_TO_SEND_LETTER, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Min:=0, Max:=99, MaxExclusive:=False)>
-    Public Property DaysToCancelCert() As LongType
+    Public Property DaysToCancelCert As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_DAYS_TO_CANCEL_CERT) Is DBNull.Value Then
@@ -1084,14 +1084,14 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_DAYS_TO_CANCEL_CERT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_DAYS_TO_CANCEL_CERT, Value)
+            SetValue(ContractDAL.COL_NAME_DAYS_TO_CANCEL_CERT, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=100, MaxExclusive:=False)>
-    Public Property DeductiblePercent() As DecimalType
+    Public Property DeductiblePercent As DecimalType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_DEDUCTIBLE_PERCENT) Is DBNull.Value Then
@@ -1100,14 +1100,14 @@ Public Class Contract
                 Return New DecimalType(CType(Row(ContractDAL.COL_NAME_DEDUCTIBLE_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_DEDUCTIBLE_PERCENT, Value)
+            SetValue(ContractDAL.COL_NAME_DEDUCTIBLE_PERCENT, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property CoverageDeductibleId() As Guid
+    Public Property CoverageDeductibleId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_COVERAGE_DEDUCTIBLE_ID) Is DBNull.Value Then
@@ -1116,13 +1116,13 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_COVERAGE_DEDUCTIBLE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_COVERAGE_DEDUCTIBLE_ID, Value)
+            SetValue(ContractDAL.COL_NAME_COVERAGE_DEDUCTIBLE_ID, Value)
         End Set
     End Property
     <ValidNumericRange("", Max:=9999)>
-    Public Property RepairDiscountPct() As LongType
+    Public Property RepairDiscountPct As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_REPAIR_DISCOUNT_PCT) Is DBNull.Value Then
@@ -1131,13 +1131,13 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_REPAIR_DISCOUNT_PCT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_REPAIR_DISCOUNT_PCT, Value)
+            SetValue(ContractDAL.COL_NAME_REPAIR_DISCOUNT_PCT, Value)
         End Set
     End Property
     <ValidNumericRange("", Max:=9999)>
-    Public Property ReplacementDiscountPct() As LongType
+    Public Property ReplacementDiscountPct As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_REPLACEMENT_DISCOUNT_PCT) Is DBNull.Value Then
@@ -1146,14 +1146,14 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_REPLACEMENT_DISCOUNT_PCT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_REPLACEMENT_DISCOUNT_PCT, Value)
+            SetValue(ContractDAL.COL_NAME_REPLACEMENT_DISCOUNT_PCT, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property EditMFGTermId() As Guid
+    Public Property EditMFGTermId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_EDIT_MFG_TERM_ID) Is DBNull.Value Then
@@ -1162,14 +1162,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_EDIT_MFG_TERM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_EDIT_MFG_TERM_ID, Value)
+            SetValue(ContractDAL.COL_NAME_EDIT_MFG_TERM_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property DeductibleByManufacturerId() As Guid
+    Public Property DeductibleByManufacturerId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_DEDUCT_BY_MFG_ID) Is DBNull.Value Then
@@ -1178,13 +1178,13 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_DEDUCT_BY_MFG_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_DEDUCT_BY_MFG_ID, Value)
+            SetValue(ContractDAL.COL_NAME_DEDUCT_BY_MFG_ID, Value)
         End Set
     End Property
 
-    Public Property AcctBusinessUnitId() As Guid
+    Public Property AcctBusinessUnitId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_ACCT_BUSINESS_UNIT_ID) Is DBNull.Value Then
@@ -1193,14 +1193,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_ACCT_BUSINESS_UNIT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_ACCT_BUSINESS_UNIT_ID, Value)
+            SetValue(ContractDAL.COL_NAME_ACCT_BUSINESS_UNIT_ID, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=100, MaxExclusive:=False)>
-    Public Property PenaltyPct() As DecimalType
+    Public Property PenaltyPct As DecimalType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_PENALTY_PCT) Is DBNull.Value Then
@@ -1209,14 +1209,14 @@ Public Class Contract
                 Return New DecimalType(CType(Row(ContractDAL.COL_NAME_PENALTY_PCT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_PENALTY_PCT, Value)
+            SetValue(ContractDAL.COL_NAME_PENALTY_PCT, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property IsCommPCodeId() As Guid
+    Public Property IsCommPCodeId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_IS_COMM_P_CODE_ID) Is DBNull.Value Then
@@ -1225,14 +1225,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_IS_COMM_P_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_IS_COMM_P_CODE_ID, Value)
+            SetValue(ContractDAL.COL_NAME_IS_COMM_P_CODE_ID, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=100, MaxExclusive:=False), ValidCLIPPercent("")>
-    Public Property ClipPercent() As DecimalType
+    Public Property ClipPercent As DecimalType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_CLIP_PERCENT) Is DBNull.Value Then
@@ -1241,14 +1241,14 @@ Public Class Contract
                 Return New DecimalType(CType(Row(ContractDAL.COL_NAME_CLIP_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_CLIP_PERCENT, Value)
+            SetValue(ContractDAL.COL_NAME_CLIP_PERCENT, Value)
         End Set
     End Property
 
     <MandatoryForInstallmentPaymentAttribute("")>
-    Public Property BaseInstallments() As Guid
+    Public Property BaseInstallments As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_BASE_INSTALLMENTS) Is DBNull.Value Then
@@ -1257,14 +1257,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_BASE_INSTALLMENTS), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_BASE_INSTALLMENTS, Value)
+            SetValue(ContractDAL.COL_NAME_BASE_INSTALLMENTS, Value)
         End Set
     End Property
 
     <MandatoryForInstallmentPaymentAttribute("")>
-    Public Property BillingCycleFrequency() As Guid
+    Public Property BillingCycleFrequency As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_BILLING_CYCLE_FREQUENCY) Is DBNull.Value Then
@@ -1273,14 +1273,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_BILLING_CYCLE_FREQUENCY), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_BILLING_CYCLE_FREQUENCY, Value)
+            SetValue(ContractDAL.COL_NAME_BILLING_CYCLE_FREQUENCY, Value)
         End Set
     End Property
 
     <MandatoryForInstallmentPaymentAttribute(""), ValidNumericRange("", Min:=0, Max:=99, MaxExclusive:=False)>
-    Public Property InstallmentsBaseReducer() As LongType
+    Public Property InstallmentsBaseReducer As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_INSTALLMENTS_BASE_REDUCER) Is DBNull.Value Then
@@ -1289,14 +1289,14 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_INSTALLMENTS_BASE_REDUCER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_INSTALLMENTS_BASE_REDUCER, Value)
+            SetValue(ContractDAL.COL_NAME_INSTALLMENTS_BASE_REDUCER, Value)
         End Set
     End Property
 
     <MandatoryForInstallmentPaymentAttribute(""), ValidNumericRange("", Min:=1, Max:=99, MaxExclusive:=False)>
-    Public Property MaxInstallments() As LongType
+    Public Property MaxInstallments As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_MAX_INSTALLMENTS) Is DBNull.Value Then
@@ -1305,14 +1305,14 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_MAX_INSTALLMENTS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_MAX_INSTALLMENTS, Value)
+            SetValue(ContractDAL.COL_NAME_MAX_INSTALLMENTS, Value)
         End Set
     End Property
 
     <MandatoryForInstallmentPaymentAttribute(""), ValidNumericRange("", Min:=1, Max:=99, MaxExclusive:=False)>
-    Public Property PastDueMonthsAllowed() As LongType
+    Public Property PastDueMonthsAllowed As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_PAST_DUE_MONTHS_ALLOWED) Is DBNull.Value Then
@@ -1321,14 +1321,14 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_PAST_DUE_MONTHS_ALLOWED), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_PAST_DUE_MONTHS_ALLOWED, Value)
+            SetValue(ContractDAL.COL_NAME_PAST_DUE_MONTHS_ALLOWED, Value)
         End Set
     End Property
 
     <MandatoryForInstallmentPaymentAttribute(""), ValidNumericRange("", Min:=1, Max:=99, MaxExclusive:=False)>
-    Public Property CollectionReAttempts() As LongType
+    Public Property CollectionReAttempts As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_COLLECTION_RE_ATTEMPTS) Is DBNull.Value Then
@@ -1337,13 +1337,13 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_COLLECTION_RE_ATTEMPTS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_COLLECTION_RE_ATTEMPTS, Value)
+            SetValue(ContractDAL.COL_NAME_COLLECTION_RE_ATTEMPTS, Value)
         End Set
     End Property
 
-    Public Property IncludeFirstPmt() As Guid
+    Public Property IncludeFirstPmt As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_INCLUDE_FIRST_PMT) Is DBNull.Value Then
@@ -1352,13 +1352,13 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_INCLUDE_FIRST_PMT), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_INCLUDE_FIRST_PMT, Value)
+            SetValue(ContractDAL.COL_NAME_INCLUDE_FIRST_PMT, Value)
         End Set
     End Property
 
-    Public Property CollectionCycleTypeId() As Guid
+    Public Property CollectionCycleTypeId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_COLLECTION_CYCLE_TYPE_ID) Is DBNull.Value Then
@@ -1367,14 +1367,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_COLLECTION_CYCLE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_COLLECTION_CYCLE_TYPE_ID, Value)
+            SetValue(ContractDAL.COL_NAME_COLLECTION_CYCLE_TYPE_ID, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=1, Max:=28, MaxExclusive:=False)>
-    Public Property CycleDay() As LongType
+    Public Property CycleDay As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_CYCLE_DAY) Is DBNull.Value Then
@@ -1383,14 +1383,14 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_CYCLE_DAY), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_CYCLE_DAY, Value)
+            SetValue(ContractDAL.COL_NAME_CYCLE_DAY, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=60, MaxExclusive:=False), ValidOffSetBeforeDueDate("")>
-    Public Property OffsetBeforeDueDate() As LongType
+    Public Property OffsetBeforeDueDate As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_OFFSET_BEFORE_DUE_DATE) Is DBNull.Value Then
@@ -1399,14 +1399,14 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_OFFSET_BEFORE_DUE_DATE), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_OFFSET_BEFORE_DUE_DATE, Value)
+            SetValue(ContractDAL.COL_NAME_OFFSET_BEFORE_DUE_DATE, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=999, MaxExclusive:=False)>
-    Public Property InsPremiumFactor() As DecimalType
+    Public Property InsPremiumFactor As DecimalType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_INS_PREMIUM_FACTOR) Is DBNull.Value Then
@@ -1415,13 +1415,13 @@ Public Class Contract
                 Return New DecimalType(CType(Row(ContractDAL.COL_NAME_INS_PREMIUM_FACTOR), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_INS_PREMIUM_FACTOR, Value)
+            SetValue(ContractDAL.COL_NAME_INS_PREMIUM_FACTOR, Value)
         End Set
     End Property
     <ValueMandatory("")>
-    Public Property ExtendCoverageId() As Guid
+    Public Property ExtendCoverageId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_EXTEND_COVERAGE_ID) Is DBNull.Value Then
@@ -1430,15 +1430,15 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_EXTEND_COVERAGE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_EXTEND_COVERAGE_ID, Value)
+            SetValue(ContractDAL.COL_NAME_EXTEND_COVERAGE_ID, Value)
         End Set
     End Property
 
 
     <ValidNumericRange("", Min:=0, Max:=99, MaxExclusive:=False)>
-    Public Property ExtraMonsToExtendCoverage() As LongType
+    Public Property ExtraMonsToExtendCoverage As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_EXTRA_MONS_TO_EXTEND_COVERAGE) Is DBNull.Value Then
@@ -1447,15 +1447,15 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_EXTRA_MONS_TO_EXTEND_COVERAGE), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_EXTRA_MONS_TO_EXTEND_COVERAGE, Value)
+            SetValue(ContractDAL.COL_NAME_EXTRA_MONS_TO_EXTEND_COVERAGE, Value)
         End Set
     End Property
 
 
     <ValidNumericRange("", Min:=0, Max:=9999, MaxExclusive:=False)>
-    Public Property ExtraDaysToExtendCoverage() As LongType
+    Public Property ExtraDaysToExtendCoverage As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_EXTRA_DAYS_TO_EXTEND_COVERAGE) Is DBNull.Value Then
@@ -1464,14 +1464,14 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_EXTRA_DAYS_TO_EXTEND_COVERAGE), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_EXTRA_DAYS_TO_EXTEND_COVERAGE, Value)
+            SetValue(ContractDAL.COL_NAME_EXTRA_DAYS_TO_EXTEND_COVERAGE, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property AllowDifferentCoverage() As Guid
+    Public Property AllowDifferentCoverage As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_ALLOW_DIFFERENT_COVERAGE) Is DBNull.Value Then
@@ -1480,15 +1480,15 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_ALLOW_DIFFERENT_COVERAGE), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_ALLOW_DIFFERENT_COVERAGE, Value)
+            SetValue(ContractDAL.COL_NAME_ALLOW_DIFFERENT_COVERAGE, Value)
         End Set
     End Property
 
     'Added for Req-635
     <ValueMandatory("")>
-    Public Property AllowNoExtended() As Guid
+    Public Property AllowNoExtended As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_ALLOW_NO_EXTENDED) Is DBNull.Value Then
@@ -1497,14 +1497,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_ALLOW_NO_EXTENDED), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_ALLOW_NO_EXTENDED, Value)
+            SetValue(ContractDAL.COL_NAME_ALLOW_NO_EXTENDED, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=9999), ValidClaimLimitConfig("")> <NumOfClaimsValidation("")>
-    Public Property NumOfClaims() As LongType
+    Public Property NumOfClaims As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_NUM_OF_CLAIMS) Is DBNull.Value Then
@@ -1513,13 +1513,13 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_NUM_OF_CLAIMS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_NUM_OF_CLAIMS, Value)
+            SetValue(ContractDAL.COL_NAME_NUM_OF_CLAIMS, Value)
         End Set
     End Property
 
-    Public Property ClaimLimitBasedOnId() As Guid
+    Public Property ClaimLimitBasedOnId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_CLAIM_LIMIT_BASED_ON_ID) Is DBNull.Value Then
@@ -1528,14 +1528,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_CLAIM_LIMIT_BASED_ON_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_CLAIM_LIMIT_BASED_ON_ID, Value)
+            SetValue(ContractDAL.COL_NAME_CLAIM_LIMIT_BASED_ON_ID, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=999, MaxExclusive:=False)>
-    Public Property DaysToReportClaim() As LongType
+    Public Property DaysToReportClaim As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_DAYS_TO_REPORT_CLAIM) Is DBNull.Value Then
@@ -1544,13 +1544,13 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_DAYS_TO_REPORT_CLAIM), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_DAYS_TO_REPORT_CLAIM, Value)
+            SetValue(ContractDAL.COL_NAME_DAYS_TO_REPORT_CLAIM, Value)
         End Set
     End Property
     'Req-703 Start
-    Public Property MarketingPromotionId() As Guid
+    Public Property MarketingPromotionId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_MARKETING_PROMO_ID) Is DBNull.Value Then
@@ -1559,14 +1559,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_MARKETING_PROMO_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_MARKETING_PROMO_ID, Value)
+            SetValue(ContractDAL.COL_NAME_MARKETING_PROMO_ID, Value)
         End Set
     End Property
     'Req-703 End
     <ValueMandatory("")>
-    Public Property CustmerAddressRequiredId() As Guid
+    Public Property CustmerAddressRequiredId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_CUST_ADDRESS_REQUIRED_ID) Is DBNull.Value Then
@@ -1575,14 +1575,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_CUST_ADDRESS_REQUIRED_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_CUST_ADDRESS_REQUIRED_ID, Value)
+            SetValue(ContractDAL.COL_NAME_CUST_ADDRESS_REQUIRED_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> <ValidNumericRange("", Min:=0, Max:=99, MaxExclusive:=False)>
-    Public Property FirstPymtMonths() As LongType
+    Public Property FirstPymtMonths As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_FIRST_PYMT_MONTHS) Is DBNull.Value Then
@@ -1591,13 +1591,13 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_FIRST_PYMT_MONTHS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_FIRST_PYMT_MONTHS, Value)
+            SetValue(ContractDAL.COL_NAME_FIRST_PYMT_MONTHS, Value)
         End Set
     End Property
     <ValueMandatory("")>
-    Public Property AllowMultipleRejectionsId() As Guid
+    Public Property AllowMultipleRejectionsId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_ALLOW_MULTIPLE_REJECTIONS) Is DBNull.Value Then
@@ -1606,9 +1606,9 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_ALLOW_MULTIPLE_REJECTIONS), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_ALLOW_MULTIPLE_REJECTIONS, Value)
+            SetValue(ContractDAL.COL_NAME_ALLOW_MULTIPLE_REJECTIONS, Value)
         End Set
     End Property
 
@@ -1630,7 +1630,7 @@ Public Class Contract
     'End Property
 
     <ValidNumericRange("", Min:=0, Max:=99, MaxExclusive:=False)>
-    Public Property AuthorizedAmountMaxUpdates() As LongType
+    Public Property AuthorizedAmountMaxUpdates As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_AUTHORIZED_AMOUNT_MAX_UPDATES) Is DBNull.Value Then
@@ -1639,15 +1639,15 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_AUTHORIZED_AMOUNT_MAX_UPDATES), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_AUTHORIZED_AMOUNT_MAX_UPDATES, Value)
+            SetValue(ContractDAL.COL_NAME_AUTHORIZED_AMOUNT_MAX_UPDATES, Value)
         End Set
     End Property
 
     'Req - 1016 Start
     <MandatoryForMonthlyBillingAttribute(""), ValidWarrantyPeriod(""), ValidNumericRange("", Min:=1, Max:=9999)>
-    Public Property RecurringWarrantyPeriod() As LongType
+    Public Property RecurringWarrantyPeriod As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_RECURRING_WARRANTY_PERIOD) Is DBNull.Value Then
@@ -1656,14 +1656,14 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_RECURRING_WARRANTY_PERIOD), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_RECURRING_WARRANTY_PERIOD, Value)
+            SetValue(ContractDAL.COL_NAME_RECURRING_WARRANTY_PERIOD, Value)
         End Set
     End Property
     'Req - 1016 End
 
-    Public Property AllowPymtSkipMonths() As Guid
+    Public Property AllowPymtSkipMonths As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_ALLOW_PYMT_SKIP_MONTHS) Is DBNull.Value Then
@@ -1672,15 +1672,15 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_ALLOW_PYMT_SKIP_MONTHS), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_ALLOW_PYMT_SKIP_MONTHS, Value)
+            SetValue(ContractDAL.COL_NAME_ALLOW_PYMT_SKIP_MONTHS, Value)
         End Set
     End Property
     'REQ-1050 start
     'DEF-2507 remove the Mandatory Field Option
     <ValidNumericRange("", Max:=9999)>
-    Public Property DaysToReactivate() As LongType
+    Public Property DaysToReactivate As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_NUMBER_OF_DAYS_TO_REACTIVATE) Is DBNull.Value Then
@@ -1689,14 +1689,14 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_NUMBER_OF_DAYS_TO_REACTIVATE), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_NUMBER_OF_DAYS_TO_REACTIVATE, Value)
+            SetValue(ContractDAL.COL_NAME_NUMBER_OF_DAYS_TO_REACTIVATE, Value)
         End Set
     End Property
     'REQ-1050 END
 
-    Public Property BillingCycleTypeId() As Guid
+    Public Property BillingCycleTypeId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_BILLING_CYCLE_TYPE_ID) Is DBNull.Value Then
@@ -1705,13 +1705,13 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_BILLING_CYCLE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_BILLING_CYCLE_TYPE_ID, Value)
+            SetValue(ContractDAL.COL_NAME_BILLING_CYCLE_TYPE_ID, Value)
         End Set
     End Property
 
-    Public Property DailyRateBasedOnId() As Guid
+    Public Property DailyRateBasedOnId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_DAILY_RATE_BASED_ON_ID) Is DBNull.Value Then
@@ -1720,13 +1720,13 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_DAILY_RATE_BASED_ON_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_DAILY_RATE_BASED_ON_ID, Value)
+            SetValue(ContractDAL.COL_NAME_DAILY_RATE_BASED_ON_ID, Value)
         End Set
     End Property
 
-    Public Property AllowBillingAfterCancellation() As Guid
+    Public Property AllowBillingAfterCancellation As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_ALLOW_BILLING_AFTER_CANCELLATION) Is DBNull.Value Then
@@ -1735,13 +1735,13 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_ALLOW_BILLING_AFTER_CANCELLATION), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_ALLOW_BILLING_AFTER_CANCELLATION, Value)
+            SetValue(ContractDAL.COL_NAME_ALLOW_BILLING_AFTER_CANCELLATION, Value)
         End Set
     End Property
 
-    Public Property AllowCollectionAfterCancellation() As Guid
+    Public Property AllowCollectionAfterCancellation As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_ALLOW_COLLECTION_AFTER_CANCELLATION) Is DBNull.Value Then
@@ -1750,14 +1750,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_ALLOW_COLLECTION_AFTER_CANCELLATION), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_ALLOW_COLLECTION_AFTER_CANCELLATION, Value)
+            SetValue(ContractDAL.COL_NAME_ALLOW_COLLECTION_AFTER_CANCELLATION, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property AllowCoverageMarkupDistribution() As Guid
+    Public Property AllowCoverageMarkupDistribution As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_ALLOW_COVERAGE_MARKUP_DISTRIBUTION) Is DBNull.Value Then
@@ -1766,14 +1766,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_ALLOW_COVERAGE_MARKUP_DISTRIBUTION), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_ALLOW_COVERAGE_MARKUP_DISTRIBUTION, Value)
+            SetValue(ContractDAL.COL_NAME_ALLOW_COVERAGE_MARKUP_DISTRIBUTION, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property FutureDateAllowForID() As Guid
+    Public Property FutureDateAllowForID As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_FUTURE_DATE_ALLOW_FOR_ID) Is DBNull.Value Then
@@ -1782,16 +1782,16 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_FUTURE_DATE_ALLOW_FOR_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_FUTURE_DATE_ALLOW_FOR_ID, Value)
+            SetValue(ContractDAL.COL_NAME_FUTURE_DATE_ALLOW_FOR_ID, Value)
         End Set
     End Property
 
 
     'REQ-1333
     <ValidNumericRange("", Min:=0, Max:=99, MaxExclusive:=False)>
-    Public Property ReplacementPolicyClaimCount() As LongType
+    Public Property ReplacementPolicyClaimCount As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_REPLACEMENT_POLICY_CLAIM_COUNT) Is DBNull.Value Then
@@ -1800,15 +1800,15 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_REPLACEMENT_POLICY_CLAIM_COUNT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_REPLACEMENT_POLICY_CLAIM_COUNT, Value)
+            SetValue(ContractDAL.COL_NAME_REPLACEMENT_POLICY_CLAIM_COUNT, Value)
         End Set
     End Property
 
     'REQ-1344/DEF-21932
     <ValueMandatory("")>
-    Public Property IgnoreWaitingPeriodWsdPsd() As Guid
+    Public Property IgnoreWaitingPeriodWsdPsd As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_IGNORE_WAITING_PERIOD_WSD_PSD) Is DBNull.Value Then
@@ -1817,14 +1817,14 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_IGNORE_WAITING_PERIOD_WSD_PSD), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_IGNORE_WAITING_PERIOD_WSD_PSD, Value)
+            SetValue(ContractDAL.COL_NAME_IGNORE_WAITING_PERIOD_WSD_PSD, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=9999, MaxExclusive:=False)> <NumOfRepairClaimsValidation("")>
-    Public Property NumOfRepairClaims() As LongType
+    Public Property NumOfRepairClaims As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_NUM_OF_REPAIR_CLAIMS) Is DBNull.Value Then
@@ -1833,14 +1833,14 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_NUM_OF_REPAIR_CLAIMS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_NUM_OF_REPAIR_CLAIMS, Value)
+            SetValue(ContractDAL.COL_NAME_NUM_OF_REPAIR_CLAIMS, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=9999, MaxExclusive:=False)> <NumOfReplacementClaimsValidation("")>
-    Public Property NumOfReplacementClaims() As LongType
+    Public Property NumOfReplacementClaims As LongType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_NUM_OF_REPLACEMENT_CLAIMS) Is DBNull.Value Then
@@ -1849,13 +1849,13 @@ Public Class Contract
                 Return New LongType(CType(Row(ContractDAL.COL_NAME_NUM_OF_REPLACEMENT_CLAIMS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_NUM_OF_REPLACEMENT_CLAIMS, Value)
+            SetValue(ContractDAL.COL_NAME_NUM_OF_REPLACEMENT_CLAIMS, Value)
         End Set
     End Property
     'REQ-5773 Start
-    Public Property PaymentProcessingTypeId() As Guid
+    Public Property PaymentProcessingTypeId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_PAYMENT_PROCESSING_TYPE_ID) Is DBNull.Value Then
@@ -1864,15 +1864,15 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_PAYMENT_PROCESSING_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_PAYMENT_PROCESSING_TYPE_ID, Value)
+            SetValue(ContractDAL.COL_NAME_PAYMENT_PROCESSING_TYPE_ID, Value)
         End Set
     End Property
 
 
     <MandatoryForPaymentProcessingTypeThirdPartyNameAttribute("")> <ValidStringLength("", Max:=50)>
-    Public Property ThirdPartyName() As String
+    Public Property ThirdPartyName As String
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_THIRD_PARTY_NAME) Is DBNull.Value Then
@@ -1881,15 +1881,15 @@ Public Class Contract
                 Return CType(Row(ContractDAL.COL_NAME_THIRD_PARTY_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_THIRD_PARTY_NAME, Value)
+            SetValue(ContractDAL.COL_NAME_THIRD_PARTY_NAME, Value)
         End Set
     End Property
 
 
     <MandatoryForPaymentProcessingTypeThirdPartyTaxIdAttribute("")> <ValidStringLength("", Max:=15)>
-    Public Property ThirdPartyTaxId() As String
+    Public Property ThirdPartyTaxId As String
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_THIRD_PARTY_TAX_ID) Is DBNull.Value Then
@@ -1898,15 +1898,15 @@ Public Class Contract
                 Return CType(Row(ContractDAL.COL_NAME_THIRD_PARTY_TAX_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_THIRD_PARTY_TAX_ID, Value)
+            SetValue(ContractDAL.COL_NAME_THIRD_PARTY_TAX_ID, Value)
         End Set
     End Property
 
 
     <MandatoryForRdoNameAttribute("")> <ValidStringLength("", Max:=50)>
-    Public Property RdoName() As String
+    Public Property RdoName As String
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_RDO_NAME) Is DBNull.Value Then
@@ -1915,15 +1915,15 @@ Public Class Contract
                 Return CType(Row(ContractDAL.COL_NAME_RDO_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_RDO_NAME, Value)
+            SetValue(ContractDAL.COL_NAME_RDO_NAME, Value)
         End Set
     End Property
 
 
     <MandatoryForRdoNameAttribute("")> <ValidStringLength("", Max:=15)>
-    Public Property RdoTaxId() As String
+    Public Property RdoTaxId As String
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_RDO_TAX_ID) Is DBNull.Value Then
@@ -1932,15 +1932,15 @@ Public Class Contract
                 Return CType(Row(ContractDAL.COL_NAME_RDO_TAX_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_RDO_TAX_ID, Value)
+            SetValue(ContractDAL.COL_NAME_RDO_TAX_ID, Value)
         End Set
     End Property
 
 
     <MandatoryForRdoNameAttribute(""), ValidNumericRange("", Min:=0, Max:=100, MaxExclusive:=True)>
-    Public Property RdoPercent() As DecimalType
+    Public Property RdoPercent As DecimalType
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_RDO_PERCENT) Is DBNull.Value Then
@@ -1949,13 +1949,13 @@ Public Class Contract
                 Return New DecimalType(CType(Row(ContractDAL.COL_NAME_RDO_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_RDO_PERCENT, Value)
+            SetValue(ContractDAL.COL_NAME_RDO_PERCENT, Value)
         End Set
     End Property
     'REQ-5773 End
-    Public Property OverrideEditMfgTerm() As String
+    Public Property OverrideEditMfgTerm As String
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_OVERRIDE_EDIT_MFG_TERM) Is DBNull.Value Then
@@ -1964,13 +1964,13 @@ Public Class Contract
                 Return CType(Row(ContractDAL.COL_NAME_OVERRIDE_EDIT_MFG_TERM), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_OVERRIDE_EDIT_MFG_TERM, Value)
+            SetValue(ContractDAL.COL_NAME_OVERRIDE_EDIT_MFG_TERM, Value)
         End Set
     End Property
     <ValueMandatory("")>
-    Public Property PolicyTypeId() As Guid
+    Public Property PolicyTypeId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_POLICY_TYPE_ID) Is DBNull.Value Then
@@ -1979,13 +1979,13 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_POLICY_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_POLICY_TYPE_ID, Value)
+            SetValue(ContractDAL.COL_NAME_POLICY_TYPE_ID, Value)
         End Set
     End Property
     <ValueMandatory("")>
-    Public Property PolicyGenerationId() As Guid
+    Public Property PolicyGenerationId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_POLICY_GENERATION_ID) Is DBNull.Value Then
@@ -1994,13 +1994,13 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_POLICY_GENERATION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_POLICY_GENERATION_ID, Value)
+            SetValue(ContractDAL.COL_NAME_POLICY_GENERATION_ID, Value)
         End Set
     End Property
     <ValueMandatoryOnAutoGeneratedPolicy("")>
-    Public Property LineOfBusinessId() As Guid
+    Public Property LineOfBusinessId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_LINE_OF_BUSINESS_ID) Is DBNull.Value Then
@@ -2009,12 +2009,12 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_LINE_OF_BUSINESS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_LINE_OF_BUSINESS_ID, Value)
+            SetValue(ContractDAL.COL_NAME_LINE_OF_BUSINESS_ID, Value)
         End Set
     End Property
-    Public Property ProducerId() As Guid
+    Public Property ProducerId As Guid
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_PRODUCER_ID) Is DBNull.Value Then
@@ -2023,23 +2023,23 @@ Public Class Contract
                 Return New Guid(CType(Row(ContractDAL.COL_NAME_PRODUCER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_PRODUCER_ID, Value)
+            SetValue(ContractDAL.COL_NAME_PRODUCER_ID, Value)
         End Set
     End Property
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             Return _countryId
         End Get
-        Set(ByVal Value As Guid)
+        Set
             _countryId = Value
         End Set
     End Property
 
     'US 489857
     <ValidStringLength("", Max:=50, Message:="CommissionsPercentSourceXcd should be between 1 to 30 chars.")>
-    Public Property CommissionsPercentSourceXcd() As String
+    Public Property CommissionsPercentSourceXcd As String
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_COMMISSIONS_PERCENT_SOURCE_XCD) Is DBNull.Value Then
@@ -2048,14 +2048,14 @@ Public Class Contract
                 Return CType(Row(ContractDAL.COL_NAME_COMMISSIONS_PERCENT_SOURCE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_COMMISSIONS_PERCENT_SOURCE_XCD, Value)
+            SetValue(ContractDAL.COL_NAME_COMMISSIONS_PERCENT_SOURCE_XCD, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50, Message:="MarketingPercentSourceXcd should be between 1 to 30 chars.")>
-    Public Property MarketingPercentSourceXcd() As String
+    Public Property MarketingPercentSourceXcd As String
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_MARKETING_PERCENT_SOURCE_XCD) Is DBNull.Value Then
@@ -2064,13 +2064,13 @@ Public Class Contract
                 Return CType(Row(ContractDAL.COL_NAME_MARKETING_PERCENT_SOURCE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_MARKETING_PERCENT_SOURCE_XCD, Value)
+            SetValue(ContractDAL.COL_NAME_MARKETING_PERCENT_SOURCE_XCD, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=50, Message:="AdminExpenseSourceXcd should be between 1 to 30 chars.")>
-    Public Property AdminExpenseSourceXcd() As String
+    Public Property AdminExpenseSourceXcd As String
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_ADMIN_EXPENSE_SOURCE_XCD) Is DBNull.Value Then
@@ -2079,13 +2079,13 @@ Public Class Contract
                 Return CType(Row(ContractDAL.COL_NAME_ADMIN_EXPENSE_SOURCE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_ADMIN_EXPENSE_SOURCE_XCD, Value)
+            SetValue(ContractDAL.COL_NAME_ADMIN_EXPENSE_SOURCE_XCD, Value)
         End Set
     End Property
    <ValidStringLength("", Max:=50, Message:="ProfitPercentSourceXcd should be between 1 to 30 chars.")>
-    Public Property ProfitPercentSourceXcd() As String
+    Public Property ProfitPercentSourceXcd As String
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_PROFIT_PERCENT_SOURCE_XCD) Is DBNull.Value Then
@@ -2094,13 +2094,13 @@ Public Class Contract
                 Return CType(Row(ContractDAL.COL_NAME_PROFIT_PERCENT_SOURCE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_PROFIT_PERCENT_SOURCE_XCD, Value)
+            SetValue(ContractDAL.COL_NAME_PROFIT_PERCENT_SOURCE_XCD, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=50, Message:="LossCostPercentSourceXcd should be between 1 to 30 chars.")>
-    Public Property LossCostPercentSourceXcd() As String
+    Public Property LossCostPercentSourceXcd As String
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_LOSS_COST_PERCENT_SOURCE_XCD) Is DBNull.Value Then
@@ -2109,9 +2109,9 @@ Public Class Contract
                 Return CType(Row(ContractDAL.COL_NAME_LOSS_COST_PERCENT_SOURCE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ContractDAL.COL_NAME_LOSS_COST_PERCENT_SOURCE_XCD, Value)
+            SetValue(ContractDAL.COL_NAME_LOSS_COST_PERCENT_SOURCE_XCD, Value)
         End Set
 
     End Property
@@ -2129,22 +2129,22 @@ Public Class Contract
             MyBase.Save()
 
             ' This generate auto sequence number if policy type is collective and auto generated.
-            If Me.IsNew AndAlso Not Me.IsDeleted Then
+            If IsNew AndAlso Not IsDeleted Then
                 GetAutoGeneratedSequenceNum()
             End If
 
 
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                                
-               If (Not Me.IsDeleted AndAlso Not Me.IsNew AndAlso Not Me.Expiration.Equals(Me.OriginalExpirationDate)) OrElse(
-                   Not Me.IsDeleted AndAlso Me.Dataset.Tables.Count > 1) Then
-                    dal.UpdateFamily(Me.Dataset, Me.DealerId, Me.Expiration, Me.Effective)
+               If (Not IsDeleted AndAlso Not IsNew AndAlso Not Expiration.Equals(OriginalExpirationDate)) OrElse(
+                   Not IsDeleted AndAlso Dataset.Tables.Count > 1) Then
+                    dal.UpdateFamily(Dataset, DealerId, Expiration, Effective)
                 Else
-                    dal.Update(Me.Row)
+                    dal.Update(Row)
                 End If
 
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then Me.Load(Me.Id)
+                If Row.RowState <> DataRowState.Detached Then Load(Id)
 
             End If
 
@@ -2152,7 +2152,7 @@ Public Class Contract
 
             'Return the auto gen sequence back if error occured in case of collective/ autogenerated policy.
             If (_autoGeneratedSequenceNum > 0) Then
-                ReturnUnUsedAutoGenSequenceNumber(_autoGeneratedSequenceNum, Me.LineOfBusinessId, _autoGenerateSequenceKey)
+                ReturnUnUsedAutoGenSequenceNumber(_autoGeneratedSequenceNum, LineOfBusinessId, _autoGenerateSequenceKey)
             End If
 
             Throw ex
@@ -2163,12 +2163,12 @@ Public Class Contract
     'This code is Different from the one 
     Public Overrides Sub Delete()
         Try
-            Me.CheckDeleted()
-            If Not Me.IsNew Then
+            CheckDeleted()
+            If Not IsNew Then
                 Dim minMax As New MinEffectiveMaxExpiration(Me)
                 If Not minMax.IsLast Then
-                    Dim err As New ValidationError(Common.ErrorCodes.INVALID_EFFECTIVE_EXPIRATION_ERR, Me.GetType, GetType(ValidEffectiveAndExpirationDate), "Effective", Me.Effective)
-                    Throw New BOValidationException(New ValidationError() {err}, Me.GetType.Name, Me.UniqueId)
+                    Dim err As New ValidationError(Common.ErrorCodes.INVALID_EFFECTIVE_EXPIRATION_ERR, [GetType], GetType(ValidEffectiveAndExpirationDate), "Effective", Effective)
+                    Throw New BOValidationException(New ValidationError() {err}, [GetType].Name, UniqueId)
                 End If
             End If
             MyBase.Delete()
@@ -2183,11 +2183,11 @@ Public Class Contract
         Public IsFirst As Boolean = True
         Public IsLast As Boolean = True
 
-        Public Sub New(ByVal obj As Contract)
+        Public Sub New(obj As Contract)
             Try
                 Dim dal As New ContractDAL
                 Dim minMaxDs As DataSet = dal.LoadMinEffectiveMaxExpiration(obj.DealerId)
-                If minMaxDs.Tables(0).Rows.Count > 0 AndAlso (Not minMaxDs.Tables(0).Rows(0)(dal.COL_MIN_EFECTIVE) Is DBNull.Value) AndAlso (Not minMaxDs.Tables(0).Rows(0)(dal.COL_MAX_EXPIRATION) Is DBNull.Value) Then
+                If minMaxDs.Tables(0).Rows.Count > 0 AndAlso (minMaxDs.Tables(0).Rows(0)(dal.COL_MIN_EFECTIVE) IsNot DBNull.Value) AndAlso (minMaxDs.Tables(0).Rows(0)(dal.COL_MAX_EXPIRATION) IsNot DBNull.Value) Then
                     MinEffective = CType(minMaxDs.Tables(0).Rows(0)(dal.COL_MIN_EFECTIVE), Date)
                     MaxExpiration = CType(minMaxDs.Tables(0).Rows(0)(dal.COL_MAX_EXPIRATION), Date)
 
@@ -2199,12 +2199,12 @@ Public Class Contract
             End Try
         End Sub
 
-        Public Sub New(ByVal dealerId As Guid)
+        Public Sub New(dealerId As Guid)
             Try
                 Dim dal As New ContractDAL
                 Dim minMaxDs As DataSet = dal.LoadMinEffectiveMaxExpiration(dealerId)
 
-                If minMaxDs.Tables(0).Rows.Count > 0 AndAlso (Not minMaxDs.Tables(0).Rows(0)(dal.COL_MIN_EFECTIVE) Is DBNull.Value) AndAlso (Not minMaxDs.Tables(0).Rows(0)(dal.COL_MAX_EXPIRATION) Is DBNull.Value) Then
+                If minMaxDs.Tables(0).Rows.Count > 0 AndAlso (minMaxDs.Tables(0).Rows(0)(dal.COL_MIN_EFECTIVE) IsNot DBNull.Value) AndAlso (minMaxDs.Tables(0).Rows(0)(dal.COL_MAX_EXPIRATION) IsNot DBNull.Value) Then
                     MinEffective = CType(minMaxDs.Tables(0).Rows(0)(dal.COL_MIN_EFECTIVE), Date)
                     MaxExpiration = CType(minMaxDs.Tables(0).Rows(0)(dal.COL_MAX_EXPIRATION), Date)
                 End If
@@ -2219,7 +2219,7 @@ Public Class Contract
         Public EndDate As Date
     End Class
 
-    Public Shared Function GetNewDefaultDates(ByVal dealerId As Guid) As StartEndDates
+    Public Shared Function GetNewDefaultDates(dealerId As Guid) As StartEndDates
         Dim minMaxDates As New Contract.MinEffectiveMaxExpiration(dealerId)
         Dim resultDates As New StartEndDates
         With minMaxDates
@@ -2237,7 +2237,7 @@ Public Class Contract
         Dim dal As New ContractDAL
         Dim ds As DataSet
 
-        ds = dal.GetSertificatesCount(Me.Id)
+        ds = dal.GetSertificatesCount(Id)
 
         If CType((ds.Tables(ContractDAL.CERTIFICATE_COUNT_TABLE).Rows(0).Item(ContractDAL.COL_NAME_CERT_COUNT)), Integer) > 0 Then
             Return False
@@ -2247,17 +2247,17 @@ Public Class Contract
 
     End Function
 
-    Public Function AddDealer(ByVal dealerID As Guid) As Dealer
+    Public Function AddDealer(dealerID As Guid) As Dealer
         If dealerID.Equals(Guid.Empty) Then
-            Dim objDealer As New Dealer(Me.Dataset)
+            Dim objDealer As New Dealer(Dataset)
             Return objDealer
         Else
-            Dim objDealer As New Dealer(dealerID, Me.Dataset)
+            Dim objDealer As New Dealer(dealerID, Dataset)
             Return objDealer
         End If
     End Function
 
-    Public Function ReturnUnUsedAutoGenSequenceNumber(ByVal seqNumToRestore As Long, ByVal autoGenSourceId As Guid, ByVal autoGenSequenceKey As String)
+    Public Function ReturnUnUsedAutoGenSequenceNumber(seqNumToRestore As Long, autoGenSourceId As Guid, autoGenSequenceKey As String)
 
         Try
 
@@ -2274,18 +2274,18 @@ Public Class Contract
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function GetContract(ByVal dealerID As Guid, ByVal contractDate As Date, ByVal Optional loggedinuserspecific As Boolean = True) As Contract
+    Public Shared Function GetContract(dealerID As Guid, contractDate As Date, ByVal Optional loggedinuserspecific As Boolean = True) As Contract
 
         Dim contractID As Guid
         Dim dv As DataView = getList(dealerID, loggedinuserspecific)
-        dv.Sort = Contract.ContractSearchDV.COL_EFFECTIVE & " DESC," & Contract.ContractSearchDV.COL_EXPIRATION & " DESC"
+        dv.Sort = ContractSearchDV.COL_EFFECTIVE & " DESC," & ContractSearchDV.COL_EXPIRATION & " DESC"
         Dim dt As DataTable = dv.Table
 
         For Each row As DataRow In dt.Rows
-            Dim MinEffective As Date = CType(row(Contract.ContractSearchDV.COL_EFFECTIVE), Date)
-            Dim MaxExpiration As Date = CType(row(Contract.ContractSearchDV.COL_EXPIRATION), Date)
+            Dim MinEffective As Date = CType(row(ContractSearchDV.COL_EFFECTIVE), Date)
+            Dim MaxExpiration As Date = CType(row(ContractSearchDV.COL_EXPIRATION), Date)
             If (contractDate.Date >= MinEffective) And (contractDate.Date <= MaxExpiration) Then
-                contractID = New Guid(CType(row(Contract.ContractSearchDV.COL_CONTRACT_ID), Byte()))
+                contractID = New Guid(CType(row(ContractSearchDV.COL_CONTRACT_ID), Byte()))
                 Return New Contract(contractID)
             End If
         Next
@@ -2293,20 +2293,20 @@ Public Class Contract
         Return Nothing
     End Function
 
-    Public Shared Function GetContractID(ByVal certID As Guid) As Guid
+    Public Shared Function GetContractID(certID As Guid) As Guid
 
         Dim contractID As Guid
         Try
             Dim dal As New ContractDAL
 
             Dim dt As DataTable = dal.GetContract(ElitaPlusIdentity.Current.ActiveUser.Companies, certID).Tables(0)
-            If (Not dt Is Nothing AndAlso dt.Rows.Count = 1) Then
+            If (dt IsNot Nothing AndAlso dt.Rows.Count = 1) Then
                 contractID = GuidControl.ByteArrayToGuid(dt.Rows(0)(0))
             Else
                 contractID = Nothing
                 'Throw New BOValidationException(Common.ErrorCodes.ERR_CONTRACT_NOT_FOUND, Common.ErrorCodes.ERR_CONTRACT_NOT_FOUND)
 
-                Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.ERR_CONTRACT_NOT_FOUND, GetType(Contract), Nothing, "", Nothing)}
+                Dim errors() As ValidationError = {New ValidationError(Common.ErrorCodes.ERR_CONTRACT_NOT_FOUND, GetType(Contract), Nothing, "", Nothing)}
                 Throw New BOValidationException(errors, GetType(Contract).FullName, contractID.ToString)
 
             End If
@@ -2319,38 +2319,38 @@ Public Class Contract
         Return Nothing
     End Function
 
-    Public Shared Function GetContract(ByVal dealerID As Guid, ByVal effectiveDate As Date, ByVal expirationDate As Date) As Contract
+    Public Shared Function GetContract(dealerID As Guid, effectiveDate As Date, expirationDate As Date) As Contract
         ' JLR - Returns the contract that fully covers the specified date range
         ' JLR - Assumes that no contract overlaps another contract
 
         Dim contractID As Guid
         Dim dv As DataView = getList(dealerID)
-        dv.Sort = Contract.ContractSearchDV.COL_EFFECTIVE & " DESC," & Contract.ContractSearchDV.COL_EXPIRATION & " DESC"
+        dv.Sort = ContractSearchDV.COL_EFFECTIVE & " DESC," & ContractSearchDV.COL_EXPIRATION & " DESC"
         Dim dt As DataTable = dv.Table
         For Each row As DataRow In dt.Rows
-            Dim contractEffective As Date = CType(row(Contract.ContractSearchDV.COL_EFFECTIVE), Date)
-            Dim contractExpiration As Date = CType(row(Contract.ContractSearchDV.COL_EXPIRATION), Date)
+            Dim contractEffective As Date = CType(row(ContractSearchDV.COL_EFFECTIVE), Date)
+            Dim contractExpiration As Date = CType(row(ContractSearchDV.COL_EXPIRATION), Date)
             If (effectiveDate >= contractEffective) And (effectiveDate <= contractExpiration) And
                 (expirationDate >= contractEffective) And (expirationDate <= contractExpiration) Then
-                contractID = New Guid(CType(row(Contract.ContractSearchDV.COL_CONTRACT_ID), Byte()))
+                contractID = New Guid(CType(row(ContractSearchDV.COL_CONTRACT_ID), Byte()))
                 Return New Contract(contractID)
             End If
         Next
         Return Nothing
     End Function
 
-    Public Shared Function GetCurrentContract(ByVal dealerID As Guid, ByVal Optional loggedinuserspecific As Boolean = True) As Contract
+    Public Shared Function GetCurrentContract(dealerID As Guid, ByVal Optional loggedinuserspecific As Boolean = True) As Contract
         Return GetContract(dealerID, System.DateTime.Now, loggedinuserspecific)
     End Function
 
-    Public Shared Function GetMaxExpirationContract(ByVal dealerID As Guid) As Contract
+    Public Shared Function GetMaxExpirationContract(dealerID As Guid) As Contract
         Dim dal As New ContractDAL
 
         Dim contractID As Guid
         Dim ds As DataSet = dal.LoadMaxExpirationContract(ElitaPlusIdentity.Current.ActiveUser.CompanyId, dealerID)
-        If Not ds Is Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
-            If Not ds.Tables(0).Rows(0)(Contract.ContractSearchDV.COL_CONTRACT_ID) Is System.DBNull.Value Then
-                contractID = New Guid(CType(ds.Tables(0).Rows(0)(Contract.ContractSearchDV.COL_CONTRACT_ID), Byte()))
+        If ds IsNot Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
+            If ds.Tables(0).Rows(0)(ContractSearchDV.COL_CONTRACT_ID) IsNot DBNull.Value Then
+                contractID = New Guid(CType(ds.Tables(0).Rows(0)(ContractSearchDV.COL_CONTRACT_ID), Byte()))
                 Return New Contract(contractID)
             Else
                 Return Nothing
@@ -2360,31 +2360,31 @@ Public Class Contract
         End If
     End Function
 
-    Public Shared Function GetContracts(ByVal dealerID As Guid) As ContractSearchDV
+    Public Shared Function GetContracts(dealerID As Guid) As ContractSearchDV
 
         Dim contractID As Guid
         Dim dv As ContractSearchDV = getList(dealerID)
-        dv.Sort = Contract.ContractSearchDV.COL_EFFECTIVE & " DESC," & Contract.ContractSearchDV.COL_EXPIRATION & " DESC"
+        dv.Sort = ContractSearchDV.COL_EFFECTIVE & " DESC," & ContractSearchDV.COL_EXPIRATION & " DESC"
 
         Return dv
     End Function
 
-    Public Shared Function GetContractDropdownList(ByVal dealerID As Guid) As DataView
+    Public Shared Function GetContractDropdownList(dealerID As Guid) As DataView
         Dim dt As New DataTable
         dt.Columns.Add("ID", GetType(Byte()))
         dt.Columns.Add("Description", GetType(String))
 
         Dim dv As ContractSearchDV = getList(dealerID)
-        dv.Sort = Contract.ContractSearchDV.COL_EFFECTIVE & " DESC," & Contract.ContractSearchDV.COL_EXPIRATION & " DESC"
+        dv.Sort = ContractSearchDV.COL_EFFECTIVE & " DESC," & ContractSearchDV.COL_EXPIRATION & " DESC"
 
         For Each row As DataRow In dv.Table.Rows
-            Dim MinEffective As Date = CType(row(Contract.ContractSearchDV.COL_EFFECTIVE), Date)
-            Dim MaxExpiration As Date = CType(row(Contract.ContractSearchDV.COL_EXPIRATION), Date)
+            Dim MinEffective As Date = CType(row(ContractSearchDV.COL_EFFECTIVE), Date)
+            Dim MaxExpiration As Date = CType(row(ContractSearchDV.COL_EXPIRATION), Date)
 
             Dim dr As DataRow = dt.NewRow()
-            dr(0) = CType(row(Contract.ContractSearchDV.COL_CONTRACT_ID), Byte())
-            dr(1) = MinEffective.ToString("dd-MMM-yyyy", System.Threading.Thread.CurrentThread.CurrentCulture) &
-                    " - " & MaxExpiration.ToString("dd-MMM-yyyy", System.Threading.Thread.CurrentThread.CurrentCulture)
+            dr(0) = CType(row(ContractSearchDV.COL_CONTRACT_ID), Byte())
+            dr(1) = MinEffective.ToString("dd-MMM-yyyy", Threading.Thread.CurrentThread.CurrentCulture) &
+                    " - " & MaxExpiration.ToString("dd-MMM-yyyy", Threading.Thread.CurrentThread.CurrentCulture)
             dt.Rows.Add(dr)
         Next
 
@@ -2393,7 +2393,7 @@ Public Class Contract
 
     'Manually added method
     'If DealerId is empty Guid it will return all Contracts regardless of the Dealer they are associated to
-    Public Shared Function getList(ByVal dealerId As Guid, ByVal Optional loggedinuserspecific As Boolean = True) As ContractSearchDV
+    Public Shared Function getList(dealerId As Guid, ByVal Optional loggedinuserspecific As Boolean = True) As ContractSearchDV
         Try
             Dim dal As New ContractDAL
             If loggedinuserspecific Then
@@ -2406,9 +2406,9 @@ Public Class Contract
         End Try
     End Function
 
-    Public Shared Function HasContract(ByVal dealerId As Guid, ByVal warrantySalesDate As Date) As Boolean
+    Public Shared Function HasContract(dealerId As Guid, warrantySalesDate As Date) As Boolean
         Dim oContract As Contract
-        oContract = Contract.GetContract(dealerId, warrantySalesDate)
+        oContract = GetContract(dealerId, warrantySalesDate)
 
         If oContract Is Nothing Then
             Return False
@@ -2420,8 +2420,8 @@ Public Class Contract
     Public Sub GetAutoGeneratedSequenceNum()
 
                ' If policy is not Collective and Auto generate then exit.
-        If Not Me.PolicyTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_CONTRACT_POLICY_TYPE, Codes.CONTRACT_POLTYPE_COLLECTIVE)) OrElse
-          Not Me.PolicyGenerationId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_CONTRACT_POLICY_GEN_TYPE, Codes.CONTRACT_POLGEN_AUTOGENERATE)) Then
+        If Not PolicyTypeId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CONTRACT_POLICY_TYPE, Codes.CONTRACT_POLTYPE_COLLECTIVE)) OrElse
+          Not PolicyGenerationId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CONTRACT_POLICY_GEN_TYPE, Codes.CONTRACT_POLGEN_AUTOGENERATE)) Then
             Return
         End If
 
@@ -2431,13 +2431,13 @@ Public Class Contract
 
             _autoGeneratedSequenceNum = 0
 
-            Dim subRamoCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_COUNTRY_LINE_OF_BUSINESS, Me.LineOfBusinessId)
-            _autoGenerateSequenceKey = objCountry.Code + "_" + subRamoCode + "_" + Me.AUTO_GEN_SEQ_POL_NUM_KEY + "_" + DateTime.Today.Year.ToString().Substring(2, 2)
+            Dim subRamoCode As String = LookupListNew.GetCodeFromId(LookupListCache.LK_COUNTRY_LINE_OF_BUSINESS, LineOfBusinessId)
+            _autoGenerateSequenceKey = objCountry.Code + "_" + subRamoCode + "_" + AUTO_GEN_SEQ_POL_NUM_KEY + "_" + DateTime.Today.Year.ToString().Substring(2, 2)
 
-            _autoGeneratedSequenceNum = dal.GetAutoGenSequenceNumber(Me.LineOfBusinessId, Me.AUTO_GEN_SEQ_POL_NUM_SOURCE, _autoGenerateSequenceKey)
+            _autoGeneratedSequenceNum = dal.GetAutoGenSequenceNumber(LineOfBusinessId, AUTO_GEN_SEQ_POL_NUM_SOURCE, _autoGenerateSequenceKey)
 
             If _autoGeneratedSequenceNum >= 0 Then
-                Me.Policy = subRamoCode + DateTime.Today.Year.ToString().Substring(2, 2) + _autoGeneratedSequenceNum.ToString().PadLeft(5, "0")
+                Policy = subRamoCode + DateTime.Today.Year.ToString().Substring(2, 2) + _autoGeneratedSequenceNum.ToString().PadLeft(5, "0")
             Else
                 Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, Nothing, "Failed to get auto generated sequence number")
             End If
@@ -2467,7 +2467,7 @@ Public Class Contract
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -2480,11 +2480,11 @@ Public Class Contract
     Public NotInheritable Class ValidEffectiveAndExpirationDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_EFFECTIVE_EXPIRATION_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
             If obj.DealerId.Equals(Guid.Empty) Then Return True
             If obj.Effective Is Nothing OrElse obj.Expiration Is Nothing Then Return True
@@ -2522,16 +2522,16 @@ Public Class Contract
     Public NotInheritable Class ValidDealerMarkup
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_DEALER_MAKUP_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
             'Req-1016 Start 
             Dim yesValueId As Guid = LookupListNew.GetIdFromCode("YES_NO", "Y")
             Dim emptyGuid As Guid = Guid.Empty
-            Dim singlePremiumId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_PERIOD_RENEW, Codes.PERIOD_RENEW__SINGLE_PREMIUM)
+            Dim singlePremiumId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_PERIOD_RENEW, Codes.PERIOD_RENEW__SINGLE_PREMIUM)
 
             'If obj.MonthlyBillingId.Equals(yesValueId) AndAlso obj.DealerMarkupId.Equals(yesValueId) Then
             'REQ5804
@@ -2549,11 +2549,11 @@ Public Class Contract
     Public NotInheritable Class ValidDealerMarkupAndRestrictMarkup
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_DEALER_MAKUP_RESTRICTED_MARKUP_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
             Dim yesValueId As Guid = LookupListNew.GetIdFromCode("YES_NO", "Y")
 
@@ -2569,22 +2569,22 @@ Public Class Contract
     Public NotInheritable Class MandatoryForMonthlyBillingAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+        Public Sub New(fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
             'Req-1016 Start 
             'Dim yesValueId As Guid = LookupListNew.GetIdFromCode("YES_NO", "Y")
             Dim emptyGuid As Guid = Guid.Empty
-            Dim singlePremiumId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_PERIOD_RENEW, Codes.PERIOD_RENEW__SINGLE_PREMIUM)
+            Dim singlePremiumId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_PERIOD_RENEW, Codes.PERIOD_RENEW__SINGLE_PREMIUM)
 
             'If obj.MonthlyBillingId.Equals(yesValueId) Then
             'REQ5804
             If ((Not obj.RecurringPremiumId.Equals(emptyGuid)) And (Not obj.RecurringPremiumId.Equals(singlePremiumId))) Then
                 'If ((Not obj.RecurringPremiumId.Equals(emptyGuid))) Then
-                Dim mandatAttr As New ValueMandatoryAttribute(Me.DisplayName)
+                Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
                 Return mandatAttr.IsValid(valueToCheck, objectToValidate)
             Else
                 Return True
@@ -2597,18 +2597,18 @@ Public Class Contract
     Public NotInheritable Class MandatoryAcselProdCodeAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+        Public Sub New(fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
             If Not obj.DealerId.Equals(Guid.Empty) Then
                 Dim dealer As New Dealer(obj.DealerId)
                 Dim oCompany As Company = New Company(dealer.CompanyId)
 
-                If oCompany.CompanyTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_COMPANY_TYPE, COMPANY_TYPE_INSURANCE)) Then
-                    Dim mandatAttr As New ValueMandatoryAttribute(Me.DisplayName)
+                If oCompany.CompanyTypeId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_COMPANY_TYPE, COMPANY_TYPE_INSURANCE)) Then
+                    Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
                     Return mandatAttr.IsValid(valueToCheck, objectToValidate)
                 Else
                     Return True
@@ -2624,11 +2624,11 @@ Public Class Contract
     Public NotInheritable Class ValidCLIPPercent
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_CLIP_PERCENT)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
             If obj.DealerId.Equals(Guid.Empty) Then
                 Return True
@@ -2637,7 +2637,7 @@ Public Class Contract
             If ClipMethodId = Guid.Empty Then
                 Return True
             Else
-                Dim CLIPMethodCode As String = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_CLIPMETHOD, ElitaPlusIdentity.Current.ActiveUser.LanguageId), ClipMethodId)
+                Dim CLIPMethodCode As String = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListCache.LK_CLIPMETHOD, ElitaPlusIdentity.Current.ActiveUser.LanguageId), ClipMethodId)
                 If CLIPMethodCode = Company.CLIP_METHOD_NONE Then
                     Return True
                 Else 'CLIP value required
@@ -2658,11 +2658,11 @@ Public Class Contract
     Public NotInheritable Class MandatoryForInstallmentPaymentAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+        Public Sub New(fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
             If obj.DealerId.Equals(Guid.Empty) Then
                 Return True
@@ -2671,7 +2671,7 @@ Public Class Contract
             Dim objDealer As Dealer = New Dealer(obj.DealerId)
 
             If obj.InstallmentPaymentId.Equals(yesValueId) AndAlso objDealer.DealerTypeDesc = objDealer.DEALER_TYPE_DESC Then
-                Dim mandatAttr As New ValueMandatoryAttribute(Me.DisplayName)
+                Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
                 Return mandatAttr.IsValid(valueToCheck, objectToValidate)
             Else
                 Return True
@@ -2683,14 +2683,14 @@ Public Class Contract
     Public NotInheritable Class MandatoryNoOfRepairClaimsAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+        Public Sub New(fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
-            If Not obj.NumOfClaims Is Nothing And obj.NumOfRepairClaims Is Nothing Then
-                Dim mandatAttr As New ValueMandatoryAttribute(Me.DisplayName)
+            If obj.NumOfClaims IsNot Nothing And obj.NumOfRepairClaims Is Nothing Then
+                Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
                 Return mandatAttr.IsValid(valueToCheck, objectToValidate)
             Else
                 Return True
@@ -2702,16 +2702,16 @@ Public Class Contract
     Public NotInheritable Class ValidNoOfRepairClaims
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_NO_OF_REPAIR_CLAIMS)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
 
             If obj.NumOfClaims Is Nothing Or obj.NumOfRepairClaims Is Nothing Then
                 Return True
-            ElseIf Not obj.NumOfClaims Is Nothing And Not obj.NumOfRepairClaims Is Nothing Then
+            ElseIf obj.NumOfClaims IsNot Nothing And obj.NumOfRepairClaims IsNot Nothing Then
                 If obj.NumOfRepairClaims.Value > obj.NumOfClaims.Value Then
                     Return False
                 Else
@@ -2724,14 +2724,14 @@ Public Class Contract
     Public NotInheritable Class MandatoryNoOfReplacementClaimsAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+        Public Sub New(fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
-            If Not obj.NumOfClaims Is Nothing And obj.NumOfReplacementClaims Is Nothing Then
-                Dim mandatAttr As New ValueMandatoryAttribute(Me.DisplayName)
+            If obj.NumOfClaims IsNot Nothing And obj.NumOfReplacementClaims Is Nothing Then
+                Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
                 Return mandatAttr.IsValid(valueToCheck, objectToValidate)
             Else
                 Return True
@@ -2742,16 +2742,16 @@ Public Class Contract
     Public NotInheritable Class ValidNoOfReplacementClaims
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_NO_OF_REPLACEMENT_CLAIMS)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
 
             If obj.NumOfClaims Is Nothing Or obj.NumOfReplacementClaims Is Nothing Then
                 Return True
-            ElseIf Not obj.NumOfClaims Is Nothing And Not obj.NumOfReplacementClaims Is Nothing Then
+            ElseIf obj.NumOfClaims IsNot Nothing And obj.NumOfReplacementClaims IsNot Nothing Then
                 If obj.NumOfReplacementClaims.Value > obj.NumOfClaims.Value Then
                     Return False
                 Else
@@ -2765,14 +2765,14 @@ Public Class Contract
     Public NotInheritable Class ValidClaimLimitConfig
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, "INVALID_CLAIM_LIMIT_CONFIG")
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
 
-            If (Not obj.NumOfClaims Is Nothing) AndAlso obj.NumOfClaims.Value > 0 Then
+            If (obj.NumOfClaims IsNot Nothing) AndAlso obj.NumOfClaims.Value > 0 Then
                 If obj.ClaimLimitBasedOnId = Guid.Empty Then
                     Return False
                 End If
@@ -2785,11 +2785,11 @@ Public Class Contract
     Public NotInheritable Class NumOfClaimsValidation
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_NUM_OF_CLAIMS_VALIDATION)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
 
             If Not obj.ClaimLimitBasedOnId = Guid.Empty Then
@@ -2807,11 +2807,11 @@ Public Class Contract
     Public NotInheritable Class NumOfRepairClaimsValidation
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_NUM_OF_REPAIR_CLAIMS_VALIDATION)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
 
             If Not obj.ClaimLimitBasedOnId = Guid.Empty Then
@@ -2829,11 +2829,11 @@ Public Class Contract
     Public NotInheritable Class NumOfReplacementClaimsValidation
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_NUM_OF_REPLACEMENT_CLAIMS_VALIDATION)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
 
             If Not obj.ClaimLimitBasedOnId = Guid.Empty Then
@@ -2851,19 +2851,19 @@ Public Class Contract
     Public NotInheritable Class ValidWarrantyPeriod
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_WARRANTY_PERIOD)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
             Dim SinglePremiumRenewable As String = "4"
 
-            If (Not obj Is Nothing) Then
-                Dim sVal As String = LookupListNew.GetCodeFromId(LookupListNew.LK_PERIOD_RENEW, obj.RecurringPremiumId)
+            If (obj IsNot Nothing) Then
+                Dim sVal As String = LookupListNew.GetCodeFromId(LookupListCache.LK_PERIOD_RENEW, obj.RecurringPremiumId)
 
-                If (Not obj.RecurringWarrantyPeriod Is Nothing) And (obj.RecurringWarrantyPeriod <> 0) Then
-                    If (Not sVal Is Nothing) And (CType(sVal, Long) <> 0) Then
+                If (obj.RecurringWarrantyPeriod IsNot Nothing) And (obj.RecurringWarrantyPeriod <> 0) Then
+                    If (sVal IsNot Nothing) And (CType(sVal, Long) <> 0) Then
                         If Not sVal = SinglePremiumRenewable Then
                             If CType(obj.RecurringWarrantyPeriod, Long) Mod CType(sVal, Long) = 0 Then
                                 Return True
@@ -2884,16 +2884,16 @@ Public Class Contract
     Public NotInheritable Class ValidOffSetBeforeDueDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_OFFSET_BEFORE_DUE_DATE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
 
-            If (Not obj Is Nothing) Then
-                If (Not obj.OffsetBeforeDueDate Is Nothing) Then
-                    Dim sVal As String = LookupListNew.GetCodeFromId(LookupListNew.LK_PERIOD_RENEW, obj.RecurringPremiumId)
+            If (obj IsNot Nothing) Then
+                If (obj.OffsetBeforeDueDate IsNot Nothing) Then
+                    Dim sVal As String = LookupListNew.GetCodeFromId(LookupListCache.LK_PERIOD_RENEW, obj.RecurringPremiumId)
 
                     Select Case sVal
                         Case 0
@@ -2921,11 +2921,11 @@ Public Class Contract
     Public NotInheritable Class MandatoryForPaymentProcessingTypeThirdPartyNameAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+        Public Sub New(fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
             Dim DealerTypeCode As Guid
 
@@ -2934,7 +2934,7 @@ Public Class Contract
                 Dim objDealer As Dealer = New Dealer(obj.DealerId)
 
                 If obj.PaymentProcessingTypeId.Equals(LKPT) AndAlso LookupListNew.GetCodeFromId(LookupListCache.LK_DEALER_TYPE, objDealer.DealerTypeId) = Codes.DEALER_TYPES__VSC Then
-                    Dim mandatattr As New ValueMandatoryAttribute(Me.DisplayName)
+                    Dim mandatattr As New ValueMandatoryAttribute(DisplayName)
                     Return mandatattr.IsValid(valueToCheck, objectToValidate)
                 Else
                     Return True
@@ -2948,11 +2948,11 @@ Public Class Contract
     Public NotInheritable Class MandatoryForPaymentProcessingTypeThirdPartyTaxIdAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+        Public Sub New(fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
             Dim DealerTypeCode As Guid
 
@@ -2961,7 +2961,7 @@ Public Class Contract
                 Dim objDealer As Dealer = New Dealer(obj.DealerId)
 
                 If obj.PaymentProcessingTypeId.Equals(LKPT) AndAlso LookupListNew.GetCodeFromId(LookupListCache.LK_DEALER_TYPE, objDealer.DealerTypeId) = Codes.DEALER_TYPES__VSC Then
-                    Dim mandatattr As New ValueMandatoryAttribute(Me.DisplayName)
+                    Dim mandatattr As New ValueMandatoryAttribute(DisplayName)
                     Return mandatattr.IsValid(valueToCheck, objectToValidate)
                 Else
                     Return True
@@ -2977,11 +2977,11 @@ Public Class Contract
     Public NotInheritable Class MandatoryForRdoNameAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+        Public Sub New(fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
 
             Dim oDealer As New Dealer(obj.DealerId)
@@ -2989,7 +2989,7 @@ Public Class Contract
             Dim oCompanyGroup As CompanyGroup = New CompanyGroup(oCompany.CompanyGroupId)
 
 
-            If oCompanyGroup.UseCommEntityTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)) Then
+            If oCompanyGroup.UseCommEntityTypeId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_Y)) Then
                 If Not obj.DealerId.Equals(Guid.Empty) Then
                     Dim objDealer As Dealer = New Dealer(obj.DealerId)
                     Dim DealerTypeCode As String
@@ -2997,7 +2997,7 @@ Public Class Contract
 
                     If LookupListNew.GetCodeFromId(LookupListCache.LK_DEALER_TYPE, objDealer.DealerTypeId) = Codes.DEALER_TYPES__VSC Then
                         If obj.RdoName Is Nothing OrElse obj.RdoTaxId Is Nothing OrElse obj.RdoPercent = New DecimalType(0) Then
-                            Dim mandatattr As New ValueMandatoryAttribute(Me.DisplayName)
+                            Dim mandatattr As New ValueMandatoryAttribute(DisplayName)
                             Return mandatattr.IsValid(valueToCheck, objectToValidate)
                         Else
                             Return True
@@ -3017,14 +3017,14 @@ Public Class Contract
     Public NotInheritable Class ValueMandatoryOnAutoGeneratedPolicy
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_SELECT_LOB_WITH_AUTOGEN)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
 
             Dim obj As Contract = CType(objectToValidate, Contract)
-            If obj.PolicyGenerationId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_CONTRACT_POLICY_GEN_TYPE, Codes.CONTRACT_POLGEN_AUTOGENERATE)) AndAlso
+            If obj.PolicyGenerationId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CONTRACT_POLICY_GEN_TYPE, Codes.CONTRACT_POLGEN_AUTOGENERATE)) AndAlso
                                              obj.LineOfBusinessId.Equals(Guid.Empty) Then
                 Return False
             End If

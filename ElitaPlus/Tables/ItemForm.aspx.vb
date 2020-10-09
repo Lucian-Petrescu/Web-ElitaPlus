@@ -36,14 +36,14 @@ Namespace Tables
         Private Sub SetStateProperties()
             ' Me.State.MyBO = New Item(CType(Me.CallingParameters, Guid))
             'Me.State.moItemId = CType(Me.CallingParameters, Guid)
-            Me.State.moItemId = Me.State.MyBO.Id
-            If Me.State.moItemId.Equals(Guid.Empty) Then
-                Me.State.IsItemNew = True
+            State.moItemId = State.MyBO.Id
+            If State.moItemId.Equals(Guid.Empty) Then
+                State.IsItemNew = True
                 ClearAll()
                 SetButtonsState(True)
                 PopulateAll()
             Else
-                Me.State.IsItemNew = False
+                State.IsItemNew = False
                 SetButtonsState(False)
                 PopulateAll()
             End If
@@ -90,16 +90,16 @@ Namespace Tables
             Get
 
                 If moItem Is Nothing Then
-                    If Me.State.IsItemNew = True Then
+                    If State.IsItemNew = True Then
                         ' For creating, inserting
                         'moItem = New Item
                         'Me.State.moItemId = moItem.Id
-                        Me.State.moItemId = Me.State.MyBO.Id
+                        State.moItemId = State.MyBO.Id
                         ' moItem = New Item(Me.State.moItemId)
                     Else
                         ' For updating, deleting
-                        Me.State.moItemId = Me.State.MyBO.Id
-                        moItem = New Item(Me.State.moItemId)
+                        State.moItemId = State.MyBO.Id
+                        moItem = New Item(State.moItemId)
                     End If
                 End If
 
@@ -111,7 +111,7 @@ Namespace Tables
             Get
                 Return moItemIdLabel.Text
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 moItemIdLabel.Text = Value
             End Set
         End Property
@@ -120,7 +120,7 @@ Namespace Tables
             Get
                 Return moActionLabel.Text
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 moActionLabel.Text = Value
             End Set
         End Property
@@ -155,7 +155,7 @@ Namespace Tables
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -163,7 +163,7 @@ Namespace Tables
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
                 moErrorController.Clear_Hide()
@@ -172,11 +172,11 @@ Namespace Tables
                     'Me.SetStateProperties()
 
                     Action = ACTION_NONE
-                    Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO,
-                                                                       Me.MSG_TYPE_CONFIRM, True)
+                    AddControlMsg(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO,
+                                                                       MSG_TYPE_CONFIRM, True)
 
 
-                    If Me.State.IsItemNew = True Then
+                    If State.IsItemNew = True Then
                         CreateNew()
                     End If
                     PopulateAll()
@@ -184,24 +184,24 @@ Namespace Tables
                 End If
                 BindBoPropertiesToLabels()
                 CheckIfComingFromConfirm()
-                If Not Me.IsPostBack Then
-                    Me.AddLabelDecorations(Me.State.MyBO)
+                If Not IsPostBack Then
+                    AddLabelDecorations(State.MyBO)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
-            Me.ShowMissingTranslations(moErrorController)
+            ShowMissingTranslations(moErrorController)
         End Sub
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Try
-                If Not Me.CallingParameters Is Nothing Then
+                If CallingParameters IsNot Nothing Then
                     'Get the id from the parent
-                    Me.State.MyBO = New Item(CType(Me.CallingParameters, Guid))
+                    State.MyBO = New Item(CType(CallingParameters, Guid))
                 Else
-                    Me.State.IsItemNew = True
+                    State.IsItemNew = True
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
@@ -211,12 +211,12 @@ Namespace Tables
                 If Not Page.IsPostBack Then
                     'Me.MasterPage.MessageController.AddWarning("RECORD_IN_USE")
                     'moErrorController.AddErrorAndShow("RECORD_IN_USE", True)
-                    Me.DisplayMessage("RECORD_IN_USE", "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT)
+                    DisplayMessage("RECORD_IN_USE", "", MSG_BTN_OK, MSG_TYPE_ALERT)
 
                     If ElitaPlusPrincipal.Current.IsInRole(CoverageForm.ConfigurationSuperUserRole) = False Then
                         'diable the save button to prevent any change to the coverage record
-                        Me.btnApply_WRITE.Enabled = False
-                        Me.btnDelete_WRITE.Enabled = False
+                        btnApply_WRITE.Enabled = False
+                        btnDelete_WRITE.Enabled = False
                     End If
                 End If
             End If
@@ -236,17 +236,17 @@ Namespace Tables
         '    End Try
         'End Sub
 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
         Handles multipleDropControl.SelectedDropChanged
             Try
-                Me.State.MyBO.DealerID = TheDealerControl.SelectedGuid
+                State.MyBO.DealerID = TheDealerControl.SelectedGuid
                 PopulateDealer()
-                Me.ClearList(moProductCodeDrop)
+                ClearList(moProductCodeDrop)
                 If TheDealerControl.SelectedIndex > 0 Then
                     PopulateProductCode()
                 End If
             Catch ex As Exception
-                HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
@@ -257,9 +257,9 @@ Namespace Tables
         Private Sub SaveChanges()
 
             If ApplyChanges() = True Then
-                Me.State.boChanged = True
-                If Me.State.IsItemNew = True Then
-                    Me.State.IsItemNew = False
+                State.boChanged = True
+                If State.IsItemNew = True Then
+                    State.IsItemNew = False
                 End If
                 PopulateAll()
             End If
@@ -267,8 +267,8 @@ Namespace Tables
 
         Private Sub GoBack()
             Dim retType As New ItemSearchForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back,
-                                                                                Me.State.moItemId, Me.State.boChanged)
-            Me.ReturnToCallingPage(retType)
+                                                                                State.moItemId, State.boChanged)
+            ReturnToCallingPage(retType)
         End Sub
 
         Private Function IsEditAllowed() As Boolean
@@ -279,35 +279,35 @@ Namespace Tables
             End If
         End Function
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
                 If IsEditAllowed() AndAlso IsDirtyBO() = True Then
                     Action = ACTION_BACK
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM,
-                                                Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM,
+                                                HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
                     GoBack()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub btnApply_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply_WRITE.Click
+        Private Sub btnApply_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnApply_WRITE.Click
             Try
                 SaveChanges()
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub btnUndo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+        Private Sub btnUndo_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
             Try
 
-                If Not Me.State.IsItemNew Then
+                If Not State.IsItemNew Then
                     'Reload from the DB
-                    Me.State.MyBO = New Item(Me.State.MyBO.Id)
+                    State.MyBO = New Item(State.MyBO.Id)
                     'ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
                     '    'It was a new with copy
                     '    Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
@@ -321,37 +321,37 @@ Namespace Tables
 
                 PopulateAll()
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
         Private Sub CreateNew()
-            Me.State.IsItemNew = True
-            Me.State.MyBO = New Item
+            State.IsItemNew = True
+            State.MyBO = New Item
             ClearAll()
-            Me.SetButtonsState(True)
+            SetButtonsState(True)
             'Me.TheItem.DealerID = Guid.Empty
-            Me.PopulateAll()
+            PopulateAll()
         End Sub
 
 
-        Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+        Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
 
             Try
                 PopulateBOsFromForm()
                 If IsEditAllowed() AndAlso IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
                     If IsEditAllowed() = False Then 'enable the save and delete button disabled when open the page
-                        Me.btnApply_WRITE.Enabled = True
-                        Me.btnDelete_WRITE.Enabled = True
+                        btnApply_WRITE.Enabled = True
+                        btnDelete_WRITE.Enabled = True
                     End If
 
                     CreateNew()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
@@ -360,45 +360,45 @@ Namespace Tables
 
             PopulateBOsFromForm()
             Dim newObj As New Item
-            newObj.CopyFrom(Me.State.MyBO)
+            newObj.CopyFrom(State.MyBO)
             newObj.Inuseflag = "N"
 
-            Me.State.MyBO = newObj
+            State.MyBO = newObj
 
             'Me.State.moItemId = Guid.Empty
-            Me.State.IsItemNew = True
-            Me.SetButtonsState(True)
-            Me.State.MyBO.ItemNumber = Nothing
+            State.IsItemNew = True
+            SetButtonsState(True)
+            State.MyBO.ItemNumber = Nothing
         End Sub
 
-        Private Sub btnCopy_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+        Private Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
 
             Try
                 If IsEditAllowed() AndAlso IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
                 Else
                     If IsEditAllowed() = False Then 'enable the save and delete button disabled when open the page
-                        Me.btnApply_WRITE.Enabled = True
-                        Me.btnDelete_WRITE.Enabled = True
+                        btnApply_WRITE.Enabled = True
+                        btnDelete_WRITE.Enabled = True
                     End If
                     CreateNewCopy()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+        Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
 
             Try
-                Me.State.MyBO.Delete()
-                Me.State.MyBO.Save()
-                Me.State.boChanged = True
-                Me.ReturnToCallingPage(New ItemSearchForm.ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.moItemId, Me.State.boChanged))
+                State.MyBO.Delete()
+                State.MyBO.Save()
+                State.boChanged = True
+                ReturnToCallingPage(New ItemSearchForm.ReturnType(ElitaPlusPage.DetailPageCommand.Delete, State.moItemId, State.boChanged))
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
@@ -408,22 +408,22 @@ Namespace Tables
 #Region "Handlers-Labels"
 
         Private Sub BindBoPropertiesToLabels()
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "DealerID", TheDealerControl.CaptionLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "ProductCodeId", moProductCodeLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "RiskTypeId", moRiskTypeLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "MaxReplacementCost", moMaxReplacementCostLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "OptionalItem", moOptionalItem)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "OptionalItemCode", moOptionalItemCode)
-            Me.ClearGridHeadersAndLabelsErrSign()
+            BindBOPropertyToLabel(State.MyBO, "DealerID", TheDealerControl.CaptionLabel)
+            BindBOPropertyToLabel(State.MyBO, "ProductCodeId", moProductCodeLabel)
+            BindBOPropertyToLabel(State.MyBO, "RiskTypeId", moRiskTypeLabel)
+            BindBOPropertyToLabel(State.MyBO, "MaxReplacementCost", moMaxReplacementCostLabel)
+            BindBOPropertyToLabel(State.MyBO, "OptionalItem", moOptionalItem)
+            BindBOPropertyToLabel(State.MyBO, "OptionalItemCode", moOptionalItemCode)
+            ClearGridHeadersAndLabelsErrSign()
         End Sub
 
         Private Sub ClearLabelsErrSign()
-            Me.ClearLabelErrSign(Me.TheDealerControl.CaptionLabel)
-            Me.ClearLabelErrSign(Me.moProductCodeLabel)
-            Me.ClearLabelErrSign(Me.moRiskTypeLabel)
-            Me.ClearLabelErrSign(Me.moMaxReplacementCostLabel)
-            Me.ClearLabelErrSign(Me.moOptionalItem)
-            Me.ClearLabelErrSign(Me.moOptionalItemCode)
+            ClearLabelErrSign(TheDealerControl.CaptionLabel)
+            ClearLabelErrSign(moProductCodeLabel)
+            ClearLabelErrSign(moRiskTypeLabel)
+            ClearLabelErrSign(moMaxReplacementCostLabel)
+            ClearLabelErrSign(moOptionalItem)
+            ClearLabelErrSign(moOptionalItemCode)
         End Sub
 #End Region
 
@@ -461,7 +461,7 @@ Namespace Tables
                                             True, True)
             Try
                 TheDealerControl.NothingSelected = True
-                TheDealerControl.SelectedGuid = Me.State.MyBO.DealerID
+                TheDealerControl.SelectedGuid = State.MyBO.DealerID
                 PopulateProductCode()
             Catch ex As Exception
                 moErrorController.AddError(ITEM_FORM001)
@@ -473,7 +473,7 @@ Namespace Tables
         Private Sub PopulateOptionalItem()
             Dim yesNoLkL As DataView = LookupListNew.DropdownLookupList("YESNO", ElitaPlusIdentity.Current.ActiveUser.LanguageId, True)
             'Me.BindListControlToDataView(Me.moOptionalItemDrop, yesNoLkL, "DESCRIPTION", "ID", False)
-            Me.moOptionalItemDrop.Populate(CommonConfigManager.Current.ListManager.GetList("YESNO", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+            moOptionalItemDrop.Populate(CommonConfigManager.Current.ListManager.GetList("YESNO", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
            {
               .AddBlankItem = False
            })
@@ -482,7 +482,7 @@ Namespace Tables
                 If State.MyBO.OptionalItem = Guid.Empty Then
                     BindSelectItem(GetNoID.ToString, moOptionalItemDrop) 'default to N
                 Else
-                    BindSelectItem(Me.State.MyBO.OptionalItem.ToString, moOptionalItemDrop)
+                    BindSelectItem(State.MyBO.OptionalItem.ToString, moOptionalItemDrop)
                 End If
 
             Catch ex As Exception
@@ -491,14 +491,14 @@ Namespace Tables
                 moErrorController.Show()
             End Try
         End Sub
-        Private Sub AddProductArrayForClientSide(ByVal dealerID As Guid)
+        Private Sub AddProductArrayForClientSide(dealerID As Guid)
             ' Dim dvPC As ProductCode.ProductCodeSearchByDealerDV = ProductCode.getListByDealer(dealerID, ElitaPlusIdentity.Current.ActiveUser.LanguageId, Guid.Empty)
             '  BindListTextToDataView(Me.moProductCodeDropBundledFlag, dvPC, ProductCode.ProductCodeSearchByDealerDV.COL_PRODUCT_CODE, ProductCode.ProductCodeSearchByDealerDV.COL_BUNDLED_ITEM)
             Dim listcontext As ListContext = New ListContext()
             listcontext.DealerId = dealerID
             listcontext.LanguageId = ElitaPlusIdentity.Current.ActiveUser.LanguageId
             Dim prodLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList(ListCodes.ProductCodeWithBundledItemByDealer, Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
-            Me.moProductCodeDropBundledFlag.Populate(prodLkl, New PopulateOptions() With
+            moProductCodeDropBundledFlag.Populate(prodLkl, New PopulateOptions() With
              {
             .AddBlankItem = True,
             .TextFunc = AddressOf .GetExtendedCode,
@@ -522,10 +522,10 @@ Namespace Tables
               .SortFunc = AddressOf .GetCode
              })
 
-                If Me.State.IsItemNew = True Then
+                If State.IsItemNew = True Then
                     BindSelectItem(Nothing, moProductCodeDrop)
                 Else
-                    BindSelectItem(Me.State.MyBO.ProductCodeId.ToString, moProductCodeDrop)
+                    BindSelectItem(State.MyBO.ProductCodeId.ToString, moProductCodeDrop)
                 End If
                 PopulateRiskType()
                 AddProductArrayForClientSide(oDealerId)
@@ -542,15 +542,15 @@ Namespace Tables
                 Dim listcontext As ListContext = New ListContext()
                 listcontext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
                 Dim riskTypeLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("RiskTypeByCompanyGroup", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
-                Me.moRiskTypeDrop.Populate(riskTypeLkl, New PopulateOptions() With
+                moRiskTypeDrop.Populate(riskTypeLkl, New PopulateOptions() With
              {
                .AddBlankItem = True
                 })
 
-                If Me.State.IsItemNew = True Then
+                If State.IsItemNew = True Then
                     BindSelectItem(Nothing, moRiskTypeDrop)
                 Else
-                    BindSelectItem(Me.State.MyBO.RiskTypeId.ToString, moRiskTypeDrop)
+                    BindSelectItem(State.MyBO.RiskTypeId.ToString, moRiskTypeDrop)
                 End If
                 PopulateTexts()
             Catch ex As Exception
@@ -562,10 +562,10 @@ Namespace Tables
 
         Private Sub PopulateTexts()
 
-            If Me.State.IsItemNew = True Then
-                moMaxReplacementCostText.Text = Me.GetAmountFormattedDoubleString("0")
+            If State.IsItemNew = True Then
+                moMaxReplacementCostText.Text = GetAmountFormattedDoubleString("0")
             Else
-                With Me.State.MyBO
+                With State.MyBO
                     PopulateControlFromBOProperty(moMaxReplacementCostText, .MaxReplacementCost)
                     PopulateControlFromBOProperty(moItemNumberText, .ItemNumber)
                     PopulateControlFromBOProperty(moOptionalItemCodeText, .OptionalItemCode)
@@ -582,7 +582,7 @@ Namespace Tables
 
 #Region "Gui-Validation"
 
-        Private Sub SetButtonsState(ByVal bIsNew As Boolean)
+        Private Sub SetButtonsState(bIsNew As Boolean)
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, Not bIsNew)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, Not bIsNew)
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, Not bIsNew)
@@ -595,20 +595,20 @@ Namespace Tables
 #Region "Business Part"
 
         Private Sub PopulateBOsFromForm()
-            With Me.State.MyBO
+            With State.MyBO
                 ' DropDowns
-                PopulateBOProperty(Me.State.MyBO, "DealerID", TheDealerControl.SelectedGuid)
-                PopulateBOProperty(Me.State.MyBO, "ProductCodeId", moProductCodeDrop)
-                PopulateBOProperty(Me.State.MyBO, "RiskTypeId", moRiskTypeDrop)
-                PopulateBOProperty(Me.State.MyBO, "OptionalItem", moOptionalItemDrop)
+                PopulateBOProperty(State.MyBO, "DealerID", TheDealerControl.SelectedGuid)
+                PopulateBOProperty(State.MyBO, "ProductCodeId", moProductCodeDrop)
+                PopulateBOProperty(State.MyBO, "RiskTypeId", moRiskTypeDrop)
+                PopulateBOProperty(State.MyBO, "OptionalItem", moOptionalItemDrop)
                 ' Texts
                 If moMaxReplacementCostText.Text = String.Empty Then
-                    moMaxReplacementCostText.Text = Me.GetAmountFormattedDoubleString("0")
+                    moMaxReplacementCostText.Text = GetAmountFormattedDoubleString("0")
                 End If
-                PopulateBOProperty(Me.State.MyBO, "MaxReplacementCost", moMaxReplacementCostText)
-                PopulateBOProperty(Me.State.MyBO, "OptionalItemCode", moOptionalItemCodeText)
+                PopulateBOProperty(State.MyBO, "MaxReplacementCost", moMaxReplacementCostText)
+                PopulateBOProperty(State.MyBO, "OptionalItemCode", moOptionalItemCodeText)
             End With
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Sub
@@ -616,7 +616,7 @@ Namespace Tables
         Private Function IsDirtyBO() As Boolean
             Dim bIsDirty As Boolean = True
             Try
-                With Me.State.MyBO
+                With State.MyBO
                     PopulateBOsFromForm()
                     bIsDirty = .IsDirty
                 End With
@@ -634,10 +634,10 @@ Namespace Tables
             Dim bIsOk As Boolean = True
             Dim bIsDirty As Boolean = False
             PopulateBOsFromForm()
-            With Me.State.MyBO
+            With State.MyBO
                 bIsDirty = .IsDirty
                 Dim tempMaxReplacementCost As Double = CType(moMaxReplacementCostText.Text, Double)
-                If tempMaxReplacementCost < Me.MIN_MAX_REPLACEMENT_COST Or tempMaxReplacementCost > Me.MAX_MAX_REPLACEMENT_COST Then
+                If tempMaxReplacementCost < MIN_MAX_REPLACEMENT_COST OrElse tempMaxReplacementCost > MAX_MAX_REPLACEMENT_COST Then
                     moErrorController.AddError(ITEM_FORM003)
                     moErrorController.Show()
                     bIsOk = False
@@ -657,9 +657,9 @@ Namespace Tables
             End With
             If bIsOk = True Then
                 If bIsDirty = True Then
-                    Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                    AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
                 Else
-                    Me.AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
+                    AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
                 End If
             End If
             Return bIsOk
@@ -670,20 +670,20 @@ Namespace Tables
 #Region "State-Management"
 
         Protected Sub ComingFromBack()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
             Dim sItemForm As String
 
             If Not confResponse = String.Empty Then
                 ' Return from the Back Button
 
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         ' Save and go back to Search Page
                         If ApplyChanges() = True Then
-                            Me.State.boChanged = True
+                            State.boChanged = True
                             GoBack()
                         End If
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
                         GoBack()
                 End Select
             End If
@@ -691,17 +691,17 @@ Namespace Tables
         End Sub
 
         Protected Sub ComingFromProductCodeExits()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the Back Button
 
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         ' Save the changes
                         Action = ACTION_AFTER_PRODUCTCODE_EXISTS
                         SaveChanges()
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
                         ' Do nothing
                         Action = ACTION_NONE
                 End Select
@@ -710,21 +710,21 @@ Namespace Tables
         End Sub
 
         Protected Sub ComingFromBackProductCodeExits()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
             Dim sItemForm As String
 
             If Not confResponse = String.Empty Then
                 ' Return from the Back Button
 
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         ' Save and go back to Search Page
                         Action = ACTION_AFTER_PRODUCTCODE_EXISTS
                         If ApplyChanges() = True Then
-                            Me.State.boChanged = True
+                            State.boChanged = True
                             GoBack()
                         End If
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
                         ' Go back to Search Page
                         Action = ACTION_NONE
                         GoBack()
@@ -748,7 +748,7 @@ Namespace Tables
 
             'Clean after consuming the action
 
-            Me.HiddenSaveChangesPromptResponse.Value = String.Empty
+            HiddenSaveChangesPromptResponse.Value = String.Empty
 
         End Sub
 

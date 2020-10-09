@@ -6,48 +6,48 @@ Public Class AfaReportingRates
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New AFARepRateDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class AfaReportingRates
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New AFARepRateDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -90,7 +90,7 @@ Public Class AfaReportingRates
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(AFARepRateDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class AfaReportingRates
     End Property
 
     <ValueMandatory("")> _
-    Public Property AfaInvoiceRateId() As Guid
+    Public Property AfaInvoiceRateId As Guid
         Get
             CheckDeleted()
             If row(AFARepRateDAL.COL_NAME_AFA_INVOICE_RATE_ID) Is DBNull.Value Then
@@ -110,15 +110,15 @@ Public Class AfaReportingRates
                 Return New Guid(CType(row(AFARepRateDAL.COL_NAME_AFA_INVOICE_RATE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(AFARepRateDAL.COL_NAME_AFA_INVOICE_RATE_ID, Value)
+            SetValue(AFARepRateDAL.COL_NAME_AFA_INVOICE_RATE_ID, Value)
         End Set
     End Property
 
 
 
-    Public Property RiskFee() As DecimalType
+    Public Property RiskFee As DecimalType
         Get
             CheckDeleted()
             If row(AFARepRateDAL.COL_NAME_RISK_FEE) Is DBNull.Value Then
@@ -127,15 +127,15 @@ Public Class AfaReportingRates
                 Return New DecimalType(CType(row(AFARepRateDAL.COL_NAME_RISK_FEE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(AFARepRateDAL.COL_NAME_RISK_FEE, Value)
+            SetValue(AFARepRateDAL.COL_NAME_RISK_FEE, Value)
         End Set
     End Property
 
 
 
-    Public Property SpmCoe() As DecimalType
+    Public Property SpmCoe As DecimalType
         Get
             CheckDeleted()
             If row(AFARepRateDAL.COL_NAME_SPM_COE) Is DBNull.Value Then
@@ -144,15 +144,15 @@ Public Class AfaReportingRates
                 Return New DecimalType(CType(row(AFARepRateDAL.COL_NAME_SPM_COE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(AFARepRateDAL.COL_NAME_SPM_COE, Value)
+            SetValue(AFARepRateDAL.COL_NAME_SPM_COE, Value)
         End Set
     End Property
 
 
 
-    Public Property FullfillmentNotification() As DecimalType
+    Public Property FullfillmentNotification As DecimalType
         Get
             CheckDeleted()
             If row(AFARepRateDAL.COL_NAME_FULLFILLMENT_NOTIFICATION) Is DBNull.Value Then
@@ -161,15 +161,15 @@ Public Class AfaReportingRates
                 Return New DecimalType(CType(row(AFARepRateDAL.COL_NAME_FULLFILLMENT_NOTIFICATION), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(AFARepRateDAL.COL_NAME_FULLFILLMENT_NOTIFICATION, Value)
+            SetValue(AFARepRateDAL.COL_NAME_FULLFILLMENT_NOTIFICATION, Value)
         End Set
     End Property
 
 
 
-    Public Property MarketingExpenses() As DecimalType
+    Public Property MarketingExpenses As DecimalType
         Get
             CheckDeleted()
             If row(AFARepRateDAL.COL_NAME_MARKETING_EXPENSES) Is DBNull.Value Then
@@ -178,15 +178,15 @@ Public Class AfaReportingRates
                 Return New DecimalType(CType(row(AFARepRateDAL.COL_NAME_MARKETING_EXPENSES), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(AFARepRateDAL.COL_NAME_MARKETING_EXPENSES, Value)
+            SetValue(AFARepRateDAL.COL_NAME_MARKETING_EXPENSES, Value)
         End Set
     End Property
 
 
 
-    Public Property PremiumTaxes() As DecimalType
+    Public Property PremiumTaxes As DecimalType
         Get
             CheckDeleted()
             If row(AFARepRateDAL.COL_NAME_PREMIUM_TAXES) Is DBNull.Value Then
@@ -195,15 +195,15 @@ Public Class AfaReportingRates
                 Return New DecimalType(CType(row(AFARepRateDAL.COL_NAME_PREMIUM_TAXES), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(AFARepRateDAL.COL_NAME_PREMIUM_TAXES, Value)
+            SetValue(AFARepRateDAL.COL_NAME_PREMIUM_TAXES, Value)
         End Set
     End Property
 
 
 
-    Public Property LossReserveCost() As DecimalType
+    Public Property LossReserveCost As DecimalType
         Get
             CheckDeleted()
             If row(AFARepRateDAL.COL_NAME_LOSS_RESERVE_COST) Is DBNull.Value Then
@@ -212,15 +212,15 @@ Public Class AfaReportingRates
                 Return New DecimalType(CType(row(AFARepRateDAL.COL_NAME_LOSS_RESERVE_COST), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(AFARepRateDAL.COL_NAME_LOSS_RESERVE_COST, Value)
+            SetValue(AFARepRateDAL.COL_NAME_LOSS_RESERVE_COST, Value)
         End Set
     End Property
 
 
 
-    Public Property Overhead() As DecimalType
+    Public Property Overhead As DecimalType
         Get
             CheckDeleted()
             If row(AFARepRateDAL.COL_NAME_OVERHEAD) Is DBNull.Value Then
@@ -229,15 +229,15 @@ Public Class AfaReportingRates
                 Return New DecimalType(CType(row(AFARepRateDAL.COL_NAME_OVERHEAD), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(AFARepRateDAL.COL_NAME_OVERHEAD, Value)
+            SetValue(AFARepRateDAL.COL_NAME_OVERHEAD, Value)
         End Set
     End Property
 
 
 
-    Public Property GeneralExpenses() As DecimalType
+    Public Property GeneralExpenses As DecimalType
         Get
             CheckDeleted()
             If row(AFARepRateDAL.COL_NAME_GENERAL_EXPENSES) Is DBNull.Value Then
@@ -246,15 +246,15 @@ Public Class AfaReportingRates
                 Return New DecimalType(CType(row(AFARepRateDAL.COL_NAME_GENERAL_EXPENSES), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(AFARepRateDAL.COL_NAME_GENERAL_EXPENSES, Value)
+            SetValue(AFARepRateDAL.COL_NAME_GENERAL_EXPENSES, Value)
         End Set
     End Property
 
 
 
-    Public Property Assessments() As DecimalType
+    Public Property Assessments As DecimalType
         Get
             CheckDeleted()
             If row(AFARepRateDAL.COL_NAME_ASSESSMENTS) Is DBNull.Value Then
@@ -263,14 +263,14 @@ Public Class AfaReportingRates
                 Return New DecimalType(CType(row(AFARepRateDAL.COL_NAME_ASSESSMENTS), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(AFARepRateDAL.COL_NAME_ASSESSMENTS, Value)
+            SetValue(AFARepRateDAL.COL_NAME_ASSESSMENTS, Value)
         End Set
     End Property
 
 
-    Public Property Lae() As DecimalType
+    Public Property Lae As DecimalType
         Get
             CheckDeleted()
             If Row(AFARepRateDAL.COL_NAME_LAE) Is DBNull.Value Then
@@ -279,9 +279,9 @@ Public Class AfaReportingRates
                 Return New DecimalType(CType(Row(AFARepRateDAL.COL_NAME_LAE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(AFARepRateDAL.COL_NAME_LAE, Value)
+            SetValue(AFARepRateDAL.COL_NAME_LAE, Value)
         End Set
     End Property
 
@@ -291,15 +291,15 @@ Public Class AfaReportingRates
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New AFARepRateDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -309,7 +309,7 @@ Public Class AfaReportingRates
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getList(ByVal afaInvoiceRateId As Guid) As RptRateSearchDV
+    Public Shared Function getList(afaInvoiceRateId As Guid) As RptRateSearchDV
         Try
             Dim dal As New AFARepRateDAL
             Return New RptRateSearchDV(dal.LoadList(afaInvoiceRateId).Tables(0))
@@ -340,14 +340,14 @@ Public Class AfaReportingRates
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
 
 
-    Public Shared Sub AddNewRowToSearchDV(ByRef dv As RptRateSearchDV, ByVal NewBO As AfaReportingRates)
+    Public Shared Sub AddNewRowToSearchDV(ByRef dv As RptRateSearchDV, NewBO As AfaReportingRates)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         If NewBO.IsNew Then
@@ -375,34 +375,34 @@ Public Class AfaReportingRates
             row(RptRateSearchDV.COL_AFA_REPORTING_RATE_ID) = NewBO.Id.ToByteArray
             row(RptRateSearchDV.COL_AFA_INVOICE_RATE_ID) = NewBO.AfaInvoiceRateId.ToByteArray
 
-            If Not NewBO.RiskFee Is Nothing Then
+            If NewBO.RiskFee IsNot Nothing Then
                 row(RptRateSearchDV.COL_RISK_FEE) = NewBO.RiskFee.Value
             End If
-            If Not NewBO.SpmCoe Is Nothing Then
+            If NewBO.SpmCoe IsNot Nothing Then
                 row(RptRateSearchDV.COL_SPM_COE) = NewBO.SpmCoe.Value
             End If
-            If Not NewBO.FullfillmentNotification Is Nothing Then
+            If NewBO.FullfillmentNotification IsNot Nothing Then
                 row(RptRateSearchDV.COL_FULLFILLMENT_NOTIFICATION) = NewBO.FullfillmentNotification.Value
             End If
-            If Not NewBO.MarketingExpenses Is Nothing Then
+            If NewBO.MarketingExpenses IsNot Nothing Then
                 row(RptRateSearchDV.COL_MARKETING_EXPENSES) = NewBO.MarketingExpenses.Value
             End If
-            If Not NewBO.PremiumTaxes Is Nothing Then
+            If NewBO.PremiumTaxes IsNot Nothing Then
                 row(RptRateSearchDV.COL_PREMIUM_TAXES) = NewBO.PremiumTaxes.Value
             End If
-            If Not NewBO.LossReserveCost Is Nothing Then
+            If NewBO.LossReserveCost IsNot Nothing Then
                 row(RptRateSearchDV.COL_LOSS_RESERVE_COST) = NewBO.LossReserveCost.Value
             End If
-            If Not NewBO.Overhead Is Nothing Then
+            If NewBO.Overhead IsNot Nothing Then
                 row(RptRateSearchDV.COL_OVERHEAD) = NewBO.Overhead.Value
             End If
-            If Not NewBO.GeneralExpenses Is Nothing Then
+            If NewBO.GeneralExpenses IsNot Nothing Then
                 row(RptRateSearchDV.COL_GENERAL_EXPENSES) = NewBO.GeneralExpenses.Value
             End If
-            If Not NewBO.Assessments Is Nothing Then
+            If NewBO.Assessments IsNot Nothing Then
                 row(RptRateSearchDV.COL_ASSESSMENTS) = NewBO.Assessments.Value
             End If
-            If Not NewBO.Lae Is Nothing Then
+            If NewBO.Lae IsNot Nothing Then
                 row(RptRateSearchDV.COL_LAE) = NewBO.Lae.Value
             End If
             dt.Rows.Add(row)

@@ -25,50 +25,50 @@ Public Class EarningCodeDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("earning_code_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function LoadList(ByVal descriptionMask As String, ByVal codeMask As String, ByVal CompanyGroupId As Guid) As DataSet
+    Public Function LoadList(descriptionMask As String, codeMask As String, CompanyGroupId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim whereClauseConditions As String = ""
         Dim parameters() As DBHelper.DBHelperParameter
         Dim ds As New DataSet
 
-        If ((Not (descriptionMask Is Nothing)) AndAlso (Me.FormatSearchMask(descriptionMask))) Then
-            whereClauseConditions &= " AND UPPER(" & Me.COL_NAME_DESCRIPTION & ")" & descriptionMask.ToUpper
+        If ((Not (descriptionMask Is Nothing)) AndAlso (FormatSearchMask(descriptionMask))) Then
+            whereClauseConditions &= " AND UPPER(" & COL_NAME_DESCRIPTION & ")" & descriptionMask.ToUpper
         End If
 
-        If ((Not (codeMask Is Nothing)) AndAlso (Me.FormatSearchMask(codeMask))) Then
-            whereClauseConditions &= Environment.NewLine & " AND UPPER(" & Me.COL_NAME_CODE & ")" & codeMask.ToUpper
+        If ((Not (codeMask Is Nothing)) AndAlso (FormatSearchMask(codeMask))) Then
+            whereClauseConditions &= Environment.NewLine & " AND UPPER(" & COL_NAME_CODE & ")" & codeMask.ToUpper
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         parameters = New DBHelper.DBHelperParameter() _
-                    {New DBHelper.DBHelperParameter(Me.COL_NAME_COMPANY_GROUP_ID, CompanyGroupId.ToByteArray)}
+                    {New DBHelper.DBHelperParameter(COL_NAME_COMPANY_GROUP_ID, CompanyGroupId.ToByteArray)}
 
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
         Return ds
 
@@ -77,12 +77,12 @@ Public Class EarningCodeDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

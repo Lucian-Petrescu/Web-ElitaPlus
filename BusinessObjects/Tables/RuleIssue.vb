@@ -8,48 +8,48 @@ Public Class RuleIssue
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New RuleIssueDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -57,23 +57,23 @@ Public Class RuleIssue
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New RuleIssueDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -91,7 +91,7 @@ Public Class RuleIssue
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid Implements IExpirable.ID
+    Public ReadOnly Property Id As Guid Implements IExpirable.ID
         Get
             If Row(RuleIssueDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -102,7 +102,7 @@ Public Class RuleIssue
     End Property
 
 
-    Public Property IssueId() As Guid
+    Public Property IssueId As Guid
         Get
             CheckDeleted()
             If Row(RuleIssueDAL.COL_NAME_ISSUE_ID) Is DBNull.Value Then
@@ -111,13 +111,13 @@ Public Class RuleIssue
                 Return New Guid(CType(Row(RuleIssueDAL.COL_NAME_ISSUE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(RuleIssueDAL.COL_NAME_ISSUE_ID, Value)
+            SetValue(RuleIssueDAL.COL_NAME_ISSUE_ID, Value)
         End Set
     End Property
 
-    Public Property RuleId() As Guid
+    Public Property RuleId As Guid
         Get
             CheckDeleted()
             If row(RuleIssueDAL.COL_NAME_RULE_ID) Is DBNull.Value Then
@@ -126,14 +126,14 @@ Public Class RuleIssue
                 Return New Guid(CType(row(RuleIssueDAL.COL_NAME_RULE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(RuleIssueDAL.COL_NAME_RULE_ID, Value)
+            SetValue(RuleIssueDAL.COL_NAME_RULE_ID, Value)
         End Set
     End Property
 
 
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(RuleIssueDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -142,13 +142,13 @@ Public Class RuleIssue
                 Return CType(Row(RuleIssueDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             'do nothing
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property Effective() As DateTimeType Implements IExpirable.Effective
+    Public Property Effective As DateTimeType Implements IExpirable.Effective
         Get
             CheckDeleted()
             If Row(RuleIssueDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -157,15 +157,15 @@ Public Class RuleIssue
                 Return New DateTimeType(CType(Row(RuleIssueDAL.COL_NAME_EFFECTIVE), DateTime))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
-            Me.SetValue(RuleIssueDAL.COL_NAME_EFFECTIVE, Value)
+            SetValue(RuleIssueDAL.COL_NAME_EFFECTIVE, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property Expiration() As DateTimeType Implements IExpirable.Expiration
+    Public Property Expiration As DateTimeType Implements IExpirable.Expiration
         Get
             CheckDeleted()
             If Row(RuleIssueDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
@@ -174,9 +174,9 @@ Public Class RuleIssue
                 Return New DateTimeType(CType(Row(RuleIssueDAL.COL_NAME_EXPIRATION), DateTime))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
-            Me.SetValue(RuleIssueDAL.COL_NAME_EXPIRATION, Value)
+            SetValue(RuleIssueDAL.COL_NAME_EXPIRATION, Value)
         End Set
     End Property
 
@@ -193,15 +193,15 @@ Public Class RuleIssue
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New RuleIssueDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -225,15 +225,15 @@ Public Class RuleIssue
     Public Class IssueRuleDetailView
         Inherits BusinessObjectListBase
 
-        Public Sub New(ByVal parent As Rule)
+        Public Sub New(parent As Rule)
             MyBase.New(LoadTable(parent), GetType(RuleIssue), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return CType(bo, RuleIssue).RuleId.Equals(CType(Parent, Rule).Id)
         End Function
 
-        Private Shared Function LoadTable(ByVal parent As Rule) As DataTable
+        Private Shared Function LoadTable(parent As Rule) As DataTable
             Try
                 If Not parent.IsChildrenCollectionLoaded(GetType(IssueRuleDetailView)) Then
                     Dim dal As New RuleIssueDAL
@@ -251,14 +251,14 @@ Public Class RuleIssue
 
 #Region "Public Methods"
 
-    Public Sub Copy(ByVal original As RuleIssue)
-        If Not Me.IsNew Then
+    Public Sub Copy(original As RuleIssue)
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Rule Issue.")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 
-    Public Shared Function IsChild(ByVal IssueId As Guid, ByVal RuleIssueId As Guid) As Byte()
+    Public Shared Function IsChild(IssueId As Guid, RuleIssueId As Guid) As Byte()
 
         Try
             Dim dal As New RuleIssueDAL
@@ -268,7 +268,7 @@ Public Class RuleIssue
             oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
             Dim ds As DataSet = dal.IsChild(RuleIssueId, IssueId, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            If Not ds Is Nothing Then
+            If ds IsNot Nothing Then
                 If ds.Tables(RuleIssueDAL.TABLE_NAME).Rows.Count > 0 Then
                     Return ds.Tables(RuleIssueDAL.TABLE_NAME).Rows(0)(RuleIssueDAL.COL_NAME_RULE_ISSUE_ID)
                 Else
@@ -280,7 +280,7 @@ Public Class RuleIssue
         End Try
     End Function
 
-    Public Shared Function GetRulesInList(ByVal IssueId As Guid) As ArrayList
+    Public Shared Function GetRulesInList(IssueId As Guid) As ArrayList
 
         Try
             Dim dal As New RuleIssueDAL
@@ -309,7 +309,7 @@ Public Class RuleIssue
         Get
             Return String.Empty
         End Get
-        Set(ByVal value As String)
+        Set
             'do nothing
         End Set
     End Property
@@ -318,7 +318,7 @@ Public Class RuleIssue
         Get
             Return Guid.Empty
         End Get
-        Set(ByVal value As Guid)
+        Set
             'do nothing
         End Set
     End Property

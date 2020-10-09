@@ -1,13 +1,12 @@
-﻿Imports Assurant.ElitaPlus.Business
+﻿
 Imports Assurant.ElitaPlus.DataEntities
-Imports Assurant.ElitaPlus.Security
 
 Public Class CompanyGroupManager
     Implements ICompanyGroupManager
 
     Private ReadOnly m_CacheFacade As ICacheFacade
 
-    Public Sub New(ByVal pCacheFacade As ICacheFacade)
+    Public Sub New(pCacheFacade As ICacheFacade)
         m_CacheFacade = pCacheFacade
     End Sub
 

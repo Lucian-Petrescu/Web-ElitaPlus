@@ -1,6 +1,9 @@
 ﻿Imports System.IO
+Imports Assurant.ElitaPlus.BusinessObjectsNew.DocumentImaging
+Imports Assurant.ElitaPlus.BusinessObjectsNew.Documents
 Imports iTextSharp.text
 Imports iTextSharp.text.pdf
+Imports Document = Assurant.ElitaPlus.BusinessObjectsNew.Doc.Document
 
 Public Class DisplayPdf
     Inherits ServerViewStatePage
@@ -12,21 +15,21 @@ Public Class DisplayPdf
     Public Const CONTENT_TYPE As String = "application/pdf"
 #End Region
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Dim oDoc As Doc.Document = New Doc.Document
-        Dim iImage As iTextSharp.text.Image
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
+        Dim oDoc As Document = New Document
+        Dim iImage As Image
         Dim iDocument As iTextSharp.text.Document
         Dim oMemoryStream As MemoryStream = New MemoryStream()
-        Dim oPdfWriter As iTextSharp.text.pdf.PdfWriter
+        Dim oPdfWriter As PdfWriter
 
         Dim ImageId As Guid
-        If Not Request.QueryString(IMAGE_ID) Is Nothing Then
+        If Request.QueryString(IMAGE_ID) IsNot Nothing Then
             ImageId = New Guid(Request.QueryString(IMAGE_ID).ToString)
         Else
             Return
         End If
 
-        If Not Request.QueryString(CLAIM_ID) Is Nothing Then
+        If Request.QueryString(CLAIM_ID) IsNot Nothing Then
             Dim claimId As Guid
             claimId = New Guid(Request.QueryString(CLAIM_ID).ToString)
             Dim oClaim As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(claimId)
@@ -35,7 +38,7 @@ Public Class DisplayPdf
 
                     Try
                         Response.Clear()
-                        Response.ContentType = Documents.DocumentManager.Current.FileTypes.Where(Function(ft) ft.Extension = ci.FileName.Split(".".ToCharArray()).Last().ToUpper()).First().MimeType
+                        Response.ContentType = DocumentManager.Current.FileTypes.Where(Function(ft) ft.Extension = ci.FileName.Split(".".ToCharArray()).Last().ToUpper()).First().MimeType
                         Response.OutputStream.Write(oClaim.Company.GetClaimImageRepository().Download(ImageId).Data, 0, oClaim.Company.GetClaimImageRepository().Download(ImageId).Data.Length)
                         Response.OutputStream.Flush()
                         Response.Buffer = True
@@ -47,7 +50,7 @@ Public Class DisplayPdf
                     End Try
                 End If
             Next
-        ElseIf Not Request.QueryString(CERTIFICATE_ID) Is Nothing Then
+        ElseIf Request.QueryString(CERTIFICATE_ID) IsNot Nothing Then
             Dim certificateId As Guid
             certificateId = New Guid(Request.QueryString(CERTIFICATE_ID).ToString)
             Dim oCertificate As Certificate = New Certificate(certificateId)
@@ -56,7 +59,7 @@ Public Class DisplayPdf
 
                     Try
                         Response.Clear()
-                        Response.ContentType = Documents.DocumentManager.Current.FileTypes.Where(Function(ft) ft.Extension = ci.FileName.Split(".".ToCharArray()).Last().ToUpper()).First().MimeType
+                        Response.ContentType = DocumentManager.Current.FileTypes.Where(Function(ft) ft.Extension = ci.FileName.Split(".".ToCharArray()).Last().ToUpper()).First().MimeType
                         Response.OutputStream.Write(oCertificate.Company.GetCertificateImageRepository().Download(ImageId).Data, 0, oCertificate.Company.GetCertificateImageRepository().Download(ImageId).Data.Length)
                         Response.OutputStream.Flush()
                         Response.Buffer = True
@@ -71,13 +74,13 @@ Public Class DisplayPdf
         Else
 
             Try
-                oDoc = DocumentImaging.Doc.DownloadDocument(ImageId)
-                iImage = iTextSharp.text.Image.GetInstance(oDoc.Data)
+                oDoc = Doc.DownloadDocument(ImageId)
+                iImage = Image.GetInstance(oDoc.Data)
 
                 Dim memStream As New MemoryStream(oDoc.Data, 0, oDoc.Data.Length, False)
 
-                Dim tif As System.Drawing.Image = System.Drawing.Image.FromStream(memStream)
-                If Not tif Is Nothing Then 'check if its a Valid Image
+                Dim tif As Drawing.Image = Drawing.Image.FromStream(memStream)
+                If tif IsNot Nothing Then 'check if its a Valid Image
                     Dim hresolution As Single = tif.Width
                     Dim vresolution As Single = tif.Height
                     tif.Dispose()
@@ -95,7 +98,7 @@ Public Class DisplayPdf
             Catch ex As Exception
                 Throw ex
             Finally
-                If (Not iDocument Is Nothing) Then
+                If (iDocument IsNot Nothing) Then
                     If iDocument.IsOpen Then
                         iDocument.Close()
                     End If

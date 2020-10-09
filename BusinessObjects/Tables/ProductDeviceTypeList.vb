@@ -1,16 +1,16 @@
 ﻿Public Class ProductDeviceTypeList
     Inherits BusinessObjectListBase
 
-    Public Sub New(ByVal parent As ProductCode)
+    Public Sub New(parent As ProductCode)
         MyBase.New(LoadTable(parent), GetType(ProductEquipment), parent)
     End Sub
 
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, ProductEquipment).ProductCodeId.Equals(CType(Parent, ProductCode).Id)
     End Function
 
-    Public Function Find(ByVal DeviceTypeId As Guid) As ProductEquipment
+    Public Function Find(DeviceTypeId As Guid) As ProductEquipment
         Dim bo As ProductEquipment
         For Each bo In Me
             If bo.DeviceTypeId.Equals(DeviceTypeId) Then Return bo
@@ -20,7 +20,7 @@
 
 
 #Region "Class Methods"
-    Private Shared Function LoadTable(ByVal parent As ProductCode) As DataTable
+    Private Shared Function LoadTable(parent As ProductCode) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(ProductDeviceTypeList)) Then
                 Dim dal As New ProductEquipmentDAL

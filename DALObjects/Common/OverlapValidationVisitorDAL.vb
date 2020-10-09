@@ -6,11 +6,11 @@
 Public Class OverlapValidationVisitorDAL
     Inherits DALBase
 
-    Public Function LoadList(ByVal id As Guid, ByVal TypeName As String, _
-                            ByVal Code As String, ByVal Effective As DateTimeType, ByVal Expiration As DateTimeType, _
-                                  ByVal ParentID As Guid) As DataSet
+    Public Function LoadList(id As Guid, TypeName As String, _
+                            Code As String, Effective As DateTimeType, Expiration As DateTimeType, _
+                                  ParentID As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/" & TypeName)
+        Dim selectStmt As String = Config("/SQL/" & TypeName)
         Dim whereClauseConditions As String = ""
 
         Dim parameters() As OracleParameter = _

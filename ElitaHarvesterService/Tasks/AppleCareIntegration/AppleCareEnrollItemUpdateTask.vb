@@ -19,7 +19,7 @@ Public Class AppleCareEnrollItemUpdateTask
 
 #Region "Constructors"
 
-    Public Sub New(ByVal machineName As String, ByVal processThreadName As String)
+    Public Sub New(machineName As String, processThreadName As String)
         MyBase.New(machineName, processThreadName)
     End Sub
 
@@ -30,7 +30,7 @@ Public Class AppleCareEnrollItemUpdateTask
         Get
             Return _certificateId
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             _certificateId = value
         End Set
     End Property
@@ -39,7 +39,7 @@ Public Class AppleCareEnrollItemUpdateTask
         Get
             Return _oCertificate
         End Get
-        Set(ByVal value As Certificate)
+        Set(value As Certificate)
             _oCertificate = value
         End Set
     End Property
@@ -71,13 +71,13 @@ Public Class AppleCareEnrollItemUpdateTask
                             Dim response As ApplePartResponse = appleCare.GetApplePartFromIMEI(CertIMEI)
                             Dim applePartNumber As String = response.PartNumber
 
-                            If response.ErrorResponse IsNot Nothing And applePartNumber Is Nothing Then
-                                failedLogs.AppendLine("Item ID: " + certItem.Id.ToString() + " - IMEI: " + CertIMEI + ". " + response.ErrorResponse.ErrorMessage)
+                            If response.ErrorResponse IsNot Nothing AndAlso applePartNumber Is Nothing Then
+                                failedLogs.AppendLine("Item ID: " & certItem.Id.ToString() & " - IMEI: " & CertIMEI & ". " & response.ErrorResponse.ErrorMessage)
                             ElseIf applePartNumber IsNot Nothing Then
                                 Dim errMsg As String
                                 errMsg = certItem.ProcessAppleCareEnrollment(applePartNumber)
                                 If errMsg.ToUpper() <> "null".ToUpper() Then
-                                    failedLogs.AppendLine("Item ID: " + certItem.Id.ToString() + " - IMEI: " + applePartNumber + ". " + errMsg)
+                                    failedLogs.AppendLine("Item ID: " & certItem.Id.ToString() & " - IMEI: " & applePartNumber & ". " & errMsg)
                                 Else
                                     countSuccessFull += 1
                                 End If
@@ -85,15 +85,15 @@ Public Class AppleCareEnrollItemUpdateTask
                             End If
 
                         Else
-                            failedLogs.AppendLine("Item ID: " + certItem.Id.ToString() + ". No IMEI present in the item.")
+                            failedLogs.AppendLine("Item ID: " & certItem.Id.ToString() & ". No IMEI present in the item.")
                         End If
 
                     Next
 
                     If failedLogs.Length > 0 Then
-                        failedLogs.AppendLine("Successfully processed " + countSuccessFull.ToString() + " out of " + oCertificateItems.Count.ToString())
-                        Me.FailReason = failedLogs.ToString()
-                        Throw New Exception(Me.FailReason)
+                        failedLogs.AppendLine("Successfully processed " & countSuccessFull.ToString() & " out of " & oCertificateItems.Count.ToString())
+                        FailReason = failedLogs.ToString()
+                        Throw New Exception(FailReason)
                     End If
                 End If
             End If
@@ -101,7 +101,7 @@ Public Class AppleCareEnrollItemUpdateTask
         Catch ex As Exception
             If failedLogs Is Nothing Then
                 failedLogs.AppendLine(ex.Message)
-                Me.FailReason = failedLogs.ToString()
+                FailReason = failedLogs.ToString()
             End If
 
             Logger.AddError(ex)

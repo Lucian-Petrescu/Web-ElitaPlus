@@ -41,25 +41,25 @@ Partial Public Class AcctAmtSrcMappingListForm
 
 #Region "Page Events"
     Private Sub UpdateBreadCrum()
-        Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
-        Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(SUMMARYTITLE)
-        Me.MasterPage.UsePageTabTitleInBreadCrum = False
-        Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+        MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
+        MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(SUMMARYTITLE)
+        MasterPage.UsePageTabTitleInBreadCrum = False
+        MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
     End Sub
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If (Not Me.IsReturningFromChild) Then Me.MasterPage.MessageController.Clear()
-        Me.Form.DefaultButton = btnSearch.UniqueID
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        If (Not IsReturningFromChild) Then MasterPage.MessageController.Clear()
+        Form.DefaultButton = btnSearch.UniqueID
         Try
-            If (Not Me.IsPostBack) Then
+            If (Not IsPostBack) Then
                 PopulateDropdowns()
 
                 ' Translate Grid Headers
-                Me.TranslateGridHeader(Me.gridFieldMapped)
-                Me.TranslateGridHeader(Me.gridFieldNotMapped)
+                TranslateGridHeader(gridFieldMapped)
+                TranslateGridHeader(gridFieldNotMapped)
 
                 ' Populate Search Criteria if Returning from Page and Information is Provided
-                If (Me.IsReturningFromChild) Then
+                If (IsReturningFromChild) Then
                     ddlDealer.SelectedValue = State.searchedDealerID.ToString
                     PopulateGrid()
                 End If
@@ -67,16 +67,16 @@ Partial Public Class AcctAmtSrcMappingListForm
 
             UpdateBreadCrum()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
-    Private Sub Page_Return(ByVal ReturnFromUrl As String, ByVal ReturnParameter As Object) Handles Me.PageReturn, Me.PageCall
-        Me.MasterPage.MessageController.Clear()
+    Private Sub Page_Return(ReturnFromUrl As String, ReturnParameter As Object) Handles Me.PageReturn, Me.PageCall
+        MasterPage.MessageController.Clear()
         Try
-            Me.MenuEnabled = True
-            Me.IsReturningFromChild = True
+            MenuEnabled = True
+            IsReturningFromChild = True
             If (ReturnParameter Is Nothing) Then
                 Exit Sub
             End If
@@ -85,12 +85,12 @@ Partial Public Class AcctAmtSrcMappingListForm
             Dim returnObj As Boolean = CType(ReturnParameter, Boolean)
             'If returnObj.HasDataChanged Then
             If returnObj = True Then
-                Me.State.SearchDVMappped = Nothing
-                Me.State.SearchDVNotMappped = Nothing
+                State.SearchDVMappped = Nothing
+                State.SearchDVNotMappped = Nothing
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
@@ -121,7 +121,7 @@ Partial Public Class AcctAmtSrcMappingListForm
             oListContext.CompanyId = UserCompanies(Index)
             Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
             If oDealerListForCompany.Count > 0 Then
-                If Not oDealerList Is Nothing Then
+                If oDealerList IsNot Nothing Then
                     oDealerList.AddRange(oDealerListForCompany)
                 Else
                     oDealerList = oDealerListForCompany.Clone()
@@ -139,30 +139,30 @@ Partial Public Class AcctAmtSrcMappingListForm
         Try
 
             Dim result As Role.RoleSearchDV
-            If Me.State.SearchDVMappped Is Nothing And Me.State.SearchDVNotMappped Is Nothing Then
+            If State.SearchDVMappped Is Nothing AndAlso State.SearchDVNotMappped Is Nothing Then
                 AfaAcctAmtSrc.getList(State.searchedDealerID, State.SearchDVMappped, State.SearchDVNotMappped)
             End If
 
             recCount = State.SearchDVMappped.Count + State.SearchDVNotMappped.Count
 
             If State.SearchDVMappped.Count > 0 Then
-                Me.gridFieldMapped.DataSource = State.SearchDVMappped
-                Me.gridFieldMapped.DataBind()
-                Me.gridFieldMapped.Visible = True
+                gridFieldMapped.DataSource = State.SearchDVMappped
+                gridFieldMapped.DataBind()
+                gridFieldMapped.Visible = True
             Else
-                Me.gridFieldMapped.Visible = False
+                gridFieldMapped.Visible = False
             End If
 
             If State.SearchDVNotMappped.Count > 0 Then
-                Me.gridFieldNotMapped.DataSource = State.SearchDVNotMappped
-                Me.gridFieldNotMapped.DataBind()
-                Me.gridFieldNotMapped.Visible = True
+                gridFieldNotMapped.DataSource = State.SearchDVNotMappped
+                gridFieldNotMapped.DataBind()
+                gridFieldNotMapped.Visible = True
             Else
-                Me.gridFieldNotMapped.Visible = False
+                gridFieldNotMapped.Visible = False
             End If
 
             If (recCount = 0) Then
-                Me.MasterPage.MessageController.AddInformation(Message.MSG_NO_RECORDS_FOUND, True)
+                MasterPage.MessageController.AddInformation(Message.MSG_NO_RECORDS_FOUND, True)
                 ControlMgr.SetVisibleControl(Me, moSearchResults, False)
             Else
                 ControlMgr.SetVisibleControl(Me, moSearchResults, True)
@@ -170,42 +170,42 @@ Partial Public Class AcctAmtSrcMappingListForm
                 lblNotMappedCnt.Text = State.SearchDVNotMappped.Count.ToString
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
 
 #Region "Button events handlers"
-    Protected Sub btnClear_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClear.Click
+    Protected Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
         Try
             ddlDealer.SelectedValue = Guid.Empty.ToString
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub btnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSearch.Click
+    Protected Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
 
-            Me.State.searchedDealerID = New Guid(ddlDealer.SelectedValue)
+            State.searchedDealerID = New Guid(ddlDealer.SelectedValue)
 
-            If (Me.State.searchedDealerID = Guid.Empty) Then
-                Me.MasterPage.MessageController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, True)
+            If (State.searchedDealerID = Guid.Empty) Then
+                MasterPage.MessageController.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, True)
                 Exit Sub
             End If
             'Reset the Caching on Search Results
 
-            Me.State.SearchDVMappped = Nothing
-            Me.State.SearchDVNotMappped = Nothing
+            State.SearchDVMappped = Nothing
+            State.SearchDVNotMappped = Nothing
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
 
 #Region "Handle grids"
-    Private Sub gridFieldMapped_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles gridFieldMapped.RowCommand
+    Private Sub gridFieldMapped_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles gridFieldMapped.RowCommand
         Try
             Select Case e.CommandName.ToString().ToUpper()
                 Case "SELECTACTION"
@@ -213,23 +213,23 @@ Partial Public Class AcctAmtSrcMappingListForm
                     objParam.ID = New Guid(e.CommandArgument.ToString)
                     objParam.ActionType = AcctAmtSrcMappingDetailForm.PageCallActionType.EditExistingMapping
                     objParam.DealerID = State.searchedDealerID
-                    Me.callPage(AcctAmtSrcMappingDetailForm.URL, objParam)
+                    callPage(AcctAmtSrcMappingDetailForm.URL, objParam)
             End Select
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub gridFieldMapped_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gridFieldMapped.RowCreated
+    Private Sub gridFieldMapped_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gridFieldMapped.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Private Sub gridFieldNotMapped_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles gridFieldNotMapped.RowCommand
+    Private Sub gridFieldNotMapped_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles gridFieldNotMapped.RowCommand
         Try
             Select Case e.CommandName.ToString().ToUpper()
                 Case "SELECTACTION"
@@ -237,18 +237,18 @@ Partial Public Class AcctAmtSrcMappingListForm
                     objParam.ID = New Guid(e.CommandArgument.ToString)
                     objParam.ActionType = AcctAmtSrcMappingDetailForm.PageCallActionType.AddNewMapping
                     objParam.DealerID = State.searchedDealerID
-                    Me.callPage(AcctAmtSrcMappingDetailForm.URL, objParam)
+                    callPage(AcctAmtSrcMappingDetailForm.URL, objParam)
             End Select
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub gridFieldNotMapped_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gridFieldNotMapped.RowCreated
+    Private Sub gridFieldNotMapped_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gridFieldNotMapped.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub

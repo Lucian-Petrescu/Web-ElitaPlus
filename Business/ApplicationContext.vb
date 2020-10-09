@@ -25,23 +25,23 @@ Public NotInheritable Class ApplicationContext
     End Property
 
     Private Sub InitializeContainer()
-        Me.Container.LoadConfiguration(DirectCast(ConfigurationManager.GetSection("Unity"), UnityConfigurationSection))
-        Me.Container.RegisterInstance(Of ListCacheManager)(New ListCacheManager(Me.Container.Resolve(Of ICommonRepository(Of List))()))
-        Me.Container.RegisterInstance(Of DealerCacheManager)(New DealerCacheManager(Me.Container.Resolve(Of IDealerRepository(Of Dealer))(),
-                                                             Me.Container.Resolve(Of IDealerRepository(Of Product))()))
-        Me.Container.RegisterInstance(Of CompanyCacheManager)(New CompanyCacheManager(Me.Container.Resolve(Of ICompanyRepository(Of Company))()))
+        Container.LoadConfiguration(DirectCast(ConfigurationManager.GetSection("Unity"), UnityConfigurationSection))
+        Container.RegisterInstance(New ListCacheManager(Container.Resolve(Of ICommonRepository(Of List))()))
+        Container.RegisterInstance(New DealerCacheManager(Container.Resolve(Of IDealerRepository(Of Dealer))(),
+                                                             Container.Resolve(Of IDealerRepository(Of Product))()))
+        Container.RegisterInstance(New CompanyCacheManager(Container.Resolve(Of ICompanyRepository(Of Company))()))
 
 
-        Me.Container.RegisterInstance(Of CountryCacheManager)(New CountryCacheManager(Me.Container.Resolve(Of ICountryRepository(Of Country))(),
-                                                                                      Me.Container.Resolve(Of ICountryRepository(Of ServiceCenter))(),
-                                                                                      Me.Container.Resolve(Of ICountryRepository(Of BankInfo))()))
+        Container.RegisterInstance(New CountryCacheManager(Container.Resolve(Of ICountryRepository(Of Country))(),
+                                                                                      Container.Resolve(Of ICountryRepository(Of ServiceCenter))(),
+                                                                                      Container.Resolve(Of ICountryRepository(Of BankInfo))()))
 
 
-        Me.Container.RegisterInstance(Of AddressCacheManager)(New AddressCacheManager(Me.Container.Resolve(Of IAddressRepository(Of Address))()))
-        Me.Container.RegisterInstance(Of CompanyGroupCacheManager)(New CompanyGroupCacheManager(Me.Container.Resolve(Of ICompanyGroupRepository(Of CompanyGroup))()))
-        Me.Container.RegisterInstance(Of EquipmentCacheManager)(New EquipmentCacheManager(Me.Container.Resolve(Of IEquipmentRepository(Of Equipment))()))
-        Me.Container.RegisterInstance(Of CurrencyCacheManager)(New CurrencyCacheManager(Me.Container.Resolve(Of ICurrencyRepository(Of Currency))()))
-        Me.Container.RegisterInstance(Of ExpressionCacheManager)(New ExpressionCacheManager(Me.Container.Resolve(Of ICommonRepository(Of Expression))()))
+        Container.RegisterInstance(New AddressCacheManager(Container.Resolve(Of IAddressRepository(Of Address))()))
+        Container.RegisterInstance(New CompanyGroupCacheManager(Container.Resolve(Of ICompanyGroupRepository(Of CompanyGroup))()))
+        Container.RegisterInstance(New EquipmentCacheManager(Container.Resolve(Of IEquipmentRepository(Of Equipment))()))
+        Container.RegisterInstance(New CurrencyCacheManager(Container.Resolve(Of ICurrencyRepository(Of Currency))()))
+        Container.RegisterInstance(New ExpressionCacheManager(Container.Resolve(Of ICommonRepository(Of Expression))()))
 
     End Sub
 

@@ -34,7 +34,7 @@ Namespace Generic
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -42,7 +42,7 @@ Namespace Generic
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
         End Sub
 
@@ -50,7 +50,7 @@ Namespace Generic
 
 #Region "Set Data"
 
-        Public Sub SetData(ByVal aDataView As DataView, ByVal oPage As ElitaPlusPage)
+        Public Sub SetData(aDataView As DataView, oPage As ElitaPlusPage)
             moAllDataView = aDataView
             moPage = oPage
         End Sub
@@ -95,7 +95,7 @@ Namespace Generic
             Next
         End Sub
 
-        Public Sub CreateTables(ByVal title As String, ByVal btnToolTip As String, ByVal btnRedirect As String, ByVal btnText As String)
+        Public Sub CreateTables(title As String, btnToolTip As String, btnRedirect As String, btnText As String)
             msTitle = title
             msBtnToolTip = btnToolTip
             msBtnText = btnText
@@ -104,7 +104,7 @@ Namespace Generic
             CreateTables()
         End Sub
 
-        Public Sub CreateTables(ByVal title As String, ByVal oSubTitleTable As DataTable)
+        Public Sub CreateTables(title As String, oSubTitleTable As DataTable)
             msTitle = title
             moSubTitleTable = oSubTitleTable
             mbIsButton = False
@@ -115,7 +115,7 @@ Namespace Generic
 #Region "Populate"
 
         ' Empty Row
-        Private Sub PopulateEmpty(ByVal oTable As HtmlTable)
+        Private Sub PopulateEmpty(oTable As HtmlTable)
             Dim oRow As HtmlTableRow
             Dim oCell As HtmlTableCell
 
@@ -147,7 +147,7 @@ Namespace Generic
         'PopulateBtn(oTable)     ' User Button like BACK
         '    PopulatePrintBtn(oTable) 'Print Button
 
-        Private Sub PopulateBtn(ByVal oRow As HtmlTableRow)
+        Private Sub PopulateBtn(oRow As HtmlTableRow)
             If mbIsButton = False Then Return
             Dim oBtn As HtmlButton = New HtmlButton
             Dim oCell As HtmlTableCell
@@ -162,7 +162,7 @@ Namespace Generic
         End Sub
 
         ' Print Button
-        Private Sub PopulatePrintBtn(ByVal oRow As HtmlTableRow)
+        Private Sub PopulatePrintBtn(oRow As HtmlTableRow)
             Dim oBtn As HtmlButton = New HtmlButton
             Dim oCell As HtmlTableCell
 
@@ -176,7 +176,7 @@ Namespace Generic
         End Sub
 
         ' Buttons
-        Private Sub PopulateBtns(ByVal oTable As HtmlTable)
+        Private Sub PopulateBtns(oTable As HtmlTable)
             Dim oRow As HtmlTableRow
 
             oRow = New HtmlTableRow
@@ -185,7 +185,7 @@ Namespace Generic
             oTable.Rows.Add(oRow)
         End Sub
 
-        Private Sub AddSubTitleCell(ByVal oRow As HtmlTableRow, ByVal sText As String)
+        Private Sub AddSubTitleCell(oRow As HtmlTableRow, sText As String)
             Dim oCell As HtmlTableCell
 
             oCell = New HtmlTableCell
@@ -195,7 +195,7 @@ Namespace Generic
             oRow.Cells.Add(oCell)
         End Sub
 
-        Private Sub PopulateSubTitle(ByVal oTable As HtmlTable)
+        Private Sub PopulateSubTitle(oTable As HtmlTable)
             Dim oDataRow As DataRow
             Dim oColumn As DataColumn
             Dim oRow As HtmlTableRow
@@ -209,7 +209,7 @@ Namespace Generic
             Next
         End Sub
 
-        Private Sub PopulateReportHeader(ByVal oTable As HtmlTable)
+        Private Sub PopulateReportHeader(oTable As HtmlTable)
             Dim oRow As HtmlTableRow
             Dim oCell As HtmlTableCell
 
@@ -228,7 +228,7 @@ Namespace Generic
             oRow.Cells.Add(oCell)
             oTable.Rows.Add(oRow)
 
-            If Not moSubTitleTable Is Nothing Then PopulateSubTitle(oTable) ' SubTitle
+            If moSubTitleTable IsNot Nothing Then PopulateSubTitle(oTable) ' SubTitle
 
             'If mbIsButton = True Then
             '    'Button
@@ -252,7 +252,7 @@ Namespace Generic
 
         End Sub
 
-        Private Sub PopulateHeaders(ByVal oHeaders As DataColumnCollection, ByVal oTable As DataTable)
+        Private Sub PopulateHeaders(oHeaders As DataColumnCollection, oTable As DataTable)
             Dim oHeader As DataColumn
             Dim oTranslationItem As TranslationItem
             Dim oAryTranslations As New ArrayList
@@ -269,7 +269,7 @@ Namespace Generic
             Next
         End Sub
 
-        Private Sub PopulateNextTable(ByVal aDataGrid As DataGrid, ByVal start As Integer)
+        Private Sub PopulateNextTable(aDataGrid As DataGrid, start As Integer)
             Try
                 Dim oRow As DataRow
                 Dim oTable As DataTable = New DataTable

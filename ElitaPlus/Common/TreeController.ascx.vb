@@ -67,13 +67,13 @@ Namespace Generic
 
 
 
-            Public Sub New(ByVal oLeaf As TreeNode, ByVal oRow As DataRow, ByVal oEventEnum As EventEnum)
+            Public Sub New(oLeaf As TreeNode, oRow As DataRow, oEventEnum As EventEnum)
                 moNode = oLeaf
                 moRow = oRow
                 moEventEnum = oEventEnum
             End Sub
 
-            Public Sub New(ByVal oNode As TreeNode, ByVal oEventEnum As EventEnum)
+            Public Sub New(oNode As TreeNode, oEventEnum As EventEnum)
                 moNode = oNode
                 moEventEnum = oEventEnum
             End Sub
@@ -104,20 +104,20 @@ Namespace Generic
                 Get
                     Return mnLevelNumber
                 End Get
-                Set(ByVal Value As Integer)
+                Set(Value As Integer)
                     mnLevelNumber = Value
                 End Set
             End Property
 
 #End Region
 
-            Public Sub New(ByVal oTree As TreeView)
+            Public Sub New(oTree As TreeView)
                 moChildTree = oTree
             End Sub
 
             Private Function GoUp() As Boolean
                 Dim bContinue As Boolean = True
-                While (moNodeEnum.MoveNext = False) And bContinue
+                While (moNodeEnum.MoveNext = False) AndAlso bContinue
                     If moEnumStack.Count > 0 Then
                         ' Go up one level
                         moNodeEnum = CType(moEnumStack(moEnumStack.Count - 1), IEnumerator)
@@ -185,7 +185,7 @@ Namespace Generic
             Get
                 Return moTree.AutoPostBack
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 moTree.AutoPostBack = Value
             End Set
         End Property
@@ -194,7 +194,7 @@ Namespace Generic
             Get
                 Return moTree.SelectedNodeIndex
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 moTree.SelectedNodeIndex = Value
             End Set
         End Property
@@ -203,7 +203,7 @@ Namespace Generic
             Get
                 Return moExpanded
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 moExpanded = Value
             End Set
         End Property
@@ -212,7 +212,7 @@ Namespace Generic
             Get
                 Return moFontWeight
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 moFontWeight = Value
             End Set
         End Property
@@ -221,8 +221,8 @@ Namespace Generic
 
 #Region "Handlers"
 
-        Public Event LeafReached(ByVal sender As TreeController, ByVal e As TreeControllerEventArgs)
-        Public Event SelectedIndexChanged(ByVal sender As TreeController, ByVal e As TreeControllerEventArgs)
+        Public Event LeafReached(sender As TreeController, e As TreeControllerEventArgs)
+        Public Event SelectedIndexChanged(sender As TreeController, e As TreeControllerEventArgs)
 
 
 #Region " Web Form Designer Generated Code "
@@ -232,7 +232,7 @@ Namespace Generic
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -240,11 +240,11 @@ Namespace Generic
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         End Sub
 
-        Private Sub moTree_SelectedIndexChange(ByVal sender As System.Object, _
-                    ByVal e As TreeViewSelectEventArgs) Handles moTree.SelectedIndexChange
+        Private Sub moTree_SelectedIndexChange(sender As System.Object, _
+                    e As TreeViewSelectEventArgs) Handles moTree.SelectedIndexChange
 
             Dim oTreeView As TreeView = CType(sender, TreeView)
             Dim sIndex As String = oTreeView.SelectedNodeIndex
@@ -263,16 +263,16 @@ Namespace Generic
         '    moTree.ExpandLevel = moTreeLevels.Count
         'End Sub
 
-        Public Sub AddData(ByVal oTreeLevel As TreeLevel)
+        Public Sub AddData(oTreeLevel As TreeLevel)
             If moTreeLevels Is Nothing Then
                 moTreeLevels = New ArrayList
             End If
-            If Not oTreeLevel Is Nothing Then
+            If oTreeLevel IsNot Nothing Then
                 moTreeLevels.Add(oTreeLevel)
             End If
         End Sub
 
-        Private Function DifferentAncestor(ByVal sPrevAncestor As String, ByVal nLevelIndex As Integer) As Boolean
+        Private Function DifferentAncestor(sPrevAncestor As String, nLevelIndex As Integer) As Boolean
             Dim bDifferent As Boolean = True
             Dim sCurrAncestor As String = ""
             Dim oRow As DataRow
@@ -296,7 +296,7 @@ Namespace Generic
             Return bDifferent
         End Function
 
-        Private Function CreateLevel(ByVal oParentNodes As TreeNodeCollection, ByVal nLevelIndex As Integer, ByVal sAncestor As String) As Boolean
+        Private Function CreateLevel(oParentNodes As TreeNodeCollection, nLevelIndex As Integer, sAncestor As String) As Boolean
             Dim oLevel As TreeLevel
             Dim oNode As TreeNode
             Dim oRow As DataRow
@@ -364,7 +364,7 @@ Namespace Generic
                 End If
 
 
-            Loop While Not bBreak And bContinue
+            Loop While Not bBreak AndAlso bContinue
             Return bContinue
 
         End Function
@@ -377,7 +377,7 @@ Namespace Generic
         ' FORMS_PERMISSIONS: Tab_ID, Tab_NAME,
         '                       FORM_ID,  FORM_NAME,
         '                            PERMISSION, TAB_ICON_IMG
-        Private Sub BindData(ByVal oNodes As TreeNodeCollection, ByVal oDataView As DataView)
+        Private Sub BindData(oNodes As TreeNodeCollection, oDataView As DataView)
             Try
                 Dim nLevelIndex As Integer = 0
                 Dim oLevel As TreeLevel
@@ -397,11 +397,11 @@ Namespace Generic
             End Try
         End Sub
 
-        Public Sub BindData(ByVal oDataView As DataView)
+        Public Sub BindData(oDataView As DataView)
             BindData(moTree.Nodes, oDataView)
         End Sub
 
-        Public Sub BindSubLevel(ByVal oParent As TreeNode, ByVal oDataView As DataView)
+        Public Sub BindSubLevel(oParent As TreeNode, oDataView As DataView)
             BindData(oParent.Nodes, oDataView)
         End Sub
 
@@ -416,13 +416,13 @@ Namespace Generic
         End Sub
 
         ' The Level is the number of dots 
-        Public Function NodeLevel(ByVal oNode As TreeNode) As Integer
+        Public Function NodeLevel(oNode As TreeNode) As Integer
             Dim sNodePath As String = oNode.GetNodeIndex
             Dim oArray As String() = Split(sNodePath, ".")
             Return oArray.Length - 1
         End Function
 
-        Public Function ObtainNodeFromIndex(ByVal oIndex As String) As TreeNode
+        Public Function ObtainNodeFromIndex(oIndex As String) As TreeNode
             Return moTree.GetNodeFromIndex(oIndex)
         End Function
 

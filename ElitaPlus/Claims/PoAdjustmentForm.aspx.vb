@@ -52,7 +52,7 @@ Namespace Claims.AccountPayable
             
     End Sub
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
             Try
                 MasterPage.MessageController.Clear_Hide()
                 SetStateProperties()
@@ -102,7 +102,7 @@ Namespace Claims.AccountPayable
         <DebuggerStepThrough()> Private Sub InitializeComponent()
 
         End Sub
-        Private Sub Page_Init(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
             InitializeComponent()
         End Sub
         Class MyState
@@ -169,7 +169,7 @@ Namespace Claims.AccountPayable
            ClearGridViewHeadersAndLabelsErrorSign()
         End Sub
 
-        Private Sub SetFocusOnEditableFieldInGrid(ByVal grid As GridView, ByVal cellPosition As Integer, ByVal controlName As String, ByVal itemIndex As Integer)
+        Private Sub SetFocusOnEditableFieldInGrid(grid As GridView, cellPosition As Integer, controlName As String, itemIndex As Integer)
             'Set focus on the Description TextBox for the EditItemIndex row
             Dim desc As TextBox = CType(grid.Rows(itemIndex).Cells(cellPosition).FindControl(controlName), TextBox)
             SetFocus(desc)
@@ -256,23 +256,23 @@ Namespace Claims.AccountPayable
             Dim gridRowIdx As Integer = PoGrid.EditIndex
             Try
                 With State.PoAdjustmentBo
-                    If (Not .vendor Is Nothing) Then
+                    If (.vendor IsNot Nothing) Then
                         CType(PoGrid.Rows(gridRowIdx).Cells(VENDOR_COL).FindControl(VENDOR_CONTROL_LABEL), Label).Text = .Vendor
                     End If
 
-                    If (Not .Ponumber Is Nothing) Then
+                    If (.Ponumber IsNot Nothing) Then
                         CType(PoGrid.Rows(gridRowIdx).Cells(PO_NUMBER_COL).FindControl(PO_NUMBER_CONTROL_LABEL), Label).Text = .PoNumber
                     End If
 
-                    If (Not .LineNumber Is Nothing) Then
+                    If (.LineNumber IsNot Nothing) Then
                         CType(PoGrid.Rows(gridRowIdx).Cells(LINE_NO_COL).FindControl(LINE_NO_CONTROL_LABEL), Label).Text = .LineNumber
                     End If
 
-                    If (Not .Itemcode Is Nothing) Then
+                    If (.Itemcode IsNot Nothing) Then
                         CType(PoGrid.Rows(gridRowIdx).Cells(ITEM_CODE_COL).FindControl(ITEM_CODE_CONTROL_LABEL), Label).Text = .ItemCode
                     End If
 
-                    If (Not .Description Is Nothing) Then
+                    If (.Description IsNot Nothing) Then
                         CType(PoGrid.Rows(gridRowIdx).Cells(DESCRIPTION_COL).FindControl(DESCRIPTION_CONTROL_LABEL), Label).Text = .Description
                     End If
 
@@ -297,12 +297,12 @@ Namespace Claims.AccountPayable
             Get
                 Return ViewState("SortDirection").ToString
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 ViewState("SortDirection") = value
             End Set
         End Property
 
-        Protected Sub ItemCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs)
+        Protected Sub ItemCreated(sender As Object, e As GridViewRowEventArgs)
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
@@ -310,7 +310,7 @@ Namespace Claims.AccountPayable
             End Try
         End Sub
 
-        Protected Sub ItemCommand(ByVal source As Object, ByVal e As GridViewCommandEventArgs)
+        Protected Sub ItemCommand(source As Object, e As GridViewCommandEventArgs)
 
             Try
                 Dim index As Integer
@@ -368,7 +368,7 @@ Namespace Claims.AccountPayable
             ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, PoGrid)
         End Sub
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 PoGrid.PageIndex = NewCurrentPageIndex(PoGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
                 State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
@@ -378,7 +378,7 @@ Namespace Claims.AccountPayable
             End Try
         End Sub
 
-        Private Sub POGrid_PageIndexChanged(ByVal source As Object, ByVal e As GridViewPageEventArgs) Handles PoGrid.PageIndexChanging
+        Private Sub POGrid_PageIndexChanged(source As Object, e As GridViewPageEventArgs) Handles PoGrid.PageIndexChanging
 
             Try
                 If (Not (State.IsEditMode)) Then
@@ -393,15 +393,15 @@ Namespace Claims.AccountPayable
 
         End Sub
 
-        Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles PoGrid.RowDataBound
+        Private Sub Grid_ItemDataBound(sender As Object, e As GridViewRowEventArgs) Handles PoGrid.RowDataBound
             Try
                 
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-                If Not dvRow Is Nothing And Not State.bnoRow Then
+                If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
 
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         CType(e.Row.Cells(PO_LINE_ID_COL).FindControl(PO_LINE_ID_CONTROL_LABEL), Label).Text = GetGuidStringFromByteArray(CType(dvRow(PoAdjustment.PO_LINE_ID_COL), Byte()))
 
                         If (State.IsEditMode = True _
@@ -426,7 +426,7 @@ Namespace Claims.AccountPayable
             End Try
         End Sub
 
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As GridViewSortEventArgs) Handles PoGrid.Sorting
+        Private Sub Grid_SortCommand(source As Object, e As GridViewSortEventArgs) Handles PoGrid.Sorting
             Try
                 Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ", StringComparison.Ordinal)
 
@@ -444,11 +444,11 @@ Namespace Claims.AccountPayable
                 State.PageIndex = 0
                 PopulatePoGrid()
             Catch ex As Exception
-                HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Protected Sub ItemBound(ByVal source As Object, ByVal e As GridViewRowEventArgs) Handles PoGrid.RowDataBound
+        Protected Sub ItemBound(source As Object, e As GridViewRowEventArgs) Handles PoGrid.RowDataBound
 
             Try
                 If Not State.bnoRow Then
@@ -456,7 +456,7 @@ Namespace Claims.AccountPayable
                 End If
 
             Catch ex As Exception
-                HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -474,7 +474,7 @@ Namespace Claims.AccountPayable
                 PopulatePogrid()
                 State.PageIndex = PoGrid.PageIndex
             Catch ex As Exception
-                HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -485,11 +485,11 @@ Namespace Claims.AccountPayable
                     State.PoAdjustmentBo.Save()
                     State.IsAfterSave = True
                     
-                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
                     State.searchDV = Nothing
                     ReturnFromEditing()
                 Else
-                    Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
+                    MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
                     ReturnFromEditing()
                 End If
             Catch ex As Exception

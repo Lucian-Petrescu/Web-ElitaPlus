@@ -15,7 +15,7 @@ Namespace Security
 
         End Sub
        
-        Private Sub New(ByVal clone As PasswordServiceCredentials)
+        Private Sub New(clone As PasswordServiceCredentials)
             MyBase.New(clone)
         End Sub
 

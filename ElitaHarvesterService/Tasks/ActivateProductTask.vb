@@ -8,7 +8,7 @@ Public NotInheritable Class ActivateProductTask
 
 
 #Region "Constructors"
-    Public Sub New(ByVal machineName As String, ByVal processThreadName As String)
+    Public Sub New(machineName As String, processThreadName As String)
         MyBase.New(machineName, processThreadName)
     End Sub
 #End Region
@@ -37,7 +37,7 @@ Public NotInheritable Class ActivateProductTask
 
     Protected Overloads ReadOnly Property SubscriberId As String
         Get
-            Return String.Format("{0}-{1}", Me.CustRegistration.TaxId, Me.CustomerItem.ImeiNumber)
+            Return String.Format("{0}-{1}", CustRegistration.TaxId, CustomerItem.ImeiNumber)
         End Get
     End Property
 #End Region
@@ -70,7 +70,7 @@ Public NotInheritable Class ActivateProductTask
                     SaveActivationLicense(activateProductResponse.ActivationCode)
                 End If
             Else
-                Throw New Exception(Me.FailReason)
+                Throw New Exception(FailReason)
             End If
         Catch ex As Exception
             Logger.AddError(ex)
@@ -87,8 +87,8 @@ Public NotInheritable Class ActivateProductTask
         Dim oWebPasswd As WebPasswd
         oWebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__ACTIVATE_AV_PRODUCT), True)
         activateProductClient = New Antivirus.ActivateProduct.ActivateProductServiceClient("CustomBinding_IActivateProduct", oWebPasswd.Url)
-        Me.UserName = oWebPasswd.UserId
-        Me.Password = oWebPasswd.Password
+        UserName = oWebPasswd.UserId
+        Password = oWebPasswd.Password
         Return activateProductClient
     End Function
 
@@ -105,7 +105,7 @@ Public NotInheritable Class ActivateProductTask
         apRequestSubscriberInfo.Street = CustRegistration.ContactInfo.Address.Address1
         apRequestSubscriberInfo.CountryCode = CountryCode
         apRequestSubscriberInfo.EmailAddress = CustRegistration.ContactInfo.Email
-        apRequestSubscriberInfo.RequestedPassword = Codes.MCAFEE_REQ_PASSWORD
+        apRequestSubscriberInfo.RequestedPassword = Codes.MCAFEE_REQ_PASS
         Return apRequestSubscriberInfo
     End Function
 
@@ -140,8 +140,8 @@ Public NotInheritable Class ActivateProductTask
 
     Private Function GetUserAuthorization() As ActivateProductRequestUserAuthorization
         Dim apUserAuth As ActivateProductRequestUserAuthorization = New ActivateProductRequestUserAuthorization()
-        apUserAuth.UserId = Me.UserName
-        apUserAuth.Password = Me.Password
+        apUserAuth.UserId = UserName
+        apUserAuth.Password = Password
 
         Return apUserAuth
     End Function
@@ -162,10 +162,10 @@ Public NotInheritable Class ActivateProductTask
         Return apRequestTransaction
     End Function
 
-    Private Sub SaveActivationLicense(ByVal activationCode As String)
+    Private Sub SaveActivationLicense(activationCode As String)
         CustomerItem.ProductKey = activationCode
         CustomerItem.ProductProcurementDate = DateTime.Now
-        CustomerItem.OrderRefNum = Me.SubscriberId
+        CustomerItem.OrderRefNum = SubscriberId
         Try
             CustomerItem.Save()
         Catch ex As Exception
@@ -178,19 +178,19 @@ Public NotInheritable Class ActivateProductTask
     Private Function IsValidRequest() As Boolean
         Dim flag As Boolean = True
         Dim sb As StringBuilder = New StringBuilder()
-        If (Not String.IsNullOrEmpty(Me.CustomerItem.ProductKey)) Then
+        If (Not String.IsNullOrEmpty(CustomerItem.ProductKey)) Then
             flag = False
             sb.AppendLine(String.Format("Activation Key already exists for cutomer registration item id {0}", GuidControl.GuidToHexString(CustomerItem.Id)))
         End If
-        If (Me.EquipmentType <> Codes.EQUIPMENT_TYPE__TABLET AndAlso Me.EquipmentType <> Codes.EQUIPMENT_TYPE__SMARTPHONE) Then
+        If (EquipmentType <> Codes.EQUIPMENT_TYPE__TABLET AndAlso EquipmentType <> Codes.EQUIPMENT_TYPE__SMARTPHONE) Then
             flag = False
-            sb.AppendLine(String.Format("Activation cannot be done for equipement type {0} for cutomer registration item id {1}", Me.EquipmentType, GuidControl.GuidToHexString(CustomerItem.Id)))
+            sb.AppendLine(String.Format("Activation cannot be done for equipement type {0} for cutomer registration item id {1}", EquipmentType, GuidControl.GuidToHexString(CustomerItem.Id)))
         End If
 
 
         If (Not flag) Then
             Logger.AddError(sb.ToString())
-            Me.FailReason = sb.ToString()
+            FailReason = sb.ToString()
         End If
 
         Return flag

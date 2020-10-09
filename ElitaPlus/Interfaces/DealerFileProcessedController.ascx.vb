@@ -69,8 +69,8 @@ Namespace Interfaces
             Public oDataView As DataView
             Public DealerType As String = ""
             Public dealerTypeVSC As String
-            Public Sub New(ByVal UrlDetailPage As String, ByVal UrlPrintPage As String,
-            ByVal oInterfaceTypeCode As DealerFileProcessedData.InterfaceTypeCode)
+            Public Sub New(UrlDetailPage As String, UrlPrintPage As String,
+            oInterfaceTypeCode As DealerFileProcessedData.InterfaceTypeCode)
                 msUrlDetailPage = UrlDetailPage
                 msUrlPrintPage = UrlPrintPage
                 moInterfaceTypeCode = oInterfaceTypeCode
@@ -81,22 +81,22 @@ Namespace Interfaces
 #Region "Page Return"
         Private IsReturningFromChild As Boolean = False
 
-        Public Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object)
-            Me.IsReturningFromChild = True
+        Public Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object)
+            IsReturningFromChild = True
             Dim retObj As ReturnType = CType(ReturnPar, ReturnType)
             Select Case retObj.LastOperation
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    If Not retObj Is Nothing Then
+                    If retObj IsNot Nothing Then
                         Try
-                            Me.TheState.SelectedDealerFileProcessedId = retObj.SelectedDealerFileProcessedId
-                            moDataGrid.CurrentPageIndex = Me.TheState.mnPageIndex
-                            If Not Me.TheState.SelectedDealerFileProcessedId.Equals(Guid.Empty) Then
-                                Me.TheState.IsGridVisible = True
+                            TheState.SelectedDealerFileProcessedId = retObj.SelectedDealerFileProcessedId
+                            moDataGrid.CurrentPageIndex = TheState.mnPageIndex
+                            If Not TheState.SelectedDealerFileProcessedId.Equals(Guid.Empty) Then
+                                TheState.IsGridVisible = True
                                 PopulateDealerDropDown()
                                 PopulateDealerGroupDropDown()
                                 ' PopulateDealerInterface()
-                                Me.PopulateGrid(ThePage.POPULATE_ACTION_SAVE)
-                                ThePage.SetGridItemStyleColor(Me.moDataGrid)
+                                PopulateGrid(ThePage.POPULATE_ACTION_SAVE)
+                                ThePage.SetGridItemStyleColor(moDataGrid)
                                 EnableDisableButtons()
                                 ControlMgr.SetVisibleForControlFamily(ThePage, moButtonPanel, True, True)
                                 ControlMgr.SetVisibleForControlFamily(ThePage, moUpLoadPanel, True, True)
@@ -111,9 +111,9 @@ Namespace Interfaces
         Public Class ReturnType
             Public LastOperation As ElitaPlusPage.DetailPageCommand
             Public SelectedDealerFileProcessedId As Guid
-            Public Sub New(ByVal LastOp As ElitaPlusPage.DetailPageCommand, ByVal selDealerFileProcessedId As Guid)
-                Me.LastOperation = LastOp
-                Me.SelectedDealerFileProcessedId = selDealerFileProcessedId
+            Public Sub New(LastOp As ElitaPlusPage.DetailPageCommand, selDealerFileProcessedId As Guid)
+                LastOperation = LastOp
+                SelectedDealerFileProcessedId = selDealerFileProcessedId
             End Sub
         End Class
 #End Region
@@ -145,10 +145,10 @@ Namespace Interfaces
         Protected ReadOnly Property TheState() As MyState
             Get
                 Try
-                    If Me.moState Is Nothing Then
-                        Me.moState = CType(Session(SESSION_LOCALSTATE_KEY), MyState)
+                    If moState Is Nothing Then
+                        moState = CType(Session(SESSION_LOCALSTATE_KEY), MyState)
                     End If
-                    Return Me.moState
+                    Return moState
                 Catch ex As Exception
                     'When we are in design mode there is no session object
                     Return Nothing
@@ -224,7 +224,7 @@ Namespace Interfaces
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -234,12 +234,12 @@ Namespace Interfaces
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             If IsReturningFromChild Then
                 ValidateSelection()
-                If (DealerMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED Or DealerGroupMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED) Then
+                If (DealerMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED OrElse DealerGroupMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED) Then
                     TheState.IsGridVisible = True
-                    Me.PopulateGrid(ThePage.POPULATE_ACTION_SAVE)
+                    PopulateGrid(ThePage.POPULATE_ACTION_SAVE)
                     ControlMgr.SetVisibleForControlFamily(ThePage, moButtonPanel, True, True)
                     Select Case TheState.moInterfaceTypeCode
                         Case DealerFileProcessedData.InterfaceTypeCode.CERT
@@ -263,23 +263,23 @@ Namespace Interfaces
         End Sub
 
         ' This method should be called for every pageload
-        Public Sub SetErrorController(ByVal oErrorCtrl As ErrorController)
+        Public Sub SetErrorController(oErrorCtrl As ErrorController)
             ErrorCtrl = oErrorCtrl
         End Sub
 
         ' This is the initialization Method
-        Public Sub InitController(ByVal UrlDetailPage As String, ByVal UrlPrintPage As String,
-        ByVal oInterfaceTypeCode As DealerFileProcessedData.InterfaceTypeCode)
+        Public Sub InitController(UrlDetailPage As String, UrlPrintPage As String,
+        oInterfaceTypeCode As DealerFileProcessedData.InterfaceTypeCode)
 
             '   State = New MyState(UrlDetailPage, UrlPrintPage, oInterfaceTypeCode)
-            Me.moState = New MyState(UrlDetailPage, UrlPrintPage, oInterfaceTypeCode)
-            Session(SESSION_LOCALSTATE_KEY) = Me.moState
+            moState = New MyState(UrlDetailPage, UrlPrintPage, oInterfaceTypeCode)
+            Session(SESSION_LOCALSTATE_KEY) = moState
             PopulateDealerDropDown()
             PopulateDealerGroupDropDown()
             'If State.IsGridVisible Then
             '    Me.PopulateGrid()
             'End If
-            ThePage.SetGridItemStyleColor(Me.moDataGrid)
+            ThePage.SetGridItemStyleColor(moDataGrid)
             '    LoadRequiredFieldControlData()
         End Sub
 
@@ -291,9 +291,9 @@ Namespace Interfaces
             Try
                 ClearAll()
                 ValidateSelection()
-                If DealerMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED Or DealerGroupMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED Then
+                If DealerMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED OrElse DealerGroupMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED Then
                     TheState.IsGridVisible = True
-                    Me.PopulateGrid(ThePage.POPULATE_ACTION_NONE)
+                    PopulateGrid(ThePage.POPULATE_ACTION_NONE)
                     ControlMgr.SetVisibleForControlFamily(ThePage, moButtonPanel, True, True)
                     Select Case TheState.moInterfaceTypeCode
                         Case DealerFileProcessedData.InterfaceTypeCode.CERT
@@ -317,7 +317,7 @@ Namespace Interfaces
                     ControlMgr.SetVisibleForControlFamily(ThePage, moUpLoadPanel, True, True)
                 End If
             Catch ex As Exception
-                ThePage.HandleErrors(ex, Me.ErrorCtrl)
+                ThePage.HandleErrors(ex, ErrorCtrl)
             Finally
                 DropDownIndexChangedController = False
             End Try
@@ -358,44 +358,44 @@ Namespace Interfaces
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnCopyDealerFile_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopyDealerFile_WRITE.Click
+        Private Sub btnCopyDealerFile_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopyDealerFile_WRITE.Click
             Dim filename As String
             Try
                 filename = uploadDealerFile()
                 '    ExecuteAndWait(SP_DOWNLOAD, filename)
                 ThePage.DisplayMessage(Message.MSG_THE_FILE_TRANSFER_HAS_COMPLETED, "", ThePage.MSG_BTN_OK, ThePage.MSG_TYPE_INFO)
             Catch ex As Exception
-                ThePage.HandleErrors(ex, Me.ErrorCtrl)
+                ThePage.HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
 
 
 
-        Private Sub BtnValidate_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnValidate_WRITE.Click
+        Private Sub BtnValidate_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnValidate_WRITE.Click
             ExecuteAndWait(SP_VALIDATE)
         End Sub
 
-        Private Sub BtnLoadCertificate_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnLoadCertificate_WRITE.Click
+        Private Sub BtnLoadCertificate_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnLoadCertificate_WRITE.Click
             ExecuteAndWait(SP_PROCESS)
         End Sub
 
-        Private Sub BtnDeleteDealerFile_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnDeleteDealerFile_WRITE.Click
+        Private Sub BtnDeleteDealerFile_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnDeleteDealerFile_WRITE.Click
             ExecuteAndWait(SP_DELETE)
         End Sub
 
-        Private Sub BtnRejectReport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnRejectReport.Click
+        Private Sub BtnRejectReport_Click(sender As System.Object, e As System.EventArgs) Handles BtnRejectReport.Click
             RejectReport(PrintDealerLoadRejectForm.REJECT_REPORT)
         End Sub
 
-        Private Sub BtnErrorExport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnErrorExport.Click
+        Private Sub BtnErrorExport_Click(sender As System.Object, e As System.EventArgs) Handles BtnErrorExport.Click
             RejectReport(PrintDealerLoadRejectForm.ERROR_EXPORT)
         End Sub
-        Private Sub BtnProcessedExport_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtnProcessedExport.Click
+        Private Sub BtnProcessedExport_Click(sender As Object, e As System.EventArgs) Handles BtnProcessedExport.Click
             RejectReport(PrintDealerLoadRejectForm.PROCESSED_EXPORT)
         End Sub
 
-        Private Sub RejectReport(ByVal reportType As Integer)
+        Private Sub RejectReport(reportType As Integer)
             Try
                 If Not TheState.SelectedDealerFileProcessedId.Equals(Guid.Empty) Then
                     Dim param As New PrintDealerLoadRejectForm.MyState
@@ -415,7 +415,7 @@ Namespace Interfaces
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                ThePage.HandleErrors(ex, Me.ErrorCtrl)
+                ThePage.HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -424,7 +424,7 @@ Namespace Interfaces
 
 #Region "Handlers-Progress Buttons"
 
-        Private Sub btnAfterProgressBar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAfterProgressBar.Click
+        Private Sub btnAfterProgressBar_Click(sender As System.Object, e As System.EventArgs) Handles btnAfterProgressBar.Click
             AfterProgressBar()
         End Sub
 
@@ -432,26 +432,26 @@ Namespace Interfaces
 
 #Region "Handlers-Grid"
 
-        Private Sub moDataGrid_PageIndexChanged(ByVal source As System.Object, _
-                ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moDataGrid.PageIndexChanged
+        Private Sub moDataGrid_PageIndexChanged(source As System.Object, _
+                e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moDataGrid.PageIndexChanged
             Try
                 moDataGrid.CurrentPageIndex = e.NewPageIndex
                 TheState.mnPageIndex = moDataGrid.CurrentPageIndex
                 ClearSelectedDealerFile(ThePage.POPULATE_ACTION_NO_EDIT)
             Catch ex As Exception
-                ThePage.HandleErrors(ex, Me.ErrorCtrl)
+                ThePage.HandleErrors(ex, ErrorCtrl)
             End Try
 
         End Sub
 
-        Public Sub ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs)
+        Public Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
             ThePage.BaseItemCreated(sender, e)
         End Sub
 
-        Public Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+        Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
             Try
                 If e.CommandName = ThePage.EDIT_COMMAND_NAME Then
-                    TheState.SelectedDealerFileProcessedId = New Guid(e.Item.Cells(Me.GRID_COL_DEALERFILE_PROCESSED_ID_IDX).Text)
+                    TheState.SelectedDealerFileProcessedId = New Guid(e.Item.Cells(GRID_COL_DEALERFILE_PROCESSED_ID_IDX).Text)
                     TheState.mnPageIndex = moDataGrid.CurrentPageIndex
                     ThePage.callPage(TheState.msUrlDetailPage, TheState.SelectedDealerFileProcessedId)
                 ElseIf e.CommandName = ThePage.SELECT_COMMAND_NAME Then
@@ -462,25 +462,25 @@ Namespace Interfaces
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                ThePage.HandleErrors(ex, Me.ErrorCtrl)
+                ThePage.HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub moDataGrid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moDataGrid.ItemDataBound
+        Private Sub moDataGrid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moDataGrid.ItemDataBound
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 With e.Item
-                    ThePage.PopulateControlFromBOProperty(.Cells(Me.GRID_COL_DEALERFILE_PROCESSED_ID_IDX), dvRow(DealerFileProcessed.COL_NAME_DEALERFILE_PROCESSED_ID))
-                    ThePage.PopulateControlFromBOProperty(.Cells(Me.GRID_COL_FILENAME_IDX), dvRow(DealerFileProcessed.COL_NAME_FILENAME))
-                    ThePage.PopulateControlFromBOProperty(.Cells(Me.GRID_COL_RECEIVED_IDX), dvRow(DealerFileProcessed.COL_NAME_RECEIVED))
-                    ThePage.PopulateControlFromBOProperty(.Cells(Me.GRID_COL_COUNTED_IDX), dvRow(DealerFileProcessed.COL_NAME_COUNTED))
-                    ThePage.PopulateControlFromBOProperty(.Cells(Me.GRID_COL_BYPASSED_IDX), dvRow(DealerFileProcessed.COL_NAME_BYPASSED))
-                    ThePage.PopulateControlFromBOProperty(.Cells(Me.GRID_COL_REJECTED_IDX), dvRow(DealerFileProcessed.COL_NAME_REJECTED))
-                    ThePage.PopulateControlFromBOProperty(.Cells(Me.GRID_COL_VALIDATED_IDX), dvRow(DealerFileProcessed.COL_NAME_VALIDATED))
-                    ThePage.PopulateControlFromBOProperty(.Cells(Me.GRID_COL_LOADED_IDX), dvRow(DealerFileProcessed.COL_NAME_LOADED))
-                    ThePage.PopulateControlFromBOProperty(.Cells(Me.GRID_COL_LAYOUT_IDX), dvRow(DealerFileProcessed.COL_NAME_LAYOUT))
+                    ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_DEALERFILE_PROCESSED_ID_IDX), dvRow(DealerFileProcessed.COL_NAME_DEALERFILE_PROCESSED_ID))
+                    ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_FILENAME_IDX), dvRow(DealerFileProcessed.COL_NAME_FILENAME))
+                    ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_RECEIVED_IDX), dvRow(DealerFileProcessed.COL_NAME_RECEIVED))
+                    ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_COUNTED_IDX), dvRow(DealerFileProcessed.COL_NAME_COUNTED))
+                    ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_BYPASSED_IDX), dvRow(DealerFileProcessed.COL_NAME_BYPASSED))
+                    ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_REJECTED_IDX), dvRow(DealerFileProcessed.COL_NAME_REJECTED))
+                    ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_VALIDATED_IDX), dvRow(DealerFileProcessed.COL_NAME_VALIDATED))
+                    ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_LOADED_IDX), dvRow(DealerFileProcessed.COL_NAME_LOADED))
+                    ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_LAYOUT_IDX), dvRow(DealerFileProcessed.COL_NAME_LAYOUT))
                 End With
             End If
         End Sub
@@ -561,7 +561,7 @@ Namespace Interfaces
         '    End Try
         'End Sub
 
-        Private Sub ExecuteAndWait(ByVal oSP As Integer, Optional ByVal filename As String = "")
+        Private Sub ExecuteAndWait(oSP As Integer, Optional ByVal filename As String = "")
             Dim intStatus As InterfaceStatusWrk
             Dim params As InterfaceBaseForm.Params
 
@@ -586,12 +586,12 @@ Namespace Interfaces
                 '     AfterProgressBar()
                 ' End If
                 ' End If
-                params = SetParameters(Me.TheState.intStatusId, DEALERP_VARIABLE_NAME)
+                params = SetParameters(TheState.intStatusId, DEALERP_VARIABLE_NAME)
                 Session(InterfaceBaseForm.SESSION_PARAMETERS_KEY) = params
                 TheInterfaceProgress.EnableInterfaceProgress(DEALERP_VARIABLE_NAME)
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                ThePage.HandleErrors(ex, Me.ErrorCtrl)
+                ThePage.HandleErrors(ex, ErrorCtrl)
                 'Finally
                 '    If TheState.errorStatus.status = InterfaceStatusWrk.IntStatus.PENDING Then
                 '        TheInterfaceProgress.EnableInterfaceProgress(DEALERP_VARIABLE_NAME)
@@ -601,7 +601,7 @@ Namespace Interfaces
             End Try
         End Sub
 
-        Function SetParameters(ByVal intStatusId As Guid, ByVal baseController As String) As InterfaceBaseForm.Params
+        Function SetParameters(intStatusId As Guid, baseController As String) As InterfaceBaseForm.Params
             Dim params As New InterfaceBaseForm.Params
 
             With params
@@ -621,9 +621,9 @@ Namespace Interfaces
 
 #Region "Error-Management"
 
-        Private Sub ShowError(ByVal msg As String)
-            Me.ErrorCtrl.AddError(msg)
-            Me.ErrorCtrl.Show()
+        Private Sub ShowError(msg As String)
+            ErrorCtrl.AddError(msg)
+            ErrorCtrl.Show()
             AppConfig.Log(New Exception(msg))
         End Sub
 
@@ -631,7 +631,7 @@ Namespace Interfaces
 
 #Region "Button-Management"
 
-        Private Sub ExecuteSp(ByVal oSP As Integer)
+        Private Sub ExecuteSp(oSP As Integer)
             Dim oDealerFileProcessedData As New DealerFileProcessedData
             Dim oInterfaceStatusWrk As New InterfaceStatusWrk
 
@@ -640,7 +640,7 @@ Namespace Interfaces
                 If oInterfaceStatusWrk.IsfileBeingProcessed(oDealerFileProcessed.Filename) Then
                     With oDealerFileProcessedData
                         .dealerfile_processed_id = TheState.SelectedDealerFileProcessedId
-                        .DealerType = Me.TheState.DealerType
+                        .DealerType = TheState.DealerType
                         .filename = oDealerFileProcessed.Filename
                         .layout = oDealerFileProcessed.Layout
                         .fileTypeCode = TheState.moInterfaceTypeCode
@@ -664,7 +664,7 @@ Namespace Interfaces
 
         End Sub
 
-        Private Sub ExecuteDownloadSp(ByVal filename As String)
+        Private Sub ExecuteDownloadSp(filename As String)
             Dim oDealerFileProcessedData As New DealerFileProcessedData
 
             With oDealerFileProcessedData
@@ -692,7 +692,7 @@ Namespace Interfaces
             layoutFileName = webServerPath & "\" & _
                 System.IO.Path.GetFileNameWithoutExtension(webServerFile) & AppConfig.UnixServer.FtpTriggerExtension
             CreateFolder(webServerPath)
-            If Not TheState.SelectedDealerFileLayout Is Nothing Then
+            If TheState.SelectedDealerFileLayout IsNot Nothing Then
                 File.WriteAllBytes(webServerFile, fileBytes)
                 File.WriteAllBytes(layoutFileName, System.Text.Encoding.ASCII.GetBytes(TheState.SelectedDealerFileLayout))
             Else
@@ -714,7 +714,7 @@ Namespace Interfaces
 
                 Return dealerFileName
             Catch ex As Exception
-                ThePage.HandleErrors(ex, Me.ErrorCtrl)
+                ThePage.HandleErrors(ex, ErrorCtrl)
             Finally
                 '' ''objUnixFTP.CloseConnection()
             End Try
@@ -829,7 +829,7 @@ Namespace Interfaces
                         ControlMgr.SetEnableControl(ThePage, BtnValidate_WRITE, False)
                     End If
 
-                    If (.Loaded.Value = .Counted.Value) Or (.Loaded.Value = 0) Then
+                    If (.Loaded.Value = .Counted.Value) OrElse (.Loaded.Value = 0) Then
                         ControlMgr.SetEnableControl(ThePage, BtnDeleteDealerFile_WRITE, True)
                     End If
 
@@ -864,21 +864,21 @@ Namespace Interfaces
             Dim edt As ImageButton
 
             '  Enable or Disable all the EDIT  buttons on the DataGrid
-            For i = 0 To (Me.moDataGrid.Items.Count - 1)
-                edt = CType(Me.moDataGrid.Items(i).Cells(ThePage.EDIT_COL).FindControl(ThePage.EDIT_CONTROL_NAME), ImageButton)
-                If Not edt Is Nothing Then
-                    edt.Enabled = (Me.moDataGrid.Items(i).Cells(Me.GRID_COL_REJECTED_IDX).Text.Trim() <> "0" _
-                                   OrElse Me.moDataGrid.Items(i).Cells(Me.GRID_COL_BYPASSED_IDX).Text.Trim() <> "0")
+            For i = 0 To (moDataGrid.Items.Count - 1)
+                edt = CType(moDataGrid.Items(i).Cells(ThePage.EDIT_COL).FindControl(ThePage.EDIT_CONTROL_NAME), ImageButton)
+                If edt IsNot Nothing Then
+                    edt.Enabled = (moDataGrid.Items(i).Cells(GRID_COL_REJECTED_IDX).Text.Trim() <> "0" _
+                                   OrElse moDataGrid.Items(i).Cells(GRID_COL_BYPASSED_IDX).Text.Trim() <> "0")
                 End If
             Next
 
         End Sub
 
-        Private Sub ClearSelectedDealerFile(ByVal oAction As String)
+        Private Sub ClearSelectedDealerFile(oAction As String)
             moDataGrid.SelectedIndex = ThePage.NO_ITEM_SELECTED_INDEX
             DisableButtons()
             TheState.SelectedDealerFileProcessedId = Guid.Empty
-            Me.PopulateGrid(oAction)
+            PopulateGrid(oAction)
         End Sub
 
 
@@ -888,7 +888,7 @@ Namespace Interfaces
 
         Private Sub ClearAll()
             moDataGrid.CurrentPageIndex = ThePage.NO_PAGE_INDEX
-            Me.TheState.oDataView = Nothing
+            TheState.oDataView = Nothing
             moDataGrid.DataSource = Nothing
             moDataGrid.DataBind()
             TheState.SelectedDealerFileProcessedId = Guid.Empty
@@ -927,13 +927,13 @@ Namespace Interfaces
             If DealerMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED Then
                 DealerGroupMultipleDrop.NothingSelected = True
                 DealerGroupMultipleDrop.SelectedIndex = -1
-                Me.TheState.SelectedDealerGroupId = Guid.Empty
-                Me.TheState.SelectedDealerGroupCode = String.Empty
+                TheState.SelectedDealerGroupId = Guid.Empty
+                TheState.SelectedDealerGroupCode = String.Empty
             ElseIf DealerGroupMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED Then
                 DealerMultipleDrop.NothingSelected = True
                 DealerMultipleDrop.SelectedIndex = -1
-                Me.TheState.SelectedDealerId = Guid.Empty
-                Me.TheState.SelectedDealerCode = String.Empty
+                TheState.SelectedDealerId = Guid.Empty
+                TheState.SelectedDealerCode = String.Empty
             End If
         End Sub
 
@@ -1018,12 +1018,12 @@ Namespace Interfaces
                 ' If Not Me.TheState.SelectedDealerId = Guid.Empty Then
                 DealerMultipleDrop.SelectedGuid = TheState.SelectedDealerId
 
-                If Not dv Is Nothing AndAlso dv.Table.Rows.Count > 0 Then
+                If dv IsNot Nothing AndAlso dv.Table.Rows.Count > 0 Then
                     Dim Dealer_id As Guid = New Guid(CType(dv.Table.Rows(0)("ID"), Byte()))
                     Dim objDealer As New Dealer(Dealer_id)
-                    If Not objDealer Is Nothing AndAlso objDealer.DealerTypeDesc = DealerType_VSC Then
+                    If objDealer IsNot Nothing AndAlso objDealer.DealerTypeDesc = DealerType_VSC Then
                         TheState.msUrlDetailPage = DealerVSCReconWrkForm.URL
-                        Me.TheState.DealerType = objDealer.DealerTypeDesc
+                        TheState.DealerType = objDealer.DealerTypeDesc
                     End If
 
                 End If
@@ -1054,12 +1054,12 @@ Namespace Interfaces
                     ' If Not Me.TheState.SelectedDealerGroupId = Guid.Empty Then
                     DealerGroupMultipleDrop.SelectedGuid = TheState.SelectedDealerGroupId
 
-                    If Not dv Is Nothing AndAlso dv.Table.Rows.Count > 0 Then
+                    If dv IsNot Nothing AndAlso dv.Table.Rows.Count > 0 Then
                         Dim Dealer_group_id As Guid = New Guid(CType(dv.Table.Rows(0)("ID"), Byte()))
                         Dim objDealerGrp As New DealerGroup(Dealer_group_id)
 
                         TheState.msUrlDetailPage = DealerVSCReconWrkForm.URL
-                        Me.TheState.DealerType = DealerType_VSC
+                        TheState.DealerType = DealerType_VSC
 
                     End If
                     'End If
@@ -1162,22 +1162,22 @@ Namespace Interfaces
         '    EnableDisableEditControl()
         'End Sub
 
-        Private Sub PopulateGrid(ByVal oAction As String)
+        Private Sub PopulateGrid(oAction As String)
             'Dim oDataView As DataView
 
             Try
                 'DEF-2447 : START
                 'Dealer Code is not available. Check if State has these details. In that case fill from state 
-                If ((DealerMultipleDrop.SelectedGuid = Guid.Empty) AndAlso (Not Me.moState Is Nothing) _
-                        AndAlso (Me.moState.SelectedDealerId <> Guid.Empty)) Then
+                If ((DealerMultipleDrop.SelectedGuid = Guid.Empty) AndAlso (moState IsNot Nothing) _
+                        AndAlso (moState.SelectedDealerId <> Guid.Empty)) Then
                     'Set Selected Value
                     PopulateDealerDropDown()
                 ElseIf ((DealerGroupMultipleDrop.SelectedGuid = Guid.Empty) _
-                    AndAlso (Not Me.moState Is Nothing) AndAlso (Me.moState.SelectedDealerGroupId <> Guid.Empty)) Then
+                    AndAlso (moState IsNot Nothing) AndAlso (moState.SelectedDealerGroupId <> Guid.Empty)) Then
                     PopulateDealerGroupDropDown()
                 End If
                 'Reset Selected item background and enable / disable controls
-                ThePage.SetGridItemStyleColor(Me.moDataGrid)
+                ThePage.SetGridItemStyleColor(moDataGrid)
                 'EnableDisableButtons()
                 ControlMgr.SetVisibleForControlFamily(ThePage, moButtonPanel, True, True)
                 ControlMgr.SetVisibleForControlFamily(ThePage, moUpLoadPanel, True, True)
@@ -1185,10 +1185,10 @@ Namespace Interfaces
                 'DEF-2447 : END
                 SetExpectedFile()
                 'If Me.TheState.oDataView Is Nothing Then
-                Me.TheState.oDataView = GetDataView()
+                TheState.oDataView = GetDataView()
                 'End If
-                ThePage.BasePopulateGrid(moDataGrid, Me.TheState.oDataView, TheState.SelectedDealerFileProcessedId, oAction)
-                ThePage.SetPageAndSelectedIndexFromGuid(Me.TheState.oDataView, TheState.SelectedDealerFileProcessedId, moDataGrid, TheState.mnPageIndex)
+                ThePage.BasePopulateGrid(moDataGrid, TheState.oDataView, TheState.SelectedDealerFileProcessedId, oAction)
+                ThePage.SetPageAndSelectedIndexFromGuid(TheState.oDataView, TheState.SelectedDealerFileProcessedId, moDataGrid, TheState.mnPageIndex)
                 EnableDisableEditControl()
             Catch ex As Exception
                 ThePage.HandleErrors(ex, ErrorCtrl)

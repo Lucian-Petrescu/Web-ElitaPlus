@@ -30,7 +30,7 @@ Public Class QuoteEngine
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As VSCQuoteDs)
+    Public Sub New(ds As VSCQuoteDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -48,7 +48,7 @@ Public Class QuoteEngine
     Private _dealerPlansIDs As ArrayList
     Private _coveragesIDs As ArrayList
 
-    Private Sub MapDataSet(ByVal ds As VSCQuoteDs)
+    Private Sub MapDataSet(ds As VSCQuoteDs)
 
         Dim schema As String = ds.GetXmlSchema.Replace(SOURCE_COL_MAKE, DATA_COL_NAME_MANUFACTURER).Replace(SOURCE_COL_MILEAGE, DATA_COL_NAME_ODOMETER).Replace(SOURCE_COL_NEWUSED, DATA_COL_NAME_CONDITION)
 
@@ -61,8 +61,8 @@ Public Class QuoteEngine
             Next
         Next
 
-        Me.Dataset = New Dataset
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New Dataset
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -70,13 +70,13 @@ Public Class QuoteEngine
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As VSCQuoteDs)
+    Private Sub Load(ds As VSCQuoteDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -89,7 +89,7 @@ Public Class QuoteEngine
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As VSCQuoteDs)
+    Private Sub PopulateBOFromWebService(ds As VSCQuoteDs)
         Try
             If ds.VSCQuote.Count = 0 Then Exit Sub
             With ds.VSCQuote.Item(0)
@@ -127,7 +127,7 @@ Public Class QuoteEngine
         End Try
     End Sub
 
-    Private Sub NewOptional(ByVal code As String)
+    Private Sub NewOptional(code As String)
 
         Dim newRow As DataRow = Dataset.Tables(TABLE_NAME_OPTIONS).NewRow
         newRow(0) = code
@@ -138,7 +138,7 @@ Public Class QuoteEngine
     Protected Shadows Sub CheckDeleted()
     End Sub
 
-    Private Sub BuildRelatedTables(ByVal ds As Dataset)
+    Private Sub BuildRelatedTables(ds As Dataset)
         Dim dr As DataRow
         ds.Tables(1).Columns.Add(New DataColumn("Quote_Item_id_String"))
 
@@ -181,185 +181,185 @@ Public Class QuoteEngine
 
 #Region "Properties"
 
-    Public Property Manufacturer() As String
+    Public Property Manufacturer As String
         Get
-            If Row(Me.DATA_COL_NAME_MANUFACTURER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_MANUFACTURER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_MANUFACTURER), String))
+                Return (CType(Row(DATA_COL_NAME_MANUFACTURER), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_MANUFACTURER, Value)
+            SetValue(DATA_COL_NAME_MANUFACTURER, Value)
         End Set
     End Property
 
-    Public Property Model() As String
+    Public Property Model As String
         Get
-            If Row(Me.DATA_COL_NAME_MODEL) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_MODEL) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_MODEL), String)
+                Return CType(Row(DATA_COL_NAME_MODEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_MODEL, Value)
+            SetValue(DATA_COL_NAME_MODEL, Value)
         End Set
     End Property
 
-    Public Property EngineVersion() As String
+    Public Property EngineVersion As String
         Get
-            If Row(Me.DATA_COL_NAME_VERSION) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_VERSION) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_VERSION), String)
+                Return CType(Row(DATA_COL_NAME_VERSION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_VERSION, Value)
+            SetValue(DATA_COL_NAME_VERSION, Value)
         End Set
     End Property
 
-    Public Property VIN() As String
+    Public Property VIN As String
         Get
-            If Row(Me.DATA_COL_NAME_VIN) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_VIN) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_VIN), String)
+                Return CType(Row(DATA_COL_NAME_VIN), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_VIN, Value)
+            SetValue(DATA_COL_NAME_VIN, Value)
         End Set
     End Property
 
-    Public Property Year() As Integer
+    Public Property Year As Integer
         Get
-            If Row(Me.DATA_COL_NAME_YEAR) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_YEAR) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_YEAR), Integer)
+                Return CType(Row(DATA_COL_NAME_YEAR), Integer)
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_YEAR, Value)
+            SetValue(DATA_COL_NAME_YEAR, Value)
         End Set
     End Property
 
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
-            If Row(Me.DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_DEALER_CODE), String)
+                Return CType(Row(DATA_COL_NAME_DEALER_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_DEALER_CODE, Value)
+            SetValue(DATA_COL_NAME_DEALER_CODE, Value)
         End Set
     End Property
 
-    Public Property WarrantyDate() As Date
+    Public Property WarrantyDate As Date
         Get
-            If Row(Me.DATA_COL_WARRANTY_DATE) Is DBNull.Value Then
+            If Row(DATA_COL_WARRANTY_DATE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_WARRANTY_DATE), String)
+                Return CType(Row(DATA_COL_WARRANTY_DATE), String)
             End If
         End Get
-        Set(ByVal Value As Date)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_WARRANTY_DATE, Value)
+            SetValue(DATA_COL_WARRANTY_DATE, Value)
         End Set
     End Property
 
-    Public Property Odometer() As Integer
+    Public Property Odometer As Integer
         Get
-            If Row(Me.DATA_COL_NAME_ODOMETER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_ODOMETER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_ODOMETER), Integer)
+                Return CType(Row(DATA_COL_NAME_ODOMETER), Integer)
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_ODOMETER, Value)
+            SetValue(DATA_COL_NAME_ODOMETER, Value)
         End Set
     End Property
 
-    Public Property Condition() As String
+    Public Property Condition As String
         Get
-            If Row(Me.DATA_COL_NAME_CONDITION) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CONDITION) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CONDITION), String)
+                Return CType(Row(DATA_COL_NAME_CONDITION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CONDITION, Value)
+            SetValue(DATA_COL_NAME_CONDITION, Value)
         End Set
     End Property
 
-    Public Property InServiceDate() As Date
+    Public Property InServiceDate As Date
         Get
-            If Row(Me.DATA_COL_NAME_IN_SERVICE_DATE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_IN_SERVICE_DATE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_IN_SERVICE_DATE), Date)
+                Return CType(Row(DATA_COL_NAME_IN_SERVICE_DATE), Date)
             End If
         End Get
-        Set(ByVal Value As Date)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_IN_SERVICE_DATE, Value)
+            SetValue(DATA_COL_NAME_IN_SERVICE_DATE, Value)
         End Set
     End Property
 
-    Public Property VehicleLicenseTag() As String
+    Public Property VehicleLicenseTag As String
         Get
-            If Row(Me.DATA_COL_NAME_TAG) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_TAG) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_TAG), String)
+                Return CType(Row(DATA_COL_NAME_TAG), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_TAG, Value)
+            SetValue(DATA_COL_NAME_TAG, Value)
         End Set
     End Property
 
-    Public Property ExternalCarCode() As String
+    Public Property ExternalCarCode As String
         Get
-            If Row(Me.DATA_COL_EXTERNAL_CAR_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_EXTERNAL_CAR_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_EXTERNAL_CAR_CODE), String)
+                Return CType(Row(DATA_COL_EXTERNAL_CAR_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_EXTERNAL_CAR_CODE, Value)
+            SetValue(DATA_COL_EXTERNAL_CAR_CODE, Value)
         End Set
     End Property
 
-    Public Property VehicleValue() As Decimal
+    Public Property VehicleValue As Decimal
         Get
-            If Row(Me.DATA_COL_VEHICLE_VALUE) Is DBNull.Value Then
+            If Row(DATA_COL_VEHICLE_VALUE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_VEHICLE_VALUE), String)
+                Return CType(Row(DATA_COL_VEHICLE_VALUE), String)
             End If
         End Get
-        Set(ByVal Value As Decimal)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_VEHICLE_VALUE, Value)
+            SetValue(DATA_COL_VEHICLE_VALUE, Value)
         End Set
     End Property
 #End Region
@@ -391,25 +391,25 @@ Public Class QuoteEngine
         With oQuoteEngineData
             .CompanyGroupID = Authentication.CurrentUser.CompanyGroup.Id
             .UserId = ElitaPlusIdentity.Current.ActiveUser.Id
-            .Dealer = Me.DealerCode
-            .EngineVersion = Me.EngineVersion
-            .InServiceDate = Me.InServiceDate
+            .Dealer = DealerCode
+            .EngineVersion = EngineVersion
+            .InServiceDate = InServiceDate
 
-            If Me.WarrantyDate > Me.GetShortDate(Today) Then
+            If WarrantyDate > GetShortDate(Today) Then
                 Throw New BOValidationException("Quote Engine Error: ", Common.ErrorCodes.INVALID_WARRANTY_SALES_DATE)
             Else
-                .WarrantyDate = Me.WarrantyDate
+                .WarrantyDate = WarrantyDate
             End If
 
-            .Manufacturer = Me.Manufacturer
-            .Model = Me.Model
-            .NewUsed = Me.Condition
-            .Odometer = Me.Odometer
-            .VehicleLicenseTag = Me.VehicleLicenseTag
-            .VIN = Me.VIN
-            .Year = Me.Year
-            .ExternalCarCode = Me.ExternalCarCode
-            .VehicleValue = Me.VehicleValue
+            .Manufacturer = Manufacturer
+            .Model = Model
+            .NewUsed = Condition
+            .Odometer = Odometer
+            .VehicleLicenseTag = VehicleLicenseTag
+            .VIN = VIN
+            .Year = Year
+            .ExternalCarCode = ExternalCarCode
+            .VehicleValue = VehicleValue
             .Options = String.Empty
 
             ' Add the options
@@ -420,7 +420,7 @@ Public Class QuoteEngine
         End With
 
         Try
-            Me.Validate()
+            Validate()
             Dim dal As New VSCQuoteDAL
             Dim ds As Dataset
             ds = dal.GetQuote(oQuoteEngineData)
@@ -474,8 +474,12 @@ Public Class QuoteEngine
 
     End Function
 
-    Private Function RemoveExcessData(ByVal xmlStringOutput As String) As String
-        xmlStringOutput = Regex.Replace(xmlStringOutput, "<QUOTE_ITEM_ID>[^>]+</QUOTE_ITEM_ID>|<QUOTE_ITEM_PARENT_ID>[^>]+</QUOTE_ITEM_PARENT_ID>|<Quote_Item_id_String>[^>]+</Quote_Item_id_String>|<QUOTE_ID>[^>]+</QUOTE_ID>", String.Empty)
+    Private Function RemoveExcessData(xmlStringOutput As String) As String
+        xmlStringOutput = Regex.Replace(xmlStringOutput, 
+                                        "<QUOTE_ITEM_ID>[^>]+</QUOTE_ITEM_ID>|<QUOTE_ITEM_PARENT_ID>[^>]+</QUOTE_ITEM_PARENT_ID>|<Quote_Item_id_String>[^>]+</Quote_Item_id_String>|<QUOTE_ID>[^>]+</QUOTE_ID>", 
+                                        String.Empty,
+                                        RegexOptions.None, 
+                                        new TimeSpan(0,0,0,0, 100))
         Return xmlStringOutput
     End Function
 
@@ -514,32 +518,32 @@ Public Class QuoteEngine
 
 #Region "Extended Properties"
 
-    Public ReadOnly Property ModelObject() As VSCModel
+    Public ReadOnly Property ModelObject As VSCModel
         Get
-            If Me._modelObject Is Nothing Then
-                If Not Me.Manufacturer Is Nothing AndAlso Not Me.Model Is Nothing AndAlso Not Me.Year = 0 Then
-                    Me._modelObject = New VSCModel(Me.Manufacturer, Me.Model, Me.Year)
+            If _modelObject Is Nothing Then
+                If Manufacturer IsNot Nothing AndAlso Model IsNot Nothing AndAlso Not Year = 0 Then
+                    _modelObject = New VSCModel(Manufacturer, Model, Year)
                 End If
             End If
-            Return Me._modelObject
+            Return _modelObject
         End Get
     End Property
 
-    Public ReadOnly Property DealerObject() As Dealer
+    Public ReadOnly Property DealerObject As Dealer
         Get
-            If Me._DealerObject Is Nothing Then
-                If Not Me.DealerCode Is Nothing Then
-                    Me._DealerObject = New Dealer(Authentication.CurrentUser.CompanyId, Me.DealerCode)
+            If _DealerObject Is Nothing Then
+                If DealerCode IsNot Nothing Then
+                    _DealerObject = New Dealer(Authentication.CurrentUser.CompanyId, DealerCode)
                 End If
             End If
-            Return Me._DealerObject
+            Return _DealerObject
         End Get
     End Property
 
-    Public ReadOnly Property DealerContract() As Contract
+    Public ReadOnly Property DealerContract As Contract
         Get
-            If Me._ContractObject Is Nothing Then
-                _ContractObject = Contract.GetContract(Me.DealerObject.Id, Today)
+            If _ContractObject Is Nothing Then
+                _ContractObject = Contract.GetContract(DealerObject.Id, Today)
                 'Dim errors() As ValidationError = {New ValidationError(Common.ErrorCodes.DEALER_DOES_NOT_HAVE_CURRENT_CONTRACT, GetType(QuoteEngine), Nothing, Nothing, Nothing)}
                 'Throw New BOValidationException(errors, GetType(QuoteEngine).FullName)
             End If
@@ -547,25 +551,25 @@ Public Class QuoteEngine
         End Get
     End Property
 
-    Public ReadOnly Property DealerPlansIDs() As ArrayList
+    Public ReadOnly Property DealerPlansIDs As ArrayList
         Get
-            If Me._dealerPlansIDs Is Nothing Then
-                If Not Me.DealerCode Is Nothing AndAlso Not Me.DealerObject Is Nothing Then
-                    Me._dealerPlansIDs = ProductCode.GetProductCodeIDs(Me.DealerObject.Id)
+            If _dealerPlansIDs Is Nothing Then
+                If DealerCode IsNot Nothing AndAlso DealerObject IsNot Nothing Then
+                    _dealerPlansIDs = ProductCode.GetProductCodeIDs(DealerObject.Id)
                 End If
             End If
-            Return Me._dealerPlansIDs
+            Return _dealerPlansIDs
         End Get
     End Property
 
-    Public ReadOnly Property CoveragesIDs() As ArrayList
+    Public ReadOnly Property CoveragesIDs As ArrayList
         Get
-            If Me._coveragesIDs Is Nothing Then
-                If Not Me.DealerCode Is Nothing AndAlso Not Me.DealerObject Is Nothing Then
-                    Me._dealerPlansIDs = ProductCode.GetProductCodeIDs(Me.DealerObject.Id)
+            If _coveragesIDs Is Nothing Then
+                If DealerCode IsNot Nothing AndAlso DealerObject IsNot Nothing Then
+                    _dealerPlansIDs = ProductCode.GetProductCodeIDs(DealerObject.Id)
                 End If
             End If
-            Return Me._dealerPlansIDs
+            Return _dealerPlansIDs
         End Get
     End Property
 #End Region

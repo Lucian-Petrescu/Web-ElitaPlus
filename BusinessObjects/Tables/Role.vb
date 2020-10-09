@@ -7,53 +7,53 @@ Public Class Role
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
-        Me.RolePermission = New RolePermissionList(Me)
+        Dataset = New DataSet
+        Load(id)
+        RolePermission = New RolePermissionList(Me)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
-        Me.RolePermission = New RolePermissionList(Me)
+        Dataset = New DataSet
+        Load()
+        RolePermission = New RolePermissionList(Me)
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
-        Me.RolePermission = New RolePermissionList(Me)
+        Dataset = familyDS
+        Load(id)
+        RolePermission = New RolePermissionList(Me)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
-        Me.RolePermission = New RolePermissionList(Me)
+        Dataset = familyDS
+        Load()
+        RolePermission = New RolePermissionList(Me)
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
-        Me.RolePermission = New RolePermissionList(Me)
+        RolePermission = New RolePermissionList(Me)
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New RoleDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -61,23 +61,23 @@ Public Class Role
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New RoleDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -97,7 +97,7 @@ Public Class Role
     Public Property RolePermission As RolePermissionList
 
     'Key Property
-    Public ReadOnly Property Id() As Guid Implements IPermissionParent.Id
+    Public ReadOnly Property Id As Guid Implements IPermissionParent.Id
         Get
             If Row(RoleDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -108,7 +108,7 @@ Public Class Role
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=5)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(RoleDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -117,15 +117,15 @@ Public Class Role
                 Return CType(Row(RoleDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(RoleDAL.COL_NAME_CODE, Value)
+            SetValue(RoleDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=280)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(RoleDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -134,15 +134,15 @@ Public Class Role
                 Return CType(Row(RoleDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(RoleDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(RoleDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)> _
-    Public Property IhqOnly() As String
+    Public Property IhqOnly As String
         Get
             CheckDeleted()
             If Row(RoleDAL.COL_NAME_IHQ_ONLY) Is DBNull.Value Then
@@ -151,13 +151,13 @@ Public Class Role
                 Return CType(Row(RoleDAL.COL_NAME_IHQ_ONLY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(RoleDAL.COL_NAME_IHQ_ONLY, Value)
+            SetValue(RoleDAL.COL_NAME_IHQ_ONLY, Value)
         End Set
     End Property
 
-    Public Property RoleProviderId() As Guid
+    Public Property RoleProviderId As Guid
         Get
             CheckDeleted()
             If Row(RoleDAL.COL_NAME_ROLE_PROVIDER_ID) Is DBNull.Value Then
@@ -166,14 +166,14 @@ Public Class Role
                 Return New Guid(CType(Row(RoleDAL.COL_NAME_ROLE_PROVIDER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(RoleDAL.COL_NAME_ROLE_PROVIDER_ID, Value)
+            SetValue(RoleDAL.COL_NAME_ROLE_PROVIDER_ID, Value)
         End Set
     End Property
 
     'Changes for DEF : 3119
-    Public ReadOnly Property RemoteRoleId() As Guid
+    Public ReadOnly Property RemoteRoleId As Guid
         Get
             CheckDeleted()
             ' As per DEF 3119, Commented Existing logic. 
@@ -186,13 +186,13 @@ Public Class Role
 
             ' Get RoleID from AuthorizationService Role Provider 
             Dim remoteRoleProvider As IRemoteRoleProvider
-            If (Not Me.RoleProviderId.Equals(Guid.Empty)) Then
-                remoteRoleProvider = BaseRoleProvider.CreateRoleProvider(Me.RoleProviderId)
+            If (Not RoleProviderId.Equals(Guid.Empty)) Then
+                remoteRoleProvider = BaseRoleProvider.CreateRoleProvider(RoleProviderId)
 
                 'For Getting ID in Remote Service need to pass Original Code else no information will be available 
-                Dim originalRoleCode As String = CType(Me.Row(RoleDAL.COL_NAME_CODE, DataRowVersion.Original), String)
+                Dim originalRoleCode As String = CType(Row(RoleDAL.COL_NAME_CODE, DataRowVersion.Original), String)
 
-                If (Not remoteRoleProvider Is Nothing AndAlso Not String.IsNullOrEmpty(originalRoleCode.Trim())) Then
+                If (remoteRoleProvider IsNot Nothing AndAlso Not String.IsNullOrEmpty(originalRoleCode.Trim())) Then
                     Return remoteRoleProvider.GetRoleId(originalRoleCode.Trim())
                 End If
 
@@ -218,19 +218,19 @@ Public Class Role
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsFamilyDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsFamilyDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New RoleDAL
                 ' Call Web Service to Manage Role on Remote System
-                If Assurant.Elita.Configuration.ElitaConfig.Current.General.IntegrateWorkQueueImagingServices = True Then
+                If Elita.Configuration.ElitaConfig.Current.General.IntegrateWorkQueueImagingServices = True Then
                     UpdateRemoteRole()
                 End If
-                dal.UpdateFamily(Me.Dataset)
+                dal.UpdateFamily(Dataset)
                     'Reload the Data from the DB
-                    If Me.Row.RowState <> DataRowState.Detached Then
-                        Dim objId As Guid = Me.Id
-                        Me.Dataset = New DataSet
-                        Me.Row = Nothing
-                        Me.Load(objId)
+                    If Row.RowState <> DataRowState.Detached Then
+                        Dim objId As Guid = Id
+                        Dataset = New DataSet
+                        Row = Nothing
+                        Load(objId)
                     End If
                 End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -240,18 +240,18 @@ Public Class Role
 
     Private Sub UpdateRemoteRole()
         Dim remoteRoleProvider As IRemoteRoleProvider
-        Select Case Me.Row.RowState
+        Select Case Row.RowState
             Case DataRowState.Added
                 ' Check if Remote Provider is Selected, if not clear remote role ID
-                If (Me.RoleProviderId.Equals(Guid.Empty)) Then
+                If (RoleProviderId.Equals(Guid.Empty)) Then
                     ' DEF  :3119 (Commented as this property is readonly now)
                     'Me.RemoteRoleId = Guid.Empty
                     'DEF:3119 : Change completed 
                     Exit Sub
                 End If
 
-                If (Not Me.RoleProviderId.Equals(Guid.Empty)) Then
-                    remoteRoleProvider = BaseRoleProvider.CreateRoleProvider(Me.RoleProviderId)
+                If (Not RoleProviderId.Equals(Guid.Empty)) Then
+                    remoteRoleProvider = BaseRoleProvider.CreateRoleProvider(RoleProviderId)
                 End If
 
 
@@ -259,15 +259,15 @@ Public Class Role
                     ' DEF  :3119 (Commented as this property is readonly now)
                     '    Me.RemoteRoleId = remoteRoleProvider.CreateRole(Me.Id, Me.Code)
                     'DEF:3119 : Change completed 
-                    remoteRoleProvider.CreateRole(Me.Id, Me.Code)   'Add new role to Remote system 
+                    remoteRoleProvider.CreateRole(Id, Code)   'Add new role to Remote system 
                 End If
 
 
             Case DataRowState.Deleted
                 ' Check if Remote Provider is in original version, if not clear remote role ID in original record
                 Dim roleProviderId As Guid = Guid.Empty
-                If (Not Me.Row.Item(RoleDAL.COL_NAME_ROLE_PROVIDER_ID, DataRowVersion.Original) Is DBNull.Value) Then
-                    roleProviderId = New Guid(CType(Me.Row.Item(RoleDAL.COL_NAME_ROLE_PROVIDER_ID, DataRowVersion.Original), Byte()))
+                If (Row.Item(RoleDAL.COL_NAME_ROLE_PROVIDER_ID, DataRowVersion.Original) IsNot DBNull.Value) Then
+                    roleProviderId = New Guid(CType(Row.Item(RoleDAL.COL_NAME_ROLE_PROVIDER_ID, DataRowVersion.Original), Byte()))
                 End If
                 If (roleProviderId.Equals(Guid.Empty)) Then
                     Exit Sub
@@ -277,8 +277,8 @@ Public Class Role
                     ' Get Remote Role ID (Changes for DEF-3119)
                     'remoteRoleProvider.DeleteRole(New Guid(CType(Me.Row(RoleDAL.COL_NAME_ROLE_ID, DataRowVersion.Original), Byte())), New Guid(CType(Me.Row(RoleDAL.COL_NAME_REMOTE_ROLE_ID, DataRowVersion.Original), Byte())), CType(Me.Row(RoleDAL.COL_NAME_CODE, DataRowVersion.Original), String))
                     'Get GUID from Webservice (RemoID property cannot be called as it first checks Deleted Row status ans from there throws exception)
-                    Dim remoteRoleID As Guid = remoteRoleProvider.GetRoleId(Me.Row(RoleDAL.COL_NAME_CODE, DataRowVersion.Original))
-                    remoteRoleProvider.DeleteRole(New Guid(CType(Me.Row(RoleDAL.COL_NAME_ROLE_ID, DataRowVersion.Original), Byte())), remoteRoleID, CType(Me.Row(RoleDAL.COL_NAME_CODE, DataRowVersion.Original), String))
+                    Dim remoteRoleID As Guid = remoteRoleProvider.GetRoleId(Row(RoleDAL.COL_NAME_CODE, DataRowVersion.Original))
+                    remoteRoleProvider.DeleteRole(New Guid(CType(Row(RoleDAL.COL_NAME_ROLE_ID, DataRowVersion.Original), Byte())), remoteRoleID, CType(Row(RoleDAL.COL_NAME_CODE, DataRowVersion.Original), String))
                     'Changes for DEF-3119 ended 
                 End If
             Case DataRowState.Modified
@@ -288,14 +288,14 @@ Public Class Role
                 If Row(RoleDAL.COL_NAME_ROLE_PROVIDER_ID, DataRowVersion.Original) Is DBNull.Value Then
                     originalRoleProviderId = Guid.Empty
                 Else
-                    originalRoleProviderId = New Guid(CType(Me.Row.Item(RoleDAL.COL_NAME_ROLE_PROVIDER_ID, DataRowVersion.Original), Byte()))
+                    originalRoleProviderId = New Guid(CType(Row.Item(RoleDAL.COL_NAME_ROLE_PROVIDER_ID, DataRowVersion.Original), Byte()))
                 End If
-                currentRoleProviderId = Me.RoleProviderId
+                currentRoleProviderId = RoleProviderId
                 ' Check if Role Provider has changed
                 If (originalRoleProviderId.Equals(currentRoleProviderId)) Then
 
 
-                    If (Me.RoleProviderId.Equals(Guid.Empty)) Then
+                    If (RoleProviderId.Equals(Guid.Empty)) Then
                         ' DEF  :3119 (Commented as this property is readonly now)
                         'Me.RemoteRoleId = Guid.Empty
                         ' DEF  :3119 Changes completed 
@@ -304,10 +304,10 @@ Public Class Role
 
 
                     ' Check if Code has changed
-                    If (CType(Me.Row(RoleDAL.COL_NAME_CODE, DataRowVersion.Current), String) <> CType(Me.Row(RoleDAL.COL_NAME_CODE, DataRowVersion.Original), String)) Then
+                    If (CType(Row(RoleDAL.COL_NAME_CODE, DataRowVersion.Current), String) <> CType(Row(RoleDAL.COL_NAME_CODE, DataRowVersion.Original), String)) Then
                         remoteRoleProvider = BaseRoleProvider.CreateRoleProvider(RoleProviderId)
                         If (remoteRoleProvider.SupportsUpdateRole()) Then
-                            remoteRoleProvider.UpdateRole(Me.Id, Me.RemoteRoleId, Me.Code)
+                            remoteRoleProvider.UpdateRole(Id, RemoteRoleId, Code)
                         End If
                     End If
                 Else
@@ -318,7 +318,7 @@ Public Class Role
                         If (originalRoleProvider.SupportsCreateRole()) Then
                             'Changed as per DEF : 3119
                             'originalRoleProvider.DeleteRole(Me.Id, New Guid(CType(Me.Row(RoleDAL.COL_NAME_REMOTE_ROLE_ID, DataRowVersion.Original), Byte())), CType(Me.Row(RoleDAL.COL_NAME_CODE, DataRowVersion.Original), String))
-                            originalRoleProvider.DeleteRole(Me.Id, Me.RemoteRoleId, CType(Me.Row(RoleDAL.COL_NAME_CODE, DataRowVersion.Original), String))
+                            originalRoleProvider.DeleteRole(Id, RemoteRoleId, CType(Row(RoleDAL.COL_NAME_CODE, DataRowVersion.Original), String))
                             'DEF-3119 Completed 
                         End If
                     End If
@@ -328,7 +328,7 @@ Public Class Role
                         If (currentRoleProvider.SupportsCreateRole()) Then
                             ' DEF  :3119 (Commented as this property is readonly now)
                             '    Me.RemoteRoleId = currentRoleProvider.CreateRole(Me.Id, Me.Code)
-                            currentRoleProvider.CreateRole(Me.Id, Me.Code)
+                            currentRoleProvider.CreateRole(Id, Code)
                             ' DEF  :3119 Changes completed 
                         End If
                         ' DEF  :3119 (Commented as this property is readonly now)
@@ -343,7 +343,7 @@ Public Class Role
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Sub AddNewRowToRoleSearchDV(ByRef dv As RoleSearchDV, ByVal NewRoleBO As Role)
+    Public Shared Sub AddNewRowToRoleSearchDV(ByRef dv As RoleSearchDV, NewRoleBO As Role)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         If NewRoleBO.IsNew Then
@@ -373,7 +373,7 @@ Public Class Role
         End If
     End Sub
 
-    Public Shared Function getList(ByVal strCode As String, ByVal strDescription As String) As RoleSearchDV
+    Public Shared Function getList(strCode As String, strDescription As String) As RoleSearchDV
         Try
             Dim dal As New RoleDAL
             Return New RoleSearchDV(dal.LoadList(strCode, strDescription).Tables(0))
@@ -413,17 +413,17 @@ Public Class Role
         ' Public Const COL_NAME_REMOTE_ROLE_ID As String = RoleDAL.COL_NAME_REMOTE_ROLE_ID  : DEF 3119 : (Removed from Database)
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property RoleId(ByVal row As DataRowView) As String
+        Public Shared ReadOnly Property RoleId(row As DataRowView) As String
             Get
                 Return New Guid(CType(row(COL_NAME_ROLE_ID), Byte())).ToString()
             End Get
         End Property
 
-        Public Shared ReadOnly Property IhqOnly(ByVal row As DataRowView) As String
+        Public Shared ReadOnly Property IhqOnly(row As DataRowView) As String
             Get
                 Dim languageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
                 Dim dvYesNo As DataView = LookupListNew.GetYesNoLookupList(languageId)
@@ -431,7 +431,7 @@ Public Class Role
             End Get
         End Property
 
-        Public Shared ReadOnly Property RoleProvider(ByVal row As DataRowView) As String
+        Public Shared ReadOnly Property RoleProvider(row As DataRowView) As String
             Get
                 If row(COL_NAME_ROLE_PROVIDER_ID) Is DBNull.Value Then
                     Return String.Empty

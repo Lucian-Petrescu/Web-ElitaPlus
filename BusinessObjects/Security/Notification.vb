@@ -6,48 +6,48 @@ Public Class Notification
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New NotificationDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class Notification
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New NotificationDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -90,7 +90,7 @@ Public Class Notification
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(NotificationDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class Notification
     End Property
 
     <ValueMandatory("")> _
-    Public Property NotificationTypeId() As Guid
+    Public Property NotificationTypeId As Guid
         Get
             CheckDeleted()
             If row(NotificationDAL.COL_NAME_NOTIFICATION_TYPE_ID) Is DBNull.Value Then
@@ -110,15 +110,15 @@ Public Class Notification
                 Return New Guid(CType(row(NotificationDAL.COL_NAME_NOTIFICATION_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(NotificationDAL.COL_NAME_NOTIFICATION_TYPE_ID, Value)
+            SetValue(NotificationDAL.COL_NAME_NOTIFICATION_TYPE_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property NotificationBeginDate() As DateTimeType
+    Public Property NotificationBeginDate As DateTimeType
         Get
             CheckDeleted()
             If Row(NotificationDAL.COL_NAME_NOTIFICATION_BEGIN_DATE) Is DBNull.Value Then
@@ -127,15 +127,15 @@ Public Class Notification
                 Return New DateTimeType(CType(Row(NotificationDAL.COL_NAME_NOTIFICATION_BEGIN_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
-            Me.SetValue(NotificationDAL.COL_NAME_NOTIFICATION_BEGIN_DATE, Value)
+            SetValue(NotificationDAL.COL_NAME_NOTIFICATION_BEGIN_DATE, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property NotificationEndDate() As DateTimeType
+    Public Property NotificationEndDate As DateTimeType
         Get
             CheckDeleted()
             If Row(NotificationDAL.COL_NAME_NOTIFICATION_END_DATE) Is DBNull.Value Then
@@ -144,15 +144,15 @@ Public Class Notification
                 Return New DateTimeType(CType(Row(NotificationDAL.COL_NAME_NOTIFICATION_END_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
-            Me.SetValue(NotificationDAL.COL_NAME_NOTIFICATION_END_DATE, Value)
+            SetValue(NotificationDAL.COL_NAME_NOTIFICATION_END_DATE, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property AudianceTypeId() As Guid
+    Public Property AudianceTypeId As Guid
         Get
             CheckDeleted()
             If row(NotificationDAL.COL_NAME_AUDIANCE_TYPE_ID) Is DBNull.Value Then
@@ -161,15 +161,15 @@ Public Class Notification
                 Return New Guid(CType(row(NotificationDAL.COL_NAME_AUDIANCE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(NotificationDAL.COL_NAME_AUDIANCE_TYPE_ID, Value)
+            SetValue(NotificationDAL.COL_NAME_AUDIANCE_TYPE_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=100)> _
-    Public Property NotificationName() As String
+    Public Property NotificationName As String
         Get
             CheckDeleted()
             If Row(NotificationDAL.COL_NAME_NOTIFICATION_NAME) Is DBNull.Value Then
@@ -178,15 +178,15 @@ Public Class Notification
                 Return CType(Row(NotificationDAL.COL_NAME_NOTIFICATION_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(NotificationDAL.COL_NAME_NOTIFICATION_NAME, Value)
+            SetValue(NotificationDAL.COL_NAME_NOTIFICATION_NAME, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=1000)> _
-    Public Property NotificationDetails() As String
+    Public Property NotificationDetails As String
         Get
             CheckDeleted()
             If Row(NotificationDAL.COL_NAME_NOTIFICATION_DETAILS) Is DBNull.Value Then
@@ -195,15 +195,15 @@ Public Class Notification
                 Return CType(Row(NotificationDAL.COL_NAME_NOTIFICATION_DETAILS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(NotificationDAL.COL_NAME_NOTIFICATION_DETAILS, Value)
+            SetValue(NotificationDAL.COL_NAME_NOTIFICATION_DETAILS, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property OutageBeginDate() As DateTimeType
+    Public Property OutageBeginDate As DateTimeType
         Get
             CheckDeleted()
             If Row(NotificationDAL.COL_NAME_OUTAGE_BEGIN_DATE) Is DBNull.Value Then
@@ -212,15 +212,15 @@ Public Class Notification
                 Return New DateTimeType(CType(Row(NotificationDAL.COL_NAME_OUTAGE_BEGIN_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
-            Me.SetValue(NotificationDAL.COL_NAME_OUTAGE_BEGIN_DATE, Value)
+            SetValue(NotificationDAL.COL_NAME_OUTAGE_BEGIN_DATE, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property OutageEndDate() As DateTimeType
+    Public Property OutageEndDate As DateTimeType
         Get
             CheckDeleted()
             If Row(NotificationDAL.COL_NAME_OUTAGE_END_DATE) Is DBNull.Value Then
@@ -229,15 +229,15 @@ Public Class Notification
                 Return New DateTimeType(CType(Row(NotificationDAL.COL_NAME_OUTAGE_END_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateTimeType)
+        Set
             CheckDeleted()
-            Me.SetValue(NotificationDAL.COL_NAME_OUTAGE_END_DATE, Value)
+            SetValue(NotificationDAL.COL_NAME_OUTAGE_END_DATE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property ContactInfo() As String
+    Public Property ContactInfo As String
         Get
             CheckDeleted()
             If Row(NotificationDAL.COL_NAME_CONTACT_INFO) Is DBNull.Value Then
@@ -246,13 +246,13 @@ Public Class Notification
                 Return CType(Row(NotificationDAL.COL_NAME_CONTACT_INFO), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(NotificationDAL.COL_NAME_CONTACT_INFO, Value)
+            SetValue(NotificationDAL.COL_NAME_CONTACT_INFO, Value)
         End Set
     End Property
 
-    Public ReadOnly Property SerialNo() As LongType
+    Public ReadOnly Property SerialNo As LongType
         Get
             CheckDeleted()
             If Row(NotificationDAL.COL_NAME_SERIAL_NO) Is DBNull.Value Then
@@ -264,7 +264,7 @@ Public Class Notification
     End Property
 
     <ValidStringLength("", Max:=1)> _
-    Public Property Enabled() As String
+    Public Property Enabled As String
         Get
             CheckDeleted()
             If Row(NotificationDAL.COL_NAME_ENABLED) Is DBNull.Value Then
@@ -273,9 +273,9 @@ Public Class Notification
                 Return CType(Row(NotificationDAL.COL_NAME_ENABLED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(NotificationDAL.COL_NAME_ENABLED, Value)
+            SetValue(NotificationDAL.COL_NAME_ENABLED, Value)
         End Set
     End Property
 #End Region
@@ -284,20 +284,20 @@ Public Class Notification
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New NotificationDAL
-                dal.Update(Me.Row)
-                If Not Me.IsNew Then
+                dal.Update(Row)
+                If Not IsNew Then
                     'Update user notifications
                     Dim dalUN As New UserNotificationDAL
-                    dalUN.DeleteUserNotifications(Me.Id)
+                    dalUN.DeleteUserNotifications(Id)
                 End If
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
 
             End If
@@ -314,15 +314,15 @@ Public Class Notification
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function GetList(ByVal NotificationNameMask As String, _
-                                   ByVal NotificationDetailMask As String, _
-                                   ByVal NotificationTypeId As Guid, _
-                                   ByVal AudianceTypeId As Guid, _
-                                   ByVal BeginDate As String, _
-                                   ByVal EndDate As String, _
-                                   ByVal BeginDateOutage As String, _
-                                   ByVal EndDateOutage As String, _
-                                   ByVal IncludeDisabled As Boolean, _
+    Public Shared Function GetList(NotificationNameMask As String, _
+                                   NotificationDetailMask As String, _
+                                   NotificationTypeId As Guid, _
+                                   AudianceTypeId As Guid, _
+                                   BeginDate As String, _
+                                   EndDate As String, _
+                                   BeginDateOutage As String, _
+                                   EndDateOutage As String, _
+                                   IncludeDisabled As Boolean, _
                                    Optional ByVal sortOrder As String = NotificationDAL.SORT_ORDER_DESC, _
                                    Optional ByVal sortBy As String = NotificationDAL.SORT_BY_NOTIFICATION_TYPE, _
                                    Optional ByVal userType As String = "ADMIN", _
@@ -331,9 +331,9 @@ Public Class Notification
 
         Try
 
-            Dim AudianceTypeExternalId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__EXTERNAL_USER)
-            Dim AudianceTypeInternalId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__INTERNAL_USER)
-            Dim AudianceTypeAllId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__ALL_USERS)
+            Dim AudianceTypeExternalId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__EXTERNAL_USER)
+            Dim AudianceTypeInternalId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__INTERNAL_USER)
+            Dim AudianceTypeAllId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__ALL_USERS)
 
             Return New NotificationSearchDV((New NotificationDAL).LoadList(ElitaPlusIdentity.Current.ActiveUser.LanguageId, _
                                                                             NotificationNameMask, _
@@ -361,9 +361,9 @@ Public Class Notification
 
         Try
 
-            Dim AudianceTypeExternalId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__EXTERNAL_USER)
-            Dim AudianceTypeInternalId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__INTERNAL_USER)
-            Dim AudianceTypeAllId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__ALL_USERS)
+            Dim AudianceTypeExternalId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__EXTERNAL_USER)
+            Dim AudianceTypeInternalId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__INTERNAL_USER)
+            Dim AudianceTypeAllId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_AUDIANCE_TYPES, Codes.AUDIANCE_TYPE__ALL_USERS)
 
 
 
@@ -400,7 +400,7 @@ Public Class Notification
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

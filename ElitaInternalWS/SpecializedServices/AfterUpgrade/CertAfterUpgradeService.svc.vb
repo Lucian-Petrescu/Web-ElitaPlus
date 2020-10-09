@@ -15,7 +15,7 @@ Imports Assurant.ElitaPlus.Common
 Public Class CertAfterUpgradeService
     Implements ICertAfterUpgradeService
 
-    Public Function GetCertAfterUpgrade(ByVal request As GetCertificateRequest) As GetCertificateResponse Implements ICertAfterUpgradeService.GetCertAfterUpgrade
+    Public Function GetCertAfterUpgrade(request As GetCertificateRequest) As GetCertificateResponse Implements ICertAfterUpgradeService.GetCertAfterUpgrade
         Dim oCertificate As Certificate
 
         ' Validate Incoming Request for Mandatory Fields (DataAnnotations)

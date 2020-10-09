@@ -11,7 +11,7 @@ Partial Class MaintainUserList
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -88,8 +88,8 @@ Partial Class MaintainUserList
         Public AvailableItems As String
         Public WorkQueueReturnType As WorkQueueListForm.WorkQueueReturnType
 
-        Public Sub New(ByVal strWorkQueueName As String, ByVal oWorkQueueId As Guid, ByVal strWorkQueueCompanyCode As String, ByVal strAvailableItems As String,
-                       ByVal WorkQueueReturnType As WorkQueueListForm.WorkQueueReturnType)
+        Public Sub New(strWorkQueueName As String, oWorkQueueId As Guid, strWorkQueueCompanyCode As String, strAvailableItems As String,
+                       WorkQueueReturnType As WorkQueueListForm.WorkQueueReturnType)
             WorkQueueId = oWorkQueueId
             WorkQueueName = strWorkQueueName
             WorkQueueCompanyCode = strWorkQueueCompanyCode
@@ -101,64 +101,64 @@ Partial Class MaintainUserList
 
 #End Region
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Dim oParam As Parameters
         Try
-            If Not Me.CallingParameters Is Nothing Then
-                Me.MenuEnabled = False
-                Me.State.selectedUserId = Guid.Empty
-                oParam = CType(Me.CallingParameters, Parameters)
-                Me.State.WorkqueueId = oParam.WorkQueueId
-                Me.State.WorkqueueName = oParam.WorkQueueName
-                Me.State.WorkqueueCompanyCode = oParam.WorkQueueCompanyCode
-                Me.State.WorkqueueAvailableItems = oParam.AvailableItems
-                Me.State.WorkQueueReturnType = oParam.WorkQueueReturnType
+            If CallingParameters IsNot Nothing Then
+                MenuEnabled = False
+                State.selectedUserId = Guid.Empty
+                oParam = CType(CallingParameters, Parameters)
+                State.WorkqueueId = oParam.WorkQueueId
+                State.WorkqueueName = oParam.WorkQueueName
+                State.WorkqueueCompanyCode = oParam.WorkQueueCompanyCode
+                State.WorkqueueAvailableItems = oParam.AvailableItems
+                State.WorkQueueReturnType = oParam.WorkQueueReturnType
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.MenuEnabled = True
-            Me.IsReturningFromChild = True
+            MenuEnabled = True
+            IsReturningFromChild = True
             Dim retObj As business.MaintainUser.ReturnType = CType(ReturnPar, business.MaintainUser.ReturnType)
-            Me.State.HasDataChanged = retObj.HasDataChanged
-            If Not retObj Is Nothing AndAlso retObj.HasDataChanged Then
-                Me.State.searchDV = Nothing
+            State.HasDataChanged = retObj.HasDataChanged
+            If retObj IsNot Nothing AndAlso retObj.HasDataChanged Then
+                State.searchDV = Nothing
             End If
-            Me.State.IsGridVisible = True
+            State.IsGridVisible = True
             Select Case retObj.LastOperation
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    If Not retObj Is Nothing Then
+                    If retObj IsNot Nothing Then
                         If Not retObj.EditingBo.IsNew Then
-                            Me.State.selectedUserId = retObj.EditingBo.Id
+                            State.selectedUserId = retObj.EditingBo.Id
                         End If
                         '     Me.State.IsGridVisible = True
                     End If
                 Case ElitaPlusPage.DetailPageCommand.Delete
-                    Me.AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
+                    AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
             End Select
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
 #End Region
 #Region "Page_Events"
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Try
-            Me.MasterPage.MessageController.Clear()
-            If Not Me.IsPostBack Then
+            MasterPage.MessageController.Clear()
+            If Not IsPostBack Then
 
-                Me.SortDirection = Me.State.SortExpression
-                Me.State.Caller_Form = Request.QueryString.Get("CALLER")
+                SortDirection = State.SortExpression
+                State.Caller_Form = Request.QueryString.Get("CALLER")
                 UpdateBreadCrum()
                 'Enable Diable Add and Back Button when required
                 btnBack.Visible = False
-                If Me.State.Caller_Form = CALLER_QUEUE_USER OrElse Me.State.Caller_Form = CALLER_QUEUE_STAFFING Then
+                If State.Caller_Form = CALLER_QUEUE_USER OrElse State.Caller_Form = CALLER_QUEUE_STAFFING Then
                     If Assurant.Elita.Configuration.ElitaConfig.Current.General.IntegrateWorkQueueImagingServices = False Then
                         PlaceHolder1.Visible = False
                         PlaceHolder2.Visible = False
@@ -167,9 +167,9 @@ Partial Class MaintainUserList
                         Throw New GUIException("", "")
                     End If
                     btnAdd_WRITE.Visible = False
-                    If Me.State.Caller_Form = CALLER_QUEUE_STAFFING Then
+                    If State.Caller_Form = CALLER_QUEUE_STAFFING Then
                         btnBack.Visible = True
-                        Me.State.UserCompanyCode = Me.State.WorkqueueCompanyCode
+                        State.UserCompanyCode = State.WorkqueueCompanyCode
                         TextBoxSearchCompanyCode.Enabled = False
                     End If
                 Else
@@ -183,27 +183,27 @@ Partial Class MaintainUserList
                     End If
                 End If
 
-                SetDefaultButton(Me.TextBoxSearchID, btnSearch)
-                SetDefaultButton(Me.TextBoxSearchName, btnSearch)
-                SetDefaultButton(Me.TextBoxSearchRole, btnSearch)
-                SetDefaultButton(Me.TextBoxSearchCompanyCode, btnSearch)
+                SetDefaultButton(TextBoxSearchID, btnSearch)
+                SetDefaultButton(TextBoxSearchName, btnSearch)
+                SetDefaultButton(TextBoxSearchRole, btnSearch)
+                SetDefaultButton(TextBoxSearchCompanyCode, btnSearch)
                 ControlMgr.SetVisibleControl(Me, moSearchResults, False)
                 PopulateSearchFieldsFromState()
-                cboPageSize.SelectedValue = CType(Me.State.selectedPageSize, String)
-                Grid.PageSize = Me.State.selectedPageSize
-                If Me.State.IsGridVisible Then
-                    Me.PopulateGrid()
+                cboPageSize.SelectedValue = CType(State.selectedPageSize, String)
+                Grid.PageSize = State.selectedPageSize
+                If State.IsGridVisible Then
+                    PopulateGrid()
                 End If
-                Me.SetGridItemStyleColor(Me.Grid)
+                SetGridItemStyleColor(Grid)
 
 
             End If
         Catch ex As GUIException
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 #End Region
 
@@ -222,11 +222,11 @@ Partial Class MaintainUserList
 
         PopulateStateFromSearchFields()
 
-        If ((Me.State.searchDV Is Nothing) OrElse (Me.State.HasDataChanged)) Then
-            Me.State.searchDV = Assurant.ElitaPlus.BusinessObjectsNew.User.GetUserNewList(Me.State.UserNetworkID,
-                                                      Me.State.UserName,
-                                                      Me.State.UserRole,
-                                                      Me.State.UserCompanyCode)
+        If ((State.searchDV Is Nothing) OrElse (State.HasDataChanged)) Then
+            State.searchDV = Assurant.ElitaPlus.BusinessObjectsNew.User.GetUserNewList(State.UserNetworkID,
+                                                      State.UserName,
+                                                      State.UserRole,
+                                                      State.UserCompanyCode)
 
             'Ticket # 748479 - Search grids in Tables tab should not show pop-up message when number of retrieved record is over 1,000
             'If (Not (Me.State.HasDataChanged)) Then
@@ -234,80 +234,80 @@ Partial Class MaintainUserList
             'End If
         End If
 
-        If Not (Me.State.searchDV Is Nothing) Then
-            Me.State.searchDV.Sort = Me.SortDirection
+        If Not (State.searchDV Is Nothing) Then
+            State.searchDV.Sort = SortDirection
 
-            Me.Grid.AutoGenerateColumns = False
+            Grid.AutoGenerateColumns = False
 
-            SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.selectedUserId, Me.Grid, Me.State.PageIndex)
-            Me.SortAndBindGrid()
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.selectedUserId, Grid, State.PageIndex)
+            SortAndBindGrid()
         End If
 
     End Sub
 
     Private Sub SortAndBindGrid()
-        Me.State.PageIndex = Me.Grid.PageIndex
+        State.PageIndex = Grid.PageIndex
 
-        If (Me.State.searchDV.Count = 0) Then
+        If (State.searchDV.Count = 0) Then
 
-            Me.State.bnoRow = True
-            CreateHeaderForEmptyGrid(Grid, Me.SortDirection)
+            State.bnoRow = True
+            CreateHeaderForEmptyGrid(Grid, SortDirection)
         Else
-            Me.State.bnoRow = False
-            Me.Grid.Enabled = True
-            Me.Grid.DataSource = Me.State.searchDV
-            HighLightSortColumn(Grid, Me.SortDirection)
-            Me.Grid.DataBind()
+            State.bnoRow = False
+            Grid.Enabled = True
+            Grid.DataSource = State.searchDV
+            HighLightSortColumn(Grid, SortDirection)
+            Grid.DataBind()
         End If
 
         If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
 
-        ControlMgr.SetVisibleControl(Me, moSearchResults, Me.State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, moSearchResults, State.IsGridVisible)
 
-        Session("recCount") = Me.State.searchDV.Count
+        Session("recCount") = State.searchDV.Count
 
-        If Me.State.searchDV.Count > 0 Then
+        If State.searchDV.Count > 0 Then
 
-            If Me.State.IsGridVisible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If State.IsGridVisible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         Else
-            If Me.State.IsGridVisible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If State.IsGridVisible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         End If
     End Sub
 
     Public Sub PopulateSearchFieldsFromState()
         ' Me.SetSelectedItem(moCountryDrop, Me.State.SearchCountryId)
-        Me.TextBoxSearchID.Text = Me.State.UserNetworkID
-        Me.TextBoxSearchName.Text = Me.State.UserName
-        Me.TextBoxSearchRole.Text = Me.State.UserRole
-        Me.TextBoxSearchCompanyCode.Text = Me.State.UserCompanyCode
+        TextBoxSearchID.Text = State.UserNetworkID
+        TextBoxSearchName.Text = State.UserName
+        TextBoxSearchRole.Text = State.UserRole
+        TextBoxSearchCompanyCode.Text = State.UserCompanyCode
         'Me.TextBoxSearchZip.Text = Me.State.zip
     End Sub
 
     Public Sub PopulateStateFromSearchFields()
         'Me.State.SearchCountryId = Me.GetSelectedItem(moCountryDrop)
-        Me.State.UserNetworkID = Me.TextBoxSearchID.Text
-        If (Not (Me.TextBoxSearchName.Text Is Nothing)) Then
-            Me.State.UserName = Me.TextBoxSearchName.Text.ToUpper
+        State.UserNetworkID = TextBoxSearchID.Text
+        If (Not (TextBoxSearchName.Text Is Nothing)) Then
+            State.UserName = TextBoxSearchName.Text.ToUpper
         Else
-            Me.State.UserName = Nothing
+            State.UserName = Nothing
         End If
-        Me.State.UserRole = Me.TextBoxSearchRole.Text
-        Me.State.UserCompanyCode = Me.TextBoxSearchCompanyCode.Text
+        State.UserRole = TextBoxSearchRole.Text
+        State.UserCompanyCode = TextBoxSearchCompanyCode.Text
         'Me.State.zip = Me.TextBoxSearchZip.Text
     End Sub
     'This method will change the Page Index and the Selected Index
-    Public Function FindDVSelectedRowIndex(ByVal dv As Assurant.ElitaPlus.BusinessObjectsNew.User.UserSearchDV) As Integer
-        If Me.State.selectedUserId.Equals(Guid.Empty) Then
+    Public Function FindDVSelectedRowIndex(dv As Assurant.ElitaPlus.BusinessObjectsNew.User.UserSearchDV) As Integer
+        If State.selectedUserId.Equals(Guid.Empty) Then
             Return -1
         Else
             'Jump to the Right Page
             Dim i As Integer
             For i = 0 To dv.Count - 1
-                If New Guid(CType(dv(i)(Assurant.ElitaPlus.BusinessObjectsNew.User.UserSearchDV.COL_USER_ID), Byte())).Equals(Me.State.selectedUserId) Then
+                If New Guid(CType(dv(i)(Assurant.ElitaPlus.BusinessObjectsNew.User.UserSearchDV.COL_USER_ID), Byte())).Equals(State.selectedUserId) Then
                     Return i
                 End If
             Next
@@ -320,18 +320,18 @@ Partial Class MaintainUserList
 
 #Region "Bread Crum"
     Private Sub UpdateBreadCrum()
-        Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("Admin")
-        Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("USER_SEARCH")
-        Me.MasterPage.UsePageTabTitleInBreadCrum = False
-        Select Case Me.State.Caller_Form
+        MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("Admin")
+        MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("USER_SEARCH")
+        MasterPage.UsePageTabTitleInBreadCrum = False
+        Select Case State.Caller_Form
             Case CALLER_QUEUE_USER
-                Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage("TABLES") + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage("WORK_QUEUE")
-                Me.MasterPage.BreadCrum = Me.MasterPage.BreadCrum & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("QUEUE_USER")
+                MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage("TABLES") + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage("WORK_QUEUE")
+                MasterPage.BreadCrum = MasterPage.BreadCrum & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("QUEUE_USER")
             Case CALLER_QUEUE_STAFFING
-                Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage("TABLES") + ElitaBase.Sperator +
+                MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage("TABLES") + ElitaBase.Sperator +
                     TranslationBase.TranslateLabelOrMessage("WORK_QUEUE_USERS") + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage("User")
             Case Else
-                Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage("Admin") + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage("User")
+                MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage("Admin") + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage("User")
         End Select
     End Sub
 #End Region
@@ -342,183 +342,183 @@ Partial Class MaintainUserList
         Get
             Return ViewState("SortDirection").ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             ViewState("SortDirection") = value
         End Set
     End Property
 
     'The Binding LOgic is here
-    Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Dim btnEditItem As LinkButton
         Try
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-            If Not dvRow Is Nothing And Not Me.State.bnoRow Then
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                    e.Row.Cells(Me.GRID_COL_NETWORKID_IDX).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.User.UserSearchDV.COL_NETWORK_ID).ToString
-                    If (Not e.Row.Cells(Me.GRID_COL_NAME_IDX).FindControl(GRID_COL_EDIT_CTRL) Is Nothing) Then
-                        btnEditItem = CType(e.Row.Cells(Me.GRID_COL_NAME_IDX).FindControl(GRID_COL_EDIT_CTRL), LinkButton)
+            If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
+                    e.Row.Cells(GRID_COL_NETWORKID_IDX).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.User.UserSearchDV.COL_NETWORK_ID).ToString
+                    If (e.Row.Cells(GRID_COL_NAME_IDX).FindControl(GRID_COL_EDIT_CTRL) IsNot Nothing) Then
+                        btnEditItem = CType(e.Row.Cells(GRID_COL_NAME_IDX).FindControl(GRID_COL_EDIT_CTRL), LinkButton)
                         btnEditItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(Assurant.ElitaPlus.BusinessObjectsNew.User.UserSearchDV.COL_USER_ID), Byte()))
                         btnEditItem.CommandName = SELECT_ACTION_COMMAND
                         btnEditItem.Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.User.UserSearchDV.COL_USER_NAME).ToString
                     End If
-                    e.Row.Cells(Me.GRID_COL_ROLE_IDX).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.User.UserSearchDV.COL_ROLE_CODE).ToString().Replace(",", ", ")
-                    e.Row.Cells(Me.GRID_COL_COMPANY_IDX).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.User.UserSearchDV.COL_COMPANY_CODE).ToString().Replace(",", ", ")
+                    e.Row.Cells(GRID_COL_ROLE_IDX).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.User.UserSearchDV.COL_ROLE_CODE).ToString().Replace(",", ", ")
+                    e.Row.Cells(GRID_COL_COMPANY_IDX).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.User.UserSearchDV.COL_COMPANY_CODE).ToString().Replace(",", ", ")
                     If (dvRow(Assurant.ElitaPlus.BusinessObjectsNew.User.UserSearchDV.COL_ACTIVE).ToString = "Y") Then
-                        e.Row.Cells(Me.GRID_COL_ACTIVE_IDX).Text = TranslationBase.TranslateLabelOrMessage("ACTIVE")
-                        e.Row.Cells(Me.GRID_COL_ACTIVE_IDX).CssClass = "StatActive"
+                        e.Row.Cells(GRID_COL_ACTIVE_IDX).Text = TranslationBase.TranslateLabelOrMessage("ACTIVE")
+                        e.Row.Cells(GRID_COL_ACTIVE_IDX).CssClass = "StatActive"
                     Else
-                        e.Row.Cells(Me.GRID_COL_ACTIVE_IDX).Text = TranslationBase.TranslateLabelOrMessage("INACTIVE")
-                        e.Row.Cells(Me.GRID_COL_ACTIVE_IDX).CssClass = "StatInactive"
+                        e.Row.Cells(GRID_COL_ACTIVE_IDX).Text = TranslationBase.TranslateLabelOrMessage("INACTIVE")
+                        e.Row.Cells(GRID_COL_ACTIVE_IDX).CssClass = "StatInactive"
                     End If
 
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-            Me.State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.PopulateGrid()
+            State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
         Try
-            Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
+            Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
-            If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                If Me.SortDirection.EndsWith(" ASC") Then
-                    Me.SortDirection = e.SortExpression + " DESC"
+            If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                If SortDirection.EndsWith(" ASC") Then
+                    SortDirection = e.SortExpression + " DESC"
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
             Else
-                Me.SortDirection = e.SortExpression + " ASC"
+                SortDirection = e.SortExpression + " ASC"
             End If
-            Me.State.SortExpression = Me.SortDirection
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.SortExpression = SortDirection
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+    Protected Sub ItemCommand(source As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
         Dim oUser As User
         Dim bWkQAlreadyAssigned As Boolean = False
         Try
             If e.CommandName = "SelectAction" Then
-                Me.State.selectedUserId = New Guid(e.CommandArgument.ToString())
-                Select Case Me.State.Caller_Form
+                State.selectedUserId = New Guid(e.CommandArgument.ToString())
+                Select Case State.Caller_Form
                     Case Is = CALLER_QUEUE_USER
-                        Me.callPage(business.MaintainQueueUser.URL, Me.State.selectedUserId)
+                        callPage(business.MaintainQueueUser.URL, State.selectedUserId)
                     Case Is = CALLER_QUEUE_STAFFING
-                        oUser = New User(Me.State.selectedUserId)
+                        oUser = New User(State.selectedUserId)
                         For Each wkQassign As WorkQueueAssign In oUser.WorkQueueAssignChildren
-                            If wkQassign.WorkqueueId = Me.State.WorkqueueId Then
+                            If wkQassign.WorkqueueId = State.WorkqueueId Then
                                 bWkQAlreadyAssigned = True
                             End If
                         Next
                         If Not bWkQAlreadyAssigned Then
-                            WorkQueue.GrantProcessWQPermission(Me.State.WorkqueueName, oUser.NetworkId)
+                            WorkQueue.GrantProcessWQPermission(State.WorkqueueName, oUser.NetworkId)
                             Dim CompWQ As WorkQueueAssign = oUser.GetNewWorkQueueAsignChild()
                             CompWQ.BeginEdit()
-                            CompWQ.WorkqueueId = New Guid(Me.State.WorkqueueId.ToString)
-                            CompWQ.CompanyId = LookupListNew.GetIdFromCode("COMPANIES", Me.State.WorkqueueCompanyCode)
+                            CompWQ.WorkqueueId = New Guid(State.WorkqueueId.ToString)
+                            CompWQ.CompanyId = LookupListNew.GetIdFromCode("COMPANIES", State.WorkqueueCompanyCode)
                             CompWQ.EndEdit()
                             CompWQ.Save()
                             oUser.UpdateWorkQueueUserAssign()
-                            Me.callPage(WorkQueueUsersForm.URL, New WorkQueueUsersForm.Parameters(Me.State.WorkqueueName, Me.State.WorkqueueId,
-                                        Me.State.WorkqueueCompanyCode, Me.State.WorkqueueAvailableItems, oUser.UserName, Me.State.WorkQueueReturnType))
+                            callPage(WorkQueueUsersForm.URL, New WorkQueueUsersForm.Parameters(State.WorkqueueName, State.WorkqueueId,
+                                        State.WorkqueueCompanyCode, State.WorkqueueAvailableItems, oUser.UserName, State.WorkQueueReturnType))
                         Else
-                            Me.MasterPage.MessageController.AddInformation(Message.MSG_USER_ALREADY_ADDED_TO_THE_WORK_QUEUE, True)
+                            MasterPage.MessageController.AddInformation(Message.MSG_USER_ALREADY_ADDED_TO_THE_WORK_QUEUE, True)
                         End If
                     Case Else
-                        Me.callPage(business.MaintainUser.URL, Me.State.selectedUserId)
+                        callPage(business.MaintainUser.URL, State.selectedUserId)
                 End Select
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
-            Me.State.PageIndex = e.NewPageIndex
-            Me.State.selectedUserId = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = e.NewPageIndex
+            State.selectedUserId = Guid.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
 
 #Region " Button Clicks "
 
-    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
         Try
-            Me.State.PageIndex = 0
-            Me.State.selectedUserId = Guid.Empty
-            Me.State.IsGridVisible = True
-            Me.State.searchDV = Nothing
-            Me.State.HasDataChanged = False
-            Me.State.searchBtnClicked = True
-            Me.PopulateGrid()
-            Me.State.searchBtnClicked = False
+            State.PageIndex = 0
+            State.selectedUserId = Guid.Empty
+            State.IsGridVisible = True
+            State.searchDV = Nothing
+            State.HasDataChanged = False
+            State.searchBtnClicked = True
+            PopulateGrid()
+            State.searchBtnClicked = False
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnAdd_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd_WRITE.Click
+    Private Sub btnAdd_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnAdd_WRITE.Click
         Try
-            Select Case Me.State.Caller_Form
+            Select Case State.Caller_Form
                 Case Is = CALLER_QUEUE_USER
-                    Me.callPage(business.MaintainQueueUser.URL)
+                    callPage(business.MaintainQueueUser.URL)
                 Case Else
-                    Me.callPage(business.MaintainUser.URL)
+                    callPage(business.MaintainUser.URL)
             End Select
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnClearSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
         Try
-            Me.TextBoxSearchID.Text = String.Empty
-            Me.TextBoxSearchName.Text = String.Empty
-            Me.TextBoxSearchRole.Text = String.Empty
-            If Not Me.State.Caller_Form = CALLER_QUEUE_STAFFING Then
-                Me.TextBoxSearchCompanyCode.Text = String.Empty
+            TextBoxSearchID.Text = String.Empty
+            TextBoxSearchName.Text = String.Empty
+            TextBoxSearchRole.Text = String.Empty
+            If Not State.Caller_Form = CALLER_QUEUE_STAFFING Then
+                TextBoxSearchCompanyCode.Text = String.Empty
             End If
             'Me.TextBoxSearchZip.Text = String.Empty
             'moCountryDrop.SelectedIndex = Me.BLANK_ITEM_SELECTED
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            If Me.State.Caller_Form = CALLER_QUEUE_STAFFING Then
-                Me.callPage(WorkQueueUsersForm.URL, New WorkQueueUsersForm.Parameters(Me.State.WorkqueueName, Me.State.WorkqueueId,
-                                                                   Me.State.WorkqueueCompanyCode, Me.State.WorkqueueAvailableItems, Nothing, Me.State.WorkQueueReturnType))
+            If State.Caller_Form = CALLER_QUEUE_STAFFING Then
+                callPage(WorkQueueUsersForm.URL, New WorkQueueUsersForm.Parameters(State.WorkqueueName, State.WorkqueueId,
+                                                                   State.WorkqueueCompanyCode, State.WorkqueueAvailableItems, Nothing, State.WorkQueueReturnType))
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 

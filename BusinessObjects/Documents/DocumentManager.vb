@@ -103,10 +103,10 @@ Namespace Documents
             Return ft
         End Function
 
-        Public Sub Save(ByVal pFileType As FileType)
+        Public Sub Save(pFileType As FileType)
             pFileType.Save()
-            Me._repositories = Nothing
-            Me._fileTypes = Nothing
+            _repositories = Nothing
+            _fileTypes = Nothing
         End Sub
 
 #End Region
@@ -122,10 +122,10 @@ Namespace Documents
             Return r
         End Function
 
-        Public Sub Save(ByVal pRepository As Repository)
+        Public Sub Save(pRepository As Repository)
             pRepository.Save()
-            Me._repositories = Nothing
-            Me._fileTypes = Nothing
+            _repositories = Nothing
+            _fileTypes = Nothing
         End Sub
 
 #End Region

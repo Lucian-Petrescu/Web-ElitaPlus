@@ -24,55 +24,55 @@ Public Class VSCModel
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load(id)
+        Dataset = New Dataset
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load()
+        Dataset = New Dataset
+        Load()
     End Sub
     'Existing BO
-    Public Sub New(ByVal manufacturer As String, ByVal description As String, ByVal year As Integer)
+    Public Sub New(manufacturer As String, description As String, year As Integer)
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load(manufacturer, description, year)
+        Dataset = New Dataset
+        Load(manufacturer, description, year)
     End Sub
 
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New VSCModelDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -80,46 +80,46 @@ Public Class VSCModel
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New VSCModelDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Protected Sub Load(ByVal manufacturer As String, ByVal description As String, ByVal year As Integer)
+    Protected Sub Load(manufacturer As String, description As String, year As Integer)
         Try
             Dim dal As New VSCModelDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(manufacturer, description, year, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(manufacturer, description, year, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
                 'dal.Load(Me.Dataset, manufacturer, description, year)
-                Me.Row = Me.FindRow(manufacturer, description, year, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+                Row = FindRow(manufacturer, description, year, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -137,7 +137,7 @@ Public Class VSCModel
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(VSCModelDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -148,7 +148,7 @@ Public Class VSCModel
     End Property
 
     <ValueMandatory("")> _
-    Public Property ManufacturerId() As Guid
+    Public Property ManufacturerId As Guid
         Get
             CheckDeleted()
             If Row(VSCModelDAL.COL_NAME_MANUFACTURER_ID) Is DBNull.Value Then
@@ -157,15 +157,15 @@ Public Class VSCModel
                 Return New Guid(CType(Row(VSCModelDAL.COL_NAME_MANUFACTURER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCModelDAL.COL_NAME_MANUFACTURER_ID, Value)
+            SetValue(VSCModelDAL.COL_NAME_MANUFACTURER_ID, Value)
         End Set
     End Property
 
     'REQ-1142 changed the data type
     <ValueMandatory(""), ValidStringLength("", Max:=15), Valid_CarCode("")> _
-    Public Property CarCode() As String
+    Public Property CarCode As String
         Get
             CheckDeleted()
             If Row(VSCModelDAL.COL_NAME_CAR_CODE) Is DBNull.Value Then
@@ -174,14 +174,14 @@ Public Class VSCModel
                 Return CType(Row(VSCModelDAL.COL_NAME_CAR_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCModelDAL.COL_NAME_CAR_CODE, Value)
+            SetValue(VSCModelDAL.COL_NAME_CAR_CODE, Value)
         End Set
     End Property
     'REQ-1142 
     <ValidStringLength("", Max:=10), Valid_External_Car_Code("")> _
-    Public Property ExternalCarCode() As String
+    Public Property ExternalCarCode As String
         Get
             CheckDeleted()
             If Row(VSCModelDAL.COL_NAME_EXTERNAL_CAR_CODE) Is DBNull.Value Then
@@ -190,14 +190,14 @@ Public Class VSCModel
                 Return CType(Row(VSCModelDAL.COL_NAME_EXTERNAL_CAR_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCModelDAL.COL_NAME_EXTERNAL_CAR_CODE, Value)
+            SetValue(VSCModelDAL.COL_NAME_EXTERNAL_CAR_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property Model() As String
+    Public Property Model As String
         Get
             CheckDeleted()
             If Row(VSCModelDAL.COL_NAME_MODEL) Is DBNull.Value Then
@@ -206,15 +206,15 @@ Public Class VSCModel
                 Return CType(Row(VSCModelDAL.COL_NAME_MODEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCModelDAL.COL_NAME_MODEL, Value)
+            SetValue(VSCModelDAL.COL_NAME_MODEL, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(VSCModelDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -223,14 +223,14 @@ Public Class VSCModel
                 Return CType(Row(VSCModelDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCModelDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(VSCModelDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Min:=1111)> _
-    Public Property ModelYear() As Integer
+    Public Property ModelYear As Integer
         Get
             CheckDeleted()
             If Row(VSCModelDAL.COL_NAME_MODEL_YEAR) Is DBNull.Value Then
@@ -239,14 +239,14 @@ Public Class VSCModel
                 Return (CType(Row(VSCModelDAL.COL_NAME_MODEL_YEAR), Integer))
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCModelDAL.COL_NAME_MODEL_YEAR, Value)
+            SetValue(VSCModelDAL.COL_NAME_MODEL_YEAR, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property NewClassCodeId() As Guid
+    Public Property NewClassCodeId As Guid
         Get
             CheckDeleted()
             If Row(VSCModelDAL.COL_NAME_NEW_CLASS_CODE_ID) Is DBNull.Value Then
@@ -255,14 +255,14 @@ Public Class VSCModel
                 Return New Guid(CType(Row(VSCModelDAL.COL_NAME_NEW_CLASS_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCModelDAL.COL_NAME_NEW_CLASS_CODE_ID, Value)
+            SetValue(VSCModelDAL.COL_NAME_NEW_CLASS_CODE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property UsedClassCodeId() As Guid
+    Public Property UsedClassCodeId As Guid
         Get
             CheckDeleted()
             If Row(VSCModelDAL.COL_NAME_USED_CLASS_CODE_ID) Is DBNull.Value Then
@@ -271,14 +271,14 @@ Public Class VSCModel
                 Return New Guid(CType(Row(VSCModelDAL.COL_NAME_USED_CLASS_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCModelDAL.COL_NAME_USED_CLASS_CODE_ID, Value)
+            SetValue(VSCModelDAL.COL_NAME_USED_CLASS_CODE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ActiveNewId() As Guid
+    Public Property ActiveNewId As Guid
         Get
             CheckDeleted()
             If Row(VSCModelDAL.COL_NAME_ACTIVE_NEW_ID) Is DBNull.Value Then
@@ -287,14 +287,14 @@ Public Class VSCModel
                 Return New Guid(CType(Row(VSCModelDAL.COL_NAME_ACTIVE_NEW_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCModelDAL.COL_NAME_ACTIVE_NEW_ID, Value)
+            SetValue(VSCModelDAL.COL_NAME_ACTIVE_NEW_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ActiveUsedId() As Guid
+    Public Property ActiveUsedId As Guid
         Get
             CheckDeleted()
             If Row(VSCModelDAL.COL_NAME_ACTIVE_USED_ID) Is DBNull.Value Then
@@ -303,14 +303,14 @@ Public Class VSCModel
                 Return New Guid(CType(Row(VSCModelDAL.COL_NAME_ACTIVE_USED_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCModelDAL.COL_NAME_ACTIVE_USED_ID, Value)
+            SetValue(VSCModelDAL.COL_NAME_ACTIVE_USED_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CoverageLimitId() As Guid
+    Public Property CoverageLimitId As Guid
         Get
             CheckDeleted()
             If Row(VSCModelDAL.COL_NAME_COVERAGE_LIMIT_ID) Is DBNull.Value Then
@@ -319,14 +319,14 @@ Public Class VSCModel
                 Return New Guid(CType(Row(VSCModelDAL.COL_NAME_COVERAGE_LIMIT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCModelDAL.COL_NAME_COVERAGE_LIMIT_ID, Value)
+            SetValue(VSCModelDAL.COL_NAME_COVERAGE_LIMIT_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyGgroupId() As Guid
+    Public Property CompanyGgroupId As Guid
         Get
             CheckDeleted()
             If Row(VSCModelDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -335,14 +335,14 @@ Public Class VSCModel
                 Return New Guid(CType(Row(VSCModelDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCModelDAL.COL_NAME_COMPANY_GROUP_ID, Value)
+            SetValue(VSCModelDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Min:=0)> _
-    Public Property CoverageLimitCode() As Integer
+    Public Property CoverageLimitCode As Integer
         Get
             CheckDeleted()
             If Row(VSCModelDAL.COL_NAME_COVERAGE_LIMIT_CODE) Is DBNull.Value Then
@@ -351,9 +351,9 @@ Public Class VSCModel
                 Return (CType(Row(VSCModelDAL.COL_NAME_COVERAGE_LIMIT_CODE), Integer))
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCModelDAL.COL_NAME_COVERAGE_LIMIT_CODE, Value)
+            SetValue(VSCModelDAL.COL_NAME_COVERAGE_LIMIT_CODE, Value)
         End Set
     End Property
 #End Region
@@ -362,43 +362,43 @@ Public Class VSCModel
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New VSCModelDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New Dataset
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New Dataset
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
-    Public Sub Copy(ByVal original As VSCModel)
-        If Not Me.IsNew Then
+    Public Sub Copy(original As VSCModel)
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing VSC MODEL")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 #End Region
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getList(ByVal make As String, _
-                                   ByVal model As String, _
-                                   ByVal trim As String, _
-                                   ByVal year As String, _
-                                   ByVal coverageSupport As String) As VSCModelSearchDV
+    Public Shared Function getList(make As String, _
+                                   model As String, _
+                                   trim As String, _
+                                   year As String, _
+                                   coverageSupport As String) As VSCModelSearchDV
         Try
 
             Dim dal As New VSCModelDAL
             Dim dv As VSCModelSearchDV = New VSCModelSearchDV(dal.LoadList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, _
                                                     make, model, trim, year).Tables(0))
 
-            If Not coverageSupport Is Nothing AndAlso Not coverageSupport.Equals(String.Empty) Then
+            If coverageSupport IsNot Nothing AndAlso Not coverageSupport.Equals(String.Empty) Then
                 If coverageSupport = VAL_NEW Then
                     dv.RowFilter = COL_NAME_ACTIVE_NEW & " ='" & VAL_YES & "'"
                 ElseIf coverageSupport = VAL_USED Then
@@ -414,19 +414,19 @@ Public Class VSCModel
 
     End Function
 
-    Public Shared Function getDistinctList(ByVal make As String, _
-                                   ByVal model As String, _
-                                   ByVal trim As String, _
-                                   ByVal year As String, _
-                                   ByVal requestedfield As String, _
-                                   ByVal coverageSupport As String) As VSCModelSearchDV
+    Public Shared Function getDistinctList(make As String, _
+                                   model As String, _
+                                   trim As String, _
+                                   year As String, _
+                                   requestedfield As String, _
+                                   coverageSupport As String) As VSCModelSearchDV
         Try
 
             Dim dal As New VSCModelDAL
             Dim dv As VSCModelSearchDV = New VSCModelSearchDV(dal.LoadDistinctList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, _
                                                     make, model, trim, year, requestedfield).Tables(0))
 
-            If Not coverageSupport Is Nothing AndAlso Not coverageSupport.Equals(String.Empty) Then
+            If coverageSupport IsNot Nothing AndAlso Not coverageSupport.Equals(String.Empty) Then
                 If coverageSupport = VAL_NEW Then
                     dv.RowFilter = COL_NAME_ACTIVE_NEW & " ='" & VAL_YES & "'"
                 ElseIf coverageSupport = VAL_USED Then
@@ -442,7 +442,7 @@ Public Class VSCModel
 
     End Function
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid) As DataView
 
         Dim dt As DataTable
         dt = dv.Table
@@ -467,7 +467,7 @@ Public Class VSCModel
 
 #Region "Web Services Methods"
 
-    Public Function GetModels(ByVal DS As VSCGetModelsInputDs) As String
+    Public Function GetModels(DS As VSCGetModelsInputDs) As String
         Try
 
             Dim sMake As String = ""
@@ -513,7 +513,7 @@ Public Class VSCModel
         End Try
     End Function
 
-    Public Function GetVersions(ByVal DS As VSCGetVersionsInputDs) As String
+    Public Function GetVersions(DS As VSCGetVersionsInputDs) As String
         Try
 
             Dim sMake As String = ""
@@ -572,7 +572,7 @@ Public Class VSCModel
         End Try
     End Function
 
-    Public Function GetYears(ByVal DS As VSCGetYearsInputDs) As String
+    Public Function GetYears(DS As VSCGetYearsInputDs) As String
         Try
 
             Dim sMake As String = ""
@@ -633,7 +633,7 @@ Public Class VSCModel
         End Try
     End Function
 
-    Public Shared Function GetVSCModels(ByVal companyGroupId As Guid, ByVal make As String) As DataSet
+    Public Shared Function GetVSCModels(companyGroupId As Guid, make As String) As DataSet
         Try
             Dim dal As New VSCModelDAL
             Return dal.LoadVSCModels(companyGroupId, make)
@@ -644,7 +644,7 @@ Public Class VSCModel
 
     End Function
 
-    Public Shared Function GetVSCEngineVersions(ByVal companyGroupId As Guid, ByVal make As String, ByVal model As String) As DataSet
+    Public Shared Function GetVSCEngineVersions(companyGroupId As Guid, make As String, model As String) As DataSet
         Try
             Dim dal As New VSCModelDAL
             Return dal.LoadVSCEngineVersions(companyGroupId, make, model)
@@ -654,7 +654,7 @@ Public Class VSCModel
         End Try
 
     End Function
-    Public Shared Function GetVSCYears(ByVal companyGroupId As Guid, ByVal make As String, ByVal model As String, ByVal engineVersion As String) As DataSet
+    Public Shared Function GetVSCYears(companyGroupId As Guid, make As String, model As String, engineVersion As String) As DataSet
         Try
             Dim dal As New VSCModelDAL
             Return dal.LoadVSCYears(companyGroupId, make, model, engineVersion)
@@ -665,14 +665,14 @@ Public Class VSCModel
 
     End Function
 
-    Public Shared Function ValidateExternalCarCode(ByVal companyGroupId As Guid, ByVal externalCarCode As String, ByVal ManufacturerId As Guid, ByVal model As String, ByVal engineVersion As String) As Boolean
+    Public Shared Function ValidateExternalCarCode(companyGroupId As Guid, externalCarCode As String, ManufacturerId As Guid, model As String, engineVersion As String) As Boolean
         Dim isValid As Boolean = True
         Dim dal As VSCModelDAL
         Dim ds As DataSet
         Dim count As Integer
         dal = New VSCModelDAL()
         ds = dal.LoadExternalCardCode(companyGroupId, externalCarCode, ManufacturerId, model, engineVersion)
-        If Not ds Is Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
+        If ds IsNot Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
             count = CType(ds.Tables(0).Rows(0)(0).ToString, Integer)
             If count > 0 Then
                 isValid = False
@@ -707,7 +707,7 @@ Public Class VSCModel
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
 
         End Sub
@@ -730,11 +730,11 @@ Public Class VSCModel
     Public NotInheritable Class Valid_CarCode
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_CAR_CODE_ERROR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As VSCModel = CType(objectToValidate, VSCModel)
             If obj.CarCode Is Nothing Then Return True
             Dim strCarCode As String = obj.CarCode
@@ -755,11 +755,11 @@ Public Class VSCModel
     Public NotInheritable Class Valid_External_Car_Code
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_EXTERNAL_CAR_CODE_ERROR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As VSCModel = CType(objectToValidate, VSCModel)
             If obj.ExternalCarCode Is Nothing Then Return True
             Dim strExternalCarCode As String = obj.ExternalCarCode

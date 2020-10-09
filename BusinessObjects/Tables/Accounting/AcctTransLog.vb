@@ -6,48 +6,48 @@ Public Class AcctTransLog
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New AcctTransLogDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class AcctTransLog
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New AcctTransLogDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -102,7 +102,7 @@ Public Class AcctTransLog
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(AcctTransLogDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -113,7 +113,7 @@ Public Class AcctTransLog
     End Property
 
     <ValueMandatory("")>
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -122,13 +122,13 @@ Public Class AcctTransLog
                 Return New Guid(CType(Row(AcctTransLogDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_COMPANY_ID, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -137,13 +137,13 @@ Public Class AcctTransLog
                 Return New Guid(CType(Row(AcctTransLogDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
-    Public Property ServiceCenterId() As Guid
+    Public Property ServiceCenterId As Guid
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_SERVICE_CENTER_ID) Is DBNull.Value Then
@@ -152,13 +152,13 @@ Public Class AcctTransLog
                 Return New Guid(CType(Row(AcctTransLogDAL.COL_NAME_SERVICE_CENTER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_SERVICE_CENTER_ID, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_SERVICE_CENTER_ID, Value)
         End Set
     End Property
 
-    Public Property CommissionEntityId() As Guid
+    Public Property CommissionEntityId As Guid
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_COMMISSION_ENTITY_ID) Is DBNull.Value Then
@@ -167,13 +167,13 @@ Public Class AcctTransLog
                 Return New Guid(CType(Row(AcctTransLogDAL.COL_NAME_COMMISSION_ENTITY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_COMMISSION_ENTITY_ID, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_COMMISSION_ENTITY_ID, Value)
         End Set
     End Property
 
-    Public Property AcctEventTypeId() As Guid
+    Public Property AcctEventTypeId As Guid
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_ACCT_EVENT_TYPE_ID) Is DBNull.Value Then
@@ -182,15 +182,15 @@ Public Class AcctTransLog
                 Return New Guid(CType(Row(AcctTransLogDAL.COL_NAME_ACCT_EVENT_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_ACCT_EVENT_TYPE_ID, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_ACCT_EVENT_TYPE_ID, Value)
         End Set
     End Property
 
 
 
-    Public Property AcctEventFieldId() As Guid
+    Public Property AcctEventFieldId As Guid
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_ACCT_EVENT_FIELD_ID) Is DBNull.Value Then
@@ -199,15 +199,15 @@ Public Class AcctTransLog
                 Return New Guid(CType(Row(AcctTransLogDAL.COL_NAME_ACCT_EVENT_FIELD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_ACCT_EVENT_FIELD_ID, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_ACCT_EVENT_FIELD_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")>
-    Public Property AcctCompanyId() As Guid
+    Public Property AcctCompanyId As Guid
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_ACCT_COMPANY_ID) Is DBNull.Value Then
@@ -216,15 +216,15 @@ Public Class AcctTransLog
                 Return New Guid(CType(Row(AcctTransLogDAL.COL_NAME_ACCT_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_ACCT_COMPANY_ID, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_ACCT_COMPANY_ID, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=160)>
-    Public Property Country() As String
+    Public Property Country As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_COUNTRY) Is DBNull.Value Then
@@ -233,15 +233,15 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_COUNTRY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_COUNTRY, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_COUNTRY, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=16)>
-    Public Property Region() As String
+    Public Property Region As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_REGION) Is DBNull.Value Then
@@ -250,15 +250,15 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_REGION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_REGION, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_REGION, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=160)>
-    Public Property RegionDescription() As String
+    Public Property RegionDescription As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_REGION_DESCRIPTION) Is DBNull.Value Then
@@ -267,15 +267,15 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_REGION_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_REGION_DESCRIPTION, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_REGION_DESCRIPTION, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=400)>
-    Public Property TaxIdCode() As String
+    Public Property TaxIdCode As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_TAX_ID_CODE) Is DBNull.Value Then
@@ -284,15 +284,15 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_TAX_ID_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_TAX_ID_CODE, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_TAX_ID_CODE, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=48)>
-    Public Property Currency() As String
+    Public Property Currency As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_CURRENCY) Is DBNull.Value Then
@@ -301,15 +301,15 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_CURRENCY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_CURRENCY, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_CURRENCY, Value)
         End Set
     End Property
 
 
 
-    Public Property BankId() As String
+    Public Property BankId As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_BANK_ID) Is DBNull.Value Then
@@ -318,15 +318,15 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_BANK_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_BANK_ID, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_BANK_ID, Value)
         End Set
     End Property
 
 
 
-    Public Property BankAccountNumber() As String
+    Public Property BankAccountNumber As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_BANK_ACCOUNT_NUMBER) Is DBNull.Value Then
@@ -335,15 +335,15 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_BANK_ACCOUNT_NUMBER), Long)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_BANK_ACCOUNT_NUMBER, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_BANK_ACCOUNT_NUMBER, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=320)>
-    Public Property Certificate() As String
+    Public Property Certificate As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_CERTIFICATE) Is DBNull.Value Then
@@ -352,15 +352,15 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_CERTIFICATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_CERTIFICATE, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_CERTIFICATE, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=120)>
-    Public Property Payee() As String
+    Public Property Payee As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_PAYEE) Is DBNull.Value Then
@@ -369,15 +369,15 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_PAYEE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_PAYEE, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_PAYEE, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=120)>
-    Public Property Address1() As String
+    Public Property Address1 As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_ADDRESS1) Is DBNull.Value Then
@@ -386,15 +386,15 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_ADDRESS1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_ADDRESS1, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_ADDRESS1, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=120)>
-    Public Property Address2() As String
+    Public Property Address2 As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_ADDRESS2) Is DBNull.Value Then
@@ -403,15 +403,15 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_ADDRESS2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_ADDRESS2, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_ADDRESS2, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=120)>
-    Public Property City() As String
+    Public Property City As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_CITY) Is DBNull.Value Then
@@ -420,15 +420,15 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_CITY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_CITY, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_CITY, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=120)>
-    Public Property Zip() As String
+    Public Property Zip As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_ZIP) Is DBNull.Value Then
@@ -437,15 +437,15 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_ZIP), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_ZIP, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_ZIP, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=640)>
-    Public Property AuthorizationNumber() As String
+    Public Property AuthorizationNumber As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_AUTHORIZATION_NUMBER) Is DBNull.Value Then
@@ -454,15 +454,15 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_AUTHORIZATION_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_AUTHORIZATION_NUMBER, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_AUTHORIZATION_NUMBER, Value)
         End Set
     End Property
 
 
 
-    Public Property PaymentAmount() As LongType
+    Public Property PaymentAmount As LongType
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_PAYMENT_AMOUNT) Is DBNull.Value Then
@@ -471,15 +471,15 @@ Public Class AcctTransLog
                 Return New LongType(CType(Row(AcctTransLogDAL.COL_NAME_PAYMENT_AMOUNT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_PAYMENT_AMOUNT, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_PAYMENT_AMOUNT, Value)
         End Set
     End Property
 
 
 
-    Public Property PaymentAmountRev() As LongType
+    Public Property PaymentAmountRev As LongType
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_PAYMENT_AMOUNT_REV) Is DBNull.Value Then
@@ -488,15 +488,15 @@ Public Class AcctTransLog
                 Return New LongType(CType(Row(AcctTransLogDAL.COL_NAME_PAYMENT_AMOUNT_REV), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_PAYMENT_AMOUNT_REV, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_PAYMENT_AMOUNT_REV, Value)
         End Set
     End Property
 
 
 
-    Public Property PaymentDate() As DateType
+    Public Property PaymentDate As DateType
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_PAYMENT_DATE) Is DBNull.Value Then
@@ -505,15 +505,15 @@ Public Class AcctTransLog
                 Return New DateType(CType(Row(AcctTransLogDAL.COL_NAME_PAYMENT_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_PAYMENT_DATE, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_PAYMENT_DATE, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=28)>
-    Public Property AcctPeriod() As String
+    Public Property AcctPeriod As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_ACCT_PERIOD) Is DBNull.Value Then
@@ -522,15 +522,15 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_ACCT_PERIOD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_ACCT_PERIOD, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_ACCT_PERIOD, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=80)>
-    Public Property CoverageType() As String
+    Public Property CoverageType As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_COVERAGE_TYPE) Is DBNull.Value Then
@@ -539,15 +539,15 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_COVERAGE_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_COVERAGE_TYPE, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_COVERAGE_TYPE, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=800)>
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -556,15 +556,15 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=160)>
-    Public Property NetworkId() As String
+    Public Property NetworkId As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_NETWORK_ID) Is DBNull.Value Then
@@ -573,15 +573,15 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_NETWORK_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_NETWORK_ID, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_NETWORK_ID, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=160)>
-    Public Property PaymentNumber() As String
+    Public Property PaymentNumber As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_PAYMENT_NUMBER) Is DBNull.Value Then
@@ -590,15 +590,15 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_PAYMENT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_PAYMENT_NUMBER, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_PAYMENT_NUMBER, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=1600)>
-    Public Property TransactionIdNumber() As String
+    Public Property TransactionIdNumber As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_TRANSACTION_ID_NUMBER) Is DBNull.Value Then
@@ -607,13 +607,13 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_TRANSACTION_ID_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_TRANSACTION_ID_NUMBER, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_TRANSACTION_ID_NUMBER, Value)
         End Set
     End Property
 
-    Public Property ProcessDate() As DateType
+    Public Property ProcessDate As DateType
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_PROCESS_DATE) Is DBNull.Value Then
@@ -622,13 +622,13 @@ Public Class AcctTransLog
                 Return New DateType(CType(Row(AcctTransLogDAL.COL_NAME_PROCESS_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_PROCESS_DATE, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_PROCESS_DATE, Value)
         End Set
     End Property
 
-    Public Property AcctTransmissionId() As Guid
+    Public Property AcctTransmissionId As Guid
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_ACCT_TRANSMISSION_ID) Is DBNull.Value Then
@@ -637,14 +637,14 @@ Public Class AcctTransLog
                 Return New Guid(CType(Row(AcctTransLogDAL.COL_NAME_ACCT_TRANSMISSION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_ACCT_TRANSMISSION_ID, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_ACCT_TRANSMISSION_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1)>
-    Public Property VendorUpdate() As String
+    Public Property VendorUpdate As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_VENDOR_UPDATE) Is DBNull.Value Then
@@ -653,14 +653,14 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_VENDOR_UPDATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_VENDOR_UPDATE, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_VENDOR_UPDATE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1)>
-    Public Property PaymentToCustomer() As String
+    Public Property PaymentToCustomer As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_PAYMENT_TO_CUSTOMER) Is DBNull.Value Then
@@ -669,14 +669,14 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_PAYMENT_TO_CUSTOMER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_PAYMENT_TO_CUSTOMER, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_PAYMENT_TO_CUSTOMER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)>
-    Public Property BankSortCode() As String
+    Public Property BankSortCode As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_BANK_SORTCODE) Is DBNull.Value Then
@@ -685,14 +685,14 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_BANK_SORTCODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_BANK_SORTCODE, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_BANK_SORTCODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)>
-    Public Property BankAddress1() As String
+    Public Property BankAddress1 As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_1) Is DBNull.Value Then
@@ -701,14 +701,14 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_1, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_1, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)>
-    Public Property BankAddress2() As String
+    Public Property BankAddress2 As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_2) Is DBNull.Value Then
@@ -717,14 +717,14 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_2, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_2, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)>
-    Public Property BankAddress3() As String
+    Public Property BankAddress3 As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_3) Is DBNull.Value Then
@@ -733,14 +733,14 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_3), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_3, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_3, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)>
-    Public Property BankAddress4() As String
+    Public Property BankAddress4 As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_4) Is DBNull.Value Then
@@ -749,14 +749,14 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_4), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_4, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_BANK_ADDRESS_4, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)>
-    Public Property BankName1() As String
+    Public Property BankName1 As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_BANK_NAME_1) Is DBNull.Value Then
@@ -765,14 +765,14 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_BANK_NAME_1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_BANK_NAME_1, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_BANK_NAME_1, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)>
-    Public Property BankName2() As String
+    Public Property BankName2 As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_BANK_NAME_2) Is DBNull.Value Then
@@ -781,14 +781,14 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_BANK_NAME_2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_BANK_NAME_2, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_BANK_NAME_2, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)>
-    Public Property BankIBAN() As String
+    Public Property BankIBAN As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_BANK_IBAN) Is DBNull.Value Then
@@ -797,14 +797,14 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_BANK_IBAN), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_BANK_IBAN, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_BANK_IBAN, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)>
-    Public Property BankBranch() As String
+    Public Property BankBranch As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_BANK_BRANCH) Is DBNull.Value Then
@@ -813,14 +813,14 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_BANK_BRANCH), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_BANK_BRANCH, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_BANK_BRANCH, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=10)>
-    Public Property WarrSalesDate() As String
+    Public Property WarrSalesDate As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_WARR_SALES_DATE) Is DBNull.Value Then
@@ -829,13 +829,13 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_WARR_SALES_DATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_WARR_SALES_DATE, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_WARR_SALES_DATE, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=10)>
-    Public Property ContractInceptionDate() As String
+    Public Property ContractInceptionDate As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_CONTRACT_INCEPTION_DATE) Is DBNull.Value Then
@@ -844,13 +844,13 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_CONTRACT_INCEPTION_DATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_CONTRACT_INCEPTION_DATE, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_CONTRACT_INCEPTION_DATE, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=15)>
-    Public Property AccountCode() As String
+    Public Property AccountCode As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_ACCOUNT_NUMBER) Is DBNull.Value Then
@@ -859,13 +859,13 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_ACCOUNT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_ACCOUNT_NUMBER, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_ACCOUNT_NUMBER, Value)
         End Set
     End Property
 
-    Public Property PolicyNumber() As String
+    Public Property PolicyNumber As String
         Get
             CheckDeleted()
             If Row(AcctTransLogDAL.COL_NAME_POLICY_NUMBER) Is DBNull.Value Then
@@ -874,9 +874,9 @@ Public Class AcctTransLog
                 Return CType(Row(AcctTransLogDAL.COL_NAME_POLICY_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctTransLogDAL.COL_NAME_POLICY_NUMBER, Value)
+            SetValue(AcctTransLogDAL.COL_NAME_POLICY_NUMBER, Value)
         End Set
     End Property
 
@@ -886,15 +886,15 @@ Public Class AcctTransLog
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New AcctTransLogDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -902,7 +902,7 @@ Public Class AcctTransLog
         End Try
     End Sub
 
-    Public Function GetAccountingInterfaceTables(ByVal oFelitaEngineData As FelitaEngine.FelitaEngineData, ByVal BatchNumber As String) As DataSet()
+    Public Function GetAccountingInterfaceTables(oFelitaEngineData As FelitaEngine.FelitaEngineData, BatchNumber As String) As DataSet()
 
 
         Dim dal As New AcctTransLogDAL
@@ -922,7 +922,7 @@ Public Class AcctTransLog
 
             'Check the accounting type to determine the type of grouping if any
             _AcctCompany = New AcctCompany(oFelitaEngineData.AccountingCompanyId)
-            _acctExtension = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), _AcctCompany.AcctSystemId)
+            _acctExtension = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), _AcctCompany.AcctSystemId)
 
             If BusinessUnitDV.Count > 0 Then
                 For Each dvRow As System.Data.DataRowView In BusinessUnitDV
@@ -961,7 +961,7 @@ Public Class AcctTransLog
                                     dsTempAP = dal.GetJournalEntriesAP(oFelitaEngineData.CompanyId, GuidControl.ByteArrayToGuid(CType(dvItem(AcctEvent.AcctEventSearchDV.COL_ACCT_EVENT_TYPE_ID), Byte())),
                                     GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte())), AcctEvent.AcctEventSearchDV.COL_EVENT_CODE)
 
-                                    If Not dsTempAP Is Nothing AndAlso dsTempAP.Tables.Count > 0 AndAlso dsTempAP.Tables(0).Rows.Count > 0 Then
+                                    If dsTempAP IsNot Nothing AndAlso dsTempAP.Tables.Count > 0 AndAlso dsTempAP.Tables(0).Rows.Count > 0 Then
                                         If ds.Tables(AcctTransLogDAL.Table_AP_LINEITEM) Is Nothing Then
                                             ds.Tables.Add(dsTempAP.Tables(0).Copy)
                                         Else
@@ -996,9 +996,9 @@ Public Class AcctTransLog
                                 boAcctExecLog = New AcctExecLog(oFelitaEngineData.CompanyId, GuidControl.ByteArrayToGuid(CType(dvItem(AcctEvent.AcctEventSearchDV.COL_ACCT_EVENT_TYPE_ID), Byte())))
                                 boAcctExecLog.UpdateExecStatus(isBalanced)
 
-                                If ((Not dsTemp.Tables(dal.Table_LINEITEM) Is Nothing AndAlso dsTemp.Tables(dal.Table_LINEITEM).Rows.Count > 0) _
+                                If ((dsTemp.Tables(dal.Table_LINEITEM) IsNot Nothing AndAlso dsTemp.Tables(dal.Table_LINEITEM).Rows.Count > 0) _
                                     OrElse
-                                    (Not dsTemp.Tables(dal.Table_AP_LINEITEM) Is Nothing AndAlso dsTemp.Tables(dal.Table_AP_LINEITEM).Rows.Count > 0)) Then
+                                    (dsTemp.Tables(dal.Table_AP_LINEITEM) IsNot Nothing AndAlso dsTemp.Tables(dal.Table_AP_LINEITEM).Rows.Count > 0)) Then
 
                                     If ds.Tables(dal.TABLE_POSTINGPARAMETERS) Is Nothing Then
                                         ds.Tables.Add(dal.GetJournalPostingParams(oFelitaEngineData.AccountingCompanyId, GuidControl.ByteArrayToGuid(CType(dvItem(AcctEvent.AcctEventSearchDV.COL_ACCT_EVENT_TYPE_ID), Byte())), GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte()))).Tables(0).Copy)
@@ -1016,14 +1016,14 @@ Public Class AcctTransLog
                     ElseIf Not oFelitaEngineData.EventId = Guid.Empty Then
 
                         Dim dsTemp As DataSet
-                        Dim eventCode As String = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_TRANS_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), oFelitaEngineData.EventId)
+                        Dim eventCode As String = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCT_TRANS_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), oFelitaEngineData.EventId)
 
                         dsTemp = New DataSet(dal.DatasetName)
                         dsTemp = dal.GetJournalEntries(oFelitaEngineData.CompanyId, oFelitaEngineData.EventId,
                         GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte())), eventCode, ElitaPlusIdentity.Current.ActiveUser.NetworkId, BatchNumber, False)
 
                         'Check if items balance before adding to our dataset.
-                        isBalanced = MergeDataSets(oFelitaEngineData.CompanyId, _acctExtension, LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_TRANS_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), oFelitaEngineData.EventId), ds, dsTemp, oFelitaEngineData.EventId)
+                        isBalanced = MergeDataSets(oFelitaEngineData.CompanyId, _acctExtension, LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCT_TRANS_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), oFelitaEngineData.EventId), ds, dsTemp, oFelitaEngineData.EventId)
                         'Update the exec log table with a success or failure based on balancing
                         boAcctExecLog = New AcctExecLog(oFelitaEngineData.CompanyId, oFelitaEngineData.EventId)
                         boAcctExecLog.UpdateExecStatus(isBalanced)
@@ -1040,7 +1040,7 @@ Public Class AcctTransLog
                             dsTempAP = dal.GetJournalEntriesAP(oFelitaEngineData.CompanyId, oFelitaEngineData.EventId,
                             GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte())), eventCode)
 
-                            If Not dsTempAP Is Nothing AndAlso dsTempAP.Tables.Count > 0 AndAlso dsTempAP.Tables(0).Rows.Count > 0 Then
+                            If dsTempAP IsNot Nothing AndAlso dsTempAP.Tables.Count > 0 AndAlso dsTempAP.Tables(0).Rows.Count > 0 Then
                                 If ds.Tables(AcctTransLogDAL.Table_AP_LINEITEM) Is Nothing Then
                                     ds.Tables.Add(dsTempAP.Tables(0).Copy)
                                 Else
@@ -1059,9 +1059,9 @@ Public Class AcctTransLog
 
                         End If
 
-                        If ((Not dsTemp.Tables(dal.Table_LINEITEM) Is Nothing AndAlso dsTemp.Tables(dal.Table_LINEITEM).Rows.Count > 0) _
+                        If ((dsTemp.Tables(dal.Table_LINEITEM) IsNot Nothing AndAlso dsTemp.Tables(dal.Table_LINEITEM).Rows.Count > 0) _
                                    OrElse
-                                   (Not dsTemp.Tables(dal.Table_AP_LINEITEM) Is Nothing AndAlso dsTemp.Tables(dal.Table_AP_LINEITEM).Rows.Count > 0)) Then
+                                   (dsTemp.Tables(dal.Table_AP_LINEITEM) IsNot Nothing AndAlso dsTemp.Tables(dal.Table_AP_LINEITEM).Rows.Count > 0)) Then
 
                             If ds.Tables(dal.TABLE_POSTINGPARAMETERS) Is Nothing Then
                                 ds.Tables.Add(dal.GetJournalPostingParams(oFelitaEngineData.AccountingCompanyId, oFelitaEngineData.EventId, GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte()))).Tables(0).Copy)
@@ -1112,14 +1112,14 @@ Public Class AcctTransLog
     End Function
 
     'Function to determine whether or not the dataset contains valid tables that will require we gather the header information
-    Public Shared Function isDSValid(ByVal ds As DataSet, Optional ByVal CheckVendors As Boolean = True) As Boolean
+    Public Shared Function isDSValid(ds As DataSet, Optional ByVal CheckVendors As Boolean = True) As Boolean
 
-        If (Not ds.Tables(AcctTransLogDAL.Table_LINEITEM) Is Nothing AndAlso ds.Tables(AcctTransLogDAL.Table_LINEITEM).Rows.Count > 0) _
-         OrElse (Not ds.Tables(AcctTransLogDAL.Table_AP_LINEITEM) Is Nothing AndAlso ds.Tables(AcctTransLogDAL.Table_AP_LINEITEM).Rows.Count > 0) Then
+        If (ds.Tables(AcctTransLogDAL.Table_LINEITEM) IsNot Nothing AndAlso ds.Tables(AcctTransLogDAL.Table_LINEITEM).Rows.Count > 0) _
+         OrElse (ds.Tables(AcctTransLogDAL.Table_AP_LINEITEM) IsNot Nothing AndAlso ds.Tables(AcctTransLogDAL.Table_AP_LINEITEM).Rows.Count > 0) Then
             Return True
         End If
 
-        If CheckVendors AndAlso Not ds.Tables(AcctTransLogDAL.Table_VENDOR) Is Nothing AndAlso ds.Tables(AcctTransLogDAL.Table_VENDOR).Rows.Count > 0 Then
+        If CheckVendors AndAlso ds.Tables(AcctTransLogDAL.Table_VENDOR) IsNot Nothing AndAlso ds.Tables(AcctTransLogDAL.Table_VENDOR).Rows.Count > 0 Then
             Return True
         End If
 
@@ -1132,7 +1132,7 @@ Public Class AcctTransLog
         Return False
     End Function
 
-    Public Shared Function PurgeTransLog(ByVal ds As DataSet, ByVal PurgeVendors As Boolean)
+    Public Shared Function PurgeTransLog(ds As DataSet, PurgeVendors As Boolean)
 
         Dim tbl As DataTable
         Dim arrIDs As New ArrayList
@@ -1163,7 +1163,7 @@ Public Class AcctTransLog
 
     End Function
 
-    Private Function IsJournalBalanced(ByVal ds As DataSet) As Boolean
+    Private Function IsJournalBalanced(ds As DataSet) As Boolean
 
 
         Dim crAmount, drAmount As Long
@@ -1192,12 +1192,12 @@ Public Class AcctTransLog
 
     End Function
 
-    Public Shared Sub PopulateAccountingEvents(ByVal CompanyCode As String, ByVal AcctEventId As Guid, ByVal IncludeVendors As Boolean)
+    Public Shared Sub PopulateAccountingEvents(CompanyCode As String, AcctEventId As Guid, IncludeVendors As Boolean)
 
         Dim _dal As New AcctTransLogDAL
 
         Try
-            Dim dv As DataView = LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_TRANS_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False)
+            Dim dv As DataView = LookupListNew.DropdownLookupList(LookupListCache.LK_ACCT_TRANS_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False)
 
             If AcctEventId = Guid.Empty Then
                 For Each dvItem As System.Data.DataRowView In dv
@@ -1218,7 +1218,7 @@ Public Class AcctTransLog
 
     End Sub
 
-    Private Function MergeDataSets(ByVal CompanyId As Guid, ByVal ext As String, ByVal eventType As String, ByVal ds As DataSet, ByVal newDs As DataSet, ByVal eventId As Guid) As Boolean
+    Private Function MergeDataSets(CompanyId As Guid, ext As String, eventType As String, ds As DataSet, newDs As DataSet, eventId As Guid) As Boolean
 
         Dim isBalanced As Boolean = True
         Dim dtTemp As DataTable
@@ -1232,7 +1232,7 @@ Public Class AcctTransLog
         If ext = FelitaEngine.SMARTSTREAM_PREFIX Then
 
             'SmartStream GL
-            If eventType <> "CLAIM" And eventType <> "REFUNDS" Then
+            If eventType <> "CLAIM" AndAlso eventType <> "REFUNDS" Then
 
                 isBalanced = IsJournalBalanced(newDs)
                 If isBalanced Then
@@ -1249,7 +1249,7 @@ Public Class AcctTransLog
                         Else
                             ds.Tables(AcctTransLogDAL.Table_AP_PURGE).Merge(dtTemp)
                         End If
-                        If Not ds.Tables(AcctTransLogDAL.Table_AP_PURGE) Is Nothing Then
+                        If ds.Tables(AcctTransLogDAL.Table_AP_PURGE) IsNot Nothing Then
                             lsCol = New Generic.List(Of DataColumn)
                             For Each col As DataColumn In ds.Tables(AcctTransLogDAL.Table_AP_PURGE).Columns
                                 If Not col.ColumnName.ToLower.Equals(AcctTransLogDAL.COL_NAME_ACCT_TRANS_LOG_ID.ToLower) Then
@@ -1343,7 +1343,7 @@ Public Class AcctTransLog
                     Else
                         ds.Tables(AcctTransLogDAL.Table_AP_PURGE).Merge(dtTemp)
                     End If
-                    If Not ds.Tables(AcctTransLogDAL.Table_AP_PURGE) Is Nothing Then
+                    If ds.Tables(AcctTransLogDAL.Table_AP_PURGE) IsNot Nothing Then
                         lsCol = New Generic.List(Of DataColumn)
                         For Each col As DataColumn In ds.Tables(AcctTransLogDAL.Table_AP_PURGE).Columns
                             If Not col.ColumnName.ToLower.Equals(AcctTransLogDAL.COL_NAME_ACCT_TRANS_LOG_ID.ToLower) Then
@@ -1380,7 +1380,7 @@ Public Class AcctTransLog
                     Else
                         ds.Tables(AcctTransLogDAL.Table_AP_PURGE).Merge(dtTemp)
                     End If
-                    If Not ds.Tables(AcctTransLogDAL.Table_AP_PURGE) Is Nothing Then
+                    If ds.Tables(AcctTransLogDAL.Table_AP_PURGE) IsNot Nothing Then
                         lsCol = New Generic.List(Of DataColumn)
                         For Each col As DataColumn In ds.Tables(AcctTransLogDAL.Table_AP_PURGE).Columns
                             If Not col.ColumnName.ToLower.Equals(AcctTransLogDAL.COL_NAME_ACCT_TRANS_LOG_ID.ToLower) Then
@@ -1433,7 +1433,7 @@ Public Class AcctTransLog
 
     End Function
 
-    Public Function BuildVendorTable(ByVal dt As DataTable) As DataTable
+    Public Function BuildVendorTable(dt As DataTable) As DataTable
 
         Dim dtTemp As DataTable
         Dim dsHelp As New DSHelper
@@ -1447,7 +1447,7 @@ Public Class AcctTransLog
 
     End Function
 
-    Public Sub AddLineNumbers(ByVal ext As String, ByVal ds As DataSet)
+    Public Sub AddLineNumbers(ext As String, ds As DataSet)
 
         If ext = FelitaEngine.SMARTSTREAM_PREFIX Then
 

@@ -37,13 +37,13 @@ Public Class ConfigQuestionSetDAL
 
 #Region "Validation Methods"
 
-    Public Function CheckForDuplicateConfiguration(ByVal ConfigQuestionSetID As Guid, ByVal CompanyGroupID As Guid, ByVal CompanyID As Guid,
-                                                   ByVal DealerGroupID As Guid, ByVal DealerID As Guid, ByVal ProductCodeID As Guid,
-                                                   ByVal CoverageTypeID As Guid, ByVal DeviceTypeID As Guid, ByVal RiskTypeID As Guid,
-                                                   ByVal LanguageID As Guid, ByVal strPurposeXCD As String, ByVal strQuestionSetCode As String) As String
+    Public Function CheckForDuplicateConfiguration(ConfigQuestionSetID As Guid, CompanyGroupID As Guid, CompanyID As Guid,
+                                                   DealerGroupID As Guid, DealerID As Guid, ProductCodeID As Guid,
+                                                   CoverageTypeID As Guid, DeviceTypeID As Guid, RiskTypeID As Guid,
+                                                   LanguageID As Guid, strPurposeXCD As String, strQuestionSetCode As String) As String
 
         Dim errorMsg As String = String.Empty
-        Dim selectStmt As String = Me.Config("/SQL/VALIDATE")
+        Dim selectStmt As String = Config("/SQL/VALIDATE")
         Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, OracleDbHelper.CreateConnection())
 
         cmd.BindByName = True
@@ -84,9 +84,9 @@ Public Class ConfigQuestionSetDAL
             cmd.AddParameter("pi_risk_type_id", OracleDbType.Raw, RiskTypeID.ToByteArray())
         End If
 
-        OracleDbHelper.AddParameter(cmd, "pi_purpose_xcd", OracleDbType.Varchar2, Me.GetFormattedSearchStringForSQL(strPurposeXCD), ParameterDirection.Input)
+        OracleDbHelper.AddParameter(cmd, "pi_purpose_xcd", OracleDbType.Varchar2, GetFormattedSearchStringForSQL(strPurposeXCD), ParameterDirection.Input)
 
-        OracleDbHelper.AddParameter(cmd, "pi_question_set_code", OracleDbType.Varchar2, Me.GetFormattedSearchStringForSQL(strQuestionSetCode), ParameterDirection.Input)
+        OracleDbHelper.AddParameter(cmd, "pi_question_set_code", OracleDbType.Varchar2, GetFormattedSearchStringForSQL(strQuestionSetCode), ParameterDirection.Input)
 
         cmd.AddParameter("pi_language_id", OracleDbType.Raw, LanguageID.ToByteArray())
 
@@ -106,12 +106,12 @@ Public Class ConfigQuestionSetDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, OracleDbHelper.CreateConnection())
 
         cmd.BindByName = True
@@ -119,18 +119,18 @@ Public Class ConfigQuestionSetDAL
         cmd.AddParameter("po_resultcursor", OracleDbType.RefCursor, direction:=ParameterDirection.Output)
 
         Try
-            OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, familyDS)
+            OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal CompGrpID As Guid, ByVal CompanyID As Guid, ByVal DealerGrpID As Guid, ByVal DealerID As Guid,
-                             ByVal ProductCode As String, ByVal CoverageTypeID As Guid, ByVal RiskTypeID As Guid,
-                             ByVal strPurposeXCD As String, ByVal strQuestionSetCode As String, ByVal LanguageID As Guid,
-                             ByVal networkID As String) As DataSet
+    Public Function LoadList(CompGrpID As Guid, CompanyID As Guid, DealerGrpID As Guid, DealerID As Guid,
+                             ProductCode As String, CoverageTypeID As Guid, RiskTypeID As Guid,
+                             strPurposeXCD As String, strQuestionSetCode As String, LanguageID As Guid,
+                             networkID As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim ds As New DataSet
         Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, OracleDbHelper.CreateConnection())
 
@@ -167,17 +167,17 @@ Public Class ConfigQuestionSetDAL
         End If
 
         If Not String.IsNullOrWhiteSpace(strPurposeXCD) Then
-            OracleDbHelper.AddParameter(cmd, "pi_purpose_xcd", OracleDbType.Varchar2, Me.GetFormattedSearchStringForSQL(strPurposeXCD), ParameterDirection.Input)
+            OracleDbHelper.AddParameter(cmd, "pi_purpose_xcd", OracleDbType.Varchar2, GetFormattedSearchStringForSQL(strPurposeXCD), ParameterDirection.Input)
         End If
 
         If Not String.IsNullOrWhiteSpace(strQuestionSetCode) Then
-            OracleDbHelper.AddParameter(cmd, "pi_question_set_code", OracleDbType.Varchar2, Me.GetFormattedSearchStringForSQL(strQuestionSetCode), ParameterDirection.Input)
+            OracleDbHelper.AddParameter(cmd, "pi_question_set_code", OracleDbType.Varchar2, GetFormattedSearchStringForSQL(strQuestionSetCode), ParameterDirection.Input)
         End If
 
         cmd.AddParameter("po_resultcursor", OracleDbType.RefCursor, direction:=ParameterDirection.Output)
 
         Try
-            Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, ds)
+            Return OracleDbHelper.Fetch(cmd, TABLE_NAME, ds)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -186,20 +186,20 @@ Public Class ConfigQuestionSetDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
-    Public Sub DeleteConfiguration(ByVal configQuestionSetId As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/DELETE")
+    Public Sub DeleteConfiguration(configQuestionSetId As Guid)
+        Dim selectStmt As String = Config("/SQL/DELETE")
         Dim inputParameters(0) As DBHelperParameter
 
-        inputParameters(0) = New DBHelperParameter(Me.COL_NAME_CONFIG_QUESTION_SET_ID, configQuestionSetId, GetType(Guid))
+        inputParameters(0) = New DBHelperParameter(COL_NAME_CONFIG_QUESTION_SET_ID, configQuestionSetId, GetType(Guid))
 
         Try
             ' Call DBHelper Store Procedure
@@ -209,7 +209,7 @@ Public Class ConfigQuestionSetDAL
         End Try
     End Sub
 
-    Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, tableName As String)
         With command
             .BindByName = True
             .AddParameter(parameterName:="pi_config_question_set_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_CONFIG_QUESTION_SET_ID, direction:=ParameterDirection.Input)
@@ -228,14 +228,14 @@ Public Class ConfigQuestionSetDAL
         End With
     End Sub
 
-    Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, tableName As String)
         With command
             .BindByName = True
             .AddParameter(parameterName:="pi_config_question_set_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_CONFIG_QUESTION_SET_ID, direction:=ParameterDirection.Input)
         End With
     End Sub
 
-    Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, tableName As String)
         With command
             .BindByName = True
             .AddParameter(parameterName:="pi_config_question_set_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_CONFIG_QUESTION_SET_ID, direction:=ParameterDirection.Input)

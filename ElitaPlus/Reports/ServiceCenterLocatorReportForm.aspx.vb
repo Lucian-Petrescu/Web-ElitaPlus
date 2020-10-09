@@ -104,7 +104,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -123,35 +123,35 @@ Namespace Reports
             PopulateDropDowns()
         End Sub
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
-            If Me.moCountryLabel.Visible = False Then
+            ErrorCtrl.Clear_Hide()
+            If moCountryLabel.Visible = False Then
                 HideHtmlElement("ddSeparator")
             End If
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                     'Else
                     ' ClearErrLabels()
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -159,30 +159,30 @@ Namespace Reports
 
 #Region "Handlers-DropDown"
 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As MultipleColumnDropControl) _
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As MultipleColumnDropControl) _
                         Handles moFromMultipleColumnDropControl.SelectedDropChanged
             'fromMultipleDrop.ClearMultipleDrop()
             ' moAllServiceCentersRadio.Checked = True
-            If fromMultipleDrop.SelectedIndex > Me.BLANK_ITEM_SELECTED Then
+            If fromMultipleDrop.SelectedIndex > BLANK_ITEM_SELECTED Then
                 moAllServiceCentersRadio.Checked = False
                 'PopulateFromServiceCenter()
             End If
         End Sub
 
-        Private Sub OnToDrop_Changed(ByVal toMultipleDrop As MultipleColumnDropControl) _
+        Private Sub OnToDrop_Changed(toMultipleDrop As MultipleColumnDropControl) _
                        Handles moToMultipleColumnDropControl.SelectedDropChanged
             ' toMultipleDrop.ClearMultipleDrop()
             ' moAllServiceCentersRadio.Checked = True
-            If toMultipleDrop.SelectedIndex > Me.BLANK_ITEM_SELECTED Then
+            If toMultipleDrop.SelectedIndex > BLANK_ITEM_SELECTED Then
                 moAllServiceCentersRadio.Checked = False
                 ' PopulateToServiceCenter()
             End If
         End Sub
 
-        Private Sub cboCountry_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboCountry.SelectedIndexChanged
+        Private Sub cboCountry_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboCountry.SelectedIndexChanged
             Try
-                selectedCountryId = Me.GetSelectedItem(Me.cboCountry)
-                If Me.selectedCountryId.Equals(Guid.Empty) Then
+                selectedCountryId = GetSelectedItem(cboCountry)
+                If selectedCountryId.Equals(Guid.Empty) Then
                     'HideHtmlElement("tblSericeCenter")
                     Throw New GUIException(Message.MSG_INVALID_COUNTRY, Assurant.ElitaPlus.Common.ErrorCodes.GUI_COUNTRY_MUST_BE_SELECTED_ERR)
                 Else
@@ -193,7 +193,7 @@ Namespace Reports
                     btnGenRpt.Visible = True
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
@@ -240,19 +240,19 @@ Namespace Reports
                 dpSvcNetwork.SelectedIndex = -1
 
                 FromMultipleDrop.NothingSelected = True
-                If cboCountry.Visible = True And cboCountry.SelectedIndex > Me.BLANK_ITEM_SELECTED Then
-                    selectedCountryId = Me.GetSelectedItem(Me.cboCountry)
+                If cboCountry.Visible = True AndAlso cboCountry.SelectedIndex > BLANK_ITEM_SELECTED Then
+                    selectedCountryId = GetSelectedItem(cboCountry)
                     FromMultipleDrop.BindData(LookupListNew.GetServiceCenterLookupList(selectedCountryId))
                 Else
                     FromMultipleDrop.BindData(LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Countries))
                 End If
             Else
-                selectednetworkId = Me.GetSelectedItem(Me.dpSvcNetwork)
+                selectednetworkId = GetSelectedItem(dpSvcNetwork)
                 rSvcNetwork.Checked = False
 
                 FromMultipleDrop.NothingSelected = True
-                If cboCountry.Visible = True And cboCountry.SelectedIndex > Me.BLANK_ITEM_SELECTED Then
-                    selectedCountryId = Me.GetSelectedItem(Me.cboCountry)
+                If cboCountry.Visible = True AndAlso cboCountry.SelectedIndex > BLANK_ITEM_SELECTED Then
+                    selectedCountryId = GetSelectedItem(cboCountry)
                     FromMultipleDrop.BindData(ServiceCenter.GetServiceCenterbyServiceNetwork(selectednetworkId, selectedCountryId))
                 Else
                     FromMultipleDrop.BindData(ServiceCenter.GetServiceCenterbyServiceNetwork(selectednetworkId, Guid.Empty))
@@ -278,19 +278,19 @@ Namespace Reports
                 dpSvcNetwork.SelectedIndex = -1
 
                 ToMultipleDrop.NothingSelected = True
-                If cboCountry.Visible = True And cboCountry.SelectedIndex > Me.BLANK_ITEM_SELECTED Then
-                    selectedCountryId = Me.GetSelectedItem(Me.cboCountry)
+                If cboCountry.Visible = True AndAlso cboCountry.SelectedIndex > BLANK_ITEM_SELECTED Then
+                    selectedCountryId = GetSelectedItem(cboCountry)
                     ToMultipleDrop.BindData(LookupListNew.GetServiceCenterLookupList(selectedCountryId))
                 Else
                     ToMultipleDrop.BindData(LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Countries))
                 End If
             Else
-                selectednetworkId = Me.GetSelectedItem(Me.dpSvcNetwork)
+                selectednetworkId = GetSelectedItem(dpSvcNetwork)
                 rSvcNetwork.Checked = False
 
                 ToMultipleDrop.NothingSelected = True
-                If cboCountry.Visible = True And cboCountry.SelectedIndex > Me.BLANK_ITEM_SELECTED Then
-                    selectedCountryId = Me.GetSelectedItem(Me.cboCountry)
+                If cboCountry.Visible = True AndAlso cboCountry.SelectedIndex > BLANK_ITEM_SELECTED Then
+                    selectedCountryId = GetSelectedItem(cboCountry)
                     ToMultipleDrop.BindData(ServiceCenter.GetServiceCenterbyServiceNetwork(selectednetworkId, selectedCountryId))
                 Else
                     ToMultipleDrop.BindData(ServiceCenter.GetServiceCenterbyServiceNetwork(selectednetworkId, Guid.Empty))
@@ -308,7 +308,7 @@ Namespace Reports
                                                                   Where ElitaPlusIdentity.Current.ActiveUser.Countries.Contains(x.ListItemId)
                                                                   Select x).ToArray()
 
-            Me.cboCountry.Populate(filteredCountryList, New PopulateOptions() With
+            cboCountry.Populate(filteredCountryList, New PopulateOptions() With
                                                    {
                                                     .AddBlankItem = True
                                                    })
@@ -323,8 +323,8 @@ Namespace Reports
         End Sub
         Private Sub PopulateServiceGroup()
 
-            If cboCountry.Visible = True And cboCountry.SelectedIndex > Me.BLANK_ITEM_SELECTED Then
-                selectedCountryId = Me.GetSelectedItem(Me.cboCountry)
+            If cboCountry.Visible = True AndAlso cboCountry.SelectedIndex > BLANK_ITEM_SELECTED Then
+                selectedCountryId = GetSelectedItem(cboCountry)
                 ' Me.BindListControlToDataView(moServiceGroupDrop,
                 'LookupListNew.GetServiceGroupLookupList(selectedCountryId)) 'ServiceGroupByCountry 
                 Dim listcontext As ListContext = New ListContext()
@@ -358,8 +358,8 @@ Namespace Reports
         'End Sub
 
         Private Sub PopulatePriceList()
-            If cboCountry.Visible = True And cboCountry.SelectedIndex > Me.BLANK_ITEM_SELECTED Then
-                selectedCountryId = Me.GetSelectedItem(Me.cboCountry)
+            If cboCountry.Visible = True AndAlso cboCountry.SelectedIndex > BLANK_ITEM_SELECTED Then
+                selectedCountryId = GetSelectedItem(cboCountry)
                 'Me.BindListControlToDataView(moPriceListDrop,
                 ' LookupListNew.GetPriceListLookupList(selectedCountryId)) 'PriceListByCountry
                 Dim listcontext As ListContext = New ListContext()
@@ -387,7 +387,7 @@ Namespace Reports
             Dim methodLkl As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("METHR", Thread.CurrentPrincipal.GetLanguageCode())
 
             Dim filteredCountryList As DataElements.ListItem() = (From x In methodLkl
-                                                                  Where x.Code = "C" Or x.Code = "H" Or x.Code = "S" Or x.Code = "P" Or x.Code = "R"
+                                                                  Where x.Code = "C" OrElse x.Code = "H" OrElse x.Code = "S" OrElse x.Code = "P" OrElse x.Code = "R"
                                                                   Select x).ToArray()
 
             moMethodofRepairDrop.Populate(filteredCountryList, New PopulateOptions() With
@@ -410,7 +410,7 @@ Namespace Reports
 
 #Region "Crystal Enterprise"
 
-        Function SetParameters(ByVal data As ParameterData) As ReportCeBaseForm.Params
+        Function SetParameters(data As ParameterData) As ReportCeBaseForm.Params
             Dim reportFormat As ReportCeBaseForm.RptFormat
             Dim reportName As String = RPT_FILENAME
             Dim params As New ReportCeBaseForm.Params
@@ -455,7 +455,7 @@ Namespace Reports
             Dim companyId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyId
             Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
             Dim serviceGroupId, priceListId, serviceTypeId As Guid
-            Dim selectedCountryId As Guid = Me.GetSelectedItem(Me.cboCountry)
+            Dim selectedCountryId As Guid = GetSelectedItem(cboCountry)
             Dim dvCountry As DataView = LookupListNew.GetUserCountriesLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
             Dim countryCode As String
 
@@ -465,8 +465,8 @@ Namespace Reports
                 If moAllServiceCentersRadio.Checked Then
                     .beginServiceCenterCode = ALL
                     .endServiceCenterCode = ALL
-                ElseIf ((FromMultipleDrop.SelectedIndex = Me.BLANK_ITEM_SELECTED) OrElse
-                         (ToMultipleDrop.SelectedIndex = Me.BLANK_ITEM_SELECTED) OrElse
+                ElseIf ((FromMultipleDrop.SelectedIndex = BLANK_ITEM_SELECTED) OrElse
+                         (ToMultipleDrop.SelectedIndex = BLANK_ITEM_SELECTED) OrElse
                          (FromMultipleDrop.SelectedIndex > ToMultipleDrop.SelectedIndex)) Then
                     Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_FROMTO_SERVICECENTER_ERR)
                 Else
@@ -474,7 +474,7 @@ Namespace Reports
                     .endServiceCenterCode = ToMultipleDrop.SelectedCode
                 End If
 
-                If Me.cboCountry.Visible = False Then
+                If cboCountry.Visible = False Then
                     .countryCode = ALL
                 Else
                     .countryCode = LookupListNew.GetCodeFromId(dvCountry, selectedCountryId)
@@ -487,7 +487,7 @@ Namespace Reports
                 If moAllServiceGroupsRadio.Checked Then
                     .serviceGroupCode = ALL
                 Else
-                    serviceGroupId = Me.GetSelectedItem(moServiceGroupDrop)
+                    serviceGroupId = GetSelectedItem(moServiceGroupDrop)
                     .serviceGroupCode = LookupListNew.GetCodeFromId(LookupListNew.LK_SERVICE_GROUPS, serviceGroupId)
                 End If
 
@@ -495,16 +495,16 @@ Namespace Reports
                     .priceListCode = ALL
                     .priceListName = Nothing
                 Else
-                    priceListId = Me.GetSelectedItem(moPriceListDrop)
+                    priceListId = GetSelectedItem(moPriceListDrop)
                     .priceListCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PRICE_LIST, priceListId)
-                    .priceListName = Me.GetSelectedDescription(moPriceListDrop)
+                    .priceListName = GetSelectedDescription(moPriceListDrop)
                 End If
 
                 If moAllMethodofRepairRadio.Checked Then
                     .MethodOfRepair = ALL
                 Else
                     ' serviceTypeId = Me.GetSelectedItem(moMethodofRepairDrop)
-                    .MethodOfRepair = Me.GetSelectedDescription(moMethodofRepairDrop)
+                    .MethodOfRepair = GetSelectedDescription(moMethodofRepairDrop)
                     'LookupListNew.GetDescriptionFromId(LookupListNew.LK_SERVICE_TYPES, serviceTypeId)
                 End If
 
@@ -512,7 +512,7 @@ Namespace Reports
                     .ServiceNetwork = ALL
                 Else
                     ' serviceTypeId = Me.GetSelectedItem(moMethodofRepairDrop)
-                    .ServiceNetwork = Me.GetSelectedDescription(dpSvcNetwork)
+                    .ServiceNetwork = GetSelectedDescription(dpSvcNetwork)
                     'LookupListNew.GetDescriptionFromId(LookupListNew.LK_SERVICE_TYPES, serviceTypeId)
                 End If
 
@@ -539,12 +539,12 @@ Namespace Reports
 #End Region
 
 
-        Private Sub dpSvcNetwork_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dpSvcNetwork.SelectedIndexChanged
+        Private Sub dpSvcNetwork_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles dpSvcNetwork.SelectedIndexChanged
             Try
-                selectednetworkId = Me.GetSelectedItem(Me.dpSvcNetwork)
+                selectednetworkId = GetSelectedItem(dpSvcNetwork)
                 rSvcNetwork.Checked = False
 
-                If Me.selectednetworkId.Equals(Guid.Empty) Then
+                If selectednetworkId.Equals(Guid.Empty) Then
                     'HideHtmlElement("tblSericeCenter")
                     rSvcNetwork.Checked = True
                     'Throw New GUIException(Message.MSG_INVALID_COUNTRY, Assurant.ElitaPlus.Common.ErrorCodes.GUI_SERVICE_NETWORK_MUST_BE_SELECTED_ERR)
@@ -554,11 +554,11 @@ Namespace Reports
                     btnGenRpt.Visible = True
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub rSvcNetwork_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles rSvcNetwork.CheckedChanged
+        Private Sub rSvcNetwork_CheckedChanged(sender As Object, e As System.EventArgs) Handles rSvcNetwork.CheckedChanged
             If rSvcNetwork.Checked = True Then
                 dpSvcNetwork.SelectedIndex = -1
                 PopulateFromServiceCenter()

@@ -1,4 +1,4 @@
-<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="DealerForm.aspx.vb" Theme="Default"
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="DealerForm.aspx.vb" Theme="Default"
 Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Tables.DealerForm" EnableSessionState="True"
 MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
 
@@ -1191,13 +1191,13 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
             <asp:HiddenField ID="hdnDisabledTab" runat="server" />
             <div id="tabs" class="style-tabs">
                 <ul>
-                    <li><a href="#tabmoAddressTabPanelWRITE"><asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">Address</asp:Label></a></li>
-                    <li><a href="#tabmoMailingAddressTabPanelWRITE"><asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">MAILING_ADDRESS</asp:Label></a></li>
-                    <li><a href="#tabmoServiceOrderAddressTabPanalWRITE"><asp:Label ID="Label8" runat="server" CssClass="tabHeaderText">SVC_ORDER_ADDRESS</asp:Label></a></li>
-                    <li><a href="#tabmoBnakInfoTabPanelWRITE"><asp:Label ID="Label5" runat="server" CssClass="tabHeaderText">BANK_INFO</asp:Label></a></li>
-                    <li><a href="#tabmoMerchantCodeTabPanelWRITE"><asp:Label ID="Label7" runat="server" CssClass="tabHeaderText">Merchant_Code</asp:Label></a></li>
-                    <li><a href="#tabmoClaimCloseRulesTabPanelWRITE"><asp:Label ID="Label9" runat="server" CssClass="tabHeaderText">CLAIM_CLOSE_RULES</asp:Label></a></li>
-                    <li><a href="#tabmoAttributesWRITE"><asp:Label ID="Label10" runat="server" CssClass="tabHeaderText">ATTRIBUTES</asp:Label></a></li>
+                    <li><a href="#tabmoAddressTabPanelWRITE" rel="noopener noreferrer"><asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">Address</asp:Label></a></li>
+                    <li><a href="#tabmoMailingAddressTabPanelWRITE" rel="noopener noreferrer"><asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">MAILING_ADDRESS</asp:Label></a></li>
+                    <li><a href="#tabmoServiceOrderAddressTabPanalWRITE" rel="noopener noreferrer"><asp:Label ID="Label8" runat="server" CssClass="tabHeaderText">SVC_ORDER_ADDRESS</asp:Label></a></li>
+                    <li><a href="#tabmoBnakInfoTabPanelWRITE" rel="noopener noreferrer"><asp:Label ID="Label5" runat="server" CssClass="tabHeaderText">BANK_INFO</asp:Label></a></li>
+                    <li><a href="#tabmoMerchantCodeTabPanelWRITE" rel="noopener noreferrer"><asp:Label ID="Label7" runat="server" CssClass="tabHeaderText">Merchant_Code</asp:Label></a></li>
+                    <li><a href="#tabmoClaimCloseRulesTabPanelWRITE" rel="noopener noreferrer"><asp:Label ID="Label9" runat="server" CssClass="tabHeaderText">CLAIM_CLOSE_RULES</asp:Label></a></li>
+                    <li><a href="#tabmoAttributesWRITE" rel="noopener noreferrer"><asp:Label ID="Label10" runat="server" CssClass="tabHeaderText">ATTRIBUTES</asp:Label></a></li>
                     <li><a href="#tabmoDealerInflationWrite"><asp:Label ID="lblDealerInflationTab" runat="server"  CssClass="tabHeaderText">DEALER_INFLATION</asp:Label></a></li>
                     <li><a href="#tabmoRiskTypeWrite"><asp:Label ID="lblRiskTypeTolerance" runat="server"  CssClass="tabHeaderText">RISK_TYPE_TOLERANCE</asp:Label></a></li>
                 </ul>

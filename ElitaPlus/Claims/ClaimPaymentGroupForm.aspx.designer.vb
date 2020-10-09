@@ -20,7 +20,7 @@ Partial Public Class ClaimPaymentGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents searchTable As Global.System.Web.UI.HtmlControls.HtmlTable
+    Protected WithEvents searchTable As HtmlTable
 
     '''<summary>
     '''lblPaymentGroupNumber control.
@@ -29,7 +29,7 @@ Partial Public Class ClaimPaymentGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPaymentGroupNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPaymentGroupNumber As Label
 
     '''<summary>
     '''moPaymentGroupNumber control.
@@ -38,7 +38,7 @@ Partial Public Class ClaimPaymentGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moPaymentGroupNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moPaymentGroupNumber As TextBox
 
     '''<summary>
     '''lblPaymentGroupDate control.
@@ -47,7 +47,7 @@ Partial Public Class ClaimPaymentGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPaymentGroupDate As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPaymentGroupDate As Label
 
     '''<summary>
     '''moPaymentGroupDate control.
@@ -56,7 +56,7 @@ Partial Public Class ClaimPaymentGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moPaymentGroupDate As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moPaymentGroupDate As TextBox
 
     '''<summary>
     '''lblPaymentGroupStatus control.
@@ -65,7 +65,7 @@ Partial Public Class ClaimPaymentGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPaymentGroupStatus As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPaymentGroupStatus As Label
 
     '''<summary>
     '''moPaymentGroupStatus control.
@@ -74,7 +74,7 @@ Partial Public Class ClaimPaymentGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moPaymentGroupStatus As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moPaymentGroupStatus As TextBox
 
     '''<summary>
     '''lblPaymentGroupTotal control.
@@ -83,7 +83,7 @@ Partial Public Class ClaimPaymentGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPaymentGroupTotal As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPaymentGroupTotal As Label
 
     '''<summary>
     '''moPaymentGroupTotal control.
@@ -92,7 +92,7 @@ Partial Public Class ClaimPaymentGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moPaymentGroupTotal As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moPaymentGroupTotal As TextBox
 
     '''<summary>
     '''lblExpectedPaymentDate control.
@@ -101,7 +101,7 @@ Partial Public Class ClaimPaymentGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblExpectedPaymentDate As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblExpectedPaymentDate As Label
 
     '''<summary>
     '''moExpectedPaymentDate control.
@@ -110,7 +110,7 @@ Partial Public Class ClaimPaymentGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moExpectedPaymentDate As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moExpectedPaymentDate As TextBox
 
     '''<summary>
     '''imgExpectedPymntDate control.
@@ -119,7 +119,7 @@ Partial Public Class ClaimPaymentGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents imgExpectedPymntDate As Global.System.Web.UI.WebControls.ImageButton
+    Protected WithEvents imgExpectedPymntDate As ImageButton
 
     '''<summary>
     '''moSearchResults control.
@@ -128,7 +128,7 @@ Partial Public Class ClaimPaymentGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moSearchResults As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents moSearchResults As HtmlGenericControl
 
     '''<summary>
     '''moSearchResultsHeader control.
@@ -137,7 +137,7 @@ Partial Public Class ClaimPaymentGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moSearchResultsHeader As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moSearchResultsHeader As Label
 
     '''<summary>
     '''lblPageSize control.
@@ -146,7 +146,7 @@ Partial Public Class ClaimPaymentGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPageSize As Label
 
     '''<summary>
     '''cboPageSize control.
@@ -155,7 +155,7 @@ Partial Public Class ClaimPaymentGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboPageSize As DropDownList
 
     '''<summary>
     '''lblRecordCount control.
@@ -164,7 +164,7 @@ Partial Public Class ClaimPaymentGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblRecordCount As Label
 
     '''<summary>
     '''moPaymentRepeater control.
@@ -173,7 +173,7 @@ Partial Public Class ClaimPaymentGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moPaymentRepeater As Global.System.Web.UI.WebControls.Repeater
+    Protected WithEvents moPaymentRepeater As Repeater
 
     '''<summary>
     '''btnBack control.
@@ -182,7 +182,7 @@ Partial Public Class ClaimPaymentGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnBack As Button
 
     '''<summary>
     '''btnCreatePayment control.
@@ -191,7 +191,7 @@ Partial Public Class ClaimPaymentGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnCreatePayment As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnCreatePayment As Button
 
     '''<summary>
     '''btnAddPayables control.
@@ -200,7 +200,7 @@ Partial Public Class ClaimPaymentGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnAddPayables As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnAddPayables As Button
 
     '''<summary>
     '''HiddenDeletePromptResponse control.
@@ -209,5 +209,5 @@ Partial Public Class ClaimPaymentGroupForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents HiddenDeletePromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents HiddenDeletePromptResponse As HtmlInputHidden
 End Class

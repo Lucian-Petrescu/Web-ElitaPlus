@@ -12,11 +12,11 @@ Public Class ElitaWSException
 
     Private _source As Xml.XmlQualifiedName = SoapException.ServerFaultCode
 
-    Private Property SourceException() As Xml.XmlQualifiedName
+    Private Property SourceException As Xml.XmlQualifiedName
         Get
             Return _source
         End Get
-        Set(ByVal Value As Xml.XmlQualifiedName)
+        Set
             _source = Value
         End Set
     End Property
@@ -38,13 +38,12 @@ Public Class ElitaWSException
     ''' 	[co1mkt]	3/21/2007	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Public Sub New(ByVal message As String, ByVal innerException As Exception)
+    Public Sub New(message As String, innerException As Exception)
 
         'MyBase.New("Elita Web Service Error: " & innerException.Message, message, innerException)
         MyBase.New(innerException.Message, message, innerException)
 
-        If message = ErrorCodes.WS_INVALID_REQUEST Or _
-           message = ErrorCodes.WS_XML_INVALID Then
+        If message = ErrorCodes.WS_INVALID_REQUEST OrElse message = ErrorCodes.WS_XML_INVALID Then
 
             SourceException = SoapException.ClientFaultCode
 
@@ -67,14 +66,14 @@ Public Class ElitaWSException
     ''' 	[co1mkt]	9/19/2007	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Public Sub New(ByVal sErrMsg As String, ByVal sErrCode As String)
+    Public Sub New(sErrMsg As String, sErrCode As String)
 
         MyBase.New(sErrMsg, sErrCode, Nothing)
         SourceException = SoapException.ClientFaultCode
 
     End Sub
 
-    Public Sub New(ByVal sErrMsg As String)
+    Public Sub New(sErrMsg As String)
 
         MyBase.New(sErrMsg, sErrMsg, Nothing)
         SourceException = SoapException.ClientFaultCode
@@ -110,7 +109,7 @@ Public Class ElitaWSException
     ''' 	[co1mkt]	3/21/2007	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Public Sub New(ByVal ex As ElitaPlusException)
+    Public Sub New(ex As ElitaPlusException)
 
         MyBase.New("Elita Web Service Error:" & ex.Message, ex.Code, ex.InnerException)
         SourceException = SoapException.ServerFaultCode
@@ -135,11 +134,11 @@ Public Class ElitaWSException
     Public Function Raise(Optional ByVal bTranslate As Boolean = True) As SoapException
 
         Dim err As String = String.Empty
-        If Not InnerException Is Nothing Then err = InnerException.Source
-        Throw New SoapException(IIf(bTranslate, TranslationBase.TranslateLabelOrMessage(Me.Code), Me.Code), _
+        If InnerException IsNot Nothing Then err = InnerException.Source
+        Throw New SoapException(IIf(bTranslate, TranslationBase.TranslateLabelOrMessage(Code), Code), _
                                 SourceException, _
                                 SourceApplicationName, _
-                                BuilErrorXML(Me.Code, err, InnerException, bTranslate), _
+                                BuilErrorXML(Code, err, InnerException, bTranslate), _
                                 InnerException)
     End Function
 
@@ -175,13 +174,13 @@ Public Class ElitaWSException
     ''' 	[co1mkt]	3/21/2007	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Private Function BuilErrorXML(ByVal errorCode As String, _
-                                  ByVal errorSource As String, _
-                                  ByVal ex As Exception, _
+    Private Function BuilErrorXML(errorCode As String, _
+                                  errorSource As String, _
+                                  ex As Exception, _
                                   Optional ByVal bTranslate As Boolean = True) As XmlNode
 
         ' Translate the error 
-        Dim errorMessage As String = IIf(bTranslate, TranslationBase.TranslateLabelOrMessage(Me.Code), Me.Code)
+        Dim errorMessage As String = IIf(bTranslate, TranslationBase.TranslateLabelOrMessage(Code), Code)
 
         Dim xmlDoc As XmlDocument = New XmlDocument
 
@@ -279,7 +278,7 @@ Public Class ElitaWSException
     ''' 	[co1mkt]	3/21/2007	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Private Function GetExceptionInfo(ByVal ex As Exception) As String
+    Private Function GetExceptionInfo(ex As Exception) As String
 
         If IsNothing(ex) Then Return String.Empty
 

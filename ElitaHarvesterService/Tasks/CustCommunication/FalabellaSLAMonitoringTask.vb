@@ -11,14 +11,14 @@ Public Class FalabellaSLAMonitoringTask
         Get
             Return _claimId
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             _claimId = value
         End Set
     End Property
 #End Region
 
 #Region "Constructors"
-    Public Sub New(ByVal machineName As String, ByVal processThreadName As String)
+    Public Sub New(machineName As String, processThreadName As String)
         MyBase.New(machineName, processThreadName)
     End Sub
 #End Region
@@ -32,7 +32,7 @@ Public Class FalabellaSLAMonitoringTask
                 If (Not ClaimId.Equals(Guid.Empty)) Then
                     PublishedTask.CheckSLAClaimStatus(ClaimId, intErrCode, strErrMsg)
                     If intErrCode <> 0 Then
-                        Throw New Exception("Falabella SLA Monitoring Err:" + intErrCode.ToString() + " - " + strErrMsg)
+                        Throw New Exception("Falabella SLA Monitoring Err:" & intErrCode.ToString() & " - " & strErrMsg)
                     End If
                 End If
             End If

@@ -12,7 +12,7 @@ Public Class GetMakesAndModels
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetMakesAndModelsDs)
+    Public Sub New(ds As GetMakesAndModelsDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -25,7 +25,7 @@ Public Class GetMakesAndModels
 #Region "Private Members"
 
     Private _dealerId As Guid = Guid.Empty
-    Private Sub MapDataSet(ByVal ds As GetMakesAndModelsDs)
+    Private Sub MapDataSet(ds As GetMakesAndModelsDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -38,8 +38,8 @@ Public Class GetMakesAndModels
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -47,13 +47,13 @@ Public Class GetMakesAndModels
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetMakesAndModelsDs)
+    Private Sub Load(ds As GetMakesAndModelsDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -66,11 +66,11 @@ Public Class GetMakesAndModels
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetMakesAndModelsDs)
+    Private Sub PopulateBOFromWebService(ds As GetMakesAndModelsDs)
         Try
             If ds.GetMakesAndModels.Count = 0 Then Exit Sub
             With ds.GetMakesAndModels.Item(0)
-                Me.DealerCode = .DealerCode
+                DealerCode = .DealerCode
             End With
 
         Catch ex As BOValidationException
@@ -87,17 +87,17 @@ Public Class GetMakesAndModels
 
 #Region "Properties"
 
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
-            If Row(Me.DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_DEALER_CODE), String))
+                Return (CType(Row(DATA_COL_NAME_DEALER_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_DEALER_CODE, Value)
+            SetValue(DATA_COL_NAME_DEALER_CODE, Value)
         End Set
     End Property
 
@@ -109,30 +109,30 @@ Public Class GetMakesAndModels
 
 
         Try
-            Me.Validate()
+            Validate()
 
-            If Not Me.DealerCode Is Nothing AndAlso DealerCode.Trim <> String.Empty Then
-                Dim strErrorFindingDealer As String = Me.FindDealer
+            If DealerCode IsNot Nothing AndAlso DealerCode.Trim <> String.Empty Then
+                Dim strErrorFindingDealer As String = FindDealer
                 If strErrorFindingDealer <> String.Empty Then
                     Return strErrorFindingDealer
                 End If
             End If
 
-            Dim oDealer As New Dealer(Me._dealerId)
-            Dim makesList As New DataSet(Me.DATASET_NAME__GET_MAKE_AND_MODEL_RESPONSE)
+            Dim oDealer As New Dealer(_dealerId)
+            Dim makesList As New DataSet(DATASET_NAME__GET_MAKE_AND_MODEL_RESPONSE)
             Dim ResponseStatus As DataTable
-            If (oDealer.UseEquipmentId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, "Y")) Then
+            If (oDealer.UseEquipmentId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, "Y")) Then
                 If oDealer.EquipmentListCode Is Nothing OrElse oDealer.EquipmentListCode.Equals(String.Empty) Then
-                    ResponseStatus = Me.BuildWSResponseStatus(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.EQUIPMENT_LIST_CODE_NULL), _
+                    ResponseStatus = BuildWSResponseStatus(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.EQUIPMENT_LIST_CODE_NULL), _
                                                                                Common.ErrorCodes.EQUIPMENT_LIST_CODE_NULL, _
                                                                                Codes.WEB_EXPERIENCE__VALIDATION_ERROR)
-                    Dim _errorDataSet As New DataSet(Me.DATASET_NAME__GET_MAKE_AND_MODEL_RESPONSE)
+                    Dim _errorDataSet As New DataSet(DATASET_NAME__GET_MAKE_AND_MODEL_RESPONSE)
                     _errorDataSet.Tables.Add(ResponseStatus)
                     Return (XMLHelper.FromDatasetToXML(_errorDataSet, Nothing, True, True, True, False, True))
                 End If
                 makesList = Equipment.LoadEquipmentListForWS(oDealer.EquipmentListCode, ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
-            ElseIf (oDealer.UseWarrantyMasterID = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, "Y")) Then
-                makesList = Manufacturer.GetMakesForWSByWarrantyMaster(Me._dealerId, ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
+            ElseIf (oDealer.UseWarrantyMasterID = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, "Y")) Then
+                makesList = Manufacturer.GetMakesForWSByWarrantyMaster(_dealerId, ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
             Else
                 makesList = Manufacturer.GetMakesForWS(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
             End If
@@ -141,7 +141,7 @@ Public Class GetMakesAndModels
                 makesList.Tables.RemoveAt(0)
             End If
 
-            ResponseStatus = Me.BuildWSResponseStatus(Nothing, Nothing, Codes.WEB_EXPERIENCE__NO_ERROR)
+            ResponseStatus = BuildWSResponseStatus(Nothing, Nothing, Codes.WEB_EXPERIENCE__NO_ERROR)
             makesList.Tables.Add(ResponseStatus)
 
             Return XMLHelper.FromDatasetToXML(makesList, Nothing, True, True, True, False, True)
@@ -159,22 +159,22 @@ Public Class GetMakesAndModels
     End Function
 
     Private Function FindDealer() As String
-        If Me._dealerId.Equals(Guid.Empty) AndAlso (Not Me.DealerCode Is Nothing AndAlso Me.DealerCode.Trim <> String.Empty) Then
+        If _dealerId.Equals(Guid.Empty) AndAlso (DealerCode IsNot Nothing AndAlso DealerCode.Trim <> String.Empty) Then
             Dim list As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
             If list Is Nothing Then
-                Dim ResponseStatus As DataTable = Me.BuildWSResponseStatus(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.WS_ERROR_ACCESSING_DATABASE), _
+                Dim ResponseStatus As DataTable = BuildWSResponseStatus(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.WS_ERROR_ACCESSING_DATABASE), _
                                                                            Common.ErrorCodes.WS_ERROR_ACCESSING_DATABASE, _
                                                                            Codes.WEB_EXPERIENCE__FATAL_ERROR)
-                Dim _errorDataSet As New DataSet(Me.DATASET_NAME__GET_MAKE_AND_MODEL_RESPONSE)
+                Dim _errorDataSet As New DataSet(DATASET_NAME__GET_MAKE_AND_MODEL_RESPONSE)
                 _errorDataSet.Tables.Add(ResponseStatus)
                 Return (XMLHelper.FromDatasetToXML(_errorDataSet, Nothing, True, True, True, False, True))
             End If
-            Me._dealerId = LookupListNew.GetIdFromCode(list, Me.DealerCode)
+            _dealerId = LookupListNew.GetIdFromCode(list, DealerCode)
             If _dealerId.Equals(Guid.Empty) Then
-                Dim ResponseStatus As DataTable = Me.BuildWSResponseStatus(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.WS_DEALER_NOT_FOUND), _
+                Dim ResponseStatus As DataTable = BuildWSResponseStatus(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.WS_DEALER_NOT_FOUND), _
                                                            Common.ErrorCodes.WS_DEALER_NOT_FOUND, _
                                                            Codes.WEB_EXPERIENCE__LOOKUP_ERROR)
-                Dim _errorDataSet As New DataSet(Me.DATASET_NAME__GET_MAKE_AND_MODEL_RESPONSE)
+                Dim _errorDataSet As New DataSet(DATASET_NAME__GET_MAKE_AND_MODEL_RESPONSE)
                 _errorDataSet.Tables.Add(ResponseStatus)
                 Return (XMLHelper.FromDatasetToXML(_errorDataSet, Nothing, True, True, True, False, True))
             End If

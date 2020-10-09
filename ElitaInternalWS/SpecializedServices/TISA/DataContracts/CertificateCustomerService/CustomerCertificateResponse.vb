@@ -33,12 +33,12 @@ Namespace SpecializedServices.Tisa
         End Sub
         Public Sub New(Certificates As DataTable)
             If (Not Certificates Is Nothing) Then
-                Me.CertificateNumber = Certificates.Rows(0)("cert_number").ToString()
-                Me.CertificateStatus = Certificates.Rows(0)("status_code").ToString()
-                Me.WarrantySalesDate = Certificates.Rows(0)("warranty_Sales_date")
-                Me.ServiceLineNumber = Certificates.Rows(0)("service_line_number").ToString()
-                Me.DealerCode = Certificates.Rows(0)("dealer").ToString()
-                Me.UpgradeProgram = (Certificates.Rows(0)("upgrade_program").ToString().ToUpper() = "Y")
+                CertificateNumber = Certificates.Rows(0)("cert_number").ToString()
+                CertificateStatus = Certificates.Rows(0)("status_code").ToString()
+                WarrantySalesDate = Certificates.Rows(0)("warranty_Sales_date")
+                ServiceLineNumber = Certificates.Rows(0)("service_line_number").ToString()
+                DealerCode = Certificates.Rows(0)("dealer").ToString()
+                UpgradeProgram = (Certificates.Rows(0)("upgrade_program").ToString().ToUpper() = "Y")
             End If
         End Sub
     End Class

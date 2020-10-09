@@ -24,7 +24,7 @@ Public Class ElitaCancelSvcIntegration
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As ElitaCancelSvcIntegrationDs)
+    Public Sub New(ds As ElitaCancelSvcIntegrationDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -42,7 +42,7 @@ Public Class ElitaCancelSvcIntegration
     Dim _functionTypeCode As String
     Dim _functionTypeId As Guid = Guid.Empty
 
-    Private Sub MapDataSet(ByVal ds As ElitaCancelSvcIntegrationDs)
+    Private Sub MapDataSet(ds As ElitaCancelSvcIntegrationDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -55,8 +55,8 @@ Public Class ElitaCancelSvcIntegration
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -64,13 +64,13 @@ Public Class ElitaCancelSvcIntegration
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As ElitaCancelSvcIntegrationDs)
+    Private Sub Load(ds As ElitaCancelSvcIntegrationDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -83,20 +83,20 @@ Public Class ElitaCancelSvcIntegration
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As ElitaCancelSvcIntegrationDs)
+    Private Sub PopulateBOFromWebService(ds As ElitaCancelSvcIntegrationDs)
         Try
-            If ds.TRANSACTION_HEADER.Count = 0 Or ds.TRANSACTION_DATA_RECORD.Count = 0 Then Exit Sub
+            If ds.TRANSACTION_HEADER.Count = 0 OrElse ds.TRANSACTION_DATA_RECORD.Count = 0 Then Exit Sub
             With ds.TRANSACTION_HEADER.Item(0)
-                Me.TransactionId = .TRANSACTION_ID
-                Me.FunctionTypeCode = .FUNCTION_TYPE_CODE
+                TransactionId = .TRANSACTION_ID
+                FunctionTypeCode = .FUNCTION_TYPE_CODE
             End With
 
-            If Not (Me.FunctionTypeCode = DALObjects.TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_CANCEL_SVC_INTEGRATION) Then
+            If Not (FunctionTypeCode = TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_CANCEL_SVC_INTEGRATION) Then
                 Throw New BOValidationException("ElitaCancelSvcIntegration Error: ", Common.ErrorCodes.ERR_FUNCTION_TYPE_CODE)
             Else
-                Me.FunctionTypeId = LookupListNew.GetIdFromCode(LookupListNew.GetGVSFunctionTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), Me.FunctionTypeCode)
+                FunctionTypeId = LookupListNew.GetIdFromCode(LookupListNew.GetGVSFunctionTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), FunctionTypeCode)
 
-                If Me.FunctionTypeId.Equals(Guid.Empty) Then
+                If FunctionTypeId.Equals(Guid.Empty) Then
                     Throw New BOValidationException("ElitaCancelSvcIntegration Error: ", Common.ErrorCodes.ERR_FUNCTION_TYPE_CODE)
                 End If
             End If
@@ -115,29 +115,29 @@ Public Class ElitaCancelSvcIntegration
 
 #Region "Properties"
 
-    Public Property TransactionId() As String
+    Public Property TransactionId As String
         Get
             Return _transactionId
         End Get
-        Set(ByVal Value As String)
+        Set
             _transactionId = Value
         End Set
     End Property
 
-    Public Property FunctionTypeCode() As String
+    Public Property FunctionTypeCode As String
         Get
             Return _functionTypeCode
         End Get
-        Set(ByVal Value As String)
+        Set
             _functionTypeCode = Value
         End Set
     End Property
 
-    Public Property FunctionTypeId() As Guid
+    Public Property FunctionTypeId As Guid
         Get
             Return _functionTypeId
         End Get
-        Set(ByVal Value As Guid)
+        Set
             _functionTypeId = Value
         End Set
     End Property
@@ -150,11 +150,11 @@ Public Class ElitaCancelSvcIntegration
         Try
 
             Dim logHeader As TransactionLogHeader = New TransactionLogHeader
-            logHeader.TransactionStatusID = LookupListNew.GetIdFromCode(LookupListNew.GetGVSTransactionStatusList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), DALObjects.TransactionLogHeaderDAL.TRANSACTION_STATUS_NEW)
+            logHeader.TransactionStatusID = LookupListNew.GetIdFromCode(LookupListNew.GetGVSTransactionStatusList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), TransactionLogHeaderDAL.TRANSACTION_STATUS_NEW)
             logHeader.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-            logHeader.FunctionTypeID = Me.FunctionTypeId
+            logHeader.FunctionTypeID = FunctionTypeId
             logHeader.TransactionXml = XMLHelper.FromDatasetToXML(dsMyElitaCancelSvcIntegration, Nothing, False).Replace("<ElitaCancelSvcIntegrationDs>", "").Replace("</ElitaCancelSvcIntegrationDs>", "")
-            logHeader.GVSoriginalTransNo = Me.TransactionId
+            logHeader.GVSoriginalTransNo = TransactionId
 
             logHeader.Save()
 

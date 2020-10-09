@@ -78,17 +78,17 @@ Public Class AFACarrierPONumForm
 #End Region
 #Region "Page Events"
     Private Sub UpdateBreadCrum()
-        Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
-        Me.MasterPage.UsePageTabTitleInBreadCrum = False
-        Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+        MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
+        MasterPage.UsePageTabTitleInBreadCrum = False
+        MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
     End Sub
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.MasterPage.MessageController.Clear()
-        Me.UpdateBreadCrum()
-        If Not Me.IsPostBack Then
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        MasterPage.MessageController.Clear()
+        UpdateBreadCrum()
+        If Not IsPostBack Then
             PopulateDropdowns()
-            Me.TranslateGridHeader(Me.Grid)
+            TranslateGridHeader(Grid)
         Else
             CheckIfComingFromDeleteConfirm()
         End If
@@ -99,9 +99,9 @@ Public Class AFACarrierPONumForm
 
 #Region "Helper functions"
     Protected Sub CheckIfComingFromDeleteConfirm()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-        If Not confResponse Is Nothing AndAlso State.gridAction = PageAction.Delete Then
-            If confResponse = Me.MSG_VALUE_YES Then
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+        If confResponse IsNot Nothing AndAlso State.gridAction = PageAction.Delete Then
+            If confResponse = MSG_VALUE_YES Then
                 DeletePONumber()
                 Grid.EditIndex = -1
                 State.SearchDV = Nothing
@@ -110,7 +110,7 @@ Public Class AFACarrierPONumForm
             'Clean after consuming the action
             State.gridAction = PageAction.None
             SetControlState()
-            Me.HiddenSaveChangesPromptResponse.Value = ""
+            HiddenSaveChangesPromptResponse.Value = ""
         End If
     End Sub
 
@@ -155,7 +155,7 @@ Public Class AFACarrierPONumForm
             oListContext.CompanyId = UserCompanies(Index)
             Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
             If oDealerListForCompany.Count > 0 Then
-                If Not oDealerList Is Nothing Then
+                If oDealerList IsNot Nothing Then
                     oDealerList.AddRange(oDealerListForCompany)
                 Else
                     oDealerList = oDealerListForCompany.Clone()
@@ -172,25 +172,25 @@ Public Class AFACarrierPONumForm
         Dim recCount As Integer
         Try
 
-            If Me.State.SearchDV Is Nothing Then
+            If State.SearchDV Is Nothing Then
                 State.SearchDV = AfaInvoiceManaulData.getPONumberListByDealer(State.searchDealerID, State.searchPeriodYear & State.searchPeriodMonth)
             End If
 
             recCount = State.SearchDV.Count
 
-            Me.Grid.DataSource = State.SearchDV
-            Me.Grid.DataBind()
+            Grid.DataSource = State.SearchDV
+            Grid.DataBind()
 
             If State.SearchDV.Count > 0 Then
                 ControlMgr.SetVisibleControl(Me, moSearchResults, True)
             Else
                 If State.gridAction = PageAction.None Then
-                    Me.MasterPage.MessageController.AddInformation(Message.MSG_NO_RECORDS_FOUND, True)
+                    MasterPage.MessageController.AddInformation(Message.MSG_NO_RECORDS_FOUND, True)
                 End If
                 ControlMgr.SetVisibleControl(Me, moSearchResults, False)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -284,11 +284,11 @@ Public Class AFACarrierPONumForm
 
             'save the record
             State.myBO.Save()                        
-            Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+            MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
 
             Return True
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Function
 
@@ -297,15 +297,15 @@ Public Class AFACarrierPONumForm
             State.myBO.Delete()
             State.myBO.Save()
             State.myBO = Nothing
-            Me.MasterPage.MessageController.AddSuccess(Message.DELETE_RECORD_CONFIRMATION)
+            MasterPage.MessageController.AddSuccess(Message.DELETE_RECORD_CONFIRMATION)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
 
 #Region "Button events handlers"
-    Protected Sub btnClear_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClear.Click
+    Protected Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
         Try
             'set dropdowns to default values
             ddlDealer.SelectedIndex = -1
@@ -317,31 +317,31 @@ Public Class AFACarrierPONumForm
             State.searchPeriodYear = String.Empty
             ControlMgr.SetVisibleControl(Me, moSearchResults, False) ' Hidden the search result grid
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub btnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSearch.Click
+    Protected Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
 
-            Me.State.searchDealerID = New Guid(ddlDealer.SelectedValue)
-            Me.State.searchPeriodYear = ddlAcctPeriodYear.SelectedValue
-            Me.State.searchPeriodMonth = ddlAcctPeriodMonth.SelectedValue
+            State.searchDealerID = New Guid(ddlDealer.SelectedValue)
+            State.searchPeriodYear = ddlAcctPeriodYear.SelectedValue
+            State.searchPeriodMonth = ddlAcctPeriodMonth.SelectedValue
 
-            Me.State.SearchDV = Nothing
+            State.SearchDV = Nothing
             PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnNew_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+    Private Sub btnNew_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnNew_WRITE.Click
         Try
             State.gridAction = PageAction.AddNew
             AddNew()
-            Me.SetControlState()
+            SetControlState()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -353,10 +353,10 @@ Public Class AFACarrierPONumForm
             Grid.EditIndex = State.SearchDV.Count
         End If
 
-        Me.State.myBO = New AfaInvoiceManaulData
-        Me.State.myBO.DealerId = New Guid(ddlDealer.SelectedValue)
-        Me.State.myBO.InvoiceMonth = DateTime.Today.Year.ToString & DateTime.Today.Month.ToString.PadLeft(2, CChar("0"))
-        State.myBO.AddEmptyRowToPONumSearchDV(Me.State.SearchDV, Me.State.myBO)
+        State.myBO = New AfaInvoiceManaulData
+        State.myBO.DealerId = New Guid(ddlDealer.SelectedValue)
+        State.myBO.InvoiceMonth = DateTime.Today.Year.ToString & DateTime.Today.Month.ToString.PadLeft(2, CChar("0"))
+        State.myBO.AddEmptyRowToPONumSearchDV(State.SearchDV, State.myBO)
 
         PopulateGrid()        
     End Sub
@@ -366,12 +366,12 @@ Public Class AFACarrierPONumForm
             ControlMgr.SetVisibleControl(Me, btnNew_WRITE, False)
             ControlMgr.SetEnableControl(Me, btnSearch, False)
             ControlMgr.SetEnableControl(Me, btnClear, False)
-            Me.MenuEnabled = False
+            MenuEnabled = False
         Else
             ControlMgr.SetVisibleControl(Me, btnNew_WRITE, True)
             ControlMgr.SetEnableControl(Me, btnSearch, True)
             ControlMgr.SetEnableControl(Me, btnClear, True)
-            Me.MenuEnabled = True
+            MenuEnabled = True
         End If
     End Sub
 
@@ -380,7 +380,7 @@ Public Class AFACarrierPONumForm
 
 #Region "Handle grid"
 
-    Private Sub grid_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+    Private Sub grid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
         Try
             Dim index As Integer
             
@@ -388,7 +388,7 @@ Public Class AFACarrierPONumForm
             Select Case e.CommandName.ToString()
                 Case "EditAction"
                     index = CInt(e.CommandArgument)
-                    Me.State.PONumID = New Guid(CType(Me.Grid.Rows(index).Cells(Me.GRID_COL_PONUM_ID_IDX).FindControl(Me.GRID_CTRL_NAME_Record_ID), Label).Text)
+                    State.PONumID = New Guid(CType(Grid.Rows(index).Cells(GRID_COL_PONUM_ID_IDX).FindControl(GRID_CTRL_NAME_Record_ID), Label).Text)
 
                     Grid.EditIndex = index
                     Grid.SelectedIndex = index
@@ -398,10 +398,10 @@ Public Class AFACarrierPONumForm
                     SetControlState()
                 Case "DeleteRecord"
                     index = CInt(e.CommandArgument)
-                    Me.State.PONumID = New Guid(CType(Me.Grid.Rows(index).Cells(Me.GRID_COL_PONUM_ID_IDX).FindControl(Me.GRID_CTRL_NAME_Record_ID), Label).Text)
+                    State.PONumID = New Guid(CType(Grid.Rows(index).Cells(GRID_COL_PONUM_ID_IDX).FindControl(GRID_CTRL_NAME_Record_ID), Label).Text)
                     State.gridAction = PageAction.Delete
                     State.myBO = New AfaInvoiceManaulData(State.PONumID)
-                    Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
+                    DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                 Case "CancelRecord"
                     Grid.EditIndex = -1
                     Grid.SelectedIndex = -1
@@ -426,31 +426,31 @@ Public Class AFACarrierPONumForm
                     End If
             End Select
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub grid_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Private Sub grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Try
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim objDDL As DropDownList, strTemp As String
 
-            If (itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
+            If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem) AndAlso e.Row.RowIndex <> -1 Then
                 With e.Row
                     If .RowIndex = Grid.EditIndex Then
                         'OrElse (State.gridAction = PageAction.EditExisting AndAlso State.myBO.InvoiceMonth = dvRow("invoice_month").ToString) Then
                         objDDL = CType(e.Row.FindControl(GRID_CTRL_NAME_DEALER), DropDownList)
-                        If Not objDDL Is Nothing Then
+                        If objDDL IsNot Nothing Then
                             ' Me.BindCodeNameToListControl(objDDL, DealerList, , , , True)
                             Dim oDealerList = GetDealerListByCompanyForUser()
                             Dim dealerTextFunc As Func(Of DataElements.ListItem, String) = Function(li As DataElements.ListItem)
@@ -462,7 +462,7 @@ Public Class AFACarrierPONumForm
                                             .AddBlankItem = True
                                            })
                             If Not State.myBO.IsNew Then
-                                Me.SetSelectedItem(objDDL, State.myBO.DealerId)
+                                SetSelectedItem(objDDL, State.myBO.DealerId)
                             End If
                             ' disable the dealer if edit existing
                             If State.gridAction = PageAction.AddNew Then
@@ -474,29 +474,29 @@ Public Class AFACarrierPONumForm
                         objDDL = Nothing
 
                         objDDL = CType(e.Row.FindControl(GRID_CTRL_NAME_AcctPeriod_Year), DropDownList)
-                        If Not objDDL Is Nothing Then
+                        If objDDL IsNot Nothing Then
                             Dim intYear As Integer = DateTime.Today.Year
                             For i As Integer = (intYear - 7) To intYear + 1
                                 objDDL.Items.Add(New System.Web.UI.WebControls.ListItem(i.ToString, i.ToString))
                             Next
-                            Me.SetSelectedItem(objDDL, State.myBO.InvoiceMonth.Substring(0, 4))                            
+                            SetSelectedItem(objDDL, State.myBO.InvoiceMonth.Substring(0, 4))                            
                         End If
                         objDDL = Nothing
 
                         objDDL = CType(e.Row.FindControl(GRID_CTRL_NAME_AcctPeriod_Month), DropDownList)
-                        If Not objDDL Is Nothing Then
+                        If objDDL IsNot Nothing Then
                             Dim monthName As String
                             For month As Integer = 1 To 12
                                 monthName = DateTimeFormatInfo.CurrentInfo.GetMonthName(month)
                                 objDDL.Items.Add(New System.Web.UI.WebControls.ListItem(monthName, month.ToString().PadLeft(2, CChar("0"))))
                             Next
-                            Me.SetSelectedItem(objDDL, State.myBO.InvoiceMonth.Substring(4))
+                            SetSelectedItem(objDDL, State.myBO.InvoiceMonth.Substring(4))
                         End If
                         objDDL = Nothing
 
                         Dim objtxt As TextBox
                         objtxt = CType(e.Row.FindControl(GRID_CTRL_NAME_PONumber), TextBox)
-                        If Not objtxt Is Nothing Then
+                        If objtxt IsNot Nothing Then
                             objtxt.Text = dvRow("PONumber").ToString
                         End If
                         objtxt = Nothing                    
@@ -505,7 +505,7 @@ Public Class AFACarrierPONumForm
             End If
             BaseItemBound(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region

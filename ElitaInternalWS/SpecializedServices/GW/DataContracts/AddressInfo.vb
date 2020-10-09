@@ -30,20 +30,20 @@ Namespace SpecializedServices.GW
         Public Sub New()
         End Sub
 
-        Public Sub New(ByVal pAddress As Address, ByVal pCountryManager As ICountryManager)
-            Me.StreetAddress1 = pAddress.Address1
-            Me.StreetAddress2 = pAddress.Address2
-            Me.StreetAddress3 = pAddress.Address3
-            Me.City = pAddress.City
-            Me.PostalCode = pAddress.PostalCode
+        Public Sub New(pAddress As Address, pCountryManager As ICountryManager)
+            StreetAddress1 = pAddress.Address1
+            StreetAddress2 = pAddress.Address2
+            StreetAddress3 = pAddress.Address3
+            City = pAddress.City
+            PostalCode = pAddress.PostalCode
 
             Dim cty As Country = pCountryManager.GetCountry(pAddress.CountryId)
             If Not cty Is Nothing Then
-                Me.CountryCode = cty.Code
+                CountryCode = cty.Code
                 If Not pAddress.RegionId Is Nothing Then
                     Dim reg As Region = cty.Regions.Where(Function(r) r.RegionId = pAddress.RegionId.GetValueOrDefault).FirstOrDefault
                     If Not reg Is Nothing Then
-                        Me.StateRegion = reg.Description
+                        StateRegion = reg.Description
                     End If
                 End If
             End If

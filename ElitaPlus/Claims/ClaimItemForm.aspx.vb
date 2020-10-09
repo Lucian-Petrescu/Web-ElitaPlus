@@ -1,4 +1,7 @@
 
+Imports System.Diagnostics
+Imports System.Threading
+
 Namespace Claims
 
     Partial Class ClaimItemForm
@@ -11,7 +14,7 @@ Namespace Claims
         Public Class Parameters
             Public moClaimId As Guid
 
-            Public Sub New(ByVal oClaimId As Guid)
+            Public Sub New(oClaimId As Guid)
                 moClaimId = oClaimId
             End Sub
 
@@ -27,12 +30,12 @@ Namespace Claims
 
             Public ReadOnly Property ClaimBO As ClaimBase
                 Get
-                    If (Me.Claim Is Nothing) Then
-                        If (Me.moParams.moClaimId <> Guid.Empty) Then
-                            Me.Claim = ClaimFacade.Instance.GetClaim(Of ClaimBase)(Me.moParams.moClaimId)
+                    If (Claim Is Nothing) Then
+                        If (moParams.moClaimId <> Guid.Empty) Then
+                            Claim = ClaimFacade.Instance.GetClaim(Of ClaimBase)(moParams.moClaimId)
                         End If
                     End If
-                    Return Me.Claim
+                    Return Claim
                 End Get
             End Property
             Public moParams As Parameters
@@ -51,13 +54,13 @@ Namespace Claims
 
         Private Sub SetStateProperties()
             Try
-                Me.State.moParams = CType(Me.CallingParameters, Parameters)
-                If (Me.State.moParams Is Nothing) OrElse (Me.State.moParams.moClaimId.Equals(Guid.Empty)) Then
+                State.moParams = CType(CallingParameters, Parameters)
+                If (State.moParams Is Nothing) OrElse (State.moParams.moClaimId.Equals(Guid.Empty)) Then
                     Throw New DataNotFoundException
                 End If
                 PopulateFormFromBo()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -74,14 +77,14 @@ Namespace Claims
 #Region " Web Form Designer Generated Code "
 
         'This call is required by the Web Form Designer.
-        <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+        <DebuggerStepThrough()> Private Sub InitializeComponent()
 
         End Sub
         'NOTE: The following placeholder declaration is required by the Web Form Designer.
         'Do not delete or move it.
-        Private designerPlaceholderDeclaration As System.Object
+        Private designerPlaceholderDeclaration As Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -92,32 +95,32 @@ Namespace Claims
 #Region "Handlers-Init"
 
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                Me.MasterPage.BreadCrum = Me.MasterPage.PageTitle & ElitaBase.Sperator &
+            If (State IsNot Nothing) Then
+                MasterPage.BreadCrum = MasterPage.PageTitle & ElitaBase.Sperator &
                     TranslationBase.TranslateLabelOrMessage("Item")
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Claim") & " " & TranslationBase.TranslateLabelOrMessage("Replacement") & " " & "Item"
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Claim") & " " & TranslationBase.TranslateLabelOrMessage("Replacement") & " " & "Item"
 
 
             End If
         End Sub
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.MasterPage.MessageController.Clear_Hide()
+            MasterPage.MessageController.Clear_Hide()
             Try
                 If Not Page.IsPostBack Then
-                    Me.MasterPage.MessageController.Clear()
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Claims")
+                    MasterPage.MessageController.Clear()
+                    MasterPage.UsePageTabTitleInBreadCrum = False
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Claims")
                     UpdateBreadCrum()
-                    Me.ShowMissingTranslations(Me.MasterPage.MessageController)
-                    Me.SetStateProperties()
+                    ShowMissingTranslations(MasterPage.MessageController)
+                    SetStateProperties()
                     Translate()
                     PopulateReplacementItemsGrid()
 
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -127,16 +130,16 @@ Namespace Claims
 
         Private Sub GoBack()
             ' Claim Detail
-            Dim retType As New ClaimForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back)
-            Me.ReturnToCallingPage(retType)
+            Dim retType As New ClaimForm.ReturnType(DetailPageCommand.Back)
+            ReturnToCallingPage(retType)
         End Sub
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             Try
                 GoBack()
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -150,8 +153,8 @@ Namespace Claims
         Private Sub PopulateFormFromBo()
             Try
 
-                moClaimInfoController.InitController(Me.State.ClaimBO)
-                With Me.State.ClaimBO
+                moClaimInfoController.InitController(State.ClaimBO)
+                With State.ClaimBO
                     moClaimNumber.Text = .ClaimNumber
                     EnableDisableControls(moClaimNumber, True)
                     moDealer.Text = .DealerName
@@ -174,20 +177,20 @@ Namespace Claims
                     EnableDisableControls(moSerialNumberText, True)
                     EnableDisableControls(moIMEINumberText, True)
 
-                    If Not Me.State.ClaimBO.Dealer.ImeiUseXcd.Equals("IMEI_USE_LST-NOTINUSE") Then
-                        Me.moSerialNumberIMEILabel.Visible = False
-                        Me.moSerialNumberLabel.Visible = True
-                        Me.moIMEINumberLabel.Visible = True
-                        Me.moIMEINumberText.Visible = True
+                    If Not State.ClaimBO.Dealer.ImeiUseXcd.Equals("IMEI_USE_LST-NOTINUSE") Then
+                        moSerialNumberIMEILabel.Visible = False
+                        moSerialNumberLabel.Visible = True
+                        moIMEINumberLabel.Visible = True
+                        moIMEINumberText.Visible = True
                     Else
-                        Me.moSerialNumberLabel.Visible = False
-                        Me.moSerialNumberIMEILabel.Visible = True
-                        Me.moIMEINumberLabel.Visible = False
-                        Me.moIMEINumberText.Visible = False
+                        moSerialNumberLabel.Visible = False
+                        moSerialNumberIMEILabel.Visible = True
+                        moIMEINumberLabel.Visible = False
+                        moIMEINumberText.Visible = False
                     End If
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
@@ -200,7 +203,7 @@ Namespace Claims
 
 
         Public Sub Translate()
-            Me.TranslateGridHeader(GridViewReplacementItems)
+            TranslateGridHeader(GridViewReplacementItems)
 
         End Sub
         Private Sub PopulateReplacementItemsGrid()
@@ -208,7 +211,7 @@ Namespace Claims
 
                 LoadReplacementItems()
 
-                If Not State.ReplacementItemsListDv Is Nothing AndAlso State.ReplacementItemsListDv.Count > 0 Then
+                If State.ReplacementItemsListDv IsNot Nothing AndAlso State.ReplacementItemsListDv.Count > 0 Then
                     GridViewReplacementItems.DataSource = State.ReplacementItemsListDv
                     GridViewReplacementItems.DataBind()
 
@@ -217,7 +220,7 @@ Namespace Claims
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
         Private Sub LoadReplacementItems()
@@ -230,7 +233,7 @@ Namespace Claims
             If e.Row.RowType = DataControlRowType.DataRow Then
                 State.ReplacementItemsStatusDv = State.ClaimBO.GetReplacementItemStatus(State.ClaimBO.Id, GetGuidFromString(GetGuidStringFromByteArray(CType(dvRow("claim_equipment_id"), Byte()))))
                 Dim gridViewReplacementStatus As GridView = CType(e.Row.FindControl(GridViewReplacementItemsStatus), GridView)
-                Me.TranslateGridHeader(gridViewReplacementStatus)
+                TranslateGridHeader(gridViewReplacementStatus)
                 gridViewReplacementStatus.DataSource = State.ReplacementItemsStatusDv
                 gridViewReplacementStatus.DataBind()
 

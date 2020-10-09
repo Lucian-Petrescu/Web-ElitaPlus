@@ -55,23 +55,23 @@ Public Class CompensationPlanDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("commission_Plan_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function CodeExistsForOtherDealers(ByVal dealerId As Guid, ByVal CommissionCode As String) As Integer
+    Public Function CodeExistsForOtherDealers(dealerId As Guid, CommissionCode As String) As Integer
 
-        Dim selectStmt As String = Me.Config("/SQL/CODE_MATCH")
+        Dim selectStmt As String = Config("/SQL/CODE_MATCH")
         Dim parameters(TOTAL_PARAM_A) As DBHelper.DBHelperParameter
         Dim result As Object
         Dim inCausecondition As String
@@ -85,25 +85,25 @@ Public Class CompensationPlanDAL
 
     End Function
 
-    Public Function LoadList(ByVal oCompensationPlanData As CompensationPlanData) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(oCompensationPlanData As CompensationPlanData) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters(TOTAL_PARAM) As DBHelper.DBHelperParameter
         Dim inCausecondition As String
 
         With oCompensationPlanData
-            inCausecondition &= MiscUtil.BuildListForSql("AND D." & Me.COL_NAME_COMPANY_ID, oCompensationPlanData.companyIds, True)
+            inCausecondition &= MiscUtil.BuildListForSql("AND D." & COL_NAME_COMPANY_ID, oCompensationPlanData.companyIds, True)
 
             If .dealerId.Equals(Guid.Empty) Then
                 parameters(DEALER_ID) = New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, GenericConstants.WILDCARD)
             Else
                 parameters(DEALER_ID) = New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, .dealerId.ToByteArray)
             End If
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inCausecondition)
+            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inCausecondition)
         End With
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -111,8 +111,8 @@ Public Class CompensationPlanDAL
     End Function
 
 
-    Public Function LoadExpiration(ByVal oCompenstionPlanData As CompensationPlanData) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/MAX_EXPIRATION")
+    Public Function LoadExpiration(oCompenstionPlanData As CompensationPlanData) As DataSet
+        Dim selectStmt As String = Config("/SQL/MAX_EXPIRATION")
         Dim parameters(TOTAL_PARAM_A) As DBHelper.DBHelperParameter
 
         With oCompenstionPlanData
@@ -122,7 +122,7 @@ Public Class CompensationPlanDAL
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -133,9 +133,9 @@ Public Class CompensationPlanDAL
 #End Region
 
 
-    Public Overloads Sub update(ByVal ds As DataSet, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal changesfilter As DataRowState = Nothing)
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), transaction, changesfilter)
+    Public Overloads Sub update(ds As DataSet, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal changesfilter As DataRowState = Nothing)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), transaction, changesfilter)
         End If
     End Sub
 

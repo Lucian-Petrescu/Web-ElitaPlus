@@ -75,93 +75,93 @@ Public Class CertItemDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("cert_item_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Public Sub LoadMfgDeductible(ByVal familyDS As DataSet, ByVal certItemId As Guid, ByVal oContractId As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_MFG_DEDUCTIBLE")
+    Public Sub LoadMfgDeductible(familyDS As DataSet, certItemId As Guid, oContractId As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_MFG_DEDUCTIBLE")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("cert_item_id", certItemId.ToByteArray), _
                                                                                            New DBHelper.DBHelperParameter("contract_id", oContractId.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME_MFG_DEDUCT, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME_MFG_DEDUCT, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function LoadList(ByVal certid As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_BY_CERT_ID")
+    Public Function LoadList(certid As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_BY_CERT_ID")
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
         parameters = New OracleParameter() _
                                     {New OracleParameter(COL_NAME_CERT_ID, certid.ToByteArray)}
 
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Function
-    Public Function LoadRegItemsList(ByVal certid As Guid, ByVal langId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_REG_ITEMS_BY_CERT_ID")
+    Public Function LoadRegItemsList(certid As Guid, langId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_REG_ITEMS_BY_CERT_ID")
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
         parameters = New OracleParameter() _
             {New OracleParameter(COL_NAME_LANGUAGE_ID, langId.ToByteArray),
             New OracleParameter(COL_NAME_CERT_ID, certid.ToByteArray)}
 
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Function
-    Public Function LoadList(ByVal certIDs As ArrayList) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_BY_CERT_IDS")
+    Public Function LoadList(certIDs As ArrayList) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_BY_CERT_IDS")
         Dim ds As New DataSet
 
-        Dim inClauseCondition As String = MiscUtil.BuildListForSql("and c." & Me.COL_NAME_CERT_ID, certIDs, False)
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClauseCondition)
+        Dim inClauseCondition As String = MiscUtil.BuildListForSql("and c." & COL_NAME_CERT_ID, certIDs, False)
+        selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClauseCondition)
 
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function GetMaxItemNumber(ByVal certid As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_MAX_ITEM_NUMBER")
+    Public Function GetMaxItemNumber(certid As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_MAX_ITEM_NUMBER")
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
         parameters = New OracleParameter() _
                                     {New OracleParameter(COL_NAME_CERT_ID, certid.ToByteArray)}
 
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Function
 
-    Public Sub LoadAllItemsForCertificate(ByVal certId As Guid, ByVal familyDataset As DataSet)
+    Public Sub LoadAllItemsForCertificate(certId As Guid, familyDataset As DataSet)
         Dim ds As DataSet = familyDataset
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_FOR_CERTIFICATE")
-        parameters = New OracleParameter() {New OracleParameter(Me.COL_NAME_CERT_ID, certId.ToByteArray)}
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_FOR_CERTIFICATE")
+        parameters = New OracleParameter() {New OracleParameter(COL_NAME_CERT_ID, certId.ToByteArray)}
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Sub
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
 
 #Region "Overloaded Methods Family"
     'This method was added manually to accommodate BO families Save
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim certDAL As New CertificateDAL
         Dim tr As IDbTransaction = Transaction
         If tr Is Nothing Then
@@ -169,7 +169,7 @@ Public Class CertItemDAL
         End If
         Try
             'Updates
-            Me.Update(familyDataset, tr, DataRowState.Modified)
+            Update(familyDataset, tr, DataRowState.Modified)
             'certDAL.Update(familyDataset, tr, DataRowState.Modified)
             certDAL.UpdateFamily(familyDataset, tr)
 
@@ -191,18 +191,18 @@ Public Class CertItemDAL
         End Try
     End Sub
 
-    Public Overloads Sub UpdateCertItemAndCov(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateCertItemAndCov(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim certItemCoverageDAL As New CertItemCoverageDAL
         Dim tr As IDbTransaction = Transaction
         If tr Is Nothing Then
             tr = DBHelper.GetNewTransaction
         End If
         Try
-            If Not familyDataset.Tables(Me.TABLE_NAME) Is Nothing Then
-                MyBase.Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added)
+            If Not familyDataset.Tables(TABLE_NAME) Is Nothing Then
+                MyBase.Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Added)
             End If
-            If Not familyDataset.Tables(Me.TABLE_CERT_ITEM_COV) Is Nothing Then
-                certItemCoverageDAL.Update(familyDataset.Tables(Me.TABLE_CERT_ITEM_COV), tr, DataRowState.Added)
+            If Not familyDataset.Tables(TABLE_CERT_ITEM_COV) Is Nothing Then
+                certItemCoverageDAL.Update(familyDataset.Tables(TABLE_CERT_ITEM_COV), tr, DataRowState.Added)
             End If
 
 
@@ -235,9 +235,9 @@ Public Class CertItemDAL
 
 #Region "Functions"
 
-    Public Function ValidateSerialNumber(ByVal SerialNumber As String, ByVal CertNumber As String, ByVal CompanyGroupId As Guid) As DataSet
+    Public Function ValidateSerialNumber(SerialNumber As String, CertNumber As String, CompanyGroupId As Guid) As DataSet
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/VALIDATE_VIN_NUMBER")
+        Dim selectStmt As String = Config("/SQL/VALIDATE_VIN_NUMBER")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                     {New DBHelper.DBHelperParameter("pi_cert_number", CertNumber),
                      New DBHelper.DBHelperParameter("pi_serial_number", SerialNumber),
@@ -246,7 +246,7 @@ Public Class CertItemDAL
         Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                             New DBHelper.DBHelperParameter("po_VINEntries", GetType(DataSet))}
         Try
-            DBHelper.FetchSp(selectStmt, parameters, outputParameters, ds, Me.TABLE_NAME)
+            DBHelper.FetchSp(selectStmt, parameters, outputParameters, ds, TABLE_NAME)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -254,8 +254,8 @@ Public Class CertItemDAL
 
     End Function
 
-    Public Function IsSerialNumberUnique(ByVal dealerID As Guid, ByVal certItemID As Guid, ByVal serialNumber As String) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/IS_SERIAL_NUMBER_UNIQUE")
+    Public Function IsSerialNumberUnique(dealerID As Guid, certItemID As Guid, serialNumber As String) As Boolean
+        Dim selectStmt As String = Config("/SQL/IS_SERIAL_NUMBER_UNIQUE")
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
                                                               New DBHelper.DBHelperParameter(PARAM_NAME_DEALER_ID, dealerID.ToByteArray), _
                                                               New DBHelper.DBHelperParameter(PARAM_NAME_CERT_ITEM_ID, certItemID.ToByteArray), _
@@ -279,17 +279,17 @@ Public Class CertItemDAL
 
     End Function
 
-    Public Function LoadSKUs(ByVal equipmentId As Guid, ByVal dealerId As Guid) As DataView
+    Public Function LoadSKUs(equipmentId As Guid, dealerId As Guid) As DataView
 
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LoadSKUs")
+        Dim selectStmt As String = Config("/SQL/LoadSKUs")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                     {New DBHelper.DBHelperParameter(PARAM_NAME_DEALER_ID, DALBase.GuidToSQLString(dealerId)), _
                      New DBHelper.DBHelperParameter(PARAM_EQUIPMENTID, DALBase.GuidToSQLString(equipmentId))}
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
-            If Not ds Is Nothing AndAlso Not ds.Tables(Me.TABLE_NAME) Is Nothing AndAlso ds.Tables(Me.TABLE_NAME).Rows.Count > 0 Then
-                Return New DataView(ds.Tables(Me.TABLE_NAME))
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
+            If Not ds Is Nothing AndAlso Not ds.Tables(TABLE_NAME) Is Nothing AndAlso ds.Tables(TABLE_NAME).Rows.Count > 0 Then
+                Return New DataView(ds.Tables(TABLE_NAME))
             Else
                 Return Nothing
             End If
@@ -303,7 +303,7 @@ Public Class CertItemDAL
 #Region "Stored Procedures Calls"
 
     Public Sub ProcessAppleCareEnrolledItem(certItemID As Guid, attValue As String, ByRef strErrMsg As String)
-        Dim selectStmt As String = Me.Config("/SQL/PROCESS_APPLECARE_ITEM_ENROLL")
+        Dim selectStmt As String = Config("/SQL/PROCESS_APPLECARE_ITEM_ENROLL")
 
         Using connection As New OracleConnection(DBHelper.ConnectString)
             Using command As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, connection)

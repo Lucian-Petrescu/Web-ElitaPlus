@@ -90,7 +90,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -98,20 +98,20 @@ Namespace Reports
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrorCtrl.Clear_Hide()
+            ErrorCtrl.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                     TheRptCeInputControl.SetExportOnly()
                 End If
                 'Me.DisplayProgressBarOnClick(Me.btnGenRpt, "LOADING_REPORT")
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 
         Private Sub PopulateAccountingDates()
@@ -126,7 +126,7 @@ Namespace Reports
                                                                   .CompanyId = ElitaPlusIdentity.Current.ActiveUser.CompanyId
                                                                 })
 
-            Me.moAccountingDateDropDownList.Populate(AccountingCloseDates.ToArray(), New PopulateOptions())
+            moAccountingDateDropDownList.Populate(AccountingCloseDates.ToArray(), New PopulateOptions())
 
         End Sub
 
@@ -136,7 +136,7 @@ Namespace Reports
             UserCompanyMultipleDrop.SetControl(False, UserCompanyMultipleDrop.MODES.NEW_MODE, True, dv, TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY), True)
             If dv.Count.Equals(ONE_ITEM) Then
                 HideHtmlElement("ddSeparator")
-                UserCompanyMultipleDrop.SelectedIndex = Me.ONE_ITEM
+                UserCompanyMultipleDrop.SelectedIndex = ONE_ITEM
                 UserCompanyMultipleDrop.Visible = False
             End If
         End Sub
@@ -146,16 +146,16 @@ Namespace Reports
             PopulateCompaniesDropdown()
         End Sub
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
 
-                If Me.moAccountingDateDropDownList.SelectedIndex = -1 Then
-                    ElitaPlusPage.SetLabelError(Me.moLabel)
+                If moAccountingDateDropDownList.SelectedIndex = -1 Then
+                    ElitaPlusPage.SetLabelError(moLabel)
                     Throw New GUIException(Message.MSG_GUI_ACCOUNTING_DATE_NOT_SELECTED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_ACCOUNTING_DATE_NOT_SELECTED)
                 End If
 
                 Dim compCode As String = UserCompanyMultipleDrop.SelectedCode
-                Dim selectedAcctDateDesc As String = Me.GetSelectedDescription(Me.moAccountingDateDropDownList)
+                Dim selectedAcctDateDesc As String = GetSelectedDescription(moAccountingDateDropDownList)
                 Dim dv As DataView = AccountingCloseInfo.GetAllAccountingCloseDates(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
                 'Dim dv As DataView = IbnrLossPaid.GetIBNRLossPaidAccountingDate(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
                 Dim selctedAcctDateCode As String = LookupListNew.GetCodeFromDescription(dv, selectedAcctDateDesc)
@@ -167,11 +167,11 @@ Namespace Reports
 
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Function SetParameters(ByVal companyCode As String, ByVal selctedAcctDateCode As String) As ReportCeBaseForm.Params
+        Function SetParameters(companyCode As String, selctedAcctDateCode As String) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim reportName As String
@@ -179,7 +179,7 @@ Namespace Reports
 
             moReportFormat = ReportCeBase.GetReportFormat(Me)
             If (moReportFormat = ReportCeBase.RptFormat.TEXT_TAB) OrElse (moReportFormat = ReportCeBase.RptFormat.TEXT_CSV) Then
-                Select Case Me.rdExportSelectiion.SelectedValue()
+                Select Case rdExportSelectiion.SelectedValue()
                     Case EXPORT_IBNR_PAID
                         reportName = RPT_FILENAME
                         rptFilenameWindow = RPT_FILENAME_WINDOW

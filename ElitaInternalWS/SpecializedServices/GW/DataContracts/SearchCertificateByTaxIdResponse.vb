@@ -24,19 +24,19 @@ Namespace SpecializedServices.GW
         Public Property RecordsCountByFilter As IEnumerable(Of SearchFilterResult)
 
 
-        Friend Sub PopulateCertificateList(ByVal pSearchResult As Collections.Generic.IEnumerable(Of DBSearchResultCertRecord),
+        Friend Sub PopulateCertificateList(pSearchResult As Collections.Generic.IEnumerable(Of DBSearchResultCertRecord),
                             ByRef pCertManager As ICertificateManager,
                             ByRef pCommonManager As ICommonManager,
                             ByRef pCompanyGroupManager As ICompanyGroupManager,
                             ByRef pdealerManager As IDealerManager,
                             ByRef paddressManager As IAddressManager,
                             ByRef pcountryManager As ICountryManager,
-                            ByVal pLanguage As String)
+                            pLanguage As String)
 
-            Me.Certificates = New List(Of SearchByTaxIdResultCertificateInfo)()
+            Certificates = New List(Of SearchByTaxIdResultCertificateInfo)()
 
             For Each cert As DBSearchResultCertRecord In pSearchResult
-                DirectCast(Me.Certificates, IList(Of SearchByTaxIdResultCertificateInfo)).Add(New SearchByTaxIdResultCertificateInfo(cert, pCertManager, pCompanyGroupManager, pCommonManager, pdealerManager, paddressManager, pcountryManager, pLanguage))
+                DirectCast(Certificates, IList(Of SearchByTaxIdResultCertificateInfo)).Add(New SearchByTaxIdResultCertificateInfo(cert, pCertManager, pCompanyGroupManager, pCommonManager, pdealerManager, paddressManager, pcountryManager, pLanguage))
             Next
 
         End Sub
@@ -50,9 +50,9 @@ Namespace SpecializedServices.GW
         <DataMember(IsRequired:=True, Name:="Count", Order:=2)>
         Public Property Count As Integer
 
-        Public Sub New(ByVal pFilter As SearchFilter, ByVal pCount As Integer)
-            Me.filter = pFilter
-            Me.Count = pCount
+        Public Sub New(pFilter As SearchFilter, pCount As Integer)
+            filter = pFilter
+            Count = pCount
         End Sub
     End Class
 
@@ -72,7 +72,7 @@ Namespace SpecializedServices.GW
         Public Property ActiveCovCount As Integer
         Public Property ActiveClaimCnt As Integer
 
-        Public Shared Function GetCertList(ByVal dsCertList As DataSet) As Collections.Generic.List(Of DBSearchResultCertRecord)
+        Public Shared Function GetCertList(dsCertList As DataSet) As Collections.Generic.List(Of DBSearchResultCertRecord)
             Dim listCert As New Collections.Generic.List(Of DBSearchResultCertRecord)
             Dim rec As DBSearchResultCertRecord
             For Each dr As DataRow In dsCertList.Tables(0).Rows

@@ -96,13 +96,13 @@ Public Class ControlMgr
 
 #Region "Enable"
 
-    Public Shared Sub DisableTabPanel(ByVal oRootControl As Control, ByVal sControlName As String, Optional ByVal blnEnabled As Boolean = False)
+    Public Shared Sub DisableTabPanel(oRootControl As Control, sControlName As String, Optional ByVal blnEnabled As Boolean = False)
         Dim oTabStrip As Microsoft.Web.UI.WebControls.TabStrip
         Dim sTabItem As String
         Dim oTabItem As Microsoft.Web.UI.WebControls.TabItem
 
         oTabStrip = CType(oRootControl.FindControl(CONTROL_TABSTRIP), Microsoft.Web.UI.WebControls.TabStrip)
-        If Not oTabStrip Is Nothing Then
+        If oTabStrip IsNot Nothing Then
             oTabStrip.SelectedIndex = -1
 
             '  If (sControlName.ToUpper().IndexOf(TABITEM_PREFIX.ToUpper()) < 0) Then
@@ -122,9 +122,9 @@ Public Class ControlMgr
 
     End Sub
 
-    Public Shared Sub SetEnableTabStrip(ByVal oPage As ElitaPlusPage,
-                                        ByVal oTabItem As Microsoft.Web.UI.WebControls.TabItem,
-                                        ByVal isEnabled As Boolean)
+    Public Shared Sub SetEnableTabStrip(oPage As ElitaPlusPage,
+                                        oTabItem As Microsoft.Web.UI.WebControls.TabItem,
+                                        isEnabled As Boolean)
         Dim sControlName As String = oTabItem.ID.Replace(TABITEM_PREFIX, String.Empty)
 
         If oPage.CanSetControlEnabled(sControlName) = True Then
@@ -133,9 +133,9 @@ Public Class ControlMgr
 
     End Sub
 
-    Public Shared Sub SetEnableTabID(ByVal oPage As ElitaPlusPage,
-                                       ByVal oTabItem As Microsoft.Web.UI.WebControls.TabItem,
-                                       ByVal isEnabled As Boolean)
+    Public Shared Sub SetEnableTabID(oPage As ElitaPlusPage,
+                                       oTabItem As Microsoft.Web.UI.WebControls.TabItem,
+                                       isEnabled As Boolean)
         Dim sControlName As String = oTabItem.ID
 
         If oPage.CanSetControlEnabled(sControlName) = True Then
@@ -144,9 +144,9 @@ Public Class ControlMgr
 
     End Sub
 
-    Public Shared Sub SetEnableControl(ByVal oPage As ElitaPlusPage,
-                                        ByVal oWebControl As WebControl,
-                                        ByVal isEnabled As Boolean)
+    Public Shared Sub SetEnableControl(oPage As ElitaPlusPage,
+                                        oWebControl As WebControl,
+                                        isEnabled As Boolean)
         If isEnabled = False Then 'always allow control to be disabled
             oWebControl.Enabled = isEnabled
         Else
@@ -157,7 +157,7 @@ Public Class ControlMgr
         End If
     End Sub
 
-    Private Shared Sub EnableAGridControl(ByVal oControl As Control, ByVal enable As Boolean)
+    Private Shared Sub EnableAGridControl(oControl As Control, enable As Boolean)
         Dim oWebControl As WebControl
 
         If TypeOf oControl Is Button Then Return
@@ -168,7 +168,7 @@ Public Class ControlMgr
     End Sub
 
     ' This method enables or disables all the columns  for all the rows on an Editable DataGrid 
-    Private Overloads Shared Sub EnableAllGridControls(ByVal grid As DataGrid, ByVal enable As Boolean)
+    Private Overloads Shared Sub EnableAllGridControls(grid As DataGrid, enable As Boolean)
         Dim row, column As Integer
         Dim oControl As Control
 
@@ -186,7 +186,7 @@ Public Class ControlMgr
     End Sub
 
     ' This method enables or disables all the columns  for all the rows on an Editable DataGrid 
-    Private Overloads Shared Sub EnableAllGridControls(ByVal grid As GridView, ByVal enable As Boolean)
+    Private Overloads Shared Sub EnableAllGridControls(grid As GridView, enable As Boolean)
         Dim row, column As Integer
         Dim oControl As Control
 
@@ -203,35 +203,35 @@ Public Class ControlMgr
         Next
     End Sub
 
-    Public Overloads Shared Sub DisableAllGridControlsIfNotEditAuth(ByVal oPage As ElitaPlusPage, ByVal grid As DataGrid)
+    Public Overloads Shared Sub DisableAllGridControlsIfNotEditAuth(oPage As ElitaPlusPage, grid As DataGrid)
         If oPage.CanUpdateForm = False Then
             EnableAllGridControls(grid, False)
         End If
 
     End Sub
 
-    Public Overloads Shared Sub DisableAllGridControlsIfNotEditAuth(ByVal oPage As ElitaPlusPage, ByVal grid As GridView)
+    Public Overloads Shared Sub DisableAllGridControlsIfNotEditAuth(oPage As ElitaPlusPage, grid As GridView)
         If oPage.CanUpdateForm = False Then
             EnableAllGridControls(grid, False)
         End If
 
     End Sub
 
-    Public Overloads Shared Sub DisableAllGridControlsIfNotEditAuth(ByVal oPage As ElitaPlusPage, ByVal grid As GridView, ByVal disable As Boolean)
-        If oPage.CanUpdateForm = False Or disable = True Then
+    Public Overloads Shared Sub DisableAllGridControlsIfNotEditAuth(oPage As ElitaPlusPage, grid As GridView, disable As Boolean)
+        If oPage.CanUpdateForm = False OrElse disable = True Then
             EnableAllGridControls(grid, False)
         End If
 
     End Sub
 
-    Public Overloads Shared Sub DisableEditDeleteGridIfNotEditAuth(ByVal oPage As ElitaPlusPage, ByVal grid As DataGrid)
+    Public Overloads Shared Sub DisableEditDeleteGridIfNotEditAuth(oPage As ElitaPlusPage, grid As DataGrid)
         If oPage.CanUpdateForm = False Then
             ElitaPlusSearchPage.SetGridControls(grid, False)
         End If
 
     End Sub
 
-    Public Overloads Shared Sub DisableEditDeleteGridIfNotEditAuth(ByVal oPage As ElitaPlusPage, ByVal grid As GridView)
+    Public Overloads Shared Sub DisableEditDeleteGridIfNotEditAuth(oPage As ElitaPlusPage, grid As GridView)
         If oPage.CanUpdateForm = False Then
             ElitaPlusSearchPage.SetGridControls(grid, False)
         End If
@@ -241,8 +241,8 @@ Public Class ControlMgr
 
 #Region "Visible"
 
-    Public Shared Sub SetVisibleControl(ByVal oPage As ElitaPlusPage,
-                                        ByVal oControl As Control, ByVal isVisible As Boolean)
+    Public Shared Sub SetVisibleControl(oPage As ElitaPlusPage,
+                                        oControl As Control, isVisible As Boolean)
         If isVisible = False Then 'always allow a control to be hidden
             oControl.Visible = isVisible
         Else
@@ -255,8 +255,8 @@ Public Class ControlMgr
 
     End Sub
 
-    Public Shared Sub SetVisibleForControlFamily(ByVal oPage As ElitaPlusPage,
-                                                    ByVal controlFamilyRoot As Control, ByVal isVisible As Boolean,
+    Public Shared Sub SetVisibleForControlFamily(oPage As ElitaPlusPage,
+                                                    controlFamilyRoot As Control, isVisible As Boolean,
                                                     Optional ByVal includeRootControl As Boolean = False)
         Dim oWebcontrol As WebControl
 
@@ -278,8 +278,8 @@ Public Class ControlMgr
 
 #Region "Visible"
 
-    Private Shared Function SetClientVisibleControl(ByVal oPage As ElitaPlusPage, ByVal oControl As Control,
-                                        ByVal isApply As String) As String
+    Private Shared Function SetClientVisibleControl(oPage As ElitaPlusPage, oControl As Control,
+                                        isApply As String) As String
         Dim sJavaScript As String
         Dim sControlName As String = oControl.ID
 
@@ -293,8 +293,8 @@ Public Class ControlMgr
         Return sJavaScript
     End Function
 
-    Private Shared Function SetClientVisibleFamily(ByVal oPage As ElitaPlusPage, ByVal controlFamilyRoot As Control,
-                ByVal isApply As String, Optional ByVal includeRootControl As Boolean = False) As String
+    Private Shared Function SetClientVisibleFamily(oPage As ElitaPlusPage, controlFamilyRoot As Control,
+                isApply As String, Optional ByVal includeRootControl As Boolean = False) As String
         Dim sJavaScript As String
         Dim childControl As Control
         Dim oWebcontrol As WebControl
@@ -311,8 +311,8 @@ Public Class ControlMgr
         Return sJavaScript
     End Function
 
-    Public Shared Function AddMoreClientVisibleIds(ByVal moreIds As ArrayList,
-                ByVal isApply As String) As String
+    Public Shared Function AddMoreClientVisibleIds(moreIds As ArrayList,
+                isApply As String) As String
         Dim sJavaScript, sId As String
         sJavaScript = String.Empty
         For Each sId In moreIds
@@ -323,9 +323,9 @@ Public Class ControlMgr
         Return sJavaScript
     End Function
 
-    Private Shared Function SetClientVisibleAction(ByVal oPage As ElitaPlusPage, ByVal targetCtrl As Control,
-                        ByVal appplyTrue As String, ByVal appyFalse As String,
-                        ByVal moreIds As ArrayList) As String
+    Private Shared Function SetClientVisibleAction(oPage As ElitaPlusPage, targetCtrl As Control,
+                        appplyTrue As String, appyFalse As String,
+                        moreIds As ArrayList) As String
         Dim sJavaScript As String
 
         sJavaScript = "var sDisplay; " & Environment.NewLine
@@ -349,8 +349,8 @@ Public Class ControlMgr
 #Region "Main"
 
     ' If apply = True Then installs targetCtrl Action  Else  installs targetCtrl  No Action
-    Private Shared Function SetClientAction(ByVal oPage As ElitaPlusPage, ByVal targetCtrl As Control,
-                                ByVal action As TargetAction, ByVal moreIds As ArrayList) As String
+    Private Shared Function SetClientAction(oPage As ElitaPlusPage, targetCtrl As Control,
+                                action As TargetAction, moreIds As ArrayList) As String
         Dim sJavaScript As String
         '  Dim diplay As String
 
@@ -370,9 +370,9 @@ Public Class ControlMgr
     ' if the event happens in the sourceCtrl then the registerName will be executed
     ' scriptContent Should return true if the ClientAction will be applied in the targetCtrl
     '   Otherwise the Not ClientAction will be applied in the targetCtrl
-    Public Shared Sub ClientRegister(ByVal oPage As ElitaPlusPage, ByVal sourceCtrl As WebControl, ByVal sourceEvnt As SourceEvent,
-                ByVal registerName As String, ByVal scriptContent As String,
-                ByVal targetCtrl As Control, ByVal action As TargetAction, ByVal moreIds As ArrayList)
+    Public Shared Sub ClientRegister(oPage As ElitaPlusPage, sourceCtrl As WebControl, sourceEvnt As SourceEvent,
+                registerName As String, scriptContent As String,
+                targetCtrl As Control, action As TargetAction, moreIds As ArrayList)
         Dim sJavaScript As String
 
         ' Installs sourceCtrl event

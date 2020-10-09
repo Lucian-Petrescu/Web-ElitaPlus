@@ -20,7 +20,7 @@ Partial Public Class PayClaimManualTaxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Grid As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents Grid As GridView
 
     '''<summary>
     '''btnBack control.
@@ -29,7 +29,7 @@ Partial Public Class PayClaimManualTaxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnBack As Button
 
     '''<summary>
     '''btnSave_WRITE control.
@@ -38,7 +38,7 @@ Partial Public Class PayClaimManualTaxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnSave_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSave_WRITE As Button
 
     '''<summary>
     '''btnCancel_WRITE control.
@@ -47,5 +47,5 @@ Partial Public Class PayClaimManualTaxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnCancel_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnCancel_WRITE As Button
 End Class

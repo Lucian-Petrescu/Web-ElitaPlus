@@ -102,7 +102,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -142,13 +142,13 @@ Namespace Reports
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrControllerMaster.Clear_Hide()
+            ErrControllerMaster.Clear_Hide()
             ClearErrLabels()
-            Me.Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
+            Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
 
-            Me.InstallProgressBar()
+            InstallProgressBar()
 
             If CompanyMultipleDrop.Visible = False Then
                 HideHtmlElement(trcomp.ClientID)
@@ -161,82 +161,82 @@ Namespace Reports
             btnDownLoadXML_WRITE.OnClientClick = "_spFormOnSubmitCalled = false; _spSuppressFormOnSubmitWrapper=true;"
 
             Try
-                If Not Me.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
+                If Not IsPostBack Then
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
                     InitializeForm()
                     'Date Calendars
-                    Me.AddCalendar(Me.BtnBeginDate, Me.moBeginDateText)
-                    Me.AddCalendar(Me.BtnEndDate, Me.moEndDateText)
+                    AddCalendar(BtnBeginDate, moBeginDateText)
+                    AddCalendar(BtnEndDate, moEndDateText)
 
-                    If Not Me.CallingParameters Is Nothing Then
-                        Me.State.TransmissionId = CType(CallingParameters, MyState).TransmissionId
-                        GenerateReport(CType(Me.CallingParameters, MyState))
+                    If CallingParameters IsNot Nothing Then
+                        State.TransmissionId = CType(CallingParameters, MyState).TransmissionId
+                        GenerateReport(CType(CallingParameters, MyState))
                     End If
                 Else
                     ClearErrLabels()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
 #End Region
 
 #Region "Handlers"
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub btnDownLoadXML_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDownLoadXML_WRITE.Click
+        Private Sub btnDownLoadXML_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDownLoadXML_WRITE.Click
             Try
                 DownLoadXML()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
                    Handles multipleDropControl.SelectedDropChanged
             Try
                 If moBeginDateText.Text <> String.Empty Then
                     PopulateFileName()
                 End If
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub moBeginDateText_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles moBeginDateText.TextChanged
+        Private Sub moBeginDateText_TextChanged(sender As Object, e As System.EventArgs) Handles moBeginDateText.TextChanged
             Try
-                If moBeginDateText.Text.Trim.ToString <> String.Empty And moEndDateText.Text.Trim.ToString <> String.Empty Then
+                If moBeginDateText.Text.Trim.ToString <> String.Empty AndAlso moEndDateText.Text.Trim.ToString <> String.Empty Then
                     PopulateFileName()
                 End If
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub moEndDateText_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles moEndDateText.TextChanged
+        Protected Sub moEndDateText_TextChanged(sender As Object, e As EventArgs) Handles moEndDateText.TextChanged
             Try
-                If moBeginDateText.Text.Trim.ToString <> String.Empty And moEndDateText.Text.Trim.ToString <> String.Empty Then
+                If moBeginDateText.Text.Trim.ToString <> String.Empty AndAlso moEndDateText.Text.Trim.ToString <> String.Empty Then
                     PopulateFileName()
                 End If
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
-            Me.ReturnToCallingPage(Me.State.TransmissionId)
+        Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
+            ReturnToCallingPage(State.TransmissionId)
         End Sub
 
 #End Region
@@ -244,10 +244,10 @@ Namespace Reports
 #Region "Clear"
 
         Private Sub ClearErrLabels()
-            Me.ClearLabelErrSign(CompanyMultipleDrop.CaptionLabel)
-            Me.ClearLabelErrSign(moBeginDateLabel)
-            Me.ClearLabelErrSign(moEndDateLabel)
-            Me.ClearLabelErrSign(lblFileName)
+            ClearLabelErrSign(CompanyMultipleDrop.CaptionLabel)
+            ClearLabelErrSign(moBeginDateLabel)
+            ClearLabelErrSign(moEndDateLabel)
+            ClearLabelErrSign(lblFileName)
         End Sub
 
 #End Region
@@ -265,7 +265,7 @@ Namespace Reports
 
         Sub PopulateFileName()
 
-            Me.cboFileName.Items.Clear()
+            cboFileName.Items.Clear()
 
             If CompanyMultipleDrop.SelectedGuid.Equals(Guid.Empty) Then
                 ElitaPlusPage.SetLabelError(CompanyMultipleDrop.CaptionLabel)
@@ -284,10 +284,9 @@ Namespace Reports
                                                          Where Not x.Translation Like "%.TMP"
                                                          Select x).ToArray()
             Dim filteredAcctFileLst As DataElements.ListItem() = (From acclist In filterList
-                                                                  Where ((Date.ParseExact(acclist.ExtendedCode, "MMddyyyy", DateTimeFormatInfo.InvariantInfo) >= beginDate) And
-                                                                                          (Date.ParseExact(acclist.ExtendedCode, "MMddyyyy", DateTimeFormatInfo.InvariantInfo) <= endDate))
+                                                                  Where ((Date.ParseExact(acclist.ExtendedCode, "MMddyyyy", DateTimeFormatInfo.InvariantInfo) >= beginDate) AndAlso (Date.ParseExact(acclist.ExtendedCode, "MMddyyyy", DateTimeFormatInfo.InvariantInfo) <= endDate))
                                                                   Select acclist).ToArray()
-            Me.cboFileName.Populate(filteredAcctFileLst, New PopulateOptions() With
+            cboFileName.Populate(filteredAcctFileLst, New PopulateOptions() With
                                                    {
                                                     .AddBlankItem = True
                                                    })
@@ -298,8 +297,8 @@ Namespace Reports
             TheReportCeInputControl.SetExportOnly()
             TheReportCeInputControl.ExcludeSSRSConfigurationCheck = True
             PopulateCompanyDropDown()
-            Me.moBeginDateText.Text = String.Empty
-            Me.moEndDateText.Text = String.Empty
+            moBeginDateText.Text = String.Empty
+            moEndDateText.Text = String.Empty
         End Sub
 
 #End Region
@@ -387,7 +386,7 @@ Namespace Reports
 
         End Sub
 
-        Private Sub GenerateReport(ByVal CallingParams As MyState)
+        Private Sub GenerateReport(CallingParams As MyState)
 
             Dim FileName As String
             Dim Filetype As String
@@ -396,22 +395,22 @@ Namespace Reports
 
             'Use this section to set fields based on parameters passed.
             'Because we're calling via other page and not directly, disable controls
-            EnableDisableControls(Me.BtnBeginDate, True)
-            EnableDisableControls(Me.BtnEndDate, True)
-            EnableDisableControls(Me.cboFileName, True)
-            EnableDisableControls(Me.moBeginDateText, True)
-            EnableDisableControls(Me.moEndDateText, True)
-            EnableDisableControls(Me.multipleDropControl, True)
+            EnableDisableControls(BtnBeginDate, True)
+            EnableDisableControls(BtnEndDate, True)
+            EnableDisableControls(cboFileName, True)
+            EnableDisableControls(moBeginDateText, True)
+            EnableDisableControls(moEndDateText, True)
+            EnableDisableControls(multipleDropControl, True)
 
             ControlMgr.SetVisibleControl(Me, btnGenRpt, False)
             ControlMgr.SetVisibleControl(Me, btnBack, True)
-            Me.MenuEnabled = False
+            MenuEnabled = False
 
-            Me.moBeginDateText.Text = CallingParams.BeginDate
-            Me.moEndDateText.Text = CallingParams.EndDate
+            moBeginDateText.Text = CallingParams.BeginDate
+            moEndDateText.Text = CallingParams.EndDate
 
-            Me.multipleDropControl.SelectedGuid = CallingParams.CompanyId
-            Me.cboFileName.Items.Add(CallingParams.FileName)
+            multipleDropControl.SelectedGuid = CallingParams.CompanyId
+            cboFileName.Items.Add(CallingParams.FileName)
 
             Validate_Begin_End_Dates()
 
@@ -434,7 +433,7 @@ Namespace Reports
 
         End Sub
 
-        Private Sub GenerateExport(ByVal input_XML As String, ByVal file_type As String, ByVal file_created_date As Date, ByVal file_name As String, ByVal xslt_file_path As String, Optional ByVal field_separator As String = "¦")
+        Private Sub GenerateExport(input_XML As String, file_type As String, file_created_date As Date, file_name As String, xslt_file_path As String, Optional ByVal field_separator As String = "¦")
             Try
 
                 Dim transform As XslCompiledTransform = New XslCompiledTransform()
@@ -496,13 +495,13 @@ Namespace Reports
             End Try
         End Sub
 
-        Private Function GetXMLRootNode(ByVal filetext As String) As String
+        Private Function GetXMLRootNode(filetext As String) As String
             Dim doc As New System.Xml.XmlDocument
             doc.LoadXml(filetext)
             Return doc.DocumentElement.Name
         End Function
 
-        Private Function GetfileType(ByVal company_Id As Guid, ByVal filename As String) As String
+        Private Function GetfileType(company_Id As Guid, filename As String) As String
             Dim rtnvalue As String = String.Empty
             Dim arrfileype() As String
 
@@ -539,7 +538,7 @@ Namespace Reports
             Return rtnvalue
         End Function
 
-        Private Function GetAccountingSystem(ByVal CompanyId As Guid) As String
+        Private Function GetAccountingSystem(CompanyId As Guid) As String
             Dim _company As New Company(CompanyId)
             Dim _acctCompany As New AcctCompany(_company.AcctCompanyId)
 

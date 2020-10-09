@@ -25,7 +25,7 @@ Partial Class DownLoadWindowForm
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -35,13 +35,13 @@ Partial Class DownLoadWindowForm
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
 
                 If Not Page.IsPostBack Then
                     Dim params As DownLoadBase.DownLoadParams
-                    params = CType(Session(Me.SESSION_PARAMETERS_DOWNLOAD_KEY), DownLoadParams)
+                    params = CType(Session(SESSION_PARAMETERS_DOWNLOAD_KEY), DownLoadParams)
 
                     Select Case params.downLoadCode
                         Case DownLoadBase.DownLoadParams.DownLoadTypeCode.FILE
@@ -49,7 +49,7 @@ Partial Class DownLoadWindowForm
                         Case DownLoadBase.DownLoadParams.DownLoadTypeCode.GRID
                             ProcessGrid(params)
                     End Select
-                    Session.Remove(Me.SESSION_PARAMETERS_DOWNLOAD_KEY)
+                    Session.Remove(SESSION_PARAMETERS_DOWNLOAD_KEY)
                 End If
             Catch exT As System.Threading.ThreadAbortException
                 'Catch ex As Exception
@@ -63,12 +63,12 @@ Partial Class DownLoadWindowForm
 
 #Region "Process Request"
 
-        Private Sub ProcessSendFile(ByVal params As DownLoadBase.DownLoadParams)
+        Private Sub ProcessSendFile(params As DownLoadBase.DownLoadParams)
             Dim sourceFileName As String = params.fileName
             SendFile(sourceFileName, params.DeleteFileAfterDownload)
         End Sub
 
-        Private Sub ProcessGrid(ByVal params As DownLoadBase.DownLoadParams)
+        Private Sub ProcessGrid(params As DownLoadBase.DownLoadParams)
             Dim oDataGrid As New DataGrid
             Dim sourceFileName As String = params.fileName
             Dim ds As DataSet = params.data
@@ -76,7 +76,7 @@ Partial Class DownLoadWindowForm
             CreateExcelHeader(sourceFileName)
             oDataGrid.DataSource = ds
             oDataGrid.DataBind()
-            Me.Controls.Add(oDataGrid)
+            Controls.Add(oDataGrid)
         End Sub
 
 #End Region

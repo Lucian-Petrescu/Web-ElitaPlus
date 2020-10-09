@@ -95,42 +95,42 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
         End Sub
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.ErrControllerMaster.Clear_Hide()
-            Me.ClearLabelsErrSign()
-            Me.Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
+            ErrControllerMaster.Clear_Hide()
+            ClearLabelsErrSign()
+            Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
             If CompanyMultipleDrop.Visible = False Then
                 HideHtmlElement(trcomp.ClientID)
             End If
             Try
-                If Not Me.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
+                If Not IsPostBack Then
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
                     JavascriptCalls()
                     InitializeForm()
                 End If
                 CheckQuerystringForCurrencyReports()
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
         Public Sub ClearLabelsErrSign()
             Try
-                Me.ClearLabelErrSign(lblMonthYear)
-                Me.ClearLabelErrSign(lblCompany)
-                Me.ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
-                Me.ClearLabelErrSign(lblCurrency)
+                ClearLabelErrSign(lblMonthYear)
+                ClearLabelErrSign(lblCompany)
+                ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
+                ClearLabelErrSign(lblCurrency)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -143,7 +143,7 @@ Namespace Reports
             If dv.Count.Equals(ONE_ITEM) Then
                 'ControlMgr.SetVisibleControl(Me, lblCompany, False)
                 'HideHtmlElement(trcomp.ClientID)
-                CompanyMultipleDrop.SelectedIndex = Me.ONE_ITEM
+                CompanyMultipleDrop.SelectedIndex = ONE_ITEM
                 OnFromDrop_Changed(CompanyMultipleDrop)
                 'CompanyMultipleDrop.Visible = False
             End If
@@ -169,7 +169,7 @@ Namespace Reports
             listcontext.CompanyId = ElitaPlusIdentity.Current.ActiveUser.CompanyId
 
             Dim YearListLkl As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ClosingYearsByCompany", context:=listcontext)
-            Me.moYearDropDownList.Populate(YearListLkl, New PopulateOptions() With
+            moYearDropDownList.Populate(YearListLkl, New PopulateOptions() With
                 {
                    .AddBlankItem = True,
                    .BlankItemValue = "0",
@@ -183,7 +183,7 @@ Namespace Reports
 
         Private Sub PopulateMonthsDropdown()
             Dim monthLkl As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("MONTH", Thread.CurrentPrincipal.GetLanguageCode())
-            Me.moMonthDropDownList.Populate(monthLkl, New PopulateOptions() With
+            moMonthDropDownList.Populate(monthLkl, New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
@@ -199,7 +199,7 @@ Namespace Reports
                 listcontext.CompanyId = CompanyMultipleDrop.SelectedGuid
                 Dim CurrencyList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="GetCurrencyByCompany", context:=listcontext)
 
-                Me.ddlCurrency.Populate(CurrencyList, New PopulateOptions() With
+                ddlCurrency.Populate(CurrencyList, New PopulateOptions() With
                 {
                    .AddBlankItem = True,
                    .TextFunc = AddressOf .GetCode,
@@ -207,7 +207,7 @@ Namespace Reports
                    .SortFunc = AddressOf .GetExtendedCode
                 })
 
-                Me.ddlDealerCurrency.Populate(CurrencyList, New PopulateOptions() With
+                ddlDealerCurrency.Populate(CurrencyList, New PopulateOptions() With
                 {
                    .AddBlankItem = True,
                    .TextFunc = AddressOf .GetCode,
@@ -222,7 +222,7 @@ Namespace Reports
                 listcontext.CompanyId = CompanyMultipleDrop.SelectedGuid
                 Dim CurrencyList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="GetCurrencyByCompany", context:=listcontext)
 
-                Me.ddlCurrency.Populate(CurrencyList, New PopulateOptions() With
+                ddlCurrency.Populate(CurrencyList, New PopulateOptions() With
                 {
                    .AddBlankItem = True,
                    .TextFunc = AddressOf .GetCode,
@@ -230,7 +230,7 @@ Namespace Reports
                    .SortFunc = AddressOf .GetExtendedCode
                 })
 
-                Me.ddlDealerCurrency.Populate(CurrencyList, New PopulateOptions() With
+                ddlDealerCurrency.Populate(CurrencyList, New PopulateOptions() With
                 {
                    .AddBlankItem = True,
                    .TextFunc = AddressOf .GetCode,
@@ -254,36 +254,36 @@ Namespace Reports
 
         Private Sub CheckQuerystringForCurrencyReports()
             ShowHideControls(False)
-            Me.SetFormTitle(PAGETITLE)
+            SetFormTitle(PAGETITLE)
 
-            If (Not Request.QueryString("CALLER") Is Nothing) Then
+            If (Request.QueryString("CALLER") IsNot Nothing) Then
                 If (Request.QueryString("CALLER") = "CR") Then
                     queryStringCaller = Request.QueryString("CALLER")
-                    Me.SetFormTitle(PAGETITLEWITHCURRENCY)
+                    SetFormTitle(PAGETITLEWITHCURRENCY)
                     ShowHideControls(True)
                 End If
             End If
         End Sub
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 #End Region
 
 #Region "Handlers-DropDown"
 
-        Protected Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+        Protected Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
              Handles CompanyDropControl.SelectedDropChanged
             Try
                 PopulateDealerDropDown()
                 PopulateCurrencyDropdown()
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -293,8 +293,8 @@ Namespace Reports
             Dim oCompanyId As Guid = CompanyMultipleDrop.SelectedGuid
             Dim compCode As String = LookupListNew.GetCodeFromId("COMPANIES", oCompanyId)
             Dim compDesc As String = LookupListNew.GetDescriptionFromId("COMPANIES", oCompanyId)
-            Dim selectedYear As String = Me.GetSelectedDescription(Me.moYearDropDownList)
-            Dim selectedMonthID As Guid = Me.GetSelectedItem(Me.moMonthDropDownList)
+            Dim selectedYear As String = GetSelectedDescription(moYearDropDownList)
+            Dim selectedMonthID As Guid = GetSelectedItem(moMonthDropDownList)
             Dim selectedMonth As String = LookupListNew.GetCodeFromId(LookupListNew.LK_MONTHS, selectedMonthID)
             Dim selectedYearMonth As String = selectedYear & selectedMonth
             Dim dealerForCur As Guid = Guid.Empty
@@ -319,7 +319,7 @@ Namespace Reports
             'If regular report is selected then either Select All Dealers or a particular dealer should be selected
             If (queryStringCaller = "CR") Then
                 'either of the three options should be selected
-                If (rdealer.Checked = False And selectedDealerId.Equals(Guid.Empty) And ddlDealerCurrency.SelectedIndex = 0) Then
+                If (rdealer.Checked = False AndAlso selectedDealerId.Equals(Guid.Empty) AndAlso ddlDealerCurrency.SelectedIndex = 0) Then
                     Throw New GUIException(Message.MSG_GUI_INVALID_SELECTION, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_REQUIRED)
                 End If
                 'currency should be selected for every run
@@ -327,14 +327,14 @@ Namespace Reports
                     ElitaPlusPage.SetLabelError(lblCurrency)
                     Throw New GUIException(Message.MSG_GUI_INVALID_SELECTION, Assurant.ElitaPlus.Common.ErrorCodes.GUI_CURRENCY_MUST_BE_SELECTED_ERR)
                 Else
-                    rptCurrency = New Guid(Me.ddlCurrency.SelectedValue)
+                    rptCurrency = New Guid(ddlCurrency.SelectedValue)
                 End If
 
                 If ddlDealerCurrency.SelectedIndex > 0 Then
-                    dealerForCur = New Guid(Me.ddlDealerCurrency.SelectedValue)
+                    dealerForCur = New Guid(ddlDealerCurrency.SelectedValue)
                 End If
             Else
-                If Me.rdealer.Checked Then
+                If rdealer.Checked Then
                     dealerCode = ALL
                 Else
                     'Validating the dealer selection
@@ -361,7 +361,7 @@ Namespace Reports
             Session(ReportCeBaseForm.SESSION_PARAMETERS_KEY) = params
         End Sub
 
-        Function SetParameters(ByVal companyCode As String, ByVal companyDesc As String, ByVal dealerCode As String, ByVal selectedYearMonth As String, _
+        Function SetParameters(companyCode As String, companyDesc As String, dealerCode As String, selectedYearMonth As String, _
                                 dealerForCur As Guid, rptCurrency As Guid) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params

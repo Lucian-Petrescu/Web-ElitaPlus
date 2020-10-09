@@ -10,7 +10,7 @@ Public Class GVSService
 
 #End Region
 
-    Public Shared Function SendToGvs(ByVal xmlIn As String, ByVal functionToProcess As String) As String
+    Public Shared Function SendToGvs(xmlIn As String, functionToProcess As String) As String
         Dim wsGvs As WebDeClaimsServiceReference.WSElitaServiceOrder
         Dim gvsToken As String
         Dim sLoginMsg As String
@@ -31,7 +31,7 @@ Public Class GVSService
             If Not tempTransId.Equals(Guid.Empty) Then
                 Dim transObj As TransactionLogHeader = New TransactionLogHeader(tempTransId)
                 xmlIn = transObj.TransactionXml
-                If Not xmlIn Is Nothing Then
+                If xmlIn IsNot Nothing Then
                     xmlIn = xmlIn.Replace("<?xml version='1.0' encoding='utf-8' ?>", "")
                 End If
             End If
@@ -52,14 +52,14 @@ Public Class GVSService
 
             If gvsToken Is Nothing Then
                 errMsg = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.WS_ERR_NO_TOKEN_RETURNED)
-                If Not (ElitaPlusIdentity.Current Is Nothing Or ElitaPlusIdentity.Current.ActiveUser Is Nothing Or ElitaPlusIdentity.Current.ActiveUser.NetworkId Is Nothing) Then
+                If Not (ElitaPlusIdentity.Current Is Nothing OrElse ElitaPlusIdentity.Current.ActiveUser Is Nothing OrElse ElitaPlusIdentity.Current.ActiveUser.NetworkId Is Nothing) Then
                     userNetworkId = ElitaPlusIdentity.Current.ActiveUser.NetworkId
                 End If
                 xmlOut = XMLHelper.FromErrorCodeToXML(Common.ErrorCodes.WS_ERR_NO_TOKEN_RETURNED, errMsg, userNetworkId)
             ElseIf gvsToken.ToUpperInvariant = LOGIN_FAILED Then
                 errMsg = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.WS_ACCESS_DENIED)
 
-                If Not (ElitaPlusIdentity.Current Is Nothing Or ElitaPlusIdentity.Current.ActiveUser Is Nothing Or ElitaPlusIdentity.Current.ActiveUser.NetworkId Is Nothing) Then
+                If Not (ElitaPlusIdentity.Current Is Nothing OrElse ElitaPlusIdentity.Current.ActiveUser Is Nothing OrElse ElitaPlusIdentity.Current.ActiveUser.NetworkId Is Nothing) Then
                     userNetworkId = ElitaPlusIdentity.Current.ActiveUser.NetworkId
                 End If
                 xmlOut = XMLHelper.FromErrorCodeToXML(Common.ErrorCodes.WS_ACCESS_DENIED, errMsg, userNetworkId)
@@ -83,7 +83,7 @@ Public Class GVSService
             AppConfig.Debug("SendToGvs exception:" & ex.StackTrace)
             Dim iex As Exception
             iex = ex
-            Do While (Not iex.InnerException Is Nothing)
+            Do While (iex.InnerException IsNot Nothing)
                 iex = iex.InnerException
                 AppConfig.Debug("SendToGvs exception:" & iex.StackTrace)
             Loop

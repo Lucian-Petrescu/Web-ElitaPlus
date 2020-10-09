@@ -1,15 +1,15 @@
 ﻿Public Class OcMessageAttemptsList
     Inherits BusinessObjectListBase
 
-    Public Sub New(ByVal parent As OcMessage, Optional ByVal clean As Boolean = False)
+    Public Sub New(parent As OcMessage, Optional ByVal clean As Boolean = False)
         MyBase.New(LoadTable(parent,clean), GetType(OcMessageAttempts), parent)
     End Sub
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, OcMessageAttempts).OcMessageId.Equals(CType(Parent, OcMessage).Id)
     End Function
 
-    Public Function Find(ByVal templateParamsId As Guid) As OcMessageAttempts
+    Public Function Find(templateParamsId As Guid) As OcMessageAttempts
         Dim bo As OcMessageAttempts
         For Each bo In Me
             If bo.Id.Equals(templateParamsId) Then Return bo
@@ -18,7 +18,7 @@
     End Function
 
 #Region "Class Methods"
-    Private Shared Function LoadTable(ByVal parent As OcMessage,Optional ByVal clean As Boolean = False) As DataTable
+    Private Shared Function LoadTable(parent As OcMessage,Optional ByVal clean As Boolean = False) As DataTable
         Try
             If (clean) Then
                 parent.Dataset.Tables.Remove("ELP_OC_MESSAGE_ATTEMPS")

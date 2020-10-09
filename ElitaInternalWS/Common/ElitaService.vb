@@ -15,14 +15,14 @@ Public Class ElitaService
 
 #Region "Services"
 
-    Public Shared Function Hello(ByVal name As String) As String
+    Public Shared Function Hello(name As String) As String
         Return "Hello, " & name
     End Function
 
-    Public Shared Function ProcessRequest(ByVal isWcf As Boolean, ByVal token As String, _
-                                               ByVal functionToProcess As String, _
-                                               ByVal xmlStringDataIn As String, _
-                                               ByVal webServiceName As String) As String
+    Public Shared Function ProcessRequest(isWcf As Boolean, token As String, _
+                                               functionToProcess As String, _
+                                               xmlStringDataIn As String, _
+                                               webServiceName As String) As String
         Dim _xml, servicePath As String
         Dim params(ElitaWebServiceConstants.PARAM_COUNT_0) As Object
         Dim xmlDataIn As String
@@ -155,7 +155,7 @@ Public Class ElitaService
 
 #Region "Token"
 
-    Public Shared Sub VerifyToken(ByVal isWcf As Boolean, ByVal token As String, Optional ByVal webServiceName As String = Nothing,
+    Public Shared Sub VerifyToken(isWcf As Boolean, token As String, Optional ByVal webServiceName As String = Nothing,
                                    Optional ByVal webServiceFunctionName As String = Nothing, Optional ByVal xmlStringDataIn As String = Nothing)
         Dim networkID As String
         Dim Token_Env As String
@@ -268,8 +268,8 @@ Public Class ElitaService
 
 #Region "Authentication"
 
-    Public Shared Function VerifyLogin(ByVal isWcf As Boolean, ByVal complexUsername As String, _
-                                    ByVal appPassword As String, Optional ByVal webServiceName As String = Nothing) As String
+    Public Shared Function VerifyLogin(isWcf As Boolean, complexUsername As String, _
+                                    appPassword As String, Optional ByVal webServiceName As String = Nothing) As String
         Dim appUsername, networkID, group As String
 
         appUsername = AppConfig.WebService.AppId(complexUsername)
@@ -279,8 +279,8 @@ Public Class ElitaService
         Return VerifyLogin(isWcf, appUsername, networkID, appPassword, group, webServiceName)
     End Function
 
-    Public Shared Function VerifyLogin(ByVal isWcf As Boolean, ByVal appId As String, ByVal networkId As String, _
-                                 ByVal appPassword As String, ByVal group As String, Optional ByVal webServiceName As String = Nothing) As String
+    Public Shared Function VerifyLogin(isWcf As Boolean, appId As String, networkId As String, _
+                                 appPassword As String, group As String, Optional ByVal webServiceName As String = Nothing) As String
         Dim isValidUser As Boolean = False
         Dim token As String
 
@@ -304,7 +304,7 @@ Public Class ElitaService
         Return token
     End Function
 
-    Private Shared Sub LoginElita(ByVal isWcf As Boolean, ByVal networkID As String, Optional ByVal webServiceName As String = Nothing, _
+    Private Shared Sub LoginElita(isWcf As Boolean, networkID As String, Optional ByVal webServiceName As String = Nothing, _
                                     Optional ByVal webServiceFunctionName As String = Nothing)
         Dim oAuthentication As New Authentication
         Try
@@ -339,8 +339,8 @@ Public Class ElitaService
 
 #Region " Private Methods"
 
-    Private Shared Sub ValidateXML(ByVal isWcf As Boolean, ByVal _xml As String, ByRef ds As DataSet, _
-                                    ByVal schemaName As String)
+    Private Shared Sub ValidateXML(isWcf As Boolean, _xml As String, ByRef ds As DataSet, _
+                                    schemaName As String)
         Dim _xsd, schemaPath As String
         Try
             If isWcf = True Then
@@ -362,8 +362,8 @@ Public Class ElitaService
 
     End Sub
 
-    Private Shared Function ObjectFromClassName(ByVal PartialAssemblyName As String, _
-                                         ByVal QualifiedClassName As String, _
+    Private Shared Function ObjectFromClassName(PartialAssemblyName As String, _
+                                         QualifiedClassName As String, _
                                          Optional ByVal params As Object() = Nothing) As Object
 
         'ALR : HINT - If you have problems with this, make sure your classes are all specified with the correct case 
@@ -377,7 +377,7 @@ Public Class ElitaService
 
 #Region " Error Handling"
 
-    Private Shared Sub HandleErrors(ByVal exc As Exception, ByRef retCode As String, ByRef retTranslatedMessage As String, ByVal xmlDataIn As String, Optional ByVal Translate As Boolean = True)
+    Private Shared Sub HandleErrors(exc As Exception, ByRef retCode As String, ByRef retTranslatedMessage As String, xmlDataIn As String, Optional ByVal Translate As Boolean = True)
         Dim exE As Exception
         Try
             retCode = String.Empty
@@ -502,7 +502,7 @@ Public Class ElitaService
         End Try
     End Sub
 
-    Public Shared Function HandelBOValidation(ByVal ex As BOValidationException) As String
+    Public Shared Function HandelBOValidation(ex As BOValidationException) As String
         Dim retMessage As String = String.Empty
         Dim retCode As String = String.Empty
         Dim retPropertyName As String = String.Empty
@@ -526,7 +526,7 @@ Public Class ElitaService
 
     End Function
 
-    Private Shared Function HandelBOValidation(ByVal ex As System.Reflection.TargetInvocationException) As String
+    Private Shared Function HandelBOValidation(ex As System.Reflection.TargetInvocationException) As String
 
         Dim retMessage As String = String.Empty
         Dim retCode As String = String.Empty
@@ -544,7 +544,7 @@ Public Class ElitaService
 
     End Function
 
-    Public Shared Function CreateErrorMsg(ByVal ex As Exception) As String
+    Public Shared Function CreateErrorMsg(ex As Exception) As String
         Dim retMessage As String = String.Empty
         Dim retCode As String = String.Empty
         Try
@@ -575,7 +575,7 @@ Public Class ElitaService
         Return XMLHelper.FromStringToXML("<ERROR><CODE>" & retCode & "</CODE>" & "<MESSAGE>" & retMessage & "</MESSAGE></ERROR>")
 
     End Function
-    Private Shared Sub LogXML(ByVal xmlDataIn As String)
+    Private Shared Sub LogXML(xmlDataIn As String)
 
         If Not xmlDataIn Is Nothing AndAlso xmlDataIn.Length > 4000 Then
             AppConfig.Debug("<![CDATA[" & xmlDataIn.Substring(0, 4000) & "]]>")

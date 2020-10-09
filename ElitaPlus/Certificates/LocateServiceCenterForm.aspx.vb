@@ -16,7 +16,7 @@ Partial Class LocateServiceCenterForm
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -70,11 +70,11 @@ Partial Class LocateServiceCenterForm
         'Def-23747- Added new variable country Id .
         Public CountryId As Guid
 
-        Public Sub New(ByVal dealerId As Guid, ByVal zipLocator As String,
-                        ByVal riskTypeId As Guid, ByVal ManufacturerId As Guid,
-                        ByVal covTypeCode As String,
-                        ByVal certItemCoverageId As Guid,
-                        ByVal ClaimId As Guid,
+        Public Sub New(dealerId As Guid, zipLocator As String,
+                        riskTypeId As Guid, ManufacturerId As Guid,
+                        covTypeCode As String,
+                        certItemCoverageId As Guid,
+                        ClaimId As Guid,
                         Optional ByVal showAcceptButton As Boolean = True,
                         Optional ByVal whenAcceptGoToCreateClaim As Boolean = True,
                         Optional ByVal ComingFromDenyClaim As Boolean = False,
@@ -92,7 +92,7 @@ Partial Class LocateServiceCenterForm
             Me.ClaimId = ClaimId
             Me.ComingFromDenyClaim = ComingFromDenyClaim
             Me.RecoveryButtonClick = RecoveryButtonClick
-            Me.ClaimedEquipment = _claimed_equipment
+            ClaimedEquipment = _claimed_equipment
             Me.CountryId = countryId
         End Sub
     End Class
@@ -131,22 +131,22 @@ Partial Class LocateServiceCenterForm
     Protected Shadows ReadOnly Property State() As MyState
         Get
             'Return CType(MyBase.State, MyState)
-            If Me.NavController.State Is Nothing Then
-                Me.NavController.State = New MyState
+            If NavController.State Is Nothing Then
+                NavController.State = New MyState
                 InitializeFromFlowSession()
             End If
-            Return CType(Me.NavController.State, MyState)
+            Return CType(NavController.State, MyState)
         End Get
     End Property
 
     Protected Sub InitializeFromFlowSession()
-        Me.State.inputParameters = CType(Me.NavController.ParametersPassed, Parameters)
+        State.inputParameters = CType(NavController.ParametersPassed, Parameters)
     End Sub
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.RestoreGUIState()
-            Me.IsReturningFromChild = True
+            RestoreGUIState()
+            IsReturningFromChild = True
             Dim retObj As LocateServiceCenterDetailForm.ReturnType = CType(ReturnPar, LocateServiceCenterDetailForm.ReturnType)
 
             Select Case retObj.LastOperation
@@ -154,29 +154,29 @@ Partial Class LocateServiceCenterForm
             End Select
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 'Get the id from the parent
-                Dim pageParameters As Parameters = CType(Me.CallingParameters, Parameters)
-                Me.State.inputParameters = pageParameters
+                Dim pageParameters As Parameters = CType(CallingParameters, Parameters)
+                State.inputParameters = pageParameters
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
     Sub SaveGUIState()
-        Me.State.searchCity = Me.TextboxCity.Text
+        State.searchCity = TextboxCity.Text
     End Sub
 
     Sub RestoreGUIState()
-        Me.TextboxCity.Text = Me.State.searchCity
+        TextboxCity.Text = State.searchCity
     End Sub
 
 #End Region
@@ -202,16 +202,16 @@ Partial Class LocateServiceCenterForm
         Try
             'Def-23747-Added condition to check FlowSessionKeys.SESSION_CERTIFICATE_COVERAGE_ID value.
             'If null then get it from inputParameters.
-            If Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_COVERAGE_ID) IsNot Nothing Then
-                certItemCvg = New CertItemCoverage(CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_COVERAGE_ID), Guid))
+            If NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_COVERAGE_ID) IsNot Nothing Then
+                certItemCvg = New CertItemCoverage(CType(NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_COVERAGE_ID), Guid))
             Else
-                certItemCvg = New CertItemCoverage(Me.State.inputParameters.CertItemCoverageId)
+                certItemCvg = New CertItemCoverage(State.inputParameters.CertItemCoverageId)
             End If
 
 
             certItem = New CertItem(certItemCvg.CertItemId)
             Dim cert As New Certificate(certItemCvg.CertId)
-            dateOfLoss = CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_DATE_OF_LOSS), Date)
+            dateOfLoss = CType(NavController.FlowSession(FlowSessionKeys.SESSION_DATE_OF_LOSS), Date)
             moProtectionAndEventDetails.CustomerName = cert.CustomerName
             If Not certItem.ManufacturerId.Equals(Guid.Empty) Then
                 moProtectionAndEventDetails.EnrolledMake = New Manufacturer(certItem.ManufacturerId).Description
@@ -220,7 +220,7 @@ Partial Class LocateServiceCenterForm
             moProtectionAndEventDetails.DealerName = cert.getDealerDescription
             moProtectionAndEventDetails.EnrolledModel = certItem.Model
             moProtectionAndEventDetails.ClaimStatus = NO_DATA
-            moProtectionAndEventDetails.CallerName = CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_CALLER_NAME), String)
+            moProtectionAndEventDetails.CallerName = CType(NavController.FlowSession(FlowSessionKeys.SESSION_CALLER_NAME), String)
 
             If dateOfLoss > Date.MinValue Then moProtectionAndEventDetails.DateOfLoss = GetDateFormattedStringNullable(dateOfLoss)
             moProtectionAndEventDetails.ProtectionStatus = LookupListNew.GetDescriptionFromId("SUBSTAT", cert.SubscriberStatus)
@@ -229,9 +229,9 @@ Partial Class LocateServiceCenterForm
             Else
                 cssClassName = "StatClosed"
             End If
-            If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, New Dealer(Me.State.inputParameters.DealerId).UseEquipmentId) = Codes.YESNO_Y Then
-                If Not Me.State.inputParameters.ClaimedEquipment Is Nothing Then
-                    With Me.State.inputParameters.ClaimedEquipment
+            If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, New Dealer(State.inputParameters.DealerId).UseEquipmentId) = Codes.YESNO_Y Then
+                If State.inputParameters.ClaimedEquipment IsNot Nothing Then
+                    With State.inputParameters.ClaimedEquipment
                         moProtectionAndEventDetails.ClaimedModel = .Model
                         moProtectionAndEventDetails.ClaimedMake = .Manufacturer
                     End With
@@ -245,11 +245,11 @@ Partial Class LocateServiceCenterForm
             moProtectionAndEventDetails.TypeOfLoss = LookupListNew.GetDescriptionFromId(LookupListNew.LK_RISKTYPES, certItem.RiskTypeId)
             moProtectionAndEventDetails.DateOfLoss = GetDateFormattedString(dateOfLoss)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Page_load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         If mbIsFirstPass = True Then
             mbIsFirstPass = False
@@ -258,44 +258,44 @@ Partial Class LocateServiceCenterForm
             Return
         End If
 
-        If (Me.NavController.CurrentFlow.Name = "CREATE_NEW_CLAIM_FROM_EXISTING_CLAIM") Then
+        If (NavController.CurrentFlow.Name = "CREATE_NEW_CLAIM_FROM_EXISTING_CLAIM") Then
             lnkCancel.Visible = False
             divSteps.Visible = False
             moProtectionAndEventDetails.Visible = False
             searchServiceCenterH2.Visible = False
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("LOCATE SERVICE CENTER")
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("LOCATE SERVICE CENTER")
         Else
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("PROTECTION_AND_EVENT_DETAILS")
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("PROTECTION_AND_EVENT_DETAILS")
         End If
 
-        Me.MasterPage.UsePageTabTitleInBreadCrum = False
-        Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("Locate_Service_Center")
+        MasterPage.UsePageTabTitleInBreadCrum = False
+        MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("Locate_Service_Center")
 
         PopulateProtectionAndEventDetail()
         Dim certid As Guid
-        certid = (New CertItemCoverage(Me.State.inputParameters.CertItemCoverageId)).CertId
+        certid = (New CertItemCoverage(State.inputParameters.CertItemCoverageId)).CertId
         UpdateBreadCrum(certid)
 
-        Me.MasterPage.MessageController.Clear()
+        MasterPage.MessageController.Clear()
         Try
-            If (Not Me.IsPostBack) Then
+            If (Not IsPostBack) Then
                 PopulateCurrentSearchType()
                 PopulateCountryDropdown()
                 EnableDisableFields()
-                Me.PopulateGridOrDropDown()
+                PopulateGridOrDropDown()
                 'REQ-5546
-                ControlMgr.SetVisibleControl(Me, RadioButtonNO_SVC_OPTION, Not Me.State.default_service_center_id.Equals(Guid.Empty))
+                ControlMgr.SetVisibleControl(Me, RadioButtonNO_SVC_OPTION, Not State.default_service_center_id.Equals(Guid.Empty))
 
                 lblCancelMessage.Text = TranslationBase.TranslateLabelOrMessage("MSG_CONFIRM_CANCEL")
                 btnModalCancelYes.Attributes.Add("onclick", String.Format("ExecuteButtonClick('{0}');", lnkCancel.UniqueID))
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
-    Private Sub ShowGridData(ByVal dv As DataView)
+    Private Sub ShowGridData(dv As DataView)
         Try
             Dim dataSet As New DataSet
             selectedServiceCenterId.Value = "XXXX"
@@ -307,7 +307,7 @@ Partial Class LocateServiceCenterForm
             xmlSource.TransformArgumentList.AddParam("recordCount", String.Empty, 30)
             xmlSource.Document = xdoc
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -319,7 +319,7 @@ Partial Class LocateServiceCenterForm
             For Each objAC In ElitaPlusIdentity.Current.ActiveUser.AccountingCompanies()
                 'ALR - Added check to only return true if we are using accounting AND Felita..  
                 'If using smartstream, allow all applicable service centers
-                Dim certItemCvg As New CertItemCoverage(Me.State.inputParameters.CertItemCoverageId)
+                Dim certItemCvg As New CertItemCoverage(State.inputParameters.CertItemCoverageId)
                 Dim cert As New Certificate(certItemCvg.CertId)
                 Dim certCompany As New Company(cert.CompanyId)
                 If certCompany.AcctCompanyId.Equals(objAC.Id) Then
@@ -333,42 +333,42 @@ Partial Class LocateServiceCenterForm
 
     Private Sub PopulateGrid(ByRef dv As DataView)
         Dim MethodOfRepairType As String
-        Dim certItemCov As New CertItemCoverage(Me.State.inputParameters.CertItemCoverageId)
+        Dim certItemCov As New CertItemCoverage(State.inputParameters.CertItemCoverageId)
         Dim cert As New Certificate(certItemCov.CertId)
         Dim dvCount As Integer = 0
 
         'cache the search results for multiple grid pages
-        Me.State.searchResult = dv
+        State.searchResult = dv
 
-        If Not Me.State.searchResult Is Nothing Then
-            dvCount = Me.State.searchResult.Count
+        If State.searchResult IsNot Nothing Then
+            dvCount = State.searchResult.Count
         End If
 
-        ShowGridData(Me.State.searchResult)
+        ShowGridData(State.searchResult)
         '''''
         Dim autoSelectSvcCenter As Guid = cert.Dealer.AutoSelectServiceCenter
         'For testing in higher env: 
         'Dim autoSelectSvcCenter As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
-        Dim strComingFrom As String = Me.NavController.PrevNavState.Name
+        Dim strComingFrom As String = NavController.PrevNavState.Name
 
         '"Search by Zip" is the default Search parameter when the page is initially loaded.
         If (autoSelectSvcCenter.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)) AndAlso Me.State.curSearchType = SearchType.ByZip) Then
             ' to check whether the user is coming from Claim Details (Action --> New Center) OR by clicking Back button in Step 4
             If (strComingFrom <> "CLAIM_DETAIL" AndAlso strComingFrom <> "CREATE_NEW_CLAIM") Then
                 If (dvCount = 1) Then
-                    Me.selectedServiceCenterId.Value = Me.State.searchResult.Table.Rows(0)("CODE").ToString()
+                    selectedServiceCenterId.Value = State.searchResult.Table.Rows(0)("CODE").ToString()
                     GoToStep4()
                 End If
             End If
         End If
         ''''''
-        Me.HandleGridMessages(dvCount, True)
+        HandleGridMessages(dvCount, True)
     End Sub
 
-    Private Sub PopulateDrop(ByVal customerCountry As ArrayList)
+    Private Sub PopulateDrop(customerCountry As ArrayList)
         Try
             Dim MethodOfRepairType As String
-            Dim certItemCov As New CertItemCoverage(Me.State.inputParameters.CertItemCoverageId)
+            Dim certItemCov As New CertItemCoverage(State.inputParameters.CertItemCoverageId)
             Dim cert As New Certificate(certItemCov.CertId)
             Dim methodOfRepairId As Guid
             If (certItemCov.MethodOfRepairId = Guid.Empty) Then
@@ -394,19 +394,19 @@ Partial Class LocateServiceCenterForm
             End If
 
             moMultipleColumnDrop.SetControl(True, moMultipleColumnDrop.MODES.NEW_MODE, True, dv, TranslationBase.TranslateLabelOrMessage(LABEL_SERVICE_CENTER), overRideSingularity)
-            If Not Me.State.SelectedServiceCenterId.Equals(Guid.Empty) Then
-                moMultipleColumnDrop.SelectedGuid = Me.State.SelectedServiceCenterId
+            If Not State.SelectedServiceCenterId.Equals(Guid.Empty) Then
+                moMultipleColumnDrop.SelectedGuid = State.SelectedServiceCenterId
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Public Sub PopulateGridOrDropDown()
         'get the customer countryId
         Try
-            Dim certItemCov As New CertItemCoverage(Me.State.inputParameters.CertItemCoverageId)
+            Dim certItemCov As New CertItemCoverage(State.inputParameters.CertItemCoverageId)
             Dim cert As New Certificate(certItemCov.CertId)
             Dim oDealer As New Dealer(cert.DealerId)
             Dim ServNetworkSvc As New ServiceNetworkSvc
@@ -419,7 +419,7 @@ Partial Class LocateServiceCenterForm
 
             'REQ-5546
             Dim objCountry As New Country(objCompany.CountryId)
-            Me.State.default_service_center_id = objCountry.DefaultSCId
+            State.default_service_center_id = objCountry.DefaultSCId
 
             If objCompany.UseZipDistrictId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "N")) Then
                 UseZipDistrict = False
@@ -427,7 +427,7 @@ Partial Class LocateServiceCenterForm
 
             Dim SelectedCountry As New ArrayList
             Dim isNetwork As Boolean
-            SelectedCountry.Add(Me.GetSelectedItem(moCountryDrop))
+            SelectedCountry.Add(GetSelectedItem(moCountryDrop))
             'Dim srvCenterdIDs As ArrayList = Nothing
             If Not oDealer.ServiceNetworkId.Equals(Guid.Empty) Then
                 ServNetworkSvc.ServiceNetworkId = oDealer.ServiceNetworkId
@@ -447,13 +447,11 @@ Partial Class LocateServiceCenterForm
             End If
 
             MethodOfRepairType = LookupListNew.GetCodeFromId(LookupListNew.LK_METHODS_OF_REPAIR, methodOfRepairId)
-            If MethodOfRepairType = Codes.METHOD_OF_REPAIR__RECOVERY Or
-               MethodOfRepairType = Codes.METHOD_OF_REPAIR__GENERAL Or
-               MethodOfRepairType = Codes.METHOD_OF_REPAIR__LEGAL Then
+            If MethodOfRepairType = Codes.METHOD_OF_REPAIR__RECOVERY OrElse MethodOfRepairType = Codes.METHOD_OF_REPAIR__GENERAL OrElse MethodOfRepairType = Codes.METHOD_OF_REPAIR__LEGAL Then
                 FlagMethodOfRepairRecovery = True
             End If
 
-            If Me.State.inputParameters.RecoveryButtonClick = True Then
+            If State.inputParameters.RecoveryButtonClick = True Then
                 FlagMethodOfRepairRecovery = True
                 'START  INC-356
                 methodOfRepairId = LookupListNew.GetIdFromCode(LookupListNew.LK_METHODS_OF_REPAIR, Codes.METHOD_OF_REPAIR__RECOVERY)
@@ -461,40 +459,40 @@ Partial Class LocateServiceCenterForm
             End If
 
             Dim dv As ServiceCenter.LocateServiceCenterResultsDv
-            With Me.State.inputParameters
-                Select Case Me.State.curSearchType
+            With State.inputParameters
+                Select Case State.curSearchType
                     Case SearchType.ByZip
                         dv = ServiceCenter.LocateServiceCenterByZip(.DealerId, .ZipLocator, .RiskTypeId, .ManufacturerId, .CovTypeCode, SelectedCountry, oDealer.ServiceNetworkId, isNetwork, methodOfRepairId, UseZipDistrict, DealerType, FlagMethodOfRepairRecovery, MethodOfRepairType, IsUserCompaniesWithAcctSettings())
                         PopulateGrid(CType(dv, DataView))
                     Case SearchType.ByCity
-                        dv = ServiceCenter.LocateServiceCenterByCity(.DealerId, .ZipLocator, Me.TextboxCity.Text, .RiskTypeId, .ManufacturerId, .CovTypeCode, SelectedCountry, oDealer.ServiceNetworkId, isNetwork, methodOfRepairId, DealerType, FlagMethodOfRepairRecovery, MethodOfRepairType, IsUserCompaniesWithAcctSettings())
+                        dv = ServiceCenter.LocateServiceCenterByCity(.DealerId, .ZipLocator, TextboxCity.Text, .RiskTypeId, .ManufacturerId, .CovTypeCode, SelectedCountry, oDealer.ServiceNetworkId, isNetwork, methodOfRepairId, DealerType, FlagMethodOfRepairRecovery, MethodOfRepairType, IsUserCompaniesWithAcctSettings())
                         PopulateGrid(CType(dv, DataView))
                     Case SearchType.All
                         Dim selectedSCIds As New ArrayList
                         selectedSCIds.Add(moMultipleColumnDrop.SelectedGuid)
-                        Me.State.SelectedServiceCenterId = moMultipleColumnDrop.SelectedGuid
+                        State.SelectedServiceCenterId = moMultipleColumnDrop.SelectedGuid
                         PopulateDrop(SelectedCountry)
                         PopulateGrid(ServiceCenter.GetLocateServiceCenterDetails(selectedSCIds, .DealerId, .ManufacturerId).Tables(0).DefaultView)
                 End Select
             End With
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub moMultipleColumnDrop_Changed(ByVal fromMultipleDrop As MultipleColumnDDLabelControl_New) _
+    Private Sub moMultipleColumnDrop_Changed(fromMultipleDrop As MultipleColumnDDLabelControl_New) _
         Handles moMultipleColumnDrop.SelectedDropChanged
         Try
             PopulateGridOrDropDown()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Sub EnableDisableFields()
-        Dim showCityFields As Boolean = Me.RadioButtonByCity.Checked
-        Dim showAllFields As Boolean = Me.RadioButtonAll.Checked
-        Dim NO_SVC_OPTION As Boolean = Me.RadioButtonNO_SVC_OPTION.Checked
+        Dim showCityFields As Boolean = RadioButtonByCity.Checked
+        Dim showAllFields As Boolean = RadioButtonAll.Checked
+        Dim NO_SVC_OPTION As Boolean = RadioButtonNO_SVC_OPTION.Checked
 
         ' City
         ControlMgr.SetVisibleControl(Me, tdCityLabel, showCityFields)
@@ -518,23 +516,23 @@ Partial Class LocateServiceCenterForm
 
     Sub PopulateCurrentSearchType()
         Try
-            Select Case Me.State.curSearchType
+            Select Case State.curSearchType
                 Case SearchType.ByZip
-                    Me.RadioButtonByZip.Checked = True
+                    RadioButtonByZip.Checked = True
                 Case SearchType.ByCity
-                    Me.RadioButtonByCity.Checked = True
+                    RadioButtonByCity.Checked = True
                 Case SearchType.All
-                    Me.RadioButtonAll.Checked = True
+                    RadioButtonAll.Checked = True
             End Select
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     'Def-23747- Added condition to get country Id from claim details if certtificate has no address info.
     Sub PopulateCountryDropdown()
         Try
-            Dim certItemCov As New CertItemCoverage(Me.State.inputParameters.CertItemCoverageId)
+            Dim certItemCov As New CertItemCoverage(State.inputParameters.CertItemCoverageId)
             Dim dv As ServiceCenter.ServiceCenterSearchDV
             Dim CountryId As Guid
             Dim cert As New Certificate(certItemCov.CertId)
@@ -543,12 +541,12 @@ Partial Class LocateServiceCenterForm
                 CountryId = address.CountryId
             Else
                 ' Get Country Id from claim details. 
-                If Not Me.State.inputParameters.CountryId.Equals(Guid.Empty) Then
-                    CountryId = Me.State.inputParameters.CountryId
+                If Not State.inputParameters.CountryId.Equals(Guid.Empty) Then
+                    CountryId = State.inputParameters.CountryId
                 Else
                     'Def- 24578- Get Country Id from the claim details if Me.State.inputParameters.CountryId is nothing.
-                    If Not CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_OLD_CLAIM), Claim).Company.CountryId.Equals(Guid.Empty) Then
-                        CountryId = CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_OLD_CLAIM), Claim).Company.CountryId
+                    If Not CType(NavController.FlowSession(FlowSessionKeys.SESSION_OLD_CLAIM), Claim).Company.CountryId.Equals(Guid.Empty) Then
+                        CountryId = CType(NavController.FlowSession(FlowSessionKeys.SESSION_OLD_CLAIM), Claim).Company.CountryId
                     End If
                 End If
             End If
@@ -564,22 +562,22 @@ Partial Class LocateServiceCenterForm
                                            .AddBlankItem = True
                                            })
 
-                Me.SetSelectedItem(Me.moCountryDrop, CountryId)
+                SetSelectedItem(moCountryDrop, CountryId)
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
 
-    Private Sub UpdateBreadCrum(ByVal CertId As Guid)
+    Private Sub UpdateBreadCrum(CertId As Guid)
         If Not CertId = Guid.Empty Then
-            If (Me.NavController.CurrentFlow.Name = "CREATE_NEW_CLAIM_FROM_EXISTING_CLAIM") Then
-                Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage("CLAIM DETAILS") & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("Locate_Service_Center")
+            If (NavController.CurrentFlow.Name = "CREATE_NEW_CLAIM_FROM_EXISTING_CLAIM") Then
+                MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage("CLAIM DETAILS") & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("Locate_Service_Center")
             Else
-                Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage("Locate_Service_Center") & ElitaBase.Sperator & "Certificate " & (New Certificate(CertId)).CertNumber
+                MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage("Locate_Service_Center") & ElitaBase.Sperator & "Certificate " & (New Certificate(CertId)).CertNumber
             End If
         End If
     End Sub
@@ -653,84 +651,84 @@ Partial Class LocateServiceCenterForm
 
 #Region "Buttons Clicks "
 
-    Private Sub btnSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As System.EventArgs) Handles btnSearch.Click
         Try
-            Me.State.PageIndex = 0
-            Me.State.SelectedServiceCenterId = Guid.Empty
-            Me.PopulateGridOrDropDown()
+            State.PageIndex = 0
+            State.SelectedServiceCenterId = Guid.Empty
+            PopulateGridOrDropDown()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As Object, e As System.EventArgs) Handles btnClearSearch.Click
         Try
-            Me.TextboxCity.Text = ""
+            TextboxCity.Text = ""
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            Me.NavController.Navigate(Me, "back")
+            NavController.Navigate(Me, "back")
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub lnkCancel_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles lnkCancel.Click
+    Private Sub lnkCancel_Click(sender As Object, e As System.EventArgs) Handles lnkCancel.Click
         Try
-            Me.NavController.Navigate(Me, "cancel")
+            NavController.Navigate(Me, "cancel")
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub RadioButtonByZip_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RadioButtonByZip.CheckedChanged
+    Private Sub RadioButtonByZip_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles RadioButtonByZip.CheckedChanged
         Try
-            If Me.RadioButtonByZip.Checked Then
-                Me.State.curSearchType = SearchType.ByZip
+            If RadioButtonByZip.Checked Then
+                State.curSearchType = SearchType.ByZip
             End If
-            Me.EnableDisableFields()
+            EnableDisableFields()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub RadioButtonByCity_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RadioButtonByCity.CheckedChanged
+    Private Sub RadioButtonByCity_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles RadioButtonByCity.CheckedChanged
         Try
-            If Me.RadioButtonByCity.Checked Then
-                Me.State.curSearchType = SearchType.ByCity
+            If RadioButtonByCity.Checked Then
+                State.curSearchType = SearchType.ByCity
             End If
-            Me.EnableDisableFields()
+            EnableDisableFields()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub RadioButtonAll_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RadioButtonAll.CheckedChanged
+    Private Sub RadioButtonAll_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles RadioButtonAll.CheckedChanged
         Try
-            Me.EnableDisableFields()
-            If Me.RadioButtonAll.Checked Then
-                Me.State.curSearchType = SearchType.All
+            EnableDisableFields()
+            If RadioButtonAll.Checked Then
+                State.curSearchType = SearchType.All
                 Dim SelectedCountry As New ArrayList
-                SelectedCountry.Add(Me.GetSelectedItem(moCountryDrop))
+                SelectedCountry.Add(GetSelectedItem(moCountryDrop))
                 PopulateDrop(SelectedCountry)
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub RadioButtonNO_SVC_OPTION_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RadioButtonNO_SVC_OPTION.CheckedChanged
+    Private Sub RadioButtonNO_SVC_OPTION_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles RadioButtonNO_SVC_OPTION.CheckedChanged
         Try
-            Me.EnableDisableFields()
-            If Me.RadioButtonNO_SVC_OPTION.Checked Then
-                Me.State.curSearchType = SearchType.None
+            EnableDisableFields()
+            If RadioButtonNO_SVC_OPTION.Checked Then
+                State.curSearchType = SearchType.None
                 'Dim address As New Address(Me.State.claimBO.Certificate.AddressId)
                 'Dim SelectedCountry As New ArrayList
                 'SelectedCountry.Add(Me.Page.GetSelectedItem(moCountryDrop))
@@ -738,54 +736,54 @@ Partial Class LocateServiceCenterForm
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub moCountryDrop_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moCountryDrop.SelectedIndexChanged
+    Private Sub moCountryDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moCountryDrop.SelectedIndexChanged
         Try
-            If Me.RadioButtonAll.Checked Then
-                Me.EnableDisableFields()
-                Me.State.curSearchType = SearchType.All
+            If RadioButtonAll.Checked Then
+                EnableDisableFields()
+                State.curSearchType = SearchType.All
                 'get the customer countryId
                 Dim SelectedCountry As New ArrayList
-                SelectedCountry.Add(Me.GetSelectedItem(moCountryDrop))
+                SelectedCountry.Add(GetSelectedItem(moCountryDrop))
                 PopulateDrop(SelectedCountry)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnContinue_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnContinue.Click
+    Private Sub btnContinue_Click(sender As Object, e As System.EventArgs) Handles btnContinue.Click
         GoToStep4()
     End Sub
 
     Private Sub GoToStep4()
 
-        If Me.RadioButtonNO_SVC_OPTION.Checked Then
+        If RadioButtonNO_SVC_OPTION.Checked Then
             'REQ-5546
             'Default SC might not null
-            If Not Me.State.default_service_center_id.Equals(Guid.Empty) Then
-                Me.State.SelectedServiceCenterId = Me.State.default_service_center_id
+            If Not State.default_service_center_id.Equals(Guid.Empty) Then
+                State.SelectedServiceCenterId = State.default_service_center_id
             Else
-                Me.MasterPage.MessageController.AddError("TEMP SERVICE CENTER NOT FOUND")
+                MasterPage.MessageController.AddError("TEMP SERVICE CENTER NOT FOUND")
                 Exit Sub
             End If
         Else
             If (selectedServiceCenterId.Value = "XXXX") Then
-                Me.MasterPage.MessageController.AddError("SELECT SERVICE CENTER")
+                MasterPage.MessageController.AddError("SELECT SERVICE CENTER")
                 Exit Sub
             End If
-            Me.State.SelectedServiceCenterId = ServiceCenter.GetServiceCenterID(selectedServiceCenterId.Value)
+            State.SelectedServiceCenterId = ServiceCenter.GetServiceCenterID(selectedServiceCenterId.Value)
         End If
 
         'START DEF-2716
-        Dim oldClaim As Claim = CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_OLD_CLAIM), Claim)
+        Dim oldClaim As Claim = CType(NavController.FlowSession(FlowSessionKeys.SESSION_OLD_CLAIM), Claim)
         'END DEF-2716
 
-        Me.NavController.FlowSession(FlowSessionKeys.SESSION_SERVICE_CENTER_ID) = Me.State.SelectedServiceCenterId
-        Me.NavController.FlowSession(FlowSessionKeys.SESSION_SERVICE_CENTER) = New ServiceCenter(Me.State.SelectedServiceCenterId)
-        Me.NavController.Navigate(Me, "servCenter_item_selected", New LocateServiceCenterDetailForm.Parameters(Me.State.SelectedServiceCenterId, Me.State.inputParameters.CertItemCoverageId, Me.State.inputParameters.ClaimId, Me.State.inputParameters.ShowAcceptButton, Me.State.inputParameters.WhenAcceptGoToCreateClaim, Me.State.inputParameters.ComingFromDenyClaim, Me.State.inputParameters.RecoveryButtonClick, Me.State.inputParameters.ClaimedEquipment))
+        NavController.FlowSession(FlowSessionKeys.SESSION_SERVICE_CENTER_ID) = State.SelectedServiceCenterId
+        NavController.FlowSession(FlowSessionKeys.SESSION_SERVICE_CENTER) = New ServiceCenter(State.SelectedServiceCenterId)
+        NavController.Navigate(Me, "servCenter_item_selected", New LocateServiceCenterDetailForm.Parameters(State.SelectedServiceCenterId, State.inputParameters.CertItemCoverageId, State.inputParameters.ClaimId, State.inputParameters.ShowAcceptButton, State.inputParameters.WhenAcceptGoToCreateClaim, State.inputParameters.ComingFromDenyClaim, State.inputParameters.RecoveryButtonClick, State.inputParameters.ClaimedEquipment))
 
     End Sub
 
@@ -801,7 +799,7 @@ Partial Class LocateServiceCenterForm
         sJavaScript &= "else { objDescDropDown.value = objCodeDropDown.options[objCodeDropDown.selectedIndex].value;}" & Environment.NewLine
         sJavaScript &= "if (lblCaption != '') {document.all.item(lblCaption).style.color = '';}}" & Environment.NewLine
         sJavaScript &= "</SCRIPT>" & Environment.NewLine
-        Me.Page.RegisterStartupScript("ToggleDropDown", sJavaScript)
+        Page.RegisterStartupScript("ToggleDropDown", sJavaScript)
     End Sub
 #End Region
 

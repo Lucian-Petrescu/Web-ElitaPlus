@@ -11,12 +11,12 @@
     Public Const ERROR_CSS As String = "errorMsg"
 #End Region
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
     End Sub
 
 #Region "Generic"
-    Public Sub AddMessage(ByVal message() As String, Optional ByVal translate As Boolean = True, _
+    Public Sub AddMessage(message() As String, Optional ByVal translate As Boolean = True, _
         Optional ByVal messageType As IMessageController.MessageType = IMessageController.MessageType.None) _
         Implements IMessageController.AddMessage
         Dim i As Integer
@@ -30,20 +30,20 @@
             Else
                 translatedMessage = message(i)
             End If
-            If Not Me.Text.Contains(translatedMessage & "<br/>") Then
-                Me.Text &= translatedMessage
-                If Not Me.Text.Length = 0 Then
-                    Me.Text &= "<br/>"
+            If Not Text.Contains(translatedMessage & "<br/>") Then
+                Text &= translatedMessage
+                If Not Text.Length = 0 Then
+                    Text &= "<br/>"
                 End If
             End If
         Next
 
         If (messageType <> IMessageController.MessageType.None) Then
-            Me.Type = messageType
+            Type = messageType
         End If
     End Sub
 
-    Public Sub AddMessage(ByVal message As String, Optional ByVal translate As Boolean = True, _
+    Public Sub AddMessage(message As String, Optional ByVal translate As Boolean = True, _
         Optional ByVal messageType As IMessageController.MessageType = IMessageController.MessageType.None) _
         Implements IMessageController.AddMessage
         Dim translatedMessage As String
@@ -52,7 +52,7 @@
         Dim nPrevCount As Integer
 
         If translate Then
-            oPage = CType(Me.Page, ElitaPlusPage)
+            oPage = CType(Page, ElitaPlusPage)
             oTranslationProcess = oPage.GetTranslationProcessReference()
             nPrevCount = oPage.MissingTranslationsCount
             translatedMessage = TranslationBase.TranslateLabelOrMessage(message)
@@ -63,82 +63,82 @@
             translatedMessage = message
         End If
 
-        If Not Me.Text.Contains(translatedMessage & "<br/>") Then
-            Me.Text &= translatedMessage
-            If Not Me.Text.Length = 0 Then
-                Me.Text &= "<br/>"
+        If Not Text.Contains(translatedMessage & "<br/>") Then
+            Text &= translatedMessage
+            If Not Text.Length = 0 Then
+                Text &= "<br/>"
             End If
         End If
 
         If (messageType <> IMessageController.MessageType.None) Then
-            Me.Type = messageType
+            Type = messageType
         End If
     End Sub
 #End Region
 
 #Region "Error"
-    Public Sub AddError(ByVal errorMessage As String, Optional ByVal translate As Boolean = True) _
+    Public Sub AddError(errorMessage As String, Optional ByVal translate As Boolean = True) _
         Implements IErrorController.AddError, IMessageController.AddError
-        Me.AddMessage(errorMessage, translate, IMessageController.MessageType.Error)
+        AddMessage(errorMessage, translate, IMessageController.MessageType.Error)
     End Sub
 
-    Public Sub AddError(ByVal errorMessages() As String, Optional ByVal translate As Boolean = True) _
+    Public Sub AddError(errorMessages() As String, Optional ByVal translate As Boolean = True) _
         Implements IErrorController.AddError, IMessageController.AddError
-        Me.AddMessage(errorMessages, translate, IMessageController.MessageType.Error)
+        AddMessage(errorMessages, translate, IMessageController.MessageType.Error)
     End Sub
 
     <Obsolete("Prefer to use method AddError over AddErrorAndShow")> _
-    Public Sub AddErrorAndShow(ByVal errorMessage As String, Optional ByVal translate As Boolean = True) _
+    Public Sub AddErrorAndShow(errorMessage As String, Optional ByVal translate As Boolean = True) _
         Implements IErrorController.AddErrorAndShow
-        Me.AddError(errorMessage, translate)
+        AddError(errorMessage, translate)
     End Sub
 
     <Obsolete("Prefer to use method AddError over AddErrorAndShow")> _
-    Public Sub AddErrorAndShow(ByVal errorMessages() As String, Optional ByVal translate As Boolean = True) _
+    Public Sub AddErrorAndShow(errorMessages() As String, Optional ByVal translate As Boolean = True) _
         Implements IErrorController.AddErrorAndShow
-        Me.AddError(errorMessages, translate)
+        AddError(errorMessages, translate)
     End Sub
 #End Region
 
 #Region "Information"
-    Public Sub AddInformation(ByVal infoMessage As String, Optional ByVal translate As Boolean = True) _
+    Public Sub AddInformation(infoMessage As String, Optional ByVal translate As Boolean = True) _
         Implements IMessageController.AddInformation
-        Me.AddMessage(infoMessage, translate, IMessageController.MessageType.Information)
+        AddMessage(infoMessage, translate, IMessageController.MessageType.Information)
     End Sub
 
-    Public Sub AddInformation(ByVal infoMessages() As String, Optional ByVal translate As Boolean = True) _
+    Public Sub AddInformation(infoMessages() As String, Optional ByVal translate As Boolean = True) _
         Implements IMessageController.AddInformation
-        Me.AddMessage(infoMessages, translate, IMessageController.MessageType.Information)
+        AddMessage(infoMessages, translate, IMessageController.MessageType.Information)
     End Sub
 #End Region
 
 #Region "Success"
-    Public Sub AddSuccess(ByVal successMessage As String, Optional ByVal translate As Boolean = True) _
+    Public Sub AddSuccess(successMessage As String, Optional ByVal translate As Boolean = True) _
         Implements IMessageController.AddSuccess
-        Me.AddMessage(successMessage, translate, IMessageController.MessageType.Success)
+        AddMessage(successMessage, translate, IMessageController.MessageType.Success)
     End Sub
 
-    Public Sub AddSuccess(ByVal successMessages() As String, Optional ByVal translate As Boolean = True) _
+    Public Sub AddSuccess(successMessages() As String, Optional ByVal translate As Boolean = True) _
         Implements IMessageController.AddSuccess
-        Me.AddMessage(successMessages, translate, IMessageController.MessageType.Success)
+        AddMessage(successMessages, translate, IMessageController.MessageType.Success)
     End Sub
 #End Region
 
 #Region "Warning"
-    Public Sub AddWarning(ByVal warningMessage As String, Optional ByVal translate As Boolean = True) _
+    Public Sub AddWarning(warningMessage As String, Optional ByVal translate As Boolean = True) _
         Implements IMessageController.AddWarning
-        Me.AddMessage(warningMessage, translate, IMessageController.MessageType.Warning)
+        AddMessage(warningMessage, translate, IMessageController.MessageType.Warning)
     End Sub
 
-    Public Sub AddWarning(ByVal warningMessages() As String, Optional ByVal translate As Boolean = True) _
+    Public Sub AddWarning(warningMessages() As String, Optional ByVal translate As Boolean = True) _
         Implements IMessageController.AddWarning
-        Me.AddMessage(warningMessages, translate, IMessageController.MessageType.Warning)
+        AddMessage(warningMessages, translate, IMessageController.MessageType.Warning)
     End Sub
 #End Region
 
     Public Sub Clear() _
         Implements IErrorController.Clear, IMessageController.Clear
-        Me.Text = String.Empty
+        Text = String.Empty
     End Sub
 
     <Obsolete("This call is not necessary, this has been taken care automatically.")> _
@@ -162,10 +162,10 @@
     Public Property Text As String _
         Implements IErrorController.Text, IMessageController.Text
         Get
-            Return Me.MessageLiteral.Text
+            Return MessageLiteral.Text
         End Get
-        Set(ByVal value As String)
-            Me.MessageLiteral.Text = value
+        Set(value As String)
+            MessageLiteral.Text = value
             ShowHideMessage()
         End Set
     End Property
@@ -173,10 +173,10 @@
     Public Property Type As IMessageController.MessageType _
         Implements IMessageController.Type
         Get
-            Return Me.m_MessageType
+            Return m_MessageType
         End Get
-        Set(ByVal value As IMessageController.MessageType)
-            Me.m_MessageType = value
+        Set(value As IMessageController.MessageType)
+            m_MessageType = value
             ChangeMessageCSS()
         End Set
     End Property
@@ -184,7 +184,7 @@
     Private Sub ChangeMessageCSS()
         Dim cssClassName As String
         Dim imagePath As String
-        Select Case Me.Type
+        Select Case Type
             Case IMessageController.MessageType.Error
                 cssClassName = ERROR_CSS
                 imagePath = "icon_error.png"
@@ -202,10 +202,10 @@
                 imagePath = "icon_error.png"
         End Select
         moIconImage.Src = String.Format("{0}\App_Themes\{1}\Images\{2}", Request.ApplicationPath, Page.Theme, imagePath)
-        Me.MessageBox.Attributes("class") = cssClassName
+        MessageBox.Attributes("class") = cssClassName
     End Sub
 
     Private Sub ShowHideMessage()
-        Me.Visible = Not String.IsNullOrEmpty(Me.Text)
+        Visible = Not String.IsNullOrEmpty(Text)
     End Sub
 End Class

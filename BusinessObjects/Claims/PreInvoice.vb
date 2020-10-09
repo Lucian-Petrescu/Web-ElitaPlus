@@ -6,48 +6,48 @@ Public Class PreInvoice
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
     
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()             
         Try
             Dim dal As New PreInvoiceDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize() 
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class PreInvoice
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)               
+    Protected Sub Load(id As Guid)               
         Try
             Dim dal As New PreInvoiceDAL            
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
             Initialize()
@@ -97,7 +97,7 @@ Public Class PreInvoice
             Dim Dv As New DataView
             Try
                 Ds = dal.GetTotalBonusAndAmount(Row(PreInvoiceDAL.COL_NAME_BATCH_NUMBER))
-                If Not Ds Is Nothing AndAlso Ds.Tables.Count > 0 Then
+                If Ds IsNot Nothing AndAlso Ds.Tables.Count > 0 Then
                     Dv = Ds.Tables(dal.TABLE_NAME).DefaultView
                     If Dv(0)("total_Amount") Is DBNull.Value Then
                         _totalAmount = Decimal.Zero
@@ -128,7 +128,7 @@ Public Class PreInvoice
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(PreInvoiceDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -139,7 +139,7 @@ Public Class PreInvoice
     End Property
 
     <ValueMandatory("")> _
-    Public Property PreInvoiceCreationDate() As DateType
+    Public Property PreInvoiceCreationDate As DateType
         Get
             CheckDeleted()
             If Row(PreInvoiceDAL.COL_NAME_PRE_INVOICE_CREATION_DATE) Is DBNull.Value Then
@@ -148,15 +148,15 @@ Public Class PreInvoice
                 Return New DateType(CType(Row(PreInvoiceDAL.COL_NAME_PRE_INVOICE_CREATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(PreInvoiceDAL.COL_NAME_PRE_INVOICE_CREATION_DATE, Value)
+            SetValue(PreInvoiceDAL.COL_NAME_PRE_INVOICE_CREATION_DATE, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property ScDisplayDate() As DateType
+    Public Property ScDisplayDate As DateType
         Get
             CheckDeleted()
             If Row(PreInvoiceDAL.COL_NAME_SC_DISPLAY_DATE) Is DBNull.Value Then
@@ -165,15 +165,15 @@ Public Class PreInvoice
                 Return New DateType(CType(Row(PreInvoiceDAL.COL_NAME_SC_DISPLAY_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(PreInvoiceDAL.COL_NAME_SC_DISPLAY_DATE, Value)
+            SetValue(PreInvoiceDAL.COL_NAME_SC_DISPLAY_DATE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=40)> _
-    Public Property BatchNumber() As String
+    Public Property BatchNumber As String
         Get
             CheckDeleted()
             If Row(PreInvoiceDAL.COL_NAME_BATCH_NUMBER) Is DBNull.Value Then
@@ -182,15 +182,15 @@ Public Class PreInvoice
                 Return CType(Row(PreInvoiceDAL.COL_NAME_BATCH_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(PreInvoiceDAL.COL_NAME_BATCH_NUMBER, Value)
+            SetValue(PreInvoiceDAL.COL_NAME_BATCH_NUMBER, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property PreInvoiceStatusId() As Guid
+    Public Property PreInvoiceStatusId As Guid
         Get
             CheckDeleted()
             If Row(PreInvoiceDAL.COL_NAME_PRE_INVOICE_STATUS_ID) Is DBNull.Value Then
@@ -199,13 +199,13 @@ Public Class PreInvoice
                 Return New Guid(CType(Row(PreInvoiceDAL.COL_NAME_PRE_INVOICE_STATUS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(PreInvoiceDAL.COL_NAME_PRE_INVOICE_STATUS_ID, Value)
+            SetValue(PreInvoiceDAL.COL_NAME_PRE_INVOICE_STATUS_ID, Value)
         End Set
     End Property
 
-    Public Property TotalAuthAmount() As DecimalType
+    Public Property TotalAuthAmount As DecimalType
         Get
             CheckDeleted()
             If Row(PreInvoiceDAL.COL_NAME_TOTAL_AMOUNT) Is DBNull.Value Then
@@ -214,13 +214,13 @@ Public Class PreInvoice
                 Return New DecimalType(CType(Row(PreInvoiceDAL.COL_NAME_TOTAL_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(PreInvoiceDAL.COL_NAME_TOTAL_AMOUNT, Value)
+            SetValue(PreInvoiceDAL.COL_NAME_TOTAL_AMOUNT, Value)
         End Set
     End Property
 
-    Public ReadOnly Property TotalAmount() As DecimalType
+    Public ReadOnly Property TotalAmount As DecimalType
         Get
             If TotalAndBonusPopulated Then
                 Return _totalAmount
@@ -231,7 +231,7 @@ Public Class PreInvoice
         End Get
     End Property
 
-    Public ReadOnly Property TotalBonusAmount() As DecimalType
+    Public ReadOnly Property TotalBonusAmount As DecimalType
         Get
             If TotalAndBonusPopulated Then
                 Return _totalBonusAmount
@@ -243,7 +243,7 @@ Public Class PreInvoice
     End Property
 
     <ValueMandatory("")>
-    Public Property TotalClaims() As DecimalType
+    Public Property TotalClaims As DecimalType
         Get
             CheckDeleted()
             If Row(PreInvoiceDAL.COL_NAME_TOTAL_CLAIMS) Is DBNull.Value Then
@@ -252,15 +252,15 @@ Public Class PreInvoice
                 Return New DecimalType(CType(Row(PreInvoiceDAL.COL_NAME_TOTAL_CLAIMS), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(PreInvoiceDAL.COL_NAME_TOTAL_CLAIMS, Value)
+            SetValue(PreInvoiceDAL.COL_NAME_TOTAL_CLAIMS, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(PreInvoiceDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -269,9 +269,9 @@ Public Class PreInvoice
                 Return New Guid(CType(Row(PreInvoiceDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(PreInvoiceDAL.COL_NAME_COMPANY_ID, Value)
+            SetValue(PreInvoiceDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
@@ -281,15 +281,15 @@ Public Class PreInvoice
     Public Overrides Sub Save()         
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New PreInvoiceDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -297,7 +297,7 @@ Public Class PreInvoice
         End Try
     End Sub
 
-    Public Shared Function LoadPreInvoiceProcess(ByVal companyId As Guid, ByVal statusId As Guid, ByVal batchNumber As String, ByVal createdDateFrom As String, ByVal createdDateTo As String) As PreinvoiceSearchDV
+    Public Shared Function LoadPreInvoiceProcess(companyId As Guid, statusId As Guid, batchNumber As String, createdDateFrom As String, createdDateTo As String) As PreinvoiceSearchDV
 
         Dim dal As New PreInvoiceDAL
 
@@ -305,7 +305,7 @@ Public Class PreInvoice
 
     End Function
 
-    Public Shared Function GeneratePreInvoice(ByVal companyCode As String) As String
+    Public Shared Function GeneratePreInvoice(companyCode As String) As String
 
         Dim dal As New PreInvoiceDAL
 
@@ -318,11 +318,11 @@ Public Class PreInvoice
 #End Region
 
 #Region "Public Methods"
-    Public Shared Function GetCountryId(ByVal companyId As Guid) As Guid
+    Public Shared Function GetCountryId(companyId As Guid) As Guid
         Return New Company(companyId).CountryId
     End Function
 
-    Public Shared Function ValidateServiceCenterCode(ByVal ServiceCenterCode As String, ByVal countryId As Guid) As Boolean
+    Public Shared Function ValidateServiceCenterCode(ServiceCenterCode As String, countryId As Guid) As Boolean
         Dim ds As DataSet = ServiceCenter.GetServiceCenterForWS(ServiceCenterCode, countryId)
         If ds Is Nothing OrElse ds.Tables.Count <= 0 OrElse ds.Tables(0).Rows.Count <= 0 Then
             Return False
@@ -331,7 +331,7 @@ Public Class PreInvoice
         End If
     End Function
 
-    Public Shared Function GetCompanyId(ByVal Companycode As String) As Guid
+    Public Shared Function GetCompanyId(Companycode As String) As Guid
         Dim oUser As New User(ElitaPlusIdentity.Current.ActiveUser.NetworkId)
         Dim userAssignedCompaniesDv As DataView = oUser.GetSelectedAssignedCompanies(ElitaPlusIdentity.Current.ActiveUser.Id)
         Dim companyId As System.Guid = Guid.Empty
@@ -345,13 +345,13 @@ Public Class PreInvoice
         Next
 
         If companyId.Equals(Guid.Empty) Then
-            Throw New BOValidationException("GetPreInvoice Error: Invalid Company Code ", Assurant.ElitaPlus.Common.ErrorCodes.WS_INVALID_COMPANY_CODE)
+            Throw New BOValidationException("GetPreInvoice Error: Invalid Company Code ", Common.ErrorCodes.WS_INVALID_COMPANY_CODE)
         Else
             Return companyId
         End If
     End Function
 
-    Public Shared Function GetPreInvoiceBAL(ByVal CompanyCode As String, ByVal ServiceCenterCode As String, ByVal SCPreInvoiceDateFrom As DateTime, ByVal SCPreInvoiceDateTo As DateTime) As DataSet
+    Public Shared Function GetPreInvoiceBAL(CompanyCode As String, ServiceCenterCode As String, SCPreInvoiceDateFrom As DateTime, SCPreInvoiceDateTo As DateTime) As DataSet
         Dim dal As New PreInvoiceDAL
         Return dal.GetPreInvoiceDAL(CompanyCode, ServiceCenterCode, SCPreInvoiceDateFrom, SCPreInvoiceDateTo)
     End Function
@@ -378,7 +378,7 @@ Public Class PreInvoice
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

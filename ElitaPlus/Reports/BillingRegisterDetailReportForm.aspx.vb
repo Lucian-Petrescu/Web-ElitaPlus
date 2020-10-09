@@ -69,13 +69,13 @@ Namespace Reports
 
 #Region "Handlers-DropDown"
 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl_New) _
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl_New) _
             Handles moUserCompanyMultipleDrop.SelectedDropChanged
             Try
                 rdealer.Checked = True
                 PopulateDealerDropDown()
             Catch ex As Exception
-                HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -100,7 +100,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -108,42 +108,42 @@ Namespace Reports
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Me.MasterPage.MessageController.Clear_Hide()
-            Me.ClearLabelsErrSign()
-            Me.Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
+            MasterPage.MessageController.Clear_Hide()
+            ClearLabelsErrSign()
+            Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
             Try
-                If Not Me.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
+                If Not IsPostBack Then
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
+                    MasterPage.UsePageTabTitleInBreadCrum = False
                     'Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETAB)
                     'Me.MasterPage.PageForm = TranslationBase.TranslateLabelOrMessage("Billing Register Detail")
                     UpdateBreadCrum()
 
                     InitializeForm()
-                    Me.AddCalendar(Me.BtnBeginDate, Me.txtBeginDate)
-                    Me.AddCalendar(Me.BtnEndDate, Me.txtEndDate)
+                    AddCalendar(BtnBeginDate, txtBeginDate)
+                    AddCalendar(BtnEndDate, txtEndDate)
                     JavascriptCalls()
                 End If
                 If rdealer.Checked Then DealerMultipleDrop.SelectedIndex = NOTHING_SELECTED
-                Me.InstallDisplayNewReportProgressBar()
+                InstallDisplayNewReportProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
         Public Sub ClearLabelsErrSign()
             Try
-                Me.ClearLabelErrSign(lblMonth)
-                Me.ClearLabelErrSign(lblYear)
-                Me.ClearLabelErrSign(lblEndDate)
-                Me.ClearLabelErrSign(lblBeginDate)
-                Me.ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
-                Me.ClearLabelErrSign(UserCompanyMultipleDrop.CaptionLabel)
+                ClearLabelErrSign(lblMonth)
+                ClearLabelErrSign(lblYear)
+                ClearLabelErrSign(lblEndDate)
+                ClearLabelErrSign(lblBeginDate)
+                ClearLabelErrSign(DealerMultipleDrop.CaptionLabel)
+                ClearLabelErrSign(UserCompanyMultipleDrop.CaptionLabel)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -168,7 +168,7 @@ Namespace Reports
             UserCompanyMultipleDrop.SetControl(True, UserCompanyMultipleDrop.MODES.NEW_MODE, True, dv, ALL + " " + TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY), True)
             If dv.Count.Equals(ONE_ITEM) Then
                 HideHtmlElement("ddSeparator")
-                UserCompanyMultipleDrop.SelectedIndex = Me.ONE_ITEM
+                UserCompanyMultipleDrop.SelectedIndex = ONE_ITEM
                 UserCompanyMultipleDrop.Visible = False
             End If
         End Sub
@@ -183,7 +183,7 @@ Namespace Reports
             listcontext.CompanyId = New Guid(UserCompanyMultipleDrop.SelectedGuid.ToString)
 
             Dim YearListLkl As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ClosingYearsByCompany", context:=listcontext)
-            Me.moYearList.Populate(YearListLkl, New PopulateOptions() With
+            moYearList.Populate(YearListLkl, New PopulateOptions() With
                 {
                    .AddBlankItem = True,
                    .BlankItemValue = "0",
@@ -193,7 +193,7 @@ Namespace Reports
 
         Private Sub PopulateMonthsDropdown()
             Dim monthLkl As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("MONTH", Thread.CurrentPrincipal.GetLanguageCode())
-            Me.moMonthList.Populate(monthLkl, New PopulateOptions() With
+            moMonthList.Populate(monthLkl, New PopulateOptions() With
                 {
                     .AddBlankItem = True,
                     .SortFunc = AddressOf .GetCode
@@ -208,16 +208,16 @@ Namespace Reports
             TheReportCeInputControl.populateReportLanguages(RPT_FILENAME)
         End Sub
         Private Sub UpdateBreadCrum()
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("Billing_Register_Detail")
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Billing_Register_Detail")
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("Billing_Register_Detail")
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Billing_Register_Detail")
         End Sub
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -227,7 +227,7 @@ Namespace Reports
             Dim compDesc As String
             Dim endDate As String
             Dim beginDate As String
-            Dim reportBasedOn As String = Me.rdReportBasedOn.SelectedValue()
+            Dim reportBasedOn As String = rdReportBasedOn.SelectedValue()
 
             'Validating the Company selection
             If UserCompanyMultipleDrop.SelectedGuid.Equals(Guid.Empty) Then
@@ -239,8 +239,8 @@ Namespace Reports
                 compId = UserCompanyMultipleDrop.SelectedGuid
             End If
 
-            Dim selectedYear As String = Me.GetSelectedDescription(Me.moYearList)
-            Dim selectedMonthID As Guid = Me.GetSelectedItem(Me.moMonthList)
+            Dim selectedYear As String = GetSelectedDescription(moYearList)
+            Dim selectedMonthID As Guid = GetSelectedItem(moMonthList)
             Dim selectedMonth As String = LookupListNew.GetCodeFromId(LookupListNew.LK_MONTHS, selectedMonthID)
             Dim selectedYearMonth As String = selectedYear & selectedMonth
 
@@ -254,15 +254,15 @@ Namespace Reports
                 ElitaPlusPage.SetLabelError(lblBeginDate)
                 ElitaPlusPage.SetLabelError(lblEndDate)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_SELECTION)
-            ElseIf ((Not selectedMonthID.Equals(Guid.Empty) And selectedYear.Equals(String.Empty)) Or (selectedMonthID.Equals(Guid.Empty) And Not selectedYear.Equals(String.Empty))) Then
+            ElseIf ((Not selectedMonthID.Equals(Guid.Empty) AndAlso selectedYear.Equals(String.Empty)) OrElse (selectedMonthID.Equals(Guid.Empty) AndAlso Not selectedYear.Equals(String.Empty))) Then
                 ElitaPlusPage.SetLabelError(lblMonth)
                 ElitaPlusPage.SetLabelError(lblYear)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_MONTH_YEAR_SELECTION_ERROR)
-            ElseIf ((Not txtBeginDate.Text.Equals(String.Empty) And txtEndDate.Text.Equals(String.Empty)) Or (txtBeginDate.Text.Equals(String.Empty) And Not txtEndDate.Text.Equals(String.Empty))) Then
+            ElseIf ((Not txtBeginDate.Text.Equals(String.Empty) AndAlso txtEndDate.Text.Equals(String.Empty)) OrElse (txtBeginDate.Text.Equals(String.Empty) AndAlso Not txtEndDate.Text.Equals(String.Empty))) Then
                 ElitaPlusPage.SetLabelError(lblBeginDate)
                 ElitaPlusPage.SetLabelError(lblEndDate)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_BEGIN_AND_END_DATES_MUST_BE_SELECTED_ERR)
-            ElseIf (Not selectedMonthID.Equals(Guid.Empty) And Not selectedYear.Equals(String.Empty)) Then
+            ElseIf (Not selectedMonthID.Equals(Guid.Empty) AndAlso Not selectedYear.Equals(String.Empty)) Then
                 selectedYearMonth = selectedYear & selectedMonth
             Else
                 ReportCeBase.ValidateBeginEndDate(lblBeginDate, txtBeginDate.Text, lblEndDate, txtEndDate.Text)
@@ -284,7 +284,7 @@ Namespace Reports
             End If
 
             'Validating the Dealer selection
-            If Me.rdealer.Checked Then
+            If rdealer.Checked Then
                 dealerCode = ALL
             Else
                 If dealerID.Equals(Guid.Empty) Then
@@ -300,9 +300,9 @@ Namespace Reports
             Session(ReportCeBaseForm.SESSION_PARAMETERS_KEY) = params
         End Sub
 
-        Function SetParameters(ByVal companyCode As String, ByVal companyId As Guid, ByVal dealerCode As String,
-                               ByVal selectedYearMonth As String, ByVal BeginDate As String, ByVal EndDate As String,
-                               ByVal reportBasedOn As String) As ReportCeBaseForm.Params
+        Function SetParameters(companyCode As String, companyId As Guid, dealerCode As String,
+                               selectedYearMonth As String, BeginDate As String, EndDate As String,
+                               reportBasedOn As String) As ReportCeBaseForm.Params
 
             Dim params As New ReportCeBaseForm.Params
             Dim culturecode As String = TheReportCeInputControl.getCultureValue(False)

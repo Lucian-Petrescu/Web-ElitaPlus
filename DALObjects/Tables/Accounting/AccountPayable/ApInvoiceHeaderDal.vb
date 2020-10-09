@@ -63,27 +63,27 @@ Public Class ApInvoiceHeaderDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
+    Public Sub Load(familyDS As DataSet, id As Guid)
         Try
-            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOAD"))
                 cmd.AddParameter(TABLE_KEY_NAME, OracleDbType.Raw, id.ToByteArray())
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, familyDS)
+                OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Public Sub Load(ByVal familyDS As DataSet, ByVal invoice_Number As String)
+    Public Sub Load(familyDS As DataSet, invoice_Number As String)
         Try
-            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOADLINES"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOADLINES"))
                 cmd.AddParameter(PAR_I_NAME_INVOICE_NUMBER, OracleDbType.Varchar2, invoice_Number)
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, familyDS)
+                OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -92,9 +92,9 @@ Public Class ApInvoiceHeaderDAL
 
     Public Function LoadList() As DataSet
         Try
-            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD_LIST"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOAD_LIST"))
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME)
+                Return OracleDbHelper.Fetch(cmd, TABLE_NAME)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -105,15 +105,15 @@ Public Class ApInvoiceHeaderDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
         If ds Is Nothing Then
             Return
         End If
         If (changesFilter Or (supportChangesFilter)) <> (supportChangesFilter) Then
             Throw New NotSupportedException()
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
@@ -178,7 +178,7 @@ Public Class ApInvoiceHeaderDAL
 #End Region
 
 #Region "Public Methods"
-    Public Sub SaveInvoiceHeader(ByVal row As DataRow)
+    Public Sub SaveInvoiceHeader(row As DataRow)
 
         Dim sqlStatement As String
         Dim rowState As DataRowState = row.RowState
@@ -187,11 +187,11 @@ Public Class ApInvoiceHeaderDAL
             Select Case rowState
                 Case DataRowState.Added
                     'Insert
-                    sqlStatement = Me.Config("/SQL/INSERT")
+                    sqlStatement = Config("/SQL/INSERT")
                     updatedBy = COL_NAME_CREATED_BY
                 Case DataRowState.Modified
                     'update
-                    sqlStatement = Me.Config("/SQL/UPDATE")
+                    sqlStatement = Config("/SQL/UPDATE")
                     updatedBy = COL_NAME_MODIFIED_BY
             End Select
 
@@ -217,7 +217,7 @@ Public Class ApInvoiceHeaderDAL
 #End Region
 
 #Region "Data query methods"
-    Private Function DB_OracleCommand(ByVal p_SqlStatement As String, ByVal p_CommandType As CommandType) As OracleCommand
+    Private Function DB_OracleCommand(p_SqlStatement As String, p_CommandType As CommandType) As OracleCommand
         Dim conn As IDbConnection = New OracleConnection(DBHelper.ConnectString)
         Dim cmd As OracleCommand = conn.CreateCommand()
 
@@ -227,10 +227,10 @@ Public Class ApInvoiceHeaderDAL
         Return cmd
     End Function
 
-    Public Sub SearchAPInvoices(ByVal vendorCode As String, ByVal invoiceNum As String,
-                                ByVal source As String, ByVal invoiceDate As Date?,
-                                ByVal dueDateFrom As Date?, ByVal dueDateTo As Date?,
-                                ByVal rowCountReturn As Integer, ByVal userId As Guid,
+    Public Sub SearchAPInvoices(vendorCode As String, invoiceNum As String,
+                                source As String, invoiceDate As Date?,
+                                dueDateFrom As Date?, dueDateTo As Date?,
+                                rowCountReturn As Integer, userId As Guid,
                                 ByRef searchResult As DataSet
                                 )
 
@@ -282,7 +282,7 @@ Public Class ApInvoiceHeaderDAL
 
     End Sub
 
-    Public Sub LoadAPInvoiceExtendedInfo(ByVal invoiceId As Guid, ByRef searchResult As DataSet)
+    Public Sub LoadAPInvoiceExtendedInfo(invoiceId As Guid, ByRef searchResult As DataSet)
 
         Dim selectStmt As String = Config("/SQL/GET_AP_INVOICE_EXTENDED_INFO")
         Dim da As OracleDataAdapter
@@ -304,7 +304,7 @@ Public Class ApInvoiceHeaderDAL
         End Try
 
     End Sub
-    Public Sub LoadApInvoice(ByVal apInvoiceNumber As String, ByVal apInvoiceVendorId As Guid,ByRef searchResult As DataSet) 
+    Public Sub LoadApInvoice(apInvoiceNumber As String, apInvoiceVendorId As Guid,ByRef searchResult As DataSet) 
 
         Dim selectStmt As String = Config("/SQL/LOADINVOICE")
         Dim da As OracleDataAdapter
@@ -326,12 +326,12 @@ Public Class ApInvoiceHeaderDAL
 
     End Sub
 
-    Public Sub LoadAPInvoiceLines(ByVal invoiceId As Guid,
-                                  ByVal minLineNum As Integer,
-                                  ByVal maxLineNum As Integer,
-                                  ByVal UnMatchedLineOnly As Boolean,
-                                  ByVal languageId As Guid,
-                                  ByVal rowCountReturn As Integer,
+    Public Sub LoadAPInvoiceLines(invoiceId As Guid,
+                                  minLineNum As Integer,
+                                  maxLineNum As Integer,
+                                  UnMatchedLineOnly As Boolean,
+                                  languageId As Guid,
+                                  rowCountReturn As Integer,
                                   ByRef searchResult As DataSet)
 
         Dim selectStmt As String = Config("/SQL/GET_AP_INVOICE_LINES")
@@ -368,7 +368,7 @@ Public Class ApInvoiceHeaderDAL
 #End Region
 
 #Region "Invoice processing methods"
-    Public Sub DeleteInvoices(ByVal invoiceIds As Generic.List(Of Guid))
+    Public Sub DeleteInvoices(invoiceIds As Generic.List(Of Guid))
         'Dim strStmt As String = Config("/SQL/DELETE_AP_INVOICE")
         Dim strStmt As String = "begin elita.elp_ap_invoice_processing.delete_invoice(:pi_invoice_header_id); end;"
 
@@ -408,7 +408,7 @@ Public Class ApInvoiceHeaderDAL
         End Try
     End Sub
 
-    Public Sub MatchInvoice(ByVal invoiceId As Guid, ByRef matchedCount As Integer)
+    Public Sub MatchInvoice(invoiceId As Guid, ByRef matchedCount As Integer)
         Dim strStmt As String = Config("/SQL/MATCH_AP_INVOICE")
         Try
             Using conn As IDbConnection = New OracleConnection(DBHelper.ConnectString)
@@ -437,7 +437,7 @@ Public Class ApInvoiceHeaderDAL
         End Try
     End Sub
 
-    Public Sub PayInvoices(ByVal strBatchNumber As String, ByVal invoiceIds As List(Of Guid), ByRef errCode As Integer, ByRef errMsg As String)
+    Public Sub PayInvoices(strBatchNumber As String, invoiceIds As List(Of Guid), ByRef errCode As Integer, ByRef errMsg As String)
         Dim strStmt As String = Config("/SQL/PAY_AP_INVOICE")
 
         errCode = 0

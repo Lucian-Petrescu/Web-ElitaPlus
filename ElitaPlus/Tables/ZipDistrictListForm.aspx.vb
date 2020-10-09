@@ -19,7 +19,7 @@ Partial Class ZipDistrictListForm
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -66,67 +66,67 @@ Partial Class ZipDistrictListForm
     End Property
 
     Private Sub SaveGuiState()
-        Me.State.SearchDescription = Me.TextBoxSearchDescription.Text
-        Me.State.SearchCode = Me.TextBoxSearchCode.Text
-        Me.State.SearchCountryId = Me.GetSelectedItem(moCountryDrop)
+        State.SearchDescription = TextBoxSearchDescription.Text
+        State.SearchCode = TextBoxSearchCode.Text
+        State.SearchCountryId = GetSelectedItem(moCountryDrop)
     End Sub
 
     Private Sub RestoreGuiState()
-        Me.TextBoxSearchDescription.Text = Me.State.SearchDescription
-        Me.TextBoxSearchCode.Text = Me.State.SearchCode
-        Me.SetSelectedItem(moCountryDrop, Me.State.SearchCountryId)
+        TextBoxSearchDescription.Text = State.SearchDescription
+        TextBoxSearchCode.Text = State.SearchCode
+        SetSelectedItem(moCountryDrop, State.SearchCountryId)
     End Sub
 
 #End Region
 
 #Region "Page_Events"
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
-        Me.ErrorCtrl.Clear_Hide()
+        ErrorCtrl.Clear_Hide()
         Try
-            If Not Me.IsPostBack Then
-                Me.SetDefaultButton(Me.TextBoxSearchCode, btnSearch)
-                Me.SetDefaultButton(Me.TextBoxSearchDescription, btnSearch)
+            If Not IsPostBack Then
+                SetDefaultButton(TextBoxSearchCode, btnSearch)
+                SetDefaultButton(TextBoxSearchDescription, btnSearch)
                 ControlMgr.SetVisibleControl(Me, trPageSize, False)
                 PopulateCountry()
-                Me.RestoreGuiState()
-                If Me.State.IsGridVisible Then
-                    If Not (Me.State.selectedPageSize = DEFAULT_PAGE_SIZE) Then
-                        cboPageSize.SelectedValue = CType(Me.State.selectedPageSize, String)
-                        Grid.PageSize = Me.State.selectedPageSize
+                RestoreGuiState()
+                If State.IsGridVisible Then
+                    If Not (State.selectedPageSize = DEFAULT_PAGE_SIZE) Then
+                        cboPageSize.SelectedValue = CType(State.selectedPageSize, String)
+                        Grid.PageSize = State.selectedPageSize
                     End If
-                    Me.PopulateGrid()
+                    PopulateGrid()
                 End If
-                Me.SetGridItemStyleColor(Me.Grid)
+                SetGridItemStyleColor(Grid)
             Else
-                Me.SaveGuiState()
+                SaveGuiState()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
-        Me.ShowMissingTranslations(Me.ErrorCtrl)
+        ShowMissingTranslations(ErrorCtrl)
     End Sub
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.MenuEnabled = True
-            Me.IsReturningFromChild = True
+            MenuEnabled = True
+            IsReturningFromChild = True
             Dim retObj As ZipDistrictForm.ReturnType = CType(ReturnPar, ZipDistrictForm.ReturnType)
-            Me.State.HasDataChanged = retObj.HasDataChanged
+            State.HasDataChanged = retObj.HasDataChanged
             Select Case retObj.LastOperation
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    If Not retObj Is Nothing Then
+                    If retObj IsNot Nothing Then
                         If Not retObj.EditingBo.IsNew Then
-                            Me.State.SelectedZDId = retObj.EditingBo.Id
+                            State.SelectedZDId = retObj.EditingBo.Id
                         End If
-                        Me.State.IsGridVisible = True
+                        State.IsGridVisible = True
                     End If
                 Case ElitaPlusPage.DetailPageCommand.Delete
-                    Me.DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
             End Select
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
@@ -142,7 +142,7 @@ Partial Class ZipDistrictListForm
                                                               Where ElitaPlusIdentity.Current.ActiveUser.Countries.Contains(x.ListItemId)
                                                               Select x).ToArray()
 
-        Me.moCountryDrop.Populate(filteredCountryList, New PopulateOptions() With
+        moCountryDrop.Populate(filteredCountryList, New PopulateOptions() With
                                                    {
                                                     .AddBlankItem = True
                                                    })
@@ -154,55 +154,55 @@ Partial Class ZipDistrictListForm
     End Sub
 
     Public Sub PopulateGrid()
-        If ((Me.State.searchDV Is Nothing) OrElse (Me.State.HasDataChanged)) AndAlso (Me.State.searchBtnClicked) Then
-            Me.State.searchDV = ZipDistrict.getList(Me.TextBoxSearchCode.Text, Me.TextBoxSearchDescription.Text,
-                                  Me.State.SearchCountryId)
+        If ((State.searchDV Is Nothing) OrElse (State.HasDataChanged)) AndAlso (State.searchBtnClicked) Then
+            State.searchDV = ZipDistrict.getList(TextBoxSearchCode.Text, TextBoxSearchDescription.Text,
+                                  State.SearchCountryId)
             'Ticket # 748479 - Search grids in Tables tab should not show pop-up message when number of retrieved record is over 1,000
             'If (Not (Me.State.HasDataChanged)) Then
             '    Me.ValidSearchResultCount(Me.State.searchDV.Count, True)
             'End If
         End If
 
-        If Me.State.HasDataChanged Then
-            Me.State.searchDV = ZipDistrict.getList(Me.TextBoxSearchCode.Text, Me.TextBoxSearchDescription.Text,
-                                Me.State.SearchCountryId)
+        If State.HasDataChanged Then
+            State.searchDV = ZipDistrict.getList(TextBoxSearchCode.Text, TextBoxSearchDescription.Text,
+                                State.SearchCountryId)
             'Ticket # 748479 - Search grids in Tables tab should not show pop-up message when number of retrieved record is over 1,000
             'Me.ValidSearchResultCount(Me.State.searchDV.Count, True)
         End If
 
-        If Not (Me.State.searchDV Is Nothing) Then
-            Me.State.searchDV.Sort = Me.State.SortExpression
+        If Not (State.searchDV Is Nothing) Then
+            State.searchDV.Sort = State.SortExpression
 
-            Me.Grid.AutoGenerateColumns = False
-            Me.Grid.Columns(Me.GRID_COL_COUNTRY).SortExpression = ZipDistrict.ZipDistrictSearchDV.COL_NAME_COUNTRY_DESC
-            Me.Grid.Columns(Me.GRID_COL_CODE).SortExpression = ZipDistrict.ZipDistrictSearchDV.COL_NAME_SHORT_DESC
-            Me.Grid.Columns(Me.GRID_COL_DESCRIPTION).SortExpression = ZipDistrict.ZipDistrictSearchDV.COL_NAME_DESCRIPTION
+            Grid.AutoGenerateColumns = False
+            Grid.Columns(GRID_COL_COUNTRY).SortExpression = ZipDistrict.ZipDistrictSearchDV.COL_NAME_COUNTRY_DESC
+            Grid.Columns(GRID_COL_CODE).SortExpression = ZipDistrict.ZipDistrictSearchDV.COL_NAME_SHORT_DESC
+            Grid.Columns(GRID_COL_DESCRIPTION).SortExpression = ZipDistrict.ZipDistrictSearchDV.COL_NAME_DESCRIPTION
 
-            SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.SelectedZDId, Me.Grid, Me.State.PageIndex)
-            Me.SortAndBindGrid()
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.SelectedZDId, Grid, State.PageIndex)
+            SortAndBindGrid()
         End If
     End Sub
 
     Private Sub SortAndBindGrid()
-        Me.State.PageIndex = Me.Grid.CurrentPageIndex
-        Me.Grid.DataSource = Me.State.searchDV
-        HighLightSortColumn(Grid, Me.State.SortExpression)
-        Me.Grid.DataBind()
+        State.PageIndex = Grid.CurrentPageIndex
+        Grid.DataSource = State.searchDV
+        HighLightSortColumn(Grid, State.SortExpression)
+        Grid.DataBind()
 
-        ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
 
-        ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+        ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-        Session("recCount") = Me.State.searchDV.Count
+        Session("recCount") = State.searchDV.Count
 
-        If Me.State.searchDV.Count > 0 Then
+        If State.searchDV.Count > 0 Then
 
-            If Me.Grid.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         Else
-            If Me.Grid.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         End If
     End Sub
@@ -214,73 +214,73 @@ Partial Class ZipDistrictListForm
 #Region " Datagrid Related "
 
     'The Binding LOgic is here  
-    Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+    Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
         Try
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                e.Item.Cells(Me.GRID_COL_ZD_ID).Text = New Guid(CType(dvRow(ZipDistrict.ZipDistrictSearchDV.COL_NAME_ZIP_DISTRICT_ID), Byte())).ToString
-                e.Item.Cells(Me.GRID_COL_COUNTRY).Text = dvRow(ZipDistrict.ZipDistrictSearchDV.COL_NAME_COUNTRY_DESC).ToString
-                e.Item.Cells(Me.GRID_COL_CODE).Text = dvRow(ZipDistrict.ZipDistrictSearchDV.COL_NAME_SHORT_DESC).ToString
-                e.Item.Cells(Me.GRID_COL_DESCRIPTION).Text = dvRow(ZipDistrict.ZipDistrictSearchDV.COL_NAME_DESCRIPTION).ToString
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
+                e.Item.Cells(GRID_COL_ZD_ID).Text = New Guid(CType(dvRow(ZipDistrict.ZipDistrictSearchDV.COL_NAME_ZIP_DISTRICT_ID), Byte())).ToString
+                e.Item.Cells(GRID_COL_COUNTRY).Text = dvRow(ZipDistrict.ZipDistrictSearchDV.COL_NAME_COUNTRY_DESC).ToString
+                e.Item.Cells(GRID_COL_CODE).Text = dvRow(ZipDistrict.ZipDistrictSearchDV.COL_NAME_SHORT_DESC).ToString
+                e.Item.Cells(GRID_COL_DESCRIPTION).Text = dvRow(ZipDistrict.ZipDistrictSearchDV.COL_NAME_DESCRIPTION).ToString
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
+    Private Sub Grid_SortCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Public Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+    Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
         Try
             If e.CommandName = "SelectAction" Then
-                Me.State.SelectedZDId = New Guid(e.Item.Cells(Me.GRID_COL_ZD_ID).Text)
-                Me.callPage(ZipDistrictForm.URL, Me.State.SelectedZDId)
+                State.SelectedZDId = New Guid(e.Item.Cells(GRID_COL_ZD_ID).Text)
+                callPage(ZipDistrictForm.URL, State.SelectedZDId)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
 
-    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs)
+    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.CurrentPageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-            Me.PopulateGrid()
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = e.NewPageIndex
-            Me.State.SelectedZDId = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = e.NewPageIndex
+            State.SelectedZDId = Guid.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
@@ -289,37 +289,37 @@ Partial Class ZipDistrictListForm
 
 #Region " Button Clicks "
 
-    Private Sub btnSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As System.EventArgs) Handles btnSearch.Click
         Try
-            Me.State.PageIndex = 0
-            Me.State.SelectedZDId = Guid.Empty
-            Me.State.IsGridVisible = True
-            Me.State.searchDV = Nothing
-            Me.State.HasDataChanged = False
-            Me.State.searchBtnClicked = True
-            Me.PopulateGrid()
-            Me.State.searchBtnClicked = False
+            State.PageIndex = 0
+            State.SelectedZDId = Guid.Empty
+            State.IsGridVisible = True
+            State.searchDV = Nothing
+            State.HasDataChanged = False
+            State.searchBtnClicked = True
+            PopulateGrid()
+            State.searchBtnClicked = False
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
 
-    Private Sub btnAdd_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd_WRITE.Click
+    Private Sub btnAdd_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnAdd_WRITE.Click
         Try
-            Me.callPage(ZipDistrictForm.URL)
+            callPage(ZipDistrictForm.URL)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnClearSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
         Try
-            Me.TextBoxSearchCode.Text = ""
-            Me.TextBoxSearchDescription.Text = ""
-            moCountryDrop.SelectedIndex = Me.BLANK_ITEM_SELECTED
+            TextBoxSearchCode.Text = ""
+            TextBoxSearchDescription.Text = ""
+            moCountryDrop.SelectedIndex = BLANK_ITEM_SELECTED
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 

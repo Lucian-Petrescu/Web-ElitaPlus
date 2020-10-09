@@ -30,48 +30,48 @@ Public Class InterfaceStatusWrk
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load(id)
+        Dataset = New Dataset
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load()
+        Dataset = New Dataset
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New InterfaceStatusWrkDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -79,30 +79,30 @@ Public Class InterfaceStatusWrk
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New InterfaceStatusWrkDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Public Shared Function IsfileBeingProcessed(ByVal filename As String, Optional ByVal parentFile As Boolean = False) As Boolean
+    Public Shared Function IsfileBeingProcessed(filename As String, Optional ByVal parentFile As Boolean = False) As Boolean
 
         Try
             Dim dal As New InterfaceStatusWrkDAL
@@ -114,7 +114,7 @@ Public Class InterfaceStatusWrk
                 ds = dal.LoadByActiveFileName(filename, parentFile)
             End If
 
-            If Not ds Is Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
                 Return False
             Else
                 Return True
@@ -125,12 +125,12 @@ Public Class InterfaceStatusWrk
         End Try
 
     End Function
-    Public Shared Function IsStatus_Running(ByVal id As Guid) As Boolean
+    Public Shared Function IsStatus_Running(id As Guid) As Boolean
         Try
             Dim dal As New InterfaceStatusWrkDAL
             Dim ds As New DataSet
             ds = dal.Load_IsStatus_Running(id)
-            If Not ds Is Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
                 Return True
             Else
                 Return False
@@ -140,7 +140,7 @@ Public Class InterfaceStatusWrk
 
         End Try
     End Function
-    Public Shared Function CreateInterfaceStatus(ByVal desc As String) As Guid
+    Public Shared Function CreateInterfaceStatus(desc As String) As Guid
         Dim intStatus = New InterfaceStatusWrk
 
         intStatus.Description = desc
@@ -150,9 +150,9 @@ Public Class InterfaceStatusWrk
         Return intStatus.id
     End Function
 
-    Public Sub ReLoad(ByVal id As Guid)
+    Public Sub ReLoad(id As Guid)
         '  Me.Dataset = New Dataset
-        Me.Load(id)
+        Load(id)
     End Sub
 #End Region
 
@@ -166,7 +166,7 @@ Public Class InterfaceStatusWrk
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(InterfaceStatusWrkDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -175,7 +175,7 @@ Public Class InterfaceStatusWrk
             End If
         End Get
     End Property
-    Public ReadOnly Property Sessionpaddrid() As Guid
+    Public ReadOnly Property Sessionpaddrid As Guid
         Get
             CheckDeleted()
             If Row(InterfaceStatusWrkDAL.COL_NAME_SESSIONPADDRID) Is DBNull.Value Then
@@ -190,7 +190,7 @@ Public Class InterfaceStatusWrk
         ' End Set
     End Property
     <ValidStringLength("", Max:=30)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(InterfaceStatusWrkDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -199,14 +199,14 @@ Public Class InterfaceStatusWrk
                 Return CType(Row(InterfaceStatusWrkDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(InterfaceStatusWrkDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(InterfaceStatusWrkDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)> _
-    Public Property Active_Filename() As String
+    Public Property Active_Filename As String
         Get
             CheckDeleted()
             If Row(InterfaceStatusWrkDAL.COL_NAME_ACTIVE_FILENAME) Is DBNull.Value Then
@@ -215,13 +215,13 @@ Public Class InterfaceStatusWrk
                 Return CType(Row(InterfaceStatusWrkDAL.COL_NAME_ACTIVE_FILENAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(InterfaceStatusWrkDAL.COL_NAME_ACTIVE_FILENAME, Value)
+            SetValue(InterfaceStatusWrkDAL.COL_NAME_ACTIVE_FILENAME, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=30)> _
-    Public Property Status() As String
+    Public Property Status As String
         Get
             CheckDeleted()
             If Row(InterfaceStatusWrkDAL.COL_NAME_STATUS) Is DBNull.Value Then
@@ -230,21 +230,21 @@ Public Class InterfaceStatusWrk
                 Return CType(Row(InterfaceStatusWrkDAL.COL_NAME_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(InterfaceStatusWrkDAL.COL_NAME_STATUS, Value)
+            SetValue(InterfaceStatusWrkDAL.COL_NAME_STATUS, Value)
         End Set
     End Property
 
-    Public ReadOnly Property ReLoadStatus() As String
+    Public ReadOnly Property ReLoadStatus As String
         Get
-            ReLoad(Me.Id)
+            ReLoad(Id)
 
             Return Status
         End Get
     End Property
 
-    Public ReadOnly Property Error_Message() As String
+    Public ReadOnly Property Error_Message As String
         Get
             CheckDeleted()
             If Row(InterfaceStatusWrkDAL.COL_NAME_ERROR_MESSAGE) Is DBNull.Value Then
@@ -256,7 +256,7 @@ Public Class InterfaceStatusWrk
     End Property
 
     'REQ-1056 
-    Public ReadOnly Property Created_Date() As String
+    Public ReadOnly Property Created_Date As String
         Get
             CheckDeleted()
             If Row(InterfaceStatusWrkDAL.COL_NAME_CREATED_DATE) Is DBNull.Value Then
@@ -274,15 +274,15 @@ Public Class InterfaceStatusWrk
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New InterfaceStatusWrkDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -295,14 +295,14 @@ Public Class InterfaceStatusWrk
         'Dim maxPollingCycles As Int32 = 2 ' * 10 = 50 Seconds
         Dim maxPollingCycles As Int32 = MAX_SCHED_POLL
         Dim currentPollingCycles As Integer = 0
-        Dim intStatus As String = Me.Status
+        Dim intStatus As String = Status
         Dim moError As InterfaceStatusWrk.IntError
 
         While ((intStatus <> InterfaceStatusWrkDAL.STATUS_SUCCESS) AndAlso _
                  (intStatus <> InterfaceStatusWrkDAL.STATUS_FAILURE) AndAlso _
                  (currentPollingCycles < maxPollingCycles))
 
-            System.Threading.Thread.CurrentThread.Sleep(sleepInterval)
+            Threading.Thread.CurrentThread.Sleep(sleepInterval)
             intStatus = ReLoadStatus()
             currentPollingCycles += 1
         End While
@@ -315,7 +315,7 @@ Public Class InterfaceStatusWrk
         ElseIf intStatus = InterfaceStatusWrkDAL.STATUS_FAILURE Then
             'Failure
             moError.status = InterfaceStatusWrk.IntStatus.INTERFACE_DB_FAILED
-            moError.msg = Me.Error_Message
+            moError.msg = Error_Message
         Else
             'Pending or Running
             moError.status = InterfaceStatusWrk.IntStatus.PENDING
@@ -342,7 +342,7 @@ Public Class InterfaceStatusWrk
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -351,7 +351,7 @@ Public Class InterfaceStatusWrk
 
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getList(ByVal activefilename As String) As InterfaceStatusSearchDV
+    Public Shared Function getList(activefilename As String) As InterfaceStatusSearchDV
         Try
             Dim dal As New InterfaceStatusWrkDAL
             Return New InterfaceStatusSearchDV(dal.LoadList(activefilename).Tables(0))

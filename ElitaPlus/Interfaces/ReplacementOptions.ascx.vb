@@ -6,13 +6,13 @@
     Public thisPage As ElitaPlusPage
 #End Region
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If Not Me.IsPostBack Then
-            If Not Me.ClaimBO Is Nothing Then
-                Me.GVReplacementOptions.DataSource = Me.ClaimBO.ReplacementOptions()
-                Me.GVReplacementOptions.DataBind()
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        If Not IsPostBack Then
+            If ClaimBO IsNot Nothing Then
+                GVReplacementOptions.DataSource = ClaimBO.ReplacementOptions()
+                GVReplacementOptions.DataBind()
             End If
-            If Not Me.thisPage Is Nothing Then Me.thisPage.TranslateGridHeader(Me.GVReplacementOptions)
+            If thisPage IsNot Nothing Then thisPage.TranslateGridHeader(GVReplacementOptions)
         End If
     End Sub
 

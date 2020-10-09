@@ -6,48 +6,48 @@ Public Class CaseAction
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
     
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()             
         Try
             Dim dal As New CaseActionDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize() 
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class CaseAction
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)               
+    Protected Sub Load(id As Guid)               
         Try
             Dim dal As New CaseActionDAL            
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -90,7 +90,7 @@ Public Class CaseAction
 #Region "Properties"
     
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(CaseActionDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class CaseAction
     End Property
 	
     
-    Public Property CaseId() As Guid
+    Public Property CaseId As Guid
         Get
             CheckDeleted()
             If row(CaseActionDAL.COL_NAME_CASE_ID) Is DBNull.Value Then
@@ -110,15 +110,15 @@ Public Class CaseAction
                 Return New Guid(CType(row(CaseActionDAL.COL_NAME_CASE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CaseActionDAL.COL_NAME_CASE_ID, Value)
+            SetValue(CaseActionDAL.COL_NAME_CASE_ID, Value)
         End Set
     End Property
 	
 	
     
-    Public Property ClaimId() As Guid
+    Public Property ClaimId As Guid
         Get
             CheckDeleted()
             If row(CaseActionDAL.COL_NAME_CLAIM_ID) Is DBNull.Value Then
@@ -127,15 +127,15 @@ Public Class CaseAction
                 Return New Guid(CType(row(CaseActionDAL.COL_NAME_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CaseActionDAL.COL_NAME_CLAIM_ID, Value)
+            SetValue(CaseActionDAL.COL_NAME_CLAIM_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)>
-    Public Property ActionOwnerXcd() As String
+    Public Property ActionOwnerXcd As String
         Get
             CheckDeleted()
             If row(CaseActionDAL.COL_NAME_ACTION_OWNER_XCD) Is DBNull.Value Then
@@ -144,13 +144,13 @@ Public Class CaseAction
                 Return CType(row(CaseActionDAL.COL_NAME_ACTION_OWNER_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CaseActionDAL.COL_NAME_ACTION_OWNER_XCD, Value)
+            SetValue(CaseActionDAL.COL_NAME_ACTION_OWNER_XCD, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=200)>
-    Public Property ActionOwner() As String
+    Public Property ActionOwner As String
         Get
             CheckDeleted()
             If Row(CaseActionDAL.COL_NAME_ACTION_OWNER) Is DBNull.Value Then
@@ -159,15 +159,15 @@ Public Class CaseAction
                 Return CType(Row(CaseActionDAL.COL_NAME_ACTION_OWNER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CaseActionDAL.COL_NAME_ACTION_OWNER, Value)
+            SetValue(CaseActionDAL.COL_NAME_ACTION_OWNER, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)>
-    Public Property ActionTypeXcd() As String
+    Public Property ActionTypeXcd As String
         Get
             CheckDeleted()
             If row(CaseActionDAL.COL_NAME_ACTION_TYPE_XCD) Is DBNull.Value Then
@@ -176,13 +176,13 @@ Public Class CaseAction
                 Return CType(row(CaseActionDAL.COL_NAME_ACTION_TYPE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CaseActionDAL.COL_NAME_ACTION_TYPE_XCD, Value)
+            SetValue(CaseActionDAL.COL_NAME_ACTION_TYPE_XCD, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=200)>
-    Public Property ActionType() As String
+    Public Property ActionType As String
         Get
             CheckDeleted()
             If Row(CaseActionDAL.COL_NAME_ACTION_TYPE) Is DBNull.Value Then
@@ -191,15 +191,15 @@ Public Class CaseAction
                 Return CType(Row(CaseActionDAL.COL_NAME_ACTION_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CaseActionDAL.COL_NAME_ACTION_TYPE, Value)
+            SetValue(CaseActionDAL.COL_NAME_ACTION_TYPE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""),ValidStringLength("", Max:=200)> _
-    Public Property StatusXcd() As String
+    Public Property StatusXcd As String
         Get
             CheckDeleted()
             If row(CaseActionDAL.COL_NAME_STATUS_XCD) Is DBNull.Value Then
@@ -208,15 +208,15 @@ Public Class CaseAction
                 Return CType(row(CaseActionDAL.COL_NAME_STATUS_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CaseActionDAL.COL_NAME_STATUS_XCD, Value)
+            SetValue(CaseActionDAL.COL_NAME_STATUS_XCD, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=200)>
-    Public Property Status() As String
+    Public Property Status As String
         Get
             CheckDeleted()
             If Row(CaseActionDAL.COL_NAME_STATUS) Is DBNull.Value Then
@@ -225,13 +225,13 @@ Public Class CaseAction
                 Return CType(Row(CaseActionDAL.COL_NAME_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CaseActionDAL.COL_NAME_STATUS, Value)
+            SetValue(CaseActionDAL.COL_NAME_STATUS, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=120)> _
-    Public Property RefSource() As String
+    Public Property RefSource As String
         Get
             CheckDeleted()
             If row(CaseActionDAL.COL_NAME_REF_SOURCE) Is DBNull.Value Then
@@ -240,15 +240,15 @@ Public Class CaseAction
                 Return CType(row(CaseActionDAL.COL_NAME_REF_SOURCE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CaseActionDAL.COL_NAME_REF_SOURCE, Value)
+            SetValue(CaseActionDAL.COL_NAME_REF_SOURCE, Value)
         End Set
     End Property
 	
 	
     
-    Public Property RefId() As Guid
+    Public Property RefId As Guid
         Get
             CheckDeleted()
             If row(CaseActionDAL.COL_NAME_REF_ID) Is DBNull.Value Then
@@ -257,9 +257,9 @@ Public Class CaseAction
                 Return New Guid(CType(row(CaseActionDAL.COL_NAME_REF_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CaseActionDAL.COL_NAME_REF_ID, Value)
+            SetValue(CaseActionDAL.COL_NAME_REF_ID, Value)
         End Set
     End Property
 	
@@ -272,15 +272,15 @@ Public Class CaseAction
     Public Overrides Sub Save()         
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CaseActionDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -290,7 +290,7 @@ Public Class CaseAction
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetCaseActionList(ByVal CaseId As Guid, ByVal LanguageId As Guid) As CaseActionDV
+    Public Shared Function GetCaseActionList(CaseId As Guid, LanguageId As Guid) As CaseActionDV
         Try
             Dim dal As New CaseActionDAL
 
@@ -300,7 +300,7 @@ Public Class CaseAction
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function GetClaimActionList(ByVal ClaimId As Guid, ByVal LanguageId As Guid) As CaseActionDV
+    Public Shared Function GetClaimActionList(ClaimId As Guid, LanguageId As Guid) As CaseActionDV
         Try
             Dim dal As New CaseActionDAL
 
@@ -321,7 +321,7 @@ Public Class CaseAction
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

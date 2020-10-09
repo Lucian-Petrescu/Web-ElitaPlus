@@ -31,24 +31,24 @@ Public Class DailyOutboundFileDetailDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("file_detail_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Try
-            Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+            Return DBHelper.Fetch(selectStmt, TABLE_NAME)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -59,23 +59,23 @@ Public Class DailyOutboundFileDetailDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
 
 #Region "Insert Detail Records"
-    Public Sub insertdetailrecords(ByVal Company_id As Guid, ByVal Dealer_id As Guid, ByVal cert_id As Guid, ByVal CertNumber As String, ByVal certCreatedDate As Date, _
-                                           ByVal selectonNewEnrollment As String, ByVal selectoncancel As String, ByVal selectonbilling As String, _
-                                           ByVal recordType As String, ByVal createdDate As Date, ByVal createdBy As String, ByVal billing_detail_id As Guid, _
+    Public Sub insertdetailrecords(Company_id As Guid, Dealer_id As Guid, cert_id As Guid, CertNumber As String, certCreatedDate As Date, _
+                                           selectonNewEnrollment As String, selectoncancel As String, selectonbilling As String, _
+                                           recordType As String, createdDate As Date, createdBy As String, billing_detail_id As Guid, _
                                             Optional ByVal selectioncertificate As String = "")
         Dim sqlStmt As String
-        sqlStmt = Me.Config("/SQL/INSERT")
+        sqlStmt = Config("/SQL/INSERT")
         Dim ds As DataSet
         Try
             Dim file_detail_id As Guid = Guid.NewGuid()
@@ -104,12 +104,12 @@ Public Class DailyOutboundFileDetailDAL
 
     End Sub
 
-    Public Sub getrecordsviewlist(ByVal CompanyCode As String, ByVal Dealercode As String, ByVal CertNumber As String, _
-                            ByVal selectonNewEnrollment As String, ByVal selectoncancel As String, ByVal selectonbilling As String, _
-                                        ByVal fromdate As Date, ByVal todate As Date, ByVal callfrom As String, _
+    Public Sub getrecordsviewlist(CompanyCode As String, Dealercode As String, CertNumber As String, _
+                            selectonNewEnrollment As String, selectoncancel As String, selectonbilling As String, _
+                                        fromdate As Date, todate As Date, callfrom As String, _
                                             Optional ByVal processeddate As Date = Nothing, Optional ByVal selectioncertificate As String = "N")
         Dim sqlStmt As String
-        sqlStmt = Me.Config("/SQL/Detail_Records_View_List")
+        sqlStmt = Config("/SQL/Detail_Records_View_List")
         Dim ds As DataSet
         Try
 
@@ -134,9 +134,9 @@ Public Class DailyOutboundFileDetailDAL
         End Try
     End Sub
 #End Region
-    Public Sub deletedetailrecord(ByVal file_detail_Id As Guid)
+    Public Sub deletedetailrecord(file_detail_Id As Guid)
         Dim sqlStmt As String
-        sqlStmt = Me.Config("/SQL/DELETE")
+        sqlStmt = Config("/SQL/DELETE")
         Dim ds As DataSet
         Try
             'If file_detail_Id.Count > 0 Then

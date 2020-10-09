@@ -21,7 +21,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moSearchResults As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+        Protected WithEvents moSearchResults As HtmlGenericControl
 
         '''<summary>
         '''lblPageSize control.
@@ -30,7 +30,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblPageSize As Label
 
         '''<summary>
         '''cboPageSize control.
@@ -39,7 +39,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents cboPageSize As DropDownList
 
         '''<summary>
         '''lblRecordCount control.
@@ -48,7 +48,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblRecordCount As Label
 
         '''<summary>
         '''Grid control.
@@ -57,7 +57,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents Grid As Global.System.Web.UI.WebControls.GridView
+        Protected WithEvents Grid As GridView
 
         '''<summary>
         '''HiddenDeletePromptResponse control.
@@ -66,7 +66,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents HiddenDeletePromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+        Protected WithEvents HiddenDeletePromptResponse As HtmlInputHidden
 
         '''<summary>
         '''btnBack control.
@@ -75,7 +75,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents btnBack As Button
 
         '''<summary>
         '''NewButton_WRITE control.
@@ -84,6 +84,6 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents NewButton_WRITE As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents NewButton_WRITE As Button
     End Class
 End Namespace

@@ -6,7 +6,7 @@ Imports Assurant.Common.Ftp
 Public Class InvoiceXmlDownload
     Inherits System.Web.UI.Page
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
         Dim strDealerId As String = Request.QueryString("DealerID").Trim
         Dim strInvoiceMonth As String = Request.QueryString("InvoiceMonth").Trim
@@ -25,7 +25,7 @@ Public Class InvoiceXmlDownload
             End If
         End If
     End Sub
-    Private Sub TestDownLoadXML(ByVal dealerId As Guid, ByVal periodMonth As String)
+    Private Sub TestDownLoadXML(dealerId As Guid, periodMonth As String)
 
         Try
 
@@ -34,7 +34,7 @@ Public Class InvoiceXmlDownload
             Response.Clear()
             Response.ClearContent()
 
-            If Not afaInvoiceData Is Nothing AndAlso
+            If afaInvoiceData IsNot Nothing AndAlso
                 Not String.IsNullOrEmpty(afaInvoiceData.DirectoryName) AndAlso
                 Not String.IsNullOrEmpty(afaInvoiceData.Filename) Then
 
@@ -55,13 +55,13 @@ Public Class InvoiceXmlDownload
 
     End Sub
 
-    Private Sub DownLoadXML(ByVal dealerId As Guid, ByVal periodMonth As String)
+    Private Sub DownLoadXML(dealerId As Guid, periodMonth As String)
 
         Try
 
             Dim afaInvoiceData As New AfaInvoiceData(dealerId, periodMonth)
 
-            If Not afaInvoiceData Is Nothing AndAlso
+            If afaInvoiceData IsNot Nothing AndAlso
                 Not String.IsNullOrEmpty(afaInvoiceData.DirectoryName) AndAlso
                 Not String.IsNullOrEmpty(afaInvoiceData.Filename) Then
 
@@ -79,7 +79,7 @@ Public Class InvoiceXmlDownload
 
     End Sub
 
-    Private Sub TransferFilesUnixWebServer(ByVal fileName As String, Optional ByVal directoryName As String = "afa_data")
+    Private Sub TransferFilesUnixWebServer(fileName As String, Optional ByVal directoryName As String = "afa_data")
 
         Dim objUnixFTP As New sFtp(AppConfig.UnixServer.HostName, AppConfig.UnixServer.FtpDirectory.Replace("/ftp", $"/{directoryName}"), AppConfig.UnixServer.UserId, AppConfig.UnixServer.Password)
 

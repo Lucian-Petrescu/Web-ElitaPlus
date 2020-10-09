@@ -84,15 +84,15 @@ Public Class CertEndorseDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("cert_endorse_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -102,9 +102,9 @@ Public Class CertEndorseDAL
     '    Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
     '    Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
     'End Function
-    Public Function LoadList(ByVal certid As Guid, ByVal languageId As Guid) As DataSet
+    Public Function LoadList(certid As Guid, languageId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
 
@@ -113,33 +113,33 @@ Public Class CertEndorseDAL
 
         Try
             ' Dim ds = New DataSet
-            Return (DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Function LoadListForEndorse(ByVal endorseId As Guid, Optional ByVal familyDataset As DataSet = Nothing) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_CERT_ENDORSMENT")
+    Public Function LoadListForEndorse(endorseId As Guid, Optional ByVal familyDataset As DataSet = Nothing) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_CERT_ENDORSMENT")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("endorse_id", endorseId)}
         Try
             Dim ds = familyDataset
             If ds Is Nothing Then
                 ds = New DataSet
             End If
-            Return (DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function ValidateCertSalesPrice(ByVal CertId As Guid, ByVal NewSalesPrice As Decimal, ByVal CovTypeId As Guid, ByVal CertDur As Integer, ByVal CovDur As Integer) As Integer
+    Public Function ValidateCertSalesPrice(CertId As Guid, NewSalesPrice As Decimal, CovTypeId As Guid, CertDur As Integer, CovDur As Integer) As Integer
         Dim inputParameters(4) As DBHelperParameter
         Dim outputParameters(0) As DBHelperParameter
         Dim RetVal As Integer
 
-        Dim selectStmt As String = Me.Config("/SQL/VALIDATE_CERT_SALES_PRICE")
+        Dim selectStmt As String = Config("/SQL/VALIDATE_CERT_SALES_PRICE")
         Try
             inputParameters(0) = New DBHelper.DBHelperParameter("p_cert_id", CertId.ToByteArray)
             inputParameters(1) = New DBHelper.DBHelperParameter("p_new_sales_price", NewSalesPrice)
@@ -167,11 +167,11 @@ Public Class CertEndorseDAL
 
     End Function
 
-    Public Function CalculateLiabilityLimitUsingCovTemplate(ByVal CertId As Guid, ByVal CoverageTypeId As Guid, ByVal NewSalesPrice As Decimal) As ArrayList
+    Public Function CalculateLiabilityLimitUsingCovTemplate(CertId As Guid, CoverageTypeId As Guid, NewSalesPrice As Decimal) As ArrayList
         Dim inputParameters(2) As DBHelperParameter
         Dim outputParameters(1) As DBHelperParameter
 
-        Dim selectStmt As String = Me.Config("/SQL/CAL_LIABILITY_LIMIT_USING_COVERAGE_TEMPLATE")
+        Dim selectStmt As String = Config("/SQL/CAL_LIABILITY_LIMIT_USING_COVERAGE_TEMPLATE")
         Try
             Dim al As New ArrayList
             inputParameters(0) = New DBHelper.DBHelperParameter("p_cert_id", CertId.ToByteArray)
@@ -200,33 +200,33 @@ Public Class CertEndorseDAL
         End Try
     End Function
 
-    Public Function IsLowestCovStrtDtEqual2PrdSalesDt(ByVal certId As Guid) As DataSet
+    Public Function IsLowestCovStrtDtEqual2PrdSalesDt(certId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_COVERAGE_LOWEST_START_DATE")
-        parameters = New OracleParameter() {New OracleParameter(Me.COL_NAME_CERT_ID, certId.ToByteArray)}
-        Return (DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters))
+        Dim selectStmt As String = Config("/SQL/GET_COVERAGE_LOWEST_START_DATE")
+        parameters = New OracleParameter() {New OracleParameter(COL_NAME_CERT_ID, certId.ToByteArray)}
+        Return (DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters))
     End Function
 
-    Public Function LoadListByCovIdClaimLossDate(ByVal certItemCoverageId As Guid, ByVal begin_date As Date, ByVal end_date As Date) As DataSet
+    Public Function LoadListByCovIdClaimLossDate(certItemCoverageId As Guid, begin_date As Date, end_date As Date) As DataSet
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_ACTIVE_CLAIMS_BY_COVERAGEID_CLAIMLOSSDATE")
+        Dim selectStmt As String = Config("/SQL/GET_ACTIVE_CLAIMS_BY_COVERAGEID_CLAIMLOSSDATE")
         Dim parameters = New OracleParameter() {New OracleParameter(COL_NAME_CERT_ITEM_COVERAGE_ID, certItemCoverageId.ToByteArray),
                                             New OracleParameter(COL_NAME_BEGIN_DATE, begin_date),
                                             New OracleParameter(COL_NAME_END_DATE, end_date)}
 
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Function
 
-    Public Function ClaimCountForParentAndChildCert(ByVal cert_Id As Guid) As Integer
+    Public Function ClaimCountForParentAndChildCert(cert_Id As Guid) As Integer
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_CLAIMS_PARENT_CHILD_CERTS")
-        Dim inputParameters = New DBHelperParameter() {New DBHelperParameter(Me.COL_NAME_CERT_ID, cert_Id.ToByteArray)}
+        Dim selectStmt As String = Config("/SQL/GET_CLAIMS_PARENT_CHILD_CERTS")
+        Dim inputParameters = New DBHelperParameter() {New DBHelperParameter(COL_NAME_CERT_ID, cert_Id.ToByteArray)}
 
         Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_CLAIM_COUNT, GetType(Integer)),
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_RETURN, GetType(Integer)),
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_EXCEPTION_MSG, GetType(String), 100)}
+                            New DBHelper.DBHelperParameter(PAR_NAME_CLAIM_COUNT, GetType(Integer)),
+                            New DBHelper.DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)),
+                            New DBHelper.DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 100)}
 
         DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameters)
         If CType(outputParameters(1).Value, Integer) <> 0 Then
@@ -241,13 +241,13 @@ Public Class CertEndorseDAL
 
 #Region "Overloaded Methods"
 
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim certItemDAL As New CertItemDAL
         Dim itemcoverageDA As New CertItemCoverageDAL
         Dim endorsecovDAL As New CertEndorseCovDAL
@@ -265,7 +265,7 @@ Public Class CertEndorseDAL
             'Dim dealerId As Guid = New Guid(CType(familyDataset.Tables("ELP_CERT").Rows(0)("Dealer_Id"), Byte()))
 
             'If IsDealerEndorsementAttributeFlagOn(dealerId) <> "Y" Then
-            Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
             endorsecovDAL.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
             ' End If
             itemcoverageDA.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
@@ -285,22 +285,22 @@ Public Class CertEndorseDAL
 
 #End Region
 
-    Public Sub SaveCustomerData(ByVal custid As Guid, ByVal custfirstname As String, ByVal custmidname As String, ByVal custlastname As String, ByVal po_code As String, ByVal po_reason As String)
-        Dim selectStmt As String = Me.Config("/SQL/UPDATE_CUST_DETAILS")
+    Public Sub SaveCustomerData(custid As Guid, custfirstname As String, custmidname As String, custlastname As String, po_code As String, po_reason As String)
+        Dim selectStmt As String = Config("/SQL/UPDATE_CUST_DETAILS")
         Dim inParameters(3) As DBHelper.DBHelperParameter
 
-        inParameters(0) = New DBHelper.DBHelperParameter(Me.CUSTOMER_ID, custid)
-        inParameters(1) = New DBHelper.DBHelperParameter(Me.CUSTOMER_FIRST_NAME, custfirstname)
-        inParameters(2) = New DBHelper.DBHelperParameter(Me.CUSTOMER_MIDDLE_NAME, custmidname)
-        inParameters(3) = New DBHelper.DBHelperParameter(Me.CUSTOMER_LAST_NAME, custlastname)
+        inParameters(0) = New DBHelper.DBHelperParameter(CUSTOMER_ID, custid)
+        inParameters(1) = New DBHelper.DBHelperParameter(CUSTOMER_FIRST_NAME, custfirstname)
+        inParameters(2) = New DBHelper.DBHelperParameter(CUSTOMER_MIDDLE_NAME, custmidname)
+        inParameters(3) = New DBHelper.DBHelperParameter(CUSTOMER_LAST_NAME, custlastname)
 
 
         Dim outParameters(1) As DBHelper.DBHelperParameter
-        outParameters(0) = New DBHelper.DBHelperParameter(Me.po_reject_code, GetType(String))
-        outParameters(1) = New DBHelper.DBHelperParameter(Me.po_reject_reason, GetType(String))
+        outParameters(0) = New DBHelper.DBHelperParameter(po_reject_code, GetType(String))
+        outParameters(1) = New DBHelper.DBHelperParameter(po_reject_reason, GetType(String))
 
         Dim ds As New DataSet
-        Dim tbl As String = Me.TABLE_CUSTOMER
+        Dim tbl As String = TABLE_CUSTOMER
 
         ' Call DBHelper Store Procedure
         DBHelper.FetchSp(selectStmt, inParameters, outParameters, ds, tbl)
@@ -315,7 +315,7 @@ Public Class CertEndorseDAL
 
         Dim endorsementFlag As String
 
-        Dim selectStmt As String = Me.Config("/SQL/GET_Dealer_Attribute_Value")
+        Dim selectStmt As String = Config("/SQL/GET_Dealer_Attribute_Value")
 
         Using command As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure)
 

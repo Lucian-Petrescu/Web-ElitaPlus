@@ -30,35 +30,35 @@ Public Class ServiceLevelDetailDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("service_level_detail_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal ServiceLevelGroupId As Guid, ByVal svcLevelCodeMask As String, ByVal svcLevelDescMask As String, ByVal langId As Guid, ByVal sDate As String) As DataSet
+    Public Function LoadList(ServiceLevelGroupId As Guid, svcLevelCodeMask As String, svcLevelDescMask As String, langId As Guid, sDate As String) As DataSet
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("language_id", langId.ToByteArray)}
         Dim whereClauseConditions As String = ""
 
-        If Not Me.IsNothing(ServiceLevelGroupId) Then
-            whereClauseConditions &= " where sld.service_level_group_id = '" & Me.GuidToSQLString(ServiceLevelGroupId) & "'"
+        If Not IsNothing(ServiceLevelGroupId) Then
+            whereClauseConditions &= " where sld.service_level_group_id = '" & GuidToSQLString(ServiceLevelGroupId) & "'"
         End If
 
-        If ((Not svcLevelCodeMask Is Nothing) AndAlso (Me.FormatSearchMask(svcLevelCodeMask))) Then
+        If ((Not svcLevelCodeMask Is Nothing) AndAlso (FormatSearchMask(svcLevelCodeMask))) Then
             whereClauseConditions &= Environment.NewLine & "AND UPPER(sld.code)" & svcLevelCodeMask.ToUpper
         End If
 
-        If ((Not svcLevelDescMask Is Nothing) AndAlso (Me.FormatSearchMask(svcLevelDescMask))) Then
+        If ((Not svcLevelDescMask Is Nothing) AndAlso (FormatSearchMask(svcLevelDescMask))) Then
             whereClauseConditions &= Environment.NewLine & "AND UPPER(sld.description)" & svcLevelDescMask.ToUpper
         End If
 
@@ -67,17 +67,17 @@ Public Class ServiceLevelDetailDAL
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Function
 
-    Public Sub Delete(ByVal serviceLevelDetailId As Guid)
+    Public Sub Delete(serviceLevelDetailId As Guid)
         Try
-            Dim deleteStatement As String = Me.Config("/SQL/DELETE")
+            Dim deleteStatement As String = Config("/SQL/DELETE")
             Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_SERVICE_LEVEL_DETAIL_ID, serviceLevelDetailId.ToByteArray)}
             DBHelper.Execute(deleteStatement, parameters)
         Catch ex As Exception
@@ -85,9 +85,9 @@ Public Class ServiceLevelDetailDAL
         End Try
     End Sub
 
-    Public Function IsServiceLevelDetailValid(ByVal slgId As Guid, ByVal sCode As String, ByVal riskypeId As Guid, ByVal costTypeId As Guid, ByVal effectiveDate As Date) As DataSet
+    Public Function IsServiceLevelDetailValid(slgId As Guid, sCode As String, riskypeId As Guid, costTypeId As Guid, effectiveDate As Date) As DataSet
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/VALIDATE_SLD")
+        Dim selectStmt As String = Config("/SQL/VALIDATE_SLD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                                 {New DBHelper.DBHelperParameter("service_level_group_id", slgId.ToByteArray), _
                                     New DBHelper.DBHelperParameter("code", sCode), _
@@ -105,12 +105,12 @@ Public Class ServiceLevelDetailDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

@@ -38,23 +38,23 @@ Public Class WebPasswdDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("web_pass_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal companyGroupId As Guid, ByVal serviceTypeId As Guid, ByVal env As String, _
-                    ByVal isExternal As Boolean, ByVal hub As String)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_WEB_PASSWD")
+    Public Sub Load(familyDS As DataSet, companyGroupId As Guid, serviceTypeId As Guid, env As String, _
+                    isExternal As Boolean, hub As String)
+        Dim selectStmt As String = Config("/SQL/LOAD_WEB_PASSWD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
                                         New DBHelper.DBHelperParameter(COL_NAME_ENV, IIf(String.IsNullOrEmpty(env), DBNull.Value, env.ToUpper())), _
                                         New DBHelper.DBHelperParameter(COL_NAME_ENV, IIf(String.IsNullOrEmpty(env), DBNull.Value, env.ToUpper())), _
@@ -66,41 +66,41 @@ Public Class WebPasswdDAL
                                         New DBHelper.DBHelperParameter(COL_NAME_SERVICE_TYPE_ID, IIf(IsNothing(serviceTypeId), DBNull.Value, serviceTypeId)), _
                                         New DBHelper.DBHelperParameter(COL_NAME_SERVICE_TYPE_ID, IIf(IsNothing(serviceTypeId), DBNull.Value, serviceTypeId))}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     'Fix for Def-2229
-    Public Sub Load(ByVal familyDS As DataSet, ByVal env As String, ByVal compGpId As Guid, Optional ByVal hub As String = Nothing)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_ENV_COMPANY_GROUP")
+    Public Sub Load(familyDS As DataSet, env As String, compGpId As Guid, Optional ByVal hub As String = Nothing)
+        Dim selectStmt As String = Config("/SQL/LOAD_ENV_COMPANY_GROUP")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
                                         New DBHelper.DBHelperParameter(COL_NAME_ENV, env), _
                                             New DBHelper.DBHelperParameter(COL_NAME_COMPANY_GROUP_ID, compGpId), _
                                                 New DBHelper.DBHelperParameter(COL_NAME_HUB, IIf(String.IsNullOrEmpty(hub), DBNull.Value, hub.ToUpper()))}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
 
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

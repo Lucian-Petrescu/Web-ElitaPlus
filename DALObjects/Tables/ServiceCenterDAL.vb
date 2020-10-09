@@ -105,48 +105,48 @@ Public Class ServiceCenterDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter
         parameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("service_center_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal code As String, ByVal oCountryIds As ArrayList)
-        Dim selectStmt As String = Me.Config("/SQL/GET_SERVICE_CENTER_BY_CODE")
+    Public Sub Load(familyDS As DataSet, code As String, oCountryIds As ArrayList)
+        Dim selectStmt As String = Config("/SQL/GET_SERVICE_CENTER_BY_CODE")
 
         Dim whereClauseConditions As String = ""
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql(Me.COL_NAME_COUNTRY_ID, oCountryIds, False)
+        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql(COL_NAME_COUNTRY_ID, oCountryIds, False)
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("code", code)}
 
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Sub GetServiceCenterID(ByVal familyDS As DataSet, ByVal code As String, ByVal oCountryIds As ArrayList)
-        Dim selectStmt As String = Me.Config("/SQL/GET_SERVICE_CENTER_ID")
+    Public Sub GetServiceCenterID(familyDS As DataSet, code As String, oCountryIds As ArrayList)
+        Dim selectStmt As String = Config("/SQL/GET_SERVICE_CENTER_ID")
 
         Dim whereClauseConditions As String = ""
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql(Me.COL_NAME_COUNTRY_ID, oCountryIds, False)
+        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql(COL_NAME_COUNTRY_ID, oCountryIds, False)
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("code", code)}
 
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -154,42 +154,42 @@ Public Class ServiceCenterDAL
 
     'Mannually Coded Method
     'If code, description, address, city and zip are ALL empty Guid it will return All Service Centers for the specified Countries
-    Public Function LoadList(ByVal oCountryIds As ArrayList, ByVal code As String, _
-                             ByVal description As String, ByVal address As String, _
-                             ByVal city As String, ByVal zip As String) As DataSet
+    Public Function LoadList(oCountryIds As ArrayList, code As String, _
+                             description As String, address As String, _
+                             city As String, zip As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
 
         Dim whereClauseConditions As String = ""
 
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("c." & Me.COL_NAME_COUNTRY_ID, oCountryIds, False)
-        If Me.FormatSearchMask(code) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(sc." & Me.COL_NAME_CODE & ") " & code.ToUpper
+        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("c." & COL_NAME_COUNTRY_ID, oCountryIds, False)
+        If FormatSearchMask(code) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(sc." & COL_NAME_CODE & ") " & code.ToUpper
         End If
-        If Me.FormatSearchMask(description) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(sc." & Me.COL_NAME_DESCRIPTION & ") " & description.ToUpper
+        If FormatSearchMask(description) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(sc." & COL_NAME_DESCRIPTION & ") " & description.ToUpper
         End If
-        If Me.FormatSearchMask(address) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "NVL(UPPER(a." & Me.COL_NAME_ADDRESS1 & "),' ') " & address.ToUpper
+        If FormatSearchMask(address) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "NVL(UPPER(a." & COL_NAME_ADDRESS1 & "),' ') " & address.ToUpper
         End If
-        If Me.FormatSearchMask(city) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "NVL(UPPER(a." & Me.COL_NAME_CITY & "),' ') " & city.ToUpper
+        If FormatSearchMask(city) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "NVL(UPPER(a." & COL_NAME_CITY & "),' ') " & city.ToUpper
         End If
-        If Me.FormatSearchMask(zip) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "NVL(UPPER(a." & Me.COL_NAME_ZIP & "),' ') " & zip.ToUpper
+        If FormatSearchMask(zip) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "NVL(UPPER(a." & COL_NAME_ZIP & "),' ') " & zip.ToUpper
         End If
 
         whereClauseConditions &= " AND " & Environment.NewLine & "ROWNUM < " & ROW_MAX
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
             Dim ds As New DataSet
-            ds = DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+            ds = DBHelper.Fetch(selectStmt, TABLE_NAME)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -201,7 +201,7 @@ Public Class ServiceCenterDAL
 #Region "Overloaded Methods"
 
     'This method was added manually to accommodate BO families Save
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, ByVal companyId As Guid, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal blnBankInfoSave As Boolean = False _
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, companyId As Guid, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal blnBankInfoSave As Boolean = False _
                                       )
         Dim svcCtrMfrDal As New ServiceCenterManufacturerDAL
         Dim svcCtrDlrDal As New ServiceCenterDealerDAL
@@ -242,7 +242,7 @@ Public Class ServiceCenterDAL
 
             'oSVCPlRecon.Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Deleted)
 
-            MyBase.Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
+            MyBase.Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
 
             'Second Pass updates additions And changes
             oAttributeValueDAL.Update(familyDataset.GetChanges(), tr)
@@ -252,7 +252,7 @@ Public Class ServiceCenterDAL
             End If
 
 
-            Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
             svcCtrMfrDal.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
             svcCtrDlrDal.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
             svcCtrZipDstDal.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
@@ -292,30 +292,30 @@ Public Class ServiceCenterDAL
     End Sub
 
 
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
 
 #End Region
 
-    Public Function GetLocateServiceCenterDetails(ByVal serviceCenterIds As ArrayList, ByVal dealerId As Guid, ByVal manufacturerId As Guid) As DataSet
+    Public Function GetLocateServiceCenterDetails(serviceCenterIds As ArrayList, dealerId As Guid, manufacturerId As Guid) As DataSet
         Dim selectStmt As String
         Dim whereClauseConditions As String = String.Empty
-        selectStmt = Me.Config("/SQL/GET_SERVICE_CENTER_DETAILS")
+        selectStmt = Config("/SQL/GET_SERVICE_CENTER_DETAILS")
         If (Not serviceCenterIds Is Nothing) Then
-            whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("elp_service_center." & Me.COL_NAME_SERVICE_CENTER_ID, serviceCenterIds, False)
+            whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("elp_service_center." & COL_NAME_SERVICE_CENTER_ID, serviceCenterIds, False)
         End If
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Try
             Dim ds As New DataSet
             Dim parameters() As DBHelper.DBHelperParameter
             parameters = New DBHelper.DBHelperParameter() { _
                             New DBHelper.DBHelperParameter("dealer_id", dealerId), _
                             New DBHelper.DBHelperParameter("manufacturer_id", manufacturerId)}
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -326,15 +326,15 @@ Public Class ServiceCenterDAL
     'zipLocator = Nothing will retrieve all the SC regardless of their Address Zip Locator
     'city = Nothing will retrieve all the SC regardless of their Address city
     'The other parameters are required (i.e. they cannot be nothing)
-    Public Function LocateServiceCenter(ByVal oCountryIds As ArrayList, _
-                                                    ByVal dealerId As Guid, _
-                                                    ByVal zipLocator As String, _
-                                                    ByVal city As String, _
-                                                    ByVal riskTypeId As Guid, _
-                                                    ByVal manufacturerId As Guid, _
-                                                    ByVal ServiceNetWrkID As Guid, _
-                                                    ByVal isNetwork As Boolean, _
-                                                    ByVal MethodOfRepairID As Guid, _
+    Public Function LocateServiceCenter(oCountryIds As ArrayList, _
+                                                    dealerId As Guid, _
+                                                    zipLocator As String, _
+                                                    city As String, _
+                                                    riskTypeId As Guid, _
+                                                    manufacturerId As Guid, _
+                                                    ServiceNetWrkID As Guid, _
+                                                    isNetwork As Boolean, _
+                                                    MethodOfRepairID As Guid, _
                                                     Optional ByVal isSearchByCity As Boolean = False, _
                                                     Optional ByVal UseZipDistrict As Boolean = True, _
                                                     Optional ByVal dealerType As String = "", _
@@ -343,16 +343,16 @@ Public Class ServiceCenterDAL
 
         Dim selectStmt As String
         If dealerType = VSCDealerTypeCode Then
-            selectStmt = Me.Config("/SQL/LOCATE_SERVICE_CENTER_DEALERS_SVC")
+            selectStmt = Config("/SQL/LOCATE_SERVICE_CENTER_DEALERS_SVC")
         Else
-            selectStmt = Me.Config("/SQL/LOCATE_SERVICE_CENTER")
+            selectStmt = Config("/SQL/LOCATE_SERVICE_CENTER")
         End If
 
         If Not UseZipDistrict Then
             If dealerType = VSCDealerTypeCode Then
-                selectStmt = Me.Config("/SQL/LOCATE_SERVICE_CENTER_WITH_NO_ZIP_DISTRICT_DEALERS_SVC")
+                selectStmt = Config("/SQL/LOCATE_SERVICE_CENTER_WITH_NO_ZIP_DISTRICT_DEALERS_SVC")
             Else
-                selectStmt = Me.Config("/SQL/LOCATE_SERVICE_CENTER_WITH_NO_ZIP_DISTRICT")
+                selectStmt = Config("/SQL/LOCATE_SERVICE_CENTER_WITH_NO_ZIP_DISTRICT")
             End If
         End If
         Dim whereClauseConditions As String = ""
@@ -378,20 +378,20 @@ Public Class ServiceCenterDAL
             zipLocatorParameter = New DBHelper.DBHelperParameter("zip_code", zipLocator)
         End If
 
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("sc." & Me.COL_NAME_COUNTRY_ID, oCountryIds, False)
+        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("sc." & COL_NAME_COUNTRY_ID, oCountryIds, False)
 
         If dealerType = VSCDealerTypeCode Then
-            inClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("sc." & Me.COL_NAME_COUNTRY_ID, oCountryIds, False)
+            inClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("sc." & COL_NAME_COUNTRY_ID, oCountryIds, False)
         End If
 
         If FlagMethodOfRepairRecovery = False Then
             'If srvCenterIDs.Count > 0 Then
             If isNetwork Then
                 'whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("sc." & Me.COL_NAME_SERVICE_CENTER_ID, srvCenterIDs, False)
-                whereClauseConditions &= Environment.NewLine & " AND sc." & Me.COL_NAME_SERVICE_CENTER_ID & " in (select snsc.service_center_id from elp_service_network_svc snsc where service_network_id  = " & MiscUtil.GetDbStringFromGuid(ServiceNetWrkID, True) & ") "
+                whereClauseConditions &= Environment.NewLine & " AND sc." & COL_NAME_SERVICE_CENTER_ID & " in (select snsc.service_center_id from elp_service_network_svc snsc where service_network_id  = " & MiscUtil.GetDbStringFromGuid(ServiceNetWrkID, True) & ") "
             Else
                 'whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildNotInListForSql("sc." & Me.COL_NAME_SERVICE_CENTER_ID, srvCenterIDs, False)
-                whereClauseConditions &= Environment.NewLine & " AND sc." & Me.COL_NAME_SERVICE_CENTER_ID & " not in (select snsc.service_center_id from elp_service_network sn, elp_service_network_svc snsc where sn.service_network_id  = snsc.service_network_id) "
+                whereClauseConditions &= Environment.NewLine & " AND sc." & COL_NAME_SERVICE_CENTER_ID & " not in (select snsc.service_center_id from elp_service_network sn, elp_service_network_svc snsc where sn.service_network_id  = snsc.service_network_id) "
             End If
             'End If
         End If
@@ -402,15 +402,15 @@ Public Class ServiceCenterDAL
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         If Not inClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Dim parameters() As DBHelper.DBHelperParameter
@@ -442,7 +442,7 @@ Public Class ServiceCenterDAL
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -450,12 +450,12 @@ Public Class ServiceCenterDAL
 
     End Function
 
-    Public Function LocateServiceCenterbyId(ByVal dealerId As Guid, _
-                                            ByVal zipLocator As String, _
-                                            ByVal riskTypeId As Guid, _
-                                            ByVal manufacturerId As Guid, _
-                                            ByVal MethodOfRepairID As Guid, _
-                                            ByVal ServiceCenterId As Guid) As DataSet
+    Public Function LocateServiceCenterbyId(dealerId As Guid, _
+                                            zipLocator As String, _
+                                            riskTypeId As Guid, _
+                                            manufacturerId As Guid, _
+                                            MethodOfRepairID As Guid, _
+                                            ServiceCenterId As Guid) As DataSet
 
         Dim parameters() As DBHelper.DBHelperParameter, selectStmt As String
 
@@ -476,7 +476,7 @@ Public Class ServiceCenterDAL
 
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -485,11 +485,11 @@ Public Class ServiceCenterDAL
     End Function
 
 
-    Public Function LoadAllServiceCenter(ByVal oCountryIds As ArrayList, ByVal blnMethodOfRepairRLG As Boolean, _
-                                         ByVal guidMethodOfRepair As Guid, Optional ByVal blnCheckAcctSetting As Boolean = False) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_SERVICE_CENTER_LIST")
+    Public Function LoadAllServiceCenter(oCountryIds As ArrayList, blnMethodOfRepairRLG As Boolean, _
+                                         guidMethodOfRepair As Guid, Optional ByVal blnCheckAcctSetting As Boolean = False) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_SERVICE_CENTER_LIST")
         Dim whereClauseConditions As String = ""
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("sc." & Me.COL_NAME_COUNTRY_ID, oCountryIds, False)
+        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("sc." & COL_NAME_COUNTRY_ID, oCountryIds, False)
         If blnMethodOfRepairRLG Then
             whereClauseConditions &= Environment.NewLine & " AND scmr.serv_center_mor_id =" & MiscUtil.GetDbStringFromGuid(guidMethodOfRepair, True)
         Else 'exclude recovery/legal/general expense
@@ -500,18 +500,18 @@ Public Class ServiceCenterDAL
             whereClauseConditions &= " exists(select null from elp_acct_settings a WHERE sc.master_center_id = a.service_center_id and not sc.master_center_id is null) ) "
 
         End If
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Try
             Dim ds As New DataSet
-            ds = DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+            ds = DBHelper.Fetch(selectStmt, TABLE_NAME)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadServiceCenterForCountry(ByVal oCountryId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_SERVICE_CENTERS_FOR_COUNTRY")
+    Public Function LoadServiceCenterForCountry(oCountryId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_SERVICE_CENTERS_FOR_COUNTRY")
         'Dim whereClauseConditions As String = ""
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
                    New DBHelper.DBHelperParameter("country_id", oCountryId)}
@@ -522,15 +522,15 @@ Public Class ServiceCenterDAL
         'selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Try
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetServiceCenterForWS(ByVal ServiceCenterCode As String, ByVal oCountryId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_SERVICE_CENTER_LIST_FOR_WS")
+    Public Function GetServiceCenterForWS(ServiceCenterCode As String, oCountryId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_SERVICE_CENTER_LIST_FOR_WS")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
                    New DBHelper.DBHelperParameter("country_id", oCountryId.ToByteArray), _
@@ -538,31 +538,31 @@ Public Class ServiceCenterDAL
         Try
             Dim ds As New DataSet
             'ds = DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME_WS, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME_WS, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetUserCustCountries(ByVal UserId As Guid, ByVal CountryId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_USER_CUST_COUNTRIES")
+    Public Function GetUserCustCountries(UserId As Guid, CountryId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_USER_CUST_COUNTRIES")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
                    New DBHelper.DBHelperParameter("user_id", UserId), _
                    New DBHelper.DBHelperParameter("country_id", CountryId)}
 
         Try
             Dim ds = New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.COUNTRY_TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, COUNTRY_TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
-        Return DBHelper.Fetch(selectStmt, Me.COUNTRY_TABLE_NAME)
+        Return DBHelper.Fetch(selectStmt, COUNTRY_TABLE_NAME)
     End Function
 
-    Public Function LoadSVCentersBySVNetwork(ByVal svnetworkid As Guid, ByVal CountryId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_SERVICE_CENTER_BY_SERVICE_NETWORK")
+    Public Function LoadSVCentersBySVNetwork(svnetworkid As Guid, CountryId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_SERVICE_CENTER_BY_SERVICE_NETWORK")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
                    New DBHelper.DBHelperParameter("sv_network_id", svnetworkid)}
         Dim whereClauseConditions As String = ""
@@ -570,21 +570,21 @@ Public Class ServiceCenterDAL
         If Not CountryId.Equals(Guid.Empty) Then
             whereClauseConditions &= Environment.NewLine & " AND sc.country_id =" & MiscUtil.GetDbStringFromGuid(CountryId, True)
         End If
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Try
             Dim ds = New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
 #Region "VendorManagement"
 
-    Public Function GetContactsView(ByVal ServiceCenterId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_SERVICE_CENTER_CONTACT_INFO")
+    Public Function GetContactsView(ServiceCenterId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_SERVICE_CENTER_CONTACT_INFO")
 
         'Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
         '           New DBHelper.DBHelperParameter("Service_center_id", ServiceCenterId.ToByteArray)}
@@ -597,8 +597,8 @@ Public Class ServiceCenterDAL
         'End Try
     End Function
 
-    Public Function GetQuantityView(ByVal ServiceCenterId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_SERVICE_CENTER_QUANTITY")
+    Public Function GetQuantityView(ServiceCenterId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_SERVICE_CENTER_QUANTITY")
 
         'Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
         '           New DBHelper.DBHelperParameter("Service_center_id", ServiceCenterId.ToByteArray)}
@@ -625,8 +625,8 @@ Public Class ServiceCenterDAL
                                          parameters)
     End Function
 
-    Public Function GetScheduleView(ByVal ServiceCenterId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_SERVICE_CENTER_SCHEDULE")
+    Public Function GetScheduleView(ServiceCenterId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_SERVICE_CENTER_SCHEDULE")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
                    New DBHelper.DBHelperParameter("Service_center_id", ServiceCenterId.ToByteArray)}
@@ -639,8 +639,8 @@ Public Class ServiceCenterDAL
         End Try
     End Function
 
-    Public Function CheckIfServiceCenterIsMaster(ByVal ServiceCenterId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/CHECK_IF_SERVICE_CENTER_IS_MASTER_CENTER")
+    Public Function CheckIfServiceCenterIsMaster(ServiceCenterId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/CHECK_IF_SERVICE_CENTER_IS_MASTER_CENTER")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
                    New DBHelper.DBHelperParameter("Service_center_id", ServiceCenterId.ToByteArray), _
@@ -654,8 +654,8 @@ Public Class ServiceCenterDAL
         End Try
     End Function
 
-    Public Function GetAttributeView(ByVal ServiceCenterId As Guid, ByVal LanguageId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_AVAILABLE_ATRIBUTES_BY_SERVICE_CENTER_ID")
+    Public Function GetAttributeView(ServiceCenterId As Guid, LanguageId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_AVAILABLE_ATRIBUTES_BY_SERVICE_CENTER_ID")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
                    New DBHelper.DBHelperParameter("Service_center_id", ServiceCenterId.ToByteArray), _
@@ -674,36 +674,36 @@ Public Class ServiceCenterDAL
 #End Region
 
 #Region "Price List"
-    Public Function IsPriceListAssignedtoServiceIssue(ByVal PriceListCode As String) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/IsPriceListAssignedToServiceCenter")
+    Public Function IsPriceListAssignedtoServiceIssue(PriceListCode As String) As Boolean
+        Dim selectStmt As String = Config("/SQL/IsPriceListAssignedToServiceCenter")
         Dim ds As New DataSet
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("price_list_code", PriceListCode)}
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
-            If ds.Tables(Me.TABLE_NAME).Rows.Count > 0 Then Return True Else Return False
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
+            If ds.Tables(TABLE_NAME).Rows.Count > 0 Then Return True Else Return False
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function GetAvailableServiceCenters(ByVal countryId As ArrayList) As DataView
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_SERVICE_CENTER_LIST")
+    Public Function GetAvailableServiceCenters(countryId As ArrayList) As DataView
+        Dim selectStmt As String = Config("/SQL/LOAD_SERVICE_CENTER_LIST")
         Try
             selectStmt &= MiscUtil.BuildListForSql(" WHERE (price_list_code is null) or (price_list_code = '') and " & ServiceCenterDAL.COL_NAME_COUNTRY_ID, countryId, True)
-            Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME).Tables(0).DefaultView
+            Return DBHelper.Fetch(selectStmt, TABLE_NAME).Tables(0).DefaultView
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Sub LoadPriceListServiceCenters(ByVal familyDS As DataSet, ByVal priceListCode As String)
+    Public Sub LoadPriceListServiceCenters(familyDS As DataSet, priceListCode As String)
 
         Try
 
-            Dim selectStmt As String = Me.Config("/SQL/LOAD_PRICE_LIST_LIST")
+            Dim selectStmt As String = Config("/SQL/LOAD_PRICE_LIST_LIST")
             Dim parameters() As OracleParameter = New OracleParameter() {New OracleParameter(COL_NAME_PRICE_LIST_CODE, priceListCode.ToString().Trim())}
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -712,16 +712,16 @@ Public Class ServiceCenterDAL
 
 #End Region
 
-    Public Function GetServicecenterDescBytes(ByVal SVCDescription As String) As Integer
+    Public Function GetServicecenterDescBytes(SVCDescription As String) As Integer
         Dim ds As New DataSet
         Dim result As Integer
-        Dim selectStmt As String = Me.Config("/SQL/GET_STRING_BYTES")
+        Dim selectStmt As String = Config("/SQL/GET_STRING_BYTES")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
         {New DBHelper.DBHelperParameter("svc_desc", SVCDescription)}
 
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Integer.TryParse(ds.Tables(0).Rows(0)(0).ToString(), result)
             Return result
         Catch ex As Exception
@@ -731,7 +731,7 @@ Public Class ServiceCenterDAL
 
     'US 224101 - Common call to stored procedures
     Private Function FetchStoredProcedure(methodName As String, storedProc As String, parameters() As OracleParameter, Optional familyDS As DataSet = Nothing) As DataSet
-        Dim tbl As String = Me.TABLE_NAME
+        Dim tbl As String = TABLE_NAME
         Dim ds As DataSet = If(familyDS Is Nothing, New DataSet(), familyDS)
 
         ds.Tables.Add(tbl)
@@ -745,7 +745,7 @@ Public Class ServiceCenterDAL
                     OracleDbHelper.Fetch(cmd, tbl, ds)
                 End Using
             End Using
-            Dim par = parameters.FirstOrDefault(Function(p As OracleParameter) p.ParameterName.Equals(Me.PAR_OUT_NAME_RETURN_CODE))
+            Dim par = parameters.FirstOrDefault(Function(p As OracleParameter) p.ParameterName.Equals(PAR_OUT_NAME_RETURN_CODE))
             If (Not par Is Nothing AndAlso par.Value = 200) Then
                 Throw New ElitaPlusException("ServiceCenter - " + methodName, Common.ErrorCodes.DB_READ_ERROR)
             End If

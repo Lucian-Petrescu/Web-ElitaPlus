@@ -2,7 +2,7 @@
              Inherits BusinessObjectBase
 
 
- Public Shared Function getCollectedTotals(ByVal certId As Guid) As CollectedTotals
+ Public Shared Function getCollectedTotals(certId As Guid) As CollectedTotals
         Try
             Dim dal As New PaymentDetailDAL
             Return New CollectedTotals(dal.LoadCollectedTotals(certId).Tables(0))
@@ -11,7 +11,7 @@
         End Try
  End Function 
 
-    Public Shared Function getCollectedHistoryList(ByVal certId As Guid, ByVal Sortby As String) As CollectedHistorySearchDV
+    Public Shared Function getCollectedHistoryList(certId As Guid, Sortby As String) As CollectedHistorySearchDV
         Try
             Dim dal As New PaymentDetailDAL
             Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
@@ -37,34 +37,34 @@
 
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property CollectedAmount(ByVal row) As String
+        Public Shared ReadOnly Property CollectedAmount(row) As String
             Get
                 Return row(COL_NAME_COLLECTED_AMOUNT).ToString()
             End Get
         End Property
 
-        Public Shared ReadOnly Property CollectedDate(ByVal row) As DateType
+        Public Shared ReadOnly Property CollectedDate(row) As DateType
             Get
                 Return row(COL_NAME_COLLECTED_DATE).ToString()
             End Get
         End Property
 
-        Public Shared ReadOnly Property BillingStartDate(ByVal row) As DateType
+        Public Shared ReadOnly Property BillingStartDate(row) As DateType
             Get
                 Return row(COL_NAME_BILLING_START_DATE).ToString()
             End Get
         End Property
-        Public Shared ReadOnly Property CREATED_DATE(ByVal row) As DateType
+        Public Shared ReadOnly Property CREATED_DATE(row) As DateType
             Get
                 Return row(COL_NAME_CREATED_DATE).ToString()
             End Get
         End Property
 
-        Public Shared ReadOnly Property IncomingAmount(ByVal row) As String
+        Public Shared ReadOnly Property IncomingAmount(row) As String
             Get
                 Return row(COL_NAME_INCOMING_AMOUNT).ToString()
             End Get
@@ -87,7 +87,7 @@
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

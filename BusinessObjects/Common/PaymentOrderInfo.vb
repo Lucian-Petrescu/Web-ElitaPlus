@@ -13,50 +13,50 @@
 #Region "Constructors"
 
     'Existing BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load(id)
+        Dataset = New Dataset
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load()
+        Dataset = New Dataset
+        Load()
     End Sub
 
     'Existing BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
         'Me._userObj = userObj
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
         'Me._userObj = userObj
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New BankInfoDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             'Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -64,23 +64,23 @@
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New BankInfoDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -103,7 +103,7 @@
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(BankInfoDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -113,7 +113,7 @@
         End Get
     End Property
     <ValueMandatory("")> _
-    Public Property CountryID() As Guid
+    Public Property CountryID As Guid
         Get
             CheckDeleted()
             If Row(BankInfoDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -122,14 +122,14 @@
                 Return New Guid(CType(Row(BankInfoDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(BankInfoDAL.COL_NAME_COUNTRY_ID, Value)
+            SetValue(BankInfoDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property Account_Name() As String
+    Public Property Account_Name As String
         Get
             CheckDeleted()
             If Row(BankInfoDAL.COL_NAME_ACCOUNT_NAME) Is DBNull.Value Then
@@ -138,15 +138,15 @@
                 Return CType(Row(BankInfoDAL.COL_NAME_ACCOUNT_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(BankInfoDAL.COL_NAME_ACCOUNT_NAME, Value)
+            SetValue(BankInfoDAL.COL_NAME_ACCOUNT_NAME, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidBankIDLengthFromCountry("")> _
-    Public Property Bank_Id() As String
+    Public Property Bank_Id As String
         Get
             CheckDeleted()
             If Row(BankInfoDAL.COL_NAME_BANK_ID) Is DBNull.Value Then
@@ -155,14 +155,14 @@
                 Return CType(Row(BankInfoDAL.COL_NAME_BANK_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(BankInfoDAL.COL_NAME_BANK_ID, Value)
+            SetValue(BankInfoDAL.COL_NAME_BANK_ID, Value)
         End Set
     End Property
     
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property BankName() As String
+    Public Property BankName As String
         Get
             CheckDeleted()
             If Row(BankInfoDAL.COL_NAME_BANK_NAME) Is DBNull.Value Then
@@ -171,34 +171,34 @@
                 Return CType(Row(BankInfoDAL.COL_NAME_BANK_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(BankInfoDAL.COL_NAME_BANK_NAME, Value)
+            SetValue(BankInfoDAL.COL_NAME_BANK_NAME, Value)
         End Set
     End Property
 
-    Public Property SourceCountryID() As Guid
+    Public Property SourceCountryID As Guid
         Get
             Return _sourceCountryID
         End Get
-        Set(ByVal Value As Guid)
+        Set
             _sourceCountryID = Value
         End Set
     End Property
-    Public Property ValidateFieldsforBR() As Boolean
+    Public Property ValidateFieldsforBR As Boolean
         Get
             Return _BRValidation
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             _BRValidation = Value
         End Set
     End Property
 
-    Public Property PaymentMethodId() As Guid
+    Public Property PaymentMethodId As Guid
         Get
             Return _PaymentMethodId
         End Get
-        Set(ByVal Value As Guid)
+        Set
             _PaymentMethodId = Value
         End Set
     End Property
@@ -210,11 +210,11 @@
     Public NotInheritable Class ValidBankIDLengthFromCountry
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_BANKID_LENGTH) 'INVALID_ACCTNO_LENGTH
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PaymentOrderInfo = CType(objectToValidate, PaymentOrderInfo)
             Dim i As Integer
 
@@ -228,13 +228,13 @@
                 obj.Bank_Id = obj.Bank_Id.ToString.Trim
             End If
 
-            If (Not objCountry.BankIDLength Is Nothing) AndAlso objCountry.BankIDLength.Value > 0 Then
+            If (objCountry.BankIDLength IsNot Nothing) AndAlso objCountry.BankIDLength.Value > 0 Then
                 'ToString.Length > 0 Then
                 If (obj.Bank_Id.ToString.Trim.Length <> objCountry.BankIDLength.Value) Then
-                    MyBase.Message = Common.ErrorCodes.INVALID_BANKID_LENGTH
+                    Message = Common.ErrorCodes.INVALID_BANKID_LENGTH
                     Return False
                 Else
-                    If LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Argentina Then
+                    If LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Argentina Then
                         Dim BankId(6) As Integer, strConstant As String = "7139713"
                         Dim Total As Integer = 0, checkDigit As Integer
                         For i = 0 To 6
@@ -247,14 +247,14 @@
                             checkDigit = 0
                         End If
                         If checkDigit <> CInt(obj.Bank_Id.ToString.Substring(obj.Bank_Id.ToString.Length - 1, 1)) Then
-                            MyBase.Message = Common.ErrorCodes.POPULATE_BO_ERR
+                            Message = Common.ErrorCodes.POPULATE_BO_ERR
                             Return False
                         End If
                     End If
                 End If
             Else
                 If obj.Bank_Id.ToString.Trim.Length > 10 Then
-                    MyBase.Message = Common.ErrorCodes.INVALID_BANKID_LENGTH
+                    Message = Common.ErrorCodes.INVALID_BANKID_LENGTH
                     Return False
                 End If
             End If
@@ -266,11 +266,11 @@
     Public NotInheritable Class ValidateBankNameForbrasil
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_BRANCHDIGIT_LENGTH) 'INVALID_ACCTNO_LENGTH
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PaymentOrderInfo = CType(objectToValidate, PaymentOrderInfo)
             Dim i As Integer
 
@@ -279,12 +279,12 @@
             End If
 
             Dim objCountry As New Country(obj.CountryID)
-            If LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Brasil _
+            If LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Brasil _
                  And obj.ValidateFieldsforBR = True Then
 
                 'Bank Number
                 If obj.IsEmptyString(obj.BankName) Then
-                    MyBase.Message = Common.ErrorCodes.ERR_BANKNAME_IS_REQUIRED
+                    Message = Common.ErrorCodes.ERR_BANKNAME_IS_REQUIRED
                     Return False
                 End If
 
@@ -299,11 +299,11 @@
     Public NotInheritable Class ValidateBankIdForbrasil
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_BRANCHDIGIT_LENGTH) 'INVALID_ACCTNO_LENGTH
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PaymentOrderInfo = CType(objectToValidate, PaymentOrderInfo)
             Dim i As Integer
 
@@ -312,17 +312,17 @@
             End If
 
             Dim objCountry As New Country(obj.CountryID)
-            If LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Brasil _
+            If LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Brasil _
                  And obj.ValidateFieldsforBR = True Then
 
                 'Bank Id
                 If obj.IsEmptyString(obj.Bank_Id) Then
-                    MyBase.Message = Common.ErrorCodes.ERR_BANKID_IS_REQUIRED
+                    Message = Common.ErrorCodes.ERR_BANKID_IS_REQUIRED
                     Return False
                 End If
 
                 If obj.Bank_Id.ToString.Length > 3 Then
-                    MyBase.Message = Common.ErrorCodes.INVALID_BANKID_LENGTH
+                    Message = Common.ErrorCodes.INVALID_BANKID_LENGTH
                     Return False
                 End If
 
@@ -340,15 +340,15 @@
             'If Not (Me.IsDeleted) Then SetPaymentReasonID()
 
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New BankInfoDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New Dataset
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New Dataset
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -356,7 +356,7 @@
         End Try
     End Sub
 
-    Private Function IsEmptyString(ByVal value As String)
+    Private Function IsEmptyString(value As String)
         Return (value Is Nothing OrElse value.Trim.Length = 0)
     End Function
 
@@ -364,14 +364,14 @@
 
 #Region "Shared Methods"
 
-    Public Shared Sub SetProcessCancellationData(ByVal oBankInfoData As BankInfoData, _
-                                              ByVal oPaymentOrderInfo As PaymentOrderInfo)
+    Public Shared Sub SetProcessCancellationData(oBankInfoData As BankInfoData, _
+                                              oPaymentOrderInfo As PaymentOrderInfo)
         With oBankInfoData
             .bankinfoId = oPaymentOrderInfo.Id
-            If Not oPaymentOrderInfo.Account_Name Is Nothing Then
+            If oPaymentOrderInfo.Account_Name IsNot Nothing Then
                 .AccountName = oPaymentOrderInfo.Account_Name
             End If            
-            If Not oPaymentOrderInfo.Bank_Id Is Nothing Then
+            If oPaymentOrderInfo.Bank_Id IsNot Nothing Then
                 .BankID = oPaymentOrderInfo.Bank_Id
             Else
                 .BankID = Nothing
@@ -382,7 +382,7 @@
                 Dim ocountry As Country = ElitaPlusIdentity.Current.ActiveUser.Country(ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID)
                 .CountryId = ocountry.Id
             End If            
-            If Not oPaymentOrderInfo.BankName Is Nothing Then
+            If oPaymentOrderInfo.BankName IsNot Nothing Then
                 .BankName = oPaymentOrderInfo.BankName
             End If            
         End With

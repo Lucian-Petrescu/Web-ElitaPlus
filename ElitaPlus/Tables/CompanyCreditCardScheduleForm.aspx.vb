@@ -74,7 +74,7 @@ Namespace Tables
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -86,7 +86,7 @@ Namespace Tables
 
         Public ReadOnly Property IsEditing() As Boolean
             Get
-                IsEditing = (Me.moDataGrid.EditItemIndex > Me.NO_ITEM_SELECTED_INDEX)
+                IsEditing = (moDataGrid.EditItemIndex > NO_ITEM_SELECTED_INDEX)
             End Get
         End Property
 
@@ -135,19 +135,19 @@ Namespace Tables
 
         Private Sub SetStateProperties()
             If IsSingleCompanyUser() Then
-                Me.State.CompanyId = ElitaPlusIdentity.Current.ActiveUser.Company.Id
+                State.CompanyId = ElitaPlusIdentity.Current.ActiveUser.Company.Id
             Else
-                If Me.State.SetClosingDateByCompany Then
-                    Me.State.CompanyId = New Guid(moCompanyDropDownList.SelectedItem.Value)
+                If State.SetClosingDateByCompany Then
+                    State.CompanyId = New Guid(moCompanyDropDownList.SelectedItem.Value)
                 Else
-                    Me.State.CompanyId = Guid.Empty
+                    State.CompanyId = Guid.Empty
                 End If
             End If
         End Sub
 
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Try
-                If Not Me.CallingParameters Is Nothing Then
+                If CallingParameters IsNot Nothing Then
                     'Get the id from the parent
                     Dim boCompanyCreditCard As CompanyCreditCard
                     Dim boCompany As Company
@@ -155,14 +155,14 @@ Namespace Tables
                     'boCompanyCreditCard = New CompanyCreditCard(CType(Me.CallingParameters, Guid))
                     paramList = CType(CallingParameters, ArrayList)
                     boCompanyCreditCard = New CompanyCreditCard(CType(paramList(0), Guid))
-                    Me.State.CompanyCreditCardId = boCompanyCreditCard.Id
-                    Me.State.CompanyCreditType = CType(paramList(1), String)
-                    Me.State.CompanyId = boCompanyCreditCard.CompanyId
-                    boCompany = New Company(Me.State.CompanyId)
-                    Me.State.CompanyName = boCompany.Description
+                    State.CompanyCreditCardId = boCompanyCreditCard.Id
+                    State.CompanyCreditType = CType(paramList(1), String)
+                    State.CompanyId = boCompanyCreditCard.CompanyId
+                    boCompany = New Company(State.CompanyId)
+                    State.CompanyName = boCompany.Description
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
 
         End Sub
@@ -171,31 +171,31 @@ Namespace Tables
 
 #Region "Page Events"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
-                Me.ErrController.Clear_Hide()
-                Me.SetStateProperties()
+                ErrController.Clear_Hide()
+                SetStateProperties()
                 If Not Page.IsPostBack Then
-                    Me.SetGridItemStyleColor(moDataGrid)
-                    Me.State.PageIndex = 0
-                    Me.State.year = DatePart("yyyy", DateHelper.GetDateValue(Now.ToString())).ToString
+                    SetGridItemStyleColor(moDataGrid)
+                    State.PageIndex = 0
+                    State.year = DatePart("yyyy", DateHelper.GetDateValue(Now.ToString())).ToString
                     PopulateYearsDropdown()
                     'DEF-1726 Set Current year as the year selected in Year dropdown
-                    setYearSelection(Me.State.year)
+                    setYearSelection(State.year)
                     'End of DEF-1726
                     PopulateCompaniesDropdown()
-                    setCompanySelection(Me.State.CompanyName)
-                    moYearLabel.Text = Me.State.CompanyCreditType
+                    setCompanySelection(State.CompanyName)
+                    moYearLabel.Text = State.CompanyCreditType
                     'If IsSingleCompanyUser() Then
                     'Me.State.CompanyId = ElitaPlusIdentity.Current.ActiveUser.Company.Id
-                    Me.State.SetClosingDateByCompany = True
+                    State.SetClosingDateByCompany = True
                     moByCompanyLabel.Visible = True
                     moCompanyDropDownList.Visible = True
                     lblColon.Visible = True
                     tblContainer.Visible = True
                     btnNew_WRITE.Visible = True
-                    Me.btnNew_WRITE.Enabled = True
+                    btnNew_WRITE.Enabled = True
                     'Else
                     '    Me.State.SetClosingDateByCompany = False
                     '    lblRecordCount.Visible = False
@@ -205,35 +205,35 @@ Namespace Tables
                     '    btnNew_WRITE.Visible = False
                     '    tblContainer.Visible = False
                     'End If
-                    Me.State.oCurrentCulture = New CultureInfo(CultureInfo.CurrentCulture.ToString())
+                    State.oCurrentCulture = New CultureInfo(CultureInfo.CurrentCulture.ToString())
                     'Thread.CurrentThread.CurrentCulture = New CultureInfo("en-US")
-                    If Not Me.CallingParameters Is Nothing AndAlso Me.State.addNewYearOnLoad Then
-                        Me.btnNew_WRITE.Enabled = False
-                        Me.State.prevSelectedYear = Me.State.year
-                        Me.State.prevSelectedCompanyName = Me.State.CompanyName
-                        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Undo
-                        Me.State.isNew = True
+                    If CallingParameters IsNot Nothing AndAlso State.addNewYearOnLoad Then
+                        btnNew_WRITE.Enabled = False
+                        State.prevSelectedYear = State.year
+                        State.prevSelectedCompanyName = State.CompanyName
+                        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Undo
+                        State.isNew = True
                         LocateNewCompany()
                         PopulateGrid(True)
                         If IsDataGPageDirty() Then
-                            DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSavePagePromptResponse)
-                            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                            Me.State.NewYearAdded = True
-                            Me.HiddenIsPageDirty.Value = "NO"
+                            DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
+                            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                            State.NewYearAdded = True
+                            HiddenIsPageDirty.Value = "NO"
                         End If
 
                     Else
                         PopulateGrid()
                     End If
-                    setYearSelection(Me.State.year)
+                    setYearSelection(State.year)
 
                 Else
                     CheckIfComingFromSaveConfirm()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
-            Me.ShowMissingTranslations(ErrController)
+            ShowMissingTranslations(ErrController)
         End Sub
 
 #End Region
@@ -242,40 +242,40 @@ Namespace Tables
 
         Protected Sub CheckIfComingFromSaveConfirm()
 
-            Dim confResponse As String = Me.HiddenSavePagePromptResponse.Value
+            Dim confResponse As String = HiddenSavePagePromptResponse.Value
 
-            If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
-                If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
+            If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
+                If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
                     'DEF-1562
                     ValidateGrig()
                     'End of DEF-1562
-                    Me.SavePage()
+                    SavePage()
                 End If
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
                         ReturnPage()
                     Case ElitaPlusPage.DetailPageCommand.New_
-                        Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                        Me.State.isNew = True
-                        Me.PopulateGrid()
+                        AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                        State.isNew = True
+                        PopulateGrid()
                 End Select
-            ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-                Me.State.NewYearAdded = False
-                Me.HiddenIsPageDirty.Value = "NO"
-                Select Case Me.State.ActionInProgress
+            ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+                State.NewYearAdded = False
+                HiddenIsPageDirty.Value = "NO"
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
                         ReturnPage()
                     Case ElitaPlusPage.DetailPageCommand.New_
-                        Me.State.isNew = True
-                        Me.PopulateGrid()
+                        State.isNew = True
+                        PopulateGrid()
                     Case ElitaPlusPage.DetailPageCommand.Accept
-                        Me.State.isNew = False
-                        Me.State.year = Me.GetSelectedDescription(Me.moYearDropDownList)
+                        State.isNew = False
+                        State.year = GetSelectedDescription(moYearDropDownList)
                         PopulateYearsDropdown()
-                        setYearSelection(Me.State.year)
-                        Me.State.CompanyName = Me.GetSelectedDescription(Me.moCompanyDropDownList)
+                        setYearSelection(State.year)
+                        State.CompanyName = GetSelectedDescription(moCompanyDropDownList)
                         PopulateCompaniesDropdown()
-                        setCompanySelection(Me.State.CompanyName)
+                        setCompanySelection(State.CompanyName)
                         PopulateGrid()
                 End Select
             End If
@@ -288,16 +288,16 @@ Namespace Tables
             End If
 
             'Clean after consuming the action
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-            Me.HiddenSavePagePromptResponse.Value = ""
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            HiddenSavePagePromptResponse.Value = ""
 
         End Sub
-        Private Function CreateBoFromGrid(ByVal index As Integer) As CcBillingSchedule
+        Private Function CreateBoFromGrid(index As Integer) As CcBillingSchedule
             Dim CcBillingScheduleId As Guid
             Dim CcBillingSchedule As CcBillingSchedule
 
             moDataGrid.SelectedIndex = index
-            CcBillingScheduleId = New Guid(moDataGrid.Items(index).Cells(Me.ID_COL).Text)
+            CcBillingScheduleId = New Guid(moDataGrid.Items(index).Cells(ID_COL).Text)
 
             If CcBillingScheduleId.Equals(Guid.Empty) Then
                 CcBillingSchedule = New CcBillingSchedule
@@ -316,10 +316,10 @@ Namespace Tables
 
             'When Closing Date is By Company, Set up the  Arraylist with current company
             ActiveUserOtherCompaniesArrayList = New ArrayList
-            ActiveUserOtherCompaniesArrayList.Add(Me.State.CompanyCreditCardId)
+            ActiveUserOtherCompaniesArrayList.Add(State.CompanyCreditCardId)
 
             If ActiveUserOtherCompaniesArrayList.Count > 0 Then
-                If Me.State.isNew Then
+                If State.isNew Then
                     ScheduleBillingInfoCompaniesArrayList = New ArrayList
                     For i As Integer = 0 To ActiveUserOtherCompaniesArrayList.Count - 1
                         Dim SchedulebillingInfosArrayList As New ArrayList
@@ -335,12 +335,12 @@ Namespace Tables
                     For i As Integer = 0 To ActiveUserOtherCompaniesArrayList.Count - 1
                         Dim BillingScheduleInfosArrayList As New ArrayList
                         Dim dv As DataView = Assurant.ElitaPlus.BusinessObjectsNew.CcBillingSchedule.GetCCBillingScheduleDates(
-                                                CType(ActiveUserOtherCompaniesArrayList.Item(i), Guid), Me.State.year)
-                        If Me.moDataGrid.Items.Count <> dv.Count Then
+                                                CType(ActiveUserOtherCompaniesArrayList.Item(i), Guid), State.year)
+                        If moDataGrid.Items.Count <> dv.Count Then
                             Throw New GUIException("", Assurant.ElitaPlus.Common.ErrorCodes.INVALID_RECORD_COUNT_ON_OTHER_COMPANY_ACCOUNTING_CLOSE_DATES_ERR)
                         End If
                         For j As Integer = 0 To 11
-                            Dim accCloseInfoId As Guid = GuidControl.ByteArrayToGuid(dv.Table.Rows(j).Item(Me.DV_ID_COL))
+                            Dim accCloseInfoId As Guid = GuidControl.ByteArrayToGuid(dv.Table.Rows(j).Item(DV_ID_COL))
                             BillingScheduleInfosArrayList.Add(New CcBillingSchedule(accCloseInfoId))
                         Next
                         ScheduleBillingInfoCompaniesArrayList.Add(BillingScheduleInfosArrayList)
@@ -349,13 +349,13 @@ Namespace Tables
             End If
 
             Dim CcBillingSchedule As CcBillingSchedule
-            Dim totItems As Integer = Me.moDataGrid.Items.Count
+            Dim totItems As Integer = moDataGrid.Items.Count
 
             If totItems > 0 Then
                 CcBillingSchedule = CreateBoFromGrid(0)
                 CcBillingSchedule.isDateEnable = False
                 BindBoPropertiesToGridHeaders(CcBillingSchedule)
-                If Me.moDataGrid.Items(0).Cells(2).Enabled Then
+                If moDataGrid.Items(0).Cells(2).Enabled Then
                     CcBillingSchedule.isDateEnable = True
                 End If
 
@@ -368,7 +368,7 @@ Namespace Tables
             totItems = totItems - 1
             For index As Integer = 1 To totItems
                 CcBillingSchedule.isDateEnable = False
-                If Me.moDataGrid.Items(index).Cells(CLOSE_DATE_COL).Enabled Then
+                If moDataGrid.Items(index).Cells(CLOSE_DATE_COL).Enabled Then
                     CcBillingSchedule.isDateEnable = True
                 End If
                 CcBillingSchedule = CreateBoFromGrid(index)
@@ -380,14 +380,14 @@ Namespace Tables
         End Sub
 
         Function IsDataGPageDirty() As Boolean
-            Dim Result As String = Me.HiddenIsPageDirty.Value
+            Dim Result As String = HiddenIsPageDirty.Value
 
             Return Result.Equals("YES")
         End Function
 
         Public Function Get_A_New_Date() As BillingSchedulingIfoDataview
             Dim oDataTable As DataTable = BillingSchedulingIfoDataview.CreateTable
-            Dim dv As CcBillingSchedule.CCSchedulingInfoSearchDV = CcBillingSchedule.GetLastBillingDate(Me.State.CompanyCreditCardId)
+            Dim dv As CcBillingSchedule.CCSchedulingInfoSearchDV = CcBillingSchedule.GetLastBillingDate(State.CompanyCreditCardId)
             Dim coverageRow As DataRow = dv.Table.Rows(0)
             Dim LastDate As Date
             If coverageRow(CcBillingSchedule.CCSchedulingInfoSearchDV.COL_NAME_CLOSE_DATE) Is System.DBNull.Value Then
@@ -402,7 +402,7 @@ Namespace Tables
             Return New BillingSchedulingIfoDataview(oDataTable)
 
         End Function
-        Private Sub AddNewBillingRow(ByVal oDataTable As DataTable, ByVal oDate As Date)
+        Private Sub AddNewBillingRow(oDataTable As DataTable, oDate As Date)
             For I As Integer = 1 To 12
                 Dim dr As DataRow = oDataTable.NewRow()
                 dr(BillingSchedulingIfoDataview.COL_ID) = Guid.Empty
@@ -412,21 +412,21 @@ Namespace Tables
             Next
             setdirty()
         End Sub
-        Private Sub LoadLaterYear(ByVal oDataTable As DataTable, ByVal oDate As Date)
-            Me.State.year = DatePart("yyyy", Now).ToString
-            Dim NewYear As String = CType(CType(Me.State.year, Integer) + 1, String)
+        Private Sub LoadLaterYear(oDataTable As DataTable, oDate As Date)
+            State.year = DatePart("yyyy", Now).ToString
+            Dim NewYear As String = CType(CType(State.year, Integer) + 1, String)
             Dim lstSelectedVal As ListItem = moYearDropDownList.Items.FindByText(NewYear)
             If (lstSelectedVal Is Nothing) Then
                 moYearDropDownList.Items.Add(NewYear)
             End If
 
             setYearSelection(NewYear)
-            Me.State.NewYearSelected = NewYear
+            State.NewYearSelected = NewYear
 
 
             Dim odv As DataView = GetDV()
 
-            If odv.Count > 0 And odv.Count < 12 Then
+            If odv.Count > 0 AndAlso odv.Count < 12 Then
                 For i As Integer = 0 To odv.Count - 1
                     Dim dr As DataRow = oDataTable.NewRow()
                     dr(BillingSchedulingIfoDataview.COL_ID) = GuidControl.ByteArrayToGuid(odv.Item(i).Row.Item(DV_ID_COL))
@@ -437,7 +437,7 @@ Namespace Tables
         End Sub
 
         Private Sub setdirty()
-            Me.HiddenIsPageDirty.Value = "YES"
+            HiddenIsPageDirty.Value = "YES"
         End Sub
 
         'Private Sub ValidateGrig()
@@ -472,7 +472,7 @@ Namespace Tables
         'End Sub
         Private Sub ValidateGrig()
             'Pratap DEF 2068
-            Dim SelectedYear As String = Me.GetSelectedDescription(Me.moYearDropDownList)
+            Dim SelectedYear As String = GetSelectedDescription(moYearDropDownList)
             Dim DuplicatedMothFound As Boolean = False
 
 
@@ -524,13 +524,13 @@ Namespace Tables
 
         Private Sub ReturnPage()
             'CultureInfo.CurrentCulture
-            Thread.CurrentThread.CurrentCulture = New CultureInfo(Me.State.oCurrentCulture.ToString)
-            If Not Me.CallingParameters Is Nothing Then
-                Dim retType As New CompanyCreditCardForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.CompanyCreditCardId, Me.State.HasDataChanged)
-                Me.ReturnToCallingPage(retType)
+            Thread.CurrentThread.CurrentCulture = New CultureInfo(State.oCurrentCulture.ToString)
+            If CallingParameters IsNot Nothing Then
+                Dim retType As New CompanyCreditCardForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.CompanyCreditCardId, State.HasDataChanged)
+                ReturnToCallingPage(retType)
 
             Else
-                Me.ReturnToTabHomePage()
+                ReturnToTabHomePage()
             End If
         End Sub
 
@@ -556,17 +556,17 @@ Namespace Tables
 
 #Region "Populate"
 
-        Private Sub PopulateData(ByVal year As String)
+        Private Sub PopulateData(year As String)
             Dim dv As DataView
 
-            If year = Me.State.NewYearSelected And Me.State.NewYearAdded = False Then
+            If year = State.NewYearSelected AndAlso State.NewYearAdded = False Then
                 dv = Get_A_New_Date()
             Else
-                dv = GetDV(Me.State.CompanyCreditCardId)
+                dv = GetDV(State.CompanyCreditCardId)
 
             End If
-            Me.moDataGrid.DataSource = dv
-            Me.moDataGrid.DataBind()
+            moDataGrid.DataSource = dv
+            moDataGrid.DataBind()
         End Sub
 
 
@@ -576,33 +576,33 @@ Namespace Tables
             Dim recCount As Integer = 0
 
             Try
-                If Me.State.isNew Then
-                    Me.State.isNew = blnPageState
+                If State.isNew Then
+                    State.isNew = blnPageState
                     dv = Get_A_New_Date()
                 Else
-                    If IsSingleCompanyUser() AndAlso Me.State.year = "" Then
-                        Me.State.year = DatePart("yyyy", DateHelper.GetDateValue(Now.ToString())).ToString
+                    If IsSingleCompanyUser() AndAlso State.year = "" Then
+                        State.year = DatePart("yyyy", DateHelper.GetDateValue(Now.ToString())).ToString
                     End If
-                    dv = GetDV(Me.State.CompanyCreditCardId)
+                    dv = GetDV(State.CompanyCreditCardId)
                 End If
 
-                dv.Sort = Me.State.sortBy
+                dv.Sort = State.sortBy
                 recCount = dv.Count
                 Session("recCount") = recCount
-                Me.TranslateGridControls(moDataGrid)
-                Me.moDataGrid.DataSource = dv
-                Me.moDataGrid.DataBind()
-                Me.lblRecordCount.Text = recCount & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                TranslateGridControls(moDataGrid)
+                moDataGrid.DataSource = dv
+                moDataGrid.DataBind()
+                lblRecordCount.Text = recCount & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 ControlMgr.DisableAllGridControlsIfNotEditAuth(Me, moDataGrid)
 
-                Me.State.year = Me.GetSelectedDescription(Me.moYearDropDownList)
-                If Not Me.State.isNew Then
+                State.year = GetSelectedDescription(moYearDropDownList)
+                If Not State.isNew Then
                     PopulateYearsDropdown()
-                    setYearSelection(Me.State.year)
+                    setYearSelection(State.year)
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
 
         End Sub
@@ -639,41 +639,41 @@ Namespace Tables
 
         End Function
 
-        Private Sub PopulateBOItem(ByVal CcBillingSchedule As CcBillingSchedule, ByVal oPropertyName As String, ByVal oCellPosition As Integer)
-            Me.PopulateBOProperty(CcBillingSchedule, oPropertyName,
-                                            CType(Me.GetSelectedGridControl(moDataGrid, oCellPosition), TextBox))
+        Private Sub PopulateBOItem(CcBillingSchedule As CcBillingSchedule, oPropertyName As String, oCellPosition As Integer)
+            PopulateBOProperty(CcBillingSchedule, oPropertyName,
+                                            CType(GetSelectedGridControl(moDataGrid, oCellPosition), TextBox))
         End Sub
 
-        Private Sub PopulateBOFromForm(ByVal CcBillingSchedule As CcBillingSchedule, ByVal CCSchedulingBillingInfoCompaniesArrayList As ArrayList, ByVal BilligScheduleDateIndex As Integer)
+        Private Sub PopulateBOFromForm(CcBillingSchedule As CcBillingSchedule, CCSchedulingBillingInfoCompaniesArrayList As ArrayList, BilligScheduleDateIndex As Integer)
 
-            Me.PopulateBOProperty(CcBillingSchedule, COMPANY_CREDIT_CARD_ID_PROPERTY, Me.State.CompanyCreditCardId)
+            PopulateBOProperty(CcBillingSchedule, COMPANY_CREDIT_CARD_ID_PROPERTY, State.CompanyCreditCardId)
             PopulateBOItem(CcBillingSchedule, BILLING_DATE_PROPERTY, CLOSE_DATE_COL)
             'If Me.State.isNew Then CcBillingSchedule.CompanyId = Me.State.CompanyId
             'Update the other company(s)
-            If Not CCSchedulingBillingInfoCompaniesArrayList Is Nothing AndAlso CCSchedulingBillingInfoCompaniesArrayList.Count > 0 Then
+            If CCSchedulingBillingInfoCompaniesArrayList IsNot Nothing AndAlso CCSchedulingBillingInfoCompaniesArrayList.Count > 0 Then
                 For i As Integer = 0 To CCSchedulingBillingInfoCompaniesArrayList.Count - 1
                     Dim BillingScheduleInfosArrayList As ArrayList = CType(CCSchedulingBillingInfoCompaniesArrayList.Item(i), ArrayList)
                     PopulateBOItem(CType(BillingScheduleInfosArrayList.Item(BilligScheduleDateIndex), CcBillingSchedule), BILLING_DATE_PROPERTY, CLOSE_DATE_COL)
                 Next
             End If
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Sub
 
-        Private Sub PopulateFormItem(ByVal oCellPosition As Integer, ByVal oPropertyValue As Object)
-            Me.PopulateControlFromBOProperty(Me.GetSelectedGridControl(moDataGrid, oCellPosition), oPropertyValue)
+        Private Sub PopulateFormItem(oCellPosition As Integer, oPropertyValue As Object)
+            PopulateControlFromBOProperty(GetSelectedGridControl(moDataGrid, oCellPosition), oPropertyValue)
         End Sub
 
         Private Sub PopulateYearsDropdown()
             Dim oListContext As New ListContext
-            oListContext.CompanyCreditCardId = Me.State.CompanyCreditCardId
+            oListContext.CompanyCreditCardId = State.CompanyCreditCardId
             Dim billingYears As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:=ListCodes.BillingYearsByCompanyCreditCard, context:=oListContext)
 
             'Dim dv As DataView = CcBillingSchedule.GetBillingYears(Me.State.CompanyCreditCardId)
 
             If IsSingleCompanyUser() Then
-                Me.moYearDropDownList.Populate(billingYears, New PopulateOptions() With
+                moYearDropDownList.Populate(billingYears, New PopulateOptions() With
                 {
                     .TextFunc = AddressOf .GetDescription,
                     .ValueFunc = AddressOf .GetCode,
@@ -681,7 +681,7 @@ Namespace Tables
                 })
                 'Me.BindListTextToDataView(Me.moYearDropDownList, dv, , , False)
             Else
-                Me.moYearDropDownList.Populate(billingYears, New PopulateOptions() With
+                moYearDropDownList.Populate(billingYears, New PopulateOptions() With
                 {
                     .TextFunc = AddressOf .GetDescription,
                     .ValueFunc = AddressOf .GetCode,
@@ -694,7 +694,7 @@ Namespace Tables
                 'tblContainer.Visible = True
                 'End If
 
-                If moCompanyDropDownList.SelectedIndex > 0 AndAlso Me.State.isDateSectionLoading AndAlso billingYears.Count = 0 Then
+                If moCompanyDropDownList.SelectedIndex > 0 AndAlso State.isDateSectionLoading AndAlso billingYears.Count = 0 Then
                     tblContainer.Visible = True
                 End If
             End If
@@ -710,8 +710,8 @@ Namespace Tables
             '    End If
             'Next
 
-            If (From b In billingYears Where b.Translation = Me.State.year Select b).Any() Then
-                Me.State.addNewYearOnLoad = False
+            If (From b In billingYears Where b.Translation = State.year Select b).Any() Then
+                State.addNewYearOnLoad = False
             End If
 
         End Sub
@@ -726,7 +726,7 @@ Namespace Tables
                                                            Where list.Contains(x.ListItemId)
                                                            Select x).ToArray()
 
-            Me.moCompanyDropDownList.Populate(filteredList.ToArray(), New PopulateOptions() With
+            moCompanyDropDownList.Populate(filteredList.ToArray(), New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
@@ -760,20 +760,20 @@ Namespace Tables
             'End If
         End Function
 
-        Private Sub setYearSelection(ByVal Year As String)
+        Private Sub setYearSelection(Year As String)
             moYearDropDownList.SelectedIndex = moYearDropDownList.Items.IndexOf(moYearDropDownList.Items.FindByText(Year))
         End Sub
 
-        Private Sub setCompanySelection(ByVal CompanyName As String)
+        Private Sub setCompanySelection(CompanyName As String)
             moCompanyDropDownList.SelectedIndex = moCompanyDropDownList.Items.IndexOf(moCompanyDropDownList.Items.FindByText(CompanyName))
         End Sub
 
         Private Sub LocateNewCompany()
             Dim ActiveUserCompanyIdDV As DataView = GetGridDataView()
-            Me.State.OtherCompanyId = Guid.Empty
+            State.OtherCompanyId = Guid.Empty
 
             If ActiveUserCompanyIdDV.Count = 0 Then
-                Me.State.OtherCompanyId = Me.State.CompanyId
+                State.OtherCompanyId = State.CompanyId
             End If
         End Sub
 
@@ -781,57 +781,57 @@ Namespace Tables
 
 #Region "GridHandlers"
 
-        Private Sub moDataGrid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moDataGrid.PageIndexChanged
+        Private Sub moDataGrid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moDataGrid.PageIndexChanged
             Try
-                Me.State.selectedPageIndex = e.NewPageIndex
+                State.selectedPageIndex = e.NewPageIndex
                 If IsDataGPageDirty() Then
-                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSavePagePromptResponse)
+                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
                 Else
-                    Me.moDataGrid.CurrentPageIndex = e.NewPageIndex
+                    moDataGrid.CurrentPageIndex = e.NewPageIndex
                     PopulateGrid()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
-        Private Sub moDataGrid_PageSizeChanged(ByVal source As System.Object, ByVal e As System.EventArgs)
+        Private Sub moDataGrid_PageSizeChanged(source As System.Object, e As System.EventArgs)
             Try
                 If IsDataGPageDirty() Then
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.GridPageSize
-                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSavePagePromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.GridPageSize
+                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
                 Else
                     'moDataGrid.CurrentPageIndex = NewCurrentPageIndex(moDataGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
                     'Me.State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
                     'Me.PopulateGrid()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
-        Protected Sub ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+        Protected Sub ItemCommand(source As Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
             Try
                 If (e.CommandName = SORT_COMMAND_NAME) Then
-                    Me.State.sortBy = CType(e.CommandArgument, String)
+                    State.sortBy = CType(e.CommandArgument, String)
                     PopulateGrid()
-                ElseIf (e.CommandName = Me.DELETE_COMMAND) Then
+                ElseIf (e.CommandName = DELETE_COMMAND) Then
                     'Do the delete here
 
                     'Clear the SelectedItemStyle to remove the highlight from the previously saved row
-                    moDataGrid.SelectedIndex = Me.NO_ROW_SELECTED_INDEX
+                    moDataGrid.SelectedIndex = NO_ROW_SELECTED_INDEX
 
                     'Save the Id in the Session
 
-                    Me.State.CCBILLINGSCHEDULEID = New Guid(Me.moDataGrid.Items(e.Item.ItemIndex).Cells(Me.ID_COL).Text)
+                    State.CCBILLINGSCHEDULEID = New Guid(moDataGrid.Items(e.Item.ItemIndex).Cells(ID_COL).Text)
 
-                    Me.State.MyBO = New Assurant.ElitaPlus.BusinessObjectsNew.CcBillingSchedule(Me.State.CCBILLINGSCHEDULEID)
+                    State.MyBO = New Assurant.ElitaPlus.BusinessObjectsNew.CcBillingSchedule(State.CCBILLINGSCHEDULEID)
                     Try
-                        Me.State.MyBO.Delete()
+                        State.MyBO.Delete()
                         'Call the Save() method in the AccountingCloseInfo Business Object here
-                        Me.State.MyBO.Save()
+                        State.MyBO.Save()
                     Catch ex As Exception
-                        Me.State.MyBO.RejectChanges()
+                        State.MyBO.RejectChanges()
                         Throw ex
                     End Try
 
@@ -839,27 +839,27 @@ Namespace Tables
 
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
-        Protected Sub ItemBound(ByVal source As Object, ByVal e As DataGridItemEventArgs) Handles moDataGrid.ItemDataBound
+        Protected Sub ItemBound(source As Object, e As DataGridItemEventArgs) Handles moDataGrid.ItemDataBound
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
             Dim oTextBox As TextBox
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                 With e.Item
-                    Me.PopulateControlFromBOProperty(.Cells(Me.ID_COL), dvRow(CcBillingSchedule.COL_NAME_CC_BILLING_SCHEDULE_IDD))
+                    PopulateControlFromBOProperty(.Cells(ID_COL), dvRow(CcBillingSchedule.COL_NAME_CC_BILLING_SCHEDULE_IDD))
                     oTextBox = CType(e.Item.Cells(CLOSE_DATE_COL).FindControl("moDateCompTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
                     Dim oDateCompImage As ImageButton = CType(e.Item.Cells(CLOSE_DATE_COL).FindControl("moDateCompImageGrid"), ImageButton)
                     Dim oDeleteCompImage As ImageButton = CType(e.Item.Cells(1).FindControl("DeleteButton_WRITE"), ImageButton)
-                    If (Not oDateCompImage Is Nothing) Then
-                        Me.AddCalendar(oDateCompImage, oTextBox)
+                    If (oDateCompImage IsNot Nothing) Then
+                        AddCalendar(oDateCompImage, oTextBox)
                     End If
 
-                    Me.PopulateControlFromBOProperty(oTextBox, Me.GetDateFormattedString(DateHelper.GetDateValue(dvRow(CcBillingSchedule.COL_NAME_BILLING_DATE))))
+                    PopulateControlFromBOProperty(oTextBox, GetDateFormattedString(DateHelper.GetDateValue(dvRow(CcBillingSchedule.COL_NAME_BILLING_DATE))))
                     If CDate(DateHelper.GetDateValue(dvRow(CcBillingSchedule.COL_NAME_BILLING_DATE))) < Now Then
                         e.Item.Cells(CLOSE_DATE_COL).Enabled = False
                         oTextBox.Enabled = False
@@ -872,16 +872,16 @@ Namespace Tables
 
         End Sub
 
-        Protected Sub ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs)
+        Protected Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Protected Sub BindBoPropertiesToGridHeaders(ByVal CCSchedulingInfo As CcBillingSchedule)
-            Me.BindBOPropertyToGridHeader(CCSchedulingInfo, CcBillingSchedule.COL_NAME_BILLING_DATE, Me.moDataGrid.Columns(Me.CLOSE_DATE_COL))
-            Me.ClearGridHeadersAndLabelsErrSign()
+        Protected Sub BindBoPropertiesToGridHeaders(CCSchedulingInfo As CcBillingSchedule)
+            BindBOPropertyToGridHeader(CCSchedulingInfo, CcBillingSchedule.COL_NAME_BILLING_DATE, moDataGrid.Columns(CLOSE_DATE_COL))
+            ClearGridHeadersAndLabelsErrSign()
         End Sub
 
-        Private Sub SetFocusOnEditableFieldInGrid(ByVal grid As DataGrid, ByVal cellPosition As Integer, ByVal controlName As String, ByVal itemIndex As Integer)
+        Private Sub SetFocusOnEditableFieldInGrid(grid As DataGrid, cellPosition As Integer, controlName As String, itemIndex As Integer)
             'Set focus on the Description TextBox for the EditItemIndex row
             Dim desc As TextBox = CType(grid.Items(itemIndex).Cells(cellPosition).FindControl(controlName), TextBox)
             SetFocus(desc)
@@ -891,74 +891,74 @@ Namespace Tables
 
 #Region "Button Click Events"
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
                 If IsDataGPageDirty() Then
-                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSavePagePromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
                     ReturnPage()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
-        Private Sub SaveButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SaveButton_WRITE.Click
+        Private Sub SaveButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles SaveButton_WRITE.Click
             Try
                 If IsDataGPageDirty() Then
                     ValidateGrig()
                     SavePage()
-                    Me.HiddenIsPageDirty.Value = EMPTY
-                    Me.State.year = Me.GetSelectedDescription(Me.moYearDropDownList)
-                    Me.State.isNew = False
+                    HiddenIsPageDirty.Value = EMPTY
+                    State.year = GetSelectedDescription(moYearDropDownList)
+                    State.isNew = False
                     PopulateGrid()
-                    Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 Else
-                    Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 End If
 
-                Me.btnNew_WRITE.Enabled = True
+                btnNew_WRITE.Enabled = True
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
-        Private Sub btnUndo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+        Private Sub btnUndo_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
             Try
 
                 If Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Undo Then
                     PopulateYearsDropdown()
                     'DEF-1726 Set Current year as the year selected in Year dropdown
-                    Me.State.year = Me.GetSelectedDescription(Me.moYearDropDownList)
+                    State.year = GetSelectedDescription(moYearDropDownList)
                     'End of DEF-1726
-                    setYearSelection(Me.State.year)
+                    setYearSelection(State.year)
 
                     PopulateCompaniesDropdown()
-                    setCompanySelection(Me.State.CompanyName)
+                    setCompanySelection(State.CompanyName)
 
                 End If
 
-                Me.btnNew_WRITE.Enabled = True
-                Me.State.isNew = False
+                btnNew_WRITE.Enabled = True
+                State.isNew = False
                 PopulateGrid()
-                Me.HiddenIsPageDirty.Value = EMPTY
+                HiddenIsPageDirty.Value = EMPTY
                 'Pratap DEF 2064
-                Me.ErrController.Clear_Hide()
+                ErrController.Clear_Hide()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
-        Private Sub btnNew_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+        Private Sub btnNew_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnNew_WRITE.Click
 
             Try
-                Me.btnNew_WRITE.Enabled = False
-                Me.State.prevSelectedYear = Me.State.year
-                Me.State.prevSelectedCompanyName = Me.State.CompanyName
+                btnNew_WRITE.Enabled = False
+                State.prevSelectedYear = State.year
+                State.prevSelectedCompanyName = State.CompanyName
 
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Undo
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Undo
 
                 If Not IsSingleCompanyUser() Then
                     lblRecordCount.Visible = True
@@ -968,15 +968,15 @@ Namespace Tables
                 End If
 
                 If IsDataGPageDirty() Then
-                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSavePagePromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
-                    Me.State.isNew = True
+                    State.isNew = True
                     LocateNewCompany()
                     PopulateGrid(True)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
@@ -984,7 +984,7 @@ Namespace Tables
 
 #Region "DropDownHandlers"
 
-        Private Sub moYearDropDownList_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles moYearDropDownList.SelectedIndexChanged
+        Private Sub moYearDropDownList_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles moYearDropDownList.SelectedIndexChanged
 
             Try
                 tblContainer.Visible = True
@@ -992,32 +992,32 @@ Namespace Tables
                 ''DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSavePagePromptResponse)
                 'Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
                 'Else
-                Me.State.year = Me.GetSelectedDescription(Me.moYearDropDownList)
-                Dim SelectedYear As String = Me.GetSelectedDescription(Me.moYearDropDownList)
+                State.year = GetSelectedDescription(moYearDropDownList)
+                Dim SelectedYear As String = GetSelectedDescription(moYearDropDownList)
                 PopulateData(SelectedYear)
                 'PopulateYearsDropdown()
                 'setYearSelection(SelectedYear)
-                Me.btnNew_WRITE.Enabled = True
+                btnNew_WRITE.Enabled = True
                 If Not IsSingleCompanyUser() Then
-                    Me.State.CompanyId = New Guid(moCompanyDropDownList.SelectedItem.Value)
+                    State.CompanyId = New Guid(moCompanyDropDownList.SelectedItem.Value)
                 End If
                 'PopulateGrid()
                 ' End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
             ''
 
         End Sub
 
-        Private Sub moCompanyDropDownList_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles moCompanyDropDownList.SelectedIndexChanged
+        Private Sub moCompanyDropDownList_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles moCompanyDropDownList.SelectedIndexChanged
 
             Try
-                Me.State.SetClosingDateByCompany = True
+                State.SetClosingDateByCompany = True
                 tblContainer.Visible = False
                 If IsDataGPageDirty() Then
-                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSavePagePromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
+                    DisplayMessage(Message.MSG_PAGE_SAVE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSavePagePromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
                 Else
                     If Not IsSingleCompanyUser() Then
                         lblRecordCount.Visible = True
@@ -1026,19 +1026,19 @@ Namespace Tables
                         SaveButton_WRITE.Visible = True
                         btnNew_WRITE.Visible = True
                     End If
-                    Me.State.CompanyName = Me.GetSelectedDescription(Me.moCompanyDropDownList)
-                    Dim SelectedCompanyName As String = Me.GetSelectedDescription(Me.moCompanyDropDownList)
+                    State.CompanyName = GetSelectedDescription(moCompanyDropDownList)
+                    Dim SelectedCompanyName As String = GetSelectedDescription(moCompanyDropDownList)
                     PopulateCompaniesDropdown()
                     setCompanySelection(SelectedCompanyName)
-                    Me.btnNew_WRITE.Enabled = True
-                    Me.State.CompanyId = New Guid(moCompanyDropDownList.SelectedItem.Value)
-                    Me.State.isDateSectionLoading = True
+                    btnNew_WRITE.Enabled = True
+                    State.CompanyId = New Guid(moCompanyDropDownList.SelectedItem.Value)
+                    State.isDateSectionLoading = True
                     PopulateGrid()
-                    Me.State.isDateSectionLoading = False
+                    State.isDateSectionLoading = False
                     moYearDropDownList.SelectedIndex = -1
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
 
         End Sub
@@ -1055,7 +1055,7 @@ Namespace Tables
             Public Const COL_NAME As String = "Description"
             Public Const NEW_DATE As String = "New"
 
-            Public Sub New(ByVal t As DataTable)
+            Public Sub New(t As DataTable)
                 MyBase.New(t)
             End Sub
 

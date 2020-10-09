@@ -6,48 +6,48 @@ Public Class ExcludeListitemByRole
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ExcludeListitemByRoleDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class ExcludeListitemByRole
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ExcludeListitemByRoleDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -97,7 +97,7 @@ Public Class ExcludeListitemByRole
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ExcludeListitemByRoleDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -108,7 +108,7 @@ Public Class ExcludeListitemByRole
     End Property
 
     <ValueMandatory("")> _
-    Public Property ListItemId() As Guid
+    Public Property ListItemId As Guid
         Get
             CheckDeleted()
             If row(ExcludeListitemByRoleDAL.COL_NAME_LIST_ITEM_ID) Is DBNull.Value Then
@@ -117,14 +117,14 @@ Public Class ExcludeListitemByRole
                 Return New Guid(CType(row(ExcludeListitemByRoleDAL.COL_NAME_LIST_ITEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ExcludeListitemByRoleDAL.COL_NAME_LIST_ITEM_ID, Value)
+            SetValue(ExcludeListitemByRoleDAL.COL_NAME_LIST_ITEM_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If row(ExcludeListitemByRoleDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -133,14 +133,14 @@ Public Class ExcludeListitemByRole
                 Return New Guid(CType(row(ExcludeListitemByRoleDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ExcludeListitemByRoleDAL.COL_NAME_COMPANY_ID, Value)
+            SetValue(ExcludeListitemByRoleDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property ListId() As Guid
+    Public Property ListId As Guid
         Get
             CheckDeleted()
             If row(ExcludeListitemByRoleDAL.COL_NAME_LIST_ID) Is DBNull.Value Then
@@ -149,18 +149,18 @@ Public Class ExcludeListitemByRole
                 Return New Guid(CType(row(ExcludeListitemByRoleDAL.COL_NAME_LIST_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ExcludeListitemByRoleDAL.COL_NAME_LIST_ID, Value)
+            SetValue(ExcludeListitemByRoleDAL.COL_NAME_LIST_ID, Value)
         End Set
     End Property
 
     <ValidExcludedRolesCount("")> _
-    Public Property ExcludedRolesCount() As Integer
+    Public Property ExcludedRolesCount As Integer
         Get
             Return _ExcludedRolesCount
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
             _ExcludedRolesCount = Value
         End Set
@@ -171,17 +171,17 @@ Public Class ExcludeListitemByRole
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ExcludeListitemByRoleDAL
                 'dal.Update(Me.Row)
-                MyBase.UpdateFamily(Me.Dataset)
-                dal.UpdateFamily(Me.Dataset)
+                UpdateFamily(Dataset)
+                dal.UpdateFamily(Dataset)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -189,22 +189,22 @@ Public Class ExcludeListitemByRole
         End Try
     End Sub
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Dim bDirty As Boolean
 
-            bDirty = MyBase.IsDirty OrElse Me.IsChildrenDirty
+            bDirty = MyBase.IsDirty OrElse IsChildrenDirty
 
             Return bDirty
         End Get
     End Property
 
-    Public Sub Copy(ByVal original As ExcludeListitemByRole)
-        If Not Me.IsNew Then
+    Public Sub Copy(original As ExcludeListitemByRole)
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Product")
         End If
         'Copy myself
-        Me.CopyFrom(original)
+        CopyFrom(original)
 
         Dim selROLEDv As DataView '= original.GetSelectedMethodOfRepair
         Dim selRoleList As New ArrayList
@@ -215,15 +215,15 @@ Public Class ExcludeListitemByRole
         For n As Integer = 0 To selROLEDv.Count - 1
             selRoleList.Add(New Guid(CType(selROLEDv(n)(LookupListNew.COL_ID_NAME), Byte())).ToString)
         Next
-        Me.AttachRoles(selRoleList)
+        AttachRoles(selRoleList)
 
     End Sub
 #End Region
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getList(ByVal compId As Guid, ByVal ListId As Guid, _
-                         ByVal ListItemId As Guid, ByVal RoleId As Guid, ByVal LanguageId As Guid) As ExcludeListitemByRoleSearchDV
+    Public Shared Function getList(compId As Guid, ListId As Guid, _
+                         ListItemId As Guid, RoleId As Guid, LanguageId As Guid) As ExcludeListitemByRoleSearchDV
         Try
             Dim dal As New ExcludeListitemByRoleDAL
             Return New ExcludeListitemByRoleSearchDV(dal.LoadList(compId, ListId, ListItemId, RoleId, LanguageId).Tables(0))
@@ -251,7 +251,7 @@ Public Class ExcludeListitemByRole
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -261,19 +261,19 @@ Public Class ExcludeListitemByRole
 
 #Region "Children Related"
 
-    Public ReadOnly Property ExcludedLiRoleChildren() As ExcludedLiRolesList
+    Public ReadOnly Property ExcludedLiRoleChildren As ExcludedLiRolesList
         Get
             Return New ExcludedLiRolesList(Me)
         End Get
     End Property
 
-    Public Sub UpdateRoles(ByVal selectedRoleGuidStrCollection As Hashtable)
+    Public Sub UpdateRoles(selectedRoleGuidStrCollection As Hashtable)
         If selectedRoleGuidStrCollection.Count = 0 Then
-            If Not Me.IsDeleted Then Me.Delete()
+            If Not IsDeleted Then Delete()
         Else
             'first Pass
             Dim bo As ExcludedLiRoles
-            For Each bo In Me.ExcludedLiRoleChildren
+            For Each bo In ExcludedLiRoleChildren
                 If Not selectedRoleGuidStrCollection.Contains(bo.RoleId.ToString) Then
                     'delete
                     bo.Delete()
@@ -283,40 +283,40 @@ Public Class ExcludeListitemByRole
             'Second Pass
             Dim entry As DictionaryEntry
             For Each entry In selectedRoleGuidStrCollection
-                If Me.ExcludedLiRoleChildren.Find(New Guid(entry.Key.ToString)) Is Nothing Then
+                If ExcludedLiRoleChildren.Find(New Guid(entry.Key.ToString)) Is Nothing Then
                     'add
                     Dim ExRoles As ExcludedLiRoles = ExcludedLiRoleChildren.GetNewChild()
                     ExRoles.RoleId = New Guid(entry.Key.ToString)
-                    ExRoles.ExcludeListitemRoleId = Me.Id
+                    ExRoles.ExcludeListitemRoleId = Id
                     ExRoles.Save()
                 End If
             Next
         End If
     End Sub
-    Public Sub AttachRoles(ByVal selectedRoleGuidStrCollection As ArrayList)
+    Public Sub AttachRoles(selectedRoleGuidStrCollection As ArrayList)
         Dim ExRolestr As String
         For Each ExRolestr In selectedRoleGuidStrCollection
-            Dim ExRoles As ExcludedLiRoles = Me.ExcludedLiRoleChildren.GetNewChild
+            Dim ExRoles As ExcludedLiRoles = ExcludedLiRoleChildren.GetNewChild
             ExRoles.RoleId = New Guid(ExRolestr)
-            ExRoles.ExcludeListitemRoleId = Me.Id
+            ExRoles.ExcludeListitemRoleId = Id
             ExRoles.Save()
         Next
     End Sub
 
 
-    Public Function AddRolesChild(ByVal RoleId As Guid) As ExcludedLiRoles
+    Public Function AddRolesChild(RoleId As Guid) As ExcludedLiRoles
         Dim oExRoles As ExcludedLiRoles
 
-        oExRoles = New ExcludedLiRoles(Me.Dataset)
+        oExRoles = New ExcludedLiRoles(Dataset)
         oExRoles.RoleId = RoleId
-        oExRoles.ExcludeListitemRoleId = Me.Id
+        oExRoles.ExcludeListitemRoleId = Id
         Return oExRoles
 
     End Function
-    Public Sub DetachRoles(ByVal selectedRoleGuidStrCollection As ArrayList)
+    Public Sub DetachRoles(selectedRoleGuidStrCollection As ArrayList)
         Dim ExRolestr As String
         For Each ExRolestr In selectedRoleGuidStrCollection
-            Dim oExRole As ExcludedLiRoles = Me.ExcludedLiRoleChildren.Find(New Guid(ExRolestr))
+            Dim oExRole As ExcludedLiRoles = ExcludedLiRoleChildren.Find(New Guid(ExRolestr))
             oExRole.Delete()
             oExRole.Save()
         Next
@@ -356,15 +356,15 @@ Public Class ExcludeListitemByRole
         Return dv
     End Function
 
-    Protected Function GetRolesLookupListSelectedSequenceFilter(ByVal dv As DataView, ByVal isFilterInclusive As Boolean) As String
+    Protected Function GetRolesLookupListSelectedSequenceFilter(dv As DataView, isFilterInclusive As Boolean) As String
 
         Dim oExRolesBO As ExcludedLiRoles
         Dim inClause As String = "(-1"
-        For Each oExRolesBO In Me.ExcludedLiRoleChildren
+        For Each oExRolesBO In ExcludedLiRoleChildren
             inClause &= "," & LookupListNew.GetSequenceFromId(dv, oExRolesBO.RoleId)
         Next
         inClause &= ")"
-        Dim rowFilter As String = BusinessObjectBase.SYSTEM_SEQUENCE_COL_NAME
+        Dim rowFilter As String = SYSTEM_SEQUENCE_COL_NAME
         If isFilterInclusive Then
             rowFilter &= " IN " & inClause
         Else
@@ -383,11 +383,11 @@ Public Class ExcludeListitemByRole
     Public NotInheritable Class ValidExcludedRolesCount
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.BO_EXCLUDED_ROLES_MUST_BE_SELECTED_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ExcludeListitemByRole = CType(objectToValidate, ExcludeListitemByRole)
 
             If obj.ExcludedRolesCount > 0 Then

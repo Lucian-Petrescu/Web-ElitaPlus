@@ -13,7 +13,7 @@ Public Class GetClaimStatusHistory
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetClaimStatusHistoryDs)
+    Public Sub New(ds As GetClaimStatusHistoryDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -25,7 +25,7 @@ Public Class GetClaimStatusHistory
 
 #Region "Private Members"
 
-    Private Sub MapDataSet(ByVal ds As GetClaimStatusHistoryDs)
+    Private Sub MapDataSet(ds As GetClaimStatusHistoryDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -38,8 +38,8 @@ Public Class GetClaimStatusHistory
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -47,13 +47,13 @@ Public Class GetClaimStatusHistory
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetClaimStatusHistoryDs)
+    Private Sub Load(ds As GetClaimStatusHistoryDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
         Catch ex As BOValidationException
             Throw ex
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -65,11 +65,11 @@ Public Class GetClaimStatusHistory
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetClaimStatusHistoryDs)
+    Private Sub PopulateBOFromWebService(ds As GetClaimStatusHistoryDs)
         Try
             If ds.GetClaimStatusHistory.Count = 0 Then Exit Sub
             With ds.GetClaimStatusHistory.Item(0)
-                Me.ClaimNumber = ds.GetClaimStatusHistory.Item(0).CLAIM_NUMBER
+                ClaimNumber = ds.GetClaimStatusHistory.Item(0).CLAIM_NUMBER
             End With
         Catch ex As BOValidationException
             Throw ex
@@ -86,32 +86,32 @@ Public Class GetClaimStatusHistory
 #Region "Properties"
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property ClaimNumber() As String
+    Public Property ClaimNumber As String
         Get
-            If Row(Me.DATA_COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_CLAIM_NUMBER), String))
+                Return (CType(Row(DATA_COL_NAME_CLAIM_NUMBER), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CLAIM_NUMBER, Value)
+            SetValue(DATA_COL_NAME_CLAIM_NUMBER, Value)
         End Set
     End Property
 
-    Private ReadOnly Property ClaimID() As Guid
+    Private ReadOnly Property ClaimID As Guid
         Get
             If _claimId.Equals(Guid.Empty) Then
-                Me._claimId = Claim.GetClaimID(ElitaPlusIdentity.Current.ActiveUser.Companies, Me.ClaimNumber)
+                _claimId = Claim.GetClaimID(ElitaPlusIdentity.Current.ActiveUser.Companies, ClaimNumber)
 
-                If Me._claimId.Equals(Guid.Empty) Then
+                If _claimId.Equals(Guid.Empty) Then
                     Throw New BOValidationException("GetClaimStatusHistory Error: ", Common.ErrorCodes.INVALID_CLAIM_NOT_FOUND)
                 End If
 
             End If
 
-            Return Me._claimId
+            Return _claimId
         End Get
     End Property
 
@@ -121,11 +121,11 @@ Public Class GetClaimStatusHistory
 
     Public Overrides Function ProcessWSRequest() As String
         Try
-            Me.Validate()
+            Validate()
 
-            Dim dsClaim As DataSet = PickupListHeader.GetClaimStatusHistory(Me.ClaimID)
+            Dim dsClaim As DataSet = PickupListHeader.GetClaimStatusHistory(ClaimID)
 
-            dsClaim.DataSetName = Me.DATASET_NAME
+            dsClaim.DataSetName = DATASET_NAME
             Dim excludeTags As ArrayList = New ArrayList()
             excludeTags.Add("/GetClaimStatusHistory/CLAIM_STATUS_HISTORY/CLAIM_ID")
 

@@ -22,7 +22,7 @@ Namespace VSC
 
         Public ReadOnly Property IsEditing() As Boolean
             Get
-                IsEditing = (Me.moDataGrid.EditItemIndex > NO_ROW_SELECTED_INDEX)
+                IsEditing = (moDataGrid.EditItemIndex > NO_ROW_SELECTED_INDEX)
             End Get
         End Property
 
@@ -44,7 +44,7 @@ Namespace VSC
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -117,25 +117,25 @@ Namespace VSC
 
 #Region "Page_Events"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
 
             Try
                 moErrorController.Clear_Hide()
                 If Not Page.IsPostBack Then
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                    Me.SetGridItemStyleColor(Me.moDataGrid)
-                    If Me.State.MyBO Is Nothing Then
-                        Me.State.MyBO = New VSCClassCode
+                    SetGridItemStyleColor(moDataGrid)
+                    If State.MyBO Is Nothing Then
+                        State.MyBO = New VSCClassCode
                     End If
-                    Me.PopulateDropdowns()
-                    Me.State.PageIndex = 0
+                    PopulateDropdowns()
+                    State.PageIndex = 0
                     SetButtonsState()
                 End If
                 BindBoPropertiesToGridHeaders()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
-            Me.ShowMissingTranslations(moErrorController)
+            ShowMissingTranslations(moErrorController)
 
         End Sub
 
@@ -143,30 +143,30 @@ Namespace VSC
 
             moDataGrid.EditItemIndex = NO_ROW_SELECTED_INDEX
 
-            If Me.moDataGrid.PageCount = 0 Then
+            If moDataGrid.PageCount = 0 Then
                 'if returning to the "1st time in" screen
                 ControlMgr.SetVisibleControl(Me, moDataGrid, False)
             Else
                 ControlMgr.SetVisibleControl(Me, moDataGrid, True)
             End If
             SetGridControls(moDataGrid, True)
-            Me.State.IsEditMode = False
-            Me.PopulateDropdowns()
-            Me.PopulateGrid()
-            Me.State.PageIndex = moDataGrid.CurrentPageIndex
+            State.IsEditMode = False
+            PopulateDropdowns()
+            PopulateGrid()
+            State.PageIndex = moDataGrid.CurrentPageIndex
             SetButtonsState()
 
         End Sub
         Private Sub SetButtonsState()
 
-            If (Me.State.IsEditMode) Then
+            If (State.IsEditMode) Then
                 ControlMgr.SetVisibleControl(Me, SaveButton_WRITE, True)
                 ControlMgr.SetVisibleControl(Me, CancelButton, True)
                 ControlMgr.SetVisibleControl(Me, NewButton_WRITE, False)
                 ControlMgr.SetEnableControl(Me, SearchButton, False)
                 ControlMgr.SetEnableControl(Me, ClearButton, False)
-                Me.MenuEnabled = False
-                If (Me.cboPageSize.Visible) Then
+                MenuEnabled = False
+                If (cboPageSize.Visible) Then
                     ControlMgr.SetEnableControl(Me, cboPageSize, False)
                 End If
             Else
@@ -175,8 +175,8 @@ Namespace VSC
                 ControlMgr.SetVisibleControl(Me, NewButton_WRITE, True)
                 ControlMgr.SetEnableControl(Me, SearchButton, True)
                 ControlMgr.SetEnableControl(Me, ClearButton, True)
-                Me.MenuEnabled = True
-                If (Me.cboPageSize.Visible) Then
+                MenuEnabled = True
+                If (cboPageSize.Visible) Then
                     ControlMgr.SetEnableControl(Me, cboPageSize, True)
                 End If
             End If
@@ -193,96 +193,96 @@ Namespace VSC
 
             Try
 
-                Me.State.CompanyId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
+                State.CompanyId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
                 ' Me.BindListControlToDataView(Me.moClassCodeDrop, LookupListNew.GetVSCClassCodesLookupList(Me.State.CompanyId)) 'VscClassCodesByCompanyGroup
                 Dim listcontext As ListContext = New ListContext()
-                listcontext.CompanyGroupId = Me.State.CompanyId
+                listcontext.CompanyGroupId = State.CompanyId
                 Dim vsccodeLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList(ListCodes.VscClassCodesByCompanyGroup, Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
-                Me.moClassCodeDrop.Populate(vsccodeLkl, New PopulateOptions() With
+                moClassCodeDrop.Populate(vsccodeLkl, New PopulateOptions() With
                     {
                     .AddBlankItem = True
                     })
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
         Public Sub PopulateGrid()
 
             Try
-                If (Me.State.searchDV Is Nothing) Then
-                    Me.State.searchDV = GetGridDataView()
+                If (State.searchDV Is Nothing) Then
+                    State.searchDV = GetGridDataView()
                 End If
 
-                Me.moDataGrid.AutoGenerateColumns = False
-                If (Me.State.IsAfterSave) Then
-                    Me.State.IsAfterSave = False
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.ClassCodeId, Me.moDataGrid, Me.State.PageIndex)
-                ElseIf (Me.State.IsEditMode) Then
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.ClassCodeId, Me.moDataGrid, Me.State.PageIndex, Me.State.IsEditMode)
+                moDataGrid.AutoGenerateColumns = False
+                If (State.IsAfterSave) Then
+                    State.IsAfterSave = False
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.ClassCodeId, moDataGrid, State.PageIndex)
+                ElseIf (State.IsEditMode) Then
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.ClassCodeId, moDataGrid, State.PageIndex, State.IsEditMode)
                 Else
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Guid.Empty, Me.moDataGrid, Me.State.PageIndex)
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, Guid.Empty, moDataGrid, State.PageIndex)
                 End If
 
-                Me.State.searchDV.Sort = Me.State.SortExpression
-                Me.moDataGrid.Columns(Me.GRID_COL_CLASS_CODE).SortExpression = VSCClassCode.ClassCodeSearchDV.COL_NAME_CODE
-                Me.moDataGrid.Columns(Me.GRID_COL_ACTIVE).SortExpression = VSCClassCode.ClassCodeSearchDV.COL_NAME_DESCRIPTION
-                Me.SortAndBindGrid()
+                State.searchDV.Sort = State.SortExpression
+                moDataGrid.Columns(GRID_COL_CLASS_CODE).SortExpression = VSCClassCode.ClassCodeSearchDV.COL_NAME_CODE
+                moDataGrid.Columns(GRID_COL_ACTIVE).SortExpression = VSCClassCode.ClassCodeSearchDV.COL_NAME_DESCRIPTION
+                SortAndBindGrid()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
         Private Sub AddNew()
 
-            Me.State.searchDV = GetGridDataView()
+            State.searchDV = GetGridDataView()
 
-            Me.State.MyBO = New VSCClassCode
-            Me.State.ClassCodeId = Me.State.MyBO.Id
+            State.MyBO = New VSCClassCode
+            State.ClassCodeId = State.MyBO.Id
 
-            Me.State.searchDV = Me.State.MyBO.GetNewDataViewRow(Me.State.searchDV, Me.State.ClassCodeId)
+            State.searchDV = State.MyBO.GetNewDataViewRow(State.searchDV, State.ClassCodeId)
 
-            moDataGrid.DataSource = Me.State.searchDV
-            SetGridControls(Me.moDataGrid, False)
-            Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.ClassCodeId, Me.moDataGrid, Me.State.PageIndex, Me.State.IsEditMode)
+            moDataGrid.DataSource = State.searchDV
+            SetGridControls(moDataGrid, False)
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.ClassCodeId, moDataGrid, State.PageIndex, State.IsEditMode)
 
-            Me.moDataGrid.AutoGenerateColumns = False
-            Me.moDataGrid.Columns(Me.GRID_COL_CLASS_CODE).SortExpression = VSCClassCode.ClassCodeSearchDV.COL_NAME_CODE
-            Me.moDataGrid.Columns(Me.GRID_COL_ACTIVE).SortExpression = VSCClassCode.ClassCodeSearchDV.COL_NAME_DESCRIPTION
+            moDataGrid.AutoGenerateColumns = False
+            moDataGrid.Columns(GRID_COL_CLASS_CODE).SortExpression = VSCClassCode.ClassCodeSearchDV.COL_NAME_CODE
+            moDataGrid.Columns(GRID_COL_ACTIVE).SortExpression = VSCClassCode.ClassCodeSearchDV.COL_NAME_DESCRIPTION
 
-            Me.SortAndBindGrid()
+            SortAndBindGrid()
 
             'Set focus on the Dealer dropdown list for the EditItemIndex row
-            Me.SetFocusOnEditableFieldInGrid(Me.moDataGrid, Me.GRID_COL_CLASS_CODE, Me.moDataGrid.EditItemIndex)
+            SetFocusOnEditableFieldInGrid(moDataGrid, GRID_COL_CLASS_CODE, moDataGrid.EditItemIndex)
 
         End Sub
 
         Private Function GetGridDataView() As DataView
 
             With State
-                Return (VSCClassCode.getList(Me.GetSelectedItem(moClassCodeDrop), Guid.Empty, Me.State.CompanyId))
+                Return (VSCClassCode.getList(GetSelectedItem(moClassCodeDrop), Guid.Empty, State.CompanyId))
             End With
 
         End Function
         Private Sub SortAndBindGrid()
 
-            Me.TranslateGridControls(moDataGrid)
-            Me.State.PageIndex = Me.moDataGrid.CurrentPageIndex
-            Me.moDataGrid.DataSource = Me.State.searchDV
-            HighLightSortColumn(moDataGrid, Me.State.SortExpression)
-            Me.moDataGrid.DataBind()
+            TranslateGridControls(moDataGrid)
+            State.PageIndex = moDataGrid.CurrentPageIndex
+            moDataGrid.DataSource = State.searchDV
+            HighLightSortColumn(moDataGrid, State.SortExpression)
+            moDataGrid.DataBind()
 
-            ControlMgr.SetVisibleControl(Me, moDataGrid, Me.State.IsGridVisible)
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.moDataGrid.Visible)
+            ControlMgr.SetVisibleControl(Me, moDataGrid, State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, moDataGrid.Visible)
 
-            Session("recCount") = Me.State.searchDV.Count
+            Session("recCount") = State.searchDV.Count
 
-            If Me.moDataGrid.Visible Then
-                If (Me.State.AddingNewRow) Then
-                    Me.lblRecordCount.Text = (Me.State.searchDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If moDataGrid.Visible Then
+                If (State.AddingNewRow) Then
+                    lblRecordCount.Text = (State.searchDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 Else
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             End If
             ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, moDataGrid)
@@ -291,14 +291,14 @@ Namespace VSC
 
         Private Sub PopulateBOFromForm()
 
-            With Me.State.MyBO
-                .Code = CType(Me.moDataGrid.Items(Me.moDataGrid.EditItemIndex).Cells(Me.GRID_COL_CLASS_CODE).FindControl(GRID_NAME_CLASS_CODE), TextBox).Text
+            With State.MyBO
+                .Code = CType(moDataGrid.Items(moDataGrid.EditItemIndex).Cells(GRID_COL_CLASS_CODE).FindControl(GRID_NAME_CLASS_CODE), TextBox).Text
                 '       Me.PopulateBOProperty(Me.State.MyBO, "code", CType(Me.GetSelectedGridControl(moDataGrid, GRID_COL_CLASS_CODE), TextBox))
-                .Active = Me.GetSelectedItem(CType(moDataGrid.Items(moDataGrid.EditItemIndex).Cells(Me.GRID_COL_ACTIVE).FindControl(GRID_NAME_ACTIVE), DropDownList))
-                Me.PopulateBOProperty(Me.State.MyBO, "CompanyGroup", ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
+                .Active = GetSelectedItem(CType(moDataGrid.Items(moDataGrid.EditItemIndex).Cells(GRID_COL_ACTIVE).FindControl(GRID_NAME_ACTIVE), DropDownList))
+                PopulateBOProperty(State.MyBO, "CompanyGroup", ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
             End With
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
 
@@ -309,87 +309,87 @@ Namespace VSC
 
 #Region "Button Click Handlers"
 
-        Private Sub ClearButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ClearButton.Click
+        Private Sub ClearButton_Click(sender As System.Object, e As System.EventArgs) Handles ClearButton.Click
 
             Try
 
-                Me.moClassCodeDrop.SelectedIndex = 0
-                moDataGrid.CurrentPageIndex = Me.NO_PAGE_INDEX
+                moClassCodeDrop.SelectedIndex = 0
+                moDataGrid.CurrentPageIndex = NO_PAGE_INDEX
                 moDataGrid.DataSource = Nothing
                 moDataGrid.DataBind()
                 ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                Me.State.ClassCodeId = Guid.Empty
+                State.ClassCodeId = Guid.Empty
 
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub SearchButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SearchButton.Click
+        Private Sub SearchButton_Click(sender As System.Object, e As System.EventArgs) Handles SearchButton.Click
 
             Try
-                Me.State.PageIndex = 0
-                Me.State.ClassCodeId = Guid.Empty
-                Me.State.IsGridVisible = True
-                Me.State.searchDV = Nothing
-                Me.PopulateGrid()
-                Me.State.PageIndex = moDataGrid.CurrentPageIndex
+                State.PageIndex = 0
+                State.ClassCodeId = Guid.Empty
+                State.IsGridVisible = True
+                State.searchDV = Nothing
+                PopulateGrid()
+                State.PageIndex = moDataGrid.CurrentPageIndex
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
 
             End Try
 
         End Sub
-        Private Sub CancelButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CancelButton.Click
+        Private Sub CancelButton_Click(sender As System.Object, e As System.EventArgs) Handles CancelButton.Click
 
             Try
-                Me.moDataGrid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
-                Me.State.Canceling = True
-                If (Me.State.AddingNewRow) Then
-                    Me.State.AddingNewRow = False
-                    Me.State.searchDV = Nothing
+                moDataGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
+                State.Canceling = True
+                If (State.AddingNewRow) Then
+                    State.AddingNewRow = False
+                    State.searchDV = Nothing
                 End If
                 ReturnFromEditing()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
 
-        Private Sub NewButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles NewButton_WRITE.Click
+        Private Sub NewButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles NewButton_WRITE.Click
 
             Try
-                Me.State.IsEditMode = True
-                Me.State.IsGridVisible = True
-                Me.State.AddingNewRow = True
+                State.IsEditMode = True
+                State.IsGridVisible = True
+                State.AddingNewRow = True
                 AddNew()
-                SetGridControls(Me.moDataGrid, False)
+                SetGridControls(moDataGrid, False)
                 SetButtonsState()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
 
 
-        Private Sub SaveButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SaveButton_WRITE.Click
+        Private Sub SaveButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles SaveButton_WRITE.Click
 
             Try
                 PopulateBOFromForm()
-                If (Me.State.MyBO.IsDirty) Then
-                    Me.State.MyBO.Save()
-                    Me.State.IsAfterSave = True
-                    Me.State.AddingNewRow = False
-                    Me.AddInfoMsg(Me.MSG_RECORD_SAVED_OK)
-                    Me.State.searchDV = Nothing
-                    Me.ReturnFromEditing()
+                If (State.MyBO.IsDirty) Then
+                    State.MyBO.Save()
+                    State.IsAfterSave = True
+                    State.AddingNewRow = False
+                    AddInfoMsg(MSG_RECORD_SAVED_OK)
+                    State.searchDV = Nothing
+                    ReturnFromEditing()
                 Else
-                    Me.AddInfoMsg(Me.MSG_RECORD_NOT_SAVED)
-                    Me.ReturnFromEditing()
+                    AddInfoMsg(MSG_RECORD_NOT_SAVED)
+                    ReturnFromEditing()
                 End If
             Catch ex As Exception
 
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
 
             End Try
 
@@ -400,7 +400,7 @@ Namespace VSC
 
 
 #Region " Datagrid Related "
-        Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moDataGrid.ItemDataBound
+        Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moDataGrid.ItemDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
@@ -409,164 +409,164 @@ Namespace VSC
                     itemType = ListItemType.AlternatingItem OrElse
                     itemType = ListItemType.SelectedItem) Then
 
-                    e.Item.Cells(Me.GRID_COL_CLASS_CODE_ID).Text = GetGuidStringFromByteArray(CType(dvRow(VSCClassCode.ClassCodeSearchDV.COL_NAME_VSC_CLASS_CODE_ID), Byte()))
-                    e.Item.Cells(Me.GRID_COL_CLASS_CODE).Text = dvRow(VSCClassCode.ClassCodeSearchDV.COL_NAME_CODE).ToString
+                    e.Item.Cells(GRID_COL_CLASS_CODE_ID).Text = GetGuidStringFromByteArray(CType(dvRow(VSCClassCode.ClassCodeSearchDV.COL_NAME_VSC_CLASS_CODE_ID), Byte()))
+                    e.Item.Cells(GRID_COL_CLASS_CODE).Text = dvRow(VSCClassCode.ClassCodeSearchDV.COL_NAME_CODE).ToString
 
-                    e.Item.Cells(Me.GRID_COL_ACTIVE).Text = GetGuidStringFromByteArray(CType(dvRow(VSCClassCode.ClassCodeSearchDV.COL_NAME_ACTIVE), Byte()))
-                    e.Item.Cells(Me.GRID_COL_ACTIVE).Text = dvRow(VSCClassCode.ClassCodeSearchDV.COL_NAME_DESCRIPTION).ToString
+                    e.Item.Cells(GRID_COL_ACTIVE).Text = GetGuidStringFromByteArray(CType(dvRow(VSCClassCode.ClassCodeSearchDV.COL_NAME_ACTIVE), Byte()))
+                    e.Item.Cells(GRID_COL_ACTIVE).Text = dvRow(VSCClassCode.ClassCodeSearchDV.COL_NAME_DESCRIPTION).ToString
 
                 ElseIf (itemType = ListItemType.EditItem) Then
 
-                    e.Item.Cells(Me.GRID_COL_CLASS_CODE_ID).Text = GetGuidStringFromByteArray(CType(dvRow(VSCClassCode.ClassCodeSearchDV.COL_NAME_VSC_CLASS_CODE_ID), Byte()))
-                    CType(e.Item.Cells(Me.GRID_COL_CLASS_CODE).FindControl(GRID_NAME_CLASS_CODE), TextBox).Text = dvRow(VSCClassCode.ClassCodeSearchDV.COL_NAME_CODE).ToString
+                    e.Item.Cells(GRID_COL_CLASS_CODE_ID).Text = GetGuidStringFromByteArray(CType(dvRow(VSCClassCode.ClassCodeSearchDV.COL_NAME_VSC_CLASS_CODE_ID), Byte()))
+                    CType(e.Item.Cells(GRID_COL_CLASS_CODE).FindControl(GRID_NAME_CLASS_CODE), TextBox).Text = dvRow(VSCClassCode.ClassCodeSearchDV.COL_NAME_CODE).ToString
 
                     Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
 
                     'Me.BindListControlToDataView(CType(e.Item.Cells(Me.GRID_COL_ACTIVE).FindControl(GRID_NAME_ACTIVE), DropDownList), LookupListNew.DropdownLookupList("YESNO", langId, True))
-                    CType(e.Item.Cells(Me.GRID_COL_ACTIVE).FindControl(GRID_NAME_ACTIVE), DropDownList).Populate(CommonConfigManager.Current.ListManager.GetList("YESNO", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                    CType(e.Item.Cells(GRID_COL_ACTIVE).FindControl(GRID_NAME_ACTIVE), DropDownList).Populate(CommonConfigManager.Current.ListManager.GetList("YESNO", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                                            {
                                             .AddBlankItem = True
                                            })
-                    Me.SetSelectedItem(CType(e.Item.Cells(Me.GRID_COL_ACTIVE).FindControl(GRID_NAME_ACTIVE), DropDownList), Me.State.MyBO.Active)
+                    SetSelectedItem(CType(e.Item.Cells(GRID_COL_ACTIVE).FindControl(GRID_NAME_ACTIVE), DropDownList), State.MyBO.Active)
 
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
-        Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moDataGrid.PageIndexChanged
+        Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moDataGrid.PageIndexChanged
 
             Try
-                If (Not (Me.State.IsEditMode)) Then
-                    Me.State.PageIndex = e.NewPageIndex
-                    Me.moDataGrid.CurrentPageIndex = Me.State.PageIndex
-                    Me.PopulateGrid()
-                    Me.moDataGrid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
+                If (Not (State.IsEditMode)) Then
+                    State.PageIndex = e.NewPageIndex
+                    moDataGrid.CurrentPageIndex = State.PageIndex
+                    PopulateGrid()
+                    moDataGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
 
-        Protected Sub ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+        Protected Sub ItemCommand(source As Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
 
             Try
                 Dim index As Integer = e.Item.ItemIndex
 
-                If (e.CommandName = Me.EDIT_COMMAND) Then
+                If (e.CommandName = EDIT_COMMAND) Then
                     'Do the Edit here
 
                     'Set the IsEditMode flag to TRUE
-                    Me.State.IsEditMode = True
+                    State.IsEditMode = True
 
-                    Me.State.ClassCodeId = New Guid(Me.moDataGrid.Items(e.Item.ItemIndex).Cells(Me.GRID_COL_CLASS_CODE_ID).Text)
+                    State.ClassCodeId = New Guid(moDataGrid.Items(e.Item.ItemIndex).Cells(GRID_COL_CLASS_CODE_ID).Text)
 
-                    Me.State.MyBO = New VSCClassCode(Me.State.ClassCodeId)
+                    State.MyBO = New VSCClassCode(State.ClassCodeId)
 
-                    Me.PopulateGrid()
+                    PopulateGrid()
 
-                    Me.State.PageIndex = moDataGrid.CurrentPageIndex
+                    State.PageIndex = moDataGrid.CurrentPageIndex
 
                     'Disable all Edit and Delete icon buttons on the Grid
-                    SetGridControls(Me.moDataGrid, False)
+                    SetGridControls(moDataGrid, False)
 
                     'Set focus on the Dealer dropdown list for the EditItemIndex row
-                    Me.SetFocusOnEditableFieldInGrid(Me.moDataGrid, Me.GRID_COL_CLASS_CODE, index)
+                    SetFocusOnEditableFieldInGrid(moDataGrid, GRID_COL_CLASS_CODE, index)
 
-                    Me.SetButtonsState()
+                    SetButtonsState()
 
-                ElseIf (e.CommandName = Me.DELETE_COMMAND) Then
+                ElseIf (e.CommandName = DELETE_COMMAND) Then
                     'Do the delete here
 
                     'Clear the SelectedItemStyle to remove the highlight from the previously saved row
-                    moDataGrid.SelectedIndex = Me.NO_ROW_SELECTED_INDEX
+                    moDataGrid.SelectedIndex = NO_ROW_SELECTED_INDEX
 
                     'Save the Id in the Session
-                    Me.State.ClassCodeId = New Guid(Me.moDataGrid.Items(e.Item.ItemIndex).Cells(Me.GRID_COL_CLASS_CODE_ID).Text)
-                    Me.State.MyBO = New VSCClassCode(Me.State.ClassCodeId)
+                    State.ClassCodeId = New Guid(moDataGrid.Items(e.Item.ItemIndex).Cells(GRID_COL_CLASS_CODE_ID).Text)
+                    State.MyBO = New VSCClassCode(State.ClassCodeId)
 
                     Try
-                        Me.State.MyBO.Delete()
+                        State.MyBO.Delete()
                         'Call the Save() method in the Business Object here
-                        Me.State.MyBO.Save()
+                        State.MyBO.Save()
                     Catch ex As Exception
-                        Me.State.MyBO.RejectChanges()
+                        State.MyBO.RejectChanges()
                         Throw ex
                     End Try
 
-                    Me.State.PageIndex = moDataGrid.CurrentPageIndex
+                    State.PageIndex = moDataGrid.CurrentPageIndex
 
                     'Set the IsAfterSave flag to TRUE so that the Paging logic gets invoked
-                    Me.State.IsAfterSave = True
+                    State.IsAfterSave = True
 
-                    Me.State.searchDV = Nothing
-                    Me.PopulateDropdowns()
+                    State.searchDV = Nothing
+                    PopulateDropdowns()
                     PopulateGrid()
-                    Me.State.PageIndex = moDataGrid.CurrentPageIndex
+                    State.PageIndex = moDataGrid.CurrentPageIndex
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
 
-        Protected Sub ItemBound(ByVal source As Object, ByVal e As DataGridItemEventArgs) Handles moDataGrid.ItemDataBound
+        Protected Sub ItemBound(source As Object, e As DataGridItemEventArgs) Handles moDataGrid.ItemDataBound
             BaseItemBound(source, e)
         End Sub
 
-        Protected Sub ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs)
+        Protected Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 moDataGrid.CurrentPageIndex = NewCurrentPageIndex(moDataGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
-                Me.PopulateGrid()
+                State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles moDataGrid.SortCommand
+        Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles moDataGrid.SortCommand
 
             Try
-                If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                    If Me.State.SortExpression.EndsWith(" DESC") Then
-                        Me.State.SortExpression = e.SortExpression
+                If State.SortExpression.StartsWith(e.SortExpression) Then
+                    If State.SortExpression.EndsWith(" DESC") Then
+                        State.SortExpression = e.SortExpression
                     Else
-                        Me.State.SortExpression &= " DESC"
+                        State.SortExpression &= " DESC"
                     End If
                 Else
-                    Me.State.SortExpression = e.SortExpression
+                    State.SortExpression = e.SortExpression
                 End If
-                Me.State.PageIndex = 0
-                Me.PopulateGrid()
+                State.PageIndex = 0
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
 
         Protected Sub BindBoPropertiesToGridHeaders()
 
-            Me.BindBOPropertyToGridHeader(Me.State.MyBO, "active", Me.moDataGrid.Columns(Me.GRID_COL_ACTIVE))
-            Me.BindBOPropertyToGridHeader(Me.State.MyBO, "ClassCode", Me.moDataGrid.Columns(Me.GRID_COL_CLASS_CODE))
+            BindBOPropertyToGridHeader(State.MyBO, "active", moDataGrid.Columns(GRID_COL_ACTIVE))
+            BindBOPropertyToGridHeader(State.MyBO, "ClassCode", moDataGrid.Columns(GRID_COL_CLASS_CODE))
 
-            Me.ClearGridHeadersAndLabelsErrSign()
+            ClearGridHeadersAndLabelsErrSign()
         End Sub
 
-        Private Sub SetFocusOnEditableFieldInGrid(ByVal grid As DataGrid, ByVal cellPosition As Integer, ByVal itemIndex As Integer)
+        Private Sub SetFocusOnEditableFieldInGrid(grid As DataGrid, cellPosition As Integer, itemIndex As Integer)
 
             ''Set focus on the specified control on the EditItemIndex row for the grid
 
-            Dim ctrlActive As DropDownList = CType(grid.Items(itemIndex).Cells(Me.GRID_COL_ACTIVE).FindControl(Me.GRID_NAME_ACTIVE), DropDownList)
-            Me.SetSelectedItem(ctrlActive, Me.State.MyBO.Active)
+            Dim ctrlActive As DropDownList = CType(grid.Items(itemIndex).Cells(GRID_COL_ACTIVE).FindControl(GRID_NAME_ACTIVE), DropDownList)
+            SetSelectedItem(ctrlActive, State.MyBO.Active)
 
-            Dim ctrlCode As TextBox = CType(grid.Items(itemIndex).Cells(Me.GRID_COL_CLASS_CODE).FindControl(Me.GRID_NAME_CLASS_CODE), TextBox)
+            Dim ctrlCode As TextBox = CType(grid.Items(itemIndex).Cells(GRID_COL_CLASS_CODE).FindControl(GRID_NAME_CLASS_CODE), TextBox)
             SetFocus(ctrlCode)
 
 

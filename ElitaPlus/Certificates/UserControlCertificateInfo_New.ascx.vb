@@ -21,7 +21,7 @@ Namespace Certificates
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -43,19 +43,19 @@ Namespace Certificates
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
         End Sub
 
         ' This is the initialization Method
-        Public Sub InitController(ByVal certificateId As Guid, Optional ByVal riskTypeDescription As String = Nothing, Optional ByVal companyCode As String = Nothing)
+        Public Sub InitController(certificateId As Guid, Optional ByVal riskTypeDescription As String = Nothing, Optional ByVal companyCode As String = Nothing)
             Dim oCertificateCtrl As New Certificate(certificateId)
             InitController(oCertificateCtrl, riskTypeDescription, companyCode)
 
         End Sub
 
         ' This is the initialization Method
-        Public Sub InitController(ByVal oCertificateCtrl As Certificate, Optional ByVal riskTypeDescription As String = Nothing, Optional ByVal companyCode As String = Nothing)
+        Public Sub InitController(oCertificateCtrl As Certificate, Optional ByVal riskTypeDescription As String = Nothing, Optional ByVal companyCode As String = Nothing)
 
             EnableControls()
             PopulateFormFromCertificateCtrl(oCertificateCtrl, riskTypeDescription, companyCode)
@@ -67,7 +67,7 @@ Namespace Certificates
             Page.SetEnabledForControlFamily(Me, False)
         End Sub
 
-        Public Sub PopulateFormFromCertificateCtrl(ByVal oCertificateCtrl As Certificate, Optional ByVal riskTypeDescription As String = Nothing, Optional ByVal companyCode As String = Nothing)
+        Public Sub PopulateFormFromCertificateCtrl(oCertificateCtrl As Certificate, Optional ByVal riskTypeDescription As String = Nothing, Optional ByVal companyCode As String = Nothing)
             Dim CertExtensionsDV As Certificate.CertExtensionsDV = Certificate.GetFraudulentCertExtensions(oCertificateCtrl.Id)
             Dim scrutinyRequiredCode As String = String.Empty
             Dim scrutinyRequired As Boolean = False
@@ -83,54 +83,54 @@ Namespace Certificates
 
             Dim cssClassName As String
             With oCertificateCtrl
-                Me.ProductRemainLiabilityLimitTD.InnerText = .ProductRemainLiabilityLimit
-                Me.ProductTotalPaidAmountTD.InnerText = .ProductTotalPaidAmount
-                Me.CustomerNameTD.InnerText = getSalutation(oCertificateCtrl) & .CustomerName
-                Me.WarrantySalesDateTD.InnerText = ElitaPlusPage.GetDateFormattedStringNullable(.WarrantySalesDate.Value)
+                ProductRemainLiabilityLimitTD.InnerText = .ProductRemainLiabilityLimit
+                ProductTotalPaidAmountTD.InnerText = .ProductTotalPaidAmount
+                CustomerNameTD.InnerText = getSalutation(oCertificateCtrl) & .CustomerName
+                WarrantySalesDateTD.InnerText = ElitaPlusPage.GetDateFormattedStringNullable(.WarrantySalesDate.Value)
 
-                Me.ScrutinyRequiredLabelTD.InnerText = LookupListNew.GetDescriptionFromCode(LookupListCache.LK_YESNO_XCD, scrutinyRequiredCode, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+                ScrutinyRequiredLabelTD.InnerText = LookupListNew.GetDescriptionFromCode(LookupListCache.LK_YESNO_XCD, scrutinyRequiredCode, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                 cssClassName = If(scrutinyRequired, "StatClosed", "StatActive")
-                Me.ScrutinyRequiredLabelTD.Attributes.Item("Class") = cssClassName
+                ScrutinyRequiredLabelTD.Attributes.Item("Class") = cssClassName
 
-                Me.CompanyCodeTD.InnerText = companyCode
-                Me.StatusTD.InnerText = LookupListNew.GetDescriptionFromCode("CSTAT", .StatusCode, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+                CompanyCodeTD.InnerText = companyCode
+                StatusTD.InnerText = LookupListNew.GetDescriptionFromCode("CSTAT", .StatusCode, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                 If (.StatusCode = Codes.CERTIFICATE_STATUS__ACTIVE) Then
                     cssClassName = "StatActive"
                 Else
                     cssClassName = "StatClosed"
                 End If
 
-                Me.StatusTD.Attributes.Item("Class") = cssClassName
+                StatusTD.Attributes.Item("Class") = cssClassName
 
                 If Not (.CustReqCancelDate Is Nothing) Then
-                    Me.CustCancelDateTD.InnerText = "(Cancellation Request Date:" + ElitaPlusPage.GetDateFormattedStringNullable(.CustReqCancelDate.Value) + ")"
-                    Me.CustCancelDateTD.Attributes.Item("Class") = Me.CustCancelDateTD.Attributes.Item("Class") & " " & "Orange"
+                    CustCancelDateTD.InnerText = "(Cancellation Request Date:" + ElitaPlusPage.GetDateFormattedStringNullable(.CustReqCancelDate.Value) + ")"
+                    CustCancelDateTD.Attributes.Item("Class") = CustCancelDateTD.Attributes.Item("Class") & " " & "Orange"
                 End If
 
-                Me.CertificateNumberTD.InnerText = .CertNumber
+                CertificateNumberTD.InnerText = .CertNumber
 
                 If Not (.SubscriberStatus.Equals(Guid.Empty)) Then
-                    Me.SubscriberStatusTD.InnerText = LookupListNew.GetDescriptionFromId(LookupListNew.LK_SUBSCRIBER_STATUS, .SubscriberStatus)
+                    SubscriberStatusTD.InnerText = LookupListNew.GetDescriptionFromId(LookupListNew.LK_SUBSCRIBER_STATUS, .SubscriberStatus)
                     If (LookupListNew.GetCodeFromId(LookupListNew.LK_SUBSCRIBER_STATUS, .SubscriberStatus) = Codes.SUBSCRIBER_STATUS__ACTIVE) Then
                         cssClassName = "StatActive"
                     Else
                         cssClassName = "StatClosed"
                     End If
-                    Me.SubscriberStatusTD.Attributes.Item("Class") = Me.SubscriberStatusTD.Attributes.Item("Class") & " " & cssClassName
+                    SubscriberStatusTD.Attributes.Item("Class") = SubscriberStatusTD.Attributes.Item("Class") & " " & cssClassName
                 Else
-                    ControlMgr.SetVisibleControl(Page, Me.SubscriberStatusLabel, False)
-                    ControlMgr.SetVisibleControl(Page, Me.SubscriberStatusTD, False)
-                    ControlMgr.SetVisibleControl(Page, Me.SubscriberStatusLabelTD, False)
-                    Me.CustomerNameTD.Attributes.Item("Class") = Me.CustomerNameTD.Attributes.Item("Class").Replace("bor", "")
+                    ControlMgr.SetVisibleControl(Page, SubscriberStatusLabel, False)
+                    ControlMgr.SetVisibleControl(Page, SubscriberStatusTD, False)
+                    ControlMgr.SetVisibleControl(Page, SubscriberStatusLabelTD, False)
+                    CustomerNameTD.Attributes.Item("Class") = CustomerNameTD.Attributes.Item("Class").Replace("bor", "")
                 End If
 
                 If Not (.DealerId.Equals(Guid.Empty)) Then
-                    Me.DealerNameTD.InnerText = .getDealerDescription
-                    ElitaPlusPage.Trace(Me.Page, "Dealer =" & Me.DealerNameTD.InnerText & "@ Cert=" & Me.CertificateNumberTD.InnerText)
-                    Me.DealerGroupTD.InnerText = .getDealerGroupName
+                    DealerNameTD.InnerText = .getDealerDescription
+                    ElitaPlusPage.Trace(Page, "Dealer =" & DealerNameTD.InnerText & "@ Cert=" & CertificateNumberTD.InnerText)
+                    DealerGroupTD.InnerText = .getDealerGroupName
                 End If
 
-                ControlMgr.SetVisibleControl(Page, Me.moRestrictedStatus, .CertificateIsRestricted)
+                ControlMgr.SetVisibleControl(Page, moRestrictedStatus, .CertificateIsRestricted)
 
 
             End With
@@ -138,7 +138,7 @@ Namespace Certificates
         End Sub
 
 
-        Private Function getSalutation(ByVal oCertificateCtrl As Certificate) As String
+        Private Function getSalutation(oCertificateCtrl As Certificate) As String
             Dim companyBO As Assurant.ElitaPlus.BusinessObjectsNew.Company = New Assurant.ElitaPlus.BusinessObjectsNew.Company(oCertificateCtrl.CompanyId)
 
             If LookupListNew.GetCodeFromId(LookupListNew.GetYesNoLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), companyBO.SalutationId) = "Y" Then

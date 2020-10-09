@@ -9,7 +9,7 @@
         MyBase.New("Integrity Constraint Violation", ErrorCodes.DB_ERROR_POSTAL_CODE_FORMAT_NOT_RIGHT, innerException)
     End Sub
 
-    Protected Sub New(ByVal info As SerializationInfo, ByVal context As StreamingContext)
+    Protected Sub New(info As SerializationInfo, context As StreamingContext)
         MyBase.New(info, context)
     End Sub
 #End Region

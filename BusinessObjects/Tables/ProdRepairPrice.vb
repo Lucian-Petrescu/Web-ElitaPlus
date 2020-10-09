@@ -6,48 +6,48 @@ Public Class ProdRepairPrice
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ProdRepairPriceDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class ProdRepairPrice
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ProdRepairPriceDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -105,7 +105,7 @@ Public Class ProdRepairPrice
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ProdRepairPriceDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -116,7 +116,7 @@ Public Class ProdRepairPrice
     End Property
 
     <ValueMandatory("")> _
-    Public Property ProductCodeId() As Guid
+    Public Property ProductCodeId As Guid
         Get
             CheckDeleted()
             If row(ProdRepairPriceDAL.COL_NAME_PRODUCT_CODE_ID) Is DBNull.Value Then
@@ -125,14 +125,14 @@ Public Class ProdRepairPrice
                 Return New Guid(CType(row(ProdRepairPriceDAL.COL_NAME_PRODUCT_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ProdRepairPriceDAL.COL_NAME_PRODUCT_CODE_ID, Value)
+            SetValue(ProdRepairPriceDAL.COL_NAME_PRODUCT_CODE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("LowPrice", MIN:=MIN_DOUBLE, Max:=NEW_MAX_DOUBLE, Message:=COVERAGE_RATE_FORM001), ValidPriceBandRange("")> _
-    Public Property PriceRangeFrom() As DecimalType
+    Public Property PriceRangeFrom As DecimalType
         Get
             CheckDeleted()
             If Row(ProdRepairPriceDAL.COL_NAME_PRICE_RANGE_FROM) Is DBNull.Value Then
@@ -141,15 +141,15 @@ Public Class ProdRepairPrice
                 Return New DecimalType(CType(Row(ProdRepairPriceDAL.COL_NAME_PRICE_RANGE_FROM), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(ProdRepairPriceDAL.COL_NAME_PRICE_RANGE_FROM, Value)
+            SetValue(ProdRepairPriceDAL.COL_NAME_PRICE_RANGE_FROM, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidNumericRange("", MIN:=MIN_DOUBLE, Max:=NEW_MAX_DOUBLE, Message:=COVERAGE_RATE_FORM002)> _
-     Public Property PriceRangeTo() As DecimalType
+     Public Property PriceRangeTo As DecimalType
         Get
             CheckDeleted()
             If Row(ProdRepairPriceDAL.COL_NAME_PRICE_RANGE_TO) Is DBNull.Value Then
@@ -158,15 +158,15 @@ Public Class ProdRepairPrice
                 Return New DecimalType(CType(Row(ProdRepairPriceDAL.COL_NAME_PRICE_RANGE_TO), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(ProdRepairPriceDAL.COL_NAME_PRICE_RANGE_TO, Value)
+            SetValue(ProdRepairPriceDAL.COL_NAME_PRICE_RANGE_TO, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property MethodOfRepairId() As Guid
+    Public Property MethodOfRepairId As Guid
         Get
             CheckDeleted()
             If row(ProdRepairPriceDAL.COL_NAME_METHOD_OF_REPAIR_ID) Is DBNull.Value Then
@@ -175,9 +175,9 @@ Public Class ProdRepairPrice
                 Return New Guid(CType(row(ProdRepairPriceDAL.COL_NAME_METHOD_OF_REPAIR_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ProdRepairPriceDAL.COL_NAME_METHOD_OF_REPAIR_ID, Value)
+            SetValue(ProdRepairPriceDAL.COL_NAME_METHOD_OF_REPAIR_ID, Value)
         End Set
     End Property
 
@@ -190,15 +190,15 @@ Public Class ProdRepairPrice
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ProdRepairPriceDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -208,7 +208,7 @@ Public Class ProdRepairPrice
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getList(ByVal ProductCodeId As Guid, ByVal LanguageId As Guid) As ProdRepairPriceSearchDV
+    Public Shared Function getList(ProductCodeId As Guid, LanguageId As Guid) As ProdRepairPriceSearchDV
         Try
             Dim dal As New ProdRepairPriceDAL
             Return New ProdRepairPriceSearchDV(dal.LoadList(ProductCodeId, LanguageId).Tables(0))
@@ -237,7 +237,7 @@ Public Class ProdRepairPrice
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -250,11 +250,11 @@ Public Class ProdRepairPrice
     Public NotInheritable Class CheckDuplicateRecord
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.PRICE_GROUP_DETAIL_DUPLICATE_RECORD)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProdRepairPrice = CType(objectToValidate, ProdRepairPrice)
             Return Not obj.CheckForDuplicateRepairMethodRangeProductCodeRangeFromCombination
         End Function
@@ -262,10 +262,10 @@ Public Class ProdRepairPrice
 
     Protected Function CheckForDuplicateRepairMethodRangeProductCodeRangeFromCombination() As Boolean
         Dim row As DataRow
-        For Each row In Me.Dataset.Tables(ProdRepairPriceDAL.TABLE_NAME).Rows
-            If row.RowState <> DataRowState.Deleted And row.RowState <> DataRowState.Detached Then
+        For Each row In Dataset.Tables(ProdRepairPriceDAL.TABLE_NAME).Rows
+            If row.RowState <> DataRowState.Deleted AndAlso row.RowState <> DataRowState.Detached Then
                 Dim bo As New ProdRepairPrice(row)
-                If Not bo.Id.Equals(Me.Id) AndAlso bo.MethodOfRepairId.Equals(Me.MethodOfRepairId) AndAlso bo.ProductCodeId.Equals(Me.ProductCodeId) AndAlso bo.PriceRangeFrom.Equals(Me.PriceRangeFrom) Then
+                If Not bo.Id.Equals(Id) AndAlso bo.MethodOfRepairId.Equals(MethodOfRepairId) AndAlso bo.ProductCodeId.Equals(ProductCodeId) AndAlso bo.PriceRangeFrom.Equals(PriceRangeFrom) Then
                     Return True
                 End If
             End If
@@ -277,21 +277,21 @@ Public Class ProdRepairPrice
     Public NotInheritable Class ValidPriceBandRange
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, COVERAGE_RATE_FORM009)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProdRepairPrice = CType(objectToValidate, ProdRepairPrice)
 
             Dim bValid As Boolean = True
 
-            If Not obj.PriceRangeFrom Is Nothing And Not obj.PriceRangeTo Is Nothing Then
+            If obj.PriceRangeFrom IsNot Nothing AndAlso obj.PriceRangeTo IsNot Nothing Then
                 If Convert.ToSingle(obj.PriceRangeFrom.Value) > Convert.ToSingle(obj.PriceRangeTo.Value) Then
-                    Me.Message = COVERAGE_RATE_FORM009
+                    Message = COVERAGE_RATE_FORM009
                     bValid = False
                 ElseIf ValidateRange(obj.PriceRangeFrom, obj.PriceRangeTo, obj) = False Then
-                    Me.Message = COVERAGE_RATE_FORM011
+                    Message = COVERAGE_RATE_FORM011
                     bValid = False
                 End If
             End If
@@ -301,7 +301,7 @@ Public Class ProdRepairPrice
         End Function
 
         ' It validates that the price range falls within the previous and next range +- THRESHOLD
-        Private Function ValidateRange(ByVal sNewLow As Assurant.Common.Types.DecimalType, ByVal sNewHigh As Assurant.Common.Types.DecimalType, ByVal oProdRepairPrice As ProdRepairPrice) As Boolean
+        Private Function ValidateRange(sNewLow As Assurant.Common.Types.DecimalType, sNewHigh As Assurant.Common.Types.DecimalType, oProdRepairPrice As ProdRepairPrice) As Boolean
             Dim bValid As Boolean = False
             Dim oNewLow As Double = Math.Round(Convert.ToDouble(sNewLow.Value), 2)
             Dim oNewHigh As Double = Math.Round(Convert.ToDouble(sNewHigh.Value), 2)
@@ -327,19 +327,19 @@ Public Class ProdRepairPrice
                             ' Updating only one record
                             bValid = True
                             Exit For
-                        ElseIf oRows.Count = oCount And prevHigh + THRESHOLD = oNewLow Then
+                        ElseIf oRows.Count = oCount AndAlso prevHigh + THRESHOLD = oNewLow Then
                             ' Updating the last record
                             bValid = True
                             Exit For
                         End If
                     Else
-                        If prevHigh < MIN_DOUBLE And oNewHigh + THRESHOLD = oLow Then
+                        If prevHigh < MIN_DOUBLE AndAlso oNewHigh + THRESHOLD = oLow Then
                             bValid = True
                             Exit For
-                        ElseIf oCount = oRows.Count And oHigh + THRESHOLD = oNewLow Then
+                        ElseIf oCount = oRows.Count AndAlso oHigh + THRESHOLD = oNewLow Then
                             bValid = True
                             Exit For
-                        ElseIf prevHigh + THRESHOLD = oNewLow And oNewHigh + THRESHOLD = oLow Then
+                        ElseIf prevHigh + THRESHOLD = oNewLow AndAlso oNewHigh + THRESHOLD = oLow Then
                             bValid = True
                             Exit For
                         End If

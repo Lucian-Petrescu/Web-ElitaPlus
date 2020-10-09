@@ -25,7 +25,7 @@ Namespace Tables
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -67,14 +67,14 @@ Namespace Tables
         '        Return _CreditCardTypeList
         '    End Get
         'End Property
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Try
-                If Not Me.CallingParameters Is Nothing Then
+                If CallingParameters IsNot Nothing Then
                     'Get the id from the parent
-                    Me.State.MyBO = New CreditCardFormat(CType(Me.CallingParameters, Guid))
+                    State.MyBO = New CreditCardFormat(CType(CallingParameters, Guid))
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
 
         End Sub
@@ -82,31 +82,31 @@ Namespace Tables
 #End Region
 
 #Region "Page Events"
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
-                Me.ErrorCtrl.Clear_Hide()
-                If Not Me.IsPostBack Then
+                ErrorCtrl.Clear_Hide()
+                If Not IsPostBack Then
                     'Date Calendars
-                    Me.MenuEnabled = False
-                    Me.AddConfirmation(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT)
-                    If Me.State.MyBO Is Nothing Then
-                        Me.State.MyBO = New CreditCardFormat
+                    MenuEnabled = False
+                    AddConfirmation(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT)
+                    If State.MyBO Is Nothing Then
+                        State.MyBO = New CreditCardFormat
                     End If
                     PopulateDropdowns()
-                    Me.PopulateFormFromBOs()
-                    Me.EnableDisableFields()
+                    PopulateFormFromBOs()
+                    EnableDisableFields()
                 End If
                 BindBoPropertiesToLabels()
                 CheckIfComingFromSaveConfirm()
-                If Not Me.IsPostBack Then
-                    Me.AddLabelDecorations(Me.State.MyBO)
+                If Not IsPostBack Then
+                    AddLabelDecorations(State.MyBO)
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
-            Me.ShowMissingTranslations(Me.ErrorCtrl)
+            ShowMissingTranslations(ErrorCtrl)
         End Sub
 #End Region
 
@@ -118,7 +118,7 @@ Namespace Tables
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, True)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, True)
             'Now disable depebding on the object state
-            If Me.State.MyBO.IsNew Then
+            If State.MyBO.IsNew Then
                 ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
                 ControlMgr.SetEnableControl(Me, btnNew_WRITE, False)
                 ControlMgr.SetEnableControl(Me, btnCopy_WRITE, False)
@@ -128,9 +128,9 @@ Namespace Tables
         End Sub
 
         Protected Sub BindBoPropertiesToLabels()
-            Me.BindBOPropertyToLabel(Me.State.MyBO.RegularExpressionBO, "Format", Me.LabelFormat)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "CreditCardTypeId", Me.moCreditCardTypesLabel)
-            Me.ClearGridHeadersAndLabelsErrSign()
+            BindBOPropertyToLabel(State.MyBO.RegularExpressionBO, "Format", LabelFormat)
+            BindBOPropertyToLabel(State.MyBO, "CreditCardTypeId", moCreditCardTypesLabel)
+            ClearGridHeadersAndLabelsErrSign()
         End Sub
 
         Protected Sub PopulateDropdowns()
@@ -147,99 +147,99 @@ Namespace Tables
                                                        })
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
         Protected Sub PopulateFormFromBOs()
-            With Me.State.MyBO
-                If Not Me.State.MyBO.IsNew Then
+            With State.MyBO
+                If Not State.MyBO.IsNew Then
                     If .RegularExpressionBO.BuildMethod.Equals("BUILDER") Then
-                        Me.PopulateControlFromBOProperty(Me.TextboxFormat, .RegularExpressionBO.Format)
-                        Me.TextboxFormatManual.Text = ""
+                        PopulateControlFromBOProperty(TextboxFormat, .RegularExpressionBO.Format)
+                        TextboxFormatManual.Text = ""
                     Else
-                        Me.PopulateControlFromBOProperty(Me.TextboxFormatManual, .RegularExpressionBO.Format)
-                        Me.TextboxFormat.Text = ""
+                        PopulateControlFromBOProperty(TextboxFormatManual, .RegularExpressionBO.Format)
+                        TextboxFormat.Text = ""
                     End If
 
                 End If
 
-                Me.PopulateControlFromBOProperty(Me.moCreditCardTypesDrop, .CreditCardTypeId)
+                PopulateControlFromBOProperty(moCreditCardTypesDrop, .CreditCardTypeId)
 
             End With
 
         End Sub
 
         Protected Sub PopulateBOsFormFrom()
-            With Me.State.MyBO
-                If Me.TextboxFormat.Text.Equals("") Then
-                    Me.PopulateBOProperty(Me.State.MyBO.RegularExpressionBO, "Format", Me.TextboxFormatManual)
-                    Me.PopulateBOProperty(Me.State.MyBO.RegularExpressionBO, "BuildMethod", "MANUAL")
+            With State.MyBO
+                If TextboxFormat.Text.Equals("") Then
+                    PopulateBOProperty(State.MyBO.RegularExpressionBO, "Format", TextboxFormatManual)
+                    PopulateBOProperty(State.MyBO.RegularExpressionBO, "BuildMethod", "MANUAL")
                 Else
-                    Me.PopulateBOProperty(Me.State.MyBO.RegularExpressionBO, "Format", Me.TextboxFormat)
-                    Me.PopulateBOProperty(Me.State.MyBO.RegularExpressionBO, "BuildMethod", "BUILDER")
+                    PopulateBOProperty(State.MyBO.RegularExpressionBO, "Format", TextboxFormat)
+                    PopulateBOProperty(State.MyBO.RegularExpressionBO, "BuildMethod", "BUILDER")
                 End If
 
-                Me.PopulateBOProperty(Me.State.MyBO, "CreditCardTypeId", Me.moCreditCardTypesDrop)
+                PopulateBOProperty(State.MyBO, "CreditCardTypeId", moCreditCardTypesDrop)
 
             End With
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Sub
 
 
         Protected Sub CreateNew()
-            Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
+            State.ScreenSnapShotBO = Nothing 'Reset the backup copy
 
-            Me.State.MyBO = New CreditCardFormat
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
+            State.MyBO = New CreditCardFormat
+            PopulateFormFromBOs()
+            EnableDisableFields()
         End Sub
 
         Protected Sub CreateNewWithCopy()
-            Me.State.MyBO = New CreditCardFormat
-            Me.PopulateBOsFormFrom()
-            Me.EnableDisableFields()
+            State.MyBO = New CreditCardFormat
+            PopulateBOsFormFrom()
+            EnableDisableFields()
 
             'create the backup copy
-            Me.State.ScreenSnapShotBO = New CreditCardFormat
-            Me.State.ScreenSnapShotBO.Clone(Me.State.MyBO)
+            State.ScreenSnapShotBO = New CreditCardFormat
+            State.ScreenSnapShotBO.Clone(State.MyBO)
         End Sub
 
         Protected Sub CheckIfComingFromSaveConfirm()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-            If Not confResponse Is Nothing AndAlso confResponse = Me.CONFIRM_MESSAGE_OK Then
-                If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
-                    Me.State.MyBO.Save()
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+            If confResponse IsNot Nothing AndAlso confResponse = CONFIRM_MESSAGE_OK Then
+                If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
+                    State.MyBO.Save()
                 End If
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        Me.ReturnToCallingPage(New CreditCardFormatListForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO.Id, Me.State.HasDataChanged))
+                        ReturnToCallingPage(New CreditCardFormatListForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO.Id, State.HasDataChanged))
                     Case ElitaPlusPage.DetailPageCommand.New_
-                        Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                        Me.CreateNew()
+                        AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                        CreateNew()
                     Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                        Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                        Me.CreateNewWithCopy()
+                        AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                        CreateNewWithCopy()
                     Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                        Me.ReturnToCallingPage(New CreditCardFormatListForm.ReturnType(Me.State.ActionInProgress, Me.State.MyBO.Id, Me.State.HasDataChanged))
+                        ReturnToCallingPage(New CreditCardFormatListForm.ReturnType(State.ActionInProgress, State.MyBO.Id, State.HasDataChanged))
                 End Select
-            ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.CONFIRM_MESSAGE_CANCEL Then
-                Select Case Me.State.ActionInProgress
+            ElseIf confResponse IsNot Nothing AndAlso confResponse = CONFIRM_MESSAGE_CANCEL Then
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        Me.ReturnToCallingPage(New CreditCardFormatListForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO.Id, Me.State.HasDataChanged))
+                        ReturnToCallingPage(New CreditCardFormatListForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO.Id, State.HasDataChanged))
                     Case ElitaPlusPage.DetailPageCommand.New_
-                        Me.CreateNew()
+                        CreateNew()
                     Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                        Me.CreateNewWithCopy()
+                        CreateNewWithCopy()
                     Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                        Me.ErrorCtrl.AddErrorAndShow(Me.State.LastErrMsg)
+                        ErrorCtrl.AddErrorAndShow(State.LastErrMsg)
                 End Select
             End If
             'Clean after consuming the action
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-            Me.HiddenSaveChangesPromptResponse.Value = ""
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            HiddenSaveChangesPromptResponse.Value = ""
         End Sub
 
 
@@ -249,110 +249,110 @@ Namespace Tables
 #Region "Button Clicks"
 
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
-                Me.PopulateBOsFormFrom()
-                If Me.State.MyBO.IsDirty Or Me.State.MyBO.IsFamilyDirty Then
-                    Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                PopulateBOsFormFrom()
+                If State.MyBO.IsDirty OrElse State.MyBO.IsFamilyDirty Then
+                    AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
-                    Me.ReturnToCallingPage(New CreditCardFormatListForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO.Id, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New CreditCardFormatListForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO.Id, State.HasDataChanged))
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
-                Me.AddConfirmMsg(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-                Me.State.LastErrMsg = Me.ErrorCtrl.Text
+                HandleErrors(ex, ErrorCtrl)
+                AddConfirmMsg(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+                State.LastErrMsg = ErrorCtrl.Text
             End Try
         End Sub
 
-        Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+        Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
             Try
-                Me.PopulateBOsFormFrom()
-                If Me.State.MyBO.IsDirty Or Me.State.MyBO.IsFamilyDirty Then
-                    Me.State.MyBO.Save()
-                    Me.State.HasDataChanged = True
-                    Me.EnableDisableFields()
-                    Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                PopulateBOsFormFrom()
+                If State.MyBO.IsDirty OrElse State.MyBO.IsFamilyDirty Then
+                    State.MyBO.Save()
+                    State.HasDataChanged = True
+                    EnableDisableFields()
+                    AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
                 Else
-                    Me.AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
+                    AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub btnUndo_Write_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_Write.Click
+        Private Sub btnUndo_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_Write.Click
             Try
-                If Not Me.State.MyBO.IsNew Then
+                If Not State.MyBO.IsNew Then
                     'Reload from the DB
-                    Me.State.MyBO = New CreditCardFormat(Me.State.MyBO.Id)
-                ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+                    State.MyBO = New CreditCardFormat(State.MyBO.Id)
+                ElseIf State.ScreenSnapShotBO IsNot Nothing Then
                     'It was a new with copy
-                    Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                    State.MyBO.Clone(State.ScreenSnapShotBO)
                 Else
-                    Me.State.MyBO = New CreditCardFormat
+                    State.MyBO = New CreditCardFormat
                 End If
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
+                PopulateFormFromBOs()
+                EnableDisableFields()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
 
 
-        Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+        Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
             Try
-                Me.State.MyBO.Delete()
-                Me.State.MyBO.Save()
-                Me.State.HasDataChanged = True
-                Me.ReturnToCallingPage(New CreditCardFormatListForm.ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Guid.Empty, Me.State.HasDataChanged))
+                State.MyBO.Delete()
+                State.MyBO.Save()
+                State.HasDataChanged = True
+                ReturnToCallingPage(New CreditCardFormatListForm.ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Guid.Empty, State.HasDataChanged))
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
                 'undo the delete
-                Me.State.MyBO.RejectChanges()
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                State.MyBO.RejectChanges()
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+        Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
             Try
-                Me.PopulateBOsFormFrom()
-                If Me.State.MyBO.IsDirty Or Me.State.MyBO.IsFamilyDirty Then
-                    Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                PopulateBOsFormFrom()
+                If State.MyBO.IsDirty OrElse State.MyBO.IsFamilyDirty Then
+                    AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
-                    Me.CreateNew()
+                    CreateNew()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
 
 
-        Private Sub btnCopy_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+        Private Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
             Try
-                Me.PopulateBOsFormFrom()
-                If Me.State.MyBO.IsDirty Or Me.State.MyBO.IsFamilyDirty Then
-                    Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                PopulateBOsFormFrom()
+                If State.MyBO.IsDirty OrElse State.MyBO.IsFamilyDirty Then
+                    AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
                 Else
-                    Me.CreateNewWithCopy()
+                    CreateNewWithCopy()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
-        Private Sub btnFormatPostalCode_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFormatPostalCode.Click
+        Private Sub btnFormatPostalCode_Click(sender As System.Object, e As System.EventArgs) Handles btnFormatPostalCode.Click
             Try
                 Session("PostalCodeRegEx") = TextboxFormat.Text
                 isPostalCodeVisible.Value = "True"
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 

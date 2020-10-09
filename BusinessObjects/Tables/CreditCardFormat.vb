@@ -7,48 +7,48 @@ Public Class CreditCardFormat
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New CreditCardFormatDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize(True)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -56,23 +56,23 @@ Public Class CreditCardFormat
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CreditCardFormatDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
             Initialize(False)
@@ -85,14 +85,14 @@ Public Class CreditCardFormat
 #Region "Private Members"
     'Initialization code for new objects
     Private _regularExpression As RegularExpression
-    Private Sub Initialize(ByVal blnNew As Boolean)
-        If Me._regularExpression Is Nothing Then
+    Private Sub Initialize(blnNew As Boolean)
+        If _regularExpression Is Nothing Then
             If blnNew Then
-                _regularExpression = New RegularExpression(Me.Dataset)
+                _regularExpression = New RegularExpression(Dataset)
             Else
-                _regularExpression = New RegularExpression(Me.RegularExpressionId, Me.Dataset)
+                _regularExpression = New RegularExpression(RegularExpressionId, Dataset)
             End If
-            Me.RegularExpressionId = Me._regularExpression.Id
+            RegularExpressionId = _regularExpression.Id
         End If
     End Sub
 
@@ -102,7 +102,7 @@ Public Class CreditCardFormat
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(CreditCardFormatDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -113,7 +113,7 @@ Public Class CreditCardFormat
     End Property
 
     <ValueMandatory("")> _
-    Public Property CreditCardTypeId() As Guid
+    Public Property CreditCardTypeId As Guid
         Get
             CheckDeleted()
             If Row(CreditCardFormatDAL.COL_NAME_CREDIT_CARD_TYPE_ID) Is DBNull.Value Then
@@ -122,15 +122,15 @@ Public Class CreditCardFormat
                 Return New Guid(CType(Row(CreditCardFormatDAL.COL_NAME_CREDIT_CARD_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CreditCardFormatDAL.COL_NAME_CREDIT_CARD_TYPE_ID, Value)
+            SetValue(CreditCardFormatDAL.COL_NAME_CREDIT_CARD_TYPE_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property RegularExpressionId() As Guid
+    Public Property RegularExpressionId As Guid
         Get
             CheckDeleted()
             If Row(CreditCardFormatDAL.COL_NAME_REGULAR_EXPRESSION_ID) Is DBNull.Value Then
@@ -139,16 +139,16 @@ Public Class CreditCardFormat
                 Return New Guid(CType(Row(CreditCardFormatDAL.COL_NAME_REGULAR_EXPRESSION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CreditCardFormatDAL.COL_NAME_REGULAR_EXPRESSION_ID, Value)
+            SetValue(CreditCardFormatDAL.COL_NAME_REGULAR_EXPRESSION_ID, Value)
         End Set
     End Property
 
     Public Function RegularExpressionBO() As RegularExpression
 
-        If Me._regularExpression Is Nothing Then
-            _regularExpression = New RegularExpression(Me.RegularExpressionId)
+        If _regularExpression Is Nothing Then
+            _regularExpression = New RegularExpression(RegularExpressionId)
         End If
         Return _regularExpression
 
@@ -160,16 +160,16 @@ Public Class CreditCardFormat
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me.IsFamilyDirty Then Me.RegularExpressionBO.Save()
-            If Me._isDSCreator AndAlso (Me.IsDirty Or Me.IsFamilyDirty) AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If IsFamilyDirty Then RegularExpressionBO.Save()
+            If _isDSCreator AndAlso (IsDirty OrElse IsFamilyDirty) AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CreditCardFormatDAL
-                dal.UpdateFamily(Me.Dataset)
+                dal.UpdateFamily(Dataset)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -195,17 +195,17 @@ Public Class CreditCardFormat
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
         Public Function AddNewRowToEmptyDV() As CreditCardFormatSearchDV
-            Dim dt As DataTable = Me.Table.Clone()
+            Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(CreditCardFormatSearchDV.COL_CREDIT_CARD_FORMAT_ID) = (New Guid()).ToByteArray
-            row(CreditCardFormatSearchDV.COL_CREDIT_CARD_TYPE_ID) = Guid.Empty.ToByteArray
-            row(CreditCardFormatSearchDV.COL_CREDIT_CARD_TYPE) = ""
-            row(CreditCardFormatSearchDV.COL_FORMAT) = ""
+            row(COL_CREDIT_CARD_FORMAT_ID) = (New Guid()).ToByteArray
+            row(COL_CREDIT_CARD_TYPE_ID) = Guid.Empty.ToByteArray
+            row(COL_CREDIT_CARD_TYPE) = ""
+            row(COL_FORMAT) = ""
             dt.Rows.Add(row)
             Return New CreditCardFormatSearchDV(dt)
         End Function
@@ -213,7 +213,7 @@ Public Class CreditCardFormat
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function LoadList(ByVal CreditCardTypeId As Guid) As CreditCardFormatSearchDV
+    Public Shared Function LoadList(CreditCardTypeId As Guid) As CreditCardFormatSearchDV
         Try
             Dim dal As New CreditCardFormatDAL
             Return New CreditCardFormatSearchDV(dal.LoadList(CreditCardTypeId, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
@@ -222,7 +222,7 @@ Public Class CreditCardFormat
         End Try
     End Function
 
-    Public Shared Function LoadByCode(ByVal CreditCardTypeCode As String) As DataView
+    Public Shared Function LoadByCode(CreditCardTypeCode As String) As DataView
         Try
             Dim dal As New CreditCardFormatDAL
             Return dal.LoadByCode(CreditCardTypeCode, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0).DefaultView
@@ -231,7 +231,7 @@ Public Class CreditCardFormat
         End Try
     End Function
 
-    Public Shared Sub AddNewRowToSearchDV(ByRef dv As CreditCardFormatSearchDV, ByVal NewCreditCardFormatBO As CreditCardFormat)
+    Public Shared Sub AddNewRowToSearchDV(ByRef dv As CreditCardFormatSearchDV, NewCreditCardFormatBO As CreditCardFormat)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         dv.Sort = ""
@@ -256,8 +256,8 @@ Public Class CreditCardFormat
         End If
     End Sub
 
-    Public Shared Function IsCreditCardValid(ByVal CreditCardTypeCode As String, ByVal CreditCardNumber As String) As Boolean
-        Dim dv As DataView = CreditCardFormat.LoadByCode(CreditCardTypeCode)
+    Public Shared Function IsCreditCardValid(CreditCardTypeCode As String, CreditCardNumber As String) As Boolean
+        Dim dv As DataView = LoadByCode(CreditCardTypeCode)
         If dv Is Nothing OrElse dv.Count <= 0 OrElse dv.Item(0).Item(CreditCardFormatSearchDV.COL_FORMAT).Equals(String.Empty) Then
             Throw New StoredProcedureGeneratedException("Credit Card Format Error", Common.ErrorCodes.WS_CREDIT_CARD_FORMAT_NOT_FOUND)
         End If

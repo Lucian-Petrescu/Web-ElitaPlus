@@ -48,15 +48,15 @@ Namespace Tables
         End Property
 
         Private Sub SetStateProperties()
-            Me.State.moCommissionPeriodId = CType(Me.CallingParameters, Guid)
-            If Me.State.moCommissionPeriodId.Equals(Guid.Empty) Then
-                Me.State.IsPeriodNew = True
+            State.moCommissionPeriodId = CType(CallingParameters, Guid)
+            If State.moCommissionPeriodId.Equals(Guid.Empty) Then
+                State.IsPeriodNew = True
                 ClearPeriod()
                 SetPeriodButtonsState(True)
                 PopulatePeriod()
                 TheDealerControl.ChangeEnabledControlProperty(True)
             Else
-                Me.State.IsPeriodNew = False
+                State.IsPeriodNew = False
                 SetPeriodButtonsState(False)
                 PopulatePeriod()
                 TheDealerControl.ChangeEnabledControlProperty(False)
@@ -172,18 +172,18 @@ Namespace Tables
 
         Private ReadOnly Property ThePeriod() As CommissionPeriod
             Get
-                If Me.State.MyBo Is Nothing Then
-                    If Me.State.IsPeriodNew = True Then
+                If State.MyBo Is Nothing Then
+                    If State.IsPeriodNew = True Then
                         ' For creating, inserting
-                        Me.State.MyBo = New CommissionPeriod
-                        Me.State.moCommissionPeriodId = Me.State.MyBo.Id
+                        State.MyBo = New CommissionPeriod
+                        State.moCommissionPeriodId = State.MyBo.Id
                     Else
                         ' For updating, deleting
-                        Me.State.MyBo = New CommissionPeriod(Me.State.moCommissionPeriodId)
+                        State.MyBo = New CommissionPeriod(State.moCommissionPeriodId)
                     End If
                 End If
-                BindBoPropertiesToLabels(Me.State.MyBo)
-                Return Me.State.MyBo
+                BindBoPropertiesToLabels(State.MyBo)
+                Return State.MyBo
             End Get
         End Property
 
@@ -221,16 +221,16 @@ Namespace Tables
         Private ReadOnly Property TheComTolerance() As CommissionTolerance
             Get
                 'If Me.State.IsToleranceNew = True Then
-                If Me.State.moCommissionToleranceId = Guid.Empty Then
+                If State.moCommissionToleranceId = Guid.Empty Then
                     ' For creating, inserting
-                    Me.State.moCommTolerance = Me.State.MyBo.AddCommTolerance(Nothing)
-                    Me.State.moCommissionToleranceId = Me.State.moCommTolerance.Id
+                    State.moCommTolerance = State.MyBo.AddCommTolerance(Nothing)
+                    State.moCommissionToleranceId = State.moCommTolerance.Id
                 Else
                     ' For updating, deleting
-                    Me.State.moCommTolerance = Me.State.MyBo.AddCommTolerance(Me.State.moCommissionToleranceId)
+                    State.moCommTolerance = State.MyBo.AddCommTolerance(State.moCommissionToleranceId)
                 End If
 
-                Return Me.State.moCommTolerance
+                Return State.moCommTolerance
             End Get
         End Property
 
@@ -255,7 +255,7 @@ Namespace Tables
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -265,36 +265,36 @@ Namespace Tables
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
-                Me.MasterPage.MessageController.Clear_Hide()
+                MasterPage.MessageController.Clear_Hide()
                 ClearLabelsErrSign()
 
                 If Not Page.IsPostBack Then
-                    Me.MasterPage.MessageController.Clear()
-                    Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
+                    MasterPage.MessageController.Clear()
+                    MasterPage.UsePageTabTitleInBreadCrum = False
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
                     UpdateBreadCrum()
                     'Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
-                    Me.TranslateGridHeader(Grid)
-                    Me.TranslateGridControls(Grid)
-                    Me.SetGridItemStyleColor(Me.Grid)
-                    Me.SetStateProperties()
+                    SetFormTab(PAGETAB)
+                    TranslateGridHeader(Grid)
+                    TranslateGridControls(Grid)
+                    SetGridItemStyleColor(Grid)
+                    SetStateProperties()
                     ExecuteEvents()
 
-                    Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO,
-                                                                        Me.MSG_TYPE_CONFIRM, True)
-                    Me.AddCalendar(Me.BtnEffectiveDate_WRITE, Me.moEffectiveText_WRITE)
-                    Me.AddCalendar(Me.BtnExpirationDate_WRITE, Me.moExpirationText_WRITE)
+                    AddControlMsg(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO,
+                                                                        MSG_TYPE_CONFIRM, True)
+                    AddCalendar(BtnEffectiveDate_WRITE, moEffectiveText_WRITE)
+                    AddCalendar(BtnExpirationDate_WRITE, moExpirationText_WRITE)
                 Else
                     CheckIfComingFromConfirm()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
 #End Region
@@ -303,92 +303,92 @@ Namespace Tables
 
         Private Sub GoBack()
             Dim retType As New CommissionPeriodSearchForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back,
-                                                                                Me.State.moCommissionPeriodId, Me.State.boChanged)
-            Me.ReturnToCallingPage(retType)
+                                                                                State.moCommissionPeriodId, State.boChanged)
+            ReturnToCallingPage(retType)
         End Sub
 
-        Private Sub btnEntityBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnEntityBack.Click
+        Private Sub btnEntityBack_Click(sender As Object, e As System.EventArgs) Handles btnEntityBack.Click
             Try
                 If IsDirtyPeriodBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM,
-                                            Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM,
+                                            HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
-                    Me.ClearGridHeaders(Me.Grid)
-                    Me.State.IsToleranceNew = False
-                    PopulateTolerance(Me.POPULATE_ACTION_NO_EDIT)
+                    ClearGridHeaders(Grid)
+                    State.IsToleranceNew = False
+                    PopulateTolerance(POPULATE_ACTION_NO_EDIT)
                     ControlMgr.SetVisibleControl(Me, moPeriodButtonPanel, True)
                     EnableDisablePeriodEntity(True)
-                    Me.EnableDisableControls(moPeriodPanel_WRITE, False)
+                    EnableDisableControls(moPeriodPanel_WRITE, False)
                     hdnSelectedTab.Value = 0
-                    ControlMgr.SetVisibleControl(Me, Me.btnEntityBack, False)
+                    ControlMgr.SetVisibleControl(Me, btnEntityBack, False)
                     TheDealerControl.ChangeEnabledControlProperty(False)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
                 If IsDirtyPeriodBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM,
-                                            Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM,
+                                            HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
                     GoBack()
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
                 GoBack()
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub SavePeriodChanges()
             If ApplyPeriodChanges() = True Then
-                Me.State.boChanged = True
+                State.boChanged = True
                 ClearTolerance()
                 PopulatePeriod()
-                Me.State.IsPeriodNew = False
+                State.IsPeriodNew = False
                 SetPeriodButtonsState(False)
             End If
         End Sub
 
-        Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+        Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
             Try
                 SavePeriodChanges()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnUndo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+        Private Sub btnUndo_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
             Try
                 ClearPeriod()
                 PopulatePeriod()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+        Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
             Try
                 If DeletePeriod() = True Then
-                    Me.State.boChanged = True
+                    State.boChanged = True
                     GoBack()
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub CreateNew()
-            Me.State.MyBo = Nothing
-            Me.State.moCommissionPeriodId = Guid.Empty
-            Me.State.IsPeriodNew = True
+            State.MyBo = Nothing
+            State.moCommissionPeriodId = Guid.Empty
+            State.IsPeriodNew = True
             ClearPeriod()
             SetPeriodButtonsState(True)
             PopulatePeriod()
@@ -397,26 +397,26 @@ Namespace Tables
             'TheDealerControl.ChangeEnabledControlProperty(True)
         End Sub
 
-        Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+        Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
             Try
                 If IsDirtyPeriodBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
                     CreateNew()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub CreateNewCopy()
             Dim newObj As New CommissionPeriod
             'Me.State.moCommissionPeriodId = Guid.Empty
-            Me.State.MyBo = Nothing
+            State.MyBo = Nothing
             newObj.Copy(ThePeriod)
-            Me.State.IsPeriodNew = True
-            Me.State.MyBo = newObj
+            State.IsPeriodNew = True
+            State.MyBo = newObj
 
             EnableDateFields()
             SetPeriodButtonsState(True)
@@ -424,16 +424,16 @@ Namespace Tables
             'TheDealerControl.ChangeEnabledControlProperty(True)
         End Sub
 
-        Private Sub btnCopy_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+        Private Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
             Try
                 If IsDirtyPeriodBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
                 Else
                     CreateNewCopy()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -442,16 +442,16 @@ Namespace Tables
 #Region "Handlers-DropDowns"
 
 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
            Handles multipleDropControl.SelectedDropChanged
             Try
                 EnableDateFields()
-                If Me.State.IsPeriodNew = True Then
+                If State.IsPeriodNew = True Then
                     PopulatePayeeType()
                 End If
                 ControlMgr.SetVisibleControl(Me, moRestrictDetailPanel2, GetRestrictMarkup())
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
         'Private Sub moDealerDrop_WRITE_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moDealerDrop_WRITE.SelectedIndexChanged
@@ -461,18 +461,18 @@ Namespace Tables
 
 #Region "Handlers-Labels"
 
-        Protected Sub BindBoPropertiesToLabels(ByVal oPeriod As CommissionPeriod)
-            Me.BindBOPropertyToLabel(oPeriod, DEALER_ID_PROPERTY, Me.TheDealerControl.CaptionLabel)
-            Me.BindBOPropertyToLabel(oPeriod, EFFECTIVE_DATE_PROPERTY, moEffectiveLabel)
-            Me.BindBOPropertyToLabel(oPeriod, EXPIRATION_DATE_PROPERTY, moExpirationLabel)
-            Me.BindBOPropertyToLabel(oPeriod, COMPUTE_METHOD_ID_PROPERTY, Me.moComputeMethodLabel)
+        Protected Sub BindBoPropertiesToLabels(oPeriod As CommissionPeriod)
+            BindBOPropertyToLabel(oPeriod, DEALER_ID_PROPERTY, TheDealerControl.CaptionLabel)
+            BindBOPropertyToLabel(oPeriod, EFFECTIVE_DATE_PROPERTY, moEffectiveLabel)
+            BindBOPropertyToLabel(oPeriod, EXPIRATION_DATE_PROPERTY, moExpirationLabel)
+            BindBOPropertyToLabel(oPeriod, COMPUTE_METHOD_ID_PROPERTY, moComputeMethodLabel)
         End Sub
 
         Public Sub ClearLabelsErrSign()
-            Me.ClearLabelErrSign(Me.TheDealerControl.CaptionLabel)
-            Me.ClearLabelErrSign(moEffectiveLabel)
-            Me.ClearLabelErrSign(moExpirationLabel)
-            Me.ClearLabelErrSign(moComputeMethodLabel)
+            ClearLabelErrSign(TheDealerControl.CaptionLabel)
+            ClearLabelErrSign(moEffectiveLabel)
+            ClearLabelErrSign(moExpirationLabel)
+            ClearLabelErrSign(moComputeMethodLabel)
         End Sub
 #End Region
 
@@ -480,18 +480,18 @@ Namespace Tables
 
 #Region "Button-Management"
 
-        Private Sub SetPeriodButtonsState(ByVal bIsNew As Boolean)
+        Private Sub SetPeriodButtonsState(bIsNew As Boolean)
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, Not bIsNew)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, Not bIsNew)
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, Not bIsNew)
         End Sub
 
-        Private Sub EnableEffective(ByVal bIsEnable As Boolean)
+        Private Sub EnableEffective(bIsEnable As Boolean)
             ControlMgr.SetEnableControl(Me, moEffectiveText_WRITE, bIsEnable)
             ControlMgr.SetVisibleControl(Me, BtnEffectiveDate_WRITE, bIsEnable)
         End Sub
 
-        Private Sub EnableExpiration(ByVal bIsEnable As Boolean)
+        Private Sub EnableExpiration(bIsEnable As Boolean)
             ControlMgr.SetEnableControl(Me, moExpirationText_WRITE, bIsEnable)
             ControlMgr.SetVisibleControl(Me, BtnExpirationDate_WRITE, bIsEnable)
         End Sub
@@ -506,7 +506,7 @@ Namespace Tables
                     ' Next Year
                     moExpirationText_WRITE.Text = Date.Now().AddYears(1).ToString("dd-MMM-yyyy", CultureInfo.CurrentCulture)
                 Case 1
-                    If Me.State.IsPeriodNew = True Then
+                    If State.IsPeriodNew = True Then
                         'New Record
                         ' Next Day MaxExpiration
                         moEffectiveText_WRITE.Text = MaxExpiration.AddDays(1).ToString("dd-MMM-yyyy", CultureInfo.CurrentCulture)
@@ -520,7 +520,7 @@ Namespace Tables
                     ControlMgr.SetEnableControl(Me, BtnExpirationDate_WRITE, True)
                 Case Else   ' There is more than one record
                     EnableExpiration(True)
-                    If Me.State.IsPeriodNew = True Then
+                    If State.IsPeriodNew = True Then
                         'New Record
                         ' Next Day MaxExpiration
                         moEffectiveText_WRITE.Text = MaxExpiration.AddDays(1).ToString("dd-MMM-yyyy", CultureInfo.CurrentCulture)
@@ -550,7 +550,7 @@ Namespace Tables
             TheDealerControl.BindData(oDataView)
             TheDealerControl.AutoPostBackDD = True
 
-            If Me.State.IsPeriodNew = True Then
+            If State.IsPeriodNew = True Then
                 TheDealerControl.NothingSelected = True
             Else
                 TheDealerControl.SelectedGuid = ThePeriod.DealerId
@@ -559,8 +559,8 @@ Namespace Tables
         End Sub
 
         Private Sub PopulateDates()
-            Me.PopulateControlFromBOProperty(moEffectiveText_WRITE, ThePeriod.EffectiveDate)
-            Me.PopulateControlFromBOProperty(moExpirationText_WRITE, ThePeriod.ExpirationDate)
+            PopulateControlFromBOProperty(moEffectiveText_WRITE, ThePeriod.EffectiveDate)
+            PopulateControlFromBOProperty(moExpirationText_WRITE, ThePeriod.ExpirationDate)
         End Sub
 
         Private Sub PupulateComputeMethod()
@@ -569,15 +569,15 @@ Namespace Tables
             'Me.BindListControlToDataView(Me.moComputeMethodDropDown, dvComputeMethod)
 
             Dim ComputeMethodList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="MCM", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
-            Me.moComputeMethodDropDown.Populate(ComputeMethodList, New PopulateOptions() With
+            moComputeMethodDropDown.Populate(ComputeMethodList, New PopulateOptions() With
             {
                 .AddBlankItem = True
             })
 
-            If Me.State.IsPeriodNew = True Then
+            If State.IsPeriodNew = True Then
                 ThePeriod.ComputeMethodId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMPUTE_METHOD, COMPUTE_METHOD_COMPUTE_ON_NET)
             End If
-            Me.PopulateControlFromBOProperty(Me.moComputeMethodDropDown, ThePeriod.ComputeMethodId)
+            PopulateControlFromBOProperty(moComputeMethodDropDown, ThePeriod.ComputeMethodId)
         End Sub
 
         Private Sub PopulatePeriod()
@@ -587,13 +587,13 @@ Namespace Tables
                 EnableDateFields()
                 PopulateTolerance()
                 PupulateComputeMethod()
-                If Me.State.IsPeriodNew = False Then
+                If State.IsPeriodNew = False Then
                     PopulatePayeeType()
                 End If
                 PopulatePeriodEntity()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
@@ -614,7 +614,7 @@ Namespace Tables
 #Region "Clear"
 
         Private Sub ClearDealer()
-            If Me.State.IsPeriodNew = True Then
+            If State.IsPeriodNew = True Then
                 'moDealerDrop_WRITE.SelectedIndex = 0
                 TheDealerControl.SelectedIndex = 0
             Else
@@ -635,28 +635,28 @@ Namespace Tables
 
 #Region "Business Part"
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                If (Not Me.State Is Nothing) Then
-                    Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            If (State IsNot Nothing) Then
+                If (State IsNot Nothing) Then
+                    MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
                 End If
             End If
         End Sub
 
-        Private Sub PopulatePeriodBOFromForm(ByVal oPeriod As CommissionPeriod)
+        Private Sub PopulatePeriodBOFromForm(oPeriod As CommissionPeriod)
             With oPeriod
                 ' DropDowns
                 .DealerId = TheDealerControl.SelectedGuid 'Me.GetSelectedItem(moDealerDrop_WRITE)
-                Me.PopulateBOProperty(oPeriod, COMPUTE_METHOD_ID_PROPERTY, Me.moComputeMethodDropDown)
+                PopulateBOProperty(oPeriod, COMPUTE_METHOD_ID_PROPERTY, moComputeMethodDropDown)
 
                 ' Texts
-                Me.PopulateBOProperty(oPeriod, EFFECTIVE_DATE_PROPERTY, moEffectiveText_WRITE)
-                Me.PopulateBOProperty(oPeriod, EXPIRATION_DATE_PROPERTY, moExpirationText_WRITE)
+                PopulateBOProperty(oPeriod, EFFECTIVE_DATE_PROPERTY, moEffectiveText_WRITE)
+                PopulateBOProperty(oPeriod, EXPIRATION_DATE_PROPERTY, moExpirationText_WRITE)
 
             End With
 
 
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Sub
@@ -667,11 +667,11 @@ Namespace Tables
 
             oPeriod = ThePeriod
             With oPeriod
-                PopulatePeriodBOFromForm(Me.State.MyBo)
+                PopulatePeriodBOFromForm(State.MyBo)
                 bIsDirty = .IsDirty
             End With
             If Not bIsDirty Then
-                If Not Me.State.moCommTolerance Is Nothing Then
+                If State.moCommTolerance IsNot Nothing Then
                     bIsDirty = IsDirtyToleranceBO()
                 End If
             End If
@@ -680,48 +680,48 @@ Namespace Tables
 
         Private Sub ValidatePayeeType()
             Dim PayeeTypeCode As String
-            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, Me.GetSelectedItem(cboPayeeType1))
+            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, GetSelectedItem(cboPayeeType1))
             If PayeeTypeCode = Payee_Type_Comm_Entity Then
-                If Me.GetSelectedItem(cboPeriodEntity1).Equals(Guid.Empty) Then
-                    ElitaPlusPage.SetLabelError(Me.LabelCommEntity)
+                If GetSelectedItem(cboPeriodEntity1).Equals(Guid.Empty) Then
+                    ElitaPlusPage.SetLabelError(LabelCommEntity)
                     ControlMgr.SetEnableControl(Me, cboPeriodEntity1, True)
-                    Me.cboPeriodEntity1.Focus()
+                    cboPeriodEntity1.Focus()
                     Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.MISSING_COMM_ENTITY_ERR)
                 End If
             End If
-            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, Me.GetSelectedItem(cboPayeeType2))
+            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, GetSelectedItem(cboPayeeType2))
             If PayeeTypeCode = Payee_Type_Comm_Entity Then
-                If Me.GetSelectedItem(cboPeriodEntity2).Equals(Guid.Empty) Then
-                    ElitaPlusPage.SetLabelError(Me.LabelCommEntity)
+                If GetSelectedItem(cboPeriodEntity2).Equals(Guid.Empty) Then
+                    ElitaPlusPage.SetLabelError(LabelCommEntity)
                     ControlMgr.SetEnableControl(Me, cboPeriodEntity2, True)
-                    Me.cboPeriodEntity2.Focus()
+                    cboPeriodEntity2.Focus()
                     Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.MISSING_COMM_ENTITY_ERR)
                 End If
             End If
-            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, Me.GetSelectedItem(cboPayeeType3))
+            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, GetSelectedItem(cboPayeeType3))
             If PayeeTypeCode = Payee_Type_Comm_Entity Then
-                If Me.GetSelectedItem(cboPeriodEntity3).Equals(Guid.Empty) Then
-                    ElitaPlusPage.SetLabelError(Me.LabelCommEntity)
+                If GetSelectedItem(cboPeriodEntity3).Equals(Guid.Empty) Then
+                    ElitaPlusPage.SetLabelError(LabelCommEntity)
                     ControlMgr.SetEnableControl(Me, cboPeriodEntity3, True)
-                    Me.cboPeriodEntity3.Focus()
+                    cboPeriodEntity3.Focus()
                     Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.MISSING_COMM_ENTITY_ERR)
                 End If
             End If
-            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, Me.GetSelectedItem(cboPayeeType4))
+            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, GetSelectedItem(cboPayeeType4))
             If PayeeTypeCode = Payee_Type_Comm_Entity Then
-                If Me.GetSelectedItem(cboPeriodEntity4).Equals(Guid.Empty) Then
-                    ElitaPlusPage.SetLabelError(Me.LabelCommEntity)
+                If GetSelectedItem(cboPeriodEntity4).Equals(Guid.Empty) Then
+                    ElitaPlusPage.SetLabelError(LabelCommEntity)
                     ControlMgr.SetEnableControl(Me, cboPeriodEntity4, True)
-                    Me.cboPeriodEntity4.Focus()
+                    cboPeriodEntity4.Focus()
                     Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.MISSING_COMM_ENTITY_ERR)
                 End If
             End If
-            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, Me.GetSelectedItem(cboPayeeType5))
+            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, GetSelectedItem(cboPayeeType5))
             If PayeeTypeCode = Payee_Type_Comm_Entity Then
-                If Me.GetSelectedItem(cboPeriodEntity5).Equals(Guid.Empty) Then
-                    ElitaPlusPage.SetLabelError(Me.LabelCommEntity)
+                If GetSelectedItem(cboPeriodEntity5).Equals(Guid.Empty) Then
+                    ElitaPlusPage.SetLabelError(LabelCommEntity)
                     ControlMgr.SetEnableControl(Me, cboPeriodEntity5, True)
-                    Me.cboPeriodEntity5.Focus()
+                    cboPeriodEntity5.Focus()
                     Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.MISSING_COMM_ENTITY_ERR)
                 End If
             End If
@@ -734,10 +734,10 @@ Namespace Tables
 
             Try
                 ValidatePayeeType()
-                SetLabelColor(Me.LabelCommEntity)
+                SetLabelColor(LabelCommEntity)
                 UpdateEntityTable()
                 If IsDirtyPeriodBO() = True Then
-                    If Not Me.State.moCommTolerance Is Nothing Then
+                    If State.moCommTolerance IsNot Nothing Then
                         PopulateToleranceBOFromForm()
                     End If
                     oPeriod = ThePeriod
@@ -745,14 +745,14 @@ Namespace Tables
                     oPeriod.Save()
                     'Me.State.MyBo = Nothing
                     'oPeriod = ThePeriod
-                    Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 Else
-                    Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 End If
-                Me.State.IsPeriodNew = False
+                State.IsPeriodNew = False
                 SetPeriodButtonsState(False)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
                 bIsOk = False
             End Try
             Return bIsOk
@@ -769,13 +769,13 @@ Namespace Tables
                     .Save()
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
                 bIsOk = False
             End Try
             Return bIsOk
         End Function
 
-        Public Shared Sub SetLabelColor(ByVal lbl As Label)
+        Public Shared Sub SetLabelColor(lbl As Label)
             lbl.ForeColor = Color.Black
         End Sub
 #End Region
@@ -788,23 +788,23 @@ Namespace Tables
 #Region "Tolerance Handlers-Buttons"
 
         Private Sub NewTolerance()
-            Me.State.moCommissionToleranceId = Guid.Empty
-            Me.State.moCommTolerance = New CommissionTolerance
-            Me.State.IsToleranceNew = True
+            State.moCommissionToleranceId = Guid.Empty
+            State.moCommTolerance = New CommissionTolerance
+            State.IsToleranceNew = True
             ControlMgr.SetVisibleControl(Me, moPeriodButtonPanel, False)
             EnableDisablePeriodEntity(False)
-            Me.EnableDisableControls(moPeriodPanel_WRITE, True)
+            EnableDisableControls(moPeriodPanel_WRITE, True)
             EnableToleranceGrid(False)
             InitializeFormTolerance()
             PopulateFormFromPeriodEntityBO()
         End Sub
 
-        Private Sub BtnNewGrid_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnNewGrid_WRITE.Click
+        Private Sub BtnNewGrid_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnNewGrid_WRITE.Click
             Try
                 If IsDirtyPeriodBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM,
-                                            Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM,
+                                            HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
                 Else
                     'If GetRestrictMarkup() = False Then
                     'Exit Sub
@@ -812,19 +812,19 @@ Namespace Tables
                     NewTolerance()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub BtnUndoGrid_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtnUndoGrid_WRITE.Click
+        Private Sub BtnUndoGrid_WRITE_Click(sender As Object, e As System.EventArgs) Handles BtnUndoGrid_WRITE.Click
             EditTolerance()
         End Sub
 
         Private Sub SaveToleranceChanges()
             If ApplyToleranceChanges() = True Then
-                Me.State.MyBo = New CommissionPeriod(Me.State.MyBo.Id)
+                State.MyBo = New CommissionPeriod(State.MyBo.Id)
                 PopulateFormFromPeriodEntityBO()
-                PopulateTolerance(Me.POPULATE_ACTION_SAVE)
+                PopulateTolerance(POPULATE_ACTION_SAVE)
                 ControlMgr.SetVisibleControl(Me, moPeriodButtonPanel, True)
                 EnableDisablePeriodEntity(True)
                 PopulatePeriodEntity()
@@ -834,32 +834,32 @@ Namespace Tables
             End If
         End Sub
 
-        Private Sub BtnSaveGrid_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSaveGrid_WRITE.Click
+        Private Sub BtnSaveGrid_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnSaveGrid_WRITE.Click
             Try
                 SaveToleranceChanges()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub BtnCancelGrid_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnCancelGrid.Click
+        Private Sub BtnCancelGrid_Click(sender As System.Object, e As System.EventArgs) Handles BtnCancelGrid.Click
             Try
                 If IsDirtyPeriodBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM,
-                                            Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM,
+                                            HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
-                    Me.ClearGridHeaders(Me.Grid)
-                    Me.State.IsToleranceNew = False
-                    PopulateTolerance(Me.POPULATE_ACTION_NO_EDIT)
+                    ClearGridHeaders(Grid)
+                    State.IsToleranceNew = False
+                    PopulateTolerance(POPULATE_ACTION_NO_EDIT)
                     ControlMgr.SetVisibleControl(Me, moPeriodButtonPanel, True)
                     EnableDisablePeriodEntity(True)
-                    Me.EnableDisableControls(moPeriodPanel_WRITE, False)
+                    EnableDisableControls(moPeriodPanel_WRITE, False)
                     TheDealerControl.ChangeEnabledControlProperty(False)
-                    ControlMgr.SetVisibleControl(Me, Me.btnEntityBack, False)
+                    ControlMgr.SetVisibleControl(Me, btnEntityBack, False)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -868,54 +868,54 @@ Namespace Tables
 
 #Region "Tolerance Handlers-Grid"
 
-        Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+        Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
             Try
-                Me.Grid.PageIndex = e.NewPageIndex
-                PopulateTolerance(Me.POPULATE_ACTION_NO_EDIT)
+                Grid.PageIndex = e.NewPageIndex
+                PopulateTolerance(POPULATE_ACTION_NO_EDIT)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Public Sub RowCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs)
+        Public Sub RowCreated(sender As Object, e As GridViewRowEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
         Private Sub EditTolerance()
-            Me.State.IsToleranceNew = False
+            State.IsToleranceNew = False
             EnableToleranceGrid(False)
             PopulateFormFromToleranceBO()
             ControlMgr.SetVisibleControl(Me, moPeriodButtonPanel, False)
             EnableDisablePeriodEntity(False)
-            Me.EnableDisableControls(moPeriodPanel_WRITE, True)
+            EnableDisableControls(moPeriodPanel_WRITE, True)
         End Sub
 
-        Private Sub RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+        Private Sub RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
             Try
-                If (e.CommandName = Me.EDIT_COMMAND_NAME) Then
+                If (e.CommandName = EDIT_COMMAND_NAME) Then
                     Dim index As Integer = CInt(e.CommandArgument)
-                    Me.State.moCommissionToleranceId = Me.GetGuidFromString(
-                                    Me.GetGridText(Me.Grid, index, COMMISSION_TOLERANCE_ID_COL))
+                    State.moCommissionToleranceId = GetGuidFromString(
+                                    GetGridText(Grid, index, COMMISSION_TOLERANCE_ID_COL))
 
                     'Me.State.moCommissionToleranceId = New Guid(Me.Grid.Rows(index).Cells(Me.COMMISSION_TOLERANCE_ID_COL).Text)
 
                     ControlMgr.SetVisibleControl(Me, btnEntityBack, True)
-                    Me.State.moCommTolerance = New CommissionTolerance(Me.State.moCommissionToleranceId)
+                    State.moCommTolerance = New CommissionTolerance(State.moCommissionToleranceId)
                     'If GetRestrictMarkup() = False Then
                     'Exit Sub
                     'End If
                     EditTolerance()
                     PopulatePeriodEntity()
                     'End If
-                ElseIf (e.CommandName = Me.DELETE_COMMAND_NAME) Then
+                ElseIf (e.CommandName = DELETE_COMMAND_NAME) Then
                     Dim index As Integer = CInt(e.CommandArgument)
                     'nIndex = e.Item.ItemIndex
-                    Me.State.moCommissionToleranceId = Me.GetGuidFromString(
-                                    Me.GetGridText(Me.Grid, index, COMMISSION_TOLERANCE_ID_COL))
+                    State.moCommissionToleranceId = GetGuidFromString(
+                                    GetGridText(Grid, index, COMMISSION_TOLERANCE_ID_COL))
                     'Me.State.moCommissionPeriodId = New Guid(Me.Grid.Rows(index).Cells(Me.COMMISSION_TOLERANCE_ID_COL).Text)
 
                     If DeleteTolerance() = True Then
-                        PopulateTolerance(Me.POPULATE_ACTION_NO_EDIT)
+                        PopulateTolerance(POPULATE_ACTION_NO_EDIT)
                         PopulatePeriodEntity()
                         '  If Me.Grid.Rows.Count = 0 Then
                         'GoBack()
@@ -924,15 +924,15 @@ Namespace Tables
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Protected Sub BindBoPropertiesToGridHeaders(ByVal oTolerance As CommissionTolerance)
-            Me.BindBOPropertyToGridHeader(oTolerance, ALLOWED_MARKUP_PCT_PROPERTY,
-                                                            Me.Grid.Columns(ALLOWED_MARKUP_COL))
-            Me.BindBOPropertyToGridHeader(oTolerance, TOLERANCE_PROPERTY,
-                                                            Me.Grid.Columns(TOLERANCE_COL))
+        Protected Sub BindBoPropertiesToGridHeaders(oTolerance As CommissionTolerance)
+            BindBOPropertyToGridHeader(oTolerance, ALLOWED_MARKUP_PCT_PROPERTY,
+                                                            Grid.Columns(ALLOWED_MARKUP_COL))
+            BindBOPropertyToGridHeader(oTolerance, TOLERANCE_PROPERTY,
+                                                            Grid.Columns(TOLERANCE_COL))
         End Sub
 
 #End Region
@@ -941,12 +941,12 @@ Namespace Tables
 
 #Region "Tolerance Button-Management"
 
-        Public Overrides Sub BaseSetButtonsState(ByVal bIsEdit As Boolean)
+        Public Overrides Sub BaseSetButtonsState(bIsEdit As Boolean)
             SetToleranceButtonsState(bIsEdit)
         End Sub
 
-        Private Sub SetToleranceButtonsState(ByVal bIsEdit As Boolean)
-            If Me.State.IsPeriodNew = False Then
+        Private Sub SetToleranceButtonsState(bIsEdit As Boolean)
+            If State.IsPeriodNew = False Then
                 ControlMgr.SetVisibleControl(Me, BtnNewGrid_WRITE, Not bIsEdit)
             End If
             ControlMgr.SetVisibleControl(Me, BtnSaveGrid_WRITE, bIsEdit)
@@ -959,16 +959,16 @@ Namespace Tables
             SetToleranceButtonsState(False)
         End Sub
 
-        Private Sub EnableRestrictMarkup(ByVal bIsReadWrite As Boolean, ByVal nRecCount As Integer)
-            Me.Grid.Columns(ALLOWED_MARKUP_COL).Visible = bIsReadWrite
-            Me.Grid.Columns(TOLERANCE_COL).Visible = bIsReadWrite
+        Private Sub EnableRestrictMarkup(bIsReadWrite As Boolean, nRecCount As Integer)
+            Grid.Columns(ALLOWED_MARKUP_COL).Visible = bIsReadWrite
+            Grid.Columns(TOLERANCE_COL).Visible = bIsReadWrite
             If (bIsReadWrite = False) AndAlso (nRecCount = 1) Then
                 ' Restrict Markup = 'N' then, period can have at most one Tolerance
                 ControlMgr.SetVisibleControl(Me, BtnNewGrid_WRITE, False)
             End If
         End Sub
 
-        Private Sub EnableRestrictMarkupDetail(ByVal bIsReadWrite As Boolean)
+        Private Sub EnableRestrictMarkupDetail(bIsReadWrite As Boolean)
             ControlMgr.SetVisibleControl(Me, moRestrictDetailPanel, bIsReadWrite)
             ControlMgr.SetVisibleControl(Me, moRestrictDetailPanel2, bIsReadWrite)
             'moAllowedMarkupPctDetailLabel.Visible = bIsReadWrite
@@ -977,12 +977,12 @@ Namespace Tables
             'moToleranceDetailText.Visible = bIsReadWrite
         End Sub
 
-        Private Sub EnableToleranceGrid(ByVal bIsEnable As Boolean)
+        Private Sub EnableToleranceGrid(bIsEnable As Boolean)
             ControlMgr.SetVisibleControl(Me, moGridPanel, bIsEnable)
             ControlMgr.SetVisibleControl(Me, BtnNewGrid_WRITE, bIsEnable)
             ControlMgr.SetVisibleControl(Me, moDetailPanel_WRITE, Not bIsEnable)
             If Not bIsEnable Then
-                Me.MasterPage.MessageController.Clear_Hide()
+                MasterPage.MessageController.Clear_Hide()
                 BindBoPropertiesToLabels()
             End If
 
@@ -998,21 +998,21 @@ Namespace Tables
         Protected Sub BindBoPropertiesToLabels()
             'Dim oComTolerance As CommissionTolerance = TheComTolerance
 
-            Me.BindBOPropertyToLabel(Me.State.moCommTolerance, ALLOWED_MARKUP_PCT_PROPERTY, Me.moAllowedMarkupPctDetailLabel)
-            Me.BindBOPropertyToLabel(Me.State.moCommTolerance, TOLERANCE_PROPERTY, Me.moToleranceDetailLabel)
-            Me.ClearGridHeadersAndLabelsErrSign()
+            BindBOPropertyToLabel(State.moCommTolerance, ALLOWED_MARKUP_PCT_PROPERTY, moAllowedMarkupPctDetailLabel)
+            BindBOPropertyToLabel(State.moCommTolerance, TOLERANCE_PROPERTY, moToleranceDetailLabel)
+            ClearGridHeadersAndLabelsErrSign()
         End Sub
 
-        Protected Sub BindBoAssocCommToLabels(ByVal obj As AssociateCommissions)
-            Me.BindBOPropertyToLabel(obj, "MarkupPercent", Me.lblMarkup)
-            Me.BindBOPropertyToLabel(obj, "CommissionPercent", Me.lblComm)
-            Me.BindBOPropertyToLabel(obj, MARKUP_TOTAL, Me.lblTotal)
-            Me.BindBOPropertyToLabel(obj, COMMISSION_TOTAL, Me.lblTotal)
+        Protected Sub BindBoAssocCommToLabels(obj As AssociateCommissions)
+            BindBOPropertyToLabel(obj, "MarkupPercent", lblMarkup)
+            BindBOPropertyToLabel(obj, "CommissionPercent", lblComm)
+            BindBOPropertyToLabel(obj, MARKUP_TOTAL, lblTotal)
+            BindBOPropertyToLabel(obj, COMMISSION_TOTAL, lblTotal)
             'Me.ClearGridHeadersAndLabelsErrSign()
         End Sub
 
-        Private Sub PopulateToleranceFormItem(ByVal oControl As TextBox, ByVal oPropertyValue As Object)
-            Me.PopulateControlFromBOProperty(oControl, oPropertyValue)
+        Private Sub PopulateToleranceFormItem(oControl As TextBox, oPropertyValue As Object)
+            PopulateControlFromBOProperty(oControl, oPropertyValue)
         End Sub
 
         Private Sub PopulateFormFromToleranceBO()
@@ -1028,7 +1028,7 @@ Namespace Tables
 
                 PopulateFormFromPeriodEntityBO()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
@@ -1041,71 +1041,71 @@ Namespace Tables
             Dim oCommEntity As CommissionEntity
 
             Dim oEntityView As DataView
-            Dim oDataView As AssociateCommissions.SearchDV = AssociateCommissions.getList(Me.State.moCommTolerance.Id)
+            Dim oDataView As AssociateCommissions.SearchDV = AssociateCommissions.getList(State.moCommTolerance.Id)
             Dim oMakupTotal As Decimal = 0
             Dim oBrokerComm As Decimal = 0
             Dim strPayeeType As String
             Dim strPositioncheck As String = String.Empty
 
-            If (Me.State.searchDV Is Nothing) Then
-                Me.State.searchDV = oDataView
+            If (State.searchDV Is Nothing) Then
+                State.searchDV = oDataView
             End If
 
             'Me.State.moAssocCommSearch = AssociateCommissions.getList(TheComTolerance.Id)
-            If Me.State.IsToleranceNew Then
-                For Each oPeriodEntity In Me.State.MyBo.AssociatedCommPeriodEntity
+            If State.IsToleranceNew Then
+                For Each oPeriodEntity In State.MyBo.AssociatedCommPeriodEntity
                     Select Case oPeriodEntity.Position
                         Case 1
                             If Not oPeriodEntity.EntityId.Equals(Guid.Empty) Then
                                 oCommEntity = New CommissionEntity(oPeriodEntity.EntityId)
-                                PopulateToleranceFormItem(Me.txtBrokerMakupEntity, oCommEntity.EntityName)
+                                PopulateToleranceFormItem(txtBrokerMakupEntity, oCommEntity.EntityName)
                             Else
                                 strPayeeType = LookupListNew.GetDescriptionFromId(LookupListNew.LK_PAYEE_TYPE, oPeriodEntity.PayeeTypeId)
-                                PopulateToleranceFormItem(Me.txtBrokerMakupEntity, strPayeeType)
+                                PopulateToleranceFormItem(txtBrokerMakupEntity, strPayeeType)
                             End If
-                            PopulateToleranceFormItem(Me.txtBrokerMakupPct, nInitValue)
-                            PopulateToleranceFormItem(Me.txtBrokerCommPct, nInitValue)
+                            PopulateToleranceFormItem(txtBrokerMakupPct, nInitValue)
+                            PopulateToleranceFormItem(txtBrokerCommPct, nInitValue)
                         Case 2
                             If Not oPeriodEntity.EntityId.Equals(Guid.Empty) Then
                                 oCommEntity = New CommissionEntity(oPeriodEntity.EntityId)
-                                PopulateToleranceFormItem(Me.txtBrokerMakupEntity2, oCommEntity.EntityName)
+                                PopulateToleranceFormItem(txtBrokerMakupEntity2, oCommEntity.EntityName)
                             Else
                                 strPayeeType = LookupListNew.GetDescriptionFromId(LookupListNew.LK_PAYEE_TYPE, oPeriodEntity.PayeeTypeId)
-                                PopulateToleranceFormItem(Me.txtBrokerMakupEntity2, strPayeeType)
+                                PopulateToleranceFormItem(txtBrokerMakupEntity2, strPayeeType)
                             End If
-                            PopulateToleranceFormItem(Me.txtBrokerMakupPct2, nInitValue)
-                            PopulateToleranceFormItem(Me.txtBrokerCommPct2, nInitValue)
+                            PopulateToleranceFormItem(txtBrokerMakupPct2, nInitValue)
+                            PopulateToleranceFormItem(txtBrokerCommPct2, nInitValue)
                         Case 3
                             If Not oPeriodEntity.EntityId.Equals(Guid.Empty) Then
                                 oCommEntity = New CommissionEntity(oPeriodEntity.EntityId)
-                                PopulateToleranceFormItem(Me.txtBrokerMakupEntity3, oCommEntity.EntityName)
+                                PopulateToleranceFormItem(txtBrokerMakupEntity3, oCommEntity.EntityName)
                             Else
                                 strPayeeType = LookupListNew.GetDescriptionFromId(LookupListNew.LK_PAYEE_TYPE, oPeriodEntity.PayeeTypeId)
-                                PopulateToleranceFormItem(Me.txtBrokerMakupEntity3, strPayeeType)
+                                PopulateToleranceFormItem(txtBrokerMakupEntity3, strPayeeType)
                             End If
 
-                            PopulateToleranceFormItem(Me.txtBrokerMakupPct3, nInitValue)
-                            PopulateToleranceFormItem(Me.txtBrokerCommPct3, nInitValue)
+                            PopulateToleranceFormItem(txtBrokerMakupPct3, nInitValue)
+                            PopulateToleranceFormItem(txtBrokerCommPct3, nInitValue)
                         Case 4
                             If Not oPeriodEntity.EntityId.Equals(Guid.Empty) Then
                                 oCommEntity = New CommissionEntity(oPeriodEntity.EntityId)
-                                PopulateToleranceFormItem(Me.txtBrokerMakupEntity4, oCommEntity.EntityName)
+                                PopulateToleranceFormItem(txtBrokerMakupEntity4, oCommEntity.EntityName)
                             Else
                                 strPayeeType = LookupListNew.GetDescriptionFromId(LookupListNew.LK_PAYEE_TYPE, oPeriodEntity.PayeeTypeId)
-                                PopulateToleranceFormItem(Me.txtBrokerMakupEntity4, strPayeeType)
+                                PopulateToleranceFormItem(txtBrokerMakupEntity4, strPayeeType)
                             End If
-                            PopulateToleranceFormItem(Me.txtBrokerMakupPct4, nInitValue)
-                            PopulateToleranceFormItem(Me.txtBrokerCommPct4, nInitValue)
+                            PopulateToleranceFormItem(txtBrokerMakupPct4, nInitValue)
+                            PopulateToleranceFormItem(txtBrokerCommPct4, nInitValue)
                         Case 5
                             If Not oPeriodEntity.EntityId.Equals(Guid.Empty) Then
                                 oCommEntity = New CommissionEntity(oPeriodEntity.EntityId)
-                                PopulateToleranceFormItem(Me.txtBrokerMakupEntity5, oCommEntity.EntityName)
+                                PopulateToleranceFormItem(txtBrokerMakupEntity5, oCommEntity.EntityName)
                             Else
                                 strPayeeType = LookupListNew.GetDescriptionFromId(LookupListNew.LK_PAYEE_TYPE, oPeriodEntity.PayeeTypeId)
-                                PopulateToleranceFormItem(Me.txtBrokerMakupEntity5, strPayeeType)
+                                PopulateToleranceFormItem(txtBrokerMakupEntity5, strPayeeType)
                             End If
-                            PopulateToleranceFormItem(Me.txtBrokerMakupPct5, nInitValue)
-                            PopulateToleranceFormItem(Me.txtBrokerCommPct5, nInitValue)
+                            PopulateToleranceFormItem(txtBrokerMakupPct5, nInitValue)
+                            PopulateToleranceFormItem(txtBrokerCommPct5, nInitValue)
                     End Select
                 Next
             Else
@@ -1115,77 +1115,77 @@ Namespace Tables
                             Case "1"
                                 strPositioncheck = strPositioncheck & ",1"
                                 'REQ-5773
-                                Me.txtBrokerMakupPct.Text = Me.GetAmountFormattedPercentString(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_MARKUP_PERCENT))
-                                Me.txtBrokerCommPct.Text = Me.GetAmountFormattedPercentString(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMMISSION_PERCENT))
+                                txtBrokerMakupPct.Text = GetAmountFormattedPercentString(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_MARKUP_PERCENT))
+                                txtBrokerCommPct.Text = GetAmountFormattedPercentString(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMMISSION_PERCENT))
                                 If oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMM_ENTITY_NAME).ToString <> "" Then
-                                    PopulateToleranceFormItem(Me.txtBrokerMakupEntity, oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMM_ENTITY_NAME))
+                                    PopulateToleranceFormItem(txtBrokerMakupEntity, oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMM_ENTITY_NAME))
                                 Else
-                                    If Not oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_PAYEE_TYPE_ID) Is DBNull.Value Then
+                                    If oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_PAYEE_TYPE_ID) IsNot DBNull.Value Then
                                         strPayeeType = LookupListNew.GetDescriptionFromId(LookupListNew.LK_PAYEE_TYPE, GuidControl.ByteArrayToGuid(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_PAYEE_TYPE_ID)))
-                                        PopulateToleranceFormItem(Me.txtBrokerMakupEntity, strPayeeType)
+                                        PopulateToleranceFormItem(txtBrokerMakupEntity, strPayeeType)
                                     End If
                                 End If
-                                PopulateToleranceFormItem(Me.AsCommId1, oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_ASSOCIATE_COMMISSIONS_ID))
+                                PopulateToleranceFormItem(AsCommId1, oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_ASSOCIATE_COMMISSIONS_ID))
                                 oMakupTotal += CType(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_MARKUP_PERCENT), Decimal)
                                 oBrokerComm += CType(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMMISSION_PERCENT), Decimal)
                             Case "2"
                                 strPositioncheck = strPositioncheck & ",2"
-                                Me.txtBrokerMakupPct2.Text = Me.GetAmountFormattedPercentString(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_MARKUP_PERCENT))
-                                Me.txtBrokerCommPct2.Text = Me.GetAmountFormattedPercentString(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMMISSION_PERCENT))
+                                txtBrokerMakupPct2.Text = GetAmountFormattedPercentString(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_MARKUP_PERCENT))
+                                txtBrokerCommPct2.Text = GetAmountFormattedPercentString(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMMISSION_PERCENT))
                                 If oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMM_ENTITY_NAME).ToString <> "" Then
-                                    PopulateToleranceFormItem(Me.txtBrokerMakupEntity2, oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMM_ENTITY_NAME))
+                                    PopulateToleranceFormItem(txtBrokerMakupEntity2, oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMM_ENTITY_NAME))
                                 Else
-                                    If Not oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_PAYEE_TYPE_ID) Is DBNull.Value Then
+                                    If oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_PAYEE_TYPE_ID) IsNot DBNull.Value Then
                                         strPayeeType = LookupListNew.GetDescriptionFromId(LookupListNew.LK_PAYEE_TYPE, GuidControl.ByteArrayToGuid(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_PAYEE_TYPE_ID)))
-                                        PopulateToleranceFormItem(Me.txtBrokerMakupEntity2, strPayeeType)
+                                        PopulateToleranceFormItem(txtBrokerMakupEntity2, strPayeeType)
                                     End If
                                 End If
-                                PopulateToleranceFormItem(Me.AsCommId2, oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_ASSOCIATE_COMMISSIONS_ID))
+                                PopulateToleranceFormItem(AsCommId2, oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_ASSOCIATE_COMMISSIONS_ID))
                                 oMakupTotal += CType(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_MARKUP_PERCENT), Decimal)
                                 oBrokerComm += CType(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMMISSION_PERCENT), Decimal)
                             Case "3"
                                 strPositioncheck = strPositioncheck & ",3"
-                                Me.txtBrokerMakupPct3.Text = Me.GetAmountFormattedPercentString(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_MARKUP_PERCENT))
-                                Me.txtBrokerCommPct3.Text = Me.GetAmountFormattedPercentString(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMMISSION_PERCENT))
+                                txtBrokerMakupPct3.Text = GetAmountFormattedPercentString(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_MARKUP_PERCENT))
+                                txtBrokerCommPct3.Text = GetAmountFormattedPercentString(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMMISSION_PERCENT))
                                 If oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMM_ENTITY_NAME).ToString <> "" Then
-                                    PopulateToleranceFormItem(Me.txtBrokerMakupEntity3, oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMM_ENTITY_NAME))
+                                    PopulateToleranceFormItem(txtBrokerMakupEntity3, oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMM_ENTITY_NAME))
                                 Else
-                                    If Not oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_PAYEE_TYPE_ID) Is DBNull.Value Then
+                                    If oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_PAYEE_TYPE_ID) IsNot DBNull.Value Then
                                         strPayeeType = LookupListNew.GetDescriptionFromId(LookupListNew.LK_PAYEE_TYPE, GuidControl.ByteArrayToGuid(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_PAYEE_TYPE_ID)))
-                                        PopulateToleranceFormItem(Me.txtBrokerMakupEntity3, strPayeeType)
+                                        PopulateToleranceFormItem(txtBrokerMakupEntity3, strPayeeType)
                                     End If
                                 End If
-                                PopulateToleranceFormItem(Me.AsCommId3, oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_ASSOCIATE_COMMISSIONS_ID))
+                                PopulateToleranceFormItem(AsCommId3, oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_ASSOCIATE_COMMISSIONS_ID))
                                 oMakupTotal += CType(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_MARKUP_PERCENT), Decimal)
                                 oBrokerComm += CType(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMMISSION_PERCENT), Decimal)
                             Case "4"
                                 strPositioncheck = strPositioncheck & ",4"
-                                Me.txtBrokerMakupPct4.Text = Me.GetAmountFormattedPercentString(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_MARKUP_PERCENT))
-                                Me.txtBrokerCommPct4.Text = Me.GetAmountFormattedPercentString(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMMISSION_PERCENT))
+                                txtBrokerMakupPct4.Text = GetAmountFormattedPercentString(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_MARKUP_PERCENT))
+                                txtBrokerCommPct4.Text = GetAmountFormattedPercentString(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMMISSION_PERCENT))
                                 If oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMM_ENTITY_NAME).ToString <> "" Then
-                                    PopulateToleranceFormItem(Me.txtBrokerMakupEntity4, oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMM_ENTITY_NAME))
+                                    PopulateToleranceFormItem(txtBrokerMakupEntity4, oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMM_ENTITY_NAME))
                                 Else
-                                    If Not oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_PAYEE_TYPE_ID) Is DBNull.Value Then
+                                    If oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_PAYEE_TYPE_ID) IsNot DBNull.Value Then
                                         strPayeeType = LookupListNew.GetDescriptionFromId(LookupListNew.LK_PAYEE_TYPE, GuidControl.ByteArrayToGuid(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_PAYEE_TYPE_ID)))
-                                        PopulateToleranceFormItem(Me.txtBrokerMakupEntity4, strPayeeType)
+                                        PopulateToleranceFormItem(txtBrokerMakupEntity4, strPayeeType)
                                     End If
                                 End If
-                                PopulateToleranceFormItem(Me.AsCommId4, oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_ASSOCIATE_COMMISSIONS_ID))
+                                PopulateToleranceFormItem(AsCommId4, oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_ASSOCIATE_COMMISSIONS_ID))
                                 oMakupTotal += CType(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_MARKUP_PERCENT), Decimal)
                                 oBrokerComm += CType(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMMISSION_PERCENT), Decimal)
                             Case "5"
                                 strPositioncheck = strPositioncheck & ",5"
-                                Me.txtBrokerMakupPct5.Text = Me.GetAmountFormattedPercentString(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_MARKUP_PERCENT))
-                                Me.txtBrokerCommPct5.Text = Me.GetAmountFormattedPercentString(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMMISSION_PERCENT))
+                                txtBrokerMakupPct5.Text = GetAmountFormattedPercentString(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_MARKUP_PERCENT))
+                                txtBrokerCommPct5.Text = GetAmountFormattedPercentString(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMMISSION_PERCENT))
                                 If oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMM_ENTITY_NAME).ToString <> "" Then
-                                    PopulateToleranceFormItem(Me.txtBrokerMakupEntity5, oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMM_ENTITY_NAME))
+                                    PopulateToleranceFormItem(txtBrokerMakupEntity5, oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMM_ENTITY_NAME))
                                 Else
-                                    If Not oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_PAYEE_TYPE_ID) Is DBNull.Value Then
+                                    If oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_PAYEE_TYPE_ID) IsNot DBNull.Value Then
                                         strPayeeType = LookupListNew.GetDescriptionFromId(LookupListNew.LK_PAYEE_TYPE, GuidControl.ByteArrayToGuid(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_PAYEE_TYPE_ID)))
-                                        PopulateToleranceFormItem(Me.txtBrokerMakupEntity5, strPayeeType)
+                                        PopulateToleranceFormItem(txtBrokerMakupEntity5, strPayeeType)
                                     End If
                                 End If
-                                PopulateToleranceFormItem(Me.AsCommId5, oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_ASSOCIATE_COMMISSIONS_ID))
+                                PopulateToleranceFormItem(AsCommId5, oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_ASSOCIATE_COMMISSIONS_ID))
                                 oMakupTotal += CType(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_MARKUP_PERCENT), Decimal)
                                 oBrokerComm += CType(oDataView(i)(AssociateCommissions.SearchDV.COL_NAME_COMMISSION_PERCENT), Decimal)
                         End Select
@@ -1195,11 +1195,11 @@ Namespace Tables
 
             'Me.BindBOPropertyToLabel(oAssocCommission, MARKUP_TOTAL, lblTotal)
             'Me.BindBOPropertyToLabel(oAssocCommission, COMMISSION_TOTAL, lblTotal)
-            PopulateToleranceFormItem(Me.txtCommPctTotal, oBrokerComm)
-            PopulateToleranceFormItem(Me.txtBrokerPctTotal, oMakupTotal)
+            PopulateToleranceFormItem(txtCommPctTotal, oBrokerComm)
+            PopulateToleranceFormItem(txtBrokerPctTotal, oMakupTotal)
         End Sub
 
-        Private Sub ChangeControlEnabledProperty(ByVal ctrl As Control, ByVal enabled As Boolean)
+        Private Sub ChangeControlEnabledProperty(ctrl As Control, enabled As Boolean)
             Try
                 If ((ctrl.GetType) Is GetType(WebControls.TextBox)) Then
                     If enabled = False Then 'change to readonly always allowed
@@ -1225,21 +1225,21 @@ Namespace Tables
 
         End Sub
 
-        Private Sub PopulateToleranceBOItem(ByVal oComTolerance As CommissionTolerance, ByVal oPropertyName As String,
-                                                ByVal oControl As TextBox)
-            Me.PopulateBOProperty(oComTolerance, oPropertyName, oControl)
+        Private Sub PopulateToleranceBOItem(oComTolerance As CommissionTolerance, oPropertyName As String,
+                                                oControl As TextBox)
+            PopulateBOProperty(oComTolerance, oPropertyName, oControl)
         End Sub
 
         Private Sub PopulateToleranceBOFromForm()
 
-            With Me.State.moCommTolerance
+            With State.moCommTolerance
                 BindBoPropertiesToLabels()
-                .CommissionPeriodId = Me.State.MyBo.Id
+                .CommissionPeriodId = State.MyBo.Id
                 If GetRestrictMarkup() = True Then
-                    Me.PopulateToleranceBOItem(Me.State.moCommTolerance, ALLOWED_MARKUP_PCT_PROPERTY, moAllowedMarkupPctDetailText)
-                    Me.PopulateToleranceBOItem(Me.State.moCommTolerance, TOLERANCE_PROPERTY, moToleranceDetailText)
+                    PopulateToleranceBOItem(State.moCommTolerance, ALLOWED_MARKUP_PCT_PROPERTY, moAllowedMarkupPctDetailText)
+                    PopulateToleranceBOItem(State.moCommTolerance, TOLERANCE_PROPERTY, moToleranceDetailText)
                 Else
-                    If Me.State.IsToleranceNew Then
+                    If State.IsToleranceNew Then
                         .AllowedMarkupPct = New DecimalType(0)
                         .Tolerance = New DecimalType(0)
                     End If
@@ -1250,7 +1250,7 @@ Namespace Tables
             End With
 
             PopulateAssocCommBOFromForm()
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
 
@@ -1258,15 +1258,15 @@ Namespace Tables
 
         Private Function GetToleranceDataView() As DataView
             Dim oCommissionTolerance As CommissionToleraneData = New CommissionToleraneData
-            Dim commToleranceView As DataView = Me.State.moCommTolerance.getList(Me.State.MyBo.Id)
+            Dim commToleranceView As DataView = State.moCommTolerance.getList(State.MyBo.Id)
             Return commToleranceView
 
         End Function
 
-        Public Overrides Sub AddNewBoRow(ByVal dv As DataView)
+        Public Overrides Sub AddNewBoRow(dv As DataView)
             Dim oId As Guid = Guid.NewGuid
 
-            Me.BaseAddNewGridRow(Me.Grid, dv, oId)
+            BaseAddNewGridRow(Grid, dv, oId)
             InitializeFormTolerance()
         End Sub
 
@@ -1274,16 +1274,16 @@ Namespace Tables
             Dim oDataView As DataView
 
             Try
-                If Me.State.IsPeriodNew = True Then Return ' We can not have Tolerances if the Period is new
+                If State.IsPeriodNew = True Then Return ' We can not have Tolerances if the Period is new
 
                 EnableToleranceGrid(True)
                 oDataView = GetToleranceDataView()
-                Me.State.searchDV = oDataView
-                BasePopulateGrid(Me.Grid, Me.State.searchDV, Me.State.moCommissionToleranceId, oAction)
+                State.searchDV = oDataView
+                BasePopulateGrid(Grid, State.searchDV, State.moCommissionToleranceId, oAction)
                 EnableRestrictMarkup(GetRestrictMarkup(), oDataView.Count)
-                ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, Me.Grid)
+                ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, Grid)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
@@ -1326,31 +1326,31 @@ Namespace Tables
             End If
 
             'Me.BindListControlToDataView(Me.cboPayeeType1, dvPayeeType, , , False)
-            Me.cboPayeeType1.Populate(FilteredPayeeTypeList, New PopulateOptions() With
+            cboPayeeType1.Populate(FilteredPayeeTypeList, New PopulateOptions() With
             {
                 .AddBlankItem = False
             })
 
             'Me.BindListControlToDataView(Me.cboPayeeType2, dvPayeeType, , , False)
-            Me.cboPayeeType2.Populate(FilteredPayeeTypeList, New PopulateOptions() With
+            cboPayeeType2.Populate(FilteredPayeeTypeList, New PopulateOptions() With
             {
                 .AddBlankItem = False
             })
 
             'Me.BindListControlToDataView(Me.cboPayeeType3, dvPayeeType, , , False)
-            Me.cboPayeeType3.Populate(FilteredPayeeTypeList, New PopulateOptions() With
+            cboPayeeType3.Populate(FilteredPayeeTypeList, New PopulateOptions() With
             {
                 .AddBlankItem = False
             })
 
             'Me.BindListControlToDataView(Me.cboPayeeType4, dvPayeeType, , , False)
-            Me.cboPayeeType4.Populate(FilteredPayeeTypeList, New PopulateOptions() With
+            cboPayeeType4.Populate(FilteredPayeeTypeList, New PopulateOptions() With
             {
                 .AddBlankItem = False
             })
 
             'Me.BindListControlToDataView(Me.cboPayeeType5, dvPayeeType, , , False)
-            Me.cboPayeeType5.Populate(FilteredPayeeTypeList, New PopulateOptions() With
+            cboPayeeType5.Populate(FilteredPayeeTypeList, New PopulateOptions() With
             {
                 .AddBlankItem = False
             })
@@ -1365,10 +1365,10 @@ Namespace Tables
             'End If
 
             If FilteredPayeeType1List.Count = 1 Then
-                Me.litScriptVars.Text += "var commEntity = '" + FilteredPayeeType1List.First().ListItemId.ToString + "';"
+                litScriptVars.Text += "var commEntity = '" + FilteredPayeeType1List.First().ListItemId.ToString + "';"
             End If
 
-            If Me.State.IsPeriodNew = True Then
+            If State.IsPeriodNew = True Then
                 Dim FirstPayeeType As String
                 FirstPayeeType = FilteredPayeeType1List.First().ListItemId.ToString()
                 'BindSelectItem(GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString, cboPayeeType1)
@@ -1394,53 +1394,53 @@ Namespace Tables
             Dim CommEntityList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="CommEntityByCompanyGroup", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=listcontext)
 
             'Me.BindListControlToDataView(cboPeriodEntity1, oDataView, , , True)
-            Me.cboPeriodEntity1.Populate(CommEntityList, New PopulateOptions() With
+            cboPeriodEntity1.Populate(CommEntityList, New PopulateOptions() With
             {
                 .AddBlankItem = True
             })
 
             'Me.BindListControlToDataView(cboPeriodEntity2, oDataView, , , True)
-            Me.cboPeriodEntity2.Populate(CommEntityList, New PopulateOptions() With
+            cboPeriodEntity2.Populate(CommEntityList, New PopulateOptions() With
             {
                 .AddBlankItem = True
             })
 
             'Me.BindListControlToDataView(cboPeriodEntity3, oDataView, , , True)
-            Me.cboPeriodEntity3.Populate(CommEntityList, New PopulateOptions() With
+            cboPeriodEntity3.Populate(CommEntityList, New PopulateOptions() With
             {
                 .AddBlankItem = True
             })
 
             'Me.BindListControlToDataView(cboPeriodEntity4, oDataView, , , True)
-            Me.cboPeriodEntity4.Populate(CommEntityList, New PopulateOptions() With
+            cboPeriodEntity4.Populate(CommEntityList, New PopulateOptions() With
             {
                 .AddBlankItem = True
             })
 
             'Me.BindListControlToDataView(cboPeriodEntity5, oDataView, , , True)
-            Me.cboPeriodEntity5.Populate(CommEntityList, New PopulateOptions() With
+            cboPeriodEntity5.Populate(CommEntityList, New PopulateOptions() With
             {
                 .AddBlankItem = True
             })
 
-            If Me.State.IsPeriodNew = True Then
+            If State.IsPeriodNew = True Then
                 'If oDataView.Count > 0 Then
                 If CommEntityList.Count > 0 Then
-                    Me.State.MyBo.AttachPeriodEntity(Me.GetSelectedItem(cboPeriodEntity1), 1, Me.GetSelectedItem(cboPayeeType1))
-                    Me.State.MyBo.AttachPeriodEntity(Me.GetSelectedItem(cboPeriodEntity2), 2, Me.GetSelectedItem(cboPayeeType2))
-                    Me.State.MyBo.AttachPeriodEntity(Me.GetSelectedItem(cboPeriodEntity3), 3, Me.GetSelectedItem(cboPayeeType3))
-                    Me.State.MyBo.AttachPeriodEntity(Me.GetSelectedItem(cboPeriodEntity4), 4, Me.GetSelectedItem(cboPayeeType4))
-                    Me.State.MyBo.AttachPeriodEntity(Me.GetSelectedItem(cboPeriodEntity5), 5, Me.GetSelectedItem(cboPayeeType5))
+                    State.MyBo.AttachPeriodEntity(GetSelectedItem(cboPeriodEntity1), 1, GetSelectedItem(cboPayeeType1))
+                    State.MyBo.AttachPeriodEntity(GetSelectedItem(cboPeriodEntity2), 2, GetSelectedItem(cboPayeeType2))
+                    State.MyBo.AttachPeriodEntity(GetSelectedItem(cboPeriodEntity3), 3, GetSelectedItem(cboPayeeType3))
+                    State.MyBo.AttachPeriodEntity(GetSelectedItem(cboPeriodEntity4), 4, GetSelectedItem(cboPayeeType4))
+                    State.MyBo.AttachPeriodEntity(GetSelectedItem(cboPeriodEntity5), 5, GetSelectedItem(cboPayeeType5))
                 End If
             Else
                 Dim PayeeTypeCode As String
-                For Each oPeriodEntity As CommissionPeriodEntity In Me.State.MyBo.AssociatedCommPeriodEntity
+                For Each oPeriodEntity As CommissionPeriodEntity In State.MyBo.AssociatedCommPeriodEntity
                     Select Case oPeriodEntity.Position
                         Case 1
                             BindSelectItem(oPeriodEntity.EntityId.ToString, cboPeriodEntity1)
                             BindSelectItem(oPeriodEntity.PayeeTypeId.ToString, cboPayeeType1)
 
-                            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, Me.GetSelectedItem(cboPayeeType1))
+                            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, GetSelectedItem(cboPayeeType1))
                             If PayeeTypeCode <> Payee_Type_Comm_Entity Then
                                 ControlMgr.SetEnableControl(Me, cboPeriodEntity1, False)
                             Else
@@ -1449,7 +1449,7 @@ Namespace Tables
                         Case 2
                             BindSelectItem(oPeriodEntity.EntityId.ToString, cboPeriodEntity2)
                             BindSelectItem(oPeriodEntity.PayeeTypeId.ToString, cboPayeeType2)
-                            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, Me.GetSelectedItem(cboPayeeType2))
+                            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, GetSelectedItem(cboPayeeType2))
                             If PayeeTypeCode <> Payee_Type_Comm_Entity Then
                                 ControlMgr.SetEnableControl(Me, cboPeriodEntity2, False)
                             Else
@@ -1458,7 +1458,7 @@ Namespace Tables
                         Case 3
                             BindSelectItem(oPeriodEntity.EntityId.ToString, cboPeriodEntity3)
                             BindSelectItem(oPeriodEntity.PayeeTypeId.ToString, cboPayeeType3)
-                            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, Me.GetSelectedItem(cboPayeeType3))
+                            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, GetSelectedItem(cboPayeeType3))
                             If PayeeTypeCode <> Payee_Type_Comm_Entity Then
                                 ControlMgr.SetEnableControl(Me, cboPeriodEntity3, False)
                             Else
@@ -1467,7 +1467,7 @@ Namespace Tables
                         Case 4
                             BindSelectItem(oPeriodEntity.EntityId.ToString, cboPeriodEntity4)
                             BindSelectItem(oPeriodEntity.PayeeTypeId.ToString, cboPayeeType4)
-                            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, Me.GetSelectedItem(cboPayeeType4))
+                            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, GetSelectedItem(cboPayeeType4))
                             If PayeeTypeCode <> Payee_Type_Comm_Entity Then
                                 ControlMgr.SetEnableControl(Me, cboPeriodEntity4, False)
                             Else
@@ -1476,7 +1476,7 @@ Namespace Tables
                         Case 5
                             BindSelectItem(oPeriodEntity.EntityId.ToString, cboPeriodEntity5)
                             BindSelectItem(oPeriodEntity.PayeeTypeId.ToString, cboPayeeType5)
-                            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, Me.GetSelectedItem(cboPayeeType5))
+                            PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, GetSelectedItem(cboPayeeType5))
                             If PayeeTypeCode <> Payee_Type_Comm_Entity Then
                                 ControlMgr.SetEnableControl(Me, cboPeriodEntity5, False)
                             Else
@@ -1494,8 +1494,8 @@ Namespace Tables
 
         Private Sub ClearTolerance()
             DisableToleranceButtons()
-            Me.Grid.DataSource = Nothing
-            Me.Grid.DataBind()
+            Grid.DataSource = Nothing
+            Grid.DataBind()
         End Sub
 
 #End Region
@@ -1515,12 +1515,12 @@ Namespace Tables
             'If me.Grid.EditItemIndex = Me.NO_ITEM_SELECTED_INDEX Then Return False ' Grid is not in edit mode
             'Dim oComTolerance As CommissionTolerance
             Try
-                With Me.State.moCommTolerance
+                With State.moCommTolerance
                     PopulateToleranceBOFromForm()
                     bIsDirty = .IsDirty
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
             Return bIsDirty
         End Function
@@ -1532,23 +1532,23 @@ Namespace Tables
             Try
                 oComTolerance = TheComTolerance
                 '  BindBoPropertiesToGridHeaders(oTolerance)
-                With Me.State.MyBo
+                With State.MyBo
                     PopulateToleranceBOFromForm()
-                    bIsDirty = .IsDirty Or oComTolerance.IsDirty Or Me.State.moIsAssocCommDirty
+                    bIsDirty = .IsDirty OrElse oComTolerance.IsDirty OrElse State.moIsAssocCommDirty
                     .Save()
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
                 bIsOk = False
             End Try
             If bIsOk Then
                 If bIsDirty Then
-                    Me.State.IsToleranceNew = False
-                    Me.State.moIsAssocCommDirty = False
+                    State.IsToleranceNew = False
+                    State.moIsAssocCommDirty = False
                     BaseSetButtonsState(False)
-                    Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 Else
-                    Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
                     bIsOk = False
                 End If
             End If
@@ -1559,17 +1559,17 @@ Namespace Tables
 
         Private Function DeleteTolerance() As Boolean
             Dim bIsOk As Boolean = True
-            Me.State.moCommTolerance = New CommissionTolerance(Me.State.moCommissionToleranceId)
+            State.moCommTolerance = New CommissionTolerance(State.moCommissionToleranceId)
             Try
-                With Me.State.moCommTolerance
+                With State.moCommTolerance
                     .Delete()
                     .Save()
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
                 bIsOk = False
             End Try
-            Me.State.moCommTolerance = Nothing
+            State.moCommTolerance = Nothing
             Return bIsOk
         End Function
 
@@ -1582,19 +1582,19 @@ Namespace Tables
 #Region "Period State-Management"
 
         Protected Sub ComingFromBack()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the Back Button
 
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         ' Save and go back to Search Page
                         If ApplyPeriodChanges() = True Then
-                            Me.State.boChanged = True
+                            State.boChanged = True
                             GoBack()
                         End If
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
                         ' Go back to Search Page
                         GoBack()
                 End Select
@@ -1603,18 +1603,18 @@ Namespace Tables
         End Sub
 
         Protected Sub ComingFromNew()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the New Button
 
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         ' Save and create a new BO
                         If ApplyPeriodChanges() = True Then
                             CreateNew()
                         End If
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
                         ' create a new BO
                         CreateNew()
                 End Select
@@ -1623,19 +1623,19 @@ Namespace Tables
         End Sub
 
         Protected Sub ComingFromNewCopy()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the New Copy Button
 
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         ' Save and create a new Copy BO
                         If ApplyPeriodChanges() = True Then
-                            Me.State.boChanged = True
+                            State.boChanged = True
                             CreateNewCopy()
                         End If
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
                         ' create a new BO
                         CreateNewCopy()
                 End Select
@@ -1648,19 +1648,19 @@ Namespace Tables
 #Region "Breadkdown State-Management"
 
         Protected Sub ComingFromEditTolerance()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the Back Button
 
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         ' Save and go back to Search Page
                         If ApplyPeriodChanges() = True Then
-                            Me.State.boChanged = True
+                            State.boChanged = True
                             EditTolerance()
                         End If
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
 
                 End Select
             End If
@@ -1668,19 +1668,19 @@ Namespace Tables
         End Sub
 
         Protected Sub ComingFromNewTolerance()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
             If Not confResponse = String.Empty Then
                 ' Return from the Back Button
 
                 Select Case confResponse
-                    Case Me.MSG_VALUE_YES
+                    Case MSG_VALUE_YES
                         ' Save and go back to Search Page
                         If ApplyPeriodChanges() = True Then
-                            Me.State.boChanged = True
+                            State.boChanged = True
                             NewTolerance()
                         End If
-                    Case Me.MSG_VALUE_NO
+                    Case MSG_VALUE_NO
 
                 End Select
             End If
@@ -1691,7 +1691,7 @@ Namespace Tables
 
         Protected Sub CheckIfComingFromConfirm()
             Try
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     ' Period
                     Case ElitaPlusPage.DetailPageCommand.Back
                         ComingFromBack()
@@ -1706,51 +1706,51 @@ Namespace Tables
                     Case ElitaPlusPage.DetailPageCommand.Accept
                         ComingFromNewTolerance()
                     Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                        Me.MasterPage.MessageController.AddErrorAndShow(Me.State.LastErrMsg)
+                        MasterPage.MessageController.AddErrorAndShow(State.LastErrMsg)
                 End Select
 
                 'Clean after consuming the action
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                Me.HiddenSaveChangesPromptResponse.Value = String.Empty
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                HiddenSaveChangesPromptResponse.Value = String.Empty
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region
 
-        Private Sub btnEntySave_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnEntitySave.Click
+        Private Sub btnEntySave_Click(sender As Object, e As System.EventArgs) Handles btnEntitySave.Click
 
             ApplyPeriodChanges()
 
         End Sub
         Private Sub UpdateEntityTable()
             Dim commPeriodEntity As CommissionPeriodEntity
-            For Each commPeriodEntity In Me.State.MyBo.AssociatedCommPeriodEntity
+            For Each commPeriodEntity In State.MyBo.AssociatedCommPeriodEntity
                 Select Case commPeriodEntity.Position.ToString
                     Case "1"
-                        If commPeriodEntity.EntityId <> Me.GetSelectedItem(cboPeriodEntity1) OrElse commPeriodEntity.PayeeTypeId <> Me.GetSelectedItem(cboPayeeType1) Then
-                            commPeriodEntity.EntityId = Me.GetSelectedItem(cboPeriodEntity1)
-                            commPeriodEntity.PayeeTypeId = Me.GetSelectedItem(cboPayeeType1)
+                        If commPeriodEntity.EntityId <> GetSelectedItem(cboPeriodEntity1) OrElse commPeriodEntity.PayeeTypeId <> GetSelectedItem(cboPayeeType1) Then
+                            commPeriodEntity.EntityId = GetSelectedItem(cboPeriodEntity1)
+                            commPeriodEntity.PayeeTypeId = GetSelectedItem(cboPayeeType1)
                         End If
                     Case "2"
-                        If commPeriodEntity.EntityId <> Me.GetSelectedItem(cboPeriodEntity2) OrElse commPeriodEntity.PayeeTypeId <> Me.GetSelectedItem(cboPayeeType2) Then
-                            commPeriodEntity.EntityId = Me.GetSelectedItem(cboPeriodEntity2)
-                            commPeriodEntity.PayeeTypeId = Me.GetSelectedItem(cboPayeeType2)
+                        If commPeriodEntity.EntityId <> GetSelectedItem(cboPeriodEntity2) OrElse commPeriodEntity.PayeeTypeId <> GetSelectedItem(cboPayeeType2) Then
+                            commPeriodEntity.EntityId = GetSelectedItem(cboPeriodEntity2)
+                            commPeriodEntity.PayeeTypeId = GetSelectedItem(cboPayeeType2)
                         End If
                     Case "3"
-                        If commPeriodEntity.EntityId <> Me.GetSelectedItem(cboPeriodEntity3) OrElse commPeriodEntity.PayeeTypeId <> Me.GetSelectedItem(cboPayeeType3) Then
-                            commPeriodEntity.EntityId = Me.GetSelectedItem(cboPeriodEntity3)
-                            commPeriodEntity.PayeeTypeId = Me.GetSelectedItem(cboPayeeType3)
+                        If commPeriodEntity.EntityId <> GetSelectedItem(cboPeriodEntity3) OrElse commPeriodEntity.PayeeTypeId <> GetSelectedItem(cboPayeeType3) Then
+                            commPeriodEntity.EntityId = GetSelectedItem(cboPeriodEntity3)
+                            commPeriodEntity.PayeeTypeId = GetSelectedItem(cboPayeeType3)
                         End If
                     Case "4"
-                        If commPeriodEntity.EntityId <> Me.GetSelectedItem(cboPeriodEntity4) OrElse commPeriodEntity.PayeeTypeId <> Me.GetSelectedItem(cboPayeeType4) Then
-                            commPeriodEntity.EntityId = Me.GetSelectedItem(cboPeriodEntity4)
-                            commPeriodEntity.PayeeTypeId = Me.GetSelectedItem(cboPayeeType4)
+                        If commPeriodEntity.EntityId <> GetSelectedItem(cboPeriodEntity4) OrElse commPeriodEntity.PayeeTypeId <> GetSelectedItem(cboPayeeType4) Then
+                            commPeriodEntity.EntityId = GetSelectedItem(cboPeriodEntity4)
+                            commPeriodEntity.PayeeTypeId = GetSelectedItem(cboPayeeType4)
                         End If
                     Case "5"
-                        If commPeriodEntity.EntityId <> Me.GetSelectedItem(cboPeriodEntity5) OrElse commPeriodEntity.PayeeTypeId <> Me.GetSelectedItem(cboPayeeType5) Then
-                            commPeriodEntity.EntityId = Me.GetSelectedItem(cboPeriodEntity5)
-                            commPeriodEntity.PayeeTypeId = Me.GetSelectedItem(cboPayeeType5)
+                        If commPeriodEntity.EntityId <> GetSelectedItem(cboPeriodEntity5) OrElse commPeriodEntity.PayeeTypeId <> GetSelectedItem(cboPayeeType5) Then
+                            commPeriodEntity.EntityId = GetSelectedItem(cboPeriodEntity5)
+                            commPeriodEntity.PayeeTypeId = GetSelectedItem(cboPayeeType5)
                         End If
                 End Select
             Next
@@ -1767,256 +1767,256 @@ Namespace Tables
             'Me.BindBOPropertyToLabel(oAssocComm, "MarkupPercent", Me.lblMarkup)
             Dim strPositionChecked As String = String.Empty
 
-            For Each oPeriodEntity In Me.State.MyBo.AssociatedCommPeriodEntity
+            For Each oPeriodEntity In State.MyBo.AssociatedCommPeriodEntity
                 oCount = oCount + 1
                 If (strPositionChecked.IndexOf(oPeriodEntity.Position.ToString) < 0) Then
                     Select Case oPeriodEntity.Position
                         Case 1
                             strPositionChecked = strPositionChecked & ",1"
-                            If Me.State.IsToleranceNew Then
+                            If State.IsToleranceNew Then
                                 If Not oPeriodEntity.EntityId.Equals(Guid.Empty) Then
                                     oCommEntity = New CommissionEntity(oPeriodEntity.EntityId)
-                                    PopulateToleranceFormItem(Me.txtBrokerMakupEntity, oCommEntity.EntityName)
+                                    PopulateToleranceFormItem(txtBrokerMakupEntity, oCommEntity.EntityName)
                                 Else
                                     strPayeeType = LookupListNew.GetDescriptionFromId(LookupListNew.LK_PAYEE_TYPE, oPeriodEntity.PayeeTypeId)
-                                    PopulateToleranceFormItem(Me.txtBrokerMakupEntity, strPayeeType)
+                                    PopulateToleranceFormItem(txtBrokerMakupEntity, strPayeeType)
                                 End If
-                                oAssocComm = Me.State.MyBo.AddAssocComm(Guid.Empty)
+                                oAssocComm = State.MyBo.AddAssocComm(Guid.Empty)
                                 BindBoAssocCommToLabels(oAssocComm)
-                                oAssocComm.CommissionToleranceId = Me.State.moCommissionToleranceId
-                                Me.PopulateBOProperty(oAssocComm, "MarkupPercent", Me.txtBrokerMakupPct)
-                                Me.PopulateBOProperty(oAssocComm, "CommissionPercent", Me.txtBrokerCommPct)
+                                oAssocComm.CommissionToleranceId = State.moCommissionToleranceId
+                                PopulateBOProperty(oAssocComm, "MarkupPercent", txtBrokerMakupPct)
+                                PopulateBOProperty(oAssocComm, "CommissionPercent", txtBrokerCommPct)
                                 oAssocComm.Position = 1
-                                If Me.txtBrokerMakupPct.Text <> "" Then
+                                If txtBrokerMakupPct.Text <> "" Then
                                     totalMarkup += oAssocComm.MarkupPercent.Value
                                 End If
-                                If Me.txtBrokerCommPct.Text <> "" Then
+                                If txtBrokerCommPct.Text <> "" Then
                                     totalComm += oAssocComm.CommissionPercent.Value
                                 End If
-                                Me.PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
-                                Me.PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
+                                PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
+                                PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
                                 'oAssocComm.Validate()
 
                             Else
-                                If Me.AsCommId1.Text <> "" Then
-                                    oAssocComm = Me.State.MyBo.AddAssocComm(New Guid(Me.AsCommId1.Text))
+                                If AsCommId1.Text <> "" Then
+                                    oAssocComm = State.MyBo.AddAssocComm(New Guid(AsCommId1.Text))
                                     BindBoAssocCommToLabels(oAssocComm)
-                                    Me.PopulateBOProperty(oAssocComm, "MarkupPercent", Me.txtBrokerMakupPct)
-                                    Me.PopulateBOProperty(oAssocComm, "CommissionPercent", Me.txtBrokerCommPct)
+                                    PopulateBOProperty(oAssocComm, "MarkupPercent", txtBrokerMakupPct)
+                                    PopulateBOProperty(oAssocComm, "CommissionPercent", txtBrokerCommPct)
                                     totalMarkup += oAssocComm.MarkupPercent.Value
                                     totalComm += oAssocComm.CommissionPercent.Value
-                                    Me.PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
-                                    Me.PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
+                                    PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
+                                    PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
                                     'oAssocComm.Validate()
                                 Else
-                                    Me.ChangeControlEnabledProperty(Me.txtBrokerMakupPct, False)
-                                    Me.ChangeControlEnabledProperty(Me.txtBrokerCommPct, False)
+                                    ChangeControlEnabledProperty(txtBrokerMakupPct, False)
+                                    ChangeControlEnabledProperty(txtBrokerCommPct, False)
                                 End If
                             End If
                         Case 2
                             strPositionChecked = strPositionChecked & ",2"
-                            If Me.State.IsToleranceNew Then
+                            If State.IsToleranceNew Then
                                 If Not oPeriodEntity.EntityId.Equals(Guid.Empty) Then
                                     oCommEntity = New CommissionEntity(oPeriodEntity.EntityId)
-                                    PopulateToleranceFormItem(Me.txtBrokerMakupEntity2, oCommEntity.EntityName)
+                                    PopulateToleranceFormItem(txtBrokerMakupEntity2, oCommEntity.EntityName)
                                 Else
                                     strPayeeType = LookupListNew.GetDescriptionFromId(LookupListNew.LK_PAYEE_TYPE, oPeriodEntity.PayeeTypeId)
-                                    PopulateToleranceFormItem(Me.txtBrokerMakupEntity2, strPayeeType)
+                                    PopulateToleranceFormItem(txtBrokerMakupEntity2, strPayeeType)
                                 End If
-                                oAssocComm = Me.State.MyBo.AddAssocComm(Guid.Empty)
+                                oAssocComm = State.MyBo.AddAssocComm(Guid.Empty)
                                 BindBoAssocCommToLabels(oAssocComm)
-                                oAssocComm.CommissionToleranceId = Me.State.moCommissionToleranceId
-                                Me.PopulateBOProperty(oAssocComm, "MarkupPercent", Me.txtBrokerMakupPct2)
-                                Me.PopulateBOProperty(oAssocComm, "CommissionPercent", Me.txtBrokerCommPct2)
+                                oAssocComm.CommissionToleranceId = State.moCommissionToleranceId
+                                PopulateBOProperty(oAssocComm, "MarkupPercent", txtBrokerMakupPct2)
+                                PopulateBOProperty(oAssocComm, "CommissionPercent", txtBrokerCommPct2)
                                 oAssocComm.Position = 2
-                                If Me.txtBrokerMakupPct2.Text <> "" Then
+                                If txtBrokerMakupPct2.Text <> "" Then
                                     totalMarkup += oAssocComm.MarkupPercent.Value
                                 End If
-                                If Me.txtBrokerCommPct2.Text <> "" Then
+                                If txtBrokerCommPct2.Text <> "" Then
                                     totalComm += oAssocComm.CommissionPercent.Value
                                 End If
-                                Me.PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
-                                Me.PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
+                                PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
+                                PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
                                 'oAssocComm.Validate()
 
                             Else
-                                If Me.AsCommId2.Text <> "" Then
-                                    oAssocComm = Me.State.MyBo.AddAssocComm(New Guid(Me.AsCommId2.Text))
+                                If AsCommId2.Text <> "" Then
+                                    oAssocComm = State.MyBo.AddAssocComm(New Guid(AsCommId2.Text))
                                     BindBoAssocCommToLabels(oAssocComm)
-                                    Me.PopulateBOProperty(oAssocComm, "MarkupPercent", Me.txtBrokerMakupPct2)
-                                    Me.PopulateBOProperty(oAssocComm, "CommissionPercent", Me.txtBrokerCommPct2)
+                                    PopulateBOProperty(oAssocComm, "MarkupPercent", txtBrokerMakupPct2)
+                                    PopulateBOProperty(oAssocComm, "CommissionPercent", txtBrokerCommPct2)
                                     totalMarkup += oAssocComm.MarkupPercent.Value
                                     totalComm += oAssocComm.CommissionPercent.Value
-                                    Me.PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
-                                    Me.PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
+                                    PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
+                                    PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
                                     'oAssocComm.Validate()
                                 Else
-                                    Me.ChangeControlEnabledProperty(Me.txtBrokerMakupPct2, False)
-                                    Me.ChangeControlEnabledProperty(Me.txtBrokerCommPct2, False)
+                                    ChangeControlEnabledProperty(txtBrokerMakupPct2, False)
+                                    ChangeControlEnabledProperty(txtBrokerCommPct2, False)
                                 End If
 
                             End If
                         Case 3
                             strPositionChecked = strPositionChecked & ",3"
-                            If Me.State.IsToleranceNew Then
+                            If State.IsToleranceNew Then
                                 If Not oPeriodEntity.EntityId.Equals(Guid.Empty) Then
                                     oCommEntity = New CommissionEntity(oPeriodEntity.EntityId)
-                                    PopulateToleranceFormItem(Me.txtBrokerMakupEntity3, oCommEntity.EntityName)
+                                    PopulateToleranceFormItem(txtBrokerMakupEntity3, oCommEntity.EntityName)
                                 Else
                                     strPayeeType = LookupListNew.GetDescriptionFromId(LookupListNew.LK_PAYEE_TYPE, oPeriodEntity.PayeeTypeId)
-                                    PopulateToleranceFormItem(Me.txtBrokerMakupEntity3, strPayeeType)
+                                    PopulateToleranceFormItem(txtBrokerMakupEntity3, strPayeeType)
                                 End If
-                                oAssocComm = Me.State.MyBo.AddAssocComm(Guid.Empty)
+                                oAssocComm = State.MyBo.AddAssocComm(Guid.Empty)
                                 BindBoAssocCommToLabels(oAssocComm)
-                                oAssocComm.CommissionToleranceId = Me.State.moCommissionToleranceId
-                                Me.PopulateBOProperty(oAssocComm, "MarkupPercent", Me.txtBrokerMakupPct3)
-                                Me.PopulateBOProperty(oAssocComm, "CommissionPercent", Me.txtBrokerCommPct3)
+                                oAssocComm.CommissionToleranceId = State.moCommissionToleranceId
+                                PopulateBOProperty(oAssocComm, "MarkupPercent", txtBrokerMakupPct3)
+                                PopulateBOProperty(oAssocComm, "CommissionPercent", txtBrokerCommPct3)
                                 oAssocComm.Position = 3
-                                If Me.txtBrokerMakupPct3.Text <> "" Then
+                                If txtBrokerMakupPct3.Text <> "" Then
                                     totalMarkup += oAssocComm.MarkupPercent.Value
                                 End If
-                                If Me.txtBrokerCommPct3.Text <> "" Then
+                                If txtBrokerCommPct3.Text <> "" Then
                                     totalComm += oAssocComm.CommissionPercent.Value
                                 End If
-                                Me.PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
-                                Me.PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
+                                PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
+                                PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
                                 'oAssocComm.Validate()
 
                             Else
-                                If Me.AsCommId3.Text <> "" Then
-                                    oAssocComm = Me.State.MyBo.AddAssocComm(New Guid(Me.AsCommId3.Text))
+                                If AsCommId3.Text <> "" Then
+                                    oAssocComm = State.MyBo.AddAssocComm(New Guid(AsCommId3.Text))
                                     BindBoAssocCommToLabels(oAssocComm)
-                                    Me.PopulateBOProperty(oAssocComm, "MarkupPercent", Me.txtBrokerMakupPct3)
-                                    Me.PopulateBOProperty(oAssocComm, "CommissionPercent", Me.txtBrokerCommPct3)
+                                    PopulateBOProperty(oAssocComm, "MarkupPercent", txtBrokerMakupPct3)
+                                    PopulateBOProperty(oAssocComm, "CommissionPercent", txtBrokerCommPct3)
                                     totalMarkup += oAssocComm.MarkupPercent.Value
                                     totalComm += oAssocComm.CommissionPercent.Value
-                                    Me.PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
-                                    Me.PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
+                                    PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
+                                    PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
                                     'oAssocComm.Validate()
                                 Else
-                                    Me.ChangeControlEnabledProperty(Me.txtBrokerMakupPct3, False)
-                                    Me.ChangeControlEnabledProperty(Me.txtBrokerCommPct3, False)
+                                    ChangeControlEnabledProperty(txtBrokerMakupPct3, False)
+                                    ChangeControlEnabledProperty(txtBrokerCommPct3, False)
                                 End If
                             End If
                         Case 4
                             strPositionChecked = strPositionChecked & ",4"
-                            If Me.State.IsToleranceNew Then
+                            If State.IsToleranceNew Then
                                 If Not oPeriodEntity.EntityId.Equals(Guid.Empty) Then
                                     oCommEntity = New CommissionEntity(oPeriodEntity.EntityId)
-                                    PopulateToleranceFormItem(Me.txtBrokerMakupEntity4, oCommEntity.EntityName)
+                                    PopulateToleranceFormItem(txtBrokerMakupEntity4, oCommEntity.EntityName)
                                 Else
                                     strPayeeType = LookupListNew.GetDescriptionFromId(LookupListNew.LK_PAYEE_TYPE, oPeriodEntity.PayeeTypeId)
-                                    PopulateToleranceFormItem(Me.txtBrokerMakupEntity4, strPayeeType)
+                                    PopulateToleranceFormItem(txtBrokerMakupEntity4, strPayeeType)
                                 End If
-                                oAssocComm = Me.State.MyBo.AddAssocComm(Guid.Empty)
+                                oAssocComm = State.MyBo.AddAssocComm(Guid.Empty)
                                 BindBoAssocCommToLabels(oAssocComm)
-                                oAssocComm.CommissionToleranceId = Me.State.moCommissionToleranceId
-                                Me.PopulateBOProperty(oAssocComm, "MarkupPercent", Me.txtBrokerMakupPct4)
-                                Me.PopulateBOProperty(oAssocComm, "CommissionPercent", Me.txtBrokerCommPct4)
+                                oAssocComm.CommissionToleranceId = State.moCommissionToleranceId
+                                PopulateBOProperty(oAssocComm, "MarkupPercent", txtBrokerMakupPct4)
+                                PopulateBOProperty(oAssocComm, "CommissionPercent", txtBrokerCommPct4)
                                 oAssocComm.Position = 4
-                                If Me.txtBrokerMakupPct4.Text <> "" Then
+                                If txtBrokerMakupPct4.Text <> "" Then
                                     totalMarkup += oAssocComm.MarkupPercent.Value
                                 End If
-                                If Me.txtBrokerCommPct4.Text <> "" Then
+                                If txtBrokerCommPct4.Text <> "" Then
                                     totalComm += oAssocComm.CommissionPercent.Value
                                 End If
-                                Me.PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
-                                Me.PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
+                                PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
+                                PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
                                 'oAssocComm.Validate()
 
                             Else
-                                If Me.AsCommId4.Text <> "" Then
-                                    oAssocComm = Me.State.MyBo.AddAssocComm(New Guid(Me.AsCommId4.Text))
+                                If AsCommId4.Text <> "" Then
+                                    oAssocComm = State.MyBo.AddAssocComm(New Guid(AsCommId4.Text))
                                     BindBoAssocCommToLabels(oAssocComm)
-                                    Me.PopulateBOProperty(oAssocComm, "MarkupPercent", Me.txtBrokerMakupPct4)
-                                    Me.PopulateBOProperty(oAssocComm, "CommissionPercent", Me.txtBrokerCommPct4)
+                                    PopulateBOProperty(oAssocComm, "MarkupPercent", txtBrokerMakupPct4)
+                                    PopulateBOProperty(oAssocComm, "CommissionPercent", txtBrokerCommPct4)
                                     totalMarkup += oAssocComm.MarkupPercent.Value
                                     totalComm += oAssocComm.CommissionPercent.Value
-                                    Me.PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
-                                    Me.PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
+                                    PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
+                                    PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
                                     'oAssocComm.Validate()
                                 Else
-                                    Me.ChangeControlEnabledProperty(Me.txtBrokerMakupPct4, False)
-                                    Me.ChangeControlEnabledProperty(Me.txtBrokerCommPct4, False)
+                                    ChangeControlEnabledProperty(txtBrokerMakupPct4, False)
+                                    ChangeControlEnabledProperty(txtBrokerCommPct4, False)
                                 End If
                             End If
                         Case 5
                             strPositionChecked = strPositionChecked & ",5"
-                            If Me.State.IsToleranceNew Then
+                            If State.IsToleranceNew Then
                                 If Not oPeriodEntity.EntityId.Equals(Guid.Empty) Then
                                     oCommEntity = New CommissionEntity(oPeriodEntity.EntityId)
-                                    PopulateToleranceFormItem(Me.txtBrokerMakupEntity5, oCommEntity.EntityName)
+                                    PopulateToleranceFormItem(txtBrokerMakupEntity5, oCommEntity.EntityName)
                                 Else
                                     strPayeeType = LookupListNew.GetDescriptionFromId(LookupListNew.LK_PAYEE_TYPE, oPeriodEntity.PayeeTypeId)
-                                    PopulateToleranceFormItem(Me.txtBrokerMakupEntity5, strPayeeType)
+                                    PopulateToleranceFormItem(txtBrokerMakupEntity5, strPayeeType)
                                 End If
-                                oAssocComm = Me.State.MyBo.AddAssocComm(Guid.Empty)
+                                oAssocComm = State.MyBo.AddAssocComm(Guid.Empty)
                                 BindBoAssocCommToLabels(oAssocComm)
-                                oAssocComm.CommissionToleranceId = Me.State.moCommissionToleranceId
-                                Me.PopulateBOProperty(oAssocComm, "MarkupPercent", Me.txtBrokerMakupPct5)
-                                Me.PopulateBOProperty(oAssocComm, "CommissionPercent", Me.txtBrokerCommPct5)
+                                oAssocComm.CommissionToleranceId = State.moCommissionToleranceId
+                                PopulateBOProperty(oAssocComm, "MarkupPercent", txtBrokerMakupPct5)
+                                PopulateBOProperty(oAssocComm, "CommissionPercent", txtBrokerCommPct5)
                                 oAssocComm.Position = 5
-                                If Me.txtBrokerMakupPct5.Text <> "" Then
+                                If txtBrokerMakupPct5.Text <> "" Then
                                     totalMarkup += oAssocComm.MarkupPercent.Value
                                 End If
-                                If Me.txtBrokerCommPct5.Text <> "" Then
+                                If txtBrokerCommPct5.Text <> "" Then
                                     totalComm += oAssocComm.CommissionPercent.Value
                                 End If
-                                Me.PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
-                                Me.PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
+                                PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
+                                PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
                                 'oAssocComm.Validate()
 
                             Else
-                                If Me.AsCommId5.Text <> "" Then
-                                    oAssocComm = Me.State.MyBo.AddAssocComm(New Guid(Me.AsCommId5.Text))
+                                If AsCommId5.Text <> "" Then
+                                    oAssocComm = State.MyBo.AddAssocComm(New Guid(AsCommId5.Text))
                                     BindBoAssocCommToLabels(oAssocComm)
-                                    Me.PopulateBOProperty(oAssocComm, "MarkupPercent", Me.txtBrokerMakupPct5)
-                                    Me.PopulateBOProperty(oAssocComm, "CommissionPercent", Me.txtBrokerCommPct5)
+                                    PopulateBOProperty(oAssocComm, "MarkupPercent", txtBrokerMakupPct5)
+                                    PopulateBOProperty(oAssocComm, "CommissionPercent", txtBrokerCommPct5)
                                     totalMarkup += oAssocComm.MarkupPercent.Value
                                     totalComm += oAssocComm.CommissionPercent.Value
-                                    Me.PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
-                                    Me.PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
+                                    PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
+                                    PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
                                     'oAssocComm.Validate()
                                 Else
-                                    Me.ChangeControlEnabledProperty(Me.txtBrokerMakupPct5, False)
-                                    Me.ChangeControlEnabledProperty(Me.txtBrokerCommPct5, False)
+                                    ChangeControlEnabledProperty(txtBrokerMakupPct5, False)
+                                    ChangeControlEnabledProperty(txtBrokerCommPct5, False)
                                 End If
                             End If
                     End Select
                 End If
-                If Me.ErrCollection.Count > 0 Then
+                If ErrCollection.Count > 0 Then
                     Throw New PopulateBOErrorException
                 ElseIf oCount > 4 Then
-                    PopulateToleranceFormItem(Me.txtCommPctTotal, totalComm)
-                    PopulateToleranceFormItem(Me.txtBrokerPctTotal, totalMarkup)
-                    If Not oAssocComm Is Nothing Then
-                        Me.State.moAssocComm = oAssocComm
+                    PopulateToleranceFormItem(txtCommPctTotal, totalComm)
+                    PopulateToleranceFormItem(txtBrokerPctTotal, totalMarkup)
+                    If oAssocComm IsNot Nothing Then
+                        State.moAssocComm = oAssocComm
                         oAssocComm.Validate()
                     End If
                 End If
-                If Not oAssocComm Is Nothing Then
-                    Me.State.moIsAssocCommDirty = Me.State.moIsAssocCommDirty Or oAssocComm.IsDirty
+                If oAssocComm IsNot Nothing Then
+                    State.moIsAssocCommDirty = State.moIsAssocCommDirty OrElse oAssocComm.IsDirty
                 End If
             Next
 
         End Sub
 
-        Private Sub EnableDisablePeriodEntity(ByVal oEnable As Boolean)
+        Private Sub EnableDisablePeriodEntity(oEnable As Boolean)
 
             'ControlMgr.SetVisibleControl(Me, btnEntitySave, oEnable)
             'ControlMgr.SetVisibleControl(Me, btnEntityUndo, oEnable)
-            Me.ChangeControlEnabledProperty(Me.btnEntitySave, oEnable)
-            Me.ChangeControlEnabledProperty(Me.btnEntityUndo, oEnable)
+            ChangeControlEnabledProperty(btnEntitySave, oEnable)
+            ChangeControlEnabledProperty(btnEntityUndo, oEnable)
 
-            Me.ChangeControlEnabledProperty(Me.cboPeriodEntity1, oEnable)
-            Me.ChangeControlEnabledProperty(Me.cboPeriodEntity2, oEnable)
-            Me.ChangeControlEnabledProperty(Me.cboPeriodEntity3, oEnable)
-            Me.ChangeControlEnabledProperty(Me.cboPeriodEntity4, oEnable)
-            Me.ChangeControlEnabledProperty(Me.cboPeriodEntity5, oEnable)
+            ChangeControlEnabledProperty(cboPeriodEntity1, oEnable)
+            ChangeControlEnabledProperty(cboPeriodEntity2, oEnable)
+            ChangeControlEnabledProperty(cboPeriodEntity3, oEnable)
+            ChangeControlEnabledProperty(cboPeriodEntity4, oEnable)
+            ChangeControlEnabledProperty(cboPeriodEntity5, oEnable)
 
         End Sub
 
-        Private Sub btnEntityUndo_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnEntityUndo.Click
+        Private Sub btnEntityUndo_Click(sender As Object, e As System.EventArgs) Handles btnEntityUndo.Click
             Dim dealerId As Guid = TheDealerControl.SelectedGuid
             If dealerId.Equals(Guid.Empty) Then
                 Exit Sub

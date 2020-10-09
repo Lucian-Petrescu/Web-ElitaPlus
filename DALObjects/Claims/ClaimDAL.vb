@@ -515,7 +515,7 @@ Public Class ClaimDAL
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id(ByVal Row As DataRow) As Guid
+    Public ReadOnly Property Id(Row As DataRow) As Guid
         Get
             If Row(ClaimDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -525,7 +525,7 @@ Public Class ClaimDAL
         End Get
     End Property
 
-    Public ReadOnly Property IsNew(ByVal Row As DataRow) As Boolean
+    Public ReadOnly Property IsNew(Row As DataRow) As Boolean
         Get
             'Me.CheckDeleted()
             Return (Row.RowState = DataRowState.Added)
@@ -533,7 +533,7 @@ Public Class ClaimDAL
     End Property
 
 
-    Public Property ClaimGroupId(ByVal Row As DataRow) As Guid
+    Public Property ClaimGroupId(Row As DataRow) As Guid
         Get
             If Row(ClaimDAL.COL_NAME_CLAIM_GROUP_ID) Is DBNull.Value Then
                 Return Nothing
@@ -541,12 +541,12 @@ Public Class ClaimDAL
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_CLAIM_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
-            Me.SetValue(Row, ClaimDAL.COL_NAME_CLAIM_GROUP_ID, Value)
+        Set(Value As Guid)
+            SetValue(Row, ClaimDAL.COL_NAME_CLAIM_GROUP_ID, Value)
         End Set
     End Property
 
-    Public Property CompanyId(ByVal Row As DataRow) As Guid
+    Public Property CompanyId(Row As DataRow) As Guid
         Get
             If Row(ClaimDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
                 Return Nothing
@@ -554,12 +554,12 @@ Public Class ClaimDAL
                 Return New Guid(CType(Row(ClaimDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
-            Me.SetValue(Row, ClaimDAL.COL_NAME_COMPANY_ID, Value)
+        Set(Value As Guid)
+            SetValue(Row, ClaimDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
-    Public Property ClaimNumber(ByVal Row As DataRow) As String
+    Public Property ClaimNumber(Row As DataRow) As String
         Get
             If Row(ClaimDAL.COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -567,12 +567,12 @@ Public Class ClaimDAL
                 Return CType(Row(ClaimDAL.COL_NAME_CLAIM_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
-            Me.SetValue(Row, ClaimDAL.COL_NAME_CLAIM_NUMBER, Value)
+        Set(Value As String)
+            SetValue(Row, ClaimDAL.COL_NAME_CLAIM_NUMBER, Value)
         End Set
     End Property
 
-    Public Property MasterClaimNumber(ByVal Row As DataRow) As String
+    Public Property MasterClaimNumber(Row As DataRow) As String
         Get
             If Row(ClaimDAL.COL_NAME_MASTER_CLAIM_NUMBER) Is DBNull.Value Then
                 Return Nothing
@@ -580,12 +580,12 @@ Public Class ClaimDAL
                 Return CType(Row(ClaimDAL.COL_NAME_MASTER_CLAIM_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
-            Me.SetValue(Row, ClaimDAL.COL_NAME_MASTER_CLAIM_NUMBER, Value)
+        Set(Value As String)
+            SetValue(Row, ClaimDAL.COL_NAME_MASTER_CLAIM_NUMBER, Value)
         End Set
     End Property
 
-    Public ReadOnly Property MethodOfRepairCode(ByVal Row As DataRow) As String
+    Public ReadOnly Property MethodOfRepairCode(Row As DataRow) As String
         Get
             If Row(ClaimDAL.COL_NAME_METHOD_OF_REPAIR_ID) Is DBNull.Value Then
                 Return Nothing
@@ -596,7 +596,7 @@ Public Class ClaimDAL
 
     End Property
 
-    Public ReadOnly Property CLaimAuthTypeCode(ByVal Row As DataRow) As String
+    Public ReadOnly Property CLaimAuthTypeCode(Row As DataRow) As String
         Get
             If Row(ClaimDAL.COL_NAME_CLAIM_AUTH_TYPE_ID) Is DBNull.Value Then
                 Return Nothing
@@ -607,7 +607,7 @@ Public Class ClaimDAL
 
     End Property
 
-    Public Property FulfillmentProviderType(ByVal Row As DataRow) As String
+    Public Property FulfillmentProviderType(Row As DataRow) As String
         Get
             If Row(ClaimDAL.COL_NAME_FULFILLMENT_PROVIDER_TYP) Is DBNull.Value Then
                 Return Nothing
@@ -615,8 +615,8 @@ Public Class ClaimDAL
                 Return CType(Row(ClaimDAL.COL_NAME_FULFILLMENT_PROVIDER_TYP), String)
             End If
         End Get
-        Set(ByVal Value As String)
-            Me.SetValue(Row, ClaimDAL.COL_NAME_FULFILLMENT_PROVIDER_TYP, Value)
+        Set(Value As String)
+            SetValue(Row, ClaimDAL.COL_NAME_FULFILLMENT_PROVIDER_TYP, Value)
         End Set
     End Property
 
@@ -627,7 +627,7 @@ Public Class ClaimDAL
 #Region "Methods"
 
     'this generic method should be called by all BO's to set their properties
-    Protected Sub SetValue(ByVal Row As DataRow, ByVal columnName As String, ByVal newValue As Object)
+    Protected Sub SetValue(Row As DataRow, columnName As String, newValue As Object)
         If Not newValue Is Nothing And Row(columnName) Is DBNull.Value Then
             'new value is something and old value is DBNULL
             If newValue.GetType Is GetType(BooleanType) Then
@@ -722,7 +722,7 @@ Public Class ClaimDAL
 
     Private Shared addMutex As New System.Threading.Mutex
 
-    Private Shared Function RetrieveList(ByVal listName As String, Optional ByVal displayNothingSelected As Boolean = True, Optional ByVal orderByColumn As String = COL_DESCRIPTION_NAME) As DataView
+    Private Shared Function RetrieveList(listName As String, Optional ByVal displayNothingSelected As Boolean = True, Optional ByVal orderByColumn As String = COL_DESCRIPTION_NAME) As DataView
         Dim dv As DataView = Nothing
 
         ' JLR - Added Mutex to avoid concurrency problems
@@ -754,11 +754,11 @@ Public Class ClaimDAL
 
     End Function
 
-    Public Shared Function DataView(ByVal listName As String, Optional ByVal displayNothingSelected As Boolean = True, Optional ByVal orderByColumn As String = COL_DESCRIPTION_NAME) As DataView
+    Public Shared Function DataView(listName As String, Optional ByVal displayNothingSelected As Boolean = True, Optional ByVal orderByColumn As String = COL_DESCRIPTION_NAME) As DataView
         Return RetrieveList(listName, displayNothingSelected, orderByColumn)
     End Function
 
-    Public Shared Function GetCodeFromId(ByVal listName As String, ByVal id As Guid) As String
+    Public Shared Function GetCodeFromId(listName As String, id As Guid) As String
         Dim dv As DataView = DataView(listName)
         Dim i As Integer
 
@@ -783,7 +783,7 @@ Public Class ClaimDAL
         Public moCoverageCode As String
         Public moUnitNumber As String
 
-        Public Sub New(ByVal claimId As Guid, ByVal galaxyClaimNumber As String, ByVal coverageCode As String, ByVal unitNumber As String)
+        Public Sub New(claimId As Guid, galaxyClaimNumber As String, coverageCode As String, unitNumber As String)
             moClaimId = claimId
             moGalaxyClaimNumber = galaxyClaimNumber
             moCoverageCode = coverageCode
@@ -797,34 +797,34 @@ Public Class ClaimDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("claim_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal claimNumber As String, ByVal compId As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_CLAIM_NUMBER")
+    Public Sub Load(familyDS As DataSet, claimNumber As String, compId As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD_CLAIM_NUMBER")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("claim_number", claimNumber),
                                             New DBHelper.DBHelperParameter(COL_NAME_COMPANY_ID, compId)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Sub WaiveExistingIssues(ByVal claimId As Guid, ByVal IdentificationNumber As String, ByVal RuleCode As String, ByVal IssueCode As String, Optional ByVal isreplacement As String = "Y")
+    Public Sub WaiveExistingIssues(claimId As Guid, IdentificationNumber As String, RuleCode As String, IssueCode As String, Optional ByVal isreplacement As String = "Y")
 
-        Dim selectStmt As String = Me.Config("/SQL/WAIVE_EXISTING_ISSUES")
+        Dim selectStmt As String = Config("/SQL/WAIVE_EXISTING_ISSUES")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("p_claim_id", claimId.ToByteArray),
                                                          New DBHelper.DBHelperParameter("p_identification_number", IdentificationNumber),
@@ -833,8 +833,8 @@ Public Class ClaimDAL
                                                          New DBHelper.DBHelperParameter("p_replacement_only", isreplacement)}
 
         Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                             New DBHelper.DBHelperParameter(Me.PAR_NAME_RETURN, GetType(Integer)),
-                             New DBHelper.DBHelperParameter(Me.PAR_NAME_EXCEPTION_MSG, GetType(String), 500)}
+                             New DBHelper.DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)),
+                             New DBHelper.DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 500)}
 
 
 
@@ -850,98 +850,98 @@ Public Class ClaimDAL
         End If
 
     End Sub
-    Public Function LoadListWithManuf(ByVal certItemid As Guid, ByVal begin_date As Date, ByVal end_date As Date) As DataSet
+    Public Function LoadListWithManuf(certItemid As Guid, begin_date As Date, end_date As Date) As DataSet
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_ACTIVE_CLAIMS_FOR_ENDORSE_WITH_MANUF")
+        Dim selectStmt As String = Config("/SQL/LOAD_ACTIVE_CLAIMS_FOR_ENDORSE_WITH_MANUF")
         Dim parameters = New OracleParameter() {New OracleParameter(COL_NAME_CERT_ITEM_ID, certItemid.ToByteArray),
                                             New OracleParameter(COL_NAME_BEGIN_DATE, begin_date),
                                             New OracleParameter(COL_NAME_BEGIN_DATE, begin_date),
                                             New OracleParameter(COL_NAME_END_DATE, end_date)}
 
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Return ds
 
     End Function
 
-    Public Function LoadListWithOutManuf(ByVal certItemid As Guid, ByVal begin_date As Date, ByVal end_date As Date) As DataSet
+    Public Function LoadListWithOutManuf(certItemid As Guid, begin_date As Date, end_date As Date) As DataSet
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_ACTIVE_CLAIMS_FOR_ENDORSE_WITH_NO_MANUF")
+        Dim selectStmt As String = Config("/SQL/LOAD_ACTIVE_CLAIMS_FOR_ENDORSE_WITH_NO_MANUF")
         Dim parameters = New OracleParameter() {New OracleParameter(COL_NAME_CERT_ITEM_ID, certItemid.ToByteArray),
                                             New OracleParameter(COL_NAME_BEGIN_DATE, begin_date),
                                             New OracleParameter(COL_NAME_END_DATE, end_date)}
 
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Function
 
-    Public Function LoadListByCoverageId(ByVal certItemCoverageId As Guid, ByVal begin_date As Date, ByVal end_date As Date) As DataSet
+    Public Function LoadListByCoverageId(certItemCoverageId As Guid, begin_date As Date, end_date As Date) As DataSet
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_ACTIVE_CLAIMS_FOR_ENDORSE_BY_COVERAGE")
+        Dim selectStmt As String = Config("/SQL/LOAD_ACTIVE_CLAIMS_FOR_ENDORSE_BY_COVERAGE")
         Dim parameters = New OracleParameter() {New OracleParameter(COL_NAME_CERT_ITEM_COVERAGE_ID, certItemCoverageId.ToByteArray),
                                             New OracleParameter(COL_NAME_BEGIN_DATE, begin_date),
                                             New OracleParameter(COL_NAME_END_DATE, end_date)}
 
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Function
 
     'Function overload for search without dealer id
-    Public Function LoadList(ByVal compIds As ArrayList, ByVal claimNumber As String, ByVal customerName As String,
-                             ByVal serviceCenterName As String, ByVal authorizationNumber As String,
-                             ByVal authorizedAmount As String, ByVal sortBy As String,
-                             ByVal externalUserServiceCenterIds As ArrayList, ByVal serviceCenterIds As ArrayList) As DataSet
+    Public Function LoadList(compIds As ArrayList, claimNumber As String, customerName As String,
+                             serviceCenterName As String, authorizationNumber As String,
+                             authorizedAmount As String, sortBy As String,
+                             externalUserServiceCenterIds As ArrayList, serviceCenterIds As ArrayList) As DataSet
         Return LoadList(compIds, claimNumber, customerName, serviceCenterName, authorizationNumber,
                              authorizedAmount, Guid.Empty, sortBy, externalUserServiceCenterIds, serviceCenterIds, Guid.Empty, String.Empty, String.Empty, String.Empty)
     End Function
 
-    Public Function LoadList(ByVal compIds As ArrayList, ByVal claimNumber As String, ByVal customerName As String,
-                             ByVal serviceCenterName As String, ByVal svcRefNumber As String,
-                             ByVal authorizedAmount As String, ByVal hasPendingAuthId As Guid, ByVal sortBy As String,
-                             ByVal externalUserServiceCenterIds As ArrayList, ByVal serviceCenterIds As ArrayList, ByVal dealerId As Guid,
-                             ByVal certificateNumber As String, ByVal Status As String, ByVal networkId As String, Optional ByVal trackingNumber As String = "", Optional ByVal dealerGroup As String = "",
+    Public Function LoadList(compIds As ArrayList, claimNumber As String, customerName As String,
+                             serviceCenterName As String, svcRefNumber As String,
+                             authorizedAmount As String, hasPendingAuthId As Guid, sortBy As String,
+                             externalUserServiceCenterIds As ArrayList, serviceCenterIds As ArrayList, dealerId As Guid,
+                             certificateNumber As String, Status As String, networkId As String, Optional ByVal trackingNumber As String = "", Optional ByVal dealerGroup As String = "",
                              Optional ByVal authorizationNumber As String = "", Optional ByVal claimAuthStatusId As Guid = Nothing) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_DYNAMIC")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_DYNAMIC")
 
         Dim whereClauseConditions As String = ""
 
-        If Me.FormatSearchMask(claimNumber) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "c." & Me.COL_NAME_CLAIM_NUMBER & " " & claimNumber
+        If FormatSearchMask(claimNumber) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "c." & COL_NAME_CLAIM_NUMBER & " " & claimNumber
         End If
 
-        If Me.FormatSearchMask(customerName) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(c." & Me.COL_NAME_CUSTOMER_NAME & ") " & customerName
+        If FormatSearchMask(customerName) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(c." & COL_NAME_CUSTOMER_NAME & ") " & customerName
         End If
 
         If (MiscUtil.IsCriteriaSelected(externalUserServiceCenterIds) = True) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & MiscUtil.BuildListForSql("c." & Me.COL_NAME_SERVICE_CENTER_ID, externalUserServiceCenterIds)
+            whereClauseConditions &= " AND " & Environment.NewLine & MiscUtil.BuildListForSql("c." & COL_NAME_SERVICE_CENTER_ID, externalUserServiceCenterIds)
         End If
 
-        If Me.FormatSearchMask(serviceCenterName) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(sc." & Me.COL_NAME_SERVICE_CENTER_NAME & ") " & serviceCenterName
+        If FormatSearchMask(serviceCenterName) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(sc." & COL_NAME_SERVICE_CENTER_NAME & ") " & serviceCenterName
         End If
 
-        If Me.FormatSearchMask(certificateNumber) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(cert." & Me.COL_NAME_CERT_NUMBER & ") " & certificateNumber
+        If FormatSearchMask(certificateNumber) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(cert." & COL_NAME_CERT_NUMBER & ") " & certificateNumber
         End If
 
-        If Me.FormatSearchMask(trackingNumber) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(cl." & Me.COL_NAME_TRACKING_NUMBER & ") " & trackingNumber.ToUpper
+        If FormatSearchMask(trackingNumber) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(cl." & COL_NAME_TRACKING_NUMBER & ") " & trackingNumber.ToUpper
         End If
 
         If (MiscUtil.IsCriteriaSelected(serviceCenterIds) = True) Then
 
-            whereClauseConditions &= " AND " & Environment.NewLine & MiscUtil.BuildListForSql("c." & Me.COL_NAME_SERVICE_CENTER_ID, serviceCenterIds)
+            whereClauseConditions &= " AND " & Environment.NewLine & MiscUtil.BuildListForSql("c." & COL_NAME_SERVICE_CENTER_ID, serviceCenterIds)
         End If
 
-        If Me.FormatSearchMask(svcRefNumber) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(c." & Me.COL_NAME_AUTHORIZATION_NUMBER & ") " & svcRefNumber.ToUpper
+        If FormatSearchMask(svcRefNumber) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(c." & COL_NAME_AUTHORIZATION_NUMBER & ") " & svcRefNumber.ToUpper
         End If
 
-        If Me.FormatSearchMask(authorizedAmount) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "c." & Me.COL_NAME_AUTHORIZED_AMOUNT & " " & authorizedAmount
+        If FormatSearchMask(authorizedAmount) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "c." & COL_NAME_AUTHORIZED_AMOUNT & " " & authorizedAmount
         End If
 
-        If Me.FormatSearchMask(Status) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(c." & Me.COL_NAME_STATUS_CODE & ") " & Status
+        If FormatSearchMask(Status) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(c." & COL_NAME_STATUS_CODE & ") " & Status
         End If
 
         'if dealer id present
@@ -954,12 +954,12 @@ Public Class ClaimDAL
             whereClauseConditions &= Environment.NewLine & " AND c.has_pending_auth_id = hextoraw(" & MiscUtil.GetDbStringFromGuid(hasPendingAuthId) & ")"
         End If
 
-        If (dealerGroup <> String.Empty AndAlso (Me.FormatSearchMask(dealerGroup))) Then
+        If (dealerGroup <> String.Empty AndAlso (FormatSearchMask(dealerGroup))) Then
             whereClauseConditions &= Environment.NewLine & "AND UPPER(dg.code) " & dealerGroup.ToUpper & ""
         End If
 
-        If Me.FormatSearchMask(authorizationNumber) Then
-            whereClauseConditions &= Environment.NewLine & "AND UPPER(cla." & Me.COL_NAME_AUTHORIZATION_NUMBER & ") " & authorizationNumber.ToUpper
+        If FormatSearchMask(authorizationNumber) Then
+            whereClauseConditions &= Environment.NewLine & "AND UPPER(cla." & COL_NAME_AUTHORIZATION_NUMBER & ") " & authorizationNumber.ToUpper
         End If
 
         If Not ((claimAuthStatusId = Guid.Empty) OrElse (claimAuthStatusId = Nothing)) Then
@@ -967,24 +967,24 @@ Public Class ClaimDAL
         End If
 
         ' not HextoRaw
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("c." & Me.COL_NAME_COMPANY_ID, compIds, False)
+        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("c." & COL_NAME_COMPANY_ID, compIds, False)
 
         whereClauseConditions &= Environment.NewLine & " AND  elp_utl_user.Has_access_to_data('" & networkId & "', d.company_id, d.dealer_id)  = 'Y'"
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
         If Not IsNothing(sortBy) Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER,
+            selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER,
                                             Environment.NewLine & "ORDER BY " & Environment.NewLine & sortBy)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
             Dim ds As New DataSet
-            Dim rowNum As New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, Me.MAX_NUMBER_OF_ROWS)
+            Dim rowNum As New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME,
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
                             New DBHelper.DBHelperParameter() {rowNum})
             Return ds
         Catch ex As Exception
@@ -993,14 +993,14 @@ Public Class ClaimDAL
 
     End Function
 
-    Public Function LoadClaimByIssue(ByVal userId As Guid, ByVal languageId As Guid,
-                            ByVal issueTypeCode As String, ByVal issueTypeId As Guid,
-                            ByVal issueId As Guid?, ByVal issueStatusXcd As String,
-                            ByVal claimStatusCode As String, ByVal dealerId As Guid?,
-                            ByVal issueAddedFromDate As Date?, ByVal issueAddedToDate As Date?, ByVal networkId As String) As DataSet
+    Public Function LoadClaimByIssue(userId As Guid, languageId As Guid,
+                            issueTypeCode As String, issueTypeId As Guid,
+                            issueId As Guid?, issueStatusXcd As String,
+                            claimStatusCode As String, dealerId As Guid?,
+                            issueAddedFromDate As Date?, issueAddedToDate As Date?, networkId As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_BY_ISSUE")
-        Dim resultCount As Integer = Me.MAX_NUMBER_OF_ROWS
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_BY_ISSUE")
+        Dim resultCount As Integer = MAX_NUMBER_OF_ROWS
 
         Dim inParameters As List(Of DBHelper.DBHelperParameter) = New List(Of DBHelperParameter)()
 
@@ -1039,65 +1039,65 @@ Public Class ClaimDAL
         Dim ds As New DataSet
 
         Try
-            DBHelper.FetchSp(selectStmt, inParameters.ToArray(), outParameters, ds, Me.TABLE_NAME, True)
+            DBHelper.FetchSp(selectStmt, inParameters.ToArray(), outParameters, ds, TABLE_NAME, True)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadPreviousInProgressClaimCount(ByVal claimId As Guid) As Integer
-        Dim selectStmt As String = Me.Config("/SQL/PreviousInProgressClaimCount")
+    Public Function LoadPreviousInProgressClaimCount(claimId As Guid) As Integer
+        Dim selectStmt As String = Config("/SQL/PreviousInProgressClaimCount")
         Dim parameters = New DBHelperParameter() {New DBHelperParameter("claim_id", claimId.ToByteArray()),
                                                  New DBHelperParameter("claim_id", claimId.ToByteArray()),
                                                  New DBHelperParameter("claim_id", claimId.ToByteArray())
                                                 }
         Dim ds As New DataSet
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
         Return ds.Tables(0).Rows(0)("claim_count")
     End Function
 
-    Public Function LoadListforImageIndexing(ByVal compIds As ArrayList, ByVal claimStatus As String, ByVal claimNumber As String, ByVal customerName As String,
-                             ByVal serviceCenterName As String, ByVal authorizationNumber As String,
-                             ByVal authorizedAmount As String, ByVal sortBy As String,
-                             ByVal externalUserServiceCenterIds As ArrayList, ByVal serviceCenterIds As ArrayList, ByVal dealerId As Guid, Optional ByVal dealerGroupCode As String = "") As DataSet
+    Public Function LoadListforImageIndexing(compIds As ArrayList, claimStatus As String, claimNumber As String, customerName As String,
+                             serviceCenterName As String, authorizationNumber As String,
+                             authorizedAmount As String, sortBy As String,
+                             externalUserServiceCenterIds As ArrayList, serviceCenterIds As ArrayList, dealerId As Guid, Optional ByVal dealerGroupCode As String = "") As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_FOR_IMAGE_INDEXING")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_FOR_IMAGE_INDEXING")
 
         Dim whereClauseConditions As String = ""
 
-        If Me.FormatSearchMask(claimNumber) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & Me.COL_NAME_CLAIM_NUMBER & " " & claimNumber
+        If FormatSearchMask(claimNumber) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & COL_NAME_CLAIM_NUMBER & " " & claimNumber
         End If
 
-        If claimStatus <> "" AndAlso Me.FormatSearchMask(claimStatus) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "c." & Me.COL_NAME_CLAIM_STATUS & " " & claimStatus
+        If claimStatus <> "" AndAlso FormatSearchMask(claimStatus) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "c." & COL_NAME_CLAIM_STATUS & " " & claimStatus
         End If
 
-        If Me.FormatSearchMask(customerName) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & Me.COL_NAME_CUSTOMER_NAME & ") " & customerName
+        If FormatSearchMask(customerName) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & COL_NAME_CUSTOMER_NAME & ") " & customerName
         End If
 
         If (MiscUtil.IsCriteriaSelected(externalUserServiceCenterIds) = True) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & MiscUtil.BuildListForSql("c." & Me.COL_NAME_SERVICE_CENTER_ID, externalUserServiceCenterIds)
+            whereClauseConditions &= " AND " & Environment.NewLine & MiscUtil.BuildListForSql("c." & COL_NAME_SERVICE_CENTER_ID, externalUserServiceCenterIds)
         End If
 
-        If Me.FormatSearchMask(serviceCenterName) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(sc." & Me.COL_NAME_SERVICE_CENTER_NAME & ") " & serviceCenterName
+        If FormatSearchMask(serviceCenterName) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(sc." & COL_NAME_SERVICE_CENTER_NAME & ") " & serviceCenterName
         End If
 
         If (MiscUtil.IsCriteriaSelected(serviceCenterIds) = True) Then
 
-            whereClauseConditions &= " AND " & Environment.NewLine & MiscUtil.BuildListForSql("c." & Me.COL_NAME_SERVICE_CENTER_ID, serviceCenterIds)
+            whereClauseConditions &= " AND " & Environment.NewLine & MiscUtil.BuildListForSql("c." & COL_NAME_SERVICE_CENTER_ID, serviceCenterIds)
         End If
 
 
-        If Me.FormatSearchMask(authorizationNumber) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & Me.COL_NAME_AUTHORIZATION_NUMBER & ") " & authorizationNumber.ToUpper
+        If FormatSearchMask(authorizationNumber) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & COL_NAME_AUTHORIZATION_NUMBER & ") " & authorizationNumber.ToUpper
         End If
 
-        If Me.FormatSearchMask(authorizedAmount) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & Me.COL_NAME_AUTHORIZED_AMOUNT & " " & authorizedAmount
+        If FormatSearchMask(authorizedAmount) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & COL_NAME_AUTHORIZED_AMOUNT & " " & authorizedAmount
         End If
 
         'if dealer id present
@@ -1105,27 +1105,27 @@ Public Class ClaimDAL
             whereClauseConditions &= Environment.NewLine & " AND c.dealer_id = hextoraw(" & MiscUtil.GetDbStringFromGuid(dealerId) & ")"
         End If
 
-        If (dealerGroupCode <> String.Empty AndAlso (Me.FormatSearchMask(dealerGroupCode))) Then
+        If (dealerGroupCode <> String.Empty AndAlso (FormatSearchMask(dealerGroupCode))) Then
             whereClauseConditions &= Environment.NewLine & "UPPER(dg.code) " & dealerGroupCode.ToUpper & " AND "
         End If
 
         ' not HextoRaw
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("c." & Me.COL_NAME_COMPANY_ID, compIds, False)
+        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("c." & COL_NAME_COMPANY_ID, compIds, False)
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
         If Not IsNothing(sortBy) Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER,
+            selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER,
                                             Environment.NewLine & "ORDER BY " & Environment.NewLine & sortBy)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
             Dim ds As New DataSet
-            Dim rowNum As New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, Me.MAX_NUMBER_OF_ROWS)
+            Dim rowNum As New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME,
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
                             New DBHelper.DBHelperParameter() {rowNum})
             Return ds
         Catch ex As Exception
@@ -1133,13 +1133,13 @@ Public Class ClaimDAL
         End Try
 
     End Function
-    Public Function LoadAdjusterList(ByVal userNetworkId As String, ByVal claimNumber As String, ByVal serviceCenterName As String, ByVal authorizationNumber As String,
-                                     ByVal claim_status As String, ByVal claimTypeId As Guid, ByVal claimExtendedStatusId As Guid, ByVal AutoApprove As String,
-                                     ByVal BeginDate As String, ByVal EndDate As String,
-                                     ByVal claimExtendedStatusOwnerId As Guid, ByVal sortOrder As String, ByVal sortBy As String,
-                                     ByVal ClaimAdjuster As String, ByVal ClaimAddedBy As String, Optional ByVal scTATLowLimit As LongType = Nothing, Optional ByVal scTATHighLimit As LongType = Nothing) As DataSet
+    Public Function LoadAdjusterList(userNetworkId As String, claimNumber As String, serviceCenterName As String, authorizationNumber As String,
+                                     claim_status As String, claimTypeId As Guid, claimExtendedStatusId As Guid, AutoApprove As String,
+                                     BeginDate As String, EndDate As String,
+                                     claimExtendedStatusOwnerId As Guid, sortOrder As String, sortBy As String,
+                                     ClaimAdjuster As String, ClaimAddedBy As String, Optional ByVal scTATLowLimit As LongType = Nothing, Optional ByVal scTATHighLimit As LongType = Nothing) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_CLAIM_ADJUSTER_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_CLAIM_ADJUSTER_LIST")
         Dim ds As New DataSet
         Dim da As OracleDataAdapter
 
@@ -1184,33 +1184,33 @@ Public Class ClaimDAL
 
     End Function
 
-    Public Function GetClaimsByCommentType(ByVal compIds As ArrayList, ByVal claimNumber As String, ByVal customerName As String,
-                     ByVal CommentTypeId As Guid, ByVal authorizationNumber As String,
-                     ByVal claimStatus As String, ByVal languageId As Guid, ByVal sortBy As String,
-                     ByVal dealerId As Guid, Optional ByVal dealerGroupCode As String = "") As DataSet
+    Public Function GetClaimsByCommentType(compIds As ArrayList, claimNumber As String, customerName As String,
+                     CommentTypeId As Guid, authorizationNumber As String,
+                     claimStatus As String, languageId As Guid, sortBy As String,
+                     dealerId As Guid, Optional ByVal dealerGroupCode As String = "") As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/GET_CLAIMS_BY_COMMENT_TYPE")
+        Dim selectStmt As String = Config("/SQL/GET_CLAIMS_BY_COMMENT_TYPE")
 
         Dim whereClauseConditions As String = ""
 
-        If Me.FormatSearchMask(claimNumber) Then
-            whereClauseConditions &= " AND cv." & Environment.NewLine & Me.COL_NAME_CLAIM_NUMBER & " " & claimNumber
+        If FormatSearchMask(claimNumber) Then
+            whereClauseConditions &= " AND cv." & Environment.NewLine & COL_NAME_CLAIM_NUMBER & " " & claimNumber
         End If
 
-        If claimStatus <> "" AndAlso Me.FormatSearchMask(claimStatus) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & Me.COL_NAME_CLAIM_STATUS & " " & claimStatus
+        If claimStatus <> "" AndAlso FormatSearchMask(claimStatus) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & COL_NAME_CLAIM_STATUS & " " & claimStatus
         End If
 
-        If Me.FormatSearchMask(customerName) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & Me.COL_NAME_CUSTOMER_NAME & ") " & customerName
+        If FormatSearchMask(customerName) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & COL_NAME_CUSTOMER_NAME & ") " & customerName
         End If
 
         If Not ((CommentTypeId = Guid.Empty) OrElse (CommentTypeId = Nothing)) Then
             whereClauseConditions &= Environment.NewLine & " AND cm.comment_type_id = hextoraw(" & MiscUtil.GetDbStringFromGuid(CommentTypeId) & ")"
         End If
 
-        If Me.FormatSearchMask(authorizationNumber) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & Me.COL_NAME_AUTHORIZATION_NUMBER & ") " & authorizationNumber.ToUpper
+        If FormatSearchMask(authorizationNumber) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & COL_NAME_AUTHORIZATION_NUMBER & ") " & authorizationNumber.ToUpper
         End If
 
         If Not ((dealerId = Guid.Empty) OrElse (dealerId = Nothing)) Then
@@ -1218,28 +1218,28 @@ Public Class ClaimDAL
         End If
 
 
-        If (dealerGroupCode <> String.Empty AndAlso (Me.FormatSearchMask(dealerGroupCode))) Then
+        If (dealerGroupCode <> String.Empty AndAlso (FormatSearchMask(dealerGroupCode))) Then
             whereClauseConditions &= Environment.NewLine & "AND UPPER(dg.code) " & dealerGroupCode.ToUpper & ""
         End If
 
         ' not HextoRaw
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("cv." & Me.COL_NAME_COMPANY_ID, compIds, False)
+        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("cv." & COL_NAME_COMPANY_ID, compIds, False)
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
         If Not IsNothing(sortBy) Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER,
+            selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER,
                                             Environment.NewLine & "ORDER BY " & Environment.NewLine & sortBy)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
             Dim ds As New DataSet
-            Dim LangIdPar As New DBHelper.DBHelperParameter(Me.PAR_NAME_LANGUAGE_ID, languageId.ToByteArray)
-            Dim rowNum As New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, Me.MAX_NUMBER_OF_ROWS)
+            Dim LangIdPar As New DBHelper.DBHelperParameter(PAR_NAME_LANGUAGE_ID, languageId.ToByteArray)
+            Dim rowNum As New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME,
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
                             New DBHelper.DBHelperParameter() {LangIdPar, rowNum})
             Return ds
         Catch ex As Exception
@@ -1248,30 +1248,30 @@ Public Class ClaimDAL
 
     End Function
 
-    Public Function GetClaimID(ByVal compIds As ArrayList, ByVal claimNumber As String) As DataSet
+    Public Function GetClaimID(compIds As ArrayList, claimNumber As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/GET_CLAIM_ID")
+        Dim selectStmt As String = Config("/SQL/GET_CLAIM_ID")
 
         Dim whereClauseConditions As String = ""
 
-        If Me.FormatSearchMask(claimNumber) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & Me.COL_NAME_CLAIM_NUMBER & " " & claimNumber
+        If FormatSearchMask(claimNumber) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & COL_NAME_CLAIM_NUMBER & " " & claimNumber
         End If
 
         ' not HextoRaw
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql(Me.COL_NAME_COMPANY_ID, compIds, False)
+        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql(COL_NAME_COMPANY_ID, compIds, False)
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
             Dim ds As New DataSet
-            Dim rowNum As New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, Me.MAX_NUMBER_OF_ROWS)
+            Dim rowNum As New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME,
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
                             New DBHelper.DBHelperParameter() {rowNum})
             Return ds
         Catch ex As Exception
@@ -1280,19 +1280,19 @@ Public Class ClaimDAL
 
     End Function
 
-    Public Function GetCaseIdByCaseNumberAndCompany(ByVal CaseNumber As String, ByVal CompanyCode As String) As DataSet
+    Public Function GetCaseIdByCaseNumberAndCompany(CaseNumber As String, CompanyCode As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/GET_CASE_ID")
+        Dim selectStmt As String = Config("/SQL/GET_CASE_ID")
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
 
         parameters = New OracleParameter() {New OracleParameter("company", CompanyCode),
                                             New OracleParameter("case_number", CaseNumber)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
     End Function
 
-    Public Function GetClaimCaseDeviceInfo(ByVal claimId As Guid, ByVal languageId As Guid) As DataSet
+    Public Function GetClaimCaseDeviceInfo(claimId As Guid, languageId As Guid) As DataSet
 
         Dim ds As New DataSet
 
@@ -1309,25 +1309,25 @@ Public Class ClaimDAL
 
     End Function
 
-    Public Function GetClaimsByMasterClaimNumber(ByVal compIds As ArrayList, ByVal masterClaimNumber As String) As DataSet
+    Public Function GetClaimsByMasterClaimNumber(compIds As ArrayList, masterClaimNumber As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_CLAIMS_BY_MASTER_CLAIM_NUMBER")
+        Dim selectStmt As String = Config("/SQL/LOAD_CLAIMS_BY_MASTER_CLAIM_NUMBER")
 
         Dim whereClauseConditions As String = ""
 
-        If Me.FormatSearchMask(masterClaimNumber) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & Me.COL_NAME_MASTER_CLAIM_NUMBER & " " & masterClaimNumber
+        If FormatSearchMask(masterClaimNumber) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & COL_NAME_MASTER_CLAIM_NUMBER & " " & masterClaimNumber
         End If
 
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("cl." & Me.COL_NAME_COMPANY_ID, compIds, False)
+        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("cl." & COL_NAME_COMPANY_ID, compIds, False)
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
         Try
             Dim ds As New DataSet
-            Dim rowNum As New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, Me.MAX_NUMBER_OF_ROWS)
+            Dim rowNum As New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME,
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
                             New DBHelper.DBHelperParameter() {rowNum})
             Return ds
         Catch ex As Exception
@@ -1337,56 +1337,56 @@ Public Class ClaimDAL
     End Function
 
     'Function overload for search without dealer id
-    Public Function LoadMasterClaimList(ByVal compIds As ArrayList, ByVal masterClaimNumber As String,
-                         ByVal claimNumber As String, ByVal customerName As String,
-                         ByVal authorizationNumber As String) As DataSet
+    Public Function LoadMasterClaimList(compIds As ArrayList, masterClaimNumber As String,
+                         claimNumber As String, customerName As String,
+                         authorizationNumber As String) As DataSet
         Dim dealerId As Guid = Guid.Empty
         Return LoadMasterClaimList(compIds, masterClaimNumber, claimNumber, customerName, authorizationNumber, dealerId)
     End Function
 
-    Public Function LoadMasterClaimList(ByVal compIds As ArrayList, ByVal masterClaimNumber As String,
-                         ByVal claimNumber As String, ByVal customerName As String,
-                         ByVal authorizationNumber As String, ByVal dealerId As Guid, Optional ByVal dealerGroupCode As String = "") As DataSet
+    Public Function LoadMasterClaimList(compIds As ArrayList, masterClaimNumber As String,
+                         claimNumber As String, customerName As String,
+                         authorizationNumber As String, dealerId As Guid, Optional ByVal dealerGroupCode As String = "") As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_MASTER_CLAIM_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_MASTER_CLAIM_LIST")
 
         Dim whereClauseConditions As String = ""
 
-        If Me.FormatSearchMask(claimNumber) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & Me.COL_NAME_CLAIM_NUMBER & " " & claimNumber
+        If FormatSearchMask(claimNumber) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & COL_NAME_CLAIM_NUMBER & " " & claimNumber
         End If
 
-        If Me.FormatSearchMask(masterClaimNumber) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & Me.COL_NAME_MASTER_CLAIM_NUMBER & " " & masterClaimNumber
+        If FormatSearchMask(masterClaimNumber) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & COL_NAME_MASTER_CLAIM_NUMBER & " " & masterClaimNumber
         End If
 
-        If Me.FormatSearchMask(customerName) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & Me.COL_NAME_CUSTOMER_NAME & ") " & customerName
+        If FormatSearchMask(customerName) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & COL_NAME_CUSTOMER_NAME & ") " & customerName
         End If
 
-        If Me.FormatSearchMask(authorizationNumber) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & Me.COL_NAME_AUTHORIZATION_NUMBER & ") " & authorizationNumber
+        If FormatSearchMask(authorizationNumber) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & COL_NAME_AUTHORIZATION_NUMBER & ") " & authorizationNumber
         End If
 
         ' not HextoRaw
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("cl." & Me.COL_NAME_COMPANY_ID, compIds, False)
+        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("cl." & COL_NAME_COMPANY_ID, compIds, False)
 
         'if dealer id present
         If Not ((dealerId = Guid.Empty) OrElse (dealerId = Nothing)) Then
             whereClauseConditions &= Environment.NewLine & " AND cl.dealer_id = hextoraw(" & MiscUtil.GetDbStringFromGuid(dealerId) & ")"
         End If
 
-        If (dealerGroupCode <> String.Empty AndAlso (Me.FormatSearchMask(dealerGroupCode))) Then
+        If (dealerGroupCode <> String.Empty AndAlso (FormatSearchMask(dealerGroupCode))) Then
             whereClauseConditions &= Environment.NewLine & "AND UPPER(dg.code) " & dealerGroupCode.ToUpper & ""
         End If
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
         Try
             Dim ds As New DataSet
-            Dim rowNum As New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, Me.MAX_NUMBER_OF_ROWS)
+            Dim rowNum As New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME,
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
                             New DBHelper.DBHelperParameter() {rowNum})
             Return ds
         Catch ex As Exception
@@ -1395,34 +1395,34 @@ Public Class ClaimDAL
 
     End Function
 
-    Public Function LoadMasterClaimDetail(ByVal compIds As ArrayList, ByVal masterClaimNumber As String, ByVal certIdStr As String) As DataSet
+    Public Function LoadMasterClaimDetail(compIds As ArrayList, masterClaimNumber As String, certIdStr As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_MASTER_CLAIM_DETAIL")
+        Dim selectStmt As String = Config("/SQL/LOAD_MASTER_CLAIM_DETAIL")
 
         Dim whereClauseConditions As String = ""
 
-        If Me.FormatSearchMask(masterClaimNumber) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & Me.COL_NAME_MASTER_CLAIM_NUMBER & " " & masterClaimNumber
+        If FormatSearchMask(masterClaimNumber) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & COL_NAME_MASTER_CLAIM_NUMBER & " " & masterClaimNumber
         End If
 
         If (Not certIdStr Is Nothing) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "cert." & Me.COL_NAME_CERTIFICATE_ID & " = " & certIdStr
+            whereClauseConditions &= " AND " & Environment.NewLine & "cert." & COL_NAME_CERTIFICATE_ID & " = " & certIdStr
         End If
 
         ' not HextoRaw
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("cl." & Me.COL_NAME_COMPANY_ID, compIds, False)
+        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("cl." & COL_NAME_COMPANY_ID, compIds, False)
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
             Dim ds As New DataSet
-            Dim rowNum As New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, Me.MAX_NUMBER_OF_ROWS)
+            Dim rowNum As New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME,
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
                             New DBHelper.DBHelperParameter() {rowNum})
             Return ds
         Catch ex As Exception
@@ -1431,34 +1431,34 @@ Public Class ClaimDAL
 
     End Function
 
-    Public Function LoadMasterClaimDetailList(ByVal compIds As ArrayList, ByVal masterClaimNumber As String, ByVal certIdStr As String) As DataSet
+    Public Function LoadMasterClaimDetailList(compIds As ArrayList, masterClaimNumber As String, certIdStr As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_MASTER_CLAIM_DETAIL_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_MASTER_CLAIM_DETAIL_LIST")
 
         Dim whereClauseConditions As String = ""
 
-        If Me.FormatSearchMask(masterClaimNumber) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & Me.COL_NAME_MASTER_CLAIM_NUMBER & " " & masterClaimNumber
+        If FormatSearchMask(masterClaimNumber) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & COL_NAME_MASTER_CLAIM_NUMBER & " " & masterClaimNumber
         End If
 
         If (Not certIdStr Is Nothing) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "cert." & Me.COL_NAME_CERTIFICATE_ID & " = " & certIdStr
+            whereClauseConditions &= " AND " & Environment.NewLine & "cert." & COL_NAME_CERTIFICATE_ID & " = " & certIdStr
         End If
 
         ' not HextoRaw
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("cl." & Me.COL_NAME_COMPANY_ID, compIds, False)
+        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("cl." & COL_NAME_COMPANY_ID, compIds, False)
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
             Dim ds As New DataSet
-            Dim rowNum As New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, Me.MAX_NUMBER_OF_ROWS)
+            Dim rowNum As New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME,
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
                             New DBHelper.DBHelperParameter() {rowNum})
             Return ds
         Catch ex As Exception
@@ -1469,68 +1469,68 @@ Public Class ClaimDAL
 
 
     'Function overload for search without dealer id
-    Public Function LoadActiveClaimList(ByVal compIds As ArrayList, ByVal claimNumber As String, ByVal customerName As String,
-                           ByVal serviceCenterName As String, ByVal authorizationNumber As String,
-                           ByVal authorizedAmount As String, ByVal sortBy As String) As DataSet
+    Public Function LoadActiveClaimList(compIds As ArrayList, claimNumber As String, customerName As String,
+                           serviceCenterName As String, authorizationNumber As String,
+                           authorizedAmount As String, sortBy As String) As DataSet
         Return LoadActiveClaimList(compIds, claimNumber, customerName, serviceCenterName, authorizationNumber,
                                authorizedAmount, Guid.Empty, sortBy)
     End Function
 
 
-    Public Function LoadActiveClaimList(ByVal compIds As ArrayList, ByVal claimNumber As String, ByVal customerName As String,
-                               ByVal serviceCenterName As String, ByVal authorizationNumber As String,
-                               ByVal authorizedAmount As String, ByVal dealerId As Guid, ByVal sortBy As String, Optional ByVal dealerGroupCode As String = "") As DataSet
+    Public Function LoadActiveClaimList(compIds As ArrayList, claimNumber As String, customerName As String,
+                               serviceCenterName As String, authorizationNumber As String,
+                               authorizedAmount As String, dealerId As Guid, sortBy As String, Optional ByVal dealerGroupCode As String = "") As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_ACTIVE_CLAIMS_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_ACTIVE_CLAIMS_LIST")
 
         Dim whereClauseConditions As String = ""
 
-        If Me.FormatSearchMask(claimNumber) Then
-            whereClauseConditions &= " AND c." & Environment.NewLine & Me.COL_NAME_CLAIM_NUMBER & " " & claimNumber
+        If FormatSearchMask(claimNumber) Then
+            whereClauseConditions &= " AND c." & Environment.NewLine & COL_NAME_CLAIM_NUMBER & " " & claimNumber
         End If
 
-        If Me.FormatSearchMask(customerName) Then
-            whereClauseConditions &= " AND c." & Environment.NewLine & "UPPER(" & Me.COL_NAME_CUSTOMER_NAME & ") " & customerName
+        If FormatSearchMask(customerName) Then
+            whereClauseConditions &= " AND c." & Environment.NewLine & "UPPER(" & COL_NAME_CUSTOMER_NAME & ") " & customerName
         End If
 
-        If Me.FormatSearchMask(serviceCenterName) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(sc." & Me.COL_NAME_SERVICE_CENTER_NAME & ") " & serviceCenterName
+        If FormatSearchMask(serviceCenterName) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(sc." & COL_NAME_SERVICE_CENTER_NAME & ") " & serviceCenterName
         End If
 
-        If Me.FormatSearchMask(authorizationNumber) Then
-            whereClauseConditions &= " AND c." & Environment.NewLine & "UPPER(" & Me.COL_NAME_AUTHORIZATION_NUMBER & ") " & authorizationNumber
+        If FormatSearchMask(authorizationNumber) Then
+            whereClauseConditions &= " AND c." & Environment.NewLine & "UPPER(" & COL_NAME_AUTHORIZATION_NUMBER & ") " & authorizationNumber
         End If
 
-        If Me.FormatSearchMask(authorizedAmount) Then
-            whereClauseConditions &= " AND c." & Environment.NewLine & Me.COL_NAME_AUTHORIZED_AMOUNT & " " & authorizedAmount
+        If FormatSearchMask(authorizedAmount) Then
+            whereClauseConditions &= " AND c." & Environment.NewLine & COL_NAME_AUTHORIZED_AMOUNT & " " & authorizedAmount
         End If
 
         ' not HextoRaw
-        whereClauseConditions &= Environment.NewLine & " AND c." & MiscUtil.BuildListForSql(Me.COL_NAME_COMPANY_ID, compIds, False)
+        whereClauseConditions &= Environment.NewLine & " AND c." & MiscUtil.BuildListForSql(COL_NAME_COMPANY_ID, compIds, False)
 
         'if dealer id present
         If Not ((dealerId = Guid.Empty) OrElse (dealerId = Nothing)) Then
             whereClauseConditions &= Environment.NewLine & " AND d.dealer_id = hextoraw(" & MiscUtil.GetDbStringFromGuid(dealerId) & ")"
         End If
 
-        If (dealerGroupCode <> String.Empty AndAlso (Me.FormatSearchMask(dealerGroupCode))) Then
+        If (dealerGroupCode <> String.Empty AndAlso (FormatSearchMask(dealerGroupCode))) Then
             whereClauseConditions &= Environment.NewLine & "AND dg.code " & dealerGroupCode.ToUpper & ""
         End If
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
         If Not IsNothing(sortBy) Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER,
+            selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER,
                                             Environment.NewLine & "ORDER BY " & Environment.NewLine & sortBy)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
             Dim ds As New DataSet
             'Dim compIdPar As New DBHelper.DBHelperParameter(Me.PAR_NAME_COMPANY_ID, compId)
-            Dim rowNum As New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, Me.MAX_NUMBER_OF_ROWS)
+            Dim rowNum As New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME,
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
                             New DBHelper.DBHelperParameter() {rowNum})
             Return ds
         Catch ex As Exception
@@ -1539,52 +1539,52 @@ Public Class ClaimDAL
 
     End Function
 
-    Public Function LoadListClaimFollowUp(ByVal followUpDate As String, ByVal serviceCenterName As String,
-                                          ByVal claimNumber As String, ByVal claimAdjusterName As String,
-                                          ByVal customerName As String, ByVal claimStatus As String,
-                                          ByVal dealerId As Guid, ByVal claimTATId As Guid,
-                                          ByVal claimExtendedStatusId As Guid, ByVal noActivityId As Guid,
-                                          ByVal ownerId As Guid, ByVal compIds As ArrayList,
-                                          ByVal languageId As Guid, ByVal nonOperatedClaims As String, ByVal sortBy As String) As DataSet
+    Public Function LoadListClaimFollowUp(followUpDate As String, serviceCenterName As String,
+                                          claimNumber As String, claimAdjusterName As String,
+                                          customerName As String, claimStatus As String,
+                                          dealerId As Guid, claimTATId As Guid,
+                                          claimExtendedStatusId As Guid, noActivityId As Guid,
+                                          ownerId As Guid, compIds As ArrayList,
+                                          languageId As Guid, nonOperatedClaims As String, sortBy As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_FOLLOW_UP")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST_FOLLOW_UP")
         Dim whereClauseConditions As String = ""
         Dim whereClauseConditions2 As String = ""
         Dim whereClauseConditions3 As String = ""
         Dim ds As New DataSet
 
-        If ((Not (followUpDate Is Nothing)) AndAlso (Me.FormatSearchMask(followUpDate))) Then
+        If ((Not (followUpDate Is Nothing)) AndAlso (FormatSearchMask(followUpDate))) Then
             'selectStmt &= Environment.NewLine & "AND " & GetOracleDate("cv.followup_date") & followUpDate
             whereClauseConditions &= " AND " & Environment.NewLine & GetOracleDate("cv.followup_date") & followUpDate
         End If
 
-        If ((Not (serviceCenterName Is Nothing)) AndAlso (Me.FormatSearchMask(serviceCenterName))) Then
+        If ((Not (serviceCenterName Is Nothing)) AndAlso (FormatSearchMask(serviceCenterName))) Then
             'selectStmt &= Environment.NewLine & "AND UPPER(sc.description)" & serviceCenterName.ToUpper
             whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(sc.description)" & serviceCenterName.ToUpper
         End If
 
-        If ((Not (claimNumber Is Nothing)) AndAlso (Me.FormatSearchMask(claimNumber))) Then
+        If ((Not (claimNumber Is Nothing)) AndAlso (FormatSearchMask(claimNumber))) Then
             'selectStmt &= Environment.NewLine & "AND UPPER(cv.claim_number)" & claimNumber.ToUpper
             whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(cv.claim_number)" & claimNumber.ToUpper
         End If
 
-        If ((Not (claimAdjusterName Is Nothing)) AndAlso (Me.FormatSearchMask(claimAdjusterName))) Then
+        If ((Not (claimAdjusterName Is Nothing)) AndAlso (FormatSearchMask(claimAdjusterName))) Then
             'selectStmt &= Environment.NewLine & "AND UPPER(cv.claims_adjuster)" & claimAdjusterName.ToUpper
             whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(usrclmadj.user_name)" & claimAdjusterName.ToUpper
         End If
 
-        If ((Not (customerName Is Nothing)) AndAlso (Me.FormatSearchMask(customerName))) Then
+        If ((Not (customerName Is Nothing)) AndAlso (FormatSearchMask(customerName))) Then
             'selectStmt &= Environment.NewLine & "AND UPPER(cv.cust_name)" & customerName.ToUpper
             whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(cv.cust_name)" & customerName.ToUpper
         End If
 
-        If ((Not (claimStatus Is Nothing)) AndAlso (Me.FormatSearchMask(claimStatus))) Then
+        If ((Not (claimStatus Is Nothing)) AndAlso (FormatSearchMask(claimStatus))) Then
             'selectStmt &= Environment.NewLine & "AND UPPER(cv.cust_name)" & customerName.ToUpper
             whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(cv.status_code)" & claimStatus.ToUpper
         End If
 
         If Not dealerId.Equals(Guid.Empty) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "D." & Me.COL_NAME_DEALER_ID & "=" & DBHelper.ValueToSQLString(dealerId)
+            whereClauseConditions &= " AND " & Environment.NewLine & "D." & COL_NAME_DEALER_ID & "=" & DBHelper.ValueToSQLString(dealerId)
         End If
 
         If nonOperatedClaims = "Y" Then
@@ -1623,45 +1623,45 @@ Public Class ClaimDAL
         End If
 
         ' not HextoRaw
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("cv." & Me.COL_NAME_COMPANY_ID, compIds, False)
+        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("cv." & COL_NAME_COMPANY_ID, compIds, False)
 
         If Not whereClauseConditions2 = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER2, whereClauseConditions2)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER2, whereClauseConditions2)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER2, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER2, "")
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         If Not whereClauseConditions3 = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER3, whereClauseConditions3)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER3, whereClauseConditions3)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER3, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER3, "")
         End If
 
         If Not IsNothing(sortBy) Then
             If sortBy = "CFDAT" Then
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER,
-                                                            Environment.NewLine & "ORDER BY " & Environment.NewLine & Me.SORT_BY_FU_DATE)
+                selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER,
+                                                            Environment.NewLine & "ORDER BY " & Environment.NewLine & SORT_BY_FU_DATE)
             Else
-                selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER,
+                selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER,
                                                             Environment.NewLine & "ORDER BY " & Environment.NewLine & sortBy)
             End If
             'selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, _
             '                                Environment.NewLine & "ORDER BY " & Environment.NewLine & sortBy)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
-            Dim LangIdPar As New DBHelper.DBHelperParameter(Me.PAR_NAME_LANGUAGE_ID, languageId.ToByteArray)
-            Dim rowNum As New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, Me.MAX_NUMBER_OF_ROWS)
+            Dim LangIdPar As New DBHelper.DBHelperParameter(PAR_NAME_LANGUAGE_ID, languageId.ToByteArray)
+            Dim rowNum As New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME,
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
                             New DBHelper.DBHelperParameter() {LangIdPar, LangIdPar, LangIdPar, LangIdPar, rowNum})
             Return ds
         Catch ex As Exception
@@ -1678,43 +1678,43 @@ Public Class ClaimDAL
 
     End Function
 
-    Public Function LoadPendingClaimList(ByVal compIds As ArrayList,
-                                         ByVal claimNumber As String,
-                                         ByVal certNumber As String,
-                                         ByVal dealerName As String) As DataSet
+    Public Function LoadPendingClaimList(compIds As ArrayList,
+                                         claimNumber As String,
+                                         certNumber As String,
+                                         dealerName As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_PENDING_CLAIM_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_PENDING_CLAIM_LIST")
         Dim whereClauseConditions As String = ""
 
-        If Me.FormatSearchMask(claimNumber) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "CMV." & Me.COL_NAME_CLAIM_NUMBER & " " & claimNumber
+        If FormatSearchMask(claimNumber) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "CMV." & COL_NAME_CLAIM_NUMBER & " " & claimNumber
         End If
 
-        If Me.FormatSearchMask(certNumber) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "CMV." & Me.COL_NAME_CERT_NUMBER & " " & certNumber
+        If FormatSearchMask(certNumber) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "CMV." & COL_NAME_CERT_NUMBER & " " & certNumber
         End If
 
-        If Not Me.IsNothing(dealerName) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "D." & Me.COL_NAME_DEALER & "='" & dealerName & "'"
+        If Not IsNothing(dealerName) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "D." & COL_NAME_DEALER & "='" & dealerName & "'"
         End If
 
         ' not HextoRaw
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("CMV." & Me.COL_NAME_COMPANY_ID, compIds, False)
+        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("CMV." & COL_NAME_COMPANY_ID, compIds, False)
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
             Dim ds As New DataSet
             'Dim compIdPar As New DBHelper.DBHelperParameter(Me.PAR_NAME_COMPANY_ID, compIds)
-            Dim rowNum As New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, Me.MAX_NUMBER_OF_ROWS)
+            Dim rowNum As New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
 
             'DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, _
             '                New DBHelper.DBHelperParameter() {compIdPar, rowNum})
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME,
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
                             New DBHelper.DBHelperParameter() {rowNum})
 
             Return ds
@@ -1725,37 +1725,37 @@ Public Class ClaimDAL
     End Function
 
 
-    Public Function LoadPendingApprovalClaimList(ByVal compIds As ArrayList,
-                                         ByVal claimNumber As String,
-                                         ByVal certNumber As String,
-                                         ByVal serviCenterName As String) As DataSet
+    Public Function LoadPendingApprovalClaimList(compIds As ArrayList,
+                                         claimNumber As String,
+                                         certNumber As String,
+                                         serviCenterName As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_PENDING_APPROVAL_CLAIM_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_PENDING_APPROVAL_CLAIM_LIST")
         Dim whereClauseConditions As String = ""
 
-        If Me.FormatSearchMask(claimNumber) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "upper(mv." & Me.COL_NAME_CLAIM_NUMBER & ") " & claimNumber
+        If FormatSearchMask(claimNumber) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "upper(mv." & COL_NAME_CLAIM_NUMBER & ") " & claimNumber
         End If
 
-        If Me.FormatSearchMask(certNumber) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "upper(mv." & Me.COL_NAME_CERT_NUMBER & ") " & certNumber
+        If FormatSearchMask(certNumber) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "upper(mv." & COL_NAME_CERT_NUMBER & ") " & certNumber
         End If
 
-        If Me.FormatSearchMask(serviCenterName) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "upper(sc." & Me.COL_NAME_SERVICE_CENTER_NAME & ") " & serviCenterName
+        If FormatSearchMask(serviCenterName) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "upper(sc." & COL_NAME_SERVICE_CENTER_NAME & ") " & serviCenterName
         End If
 
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("mv." & Me.COL_NAME_COMPANY_ID, compIds, False)
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("mv." & COL_NAME_COMPANY_ID, compIds, False)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
         Try
             Dim ds As New DataSet
             'Dim compIdPar As New DBHelper.DBHelperParameter(Me.PAR_NAME_COMPANY_ID, compIds)
-            Dim rowNum As New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, Me.MAX_NUMBER_OF_ROWS)
+            Dim rowNum As New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
 
             'DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, _
             '                New DBHelper.DBHelperParameter() {compIdPar, rowNum})
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME,
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
                             New DBHelper.DBHelperParameter() {rowNum})
 
             Return ds
@@ -1765,15 +1765,15 @@ Public Class ClaimDAL
 
     End Function
 
-    Public Function LoadPendingReviewPaymentClaimList(ByVal claimNumber As String, ByVal claimedSerialNumber As String, ByVal certificateNumber As String,
-                                                      ByVal serviceCenterId As Guid, ByVal countryId As Guid, ByVal claimedManufacturerId As Guid, ByVal claimedModel As String, ByVal claimedSku As String,
-                                                      ByVal replacedSku As String, ByVal claimStatusCode As String, ByVal extendedClaimStatusId As Guid, ByVal coverageTypeId As Guid,
-                                                      ByVal serviceLevelId As Guid, ByVal originalRiskTypeId As Guid, ByVal replacementPartSku As String, ByVal replacementTypeId As Guid,
-                                                      ByVal claimCreatedDate As SearchCriteriaStructType(Of Date), ByVal languageId As Guid, ByVal userId As Guid,
-                                                      ByVal serviceLevelCode As String, ByVal multipleAuthId As Guid, ByVal singleAuthId As Guid, ByVal claimAuthStatusVoidId As Guid,
-                                                      ByVal equipmentTypeClaimedId As Guid) As DataSet
+    Public Function LoadPendingReviewPaymentClaimList(claimNumber As String, claimedSerialNumber As String, certificateNumber As String,
+                                                      serviceCenterId As Guid, countryId As Guid, claimedManufacturerId As Guid, claimedModel As String, claimedSku As String,
+                                                      replacedSku As String, claimStatusCode As String, extendedClaimStatusId As Guid, coverageTypeId As Guid,
+                                                      serviceLevelId As Guid, originalRiskTypeId As Guid, replacementPartSku As String, replacementTypeId As Guid,
+                                                      claimCreatedDate As SearchCriteriaStructType(Of Date), languageId As Guid, userId As Guid,
+                                                      serviceLevelCode As String, multipleAuthId As Guid, singleAuthId As Guid, claimAuthStatusVoidId As Guid,
+                                                      equipmentTypeClaimedId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_PENDING_REVIEW_PAYMENT_CLAIM_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_PENDING_REVIEW_PAYMENT_CLAIM_LIST")
         Dim whereClauseConditions As String = ""
 
         claimNumber = GetFormattedSearchStringForSQL(claimNumber)
@@ -1783,73 +1783,73 @@ Public Class ClaimDAL
         Dim parameters() As DBHelper.DBHelperParameter =
             New DBHelper.DBHelperParameter() _
             {
-                New DBHelper.DBHelperParameter(Me.PAR_NAME_SINGLE_AUTH_ID, singleAuthId.ToByteArray()),
+                New DBHelper.DBHelperParameter(PAR_NAME_SINGLE_AUTH_ID, singleAuthId.ToByteArray()),
                 New DBHelper.DBHelperParameter(UserDAL.COL_NAME_USER_ID & "1", userId.ToByteArray()),
-                New DBHelper.DBHelperParameter(Me.PAR_NAME_SERVICE_LEVEL_CODE & "1", serviceLevelCode),
-                New DBHelper.DBHelperParameter(Me.PAR_NAME_SERVICE_LEVEL_CODE & "2", serviceLevelCode),
-                New DBHelper.DBHelperParameter(Me.COL_NAME_STATUS_CODE & "1", claimStatusCode),
-                New DBHelper.DBHelperParameter(Me.COL_NAME_STATUS_CODE & "2", claimStatusCode),
-                New DBHelper.DBHelperParameter(Me.COL_NAME_CLAIM_NUMBER & "1", claimNumber),
-                New DBHelper.DBHelperParameter(Me.COL_NAME_CLAIM_NUMBER & "2", claimNumber),
-                New DBHelper.DBHelperParameter(Me.COL_NAME_SERVICE_CENTER_ID & "1", IIf(serviceCenterId.Equals(Guid.Empty), DBNull.Value, serviceCenterId.ToByteArray())),
-                New DBHelper.DBHelperParameter(Me.COL_NAME_SERVICE_CENTER_ID & "2", IIf(serviceCenterId.Equals(Guid.Empty), DBNull.Value, serviceCenterId.ToByteArray())),
-                New DBHelper.DBHelperParameter(Me.COL_NAME_RISK_TYPE_ID & "1", IIf(originalRiskTypeId.Equals(Guid.Empty), DBNull.Value, originalRiskTypeId.ToByteArray())),
-                New DBHelper.DBHelperParameter(Me.COL_NAME_RISK_TYPE_ID & "2", IIf(originalRiskTypeId.Equals(Guid.Empty), DBNull.Value, originalRiskTypeId.ToByteArray())),
-                New DBHelper.DBHelperParameter(Me.PAR_NAME_REPLACEMENT_PART_SKU & "1", replacementPartSku),
-                New DBHelper.DBHelperParameter(Me.PAR_NAME_REPLACEMENT_PART_SKU & "2", replacementPartSku),
-                New DBHelper.DBHelperParameter(Me.PAR_NAME_REPLACED_SKU & "1", replacedSku),
-                New DBHelper.DBHelperParameter(Me.PAR_NAME_REPLACED_SKU & "2", replacedSku),
+                New DBHelper.DBHelperParameter(PAR_NAME_SERVICE_LEVEL_CODE & "1", serviceLevelCode),
+                New DBHelper.DBHelperParameter(PAR_NAME_SERVICE_LEVEL_CODE & "2", serviceLevelCode),
+                New DBHelper.DBHelperParameter(COL_NAME_STATUS_CODE & "1", claimStatusCode),
+                New DBHelper.DBHelperParameter(COL_NAME_STATUS_CODE & "2", claimStatusCode),
+                New DBHelper.DBHelperParameter(COL_NAME_CLAIM_NUMBER & "1", claimNumber),
+                New DBHelper.DBHelperParameter(COL_NAME_CLAIM_NUMBER & "2", claimNumber),
+                New DBHelper.DBHelperParameter(COL_NAME_SERVICE_CENTER_ID & "1", IIf(serviceCenterId.Equals(Guid.Empty), DBNull.Value, serviceCenterId.ToByteArray())),
+                New DBHelper.DBHelperParameter(COL_NAME_SERVICE_CENTER_ID & "2", IIf(serviceCenterId.Equals(Guid.Empty), DBNull.Value, serviceCenterId.ToByteArray())),
+                New DBHelper.DBHelperParameter(COL_NAME_RISK_TYPE_ID & "1", IIf(originalRiskTypeId.Equals(Guid.Empty), DBNull.Value, originalRiskTypeId.ToByteArray())),
+                New DBHelper.DBHelperParameter(COL_NAME_RISK_TYPE_ID & "2", IIf(originalRiskTypeId.Equals(Guid.Empty), DBNull.Value, originalRiskTypeId.ToByteArray())),
+                New DBHelper.DBHelperParameter(PAR_NAME_REPLACEMENT_PART_SKU & "1", replacementPartSku),
+                New DBHelper.DBHelperParameter(PAR_NAME_REPLACEMENT_PART_SKU & "2", replacementPartSku),
+                New DBHelper.DBHelperParameter(PAR_NAME_REPLACED_SKU & "1", replacedSku),
+                New DBHelper.DBHelperParameter(PAR_NAME_REPLACED_SKU & "2", replacedSku),
                 New DBHelper.DBHelperParameter(ReplacementDAL.COL_NAME_DEVICE_TYPE & "1", IIf(replacementTypeId.Equals(Guid.Empty), DBNull.Value, replacementTypeId.ToByteArray())),
                 New DBHelper.DBHelperParameter(ReplacementDAL.COL_NAME_DEVICE_TYPE & "2", IIf(replacementTypeId.Equals(Guid.Empty), DBNull.Value, replacementTypeId.ToByteArray())),
-                New DBHelper.DBHelperParameter(Me.PAR_NAME_MULTIPLE_AUTH_ID, multipleAuthId.ToByteArray()),
-                New DBHelper.DBHelperParameter(Me.PAR_NAME_AUTH_VOID_ID, claimAuthStatusVoidId.ToByteArray()),
+                New DBHelper.DBHelperParameter(PAR_NAME_MULTIPLE_AUTH_ID, multipleAuthId.ToByteArray()),
+                New DBHelper.DBHelperParameter(PAR_NAME_AUTH_VOID_ID, claimAuthStatusVoidId.ToByteArray()),
                 New DBHelper.DBHelperParameter(UserDAL.COL_NAME_USER_ID & "2", userId.ToByteArray()),
-                New DBHelper.DBHelperParameter(Me.PAR_NAME_SERVICE_LEVEL_ID & "1", IIf(serviceLevelId.Equals(Guid.Empty), DBNull.Value, serviceLevelId.ToByteArray())),
-                New DBHelper.DBHelperParameter(Me.PAR_NAME_SERVICE_LEVEL_ID & "2", IIf(serviceLevelId.Equals(Guid.Empty), DBNull.Value, serviceLevelId.ToByteArray())),
-                New DBHelper.DBHelperParameter(Me.COL_NAME_STATUS_CODE & "3", claimStatusCode),
-                New DBHelper.DBHelperParameter(Me.COL_NAME_STATUS_CODE & "4", claimStatusCode),
-                New DBHelper.DBHelperParameter(Me.COL_NAME_CLAIM_NUMBER & "3", claimNumber),
-                New DBHelper.DBHelperParameter(Me.COL_NAME_CLAIM_NUMBER & "4", claimNumber),
-                New DBHelper.DBHelperParameter(Me.COL_NAME_SERVICE_CENTER_ID & "3", IIf(serviceCenterId.Equals(Guid.Empty), DBNull.Value, serviceCenterId.ToByteArray())),
-                New DBHelper.DBHelperParameter(Me.COL_NAME_SERVICE_CENTER_ID & "4", IIf(serviceCenterId.Equals(Guid.Empty), DBNull.Value, serviceCenterId.ToByteArray())),
-                New DBHelper.DBHelperParameter(Me.COL_NAME_RISK_TYPE_ID & "3", IIf(originalRiskTypeId.Equals(Guid.Empty), DBNull.Value, originalRiskTypeId.ToByteArray())),
-                New DBHelper.DBHelperParameter(Me.COL_NAME_RISK_TYPE_ID & "4", IIf(originalRiskTypeId.Equals(Guid.Empty), DBNull.Value, originalRiskTypeId.ToByteArray())),
-                New DBHelper.DBHelperParameter(Me.PAR_NAME_REPLACEMENT_PART_SKU & "3", replacementPartSku),
-                New DBHelper.DBHelperParameter(Me.PAR_NAME_REPLACEMENT_PART_SKU & "4", replacementPartSku),
-                New DBHelper.DBHelperParameter(Me.PAR_NAME_REPLACED_SKU & "3", replacedSku),
-                New DBHelper.DBHelperParameter(Me.PAR_NAME_REPLACED_SKU & "4", replacedSku),
+                New DBHelper.DBHelperParameter(PAR_NAME_SERVICE_LEVEL_ID & "1", IIf(serviceLevelId.Equals(Guid.Empty), DBNull.Value, serviceLevelId.ToByteArray())),
+                New DBHelper.DBHelperParameter(PAR_NAME_SERVICE_LEVEL_ID & "2", IIf(serviceLevelId.Equals(Guid.Empty), DBNull.Value, serviceLevelId.ToByteArray())),
+                New DBHelper.DBHelperParameter(COL_NAME_STATUS_CODE & "3", claimStatusCode),
+                New DBHelper.DBHelperParameter(COL_NAME_STATUS_CODE & "4", claimStatusCode),
+                New DBHelper.DBHelperParameter(COL_NAME_CLAIM_NUMBER & "3", claimNumber),
+                New DBHelper.DBHelperParameter(COL_NAME_CLAIM_NUMBER & "4", claimNumber),
+                New DBHelper.DBHelperParameter(COL_NAME_SERVICE_CENTER_ID & "3", IIf(serviceCenterId.Equals(Guid.Empty), DBNull.Value, serviceCenterId.ToByteArray())),
+                New DBHelper.DBHelperParameter(COL_NAME_SERVICE_CENTER_ID & "4", IIf(serviceCenterId.Equals(Guid.Empty), DBNull.Value, serviceCenterId.ToByteArray())),
+                New DBHelper.DBHelperParameter(COL_NAME_RISK_TYPE_ID & "3", IIf(originalRiskTypeId.Equals(Guid.Empty), DBNull.Value, originalRiskTypeId.ToByteArray())),
+                New DBHelper.DBHelperParameter(COL_NAME_RISK_TYPE_ID & "4", IIf(originalRiskTypeId.Equals(Guid.Empty), DBNull.Value, originalRiskTypeId.ToByteArray())),
+                New DBHelper.DBHelperParameter(PAR_NAME_REPLACEMENT_PART_SKU & "3", replacementPartSku),
+                New DBHelper.DBHelperParameter(PAR_NAME_REPLACEMENT_PART_SKU & "4", replacementPartSku),
+                New DBHelper.DBHelperParameter(PAR_NAME_REPLACED_SKU & "3", replacedSku),
+                New DBHelper.DBHelperParameter(PAR_NAME_REPLACED_SKU & "4", replacedSku),
                 New DBHelper.DBHelperParameter(ReplacementDAL.COL_NAME_DEVICE_TYPE & "3", IIf(replacementTypeId.Equals(Guid.Empty), DBNull.Value, replacementTypeId.ToByteArray())),
                 New DBHelper.DBHelperParameter(ReplacementDAL.COL_NAME_DEVICE_TYPE & "4", IIf(replacementTypeId.Equals(Guid.Empty), DBNull.Value, replacementTypeId.ToByteArray())),
-                New DBHelper.DBHelperParameter(Me.PAR_NAME_LANGUAGE_ID & "1", languageId.ToByteArray),
-                New DBHelper.DBHelperParameter(Me.PAR_NAME_EQUIPMENT_TYPE_CLAIMED_ID, equipmentTypeClaimedId.ToByteArray),
-                New DBHelper.DBHelperParameter(Me.PAR_NAME_CLAIMED_MANUFACTURER_ID & "1", IIf(claimedManufacturerId.Equals(Guid.Empty), DBNull.Value, claimedManufacturerId.ToByteArray())),
-                New DBHelper.DBHelperParameter(Me.PAR_NAME_CLAIMED_MANUFACTURER_ID & "2", IIf(claimedManufacturerId.Equals(Guid.Empty), DBNull.Value, claimedManufacturerId.ToByteArray())),
-                New DBHelper.DBHelperParameter(Me.PAR_NAME_LANGUAGE_ID & "2", languageId.ToByteArray),
+                New DBHelper.DBHelperParameter(PAR_NAME_LANGUAGE_ID & "1", languageId.ToByteArray),
+                New DBHelper.DBHelperParameter(PAR_NAME_EQUIPMENT_TYPE_CLAIMED_ID, equipmentTypeClaimedId.ToByteArray),
+                New DBHelper.DBHelperParameter(PAR_NAME_CLAIMED_MANUFACTURER_ID & "1", IIf(claimedManufacturerId.Equals(Guid.Empty), DBNull.Value, claimedManufacturerId.ToByteArray())),
+                New DBHelper.DBHelperParameter(PAR_NAME_CLAIMED_MANUFACTURER_ID & "2", IIf(claimedManufacturerId.Equals(Guid.Empty), DBNull.Value, claimedManufacturerId.ToByteArray())),
+                New DBHelper.DBHelperParameter(PAR_NAME_LANGUAGE_ID & "2", languageId.ToByteArray),
                 New DBHelper.DBHelperParameter(CompanyDAL.COL_NAME_COUNTRY_ID & "1", IIf(countryId.Equals(Guid.Empty), DBNull.Value, countryId.ToByteArray())),
                 New DBHelper.DBHelperParameter(CompanyDAL.COL_NAME_COUNTRY_ID & "2", IIf(countryId.Equals(Guid.Empty), DBNull.Value, countryId.ToByteArray())),
-                New DBHelper.DBHelperParameter(Me.COL_NAME_COVERAGE_TYPE_ID & "1", IIf(coverageTypeId.Equals(Guid.Empty), DBNull.Value, coverageTypeId.ToByteArray())),
-                New DBHelper.DBHelperParameter(Me.COL_NAME_COVERAGE_TYPE_ID & "2", IIf(coverageTypeId.Equals(Guid.Empty), DBNull.Value, coverageTypeId.ToByteArray())),
+                New DBHelper.DBHelperParameter(COL_NAME_COVERAGE_TYPE_ID & "1", IIf(coverageTypeId.Equals(Guid.Empty), DBNull.Value, coverageTypeId.ToByteArray())),
+                New DBHelper.DBHelperParameter(COL_NAME_COVERAGE_TYPE_ID & "2", IIf(coverageTypeId.Equals(Guid.Empty), DBNull.Value, coverageTypeId.ToByteArray())),
                 New DBHelper.DBHelperParameter(CertificateDAL.COL_NAME_CERT_NUMBER & "1", certificateNumber),
                 New DBHelper.DBHelperParameter(CertificateDAL.COL_NAME_CERT_NUMBER & "2", certificateNumber),
                 New DBHelper.DBHelperParameter(ClaimEquipmentDAL.COL_NAME_SERIAL_NUMBER & "1", claimedSerialNumber),
                 New DBHelper.DBHelperParameter(ClaimEquipmentDAL.COL_NAME_SERIAL_NUMBER & "2", claimedSerialNumber),
-                New DBHelper.DBHelperParameter(Me.PAR_NAME_CLAIMED_SKU & "1", claimedSku),
-                New DBHelper.DBHelperParameter(Me.PAR_NAME_CLAIMED_SKU & "2", claimedSku),
-                New DBHelper.DBHelperParameter(Me.PAR_NAME_CLAIMED_MODEL & "1", claimedModel),
-                New DBHelper.DBHelperParameter(Me.PAR_NAME_CLAIMED_MODEL & "2", claimedModel)
+                New DBHelper.DBHelperParameter(PAR_NAME_CLAIMED_SKU & "1", claimedSku),
+                New DBHelper.DBHelperParameter(PAR_NAME_CLAIMED_SKU & "2", claimedSku),
+                New DBHelper.DBHelperParameter(PAR_NAME_CLAIMED_MODEL & "1", claimedModel),
+                New DBHelper.DBHelperParameter(PAR_NAME_CLAIMED_MODEL & "2", claimedModel)
             }
-        whereClauseConditions &= claimCreatedDate.ToSqlString("cl", Me.COL_NAME_CREATED_DATE, parameters)
+        whereClauseConditions &= claimCreatedDate.ToSqlString("cl", COL_NAME_CREATED_DATE, parameters)
 
         ReDim Preserve parameters(parameters.Length + 2)
-        parameters(parameters.Length - 3) = New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, Me.MAX_NUMBER_OF_ROWS)
-        parameters(parameters.Length - 2) = New DBHelper.DBHelperParameter(Me.PAR_NAME_EXTENDED_STATUS_ID & "1", IIf(extendedClaimStatusId.Equals(Guid.Empty), DBNull.Value, extendedClaimStatusId.ToByteArray()))
-        parameters(parameters.Length - 1) = New DBHelper.DBHelperParameter(Me.PAR_NAME_EXTENDED_STATUS_ID & "2", IIf(extendedClaimStatusId.Equals(Guid.Empty), DBNull.Value, extendedClaimStatusId.ToByteArray()))
+        parameters(parameters.Length - 3) = New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
+        parameters(parameters.Length - 2) = New DBHelper.DBHelperParameter(PAR_NAME_EXTENDED_STATUS_ID & "1", IIf(extendedClaimStatusId.Equals(Guid.Empty), DBNull.Value, extendedClaimStatusId.ToByteArray()))
+        parameters(parameters.Length - 1) = New DBHelper.DBHelperParameter(PAR_NAME_EXTENDED_STATUS_ID & "2", IIf(extendedClaimStatusId.Equals(Guid.Empty), DBNull.Value, extendedClaimStatusId.ToByteArray()))
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
         Try
             Dim ds As New DataSet
-            ds = DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            ds = DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
 
 
@@ -1860,55 +1860,55 @@ Public Class ClaimDAL
 
     End Function
 
-    Public Function LoadNonReworkClaimList(ByVal compIds As ArrayList, ByVal claimNumber As String, ByVal customerName As String,
-                           ByVal serviceCenter As String, ByVal authorizationNumber As String,
-                           ByVal authorizedAmount As String, ByVal sortBy As String) As DataSet
+    Public Function LoadNonReworkClaimList(compIds As ArrayList, claimNumber As String, customerName As String,
+                           serviceCenter As String, authorizationNumber As String,
+                           authorizedAmount As String, sortBy As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_NonRework_LIST_DYNAMIC")
+        Dim selectStmt As String = Config("/SQL/LOAD_NonRework_LIST_DYNAMIC")
 
         Dim whereClauseConditions As String = ""
 
-        If Me.FormatSearchMask(claimNumber) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "c." & Me.COL_NAME_CLAIM_NUMBER & " " & claimNumber
+        If FormatSearchMask(claimNumber) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "c." & COL_NAME_CLAIM_NUMBER & " " & claimNumber
         End If
 
-        If Me.FormatSearchMask(customerName) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(c." & Me.COL_NAME_CUSTOMER_NAME & ") " & customerName
+        If FormatSearchMask(customerName) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(c." & COL_NAME_CUSTOMER_NAME & ") " & customerName
         End If
 
-        If Me.FormatSearchMask(serviceCenter) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(sc." & Me.COL_NAME_SERVICE_CENTER_NAME & ") " & serviceCenter
+        If FormatSearchMask(serviceCenter) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(sc." & COL_NAME_SERVICE_CENTER_NAME & ") " & serviceCenter
         End If
 
-        If Me.FormatSearchMask(authorizationNumber) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(c." & Me.COL_NAME_AUTHORIZATION_NUMBER & ") " & authorizationNumber
+        If FormatSearchMask(authorizationNumber) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(c." & COL_NAME_AUTHORIZATION_NUMBER & ") " & authorizationNumber
         End If
 
-        If Me.FormatSearchMask(authorizedAmount) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "c." & Me.COL_NAME_AUTHORIZED_AMOUNT & " " & authorizedAmount
+        If FormatSearchMask(authorizedAmount) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "c." & COL_NAME_AUTHORIZED_AMOUNT & " " & authorizedAmount
         End If
 
         ' not HextoRaw
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("c." & Me.COL_NAME_COMPANY_ID, compIds, False)
+        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("c." & COL_NAME_COMPANY_ID, compIds, False)
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         If Not IsNothing(sortBy) Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER,
+            selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER,
                                             Environment.NewLine & "ORDER BY " & Environment.NewLine & sortBy)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
             Dim ds As New DataSet
-            Dim rowNum As New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, Me.MAX_NUMBER_OF_ROWS)
+            Dim rowNum As New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME,
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
                             New DBHelper.DBHelperParameter() {rowNum})
             Return ds
         Catch ex As Exception
@@ -1917,71 +1917,71 @@ Public Class ClaimDAL
 
     End Function
 
-    Public Function LoadMasterClaimList(ByVal certItemCoverageId As Guid, ByVal allowDiffCoverage As Boolean, ByVal masterClaimProcCode As String) As DataSet
+    Public Function LoadMasterClaimList(certItemCoverageId As Guid, allowDiffCoverage As Boolean, masterClaimProcCode As String) As DataSet
         Dim ds As New DataSet
         Dim selectStmt As String
 
         If masterClaimProcCode = MasterClmProc_ANYMC Then
             If (allowDiffCoverage) Then
-                selectStmt = Me.Config("/SQL/LOAD_MASTER_CLAIMS_DIFFERENT_COVERAGE")
+                selectStmt = Config("/SQL/LOAD_MASTER_CLAIMS_DIFFERENT_COVERAGE")
             Else
-                selectStmt = Me.Config("/SQL/LOAD_MASTER_CLAIMS_SAME_COVERAGE")
+                selectStmt = Config("/SQL/LOAD_MASTER_CLAIMS_SAME_COVERAGE")
             End If
         ElseIf masterClaimProcCode = MasterClmProc_BYDOL Then
-            selectStmt = Me.Config("/SQL/LOAD_MASTER_CLAIMS_BY_ALLDATEOFLOSS")
+            selectStmt = Config("/SQL/LOAD_MASTER_CLAIMS_BY_ALLDATEOFLOSS")
         End If
         Dim parameters = New OracleParameter() {New OracleParameter(COL_NAME_CERT_ITEM_COVERAGE_ID, certItemCoverageId.ToByteArray)}
 
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
     End Function
-    Public Function LoadMasterClaimList(ByVal certItemCoverageId As Guid, ByVal allowDiffCoverage As Boolean, ByVal masterClaimProcCode As String, ByVal dateofLoss As Date) As DataSet
+    Public Function LoadMasterClaimList(certItemCoverageId As Guid, allowDiffCoverage As Boolean, masterClaimProcCode As String, dateofLoss As Date) As DataSet
         Dim ds As New DataSet
         Dim selectStmt As String
 
-        selectStmt = Me.Config("/SQL/LOAD_MASTER_CLAIMS_BY_SAMEDATEOFLOSS")
+        selectStmt = Config("/SQL/LOAD_MASTER_CLAIMS_BY_SAMEDATEOFLOSS")
         Dim parameters = New OracleParameter() {New OracleParameter(COL_NAME_CERT_ITEM_COVERAGE_ID, certItemCoverageId.ToByteArray),
                                                  New OracleParameter(COL_NAME_LOSS_DATE, dateofLoss)}
 
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
     End Function
 
-    Public Function GetRepairedMasterClaimList(ByVal certItemCoverageId As Guid, ByVal dateofLoss As Date) As DataSet
+    Public Function GetRepairedMasterClaimList(certItemCoverageId As Guid, dateofLoss As Date) As DataSet
         Dim ds As New DataSet
         Dim selectStmt As String
 
-        selectStmt = Me.Config("/SQL/GET_REPAIRED_MASTER_CLAIMS_FOR_SAMEDATEOFLOSS")
+        selectStmt = Config("/SQL/GET_REPAIRED_MASTER_CLAIMS_FOR_SAMEDATEOFLOSS")
         Dim parameters = New OracleParameter() {New OracleParameter(COL_NAME_CERT_ITEM_COVERAGE_ID, certItemCoverageId.ToByteArray),
                                                  New OracleParameter(COL_NAME_LOSS_DATE, dateofLoss)}
 
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
     End Function
-    Public Function LoadRedoClaimList(ByVal certItemCoverageId As Guid, ByVal createdDate As Date, ByVal redoClaimID As Guid) As DataSet
+    Public Function LoadRedoClaimList(certItemCoverageId As Guid, createdDate As Date, redoClaimID As Guid) As DataSet
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_REDO_CLAIMS")
+        Dim selectStmt As String = Config("/SQL/LOAD_REDO_CLAIMS")
 
         Dim parameters = New OracleParameter() {New OracleParameter(COL_NAME_CREATED_DATE, createdDate.ToString("MM/dd/yyyy")),
                             New OracleParameter(COL_NAME_CERT_ITEM_COVERAGE_ID, certItemCoverageId.ToByteArray),
                             New OracleParameter(COL_NAME_REDO_CLAIM_ID, redoClaimID.ToByteArray)}
 
 
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
     End Function
 
 
-    Public Function NumberOfAvailableClaims(ByVal certItemCoverageId As Guid, ByVal createdDate As Date, ByVal redoClaimID As Guid) As Boolean
+    Public Function NumberOfAvailableClaims(certItemCoverageId As Guid, createdDate As Date, redoClaimID As Guid) As Boolean
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/REDO_CLAIMS_NUMBER")
+        Dim selectStmt As String = Config("/SQL/REDO_CLAIMS_NUMBER")
 
         Dim parameters = New OracleParameter() {New OracleParameter(COL_NAME_CREATED_DATE, createdDate.ToString("MM/dd/yyyy")),
                             New OracleParameter(COL_NAME_CERT_ITEM_COVERAGE_ID, certItemCoverageId.ToByteArray),
                             New OracleParameter(COL_NAME_REDO_CLAIM_ID, redoClaimID.ToByteArray)}
 
 
-        Dim dsCount As DataSet = DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Dim dsCount As DataSet = DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
         If CInt(dsCount.Tables(0).Rows(0).Item(0)) > 0 Then
             Return True
@@ -1991,40 +1991,40 @@ Public Class ClaimDAL
 
     End Function
 
-    Public Function IsClaimActive(ByVal claimId As Guid) As Integer
+    Public Function IsClaimActive(claimId As Guid) As Integer
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/IS_CLAIM_ACTIVE")
+        Dim selectStmt As String = Config("/SQL/IS_CLAIM_ACTIVE")
 
         Dim parameters = New OracleParameter() {New OracleParameter(COL_NAME_CLAIM_ID, claimId.ToByteArray)}
 
 
-        Dim dsCount As DataSet = DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Dim dsCount As DataSet = DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
         Return CInt(dsCount.Tables(0).Rows(0).Item(0))
 
     End Function
 
-    Public Function IsClaimAuthNumberExists(ByVal claimId As Guid, ByVal authnumber As String) As Integer
+    Public Function IsClaimAuthNumberExists(claimId As Guid, authnumber As String) As Integer
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/IS_CLAIM_AUTH_NUMBER_EXISTS")
+        Dim selectStmt As String = Config("/SQL/IS_CLAIM_AUTH_NUMBER_EXISTS")
 
         Dim parameters = New OracleParameter() {New OracleParameter(COL_NAME_AUTHORIZATION_NUMBER, authnumber),
                                                 New OracleParameter(COL_NAME_CLAIM_ID, claimId.ToByteArray)}
 
 
-        Dim dsCount As DataSet = DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Dim dsCount As DataSet = DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
         Return CInt(dsCount.Tables(0).Rows(0).Item(0))
 
     End Function
 
-    Public Function IsServiceWarrantyValid(ByVal claimId As Guid) As Boolean 'validates service warranty
+    Public Function IsServiceWarrantyValid(claimId As Guid) As Boolean 'validates service warranty
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/VALIDATE_SERVICE_WARRANTY")
+        Dim selectStmt As String = Config("/SQL/VALIDATE_SERVICE_WARRANTY")
 
         Dim parameters = New OracleParameter() {New OracleParameter(COL_NAME_CLAIM_ID, claimId.ToByteArray)}
 
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
         If (ds.Tables(0).Rows(0).Item(0).ToString) = "Y" Then
             Return True
@@ -2033,21 +2033,21 @@ Public Class ClaimDAL
         End If
     End Function
 
-    Public Function GetCertClaims(ByVal certId As Guid) As DataSet
+    Public Function GetCertClaims(certId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/ALL_CERT_CLAIMS")
+        Dim selectStmt As String = Config("/SQL/ALL_CERT_CLAIMS")
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_CERTIFICATE_ID, certId.ToByteArray)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Function
 
-    Public Function LoadTotalPaid(ByVal ClaimId As Guid) As MultiValueReturn(Of DecimalType, Integer)
+    Public Function LoadTotalPaid(ClaimId As Guid) As MultiValueReturn(Of DecimalType, Integer)
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_TOTAL_PAID")
+        Dim selectStmt As String = Config("/SQL/LOAD_TOTAL_PAID")
         Dim parameters = New OracleParameter() {New OracleParameter(COL_NAME_CLAIM_ID, ClaimId.ToByteArray)}
         Dim returnValue As New MultiValueReturn(Of DecimalType, Integer)
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             If ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0 Then
                 returnValue.Value1 = New DecimalType(Convert.ToDecimal(ds.Tables(0).Rows(0)(0)))
                 returnValue.Value2 = Convert.ToInt32(ds.Tables(0).Rows(0)(1))
@@ -2062,13 +2062,13 @@ Public Class ClaimDAL
 
     End Function
 
-    Public Function LoadTotalPaidForCert(ByVal CertId As Guid) As DecimalType
+    Public Function LoadTotalPaidForCert(CertId As Guid) As DecimalType
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_TOTAL_PAID_FOR_CERT")
+        Dim selectStmt As String = Config("/SQL/LOAD_TOTAL_PAID_FOR_CERT")
         Dim parameters = New OracleParameter() {New OracleParameter(COL_NAME_CERTIFICATE_ID, CertId.ToByteArray)}
 
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             If ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0 Then
                 Return New DecimalType(Convert.ToDecimal(ds.Tables(0).Rows(0)(0)))
             Else
@@ -2081,17 +2081,17 @@ Public Class ClaimDAL
 
     End Function
 
-    Public Function LoadDeductible(ByVal pCert_Item_Cov_Id As Guid, ByVal pService_Center_Id As Guid) As DecimalType
+    Public Function LoadDeductible(pCert_Item_Cov_Id As Guid, pService_Center_Id As Guid) As DecimalType
 
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_DEDUCTIBLE")
+        Dim selectStmt As String = Config("/SQL/GET_DEDUCTIBLE")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
         {New DBHelper.DBHelperParameter("Cert_Item_Cov_Id", pCert_Item_Cov_Id.ToByteArray) _
         , New DBHelper.DBHelperParameter("Service_Center_Id", pService_Center_Id.ToByteArray)}
 
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             LoadDeductible = New DecimalType(Convert.ToDecimal(ds.Tables(0).Rows(0)(0)))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -2099,9 +2099,9 @@ Public Class ClaimDAL
 
     End Function
 
-    Public Sub GetPreviousYearReplacements(ByVal CertID As Guid,
-                                           ByVal CurrentLossDate As Date,
-                                           ByVal strClaimNum As String,
+    Public Sub GetPreviousYearReplacements(CertID As Guid,
+                                           CurrentLossDate As Date,
+                                           strClaimNum As String,
                                             ByRef TotalClaimsAllowed As Integer,
                                             ByRef RepairsAllowed As Integer,
                                             ByRef ReplAllowed As Integer,
@@ -2113,7 +2113,7 @@ Public Class ClaimDAL
         Dim whereClauseConditions As String = ""
 
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GetPreviousYearReplacements")
+        Dim selectStmt As String = Config("/SQL/GetPreviousYearReplacements")
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                             New DBHelper.DBHelperParameter("pi_cert_id", CertID.ToByteArray),
                             New DBHelper.DBHelperParameter("pi_loss_date", CurrentLossDate),
@@ -2145,25 +2145,25 @@ Public Class ClaimDAL
     End Sub
 
 
-    Public Function LoadClaimDetailbyClaimNumAndDealer(ByVal claimnunber As String, ByVal dealerId As Guid) As DataSet
+    Public Function LoadClaimDetailbyClaimNumAndDealer(claimnunber As String, dealerId As Guid) As DataSet
         Dim ds As New DataSet
         Dim selectStmt As String
 
-        selectStmt = Me.Config("/SQL/LOAD_CLAIM_DETAIL_BY_CLAIM_NUMBER_AND_DEALER")
+        selectStmt = Config("/SQL/LOAD_CLAIM_DETAIL_BY_CLAIM_NUMBER_AND_DEALER")
 
         Dim parameters = New OracleParameter() {New OracleParameter(COL_NAME_CLAIM_NUMBER, claimnunber),
                          New OracleParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray)}
 
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME_WS, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME_WS, parameters)
 
     End Function
 
-    Public Function LoadClaimDetailForWS(ByVal claimId As String, ByVal claimNunber As String, ByVal companyId As Guid, ByVal languageId As Guid) As DataSet
+    Public Function LoadClaimDetailForWS(claimId As String, claimNunber As String, companyId As Guid, languageId As Guid) As DataSet
         Dim ds As New DataSet
         Dim selectStmt As String
         Dim whereClauseConditions As String = ""
 
-        selectStmt = Me.Config("/SQL/LOAD_CLAIM_DETAIL_FOR_WS")
+        selectStmt = Config("/SQL/LOAD_CLAIM_DETAIL_FOR_WS")
         If Not claimId Is Nothing AndAlso Not claimId.Equals(String.Empty) Then
             whereClauseConditions &= " AND c.claim_id = hextoraw('" & claimId & "')" '& Environment.NewLine & cert_number.ToUpper
         Else
@@ -2172,15 +2172,15 @@ Public Class ClaimDAL
         End If
 
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
-        Dim parameters = New OracleParameter() {New OracleParameter(Me.PAR_NAME_LANGUAGE_ID, languageId.ToByteArray)}
+        Dim parameters = New OracleParameter() {New OracleParameter(PAR_NAME_LANGUAGE_ID, languageId.ToByteArray)}
 
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
     End Function
 
-    Private Function DB_OracleCommand(ByVal p_SqlStatement As String, ByVal p_CommandType As CommandType) As OracleCommand
+    Private Function DB_OracleCommand(p_SqlStatement As String, p_CommandType As CommandType) As OracleCommand
         Dim conn As IDbConnection = New OracleConnection(DBHelper.ConnectString)
         Dim cmd As OracleCommand = conn.CreateCommand()
 
@@ -2190,7 +2190,7 @@ Public Class ClaimDAL
         Return cmd
     End Function
 
-    Public Function LoadGetClaimsForWS(ByVal claimNumber As String, ByVal companyId As Guid, ByVal languageId As Guid, ByVal GetComments As Integer, ByVal GetPartsDesc As Integer) As DataSet
+    Public Function LoadGetClaimsForWS(claimNumber As String, companyId As Guid, languageId As Guid, GetComments As Integer, GetPartsDesc As Integer) As DataSet
 
         Dim ds As New DataSet
         Dim da As OracleDataAdapter
@@ -2229,25 +2229,25 @@ Public Class ClaimDAL
         End Try
     End Function
 
-    Public Function LoadClaimDetailbyClaimNumAndCompany(ByVal claimnunber As String, ByVal companyIds As ArrayList) As DataSet
+    Public Function LoadClaimDetailbyClaimNumAndCompany(claimnunber As String, companyIds As ArrayList) As DataSet
         Dim ds As New DataSet
         Dim selectStmt As String
 
-        selectStmt = Me.Config("/SQL/LOAD_CLAIM_DETAIL_BY_CLAIM_NUMBER_AND_DEALER")
+        selectStmt = Config("/SQL/LOAD_CLAIM_DETAIL_BY_CLAIM_NUMBER_AND_DEALER")
 
-        Dim whereClauseConditions As String = " AND " & MiscUtil.BuildListForSql("cl." & Me.COL_NAME_COMPANY_ID, companyIds, False)
+        Dim whereClauseConditions As String = " AND " & MiscUtil.BuildListForSql("cl." & COL_NAME_COMPANY_ID, companyIds, False)
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
         Dim parameters = New OracleParameter() {New OracleParameter(COL_NAME_CLAIM_NUMBER, claimnunber)}
 
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
     End Function
 
-    Public Sub GetFirstLossDate(ByVal CertID As Guid, ByRef FirstLossDate As String)
+    Public Sub GetFirstLossDate(CertID As Guid, ByRef FirstLossDate As String)
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GetFirstLossDate")
+        Dim selectStmt As String = Config("/SQL/GetFirstLossDate")
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                             New DBHelper.DBHelperParameter("pi_cert_id", CertID.ToByteArray)}
         Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
@@ -2267,15 +2267,15 @@ Public Class ClaimDAL
 
     End Sub
 
-    Public Function ApproveOrRejectClaims(ByVal cmd, ByVal claimIds, ByVal company_group_id) As DBHelper.DBHelperParameter()
-        Dim selectStmt As String = Me.Config("/SQL/APPROVE_OR_REJECT_CLAIMS")
+    Public Function ApproveOrRejectClaims(cmd, claimIds, company_group_id) As DBHelper.DBHelperParameter()
+        Dim selectStmt As String = Config("/SQL/APPROVE_OR_REJECT_CLAIMS")
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_CMD, cmd),
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_CLAIM_IDs, claimIds),
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_COMPANY_GROUP_ID, company_group_id.ToByteArray)}
+                            New DBHelper.DBHelperParameter(PAR_NAME_CMD, cmd),
+                            New DBHelper.DBHelperParameter(PAR_NAME_CLAIM_IDs, claimIds),
+                            New DBHelper.DBHelperParameter(PAR_NAME_COMPANY_GROUP_ID, company_group_id.ToByteArray)}
         Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_RETURN, GetType(Integer)),
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_EXCEPTION_MSG, GetType(String), 500)}
+                            New DBHelper.DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)),
+                            New DBHelper.DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 500)}
 
         Try
 
@@ -2288,18 +2288,18 @@ Public Class ClaimDAL
         End Try
     End Function
 
-    Public Function ApproveOrRejectClaims(ByVal cmd, ByVal claimIds, ByVal comments, ByVal risktypes, ByVal company_group_id, ByVal language_id) As DBHelper.DBHelperParameter()
-        Dim selectStmt As String = Me.Config("/SQL/APPROVE_OR_REJECT_CLAIMS")
+    Public Function ApproveOrRejectClaims(cmd, claimIds, comments, risktypes, company_group_id, language_id) As DBHelper.DBHelperParameter()
+        Dim selectStmt As String = Config("/SQL/APPROVE_OR_REJECT_CLAIMS")
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_CMD, cmd),
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_CLAIM_IDs, claimIds),
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_RISK_TYPE_IDs, risktypes),
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_COMMENTs, comments),
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_LANGUAGE_ID, language_id.ToByteArray),
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_COMPANY_GROUP_ID, company_group_id.ToByteArray)}
+                            New DBHelper.DBHelperParameter(PAR_NAME_CMD, cmd),
+                            New DBHelper.DBHelperParameter(PAR_NAME_CLAIM_IDs, claimIds),
+                            New DBHelper.DBHelperParameter(PAR_NAME_RISK_TYPE_IDs, risktypes),
+                            New DBHelper.DBHelperParameter(PAR_NAME_COMMENTs, comments),
+                            New DBHelper.DBHelperParameter(PAR_NAME_LANGUAGE_ID, language_id.ToByteArray),
+                            New DBHelper.DBHelperParameter(PAR_NAME_COMPANY_GROUP_ID, company_group_id.ToByteArray)}
         Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_RETURN, GetType(Integer)),
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_EXCEPTION_MSG, GetType(String), 500)}
+                            New DBHelper.DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)),
+                            New DBHelper.DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 500)}
 
         Try
 
@@ -2312,27 +2312,27 @@ Public Class ClaimDAL
         End Try
     End Function
 
-    Public Function IsCustomerPresentInUFIList(ByVal CountryId As Guid, ByVal TaxID As String) As DataView 'REQ-5978
+    Public Function IsCustomerPresentInUFIList(CountryId As Guid, TaxID As String) As DataView 'REQ-5978
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOOKUP_UFI_LIST")
+        Dim selectStmt As String = Config("/SQL/LOOKUP_UFI_LIST")
 
         Dim parameters = New OracleParameter() {New OracleParameter(COL_NAME_COUNTRY_ID, CountryId.ToByteArray),
                             New OracleParameter(COL_NAME_TAX_ID, TaxID)}
 
 
-        ds = DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME_UFI_LIST, parameters)
+        ds = DBHelper.Fetch(ds, selectStmt, TABLE_NAME_UFI_LIST, parameters)
 
         Return ds.Tables(0).DefaultView
 
     End Function
-    Public Function IsCertPaymentExists(ByVal CertId As Guid) As Boolean 'REQ-6026
+    Public Function IsCertPaymentExists(CertId As Guid) As Boolean 'REQ-6026
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_PAYMENTS_FOR_CERT")
+        Dim selectStmt As String = Config("/SQL/GET_PAYMENTS_FOR_CERT")
 
         Dim parameters = New OracleParameter() {New OracleParameter(COL_NAME_CERTIFICATE_ID, CertId.ToByteArray)}
 
 
-        ds = DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME_CERT_PAYMENT, parameters)
+        ds = DBHelper.Fetch(ds, selectStmt, TABLE_NAME_CERT_PAYMENT, parameters)
 
         If CInt(ds.Tables(0).Rows(0).Item(0)) = 0 Then
             Return True
@@ -2341,12 +2341,12 @@ Public Class ClaimDAL
         End If
 
     End Function
-    Public Function isConsequentialDamageAllowed(ByVal productCodeId As Guid) As Boolean
+    Public Function isConsequentialDamageAllowed(productCodeId As Guid) As Boolean
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/IS_CONSEQUENTIAL_DAMAGE_ALLOWED")
+        Dim selectStmt As String = Config("/SQL/IS_CONSEQUENTIAL_DAMAGE_ALLOWED")
         Dim parameters = New OracleParameter() {New OracleParameter("product_code_id", productCodeId.ToByteArray)}
 
-        ds = DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        ds = DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
         If CInt(ds.Tables(0).Rows(0).Item(0)) > 0 Then
             Return True
@@ -2364,21 +2364,21 @@ Public Class ClaimDAL
         Public ReturenIndex As Integer
         Public ExceptionMsg As String
 
-        Public Sub New(ByVal claimNumber As String, ByVal claimGroupId As Guid)
+        Public Sub New(claimNumber As String, claimGroupId As Guid)
             Me.ClaimNumber = claimNumber
             Me.ClaimGroupId = claimGroupId
         End Sub
 
-        Public Sub New(ByVal claimNumber As String, ByVal returnIndex As Integer, ByVal exceptionMsg As String)
+        Public Sub New(claimNumber As String, returnIndex As Integer, exceptionMsg As String)
             Me.ClaimNumber = claimNumber
-            Me.ReturenIndex = returnIndex
+            ReturenIndex = returnIndex
             Me.ExceptionMsg = exceptionMsg
         End Sub
 
     End Class
 
-    Public Function CalculateLiabilityLimit(ByVal certId As Guid, ByVal contractId As Guid, ByVal certItemCoverageId As Guid, Optional ByVal lossDate As DateType = Nothing) As ArrayList
-        Dim selectStmt As String = Me.Config("/SQL/CALCULATE_LIABILITY_LIMIT")
+    Public Function CalculateLiabilityLimit(certId As Guid, contractId As Guid, certItemCoverageId As Guid, Optional ByVal lossDate As DateType = Nothing) As ArrayList
+        Dim selectStmt As String = Config("/SQL/CALCULATE_LIABILITY_LIMIT")
         Dim myLossDate As Date
 
         If lossDate Is Nothing Then
@@ -2394,7 +2394,7 @@ Public Class ClaimDAL
                             New DBHelper.DBHelperParameter("p_loss_date", myLossDate)}
         Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                             New DBHelper.DBHelperParameter("p_liability_limit", GetType(Decimal)),
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_RETURN, GetType(Integer))}
+                            New DBHelper.DBHelperParameter(PAR_NAME_RETURN, GetType(Integer))}
 
         ' Call DBHelper Store Procedure
         DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameters)
@@ -2407,8 +2407,8 @@ Public Class ClaimDAL
 
     End Function
 
-    Public Function GetDepreciationSchedule(ByVal contractId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_DEPRECIATION_SCHEDULE")
+    Public Function GetDepreciationSchedule(contractId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_DEPRECIATION_SCHEDULE")
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                             New DBHelper.DBHelperParameter("p_contract_id", contractId.ToByteArray),
                             New DBHelper.DBHelperParameter("p_table_reference", ContractDAL.TABLE_NAME),
@@ -2416,7 +2416,7 @@ Public Class ClaimDAL
 
         Dim ds As New DataSet
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, inputParameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, inputParameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -2425,16 +2425,16 @@ Public Class ClaimDAL
 
 
     ' Execute Store Procedure
-    Public Function Handle_Replaced_Items(ByVal replaceAll As Integer, ByVal claimId As Guid, ByVal certId As Guid, ByVal certItemCoverageId As Guid, ByVal replaceDate As Date) As Integer
-        Dim selectStmt As String = Me.Config("/SQL/HANDLE_REPLACED_ITEMS")
+    Public Function Handle_Replaced_Items(replaceAll As Integer, claimId As Guid, certId As Guid, certItemCoverageId As Guid, replaceDate As Date) As Integer
+        Dim selectStmt As String = Config("/SQL/HANDLE_REPLACED_ITEMS")
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                             New DBHelper.DBHelperParameter("p_replace_all", replaceAll),
-                            New DBHelper.DBHelperParameter(Me.COL_NAME_CLAIM_ID, claimId.ToByteArray),
-                            New DBHelper.DBHelperParameter(Me.COL_NAME_CERTIFICATE_ID, certId.ToByteArray),
-                            New DBHelper.DBHelperParameter(Me.COL_NAME_CERT_ITEM_COVERAGE_ID, certItemCoverageId.ToByteArray),
+                            New DBHelper.DBHelperParameter(COL_NAME_CLAIM_ID, claimId.ToByteArray),
+                            New DBHelper.DBHelperParameter(COL_NAME_CERTIFICATE_ID, certId.ToByteArray),
+                            New DBHelper.DBHelperParameter(COL_NAME_CERT_ITEM_COVERAGE_ID, certItemCoverageId.ToByteArray),
                             New DBHelper.DBHelperParameter("p_replace_date", replaceDate)}
         Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_RETURN, GetType(Integer))}
+                            New DBHelper.DBHelperParameter(PAR_NAME_RETURN, GetType(Integer))}
 
         ' Call DBHelper Store Procedure
         DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameters)
@@ -2448,19 +2448,19 @@ Public Class ClaimDAL
 
     End Function
 
-    Public Function GetClaimNumber(ByVal companyId As Guid, Optional ByVal claimNumber As String = "", Optional ByVal CoverageCode As String = "", Optional ByVal UnitNumber As Integer = Nothing) As ClaimNumberInfo
-        Dim selectStmt As String = Me.Config("/SQL/GET_NEXT_CLAIM_NUMBER_SP")
+    Public Function GetClaimNumber(companyId As Guid, Optional ByVal claimNumber As String = "", Optional ByVal CoverageCode As String = "", Optional ByVal UnitNumber As Integer = Nothing) As ClaimNumberInfo
+        Dim selectStmt As String = Config("/SQL/GET_NEXT_CLAIM_NUMBER_SP")
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_COMPANY, companyId.ToByteArray),
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_CLAIM_NUMBER_INPUT, claimNumber),
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_COVERAGE_CODE_INPUT, CoverageCode),
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_UNIT_NUMBER_INPUT, UnitNumber)}
+                            New DBHelper.DBHelperParameter(PAR_NAME_COMPANY, companyId.ToByteArray),
+                            New DBHelper.DBHelperParameter(PAR_NAME_CLAIM_NUMBER_INPUT, claimNumber),
+                            New DBHelper.DBHelperParameter(PAR_NAME_COVERAGE_CODE_INPUT, CoverageCode),
+                            New DBHelper.DBHelperParameter(PAR_NAME_UNIT_NUMBER_INPUT, UnitNumber)}
 
         Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_CLAIM_NUMBER, GetType(String), 50),
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_CLAIM_GROUP_ID, GetType(Guid)),
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_RETURN, GetType(Integer)),
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_EXCEPTION_MSG, GetType(String), 500)}
+                            New DBHelper.DBHelperParameter(PAR_NAME_CLAIM_NUMBER, GetType(String), 50),
+                            New DBHelper.DBHelperParameter(PAR_NAME_CLAIM_GROUP_ID, GetType(Guid)),
+                            New DBHelper.DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)),
+                            New DBHelper.DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 500)}
 
         ' Call DBHelper Store Procedure
         DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameters)
@@ -2477,18 +2477,18 @@ Public Class ClaimDAL
 
     End Function
 
-    Public Function GetExistClaimNumber(ByVal companyId As Guid, ByVal claimNumber As String, ByVal CoverageCode As String, ByVal UnitNumber As Integer, Optional ByVal IsPayClaim As Boolean = False) As String
-        Dim selectStmt As String = Me.Config("/SQL/GET_CLAIM_NUMBER_INFO_SP")
+    Public Function GetExistClaimNumber(companyId As Guid, claimNumber As String, CoverageCode As String, UnitNumber As Integer, Optional ByVal IsPayClaim As Boolean = False) As String
+        Dim selectStmt As String = Config("/SQL/GET_CLAIM_NUMBER_INFO_SP")
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_COMPANY, companyId.ToByteArray),
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_CLAIM_NUMBER_INPUT, claimNumber),
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_COVERAGE_CODE_INPUT, CoverageCode),
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_UNIT_NUMBER_INPUT, UnitNumber)}
+                            New DBHelper.DBHelperParameter(PAR_NAME_COMPANY, companyId.ToByteArray),
+                            New DBHelper.DBHelperParameter(PAR_NAME_CLAIM_NUMBER_INPUT, claimNumber),
+                            New DBHelper.DBHelperParameter(PAR_NAME_COVERAGE_CODE_INPUT, CoverageCode),
+                            New DBHelper.DBHelperParameter(PAR_NAME_UNIT_NUMBER_INPUT, UnitNumber)}
 
         Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_CLAIM_NUMBER, GetType(String), 50),
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_RETURN, GetType(Integer)),
-                            New DBHelper.DBHelperParameter(Me.PAR_NAME_EXCEPTION_MSG, GetType(String), 500)}
+                            New DBHelper.DBHelperParameter(PAR_NAME_CLAIM_NUMBER, GetType(String), 50),
+                            New DBHelper.DBHelperParameter(PAR_NAME_RETURN, GetType(Integer)),
+                            New DBHelper.DBHelperParameter(PAR_NAME_EXCEPTION_MSG, GetType(String), 500)}
 
         Dim retClaimNumber As String
 
@@ -2526,21 +2526,21 @@ Public Class ClaimDAL
     End Function
 
 
-    Public Function GetClaimsForBatch(ByVal serviceCenterId As Guid, ByVal batchNumber As String, ByVal InvoiceTransId As Guid, ByVal userId As Guid, ByVal languageId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_CLAIMS_FOR_BATCH")
+    Public Function GetClaimsForBatch(serviceCenterId As Guid, batchNumber As String, InvoiceTransId As Guid, userId As Guid, languageId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_CLAIMS_FOR_BATCH")
 
         Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                                New DBHelper.DBHelperParameter(Me.PAR_SERVICE_CENTER, serviceCenterId.ToByteArray),
-                                New DBHelper.DBHelperParameter(Me.PAR_INVOICE_TRANS, InvoiceTransId.ToByteArray),
-                                New DBHelper.DBHelperParameter(Me.PAR_USER_ID, userId.ToByteArray),
-                                New DBHelper.DBHelperParameter(Me.PAR_LANGUAGE_ID, languageId),
-                                New DBHelper.DBHelperParameter(Me.PAR_BATCH_NUMBER, batchNumber)}
+                                New DBHelper.DBHelperParameter(PAR_SERVICE_CENTER, serviceCenterId.ToByteArray),
+                                New DBHelper.DBHelperParameter(PAR_INVOICE_TRANS, InvoiceTransId.ToByteArray),
+                                New DBHelper.DBHelperParameter(PAR_USER_ID, userId.ToByteArray),
+                                New DBHelper.DBHelperParameter(PAR_LANGUAGE_ID, languageId),
+                                New DBHelper.DBHelperParameter(PAR_BATCH_NUMBER, batchNumber)}
 
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                                New DBHelper.DBHelperParameter(Me.PAR_CLAIMS, GetType(DataSet))}
+                                New DBHelper.DBHelperParameter(PAR_CLAIMS, GetType(DataSet))}
 
         Dim ds As New DataSet
-        Dim tbl As String = Me.TABLE_NAME
+        Dim tbl As String = TABLE_NAME
 
         ' Call DBHelper Store Procedure
         DBHelper.FetchSp(selectStmt, inParameters, outParameters, ds, tbl)
@@ -2548,14 +2548,14 @@ Public Class ClaimDAL
 
     End Function
 
-    Public Function GetOriginalLiabilityAmount(ByVal Claim_id As Guid) As DataSet
+    Public Function GetOriginalLiabilityAmount(Claim_id As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/GET_ORIGINAL_LIABILITY_AMOUNT")
+        Dim selectStmt As String = Config("/SQL/GET_ORIGINAL_LIABILITY_AMOUNT")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                         New DBHelper.DBHelperParameter(Me.TABLE_KEY_NAME, Claim_id.ToByteArray)}
+                         New DBHelper.DBHelperParameter(TABLE_KEY_NAME, Claim_id.ToByteArray)}
         Dim ds As New DataSet
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
 
         Catch ex As Exception
@@ -2626,16 +2626,16 @@ Public Class ClaimDAL
 
 #Region "Overloaded Methods"
 
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
     'This method was added manually to accommodate BO families Save
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, ByVal IsUpdatedComment As Boolean,
-                                      ByVal galaxyClaimNumberList As ArrayList,
-                                      ByVal publishEventData As PublishedTaskDAL.PublishTaskData(Of ClaimIssueDAL.PublishTaskClaimData),
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, IsUpdatedComment As Boolean,
+                                      galaxyClaimNumberList As ArrayList,
+                                      publishEventData As PublishedTaskDAL.PublishTaskData(Of ClaimIssueDAL.PublishTaskClaimData),
                                       Optional ByVal Transaction As IDbTransaction = Nothing,
                                       Optional ByVal AuthDetailDataHasChanged As Boolean = False,
                                       Optional ByVal IsUpdatedMasterClaimComment As Boolean = False,
@@ -2654,7 +2654,7 @@ Public Class ClaimDAL
         'and after that a new record would be created in elp_claim_active_sessions here and would be deleted 
         'after the commit or Rollback of the transaction
         'start
-        Dim selectStmt As String = Me.Config("/SQL/CLAIM_CHECK_SESSION")
+        Dim selectStmt As String = Config("/SQL/CLAIM_CHECK_SESSION")
 
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                             New DBHelper.DBHelperParameter("p_calling_process", network_Id, Type.GetType("System.String"))}
@@ -2665,7 +2665,7 @@ Public Class ClaimDAL
 
         Dim processId As Guid = Guid.NewGuid
 
-        Me.UpdateActiveSession("INSERT", processId, network_Id)
+        UpdateActiveSession("INSERT", processId, network_Id)
         'end
         Try
             'First Pass updates Deletions
@@ -2678,7 +2678,7 @@ Public Class ClaimDAL
 
             claimEquipment.Update(familyDataset, tr, DataRowState.Deleted)
 
-            Me.Update(familyDataset, tr, DataRowState.Deleted)
+            Update(familyDataset, tr, DataRowState.Deleted)
 
             '' Function call sequence:
             '' AddressDal.Update -> ContactInfoDal.Updat ->  Me.Update
@@ -2695,7 +2695,7 @@ Public Class ClaimDAL
             'Second Pass updates additions and changes
             '  If isGetClaimNumber = True Then ObtainAndAssignClaimNumber(Row, suffix)
             ObtainAndAssignClaimNumber(familyDataset, galaxyClaimNumberList)
-            Me.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
 
             If Not familyDataset.Tables(ContactInfoDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(ContactInfoDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim ContactInfoDal As New ContactInfoDAL
@@ -2774,7 +2774,7 @@ Public Class ClaimDAL
                 DBHelper.Commit(tr)
                 'Def - 1113. Record identified by processId would be deleted from elp_claim_active_sessions table
                 'start
-                Me.UpdateActiveSession("DELETE", processId, network_Id)
+                UpdateActiveSession("DELETE", processId, network_Id)
                 'end
             End If
         Catch ex As Exception
@@ -2783,7 +2783,7 @@ Public Class ClaimDAL
                 DBHelper.RollBack(tr)
                 'Def - 1113. Record identified by processId would be deleted from elp_claim_active_sessions table
                 'start
-                Me.UpdateActiveSession("DELETE", processId, network_Id)
+                UpdateActiveSession("DELETE", processId, network_Id)
                 'end
             End If
             Throw ex
@@ -2795,7 +2795,7 @@ Public Class ClaimDAL
 #Region "StoreProcedures Control"
 
     ' Execute Store Procedure
-    Public Function ExecuteSP(ByVal docType As String, ByVal IdentificationNumber As String) As String
+    Public Function ExecuteSP(docType As String, IdentificationNumber As String) As String
         Dim dal As New CertificateDAL
         Return dal.ExecuteSP(docType, IdentificationNumber)
     End Function
@@ -2803,22 +2803,22 @@ Public Class ClaimDAL
 #End Region
 
 #Region "Claim Specific Methods"
-    Public Function GetClaimNumberForOpenMobile(ByVal cert_number As String, ByVal serial_number As String, ByVal compIds As ArrayList) As DataSet
+    Public Function GetClaimNumberForOpenMobile(cert_number As String, serial_number As String, compIds As ArrayList) As DataSet
 
         Dim ds As New DataSet
-        Dim selectStmt As String = Me.Config("/SQL/OPEN_MOBILE_GET_CLAIM_NUMBER")
+        Dim selectStmt As String = Config("/SQL/OPEN_MOBILE_GET_CLAIM_NUMBER")
 
-        Me.FormatSearchMask(cert_number)
+        FormatSearchMask(cert_number)
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
         {New DBHelper.DBHelperParameter(PAR_NAME_SERIAL_NUMBER, serial_number.ToUpper)}
         'Open Mobile requires generic certificate search Ticket #:1484585
 
-        Dim whereClauseConditions As String = " AND " & MiscUtil.BuildListForSql("cl." & Me.COL_NAME_COMPANY_ID, compIds, False)
+        Dim whereClauseConditions As String = " AND " & MiscUtil.BuildListForSql("cl." & COL_NAME_COMPANY_ID, compIds, False)
         whereClauseConditions &= " AND upper(c.cert_number) " & Environment.NewLine & cert_number.ToUpper
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+        selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Try
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME_OMBILE, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME_OMBILE, parameters)
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -2826,8 +2826,8 @@ Public Class ClaimDAL
 
     End Function
 
-    Public Function GetActiveClaimsForSvc(ByVal companyGroupID As Guid, ByVal serviceCenterID As Guid, ByVal sortOrder As Integer, ByVal ExtendedClaimStatusListItemID As Guid, ByVal companies As ArrayList, ByVal ExcludeRepairedClaims As String, ByVal languageId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC")
+    Public Function GetActiveClaimsForSvc(companyGroupID As Guid, serviceCenterID As Guid, sortOrder As Integer, ExtendedClaimStatusListItemID As Guid, companies As ArrayList, ExcludeRepairedClaims As String, languageId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC")
 
         Dim whereClauseConditions As String = ""
         Dim MAX_ROWS_RETURN As Integer = 10000
@@ -2849,41 +2849,41 @@ Public Class ClaimDAL
 
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Dim sortOrderClause As String = ""
 
         Select Case sortOrder
-            Case Me.WS_SORT_BY_CLAIM_NUMBER
+            Case WS_SORT_BY_CLAIM_NUMBER
                 sortOrderClause &= Environment.NewLine & " order by claim_number"
-            Case Me.WS_SORT_BY_CLAIM_STATUS
+            Case WS_SORT_BY_CLAIM_STATUS
                 sortOrderClause &= Environment.NewLine & " order by claim_status"
-            Case Me.WS_SORT_BY_ITEM_ITEM_MODEL
+            Case WS_SORT_BY_ITEM_ITEM_MODEL
                 sortOrderClause &= Environment.NewLine & " order by item_model"
-            Case Me.WS_SORT_BY_ITEM_MANUFACTURER
+            Case WS_SORT_BY_ITEM_MANUFACTURER
                 sortOrderClause &= Environment.NewLine & " order by item_manufacturer"
         End Select
 
         If Not sortOrderClause = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, sortOrderClause)
+            selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, sortOrderClause)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                        {New DBHelper.DBHelperParameter(Me.WS_PAR_LANGUAGE_ID, languageId.ToByteArray) _
-                         , New DBHelper.DBHelperParameter(Me.WS_PAR_LANGUAGE_ID, languageId.ToByteArray) _
-                        , New DBHelper.DBHelperParameter(Me.WS_PAR_SERVICE_CENTER_ID, serviceCenterID.ToByteArray) _
-                        , New DBHelper.DBHelperParameter(Me.WS_PAR_LANGUAGE_ID, languageId.ToByteArray) _
-                        , New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, MAX_ROWS_RETURN)}
+                        {New DBHelper.DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray) _
+                         , New DBHelper.DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray) _
+                        , New DBHelper.DBHelperParameter(WS_PAR_SERVICE_CENTER_ID, serviceCenterID.ToByteArray) _
+                        , New DBHelper.DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray) _
+                        , New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_ROWS_RETURN)}
 
         Dim ds As New DataSet()
         Try
 
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME_STORE, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME_STORE, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -2892,8 +2892,8 @@ Public Class ClaimDAL
     End Function
 
 
-    Public Function GetActiveClaimsForSvcGeneric(ByVal oServiceCenterClaimsSearchData As ClaimDAL.ServiceCenterClaimsSearchData, ByVal companies As ArrayList, ByVal companyGroupID As Guid, ByVal languageId As Guid, Optional ByVal IncludeTotalCount As Boolean = False) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/NEW_GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC")
+    Public Function GetActiveClaimsForSvcGeneric(oServiceCenterClaimsSearchData As ClaimDAL.ServiceCenterClaimsSearchData, companies As ArrayList, companyGroupID As Guid, languageId As Guid, Optional ByVal IncludeTotalCount As Boolean = False) As DataSet
+        Dim selectStmt As String = Config("/SQL/NEW_GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC")
         Dim whereClauseConditions As String = ""
         'Dim whereClauseConditions_count As String = ""
         Dim whereCMVClauseConditions As String = ""
@@ -3031,15 +3031,15 @@ Public Class ClaimDAL
             selectStmt = selectStmt.Replace("--dynamic_cmv_where_clause", whereCMVClauseConditions)
             'selectStmt_recordCount = selectStmt_recordCount.Replace("--dynamic_cmv_where_clause", whereCMVClauseConditions_count)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
             'selectStmt_recordCount = selectStmt_recordCount.Replace("--dynamic_cmv_where_clause", "")
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
             'selectStmt_recordCount = selectStmt_recordCount.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions_count)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
             'selectStmt_recordCount = selectStmt_recordCount.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
@@ -3054,49 +3054,49 @@ Public Class ClaimDAL
         End If
 
         Select Case oServiceCenterClaimsSearchData.SortBy
-            Case Me.WS_G_SORT_BY_VISIT_DATE
-                Number_Of_Row &= "cmv." & Me.COL_NAME_VISIT_DATE & sortOrderClause & ") As number_of_row"
-            Case Me.WS_G_SORT_BY_CLAIM_NUMBER
-                Number_Of_Row &= Me.COL_NAME_CLAIM_NUMBER_WS & sortOrderClause & ") As number_of_row"
-            Case Me.WS_G_SORT_BY_AUTHORIZATION_NUMBER
-                Number_Of_Row &= Me.COL_NAME_AUTHORIZATION_NUMBER_WS & sortOrderClause & ") As number_of_row"
-            Case Me.WS_G_SORT_BY_CLAIM_CREATED_DATE
-                Number_Of_Row &= Me.COL_NAME_CLAIM_CREATED_DATE & sortOrderClause & ") As number_of_row"
-            Case Me.WS_G_SORT_BY_CERTIFICATE_NUMBER
-                Number_Of_Row &= Me.COL_NAME_CERT_NUMBER_WS & sortOrderClause & ") As number_of_row"
-            Case Me.WS_G_SORT_BY_PRODUCT_DESCRIPTION
-                Number_Of_Row &= Me.COL_NAME_PRODUCT_DESCRIPTION_WS & sortOrderClause & ") As number_of_row"
-            Case Me.WS_G_SORT_BY_ITEM_MODELE
-                Number_Of_Row &= Me.COL_NAME_ITEM_MODEL_WS & sortOrderClause & ") As number_of_row"
-            Case Me.WS_G_SORT_BY_ITEM_MANUFACTURER_DESCRIPTION
+            Case WS_G_SORT_BY_VISIT_DATE
+                Number_Of_Row &= "cmv." & COL_NAME_VISIT_DATE & sortOrderClause & ") As number_of_row"
+            Case WS_G_SORT_BY_CLAIM_NUMBER
+                Number_Of_Row &= COL_NAME_CLAIM_NUMBER_WS & sortOrderClause & ") As number_of_row"
+            Case WS_G_SORT_BY_AUTHORIZATION_NUMBER
+                Number_Of_Row &= COL_NAME_AUTHORIZATION_NUMBER_WS & sortOrderClause & ") As number_of_row"
+            Case WS_G_SORT_BY_CLAIM_CREATED_DATE
+                Number_Of_Row &= COL_NAME_CLAIM_CREATED_DATE & sortOrderClause & ") As number_of_row"
+            Case WS_G_SORT_BY_CERTIFICATE_NUMBER
+                Number_Of_Row &= COL_NAME_CERT_NUMBER_WS & sortOrderClause & ") As number_of_row"
+            Case WS_G_SORT_BY_PRODUCT_DESCRIPTION
+                Number_Of_Row &= COL_NAME_PRODUCT_DESCRIPTION_WS & sortOrderClause & ") As number_of_row"
+            Case WS_G_SORT_BY_ITEM_MODELE
+                Number_Of_Row &= COL_NAME_ITEM_MODEL_WS & sortOrderClause & ") As number_of_row"
+            Case WS_G_SORT_BY_ITEM_MANUFACTURER_DESCRIPTION
                 Number_Of_Row &= "mnf.description" & sortOrderClause & ") As number_of_row"
-            Case Me.WS_G_SORT_BY_CUSTOMER_NAME
+            Case WS_G_SORT_BY_CUSTOMER_NAME
                 Number_Of_Row &= "cert.customer_name" & sortOrderClause & ") As number_of_row"
-            Case Me.WS_G_SORT_BY_CLAIM_TYPE
-                Number_Of_Row &= Me.COL_NAME_CLAIM_TYPE_WS & sortOrderClause & ") As number_of_row"
-            Case Me.WS_G_SORT_BY_CLAIM_EXTENDED_STATUS_ORDER
+            Case WS_G_SORT_BY_CLAIM_TYPE
+                Number_Of_Row &= COL_NAME_CLAIM_TYPE_WS & sortOrderClause & ") As number_of_row"
+            Case WS_G_SORT_BY_CLAIM_EXTENDED_STATUS_ORDER
                 Number_Of_Row &= "getlatestextendedclaimstatusid(claim.claim_id)" & sortOrderClause & ") As number_of_row"
-            Case Me.WS_G_SORT_BY_CLAIM_EXTENDED_STATUS_OWNER
+            Case WS_G_SORT_BY_CLAIM_EXTENDED_STATUS_OWNER
                 Number_Of_Row &= "getlatestextendedclaimownerid(claim.claim_id)" & sortOrderClause & ") As number_of_row"
-            Case Me.WS_G_SORT_BY_AUTHORIZED_AMOUNT
-                Number_Of_Row &= Me.COL_NAME_AUTHORIZED_AMOUNT_WS & sortOrderClause & ") As number_of_row"
-            Case Me.WS_G_SORT_BY_ADJUSTED_CLAIM_STATUS
-                Number_Of_Row &= Me.COL_NAME_CLAIM_STATUS_WS & sortOrderClause & ") As number_of_row"
-            Case Me.WS_G_SORT_BY_BATCH_NUMBER
-                Number_Of_Row &= Me.COL_NAME_BATCH_NUMBER_WS & sortOrderClause & ") As number_of_row"
-            Case Me.WS_G_SORT_BY_SERIAL_NUMBER
-                Number_Of_Row &= Me.COL_NAME_SERIAL_NUMBER_WS & sortOrderClause & ") As number_of_row"
-            Case Me.WS_G_SORT_BY_WORK_PHONE
-                Number_Of_Row &= Me.COL_NAME_WORK_PHONE & sortOrderClause & ") As number_of_row"
-            Case Me.WS_G_SORT_BY_SC_TAT
-                Number_Of_Row &= Me.COL_NAME_SC_TAT & sortOrderClause & ") As number_of_row"
-            Case Me.WS_G_SORT_BY_HOME_PHONE
-                Number_Of_Row &= Me.COL_NAME_HOME_PHONE & sortOrderClause & ") As number_of_row"
-            Case Me.WS_G_SORT_BY_LOSS_DATE
-                Number_Of_Row &= Me.COL_NAME_LOSS_DATE & sortOrderClause & ") As number_of_row"
-            Case Me.WS_G_SORT_BY_CLAIM_PAID_AMOUNT
-                Number_Of_Row &= Me.COL_NAME_CLAIM_PAID_AMOUNT & sortOrderClause & ") As number_of_row"
-            Case Me.WS_G_SORT_BY_BONUS_TOTAL
+            Case WS_G_SORT_BY_AUTHORIZED_AMOUNT
+                Number_Of_Row &= COL_NAME_AUTHORIZED_AMOUNT_WS & sortOrderClause & ") As number_of_row"
+            Case WS_G_SORT_BY_ADJUSTED_CLAIM_STATUS
+                Number_Of_Row &= COL_NAME_CLAIM_STATUS_WS & sortOrderClause & ") As number_of_row"
+            Case WS_G_SORT_BY_BATCH_NUMBER
+                Number_Of_Row &= COL_NAME_BATCH_NUMBER_WS & sortOrderClause & ") As number_of_row"
+            Case WS_G_SORT_BY_SERIAL_NUMBER
+                Number_Of_Row &= COL_NAME_SERIAL_NUMBER_WS & sortOrderClause & ") As number_of_row"
+            Case WS_G_SORT_BY_WORK_PHONE
+                Number_Of_Row &= COL_NAME_WORK_PHONE & sortOrderClause & ") As number_of_row"
+            Case WS_G_SORT_BY_SC_TAT
+                Number_Of_Row &= COL_NAME_SC_TAT & sortOrderClause & ") As number_of_row"
+            Case WS_G_SORT_BY_HOME_PHONE
+                Number_Of_Row &= COL_NAME_HOME_PHONE & sortOrderClause & ") As number_of_row"
+            Case WS_G_SORT_BY_LOSS_DATE
+                Number_Of_Row &= COL_NAME_LOSS_DATE & sortOrderClause & ") As number_of_row"
+            Case WS_G_SORT_BY_CLAIM_PAID_AMOUNT
+                Number_Of_Row &= COL_NAME_CLAIM_PAID_AMOUNT & sortOrderClause & ") As number_of_row"
+            Case WS_G_SORT_BY_BONUS_TOTAL
                 Number_Of_Row &= "(claim.bonus + claim.bonus_tax)" & sortOrderClause & ") As number_of_row"
         End Select
 
@@ -3105,22 +3105,22 @@ Public Class ClaimDAL
         LimitResultSet_Low = (oServiceCenterClaimsSearchData.PageNumber - 1) * oServiceCenterClaimsSearchData.PageSize
         LimitResultSet_High = oServiceCenterClaimsSearchData.PageNumber * oServiceCenterClaimsSearchData.PageSize
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_ROW_NUMBER_PLACE_HOLDER, Number_Of_Row)
+        selectStmt = selectStmt.Replace(DYNAMIC_ROW_NUMBER_PLACE_HOLDER, Number_Of_Row)
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                        {New DBHelper.DBHelperParameter(Me.WS_PAR_SERVICE_CENTER_ID, oServiceCenterClaimsSearchData.ServiceCenterId.ToByteArray),
-                         New DBHelper.DBHelperParameter(Me.WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
-                         New DBHelper.DBHelperParameter(Me.WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
-                         New DBHelper.DBHelperParameter(Me.WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
-                         New DBHelper.DBHelperParameter(Me.WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
-                         New DBHelper.DBHelperParameter(Me.COL_NAME_LOW_LIMIT, LimitResultSet_Low),
-                         New DBHelper.DBHelperParameter(Me.COL_NAME_HIGH_LIMIT, LimitResultSet_High)}
+                        {New DBHelper.DBHelperParameter(WS_PAR_SERVICE_CENTER_ID, oServiceCenterClaimsSearchData.ServiceCenterId.ToByteArray),
+                         New DBHelper.DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
+                         New DBHelper.DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
+                         New DBHelper.DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
+                         New DBHelper.DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
+                         New DBHelper.DBHelperParameter(COL_NAME_LOW_LIMIT, LimitResultSet_Low),
+                         New DBHelper.DBHelperParameter(COL_NAME_HIGH_LIMIT, LimitResultSet_High)}
 
         Dim ds As New DataSet()
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME_SVC, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME_SVC, parameters)
 
-            Dim countTab As DataTable = New DataTable(Me.TABLE_NAME_SVC_COUNT)
+            Dim countTab As DataTable = New DataTable(TABLE_NAME_SVC_COUNT)
             countTab.Columns.Add("COUNT")
             If ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0 Then
                 countTab.Rows.Add(CType(ds.Tables(0).Rows(0).Item("COUNT"), Integer))
@@ -3133,7 +3133,7 @@ Public Class ClaimDAL
         End Try
     End Function
 
-    Public Function GetClaimsForServiceCenter(ByVal oServiceCenterClaimsSearchData As ClaimDAL.ServiceCenterClaimsSearchData, ByVal username As String, Optional ByVal IncludeTotalCount As Boolean = False) As DataSet
+    Public Function GetClaimsForServiceCenter(oServiceCenterClaimsSearchData As ClaimDAL.ServiceCenterClaimsSearchData, username As String, Optional ByVal IncludeTotalCount As Boolean = False) As DataSet
         Dim ds As New DataSet
         Dim da As OracleDataAdapter
         Dim ClaimStatusString As String = Nothing
@@ -3233,7 +3233,7 @@ Public Class ClaimDAL
         End Try
     End Function
 
-    Public Function GetClaimsForServiceCenterAC(ByVal oServiceCenterClaimsSearchData As ClaimDAL.ServiceCenterClaimsSearchData, ByVal username As String, Optional ByVal IncludeTotalCount As Boolean = False) As DataSet
+    Public Function GetClaimsForServiceCenterAC(oServiceCenterClaimsSearchData As ClaimDAL.ServiceCenterClaimsSearchData, username As String, Optional ByVal IncludeTotalCount As Boolean = False) As DataSet
         Dim ds As New DataSet
         Dim da As OracleDataAdapter
         Dim ClaimStatusString As String = Nothing
@@ -3333,8 +3333,8 @@ Public Class ClaimDAL
         End Try
     End Function
 
-    Public Function GetActiveClaimsByClaimNumberorCertificate(ByVal oServiceCenterClaimsSearchData As ClaimDAL.ServiceCenterClaimsSearchData, ByVal companies As ArrayList, ByVal companyGroupID As Guid, ByVal languageId As Guid, Optional ByVal IncludeTotalCount As Boolean = False) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_BASED_ON_CERT_OR_CLAIM_NUMBER")
+    Public Function GetActiveClaimsByClaimNumberorCertificate(oServiceCenterClaimsSearchData As ClaimDAL.ServiceCenterClaimsSearchData, companies As ArrayList, companyGroupID As Guid, languageId As Guid, Optional ByVal IncludeTotalCount As Boolean = False) As DataSet
+        Dim selectStmt As String = Config("/SQL/GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_BASED_ON_CERT_OR_CLAIM_NUMBER")
         Dim whereClauseConditions As String = ""
         Dim whereCMVClauseConditions As String = ""
         Dim whereCertClauseConditions As String = ""
@@ -3396,7 +3396,7 @@ Public Class ClaimDAL
         If Not whereCMVClauseConditions = "" Then
             selectStmt = selectStmt.Replace("--dynamic_cmv_where_clause", whereCMVClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         If Not whereCertClauseConditions = "" Then
@@ -3404,9 +3404,9 @@ Public Class ClaimDAL
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Dim Number_Of_Row As String = "ROW_NUMBER()  OVER (ORDER BY "
@@ -3421,70 +3421,70 @@ Public Class ClaimDAL
         End If
 
         Select Case oServiceCenterClaimsSearchData.SortBy
-            Case Me.WS_G_SORT_BY_VISIT_DATE
-                Number_Of_Row &= "cmv." & Me.COL_NAME_VISIT_DATE & sortOrderClause & ") As number_of_row"
-                Count_Of_Row &= "cmv." & Me.COL_NAME_VISIT_DATE & sortOrderClause & ") As COUNT,"
-            Case Me.WS_G_SORT_BY_CLAIM_NUMBER
-                Number_Of_Row &= Me.COL_NAME_CLAIM_NUMBER_WS & sortOrderClause & ") As number_of_row"
-                Count_Of_Row &= Me.COL_NAME_CLAIM_NUMBER_WS & sortOrderClause & ") As COUNT,"
-            Case Me.WS_G_SORT_BY_AUTHORIZATION_NUMBER
-                Number_Of_Row &= Me.COL_NAME_AUTHORIZATION_NUMBER_WS & sortOrderClause & ") As number_of_row"
-                Count_Of_Row &= Me.COL_NAME_AUTHORIZATION_NUMBER_WS & sortOrderClause & ") As COUNT,"
-            Case Me.WS_G_SORT_BY_CLAIM_CREATED_DATE
-                Number_Of_Row &= Me.COL_NAME_CLAIM_CREATED_DATE & sortOrderClause & ") As number_of_row"
-                Count_Of_Row &= Me.COL_NAME_CLAIM_CREATED_DATE & sortOrderClause & ") As COUNT,"
-            Case Me.WS_G_SORT_BY_CERTIFICATE_NUMBER
-                Number_Of_Row &= Me.COL_NAME_CERT_NUMBER_WS & sortOrderClause & ") As number_of_row"
-                Count_Of_Row &= Me.COL_NAME_CERT_NUMBER_WS & sortOrderClause & ") As COUNT,"
-            Case Me.WS_G_SORT_BY_PRODUCT_DESCRIPTION
-                Number_Of_Row &= Me.COL_NAME_PRODUCT_DESCRIPTION_WS & sortOrderClause & ") As number_of_row"
-                Count_Of_Row &= Me.COL_NAME_PRODUCT_DESCRIPTION_WS & sortOrderClause & ") As COUNT,"
-            Case Me.WS_G_SORT_BY_ITEM_MODELE
-                Number_Of_Row &= Me.COL_NAME_ITEM_MODEL_WS & sortOrderClause & ") As number_of_row"
-                Count_Of_Row &= Me.COL_NAME_ITEM_MODEL_WS & sortOrderClause & ") As COUNT,"
-            Case Me.WS_G_SORT_BY_ITEM_MANUFACTURER_DESCRIPTION
+            Case WS_G_SORT_BY_VISIT_DATE
+                Number_Of_Row &= "cmv." & COL_NAME_VISIT_DATE & sortOrderClause & ") As number_of_row"
+                Count_Of_Row &= "cmv." & COL_NAME_VISIT_DATE & sortOrderClause & ") As COUNT,"
+            Case WS_G_SORT_BY_CLAIM_NUMBER
+                Number_Of_Row &= COL_NAME_CLAIM_NUMBER_WS & sortOrderClause & ") As number_of_row"
+                Count_Of_Row &= COL_NAME_CLAIM_NUMBER_WS & sortOrderClause & ") As COUNT,"
+            Case WS_G_SORT_BY_AUTHORIZATION_NUMBER
+                Number_Of_Row &= COL_NAME_AUTHORIZATION_NUMBER_WS & sortOrderClause & ") As number_of_row"
+                Count_Of_Row &= COL_NAME_AUTHORIZATION_NUMBER_WS & sortOrderClause & ") As COUNT,"
+            Case WS_G_SORT_BY_CLAIM_CREATED_DATE
+                Number_Of_Row &= COL_NAME_CLAIM_CREATED_DATE & sortOrderClause & ") As number_of_row"
+                Count_Of_Row &= COL_NAME_CLAIM_CREATED_DATE & sortOrderClause & ") As COUNT,"
+            Case WS_G_SORT_BY_CERTIFICATE_NUMBER
+                Number_Of_Row &= COL_NAME_CERT_NUMBER_WS & sortOrderClause & ") As number_of_row"
+                Count_Of_Row &= COL_NAME_CERT_NUMBER_WS & sortOrderClause & ") As COUNT,"
+            Case WS_G_SORT_BY_PRODUCT_DESCRIPTION
+                Number_Of_Row &= COL_NAME_PRODUCT_DESCRIPTION_WS & sortOrderClause & ") As number_of_row"
+                Count_Of_Row &= COL_NAME_PRODUCT_DESCRIPTION_WS & sortOrderClause & ") As COUNT,"
+            Case WS_G_SORT_BY_ITEM_MODELE
+                Number_Of_Row &= COL_NAME_ITEM_MODEL_WS & sortOrderClause & ") As number_of_row"
+                Count_Of_Row &= COL_NAME_ITEM_MODEL_WS & sortOrderClause & ") As COUNT,"
+            Case WS_G_SORT_BY_ITEM_MANUFACTURER_DESCRIPTION
                 Number_Of_Row &= "mnf.description" & sortOrderClause & ") As number_of_row"
                 Count_Of_Row &= "mnf.description" & sortOrderClause & ") As COUNT,"
-            Case Me.WS_G_SORT_BY_CUSTOMER_NAME
+            Case WS_G_SORT_BY_CUSTOMER_NAME
                 Number_Of_Row &= "cert.customer_name" & sortOrderClause & ") As number_of_row"
                 Count_Of_Row &= "cert.customer_name" & sortOrderClause & ") As COUNT,"
-            Case Me.WS_G_SORT_BY_CLAIM_TYPE
-                Number_Of_Row &= Me.COL_NAME_CLAIM_TYPE_WS & sortOrderClause & ") As number_of_row"
-                Count_Of_Row &= Me.COL_NAME_CLAIM_TYPE_WS & sortOrderClause & ") As COUNT,"
-            Case Me.WS_G_SORT_BY_CLAIM_EXTENDED_STATUS_ORDER
+            Case WS_G_SORT_BY_CLAIM_TYPE
+                Number_Of_Row &= COL_NAME_CLAIM_TYPE_WS & sortOrderClause & ") As number_of_row"
+                Count_Of_Row &= COL_NAME_CLAIM_TYPE_WS & sortOrderClause & ") As COUNT,"
+            Case WS_G_SORT_BY_CLAIM_EXTENDED_STATUS_ORDER
                 Number_Of_Row &= "getlatestextendedclaimstatusid(claim.claim_id)" & sortOrderClause & ") As number_of_row"
                 Count_Of_Row &= "getlatestextendedclaimstatusid(claim.claim_id)" & sortOrderClause & ") As COUNT,"
-            Case Me.WS_G_SORT_BY_CLAIM_EXTENDED_STATUS_OWNER
+            Case WS_G_SORT_BY_CLAIM_EXTENDED_STATUS_OWNER
                 Number_Of_Row &= "getlatestextendedclaimownerid(claim.claim_id)" & sortOrderClause & ") As number_of_row"
                 Count_Of_Row &= "getlatestextendedclaimownerid(claim.claim_id)" & sortOrderClause & ") As COUNT,"
-            Case Me.WS_G_SORT_BY_AUTHORIZED_AMOUNT
-                Number_Of_Row &= Me.COL_NAME_AUTHORIZED_AMOUNT_WS & sortOrderClause & ") As number_of_row"
-                Count_Of_Row &= Me.COL_NAME_AUTHORIZED_AMOUNT_WS & sortOrderClause & ") As COUNT,"
-            Case Me.WS_G_SORT_BY_ADJUSTED_CLAIM_STATUS
-                Number_Of_Row &= Me.COL_NAME_CLAIM_STATUS_WS & sortOrderClause & ") As number_of_row"
-                Count_Of_Row &= Me.COL_NAME_CLAIM_STATUS_WS & sortOrderClause & ") As COUNT,"
-            Case Me.WS_G_SORT_BY_BATCH_NUMBER
-                Number_Of_Row &= Me.COL_NAME_BATCH_NUMBER_WS & sortOrderClause & ") As number_of_row"
-                Count_Of_Row &= Me.COL_NAME_BATCH_NUMBER_WS & sortOrderClause & ") As COUNT,"
-            Case Me.WS_G_SORT_BY_SERIAL_NUMBER
-                Number_Of_Row &= Me.COL_NAME_SERIAL_NUMBER_WS & sortOrderClause & ") As number_of_row"
-                Count_Of_Row &= Me.COL_NAME_SERIAL_NUMBER_WS & sortOrderClause & ") As COUNT,"
-            Case Me.WS_G_SORT_BY_WORK_PHONE
-                Number_Of_Row &= Me.COL_NAME_WORK_PHONE & sortOrderClause & ") As number_of_row"
-                Count_Of_Row &= Me.COL_NAME_WORK_PHONE & sortOrderClause & ") As COUNT,"
-            Case Me.WS_G_SORT_BY_SC_TAT
-                Number_Of_Row &= Me.COL_NAME_SC_TAT & sortOrderClause & ") As number_of_row"
-                Count_Of_Row &= Me.COL_NAME_SC_TAT & sortOrderClause & ") As COUNT,"
-            Case Me.WS_G_SORT_BY_HOME_PHONE
-                Number_Of_Row &= Me.COL_NAME_HOME_PHONE & sortOrderClause & ") As number_of_row"
-                Count_Of_Row &= Me.COL_NAME_HOME_PHONE & sortOrderClause & ") As COUNT,"
-            Case Me.WS_G_SORT_BY_LOSS_DATE
-                Number_Of_Row &= Me.COL_NAME_LOSS_DATE & sortOrderClause & ") As number_of_row"
-                Count_Of_Row &= Me.COL_NAME_LOSS_DATE & sortOrderClause & ") As COUNT,"
-            Case Me.WS_G_SORT_BY_CLAIM_PAID_AMOUNT
-                Number_Of_Row &= Me.COL_NAME_CLAIM_PAID_AMOUNT & sortOrderClause & ") As number_of_row"
-                Count_Of_Row &= Me.COL_NAME_CLAIM_PAID_AMOUNT & sortOrderClause & ") As COUNT,"
-            Case Me.WS_G_SORT_BY_BONUS_TOTAL
+            Case WS_G_SORT_BY_AUTHORIZED_AMOUNT
+                Number_Of_Row &= COL_NAME_AUTHORIZED_AMOUNT_WS & sortOrderClause & ") As number_of_row"
+                Count_Of_Row &= COL_NAME_AUTHORIZED_AMOUNT_WS & sortOrderClause & ") As COUNT,"
+            Case WS_G_SORT_BY_ADJUSTED_CLAIM_STATUS
+                Number_Of_Row &= COL_NAME_CLAIM_STATUS_WS & sortOrderClause & ") As number_of_row"
+                Count_Of_Row &= COL_NAME_CLAIM_STATUS_WS & sortOrderClause & ") As COUNT,"
+            Case WS_G_SORT_BY_BATCH_NUMBER
+                Number_Of_Row &= COL_NAME_BATCH_NUMBER_WS & sortOrderClause & ") As number_of_row"
+                Count_Of_Row &= COL_NAME_BATCH_NUMBER_WS & sortOrderClause & ") As COUNT,"
+            Case WS_G_SORT_BY_SERIAL_NUMBER
+                Number_Of_Row &= COL_NAME_SERIAL_NUMBER_WS & sortOrderClause & ") As number_of_row"
+                Count_Of_Row &= COL_NAME_SERIAL_NUMBER_WS & sortOrderClause & ") As COUNT,"
+            Case WS_G_SORT_BY_WORK_PHONE
+                Number_Of_Row &= COL_NAME_WORK_PHONE & sortOrderClause & ") As number_of_row"
+                Count_Of_Row &= COL_NAME_WORK_PHONE & sortOrderClause & ") As COUNT,"
+            Case WS_G_SORT_BY_SC_TAT
+                Number_Of_Row &= COL_NAME_SC_TAT & sortOrderClause & ") As number_of_row"
+                Count_Of_Row &= COL_NAME_SC_TAT & sortOrderClause & ") As COUNT,"
+            Case WS_G_SORT_BY_HOME_PHONE
+                Number_Of_Row &= COL_NAME_HOME_PHONE & sortOrderClause & ") As number_of_row"
+                Count_Of_Row &= COL_NAME_HOME_PHONE & sortOrderClause & ") As COUNT,"
+            Case WS_G_SORT_BY_LOSS_DATE
+                Number_Of_Row &= COL_NAME_LOSS_DATE & sortOrderClause & ") As number_of_row"
+                Count_Of_Row &= COL_NAME_LOSS_DATE & sortOrderClause & ") As COUNT,"
+            Case WS_G_SORT_BY_CLAIM_PAID_AMOUNT
+                Number_Of_Row &= COL_NAME_CLAIM_PAID_AMOUNT & sortOrderClause & ") As number_of_row"
+                Count_Of_Row &= COL_NAME_CLAIM_PAID_AMOUNT & sortOrderClause & ") As COUNT,"
+            Case WS_G_SORT_BY_BONUS_TOTAL
                 Number_Of_Row &= "(claim.bonus + claim.bonus_tax)" & sortOrderClause & ") As number_of_row"
                 Count_Of_Row &= "(claim.bonus + claim.bonus_tax)" & sortOrderClause & ") As COUNT,"
         End Select
@@ -3494,22 +3494,22 @@ Public Class ClaimDAL
         LimitResultSet_Low = (oServiceCenterClaimsSearchData.PageNumber - 1) * oServiceCenterClaimsSearchData.PageSize
         LimitResultSet_High = oServiceCenterClaimsSearchData.PageNumber * oServiceCenterClaimsSearchData.PageSize
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_ROW_NUMBER_PLACE_HOLDER, Number_Of_Row)
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_COUNT_PLACE_HOLDER, Count_Of_Row)
+        selectStmt = selectStmt.Replace(DYNAMIC_ROW_NUMBER_PLACE_HOLDER, Number_Of_Row)
+        selectStmt = selectStmt.Replace(DYNAMIC_COUNT_PLACE_HOLDER, Count_Of_Row)
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                        {New DBHelper.DBHelperParameter(Me.WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
-                         New DBHelper.DBHelperParameter(Me.WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
-                         New DBHelper.DBHelperParameter(Me.WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
-                         New DBHelper.DBHelperParameter(Me.WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
-                         New DBHelper.DBHelperParameter(Me.COL_NAME_LOW_LIMIT, LimitResultSet_Low),
-                         New DBHelper.DBHelperParameter(Me.COL_NAME_HIGH_LIMIT, LimitResultSet_High)}
+                        {New DBHelper.DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
+                         New DBHelper.DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
+                         New DBHelper.DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
+                         New DBHelper.DBHelperParameter(WS_PAR_LANGUAGE_ID, languageId.ToByteArray),
+                         New DBHelper.DBHelperParameter(COL_NAME_LOW_LIMIT, LimitResultSet_Low),
+                         New DBHelper.DBHelperParameter(COL_NAME_HIGH_LIMIT, LimitResultSet_High)}
 
         Dim ds As New DataSet()
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME_SVC, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME_SVC, parameters)
 
-            Dim countTab As DataTable = New DataTable(Me.TABLE_NAME_SVC_COUNT)
+            Dim countTab As DataTable = New DataTable(TABLE_NAME_SVC_COUNT)
             countTab.Columns.Add("COUNT")
             If ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0 Then
                 countTab.Rows.Add(CType(ds.Tables(0).Rows(0).Item("COUNT"), Integer))
@@ -3522,39 +3522,39 @@ Public Class ClaimDAL
         End Try
     End Function
 
-    Public Function GetProblemDescription(ByVal claim_number As String) As DataSet
+    Public Function GetProblemDescription(claim_number As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/PROBLEM_DESCRIPTION")
+        Dim selectStmt As String = Config("/SQL/PROBLEM_DESCRIPTION")
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
         Dim Claim_id As Guid = New Guid(claim_number)
 
-        parameters = New OracleParameter() {New OracleParameter(Me.COL_NAME_CLAIM_ID, Claim_id.ToByteArray)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        parameters = New OracleParameter() {New OracleParameter(COL_NAME_CLAIM_ID, Claim_id.ToByteArray)}
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
     End Function
 
-    Public Function GetTechnicalReport(ByVal claim_number As String) As DataSet
+    Public Function GetTechnicalReport(claim_number As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/TECHNICAL_REPORT")
+        Dim selectStmt As String = Config("/SQL/TECHNICAL_REPORT")
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
         Dim Claim_id As Guid = New Guid(claim_number)
 
-        parameters = New OracleParameter() {New OracleParameter(Me.COL_NAME_CLAIM_ID, Claim_id.ToByteArray)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        parameters = New OracleParameter() {New OracleParameter(COL_NAME_CLAIM_ID, Claim_id.ToByteArray)}
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
     End Function
 
-    Public Function GetExtendedStatusComment(ByVal claim_number As String) As DataSet
+    Public Function GetExtendedStatusComment(claim_number As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/EXTENDED_STATUS_COMMENT")
+        Dim selectStmt As String = Config("/SQL/EXTENDED_STATUS_COMMENT")
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
         Dim Claim_id As Guid = New Guid(claim_number)
 
-        parameters = New OracleParameter() {New OracleParameter(Me.COL_NAME_CLAIM_ID, Claim_id.ToByteArray)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        parameters = New OracleParameter() {New OracleParameter(COL_NAME_CLAIM_ID, Claim_id.ToByteArray)}
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
     End Function
 
@@ -3566,69 +3566,69 @@ Public Class ClaimDAL
     '    If Me.MasterClaimNumber(Row) Is Nothing Then Me.MasterClaimNumber(Row) = Me.ClaimNumber(Row)
     'End Sub
 
-    Public Sub ObtainAndAssignClaimNumber(ByVal familyDataset As DataSet, ByVal galaxyClaimNumberList As ArrayList)
+    Public Sub ObtainAndAssignClaimNumber(familyDataset As DataSet, galaxyClaimNumberList As ArrayList)
         Dim dal As New ClaimDAL
         Dim oRow As DataRow
         Dim suffix As String
         Dim claimNumberInfo As ClaimDAL.ClaimNumberInfo
         Dim oGalaxyClaimNumber As GalaxyClaimNumber
 
-        For Each oRow In familyDataset.Tables(Me.TABLE_NAME).Rows
-            If Me.IsNew(oRow) AndAlso Me.ClaimNumber(oRow) Is Nothing Then
+        For Each oRow In familyDataset.Tables(TABLE_NAME).Rows
+            If IsNew(oRow) AndAlso ClaimNumber(oRow) Is Nothing Then
                 suffix = String.Empty
-                If (Me.MethodOfRepairCode(oRow) = METHOD_OF_REPAIR__REPLACEMENT AndAlso Me.CLaimAuthTypeCode(oRow) = CLAIM_AUTH_TYPE_SINGLE) Then
+                If (MethodOfRepairCode(oRow) = METHOD_OF_REPAIR__REPLACEMENT AndAlso CLaimAuthTypeCode(oRow) = CLAIM_AUTH_TYPE_SINGLE) Then
                     suffix = "R"
                 End If
 
                 If galaxyClaimNumberList Is Nothing Then
-                    claimNumberInfo = dal.GetClaimNumber(Me.CompanyId(oRow))
+                    claimNumberInfo = dal.GetClaimNumber(CompanyId(oRow))
                 Else    ' Galaxy
                     oGalaxyClaimNumber = (From galaxyClaimNumberItem As GalaxyClaimNumber In galaxyClaimNumberList
-                                          Where galaxyClaimNumberItem.moClaimId.Equals(Me.Id(oRow))
+                                          Where galaxyClaimNumberItem.moClaimId.Equals(Id(oRow))
                                           Select galaxyClaimNumberItem).First
 
-                    claimNumberInfo = dal.GetClaimNumber(Me.CompanyId(oRow), oGalaxyClaimNumber.moGalaxyClaimNumber,
+                    claimNumberInfo = dal.GetClaimNumber(CompanyId(oRow), oGalaxyClaimNumber.moGalaxyClaimNumber,
                                                           oGalaxyClaimNumber.moCoverageCode, oGalaxyClaimNumber.moUnitNumber)
                 End If
 
-                If Me.ClaimGroupId(oRow).Equals(Guid.Empty) Then Me.ClaimGroupId(oRow) = claimNumberInfo.ClaimGroupId
-                If String.IsNullOrEmpty(Me.MasterClaimNumber(oRow)) Then Me.MasterClaimNumber(oRow) = claimNumberInfo.ClaimNumber
-                Me.ClaimNumber(oRow) = claimNumberInfo.ClaimNumber & suffix
+                If ClaimGroupId(oRow).Equals(Guid.Empty) Then ClaimGroupId(oRow) = claimNumberInfo.ClaimGroupId
+                If String.IsNullOrEmpty(MasterClaimNumber(oRow)) Then MasterClaimNumber(oRow) = claimNumberInfo.ClaimNumber
+                ClaimNumber(oRow) = claimNumberInfo.ClaimNumber & suffix
             End If
         Next
     End Sub
 
-    Public Function GetClaimsCntByLossDatesSplService(ByVal certId As Guid, ByVal CauseOfLoss As Guid, Optional ByVal CurrentLossDate As String = Nothing) As DataSet
+    Public Function GetClaimsCntByLossDatesSplService(certId As Guid, CauseOfLoss As Guid, Optional ByVal CurrentLossDate As String = Nothing) As DataSet
         Dim ds As New DataSet
         Dim whereClauseConditions As String = ""
 
-        Dim selectStmt As String = Me.Config("/SQL/CLAIM_LOSSDATES_COMPARE_TO_NEW_LOSSDATE_SPL_SVC")
+        Dim selectStmt As String = Config("/SQL/CLAIM_LOSSDATES_COMPARE_TO_NEW_LOSSDATE_SPL_SVC")
 
         If Not CurrentLossDate Is Nothing Then
             whereClauseConditions &= Environment.NewLine & " AND abs(months_between( c.loss_date , to_date('" & CurrentLossDate & "','mm/dd/yyyy'))) <= 12"
         End If
 
         If Not CauseOfLoss = Guid.Empty Then
-            whereClauseConditions &= Environment.NewLine & " AND c.CAUSE_OF_LOSS_ID =  '" & Me.GuidToSQLString(CauseOfLoss) & "'"
+            whereClauseConditions &= Environment.NewLine & " AND c.CAUSE_OF_LOSS_ID =  '" & GuidToSQLString(CauseOfLoss) & "'"
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                                                 {New DBHelper.DBHelperParameter(COL_NAME_CERTIFICATE_ID, certId.ToByteArray)}
         ', New DBHelper.DBHelperParameter(COL_NAME_LOSS_DATE, CurrentLossDate.ToString("MM/dd/yyyy"))}
 
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
     End Function
 
     'Def-1113
     'Start
-    Public Sub UpdateActiveSession(ByVal operation As String, ByVal processId As Guid, ByVal networkId As String)
+    Public Sub UpdateActiveSession(operation As String, processId As Guid, networkId As String)
         Try
             Select Case operation
                 Case "INSERT"
@@ -3641,7 +3641,7 @@ Public Class ClaimDAL
         End Try
     End Sub
 
-    Public Sub CreateActiveSessionRec(ByVal processId As Guid, ByVal networkId As String)
+    Public Sub CreateActiveSessionRec(processId As Guid, networkId As String)
 
         Dim dt As New DataTable
         Dim dc As DataColumn
@@ -3698,9 +3698,9 @@ Public Class ClaimDAL
         End Try
     End Sub
 
-    Public Sub RemoveActiveSessionRec(ByVal processId As Guid)
+    Public Sub RemoveActiveSessionRec(processId As Guid)
         Dim tr As IDbTransaction = DBHelper.GetNewTransaction
-        Dim deleteStmt As String = Me.Config("/SQL/DELETE_ACTIVE_SESSION")
+        Dim deleteStmt As String = Config("/SQL/DELETE_ACTIVE_SESSION")
         Dim inputParameters(0) As DBHelper.DBHelperParameter
 
         Try
@@ -3716,11 +3716,11 @@ Public Class ClaimDAL
 
     'end
 
-    Public Function GetClaimReserveAmount(ByVal claimId As Guid) As DecimalType
-        Dim selectStmt As String = Me.Config("/SQL/GET_RESERVE_AMOUNT")
+    Public Function GetClaimReserveAmount(claimId As Guid) As DecimalType
+        Dim selectStmt As String = Config("/SQL/GET_RESERVE_AMOUNT")
         Dim returnValue As Object
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-            {New DBHelper.DBHelperParameter(Me.COL_NAME_CLAIM_ID, claimId.ToByteArray)}
+            {New DBHelper.DBHelperParameter(COL_NAME_CLAIM_ID, claimId.ToByteArray)}
         Try
 
             returnValue = DBHelper.ExecuteScalar(selectStmt, parameters)
@@ -3735,8 +3735,8 @@ Public Class ClaimDAL
     End Function
 
 
-    Public Function IsCertCoveragesEligibleforCancel(ByVal CertId As Guid, ByVal CertItemCoverageId As Guid, ByVal lossDate As DateType) As Integer
-        Dim selectStmt As String = Me.Config("/SQL/CERT_COVERAGES_ELIGIBILITY_FOR_CANCEL")
+    Public Function IsCertCoveragesEligibleforCancel(CertId As Guid, CertItemCoverageId As Guid, lossDate As DateType) As Integer
+        Dim selectStmt As String = Config("/SQL/CERT_COVERAGES_ELIGIBILITY_FOR_CANCEL")
         Dim returnValue As Object
         Dim myLossDate As Date
 
@@ -3746,9 +3746,9 @@ Public Class ClaimDAL
             myLossDate = lossDate.Value
         End If
         Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                        {New DBHelper.DBHelperParameter(Me.COL_NAME_CERTIFICATE_ID, CertId.ToByteArray) _
-                        , New DBHelper.DBHelperParameter(Me.COL_NAME_CERT_ITEM_COVERAGE_ID, CertItemCoverageId.ToByteArray) _
-                        , New DBHelper.DBHelperParameter(Me.COL_NAME_LOSS_DATE, myLossDate)}
+                        {New DBHelper.DBHelperParameter(COL_NAME_CERTIFICATE_ID, CertId.ToByteArray) _
+                        , New DBHelper.DBHelperParameter(COL_NAME_CERT_ITEM_COVERAGE_ID, CertItemCoverageId.ToByteArray) _
+                        , New DBHelper.DBHelperParameter(COL_NAME_LOSS_DATE, myLossDate)}
         Try
 
             returnValue = DBHelper.ExecuteScalar(selectStmt, inParameters)
@@ -3758,8 +3758,8 @@ Public Class ClaimDAL
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
-    Public Function ProductRemainLiabilityAmount(ByVal CertId As Guid, ByVal lossDate As DateType) As Decimal
-        Dim selectStmt As String = Me.Config("/SQL/PRODUCT_REMAIN_LIABILITY_LIMIT")
+    Public Function ProductRemainLiabilityAmount(CertId As Guid, lossDate As DateType) As Decimal
+        Dim selectStmt As String = Config("/SQL/PRODUCT_REMAIN_LIABILITY_LIMIT")
         Dim returnValue As Object
         Dim myLossDate As Date
 
@@ -3769,8 +3769,8 @@ Public Class ClaimDAL
             myLossDate = lossDate.Value
         End If
         Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                        {New DBHelper.DBHelperParameter(Me.COL_NAME_CERTIFICATE_ID, CertId.ToByteArray) _
-                        , New DBHelper.DBHelperParameter(Me.COL_NAME_LOSS_DATE, myLossDate)}
+                        {New DBHelper.DBHelperParameter(COL_NAME_CERTIFICATE_ID, CertId.ToByteArray) _
+                        , New DBHelper.DBHelperParameter(COL_NAME_LOSS_DATE, myLossDate)}
 
 
         Try
@@ -3786,8 +3786,8 @@ Public Class ClaimDAL
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
-    Public Function CoverageRemainLiabilityAmount(ByVal CertItemCoverageId As Guid, ByVal lossDate As DateType) As Decimal
-        Dim selectStmt As String = Me.Config("/SQL/COVERAGE_REMAIN_LIABILITY_LIMIT")
+    Public Function CoverageRemainLiabilityAmount(CertItemCoverageId As Guid, lossDate As DateType) As Decimal
+        Dim selectStmt As String = Config("/SQL/COVERAGE_REMAIN_LIABILITY_LIMIT")
         Dim returnValue As Object
         Dim myLossDate As Date
 
@@ -3797,8 +3797,8 @@ Public Class ClaimDAL
             myLossDate = lossDate.Value
         End If
         Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                        {New DBHelper.DBHelperParameter(Me.COL_NAME_CERT_ITEM_COVERAGE_ID, CertItemCoverageId.ToByteArray) _
-                        , New DBHelper.DBHelperParameter(Me.COL_NAME_LOSS_DATE, myLossDate)}
+                        {New DBHelper.DBHelperParameter(COL_NAME_CERT_ITEM_COVERAGE_ID, CertItemCoverageId.ToByteArray) _
+                        , New DBHelper.DBHelperParameter(COL_NAME_LOSS_DATE, myLossDate)}
         Try
 
             returnValue = DBHelper.ExecuteScalar(selectStmt, inParameters)
@@ -3813,27 +3813,27 @@ Public Class ClaimDAL
         End Try
     End Function
 
-    Public Function GetClaimIDWithCertAndDealer(ByVal certID As Guid, ByVal DealerID As Guid, ByVal claim_number As String) As DataSet
+    Public Function GetClaimIDWithCertAndDealer(certID As Guid, DealerID As Guid, claim_number As String) As DataSet
 
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/WS_GetClaimIDWithCertAndDealer")
+        Dim selectStmt As String = Config("/SQL/WS_GetClaimIDWithCertAndDealer")
 
-        parameters = New OracleParameter() {New OracleParameter(Me.COL_NAME_DEALER_ID, DealerID.ToByteArray),
-                                            New OracleParameter(Me.COL_NAME_CERTIFICATE_ID, certID.ToByteArray),
-                                            New OracleParameter(Me.COL_NAME_CLAIM_NUMBER, claim_number)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        parameters = New OracleParameter() {New OracleParameter(COL_NAME_DEALER_ID, DealerID.ToByteArray),
+                                            New OracleParameter(COL_NAME_CERTIFICATE_ID, certID.ToByteArray),
+                                            New OracleParameter(COL_NAME_CLAIM_NUMBER, claim_number)}
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
     End Function
 
-    Public Function GetLatestExtendedClaimStatus(ByVal cliamId As Guid, ByVal languageId As Guid) As String
+    Public Function GetLatestExtendedClaimStatus(cliamId As Guid, languageId As Guid) As String
 
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_LATEST_EXTENDED_STATUS")
+        Dim selectStmt As String = Config("/SQL/GET_LATEST_EXTENDED_STATUS")
 
-        parameters = New OracleParameter() {New OracleParameter(Me.COL_NAME_CLAIM_ID, cliamId.ToByteArray),
-                                            New OracleParameter(Me.COL_NAME_LANGUAGE_ID, languageId.ToByteArray)}
-        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+        parameters = New OracleParameter() {New OracleParameter(COL_NAME_CLAIM_ID, cliamId.ToByteArray),
+                                            New OracleParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray)}
+        DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
         Return ds.Tables(0).Rows(0)("extended_status").ToString
 
@@ -3842,26 +3842,26 @@ Public Class ClaimDAL
 
 #Region "Lock Claim"
 
-    Public Function Lock_Claim(ByVal ClaimId As Guid, ByVal LockBy As String) As DataSet
+    Public Function Lock_Claim(ClaimId As Guid, LockBy As String) As DataSet
         Dim sqlStmt As String
-        sqlStmt = Me.Config("/SQL/CLAIM_LOCK")
+        sqlStmt = Config("/SQL/CLAIM_LOCK")
 
         Dim Inputparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-        {New DBHelper.DBHelperParameter(Me.COL_NAME_CLAIM_ID, ClaimId.ToByteArray, GetType(Guid)) _
-        , New DBHelper.DBHelperParameter(Me.COL_NAME_LOCKED_BY, LockBy, GetType(String))}
+        {New DBHelper.DBHelperParameter(COL_NAME_CLAIM_ID, ClaimId.ToByteArray, GetType(Guid)) _
+        , New DBHelper.DBHelperParameter(COL_NAME_LOCKED_BY, LockBy, GetType(String))}
 
         Dim Outputparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
          {New DBHelper.DBHelperParameter("p_error_code", GetType(String), 100),
          New DBHelper.DBHelperParameter("p_error_description", GetType(String), 1000)}
 
-        Dim ds As New DataSet(Me.CLAIM_LOCK_STATUS)
+        Dim ds As New DataSet(CLAIM_LOCK_STATUS)
         ' Call DBHelper Store Procedure
 
         Try
-            DBHelper.FetchSp(sqlStmt, Inputparameters, Outputparameters, ds, Me.CLAIM_LOCK_STATUS)
+            DBHelper.FetchSp(sqlStmt, Inputparameters, Outputparameters, ds, CLAIM_LOCK_STATUS)
 
-            If Outputparameters(Me.P_RETURN).Value <> 0 Then
-                ds.Tables(0).TableName = Me.CLAIM_LOCK_STATUS
+            If Outputparameters(P_RETURN).Value <> 0 Then
+                ds.Tables(0).TableName = CLAIM_LOCK_STATUS
                 Return ds
             End If
         Catch ex As Exception
@@ -3869,26 +3869,26 @@ Public Class ClaimDAL
         End Try
     End Function
 
-    Public Function UnLock_Claim(ByVal ClaimId As Guid, ByVal LockBy As String) As DataSet
+    Public Function UnLock_Claim(ClaimId As Guid, LockBy As String) As DataSet
         Dim sqlStmt As String
-        sqlStmt = Me.Config("/SQL/CLAIM_UNLOCK")
+        sqlStmt = Config("/SQL/CLAIM_UNLOCK")
 
         Dim Inputparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-        {New DBHelper.DBHelperParameter(Me.COL_NAME_CLAIM_ID, ClaimId.ToByteArray, GetType(Guid)) _
-        , New DBHelper.DBHelperParameter(Me.COL_NAME_LOCKED_BY, LockBy, GetType(String))}
+        {New DBHelper.DBHelperParameter(COL_NAME_CLAIM_ID, ClaimId.ToByteArray, GetType(Guid)) _
+        , New DBHelper.DBHelperParameter(COL_NAME_LOCKED_BY, LockBy, GetType(String))}
 
         Dim Outputparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
          {New DBHelper.DBHelperParameter("p_error_code", GetType(String), 100),
          New DBHelper.DBHelperParameter("p_error_description", GetType(String), 1000)}
 
-        Dim ds As New DataSet(Me.CLAIM_LOCK_STATUS)
+        Dim ds As New DataSet(CLAIM_LOCK_STATUS)
         ' Call DBHelper Store Procedure
 
         Try
-            DBHelper.FetchSp(sqlStmt, Inputparameters, Outputparameters, ds, Me.CLAIM_LOCK_STATUS)
+            DBHelper.FetchSp(sqlStmt, Inputparameters, Outputparameters, ds, CLAIM_LOCK_STATUS)
 
-            If Outputparameters(Me.P_RETURN).Value <> 0 Then
-                ds.Tables(0).TableName = Me.CLAIM_LOCK_STATUS
+            If Outputparameters(P_RETURN).Value <> 0 Then
+                ds.Tables(0).TableName = CLAIM_LOCK_STATUS
                 Return ds
             End If
         Catch ex As Exception
@@ -3901,49 +3901,49 @@ Public Class ClaimDAL
 
 #Region "Claim Logistics"
 
-    Public Function WS_GetClaimStatusInfo(ByVal CustomerIdentifier As String, ByVal IdentifierType As String, ByVal DealerId As Guid, ByVal userId As Guid, ByVal BillingZipCode As String, ByVal LanguageISOCode As String, ByVal CertificateNumber As String, ByRef ValidateErrorCode As Integer) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/WS_GetClaimStatusInfo")
-        Dim inputParameters(Me.TOTAL_INPUT_PARAM_WS_1) As DBHelper.DBHelperParameter
-        Dim outputParameter(Me.TOTAL_OUTPUT_PARAM_WS) As DBHelper.DBHelperParameter
+    Public Function WS_GetClaimStatusInfo(CustomerIdentifier As String, IdentifierType As String, DealerId As Guid, userId As Guid, BillingZipCode As String, LanguageISOCode As String, CertificateNumber As String, ByRef ValidateErrorCode As Integer) As DataSet
+        Dim selectStmt As String = Config("/SQL/WS_GetClaimStatusInfo")
+        Dim inputParameters(TOTAL_INPUT_PARAM_WS_1) As DBHelper.DBHelperParameter
+        Dim outputParameter(TOTAL_OUTPUT_PARAM_WS) As DBHelper.DBHelperParameter
 
 
         inputParameters = New DBHelper.DBHelperParameter() _
-                {SetParameter(Me.SP_PARAM_NAME__CUSTOMER_IDENTIFIER, CustomerIdentifier),
-                 SetParameter(Me.SP_PARAM_NAME__IDENTIFIER_TYPE, IdentifierType),
-                 SetParameter(Me.SP_PARAM_NAME__SYSTEM_USER_ID, userId.ToByteArray),
-                 SetParameter(Me.SP_PARAM_NAME__BILLING_ZIP_CODE, BillingZipCode),
-                 SetParameter(Me.SP_PARAM_NAME__LANGUAGE_ISO_CODE, LanguageISOCode),
-                 SetParameter(Me.SP_PARAM_NAME__DEALER_ID, DealerId.ToByteArray),
-                              SetParameter(Me.SP_PARAM_NAME__CERTIFICATE_NUMBER, CertificateNumber)
+                {SetParameter(SP_PARAM_NAME__CUSTOMER_IDENTIFIER, CustomerIdentifier),
+                 SetParameter(SP_PARAM_NAME__IDENTIFIER_TYPE, IdentifierType),
+                 SetParameter(SP_PARAM_NAME__SYSTEM_USER_ID, userId.ToByteArray),
+                 SetParameter(SP_PARAM_NAME__BILLING_ZIP_CODE, BillingZipCode),
+                 SetParameter(SP_PARAM_NAME__LANGUAGE_ISO_CODE, LanguageISOCode),
+                 SetParameter(SP_PARAM_NAME__DEALER_ID, DealerId.ToByteArray),
+                              SetParameter(SP_PARAM_NAME__CERTIFICATE_NUMBER, CertificateNumber)
                 }
 
-        outputParameter(Me.P_RETURN) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME__RETURN, GetType(Integer))
-        outputParameter(Me.P_EXCEPTION_MSG) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME__EXCEPTION_MSG, GetType(String), 50)
-        outputParameter(Me.P_CURSOR_CLAIM_STATUS_INFO) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME__CLAIM_STATUS_INFO, GetType(DataSet))
-        outputParameter(Me.P_CURSOR_EXTENDED_STATUS_INFO) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME__EXTENDED_CLAIM_STATUS_INFO, GetType(DataSet))
-        outputParameter(Me.P_CURSOR_RESPONSE_STATUS) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME__RESPONSE_STATUS, GetType(DataSet))
+        outputParameter(P_RETURN) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__RETURN, GetType(Integer))
+        outputParameter(P_EXCEPTION_MSG) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__EXCEPTION_MSG, GetType(String), 50)
+        outputParameter(P_CURSOR_CLAIM_STATUS_INFO) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__CLAIM_STATUS_INFO, GetType(DataSet))
+        outputParameter(P_CURSOR_EXTENDED_STATUS_INFO) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__EXTENDED_CLAIM_STATUS_INFO, GetType(DataSet))
+        outputParameter(P_CURSOR_RESPONSE_STATUS) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__RESPONSE_STATUS, GetType(DataSet))
 
-        Dim ds As New DataSet(Me.DATASET_NAME__CLAIM_CHECK_RESPONSE)
+        Dim ds As New DataSet(DATASET_NAME__CLAIM_CHECK_RESPONSE)
         ' Call DBHelper Store Procedure
         If DealerId.Equals(Guid.Empty) Then
             inputParameters(5).Value = DBNull.Value
         End If
 
         Try
-            DBHelper.FetchSp(selectStmt, inputParameters, outputParameter, ds, Me.TABLE_NAME__GET_CLAIM_STATUS_INFO_RESPONSE)
+            DBHelper.FetchSp(selectStmt, inputParameters, outputParameter, ds, TABLE_NAME__GET_CLAIM_STATUS_INFO_RESPONSE)
 
-            If outputParameter(Me.P_RETURN).Value <> 0 Then
-                ds.Tables(0).TableName = Me.TABLE_NAME__RESPONSE_STATUS
-                ValidateErrorCode = outputParameter(Me.P_RETURN).Value
+            If outputParameter(P_RETURN).Value <> 0 Then
+                ds.Tables(0).TableName = TABLE_NAME__RESPONSE_STATUS
+                ValidateErrorCode = outputParameter(P_RETURN).Value
                 Return ds
             Else
-                ds.Tables(0).TableName = Me.TABLE_NAME__GET_CLAIM_STATUS_INFO_RESPONSE
-                ds.Tables(1).TableName = Me.TABLE_NAME__GET_CLAIM_EXT_STATUS_INFO_RESPONSE
-                ds.Tables(2).TableName = Me.TABLE_NAME__RESPONSE_STATUS
-                ValidateErrorCode = outputParameter(Me.P_RETURN).Value
-                Dim ClaimStatusToExtendedStatusRel As New DataRelation(Me.TABLE_NAME_CLAIMSTATUS_EXTENDEDSTATUS_RELATIONS,
-                                                 ds.Tables(Me.TABLE_NAME__GET_CLAIM_STATUS_INFO_RESPONSE).Columns(Me.COL_NAME_CLAIMNUMBER_WS),
-                                                 ds.Tables(Me.TABLE_NAME__GET_CLAIM_EXT_STATUS_INFO_RESPONSE).Columns(Me.COL_NAME_CLAIMNUMBER_WS))
+                ds.Tables(0).TableName = TABLE_NAME__GET_CLAIM_STATUS_INFO_RESPONSE
+                ds.Tables(1).TableName = TABLE_NAME__GET_CLAIM_EXT_STATUS_INFO_RESPONSE
+                ds.Tables(2).TableName = TABLE_NAME__RESPONSE_STATUS
+                ValidateErrorCode = outputParameter(P_RETURN).Value
+                Dim ClaimStatusToExtendedStatusRel As New DataRelation(TABLE_NAME_CLAIMSTATUS_EXTENDEDSTATUS_RELATIONS,
+                                                 ds.Tables(TABLE_NAME__GET_CLAIM_STATUS_INFO_RESPONSE).Columns(COL_NAME_CLAIMNUMBER_WS),
+                                                 ds.Tables(TABLE_NAME__GET_CLAIM_EXT_STATUS_INFO_RESPONSE).Columns(COL_NAME_CLAIMNUMBER_WS))
                 ClaimStatusToExtendedStatusRel.Nested = True
                 ds.Relations.Add(ClaimStatusToExtendedStatusRel)
                 Return ds
@@ -3956,56 +3956,56 @@ Public Class ClaimDAL
     End Function
 
 
-    Public Function WebSubmitClaimPreValidate(ByVal oWebSubmitClaimPreValidateInputData As WebSubmitClaimPreValidateInputData,
+    Public Function WebSubmitClaimPreValidate(oWebSubmitClaimPreValidateInputData As WebSubmitClaimPreValidateInputData,
                                               ByRef oWebSubmitClaimPreValidateOutputData As WebSubmitClaimPreValidateOutputData) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/WS_SubmitClaimPreValidate")
+        Dim selectStmt As String = Config("/SQL/WS_SubmitClaimPreValidate")
         Dim inputParameters() As DBHelper.DBHelperParameter
-        Dim outputParameter(Me.TOTAL_OUTPUT_PARAM_WS_1) As DBHelper.DBHelperParameter
+        Dim outputParameter(TOTAL_OUTPUT_PARAM_WS_1) As DBHelper.DBHelperParameter
 
 
         inputParameters = New DBHelper.DBHelperParameter() _
-                {SetParameter(Me.SP_PARAM_NAME__CUSTOMER_IDENTIFIER, oWebSubmitClaimPreValidateInputData.CustomerIdentifier),
-                 SetParameter(Me.SP_PARAM_NAME__IDENTIFIER_TYPE, oWebSubmitClaimPreValidateInputData.IdentifierType),
-                 SetParameter(Me.SP_PARAM_NAME__SYSTEM_USER_ID, oWebSubmitClaimPreValidateInputData.SystemUserId.ToByteArray),
-                 SetParameter(Me.SP_PARAM_NAME__DEALER_CODE, oWebSubmitClaimPreValidateInputData.DealerCode),
-                 SetParameter(Me.SP_PARAM_NAME__COVERAGE_CODE, oWebSubmitClaimPreValidateInputData.CoverageCode),
-                 SetParameter(Me.SP_PARAM_NAME__SERVICE_CENTER_CODE, oWebSubmitClaimPreValidateInputData.ServiceCenterCode),
-                 SetParameter(Me.SP_PARAM_NAME__SERIAL_NUMBER, oWebSubmitClaimPreValidateInputData.SerialNumber),
-                 SetParameter(Me.SP_PARAM_NAME__MAKE, oWebSubmitClaimPreValidateInputData.Make),
-                 SetParameter(Me.SP_PARAM_NAME__MODEL, oWebSubmitClaimPreValidateInputData.Model),
-                 SetParameter(Me.SP_PARAM_NAME__CAUSE_OF_LOSS_CODE, oWebSubmitClaimPreValidateInputData.CauseOfLossCode),
-                 SetParameter(Me.SP_PARAM_NAME__COUNTRY_CODE, oWebSubmitClaimPreValidateInputData.CountryCode),
-                 SetParameter(Me.SP_PARAM_NAME__REGION_CODE, oWebSubmitClaimPreValidateInputData.RegionCode),
-                 SetParameter(Me.SP_PARAM_NAME__ADDRESS_TYPE_CODE, oWebSubmitClaimPreValidateInputData.AddressTypeCode),
-                 SetParameter(Me.SP_PARAM_NAME__PAYMENT_METHOD, oWebSubmitClaimPreValidateInputData.PaymentMethod),
-                 SetParameter(Me.SP_PARAM_NAME__DATE_OF_LOSS, oWebSubmitClaimPreValidateInputData.DateOfLoss)
+                {SetParameter(SP_PARAM_NAME__CUSTOMER_IDENTIFIER, oWebSubmitClaimPreValidateInputData.CustomerIdentifier),
+                 SetParameter(SP_PARAM_NAME__IDENTIFIER_TYPE, oWebSubmitClaimPreValidateInputData.IdentifierType),
+                 SetParameter(SP_PARAM_NAME__SYSTEM_USER_ID, oWebSubmitClaimPreValidateInputData.SystemUserId.ToByteArray),
+                 SetParameter(SP_PARAM_NAME__DEALER_CODE, oWebSubmitClaimPreValidateInputData.DealerCode),
+                 SetParameter(SP_PARAM_NAME__COVERAGE_CODE, oWebSubmitClaimPreValidateInputData.CoverageCode),
+                 SetParameter(SP_PARAM_NAME__SERVICE_CENTER_CODE, oWebSubmitClaimPreValidateInputData.ServiceCenterCode),
+                 SetParameter(SP_PARAM_NAME__SERIAL_NUMBER, oWebSubmitClaimPreValidateInputData.SerialNumber),
+                 SetParameter(SP_PARAM_NAME__MAKE, oWebSubmitClaimPreValidateInputData.Make),
+                 SetParameter(SP_PARAM_NAME__MODEL, oWebSubmitClaimPreValidateInputData.Model),
+                 SetParameter(SP_PARAM_NAME__CAUSE_OF_LOSS_CODE, oWebSubmitClaimPreValidateInputData.CauseOfLossCode),
+                 SetParameter(SP_PARAM_NAME__COUNTRY_CODE, oWebSubmitClaimPreValidateInputData.CountryCode),
+                 SetParameter(SP_PARAM_NAME__REGION_CODE, oWebSubmitClaimPreValidateInputData.RegionCode),
+                 SetParameter(SP_PARAM_NAME__ADDRESS_TYPE_CODE, oWebSubmitClaimPreValidateInputData.AddressTypeCode),
+                 SetParameter(SP_PARAM_NAME__PAYMENT_METHOD, oWebSubmitClaimPreValidateInputData.PaymentMethod),
+                 SetParameter(SP_PARAM_NAME__DATE_OF_LOSS, oWebSubmitClaimPreValidateInputData.DateOfLoss)
                  }
 
-        outputParameter(Me.P_RETURN) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME__RETURN, GetType(Integer))
-        outputParameter(Me.P_EXCEPTION_MSG) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME__EXCEPTION_MSG, GetType(String), 100)
-        outputParameter(Me.P_COVERAGE_TYPE_ID) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME__COVERAGE_TYPE_ID, oWebSubmitClaimPreValidateOutputData.CoverageTypeId.ToByteArray.GetType)
-        outputParameter(Me.P_CERT_ITEM_COVERAGE_ID) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME__CERT_ITEM_COVERAGE_ID, oWebSubmitClaimPreValidateOutputData.CertItemCoverageId.ToByteArray.GetType)
-        outputParameter(Me.P_SERVICE_CENTER_ID) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME__SERVICE_CENTER_ID, oWebSubmitClaimPreValidateOutputData.ServiceCenterId.ToByteArray.GetType)
-        outputParameter(Me.P_CAUSE_OF_LOSS_ID) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME__CAUSE_OF_LOSS_ID, oWebSubmitClaimPreValidateOutputData.CauseOfLossId.ToByteArray.GetType)
-        outputParameter(Me.P_COUNTRY_ID) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME__COUNTRY_ID, oWebSubmitClaimPreValidateOutputData.CountryId.ToByteArray.GetType)
-        outputParameter(Me.P_REGION_ID) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME__REGION_ID, oWebSubmitClaimPreValidateOutputData.RegionId.ToByteArray.GetType)
-        outputParameter(Me.P_HOME_PHONE) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME__HONE_PHONE, GetType(String), 20)
-        outputParameter(Me.P_WORK_PHONE) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME__WORK_PHONE, GetType(String), 20)
-        outputParameter(Me.P_ADDRESS_TYPE_ID) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME__ADDRESS_TYPE_ID, oWebSubmitClaimPreValidateOutputData.AddressTypeId.ToByteArray.GetType)
-        outputParameter(Me.P_DEDUCTIBLE) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME__DEDUCTIBLE, GetType(Decimal))
-        outputParameter(Me.P_PAYMENT_METHOD_ID) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME__PAYMENT_METHOD_ID, oWebSubmitClaimPreValidateOutputData.PaymentMethodId.ToByteArray.GetType)
-        outputParameter(Me.P_CLAIM_STATUS_FOR_EXT_SYS_CODE) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME__DEFAULT_CLAIM_STATUS_FOR_EXT_SYS_CODE, GetType(String), 50)
-        outputParameter(Me.P_INVALID_SERIAL_NUMBER) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME__INVALID_SERIAL_NUMBER, GetType(Integer))
-        outputParameter(Me.P_INVALID_MAKE_MODEL) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME__INVALID_MAKE_MODEL, GetType(Integer))
-        outputParameter(Me.P_CURSOR_RESPONSE_STATUS_1) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME__RESPONSE_STATUS, GetType(DataSet))
+        outputParameter(P_RETURN) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__RETURN, GetType(Integer))
+        outputParameter(P_EXCEPTION_MSG) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__EXCEPTION_MSG, GetType(String), 100)
+        outputParameter(P_COVERAGE_TYPE_ID) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__COVERAGE_TYPE_ID, oWebSubmitClaimPreValidateOutputData.CoverageTypeId.ToByteArray.GetType)
+        outputParameter(P_CERT_ITEM_COVERAGE_ID) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__CERT_ITEM_COVERAGE_ID, oWebSubmitClaimPreValidateOutputData.CertItemCoverageId.ToByteArray.GetType)
+        outputParameter(P_SERVICE_CENTER_ID) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__SERVICE_CENTER_ID, oWebSubmitClaimPreValidateOutputData.ServiceCenterId.ToByteArray.GetType)
+        outputParameter(P_CAUSE_OF_LOSS_ID) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__CAUSE_OF_LOSS_ID, oWebSubmitClaimPreValidateOutputData.CauseOfLossId.ToByteArray.GetType)
+        outputParameter(P_COUNTRY_ID) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__COUNTRY_ID, oWebSubmitClaimPreValidateOutputData.CountryId.ToByteArray.GetType)
+        outputParameter(P_REGION_ID) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__REGION_ID, oWebSubmitClaimPreValidateOutputData.RegionId.ToByteArray.GetType)
+        outputParameter(P_HOME_PHONE) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__HONE_PHONE, GetType(String), 20)
+        outputParameter(P_WORK_PHONE) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__WORK_PHONE, GetType(String), 20)
+        outputParameter(P_ADDRESS_TYPE_ID) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__ADDRESS_TYPE_ID, oWebSubmitClaimPreValidateOutputData.AddressTypeId.ToByteArray.GetType)
+        outputParameter(P_DEDUCTIBLE) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__DEDUCTIBLE, GetType(Decimal))
+        outputParameter(P_PAYMENT_METHOD_ID) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__PAYMENT_METHOD_ID, oWebSubmitClaimPreValidateOutputData.PaymentMethodId.ToByteArray.GetType)
+        outputParameter(P_CLAIM_STATUS_FOR_EXT_SYS_CODE) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__DEFAULT_CLAIM_STATUS_FOR_EXT_SYS_CODE, GetType(String), 50)
+        outputParameter(P_INVALID_SERIAL_NUMBER) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__INVALID_SERIAL_NUMBER, GetType(Integer))
+        outputParameter(P_INVALID_MAKE_MODEL) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__INVALID_MAKE_MODEL, GetType(Integer))
+        outputParameter(P_CURSOR_RESPONSE_STATUS_1) = New DBHelper.DBHelperParameter(SP_PARAM_NAME__RESPONSE_STATUS, GetType(DataSet))
 
-        Dim ds As New DataSet(Me.DATASET_NAME__SUBMIT_CLAIM_RESPONSE)
+        Dim ds As New DataSet(DATASET_NAME__SUBMIT_CLAIM_RESPONSE)
         ' Call DBHelper Store Procedure
 
         Try
-            DBHelper.FetchSp(selectStmt, inputParameters, outputParameter, ds, Me.TABLE_NAME__RESPONSE_STATUS)
+            DBHelper.FetchSp(selectStmt, inputParameters, outputParameter, ds, TABLE_NAME__RESPONSE_STATUS)
 
-            If outputParameter(Me.P_RETURN).Value <> 0 Then
+            If outputParameter(P_RETURN).Value <> 0 Then
                 oWebSubmitClaimPreValidateOutputData.CoverageTypeId = Guid.Empty
                 oWebSubmitClaimPreValidateOutputData.CertItemCoverageId = Guid.Empty
                 oWebSubmitClaimPreValidateOutputData.ServiceCenterId = Guid.Empty
@@ -4018,30 +4018,30 @@ Public Class ClaimDAL
                 oWebSubmitClaimPreValidateOutputData.Deductible = Nothing
                 oWebSubmitClaimPreValidateOutputData.PaymentMethodId = Guid.Empty
                 oWebSubmitClaimPreValidateOutputData.DefaultClaimStatusCode = Nothing
-                oWebSubmitClaimPreValidateOutputData.PreValidateErrorCode = outputParameter(Me.P_RETURN).Value
-                oWebSubmitClaimPreValidateOutputData.PreValidateError = outputParameter(Me.P_EXCEPTION_MSG).Value
-                oWebSubmitClaimPreValidateOutputData.PreValidateMakeModelErrorCode = outputParameter(Me.P_INVALID_MAKE_MODEL).Value
-                oWebSubmitClaimPreValidateOutputData.PreValidateSerialNumberErrorCode = outputParameter(Me.P_INVALID_SERIAL_NUMBER).Value
-                ds.Tables(0).TableName = Me.TABLE_NAME__RESPONSE_STATUS
+                oWebSubmitClaimPreValidateOutputData.PreValidateErrorCode = outputParameter(P_RETURN).Value
+                oWebSubmitClaimPreValidateOutputData.PreValidateError = outputParameter(P_EXCEPTION_MSG).Value
+                oWebSubmitClaimPreValidateOutputData.PreValidateMakeModelErrorCode = outputParameter(P_INVALID_MAKE_MODEL).Value
+                oWebSubmitClaimPreValidateOutputData.PreValidateSerialNumberErrorCode = outputParameter(P_INVALID_SERIAL_NUMBER).Value
+                ds.Tables(0).TableName = TABLE_NAME__RESPONSE_STATUS
                 Return ds
             Else
-                oWebSubmitClaimPreValidateOutputData.CoverageTypeId = outputParameter(Me.P_COVERAGE_TYPE_ID).Value
-                oWebSubmitClaimPreValidateOutputData.CertItemCoverageId = outputParameter(Me.P_CERT_ITEM_COVERAGE_ID).Value
-                oWebSubmitClaimPreValidateOutputData.ServiceCenterId = outputParameter(Me.P_SERVICE_CENTER_ID).Value
-                oWebSubmitClaimPreValidateOutputData.CauseOfLossId = outputParameter(Me.P_CAUSE_OF_LOSS_ID).Value
-                oWebSubmitClaimPreValidateOutputData.CountryId = outputParameter(Me.P_COUNTRY_ID).Value
-                oWebSubmitClaimPreValidateOutputData.RegionId = outputParameter(Me.P_REGION_ID).Value
-                oWebSubmitClaimPreValidateOutputData.AddressTypeId = outputParameter(Me.P_ADDRESS_TYPE_ID).Value
-                oWebSubmitClaimPreValidateOutputData.WorkPhone = outputParameter(Me.P_WORK_PHONE).Value
-                oWebSubmitClaimPreValidateOutputData.HomePhone = outputParameter(Me.P_HOME_PHONE).Value
-                oWebSubmitClaimPreValidateOutputData.Deductible = outputParameter(Me.P_DEDUCTIBLE).Value
-                oWebSubmitClaimPreValidateOutputData.PaymentMethodId = outputParameter(Me.P_PAYMENT_METHOD_ID).Value
-                oWebSubmitClaimPreValidateOutputData.DefaultClaimStatusCode = outputParameter(Me.P_CLAIM_STATUS_FOR_EXT_SYS_CODE).Value
-                ds.Tables(0).TableName = Me.TABLE_NAME__RESPONSE_STATUS
-                oWebSubmitClaimPreValidateOutputData.PreValidateErrorCode = outputParameter(Me.P_RETURN).Value
-                oWebSubmitClaimPreValidateOutputData.PreValidateError = outputParameter(Me.P_EXCEPTION_MSG).Value
-                oWebSubmitClaimPreValidateOutputData.PreValidateMakeModelErrorCode = outputParameter(Me.P_INVALID_MAKE_MODEL).Value
-                oWebSubmitClaimPreValidateOutputData.PreValidateSerialNumberErrorCode = outputParameter(Me.P_INVALID_SERIAL_NUMBER).Value
+                oWebSubmitClaimPreValidateOutputData.CoverageTypeId = outputParameter(P_COVERAGE_TYPE_ID).Value
+                oWebSubmitClaimPreValidateOutputData.CertItemCoverageId = outputParameter(P_CERT_ITEM_COVERAGE_ID).Value
+                oWebSubmitClaimPreValidateOutputData.ServiceCenterId = outputParameter(P_SERVICE_CENTER_ID).Value
+                oWebSubmitClaimPreValidateOutputData.CauseOfLossId = outputParameter(P_CAUSE_OF_LOSS_ID).Value
+                oWebSubmitClaimPreValidateOutputData.CountryId = outputParameter(P_COUNTRY_ID).Value
+                oWebSubmitClaimPreValidateOutputData.RegionId = outputParameter(P_REGION_ID).Value
+                oWebSubmitClaimPreValidateOutputData.AddressTypeId = outputParameter(P_ADDRESS_TYPE_ID).Value
+                oWebSubmitClaimPreValidateOutputData.WorkPhone = outputParameter(P_WORK_PHONE).Value
+                oWebSubmitClaimPreValidateOutputData.HomePhone = outputParameter(P_HOME_PHONE).Value
+                oWebSubmitClaimPreValidateOutputData.Deductible = outputParameter(P_DEDUCTIBLE).Value
+                oWebSubmitClaimPreValidateOutputData.PaymentMethodId = outputParameter(P_PAYMENT_METHOD_ID).Value
+                oWebSubmitClaimPreValidateOutputData.DefaultClaimStatusCode = outputParameter(P_CLAIM_STATUS_FOR_EXT_SYS_CODE).Value
+                ds.Tables(0).TableName = TABLE_NAME__RESPONSE_STATUS
+                oWebSubmitClaimPreValidateOutputData.PreValidateErrorCode = outputParameter(P_RETURN).Value
+                oWebSubmitClaimPreValidateOutputData.PreValidateError = outputParameter(P_EXCEPTION_MSG).Value
+                oWebSubmitClaimPreValidateOutputData.PreValidateMakeModelErrorCode = outputParameter(P_INVALID_MAKE_MODEL).Value
+                oWebSubmitClaimPreValidateOutputData.PreValidateSerialNumberErrorCode = outputParameter(P_INVALID_SERIAL_NUMBER).Value
                 Return ds
             End If
 
@@ -4054,8 +4054,8 @@ Public Class ClaimDAL
 #End Region
 
 #Region "Claim Issues"
-    Public Function CheckClaimPaymentInProgress(ByVal claimId As Guid, ByVal companyGroupId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/CHECK_CLAIM_PAYMENT_IN_PROGRESS")
+    Public Function CheckClaimPaymentInProgress(claimId As Guid, companyGroupId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/CHECK_CLAIM_PAYMENT_IN_PROGRESS")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                    New DBHelper.DBHelperParameter("claim_id", claimId.ToByteArray),
@@ -4072,7 +4072,7 @@ Public Class ClaimDAL
 
 #Region "Private Methods"
 
-    Function SetParameter(ByVal name As String, ByVal value As Object) As DBHelper.DBHelperParameter
+    Function SetParameter(name As String, value As Object) As DBHelper.DBHelperParameter
 
         name = name.Trim
         If value Is Nothing Then value = DBNull.Value
@@ -4094,14 +4094,14 @@ Public Class ClaimDAL
     End Structure
 
     Public Function GetClaimInfo(
-                                ByVal claimId As Guid,
-                                ByVal claimNumber As String,
-                                ByVal companyId As Guid,
-                                ByVal companyCode As String,
-                                ByVal dealerId As Guid,
-                                ByVal dealerCode As String,
-                                ByVal serialNumber As String,
-                                ByVal networId As String) As ClaimAuthTypeDetails
+                                claimId As Guid,
+                                claimNumber As String,
+                                companyId As Guid,
+                                companyCode As String,
+                                dealerId As Guid,
+                                dealerCode As String,
+                                serialNumber As String,
+                                networId As String) As ClaimAuthTypeDetails
         Dim returnValue As ClaimAuthTypeDetails
         returnValue.ClaimAuthTypeId = String.Empty
         returnValue.IsClaimLocked = String.Empty
@@ -4109,38 +4109,38 @@ Public Class ClaimDAL
         returnValue.ClaimId = String.Empty
 
 
-        Dim selectStmt As String = Me.Config("/SQL/SEARCH_CLAIM_INFO")
+        Dim selectStmt As String = Config("/SQL/SEARCH_CLAIM_INFO")
         Dim inputParameters(7) As DBHelperParameter
         Dim outputParameter(5) As DBHelperParameter
 
         If claimId.Equals(Guid.Empty) Then
-            inputParameters(0) = New DBHelperParameter(Me.PAR_NAME_IP_CLAIM_ID, DBNull.Value)
+            inputParameters(0) = New DBHelperParameter(PAR_NAME_IP_CLAIM_ID, DBNull.Value)
         Else
-            inputParameters(0) = New DBHelperParameter(Me.PAR_NAME_IP_CLAIM_ID, claimId, GetType(Guid))
+            inputParameters(0) = New DBHelperParameter(PAR_NAME_IP_CLAIM_ID, claimId, GetType(Guid))
         End If
-        inputParameters(1) = New DBHelperParameter(Me.PAR_NAME_IP_CLAIM_NUMBER, claimNumber, GetType(String))
+        inputParameters(1) = New DBHelperParameter(PAR_NAME_IP_CLAIM_NUMBER, claimNumber, GetType(String))
         If companyId.Equals(Guid.Empty) Then
-            inputParameters(2) = New DBHelperParameter(Me.PAR_NAME_IP_COMPANY_ID, DBNull.Value)
+            inputParameters(2) = New DBHelperParameter(PAR_NAME_IP_COMPANY_ID, DBNull.Value)
         Else
-            inputParameters(2) = New DBHelperParameter(Me.PAR_NAME_IP_COMPANY_ID, companyId, GetType(Guid))
+            inputParameters(2) = New DBHelperParameter(PAR_NAME_IP_COMPANY_ID, companyId, GetType(Guid))
         End If
-        inputParameters(3) = New DBHelperParameter(Me.PAR_NAME_IP_COMPANY_CODE, companyCode, GetType(String))
+        inputParameters(3) = New DBHelperParameter(PAR_NAME_IP_COMPANY_CODE, companyCode, GetType(String))
         If dealerId.Equals(Guid.Empty) Then
-            inputParameters(4) = New DBHelperParameter(Me.PAR_NAME_IP_DEALER_ID, DBNull.Value)
+            inputParameters(4) = New DBHelperParameter(PAR_NAME_IP_DEALER_ID, DBNull.Value)
         Else
-            inputParameters(4) = New DBHelperParameter(Me.PAR_NAME_IP_DEALER_ID, dealerId, GetType(Guid))
+            inputParameters(4) = New DBHelperParameter(PAR_NAME_IP_DEALER_ID, dealerId, GetType(Guid))
         End If
-        inputParameters(5) = New DBHelperParameter(Me.PAR_NAME_IP_DEALER_CODE, dealerCode, GetType(String))
-        inputParameters(6) = New DBHelperParameter(Me.PAR_NAME_IP_SERIAL_NUMBER, serialNumber, GetType(String))
-        inputParameters(7) = New DBHelperParameter(Me.PAR_NAME_IP_NETWORK_ID, networId, GetType(String))
+        inputParameters(5) = New DBHelperParameter(PAR_NAME_IP_DEALER_CODE, dealerCode, GetType(String))
+        inputParameters(6) = New DBHelperParameter(PAR_NAME_IP_SERIAL_NUMBER, serialNumber, GetType(String))
+        inputParameters(7) = New DBHelperParameter(PAR_NAME_IP_NETWORK_ID, networId, GetType(String))
 
 
-        outputParameter(0) = New DBHelperParameter(Me.PAR_NAME_OP_CLAIM_AUTH_TYPE_ID, GetType(String), 32)
-        outputParameter(1) = New DBHelperParameter(Me.PAR_NAME_OP_CLAIM_ID, GetType(String), 32)
-        outputParameter(2) = New DBHelperParameter(Me.PAR_NAME_OP_IS_CLAIM_LOCKED, GetType(String), 32)
-        outputParameter(3) = New DBHelperParameter(Me.PAR_NAME_OP_CLAIM_LOCK_BY, GetType(String), 32)
-        outputParameter(4) = New DBHelperParameter(Me.PAR_NAME_OP_RETURN, GetType(Integer), 32)
-        outputParameter(5) = New DBHelperParameter(Me.PAR_NAME_OP_EXCEPTION_MESSAGE, GetType(String), 500)
+        outputParameter(0) = New DBHelperParameter(PAR_NAME_OP_CLAIM_AUTH_TYPE_ID, GetType(String), 32)
+        outputParameter(1) = New DBHelperParameter(PAR_NAME_OP_CLAIM_ID, GetType(String), 32)
+        outputParameter(2) = New DBHelperParameter(PAR_NAME_OP_IS_CLAIM_LOCKED, GetType(String), 32)
+        outputParameter(3) = New DBHelperParameter(PAR_NAME_OP_CLAIM_LOCK_BY, GetType(String), 32)
+        outputParameter(4) = New DBHelperParameter(PAR_NAME_OP_RETURN, GetType(Integer), 32)
+        outputParameter(5) = New DBHelperParameter(PAR_NAME_OP_EXCEPTION_MESSAGE, GetType(String), 500)
 
         'Try
         ' Call DBHelper Store Procedure
@@ -4176,8 +4176,8 @@ Public Class ClaimDAL
 
     End Function
 
-    Public Function GetFraudulentClaimExtensions(ByVal claimId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/GET_FRAUD_CLAIM_EXT")
+    Public Function GetFraudulentClaimExtensions(claimId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/GET_FRAUD_CLAIM_EXT")
         Dim ds As DataSet = New DataSet
         Dim outputParameter(0) As DBHelper.DBHelperParameter
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("claimId", claimId.ToByteArray)}
@@ -4194,15 +4194,15 @@ Public Class ClaimDAL
 
     End Function
 
-    Public Function GetDealerDRPTradeInQuoteFlag(ByVal dealerCode As String) As DataSet
+    Public Function GetDealerDRPTradeInQuoteFlag(dealerCode As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/GET_DEALER_DRP_TRADE_IN_QUOTE_FLAG")
+        Dim selectStmt As String = Config("/SQL/GET_DEALER_DRP_TRADE_IN_QUOTE_FLAG")
         Try
             Dim ds As New DataSet
             Dim parameters() As OracleParameter
-            parameters = New OracleParameter() {New OracleParameter(Me.COL_NAME_DEALER, dealerCode)}
+            parameters = New OracleParameter() {New OracleParameter(COL_NAME_DEALER, dealerCode)}
 
-            Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME_ATTRIBUTE, parameters)
+            Return DBHelper.Fetch(ds, selectStmt, TABLE_NAME_ATTRIBUTE, parameters)
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -4220,13 +4220,13 @@ Public Class ClaimDAL
     ''' <param name="userId">User ID requesting the </param>
     ''' <returns><see cref="DataSet" /></returns>
     ''' <remarks></remarks>
-    Public Function LoadClaimsBySerialNumber(ByVal countryCode As String,
-                                             ByVal companyCode As String,
-                                             ByVal dealerCode As String,
-                                             ByVal serialNumber As String,
-                                             ByVal userId As Guid) As DataSet
+    Public Function LoadClaimsBySerialNumber(countryCode As String,
+                                             companyCode As String,
+                                             dealerCode As String,
+                                             serialNumber As String,
+                                             userId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/WS_CLAIMS_GET_CLAIMS")
+        Dim selectStmt As String = Config("/SQL/WS_CLAIMS_GET_CLAIMS")
 
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
             New DBHelper.DBHelperParameter("pi_country_code", countryCode),
@@ -4240,7 +4240,7 @@ Public Class ClaimDAL
 
         Try
             Dim ds As New DataSet
-            DBHelper.FetchSp(selectStmt, inputParameters, outputParameters, ds, Me.TABLE_NAME)
+            DBHelper.FetchSp(selectStmt, inputParameters, outputParameters, ds, TABLE_NAME)
 
             Return ds
 
@@ -4258,13 +4258,13 @@ Public Class ClaimDAL
     ''' <param name="userId">User ID requesting the </param>
     ''' <returns><see cref="DataSet" /></returns>
     ''' <remarks></remarks>
-    Public Function LoadClaimsByImeiNumber(ByVal countryCode As String,
-                                           ByVal companyCode As String,
-                                           ByVal dealerCode As String,
-                                           ByVal imeiNumber As String,
-                                           ByVal userId As Guid) As DataSet
+    Public Function LoadClaimsByImeiNumber(countryCode As String,
+                                           companyCode As String,
+                                           dealerCode As String,
+                                           imeiNumber As String,
+                                           userId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/WS_CLAIMS_GET_CLAIMS_BY_IMEI_NUMBER")
+        Dim selectStmt As String = Config("/SQL/WS_CLAIMS_GET_CLAIMS_BY_IMEI_NUMBER")
 
         Dim inputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
             New DBHelper.DBHelperParameter("pi_country_code", countryCode),
@@ -4278,7 +4278,7 @@ Public Class ClaimDAL
 
         Try
             Dim ds As New DataSet
-            DBHelper.FetchSp(selectStmt, inputParameters, outputParameters, ds, Me.TABLE_NAME)
+            DBHelper.FetchSp(selectStmt, inputParameters, outputParameters, ds, TABLE_NAME)
 
             Return ds
 
@@ -4299,16 +4299,16 @@ Public Class ClaimDAL
     ''' <returns>Claim_Info => Returns Claim information of the Certificate</returns>
     ''' <returns>Is_Valid => Returns if the data retrival is successfull</returns>
     ''' <remarks></remarks>
-    Public Function WS_CHLMobileSCPortal_GetCertClaimInfo(ByVal CompanyCode As String,
-                                                          ByVal UserId As Guid,
-                                                          ByVal LanguageId As Guid,
-                                                          ByVal SerialNumber As String,
-                                                          ByVal PhoneNumber As String,
-                                                          ByVal taxId As String,
-                                                          ByVal claimStatusCode As String,
+    Public Function WS_CHLMobileSCPortal_GetCertClaimInfo(CompanyCode As String,
+                                                          UserId As Guid,
+                                                          LanguageId As Guid,
+                                                          SerialNumber As String,
+                                                          PhoneNumber As String,
+                                                          taxId As String,
+                                                          claimStatusCode As String,
                                                           ByRef ErrorCode As String,
                                                           ByRef ErrorMessage As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/CHLMobileSCPortal_GetCertClaimInfo")
+        Dim selectStmt As String = Config("/SQL/CHLMobileSCPortal_GetCertClaimInfo")
 
         Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                                 New DBHelper.DBHelperParameter("pi_company_code", CompanyCode),
@@ -4344,23 +4344,23 @@ Public Class ClaimDAL
 
     End Function
 
-    Public Function WS_SNMPORTAL_SA_CLAIMREPORT(ByVal companyCode As String,
-                                                ByVal userId As Guid,
-                                                ByVal languageId As Guid,
-                                                ByVal serviceCenterCode As String,
-                                                ByVal countryIsoCode As String,
-                                                ByVal fromDate As Date,
-                                                ByVal endDate As Date,
-                                                ByVal extendedStatusCode As String,
-                                                ByVal dealerCode As String,
-                                                ByVal pageSize As Integer,
+    Public Function WS_SNMPORTAL_SA_CLAIMREPORT(companyCode As String,
+                                                userId As Guid,
+                                                languageId As Guid,
+                                                serviceCenterCode As String,
+                                                countryIsoCode As String,
+                                                fromDate As Date,
+                                                endDate As Date,
+                                                extendedStatusCode As String,
+                                                dealerCode As String,
+                                                pageSize As Integer,
                                                 ByRef batchId As Guid,
                                                 ByRef totalRecordCount As Integer,
                                                 ByRef totalRecordsInQueue As Integer,
                                                 ByRef errorCode As String,
                                                 ByRef errorMessage As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/WS_SNMPORTAL_SA_CLAIMREPORT")
+        Dim selectStmt As String = Config("/SQL/WS_SNMPORTAL_SA_CLAIMREPORT")
 
         Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                                 New DBHelper.DBHelperParameter("pi_service_center_code", serviceCenterCode),
@@ -4409,15 +4409,15 @@ Public Class ClaimDAL
 
     End Function
 
-    Public Function WS_SNMPORTAL_SA_CLAIMREPORT_NextPage(ByVal batchId As Guid,
-                                                         ByVal languageId As Guid,
-                                                         ByVal pageSize As Integer,
+    Public Function WS_SNMPORTAL_SA_CLAIMREPORT_NextPage(batchId As Guid,
+                                                         languageId As Guid,
+                                                         pageSize As Integer,
                                                          ByRef totalRecordCount As Integer,
                                                          ByRef totalRecordsInQueue As Integer,
                                                          ByRef errorCode As String,
                                                          ByRef errorMessage As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/WS_SNMPORTAL_SA_CLAIMREPORT_GET_NEXT_PAGE")
+        Dim selectStmt As String = Config("/SQL/WS_SNMPORTAL_SA_CLAIMREPORT_GET_NEXT_PAGE")
 
         Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                                 New DBHelper.DBHelperParameter("pi_batch_id", batchId.ToByteArray()),
@@ -4465,7 +4465,7 @@ Public Class ClaimDAL
         'Dim selectStmt As String = 
 
         Try
-            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/GVS_TRANSACTION_CREATION"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/GVS_TRANSACTION_CREATION"))
                 cmd.AddParameter("pi_key_id", OracleDbType.Raw, pClaimID.ToByteArray())
                 cmd.AddParameter("pi_function_type_code", OracleDbType.Char, pFunctionTypeCode)
                 cmd.AddParameter("pi_followup_xml", OracleDbType.Varchar2, pCommentID)
@@ -4478,8 +4478,8 @@ Public Class ClaimDAL
     End Sub
 #End Region
 #Region "Google Claims Service"
-    Public Function GetTotalSvcWarrantyByCert(ByVal CertId As Guid, ByVal DealerId As Guid) As Integer
-        Dim selectStmt As String = Me.Config("/SQL/GET_SVC_WARRANTY_COUNT_BY_CERTIFICATE")
+    Public Function GetTotalSvcWarrantyByCert(CertId As Guid, DealerId As Guid) As Integer
+        Dim selectStmt As String = Config("/SQL/GET_SVC_WARRANTY_COUNT_BY_CERTIFICATE")
         Dim returnValue As Object
 
         Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
@@ -4503,8 +4503,8 @@ Public Class ClaimDAL
 #End Region
 
 #Region "Indix Service"
-    Public Function GetIndixIdofRegisteredDevice(ByVal ClaimId As Guid) As String
-        Dim selectStmt As String = Me.Config("/SQL/GET_REGISTERED_ITEM_INDIXID")
+    Public Function GetIndixIdofRegisteredDevice(ClaimId As Guid) As String
+        Dim selectStmt As String = Config("/SQL/GET_REGISTERED_ITEM_INDIXID")
         Dim returnValue As Object
 
         Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
@@ -4526,17 +4526,17 @@ Public Class ClaimDAL
     End Function
 
     'REQ-6230
-    Public Function GetCountryCodeOverwrite(ByVal CompanyId As Guid) As String
-        Dim selectStmt As String = Me.Config("/SQL/GET_COUNTRY_CODE_OVERWRITE")
+    Public Function GetCountryCodeOverwrite(CompanyId As Guid) As String
+        Dim selectStmt As String = Config("/SQL/GET_COUNTRY_CODE_OVERWRITE")
         Dim returnValue As Object
 
         Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                        {New DBHelper.DBHelperParameter(Me.PAR_NAME_IP_COMPANY_ID, CompanyId.ToByteArray)}
+                        {New DBHelper.DBHelperParameter(PAR_NAME_IP_COMPANY_ID, CompanyId.ToByteArray)}
 
         Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                             New DBHelper.DBHelperParameter(Me.PAR_NAME_OP_COUNTRY_CODE, GetType(String), 2),
-                             New DBHelper.DBHelperParameter(Me.PAR_NAME_OP_RETURN, GetType(Integer), 32),
-                             New DBHelper.DBHelperParameter(Me.PAR_NAME_OP_EXCEPTION_MESSAGE, GetType(String), 500)}
+                             New DBHelper.DBHelperParameter(PAR_NAME_OP_COUNTRY_CODE, GetType(String), 2),
+                             New DBHelper.DBHelperParameter(PAR_NAME_OP_RETURN, GetType(Integer), 32),
+                             New DBHelper.DBHelperParameter(PAR_NAME_OP_EXCEPTION_MESSAGE, GetType(String), 500)}
 
         Try
 

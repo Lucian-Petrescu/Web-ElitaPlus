@@ -1,5 +1,8 @@
-﻿Imports System.Globalization
+﻿Imports System.Collections.Generic
+Imports System.Globalization
 Imports System.Threading
+Imports System.Web.Script.Services
+Imports System.Web.Services
 Imports Assurant.Elita.Web.Forms
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.ElitaPlus.Security
@@ -78,29 +81,29 @@ Public Class ClaimByIssueSearch
         Get
             Dim retState As MyState
             'Return CType(MyBase.State, MyState)
-            If Me.NavController Is Nothing Then
+            If NavController Is Nothing Then
                 'Restart flow
-                Me.StartNavControl()
-                Me.NavController.State = CType(Session(SESSION_KEY_BACKUP_STATE), MyState)
-            ElseIf Me.NavController.State Is Nothing Then
-                Me.NavController.State = New MyState
-            ElseIf (Me.GetType.BaseType.FullName <>
-                    Me.NavController.State.GetType.ReflectedType.FullName) Then
+                StartNavControl()
+                NavController.State = CType(Session(SESSION_KEY_BACKUP_STATE), MyState)
+            ElseIf NavController.State Is Nothing Then
+                NavController.State = New MyState
+            ElseIf ([GetType].BaseType.FullName <>
+                    NavController.State.GetType.ReflectedType.FullName) Then
                 'Restart flow
-                Me.StartNavControl()
-                Me.NavController.State = CType(Session(SESSION_KEY_BACKUP_STATE), MyState)
+                StartNavControl()
+                NavController.State = CType(Session(SESSION_KEY_BACKUP_STATE), MyState)
             Else
-                If Me.NavController.IsFlowEnded Then
+                If NavController.IsFlowEnded Then
                     'restart flow
-                    Dim s As MyState = CType(Me.NavController.State, MyState)
-                    Me.StartNavControl()
-                    Me.NavController.State = s
+                    Dim s As MyState = CType(NavController.State, MyState)
+                    StartNavControl()
+                    NavController.State = s
                 End If
             End If
-            If Me.NavController.State Is Nothing Then
-                Me.NavController.State = New MyState
+            If NavController.State Is Nothing Then
+                NavController.State = New MyState
             End If
-            retState = CType(Me.NavController.State, MyState)
+            retState = CType(NavController.State, MyState)
             Session(SESSION_KEY_BACKUP_STATE) = retState
             Return retState
         End Get
@@ -110,42 +113,42 @@ Public Class ClaimByIssueSearch
 #Region "Navigation Handling"
     Public Sub Process(callingPage As Page, navCtrl As INavigationController) Implements IStateController.Process
         Try
-            If Not Me.IsPostBack AndAlso navCtrl.CurrentFlow.Name = Me.FLOW_NAME AndAlso
-                        Not navCtrl.PrevNavState Is Nothing Then
-                Me.IsReturningFromChild = True
+            If Not IsPostBack AndAlso navCtrl.CurrentFlow.Name = FLOW_NAME AndAlso
+navCtrl.PrevNavState IsNot Nothing Then
+                IsReturningFromChild = True
                 If navCtrl.IsFlowEnded Then
-                    Me.State.SearchDv = Nothing 'This will force a reload
+                    State.SearchDv = Nothing 'This will force a reload
                     'restart the flow
                     Dim savedState As MyState = CType(navCtrl.State, MyState)
-                    Me.StartNavControl()
-                    Me.NavController.State = savedState
+                    StartNavControl()
+                    NavController.State = savedState
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 #End Region
 
 #Region "Page_Events"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         'Put user code to initialize the page here
         'Page.RegisterHiddenField("__EVENTTARGET", Me.btnSearch.ClientID)
-        ClientScript.RegisterHiddenField("__EVENTTARGET", Me.btnSearch.ClientID)
+        ClientScript.RegisterHiddenField("__EVENTTARGET", btnSearch.ClientID)
 
         'Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
-        Me.MasterPage.MessageController.Clear_Hide()
+        MasterPage.MessageController.Clear_Hide()
         Try
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
                 'Trace(Me, "Cert = " & Me.State.certificate & "@ Claim = " & Me.State.claimNumber)
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGE_TITLE_NAME)
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGE_TITLE_NAME)
 
-                Me.AddCalendar_New(Me.ImageIssueAddedFromDate, Me.txtIssueAddedFromDate)
-                Me.AddCalendar_New(Me.ImageIssueAddedToDate, Me.txtIssueAddedToDate)
+                AddCalendar_New(ImageIssueAddedFromDate, txtIssueAddedFromDate)
+                AddCalendar_New(ImageIssueAddedToDate, txtIssueAddedToDate)
 
                 UpdateBreadCrum()
                 SetDefaultButtonToControls()
-                TranslateGridHeader(Me.Grid)
+                TranslateGridHeader(Grid)
 
                 PopulateDropdowns()
 
@@ -156,34 +159,34 @@ Public Class ClaimByIssueSearch
 
                 InitializePageSize()
 
-                If Me.IsReturningFromChild Then
+                If IsReturningFromChild Then
                     ' It is returning from detail
                     PopulateSearchFieldsFromState()
-                    Me.PopulateGrid()
+                    PopulateGrid()
                 Else
-                    Me.ClearState()
-                    Me.ClearSearch()
+                    ClearState()
+                    ClearSearch()
                     ControlMgr.SetVisibleControl(Me, Grid, False)
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
                 End If
 
-                Me.SetGridItemStyleColor(Me.Grid)
+                SetGridItemStyleColor(Grid)
                 SetFocus(cboSearchIssueType)
             End If
-            Me.DisplayNewProgressBarOnClick(Me.btnSearch, "Loading_Claims")
+            DisplayNewProgressBarOnClick(btnSearch, "Loading_Claims")
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.MenuEnabled = True
-            Me.IsReturningFromChild = True
+            MenuEnabled = True
+            IsReturningFromChild = True
 
-            Me.State.SearchDv = Nothing
-            Me.State.SelectedClaimId = Guid.Empty
+            State.SearchDv = Nothing
+            State.SelectedClaimId = Guid.Empty
 
             'If Not ReturnedValues Is Nothing then
             '    if TypeOf ReturnedValues Is ClaimForm.ReturnType Then
@@ -214,7 +217,7 @@ Public Class ClaimByIssueSearch
             'End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
@@ -223,18 +226,18 @@ Public Class ClaimByIssueSearch
         'if string.IsNullOrEmpty(cboSearchIssueType.SelectedValue) = false andalso cboClaimIssue.Items.Count = 0 then 'andalso cboSearchIssueType.SelectedValue <> "00000000-0000-0000-0000-000000000000" 
         If State.Criterias.IssueTypeId.Equals(Guid.Empty) = False Then
             Dim dv As DataView = EntityIssue.GetClaimIssuesByIssueType(State.Criterias.IssueTypeId)
-            Me.BindListControlToDataView(cboClaimIssue, dv, "description", "issue_id", True)
+            BindListControlToDataView(cboClaimIssue, dv, "description", "issue_id", True)
             If cboClaimIssue.Items(0).Text = String.Empty Then
                 cboClaimIssue.Items(0).Text = "---------------"
             End If
             If State.Criterias.IssueId.HasValue Then
                 cboClaimIssue.SelectedValue = State.Criterias.IssueId.Value.ToString()
             End If
-            If Me.State.Criterias.IssueAddedFromDate.HasValue Then
-                txtIssueAddedFromDate.Text = GetDateFormattedString(Me.State.Criterias.IssueAddedFromDate)
+            If State.Criterias.IssueAddedFromDate.HasValue Then
+                txtIssueAddedFromDate.Text = GetDateFormattedString(State.Criterias.IssueAddedFromDate)
             End If
-            If Me.State.Criterias.IssueAddedToDate.HasValue Then
-                txtIssueAddedToDate.Text = GetDateFormattedString(Me.State.Criterias.IssueAddedToDate)
+            If State.Criterias.IssueAddedToDate.HasValue Then
+                txtIssueAddedToDate.Text = GetDateFormattedString(State.Criterias.IssueAddedToDate)
             End If
         Else
             If cboClaimIssue.Items.Count > 0 Then
@@ -246,11 +249,11 @@ Public Class ClaimByIssueSearch
 
 #Region "Methods"
     Private Sub UpdateBreadCrum()
-        If (Not Me.State Is Nothing) Then
-            If (Not Me.State Is Nothing) Then
-                Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
+        If (State IsNot Nothing) Then
+            If (State IsNot Nothing) Then
+                MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
                     TranslationBase.TranslateLabelOrMessage(PAGE_TITLE_NAME)
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGE_TITLE_NAME)
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGE_TITLE_NAME)
             End If
         End If
     End Sub
@@ -260,40 +263,40 @@ Public Class ClaimByIssueSearch
             SetDefaultButton(txtIssueAddedFromDate, btnSearch)
             SetDefaultButton(txtIssueAddedToDate, btnSearch)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
 
 #Region " Button Clicks "
 
-    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
 
             ControlMgr.SetVisibleControl(Me, Grid, False)
             ControlMgr.SetVisibleControl(Me, trPageSize, False)
 
             If PopulateStateFromSearchFields() Then
-                Me.State.PageIndex = 0
-                Me.State.SelectedClaimId = Guid.Empty
-                Me.State.IsGridVisible = True
-                Me.State.SearchDv = Nothing
-                Me.State.SortExpression = String.Empty
-                Me.PopulateGrid()
+                State.PageIndex = 0
+                State.SelectedClaimId = Guid.Empty
+                State.IsGridVisible = True
+                State.SearchDv = Nothing
+                State.SortExpression = String.Empty
+                PopulateGrid()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnClearSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         Try
-            Me.ClearState()
-            Me.ClearSearch()
+            ClearState()
+            ClearSearch()
             ControlMgr.SetVisibleControl(Me, Grid, False)
             ControlMgr.SetVisibleControl(Me, trPageSize, False)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -305,7 +308,7 @@ Public Class ClaimByIssueSearch
 
         Try
 
-            If Me.State.SearchDv Is Nothing Then
+            If State.SearchDv Is Nothing Then
                 Dim strClaimStatusCode As String = State.Criterias.ClaimStatusCode
                 If strClaimStatusCode = "00000000-0000-0000-0000-000000000000" Then
                     strClaimStatusCode = String.Empty
@@ -316,7 +319,7 @@ Public Class ClaimByIssueSearch
                     strIssueStatusXcd = String.Empty
                 End If
 
-                Me.State.SearchDv = Claim.GetClaimsByIssue(
+                State.SearchDv = Claim.GetClaimsByIssue(
                     State.Criterias.IssueTypeCode,
                     State.Criterias.IssueTypeId,
                     State.Criterias.IssueId,
@@ -329,33 +332,33 @@ Public Class ClaimByIssueSearch
 
             Grid.PageSize = State.PageSize
 
-            SetPageAndSelectedIndexFromGuid(Me.State.SearchDv, Me.State.SelectedClaimId, Me.Grid, Me.State.PageIndex)
-            Me.Grid.DataSource = Me.State.SearchDv
-            Me.State.PageIndex = Me.Grid.PageIndex
+            SetPageAndSelectedIndexFromGuid(State.SearchDv, State.SelectedClaimId, Grid, State.PageIndex)
+            Grid.DataSource = State.SearchDv
+            State.PageIndex = Grid.PageIndex
 
             If String.IsNullOrEmpty(State.SortExpression) = True Then
                 State.SortExpression = "claim_number ASC"
             End If
 
-            Me.State.SearchDv.Sort = Me.State.SortExpression
+            State.SearchDv.Sort = State.SortExpression
 
-            HighLightSortColumn(Me.Grid, Me.State.SortExpression, Me.IsNewUI)
+            HighLightSortColumn(Grid, State.SortExpression, IsNewUI)
 
-            Me.Grid.DataBind()
+            Grid.DataBind()
 
-            ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
 
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-            Session("recCount") = Me.State.SearchDv.Count
+            Session("recCount") = State.SearchDv.Count
 
-            If Me.Grid.Visible Then
-                Me.lblRecordCount.Text = Me.State.SearchDv.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIMS_FOUND)
+            If Grid.Visible Then
+                lblRecordCount.Text = State.SearchDv.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIMS_FOUND)
             End If
 
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
@@ -364,10 +367,10 @@ Public Class ClaimByIssueSearch
         Dim dt As DateTime
 
         Try
-            Me.State.Criterias = New SearchCriterias()
-            Me.State.Criterias.IssueTypeId = GetSelectedItem(cboSearchIssueType)
+            State.Criterias = New SearchCriterias()
+            State.Criterias.IssueTypeId = GetSelectedItem(cboSearchIssueType)
 
-            State.Criterias.IssueTypeCode = LookupListNew.GetIssueTypeCodeFromId(LookupListNew.LK_ISSUE_TYPE_CODE_LIST, Me.State.Criterias.IssueTypeId)
+            State.Criterias.IssueTypeCode = LookupListNew.GetIssueTypeCodeFromId(LookupListNew.LK_ISSUE_TYPE_CODE_LIST, State.Criterias.IssueTypeId)
 
             Dim value As String = Request.Form(cboClaimIssue.UniqueID)
             If String.IsNullOrEmpty(value) = False Then
@@ -376,24 +379,24 @@ Public Class ClaimByIssueSearch
 
             If String.IsNullOrEmpty(txtIssueAddedFromDate.Text) = False Then
                 Try
-                    DateTime.TryParseExact(txtIssueAddedFromDate.Text.Trim(), DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt)
+                    DateTime.TryParseExact(txtIssueAddedFromDate.Text.Trim(), DATE_FORMAT, Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt)
                     If (dt <> DateTime.MinValue) Then
-                        Me.State.Criterias.IssueAddedFromDate = GetDateFormattedStringNullable(dt)
+                        State.Criterias.IssueAddedFromDate = GetDateFormattedStringNullable(dt)
                     End If
                 Catch ex As Exception
-                    ElitaPlusPage.SetLabelError(Me.Label2)
+                    SetLabelError(Label2)
                     Throw New GUIException(Message.MSG_INVALID_DATE, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DATE_ERR)
                 End Try
             End If
 
             If String.IsNullOrEmpty(txtIssueAddedToDate.Text) = False Then
                 Try
-                    DateTime.TryParseExact(txtIssueAddedToDate.Text.Trim(), DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt)
+                    DateTime.TryParseExact(txtIssueAddedToDate.Text.Trim(), DATE_FORMAT, Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt)
                     If (dt <> DateTime.MinValue) Then
-                        Me.State.Criterias.IssueAddedToDate = GetDateFormattedStringNullable(dt)
+                        State.Criterias.IssueAddedToDate = GetDateFormattedStringNullable(dt)
                     End If
                 Catch ex As Exception
-                    ElitaPlusPage.SetLabelError(Me.Label4)
+                    SetLabelError(Label4)
                     Throw New GUIException(Message.MSG_INVALID_DATE, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DATE_ERR)
                 End Try
             End If
@@ -414,7 +417,7 @@ Public Class ClaimByIssueSearch
 
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Function
@@ -422,36 +425,36 @@ Public Class ClaimByIssueSearch
         Try
 
             If Not ElitaPlusIdentity.Current.ActiveUser.IsDealer Then
-                Me.cboSearchDealer.SelectedIndex = 0
+                cboSearchDealer.SelectedIndex = 0
             End If
-            Me.cboSearchClaimStatus.SelectedIndex = 0
-            Me.cboSearchClaimIssueStatus.SelectedIndex = 0
-            Me.cboSearchIssueType.SelectedIndex = 0
+            cboSearchClaimStatus.SelectedIndex = 0
+            cboSearchClaimIssueStatus.SelectedIndex = 0
+            cboSearchIssueType.SelectedIndex = 0
             cboClaimIssue.SelectedIndex = 0
             txtIssueAddedToDate.Text = String.Empty
             txtIssueAddedFromDate.Text = String.Empty
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Public Sub ClearState()
 
         Try
-            Me.State.Criterias = New SearchCriterias
+            State.Criterias = New SearchCriterias
             State.SearchDv = Nothing
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Sub InitializePageSize()
         Try
-            cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
-            Grid.PageSize = Me.State.PageSize
+            cboPageSize.SelectedValue = CType(State.PageSize, String)
+            Grid.PageSize = State.PageSize
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
@@ -461,7 +464,7 @@ Public Class ClaimByIssueSearch
 
     Sub PopulateDropdowns()
         'To be updated with new list code
-        BindListControlToDataView(Me.cboSearchIssueType, LookupListNew.GetIssueTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), "DESCRIPTION", "ID", True, True)
+        BindListControlToDataView(cboSearchIssueType, LookupListNew.GetIssueTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), "DESCRIPTION", "ID", True, True)
         PopulateDealerDropDown()
 
         cboSearchClaimStatus.Populate(CommonConfigManager.Current.ListManager.GetList("CLSTAT", Thread.CurrentPrincipal.GetLanguageCode()),
@@ -496,24 +499,24 @@ Public Class ClaimByIssueSearch
 
 
         Catch ex As Exception
-            Me.HandleErrors(ex, MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Function GetDealerListByCompanyForUser() As Assurant.Elita.CommonConfiguration.DataElements.ListItem()
+    Private Function GetDealerListByCompanyForUser() As ListItem()
         Dim Index As Integer
-        Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
+        Dim oListContext As New ListContext
 
         Dim UserCompanies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
 
-        Dim oDealerList As New Collections.Generic.List(Of Assurant.Elita.CommonConfiguration.DataElements.ListItem)
+        Dim oDealerList As New List(Of ListItem)
 
         For Index = 0 To UserCompanies.Count - 1
             'UserCompanyList &= ",'" & GuidControl.GuidToHexString(UserCompanyies(Index))
             oListContext.CompanyId = UserCompanies(Index)
-            Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
+            Dim oDealerListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
             If oDealerListForCompany.Count > 0 Then
-                If Not oDealerList Is Nothing Then
+                If oDealerList IsNot Nothing Then
                     oDealerList.AddRange(oDealerListForCompany)
                 Else
                     oDealerList = oDealerListForCompany.Clone()
@@ -532,7 +535,7 @@ Public Class ClaimByIssueSearch
 
             With State.Criterias
                 If .DealerId.HasValue Then
-                    SetSelectedItem(Me.cboSearchDealer, .DealerId)
+                    SetSelectedItem(cboSearchDealer, .DealerId)
                 End If
                 If .IssueAddedToDate.HasValue Then
                     txtIssueAddedToDate.Text = GetDateFormattedString(.IssueAddedToDate)
@@ -541,13 +544,13 @@ Public Class ClaimByIssueSearch
                     txtIssueAddedFromDate.Text = GetDateFormattedString(.IssueAddedFromDate)
                 End If
 
-                SetSelectedItem(Me.cboSearchClaimStatus, .ClaimStatusCode)
-                SetSelectedItem(Me.cboSearchClaimIssueStatus, .IssueStatusXcd)
-                SetSelectedItem(Me.cboSearchIssueType, .IssueTypeId)
+                SetSelectedItem(cboSearchClaimStatus, .ClaimStatusCode)
+                SetSelectedItem(cboSearchClaimIssueStatus, .IssueStatusXcd)
+                SetSelectedItem(cboSearchIssueType, .IssueTypeId)
             End With
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -557,62 +560,62 @@ Public Class ClaimByIssueSearch
     Public Const FLOW_NAME As String = "AUTHORIZE_PENDING_CLAIM_CLONE"
     Sub StartNavControl()
         Dim nav As New ElitaPlusNavigation
-        Me.NavController = New NavControllerBase(nav.Flow(FLOW_NAME))
-        Me.NavController.State = New MyState
+        NavController = New NavControllerBase(nav.Flow(FLOW_NAME))
+        NavController.State = New MyState
     End Sub
 
     Function IsFlowStarted() As Boolean
-        Return Not Me.NavController Is Nothing AndAlso Me.NavController.CurrentFlow.Name = FLOW_NAME
+        Return NavController IsNot Nothing AndAlso NavController.CurrentFlow.Name = FLOW_NAME
     End Function
 #End Region
 
 
 #Region " Datagrid Related "
 
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As GridViewSortEventArgs) Handles Grid.Sorting
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression & " ASC"
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression & " ASC"
                 Else
-                    Me.State.SortExpression = e.SortExpression & " DESC"
+                    State.SortExpression = e.SortExpression & " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression & " ASC"
+                State.SortExpression = e.SortExpression & " ASC"
             End If
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     'The Binding Logic is here
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
         'Dim itemType As ListItemType = CType(e.Row.ItemType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
         Dim btnEditClaimItem As LinkButton
 
         Try
             If e.Row.RowType = DataControlRowType.DataRow OrElse (e.Row.RowType = DataControlRowType.Separator) Then
-                If (Not e.Row.Cells(GRID_COL_CLAIM_NUMBER_IDX).FindControl(GRID_COL_CLAIM_NUMBER_CTRL) Is Nothing) Then
+                If (e.Row.Cells(GRID_COL_CLAIM_NUMBER_IDX).FindControl(GRID_COL_CLAIM_NUMBER_CTRL) IsNot Nothing) Then
                     btnEditClaimItem = CType(e.Row.Cells(GRID_COL_CLAIM_NUMBER_IDX).FindControl(GRID_COL_CLAIM_NUMBER_CTRL), LinkButton)
                     btnEditClaimItem.CommandArgument = e.Row.RowIndex.ToString
                     btnEditClaimItem.CommandName = SELECT_COMMAND_NAME
                     btnEditClaimItem.Text = dvRow(Claim.ClaimIssueSearchDV.COL_CLAIM_NUMBER).ToString
                 End If
 
-                Me.PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_STATUS_IDX), dvRow(Claim.ClaimIssueSearchDV.COL_STATUS_CODE))
+                PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_STATUS_IDX), dvRow(Claim.ClaimIssueSearchDV.COL_STATUS_CODE))
                 e.Row.Cells(GRID_COL_STATUS_IDX).Text = LookupListNew.GetDescriptionFromCode("CLSTAT", dvRow(Claim.ClaimIssueSearchDV.COL_STATUS_CODE).ToString, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                 If (dvRow(Claim.ClaimIssueSearchDV.COL_STATUS_CODE).ToString = Codes.CLAIM_STATUS__ACTIVE) Then
                     e.Row.Cells(GRID_COL_STATUS_IDX).CssClass = "StatActive"
@@ -624,7 +627,7 @@ Public Class ClaimByIssueSearch
                 'Me.PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_SERVICE_CENTER_REF_NUMBER_IDX), dvRow(Claim.ClaimIssueSearchDV.COL_SERVICE_CENTER_REF_NUMBER))
                 'Me.PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_DEALER_IDX), dvRow(Claim.ClaimIssueSearchDV.COL_DEALER_CODE))
                 'Me.PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CERTIFICATE_IDX), dvRow(Claim.ClaimIssueSearchDV.COL_CERTIFICATE_NUMBER))
-                Me.PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_ISSUE_ADDED_DATE_IDX), GetLongDateFormattedString(CType(dvRow(Claim.ClaimIssueSearchDV.COL_ISSUE_ADDED_DATE), Date)))
+                PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_ISSUE_ADDED_DATE_IDX), GetLongDateFormattedString(CType(dvRow(Claim.ClaimIssueSearchDV.COL_ISSUE_ADDED_DATE), Date)))
                 'Me.PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_PRODUCT_CODE_IDX), dvRow(Claim.ClaimIssueSearchDV.COL_PRODUCT_CODE))
                 'Me.PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_AUTHORIZATION_NUMBER_IDX), dvRow(Claim.ClaimIssueSearchDV.COL_AUTHORIZATION_NUMBER))
                 'Me.PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_TRACKING_NUMBER_IDX), dvRow(Claim.ClaimIssueSearchDV.COL_TRACKING_NUMBER))
@@ -634,93 +637,93 @@ Public Class ClaimByIssueSearch
                 'Me.PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_ISSUE_TYPE_IDX), dvRow(Claim.ClaimIssueSearchDV.COL_CLAIM_ISSUE_TYPE))
                 'Me.PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_ISSUE_DESCRIPTION_IDX), dvRow(Claim.ClaimIssueSearchDV.COL_CLAIM_ISSUE_DESCRIPTION))
 
-                Me.PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_ID_IDX), dvRow(Claim.ClaimIssueSearchDV.COL_CLAIM_ID))
-                Me.PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_STATUS_CODE_IDX), dvRow(Claim.ClaimIssueSearchDV.COL_STATUS_CODE))
-                Me.PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_AUTH_TYPE_ID_IDX), dvRow(Claim.ClaimIssueSearchDV.COL_CLAIM_AUTH_TYPE_ID))
+                PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_ID_IDX), dvRow(Claim.ClaimIssueSearchDV.COL_CLAIM_ID))
+                PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_STATUS_CODE_IDX), dvRow(Claim.ClaimIssueSearchDV.COL_STATUS_CODE))
+                PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_AUTH_TYPE_ID_IDX), dvRow(Claim.ClaimIssueSearchDV.COL_CLAIM_AUTH_TYPE_ID))
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub cboPageSize_SelectedIndexChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.State.PageIndex = NewCurrentPageIndex(Grid, State.SearchDv.Count, State.PageSize)
+            State.PageIndex = NewCurrentPageIndex(Grid, State.SearchDv.Count, State.PageSize)
             Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-            Me.PopulateGrid()
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Public Sub Grid_RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+    Public Sub Grid_RowCommand(source As Object, e As GridViewCommandEventArgs) Handles Grid.RowCommand
         Dim rowIndex As Integer = 0
         Dim claimid As String = String.Empty
         Try
-            If (Not e.CommandArgument.ToString().Equals(String.Empty)) And (e.CommandName = SELECT_COMMAND_NAME) Then
+            If (Not e.CommandArgument.ToString().Equals(String.Empty)) AndAlso (e.CommandName = SELECT_COMMAND_NAME) Then
                 rowIndex = CInt(e.CommandArgument)
 
-                If Me.State Is Nothing Then
-                    Me.Trace(Me, "Restoring State")
-                    Me.RestoreState(New MyState)
+                If State Is Nothing Then
+                    Trace(Me, "Restoring State")
+                    RestoreState(New MyState)
                 End If
 
                 claimid = Grid.Rows(rowIndex).Cells(GRID_COL_CLAIM_ID_IDX).Text
-                Me.State.SelectedClaimId = New Guid(claimid)
+                State.SelectedClaimId = New Guid(claimid)
 
                 If Grid.Rows(rowIndex).Cells(GRID_COL_CLAIM_STATUS_CODE_IDX).Text = "P" Then
                     Dim claim_auth_type_code As String
                     Dim ClaimAutthTypeid As Guid = New Guid(Grid.Rows(rowIndex).Cells(GRID_COL_CLAIM_AUTH_TYPE_ID_IDX).Text) ' New Guid(BusinessObjectBase.FindRow(Me.State.selectedClaimId, Claim.ClaimSearchDV.COL_CLAIM_ID, Me.State.searchDV.Table)(Claim.ClaimSearchDV.COL_NAME_CLAIM_AUTH_TYPE_ID).ToString())
                     claim_auth_type_code = LookupListNew.GetCodeFromId(LookupListNew.LK_CLAIM_AUTHORIZATION_TYPE, ClaimAutthTypeid)
-                    Dim selectedClaimId As Guid = Me.State.SelectedClaimId
+                    Dim selectedClaimId As Guid = State.SelectedClaimId
                     If (claim_auth_type_code = "M") Then
-                        Me.NavController = Nothing
-                        Me.callPage(ClaimWizardForm.URL, New ClaimWizardForm.Parameters(ClaimWizardForm.ClaimWizardSteps.Step3, Nothing, selectedClaimId, Nothing))
+                        NavController = Nothing
+                        callPage(ClaimWizardForm.URL, New ClaimWizardForm.Parameters(ClaimWizardForm.ClaimWizardSteps.Step3, Nothing, selectedClaimId, Nothing))
                     Else
-                        Dim claimBo As Claim = ClaimFacade.Instance.GetClaim(Of Claim)(Me.State.SelectedClaimId)
-                        Me.NavController.FlowSession(FlowSessionKeys.SESSION_CLAIM) = claimBo
-                        Me.NavController.Navigate(Me, FlowEvents.EVENT_CLAIM_SELECTED)
+                        Dim claimBo As Claim = ClaimFacade.Instance.GetClaim(Of Claim)(State.SelectedClaimId)
+                        NavController.FlowSession(FlowSessionKeys.SESSION_CLAIM) = claimBo
+                        NavController.Navigate(Me, FlowEvents.EVENT_CLAIM_SELECTED)
 
                     End If
                 Else
-                    Me.NavController = Nothing
-                    Me.callPage(ClaimForm.URL, Me.State.SelectedClaimId)
+                    NavController = Nothing
+                    callPage(ClaimForm.URL, State.SelectedClaimId)
                 End If
 
 
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Public Sub RowCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Public Sub RowCreated(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As EventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = Grid.PageIndex
-            Me.State.SelectedClaimId = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = Grid.PageIndex
+            State.SelectedClaimId = Guid.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
 
 #Region "Ajax Funtions"
-    <System.Web.Services.WebMethod(), System.Web.Script.Services.ScriptMethod()>
-    Public Shared Function GetClaimIssueByType(ByVal issueTypestr As String) As System.Collections.Generic.List(Of WebControls.ListItem)
-        Dim listitems As System.Collections.Generic.List(Of WebControls.ListItem) = New System.Collections.Generic.List(Of WebControls.ListItem)
+    <WebMethod(), ScriptMethod()>
+    Public Shared Function GetClaimIssueByType(issueTypestr As String) As List(Of WebControls.ListItem)
+        Dim listitems As List(Of WebControls.ListItem) = New List(Of WebControls.ListItem)
         Dim issueTypeId As Guid
         Try
             issueTypeId = New Guid(issueTypestr)
@@ -730,7 +733,7 @@ Public Class ClaimByIssueSearch
 
         Dim dv As DataView = EntityIssue.GetClaimIssuesByIssueType(issueTypeId)
 
-        If Not dv Is Nothing AndAlso dv.Table.Rows.Count > 0 Then
+        If dv IsNot Nothing AndAlso dv.Table.Rows.Count > 0 Then
             dv.Table.Locale = CultureInfo.CurrentCulture
             dv.Sort = "description ASC"
 

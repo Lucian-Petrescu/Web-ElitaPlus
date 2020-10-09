@@ -13,7 +13,7 @@ Public Class GetClaimNumByCertAndPhone
 #End Region
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetClaimNumByCertAndPhoneDs)
+    Public Sub New(ds As GetClaimNumByCertAndPhoneDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -23,7 +23,7 @@ Public Class GetClaimNumByCertAndPhone
 
 #End Region
 #Region "Private Members"
-    Private Sub MapDataSet(ByVal ds As GetClaimNumByCertAndPhoneDs)
+    Private Sub MapDataSet(ds As GetClaimNumByCertAndPhoneDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -36,17 +36,17 @@ Public Class GetClaimNumByCertAndPhone
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
-    Private Sub Load(ByVal ds As GetClaimNumByCertAndPhoneDs)
+    Private Sub Load(ds As GetClaimNumByCertAndPhoneDs)
         Try
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw ex
         Catch ex As BOValidationException
@@ -58,7 +58,7 @@ Public Class GetClaimNumByCertAndPhone
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetClaimNumByCertAndPhoneDs)
+    Private Sub PopulateBOFromWebService(ds As GetClaimNumByCertAndPhoneDs)
         Try
             If ds.GetClaimNumByCertAndPhone.Count = 0 Then Exit Sub
 
@@ -87,29 +87,29 @@ Public Class GetClaimNumByCertAndPhone
 
 #Region "Properties"
 
-    Public Property CertNum() As String
+    Public Property CertNum As String
         Get
-            If Row(Me.DATA_COL_NAME_CERT_NUM) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CERT_NUM) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CERT_NUM), String)
+                Return CType(Row(DATA_COL_NAME_CERT_NUM), String)
             End If
         End Get
-        Set(ByVal Value As String)
-            Me.SetValue(Me.DATA_COL_NAME_CERT_NUM, Value)
+        Set
+            SetValue(DATA_COL_NAME_CERT_NUM, Value)
         End Set
     End Property
 
-    Public Property PhoneNum() As String
+    Public Property PhoneNum As String
         Get
-            If Row(Me.DATA_COL_NAME_PHONE_NUM) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_PHONE_NUM) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_PHONE_NUM), String)
+                Return CType(Row(DATA_COL_NAME_PHONE_NUM), String)
             End If
         End Get
-        Set(ByVal Value As String)
-            Me.SetValue(Me.DATA_COL_NAME_PHONE_NUM, Value)
+        Set
+            SetValue(DATA_COL_NAME_PHONE_NUM, Value)
         End Set
     End Property
 
@@ -135,8 +135,8 @@ Public Class GetClaimNumByCertAndPhone
             If Not IsSearchCriteriaValid() Then
                 strErrMsg = TranslationBase.TranslateLabelOrMessage("ERR_INVALID_SEARCH_CRITERA")
             Else
-                Me.Validate()
-                Dim _CertDataSet As DataSet = Certificate.GetCertsWithActiveClaimByCertNumAndPhone(Me.CertNum, Me.PhoneNum)
+                Validate()
+                Dim _CertDataSet As DataSet = Certificate.GetCertsWithActiveClaimByCertNumAndPhone(CertNum, PhoneNum)
                 If _CertDataSet.Tables(0).Rows.Count = 1 Then
                     If IsDBNull(_CertDataSet.Tables(0).Rows(0)("claim_number")) Then
                         strErrMsg = TranslationBase.TranslateLabelOrMessage("CLAIM_NOT_FOUND")

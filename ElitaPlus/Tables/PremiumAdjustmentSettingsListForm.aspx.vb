@@ -16,7 +16,7 @@ Public Class PremiumAdjustmentSettingsListForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -80,10 +80,10 @@ Public Class PremiumAdjustmentSettingsListForm
                 Dim s As String
                 Dim i As Integer
                 Dim sortExp As String = ""
-                For i = 0 To Me.SortColumns.Length - 1
-                    If Not Me.SortColumns(i) Is Nothing Then
-                        sortExp &= Me.SortColumns(i)
-                        If Me.IsSortDesc(i) Then sortExp &= " DESC"
+                For i = 0 To SortColumns.Length - 1
+                    If SortColumns(i) IsNot Nothing Then
+                        sortExp &= SortColumns(i)
+                        If IsSortDesc(i) Then sortExp &= " DESC"
                         sortExp &= ","
                     End If
                 Next
@@ -91,7 +91,7 @@ Public Class PremiumAdjustmentSettingsListForm
             End Get
         End Property
 
-        Public Sub ToggleSort1(ByVal gridColIndex As Integer)
+        Public Sub ToggleSort1(gridColIndex As Integer)
             IsSortDesc(gridColIndex) = Not IsSortDesc(gridColIndex)
         End Sub
 
@@ -108,32 +108,32 @@ Public Class PremiumAdjustmentSettingsListForm
         End Get
     End Property
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.MenuEnabled = True
-            Me.IsReturningFromChild = True
-            If Me.State.searchDV Is Nothing Then
-                Me.State.IsGridVisible = False
+            MenuEnabled = True
+            IsReturningFromChild = True
+            If State.searchDV Is Nothing Then
+                State.IsGridVisible = False
             Else
-                Me.State.IsGridVisible = True
+                State.IsGridVisible = True
             End If
             Dim retObj As PremiumAdjustmentSettingsForm.ReturnType = CType(ReturnPar, PremiumAdjustmentSettingsForm.ReturnType)
-            If Not retObj Is Nothing AndAlso retObj.BoChanged Then
-                Me.State.searchDV = Nothing
+            If retObj IsNot Nothing AndAlso retObj.BoChanged Then
+                State.searchDV = Nothing
             End If
             Select Case retObj.LastOperation
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    If Not retObj Is Nothing Then
+                    If retObj IsNot Nothing Then
                         If Not retObj.EditingBo.IsNew Then
-                            Me.State.PremiumAdjustmentSettingId = retObj.EditingBo.Id
+                            State.PremiumAdjustmentSettingId = retObj.EditingBo.Id
                         End If
                         'Me.State.IsGridVisible = True
                     End If
                 Case ElitaPlusPage.DetailPageCommand.Delete
-                    Me.AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
+                    AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
             End Select
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
@@ -141,72 +141,72 @@ Public Class PremiumAdjustmentSettingsListForm
 #End Region
 
 #Region "Page_Events"
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
-        Me.ErrorCtrl.Clear_Hide()
-        Me.SetStateProperties()
+        ErrorCtrl.Clear_Hide()
+        SetStateProperties()
         Try
-            If Not Me.IsPostBack Then
-                Me.SortDirection = PremiumAdjustmentSettings.PremiumAdjustnmentSettingSearchDV.COL_DEALER_CODE
+            If Not IsPostBack Then
+                SortDirection = PremiumAdjustmentSettings.PremiumAdjustnmentSettingSearchDV.COL_DEALER_CODE
                 ControlMgr.SetVisibleControl(Me, trPageSize, False)
                 PopulateDropdown()
-                Me.SetGridItemStyleColor(Grid)
-                Me.TranslateGridHeader(Me.Grid)
-                Me.TranslateGridControls(Me.Grid)
-                If Me.State.IsGridVisible Then
-                    If Not (Me.State.PageSize = DEFAULT_PAGE_SIZE) Then
-                        cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
-                        Grid.PageSize = Me.State.PageSize
+                SetGridItemStyleColor(Grid)
+                TranslateGridHeader(Grid)
+                TranslateGridControls(Grid)
+                If State.IsGridVisible Then
+                    If Not (State.PageSize = DEFAULT_PAGE_SIZE) Then
+                        cboPageSize.SelectedValue = CType(State.PageSize, String)
+                        Grid.PageSize = State.PageSize
                     End If
-                    Me.PopulateGrid()
+                    PopulateGrid()
                 End If
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
-        Me.ShowMissingTranslations(Me.ErrorCtrl)
+        ShowMissingTranslations(ErrorCtrl)
     End Sub
 #End Region
 
 #Region "Controlling Logic"
 
     Public Sub PopulateGrid()
-        If (Me.State.searchDV Is Nothing) Then
-            Me.State.searchDV = PremiumAdjustmentSettings.getList(Me.State.DealerId)
+        If (State.searchDV Is Nothing) Then
+            State.searchDV = PremiumAdjustmentSettings.getList(State.DealerId)
         End If
-        Me.State.searchDV.Sort = Me.SortDirection
-        Me.Grid.AutoGenerateColumns = False
-        SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.PremiumAdjustmentSettingId, Me.Grid, Me.State.PageIndex)
+        State.searchDV.Sort = SortDirection
+        Grid.AutoGenerateColumns = False
+        SetPageAndSelectedIndexFromGuid(State.searchDV, State.PremiumAdjustmentSettingId, Grid, State.PageIndex)
         SortAndBindGrid()
 
     End Sub
 
     Private Sub SortAndBindGrid()
-        Me.State.PageIndex = Me.Grid.PageIndex
-        If (Me.State.searchDV.Count = 0) Then
+        State.PageIndex = Grid.PageIndex
+        If (State.searchDV.Count = 0) Then
 
-            Me.State.bnoRow = True
-            CreateHeaderForEmptyGrid(Grid, Me.SortDirection)
+            State.bnoRow = True
+            CreateHeaderForEmptyGrid(Grid, SortDirection)
         Else
-            Me.State.bnoRow = False
-            Me.Grid.Enabled = True
-            Me.Grid.DataSource = Me.State.searchDV
-            HighLightSortColumn(Grid, Me.SortDirection)
-            Me.Grid.DataBind()
+            State.bnoRow = False
+            Grid.Enabled = True
+            Grid.DataSource = State.searchDV
+            HighLightSortColumn(Grid, SortDirection)
+            Grid.DataBind()
         End If
         If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
 
 
 
-        ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
 
-        ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+        ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-        Session("recCount") = Me.State.searchDV.Count
+        Session("recCount") = State.searchDV.Count
 
-        If Me.Grid.Visible Then
-            Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+        If Grid.Visible Then
+            lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
         End If
 
     End Sub
@@ -224,11 +224,11 @@ Public Class PremiumAdjustmentSettingsListForm
 
     End Sub
 
-    Private Sub moDealerMultipleDrop_SelectedDropChanged(ByVal aSrc As Common.MultipleColumnDDLabelControl) Handles moDealerMultipleDrop.SelectedDropChanged
+    Private Sub moDealerMultipleDrop_SelectedDropChanged(aSrc As Common.MultipleColumnDDLabelControl) Handles moDealerMultipleDrop.SelectedDropChanged
         Try
-            Me.State.DealerId = Me.DealerMultipleDrop.SelectedGuid()
+            State.DealerId = DealerMultipleDrop.SelectedGuid()
         Catch ex As Exception
-            HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
@@ -242,85 +242,85 @@ Public Class PremiumAdjustmentSettingsListForm
         Get
             Return ViewState("SortDirection").ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             ViewState("SortDirection") = value
         End Set
     End Property
     'The Binding Logic is here
-    Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-        If Not dvRow Is Nothing And Not Me.State.bnoRow Then
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                e.Row.Cells(Me.GRID_COL_DEALER_CODE_IDX).Text = dvRow(PremiumAdjustmentSettings.PremiumAdjustnmentSettingSearchDV.COL_DEALER_CODE).ToString
-                e.Row.Cells(Me.GRID_COL_ADJUSTMENT_BY_IDX).Text = LookupListNew.GetDescriptionFromId("FIN_ADJ_BY", New Guid(GetGuidStringFromByteArray(CType(dvRow(PremiumAdjustmentSettings.PremiumAdjustnmentSettingSearchDV.COL_ADJUSTMENT_BY), Byte()))))
-                e.Row.Cells(Me.GRID_COL_EFFECTIVE_DATE_IDX).Text = dvRow(PremiumAdjustmentSettings.PremiumAdjustnmentSettingSearchDV.COL_EFFECTIVE_DATE).ToString
-                e.Row.Cells(Me.GRID_COL_PREMIUM_ADJUSTMENT_SETTING_ID_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(PremiumAdjustmentSettings.PremiumAdjustnmentSettingSearchDV.COL_PREMIUM_ADJUSTMENT_SETTING_ID), Byte()))
+        If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
+                e.Row.Cells(GRID_COL_DEALER_CODE_IDX).Text = dvRow(PremiumAdjustmentSettings.PremiumAdjustnmentSettingSearchDV.COL_DEALER_CODE).ToString
+                e.Row.Cells(GRID_COL_ADJUSTMENT_BY_IDX).Text = LookupListNew.GetDescriptionFromId("FIN_ADJ_BY", New Guid(GetGuidStringFromByteArray(CType(dvRow(PremiumAdjustmentSettings.PremiumAdjustnmentSettingSearchDV.COL_ADJUSTMENT_BY), Byte()))))
+                e.Row.Cells(GRID_COL_EFFECTIVE_DATE_IDX).Text = dvRow(PremiumAdjustmentSettings.PremiumAdjustnmentSettingSearchDV.COL_EFFECTIVE_DATE).ToString
+                e.Row.Cells(GRID_COL_PREMIUM_ADJUSTMENT_SETTING_ID_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(PremiumAdjustmentSettings.PremiumAdjustnmentSettingSearchDV.COL_PREMIUM_ADJUSTMENT_SETTING_ID), Byte()))
             End If
         End If
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
         Try
-            Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
+            Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
 
-            If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                If Me.SortDirection.EndsWith(" ASC") Then
-                    Me.SortDirection = e.SortExpression + " DESC"
+            If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                If SortDirection.EndsWith(" ASC") Then
+                    SortDirection = e.SortExpression + " DESC"
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
             Else
-                Me.SortDirection = e.SortExpression + " ASC"
+                SortDirection = e.SortExpression + " ASC"
             End If
 
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Public Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+    Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
         Try
             If e.CommandName = "SelectAction" Then
                 Dim index As Integer = CInt(e.CommandArgument)
-                Me.State.PremiumAdjustmentSettingId = New Guid(Me.Grid.Rows(index).Cells(Me.GRID_COL_PREMIUM_ADJUSTMENT_SETTING_ID_IDX).Text)
-                Me.callPage(PremiumAdjustmentSettingsForm.URL, Me.State.PremiumAdjustmentSettingId)
+                State.PremiumAdjustmentSettingId = New Guid(Grid.Rows(index).Cells(GRID_COL_PREMIUM_ADJUSTMENT_SETTING_ID_IDX).Text)
+                callPage(PremiumAdjustmentSettingsForm.URL, State.PremiumAdjustmentSettingId)
             ElseIf e.CommandName = "Sort" Then
                 Grid.DataMember = e.CommandArgument.ToString
-                Me.PopulateGrid()
+                PopulateGrid()
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
-    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
 
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
-            Me.State.PageIndex = e.NewPageIndex
-            Me.State.PremiumAdjustmentSettingId = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = e.NewPageIndex
+            State.PremiumAdjustmentSettingId = Guid.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-            Me.State.PageSize = Grid.PageSize
-            Me.PopulateGrid()
+            State.PageSize = Grid.PageSize
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 #End Region
@@ -328,45 +328,45 @@ Public Class PremiumAdjustmentSettingsListForm
 #Region " Buttons Clicks "
     Private Sub SetStateProperties()
 
-        Me.State.DealerId = Me.DealerMultipleDrop.SelectedGuid()
+        State.DealerId = DealerMultipleDrop.SelectedGuid()
 
     End Sub
 
-    Private Sub btnSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As System.EventArgs) Handles btnSearch.Click
         Try
-            Me.State.PageIndex = 0
-            Me.State.PremiumAdjustmentSettingId = Guid.Empty
-            Me.State.IsGridVisible = True
-            Me.State.searchDV = Nothing
-            Me.State.searchBtnClicked = True
-            Me.PopulateGrid()
-            Me.State.searchBtnClicked = False
+            State.PageIndex = 0
+            State.PremiumAdjustmentSettingId = Guid.Empty
+            State.IsGridVisible = True
+            State.searchDV = Nothing
+            State.searchBtnClicked = True
+            PopulateGrid()
+            State.searchBtnClicked = False
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnAdd_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd_WRITE.Click
+    Private Sub btnAdd_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnAdd_WRITE.Click
         Try
-            Me.callPage(PremiumAdjustmentSettingsForm.URL)
+            callPage(PremiumAdjustmentSettingsForm.URL)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnClearSearch_Click1(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click1(sender As Object, e As System.EventArgs) Handles btnClearSearch.Click
         Try
             ClearSearchCriteria()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
     Private Sub ClearSearchCriteria()
 
         Try
-            Me.DealerMultipleDrop.SelectedIndex = Me.BLANK_ITEM_SELECTED
+            DealerMultipleDrop.SelectedIndex = BLANK_ITEM_SELECTED
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub

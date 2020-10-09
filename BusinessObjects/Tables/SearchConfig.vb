@@ -4,7 +4,7 @@
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -18,20 +18,20 @@
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDs As DataSet)
+    Public Sub New(id As Guid, familyDs As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDs As DataSet)
+    Public Sub New(familyDs As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
     
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -53,10 +53,10 @@
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)               
+    Protected Sub Load(id As Guid)               
         Try
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(SearchConfigDAL.TableName).Rows.Remove(Row)
                 End If
             End If
@@ -88,7 +88,7 @@
 #Region "Properties"
     
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(SearchConfigDAL.TableKeyName) Is DBNull.Value Then
                 Return Nothing
@@ -99,7 +99,7 @@
     End Property
 	
     <ValueMandatory(""),ValidStringLength("", Max:=400)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If row(SearchConfigDAL.ColNameCode) Is DBNull.Value Then
@@ -108,7 +108,7 @@
                 Return CType(row(SearchConfigDAL.ColNameCode), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(SearchConfigDAL.ColNameCode, Value)
         End Set
@@ -116,7 +116,7 @@
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=4000)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If row(SearchConfigDAL.ColNameDescription) Is DBNull.Value Then
@@ -125,7 +125,7 @@
                 Return CType(row(SearchConfigDAL.ColNameDescription), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(SearchConfigDAL.ColNameDescription, Value)
         End Set
@@ -133,7 +133,7 @@
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=400)> _
-    Public Property SearchTypeXcd() As String
+    Public Property SearchTypeXcd As String
         Get
             CheckDeleted()
             If row(SearchConfigDAL.ColNameSearchTypeXcd) Is DBNull.Value Then
@@ -142,7 +142,7 @@
                 Return CType(row(SearchConfigDAL.ColNameSearchTypeXcd), String)
             End If
         End Get
-        Set(ByVal value As String)
+        Set
             CheckDeleted()
             SetValue(SearchConfigDAL.ColNameSearchTypeXcd, Value)
         End Set

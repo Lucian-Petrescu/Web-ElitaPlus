@@ -27,7 +27,7 @@ Public Class PremiumAdjustmentSettingsForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -61,9 +61,9 @@ Public Class PremiumAdjustmentSettingsForm
         Public LastOperation As DetailPageCommand
         Public EditingBo As PremiumAdjustmentSettings
         Public BoChanged As Boolean = False
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As PremiumAdjustmentSettings, Optional ByVal boChanged As Boolean = False)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(LastOp As DetailPageCommand, curEditingBo As PremiumAdjustmentSettings, Optional ByVal boChanged As Boolean = False)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
             Me.BoChanged = boChanged
         End Sub
     End Class
@@ -91,15 +91,15 @@ Public Class PremiumAdjustmentSettingsForm
         End Get
     End Property
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 'Get the id from the parent
-                Me.State.MyBO = New PremiumAdjustmentSettings(CType(Me.CallingParameters, Guid))
-                Me.State.AdjustmentSettingChanged = False
+                State.MyBO = New PremiumAdjustmentSettings(CType(CallingParameters, Guid))
+                State.AdjustmentSettingChanged = False
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
@@ -107,41 +107,41 @@ Public Class PremiumAdjustmentSettingsForm
 #End Region
 
 #Region "Page Events"
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
-        Me.ErrorCtrl.Clear_Hide()
+        ErrorCtrl.Clear_Hide()
         Try
             cboFinancialAdjustmentBy.Attributes.Add("onChange", "fabDDOnChange(this);")
 
             Dim oEffectiveDateImage As ImageButton = CType(FindControl("moEffectiveDateImage"), ImageButton)
-            If (Not oEffectiveDateImage Is Nothing) Then
-                Me.AddCalendar(oEffectiveDateImage, CType(FindControl("TextBoxEffectiveDate"), TextBox))
+            If (oEffectiveDateImage IsNot Nothing) Then
+                AddCalendar(oEffectiveDateImage, CType(FindControl("TextBoxEffectiveDate"), TextBox))
             End If
 
             Dim oExpirationDateImage As ImageButton = CType(FindControl("moExpirationDateImage"), ImageButton)
-            If (Not oExpirationDateImage Is Nothing) Then
-                Me.AddCalendar(oExpirationDateImage, CType(FindControl("TextBoxExpirationDate"), TextBox))
+            If (oExpirationDateImage IsNot Nothing) Then
+                AddCalendar(oExpirationDateImage, CType(FindControl("TextBoxExpirationDate"), TextBox))
             End If
 
-            If Not Me.IsPostBack Then
-                Me.MenuEnabled = False
-                Me.AddConfirmation(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT)
-                If Me.State.MyBO Is Nothing Then
-                    Me.State.MyBO = New PremiumAdjustmentSettings
+            If Not IsPostBack Then
+                MenuEnabled = False
+                AddConfirmation(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT)
+                If State.MyBO Is Nothing Then
+                    State.MyBO = New PremiumAdjustmentSettings
                 End If
                 PopulateDropdowns()
                 InitializeDealerDropDowns()
-                Me.PopulateFormFromBOs()
+                PopulateFormFromBOs()
                 'Me.EnableDisableFields()
             End If
             BindBoPropertiesToLabels()
             CheckIfComingFromSaveConfirm()
-            Me.EnableDisableFields()
+            EnableDisableFields()
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
-        Me.ShowMissingTranslations(Me.ErrorCtrl)
+        ShowMissingTranslations(ErrorCtrl)
     End Sub
 #End Region
 
@@ -155,8 +155,8 @@ Public Class PremiumAdjustmentSettingsForm
         DealerMultipleDrop.BindData(LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies))
         DealerMultipleDrop.AutoPostBackDD = True
 
-        If Not Me.State.MyBO Is Nothing Then
-            Me.DealerMultipleDrop.SelectedGuid = Me.State.MyBO.DealerId
+        If State.MyBO IsNot Nothing Then
+            DealerMultipleDrop.SelectedGuid = State.MyBO.DealerId
         End If
 
 
@@ -172,34 +172,34 @@ Public Class PremiumAdjustmentSettingsForm
         ControlMgr.SetEnableControl(Me, btnNew_WRITE, True)
         ControlMgr.SetEnableControl(Me, btnCopy_WRITE, True)
 
-        If (GetGuidFromString(Me.cboFinancialAdjustmentBy.SelectedValue) = Guid.Empty) Then
-            Me.LabelAdjustmentPercentage.Style.Add("display", "none")
-            Me.TextBoxAdjustmentPercentage.Style.Add("display", "none")
-            Me.LabelAdjustmentAmount.Style.Add("display", "none")
-            Me.TextBoxAdjustmentAmount.Style.Add("display", "none")
-            Me.LabelAdjustmentBasedOn.Style.Add("display", "none")
-            Me.cboAdjustmentBasedOn.Style.Add("display", "none")
-        ElseIf (LookupListNew.GetCodeFromId("FIN_ADJ_BY", GetGuidFromString(Me.cboFinancialAdjustmentBy.SelectedValue)) = FIN_ADJ_BY_PERCENTAGE) Then
-            Me.LabelAdjustmentAmount.Style.Add("display", "none")
-            Me.TextBoxAdjustmentAmount.Style.Add("display", "none")
+        If (GetGuidFromString(cboFinancialAdjustmentBy.SelectedValue) = Guid.Empty) Then
+            LabelAdjustmentPercentage.Style.Add("display", "none")
+            TextBoxAdjustmentPercentage.Style.Add("display", "none")
+            LabelAdjustmentAmount.Style.Add("display", "none")
+            TextBoxAdjustmentAmount.Style.Add("display", "none")
+            LabelAdjustmentBasedOn.Style.Add("display", "none")
+            cboAdjustmentBasedOn.Style.Add("display", "none")
+        ElseIf (LookupListNew.GetCodeFromId("FIN_ADJ_BY", GetGuidFromString(cboFinancialAdjustmentBy.SelectedValue)) = FIN_ADJ_BY_PERCENTAGE) Then
+            LabelAdjustmentAmount.Style.Add("display", "none")
+            TextBoxAdjustmentAmount.Style.Add("display", "none")
 
-            Me.LabelAdjustmentPercentage.Style.Add("display", "inline")
-            Me.TextBoxAdjustmentPercentage.Style.Add("display", "inline")
+            LabelAdjustmentPercentage.Style.Add("display", "inline")
+            TextBoxAdjustmentPercentage.Style.Add("display", "inline")
 
-            Me.LabelAdjustmentBasedOn.Style.Add("display", "none")
-            Me.cboAdjustmentBasedOn.Style.Add("display", "none")
-        ElseIf (LookupListNew.GetCodeFromId("FIN_ADJ_BY", GetGuidFromString(Me.cboFinancialAdjustmentBy.SelectedValue)) = FIN_ADJ_BY_AMOUNT) Then
-            Me.LabelAdjustmentPercentage.Style.Add("display", "none")
-            Me.TextBoxAdjustmentPercentage.Style.Add("display", "none")
+            LabelAdjustmentBasedOn.Style.Add("display", "none")
+            cboAdjustmentBasedOn.Style.Add("display", "none")
+        ElseIf (LookupListNew.GetCodeFromId("FIN_ADJ_BY", GetGuidFromString(cboFinancialAdjustmentBy.SelectedValue)) = FIN_ADJ_BY_AMOUNT) Then
+            LabelAdjustmentPercentage.Style.Add("display", "none")
+            TextBoxAdjustmentPercentage.Style.Add("display", "none")
 
-            Me.LabelAdjustmentAmount.Style.Add("display", "inline")
-            Me.TextBoxAdjustmentAmount.Style.Add("display", "inline")
+            LabelAdjustmentAmount.Style.Add("display", "inline")
+            TextBoxAdjustmentAmount.Style.Add("display", "inline")
 
-            Me.LabelAdjustmentBasedOn.Style.Add("display", "inline")
-            Me.cboAdjustmentBasedOn.Style.Add("display", "inline")
+            LabelAdjustmentBasedOn.Style.Add("display", "inline")
+            cboAdjustmentBasedOn.Style.Add("display", "inline")
         End If
         'New With Copy Button
-        If Me.State.MyBO.IsNew Then
+        If State.MyBO.IsNew Then
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, False)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, False)
@@ -207,38 +207,38 @@ Public Class PremiumAdjustmentSettingsForm
     End Sub
 
     Protected Sub BindBoPropertiesToLabels()
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "AdjustmentBy", Me.LabeFinancialAdjustmentBy)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "AdjustmentBasedOn", Me.LabelAdjustmentBasedOn)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "AdjustmentPercentage", Me.LabelAdjustmentPercentage)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "AdjustmentAmount", Me.LabelAdjustmentAmount)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "EffectiveDate", Me.LabelEffectiveDate)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "ExpirationDate", Me.LabelExpirationDate)
-        Me.ClearGridHeadersAndLabelsErrSign()
+        BindBOPropertyToLabel(State.MyBO, "AdjustmentBy", LabeFinancialAdjustmentBy)
+        BindBOPropertyToLabel(State.MyBO, "AdjustmentBasedOn", LabelAdjustmentBasedOn)
+        BindBOPropertyToLabel(State.MyBO, "AdjustmentPercentage", LabelAdjustmentPercentage)
+        BindBOPropertyToLabel(State.MyBO, "AdjustmentAmount", LabelAdjustmentAmount)
+        BindBOPropertyToLabel(State.MyBO, "EffectiveDate", LabelEffectiveDate)
+        BindBOPropertyToLabel(State.MyBO, "ExpirationDate", LabelExpirationDate)
+        ClearGridHeadersAndLabelsErrSign()
     End Sub
 
     Protected Sub PopulateDropdowns()
         'Me.BindListControlToDataView(Me.cboAdjustmentBasedOn, LookupListNew.DropdownLookupList("ABO", langId, True))
-        Me.cboAdjustmentBasedOn.Populate(CommonConfigManager.Current.ListManager.GetList("ABO", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+        cboAdjustmentBasedOn.Populate(CommonConfigManager.Current.ListManager.GetList("ABO", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
             {
                 .AddBlankItem = True
             })
 
         'Me.BindListControlToDataView(Me.cboFinancialAdjustmentBy, LookupListNew.DropdownLookupList("FAB", langId, True))
-        Me.cboFinancialAdjustmentBy.Populate(CommonConfigManager.Current.ListManager.GetList("FAB", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+        cboFinancialAdjustmentBy.Populate(CommonConfigManager.Current.ListManager.GetList("FAB", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
             {
                 .AddBlankItem = True
             })
     End Sub
 
     Protected Sub PopulateFormFromBOs()
-        With Me.State.MyBO
-            Me.PopulateControlFromBOProperty(Me.TextBoxAdjustmentAmount, .AdjustmentAmount)
-            Me.PopulateControlFromBOProperty(Me.TextBoxAdjustmentPercentage, .AdjustmentPercentage)
-            Me.PopulateControlFromBOProperty(Me.TextBoxEffectiveDate, .EffectiveDate)
-            Me.PopulateControlFromBOProperty(Me.TextBoxExpirationDate, .ExpirationDate)
+        With State.MyBO
+            PopulateControlFromBOProperty(TextBoxAdjustmentAmount, .AdjustmentAmount)
+            PopulateControlFromBOProperty(TextBoxAdjustmentPercentage, .AdjustmentPercentage)
+            PopulateControlFromBOProperty(TextBoxEffectiveDate, .EffectiveDate)
+            PopulateControlFromBOProperty(TextBoxExpirationDate, .ExpirationDate)
 
-            Me.SetSelectedItem(Me.cboFinancialAdjustmentBy, .AdjustmentBy)
-            Me.SetSelectedItem(Me.cboAdjustmentBasedOn, .AdjustmentBasedOn)
+            SetSelectedItem(cboFinancialAdjustmentBy, .AdjustmentBy)
+            SetSelectedItem(cboAdjustmentBasedOn, .AdjustmentBasedOn)
 
             If Not LookupListNew.GetIdFromCode("FIN_ADJ_BY", FIN_ADJ_BY_AMOUNT) = Guid.Empty Then
                 hdFinAdjustByAmt.Value = LookupListNew.GetIdFromCode("FIN_ADJ_BY", FIN_ADJ_BY_AMOUNT).ToString
@@ -253,77 +253,77 @@ Public Class PremiumAdjustmentSettingsForm
     End Sub
 
     Protected Sub PopulateBOsFormFrom()
-        With Me.State.MyBO
-            Me.PopulateBOProperty(Me.State.MyBO, "AdjustmentBy", Me.cboFinancialAdjustmentBy)
-            Me.PopulateBOProperty(Me.State.MyBO, "AdjustmentBasedOn", Me.cboAdjustmentBasedOn)
-            Me.PopulateBOProperty(Me.State.MyBO, "AdjustmentPercentage", Me.TextBoxAdjustmentPercentage)
-            Me.PopulateBOProperty(Me.State.MyBO, "AdjustmentAmount", Me.TextBoxAdjustmentAmount)
-            Me.PopulateBOProperty(Me.State.MyBO, "EffectiveDate", Me.TextBoxEffectiveDate)
-            Me.PopulateBOProperty(Me.State.MyBO, "ExpirationDate", Me.TextBoxExpirationDate)
-            If Me.State.MyBO.IsNew And ElitaPlusIdentity.Current.ActiveUser.Companies.Count > 1 Then
-                Me.State.MyBO.DealerId = Me.DealerMultipleDrop.SelectedGuid
+        With State.MyBO
+            PopulateBOProperty(State.MyBO, "AdjustmentBy", cboFinancialAdjustmentBy)
+            PopulateBOProperty(State.MyBO, "AdjustmentBasedOn", cboAdjustmentBasedOn)
+            PopulateBOProperty(State.MyBO, "AdjustmentPercentage", TextBoxAdjustmentPercentage)
+            PopulateBOProperty(State.MyBO, "AdjustmentAmount", TextBoxAdjustmentAmount)
+            PopulateBOProperty(State.MyBO, "EffectiveDate", TextBoxEffectiveDate)
+            PopulateBOProperty(State.MyBO, "ExpirationDate", TextBoxExpirationDate)
+            If State.MyBO.IsNew AndAlso ElitaPlusIdentity.Current.ActiveUser.Companies.Count > 1 Then
+                State.MyBO.DealerId = DealerMultipleDrop.SelectedGuid
             End If
         End With
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Sub
 
 
     Protected Sub CreateNew()
-        Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
+        State.ScreenSnapShotBO = Nothing 'Reset the backup copy
 
-        Me.State.MyBO = New PremiumAdjustmentSettings
-        Me.PopulateFormFromBOs()
-        Me.EnableDisableFields()
+        State.MyBO = New PremiumAdjustmentSettings
+        PopulateFormFromBOs()
+        EnableDisableFields()
     End Sub
 
     Protected Sub CreateNewWithCopy()
-        Me.State.MyBO = New PremiumAdjustmentSettings
-        Me.PopulateBOsFormFrom()
-        Me.EnableDisableFields()
+        State.MyBO = New PremiumAdjustmentSettings
+        PopulateBOsFormFrom()
+        EnableDisableFields()
 
         'create the backup copy for undo
-        Me.State.ScreenSnapShotBO = New PremiumAdjustmentSettings
-        Me.State.ScreenSnapShotBO.Clone(Me.State.MyBO)
+        State.ScreenSnapShotBO = New PremiumAdjustmentSettings
+        State.ScreenSnapShotBO.Clone(State.MyBO)
     End Sub
 
     Protected Sub CheckIfComingFromSaveConfirm()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
         'If Not confResponse Is Nothing AndAlso confResponse = Me.CONFIRM_MESSAGE_OK Then
-        If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
-            Select Case Me.State.actionInProgress
+        If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
+            Select Case State.actionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.State.MyBO.Save()
-                    Me.State.AdjustmentSettingChanged = True
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.AdjustmentSettingChanged))
+                    State.MyBO.Save()
+                    State.AdjustmentSettingChanged = True
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.AdjustmentSettingChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.State.MyBO.Save()
-                    Me.State.AdjustmentSettingChanged = True
-                    Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                    Me.CreateNew()
+                    State.MyBO.Save()
+                    State.AdjustmentSettingChanged = True
+                    AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    Me.State.MyBO.Save()
-                    Me.State.AdjustmentSettingChanged = True
-                    Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                    Me.CreateNewWithCopy()
+                    State.MyBO.Save()
+                    State.AdjustmentSettingChanged = True
+                    AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                    CreateNewWithCopy()
             End Select
             'ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.CONFIRM_MESSAGE_CANCEL Then
-        ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-            Select Case Me.State.actionInProgress
+        ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+            Select Case State.actionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.AdjustmentSettingChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.AdjustmentSettingChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.CreateNew()
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    Me.CreateNewWithCopy()
+                    CreateNewWithCopy()
             End Select
         End If
 
         'Clean after consuming the action
-        Me.State.actionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-        Me.HiddenSaveChangesPromptResponse.Value = ""
+        State.actionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        HiddenSaveChangesPromptResponse.Value = ""
     End Sub
 
 
@@ -331,107 +331,107 @@ Public Class PremiumAdjustmentSettingsForm
 
 #Region "Button Clicks"
 
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
                 'Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.actionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.actionInProgress = ElitaPlusPage.DetailPageCommand.Back
             Else
-                Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.AdjustmentSettingChanged))
+                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.AdjustmentSettingChanged))
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
         Try
             Dim errors() As ValidationError = {New ValidationError("Adjustment Based On is required", GetType(PremiumAdjustmentSettings), Nothing, "AdjustmentBasedOn", Nothing)}
-            Me.PopulateBOsFormFrom()
-            If ((Me.State.MyBO.AdjustmentBasedOn.ToString = Guid.Empty.ToString) And (Me.State.MyBO.AdjustmentBy.ToString = LookupListNew.GetIdFromCode("FIN_ADJ_BY", FIN_ADJ_BY_AMOUNT).ToString)) Then
+            PopulateBOsFormFrom()
+            If ((State.MyBO.AdjustmentBasedOn.ToString = Guid.Empty.ToString) AndAlso (State.MyBO.AdjustmentBy.ToString = LookupListNew.GetIdFromCode("FIN_ADJ_BY", FIN_ADJ_BY_AMOUNT).ToString)) Then
                 Throw New BOValidationException(errors, GetType(PremiumAdjustmentSettings).FullName)
             End If
 
-            If Me.State.MyBO.IsDirty Then
-                If Me.State.MyBO.IsNew Then
-                    Me.State.MyBO.DealerId = Me.DealerMultipleDrop.SelectedGuid
+            If State.MyBO.IsDirty Then
+                If State.MyBO.IsNew Then
+                    State.MyBO.DealerId = DealerMultipleDrop.SelectedGuid
                 End If
-                Me.State.MyBO.Save()
-                Me.State.AdjustmentSettingChanged = True
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
-                Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                State.MyBO.Save()
+                State.AdjustmentSettingChanged = True
+                PopulateFormFromBOs()
+                EnableDisableFields()
+                AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
             Else
-                Me.AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
+                AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnUndo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+    Private Sub btnUndo_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
         Try
-            If Not Me.State.MyBO.IsNew Then
+            If Not State.MyBO.IsNew Then
                 'Reload from the DB
-                Me.State.MyBO = New PremiumAdjustmentSettings(Me.State.MyBO.Id)
-            ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+                State.MyBO = New PremiumAdjustmentSettings(State.MyBO.Id)
+            ElseIf State.ScreenSnapShotBO IsNot Nothing Then
                 'It was a new with copy
-                Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                State.MyBO.Clone(State.ScreenSnapShotBO)
             Else
-                Me.State.MyBO = New PremiumAdjustmentSettings
+                State.MyBO = New PremiumAdjustmentSettings
             End If
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
+            PopulateFormFromBOs()
+            EnableDisableFields()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+    Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
         Try
-            Me.State.MyBO.Delete()
-            Me.State.MyBO.Save()
-            Me.State.AdjustmentSettingChanged = True
-            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.MyBO, Me.State.AdjustmentSettingChanged))
+            State.MyBO.Delete()
+            State.MyBO.Save()
+            State.AdjustmentSettingChanged = True
+            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, State.MyBO, State.AdjustmentSettingChanged))
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.State.MyBO.RejectChanges()
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            State.MyBO.RejectChanges()
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+    Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
-                Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                Me.State.actionInProgress = ElitaPlusPage.DetailPageCommand.New_
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
+                AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, HiddenSaveChangesPromptResponse)
+                State.actionInProgress = ElitaPlusPage.DetailPageCommand.New_
             Else
-                Me.CreateNew()
+                CreateNew()
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
 
 
-    Private Sub btnCopy_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+    Private Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
         Try
-            Me.PopulateBOsFormFrom()
-            If Me.State.MyBO.IsDirty Then
-                Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                Me.State.actionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+            PopulateBOsFormFrom()
+            If State.MyBO.IsDirty Then
+                AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, HiddenSaveChangesPromptResponse)
+                State.actionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
             Else
-                Me.CreateNewWithCopy()
+                CreateNewWithCopy()
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 

@@ -72,7 +72,7 @@ Namespace Tables
                 Get
                     Return mnPageIndex
                 End Get
-                Set(ByVal Value As Integer)
+                Set(Value As Integer)
                     mnPageIndex = Value
                 End Set
             End Property
@@ -81,7 +81,7 @@ Namespace Tables
                 Get
                     Return mnPageSize
                 End Get
-                Set(ByVal Value As Integer)
+                Set(Value As Integer)
                     mnPageSize = Value
                 End Set
             End Property
@@ -90,7 +90,7 @@ Namespace Tables
                 Get
                     Return msPageSort
                 End Get
-                Set(ByVal Value As String)
+                Set(Value As String)
                     msPageSort = Value
                 End Set
             End Property
@@ -99,7 +99,7 @@ Namespace Tables
                 Get
                     Return moSearchDataView
                 End Get
-                Set(ByVal Value As DataView)
+                Set(Value As DataView)
                     moSearchDataView = Value
                 End Set
             End Property
@@ -124,10 +124,10 @@ Namespace Tables
                     Dim s As String
                     Dim i As Integer
                     Dim sortExp As String = ""
-                    For i = 0 To Me.SortColumns.Length - 1
-                        If Not Me.SortColumns(i) Is Nothing Then
-                            sortExp &= Me.SortColumns(i)
-                            If Me.IsSortDesc(i) Then sortExp &= " DESC"
+                    For i = 0 To SortColumns.Length - 1
+                        If SortColumns(i) IsNot Nothing Then
+                            sortExp &= SortColumns(i)
+                            If IsSortDesc(i) Then sortExp &= " DESC"
                             sortExp &= ","
                         End If
                     Next
@@ -135,7 +135,7 @@ Namespace Tables
                 End Get
             End Property
 
-            Public Sub ToggleSort1(ByVal gridColIndex As Integer)
+            Public Sub ToggleSort1(gridColIndex As Integer)
                 IsSortDesc(gridColIndex) = Not IsSortDesc(gridColIndex)
             End Sub
 
@@ -156,36 +156,36 @@ Namespace Tables
 
         Private IsReturningFromChild As Boolean = False
 
-        Public Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Public Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.IsReturningFromChild = True
-                If Me.State.searchDV Is Nothing Then
-                    Me.State.IsGridVisible = False
+                IsReturningFromChild = True
+                If State.searchDV Is Nothing Then
+                    State.IsGridVisible = False
                 Else
-                    Me.State.IsGridVisible = True
+                    State.IsGridVisible = True
                 End If
                 Dim retObj As ReturnType = CType(ReturnPar, ReturnType)
-                If Not retObj Is Nothing AndAlso retObj.BoChanged Then
-                    Me.State.searchDV = Nothing
+                If retObj IsNot Nothing AndAlso retObj.BoChanged Then
+                    State.searchDV = Nothing
                 End If
-                If Not retObj Is Nothing Then
+                If retObj IsNot Nothing Then
 
                     Select Case retObj.LastOperation
                         Case ElitaPlusPage.DetailPageCommand.Back
-                            Me.State.moEarningPatternId = retObj.moEarningPatternId
+                            State.moEarningPatternId = retObj.moEarningPatternId
                         Case Else
-                            Me.State.moEarningPatternId = Guid.Empty
+                            State.moEarningPatternId = Guid.Empty
                     End Select
-                    If Me.State.IsGridVisible Then
-                        moDataGrid.PageIndex = Me.State.PageIndex
-                        moDataGrid.PageSize = Me.State.PageSize
-                        cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
-                        moDataGrid.PageSize = Me.State.PageSize
+                    If State.IsGridVisible Then
+                        moDataGrid.PageIndex = State.PageIndex
+                        moDataGrid.PageSize = State.PageSize
+                        cboPageSize.SelectedValue = CType(State.PageSize, String)
+                        moDataGrid.PageSize = State.PageSize
                         ControlMgr.SetVisibleControl(Me, trPageSize, moDataGrid.Visible)
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
@@ -194,9 +194,9 @@ Namespace Tables
             Public moEarningPatternId As Guid
             Public BoChanged As Boolean = False
 
-            Public Sub New(ByVal LastOp As ElitaPlusPage.DetailPageCommand, ByVal oEarningPatternId As Guid, Optional ByVal boChanged As Boolean = False)
-                Me.LastOperation = LastOp
-                Me.moEarningPatternId = oEarningPatternId
+            Public Sub New(LastOp As ElitaPlusPage.DetailPageCommand, oEarningPatternId As Guid, Optional ByVal boChanged As Boolean = False)
+                LastOperation = LastOp
+                moEarningPatternId = oEarningPatternId
                 Me.BoChanged = boChanged
             End Sub
 
@@ -230,7 +230,7 @@ Namespace Tables
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -238,67 +238,67 @@ Namespace Tables
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
                 moErrorController.Clear_Hide()
                 If Not Page.IsPostBack Then
-                    Me.SortDirection = Me.State.SortExpression
+                    SortDirection = State.SortExpression
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                    Me.SetGridItemStyleColor(moDataGrid)
-                    If Not Me.IsReturningFromChild Then
+                    SetGridItemStyleColor(moDataGrid)
+                    If Not IsReturningFromChild Then
                         ' It is The First Time
                         ' It is not Returning from Detail
                         ControlMgr.SetVisibleControl(Me, trPageSize, False)
                     Else
                         ' It is returning from detail
-                        ControlMgr.SetVisibleControl(Me, moDataGrid, Me.State.IsGridVisible)
-                        ControlMgr.SetVisibleControl(Me, trPageSize, Me.State.IsGridVisible)
-                        If Me.State.IsGridVisible Then
-                            Me.PopulateGrid(Me.POPULATE_ACTION_SAVE)
+                        ControlMgr.SetVisibleControl(Me, moDataGrid, State.IsGridVisible)
+                        ControlMgr.SetVisibleControl(Me, trPageSize, State.IsGridVisible)
+                        If State.IsGridVisible Then
+                            PopulateGrid(POPULATE_ACTION_SAVE)
                         End If
                     End If
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
-            Me.ShowMissingTranslations(moErrorController)
+            ShowMissingTranslations(moErrorController)
         End Sub
 
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Private Sub moBtnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moBtnSearch.Click
+        Private Sub moBtnSearch_Click(sender As System.Object, e As System.EventArgs) Handles moBtnSearch.Click
             Try
-                moDataGrid.PageIndex = Me.NO_PAGE_INDEX
+                moDataGrid.PageIndex = NO_PAGE_INDEX
                 moDataGrid.DataMember = Nothing
-                Me.State.searchDV = Nothing
-                Me.State.searchBtnClicked = True
+                State.searchDV = Nothing
+                State.searchBtnClicked = True
                 PopulateGrid()
-                Me.State.searchBtnClicked = False
+                State.searchBtnClicked = False
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub moBtnClear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moBtnClear.Click
+        Private Sub moBtnClear_Click(sender As System.Object, e As System.EventArgs) Handles moBtnClear.Click
             Try
                 ClearSearch()
                 PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub BtnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnNew_WRITE.Click
+        Private Sub BtnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnNew_WRITE.Click
             Try
-                Me.State.moEarningPatternId = Guid.Empty
+                State.moEarningPatternId = Guid.Empty
                 SetSession()
-                Me.callPage(EarningPatternForm.URL, Me.State.moEarningPatternId)
+                callPage(EarningPatternForm.URL, State.moEarningPatternId)
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
@@ -309,78 +309,78 @@ Namespace Tables
             Get
                 Return ViewState("SortDirection").ToString
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 ViewState("SortDirection") = value
             End Set
         End Property
         'The Binding LOgic is here
-        Private Sub moDataGrid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles moDataGrid.RowDataBound
+        Private Sub moDataGrid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles moDataGrid.RowDataBound
             Try
 
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-                If Not dvRow Is Nothing And Not Me.State.bnoRow Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                        e.Row.Cells(Me.GRID_COL_EARNING_PATTERN_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(Assurant.ElitaPlus.BusinessObjectsNew.EarningPattern.COL_EARNING_PATTERN_ID), Byte()))
-                        e.Row.Cells(Me.GRID_COL_DESCRIPTION).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.EarningPattern.COL_DESCRIPTION).ToString
-                        e.Row.Cells(Me.GRID_COL_CODE).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.EarningPattern.COL_CODE).ToString
-                        e.Row.Cells(Me.GRID_COL_EFFECTIVE).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.EarningPattern.COL_EFFECTIVE).ToString
-                        e.Row.Cells(Me.GRID_COL_EXPIRATION).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.EarningPattern.COL_EXPIRATION).ToString
+                If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
+                        e.Row.Cells(GRID_COL_EARNING_PATTERN_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(Assurant.ElitaPlus.BusinessObjectsNew.EarningPattern.COL_EARNING_PATTERN_ID), Byte()))
+                        e.Row.Cells(GRID_COL_DESCRIPTION).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.EarningPattern.COL_DESCRIPTION).ToString
+                        e.Row.Cells(GRID_COL_CODE).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.EarningPattern.COL_CODE).ToString
+                        e.Row.Cells(GRID_COL_EFFECTIVE).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.EarningPattern.COL_EFFECTIVE).ToString
+                        e.Row.Cells(GRID_COL_EXPIRATION).Text = dvRow(Assurant.ElitaPlus.BusinessObjectsNew.EarningPattern.COL_EXPIRATION).ToString
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
-        Private Sub moDataGrid_PageIndexChanged(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles moDataGrid.PageIndexChanging
+        Private Sub moDataGrid_PageIndexChanged(source As System.Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles moDataGrid.PageIndexChanging
             Try
                 moDataGrid.PageIndex = e.NewPageIndex
                 PopulateGrid(POPULATE_ACTION_NO_EDIT)
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Public Sub ItemCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs)
+        Public Sub ItemCreated(sender As Object, e As GridViewRowEventArgs)
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+        Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
 
             Try
                 If e.CommandSource.GetType.Equals(GetType(ImageButton)) Then
                     Dim index As Integer = CInt(e.CommandArgument)
-                    Me.State.moEarningPatternId = New Guid(Me.moDataGrid.Rows(index).Cells(Me.GRID_COL_EARNING_PATTERN_IDX).Text)
+                    State.moEarningPatternId = New Guid(moDataGrid.Rows(index).Cells(GRID_COL_EARNING_PATTERN_IDX).Text)
                     SetSession()
-                    Me.callPage(EarningPatternForm.URL, Me.State.moEarningPatternId)
+                    callPage(EarningPatternForm.URL, State.moEarningPatternId)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub moDataGrid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles moDataGrid.Sorting
+        Private Sub moDataGrid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles moDataGrid.Sorting
             Try
-                Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
+                Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
-                If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                    If Me.SortDirection.EndsWith(" ASC") Then
-                        Me.SortDirection = e.SortExpression + " DESC"
+                If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                    If SortDirection.EndsWith(" ASC") Then
+                        SortDirection = e.SortExpression + " DESC"
                     Else
-                        Me.SortDirection = e.SortExpression + " ASC"
+                        SortDirection = e.SortExpression + " ASC"
                     End If
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
-                Me.State.SortExpression = Me.SortDirection
-                Me.State.PageIndex = 0
-                Me.PopulateGrid()
+                State.SortExpression = SortDirection
+                State.PageIndex = 0
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 #End Region
@@ -389,7 +389,7 @@ Namespace Tables
 
 #Region "Populate"
 
-        Public Function CheckGuidValue(ByVal gd As Byte()) As Byte()
+        Public Function CheckGuidValue(gd As Byte()) As Byte()
 
             Dim guid As System.Guid = System.Guid.NewGuid
 
@@ -399,21 +399,21 @@ Namespace Tables
             Return gd
         End Function
 
-        Private Sub BindDataGrid(ByVal oDataView As DataView)
+        Private Sub BindDataGrid(oDataView As DataView)
             'moDataGrid.DataSource = oDataView
             'moDataGrid.DataBind()
-            Me.State.PageIndex = Me.moDataGrid.PageIndex
+            State.PageIndex = moDataGrid.PageIndex
 
-            If (Me.State.searchDV.Count = 0) Then
+            If (State.searchDV.Count = 0) Then
 
-                Me.State.bnoRow = True
-                CreateHeaderForEmptyGrid(moDataGrid, Me.SortDirection)
+                State.bnoRow = True
+                CreateHeaderForEmptyGrid(moDataGrid, SortDirection)
             Else
-                Me.State.bnoRow = False
-                Me.moDataGrid.Enabled = True
-                Me.moDataGrid.DataSource = oDataView
-                HighLightSortColumn(moDataGrid, Me.SortDirection)
-                Me.moDataGrid.DataBind()
+                State.bnoRow = False
+                moDataGrid.Enabled = True
+                moDataGrid.DataSource = oDataView
+                HighLightSortColumn(moDataGrid, SortDirection)
+                moDataGrid.DataBind()
             End If
             If Not moDataGrid.BottomPagerRow.Visible Then moDataGrid.BottomPagerRow.Visible = True
         End Sub
@@ -422,33 +422,33 @@ Namespace Tables
             Dim oDataView As DataView
 
             Try
-                If (Me.State.searchDV Is Nothing) Then
-                    Me.State.searchDV = GetDataView()
+                If (State.searchDV Is Nothing) Then
+                    State.searchDV = GetDataView()
                     ControlMgr.SetVisibleControl(Me, moDataGrid, True)
                 End If
 
-                Me.State.searchDV.Sort = Me.State.SortExpression
+                State.searchDV.Sort = State.SortExpression
                 moDataGrid.AutoGenerateColumns = False
-                HighLightSortColumn(moDataGrid, Me.State.SortExpression)
-                BasePopulateGrid(moDataGrid, Me.State.searchDV, Me.State.moEarningPatternId, oAction)
+                HighLightSortColumn(moDataGrid, State.SortExpression)
+                BasePopulateGrid(moDataGrid, State.searchDV, State.moEarningPatternId, oAction)
                 ControlMgr.SetVisibleControl(Me, trPageSize, moDataGrid.Visible)
-                Session("recCount") = Me.State.searchDV.Count
+                Session("recCount") = State.searchDV.Count
 
-                If Me.moDataGrid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If moDataGrid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
-                BindDataGrid(Me.State.searchDV)
+                BindDataGrid(State.searchDV)
             Catch ex As Exception
-                Me.HandleErrors(ex, moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub Grid_PageSizeChanged(ByVal source As System.Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As System.Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
-                Me.moDataGrid.PageIndex = NewCurrentPageIndex(moDataGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.PopulateGrid()
+                moDataGrid.PageIndex = NewCurrentPageIndex(moDataGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
@@ -458,8 +458,8 @@ Namespace Tables
 
         Private Sub ClearSearch()
             'moDataGrid.CurrentPageIndex = 0
-            Me.SearchDescriptionTextBox.Text = Nothing
-            Me.SearchCodeTextBox.Text = Nothing
+            SearchDescriptionTextBox.Text = Nothing
+            SearchCodeTextBox.Text = Nothing
             ' moDataGrid.DataSource = Nothing
             'moDataGrid.DataBind()
             ' ControlMgr.SetVisibleControl(Me, trPageSize, False)
@@ -471,11 +471,11 @@ Namespace Tables
 #Region "State-Management"
 
         Private Sub SetSession()
-            With Me.State
+            With State
                 .PageIndex = moDataGrid.PageIndex
-                .PageSort = Me.State.SortExpression
+                .PageSort = State.SortExpression
                 .PageSize = moDataGrid.PageSize
-                .SearchDataView = Me.State.searchDV
+                .SearchDataView = State.searchDV
             End With
         End Sub
 
@@ -486,8 +486,8 @@ Namespace Tables
         Private Function GetDataView() As DataView
             Dim oEarningPattern As EarningPattern = New EarningPattern
             Dim oCompanyGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-            Dim oDescription As String = Me.SearchDescriptionTextBox.Text
-            Dim oCode As String = Me.SearchCodeTextBox.Text
+            Dim oDescription As String = SearchDescriptionTextBox.Text
+            Dim oCode As String = SearchCodeTextBox.Text
 
             Return oEarningPattern.GetList(oDescription, oCode, oCompanyGroupId)
 

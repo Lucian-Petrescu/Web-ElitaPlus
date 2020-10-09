@@ -20,47 +20,47 @@ Public Class MiscUtil
 #End Region
 
 #Region "Common Culture Related Helper Function"
-    Public Shared Function GetDateFormattedString(ByVal value As Date) As String
+    Public Shared Function GetDateFormattedString(value As Date) As String
         'Return value.ToString(DATE_FORMAT, LocalizationMgr.CurrentCulture)
         Return value.ToString(DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture)
     End Function
 
-    Public Shared Function GetAmountFormattedString(ByVal value As Decimal, Optional ByVal format As String = Nothing) As String
+    Public Shared Function GetAmountFormattedString(value As Decimal, Optional ByVal format As String = Nothing) As String
         If format Is Nothing Then format = DECIMAL_FORMAT
         'Return value.ToString(format, LocalizationMgr.CurrentCulture)
         Return value.ToString(format, System.Threading.Thread.CurrentThread.CurrentCulture)
     End Function
 
-    Public Shared Function GetAmountFormattedDoubleString(ByVal value As String, Optional ByVal format As String = Nothing) As String
+    Public Shared Function GetAmountFormattedDoubleString(value As String, Optional ByVal format As String = Nothing) As String
         If format Is Nothing Then format = DECIMAL_FORMAT
         Return Convert.ToDouble(value).ToString(format, System.Threading.Thread.CurrentThread.CurrentCulture)
     End Function
 
-    Public Shared Function GetDecimalSeperator(ByVal culturecode As String) As String
+    Public Shared Function GetDecimalSeperator(culturecode As String) As String
         Dim decimalsep As String
         decimalsep = System.Globalization.CultureInfo.CreateSpecificCulture(culturecode).NumberFormat.CurrencyDecimalSeparator
         Return decimalsep
     End Function
 
-    Public Shared Function GetGroupSeperator(ByVal culturecode As String) As String
+    Public Shared Function GetGroupSeperator(culturecode As String) As String
         Dim groupsep As String
         groupsep = System.Globalization.CultureInfo.CreateSpecificCulture(culturecode).NumberFormat.CurrencyGroupSeparator
         Return groupsep
     End Function
 
-    Public Shared Function GetCurrencySymbol(ByVal culturecode As String) As String
+    Public Shared Function GetCurrencySymbol(culturecode As String) As String
         Dim currencysymbol As String
         currencysymbol = System.Globalization.CultureInfo.CreateSpecificCulture(culturecode).NumberFormat.CurrencySymbol
         Return currencysymbol
     End Function
 
-    Public Shared Function GetShortDateFormat(ByVal culturecode As String) As String
+    Public Shared Function GetShortDateFormat(culturecode As String) As String
         Dim dateformat As String
         dateformat = System.Globalization.CultureInfo.CreateSpecificCulture(culturecode).DateTimeFormat.ShortDatePattern
         Return dateformat
     End Function
 
-    Public Shared Function GetDateSeperator(ByVal culturecode As String) As String
+    Public Shared Function GetDateSeperator(culturecode As String) As String
         Dim dateSeperator As String
         dateSeperator = System.Globalization.CultureInfo.CreateSpecificCulture(culturecode).DateTimeFormat.DateSeparator
         Return dateSeperator
@@ -75,7 +75,7 @@ Public Class MiscUtil
     Private Const COMMA As String = ","
 #End Region
 
-    Public Shared Sub GenerateCommaSeparatedFormat(ByVal table As DataTable, ByVal columnHeaders() As String, ByVal outStream As System.IO.Stream)
+    Public Shared Sub GenerateCommaSeparatedFormat(table As DataTable, columnHeaders() As String, outStream As System.IO.Stream)
 
         Dim dt As DataTable = table
 
@@ -95,7 +95,7 @@ Public Class MiscUtil
     End Sub
 
 
-    Private Shared Sub WriteHeader(ByVal columnHeaders() As String, ByVal strWriter As StreamWriter)
+    Private Shared Sub WriteHeader(columnHeaders() As String, strWriter As StreamWriter)
         Dim hdrIndex As Integer
 
         For hdrIndex = 0 To (columnHeaders.Length - 1)
@@ -108,7 +108,7 @@ Public Class MiscUtil
     End Sub
 
 
-    Private Shared Sub WriteRow(ByVal row As DataRow, ByVal strWriter As StreamWriter)
+    Private Shared Sub WriteRow(row As DataRow, strWriter As StreamWriter)
         Dim colIndx As Integer
         For colIndx = 0 To (row.Table.Columns.Count - 1)
             strWriter.Write(row.Item(colIndx))
@@ -125,7 +125,7 @@ Public Class MiscUtil
     'This functions will return the First Friday After a Date or First Friday befor a Date 
     'or First Friday Of a Month or Last Friday Of a Month or return true if it is LeapYear
 
-    Public Shared Function FirstFridayAfterDate(ByVal DateVal As Date) As Date
+    Public Shared Function FirstFridayAfterDate(DateVal As Date) As Date
         Dim WkDay As Integer
 
         WkDay = Weekday(DateVal)
@@ -138,7 +138,7 @@ Public Class MiscUtil
         End If
     End Function
 
-    Public Shared Function FirstFridayBeforeDate(ByVal DateVal As Date) As Date
+    Public Shared Function FirstFridayBeforeDate(DateVal As Date) As Date
         Dim WkDay As Integer
 
         WkDay = Weekday(DateVal)
@@ -149,7 +149,7 @@ Public Class MiscUtil
         End If
     End Function
 
-    Public Shared Function FirstFridayOfMonth(ByVal DateVal As Date) As Date
+    Public Shared Function FirstFridayOfMonth(DateVal As Date) As Date
         Dim Mnth As Integer
         Dim Yr As Integer
         Dim DateTmp As Date
@@ -165,7 +165,7 @@ Public Class MiscUtil
 
     End Function
 
-    Public Shared Function LastFridayOfMonth(ByVal DateVal As Date) As Date
+    Public Shared Function LastFridayOfMonth(DateVal As Date) As Date
         Dim Mnth As Integer
         Dim Yr As Integer
         Dim DateTmp As Date
@@ -182,7 +182,7 @@ Public Class MiscUtil
 
     End Function
 
-    Public Shared Function DaysInMonth(ByVal Month As Integer, ByVal Year As Integer) As Integer
+    Public Shared Function DaysInMonth(Month As Integer, Year As Integer) As Integer
 
         Select Case Month
             Case 2
@@ -199,7 +199,7 @@ Public Class MiscUtil
 
     End Function
 
-    Public Shared Function IsLeapYear(ByVal Year As Integer) As Boolean
+    Public Shared Function IsLeapYear(Year As Integer) As Boolean
         Return (Month(DateSerial(Year, 2, 29)) = 2)
     End Function
 
@@ -226,7 +226,7 @@ Public Class MiscUtil
     '    Return result.ToString
     'End Function
 
-    Public Shared Function CleanseSQLInjectChars(ByVal sSQL As String) As String
+    Public Shared Function CleanseSQLInjectChars(sSQL As String) As String
         Dim sNewSQL As String = sSQL
         Dim index As Integer
 
@@ -240,7 +240,7 @@ Public Class MiscUtil
     End Function
 
 
-    Public Shared Function IsCriteriaSelected(ByVal oList As ArrayList) As Boolean
+    Public Shared Function IsCriteriaSelected(oList As ArrayList) As Boolean
         Dim bIsSelected As Boolean = False
 
         If ((Not oList Is Nothing) AndAlso (oList.Count > 0) AndAlso _
@@ -250,7 +250,7 @@ Public Class MiscUtil
         Return bIsSelected
     End Function
 
-    Public Shared Function GuidToSQLString(ByVal Value As Guid) As String
+    Public Shared Function GuidToSQLString(Value As Guid) As String
         Dim byteArray As Byte() = Value.ToByteArray
         Dim i As Integer
         Dim result As New StringBuilder("")
@@ -264,7 +264,7 @@ Public Class MiscUtil
         Return result.ToString
     End Function
 
-    Public Shared Function GetDbStringFromGuid(ByVal oItem As Object, Optional ByVal isHEXTORAW As Boolean = False) As String
+    Public Shared Function GetDbStringFromGuid(oItem As Object, Optional ByVal isHEXTORAW As Boolean = False) As String
         Dim value As Guid = CType(oItem, Guid)
 
         If value.Equals(Guid.Empty) Then
@@ -280,7 +280,7 @@ Public Class MiscUtil
 
     End Function
 
-    Public Shared Function BuildListForSql(ByVal colName As String, ByVal oList As ArrayList, Optional ByVal isHEXTORAW As Boolean = False) As String
+    Public Shared Function BuildListForSql(colName As String, oList As ArrayList, Optional ByVal isHEXTORAW As Boolean = False) As String
         Dim sqlList As String = String.Empty
         Dim index As Integer
         Dim oItem As Object
@@ -298,7 +298,7 @@ Public Class MiscUtil
         Return sqlList
     End Function
 
-    Public Shared Function BuildListForNetSql(ByVal colName As String, ByVal oList As ArrayList) As String
+    Public Shared Function BuildListForNetSql(colName As String, oList As ArrayList) As String
         Dim sqlList As String = String.Empty
         Dim index As Integer
         Dim oItem As Object
@@ -317,7 +317,7 @@ Public Class MiscUtil
         Return sqlList
     End Function
 
-    Public Shared Function BuildListSVCSql(ByVal oList As ArrayList) As String
+    Public Shared Function BuildListSVCSql(oList As ArrayList) As String
         Dim sqlList As String = String.Empty
         Dim index As Integer
         Dim oItem As Object
@@ -333,7 +333,7 @@ Public Class MiscUtil
         Return sqlList
     End Function
 
-    Public Shared Function BuildNotInListForSql(ByVal colName As String, ByVal oList As ArrayList, Optional ByVal isHEXTORAW As Boolean = False) As String
+    Public Shared Function BuildNotInListForSql(colName As String, oList As ArrayList, Optional ByVal isHEXTORAW As Boolean = False) As String
         Dim sqlList As String = String.Empty
         Dim index As Integer
         Dim oItem As Object
@@ -351,7 +351,7 @@ Public Class MiscUtil
         Return sqlList
     End Function
 
-    Public Shared Function BuildNotInListForNetSql(ByVal colName As String, ByVal oList As ArrayList) As String
+    Public Shared Function BuildNotInListForNetSql(colName As String, oList As ArrayList) As String
         Dim sqlList As String = String.Empty
         Dim index As Integer
         Dim oItem As Object
@@ -373,7 +373,7 @@ Public Class MiscUtil
 
 #Region "String Format"
 
-    Public Shared Function ConvertToUpper(ByVal source As String) As String
+    Public Shared Function ConvertToUpper(source As String) As String
         Dim target As String = source
 
         If ((Not source Is Nothing) AndAlso (source <> String.Empty)) Then
@@ -382,7 +382,7 @@ Public Class MiscUtil
         Return target
     End Function
 
-    Public Shared Function EmailAddressValidation(ByVal email As String) As Boolean
+    Public Shared Function EmailAddressValidation(email As String) As Boolean
 
         Dim objRegEx As New System.Text.RegularExpressions.Regex(Reg_Exp, RegularExpressions.RegexOptions.IgnoreCase Or RegularExpressions.RegexOptions.CultureInvariant)
         Dim strToValidate As String = email.Trim(" ".ToCharArray)
@@ -402,7 +402,7 @@ Public Class MiscUtil
         '''<summary>Default constructor for the EncodedStringWriter class.</summary>
         '''<param name=“sb“>The formatted result to output.</param>
         '''<param name=“Encoding“>A member of the System.Text.Encoding class.</param>
-        Public Sub New(ByVal sb As StringBuilder, ByVal Encoding As Encoding)
+        Public Sub New(sb As StringBuilder, Encoding As Encoding)
             MyBase.New(sb)
             _Encoding = Encoding
         End Sub
@@ -428,7 +428,7 @@ Public Class MiscUtil
 
 #End Region
 
-    Public Shared Function RemoveInvalidChar(ByVal filename As String) As String
+    Public Shared Function RemoveInvalidChar(filename As String) As String
         Dim index As Integer
         For index = 0 To FILE_NAME_INVALID_CHARACTERS.Length - 1
             'replace the invalid character with blank
@@ -437,18 +437,18 @@ Public Class MiscUtil
         Return filename
     End Function
 
-    Public Shared Function ReplaceSpaceByUnderscore(ByVal filename As String) As String
+    Public Shared Function ReplaceSpaceByUnderscore(filename As String) As String
         Return filename.Replace(" ", "_")
     End Function
 
-    Public Shared Function GetUniqueDirectory(ByVal path As String, ByVal username As String) As String
+    Public Shared Function GetUniqueDirectory(path As String, username As String) As String
         Dim uniqueIdDirectory As String = path & username _
                                  & "_" & RemoveInvalidChar(Date.Now.ToString)
         Return uniqueIdDirectory
     End Function
 
-    Public Shared Function GetUniqueFullPath(ByVal path As String, ByVal username As String, _
-                                            ByVal filename As String) As String
+    Public Shared Function GetUniqueFullPath(path As String, username As String, _
+                                            filename As String) As String
 
         Dim fullFileName As String = path & username & "_" & MiscUtil.RemoveInvalidChar(Date.Now.ToString) _
               & "_" & MiscUtil.RemoveInvalidChar(filename)
@@ -456,8 +456,8 @@ Public Class MiscUtil
         Return fullFileName
     End Function
 
-    Public Shared Function GetModifiedUniqueFullPath(ByVal path As String, ByVal modifiedName As String, _
-                                            ByVal filename As String) As String
+    Public Shared Function GetModifiedUniqueFullPath(path As String, modifiedName As String, _
+                                            filename As String) As String
 
         Dim fullFileName As String = path & modifiedName & "_" & MiscUtil.RemoveInvalidChar(Date.Now.ToString) _
               & "_" & MiscUtil.RemoveInvalidChar(filename)
@@ -481,21 +481,21 @@ Public Class MiscUtil
     '    '     End Try
     'End Sub
 
-    Public Shared Sub CreateFolder(ByVal folderName As String)
+    Public Shared Sub CreateFolder(folderName As String)
         Dim objDir As New DirectoryInfo(folderName)
         If Not objDir.Exists() Then
             objDir.Create()
         End If
     End Sub
 
-    Public Shared Sub DeleteFolder(ByVal folderName As String)
+    Public Shared Sub DeleteFolder(folderName As String)
         Dim objDir As New DirectoryInfo(folderName)
         If objDir.Exists Then
             objDir.Delete(True)
         End If
     End Sub
 
-    Public Shared Function FromStringToStream(ByVal source As String) As Stream
+    Public Shared Function FromStringToStream(source As String) As Stream
         '  Dim count As Integer
         '   Dim byteArray As Byte()
         '  Dim charArray As Char()
@@ -557,8 +557,8 @@ Public Class MiscUtil
 
     End Function
 
-    Public Shared Sub DownloadFileToWebServer(ByVal webServerPath As String, ByVal fileNameFullPath As String, _
-                                              ByVal fileLen As Integer, ByVal objStream As System.IO.Stream)
+    Public Shared Sub DownloadFileToWebServer(webServerPath As String, fileNameFullPath As String, _
+                                              fileLen As Integer, objStream As System.IO.Stream)
         Dim fileBytes(fileLen - 1) As Byte
 
         objStream.Read(fileBytes, 0, fileLen)
@@ -571,7 +571,7 @@ Public Class MiscUtil
 
 #Region "Ftp"
 
-    Public Shared Sub SendFileToUnix(ByVal inputStream As Stream, ByVal targetFileName As String)
+    Public Shared Sub SendFileToUnix(inputStream As Stream, targetFileName As String)
         Dim unixPath As String = AppConfig.UnixServer.FtpDirectory
         Dim objUnixFTP As New aFtp(AppConfig.UnixServer.HostName, unixPath, AppConfig.UnixServer.UserId, _
                                          AppConfig.UnixServer.Password, PORT)
@@ -587,7 +587,7 @@ Public Class MiscUtil
         End Try
     End Sub
 
-    Public Shared Sub SendFileToUnix(ByVal targetFileNameFullPath As String)
+    Public Shared Sub SendFileToUnix(targetFileNameFullPath As String)
         Dim objUnixFTP As New sFtp(AppConfig.UnixServer.HostName, AppConfig.UnixServer.FtpDirectory, AppConfig.UnixServer.UserId, AppConfig.UnixServer.Password)
 
         objUnixFTP.UploadFile(targetFileNameFullPath)

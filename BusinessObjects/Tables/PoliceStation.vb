@@ -5,48 +5,48 @@ Public Class PoliceStation
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New PoliceStationDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -54,23 +54,23 @@ Public Class PoliceStation
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New PoliceStationDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -113,7 +113,7 @@ Public Class PoliceStation
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(PoliceStationDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -124,7 +124,7 @@ Public Class PoliceStation
     End Property
 
     <ValueMandatory("")>
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             CheckDeleted()
             If Row(PoliceStationDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -133,15 +133,15 @@ Public Class PoliceStation
                 Return New Guid(CType(Row(PoliceStationDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(PoliceStationDAL.COL_NAME_COUNTRY_ID, Value)
+            SetValue(PoliceStationDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=15)>
-    Public Property PoliceStationCode() As String
+    Public Property PoliceStationCode As String
         Get
             CheckDeleted()
             If Row(PoliceStationDAL.COL_NAME_POLICE_STATION_CODE) Is DBNull.Value Then
@@ -150,15 +150,15 @@ Public Class PoliceStation
                 Return CType(Row(PoliceStationDAL.COL_NAME_POLICE_STATION_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(PoliceStationDAL.COL_NAME_POLICE_STATION_CODE, Value)
+            SetValue(PoliceStationDAL.COL_NAME_POLICE_STATION_CODE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)>
-    Public Property PoliceStationName() As String
+    Public Property PoliceStationName As String
         Get
             CheckDeleted()
             If Row(PoliceStationDAL.COL_NAME_POLICE_STATION_NAME) Is DBNull.Value Then
@@ -167,14 +167,14 @@ Public Class PoliceStation
                 Return CType(Row(PoliceStationDAL.COL_NAME_POLICE_STATION_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(PoliceStationDAL.COL_NAME_POLICE_STATION_NAME, Value)
+            SetValue(PoliceStationDAL.COL_NAME_POLICE_STATION_NAME, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=15), DistrictCodeValidation("")>
-    Public Property PoliceStationDistrictCode() As String
+    Public Property PoliceStationDistrictCode As String
         Get
             CheckDeleted()
             If Row(PoliceStationDAL.COL_NAME_POLICE_STATION_DISTRICT_CODE) Is DBNull.Value Then
@@ -183,15 +183,15 @@ Public Class PoliceStation
                 Return CType(Row(PoliceStationDAL.COL_NAME_POLICE_STATION_DISTRICT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(PoliceStationDAL.COL_NAME_POLICE_STATION_DISTRICT_CODE, Value)
+            SetValue(PoliceStationDAL.COL_NAME_POLICE_STATION_DISTRICT_CODE, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=200), DistrictNameValidation("")>
-    Public Property PoliceStationDistrictName() As String
+    Public Property PoliceStationDistrictName As String
         Get
             CheckDeleted()
             If Row(PoliceStationDAL.COL_NAME_POLICE_STATION_DISTRICT_NAME) Is DBNull.Value Then
@@ -200,14 +200,14 @@ Public Class PoliceStation
                 Return CType(Row(PoliceStationDAL.COL_NAME_POLICE_STATION_DISTRICT_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(PoliceStationDAL.COL_NAME_POLICE_STATION_DISTRICT_NAME, Value)
+            SetValue(PoliceStationDAL.COL_NAME_POLICE_STATION_DISTRICT_NAME, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)>
-    Public Property Address1() As String
+    Public Property Address1 As String
         Get
             CheckDeleted()
             If Row(PoliceStationDAL.COL_NAME_ADDRESS1) Is DBNull.Value Then
@@ -216,15 +216,15 @@ Public Class PoliceStation
                 Return CType(Row(PoliceStationDAL.COL_NAME_ADDRESS1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(PoliceStationDAL.COL_NAME_ADDRESS1, Value)
+            SetValue(PoliceStationDAL.COL_NAME_ADDRESS1, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=200)>
-    Public Property Address2() As String
+    Public Property Address2 As String
         Get
             CheckDeleted()
             If Row(PoliceStationDAL.COL_NAME_ADDRESS2) Is DBNull.Value Then
@@ -233,15 +233,15 @@ Public Class PoliceStation
                 Return CType(Row(PoliceStationDAL.COL_NAME_ADDRESS2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(PoliceStationDAL.COL_NAME_ADDRESS2, Value)
+            SetValue(PoliceStationDAL.COL_NAME_ADDRESS2, Value)
         End Set
     End Property
 
     'Added for Def-1598
     <ValidStringLength("", Max:=200)>
-    Public Property Address3() As String
+    Public Property Address3 As String
         Get
             CheckDeleted()
             If Row(PoliceStationDAL.COL_NAME_ADDRESS3) Is DBNull.Value Then
@@ -250,14 +250,14 @@ Public Class PoliceStation
                 Return CType(Row(PoliceStationDAL.COL_NAME_ADDRESS3), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(PoliceStationDAL.COL_NAME_ADDRESS3, Value)
+            SetValue(PoliceStationDAL.COL_NAME_ADDRESS3, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)>
-    Public Property City() As String
+    Public Property City As String
         Get
             CheckDeleted()
             If Row(PoliceStationDAL.COL_NAME_CITY) Is DBNull.Value Then
@@ -266,13 +266,13 @@ Public Class PoliceStation
                 Return CType(Row(PoliceStationDAL.COL_NAME_CITY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(PoliceStationDAL.COL_NAME_CITY, Value)
+            SetValue(PoliceStationDAL.COL_NAME_CITY, Value)
         End Set
     End Property
 
-    Public Property RegionId() As Guid
+    Public Property RegionId As Guid
         Get
             CheckDeleted()
             If Row(PoliceStationDAL.COL_NAME_REGION_ID) Is DBNull.Value Then
@@ -281,15 +281,15 @@ Public Class PoliceStation
                 Return New Guid(CType(Row(PoliceStationDAL.COL_NAME_REGION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(PoliceStationDAL.COL_NAME_REGION_ID, Value)
+            SetValue(PoliceStationDAL.COL_NAME_REGION_ID, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=40)>
-    Public Property PostalCode() As String
+    Public Property PostalCode As String
         Get
             CheckDeleted()
             If Row(PoliceStationDAL.COL_NAME_POSTAL_CODE) Is DBNull.Value Then
@@ -298,9 +298,9 @@ Public Class PoliceStation
                 Return CType(Row(PoliceStationDAL.COL_NAME_POSTAL_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(PoliceStationDAL.COL_NAME_POSTAL_CODE, Value)
+            SetValue(PoliceStationDAL.COL_NAME_POSTAL_CODE, Value)
         End Set
     End Property
 
@@ -313,15 +313,15 @@ Public Class PoliceStation
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New PoliceStationDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -329,31 +329,31 @@ Public Class PoliceStation
         End Try
     End Sub
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsDirty
         End Get
     End Property
 
     Public Sub DeleteAndSave()
-        Me.CheckDeleted()
-        Me.BeginEdit()
+        CheckDeleted()
+        BeginEdit()
         Try
-            Me.Delete()
-            Me.Save()
+            Delete()
+            Save()
         Catch ex As Exception
-            Me.cancelEdit()
+            cancelEdit()
             Throw ex
         End Try
 
     End Sub
 
-    Public Sub Copy(ByVal original As PoliceStation)
-        If Not Me.IsNew Then
+    Public Sub Copy(original As PoliceStation)
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing police station")
         End If
         'Copy myself
-        Me.CopyFrom(original)
+        CopyFrom(original)
 
         'copy the children       
 
@@ -382,14 +382,14 @@ Public Class PoliceStation
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
 #End Region
 
-    Public Shared Function getList(ByVal descriptionMask As String, ByVal codeMask As String, ByVal CountryMask As Guid) As PoliceStationSearchDV
+    Public Shared Function getList(descriptionMask As String, codeMask As String, CountryMask As Guid) As PoliceStationSearchDV
         Try
             Dim dal As New PoliceStationDAL
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
@@ -406,15 +406,15 @@ Public Class PoliceStation
     Public NotInheritable Class DistrictCodeValidation
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+        Public Sub New(fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PoliceStation = CType(objectToValidate, PoliceStation)
             If (String.IsNullOrEmpty(obj.PoliceStationDistrictCode) AndAlso Not String.IsNullOrEmpty(obj.PoliceStationDistrictName)) Or (Not String.IsNullOrEmpty(obj.PoliceStationDistrictCode) AndAlso String.IsNullOrEmpty(obj.PoliceStationDistrictName)) Then
                 If String.IsNullOrEmpty(obj.PoliceStationDistrictCode) Then
-                    MyBase.Message = "Please enter District Code."
+                    Message = "Please enter District Code."
                     Return False
                 End If
             End If
@@ -427,15 +427,15 @@ Public Class PoliceStation
     Public NotInheritable Class DistrictNameValidation
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+        Public Sub New(fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PoliceStation = CType(objectToValidate, PoliceStation)
             If (String.IsNullOrEmpty(obj.PoliceStationDistrictCode) AndAlso Not String.IsNullOrEmpty(obj.PoliceStationDistrictName)) Or (Not String.IsNullOrEmpty(obj.PoliceStationDistrictCode) AndAlso String.IsNullOrEmpty(obj.PoliceStationDistrictName)) Then
                 If String.IsNullOrEmpty(obj.PoliceStationDistrictName) Then
-                    MyBase.Message = "Please enter District Name."
+                    Message = "Please enter District Name."
                     Return False
                 End If
             End If

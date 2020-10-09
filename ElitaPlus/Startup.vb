@@ -19,7 +19,7 @@ Public Class Startup
     Private ReadOnly _responseType As String = ConfigurationManager.AppSettings("Okta.ResponseType")
     Private ReadOnly _scope As String = ConfigurationManager.AppSettings("Okta.Scope")
 
-    Public Sub Configuration(ByVal app As IAppBuilder)
+    Public Sub Configuration(app As IAppBuilder)
         app.SetDefaultSignInAsAuthenticationType(CookieAuthenticationDefaults.AuthenticationType)
         app.UseCookieAuthentication(New CookieAuthenticationOptions())
 

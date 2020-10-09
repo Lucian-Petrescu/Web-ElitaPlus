@@ -23,7 +23,7 @@ Namespace Generic
             Get
                 Return moTitle.Text
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 moTitle.Text = Value
             End Set
         End Property
@@ -56,17 +56,17 @@ Namespace Generic
 
         Public Property BackColor() As String
             Get
-                Return (Me.moOutTable.BgColor)
+                Return (moOutTable.BgColor)
             End Get
-            Set(ByVal Value As String)
-                Me.moOutTable.BgColor = Value
+            Set(Value As String)
+                moOutTable.BgColor = Value
             End Set
         End Property
 
 #End Region
 
 #Region "Handlers"
-        Public Event SelectedListChanged(ByVal aSrc As SrcDstListChooser, ByVal aReason As EventArg)
+        Public Event SelectedListChanged(aSrc As SrcDstListChooser, aReason As EventArg)
 
        
 
@@ -77,7 +77,7 @@ Namespace Generic
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -85,41 +85,41 @@ Namespace Generic
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
 
         End Sub
 
-        Private Sub BtnAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnAdd.Click
+        Private Sub BtnAdd_Click(sender As System.Object, e As System.EventArgs) Handles BtnAdd.Click
             BtnAdd_Action()
             UpdateAddEnable()
             RemoveSelection(moSelectedList)
         End Sub
 
-        Private Sub BtnAddAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnAddAll.Click
+        Private Sub BtnAddAll_Click(sender As System.Object, e As System.EventArgs) Handles BtnAddAll.Click
             BtnAddAll_Action()
             UpdateAddEnable()
             RemoveSelection(moSelectedList)
         End Sub
 
-        Private Sub BtnRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnRemove.Click
+        Private Sub BtnRemove_Click(sender As System.Object, e As System.EventArgs) Handles BtnRemove.Click
             BtnRemove_Action()
             UpdateRemoveEnable()
             RemoveSelection(moAvailableList)
         End Sub
 
-        Private Sub BtnRemoveAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnRemoveAll.Click
+        Private Sub BtnRemoveAll_Click(sender As System.Object, e As System.EventArgs) Handles BtnRemoveAll.Click
             BtnRemoveAll_Action()
             UpdateRemoveEnable()
             RemoveSelection(moAvailableList)
         End Sub
 
-        Private Sub moAvailableList_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moAvailableList.SelectedIndexChanged
+        Private Sub moAvailableList_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moAvailableList.SelectedIndexChanged
             BtnAdd.Enabled = True
             BtnRemove.Enabled = False
         End Sub
 
-        Private Sub moSelectedList_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moSelectedList.SelectedIndexChanged
+        Private Sub moSelectedList_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moSelectedList.SelectedIndexChanged
             BtnRemove.Enabled = True
             BtnAdd.Enabled = False
         End Sub
@@ -127,21 +127,21 @@ Namespace Generic
 
 #Region "Button Management"
 
-        Private Sub RemoveSelection(ByVal aListBox As ListBox)
+        Private Sub RemoveSelection(aListBox As ListBox)
             Dim oItem As ListItem
             For Each oItem In aListBox.Items
                 oItem.Selected = False
             Next
         End Sub
 
-        Private Sub RemoveFromList(ByVal BoxToRemove As ListBox, ByVal BoxThatContains As ListBox)
+        Private Sub RemoveFromList(BoxToRemove As ListBox, BoxThatContains As ListBox)
             Dim oItem As ListItem
             For Each oItem In BoxThatContains.Items
                 BoxToRemove.Items.Remove(oItem)
             Next
         End Sub
 
-        Private Sub AddToListBox(ByVal BoxToAdd As ListBox, ByVal BoxThatContains As ListBox)
+        Private Sub AddToListBox(BoxToAdd As ListBox, BoxThatContains As ListBox)
             Dim oItem As ListItem
             For Each oItem In BoxThatContains.Items
                 If oItem.Selected = True Then
@@ -150,7 +150,7 @@ Namespace Generic
             Next
         End Sub
 
-        Private Sub AddAllList(ByVal BoxToAdd As ListBox, ByVal BoxThatContains As ListBox)
+        Private Sub AddAllList(BoxToAdd As ListBox, BoxThatContains As ListBox)
             Dim oItem As ListItem
             For Each oItem In BoxThatContains.Items
                 BoxToAdd.Items.Add(oItem)
@@ -205,7 +205,7 @@ Namespace Generic
 #Region "Set List Data"
 
 
-        Private Sub SetData(ByVal aListBox As ListBox, ByVal aData As Object, ByVal aText As String, ByVal aValue As String)
+        Private Sub SetData(aListBox As ListBox, aData As Object, aText As String, aValue As String)
             Try
                 With aListBox
                     .DataSource = aData
@@ -220,7 +220,7 @@ Namespace Generic
             End Try
         End Sub
 
-        Public Sub SetAvailableData(ByVal aData As Object, ByVal aText As String, ByVal aValue As String)
+        Public Sub SetAvailableData(aData As Object, aText As String, aValue As String)
             SetData(moAvailableList, aData, aText, aValue)
             BtnAdd.Enabled = False
             BtnAddAll.Enabled = True
@@ -228,11 +228,11 @@ Namespace Generic
             BtnRemoveAll.Enabled = False
         End Sub
 
-        Public Sub SetSelectedData(ByVal aData As Object, ByVal aText As String, ByVal aValue As String)
+        Public Sub SetSelectedData(aData As Object, aText As String, aValue As String)
             SetData(moSelectedList, aData, aText, aValue)
         End Sub
 
-        Private Sub ClearData(ByVal aList As ListBox)
+        Private Sub ClearData(aList As ListBox)
             Dim nCount As Integer = aList.Items.Count
             Dim nIndex As Integer
 
@@ -256,7 +256,7 @@ Namespace Generic
         Private Class TheComparer
             Implements System.Collections.IComparer
 
-            Function Compare(ByVal x As Object, ByVal y As Object) As Integer _
+            Function Compare(x As Object, y As Object) As Integer _
                   Implements System.Collections.IComparer.Compare
                 Dim oXItem As ListItem = CType(x, ListItem)
                 Dim oYItem As ListItem = CType(y, ListItem)
@@ -266,7 +266,7 @@ Namespace Generic
             End Function
         End Class
 
-        Private Sub Sort(ByVal aList As ListBox)
+        Private Sub Sort(aList As ListBox)
             Dim oArray As ArrayList = New ArrayList()
             Dim oItem As ListItem
             Dim oComparer As IComparer = New TheComparer()
@@ -285,7 +285,7 @@ Namespace Generic
 
 #End Region
 #Region "Manual Test"
-        Public Sub SelectAvailableItems(ByVal indices As ArrayList)
+        Public Sub SelectAvailableItems(indices As ArrayList)
             Dim oItem As Integer
             For Each oItem In indices
                 If moAvailableList.Items.Count > oItem Then

@@ -16,28 +16,20 @@ Namespace SpecializedServices.Goow
         FaultContract(GetType(InvalidDateOfLossFault)),
         FaultContract(GetType(PriceListNotConfiguredFault)),
         FaultContract(GetType(InvalidClaimTypeFault))>
-        Function CreateClaim(ByVal request As CreateClaimRequest) As CreateClaimResponse
+        Function CreateClaim(request As CreateClaimRequest) As CreateClaimResponse
 
         <OperationContract(),
         ElitaPermission(PermissionCodes.WS_GOOW_GoogleService),
         FaultContract(GetType(CompanyNotFoundFault)),
         FaultContract(GetType(ClaimNotFoundFault)),
         FaultContract(GetType(DealerNotFoundFault))>
-        Sub DenyClaim(ByVal request As DenyClaimRequest)
+        Sub DenyClaim(request As DenyClaimRequest)
 
         <OperationContract(),
         ElitaPermission(PermissionCodes.WS_GOOW_GoogleService),
         FaultContract(GetType(DealerNotFoundFault)),
         FaultContract(GetType(CompanyNotFoundFault))>
-        Function ComputeTax(ByVal request As ComputeTaxRequest) As ComputeTaxResponse
-
-
-        <OperationContract(),
-        ElitaPermission(PermissionCodes.WS_GOOW_GoogleService),
-        FaultContract(GetType(DealerNotFoundFault)),
-        FaultContract(GetType(CertificateNotFoundFault)),
-        FaultContract(GetType(CompanyNotFoundFault))>
-        Sub FulfillClaim(ByVal request As FulfillClaimRequest)
+        Function ComputeTax(request As ComputeTaxRequest) As ComputeTaxResponse
 
 
         <OperationContract(),
@@ -45,14 +37,22 @@ Namespace SpecializedServices.Goow
         FaultContract(GetType(DealerNotFoundFault)),
         FaultContract(GetType(CertificateNotFoundFault)),
         FaultContract(GetType(CompanyNotFoundFault))>
-        Sub ChangeServiceCenter(ByVal request As ChangeServiceCenterRequest)
+        Sub FulfillClaim(request As FulfillClaimRequest)
+
 
         <OperationContract(),
         ElitaPermission(PermissionCodes.WS_GOOW_GoogleService),
         FaultContract(GetType(DealerNotFoundFault)),
         FaultContract(GetType(CertificateNotFoundFault)),
         FaultContract(GetType(CompanyNotFoundFault))>
-        Sub PayClaim(ByVal request As PayClaimRequest)
+        Sub ChangeServiceCenter(request As ChangeServiceCenterRequest)
+
+        <OperationContract(),
+        ElitaPermission(PermissionCodes.WS_GOOW_GoogleService),
+        FaultContract(GetType(DealerNotFoundFault)),
+        FaultContract(GetType(CertificateNotFoundFault)),
+        FaultContract(GetType(CompanyNotFoundFault))>
+        Sub PayClaim(request As PayClaimRequest)
 
         <OperationContract(),
         ElitaPermission(PermissionCodes.WS_GOOW_GoogleService),
@@ -60,7 +60,7 @@ Namespace SpecializedServices.Goow
         FaultContract(GetType(CertificateNotFoundFault)),
         FaultContract(GetType(CoverageNotFoundFault)),
         FaultContract(GetType(CompanyNotFoundFault))>
-        Sub ReturnDamagedDeviceAdvEx(ByVal request As ReturnDamagedDeviceAdvExRequest)
+        Sub ReturnDamagedDeviceAdvEx(request As ReturnDamagedDeviceAdvExRequest)
 
 
         <OperationContract(),
@@ -68,14 +68,14 @@ Namespace SpecializedServices.Goow
         FaultContract(GetType(DealerNotFoundFault)),
         FaultContract(GetType(CertificateNotFoundFault)),
         FaultContract(GetType(CompanyNotFoundFault))>
-        Sub MaxDaysElapsedAdvEx(ByVal request As MaxDaysElapsedAdvExRequest)
+        Sub MaxDaysElapsedAdvEx(request As MaxDaysElapsedAdvExRequest)
 
         <OperationContract(),
         ElitaPermission(PermissionCodes.WS_GOOW_GoogleService),
         FaultContract(GetType(DealerNotFoundFault)),
         FaultContract(GetType(CertificateNotFoundFault)),
         FaultContract(GetType(CompanyNotFoundFault))>
-        Function GetClaimInfo(ByVal request As GetClaimInfoRequest) As GetClaimInfoResponse
+        Function GetClaimInfo(request As GetClaimInfoRequest) As GetClaimInfoResponse
 
     End Interface
 End Namespace

@@ -34,16 +34,16 @@ Public Class CancellationReasonDAL
 
 #Region "CRUD Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("cancellation_id", id.ToByteArray)}
         'Dim parameters() As OracleParameter = New OracleParameter() {New OracleParameter("cancellation_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -51,18 +51,18 @@ Public Class CancellationReasonDAL
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Try
-            Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+            Return DBHelper.Fetch(selectStmt, TABLE_NAME)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Function LoadList(ByVal description As String, ByVal code As String, ByVal compIds As ArrayList) As DataSet
+    Public Function LoadList(description As String, code As String, compIds As ArrayList) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim whereClauseConditions As String = ""
         Dim inCausecondition As String = ""
         Dim parameters() As OracleParameter
@@ -75,21 +75,21 @@ Public Class CancellationReasonDAL
                                     {New OracleParameter(COL_NAME_CODE, code), _
                                      New OracleParameter(COL_NAME_DESCRIPTION, description)}
 
-        inCausecondition &= MiscUtil.BuildListForSql("AND c." & Me.COL_NAME_COMPANY_ID, compIds, True)
+        inCausecondition &= MiscUtil.BuildListForSql("AND c." & COL_NAME_COMPANY_ID, compIds, True)
 
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inCausecondition)
+        selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inCausecondition)
 
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
 
-    Public Function LoadListbyRoleExlusion(ByVal User_Id As Guid, ByVal company_id As Guid) As DataSet
+    Public Function LoadListbyRoleExlusion(User_Id As Guid, company_id As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_CANC_REASONS_LIST_BY_ROLE_EXCLUSION")
+        Dim selectStmt As String = Config("/SQL/LOAD_CANC_REASONS_LIST_BY_ROLE_EXCLUSION")
         Dim whereClauseConditions As String = ""
         Dim inCausecondition As String = ""
         Dim parameters() As OracleParameter
@@ -98,7 +98,7 @@ Public Class CancellationReasonDAL
                                     {New OracleParameter(UserDAL.COL_NAME_USER_ID, User_Id.ToByteArray), _
                                      New OracleParameter(COL_NAME_COMPANY_ID, company_id.ToByteArray)}
         Try
-            Return (DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters))
+            Return (DBHelper.Fetch(selectStmt, DSNAME, TABLE_NAME, parameters))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -122,9 +122,9 @@ Public Class CancellationReasonDAL
     '    End Try
     'End Sub
 
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal transaction As IDbTransaction = Nothing)
-        DBHelper.Execute(ds.Tables(Me.TABLE_NAME), Config("/SQL/INSERT"), Config("/SQL/UPDATE"), Config("/SQL/DELETE"), Nothing, transaction)
-        LookupListCache.ClearFromCache(Me.GetType.ToString)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal transaction As IDbTransaction = Nothing)
+        DBHelper.Execute(ds.Tables(TABLE_NAME), Config("/SQL/INSERT"), Config("/SQL/UPDATE"), Config("/SQL/DELETE"), Nothing, transaction)
+        LookupListCache.ClearFromCache([GetType].ToString)
     End Sub
 
     'Public Sub Update(ByVal ds As DataSet, ByVal transaction As OracleTransaction)
@@ -172,7 +172,7 @@ Public Class CancellationReasonDAL
     '    cmd.Parameters.Add("created_by", OracleDbType.Varchar2, 30, "created_by")
     'End Sub
 
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim CancResnbyRoleDal As New ExcludeCancReasonByRoleDAL
 
         Dim tr As IDbTransaction = Transaction
@@ -183,10 +183,10 @@ Public Class CancellationReasonDAL
             'First Pass updates Deletions           
             CancResnbyRoleDal.Update(familyDataset, tr, DataRowState.Deleted)
 
-            MyBase.Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
+            MyBase.Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
 
             'Second Pass updates additions and changes            
-            Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
 
             CancResnbyRoleDal.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
 

@@ -25,10 +25,10 @@ Public Class ClaimDeviceInformationController
     Public thisPage As ElitaPlusPage
     Private ReadOnly Property State() As MyState
         Get
-            If Me.Page.StateSession.Item(Me.UniqueID) Is Nothing Then
-                Me.Page.StateSession.Item(Me.UniqueID) = New MyState
+            If Page.StateSession.Item(UniqueID) Is Nothing Then
+                Page.StateSession.Item(UniqueID) = New MyState
             End If
-            Return CType(Me.Page.StateSession.Item(Me.UniqueID), MyState)
+            Return CType(Page.StateSession.Item(UniqueID), MyState)
         End Get
     End Property
     Private Shadows ReadOnly Property Page() As ElitaPlusSearchPage
@@ -41,7 +41,7 @@ Public Class ClaimDeviceInformationController
         Get
             Return showGridEditImg
         End Get
-        Set(ByVal Value As Boolean)
+        Set(Value As Boolean)
             showGridEditImg = Value
         End Set
     End Property
@@ -74,9 +74,9 @@ Public Class ClaimDeviceInformationController
 #End Region
 
 #Region "Page Events"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If Not Me.IsPostBack Then
-            Me.Page.TranslateGridHeader(GvClaimDeviceInformation)
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        If Not IsPostBack Then
+            Page.TranslateGridHeader(GvClaimDeviceInformation)
             PopulateGridViewData()
         End If
     End Sub
@@ -85,7 +85,7 @@ Public Class ClaimDeviceInformationController
 
 #Region "GridView Events"
 
-    Public Sub RowCommand(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+    Public Sub RowCommand(sender As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
         Try
 
             If (e.CommandName = SAVE_COMMAND_NAME) Then
@@ -93,14 +93,14 @@ Public Class ClaimDeviceInformationController
                 If Not PopulateBOFromGrid(CType(sender, GridView)) Then
                     Exit Sub
                 End If
-                Me.ClaimBO.ClaimedEquipment.EndEdit()
-                Me.ClaimBO.ClaimedEquipment.SaveClaimDeviceInfo()
+                ClaimBO.ClaimedEquipment.EndEdit()
+                ClaimBO.ClaimedEquipment.SaveClaimDeviceInfo()
                 GvClaimDeviceInformation.EditIndex = -1
                 PopulateGridViewData()
             End If
 
         Catch ex As Exception
-            Me.Page.HandleErrors(ex, Me.Page.MasterPage.MessageController)
+            Page.HandleErrors(ex, Page.MasterPage.MessageController)
         End Try
 
     End Sub
@@ -109,9 +109,9 @@ Public Class ClaimDeviceInformationController
         Try
             Dim sEquipTypeClaimed As String = LookupListNew.GetDescriptionFromExtCode(DATA_TEXT_CLAIM_EQUIP_TYPE, Authentication.LangId, DATA_TEXT_CLAIM_EQUIP_TYPE_CLAIMED)
             'im dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-            If Not e.Row.DataItem Is Nothing And e.Row.RowType = DataControlRowType.DataRow Then
+            If e.Row.DataItem IsNot Nothing AndAlso e.Row.RowType = DataControlRowType.DataRow Then
                 If CType(e.Row.FindControl(GRID_CTRL_NAME_LBL_EQUIPMENT_TYPE), Label).Text = sEquipTypeClaimed Then
-                    If Not e.Row.FindControl(GRID_CTRL_NAME_IMG_EDIT) Is Nothing Then
+                    If e.Row.FindControl(GRID_CTRL_NAME_IMG_EDIT) IsNot Nothing Then
                         CType(e.Row.FindControl(GRID_CTRL_NAME_IMG_EDIT), ImageButton).Visible = ShowDeviceEditImg
                     End If
                 End If
@@ -126,8 +126,8 @@ Public Class ClaimDeviceInformationController
                     Dim ddlModel As DropDownList = CType(e.Row.FindControl(GRID_CTRL_NAME_DDL_MODEL), DropDownList)
                     Dim txtModel As TextBox = CType(e.Row.FindControl(GRID_CTRL_NAME_TXT_MODEL), TextBox)
 
-                    If Not String.IsNullOrEmpty(Me.ClaimBO.Dealer.Dealer) Then
-                        Dim makesAndModels = GetMakesAndModels(Me.ClaimBO.Dealer.Dealer)
+                    If Not String.IsNullOrEmpty(ClaimBO.Dealer.Dealer) Then
+                        Dim makesAndModels = GetMakesAndModels(ClaimBO.Dealer.Dealer)
                         If (makesAndModels IsNot Nothing) Then
                             Dim ds As New DataSet()
                             ds.ReadXml(New StringReader(makesAndModels))
@@ -185,28 +185,28 @@ Public Class ClaimDeviceInformationController
                 End If
             End If
         Catch ex As Exception
-            Me.Page.HandleErrors(ex, Me.Page.MasterPage.MessageController)
+            Page.HandleErrors(ex, Page.MasterPage.MessageController)
         End Try
     End Sub
 
     Protected Sub GvClaimDeviceInformation_RowEditing(sender As Object, e As GridViewEditEventArgs) Handles GvClaimDeviceInformation.RowEditing
         Try
-            Me.GvClaimDeviceInformation.EditIndex = e.NewEditIndex
+            GvClaimDeviceInformation.EditIndex = e.NewEditIndex
             PopulateGridViewData()
         Catch ex As Exception
-            Me.Page.HandleErrors(ex, Me.Page.MasterPage.MessageController)
+            Page.HandleErrors(ex, Page.MasterPage.MessageController)
         End Try
     End Sub
 
 #End Region
 
 #Region "Button Clicks"
-    Protected Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Protected Sub btnCancel_Click(sender As Object, e As EventArgs)
         Try
-            Me.GvClaimDeviceInformation.EditIndex = -1
+            GvClaimDeviceInformation.EditIndex = -1
             PopulateGridViewData()
         Catch ex As Exception
-            Me.Page.HandleErrors(ex, Me.Page.MasterPage.MessageController)
+            Page.HandleErrors(ex, Page.MasterPage.MessageController)
         End Try
     End Sub
 
@@ -215,12 +215,12 @@ Public Class ClaimDeviceInformationController
 #Region "Controlling Logic"
     Private Sub PopulateGridViewData()
         Try
-            If Not Me.ClaimBO Is Nothing Then
-                Me.GvClaimDeviceInformation.DataSource = Me.ClaimBO.ClaimedEnrolledEquipments()
-                Me.GvClaimDeviceInformation.DataBind()
+            If ClaimBO IsNot Nothing Then
+                GvClaimDeviceInformation.DataSource = ClaimBO.ClaimedEnrolledEquipments()
+                GvClaimDeviceInformation.DataBind()
             End If
         Catch ex As Exception
-            Me.Page.HandleErrors(ex, Me.Page.MasterPage.MessageController)
+            Page.HandleErrors(ex, Page.MasterPage.MessageController)
         End Try
     End Sub
 
@@ -240,13 +240,13 @@ Public Class ClaimDeviceInformationController
 
     End Function
 
-    Private Function PopulateBOFromGrid(ByVal pGridView As GridView) As Boolean
+    Private Function PopulateBOFromGrid(pGridView As GridView) As Boolean
         Dim row As GridViewRow = pGridView.Rows(pGridView.EditIndex)
         Dim blnUpdateSuccess As Boolean = True
-        With Me.ClaimBO
-            If Not .ClaimedEquipment Is Nothing Then
+        With ClaimBO
+            If .ClaimedEquipment IsNot Nothing Then
                 Dim lblId As Label = CType(row.FindControl(GRID_CTRL_NAME_LBL_ID), Label)
-                Dim _ClaimEquipment As ClaimEquipment = Me.ClaimBO.ClaimEquipmentChildren.GetChild(Guid.Parse(lblId.Text))
+                Dim _ClaimEquipment As ClaimEquipment = ClaimBO.ClaimEquipmentChildren.GetChild(Guid.Parse(lblId.Text))
                 Dim ddlMake As DropDownList = CType(row.FindControl(GRID_CTRL_NAME_DDL_MAKE), DropDownList)
                 Dim txtMake As TextBox = CType(row.FindControl(GRID_CTRL_NAME_TXT_MAKE), TextBox)
                 Dim ddlModel As DropDownList = CType(row.FindControl(GRID_CTRL_NAME_DDL_MODEL), DropDownList)
@@ -267,11 +267,11 @@ Public Class ClaimDeviceInformationController
 
                 Dim makeId As Guid = LookupListNew.GetIdFromDescription(LookupListNew.GetManufacturerLookupList(Authentication.CompanyGroupId), makeName)
                 If makeId.Equals(Guid.Empty) Then
-                    Me.Page.MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.BO_ERROR_NO_MANUFACTURER_FOUND, True)
+                    Page.MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.BO_ERROR_NO_MANUFACTURER_FOUND, True)
                     blnUpdateSuccess = False
                     Return blnUpdateSuccess
                 Else
-                    Me.Page.MasterPage.MessageController.Clear()
+                    Page.MasterPage.MessageController.Clear()
                     .ClaimedEquipment.ManufacturerId = makeId
                 End If
 

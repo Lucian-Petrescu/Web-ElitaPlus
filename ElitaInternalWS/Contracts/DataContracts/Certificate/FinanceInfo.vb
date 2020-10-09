@@ -23,17 +23,17 @@ Public Class FinanceInfo
 
     End Sub
 
-    Friend Sub New(ByVal pCertificate As Certificate, ByVal serialNumber As String)
+    Friend Sub New(pCertificate As Certificate, serialNumber As String)
 
-        Me.FinancedTabAmount = pCertificate.Finance_Tab_Amount
+        FinancedTabAmount = pCertificate.Finance_Tab_Amount
 
-        Me.AssurantOutstandingFinancialBalance = pCertificate.GetFinancialAmount(serialNumber)
+        AssurantOutstandingFinancialBalance = pCertificate.GetFinancialAmount(serialNumber)
 
-        Me.TotalPaidInstallments = pCertificate.NumOfConsecutivePayments
+        TotalPaidInstallments = pCertificate.NumOfConsecutivePayments
 
-        Me.TotalInstallments = pCertificate.Finance_Term
+        TotalInstallments = pCertificate.Finance_Term
 
-        Me.TotalPayments = pCertificate.GetTotalOverallPayments()
+        TotalPayments = pCertificate.GetTotalOverallPayments()
 
     End Sub
 

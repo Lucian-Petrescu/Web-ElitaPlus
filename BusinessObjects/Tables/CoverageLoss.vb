@@ -6,55 +6,55 @@ Public Class CoverageLoss
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     'New BO Load not avialable
-    Public Sub New(ByVal causeOfLossId As Guid, ByVal coverageTypeId As Guid)
+    Public Sub New(causeOfLossId As Guid, coverageTypeId As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(causeOfLossId, coverageTypeId)
+        Dataset = New DataSet
+        Load(causeOfLossId, coverageTypeId)
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New CoverageLossDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -62,23 +62,23 @@ Public Class CoverageLoss
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CoverageLossDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -86,22 +86,22 @@ Public Class CoverageLoss
         End Try
     End Sub
 
-    Protected Sub Load(ByVal causeOfLossId As Guid, ByVal coverageTypeId As Guid)
+    Protected Sub Load(causeOfLossId As Guid, coverageTypeId As Guid)
         Try
             Dim dal As New CoverageLossDAL
             Dim oCompanyGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(causeOfLossId, dal.COL_NAME_CAUSE_OF_LOSS_ID, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(causeOfLossId, dal.COL_NAME_CAUSE_OF_LOSS_ID, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, oCompanyGroupId, causeOfLossId, coverageTypeId)
-                Me.Row = Me.FindRow(causeOfLossId, dal.COL_NAME_CAUSE_OF_LOSS_ID, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, oCompanyGroupId, causeOfLossId, coverageTypeId)
+                Row = FindRow(causeOfLossId, dal.COL_NAME_CAUSE_OF_LOSS_ID, Dataset.Tables(dal.TABLE_NAME))
             End If
             'If Me.Row Is Nothing Then
             '    Throw New DataNotFoundException
@@ -125,7 +125,7 @@ Public Class CoverageLoss
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CoverageLossDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -136,7 +136,7 @@ Public Class CoverageLoss
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(CoverageLossDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -145,15 +145,15 @@ Public Class CoverageLoss
                 Return New Guid(CType(Row(CoverageLossDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CoverageLossDAL.COL_NAME_COMPANY_GROUP_ID, Value)
+            SetValue(CoverageLossDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property CoverageTypeId() As Guid
+    Public Property CoverageTypeId As Guid
         Get
             CheckDeleted()
             If Row(CoverageLossDAL.COL_NAME_COVERAGE_TYPE_ID) Is DBNull.Value Then
@@ -162,15 +162,15 @@ Public Class CoverageLoss
                 Return New Guid(CType(Row(CoverageLossDAL.COL_NAME_COVERAGE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CoverageLossDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
+            SetValue(CoverageLossDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property CauseOfLossId() As Guid
+    Public Property CauseOfLossId As Guid
         Get
             CheckDeleted()
             If Row(CoverageLossDAL.COL_NAME_CAUSE_OF_LOSS_ID) Is DBNull.Value Then
@@ -179,13 +179,13 @@ Public Class CoverageLoss
                 Return New Guid(CType(Row(CoverageLossDAL.COL_NAME_CAUSE_OF_LOSS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CoverageLossDAL.COL_NAME_CAUSE_OF_LOSS_ID, Value)
+            SetValue(CoverageLossDAL.COL_NAME_CAUSE_OF_LOSS_ID, Value)
         End Set
     End Property
 
-    Public Property DefaultFlag() As String
+    Public Property DefaultFlag As String
         Get
             CheckDeleted()
             If Row(CoverageLossDAL.COL_NAME_DEFAULT_FLAG) Is DBNull.Value Then
@@ -194,13 +194,13 @@ Public Class CoverageLoss
                 Return CType(Row(CoverageLossDAL.COL_NAME_DEFAULT_FLAG), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CoverageLossDAL.COL_NAME_DEFAULT_FLAG, Value)
+            SetValue(CoverageLossDAL.COL_NAME_DEFAULT_FLAG, Value)
         End Set
     End Property
 
-    Public Property Active() As String
+    Public Property Active As String
         Get
             CheckDeleted()
             If Row(CoverageLossDAL.COL_NAME_ACTIVE) Is DBNull.Value Then
@@ -209,9 +209,9 @@ Public Class CoverageLoss
                 Return CType(Row(CoverageLossDAL.COL_NAME_ACTIVE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CoverageLossDAL.COL_NAME_ACTIVE, Value)
+            SetValue(CoverageLossDAL.COL_NAME_ACTIVE, Value)
         End Set
     End Property
 #End Region
@@ -220,15 +220,15 @@ Public Class CoverageLoss
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CoverageLossDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New Dataset
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New Dataset
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -236,10 +236,10 @@ Public Class CoverageLoss
         End Try
     End Sub
 
-    Public Function getCoverageLossForSpecialService(ByVal splsvcCode As String, ByVal DealerCode As String) As DataView
+    Public Function getCoverageLossForSpecialService(splsvcCode As String, DealerCode As String) As DataView
         Dim dal As New CoverageLossDAL
         Try
-            Dim dealerid As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_DEALERS, DealerCode)
+            Dim dealerid As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_DEALERS, DealerCode)
             Dim oCompanyGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
             Dim ds As DataSet = dal.getCoverageLossforSpecialService(splsvcCode, dealerid, oCompanyGroupId)
             If ds.Tables(CoverageLossDAL.TABLE_NAME).Rows.Count < 1 Then
@@ -256,7 +256,7 @@ Public Class CoverageLoss
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function getList(ByVal coverageTypeId As Guid) As SearchDV
+    Public Shared Function getList(coverageTypeId As Guid) As SearchDV
         Try
             Dim dal As New CoverageLossDAL
             'Dim oCompany As New ElitaPlus.BusinessObjectsNew.Company(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
@@ -269,7 +269,7 @@ Public Class CoverageLoss
         End Try
     End Function
 
-    Private Shared Function GetCovLossList(ByVal parent As CoverageType) As DataTable
+    Private Shared Function GetCovLossList(parent As CoverageType) As DataTable
         Dim oCompanyGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
 
         Try
@@ -286,7 +286,7 @@ Public Class CoverageLoss
     End Function
 
 
-    Private Shared Function GetCovLoss(ByVal parent As CoverageType, ByVal coverageLossId As Guid) As DataTable
+    Private Shared Function GetCovLoss(parent As CoverageType, coverageLossId As Guid) As DataTable
         Dim oCompanyGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
 
         Try
@@ -302,7 +302,7 @@ Public Class CoverageLoss
         End Try
     End Function
 
-    Public Function LoadCauseOfLossInUse(ByVal causeOfLossIds As ArrayList) As Boolean
+    Public Function LoadCauseOfLossInUse(causeOfLossIds As ArrayList) As Boolean
         Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
         Dim dal As New CoverageLossDAL
 
@@ -316,7 +316,7 @@ Public Class CoverageLoss
 
     End Function
 
-    Public Shared Function LoadSelectedCovLossFromCovandCauseOfLoss(ByVal CauseOfLossId As Guid, ByVal coverageTypeId As Guid) As DataSet
+    Public Shared Function LoadSelectedCovLossFromCovandCauseOfLoss(CauseOfLossId As Guid, coverageTypeId As Guid) As DataSet
         Dim grpId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
         Dim dal As New CoverageLossDAL
 
@@ -325,7 +325,7 @@ Public Class CoverageLoss
         Return ds
     End Function
 
-    Public Shared Function LoadCauseOfLossByCov(ByVal coverageTypeId As Guid) As DataSet
+    Public Shared Function LoadCauseOfLossByCov(coverageTypeId As Guid) As DataSet
         Dim grpId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
         Dim language_Id As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
         Dim dal As New CoverageLossDAL
@@ -335,7 +335,7 @@ Public Class CoverageLoss
         Return ds
     End Function
 
-    Public Shared Function LoadDefaultCauseOfLossByCov(ByVal coverageTypeId As Guid) As DataSet
+    Public Shared Function LoadDefaultCauseOfLossByCov(coverageTypeId As Guid) As DataSet
         Dim grpId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
         Dim language_Id As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
         Dim dal As New CoverageLossDAL
@@ -363,53 +363,53 @@ Public Class CoverageLoss
 
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property CoverageLossId(ByVal row) As Guid
+        Public Shared ReadOnly Property CoverageLossId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_COVERAGE_LOSS_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Description(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Description(row As DataRow) As String
             Get
                 Return row(COL_NAME_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property ShortDescription(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property ShortDescription(row As DataRow) As String
             Get
                 Return row(COL_NAME_CODE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property CompanyGroupGd(ByVal row As DataRow) As Guid
+        Public Shared ReadOnly Property CompanyGroupGd(row As DataRow) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_COMPANY_GROUP_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property CoverageTypeId(ByVal row As DataRow) As Guid
+        Public Shared ReadOnly Property CoverageTypeId(row As DataRow) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_COVERAGE_TYPE_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property CauseOfLossId(ByVal row As DataRow) As Guid
+        Public Shared ReadOnly Property CauseOfLossId(row As DataRow) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_CAUSE_OF_LOSS_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property DefaultFlag(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property DefaultFlag(row As DataRow) As String
             Get
                 Return CType(row(COL_NAME_DEFAULT_FLAG), String)
             End Get
         End Property
 
-        Public Shared ReadOnly Property Active(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Active(row As DataRow) As String
             Get
                 Return CType(row(COL_NAME_ACTIVE), String)
             End Get
@@ -422,17 +422,17 @@ Public Class CoverageLoss
 #Region "List Methods"
     Public Class CovLossList
         Inherits BusinessObjectListBase
-        Public Sub New(ByVal parent As CoverageType)
+        Public Sub New(parent As CoverageType)
             MyBase.New(GetCovLossList(parent), GetType(CoverageLoss), parent)
         End Sub
-        Public Sub New(ByVal parent As CoverageType, ByVal coverageLossId As Guid)
+        Public Sub New(parent As CoverageType, coverageLossId As Guid)
             MyBase.New(GetCovLoss(parent, coverageLossId), GetType(CoverageLoss), parent)
         End Sub
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return True
         End Function
 
-        Public Function FindById(ByVal CauseOfLossId As Guid) As CoverageLoss
+        Public Function FindById(CauseOfLossId As Guid) As CoverageLoss
             Dim bo As CoverageLoss
             For Each bo In Me
                 If bo.CauseOfLossId.Equals(CauseOfLossId) Then Return bo

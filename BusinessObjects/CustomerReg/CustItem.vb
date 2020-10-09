@@ -14,48 +14,48 @@ Public Class CustItem
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
     
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()             
         Try
             Dim dal As New CustItemDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -63,23 +63,23 @@ Public Class CustItem
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CustItemDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -98,7 +98,7 @@ Public Class CustItem
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(CustItemDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -109,7 +109,7 @@ Public Class CustItem
     End Property
 
     <ValueMandatory("")> _
-    Public Property RegistrationId() As Guid
+    Public Property RegistrationId As Guid
         Get
             CheckDeleted()
             If row(CustItemDAL.COL_NAME_REGISTRATION_ID) Is DBNull.Value Then
@@ -118,15 +118,15 @@ Public Class CustItem
                 Return New Guid(CType(row(CustItemDAL.COL_NAME_REGISTRATION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CustItemDAL.COL_NAME_REGISTRATION_ID, Value)
+            SetValue(CustItemDAL.COL_NAME_REGISTRATION_ID, Value)
         End Set
     End Property
 
 
 
-    Public Property CertItemId() As Guid
+    Public Property CertItemId As Guid
         Get
             CheckDeleted()
             If row(CustItemDAL.COL_NAME_CERT_ITEM_ID) Is DBNull.Value Then
@@ -135,15 +135,15 @@ Public Class CustItem
                 Return New Guid(CType(row(CustItemDAL.COL_NAME_CERT_ITEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CustItemDAL.COL_NAME_CERT_ITEM_ID, Value)
+            SetValue(CustItemDAL.COL_NAME_CERT_ITEM_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property RegistrationDate() As DateType
+    Public Property RegistrationDate As DateType
         Get
             CheckDeleted()
             If Row(CustItemDAL.COL_NAME_REGISTRATION_DATE) Is DBNull.Value Then
@@ -152,15 +152,15 @@ Public Class CustItem
                 Return New DateType(CType(Row(CustItemDAL.COL_NAME_REGISTRATION_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CustItemDAL.COL_NAME_REGISTRATION_DATE, Value)
+            SetValue(CustItemDAL.COL_NAME_REGISTRATION_DATE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=255)> _
-    Public Property Make() As String
+    Public Property Make As String
         Get
             CheckDeleted()
             If Row(CustItemDAL.COL_NAME_MAKE) Is DBNull.Value Then
@@ -169,14 +169,14 @@ Public Class CustItem
                 Return CType(Row(CustItemDAL.COL_NAME_MAKE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CustItemDAL.COL_NAME_MAKE, Value)
+            SetValue(CustItemDAL.COL_NAME_MAKE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=255)> _
-    Public Property Model() As String
+    Public Property Model As String
         Get
             CheckDeleted()
             If Row(CustItemDAL.COL_NAME_MODEL) Is DBNull.Value Then
@@ -185,14 +185,14 @@ Public Class CustItem
                 Return CType(Row(CustItemDAL.COL_NAME_MODEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CustItemDAL.COL_NAME_MODEL, Value)
+            SetValue(CustItemDAL.COL_NAME_MODEL, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=255)> _
-    Public Property ItemName() As String
+    Public Property ItemName As String
         Get
             CheckDeleted()
             If Row(CustItemDAL.COL_NAME_ITEM_NAME) Is DBNull.Value Then
@@ -201,15 +201,15 @@ Public Class CustItem
                 Return CType(Row(CustItemDAL.COL_NAME_ITEM_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CustItemDAL.COL_NAME_ITEM_NAME, Value)
+            SetValue(CustItemDAL.COL_NAME_ITEM_NAME, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property RegistrationStatusId() As Guid
+    Public Property RegistrationStatusId As Guid
         Get
             CheckDeleted()
             If row(CustItemDAL.COL_NAME_REGISTRATION_STATUS_ID) Is DBNull.Value Then
@@ -218,15 +218,15 @@ Public Class CustItem
                 Return New Guid(CType(row(CustItemDAL.COL_NAME_REGISTRATION_STATUS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CustItemDAL.COL_NAME_REGISTRATION_STATUS_ID, Value)
+            SetValue(CustItemDAL.COL_NAME_REGISTRATION_STATUS_ID, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=30)> _
-    Public Property Coverage() As String
+    Public Property Coverage As String
         Get
             CheckDeleted()
             If Row(CustItemDAL.COL_NAME_COVERAGE) Is DBNull.Value Then
@@ -235,15 +235,15 @@ Public Class CustItem
                 Return CType(Row(CustItemDAL.COL_NAME_COVERAGE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CustItemDAL.COL_NAME_COVERAGE, Value)
+            SetValue(CustItemDAL.COL_NAME_COVERAGE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=120)> _
-    Public Property ImeiNumber() As String
+    Public Property ImeiNumber As String
         Get
             CheckDeleted()
             If Row(CustItemDAL.COL_NAME_IMEI_NUMBER) Is DBNull.Value Then
@@ -252,15 +252,15 @@ Public Class CustItem
                 Return CType(Row(CustItemDAL.COL_NAME_IMEI_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CustItemDAL.COL_NAME_IMEI_NUMBER, Value)
+            SetValue(CustItemDAL.COL_NAME_IMEI_NUMBER, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=100)> _
-    Public Property ProductKey() As String
+    Public Property ProductKey As String
         Get
             CheckDeleted()
             If Row(CustItemDAL.COL_NAME_PRODUCT_KEY) Is DBNull.Value Then
@@ -269,15 +269,15 @@ Public Class CustItem
                 Return CType(Row(CustItemDAL.COL_NAME_PRODUCT_KEY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CustItemDAL.COL_NAME_PRODUCT_KEY, Value)
+            SetValue(CustItemDAL.COL_NAME_PRODUCT_KEY, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=100)> _
-    Public Property OrderRefNum() As String
+    Public Property OrderRefNum As String
         Get
             CheckDeleted()
             If Row(CustItemDAL.COL_NAME_ORDER_REF_NUM) Is DBNull.Value Then
@@ -286,13 +286,13 @@ Public Class CustItem
                 Return CType(Row(CustItemDAL.COL_NAME_ORDER_REF_NUM), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CustItemDAL.COL_NAME_ORDER_REF_NUM, Value)
+            SetValue(CustItemDAL.COL_NAME_ORDER_REF_NUM, Value)
         End Set
     End Property
 
-    Public Property ProductProcurementDate() As DateType
+    Public Property ProductProcurementDate As DateType
         Get
             CheckDeleted()
             If Row(CustItemDAL.COL_NAME_PRODUCT_PROCUREMENT_DATE) Is DBNull.Value Then
@@ -301,14 +301,14 @@ Public Class CustItem
                 Return New DateType(CType(Row(CustItemDAL.COL_NAME_PRODUCT_PROCUREMENT_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CustItemDAL.COL_NAME_PRODUCT_PROCUREMENT_DATE, Value)
+            SetValue(CustItemDAL.COL_NAME_PRODUCT_PROCUREMENT_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property IsDeletedId() As Guid
+    Public Property IsDeletedId As Guid
         Get
             CheckDeleted()
             If Row(CustItemDAL.COL_NAME_IS_DELETED_ID) Is DBNull.Value Then
@@ -317,14 +317,14 @@ Public Class CustItem
                 Return New Guid(CType(Row(CustItemDAL.COL_NAME_IS_DELETED_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CustItemDAL.COL_NAME_IS_DELETED_ID, Value)
+            SetValue(CustItemDAL.COL_NAME_IS_DELETED_ID, Value)
         End Set
     End Property
 
     <ValueMandatoryConditionally("")> _
-    Public Property CellPhone() As String
+    Public Property CellPhone As String
         Get
             CheckDeleted()
             If Row(CustItemDAL.COL_NAME_CELL_PHONE) Is DBNull.Value Then
@@ -333,9 +333,9 @@ Public Class CustItem
                 Return CType(Row(CustItemDAL.COL_NAME_CELL_PHONE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CustItemDAL.COL_NAME_CELL_PHONE, Value)
+            SetValue(CustItemDAL.COL_NAME_CELL_PHONE, Value)
         End Set
     End Property
 
@@ -347,11 +347,11 @@ Public Class CustItem
     Public Property CustomerRegistration As CustRegistration
         Get
             If (_custReg Is Nothing) Then
-                _custReg = New CustRegistration(Me.RegistrationId)
+                _custReg = New CustRegistration(RegistrationId)
             End If
             Return _custReg
         End Get
-        Set(ByVal value As CustRegistration)
+        Set
             _custReg = value
         End Set
     End Property
@@ -359,13 +359,13 @@ Public Class CustItem
     Public Property Dealer As Dealer
         Get
             If (_dealer Is Nothing) Then
-                If (Not Me.CustomerRegistration Is Nothing) Then
-                    _dealer = New Dealer(Me.CustomerRegistration.DealerId)
+                If (CustomerRegistration IsNot Nothing) Then
+                    _dealer = New Dealer(CustomerRegistration.DealerId)
                 End If
             End If
             Return _dealer
         End Get
-        Set(ByVal value As Dealer)
+        Set
             _dealer = value
         End Set
     End Property
@@ -373,13 +373,13 @@ Public Class CustItem
     Public Property EquipmentId As Guid
         Get
             If (_equipmentId = Guid.Empty) Then
-                If (Not Me.Dealer Is Nothing) Then
-                    _equipmentId = Equipment.FindEquipment(Me.Dealer.Dealer, Me.Make, Me.Model, Me.RegistrationDate)
+                If (Dealer IsNot Nothing) Then
+                    _equipmentId = Equipment.FindEquipment(Dealer.Dealer, Make, Model, RegistrationDate)
                 End If
             End If
             Return _equipmentId
         End Get
-        Set(ByVal value As Guid)
+        Set
             _equipmentId = value
         End Set
     End Property
@@ -387,7 +387,7 @@ Public Class CustItem
 #End Region
 
 #Region "Public Members"
-    Public Shared Function FindRegistration(ByVal certificateId As Guid) As CustItemDAL.RegistrationDetails
+    Public Shared Function FindRegistration(certificateId As Guid) As CustItemDAL.RegistrationDetails
         Dim dal As New CustItemDAL
         Try
             Return dal.FindRegistration(certificateId)
@@ -396,7 +396,7 @@ Public Class CustItem
         End Try
     End Function
 
-    Public Shared Function CreateItemElements(ByVal customerItem As CustItemDC, ByVal custRegBO As CustRegistration) As String
+    Public Shared Function CreateItemElements(customerItem As CustItemDC, custRegBO As CustRegistration) As String
         Try
             Dim ds As DataSet
             Dim noId As Guid
@@ -406,16 +406,16 @@ Public Class CustItem
             Dim equipmentId As Guid
             Dim cellNumber As String
 
-            noId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
-            regStatusActiveId = LookupListNew.GetIdFromCode(LookupListNew.LK_REGSTATUS, Codes.REGSTATUS_ACTIVE)
-            regStatusPendingId = LookupListNew.GetIdFromCode(LookupListNew.LK_REGSTATUS, Codes.REGSTATUS_PENDING)
+            noId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_N)
+            regStatusActiveId = LookupListNew.GetIdFromCode(LookupListCache.LK_REGSTATUS, Codes.REGSTATUS_ACTIVE)
+            regStatusPendingId = LookupListNew.GetIdFromCode(LookupListCache.LK_REGSTATUS, Codes.REGSTATUS_PENDING)
 
             If IsIMEINumberValid(customerItem.IMEINumber) Then
                 equipmentId = Equipment.FindEquipment(customerItem.DealerCode, customerItem.Make, customerItem.Model, customerItem.RegistrationDate)
 
                 If (equipmentId <> Guid.Empty) Then
                     'check if enrollment came in for the customer's device & is in active state
-                    If Not customerItem.CellPhone Is Nothing Then
+                    If customerItem.CellPhone IsNot Nothing Then
                         cellNumber = customerItem.CellPhone.Trim()
                     End If
                     certItemId = GetCertItemIDforTaxImei(custRegBO.TaxId, customerItem.IMEINumber, custRegBO.DealerId, cellNumber)
@@ -452,7 +452,7 @@ Public Class CustItem
                         objInsertCustItem.Save()
                         Return OK_RESPONSE
                     Else
-                        If (LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, New Guid(CType(ds.Tables(0).Rows(0)("is_deleted_id"), Byte()))) = Codes.YESNO_N) Then
+                        If (LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, New Guid(CType(ds.Tables(0).Rows(0)("is_deleted_id"), Byte()))) = Codes.YESNO_N) Then
                             'IMEI already added by the current user under the current dealer and is not deleted
                             Dim errors() As ValidationError = {New ValidationError(Common.ErrorCodes.ITEM_ALREADY_EXISTS_ERR, GetType(CustItem), Nothing, "", Nothing)}
                             Throw New BOValidationException(errors, GetType(CustItem).FullName)
@@ -492,11 +492,11 @@ Public Class CustItem
         End Try
     End Function
 
-    Public Shared Function DeleteItem(ByVal custItemBO As CustItem) As String
+    Public Shared Function DeleteItem(custItemBO As CustItem) As String
         Try
             Dim yesId As Guid
 
-            yesId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
+            yesId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_Y)
 
             custItemBO.IsDeletedId = yesId
 
@@ -513,15 +513,15 @@ Public Class CustItem
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CustItemDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -529,7 +529,7 @@ Public Class CustItem
         End Try
     End Sub
 
-    Public Shared Function IsIMEINumberValid(ByVal imeiNumber As String) As Boolean
+    Public Shared Function IsIMEINumberValid(imeiNumber As String) As Boolean
         Dim dal As New CustItemDAL
 
         If (imeiNumber = String.Empty) Then
@@ -544,7 +544,7 @@ Public Class CustItem
 
     End Function
 
-    Public Shared Function ActivateItem(ByVal custItemDeleteActivate As CustItemDeleteActivateDC, ByVal custRegBO As CustRegistration, ByVal custItemBO As CustItem) As String
+    Public Shared Function ActivateItem(custItemDeleteActivate As CustItemDeleteActivateDC, custRegBO As CustRegistration, custItemBO As CustItem) As String
         Try
             Dim regStatusActiveId As Guid
             Dim regStatusPendingId As Guid
@@ -553,16 +553,16 @@ Public Class CustItem
             Dim evntReactivateId As Guid
             Dim argumentsToAddEvent As String
 
-            regStatusActiveId = LookupListNew.GetIdFromCode(LookupListNew.LK_REGSTATUS, Codes.REGSTATUS_ACTIVE)
-            regStatusPendingId = LookupListNew.GetIdFromCode(LookupListNew.LK_REGSTATUS, Codes.REGSTATUS_PENDING)
-            regStatusInActiveId = LookupListNew.GetIdFromCode(LookupListNew.LK_REGSTATUS, Codes.REGSTATUS_INACTIVE)
+            regStatusActiveId = LookupListNew.GetIdFromCode(LookupListCache.LK_REGSTATUS, Codes.REGSTATUS_ACTIVE)
+            regStatusPendingId = LookupListNew.GetIdFromCode(LookupListCache.LK_REGSTATUS, Codes.REGSTATUS_PENDING)
+            regStatusInActiveId = LookupListNew.GetIdFromCode(LookupListCache.LK_REGSTATUS, Codes.REGSTATUS_INACTIVE)
 
-            evntActivateId = LookupListNew.GetIdFromCode(LookupListNew.LK_EVNT_TYPE, Codes.EVNT_TYPE_ACTIVATE)
-            evntReactivateId = LookupListNew.GetIdFromCode(LookupListNew.LK_EVNT_TYPE, Codes.EVNT_TYPE_REACTIVATE)
+            evntActivateId = LookupListNew.GetIdFromCode(LookupListCache.LK_EVNT_TYPE, Codes.EVNT_TYPE_ACTIVATE)
+            evntReactivateId = LookupListNew.GetIdFromCode(LookupListCache.LK_EVNT_TYPE, Codes.EVNT_TYPE_REACTIVATE)
 
             argumentsToAddEvent = PublishedTask.REGISTRATION_ID & ":" & DALBase.GuidToSQLString(custRegBO.Id) & ";" & PublishedTask.REGISTRATION_ITEM_ID & ":" & DALBase.GuidToSQLString(custItemBO.Id)
 
-            If (LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, custItemBO.IsDeletedId) = Codes.YESNO_N) Then
+            If (LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, custItemBO.IsDeletedId) = Codes.YESNO_N) Then
 
                 If (custItemBO.RegistrationStatusId = regStatusActiveId Or custItemBO.RegistrationStatusId = regStatusPendingId) Then
                     'Raise Activate and Reactive events based on the status, product key
@@ -597,7 +597,7 @@ Public Class CustItem
 #End Region
 
 #Region "Data Retrieveing Methods"
-    Public Shared Function GetItemFromEmail(ByVal emailId As String, ByVal dealerId As Guid) As DataSet
+    Public Shared Function GetItemFromEmail(emailId As String, dealerId As Guid) As DataSet
         Try
             Dim dal As New CustItemDAL
             Dim ds As DataSet
@@ -619,7 +619,7 @@ Public Class CustItem
         End Try
     End Function
 
-    Public Shared Function GetItemforDealerAndRegistration(ByVal imeiNumber As String, ByVal dealerId As Guid, ByVal registrationId As Guid) As DataSet
+    Public Shared Function GetItemforDealerAndRegistration(imeiNumber As String, dealerId As Guid, registrationId As Guid) As DataSet
         Try
             Dim dal As New CustItemDAL
 
@@ -629,7 +629,7 @@ Public Class CustItem
         End Try
     End Function
 
-    Public Shared Function GetItemByRegistrationAndIMEI(ByVal registrationId As Guid, ByVal imeiNumber As String) As Guid
+    Public Shared Function GetItemByRegistrationAndIMEI(registrationId As Guid, imeiNumber As String) As Guid
         Try
             Dim dal As New CustItemDAL
 
@@ -639,7 +639,7 @@ Public Class CustItem
         End Try
     End Function
 
-    Public Shared Function CheckItemforDealer(ByVal imeiNumber As String, ByVal dealerId As Guid) As Integer
+    Public Shared Function CheckItemforDealer(imeiNumber As String, dealerId As Guid) As Integer
         Try
             Dim dal As New CustItemDAL
 
@@ -649,7 +649,7 @@ Public Class CustItem
         End Try
     End Function
 
-    Public Shared Function GetCertItemIDforTaxImei(ByVal taxID As String, ByVal imeiNumber As String, ByVal dealerId As Guid, ByVal cellNumber As String) As Guid
+    Public Shared Function GetCertItemIDforTaxImei(taxID As String, imeiNumber As String, dealerId As Guid, cellNumber As String) As Guid
         Try
             Dim dal As New CustItemDAL
 
@@ -667,17 +667,17 @@ Public Class CustItem
     Public NotInheritable Class ValueMandatoryConditionally
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.CELL_PHONE_NUMBER_IS_REQUIRED)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CustItem = CType(objectToValidate, CustItem)
             Dim returnVal As Boolean = True
             If (Not obj.EquipmentId.Equals(Guid.Empty)) Then
                 Dim eqp As New Equipment(obj.EquipmentId)
-                If (LookupListNew.GetCodeFromId(LookupListNew.LK_EQUIPMENT_TYPE, eqp.EquipmentTypeId) = Codes.EQUIPMENT_TYPE__SMARTPHONE _
-                        OrElse LookupListNew.GetCodeFromId(LookupListNew.LK_EQUIPMENT_TYPE, eqp.EquipmentTypeId) = Codes.EQUIPMENT_TYPE__FEATUREPHONE) Then
+                If (LookupListNew.GetCodeFromId(LookupListCache.LK_EQUIPMENT_TYPE, eqp.EquipmentTypeId) = Codes.EQUIPMENT_TYPE__SMARTPHONE _
+                        OrElse LookupListNew.GetCodeFromId(LookupListCache.LK_EQUIPMENT_TYPE, eqp.EquipmentTypeId) = Codes.EQUIPMENT_TYPE__FEATUREPHONE) Then
                     If (obj.CellPhone Is Nothing OrElse obj.CellPhone.Trim = String.Empty) Then
                         returnVal = False
                     End If

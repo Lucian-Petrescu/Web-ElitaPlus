@@ -7,48 +7,48 @@ Public Class IssueComment
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New IssueCommentDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -56,23 +56,23 @@ Public Class IssueComment
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New IssueCommentDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -91,12 +91,12 @@ Public Class IssueComment
         Dim issueCommentTable As DataTable
         Dim issueCommentObj As IssueComment
         Dim issueCommentId As Guid
-        If Me.Dataset.Tables.Contains(IssueCommentDAL.TABLE_NAME) Then
-            issueCommentTable = Me.Dataset.Tables(IssueCommentDAL.TABLE_NAME)
+        If Dataset.Tables.Contains(IssueCommentDAL.TABLE_NAME) Then
+            issueCommentTable = Dataset.Tables(IssueCommentDAL.TABLE_NAME)
             For Each issueCommentRow As DataRow In issueCommentTable.Rows
                 issueCommentId = New Guid(CType(issueCommentRow(IssueCommentDAL.COL_NAME_ISSUE_COMMENT_ID), Byte()))
-                issueCommentObj = New IssueComment(issueCommentId, Me.Dataset)
-                If (Not issueCommentObj.Id.Equals(Me.Id) AndAlso issueCommentObj.IssueCommentTypeId.Equals(Me.IssueCommentTypeId)) Then
+                issueCommentObj = New IssueComment(issueCommentId, Dataset)
+                If (Not issueCommentObj.Id.Equals(Id) AndAlso issueCommentObj.IssueCommentTypeId.Equals(IssueCommentTypeId)) Then
                     returnValue = False
                     Exit For
                 End If
@@ -109,7 +109,7 @@ Public Class IssueComment
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(IssueCommentDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -120,7 +120,7 @@ Public Class IssueComment
     End Property
 
     <ValueMandatory("")> _
-    Public Property IssueId() As Guid
+    Public Property IssueId As Guid
         Get
             CheckDeleted()
             If Row(IssueCommentDAL.COL_NAME_ISSUE_ID) Is DBNull.Value Then
@@ -129,14 +129,14 @@ Public Class IssueComment
                 Return New Guid(CType(Row(IssueCommentDAL.COL_NAME_ISSUE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(IssueCommentDAL.COL_NAME_ISSUE_ID, Value)
+            SetValue(IssueCommentDAL.COL_NAME_ISSUE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), DuplicateNoteTypeValidator("")> _
-    Public Property IssueCommentTypeId() As Guid
+    Public Property IssueCommentTypeId As Guid
         Get
             CheckDeleted()
             If Row(IssueCommentDAL.COL_NAME_ISSUE_COMMENT_TYPE_ID) Is DBNull.Value Then
@@ -145,14 +145,14 @@ Public Class IssueComment
                 Return New Guid(CType(Row(IssueCommentDAL.COL_NAME_ISSUE_COMMENT_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(IssueCommentDAL.COL_NAME_ISSUE_COMMENT_TYPE_ID, Value)
+            SetValue(IssueCommentDAL.COL_NAME_ISSUE_COMMENT_TYPE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1020)> _
-    Public Property Code() As String
+    Public Property Code As String
         Get
             CheckDeleted()
             If Row(IssueCommentDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -161,14 +161,14 @@ Public Class IssueComment
                 Return CType(Row(IssueCommentDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(IssueCommentDAL.COL_NAME_CODE, Value)
+            SetValue(IssueCommentDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=4000)> _
-    Public Property Text() As String
+    Public Property Text As String
         Get
             CheckDeleted()
             If Row(IssueCommentDAL.COL_NAME_TEXT) Is DBNull.Value Then
@@ -177,14 +177,14 @@ Public Class IssueComment
                 Return CType(Row(IssueCommentDAL.COL_NAME_TEXT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(IssueCommentDAL.COL_NAME_TEXT, Value)
+            SetValue(IssueCommentDAL.COL_NAME_TEXT, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property DisplayOnWeb() As Guid
+    Public Property DisplayOnWeb As Guid
         Get
             CheckDeleted()
             If Row(IssueCommentDAL.COL_NAME_DISPLAY_ON_WEB) Is DBNull.Value Then
@@ -193,9 +193,9 @@ Public Class IssueComment
                 Return New Guid(CType(Row(IssueCommentDAL.COL_NAME_DISPLAY_ON_WEB), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(IssueCommentDAL.COL_NAME_DISPLAY_ON_WEB, Value)
+            SetValue(IssueCommentDAL.COL_NAME_DISPLAY_ON_WEB, Value)
         End Set
     End Property
 
@@ -205,15 +205,15 @@ Public Class IssueComment
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New IssueCommentDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -226,14 +226,14 @@ Public Class IssueComment
 
 #Region "Public Methods"
 
-    Public Sub Copy(ByVal original As IssueComment)
-        If Not Me.IsNew Then
+    Public Sub Copy(original As IssueComment)
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Issue Comment.")
         End If
-        MyBase.CopyFrom(original)
+        CopyFrom(original)
     End Sub
 
-    Public Shared Function IsChild(ByVal IssueId As Guid, ByVal IssueCommentId As Guid) As Byte()
+    Public Shared Function IsChild(IssueId As Guid, IssueCommentId As Guid) As Byte()
 
         Try
             Dim dal As New IssueCommentDAL
@@ -243,7 +243,7 @@ Public Class IssueComment
             oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
             Dim ds As DataSet = dal.IsChild(IssueCommentId, IssueId, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            If Not ds Is Nothing Then
+            If ds IsNot Nothing Then
                 If ds.Tables(IssueCommentDAL.TABLE_NAME).Rows.Count > 0 Then
                     Return ds.Tables(IssueCommentDAL.TABLE_NAME).Rows(0)(IssueCommentDAL.COL_NAME_ISSUE_COMMENT_ID)
                 Else
@@ -282,7 +282,7 @@ Public Class IssueComment
         Public Const COL_NAME_CODE As String = IssueCommentDAL.COL_NAME_CODE
         Public Const COL_NAME_TEXT As String = IssueCommentDAL.COL_NAME_TEXT
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -296,7 +296,7 @@ Public Class IssueComment
         End Function
     End Class
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid, ByVal bo As IssueComment) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid, bo As IssueComment) As DataView
         Dim dt As DataTable
         dt = dv.Table
         Dim row As DataRow = dt.NewRow
@@ -307,7 +307,7 @@ Public Class IssueComment
         Return (dv)
     End Function
 
-    Public Shared Function GetList(ByVal IssueId As Guid) As IssueComment.IssueCommentGridDV
+    Public Shared Function GetList(IssueId As Guid) As IssueComment.IssueCommentGridDV
 
         Try
             Dim dal As New IssueCommentDAL
@@ -335,7 +335,7 @@ Public Class IssueComment
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -352,11 +352,11 @@ Public Class IssueComment
     Public NotInheritable Class DuplicateNoteTypeValidator
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, "ONLY_ONE_NOTE_TYPE_ALLOWED")
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As IssueComment = CType(objectToValidate, IssueComment)
             Return obj.CheckDuplicateNoteType()
         End Function

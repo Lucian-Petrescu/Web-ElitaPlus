@@ -47,50 +47,50 @@
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
             MyBase.New()
-            Me.Dataset = New DataSet
-            Me.Load(id)
+            Dataset = New DataSet
+            Load(id)
         End Sub
 
         'Exiting BO
-        Public Sub New(ByVal id As Guid, ByVal sModifiedDate As String)
+        Public Sub New(id As Guid, sModifiedDate As String)
             MyBase.New()
-            Me.Dataset = New DataSet
-            Me.Load(id)
+            Dataset = New DataSet
+            Load(id)
         'Me.VerifyConcurrency(sModifiedDate)
     End Sub
 
         'New BO
         Public Sub New()
             MyBase.New()
-            Me.Dataset = New DataSet
-            Me.Load()
+            Dataset = New DataSet
+            Load()
         End Sub
 
         'Exiting BO attaching to a BO family
-        Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+        Public Sub New(id As Guid, familyDS As DataSet)
             MyBase.New(False)
-            Me.Dataset = familyDS
-            Me.Load(id)
+            Dataset = familyDS
+            Load(id)
         End Sub
 
         'New BO attaching to a BO family
-        Public Sub New(ByVal familyDS As DataSet)
+        Public Sub New(familyDS As DataSet)
             MyBase.New(False)
-            Me.Dataset = familyDS
-            Me.Load()
+            Dataset = familyDS
+            Load()
         End Sub
 
         Protected Sub Load()
             Try
             Dim dal As New ARInvoiceReconWrkDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                    dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                    dal.LoadSchema(Dataset)
                 End If
-                Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-                Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-                Me.Row = newRow
+                Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+                Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+                Row = newRow
                 SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
                 Initialize()
             Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -98,23 +98,23 @@
             End Try
         End Sub
 
-        Protected Sub Load(ByVal id As Guid)
+        Protected Sub Load(id As Guid)
             Try
             Dim dal As New ARInvoiceReconWrkDAL
-            If Me._isDSCreator Then
-                    If Not Me.Row Is Nothing Then
-                        Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                    If Row IsNot Nothing Then
+                        Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                     End If
                 End If
-                Me.Row = Nothing
-                If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                    Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+                Row = Nothing
+                If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                    Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
                 End If
-                If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                    dal.Load(Me.Dataset, id)
-                    Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+                If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                    dal.Load(Dataset, id)
+                    Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
                 End If
-                If Me.Row Is Nothing Then
+                If Row Is Nothing Then
                     Throw New DataNotFoundException
                 End If
             Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -132,7 +132,7 @@
 #Region "Properties"
 
         'Key Property
-        Public ReadOnly Property Id() As Guid
+        Public ReadOnly Property Id As Guid
             Get
             If Row(ARInvoiceReconWrkDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -143,7 +143,7 @@
         End Property
 
     <ValueMandatory("")>
-    Public Property DealerfileProcessedId() As Guid
+    Public Property DealerfileProcessedId As Guid
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_DEALERFILE_PROCESSED_ID) Is DBNull.Value Then
@@ -152,13 +152,13 @@
                 Return New Guid(CType(Row(ARInvoiceReconWrkDAL.COL_NAME_DEALERFILE_PROCESSED_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ARInvoiceReconWrkDAL.COL_NAME_DEALERFILE_PROCESSED_ID, Value)
+            SetValue(ARInvoiceReconWrkDAL.COL_NAME_DEALERFILE_PROCESSED_ID, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=2)>
-    Public Property RecordType() As String
+    Public Property RecordType As String
         Get
             CheckDeleted()
             If Row(DealerReconWrkDAL.COL_NAME_RECORD_TYPE) Is DBNull.Value Then
@@ -167,13 +167,13 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_RECORD_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ARInvoiceReconWrkDAL.COL_NAME_RECORD_TYPE, Value)
+            SetValue(ARInvoiceReconWrkDAL.COL_NAME_RECORD_TYPE, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=20)>
-    Public Property Certificate() As String
+    Public Property Certificate As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_CERTIFICATE) Is DBNull.Value Then
@@ -182,13 +182,13 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_CERTIFICATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ARInvoiceReconWrkDAL.COL_NAME_CERTIFICATE, Value)
+            SetValue(ARInvoiceReconWrkDAL.COL_NAME_CERTIFICATE, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=3)>
-        Public Property RejectCode() As String
+        Public Property RejectCode As String
             Get
                 CheckDeleted()
                 If Row(DealerReconWrkDAL.COL_NAME_REJECT_CODE) Is DBNull.Value Then
@@ -197,13 +197,13 @@
                     Return CType(Row(DealerReconWrkDAL.COL_NAME_REJECT_CODE), String)
                 End If
             End Get
-            Set(ByVal Value As String)
+            Set
                 CheckDeleted()
-                Me.SetValue(DealerReconWrkDAL.COL_NAME_REJECT_CODE, Value)
+                SetValue(DealerReconWrkDAL.COL_NAME_REJECT_CODE, Value)
             End Set
         End Property
 
-    Public Property BillToAddressId() As Guid
+    Public Property BillToAddressId As Guid
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_BILL_TO_ADDRESS_ID) Is DBNull.Value Then
@@ -212,13 +212,13 @@
                 Return New Guid(CType(Row(ARInvoiceReconWrkDAL.COL_NAME_BILL_TO_ADDRESS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ARInvoiceReconWrkDAL.COL_NAME_BILL_TO_ADDRESS_ID, Value)
+            SetValue(ARInvoiceReconWrkDAL.COL_NAME_BILL_TO_ADDRESS_ID, Value)
         End Set
     End Property
 
-    Public Property ShipToAddressId() As Guid
+    Public Property ShipToAddressId As Guid
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_SHIP_TO_ADDRESS_ID) Is DBNull.Value Then
@@ -227,14 +227,14 @@
                 Return New Guid(CType(Row(ARInvoiceReconWrkDAL.COL_NAME_SHIP_TO_ADDRESS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ARInvoiceReconWrkDAL.COL_NAME_SHIP_TO_ADDRESS_ID, Value)
+            SetValue(ARInvoiceReconWrkDAL.COL_NAME_SHIP_TO_ADDRESS_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=3)>
-    Public Property CurrencyCode() As String
+    Public Property CurrencyCode As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_CURRENCY_CODE) Is DBNull.Value Then
@@ -243,14 +243,14 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_CURRENCY_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ARInvoiceReconWrkDAL.COL_NAME_CURRENCY_CODE, Value)
+            SetValue(ARInvoiceReconWrkDAL.COL_NAME_CURRENCY_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=100)>
-        Public Property RejectReason() As String
+        Public Property RejectReason As String
             Get
                 CheckDeleted()
                 If Row(DealerReconWrkDAL.COL_NAME_REJECT_REASON) Is DBNull.Value Then
@@ -259,13 +259,13 @@
                     Return CType(Row(DealerReconWrkDAL.COL_NAME_REJECT_REASON), String)
                 End If
             End Get
-            Set(ByVal Value As String)
+            Set
                 CheckDeleted()
-                Me.SetValue(DealerReconWrkDAL.COL_NAME_REJECT_REASON, Value)
+                SetValue(DealerReconWrkDAL.COL_NAME_REJECT_REASON, Value)
             End Set
         End Property
     <ValidStringLength("", Max:=24)>
-    Public Property ExchangeRate() As String
+    Public Property ExchangeRate As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_EXCHANGE_RATE) Is DBNull.Value Then
@@ -274,13 +274,13 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_EXCHANGE_RATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ARInvoiceReconWrkDAL.COL_NAME_EXCHANGE_RATE, Value)
+            SetValue(ARInvoiceReconWrkDAL.COL_NAME_EXCHANGE_RATE, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=10)>
-    Public Property LineType() As String
+    Public Property LineType As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_LINE_TYPE) Is DBNull.Value Then
@@ -289,13 +289,13 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_LINE_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ARInvoiceReconWrkDAL.COL_NAME_LINE_TYPE, Value)
+            SetValue(ARInvoiceReconWrkDAL.COL_NAME_LINE_TYPE, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=100)>
-    Public Property RejectMsgParams() As String
+    Public Property RejectMsgParams As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_REJECT_MSG_PARMS) Is DBNull.Value Then
@@ -304,13 +304,13 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_REJECT_MSG_PARMS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ARInvoiceReconWrkDAL.COL_NAME_REJECT_MSG_PARMS, Value)
+            SetValue(ARInvoiceReconWrkDAL.COL_NAME_REJECT_MSG_PARMS, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=30)>
-    Public Property InvoiceNumber() As String
+    Public Property InvoiceNumber As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_NUMBER) Is DBNull.Value Then
@@ -319,13 +319,13 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_NUMBER, Value)
+            SetValue(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_NUMBER, Value)
         End Set
     End Property
 
-    Public Property InvoicePeriodStartDate() As DateType
+    Public Property InvoicePeriodStartDate As DateType
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_PERIOD_START_DATE) Is DBNull.Value Then
@@ -334,13 +334,13 @@
                 Return New DateType(CType(Row(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_PERIOD_START_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_PERIOD_START_DATE, Value)
+            SetValue(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_PERIOD_START_DATE, Value)
         End Set
     End Property
 
-    Public Property InvoicePeriodEndDate() As DateType
+    Public Property InvoicePeriodEndDate As DateType
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_PERIOD_END_DATE) Is DBNull.Value Then
@@ -349,13 +349,13 @@
                 Return New DateType(CType(Row(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_PERIOD_END_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_PERIOD_END_DATE, Value)
+            SetValue(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_PERIOD_END_DATE, Value)
         End Set
     End Property
 
-    Public Property InvoiceDate() As DateType
+    Public Property InvoiceDate As DateType
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_DATE) Is DBNull.Value Then
@@ -364,12 +364,12 @@
                 Return New DateType(CType(Row(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_DATE, Value)
+            SetValue(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_DATE, Value)
         End Set
     End Property
-    Public Property InvoiceDueDate() As DateType
+    Public Property InvoiceDueDate As DateType
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_INVOCE_DUE_DATE) Is DBNull.Value Then
@@ -378,9 +378,9 @@
                 Return New DateType(CType(Row(ARInvoiceReconWrkDAL.COL_NAME_INVOCE_DUE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(ARInvoiceReconWrkDAL.COL_NAME_INVOCE_DUE_DATE, Value)
+            SetValue(ARInvoiceReconWrkDAL.COL_NAME_INVOCE_DUE_DATE, Value)
         End Set
     End Property
 
@@ -401,7 +401,7 @@
     '    End Property
 
     <ValidStringLength("", Max:=10)>
-    Public Property ItemCode() As String
+    Public Property ItemCode As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_ITEM_CODE) Is DBNull.Value Then
@@ -410,14 +410,14 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_ITEM_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ARInvoiceReconWrkDAL.COL_NAME_ITEM_CODE, Value)
+            SetValue(ARInvoiceReconWrkDAL.COL_NAME_ITEM_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=10)>
-    Public Property EarningPartner() As String
+    Public Property EarningPartner As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_EARNING_PARTER) Is DBNull.Value Then
@@ -426,13 +426,13 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_EARNING_PARTER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ARInvoiceReconWrkDAL.COL_NAME_EARNING_PARTER, Value)
+            SetValue(ARInvoiceReconWrkDAL.COL_NAME_EARNING_PARTER, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=50)>
-    Public Property Source() As String
+    Public Property Source As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_SOURCE) Is DBNull.Value Then
@@ -441,13 +441,13 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_SOURCE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ARInvoiceReconWrkDAL.COL_NAME_SOURCE, Value)
+            SetValue(ARInvoiceReconWrkDAL.COL_NAME_SOURCE, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=10)>
-    Public Property Reference() As String
+    Public Property Reference As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_REFERENCE) Is DBNull.Value Then
@@ -456,13 +456,13 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_REFERENCE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ARInvoiceReconWrkDAL.COL_NAME_REFERENCE, Value)
+            SetValue(ARInvoiceReconWrkDAL.COL_NAME_REFERENCE, Value)
         End Set
     End Property
 
-    Public Property ReferenceId() As Guid
+    Public Property ReferenceId As Guid
         Get
             If Row(ARInvoiceReconWrkDAL.COL_NAME_REFERENCE_ID) Is DBNull.Value Then
                 Return Nothing
@@ -470,14 +470,14 @@
                 Return New Guid(CType(Row(ARInvoiceReconWrkDAL.COL_NAME_REFERENCE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ARInvoiceReconWrkDAL.COL_NAME_REFERENCE_ID, Value)
+            SetValue(ARInvoiceReconWrkDAL.COL_NAME_REFERENCE_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=99)>
-    Public Property InstallmentNumber() As String
+    Public Property InstallmentNumber As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_INSTALLMENT_NUMBER) Is DBNull.Value Then
@@ -486,13 +486,13 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_INSTALLMENT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ARInvoiceReconWrkDAL.COL_NAME_INSTALLMENT_NUMBER, Value)
+            SetValue(ARInvoiceReconWrkDAL.COL_NAME_INSTALLMENT_NUMBER, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=13)>
-    Public Property Amount() As String
+    Public Property Amount As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_AMOUNT) Is DBNull.Value Then
@@ -501,13 +501,13 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_AMOUNT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ARInvoiceReconWrkDAL.COL_NAME_AMOUNT, Value)
+            SetValue(ARInvoiceReconWrkDAL.COL_NAME_AMOUNT, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=10)>
-    Public Property ParentLineNumber() As String
+    Public Property ParentLineNumber As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_PARENT_LINE_NUMBER) Is DBNull.Value Then
@@ -516,13 +516,13 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_PARENT_LINE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ARInvoiceReconWrkDAL.COL_NAME_PARENT_LINE_NUMBER, Value)
+            SetValue(ARInvoiceReconWrkDAL.COL_NAME_PARENT_LINE_NUMBER, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=200)>
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -531,12 +531,12 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ARInvoiceReconWrkDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(ARInvoiceReconWrkDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
-    Public Property InvoiceHeaderId() As String
+    Public Property InvoiceHeaderId As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_HEADER_ID) Is DBNull.Value Then
@@ -545,12 +545,12 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_HEADER_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_HEADER_ID, Value)
+            SetValue(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_HEADER_ID, Value)
         End Set
     End Property
-    Public Property InvoiceLineId() As String
+    Public Property InvoiceLineId As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_LINE_ID) Is DBNull.Value Then
@@ -559,13 +559,13 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_LINE_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_LINE_ID, Value)
+            SetValue(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_LINE_ID, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=3000)>
-    Public Property EntireRecord() As String
+    Public Property EntireRecord As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_ENTIRE_RECORD) Is DBNull.Value Then
@@ -574,13 +574,13 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_ENTIRE_RECORD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ARInvoiceReconWrkDAL.COL_NAME_ENTIRE_RECORD, Value)
+            SetValue(ARInvoiceReconWrkDAL.COL_NAME_ENTIRE_RECORD, Value)
         End Set
     End Property
     <ValidStringLength("", Max:=1)>
-    Public Property InvoiceLoaded() As String
+    Public Property InvoiceLoaded As String
         Get
             CheckDeleted()
             If Row(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_LOADED) Is DBNull.Value Then
@@ -589,9 +589,9 @@
                 Return CType(Row(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_LOADED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_LOADED, Value)
+            SetValue(ARInvoiceReconWrkDAL.COL_NAME_INVOICE_LOADED, Value)
         End Set
     End Property
 
@@ -605,7 +605,7 @@
 
 #Region "External Properties"
 
-    Shared ReadOnly Property CompanyId(ByVal DealerfileProcessedId As Guid) As Guid
+    Shared ReadOnly Property CompanyId(DealerfileProcessedId As Guid) As Guid
             Get
                 Dim oDealerfileProcessed As New DealerFileProcessed(DealerfileProcessedId)
                 Dim oDealer As New Dealer(oDealerfileProcessed.DealerId)
@@ -626,15 +626,15 @@
     Public Overrides Sub Save()
             Try
                 MyBase.Save()
-                If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+                If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ARInvoiceReconWrkDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                     'Reload the Data from the DB
-                    If Me.Row.RowState <> DataRowState.Detached Then
-                        Dim objId As Guid = Me.Id
-                        Me.Dataset = New DataSet
-                        Me.Row = Nothing
-                        Me.Load(objId)
+                    If Row.RowState <> DataRowState.Detached Then
+                        Dim objId As Guid = Id
+                        Dataset = New DataSet
+                        Row = Nothing
+                        Load(objId)
                     End If
                 End If
             Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -645,15 +645,15 @@
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function LoadList(ByVal dealerfileProcessedID As Guid,
-                                    ByVal recordMode As String,
-                                    ByVal recordType As String,
-                                    ByVal rejectCode As String,
-                                    ByVal rejectReason As String,
-                                    ByVal parentFile As String,
-                                    ByVal PageIndex As Integer,
-                                    ByVal Pagesize As Integer,
-                                    ByVal SortExpression As String) As DataView
+    Public Shared Function LoadList(dealerfileProcessedID As Guid,
+                                    recordMode As String,
+                                    recordType As String,
+                                    rejectCode As String,
+                                    rejectReason As String,
+                                    parentFile As String,
+                                    PageIndex As Integer,
+                                    Pagesize As Integer,
+                                    SortExpression As String) As DataView
         Try
             Dim dal As New ARInvoiceReconWrkDAL
             Dim ds As DataSet
@@ -669,7 +669,7 @@
 
     End Function
 
-    Public Shared Function LoadRejectList(ByVal dealerfileProcessedID As Guid) As DataView
+    Public Shared Function LoadRejectList(dealerfileProcessedID As Guid) As DataView
         Try
             Dim dal As New ARInvoiceReconWrkDAL
             Dim ds As DataSet

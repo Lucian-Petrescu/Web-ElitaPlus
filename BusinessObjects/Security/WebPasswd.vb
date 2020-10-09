@@ -7,14 +7,14 @@ Public Class WebPasswd
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'Exiting BO
-    Public Sub New(ByVal isEnvCmpGp As Boolean)
+    Public Sub New(isEnvCmpGp As Boolean)
         MyBase.New()
 
         Dim env As String = EnvironmentContext.Current.EnvironmentName
@@ -22,56 +22,56 @@ Public Class WebPasswd
         'Fix for Def-2229 
         Dim hub As String = ElitaPlusIdentity.Current.ConnectionType
 
-        Me.Dataset = New DataSet
-        Me.Load(env, cmpGpId, hub)
+        Dataset = New DataSet
+        Load(env, cmpGpId, hub)
     End Sub
 
-    Public Sub New(ByVal companyGroupId As Guid, ByVal serviceTypeId As Guid, ByVal isExternal As Boolean)
+    Public Sub New(companyGroupId As Guid, serviceTypeId As Guid, isExternal As Boolean)
         MyBase.New()
 
         Dim env As String = EnvironmentContext.Current.EnvironmentName
         Dim hub As String = ElitaPlusIdentity.Current.ConnectionType
 
-        Me.Dataset = New DataSet
-        Me.Load(companyGroupId, serviceTypeId, env, isExternal, hub)
+        Dataset = New DataSet
+        Load(companyGroupId, serviceTypeId, env, isExternal, hub)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New WebPasswdDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -79,23 +79,23 @@ Public Class WebPasswd
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New WebPasswdDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -103,24 +103,24 @@ Public Class WebPasswd
         End Try
     End Sub
     'Fix for Def-2229
-    Protected Sub Load(ByVal env As String, ByVal cmpGpId As Guid, Optional ByVal hub As String = Nothing)
+    Protected Sub Load(env As String, cmpGpId As Guid, Optional ByVal hub As String = Nothing)
         Try
             Dim dal As New WebPasswdDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(env, dal.COL_NAME_ENV, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(env, dal.COL_NAME_ENV, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
                 'Fix for Def-2229
-                dal.Load(Me.Dataset, env, cmpGpId, hub)
-                Me.Row = Me.FindRow(env, dal.COL_NAME_ENV, Me.Dataset.Tables(dal.TABLE_NAME))
+                dal.Load(Dataset, env, cmpGpId, hub)
+                Row = FindRow(env, dal.COL_NAME_ENV, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
 
@@ -129,8 +129,8 @@ Public Class WebPasswd
         End Try
     End Sub
 
-    Protected Sub Load(ByVal companyGroupId As Guid, ByVal serviceTypeId As Guid, ByVal env As String, _
-                    ByVal isExternal As Boolean, ByVal hub As String)
+    Protected Sub Load(companyGroupId As Guid, serviceTypeId As Guid, env As String, _
+                    isExternal As Boolean, hub As String)
         Try
             Dim dal As New WebPasswdDAL
             Dim keyValueList As New List(Of KeyValuePair(Of String, Object))
@@ -147,25 +147,25 @@ Public Class WebPasswd
             If (Not IsNothing(serviceTypeId)) Then
                 keyValueList.Add(New KeyValuePair(Of String, Object)(WebPasswdDAL.COL_NAME_HUB, hub))
             End If
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(keyValueList, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(keyValueList, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, companyGroupId, serviceTypeId, env, isExternal, hub)
-                Me.Row = Me.FindRow(keyValueList, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, companyGroupId, serviceTypeId, env, isExternal, hub)
+                Row = FindRow(keyValueList, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 'check if there is entry based on CompanyGroup , Env , hub 
                 AppConfig.Log("WebPasswd, No record found for : Environment =" & env & ", Hub=" & hub & ", CompanyGroupId=" & MiscUtil.GetDbStringFromGuid(companyGroupId) & ", ServiceTypeId=" & MiscUtil.GetDbStringFromGuid(serviceTypeId))
-                dal.Load(Me.Dataset, env, companyGroupId, hub)
-                Me.Row = Me.FindRow(env, dal.COL_NAME_ENV, Me.Dataset.Tables(dal.TABLE_NAME))
-                If Me.Row Is Nothing Then
+                dal.Load(Dataset, env, companyGroupId, hub)
+                Row = FindRow(env, dal.COL_NAME_ENV, Dataset.Tables(dal.TABLE_NAME))
+                If Row Is Nothing Then
                     Throw New DataNotFoundException
                 End If
             End If
@@ -186,7 +186,7 @@ Public Class WebPasswd
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(WebPasswdDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -197,7 +197,7 @@ Public Class WebPasswd
     End Property
 
     <ValueMandatory("")> _
-    Public Property UserId() As String
+    Public Property UserId As String
         Get
             CheckDeleted()
             If Row(WebPasswdDAL.COL_NAME_USER_ID) Is DBNull.Value Then
@@ -206,15 +206,15 @@ Public Class WebPasswd
                 Return CType(Row(WebPasswdDAL.COL_NAME_USER_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(WebPasswdDAL.COL_NAME_USER_ID, Value)
+            SetValue(WebPasswdDAL.COL_NAME_USER_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property Password() As String
+    Public Property Password As String
         Get
             CheckDeleted()
             If Row(WebPasswdDAL.COL_NAME_PASSWORD) Is DBNull.Value Then
@@ -223,15 +223,15 @@ Public Class WebPasswd
                 Return CType(Row(WebPasswdDAL.COL_NAME_PASSWORD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(WebPasswdDAL.COL_NAME_PASSWORD, Value)
+            SetValue(WebPasswdDAL.COL_NAME_PASSWORD, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=40)> _
-    Public Property Env() As String
+    Public Property Env As String
         Get
             CheckDeleted()
             If Row(WebPasswdDAL.COL_NAME_ENV) Is DBNull.Value Then
@@ -240,15 +240,15 @@ Public Class WebPasswd
                 Return CType(Row(WebPasswdDAL.COL_NAME_ENV), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(WebPasswdDAL.COL_NAME_ENV, Value)
+            SetValue(WebPasswdDAL.COL_NAME_ENV, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=400)> _
-    Public Property Url() As String
+    Public Property Url As String
         Get
             CheckDeleted()
             If row(WebPasswdDAL.COL_NAME_URL) Is DBNull.Value Then
@@ -257,15 +257,15 @@ Public Class WebPasswd
                 Return CType(Row(WebPasswdDAL.COL_NAME_URL), String).Replace("[LOCALHOST]", Environment.MachineName)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(WebPasswdDAL.COL_NAME_URL, Value)
+            SetValue(WebPasswdDAL.COL_NAME_URL, Value)
         End Set
     End Property
 
 
 
-    Public Property Token() As String
+    Public Property Token As String
         Get
             CheckDeleted()
             If Row(WebPasswdDAL.COL_NAME_TOKEN) Is DBNull.Value Then
@@ -274,15 +274,15 @@ Public Class WebPasswd
                 Return CType(Row(WebPasswdDAL.COL_NAME_TOKEN), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(WebPasswdDAL.COL_NAME_TOKEN, Value)
+            SetValue(WebPasswdDAL.COL_NAME_TOKEN, Value)
         End Set
     End Property
 
 
 
-    Public Property TokenCreatedDate() As DateType
+    Public Property TokenCreatedDate As DateType
         Get
             CheckDeleted()
             If row(WebPasswdDAL.COL_NAME_TOKEN_CREATED_DATE) Is DBNull.Value Then
@@ -291,15 +291,15 @@ Public Class WebPasswd
                 Return New DateType(CType(row(WebPasswdDAL.COL_NAME_TOKEN_CREATED_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(WebPasswdDAL.COL_NAME_TOKEN_CREATED_DATE, Value)
+            SetValue(WebPasswdDAL.COL_NAME_TOKEN_CREATED_DATE, Value)
         End Set
     End Property
 
 
 
-    Public Property NumPerProcess() As LongType
+    Public Property NumPerProcess As LongType
         Get
             CheckDeleted()
             If row(WebPasswdDAL.COL_NAME_NUM_PER_PROCESS) Is DBNull.Value Then
@@ -308,15 +308,15 @@ Public Class WebPasswd
                 Return New LongType(CType(row(WebPasswdDAL.COL_NAME_NUM_PER_PROCESS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(WebPasswdDAL.COL_NAME_NUM_PER_PROCESS, Value)
+            SetValue(WebPasswdDAL.COL_NAME_NUM_PER_PROCESS, Value)
         End Set
     End Property
 
 
 
-    Public Property TokenDuration() As LongType
+    Public Property TokenDuration As LongType
         Get
             CheckDeleted()
             If row(WebPasswdDAL.COL_NAME_TOKEN_DURATION) Is DBNull.Value Then
@@ -325,15 +325,15 @@ Public Class WebPasswd
                 Return New LongType(CType(row(WebPasswdDAL.COL_NAME_TOKEN_DURATION), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(WebPasswdDAL.COL_NAME_TOKEN_DURATION, Value)
+            SetValue(WebPasswdDAL.COL_NAME_TOKEN_DURATION, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If row(WebPasswdDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -342,15 +342,15 @@ Public Class WebPasswd
                 Return New Guid(CType(row(WebPasswdDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(WebPasswdDAL.COL_NAME_COMPANY_GROUP_ID, Value)
+            SetValue(WebPasswdDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=4)> _
-    Public Property IsExternal() As String
+    Public Property IsExternal As String
         Get
             CheckDeleted()
             If row(WebPasswdDAL.COL_NAME_IS_EXTERNAL) Is DBNull.Value Then
@@ -359,14 +359,14 @@ Public Class WebPasswd
                 Return CType(row(WebPasswdDAL.COL_NAME_IS_EXTERNAL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(WebPasswdDAL.COL_NAME_IS_EXTERNAL, Value)
+            SetValue(WebPasswdDAL.COL_NAME_IS_EXTERNAL, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=250)> _
-    Public Property AuthenticationKey() As String
+    Public Property AuthenticationKey As String
         Get
             CheckDeleted()
             If Row(WebPasswdDAL.COL_NAME_AUTHENTICATION_KEY) Is DBNull.Value Then
@@ -375,15 +375,15 @@ Public Class WebPasswd
                 Return CType(Row(WebPasswdDAL.COL_NAME_AUTHENTICATION_KEY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(WebPasswdDAL.COL_NAME_AUTHENTICATION_KEY, Value)
+            SetValue(WebPasswdDAL.COL_NAME_AUTHENTICATION_KEY, Value)
         End Set
     End Property
 
     'Fix for Def-2229
     <ValidStringLength("", Max:=40)> _
-    Public Property Hub() As String
+    Public Property Hub As String
         Get
             CheckDeleted()
             If Row(WebPasswdDAL.COL_NAME_HUB) Is DBNull.Value Then
@@ -392,15 +392,15 @@ Public Class WebPasswd
                 Return CType(Row(WebPasswdDAL.COL_NAME_HUB), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(WebPasswdDAL.COL_NAME_HUB, Value)
+            SetValue(WebPasswdDAL.COL_NAME_HUB, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=400)> _
-    Public Property GenericUrl() As String
+    Public Property GenericUrl As String
         Get
             CheckDeleted()
             If Row(WebPasswdDAL.COL_NAME_GENERIC_URL) Is DBNull.Value Then
@@ -409,9 +409,9 @@ Public Class WebPasswd
                 Return CType(Row(WebPasswdDAL.COL_NAME_GENERIC_URL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(WebPasswdDAL.COL_NAME_GENERIC_URL, Value)
+            SetValue(WebPasswdDAL.COL_NAME_GENERIC_URL, Value)
         End Set
     End Property
 
@@ -421,15 +421,15 @@ Public Class WebPasswd
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New WebPasswdDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException

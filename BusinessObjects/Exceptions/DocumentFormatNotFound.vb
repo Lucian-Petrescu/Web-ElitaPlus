@@ -9,9 +9,9 @@
         End Get
     End Property
 
-    Public Sub New(ByVal pExtension As String)
+    Public Sub New(pExtension As String)
         MyBase.New(String.Format("Document Format with Extension {0} not found.", pExtension), "DOCUMENT_FORMAT_NOT_FOUND")
-        Me.oExtension = pExtension
+        oExtension = pExtension
     End Sub
 
 End Class

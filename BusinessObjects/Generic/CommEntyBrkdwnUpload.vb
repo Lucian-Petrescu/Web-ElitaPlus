@@ -6,48 +6,48 @@ Public Class CommEntyBrkdwnUpload
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New CommEntyBrkdwnUploadDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class CommEntyBrkdwnUpload
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CommEntyBrkdwnUploadDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -89,7 +89,7 @@ Public Class CommEntyBrkdwnUpload
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CommEntyBrkdwnUploadDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -100,7 +100,7 @@ Public Class CommEntyBrkdwnUpload
     End Property
 
     <ValueMandatory("")>
-    Public Property UploadSessionId() As Guid
+    Public Property UploadSessionId As Guid
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_UPLOAD_SESSION_ID) Is DBNull.Value Then
@@ -109,14 +109,14 @@ Public Class CommEntyBrkdwnUpload
                 Return New Guid(CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_UPLOAD_SESSION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_UPLOAD_SESSION_ID, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_UPLOAD_SESSION_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property RecordNumber() As LongType
+    Public Property RecordNumber As LongType
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_RECORD_NUMBER) Is DBNull.Value Then
@@ -125,14 +125,14 @@ Public Class CommEntyBrkdwnUpload
                 Return New LongType(CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_RECORD_NUMBER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_RECORD_NUMBER, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_RECORD_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=2000)>
-    Public Property ValidationErrors() As String
+    Public Property ValidationErrors As String
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_VALIDATION_ERRORS) Is DBNull.Value Then
@@ -141,14 +141,14 @@ Public Class CommEntyBrkdwnUpload
                 Return CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_VALIDATION_ERRORS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_VALIDATION_ERRORS, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_VALIDATION_ERRORS, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -157,13 +157,13 @@ Public Class CommEntyBrkdwnUpload
                 Return New Guid(CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
-    Public ReadOnly Property CompanyId() As Guid
+    Public ReadOnly Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -174,7 +174,7 @@ Public Class CommEntyBrkdwnUpload
         End Get
     End Property
 
-    Public Property Effective() As DateType
+    Public Property Effective As DateType
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -183,13 +183,13 @@ Public Class CommEntyBrkdwnUpload
                 Return New DateType(CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_EFFECTIVE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_EFFECTIVE, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_EFFECTIVE, Value)
         End Set
     End Property
 
-    Public Property Expiration() As DateType
+    Public Property Expiration As DateType
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
@@ -198,13 +198,13 @@ Public Class CommEntyBrkdwnUpload
                 Return New DateType(CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_EXPIRATION), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_EXPIRATION, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_EXPIRATION, Value)
         End Set
     End Property
 
-    Public Property AllowMarkupPCT() As DecimalType
+    Public Property AllowMarkupPCT As DecimalType
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_ALLOW_MARKUP_PCT) Is DBNull.Value Then
@@ -213,13 +213,13 @@ Public Class CommEntyBrkdwnUpload
                 Return New DecimalType(CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_ALLOW_MARKUP_PCT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_ALLOW_MARKUP_PCT, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_ALLOW_MARKUP_PCT, Value)
         End Set
     End Property
 
-    Public Property Tolerance() As DecimalType
+    Public Property Tolerance As DecimalType
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_TOLERANCE) Is DBNull.Value Then
@@ -228,14 +228,14 @@ Public Class CommEntyBrkdwnUpload
                 Return New DecimalType(CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_TOLERANCE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_TOLERANCE, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_TOLERANCE, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -244,13 +244,13 @@ Public Class CommEntyBrkdwnUpload
                 Return New Guid(CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_COMPANY_GROUP_ID, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
     End Property
 
-    Public Property Position() As Integer
+    Public Property Position As Integer
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_POSITION) Is DBNull.Value Then
@@ -259,13 +259,13 @@ Public Class CommEntyBrkdwnUpload
                 Return New DecimalType(CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_POSITION), Decimal))
             End If
         End Get
-        Set(ByVal Value As Integer)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_POSITION, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_POSITION, Value)
         End Set
     End Property
 
-    Public Property EntityId() As Guid
+    Public Property EntityId As Guid
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_ENTITY_ID) Is DBNull.Value Then
@@ -274,14 +274,14 @@ Public Class CommEntyBrkdwnUpload
                 Return New Guid(CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_ENTITY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_ENTITY_ID, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_ENTITY_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)>
-    Public Property EntityName() As String
+    Public Property EntityName As String
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_ENTITY_NAME) Is DBNull.Value Then
@@ -290,14 +290,14 @@ Public Class CommEntyBrkdwnUpload
                 Return CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_ENTITY_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_VALIDATION_ERRORS, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_VALIDATION_ERRORS, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=60)>
-    Public Property Phone() As String
+    Public Property Phone As String
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_PHONE) Is DBNull.Value Then
@@ -306,14 +306,14 @@ Public Class CommEntyBrkdwnUpload
                 Return CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_PHONE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_PHONE, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_PHONE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)>
-    Public Property Email() As String
+    Public Property Email As String
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_EMAIL) Is DBNull.Value Then
@@ -322,14 +322,14 @@ Public Class CommEntyBrkdwnUpload
                 Return CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_EMAIL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_EMAIL, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_EMAIL, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)>
-    Public Property Address1() As String
+    Public Property Address1 As String
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_ADDRESS1) Is DBNull.Value Then
@@ -338,14 +338,14 @@ Public Class CommEntyBrkdwnUpload
                 Return CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_ADDRESS1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_ADDRESS1, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_ADDRESS1, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)>
-    Public Property Address2() As String
+    Public Property Address2 As String
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_ADDRESS2) Is DBNull.Value Then
@@ -354,14 +354,14 @@ Public Class CommEntyBrkdwnUpload
                 Return CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_ADDRESS2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_ADDRESS2, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_ADDRESS2, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)>
-    Public Property City() As String
+    Public Property City As String
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_CITY) Is DBNull.Value Then
@@ -370,13 +370,13 @@ Public Class CommEntyBrkdwnUpload
                 Return CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_CITY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_CITY, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_CITY, Value)
         End Set
     End Property
 
-    Public Property RegionId() As Guid
+    Public Property RegionId As Guid
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_REGION_ID) Is DBNull.Value Then
@@ -385,14 +385,14 @@ Public Class CommEntyBrkdwnUpload
                 Return New Guid(CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_REGION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_REGION_ID, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_REGION_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=40)>
-    Public Property PostalCode() As String
+    Public Property PostalCode As String
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_POSTAL_CODE) Is DBNull.Value Then
@@ -401,13 +401,13 @@ Public Class CommEntyBrkdwnUpload
                 Return CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_POSTAL_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_POSTAL_CODE, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_POSTAL_CODE, Value)
         End Set
     End Property
 
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -416,13 +416,13 @@ Public Class CommEntyBrkdwnUpload
                 Return New Guid(CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_COUNTRY_ID, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
-    Public Property DisplayId() As Guid
+    Public Property DisplayId As Guid
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_DISPLAY_ID) Is DBNull.Value Then
@@ -431,14 +431,14 @@ Public Class CommEntyBrkdwnUpload
                 Return New Guid(CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_DISPLAY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_DISPLAY_ID, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_DISPLAY_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=15)>
-    Public Property TaxId() As String
+    Public Property TaxId As String
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_TAX_ID) Is DBNull.Value Then
@@ -447,13 +447,13 @@ Public Class CommEntyBrkdwnUpload
                 Return CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_TAX_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_TAX_ID, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_TAX_ID, Value)
         End Set
     End Property
 
-    Public Property CommissionEntityTypeid() As Guid
+    Public Property CommissionEntityTypeid As Guid
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_COMM_ENTY_TYPE_ID) Is DBNull.Value Then
@@ -462,13 +462,13 @@ Public Class CommEntyBrkdwnUpload
                 Return New Guid(CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_COMM_ENTY_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_COMM_ENTY_TYPE_ID, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_COMM_ENTY_TYPE_ID, Value)
         End Set
     End Property
 
-    Public Property PaymentMethodId() As Guid
+    Public Property PaymentMethodId As Guid
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_PAYMENT_METHOD_ID) Is DBNull.Value Then
@@ -477,14 +477,14 @@ Public Class CommEntyBrkdwnUpload
                 Return New Guid(CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_PAYMENT_METHOD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_PAYMENT_METHOD_ID, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_PAYMENT_METHOD_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)>
-    Public Property AccountName() As String
+    Public Property AccountName As String
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_ACCOUNT_NAME) Is DBNull.Value Then
@@ -493,13 +493,13 @@ Public Class CommEntyBrkdwnUpload
                 Return CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_ACCOUNT_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_ACCOUNT_NAME, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_ACCOUNT_NAME, Value)
         End Set
     End Property
 
-    Public Property BankCountryId() As Guid
+    Public Property BankCountryId As Guid
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_BANK_COUNTRY_ID) Is DBNull.Value Then
@@ -508,13 +508,13 @@ Public Class CommEntyBrkdwnUpload
                 Return New Guid(CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_BANK_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_BANK_COUNTRY_ID, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_BANK_COUNTRY_ID, Value)
         End Set
     End Property
 
-    Public Property PaymentReasonId() As Guid
+    Public Property PaymentReasonId As Guid
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_PYMT_REASON_ID) Is DBNull.Value Then
@@ -523,14 +523,14 @@ Public Class CommEntyBrkdwnUpload
                 Return New Guid(CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_PYMT_REASON_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_PYMT_REASON_ID, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_PYMT_REASON_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)>
-    Public Property BranchName() As String
+    Public Property BranchName As String
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_BRANCH_NAME) Is DBNull.Value Then
@@ -539,14 +539,14 @@ Public Class CommEntyBrkdwnUpload
                 Return CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_BRANCH_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_BRANCH_NAME, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_BRANCH_NAME, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)>
-    Public Property BankName() As String
+    Public Property BankName As String
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_BANK_NAME) Is DBNull.Value Then
@@ -555,14 +555,14 @@ Public Class CommEntyBrkdwnUpload
                 Return CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_BANK_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_BANK_NAME, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_BANK_NAME, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=15)>
-    Public Property BankSortCode() As String
+    Public Property BankSortCode As String
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_BANK_SORT_CODE) Is DBNull.Value Then
@@ -571,14 +571,14 @@ Public Class CommEntyBrkdwnUpload
                 Return CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_BANK_SORT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_BANK_SORT_CODE, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_BANK_SORT_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=40)>
-    Public Property IbanNumber() As String
+    Public Property IbanNumber As String
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_IBAN_NUMBER) Is DBNull.Value Then
@@ -587,14 +587,14 @@ Public Class CommEntyBrkdwnUpload
                 Return CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_IBAN_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_IBAN_NUMBER, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_IBAN_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=40)>
-    Public Property SwiftCode() As String
+    Public Property SwiftCode As String
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_SWIFT_CODE) Is DBNull.Value Then
@@ -603,13 +603,13 @@ Public Class CommEntyBrkdwnUpload
                 Return CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_SWIFT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_SWIFT_CODE, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_SWIFT_CODE, Value)
         End Set
     End Property
 
-    Public Property AccountTypeId() As Guid
+    Public Property AccountTypeId As Guid
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_ACCOUNT_TYPE_ID) Is DBNull.Value Then
@@ -618,14 +618,14 @@ Public Class CommEntyBrkdwnUpload
                 Return New Guid(CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_ACCOUNT_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_ACCOUNT_TYPE_ID, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_ACCOUNT_TYPE_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=10)>
-    Public Property BankId() As String
+    Public Property BankId As String
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_BANK_ID) Is DBNull.Value Then
@@ -634,14 +634,14 @@ Public Class CommEntyBrkdwnUpload
                 Return CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_BANK_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_BANK_ID, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_BANK_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=29)>
-    Public Property AccountNumber() As String
+    Public Property AccountNumber As String
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_ACCOUNT_NUMBER) Is DBNull.Value Then
@@ -650,14 +650,14 @@ Public Class CommEntyBrkdwnUpload
                 Return CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_ACCOUNT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_ACCOUNT_NUMBER, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_ACCOUNT_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=15)>
-    Public Property BankLookupCode() As String
+    Public Property BankLookupCode As String
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_BANK_LOOKUP_CODE) Is DBNull.Value Then
@@ -666,13 +666,13 @@ Public Class CommEntyBrkdwnUpload
                 Return CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_BANK_LOOKUP_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_BANK_LOOKUP_CODE, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_BANK_LOOKUP_CODE, Value)
         End Set
     End Property
 
-    Public Property TransactionLimit() As DecimalType
+    Public Property TransactionLimit As DecimalType
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_TRANSACTION_LIMIT) Is DBNull.Value Then
@@ -681,14 +681,14 @@ Public Class CommEntyBrkdwnUpload
                 Return New DecimalType(CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_TRANSACTION_LIMIT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_TRANSACTION_LIMIT, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_TRANSACTION_LIMIT, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=5)>
-    Public Property BankSubCode() As String
+    Public Property BankSubCode As String
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_BANK_SUB_CODE) Is DBNull.Value Then
@@ -697,13 +697,13 @@ Public Class CommEntyBrkdwnUpload
                 Return CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_BANK_SUB_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_BANK_SUB_CODE, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_BANK_SUB_CODE, Value)
         End Set
     End Property
 
-    Public Property BranchDigit() As LongType
+    Public Property BranchDigit As LongType
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_BRANCH_DIGIT) Is DBNull.Value Then
@@ -712,13 +712,13 @@ Public Class CommEntyBrkdwnUpload
                 Return New LongType(CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_BRANCH_DIGIT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_BRANCH_DIGIT, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_BRANCH_DIGIT, Value)
         End Set
     End Property
 
-    Public Property AccountDigit() As LongType
+    Public Property AccountDigit As LongType
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_ACCOUNT_DIGIT) Is DBNull.Value Then
@@ -727,13 +727,13 @@ Public Class CommEntyBrkdwnUpload
                 Return New LongType(CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_ACCOUNT_DIGIT), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_ACCOUNT_DIGIT, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_ACCOUNT_DIGIT, Value)
         End Set
     End Property
 
-    Public Property BranchNumber() As LongType
+    Public Property BranchNumber As LongType
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_BRANCH_NUMBER) Is DBNull.Value Then
@@ -742,14 +742,14 @@ Public Class CommEntyBrkdwnUpload
                 Return New LongType(CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_BRANCH_NUMBER), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_BRANCH_NUMBER, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_BRANCH_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=15)>
-    Public Property BankTaxId() As String
+    Public Property BankTaxId As String
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_BANK_TAX_ID) Is DBNull.Value Then
@@ -758,13 +758,13 @@ Public Class CommEntyBrkdwnUpload
                 Return CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_BANK_TAX_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_BANK_TAX_ID, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_BANK_TAX_ID, Value)
         End Set
     End Property
 
-    Public Property PayeeTypeId() As Guid
+    Public Property PayeeTypeId As Guid
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_PAYEE_TYPE_ID) Is DBNull.Value Then
@@ -773,13 +773,13 @@ Public Class CommEntyBrkdwnUpload
                 Return New Guid(CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_PAYEE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_PAYEE_TYPE_ID, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_PAYEE_TYPE_ID, Value)
         End Set
     End Property
 
-    Public Property MarkupPercent() As DecimalType
+    Public Property MarkupPercent As DecimalType
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_MARKUP_PERCENT) Is DBNull.Value Then
@@ -788,23 +788,23 @@ Public Class CommEntyBrkdwnUpload
                 Return New DecimalType(CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_MARKUP_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_MARKUP_PERCENT, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_MARKUP_PERCENT, Value)
         End Set
     End Property
 
     Private _markuppercenttotal As DecimalType
-    Public Property MarkupPercentTotal() As DecimalType
+    Public Property MarkupPercentTotal As DecimalType
         Get
             Return _markuppercenttotal
         End Get
-        Set(ByVal value As DecimalType)
+        Set
             _markuppercenttotal = value
         End Set
     End Property
 
-    Public Property CommissionPercent() As DecimalType
+    Public Property CommissionPercent As DecimalType
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_COMMISSION_PERCENT) Is DBNull.Value Then
@@ -813,23 +813,23 @@ Public Class CommEntyBrkdwnUpload
                 Return New DecimalType(CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_COMMISSION_PERCENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_COMMISSION_PERCENT, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_COMMISSION_PERCENT, Value)
         End Set
     End Property
 
     Private _commissionpercenttotal As DecimalType
-    Public Property CommissionPercentTotal() As DecimalType
+    Public Property CommissionPercentTotal As DecimalType
         Get
             Return _commissionpercenttotal
         End Get
-        Set(ByVal value As DecimalType)
+        Set
             _commissionpercenttotal = value
         End Set
     End Property
 
-    Public Property ComputeMethodId() As Guid
+    Public Property ComputeMethodId As Guid
         Get
             CheckDeleted()
             If Row(CommEntyBrkdwnUploadDAL.COL_NAME_COMP_MTHD_ID) Is DBNull.Value Then
@@ -838,9 +838,9 @@ Public Class CommEntyBrkdwnUpload
                 Return New Guid(CType(Row(CommEntyBrkdwnUploadDAL.COL_NAME_COMP_MTHD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_COMP_MTHD_ID, Value)
+            SetValue(CommEntyBrkdwnUploadDAL.COL_NAME_COMP_MTHD_ID, Value)
         End Set
     End Property
 
@@ -850,15 +850,15 @@ Public Class CommEntyBrkdwnUpload
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CommEntyBrkdwnUploadDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -868,7 +868,7 @@ Public Class CommEntyBrkdwnUpload
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetPreValidatedCommEntyBrkdwnsForDealer(ByVal UploadSessionId As String) As DataSet
+    Public Shared Function GetPreValidatedCommEntyBrkdwnsForDealer(UploadSessionId As String) As DataSet
         Try
             Dim dal As New CommEntyBrkdwnUploadDAL
             Return dal.LoadPreValidatedCommEntyBrkdwnsForDealer(UploadSessionId)
@@ -877,7 +877,7 @@ Public Class CommEntyBrkdwnUpload
         End Try
     End Function
 
-    Public Shared Function GetPreValidatedCommEntyBrkdwnsForUpload(ByVal UploadSessionId As String, ByVal Daler_Id As Guid) As DataSet
+    Public Shared Function GetPreValidatedCommEntyBrkdwnsForUpload(UploadSessionId As String, Daler_Id As Guid) As DataSet
         Try
             Dim dal As New CommEntyBrkdwnUploadDAL
             Return dal.LoadPreValidatedCommEntyBrkdwnsForUpload(UploadSessionId, Daler_Id)
@@ -886,7 +886,7 @@ Public Class CommEntyBrkdwnUpload
         End Try
     End Function
 
-    Public Shared Function UpdatePreValidatedCommEntyBrkdwnRecord(preValidatedCommEntyBrkdwnId As Guid, ByVal strValidationErrors As String) As DataSet
+    Public Shared Function UpdatePreValidatedCommEntyBrkdwnRecord(preValidatedCommEntyBrkdwnId As Guid, strValidationErrors As String) As DataSet
         Try
             Dim dal As New CommEntyBrkdwnUploadDAL
             Return dal.UpdatePreValidatedCommEntyBrkdwnRecord(preValidatedCommEntyBrkdwnId, strValidationErrors)

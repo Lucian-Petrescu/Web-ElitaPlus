@@ -36,12 +36,12 @@ Public Class EventConfigDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, OracleDbHelper.CreateConnection())
 
         cmd.BindByName = True
@@ -49,17 +49,17 @@ Public Class EventConfigDAL
         cmd.AddParameter("po_resultcursor", OracleDbType.RefCursor, direction:=ParameterDirection.Output)
 
         Try
-            OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, familyDS)
+            OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDS)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal CompGrpID As Guid, ByVal CompanyID As Guid, ByVal CountryID As Guid, ByVal DealerGroupID As Guid,
-                             ByVal DealerID As Guid, ByVal strProdCode As String, ByVal CoverageTypeID As Guid,
-                             ByVal LanguageID As Guid, ByVal networkID As String) As DataSet
+    Public Function LoadList(CompGrpID As Guid, CompanyID As Guid, CountryID As Guid, DealerGroupID As Guid,
+                             DealerID As Guid, strProdCode As String, CoverageTypeID As Guid,
+                             LanguageID As Guid, networkID As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim ds As New DataSet
         Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, OracleDbHelper.CreateConnection())
 
@@ -91,12 +91,12 @@ Public Class EventConfigDAL
             cmd.AddParameter("pi_coverage_type_id", OracleDbType.Raw, CoverageTypeID.ToByteArray())
         End If
 
-        OracleDbHelper.AddParameter(cmd, "pi_product_code", OracleDbType.Varchar2, Me.GetFormattedSearchStringForSQL(strProdCode), ParameterDirection.Input)
+        OracleDbHelper.AddParameter(cmd, "pi_product_code", OracleDbType.Varchar2, GetFormattedSearchStringForSQL(strProdCode), ParameterDirection.Input)
 
         cmd.AddParameter("po_resultcursor", OracleDbType.RefCursor, direction:=ParameterDirection.Output)
 
         Try
-            Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, ds)
+            Return OracleDbHelper.Fetch(cmd, TABLE_NAME, ds)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -105,16 +105,16 @@ Public Class EventConfigDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 
-    Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, tableName As String)
         With command
             .BindByName = True
             .AddParameter(parameterName:="pi_event_config_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_EVENT_CONFIG_ID, direction:=ParameterDirection.Input)
@@ -131,14 +131,14 @@ Public Class EventConfigDAL
         End With
     End Sub
 
-    Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, tableName As String)
         With command
             .BindByName = True
             .AddParameter(parameterName:="pi_event_config_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_EVENT_CONFIG_ID, direction:=ParameterDirection.Input)
         End With
     End Sub
 
-    Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, tableName As String)
         With command
             .BindByName = True
             .AddParameter(parameterName:="pi_event_config_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_EVENT_CONFIG_ID, direction:=ParameterDirection.Input)

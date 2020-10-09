@@ -33,31 +33,31 @@ Public Class InvoiceDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("invoice_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal invoiceNumber As SearchCriteriaStringType,
-                            ByVal invoiceAmount As SearchCriteriaStructType(Of Double),
-                            ByVal invoiceDate As SearchCriteriaStructType(Of Date),
-                            ByVal serviceCenterName As String,
-                            ByVal batchNumber As SearchCriteriaStringType,
-                            ByVal claimNumber As SearchCriteriaStringType,
-                            ByVal dateCreated As SearchCriteriaStructType(Of Date),
-                            ByVal authorizationNumber As SearchCriteriaStringType,
-                            ByVal userId As Guid,
-                            ByVal languageId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(invoiceNumber As SearchCriteriaStringType,
+                            invoiceAmount As SearchCriteriaStructType(Of Double),
+                            invoiceDate As SearchCriteriaStructType(Of Date),
+                            serviceCenterName As String,
+                            batchNumber As SearchCriteriaStringType,
+                            claimNumber As SearchCriteriaStringType,
+                            dateCreated As SearchCriteriaStructType(Of Date),
+                            authorizationNumber As SearchCriteriaStringType,
+                            userId As Guid,
+                            languageId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim whereClauseConditions As String
         Dim parameters() As DBHelper.DBHelperParameter =
             New DBHelper.DBHelperParameter() _
@@ -68,8 +68,8 @@ Public Class InvoiceDAL
         whereClauseConditions &= invoiceNumber.ToSqlString(MV_INVOICE_NAME, COL_NAME_INVOICE_NUMBER, parameters)
         whereClauseConditions &= invoiceAmount.ToSqlString(MV_INVOICE_NAME, COL_NAME_INVOICE_AMOUNT, parameters)
         whereClauseConditions &= invoiceDate.ToSqlString(MV_INVOICE_NAME, COL_NAME_INVOICE_DATE, parameters)
-        If ((Not (serviceCenterName Is Nothing)) AndAlso (Me.FormatSearchMask(serviceCenterName))) Then
-            whereClauseConditions &= Environment.NewLine & " AND UPPER(" & Me.COL_NAME_SERVICE_CENTER_DESCRIPTION & ")" & serviceCenterName.ToUpper
+        If ((Not (serviceCenterName Is Nothing)) AndAlso (FormatSearchMask(serviceCenterName))) Then
+            whereClauseConditions &= Environment.NewLine & " AND UPPER(" & COL_NAME_SERVICE_CENTER_DESCRIPTION & ")" & serviceCenterName.ToUpper
         End If
         whereClauseConditions &= batchNumber.ToSqlString(MV_INVOICE_NAME, ClaimAuthorizationDAL.COL_NAME_BATCH_NUMBER, parameters)
         whereClauseConditions &= claimNumber.ToSqlString(MV_INVOICE_NAME, ClaimDAL.COL_NAME_CLAIM_NUMBER, parameters)
@@ -77,22 +77,22 @@ Public Class InvoiceDAL
         whereClauseConditions &= authorizationNumber.ToSqlString(MV_INVOICE_NAME, ClaimAuthorizationDAL.COL_NAME_AUTHORIZATION_NUMBER, parameters)
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Dim ds As New DataSet
         Try
-            ds = DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            ds = DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadAuthorizationList(ByVal invoiceId As Guid, ByVal languageId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_AUTHORIZATION_LIST")
+    Public Function LoadAuthorizationList(invoiceId As Guid, languageId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_AUTHORIZATION_LIST")
         Dim parameters() As DBHelper.DBHelperParameter = _
             New DBHelper.DBHelperParameter() _
             { _
@@ -102,15 +102,15 @@ Public Class InvoiceDAL
 
         Dim ds As New DataSet
         Try
-            ds = DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            ds = DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
 
-    Public Function LoadAuthorizationList(ByVal serviceCenterId As Guid, ByVal batchNumber As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_AUTHORIZATION_FOR_SELECTION")
+    Public Function LoadAuthorizationList(serviceCenterId As Guid, batchNumber As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_AUTHORIZATION_FOR_SELECTION")
         Dim parameters() As DBHelper.DBHelperParameter = _
             New DBHelper.DBHelperParameter() _
             { _
@@ -122,7 +122,7 @@ Public Class InvoiceDAL
 
         Dim ds As New DataSet
         Try
-            ds = DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            ds = DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -131,7 +131,7 @@ Public Class InvoiceDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim oInvoiceItemDAL As New InvoiceItemDAL
         Dim oClaimAuthorizationDAL As New ClaimAuthorizationDAL
         Dim oClaimAuthItemDAL As New ClaimAuthItemDAL
@@ -150,10 +150,10 @@ Public Class InvoiceDAL
             oInvoiceItemDAL.Update(familyDataset, tr, DataRowState.Deleted)
             oAttributeValueDAL.Update(familyDataset, tr, DataRowState.Deleted)
 
-            MyBase.Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Deleted)
+            MyBase.Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Deleted)
 
             'Second Pass updates additions and changes
-            Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
             oAttributeValueDAL.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
             oInvoiceItemDAL.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
             oClaimAuthorizationDAL.Update(familyDataset, tr, DataRowState.Modified)
@@ -174,12 +174,12 @@ Public Class InvoiceDAL
         End Try
     End Sub
 
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

@@ -1,5 +1,5 @@
 ﻿Public Class UserControlLogisticalInfo
-    Inherits System.Web.UI.UserControl
+    Inherits UserControl
 
     'Public Delegate Sub RequestData(ByVal sender As Object, ByRef e As RequestDataEventArgs)
 
@@ -41,10 +41,10 @@
     Protected ReadOnly Property TheState() As MyState
         Get
             Try
-                If ThePage.StateSession.Item(Me.UniqueID) Is Nothing Then
-                    ThePage.StateSession.Item(Me.UniqueID) = New MyState
+                If ThePage.StateSession.Item(UniqueID) Is Nothing Then
+                    ThePage.StateSession.Item(UniqueID) = New MyState
                 End If
-                Return CType(ThePage.StateSession.Item(Me.UniqueID), MyState)
+                Return CType(ThePage.StateSession.Item(UniqueID), MyState)
 
             Catch ex As Exception
                 'When we are in design mode there is no session object
@@ -61,78 +61,78 @@
 
     Public ReadOnly Property IsGridInEditMode() As Boolean
         Get
-            Return Me.LogisticsGrid.EditIndex > ThePage.NO_ITEM_SELECTED_INDEX
+            Return LogisticsGrid.EditIndex > ThePage.NO_ITEM_SELECTED_INDEX
         End Get
     End Property
 
     Public Property SortDirection() As String
         Get
-            If Not ViewState("SortDirection") Is Nothing Then
+            If ViewState("SortDirection") IsNot Nothing Then
                 Return ViewState("SortDirection").ToString
             Else
                 Return String.Empty
             End If
 
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             ViewState("SortDirection") = value
         End Set
     End Property
 
     Public Property claimId As Guid
         Get
-            Return Me.TheState.claimId
+            Return TheState.claimId
         End Get
-        Set(ByVal value As Guid)
-            Me.TheState.claimId = value
+        Set(value As Guid)
+            TheState.claimId = value
         End Set
 
     End Property
 
 #End Region
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
 
     End Sub
 
     Public Sub PopulateGrid()
         If (Not Page.IsPostBack) Then
-            Me.ThePage.TranslateGridHeader(LogisticsGrid)
+            ThePage.TranslateGridHeader(LogisticsGrid)
         End If
 
         Dim blnNewSearch As Boolean = False
-        Me.TheState.PageIndex = LogisticsGrid.PageIndex
+        TheState.PageIndex = LogisticsGrid.PageIndex
         Dim objClaimShipping As New ClaimShipping
 
         Try
             With TheState
                 If (.claimShippingDV Is Nothing) Then
-                    objClaimShipping.ClaimId = Me.TheState.claimId
+                    objClaimShipping.ClaimId = TheState.claimId
                     .claimShippingDV = objClaimShipping.LoadClaimShippingData()
                 End If
             End With
 
-            If Me.TheState.claimShippingDV.Count > 0 Then
-                Me.LogisticsGrid.AutoGenerateColumns = False
-                If (Me.TheState.IsEditMode) Then
-                    Me.ThePage.SetPageAndSelectedIndexFromGuid(TheState.claimShippingDV, TheState.SelectedClaimShippingID, LogisticsGrid, TheState.PageIndex, TheState.IsEditMode)
+            If TheState.claimShippingDV.Count > 0 Then
+                LogisticsGrid.AutoGenerateColumns = False
+                If (TheState.IsEditMode) Then
+                    ThePage.SetPageAndSelectedIndexFromGuid(TheState.claimShippingDV, TheState.SelectedClaimShippingID, LogisticsGrid, TheState.PageIndex, TheState.IsEditMode)
                 End If
             End If
-            LogisticsGrid.DataSource = Me.TheState.claimShippingDV
+            LogisticsGrid.DataSource = TheState.claimShippingDV
             LogisticsGrid.DataBind()
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
 
     End Sub
-    Public Sub RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles LogisticsGrid.RowCreated
+    Public Sub RowCreated(sender As Object, e As GridViewRowEventArgs) Handles LogisticsGrid.RowCreated
         Try
             ThePage.BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles LogisticsGrid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles LogisticsGrid.RowDataBound
         Try
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
@@ -141,7 +141,7 @@
 
                 CType(e.Row.Cells(GRID_COL_SHIPPING_DATE_IDX).FindControl("TextboxShippingDate"), TextBox).Text = ElitaPlusPage.GetDateFormattedStringNullable(CType(dvRow("shipping_date"), Date))
 
-                If Me.TheState.IsEditMode Then
+                If TheState.IsEditMode Then
                     selectedId = GuidControl.ByteArrayToGuid(dvRow(ClaimShipping.ClaimShippingDV.COL_CLAIM_SHIPPING_ID))
 
                     If (TheState.IsEditMode AndAlso TheState.SelectedClaimShippingID.Equals(selectedId)) Then
@@ -150,10 +150,10 @@
                         , ElitaPlusPage.GetLongDateFormattedString(CType(dvRow("received_date"), Date)), "")
                         Dim oRecdDateImage As ImageButton = CType(e.Row.Cells(GRID_COL_RECEIVED_DATE_IDX).FindControl("ImageButtonRecdDate"), ImageButton)
                         'once received date is populated, value cannot be updated
-                        If (dvRow("received_date") Is Nothing Or dvRow("received_date").ToString() = String.Empty) Then
+                        If (dvRow("received_date") Is Nothing OrElse dvRow("received_date").ToString() = String.Empty) Then
                             oRecdDateImage.Visible = True
                             CType(e.Row.Cells(GRID_COL_RECEIVED_DATE_IDX).FindControl("TextboxReceivedDate"), TextBox).ReadOnly = False
-                            If (Not oRecdDateImage Is Nothing) Then
+                            If (oRecdDateImage IsNot Nothing) Then
                                 ThePage.AddCalendarwithTime_New(oRecdDateImage, CType(e.Row.Cells(GRID_COL_RECEIVED_DATE_IDX).FindControl("TextboxReceivedDate"), TextBox))
                             End If
                         Else
@@ -172,12 +172,12 @@
                 End If
             End If
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Public Sub RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles LogisticsGrid.RowCommand
+    Public Sub RowCommand(source As Object, e As GridViewCommandEventArgs) Handles LogisticsGrid.RowCommand
 
         Try
             Dim index As Integer
@@ -187,20 +187,20 @@
                 'Do the Edit here
 
                 'Set the IsEditMode flag to TRUE
-                Me.TheState.IsEditMode = True
+                TheState.IsEditMode = True
 
                 TheState.SelectedClaimShippingID = GuidControl.ByteArrayToGuid(LogisticsGrid.DataKeys(index).Values(0))
 
-                Me.TheState.MyBO = New ClaimShipping(TheState.SelectedClaimShippingID)
+                TheState.MyBO = New ClaimShipping(TheState.SelectedClaimShippingID)
 
                 PopulateGrid()
 
-                Me.TheState.PageIndex = LogisticsGrid.PageIndex
+                TheState.PageIndex = LogisticsGrid.PageIndex
 
             End If
 
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
     End Sub
 
@@ -209,9 +209,9 @@
         Dim objReceivedDateTxt As TextBox
         Dim objShippingDateTxt As TextBox
 
-        objTrackingNumberTxt = CType(LogisticsGrid.Rows(Me.LogisticsGrid.EditIndex).Cells(GRID_COL_TRACKING_NUMBER_IDX).FindControl("TextboxTrackingNumber"), TextBox)
-        objReceivedDateTxt = CType(LogisticsGrid.Rows(Me.LogisticsGrid.EditIndex).Cells(GRID_COL_TRACKING_NUMBER_IDX).FindControl("TextboxReceivedDate"), TextBox)
-        objShippingDateTxt = CType(LogisticsGrid.Rows(Me.LogisticsGrid.EditIndex).Cells(GRID_COL_SHIPPING_DATE_IDX).FindControl("textboxShippingDate"), TextBox)
+        objTrackingNumberTxt = CType(LogisticsGrid.Rows(LogisticsGrid.EditIndex).Cells(GRID_COL_TRACKING_NUMBER_IDX).FindControl("TextboxTrackingNumber"), TextBox)
+        objReceivedDateTxt = CType(LogisticsGrid.Rows(LogisticsGrid.EditIndex).Cells(GRID_COL_TRACKING_NUMBER_IDX).FindControl("TextboxReceivedDate"), TextBox)
+        objShippingDateTxt = CType(LogisticsGrid.Rows(LogisticsGrid.EditIndex).Cells(GRID_COL_SHIPPING_DATE_IDX).FindControl("textboxShippingDate"), TextBox)
 
         ThePage.PopulateBOProperty(TheState.MyBO, "ClaimId", TheState.MyBO.ClaimId)
         ThePage.PopulateBOProperty(TheState.MyBO, "ShippingTypeId", TheState.MyBO.ShippingTypeId)
@@ -219,7 +219,7 @@
         ThePage.PopulateBOProperty(TheState.MyBO, "TrackingNumber", objTrackingNumberTxt)
         ThePage.PopulateBOProperty(TheState.MyBO, "ReceivedDate", objReceivedDateTxt)
 
-        If Me.ThePage.ErrCollection.Count > 0 Then
+        If ThePage.ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Function
@@ -228,51 +228,51 @@
 
         LogisticsGrid.EditIndex = NO_ROW_SELECTED_INDEX
 
-        If (Me.LogisticsGrid.PageCount = 0) Then
-            ControlMgr.SetVisibleControl(Me.ThePage, LogisticsGrid, False)
+        If (LogisticsGrid.PageCount = 0) Then
+            ControlMgr.SetVisibleControl(ThePage, LogisticsGrid, False)
         Else
-            ControlMgr.SetVisibleControl(Me.ThePage, LogisticsGrid, True)
+            ControlMgr.SetVisibleControl(ThePage, LogisticsGrid, True)
         End If
 
-        Me.TheState.IsEditMode = False
-        Me.PopulateGrid()
-        Me.TheState.PageIndex = LogisticsGrid.PageIndex
+        TheState.IsEditMode = False
+        PopulateGrid()
+        TheState.PageIndex = LogisticsGrid.PageIndex
 
     End Sub
 
-    Protected Sub btnSave_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Protected Sub btnSave_Click(sender As Object, e As EventArgs)
 
         Try
             PopulateBOFromForm()
 
-            If (Me.TheState.MyBO.IsDirty) Then
-                Me.TheState.MyBO.Save()
-                Me.ThePage.MasterPage.MessageController.AddSuccess(MSG_RECORD_SAVED_OK, True)
-                Me.TheState.claimShippingDV = Nothing
-                Me.TheState.MyBO = Nothing
-                Me.ReturnFromEditing()
+            If (TheState.MyBO.IsDirty) Then
+                TheState.MyBO.Save()
+                ThePage.MasterPage.MessageController.AddSuccess(MSG_RECORD_SAVED_OK, True)
+                TheState.claimShippingDV = Nothing
+                TheState.MyBO = Nothing
+                ReturnFromEditing()
             Else
-                Me.ThePage.MasterPage.MessageController.AddWarning(MSG_RECORD_NOT_SAVED, True)
-                Me.ReturnFromEditing()
+                ThePage.MasterPage.MessageController.AddWarning(MSG_RECORD_NOT_SAVED, True)
+                ReturnFromEditing()
             End If
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Protected Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Protected Sub btnCancel_Click(sender As Object, e As EventArgs)
         Try
             With TheState
                 .SelectedClaimShippingID = Guid.Empty
-                Me.TheState.MyBO = Nothing
+                TheState.MyBO = Nothing
                 .IsEditMode = False
             End With
             LogisticsGrid.EditIndex = NO_ROW_SELECTED_INDEX
             PopulateGrid()
 
         Catch ex As Exception
-            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
         End Try
     End Sub
 End Class

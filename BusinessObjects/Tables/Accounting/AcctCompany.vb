@@ -6,48 +6,48 @@ Public Class AcctCompany
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New AcctCompanyDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class AcctCompany
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New AcctCompanyDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -90,7 +90,7 @@ Public Class AcctCompany
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(AcctCompanyDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class AcctCompany
     End Property
 
     <ValueMandatory(""), ValidStringLength(Nothing, max:=100)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(AcctCompanyDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -110,14 +110,14 @@ Public Class AcctCompany
                 Return CType(Row(AcctCompanyDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctCompanyDAL.COL_NAME_DESCRIPTION, Value)
+            SetValue(AcctCompanyDAL.COL_NAME_DESCRIPTION, Value)
         End Set
     End Property
 
     <ValidStringLength(Nothing, max:=100)> _
-   Public Property FTPDirectory() As String
+   Public Property FTPDirectory As String
         Get
             CheckDeleted()
             If Row(AcctCompanyDAL.COL_NAME_FTP_DIRECTORY) Is DBNull.Value Then
@@ -126,14 +126,14 @@ Public Class AcctCompany
                 Return CType(Row(AcctCompanyDAL.COL_NAME_FTP_DIRECTORY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctCompanyDAL.COL_NAME_FTP_DIRECTORY, Value)
+            SetValue(AcctCompanyDAL.COL_NAME_FTP_DIRECTORY, Value)
         End Set
     End Property
 
     <ValidStringLength(Nothing, max:=100)> _
-    Public Property BalanceDirectory() As String
+    Public Property BalanceDirectory As String
         Get
             CheckDeleted()
             If Row(AcctCompanyDAL.COL_NAME_BALANCE_DIRECTORY) Is DBNull.Value Then
@@ -142,14 +142,14 @@ Public Class AcctCompany
                 Return CType(Row(AcctCompanyDAL.COL_NAME_BALANCE_DIRECTORY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctCompanyDAL.COL_NAME_BALANCE_DIRECTORY, Value)
+            SetValue(AcctCompanyDAL.COL_NAME_BALANCE_DIRECTORY, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength(Nothing, max:=1, min:=1)> _
-  Public Property UseAccounting() As String
+  Public Property UseAccounting As String
         Get
             CheckDeleted()
             If Row(AcctCompanyDAL.COL_NAME_USE_ACCOUNTING) Is DBNull.Value Then
@@ -158,14 +158,14 @@ Public Class AcctCompany
                 Return CType(Row(AcctCompanyDAL.COL_NAME_USE_ACCOUNTING), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctCompanyDAL.COL_NAME_USE_ACCOUNTING, Value)
+            SetValue(AcctCompanyDAL.COL_NAME_USE_ACCOUNTING, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property UseElitaBankInfoId() As Guid
+    Public Property UseElitaBankInfoId As Guid
         Get
             CheckDeleted()
             If Row(AcctCompanyDAL.COL_NAME_USE_ELITA_BANK_INFO_ID) Is DBNull.Value Then
@@ -174,14 +174,14 @@ Public Class AcctCompany
                 Return New Guid(CType(Row(AcctCompanyDAL.COL_NAME_USE_ELITA_BANK_INFO_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctCompanyDAL.COL_NAME_USE_ELITA_BANK_INFO_ID, Value)
+            SetValue(AcctCompanyDAL.COL_NAME_USE_ELITA_BANK_INFO_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-   Public Property AcctSystemId() As Guid
+   Public Property AcctSystemId As Guid
         Get
             CheckDeleted()
             If Row(AcctCompanyDAL.COL_NAME_ACCT_SYSTEM_ID) Is DBNull.Value Then
@@ -190,14 +190,14 @@ Public Class AcctCompany
                 Return New Guid(CType(Row(AcctCompanyDAL.COL_NAME_ACCT_SYSTEM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctCompanyDAL.COL_NAME_ACCT_SYSTEM_ID, Value)
+            SetValue(AcctCompanyDAL.COL_NAME_ACCT_SYSTEM_ID, Value)
         End Set
     End Property
 
     <ValidStringLength(Nothing, max:=15)> _
-   Public Property Code() As String
+   Public Property Code As String
         Get
             CheckDeleted()
             If Row(AcctCompanyDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -206,14 +206,14 @@ Public Class AcctCompany
                 Return CType(Row(AcctCompanyDAL.COL_NAME_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctCompanyDAL.COL_NAME_CODE, Value)
+            SetValue(AcctCompanyDAL.COL_NAME_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength(Nothing, max:=1, min:=1)> _
-    Public Property ReportCommissionBreakdown() As String
+    Public Property ReportCommissionBreakdown As String
         Get
             CheckDeleted()
             If Row(AcctCompanyDAL.COL_NAME_RPT_COMMISSION_BREAKDOWN) Is DBNull.Value Then
@@ -222,14 +222,14 @@ Public Class AcctCompany
                 Return CType(Row(AcctCompanyDAL.COL_NAME_RPT_COMMISSION_BREAKDOWN), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctCompanyDAL.COL_NAME_RPT_COMMISSION_BREAKDOWN, Value)
+            SetValue(AcctCompanyDAL.COL_NAME_RPT_COMMISSION_BREAKDOWN, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-   Public Property ProcessMethodId() As Guid
+   Public Property ProcessMethodId As Guid
         Get
             CheckDeleted()
             If Row(AcctCompanyDAL.COL_NAME_PROCESS_METHOD_ID) Is DBNull.Value Then
@@ -238,14 +238,14 @@ Public Class AcctCompany
                 Return New Guid(CType(Row(AcctCompanyDAL.COL_NAME_PROCESS_METHOD_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctCompanyDAL.COL_NAME_PROCESS_METHOD_ID, Value)
+            SetValue(AcctCompanyDAL.COL_NAME_PROCESS_METHOD_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CoverageEntityByRegion() As Guid
+    Public Property CoverageEntityByRegion As Guid
         Get
             CheckDeleted()
             If Row(AcctCompanyDAL.COL_NAME_COV_ENTITY_BY_REGION) Is DBNull.Value Then
@@ -254,14 +254,14 @@ Public Class AcctCompany
                 Return New Guid(CType(Row(AcctCompanyDAL.COL_NAME_COV_ENTITY_BY_REGION), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctCompanyDAL.COL_NAME_COV_ENTITY_BY_REGION, Value)
+            SetValue(AcctCompanyDAL.COL_NAME_COV_ENTITY_BY_REGION, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property UseCoverageEntityId() As Guid
+    Public Property UseCoverageEntityId As Guid
         Get
             CheckDeleted()
             If Row(AcctCompanyDAL.COL_NAME_USE_COVERAGE_ENTITY) Is DBNull.Value Then
@@ -270,14 +270,14 @@ Public Class AcctCompany
                 Return New Guid(CType(Row(AcctCompanyDAL.COL_NAME_USE_COVERAGE_ENTITY), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctCompanyDAL.COL_NAME_USE_COVERAGE_ENTITY, Value)
+            SetValue(AcctCompanyDAL.COL_NAME_USE_COVERAGE_ENTITY, Value)
         End Set
     End Property
 
     <ValidStringLength(Nothing, max:=200)> _
-    Public Property NotifyEmail() As String
+    Public Property NotifyEmail As String
         Get
             CheckDeleted()
             If Row(AcctCompanyDAL.COL_NAME_NOTIFY_EMAIL) Is DBNull.Value Then
@@ -286,9 +286,9 @@ Public Class AcctCompany
                 Return CType(Row(AcctCompanyDAL.COL_NAME_NOTIFY_EMAIL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AcctCompanyDAL.COL_NAME_NOTIFY_EMAIL, Value)
+            SetValue(AcctCompanyDAL.COL_NAME_NOTIFY_EMAIL, Value)
         End Set
     End Property
 
@@ -298,15 +298,15 @@ Public Class AcctCompany
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New AcctCompanyDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New Dataset
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New Dataset
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -314,14 +314,14 @@ Public Class AcctCompany
         End Try
     End Sub
 
-    Public Shared Function GetAccountingCompanies(ByVal Companies As ArrayList) As AcctCompany()
+    Public Shared Function GetAccountingCompanies(Companies As ArrayList) As AcctCompany()
 
         Try
             Dim _AcctDAL As New AcctCompanyDAL
             Dim ds As Dataset = _AcctDAL.GetByCompanies(Companies)
             Dim _acctCo(0) As AcctCompany
 
-            If Not ds Is Nothing AndAlso ds.Tables.Count = 1 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count = 1 Then
 
                 'If no acctCompanies are found, return 1 new acct_company in the object.
                 If ds.Tables(0).Rows.Count = 0 Then
@@ -351,7 +351,7 @@ Public Class AcctCompany
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function LoadList(ByVal descriptionMask As String) As DataView
+    Public Shared Function LoadList(descriptionMask As String) As DataView
         Try
             Dim dal As New AcctCompanyDAL
             Dim ds As DataSet
@@ -365,7 +365,7 @@ Public Class AcctCompany
 
     End Function
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid, ByVal bo As AcctCompany) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid, bo As AcctCompany) As DataView
 
         Dim dt As DataTable
         dt = dv.Table
@@ -414,7 +414,7 @@ Public Class AcctCompany
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

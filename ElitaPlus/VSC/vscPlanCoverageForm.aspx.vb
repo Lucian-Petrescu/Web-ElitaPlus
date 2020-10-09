@@ -27,9 +27,9 @@ Public Partial Class vscPlanCoverageForm
         Public Dealer As String
         Public DealerGroup As String
 
-        Public Sub New(ByVal RateVersionId As Guid, ByVal VSCPlan As String, ByVal Dealer As String, ByVal DealerGroup As String)
-            Me.VSC_RATE_VERSION_ID = RateVersionId
-            Me.VSC_Plan = VSCPlan
+        Public Sub New(RateVersionId As Guid, VSCPlan As String, Dealer As String, DealerGroup As String)
+            VSC_RATE_VERSION_ID = RateVersionId
+            VSC_Plan = VSCPlan
             Me.Dealer = Dealer
             Me.DealerGroup = DealerGroup
         End Sub
@@ -41,9 +41,9 @@ Public Partial Class vscPlanCoverageForm
         Public LastOperation As DetailPageCommand
         Public EditingBo As VSCRateVersion
         Public HasDataChanged As Boolean
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As VSCRateVersion, ByVal hasDataChanged As Boolean)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(LastOp As DetailPageCommand, curEditingBo As VSCRateVersion, hasDataChanged As Boolean)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
             Me.HasDataChanged = hasDataChanged
         End Sub
     End Class
@@ -80,76 +80,76 @@ Public Partial Class vscPlanCoverageForm
 #End Region
 
 #Region "Page events"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.ErrControllerMaster.Clear_Hide()
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        ErrControllerMaster.Clear_Hide()
         Try
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
 
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
 
                 populatePage()
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
-        Me.ShowMissingTranslations(Me.ErrControllerMaster)
+        ShowMissingTranslations(ErrControllerMaster)
     End Sub
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Dim objParam As Parameters
         Try
-            If Not Me.CallingParameters Is Nothing Then
-                objParam = CType(Me.CallingParameters, Parameters)
-                Me.State.MyBO = New VSCRateVersion(objParam.VSC_RATE_VERSION_ID)
-                Me.State.VSC_Plan = objParam.VSC_Plan
-                Me.State.Dealer = objParam.Dealer
-                Me.State.DealerGroup = objParam.DealerGroup
+            If CallingParameters IsNot Nothing Then
+                objParam = CType(CallingParameters, Parameters)
+                State.MyBO = New VSCRateVersion(objParam.VSC_RATE_VERSION_ID)
+                State.VSC_Plan = objParam.VSC_Plan
+                State.Dealer = objParam.Dealer
+                State.DealerGroup = objParam.DealerGroup
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 #End Region
 
 #Region "Helper functions"
     Private Sub populatePage()
-        Me.txtDealer.Text = State.Dealer
-        Me.txtDealerGroup.Text = State.DealerGroup
-        Me.txtPlan.Text = State.VSC_Plan
-        Me.txtVersion.Text = State.MyBO.VersionNumber.ToString
-        Me.txtEffectiveDate.Text = State.MyBO.EffectiveDate.Value.ToString("dd-MMM-yyyy")
-        Me.txtExpirationDate.Text = State.MyBO.ExpirationDate.Value.ToString("dd-MMM-yyyy")
+        txtDealer.Text = State.Dealer
+        txtDealerGroup.Text = State.DealerGroup
+        txtPlan.Text = State.VSC_Plan
+        txtVersion.Text = State.MyBO.VersionNumber.ToString
+        txtEffectiveDate.Text = State.MyBO.EffectiveDate.Value.ToString("dd-MMM-yyyy")
+        txtExpirationDate.Text = State.MyBO.ExpirationDate.Value.ToString("dd-MMM-yyyy")
 
         populateGrid()
     End Sub
 
     Private Sub populateGrid()
-        If Me.State.searchDV Is Nothing Then GetCoverageList()
+        If State.searchDV Is Nothing Then GetCoverageList()
 
-        Me.Grid.AutoGenerateColumns = False
-        SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.VSCCoverageID, Me.Grid, Me.State.PageIndex)
+        Grid.AutoGenerateColumns = False
+        SetPageAndSelectedIndexFromGuid(State.searchDV, State.VSCCoverageID, Grid, State.PageIndex)
 
-        Me.State.PageIndex = Me.Grid.CurrentPageIndex
-        Me.Grid.DataSource = Me.State.searchDV
-        Me.Grid.DataBind()
-        ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
-        ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+        State.PageIndex = Grid.CurrentPageIndex
+        Grid.DataSource = State.searchDV
+        Grid.DataBind()
+        ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-        If Me.Grid.Visible Then
-            Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+        If Grid.Visible Then
+            lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
         End If
     End Sub
 
     Private Sub GetCoverageList()
         Dim objCR As VSCCoverage = New VSCCoverage
-        Me.State.searchDV = objCR.GetCoverageList(Authentication.CurrentUser.LanguageId, State.MyBO.VscPlanId)
+        State.searchDV = objCR.GetCoverageList(Authentication.CurrentUser.LanguageId, State.MyBO.VscPlanId)
     End Sub
 #End Region
 
 #Region "Grid related"
-    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs)
+    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
         'Dim elemType As ListItemType = e.Item.ItemType
         '' make sure it is the pager bar
         'If elemType = ListItemType.Pager Then
@@ -159,55 +159,55 @@ Public Partial Class vscPlanCoverageForm
         BaseItemCreated(sender, e)
     End Sub
 
-    Public Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+    Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
         Dim index As Integer
         Dim lblControl As Label, dr As DataRow
         Try
             'Find the datarow associated with the selected item
             If e.CommandName = "SelectAction" Then
                 index = e.Item.ItemIndex
-                lblControl = CType(Me.Grid.Items(e.Item.ItemIndex).Cells(Me.GRID_COL_COVERAGE_ID_IDX).FindControl(Me.GRID_CONTROL_NAME_COVERAGE_ID), Label)
+                lblControl = CType(Grid.Items(e.Item.ItemIndex).Cells(GRID_COL_COVERAGE_ID_IDX).FindControl(GRID_CONTROL_NAME_COVERAGE_ID), Label)
                 dr = State.searchDV.Table.Select("ROWNUM=" & lblControl.Text)(0)
-                State.VSCCoverageID = New Guid(CType(dr(Me.COL_COVERAGE_ID), Byte()))
-                Me.callPage(vscPlanCoveragesRateForm.URL, New vscPlanCoveragesRateForm.Parameters(State.MyBO.Id, State.MyBO.VscPlanId, State.VSC_Plan, State.Dealer, State.DealerGroup, _
-                    dr(Me.COL_COVERAGE_TYPE).ToString, CType(dr(Me.COL_ALLOC_NEW), Decimal), CType(dr(Me.COL_ALLOC_USED), Decimal), dr(Me.COL_ADD_TO_PLAN).ToString, dr(Me.COL_CLAIM_ALLOWED).ToString, dr(Me.COL_DEALER_DISCOUNT).ToString))
+                State.VSCCoverageID = New Guid(CType(dr(COL_COVERAGE_ID), Byte()))
+                callPage(vscPlanCoveragesRateForm.URL, New vscPlanCoveragesRateForm.Parameters(State.MyBO.Id, State.MyBO.VscPlanId, State.VSC_Plan, State.Dealer, State.DealerGroup, _
+                    dr(COL_COVERAGE_TYPE).ToString, CType(dr(COL_ALLOC_NEW), Decimal), CType(dr(COL_ALLOC_USED), Decimal), dr(COL_ADD_TO_PLAN).ToString, dr(COL_CLAIM_ALLOWED).ToString, dr(COL_DEALER_DISCOUNT).ToString))
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = e.NewPageIndex
-            Me.State.VSCCoverageID = Guid.Empty
-            Me.populateGrid()
+            State.PageIndex = e.NewPageIndex
+            State.VSCCoverageID = Guid.Empty
+            populateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Protected Sub cboPageSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Protected Sub cboPageSize_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
-            Me.Grid.CurrentPageIndex = Me.State.PageIndex
-            Me.PopulateGrid()
+            State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
+            Grid.CurrentPageIndex = State.PageIndex
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
 #End Region
 
 #Region "Button click"
-    Protected Sub btnBACK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBACK.Click
+    Protected Sub btnBACK_Click(sender As System.Object, e As System.EventArgs) Handles btnBACK.Click
         Try
-            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 #End Region

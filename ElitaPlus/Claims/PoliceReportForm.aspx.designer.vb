@@ -22,7 +22,7 @@ Partial Public Class PoliceReportForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Form1 As Global.System.Web.UI.HtmlControls.HtmlForm
+    Protected WithEvents Form1 As HtmlForm
 
     '''<summary>
     '''LabelTables control.
@@ -31,7 +31,7 @@ Partial Public Class PoliceReportForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelTables As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelTables As Label
 
     '''<summary>
     '''Label1 control.
@@ -40,7 +40,7 @@ Partial Public Class PoliceReportForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label1 As Label
 
     '''<summary>
     '''moIndicatesLabel control.
@@ -49,7 +49,7 @@ Partial Public Class PoliceReportForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moIndicatesLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moIndicatesLabel As Label
 
     '''<summary>
     '''WorkingPanel control.
@@ -58,7 +58,7 @@ Partial Public Class PoliceReportForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents WorkingPanel As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents WorkingPanel As Panel
 
     '''<summary>
     '''EditPanel_WRITE control.
@@ -67,7 +67,7 @@ Partial Public Class PoliceReportForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents EditPanel_WRITE As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents EditPanel_WRITE As Panel
 
     '''<summary>
     '''LabelClaimNumber control.
@@ -76,7 +76,7 @@ Partial Public Class PoliceReportForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelClaimNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelClaimNumber As Label
 
     '''<summary>
     '''TextboxClaimNumber control.
@@ -85,7 +85,7 @@ Partial Public Class PoliceReportForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextboxClaimNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextboxClaimNumber As TextBox
 
     '''<summary>
     '''LabelCertNumber control.
@@ -94,7 +94,7 @@ Partial Public Class PoliceReportForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelCertNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelCertNumber As Label
 
     '''<summary>
     '''TextboxCertNumber control.
@@ -103,7 +103,7 @@ Partial Public Class PoliceReportForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextboxCertNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextboxCertNumber As TextBox
 
     '''<summary>
     '''LabelDealer control.
@@ -112,7 +112,7 @@ Partial Public Class PoliceReportForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelDealer As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelDealer As Label
 
     '''<summary>
     '''TextboxDealer control.
@@ -121,7 +121,7 @@ Partial Public Class PoliceReportForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextboxDealer As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextboxDealer As TextBox
 
     '''<summary>
     '''mcUserControlPoliceReport control.
@@ -130,7 +130,7 @@ Partial Public Class PoliceReportForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents mcUserControlPoliceReport As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlPoliceReport
+    Protected WithEvents mcUserControlPoliceReport As UserControlPoliceReport
 
     '''<summary>
     '''btnBack control.
@@ -139,7 +139,7 @@ Partial Public Class PoliceReportForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnBack As Button
 
     '''<summary>
     '''btnEdit_WRITE control.
@@ -148,7 +148,7 @@ Partial Public Class PoliceReportForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnEdit_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnEdit_WRITE As Button
 
     '''<summary>
     '''btnSave_WRITE control.
@@ -157,7 +157,7 @@ Partial Public Class PoliceReportForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnSave_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSave_WRITE As Button
 
     '''<summary>
     '''btnUndo_Write control.
@@ -166,7 +166,7 @@ Partial Public Class PoliceReportForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnUndo_Write As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnUndo_Write As Button
 
     '''<summary>
     '''HiddenSaveChangesPromptResponse control.
@@ -175,5 +175,5 @@ Partial Public Class PoliceReportForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents HiddenSaveChangesPromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents HiddenSaveChangesPromptResponse As HtmlInputHidden
 End Class

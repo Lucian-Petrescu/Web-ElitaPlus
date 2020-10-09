@@ -17,7 +17,7 @@ Partial Class CountryTaxList
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -62,43 +62,43 @@ Partial Class CountryTaxList
 #Region "Page_Events"
 
     Private Sub UpdateBreadCrum()
-        If (Not Me.State Is Nothing) Then
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+        If (State IsNot Nothing) Then
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage(PAGETITLE)
         End If
     End Sub
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
-        Me.MasterPage.MessageController.Clear_Hide()
+        MasterPage.MessageController.Clear_Hide()
         Try
-            Me.MasterPage.MessageController.Clear()
-            Me.MasterPage.UsePageTabTitleInBreadCrum = False
-            Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-            Me.UpdateBreadCrum()
+            MasterPage.MessageController.Clear()
+            MasterPage.UsePageTabTitleInBreadCrum = False
+            MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            UpdateBreadCrum()
 
             If Not IsPostBack Then
-                Me.SetGridItemStyleColor(grdResults)
-                Me.TranslateGridHeader(Me.grdResults)
-                Me.MenuEnabled = True
+                SetGridItemStyleColor(grdResults)
+                TranslateGridHeader(grdResults)
+                MenuEnabled = True
                 LoadTaxes()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
 
     End Sub
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
-        Me.MenuEnabled = True
-        Me.IsReturningFromChild = True
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
+        MenuEnabled = True
+        IsReturningFromChild = True
         Dim retObj As CountryTaxEdit.ReturnType = CType(ReturnPar, CountryTaxEdit.ReturnType)
-        Me.State.HasDataChanged = retObj.HasDataChanged
+        State.HasDataChanged = retObj.HasDataChanged
         Select Case retObj.LastOperation
             Case ElitaPlusPage.DetailPageCommand.Delete
                 'Me.AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
-                Me.DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                DisplayMessage(Message.DELETE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
         End Select
     End Sub
 
@@ -116,7 +116,7 @@ Partial Class CountryTaxList
                 Dim index As Integer
                 ' Create Array
                 For index = 0 To oCountriesDv.Count - 1
-                    If Not oCountriesDv(index)("ID") Is System.DBNull.Value Then
+                    If oCountriesDv(index)("ID") IsNot System.DBNull.Value Then
                         oCountriesArr.Add(New Guid(CType(oCountriesDv(index)("ID"), Byte())))
                     End If
                 Next
@@ -126,7 +126,7 @@ Partial Class CountryTaxList
                 Dim index As Integer
                 ' Create Array
                 For index = 0 To oCompanyDv.Count - 1
-                    If Not oCompanyDv(index)("ID") Is System.DBNull.Value Then
+                    If oCompanyDv(index)("ID") IsNot System.DBNull.Value Then
                         oCompanyArr.Add(New Guid(CType(oCompanyDv(index)("ID"), Byte())))
                     End If
                 Next
@@ -146,45 +146,45 @@ Partial Class CountryTaxList
             If Not grdResults.BottomPagerRow.Visible Then grdResults.BottomPagerRow.Visible = True
             'SetPageAndSelectedIndexFromGuid(dv, Me.State.selectedID, Me.grdResults, Me.State.PageIndex)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnAdd_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd_WRITE.Click
+    Private Sub btnAdd_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnAdd_WRITE.Click
 
         Try
-            Me.callPage(CountryTaxEdit.URL)
+            callPage(CountryTaxEdit.URL)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Private Sub grdResults_ItemCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles grdResults.RowCreated
+    Private Sub grdResults_ItemCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles grdResults.RowCreated
 
         BaseItemCreated(sender, e)
 
     End Sub
 
-    Private Sub grdResults_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles grdResults.PageIndexChanging
+    Private Sub grdResults_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles grdResults.PageIndexChanging
         grdResults.PageIndex = e.NewPageIndex
-        Me.State.PageIndex = e.NewPageIndex
+        State.PageIndex = e.NewPageIndex
         LoadTaxes()
     End Sub
 
-    Private Sub grdResults_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles grdResults.RowCommand
+    Private Sub grdResults_ItemCommand(source As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles grdResults.RowCommand
 
         Dim sCurrentTaxID As String
         Try
             If e.CommandName = ACTION_SELECT Then
 
                 Dim index As Integer = CInt(e.CommandArgument)
-                sCurrentTaxID = CType(Me.grdResults.Rows(index).Cells(DG_COUNTRY_TAX_GUID_ID).FindControl("lblCountryTaxId"), Label).Text
-                Me.State.selectedID = New Guid(sCurrentTaxID)
-                Me.callPage(CountryTaxEdit.URL, New Guid(sCurrentTaxID))
+                sCurrentTaxID = CType(grdResults.Rows(index).Cells(DG_COUNTRY_TAX_GUID_ID).FindControl("lblCountryTaxId"), Label).Text
+                State.selectedID = New Guid(sCurrentTaxID)
+                callPage(CountryTaxEdit.URL, New Guid(sCurrentTaxID))
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub

@@ -15,7 +15,7 @@ Namespace Interfaces
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -23,7 +23,7 @@ Namespace Interfaces
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             If Not Page.IsPostBack Then
                 If Request.QueryString("Message") Is Nothing Then
@@ -44,7 +44,7 @@ Namespace Interfaces
             sJavaScript &= "LoadWaitMsg();" & Environment.NewLine
             sJavaScript &= "ShowInterfaceContainer();" & Environment.NewLine
             sJavaScript &= "</SCRIPT>" & Environment.NewLine
-            Me.RegisterStartupScript("StartProgressBar", sJavaScript)
+            RegisterStartupScript("StartProgressBar", sJavaScript)
         End Sub
 
 

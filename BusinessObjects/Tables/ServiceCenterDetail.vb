@@ -3,15 +3,15 @@
 Public Class IsContactChildrenList
     Inherits BusinessObjectListBase
 
-    Public Sub New(ByVal parent As ServiceCenter)
+    Public Sub New(parent As ServiceCenter)
         MyBase.New(LoadTable(parent), GetType(VendorContact), parent)
     End Sub
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, VendorContact).ServiceCenterId.Equals(CType(Parent, ServiceCenter).Id)
     End Function
 
-    Private Shared Function LoadTable(ByVal parent As ServiceCenter) As DataTable
+    Private Shared Function LoadTable(parent As ServiceCenter) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(IsContactChildrenList)) Then
                 Dim dal As New VendorContactDAL
@@ -28,15 +28,15 @@ End Class
 Public Class IsContactInfoChildrenList
     Inherits BusinessObjectListBase
 
-    Public Sub New(ByVal parent As VendorContact)
+    Public Sub New(parent As VendorContact)
         MyBase.New(LoadTable(parent), GetType(ContactInfo), parent)
     End Sub
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, ContactInfo).Id.Equals(CType(Parent, VendorContact).ContactInfoId)
     End Function
 
-    Private Shared Function LoadTable(ByVal parent As VendorContact) As DataTable
+    Private Shared Function LoadTable(parent As VendorContact) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(IsContactInfoChildrenList)) Then
                 Dim dal As New ContactInfoDAL
@@ -53,15 +53,15 @@ End Class
 Public Class IsAddressChildrenList
     Inherits BusinessObjectListBase
 
-    Public Sub New(ByVal parent As ContactInfo)
+    Public Sub New(parent As ContactInfo)
         MyBase.New(LoadTable(parent), GetType(Address), parent)
     End Sub
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, Address).Id.Equals(CType(Parent, ContactInfo).AddressId)
     End Function
 
-    Private Shared Function LoadTable(ByVal parent As ContactInfo) As DataTable
+    Private Shared Function LoadTable(parent As ContactInfo) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(IsAddressChildrenList)) Then
                 Dim dal As New AddressDAL
@@ -83,15 +83,15 @@ End Class
 Public Class IsQuantityChildrenList
     Inherits BusinessObjectListBase
 
-    Public Sub New(ByVal parent As ServiceCenter)
+    Public Sub New(parent As ServiceCenter)
         MyBase.New(LoadTable(parent), GetType(VendorQuantity), parent)
     End Sub
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, VendorQuantity).ReferenceId.Equals(CType(Parent, ServiceCenter).Id)
     End Function
 
-    Private Shared Function LoadTable(ByVal parent As ServiceCenter) As DataTable
+    Private Shared Function LoadTable(parent As ServiceCenter) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(IsQuantityChildrenList)) Then
                 Dim dal As New VendorQuantityDAL
@@ -113,15 +113,15 @@ End Class
 Public Class IsScheduleChildrenList
     Inherits BusinessObjectListBase
 
-    Public Sub New(ByVal parent As ServiceCenter)
+    Public Sub New(parent As ServiceCenter)
         MyBase.New(LoadTable(parent), GetType(ServiceSchedule), parent)
     End Sub
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, ServiceSchedule).ServiceCenterId.Equals(CType(Parent, ServiceCenter).Id)
     End Function
 
-    Private Shared Function LoadTable(ByVal parent As ServiceCenter) As DataTable
+    Private Shared Function LoadTable(parent As ServiceCenter) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(IsScheduleChildrenList)) Then
                 Dim dal As New ServiceScheduleDAL
@@ -138,15 +138,15 @@ End Class
 Public Class IsScheduleTableChildrenList
     Inherits BusinessObjectListBase
 
-    Public Sub New(ByVal parent As ServiceSchedule)
+    Public Sub New(parent As ServiceSchedule)
         MyBase.New(LoadTable(parent), GetType(schedule), parent)
     End Sub
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, Schedule).Id.Equals(CType(Parent, ServiceSchedule).ScheduleId)
     End Function
 
-    Private Shared Function LoadTable(ByVal parent As ServiceSchedule) As DataTable
+    Private Shared Function LoadTable(parent As ServiceSchedule) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(IsScheduleChildrenList)) Then
                 Dim dal As New ScheduleDAL
@@ -163,15 +163,15 @@ End Class
 Public Class IsScheduleDetailChildrenList
     Inherits BusinessObjectListBase
 
-    Public Sub New(ByVal parent As Schedule, ByVal objParent As ServiceSchedule)
+    Public Sub New(parent As Schedule, objParent As ServiceSchedule)
         MyBase.New(LoadTable(parent, objParent), GetType(ScheduleDetail), parent)
     End Sub
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, ScheduleDetail).ScheduleId.Equals(CType(Parent, Schedule).Id)
     End Function
 
-    Private Shared Function LoadTable(ByVal parent As Schedule, ByVal objParent As ServiceSchedule) As DataTable
+    Private Shared Function LoadTable(parent As Schedule, objParent As ServiceSchedule) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(IsScheduleDetailChildrenList)) Then
                 Dim dal As New ScheduleDetailDAL

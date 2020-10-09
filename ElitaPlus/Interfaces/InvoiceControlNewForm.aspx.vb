@@ -20,8 +20,8 @@ Partial Public Class InvoiceControlNewForm
     Public Class ReturnType
         Public LastOperation As DetailPageCommand
         Public HasDataChanged As Boolean
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal hasDataChanged As Boolean)
-            Me.LastOperation = LastOp
+        Public Sub New(LastOp As DetailPageCommand, hasDataChanged As Boolean)
+            LastOperation = LastOp
             Me.HasDataChanged = hasDataChanged
         End Sub
     End Class
@@ -46,28 +46,28 @@ Partial Public Class InvoiceControlNewForm
 #End Region
 
 #Region "Page event"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.ErrControllerMaster.Clear_Hide()
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        ErrControllerMaster.Clear_Hide()
         Try
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
 
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
 
                 populateDropdown()
             End If
-            Me.DisplayProgressBarOnClick(Me.btnCreateNew, "CREATE_INVOICE")
+            DisplayProgressBarOnClick(btnCreateNew, "CREATE_INVOICE")
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
-        Me.ShowMissingTranslations(Me.ErrControllerMaster)
+        ShowMissingTranslations(ErrControllerMaster)
     End Sub
 
-    Private Sub Page_LoadComplete(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.LoadComplete
+    Private Sub Page_LoadComplete(sender As Object, e As System.EventArgs) Handles Me.LoadComplete
         If ErrControllerMaster.Visible Then
-            Me.spanFiller.Text = "<tr><td colspan=""2"" style=""height:280px"">&nbsp;</td></tr>"
+            spanFiller.Text = "<tr><td colspan=""2"" style=""height:280px"">&nbsp;</td></tr>"
         Else
-            Me.spanFiller.Text = "<tr><td colspan=""2"" style=""height:1px"">&nbsp;</td></tr>"
+            spanFiller.Text = "<tr><td colspan=""2"" style=""height:1px"">&nbsp;</td></tr>"
         End If
     End Sub
 
@@ -92,7 +92,7 @@ Partial Public Class InvoiceControlNewForm
                                                         })
 
                 If Dealers.Count > 0 Then
-                    If Not DealerList Is Nothing Then
+                    If DealerList IsNot Nothing Then
                         DealerList.AddRange(Dealers)
                     Else
                         DealerList = Dealers.Clone()
@@ -119,38 +119,38 @@ Partial Public Class InvoiceControlNewForm
                                             .SortFunc = AddressOf .GetCode
                                         })
 
-            Me.ddlDealer.Attributes.Add("onchange", "UpdateList('" & Me.ddlDealerCode.ClientID & "')")
-            Me.ddlDealerCode.Attributes.Add("onchange", "UpdateList('" & Me.ddlDealer.ClientID & "')")
+            ddlDealer.Attributes.Add("onchange", "UpdateList('" & ddlDealerCode.ClientID & "')")
+            ddlDealerCode.Attributes.Add("onchange", "UpdateList('" & ddlDealer.ClientID & "')")
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub ShowInfoMsgBox(ByVal strMsg As String, Optional ByVal Translate As Boolean = True)
+    Private Sub ShowInfoMsgBox(strMsg As String, Optional ByVal Translate As Boolean = True)
         Dim translatedMsg As String = strMsg
         If Translate Then translatedMsg = TranslationBase.TranslateLabelOrMessage(strMsg)
         Dim sJavaScript As String
         sJavaScript = "<SCRIPT>" & Environment.NewLine
-        sJavaScript &= "setTimeout(""showMessage('" & translatedMsg & "', '" & "AlertWindow" & "', '" & Me.MSG_BTN_OK & "', '" & Me.MSG_TYPE_INFO & "', '" & "null" & "')"", 0);" & Environment.NewLine
+        sJavaScript &= "setTimeout(""showMessage('" & translatedMsg & "', '" & "AlertWindow" & "', '" & MSG_BTN_OK & "', '" & MSG_TYPE_INFO & "', '" & "null" & "')"", 0);" & Environment.NewLine
         sJavaScript &= "</SCRIPT>" & Environment.NewLine
-        Me.RegisterStartupScript("ShowConfirmation", sJavaScript)
+        RegisterStartupScript("ShowConfirmation", sJavaScript)
     End Sub
 
 #End Region
 
 #Region "Button handler"
-    Protected Sub btnBACK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBACK.Click
+    Protected Sub btnBACK_Click(sender As System.Object, e As System.EventArgs) Handles btnBACK.Click
         Try
-            Me.ReturnToCallingPage(Me.State.HasDataChanged)
+            ReturnToCallingPage(State.HasDataChanged)
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Protected Sub btnCreateNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCreateNew.Click
+    Protected Sub btnCreateNew_Click(sender As System.Object, e As System.EventArgs) Handles btnCreateNew.Click
         Try
-            Dim DealerID As Guid = Me.GetSelectedItem(Me.ddlDealer)
+            Dim DealerID As Guid = GetSelectedItem(ddlDealer)
             If DealerID = Guid.Empty Then
                 Throw New GUIException("You must select a dealer file", Assurant.ElitaPlus.Common.ErrorCodes.GUI_DEALER_MUST_BE_SELECTED_ERR)
             Else
@@ -159,13 +159,13 @@ Partial Public Class InvoiceControlNewForm
                 ShowInfoMsgBox(MSG_INVOICE_CREATED_OK)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Protected Sub btnClear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClear.Click
-        Me.ddlDealer.SelectedIndex = 0
-        Me.ddlDealerCode.SelectedIndex = 0
+    Protected Sub btnClear_Click(sender As System.Object, e As System.EventArgs) Handles btnClear.Click
+        ddlDealer.SelectedIndex = 0
+        ddlDealerCode.SelectedIndex = 0
     End Sub
 #End Region
 

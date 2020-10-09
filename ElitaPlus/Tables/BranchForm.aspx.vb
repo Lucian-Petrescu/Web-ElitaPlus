@@ -40,17 +40,17 @@ Partial Class BranchForm
     End Property
 
     Private Sub SetStateProperties()
-        Me.State.moIsNewBranchLabel = CType(Me.CallingParameters, Guid)
-        If Me.State.moIsNewBranchLabel.Equals(Guid.Empty) Then
-            Me.State.IsNewBranchNew = True
+        State.moIsNewBranchLabel = CType(CallingParameters, Guid)
+        If State.moIsNewBranchLabel.Equals(Guid.Empty) Then
+            State.IsNewBranchNew = True
             BindBoPropertiesToLabels()
-            Me.AddLabelDecorations(TheBranch)
+            AddLabelDecorations(TheBranch)
             ClearAll()
             PopulateAll()
         Else
-            Me.State.IsNewBranchNew = False
+            State.IsNewBranchNew = False
             BindBoPropertiesToLabels()
-            Me.AddLabelDecorations(TheBranch)
+            AddLabelDecorations(TheBranch)
             PopulateAll()
         End If
     End Sub
@@ -81,9 +81,9 @@ Partial Class BranchForm
         Public LastOperation As DetailPageCommand
         Public moBranchId As Guid
         Public HasDataChanged As Boolean
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal oBranchId As Guid, ByVal hasDataChanged As Boolean)
-            Me.LastOperation = LastOp
-            Me.moBranchId = oBranchId
+        Public Sub New(LastOp As DetailPageCommand, oBranchId As Guid, hasDataChanged As Boolean)
+            LastOperation = LastOp
+            moBranchId = oBranchId
             Me.HasDataChanged = hasDataChanged
         End Sub
     End Class
@@ -94,18 +94,18 @@ Partial Class BranchForm
     Private ReadOnly Property TheBranch As Branch
 
         Get
-            If Me.State.MyBO Is Nothing Then
-                If Me.State.IsNewBranchNew = True Then
+            If State.MyBO Is Nothing Then
+                If State.IsNewBranchNew = True Then
                     ' For creating, inserting
-                    Me.State.MyBO = New Branch
-                    Me.State.moIsNewBranchLabel = Me.State.MyBO.Id
+                    State.MyBO = New Branch
+                    State.moIsNewBranchLabel = State.MyBO.Id
                 Else
                     ' For updating, deleting
-                    Me.State.MyBO = New Branch(Me.State.moIsNewBranchLabel)
+                    State.MyBO = New Branch(State.moIsNewBranchLabel)
                 End If
             End If
 
-            Return Me.State.MyBO
+            Return State.MyBO
         End Get
     End Property
 
@@ -144,7 +144,7 @@ Partial Class BranchForm
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -152,61 +152,61 @@ Partial Class BranchForm
 
 #End Region
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
         'Put user code to initialize the page here
         Try
-            Me.MasterPage.MessageController.Clear_Hide()
+            MasterPage.MessageController.Clear_Hide()
             ClearLabelsErrSign()
             If Not Page.IsPostBack Then
-                Me.MasterPage.MessageController.Clear()
-                Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
+                MasterPage.MessageController.Clear()
+                MasterPage.UsePageTabTitleInBreadCrum = False
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
                 UpdateBreadCrum()
-                Me.SetStateProperties()
-                Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO,
+                SetStateProperties()
+                AddControlMsg(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO,
                 MSG_TYPE_CONFIRM, True)
 
-                If Me.State.IsNewBranchNew = True Then
+                If State.IsNewBranchNew = True Then
                     CreateNew()
                 End If
                 PopulateFormFromBOs()
-                Me.moAddressController.ReAssignTabIndex(AddressInfoStartIndex)
+                moAddressController.ReAssignTabIndex(AddressInfoStartIndex)
                 AddressCtr.EnableControls(False, True)
-                Me.AddCalendar(Me.BtnOpenDate, Me.txtOpendate)
-                Me.AddCalendar(Me.BtnCloseDate, Me.txtClosedate)
+                AddCalendar(BtnOpenDate, txtOpendate)
+                AddCalendar(BtnCloseDate, txtClosedate)
             End If
 
             BindBoPropertiesToLabels()
             CheckIfComingFromConfirm()
-            If Not Me.IsPostBack Then
-                Me.AddLabelDecorations(TheBranch)
+            If Not IsPostBack Then
+                AddLabelDecorations(TheBranch)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
 
         End Try
         If Me.State.LastOperation = DetailPageCommand.Redirect_ Then
-            Me.MasterPage.MessageController.Clear_Hide()
+            MasterPage.MessageController.Clear_Hide()
             'ClearLabelsErrSign()
-            Me.State.LastOperation = DetailPageCommand.Nothing_
+            State.LastOperation = DetailPageCommand.Nothing_
         Else
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End If
     End Sub
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
 
         Try
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 'Get the id from the parent
-                Me.State.MyBO = New Branch(CType(Me.CallingParameters, Guid))
+                State.MyBO = New Branch(CType(CallingParameters, Guid))
             Else
-                Me.State.IsNewBranchNew = True
+                State.IsNewBranchNew = True
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
@@ -215,90 +215,90 @@ Partial Class BranchForm
 
 #Region "Handlers-Buttons"
 
-    Private Sub btnApply_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply_WRITE.Click
+    Private Sub btnApply_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnApply_WRITE.Click
         ApplyChanges()
         AddressCtr.EnableControls(False, True)
     End Sub
 
     Private Sub GoBack()
         Dim retType As New BranchForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back,
-                                                                Me.State.moIsNewBranchLabel, Me.State.boChanged)
-        Me.ReturnToCallingPage(retType)
+                                                                State.moIsNewBranchLabel, State.boChanged)
+        ReturnToCallingPage(retType)
     End Sub
 
-    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
         Try
             If IsDirtyBO() = True Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM,
-                                                Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM,
+                                                HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
             Else
                 GoBack()
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnUndo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+    Private Sub btnUndo_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
         Try
-            If Not Me.State.IsNewBranchNew Then
+            If Not State.IsNewBranchNew Then
                 'Reload from the DB
-                Me.State.MyBO = New Branch(Me.State.MyBO.Id)
-            ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+                State.MyBO = New Branch(State.MyBO.Id)
+            ElseIf State.ScreenSnapShotBO IsNot Nothing Then
                 'It was a new with copy
-                Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                State.MyBO.Clone(State.ScreenSnapShotBO)
             Else
                 CreateNew()
             End If
             PopulateAll()
             PopulateFormFromBOs()
-            Me.SetButtonsState(Me.State.IsNewBranchNew)
+            SetButtonsState(State.IsNewBranchNew)
             AddressCtr.EnableControls(False, True)
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Private Sub CreateNew()
-        Me.State.ScreenSnapShotBO = Nothing
-        Me.State.IsNewBranchNew = True
-        Me.State.MyBO = New Branch
+        State.ScreenSnapShotBO = Nothing
+        State.IsNewBranchNew = True
+        State.MyBO = New Branch
         ClearAll()
-        Me.SetButtonsState(True)
-        Me.PopulateAll()
-        Me.PopulateBOsFromForm()
+        SetButtonsState(True)
+        PopulateAll()
+        PopulateBOsFromForm()
         PopulateFormFromBOs()
         TheDealerControl.ChangeEnabledControlProperty(True)
         'SetOpenDate(True)
     End Sub
 
-    Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+    Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
         Try
             If IsDirtyBO() = True Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
             Else
                 CreateNew()
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Private Sub CreateNewCopy()
 
-        Me.PopulateBOsFromForm()
+        PopulateBOsFromForm()
 
         Dim newObj As New Branch
         newObj.Copy(TheBranch)
 
-        Me.State.MyBO = newObj
-        Me.State.moIsNewBranchLabel = Guid.Empty
-        Me.State.IsNewBranchNew = True
+        State.MyBO = newObj
+        State.moIsNewBranchLabel = Guid.Empty
+        State.IsNewBranchNew = True
         AddressCtr.EnableControls(False, True)
 
         With TheBranch
@@ -306,41 +306,41 @@ Partial Class BranchForm
             .BranchName = Nothing
         End With
 
-        Me.SetButtonsState(True)
+        SetButtonsState(True)
         PopulateFormFromBOs()
         TheDealerControl.ChangeEnabledControlProperty(True)
         'SetOpenDate(True)
 
         'create the backup copy
-        Me.State.ScreenSnapShotBO = New Branch
-        Me.State.ScreenSnapShotBO.Copy(TheBranch)
+        State.ScreenSnapShotBO = New Branch
+        State.ScreenSnapShotBO.Copy(TheBranch)
 
     End Sub
 
-    Private Sub btnCopy_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+    Private Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
         Try
             If IsDirtyBO() = True Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
             Else
                 CreateNewCopy()
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+            HandleErrors(ex, MasterPage.MessageController)
+            DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
         End Try
     End Sub
 
-    Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+    Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
         Try
-            Me.State.MyBO.DeleteAndSave()
-            Me.State.HasDataChanged = True
-            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.moIsNewBranchLabel, Me.State.HasDataChanged))
+            State.MyBO.DeleteAndSave()
+            State.HasDataChanged = True
+            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, State.moIsNewBranchLabel, State.HasDataChanged))
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -373,10 +373,10 @@ Partial Class BranchForm
 #Region "Populate"
 
     Private Sub UpdateBreadCrum()
-        If (Not Me.State Is Nothing) Then
-            If (Not Me.State Is Nothing) Then
-                Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("BRANCH_FORM")
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("BRANCH_FORM")
+        If (State IsNot Nothing) Then
+            If (State IsNot Nothing) Then
+                MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("BRANCH_FORM")
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("BRANCH_FORM")
             End If
         End If
     End Sub
@@ -386,22 +386,22 @@ Partial Class BranchForm
         Try
             Dim dv As DataView = LookupListNew.GetDealerLookupList(oCompanyList, True)
             TheDealerControl.SetControl(True, TheDealerControl.MODES.NEW_MODE, True, dv, "*" + TranslationBase.TranslateLabelOrMessage(LABEL_DEALER), True, True)
-            If Me.State.IsNewBranchNew = True Then
+            If State.IsNewBranchNew = True Then
                 TheDealerControl.SelectedGuid = Guid.Empty
                 TheDealerControl.ChangeEnabledControlProperty(True)
                 'SetOpenDate(True)
             Else
                 TheDealerControl.ChangeEnabledControlProperty(False)
-                If Not State.MyBO.OpenDate Is Nothing Then
+                If State.MyBO.OpenDate IsNot Nothing Then
                     'SetOpenDate(False)
                 End If
                 TheDealerControl.SelectedGuid = TheBranch.DealerId
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.MasterPage.MessageController.AddError(BRANCH_LIST_FORM001)
-            Me.MasterPage.MessageController.AddError(ex.Message, False)
-            Me.MasterPage.MessageController.Show()
+            MasterPage.MessageController.AddError(BRANCH_LIST_FORM001)
+            MasterPage.MessageController.AddError(ex.Message, False)
+            MasterPage.MessageController.Show()
         End Try
     End Sub
 
@@ -416,9 +416,9 @@ Partial Class BranchForm
 
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.MasterPage.MessageController.AddError(BRANCH_LIST_FORM001)
-            Me.MasterPage.MessageController.AddError(ex.Message, False)
-            Me.MasterPage.MessageController.Show()
+            MasterPage.MessageController.AddError(BRANCH_LIST_FORM001)
+            MasterPage.MessageController.AddError(ex.Message, False)
+            MasterPage.MessageController.Show()
         End Try
     End Sub
 
@@ -426,22 +426,22 @@ Partial Class BranchForm
         Try
             With TheBranch
                 BindSelectItem(.BranchTypeId.ToString, ddlBranchType)
-                Me.PopulateControlFromBOProperty(Me.txtBranchCode, .BranchCode)
-                Me.PopulateControlFromBOProperty(Me.txtBranchName, .BranchName)
-                Me.PopulateControlFromBOProperty(Me.txtContactEmail, .ContactEmail)
-                Me.PopulateControlFromBOProperty(Me.txtContactExt, .ContactExt)
-                Me.PopulateControlFromBOProperty(Me.txtContactFax, .ContactFax)
-                Me.PopulateControlFromBOProperty(Me.txtContactPhone, .ContactPhone)
-                Me.PopulateControlFromBOProperty(Me.txtMarket, .Market)
-                Me.PopulateControlFromBOProperty(Me.txtMarketingRegion, .MarketingRegion)
-                Me.PopulateControlFromBOProperty(Me.txtStoreManager, .StoreManager)
-                Me.PopulateControlFromBOProperty(Me.txtOpendate, .OpenDate)
-                Me.PopulateControlFromBOProperty(Me.txtClosedate, .CloseDate)
-                AddressCtr.Bind(Me.State.MyBO)
+                PopulateControlFromBOProperty(txtBranchCode, .BranchCode)
+                PopulateControlFromBOProperty(txtBranchName, .BranchName)
+                PopulateControlFromBOProperty(txtContactEmail, .ContactEmail)
+                PopulateControlFromBOProperty(txtContactExt, .ContactExt)
+                PopulateControlFromBOProperty(txtContactFax, .ContactFax)
+                PopulateControlFromBOProperty(txtContactPhone, .ContactPhone)
+                PopulateControlFromBOProperty(txtMarket, .Market)
+                PopulateControlFromBOProperty(txtMarketingRegion, .MarketingRegion)
+                PopulateControlFromBOProperty(txtStoreManager, .StoreManager)
+                PopulateControlFromBOProperty(txtOpendate, .OpenDate)
+                PopulateControlFromBOProperty(txtClosedate, .CloseDate)
+                AddressCtr.Bind(State.MyBO)
             End With
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -452,24 +452,24 @@ Partial Class BranchForm
 
     Protected Sub PopulateBOsFromForm()
 
-        With Me.TheBranch
+        With TheBranch
             .DealerId = TheDealerControl.SelectedGuid
-            Me.PopulateBOProperty(Me.State.MyBO, "BranchCode", Me.txtBranchCode)
-            Me.PopulateBOProperty(Me.State.MyBO, "BranchName", Me.txtBranchName)
-            Me.PopulateBOProperty(Me.State.MyBO, "ContactEmail", Me.txtContactEmail)
-            Me.PopulateBOProperty(Me.State.MyBO, "ContactExt", Me.txtContactExt)
-            Me.PopulateBOProperty(Me.State.MyBO, "ContactFax", Me.txtContactFax)
-            Me.PopulateBOProperty(Me.State.MyBO, "ContactPhone", Me.txtContactPhone)
-            Me.PopulateBOProperty(Me.State.MyBO, "Market", Me.txtMarket)
-            Me.PopulateBOProperty(Me.State.MyBO, "MarketingRegion", Me.txtMarketingRegion)
-            Me.PopulateBOProperty(Me.State.MyBO, "BranchTypeId", Me.ddlBranchType)
-            Me.PopulateBOProperty(Me.State.MyBO, "StoreManager", Me.txtStoreManager)
-            Me.PopulateBOProperty(Me.State.MyBO, "OpenDate", Me.txtOpendate)
-            Me.PopulateBOProperty(Me.State.MyBO, "CloseDate", Me.txtClosedate)
-            Me.AddressCtr.PopulateBOFromControl(True)
+            PopulateBOProperty(State.MyBO, "BranchCode", txtBranchCode)
+            PopulateBOProperty(State.MyBO, "BranchName", txtBranchName)
+            PopulateBOProperty(State.MyBO, "ContactEmail", txtContactEmail)
+            PopulateBOProperty(State.MyBO, "ContactExt", txtContactExt)
+            PopulateBOProperty(State.MyBO, "ContactFax", txtContactFax)
+            PopulateBOProperty(State.MyBO, "ContactPhone", txtContactPhone)
+            PopulateBOProperty(State.MyBO, "Market", txtMarket)
+            PopulateBOProperty(State.MyBO, "MarketingRegion", txtMarketingRegion)
+            PopulateBOProperty(State.MyBO, "BranchTypeId", ddlBranchType)
+            PopulateBOProperty(State.MyBO, "StoreManager", txtStoreManager)
+            PopulateBOProperty(State.MyBO, "OpenDate", txtOpendate)
+            PopulateBOProperty(State.MyBO, "CloseDate", txtClosedate)
+            AddressCtr.PopulateBOFromControl(True)
 
         End With
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
 
@@ -477,12 +477,12 @@ Partial Class BranchForm
 
     Public Sub ValidateDates()
 
-        If txtClosedate.Text.Trim() <> String.Empty And txtOpendate.Text.Trim() <> String.Empty Then
+        If txtClosedate.Text.Trim() <> String.Empty AndAlso txtOpendate.Text.Trim() <> String.Empty Then
             If CDate(txtOpendate.Text) >= CDate(txtClosedate.Text) Then
                 ElitaPlusPage.SetLabelError(lblOpenDate)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.BEGIN_DATE_ERR1)
             End If
-        ElseIf txtClosedate.Text.Trim() <> String.Empty And txtOpendate.Text.Trim() = String.Empty Then
+        ElseIf txtClosedate.Text.Trim() <> String.Empty AndAlso txtOpendate.Text.Trim() = String.Empty Then
             ElitaPlusPage.SetLabelError(lblOpenDate)
             Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_BEGIN_DATE)
         End If
@@ -491,7 +491,7 @@ Partial Class BranchForm
 
 #Region "Gui-Validation"
 
-    Private Sub SetButtonsState(ByVal bIsNew As Boolean)
+    Private Sub SetButtonsState(bIsNew As Boolean)
         ControlMgr.SetEnableControl(Me, btnNew_WRITE, Not bIsNew)
         ControlMgr.SetEnableControl(Me, btnCopy_WRITE, Not bIsNew)
         ControlMgr.SetEnableControl(Me, btnDelete_WRITE, Not bIsNew)
@@ -518,9 +518,9 @@ Partial Class BranchForm
             End With
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.MasterPage.MessageController.AddError(BRANCH_LIST_FORM001)
-            Me.MasterPage.MessageController.AddError(ex.Message, False)
-            Me.MasterPage.MessageController.Show()
+            MasterPage.MessageController.AddError(BRANCH_LIST_FORM001)
+            MasterPage.MessageController.AddError(ex.Message, False)
+            MasterPage.MessageController.Show()
         End Try
         Return bIsDirty
     End Function
@@ -529,7 +529,7 @@ Partial Class BranchForm
 
         Try
 
-            Me.PopulateBOsFromForm()
+            PopulateBOsFromForm()
 
             'Dim errors() As ValidationError = {New ValidationError("Branch Code is required", GetType(Branch), Nothing, "BranchID", Nothing)}
             'If ((Me.State.MyBO.BranchCode = Nothing)) Then
@@ -538,21 +538,21 @@ Partial Class BranchForm
 
             If TheBranch.IsDirty() Then
                 ValidateDates()
-                Me.State.MyBO.Save()
-                Me.State.boChanged = True
-                If Me.State.IsNewBranchNew = True Then
-                    Me.State.IsNewBranchNew = False
+                State.MyBO.Save()
+                State.boChanged = True
+                If State.IsNewBranchNew = True Then
+                    State.IsNewBranchNew = False
                 End If
                 PopulateAll()
                 PopulateFormFromBOs()
-                Me.SetButtonsState(Me.State.IsNewBranchNew)
-                Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                SetButtonsState(State.IsNewBranchNew)
+                MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
             Else
-                Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
+                MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Function
@@ -562,7 +562,7 @@ Partial Class BranchForm
 #Region "State-Management"
 
     Protected Sub ComingFromBack()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
         If Not confResponse = String.Empty Then
             ' Return from the Back Button
@@ -571,7 +571,7 @@ Partial Class BranchForm
                 Case MSG_VALUE_YES
                     ' Save and go back to Search Page
                     If ApplyChanges() = True Then
-                        Me.State.boChanged = True
+                        State.boChanged = True
                         GoBack()
                     End If
                 Case MSG_VALUE_NO
@@ -582,7 +582,7 @@ Partial Class BranchForm
     End Sub
 
     Protected Sub ComingFromNewCopy()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
         If Not confResponse = String.Empty Then
             ' Return from the New Copy Button
@@ -591,7 +591,7 @@ Partial Class BranchForm
                 Case MSG_VALUE_YES
                     ' Save and create a new Copy BO
                     If ApplyChanges() = True Then
-                        Me.State.boChanged = True
+                        State.boChanged = True
                         CreateNewCopy()
                     End If
                 Case MSG_VALUE_NO
@@ -602,7 +602,7 @@ Partial Class BranchForm
 
     End Sub
     Protected Sub ComingFromNew()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
         If Not confResponse = String.Empty Then
             ' Return from the New Copy Button
@@ -611,7 +611,7 @@ Partial Class BranchForm
                 Case MSG_VALUE_YES
                     ' Save and create a new Copy BO
                     If ApplyChanges() = True Then
-                        Me.State.boChanged = True
+                        State.boChanged = True
                         CreateNew()
                     End If
                 Case MSG_VALUE_NO
@@ -625,7 +625,7 @@ Partial Class BranchForm
 
     Protected Sub CheckIfComingFromConfirm()
         Try
-            Select Case Me.State.ActionInProgress
+            Select Case State.ActionInProgress
                     ' Period
                 Case ElitaPlusPage.DetailPageCommand.Back
                     ComingFromBack()
@@ -636,10 +636,10 @@ Partial Class BranchForm
             End Select
 
             'Clean after consuming the action
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-            Me.HiddenSaveChangesPromptResponse.Value = String.Empty
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            HiddenSaveChangesPromptResponse.Value = String.Empty
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -648,38 +648,38 @@ Partial Class BranchForm
 #Region "Handlers-Labels"
 
     Private Sub BindBoPropertiesToLabels()
-        Me.BindBOPropertyToLabel(Me.State.MyBO, DEALERID_PROPERTY, Me.TheDealerControl.CaptionLabel)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, BRANCHCODE_PROPERTY, Me.lblBranchCode)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, BRANCHNAME_PROPERTY, Me.lblBranchName)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, CONTACTEMAIL_PROPERTY, Me.lblContactEmail)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, CONTACTEXT_PROPERTY, Me.lblContactExt)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, CONTACTFAX_PROPERTY, Me.lblContactFax)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, CONTACTPHONE_PROPERTY, Me.lblContactPhone)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, MARKET_PROPERTY, Me.lblMarket)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "MarketingRegion", Me.lblMarketingRegion)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "BranchTypeId", Me.lblBranchType)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "StoreManager", Me.lblStoreMgr)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "OpenDate", Me.lblOpenDate)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, "CloseDate", Me.lblCloseDate)
+        BindBOPropertyToLabel(State.MyBO, DEALERID_PROPERTY, TheDealerControl.CaptionLabel)
+        BindBOPropertyToLabel(State.MyBO, BRANCHCODE_PROPERTY, lblBranchCode)
+        BindBOPropertyToLabel(State.MyBO, BRANCHNAME_PROPERTY, lblBranchName)
+        BindBOPropertyToLabel(State.MyBO, CONTACTEMAIL_PROPERTY, lblContactEmail)
+        BindBOPropertyToLabel(State.MyBO, CONTACTEXT_PROPERTY, lblContactExt)
+        BindBOPropertyToLabel(State.MyBO, CONTACTFAX_PROPERTY, lblContactFax)
+        BindBOPropertyToLabel(State.MyBO, CONTACTPHONE_PROPERTY, lblContactPhone)
+        BindBOPropertyToLabel(State.MyBO, MARKET_PROPERTY, lblMarket)
+        BindBOPropertyToLabel(State.MyBO, "MarketingRegion", lblMarketingRegion)
+        BindBOPropertyToLabel(State.MyBO, "BranchTypeId", lblBranchType)
+        BindBOPropertyToLabel(State.MyBO, "StoreManager", lblStoreMgr)
+        BindBOPropertyToLabel(State.MyBO, "OpenDate", lblOpenDate)
+        BindBOPropertyToLabel(State.MyBO, "CloseDate", lblCloseDate)
     End Sub
 
     Private Sub ClearLabelsErrSign()
-        Me.ClearLabelErrSign(lblBranchCode)
-        Me.ClearLabelErrSign(TheDealerControl.CaptionLabel)
-        Me.ClearLabelErrSign(lblBranchName)
-        Me.ClearLabelErrSign(lblBranchType)
-        Me.ClearLabelErrSign(lblStoreMgr)
-        Me.ClearLabelErrSign(lblContactPhone)
-        Me.ClearLabelErrSign(lblContactExt)
-        Me.ClearLabelErrSign(lblContactFax)
-        Me.ClearLabelErrSign(lblContactEmail)
-        Me.ClearLabelErrSign(lblMarket)
-        Me.ClearLabelErrSign(lblMarketingRegion)
-        Me.ClearLabelErrSign(lblOpenDate)
-        Me.ClearLabelErrSign(lblCloseDate)
+        ClearLabelErrSign(lblBranchCode)
+        ClearLabelErrSign(TheDealerControl.CaptionLabel)
+        ClearLabelErrSign(lblBranchName)
+        ClearLabelErrSign(lblBranchType)
+        ClearLabelErrSign(lblStoreMgr)
+        ClearLabelErrSign(lblContactPhone)
+        ClearLabelErrSign(lblContactExt)
+        ClearLabelErrSign(lblContactFax)
+        ClearLabelErrSign(lblContactEmail)
+        ClearLabelErrSign(lblMarket)
+        ClearLabelErrSign(lblMarketingRegion)
+        ClearLabelErrSign(lblOpenDate)
+        ClearLabelErrSign(lblCloseDate)
     End Sub
 
-    Public Shared Sub SetLabelColor(ByVal lbl As Label)
+    Public Shared Sub SetLabelColor(lbl As Label)
         lbl.ForeColor = Color.Black
     End Sub
 

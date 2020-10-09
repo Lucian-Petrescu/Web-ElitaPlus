@@ -36,28 +36,28 @@
     Public Sub LoadSchema(ByRef ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_BEN_PRODUCT_CODE_ID, id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal compIds As ArrayList, ByVal dealerId As Guid,
-                             ByVal benefitProductCodeMask As String, ByVal LanguageId As Guid) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(compIds As ArrayList, dealerId As Guid,
+                             benefitProductCodeMask As String, LanguageId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         Dim parameters() As DBHelper.DBHelperParameter
         Dim inClausecondition As String = ""
         Dim whereClauseConditions As String = ""
         Dim bIsLikeClause As Boolean = False
 
-        inClausecondition &= "And edealer." & MiscUtil.BuildListForSql(Me.COL_NAME_COMPANY_ID, compIds, False)
+        inClausecondition &= "And edealer." & MiscUtil.BuildListForSql(COL_NAME_COMPANY_ID, compIds, False)
 
         benefitProductCodeMask = benefitProductCodeMask.Trim()
-        If (Not benefitProductCodeMask.Equals(String.Empty) Or Not benefitProductCodeMask = "") AndAlso (Me.FormatSearchMask(benefitProductCodeMask)) Then
+        If (Not benefitProductCodeMask.Equals(String.Empty) Or Not benefitProductCodeMask = "") AndAlso (FormatSearchMask(benefitProductCodeMask)) Then
             whereClauseConditions &= Environment.NewLine & "AND " & "Upper(pc.ben_product_code)" & benefitProductCodeMask.ToUpper
         End If
 
@@ -70,43 +70,43 @@
 
 
         If Not inClausecondition = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClausecondition)
+            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, inClausecondition)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_IN_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_IN_CLAUSE_PLACE_HOLDER, "")
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Dim ds As New DataSet
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
     End Function
-    Public Sub LoadByDealerProduct(ByVal familyDS As DataSet, ByVal dealerId As Guid, ByVal productCode As String)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_BY_DEALER_PRODUCT")
+    Public Sub LoadByDealerProduct(familyDS As DataSet, dealerId As Guid, productCode As String)
+        Dim selectStmt As String = Config("/SQL/LOAD_BY_DEALER_PRODUCT")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                                                          {
                                                              New DBHelper.DBHelperParameter("dealer_id", dealerId.ToByteArray),
                                                              New DBHelper.DBHelperParameter("productCode", productCode)
                                                          }
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function LoadList(ByVal companyIds As ArrayList, ByVal Effective_On_Date As Date, ByVal languageId As Guid) As DataSet
+    Public Function LoadList(companyIds As ArrayList, Effective_On_Date As Date, languageId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
 
         Dim whereClauseConditions As String = ""
         Dim ds As New DataSet
@@ -117,13 +117,13 @@
         whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("M." & ManufacturerDAL.COL_NAME_COMPANY_GROUP_ID, companyIds, True) & " AND"
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME,
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME,
                             New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("EFF_DATE", Effective_On_Date)})
 
             Return ds
@@ -132,9 +132,9 @@
         End Try
     End Function
 
-    Public Function LoadList(ByVal dealerId As Guid, ByVal benefitProductCode As String, ByVal vendorBillablePartNum As String, ByVal ben_product_code_id As Guid) As DataSet
+    Public Function LoadList(dealerId As Guid, benefitProductCode As String, vendorBillablePartNum As String, ben_product_code_id As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_BY_UNIQUE_KEY")
+        Dim selectStmt As String = Config("/SQL/LOAD_BY_UNIQUE_KEY")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                 {
                     New DBHelper.DBHelperParameter("dealer_id", dealerId.ToByteArray),
@@ -144,7 +144,7 @@
                 }
         Dim ds As New DataSet
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
             Return ds
         Catch ex As Exception
@@ -152,17 +152,17 @@
         End Try
     End Function
 
-    Private Function IsThereALikeClause(ByVal description As String, ByVal model As String,
-                               ByVal manufacturerName As String, SKU As String) As Boolean
+    Private Function IsThereALikeClause(description As String, model As String,
+                               manufacturerName As String, SKU As String) As Boolean
         Dim bIsLikeClause As Boolean
 
-        bIsLikeClause = Me.IsLikeClause(description) OrElse Me.IsLikeClause(model) OrElse
-                            Me.IsLikeClause(manufacturerName) OrElse Me.IsLikeClause(SKU)
+        bIsLikeClause = IsLikeClause(description) OrElse IsLikeClause(model) OrElse
+                            IsLikeClause(manufacturerName) OrElse IsLikeClause(SKU)
         Return bIsLikeClause
     End Function
 #End Region
 #Region "Overloaled Methods"
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, ByVal familyDatasetClone As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, familyDatasetClone As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
 
         Dim tr As IDbTransaction = Transaction
         If tr Is Nothing Then
@@ -187,7 +187,7 @@
             Throw ex
         End Try
     End Sub
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
 
         Dim tr As IDbTransaction = Transaction
         If tr Is Nothing Then
@@ -211,7 +211,7 @@
             Throw ex
         End Try
     End Sub
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If Not ds.Tables(TABLE_NAME) Is Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If

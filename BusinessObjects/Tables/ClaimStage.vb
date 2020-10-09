@@ -6,17 +6,17 @@ Public Class ClaimStage
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid, ByVal languageid As Guid)
+    Public Sub New(id As Guid, languageid As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
         If Me.LanguageId = Guid.Empty Then
             Me.LanguageId = languageid
         End If
@@ -25,39 +25,39 @@ Public Class ClaimStage
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ClaimStageDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -65,23 +65,23 @@ Public Class ClaimStage
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ClaimStageDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -89,22 +89,22 @@ Public Class ClaimStage
         End Try
     End Sub
 
-    Protected Sub LoadChildren(ByVal reloadData As Boolean, ByVal languageid As Guid)
+    Protected Sub LoadChildren(reloadData As Boolean, languageid As Guid)
         If Me.LanguageId = Guid.Empty Then
             Me.LanguageId = languageid
         End If
 
         Try
             If reloadData Then
-                Dim tableIdx As Integer = Me.Dataset.Tables.IndexOf(StageEndStatusDAL.TABLE_NAME)
+                Dim tableIdx As Integer = Dataset.Tables.IndexOf(StageEndStatusDAL.TABLE_NAME)
                 If tableIdx <> -1 Then
-                    Me.Dataset.Tables.Remove(StageEndStatusDAL.TABLE_NAME)
+                    Dataset.Tables.Remove(StageEndStatusDAL.TABLE_NAME)
                 End If
             End If
 
-            If Me.Dataset.Tables.IndexOf(StageEndStatusDAL.TABLE_NAME) < 0 Then
+            If Dataset.Tables.IndexOf(StageEndStatusDAL.TABLE_NAME) < 0 Then
                 Dim _claimstageDAL As New ClaimStageDAL
-                _claimstageDAL.LoadEndStatusList(Me.Dataset, StageEndStatusDAL.TABLE_NAME, Me.Id, languageid)
+                _claimstageDAL.LoadEndStatusList(Dataset, StageEndStatusDAL.TABLE_NAME, Id, languageid)
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -123,7 +123,7 @@ Public Class ClaimStage
 
     'Key Property
     <ValidOnlyOneEntity(""), ValidOneEntitySelected("")>
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ClaimStageDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -134,7 +134,7 @@ Public Class ClaimStage
     End Property
 
     <ValueMandatory("")> _
-    Public Property StageNameId() As Guid
+    Public Property StageNameId As Guid
         Get
             CheckDeleted()
             If Row(ClaimStageDAL.COL_NAME_STAGE_NAME_ID) Is DBNull.Value Then
@@ -143,14 +143,14 @@ Public Class ClaimStage
                 Return New Guid(CType(Row(ClaimStageDAL.COL_NAME_STAGE_NAME_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimStageDAL.COL_NAME_STAGE_NAME_ID, Value)
+            SetValue(ClaimStageDAL.COL_NAME_STAGE_NAME_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property StartStatusId() As Guid
+    Public Property StartStatusId As Guid
         Get
             CheckDeleted()
             If Row(ClaimStageDAL.COL_NAME_START_STATUS_ID) Is DBNull.Value Then
@@ -159,13 +159,13 @@ Public Class ClaimStage
                 Return New Guid(CType(Row(ClaimStageDAL.COL_NAME_START_STATUS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimStageDAL.COL_NAME_START_STATUS_ID, Value)
+            SetValue(ClaimStageDAL.COL_NAME_START_STATUS_ID, Value)
         End Set
     End Property
 
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(ClaimStageDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -174,13 +174,13 @@ Public Class ClaimStage
                 Return New Guid(CType(Row(ClaimStageDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimStageDAL.COL_NAME_COMPANY_GROUP_ID, Value)
+            SetValue(ClaimStageDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
     End Property
 
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If Row(ClaimStageDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
@@ -189,13 +189,13 @@ Public Class ClaimStage
                 Return New Guid(CType(Row(ClaimStageDAL.COL_NAME_COMPANY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimStageDAL.COL_NAME_COMPANY_ID, Value)
+            SetValue(ClaimStageDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(ClaimStageDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -204,14 +204,14 @@ Public Class ClaimStage
                 Return New Guid(CType(Row(ClaimStageDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimStageDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(ClaimStageDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=5), ValidProductCode("")> _
-    Public Property ProductCode() As String
+    Public Property ProductCode As String
         Get
             CheckDeleted()
             If Row(ClaimStageDAL.COL_NAME_PRODUCT_CODE) Is DBNull.Value Then
@@ -220,14 +220,14 @@ Public Class ClaimStage
                 Return CType(Row(ClaimStageDAL.COL_NAME_PRODUCT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimStageDAL.COL_NAME_PRODUCT_CODE, Value)
+            SetValue(ClaimStageDAL.COL_NAME_PRODUCT_CODE, Value)
         End Set
     End Property
 
     <ValidCoverageType("")> _
-    Public Property CoverageTypeId() As Guid
+    Public Property CoverageTypeId As Guid
         Get
             CheckDeleted()
             If Row(ClaimStageDAL.COL_NAME_COVERAGE_TYPE_ID) Is DBNull.Value Then
@@ -236,14 +236,14 @@ Public Class ClaimStage
                 Return New Guid(CType(Row(ClaimStageDAL.COL_NAME_COVERAGE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimStageDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
+            SetValue(ClaimStageDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), RejectOverlapsOrGaps("")> _
-    Public Property EffectiveDate() As DateTime?
+    Public Property EffectiveDate As DateTime?
         Get
             CheckDeleted()
             If Row(ClaimStageDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -252,16 +252,16 @@ Public Class ClaimStage
                 Return CType(Row(ClaimStageDAL.COL_NAME_EFFECTIVE_DATE), Date)
             End If
         End Get
-        Set(ByVal Value As DateTime?)
+        Set
             If Value.HasValue Then
                 CheckDeleted()
-                Me.SetValue(ClaimStageDAL.COL_NAME_EFFECTIVE_DATE, Value)
+                SetValue(ClaimStageDAL.COL_NAME_EFFECTIVE_DATE, Value)
             End If
         End Set
     End Property
 
     <ValueMandatory(""), EffectiveExpirationDateValidation("ExpirationDate")> _
-    Public Property ExpirationDate() As DateTime?
+    Public Property ExpirationDate As DateTime?
         Get
             CheckDeleted()
             If Row(ClaimStageDAL.COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
@@ -270,16 +270,16 @@ Public Class ClaimStage
                 Return CType(Row(ClaimStageDAL.COL_NAME_EXPIRATION_DATE), Date)
             End If
         End Get
-        Set(ByVal Value As DateTime?)
+        Set
             If Value.HasValue Then
                 CheckDeleted()
-                Me.SetValue(ClaimStageDAL.COL_NAME_EXPIRATION_DATE, Value)
+                SetValue(ClaimStageDAL.COL_NAME_EXPIRATION_DATE, Value)
             End If
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Min:=0, Max:=99)> _
-    Public Property Sequence() As LongType
+    Public Property Sequence As LongType
         Get
             CheckDeleted()
             If Row(ClaimStageDAL.COL_NAME_SEQUENCE) Is DBNull.Value Then
@@ -288,14 +288,14 @@ Public Class ClaimStage
                 Return New LongType(CType(Row(ClaimStageDAL.COL_NAME_SEQUENCE), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimStageDAL.COL_NAME_SEQUENCE, Value)
+            SetValue(ClaimStageDAL.COL_NAME_SEQUENCE, Value)
         End Set
     End Property
 
     <ValidScreenValue("")> _
-    Public Property ScreenId() As Guid
+    Public Property ScreenId As Guid
         Get
             CheckDeleted()
             If Row(ClaimStageDAL.COL_NAME_SCREEN_ID) Is DBNull.Value Then
@@ -304,14 +304,14 @@ Public Class ClaimStage
                 Return New Guid(CType(Row(ClaimStageDAL.COL_NAME_SCREEN_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimStageDAL.COL_NAME_SCREEN_ID, Value)
+            SetValue(ClaimStageDAL.COL_NAME_SCREEN_ID, Value)
         End Set
     End Property
 
     <ValidPortalValue("")> _
-    Public Property PortalId() As Guid
+    Public Property PortalId As Guid
         Get
             CheckDeleted()
             If Row(ClaimStageDAL.COL_NAME_PORTAL_ID) Is DBNull.Value Then
@@ -320,21 +320,21 @@ Public Class ClaimStage
                 Return New Guid(CType(Row(ClaimStageDAL.COL_NAME_PORTAL_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ClaimStageDAL.COL_NAME_PORTAL_ID, Value)
+            SetValue(ClaimStageDAL.COL_NAME_PORTAL_ID, Value)
         End Set
     End Property
 
-    Public ReadOnly Property OriginalEffectiveDate() As DateType
+    Public ReadOnly Property OriginalEffectiveDate As DateType
         Get
-            Return New DateType(CType(Me.Row(AFAInvoiceRateDAL.COL_NAME_EFFECTIVE_DATE, DataRowVersion.Original), Date))
+            Return New DateType(CType(Row(AFAInvoiceRateDAL.COL_NAME_EFFECTIVE_DATE, DataRowVersion.Original), Date))
         End Get
     End Property
 
-    Public ReadOnly Property OriginalExpirationDate() As DateType
+    Public ReadOnly Property OriginalExpirationDate As DateType
         Get
-            Return New DateType(CType(Me.Row(AFAInvoiceRateDAL.COL_NAME_EXPIRATION_DATE, DataRowVersion.Original), Date))
+            Return New DateType(CType(Row(AFAInvoiceRateDAL.COL_NAME_EXPIRATION_DATE, DataRowVersion.Original), Date))
         End Get
     End Property
 
@@ -344,7 +344,7 @@ Public Class ClaimStage
 
 #Region "Public Members"
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsFamilyDirty()
         End Get
@@ -353,14 +353,14 @@ Public Class ClaimStage
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsFamilyDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsFamilyDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ClaimStageDAL
                 'dal.Update(Me.Row)
-                dal.UpdateFamily(Me.Dataset) ' changed to take care of join table
+                dal.UpdateFamily(Dataset) ' changed to take care of join table
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Me.Load(Me.Id)
-                    Me.LoadChildren(True, Me.LanguageId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Load(Id)
+                    LoadChildren(True, LanguageId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -368,30 +368,30 @@ Public Class ClaimStage
         End Try
     End Sub
 
-    Public Sub AttachStageEndStatus(ByVal stageEndStatusGuidStr As String, ByVal _languageid As Guid)
-        Me.LoadChildren(False, _languageid)
+    Public Sub AttachStageEndStatus(stageEndStatusGuidStr As String, _languageid As Guid)
+        LoadChildren(False, _languageid)
 
-        If Not stageEndStatusGuidStr Is Nothing AndAlso stageEndStatusGuidStr.Length > 0 Then
+        If stageEndStatusGuidStr IsNot Nothing AndAlso stageEndStatusGuidStr.Length > 0 Then
             Dim i As Integer
             Dim StgEndStatusId As Guid = New Guid(stageEndStatusGuidStr)
-            Dim stgEndStatus As StageEndStatus = StageEndStatus.Find(Me.Dataset, Me.Id, StgEndStatusId)
+            Dim stgEndStatus As StageEndStatus = StageEndStatus.Find(Dataset, Id, StgEndStatusId)
             If stgEndStatus Is Nothing Then
-                stgEndStatus = New StageEndStatus(Me.Dataset)
+                stgEndStatus = New StageEndStatus(Dataset)
                 stgEndStatus.EndStatusId = StgEndStatusId
-                stgEndStatus.StageId = Me.Id
+                stgEndStatus.StageId = Id
                 stgEndStatus.Save()
             End If
         End If
     End Sub
 
-    Public Sub DetachStageEndStatus(ByVal stageEndStatusGuidStr As String, ByVal _languageid As Guid)
-        Me.LoadChildren(False, _languageid)
+    Public Sub DetachStageEndStatus(stageEndStatusGuidStr As String, _languageid As Guid)
+        LoadChildren(False, _languageid)
 
-        If Not stageEndStatusGuidStr Is Nothing AndAlso stageEndStatusGuidStr.Length > 0 Then
+        If stageEndStatusGuidStr IsNot Nothing AndAlso stageEndStatusGuidStr.Length > 0 Then
             Dim i As Integer
-            Dim stgEndStatus As StageEndStatus = StageEndStatus.Find(Me.Dataset, Me.Id, New Guid(stageEndStatusGuidStr))
+            Dim stgEndStatus As StageEndStatus = StageEndStatus.Find(Dataset, Id, New Guid(stageEndStatusGuidStr))
 
-            If Not stgEndStatus Is Nothing Then
+            If stgEndStatus IsNot Nothing Then
                 stgEndStatus.Delete()
                 stgEndStatus.Save()
             End If
@@ -429,13 +429,13 @@ Public Class ClaimStage
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
 
-    Public Shared Sub AddNewRowToSearchDV(ByRef dv As ClaimStageSearchDV, ByVal NewBO As ClaimStage)
+    Public Shared Sub AddNewRowToSearchDV(ByRef dv As ClaimStageSearchDV, NewBO As ClaimStage)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         If NewBO.IsNew Then
@@ -487,9 +487,9 @@ Public Class ClaimStage
         End If
     End Sub
 
-    Public Shared Function getList(ByVal StageNameID As Guid, ByVal CompGrpID As Guid, ByVal CompanyID As Guid, ByVal DealerID As Guid, _
-                             ByVal CoverageTypeID As Guid, ByVal ActiveOn As DateType, ByVal Sequence As String, _
-                             ByVal ScreenID As Guid, ByVal PortalID As Guid) As ClaimStageSearchDV
+    Public Shared Function getList(StageNameID As Guid, CompGrpID As Guid, CompanyID As Guid, DealerID As Guid, _
+                             CoverageTypeID As Guid, ActiveOn As DateType, Sequence As String, _
+                             ScreenID As Guid, PortalID As Guid) As ClaimStageSearchDV
         Try
             Dim dal As New ClaimStageDAL
             Return New ClaimStageSearchDV(dal.LoadList(StageNameID, CompGrpID, CompanyID, DealerID, CoverageTypeID, ActiveOn, Sequence, ScreenID, PortalID, ElitaPlusIdentity.Current.ActiveUser.LanguageId, ElitaPlusIdentity.Current.ActiveUser.Companies, ElitaPlusIdentity.Current.ActiveUser.Countries).Tables(0))
@@ -504,11 +504,11 @@ Public Class ClaimStage
     Public NotInheritable Class ValidProductCode
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.DEALER_IS_REQUIRED)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ClaimStage = CType(objectToValidate, ClaimStage)
 
             If valueToCheck Is Nothing Then Return True
@@ -528,12 +528,12 @@ Public Class ClaimStage
     Public NotInheritable Class ValidOnlyOneEntity
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.ONLY_ONE_ALLOWED_COMPGRP_COMANPY_DEALER)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
-            If (Not valueToCheck Is Nothing) AndAlso valueToCheck <> Guid.Empty Then
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
+            If (valueToCheck IsNot Nothing) AndAlso valueToCheck <> Guid.Empty Then
                 Dim obj As ClaimStage = CType(objectToValidate, ClaimStage)
 
                 If valueToCheck Is Nothing Then Return True
@@ -560,11 +560,11 @@ Public Class ClaimStage
     Public NotInheritable Class ValidCoverageType
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.PRODUCT_CODE_AND_DEALER_IS_REQUIRED)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ClaimStage = CType(objectToValidate, ClaimStage)
 
             If valueToCheck Is Nothing Then Return True
@@ -584,11 +584,11 @@ Public Class ClaimStage
     Public NotInheritable Class ValidOneEntitySelected
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.SELECT_ONE_COMPGRP_COMANPY_DEALER)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ClaimStage = CType(objectToValidate, ClaimStage)
 
             If valueToCheck Is Nothing Then Return True
@@ -604,11 +604,11 @@ Public Class ClaimStage
     Public NotInheritable Class ValidScreenValue
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_INVALID_VALUE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ClaimStage = CType(objectToValidate, ClaimStage)
 
             If valueToCheck Is Nothing Then Return True
@@ -625,11 +625,11 @@ Public Class ClaimStage
     Public NotInheritable Class ValidPortalValue
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_INVALID_VALUE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ClaimStage = CType(objectToValidate, ClaimStage)
 
             If valueToCheck Is Nothing Then Return True
@@ -647,18 +647,18 @@ Public Class ClaimStage
         Inherits ValidBaseAttribute
         Implements IValidatorAttribute
 
-        Public Sub New(ByVal FieldNamestring As String)
+        Public Sub New(FieldNamestring As String)
             MyBase.New(FieldNamestring, Messages.INVALID_EXP_DATE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal context As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, context As Object) As Boolean
             Dim obj As ClaimStage = CType(context, ClaimStage)
 
             If objectToCheck Is Nothing Then Return True
 
             Try
                 Dim objDate As DateTime? = CType(objectToCheck, DateTime?)
-                If Not objDate = Nothing And Not obj.EffectiveDate Is Nothing Then
+                If Not objDate = Nothing And obj.EffectiveDate IsNot Nothing Then
                     If obj.EffectiveDate.Value > objDate.Value Then Return False
                 End If
             Catch ex As FormatException
@@ -674,11 +674,11 @@ Public Class ClaimStage
     Public NotInheritable Class RejectOverlapsOrGaps
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_OVERLAP_OR_GAP_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ClaimStage = CType(objectToValidate, ClaimStage)
 
             If valueToCheck Is Nothing Then Return True
@@ -721,7 +721,7 @@ Public Class ClaimStage
         Public IsLast As Boolean = False
         Public HasOverlap As Boolean = False
 
-        Public Sub New(ByVal obj As ClaimStage)
+        Public Sub New(obj As ClaimStage)
             Dim tempEffective As Date
             Dim tempExpiration As Date
             Try
@@ -752,18 +752,18 @@ Public Class ClaimStage
 
 #Region "Children Related"
 
-    Public Function GetAvailableStageStartStatusList(ByVal company_group_id As Guid, ByVal language_id As Guid) As DataView
+    Public Function GetAvailableStageStartStatusList(company_group_id As Guid, language_id As Guid) As DataView
         Dim dal As New ClaimStageDAL
         Return dal.GetAvailableStageStartStatusList(company_group_id, language_id)
     End Function
 
-    Public Function GetAvailableStageEndStatusList(ByVal company_group_id As Guid, ByVal language_id As Guid) As DataView
-        Me.LoadChildren(False, language_id)
+    Public Function GetAvailableStageEndStatusList(company_group_id As Guid, language_id As Guid) As DataView
+        LoadChildren(False, language_id)
         Dim dal As New ClaimStageDAL
         Return dal.GetAvailableStageEndStatusList(company_group_id, language_id)
     End Function
 
-    Public Function GetSelectedStageEndStatusList(ByVal stage_id As Guid, ByVal language_id As Guid) As DataView
+    Public Function GetSelectedStageEndStatusList(stage_id As Guid, language_id As Guid) As DataView
         Dim dal As New ClaimStageDAL
         Return dal.GetSelectedStageEndStatusList(stage_id, language_id)
     End Function

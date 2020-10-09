@@ -1,15 +1,15 @@
 ﻿Public Class OcTemplateRecipientList
     Inherits BusinessObjectListBase
 
-    Public Sub New(ByVal parent As OcTemplate)
+    Public Sub New(parent As OcTemplate)
         MyBase.New(LoadTable(parent), GetType(OcTemplateRecipient), parent)
     End Sub
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, OcTemplateRecipient).OcTemplateId.Equals(CType(Parent, OcTemplate).Id)
     End Function
 
-    Public Function Find(ByVal templateRecipientId As Guid) As OcTemplateRecipient
+    Public Function Find(templateRecipientId As Guid) As OcTemplateRecipient
         Dim bo As OcTemplateRecipient
         For Each bo In Me
             If bo.Id.Equals(templateRecipientId) Then Return bo
@@ -17,7 +17,7 @@
         Return Nothing
     End Function
 
-    Public Function Delete(ByVal childId As Guid)
+    Public Function Delete(childId As Guid)
         Dim bo As OcTemplateRecipient
         Dim dr As DataRow
 
@@ -29,7 +29,7 @@
     End Function
 
 #Region "Class Methods"
-    Private Shared Function LoadTable(ByVal parent As OcTemplate) As DataTable
+    Private Shared Function LoadTable(parent As OcTemplate) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(OcTemplateRecipientList)) Then
                 Dim dal As New OcTemplateRecipientDAL

@@ -45,24 +45,24 @@
 #Region "Page Return"
 
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.MenuEnabled = True
-            Me.IsReturningFromChild = True
+            MenuEnabled = True
+            IsReturningFromChild = True
             Dim retObj As TransAllMappingForm.ReturnType = CType(ReturnPar, TransAllMappingForm.ReturnType)
 
-            Me.State.HasDataChanged = retObj.HasDataChanged
+            State.HasDataChanged = retObj.HasDataChanged
             Select Case retObj.LastOperation
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    If Not retObj Is Nothing Then
-                        Me.State.TransAllMappingGUID = retObj.EditingBo.Id
-                        Me.State.IsGridVisible = True
+                    If retObj IsNot Nothing Then
+                        State.TransAllMappingGUID = retObj.EditingBo.Id
+                        State.IsGridVisible = True
                     End If
                 Case ElitaPlusPage.DetailPageCommand.Delete
-                    Me.AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
+                    AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
             End Select
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
@@ -71,40 +71,40 @@
 
 #Region "Page Events"
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
         'Put user code to initialize the page here
-        Me.ErrControllerMaster.Clear_Hide()
+        ErrControllerMaster.Clear_Hide()
 
         Try
 
-            Me.DisplayProgressBarOnClick(Me.btnSearch, ElitaPlusWebApp.Message.MSG_PERFORMING_REQUEST)
+            DisplayProgressBarOnClick(btnSearch, ElitaPlusWebApp.Message.MSG_PERFORMING_REQUEST)
 
-            If Not Me.IsPostBack Then
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
+            If Not IsPostBack Then
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
                 PopulateDealer()
-                Me.TranslateGridHeader(Me.grdResults)
+                TranslateGridHeader(grdResults)
 
-                If Me.State.IsGridVisible Then
-                    If Not (Me.State.selectedPageSize = DEFAULT_PAGE_SIZE) Then
-                        cboPageSize.SelectedValue = CType(Me.State.selectedPageSize, String)
-                        grdResults.PageSize = Me.State.selectedPageSize
+                If State.IsGridVisible Then
+                    If Not (State.selectedPageSize = DEFAULT_PAGE_SIZE) Then
+                        cboPageSize.SelectedValue = CType(State.selectedPageSize, String)
+                        grdResults.PageSize = State.selectedPageSize
                     End If
-                    Me.PopulateGrid()
+                    PopulateGrid()
                 End If
             End If
-            If Me.IsReturningFromChild = True Then
-                Me.IsReturningFromChild = False
+            If IsReturningFromChild = True Then
+                IsReturningFromChild = False
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub
 
 
-    Private Sub TransAllMappingListForm_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles Me.PageReturn
+    Private Sub TransAllMappingListForm_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles Me.PageReturn
 
     End Sub
 
@@ -118,40 +118,40 @@
 
         Try
 
-            Me.State.SelectedDealerId = ddlDealer.SelectedGuid
-            If ((Me.State.searchDV Is Nothing) OrElse (Me.State.HasDataChanged)) Then
-                Me.State.searchDV = TransallMapping.GetList(ddlDealer.SelectedGuid, ElitaPlusIdentity.Current.ActiveUser.Companies)
+            State.SelectedDealerId = ddlDealer.SelectedGuid
+            If ((State.searchDV Is Nothing) OrElse (State.HasDataChanged)) Then
+                State.searchDV = TransallMapping.GetList(ddlDealer.SelectedGuid, ElitaPlusIdentity.Current.ActiveUser.Companies)
             End If
 
             grdResults.AutoGenerateColumns = False
-            SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.TransAllMappingGUID, Me.grdResults, Me.State.PageIndex)
-            Me.SortAndBindGrid()
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.TransAllMappingGUID, grdResults, State.PageIndex)
+            SortAndBindGrid()
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub
 
     Private Sub SortAndBindGrid()
-        Me.State.PageIndex = Me.grdResults.PageIndex
-        grdResults.DataSource = Me.State.searchDV
+        State.PageIndex = grdResults.PageIndex
+        grdResults.DataSource = State.searchDV
         grdResults.DataBind()
 
-        ControlMgr.SetVisibleControl(Me, grdResults, Me.State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, grdResults, State.IsGridVisible)
 
-        ControlMgr.SetVisibleControl(Me, trPageSize, Me.grdResults.Visible)
+        ControlMgr.SetVisibleControl(Me, trPageSize, grdResults.Visible)
 
-        Session("recCount") = Me.State.searchDV.Count
+        Session("recCount") = State.searchDV.Count
 
-        If Me.State.searchDV.Count > 0 Then
+        If State.searchDV.Count > 0 Then
 
-            If Me.grdResults.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If grdResults.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         Else
-            If Me.grdResults.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If grdResults.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         End If
     End Sub
@@ -171,7 +171,7 @@
                                         False, _
                                         0)
             ddlDealer.SelectedIndex = ElitaPlusSearchPage.SELECTED_GUID_COL
-            ddlDealer.SelectedGuid = Me.State.SelectedDealerId
+            ddlDealer.SelectedGuid = State.SelectedDealerId
         Catch ex As Exception
             ErrControllerMaster.AddError(ex.Message, False)
             ErrControllerMaster.Show()
@@ -183,38 +183,38 @@
 #Region "EVENTS"
 
 
-    Private Sub btnSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As System.EventArgs) Handles btnSearch.Click
 
         Try
-            Me.State.PageIndex = 0
-            Me.State.TransAllMappingGUID = Guid.Empty
-            Me.State.IsGridVisible = True
-            Me.State.searchDV = Nothing
-            Me.State.HasDataChanged = False
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            State.TransAllMappingGUID = Guid.Empty
+            State.IsGridVisible = True
+            State.searchDV = Nothing
+            State.HasDataChanged = False
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub
 
-    Private Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As Object, e As System.EventArgs) Handles btnClearSearch.Click
 
-        Me.ddlDealer.SelectedIndex = -1
-        Me.State.PageIndex = 0
-        Me.State.TransAllMappingGUID = Guid.Empty
-        Me.State.searchDV = Nothing
-        Me.lblRecordCount.Text = "0"
-        Me.grdResults.DataSource = Nothing
-        Me.grdResults.DataBind()
+        ddlDealer.SelectedIndex = -1
+        State.PageIndex = 0
+        State.TransAllMappingGUID = Guid.Empty
+        State.searchDV = Nothing
+        lblRecordCount.Text = "0"
+        grdResults.DataSource = Nothing
+        grdResults.DataBind()
 
     End Sub
 
-    Private Sub btnAdd_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnAdd.Click
+    Private Sub btnAdd_Click(sender As Object, e As System.EventArgs) Handles btnAdd.Click
         Try
-            Me.callPage(TransAllMappingForm.URL)
+            callPage(TransAllMappingForm.URL)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
@@ -224,81 +224,81 @@
 
     Public Property SortDirection() As String
         Get
-            Return Me.State.SortDirection
+            Return State.SortDirection
         End Get
-        Set(ByVal value As String)
-            Me.State.SortDirection = value
+        Set(value As String)
+            State.SortDirection = value
         End Set
     End Property
 
     'The Binding Logic is here
-    Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles grdResults.RowDataBound
+    Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles grdResults.RowDataBound
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-        If Not dvRow Is Nothing Then
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                e.Row.Cells(Me.GRD_IDX_ID_COL).Text = GetGuidStringFromByteArray(CType(dvRow(DALObjects.TransAllMappingDAL.COL_NAME_TRANSALL_MAPPING_ID), Byte()))
-                e.Row.Cells(Me.GRD_IDX_DEALER_COL).Text = dvRow(DALObjects.TransAllMappingDAL.COL_NAME_DEALER_NAME).ToString
-                e.Row.Cells(Me.GRD_IDX_PACKAGE_COL).Text = dvRow(DALObjects.TransAllMappingDAL.COL_NAME_TRANSALL_PACKAGE).ToString
+        If dvRow IsNot Nothing Then
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
+                e.Row.Cells(GRD_IDX_ID_COL).Text = GetGuidStringFromByteArray(CType(dvRow(DALObjects.TransAllMappingDAL.COL_NAME_TRANSALL_MAPPING_ID), Byte()))
+                e.Row.Cells(GRD_IDX_DEALER_COL).Text = dvRow(DALObjects.TransAllMappingDAL.COL_NAME_DEALER_NAME).ToString
+                e.Row.Cells(GRD_IDX_PACKAGE_COL).Text = dvRow(DALObjects.TransAllMappingDAL.COL_NAME_TRANSALL_PACKAGE).ToString
             End If
         End If
     End Sub
 
-    Public Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles grdResults.RowCommand
+    Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles grdResults.RowCommand
         Try
             If e.CommandName = "SelectAction" Then
                 Dim index As Integer = CInt(e.CommandArgument)
-                Me.State.TransAllMappingGUID = New Guid(Me.grdResults.Rows(index).Cells(Me.GRD_IDX_ID_COL).Text)
-                Me.callPage(TransAllMappingForm.URL, Me.State.TransAllMappingGUID)
+                State.TransAllMappingGUID = New Guid(grdResults.Rows(index).Cells(GRD_IDX_ID_COL).Text)
+                callPage(TransAllMappingForm.URL, State.TransAllMappingGUID)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub
 
-    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             grdResults.PageIndex = NewCurrentPageIndex(grdResults, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-            Me.PopulateGrid()
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles grdResults.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles grdResults.Sorting
         Try
-            Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
+            Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
-            If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                If Me.SortDirection.EndsWith(" ASC") Then
-                    Me.SortDirection = e.SortExpression + " DESC"
+            If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                If SortDirection.EndsWith(" ASC") Then
+                    SortDirection = e.SortExpression + " DESC"
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
             Else
-                Me.SortDirection = e.SortExpression + " ASC"
+                SortDirection = e.SortExpression + " ASC"
             End If
-            Me.State.SortDirection = Me.SortDirection
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.SortDirection = SortDirection
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles grdResults.PageIndexChanging
+    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles grdResults.PageIndexChanging
         Try
-            Me.State.PageIndex = e.NewPageIndex
-            Me.State.TransAllMappingGUID = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = e.NewPageIndex
+            State.TransAllMappingGUID = Guid.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 

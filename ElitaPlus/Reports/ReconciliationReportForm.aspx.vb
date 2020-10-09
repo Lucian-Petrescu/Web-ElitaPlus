@@ -73,13 +73,13 @@ Namespace Reports
 
 #Region "Handlers-DropDown"
 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl_New) _
+        Private Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl_New) _
             Handles moUserCompanyMultipleDrop.SelectedDropChanged
             Try
                 rdealer.Checked = True
                 PopulateDealerDropDown()
             Catch ex As Exception
-                HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -104,7 +104,7 @@ Namespace Reports
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -141,19 +141,19 @@ Namespace Reports
         Private Sub InitializeForm()
             PopulateDropDowns()
             Dim t As Date = Date.Now.AddDays(-1)
-            Me.txtBeginDate.Text = GetDateFormattedString(t)
-            Me.txtEndDate.Text = GetDateFormattedString(Date.Now)
+            txtBeginDate.Text = GetDateFormattedString(t)
+            txtEndDate.Text = GetDateFormattedString(Date.Now)
         End Sub
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load, Me.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load, Me.Load
             If Not String.IsNullOrEmpty(Request.QueryString("rid")) Then
 
             End If
             'Put user code to initialize the page here
-            Me.MasterPage.MessageController.Clear_Hide()
-            Me.ClearLabelsErrSign()
+            MasterPage.MessageController.Clear_Hide()
+            ClearLabelsErrSign()
             Try
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     InitializeForm()
                     TheReportExtractInputControl.ViewVisible = False
                     TheReportExtractInputControl.PdfVisible = False
@@ -162,23 +162,23 @@ Namespace Reports
                     MasterPage.UsePageTabTitleInBreadCrum = False
                     UpdateBreadCrum()
                     'Date Calendars
-                    Me.AddCalendar(Me.BtnBeginDate, Me.txtBeginDate)
-                    Me.AddCalendar(Me.BtnEndDate, Me.txtEndDate)
+                    AddCalendar(BtnBeginDate, txtBeginDate)
+                    AddCalendar(BtnEndDate, txtEndDate)
                 Else
                     btnGenRpt.Enabled = True
                 End If
-                Me.InstallProgressBar()
+                InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
 
         End Sub
 
         Private Sub UpdateBreadCrum()
-            Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
-            Me.MasterPage.UsePageTabTitleInBreadCrum = False
-            Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
+            MasterPage.UsePageTabTitleInBreadCrum = False
+            MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
         End Sub
 
 #End Region
@@ -198,7 +198,7 @@ Namespace Reports
             UserCompanyMultipleDrop.SetControl(True, UserCompanyMultipleDrop.MODES.NEW_MODE, True, dv, ALL + " " + TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY), True)
             If dv.Count.Equals(ONE_ITEM) Then
                 HideHtmlElement("ddSeparator")
-                UserCompanyMultipleDrop.SelectedIndex = Me.ONE_ITEM
+                UserCompanyMultipleDrop.SelectedIndex = ONE_ITEM
                 UserCompanyMultipleDrop.Visible = False
             End If
         End Sub
@@ -213,16 +213,16 @@ Namespace Reports
             Dim listcontext As ListContext = New ListContext()
             listcontext.CompanyId = ElitaPlusIdentity.Current.ActiveUser.CompanyId
             Dim YearListLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("ClosingYearsByCompany", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
-            Me.moYearList.Populate(YearListLkl, New PopulateOptions() With
+            moYearList.Populate(YearListLkl, New PopulateOptions() With
              {
             .AddBlankItem = True,
             .ValueFunc = AddressOf PopulateOptions.GetCode
                   })
-            Dim oDescrip As String = Me.GetSelectedDescription(Me.moYearList)
+            Dim oDescrip As String = GetSelectedDescription(moYearList)
         End Sub
         Private Sub PopulateMonthsDropdown()
             Dim monthLkl As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("MONTH", Thread.CurrentPrincipal.GetLanguageCode())
-            Me.moMonthList.Populate(monthLkl, New PopulateOptions() With
+            moMonthList.Populate(monthLkl, New PopulateOptions() With
                 {
                     .AddBlankItem = True,
                     .SortFunc = AddressOf .GetCode
@@ -235,29 +235,29 @@ Namespace Reports
 
         Public Sub ClearLabelsErrSign()
             Try
-                Me.ClearLabelErrSign(lblBeginDate)
-                Me.ClearLabelErrSign(lblEndDate)
-                Me.ClearLabelErrSign(lblMonth)
-                Me.ClearLabelErrSign(lblYear)
+                ClearLabelErrSign(lblBeginDate)
+                ClearLabelErrSign(lblEndDate)
+                ClearLabelErrSign(lblMonth)
+                ClearLabelErrSign(lblYear)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 #End Region
 
-        Private Sub btnGenRpt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGenRpt.Click
+        Private Sub btnGenRpt_Click(sender As System.Object, e As System.EventArgs) Handles btnGenRpt.Click
             Try
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub GenerateReport()
             Dim reportParams As New System.Text.StringBuilder
             Dim langId As String = GuidControl.GuidToHexString(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            Dim reportBasedOn As String = Me.rdReportBasedOn.SelectedValue()
+            Dim reportBasedOn As String = rdReportBasedOn.SelectedValue()
             If UserCompanyMultipleDrop.SelectedGuid.Equals(Guid.Empty) Then
                 SetLabelError(UserCompanyMultipleDrop.CaptionLabel)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_COMPANY_IS_REQUIRED)
@@ -265,8 +265,8 @@ Namespace Reports
                 compCode = UserCompanyMultipleDrop.SelectedCode
             End If
 
-            Dim selectedYear As String = Me.GetSelectedDescription(Me.moYearList)
-            Dim selectedMonthID As Guid = Me.GetSelectedItem(Me.moMonthList)
+            Dim selectedYear As String = GetSelectedDescription(moYearList)
+            Dim selectedMonthID As Guid = GetSelectedItem(moMonthList)
             Dim selectedMonth As String = LookupListNew.GetCodeFromId(LookupListNew.LK_MONTHS, selectedMonthID)
             Dim selectedYearMonth As String = selectedYear & selectedMonth
 
@@ -283,15 +283,15 @@ Namespace Reports
                 ElitaPlusPage.SetLabelError(lblBeginDate)
                 ElitaPlusPage.SetLabelError(lblEndDate)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_SELECTION)
-            ElseIf ((Not selectedMonthID.Equals(Guid.Empty) And selectedYear.Equals(String.Empty)) Or (selectedMonthID.Equals(Guid.Empty) And Not selectedYear.Equals(String.Empty))) Then
+            ElseIf ((Not selectedMonthID.Equals(Guid.Empty) AndAlso selectedYear.Equals(String.Empty)) OrElse (selectedMonthID.Equals(Guid.Empty) AndAlso Not selectedYear.Equals(String.Empty))) Then
                 ElitaPlusPage.SetLabelError(lblMonth)
                 ElitaPlusPage.SetLabelError(lblYear)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_MONTH_YEAR_SELECTION_ERROR)
-            ElseIf ((Not txtBeginDate.Text.Equals(String.Empty) And txtEndDate.Text.Equals(String.Empty)) Or (txtBeginDate.Text.Equals(String.Empty) And Not txtEndDate.Text.Equals(String.Empty))) Then
+            ElseIf ((Not txtBeginDate.Text.Equals(String.Empty) AndAlso txtEndDate.Text.Equals(String.Empty)) OrElse (txtBeginDate.Text.Equals(String.Empty) AndAlso Not txtEndDate.Text.Equals(String.Empty))) Then
                 ElitaPlusPage.SetLabelError(lblBeginDate)
                 ElitaPlusPage.SetLabelError(lblEndDate)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_BEGIN_AND_END_DATES_MUST_BE_SELECTED_ERR)
-            ElseIf (Not selectedMonthID.Equals(Guid.Empty) And Not selectedYear.Equals(String.Empty)) Then
+            ElseIf (Not selectedMonthID.Equals(Guid.Empty) AndAlso Not selectedYear.Equals(String.Empty)) Then
                 selectedYearMonth = selectedYear & selectedMonth
             Else
                 ReportCeBase.ValidateBeginEndDate(lblBeginDate, txtBeginDate.Text, lblEndDate, txtEndDate.Text)
@@ -324,37 +324,37 @@ Namespace Reports
             reportParams.AppendFormat("pi_report_based_on => '{0}',", reportBasedOn)
             reportParams.AppendFormat("pi_language_id => '{0}'", langId)
 
-            Me.State.MyBO = New ReportRequests
-            Me.State.ForEdit = True
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "RECONCILIATION_REPORT")
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "r_Reconciliation_Report.export")
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportParameters", reportParams.ToString())
-            Me.PopulateBOProperty(Me.State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
+            State.MyBO = New ReportRequests
+            State.ForEdit = True
+            PopulateBOProperty(State.MyBO, "ReportType", "RECONCILIATION_REPORT")
+            PopulateBOProperty(State.MyBO, "ReportProc", "r_Reconciliation_Report.export")
+            PopulateBOProperty(State.MyBO, "ReportParameters", reportParams.ToString())
+            PopulateBOProperty(State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
             ScheduleReport()
         End Sub
 
         Private Sub ScheduleReport()
             Try
                 Dim scheduleDate As DateTime = TheReportExtractInputControl.GetSchedDate()
-                If Me.State.MyBO.IsDirty Then
-                    Me.State.MyBO.Save()
+                If State.MyBO.IsDirty Then
+                    State.MyBO.Save()
 
-                    Me.State.IsNew = False
-                    Me.State.HasDataChanged = True
-                    Me.State.MyBO.CreateJob(scheduleDate)
+                    State.IsNew = False
+                    State.HasDataChanged = True
+                    State.MyBO.CreateJob(scheduleDate)
 
 
                     If String.IsNullOrEmpty(ElitaPlusIdentity.Current.EmailAddress) Then
-                        Me.DisplayMessage(Message.MSG_Email_not_configured, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_Email_not_configured, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     Else
-                        Me.DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
+                        DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     End If
 
                     btnGenRpt.Enabled = False
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -362,7 +362,7 @@ Namespace Reports
             Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
             Try
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub

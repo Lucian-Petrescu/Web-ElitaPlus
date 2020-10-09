@@ -75,7 +75,7 @@ Namespace Tables
                 Get
                     Return moDealerId
                 End Get
-                Set(ByVal Value As Guid)
+                Set(Value As Guid)
                     moDealerId = Value
                 End Set
             End Property
@@ -152,29 +152,29 @@ Namespace Tables
 
 
 #Region "Page Return"
-        Public Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Public Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.IsReturningFromChild = True
+                IsReturningFromChild = True
                 Dim retObj As ReturnType = CType(ReturnPar, ReturnType)
-                If Not retObj Is Nothing AndAlso retObj.BoChanged Then
-                    Me.State.searchDV = Nothing
+                If retObj IsNot Nothing AndAlso retObj.BoChanged Then
+                    State.searchDV = Nothing
                 End If
-                If Not retObj Is Nothing Then
+                If retObj IsNot Nothing Then
                     Select Case retObj.LastOperation
                         Case ElitaPlusPage.DetailPageCommand.Back
-                            Me.State.moRegistrationLetterId = retObj.moRegistrationLetterId
+                            State.moRegistrationLetterId = retObj.moRegistrationLetterId
                         Case Else
-                            Me.State.moRegistrationLetterId = Guid.Empty
+                            State.moRegistrationLetterId = Guid.Empty
                     End Select
 
-                    Grid.PageIndex = Me.State.PageIndex
-                    Grid.PageSize = Me.State.PageSize
-                    cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
+                    Grid.PageIndex = State.PageIndex
+                    Grid.PageSize = State.PageSize
+                    cboPageSize.SelectedValue = CType(State.PageSize, String)
                     ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
                     PopulateDealer()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -183,9 +183,9 @@ Namespace Tables
             Public moRegistrationLetterId As Guid
             Public BoChanged As Boolean = False
 
-            Public Sub New(ByVal LastOp As ElitaPlusPage.DetailPageCommand, ByVal oRegistrationLetterId As Guid, Optional ByVal boChanged As Boolean = False)
-                Me.LastOperation = LastOp
-                Me.moRegistrationLetterId = oRegistrationLetterId
+            Public Sub New(LastOp As ElitaPlusPage.DetailPageCommand, oRegistrationLetterId As Guid, Optional ByVal boChanged As Boolean = False)
+                LastOperation = LastOp
+                moRegistrationLetterId = oRegistrationLetterId
                 Me.BoChanged = boChanged
             End Sub
 
@@ -199,155 +199,155 @@ Namespace Tables
 #Region "Handlers"
 
 #Region "Hanlers-Init"
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-            Me.ErrControllerMaster.Clear_Hide()
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+            ErrControllerMaster.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
-                    Me.SortDirection = Me.State.SortExpression
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
+                If Not IsPostBack Then
+                    SortDirection = State.SortExpression
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
                     TranslateGridHeader(Grid)
 
-                    If Not Me.IsReturningFromChild Then
+                    If Not IsReturningFromChild Then
                         ' It is The First Time
                         ' It is not Returning from Detail
                         ControlMgr.SetVisibleControl(Me, trPageSize, False)
                         PopulateDealer()
                     Else
                         ' It is returning from detail
-                        Me.PopulateGrid(Me.POPULATE_ACTION_SAVE)
+                        PopulateGrid(POPULATE_ACTION_SAVE)
                         'If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
                     End If
 
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
 #End Region
 
 #Region "Handlers-Grid"
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-                Me.State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
-                Me.Grid.PageIndex = Me.State.PageIndex
-                Me.PopulateGrid()
+                State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
+                Grid.PageIndex = State.PageIndex
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
  
-        Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+        Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles Grid.PageIndexChanged
             Try                
-                Me.State.PageIndex = Grid.PageIndex
-                Me.State.moRegistrationLetterId = Guid.Empty
+                State.PageIndex = Grid.PageIndex
+                State.moRegistrationLetterId = Guid.Empty
                 PopulateGrid(POPULATE_ACTION_NO_EDIT)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+        Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
             Try
                 Grid.PageIndex = e.NewPageIndex
                 State.PageIndex = Grid.PageIndex
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub Grid_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+        Private Sub Grid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
             Try
                 If e.CommandName = "Select" Then
                     Dim lblCtrl As Label
                     Dim row As GridViewRow = CType(CType(e.CommandSource, Control).Parent.Parent, GridViewRow)
                     Dim RowInd As Integer = row.RowIndex
-                    lblCtrl = CType(Grid.Rows(RowInd).Cells(GRID_COL_REGISTRATION_LETTER_ID).FindControl(Me.GRID_CTRL_REGISTRATION_LETTER_ID), Label)
-                    Me.State.moRegistrationLetterId = New Guid(lblCtrl.Text)
+                    lblCtrl = CType(Grid.Rows(RowInd).Cells(GRID_COL_REGISTRATION_LETTER_ID).FindControl(GRID_CTRL_REGISTRATION_LETTER_ID), Label)
+                    State.moRegistrationLetterId = New Guid(lblCtrl.Text)
                     SetSession()
-                    Me.callPage(RegistrationLetterForm.URL, Me.State.moRegistrationLetterId)
+                    callPage(RegistrationLetterForm.URL, State.moRegistrationLetterId)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub Grid_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+        Private Sub Grid_RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
             Try
                 BaseItemCreated(sender, e)
                 
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+        Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
             Try
                 BaseItemBound(sender, e)
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+        Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
             Try
-                Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
+                Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
 
-                If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                    If Me.SortDirection.EndsWith(" ASC") Then
-                        Me.SortDirection = e.SortExpression + " DESC"
+                If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                    If SortDirection.EndsWith(" ASC") Then
+                        SortDirection = e.SortExpression + " DESC"
                     Else
-                        Me.SortDirection = e.SortExpression + " ASC"
+                        SortDirection = e.SortExpression + " ASC"
                     End If
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
 
-                Me.State.PageIndex = 0
-                Me.PopulateGrid()
+                State.PageIndex = 0
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 #End Region
 
 #Region "Handlers-Buttons"
 
-        Protected Sub moBtnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles moBtnSearch.Click
+        Protected Sub moBtnSearch_Click(sender As Object, e As EventArgs) Handles moBtnSearch.Click
             Try
-                Grid.PageIndex = Me.NO_PAGE_INDEX
+                Grid.PageIndex = NO_PAGE_INDEX
                 State.moRegistrationLetterId = Guid.Empty
-                Me.State.searchDV = Nothing
-                Me.PopulateGrid()
+                State.searchDV = Nothing
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Protected Sub moBtnClear_Click(ByVal sender As Object, ByVal e As EventArgs) Handles moBtnClear.Click
+        Protected Sub moBtnClear_Click(sender As Object, e As EventArgs) Handles moBtnClear.Click
             Try
                 ClearSearch()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
 
-        Protected Sub btnNew_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnNew.Click
+        Protected Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
             Try
-                Me.State.moRegistrationLetterId = Guid.Empty
+                State.moRegistrationLetterId = Guid.Empty
                 SetSession()
-                Me.callPage(RegistrationLetterForm.URL, Me.State.moRegistrationLetterId)
+                callPage(RegistrationLetterForm.URL, State.moRegistrationLetterId)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -361,7 +361,7 @@ Namespace Tables
             Get
                 Return ViewState("SortDirection").ToString
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 ViewState("SortDirection") = value
             End Set
         End Property
@@ -375,10 +375,10 @@ Namespace Tables
                 TheDealerControl.BindData(oDataView)
                 TheDealerControl.AutoPostBackDD = False
                 TheDealerControl.NothingSelected = True
-                TheDealerControl.SelectedGuid = Me.State.DealerId
+                TheDealerControl.SelectedGuid = State.DealerId
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -387,50 +387,50 @@ Namespace Tables
             Dim oDataView As DataView
 
             Try
-                If (Me.State.searchDV Is Nothing) Then
-                    Me.State.searchDV = RegistrationLetter.getList(ElitaPlusIdentity.Current.ActiveUser.Companies, _
+                If (State.searchDV Is Nothing) Then
+                    State.searchDV = RegistrationLetter.getList(ElitaPlusIdentity.Current.ActiveUser.Companies, _
                                         TheDealerControl.SelectedGuid)
                 End If
-                Me.State.searchDV.Sort = Me.SortDirection
+                State.searchDV.Sort = SortDirection
                 
-                Session("recCount") = Me.State.searchDV.Count
+                Session("recCount") = State.searchDV.Count
 
-                SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.moRegistrationLetterId, Me.Grid, Me.State.PageIndex)
+                SetPageAndSelectedIndexFromGuid(State.searchDV, State.moRegistrationLetterId, Grid, State.PageIndex)
                 
-                Me.State.PageIndex = Me.Grid.PageIndex
+                State.PageIndex = Grid.PageIndex
 
-                If (Me.State.searchDV.Count = 0) Then
-                    Grid.DataSource = RegistrationLetter.getEmptyList(Me.State.searchDV)
+                If (State.searchDV.Count = 0) Then
+                    Grid.DataSource = RegistrationLetter.getEmptyList(State.searchDV)
                     Grid.DataBind()
                     Grid.Rows(0).Visible = False
 
-                    Me.State.searchDV = Nothing
+                    State.searchDV = Nothing
                 Else
-                    Me.Grid.Enabled = True
-                    Me.Grid.DataSource = Me.State.searchDV
-                    HighLightSortColumn(Grid, Me.SortDirection)
-                    Me.Grid.DataBind()
+                    Grid.Enabled = True
+                    Grid.DataSource = State.searchDV
+                    HighLightSortColumn(Grid, SortDirection)
+                    Grid.DataBind()
                 End If
 
                 If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
 
                 ControlMgr.SetVisibleControl(Me, Grid, True)
-                ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+                ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-                If Not Me.State.searchDV Is Nothing Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                If State.searchDV IsNot Nothing Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 Else
-                    Me.lblRecordCount.Text = 0 & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                    lblRecordCount.Text = 0 & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
         Private Sub ClearSearch()
             TheDealerControl.SelectedIndex = 0
-            Me.State.moRegistrationLetterId = Guid.Empty
+            State.moRegistrationLetterId = Guid.Empty
         End Sub
 
 #End Region
@@ -438,11 +438,11 @@ Namespace Tables
 #Region "State-Management"
 
         Private Sub SetSession()
-            With Me.State
+            With State
                 .DealerId = TheDealerControl.SelectedGuid
                 .PageIndex = Grid.PageIndex
                 .PageSize = Grid.PageSize
-                .PageSort = Me.State.SortExpression
+                .PageSort = State.SortExpression
                 '.SearchDataView = Me.State.searchDV
             End With
         End Sub

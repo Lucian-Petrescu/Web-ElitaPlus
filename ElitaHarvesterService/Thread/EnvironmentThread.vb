@@ -18,12 +18,12 @@ Public Class EnvironmentThread
         Get
             Return _config
         End Get
-        Private Set(ByVal value As IThreadEnvironmentConfig)
+        Private Set(value As IThreadEnvironmentConfig)
             _config = value
         End Set
     End Property
 
-    Public Sub New(ByVal config As IThreadEnvironmentConfig)
+    Public Sub New(config As IThreadEnvironmentConfig)
         MyBase.New(config)
         _config = config
         _taskManager = New TaskManager(Me.Config.Name)

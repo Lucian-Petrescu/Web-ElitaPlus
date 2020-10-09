@@ -36,32 +36,32 @@ Public Class WorkQueueActionForm
 
     Protected Shadows ReadOnly Property State() As MyState
         Get
-            If Me.NavController.State Is Nothing Then
-                Me.NavController.State = New MyState
+            If NavController.State Is Nothing Then
+                NavController.State = New MyState
                 InitializeFlowFromSession()
                 GetAction()
             End If
-            Return CType(Me.NavController.State, MyState)
+            Return CType(NavController.State, MyState)
         End Get
     End Property
 
     Protected Sub GetAction()
         Try
-            If Me.State.Action Is Nothing Then
-                Me.State.Action = BaseActionProvider.GetAction()
-                If (Not Me.State.Action Is Nothing) Then
-                    Me.State.WorkQueueItem = Me.State.Action.WorkQueueItem
+            If State.Action Is Nothing Then
+                State.Action = BaseActionProvider.GetAction()
+                If (State.Action IsNot Nothing) Then
+                    State.WorkQueueItem = State.Action.WorkQueueItem
                 End If
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Private Sub InitializeFlowFromSession()
-        If (Not Me.NavController.ParametersPassed Is Nothing) Then
-            ItemAction = CType(Me.NavController.ParametersPassed, ItemActionType)
+        If (NavController.ParametersPassed IsNot Nothing) Then
+            ItemAction = CType(NavController.ParametersPassed, ItemActionType)
         End If
 
     End Sub
@@ -73,15 +73,15 @@ Public Class WorkQueueActionForm
 
     Private Sub UpdateBreadCrum()
 
-        Me.MasterPage.BreadCrum = Me.MasterPage.PageTab
+        MasterPage.BreadCrum = MasterPage.PageTab
 
     End Sub
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles MyBase.Load
 
         Try
 
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
                 UpdateBreadCrum()
                 If Assurant.Elita.Configuration.ElitaConfig.Current.General.IntegrateWorkQueueImagingServices = False Then
                     PlaceHolder1.Visible = False
@@ -90,19 +90,19 @@ Public Class WorkQueueActionForm
                     Throw New GUIException("", "")
                 End If
                 'This Code must be the first thing to execute
-                If Not Me.IsReturningFromChild Then
-                    Me.StartNavControl()
+                If Not IsReturningFromChild Then
+                    StartNavControl()
                 End If
             End If
 
-            Me.MasterPage.UsePageTabTitleInBreadCrum = False
-            Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("WORK_QUEUE_ITEM")
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("WORK_QUEUE_ITEM")
+            MasterPage.UsePageTabTitleInBreadCrum = False
+            MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("WORK_QUEUE_ITEM")
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("WORK_QUEUE_ITEM")
 
 
-            Me.MasterPage.MessageController.Clear()
+            MasterPage.MessageController.Clear()
             mcWorkQueueAction.Clear()
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
                 PopulateForm()
             End If
 
@@ -113,9 +113,9 @@ Public Class WorkQueueActionForm
             End If
 
             'Check if Queue Item belongs to same company group or not
-            If (Not Me.State.WorkQueueItem Is Nothing) Then
+            If (State.WorkQueueItem IsNot Nothing) Then
                 If (Not CheckQueueItemForUserCompany()) Then
-                    Me.MasterPage.MessageController.AddWarning("MSG_WO_ITEM_DIFFERENT_COMPANY")
+                    MasterPage.MessageController.AddWarning("MSG_WO_ITEM_DIFFERENT_COMPANY")
                     btnZone.Visible = False
                     Exit Sub
                 Else
@@ -135,18 +135,18 @@ Public Class WorkQueueActionForm
 
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.MenuEnabled = True
-            Me.IsReturningFromChild = True
+            MenuEnabled = True
+            IsReturningFromChild = True
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
@@ -158,20 +158,20 @@ Public Class WorkQueueActionForm
             NavigateNext()
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Protected Sub btnRequeueContinue_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnRequeueContinue.Click
+    Protected Sub btnRequeueContinue_Click(sender As Object, e As System.EventArgs) Handles btnRequeueContinue.Click
         Try
-            Me.State.WorkQueueItem.ReQueue(New Guid(rdbtlstRequeueReasons.SelectedItem.Value), rdbtlstRequeueReasons.SelectedItem.Text)
-            Me.State.Action = BaseActionProvider.GetAction()
-            If (Not Me.State.Action Is Nothing) Then
-                Me.State.WorkQueueItem = Me.State.Action.WorkQueueItem
+            State.WorkQueueItem.ReQueue(New Guid(rdbtlstRequeueReasons.SelectedItem.Value), rdbtlstRequeueReasons.SelectedItem.Text)
+            State.Action = BaseActionProvider.GetAction()
+            If (State.Action IsNot Nothing) Then
+                State.WorkQueueItem = State.Action.WorkQueueItem
             End If
             mcWorkQueueAction.Clear()
-            If (Me.State.Action Is Nothing) Then
+            If (State.Action Is Nothing) Then
                 mcWorkQueueAction.AddSuccess("MSG_WQ_ITEM_REQUEUE_SUCCESS_NO_NEXT_ITEM")
             Else
                 mcWorkQueueAction.AddSuccess("MSG_WQ_ITEM_REQUEUE_SUCCESS")
@@ -179,20 +179,20 @@ Public Class WorkQueueActionForm
             PopulateForm()
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
             PopulateForm()
         End Try
     End Sub
 
-    Protected Sub btnRedirectContinue_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnRedirectContinue.Click
+    Protected Sub btnRedirectContinue_Click(sender As Object, e As System.EventArgs) Handles btnRedirectContinue.Click
         Try
-            Me.State.WorkQueueItem.ReDirect(ddlWorkQueueList.SelectedItem.Text, New Guid(rdbtRedirectRsn.SelectedItem.Value), rdbtRedirectRsn.SelectedItem.Text)
-            Me.State.Action = BaseActionProvider.GetAction()
-            If (Not Me.State.Action Is Nothing) Then
-                Me.State.WorkQueueItem = Me.State.Action.WorkQueueItem
+            State.WorkQueueItem.ReDirect(ddlWorkQueueList.SelectedItem.Text, New Guid(rdbtRedirectRsn.SelectedItem.Value), rdbtRedirectRsn.SelectedItem.Text)
+            State.Action = BaseActionProvider.GetAction()
+            If (State.Action IsNot Nothing) Then
+                State.WorkQueueItem = State.Action.WorkQueueItem
             End If
             mcWorkQueueAction.Clear()
-            If (Me.State.Action Is Nothing) Then
+            If (State.Action Is Nothing) Then
                 mcWorkQueueAction.AddSuccess("MSG_WQ_ITEM_REDIRECT_SUCCESS_NO_NEXT_ITEM")
             Else
                 mcWorkQueueAction.AddSuccess("MSG_WQ_ITEM_REDIRECT_SUCCESS")
@@ -200,19 +200,19 @@ Public Class WorkQueueActionForm
             PopulateForm()
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
             PopulateForm()
         End Try
     End Sub
 
-    Protected Sub ddlWorkQueueList_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ddlWorkQueueList.SelectedIndexChanged
+    Protected Sub ddlWorkQueueList_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles ddlWorkQueueList.SelectedIndexChanged
         Try
             Dim wq As WorkQueue
             Dim wqReasonList As ListItem()
             If (Not String.IsNullOrEmpty(ddlWorkQueueList.SelectedItem.Value)) Then
                 wq = New WorkQueue(New Guid(ddlWorkQueueList.SelectedItem.Value))
                 wqReasonList = (From wqr In wq.ReDirectReasons Select New ListItem(If(wqr.Description Is Nothing, wqr.ItemStatusReason.Reason, wqr.Description), wqr.ItemStatusReason.Id.ToString())).ToArray()
-                Me.BindListControlToArray(rdbtRedirectRsn, wqReasonList, False, False, Guid.Empty.ToString())
+                BindListControlToArray(rdbtRedirectRsn, wqReasonList, False, False, Guid.Empty.ToString())
                 ddlWorkQueueList.SelectedValue = ddlWorkQueueList.SelectedItem.Value
                 If (wqReasonList.Count = 0) Then
                     msgRedirectReasons.Text = TranslationBase.TranslateLabelOrMessage("MSG_NO_REDIRECT_REASONS_TO_POPULATE")
@@ -244,7 +244,7 @@ Public Class WorkQueueActionForm
 
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -255,7 +255,7 @@ Public Class WorkQueueActionForm
 
     Private Sub PopulateForm()
 
-        If (Me.State.Action Is Nothing) Then
+        If (State.Action Is Nothing) Then
             lblItemAssignmentTimestampValue.Text = String.Empty
             lblQueueNameValue.Text = String.Empty
             mcWorkQueueAction.AddInformation("MSG_NO_WORK_QUEUE_ITEM_FOR_USER")
@@ -265,12 +265,12 @@ Public Class WorkQueueActionForm
             Return
         End If
 
-        xmlSource.TransformSource = Me.State.Action.XsltPath.AbsolutePath
-        xmlSource.Document = Me.State.Action.DisplayXml
-        xmlSource.TransformArgumentList = GetXSLTArgumentList(Me.State.WorkQueueItem.WorkQueueItemType)
-        lblQueueNameValue.Text = Me.State.WorkQueueItem.WorkQueue.WorkQueue.Name
-        lblItemAssignmentTimestampValue.Text = Me.State.WorkQueueItem.StartDate.ToString()
-        lblCompanyValue.Text = LookupListNew.GetDescriptionFromCode("COMPANIES", Me.State.WorkQueueItem.WorkQueue.WorkQueue.CompanyCode)
+        xmlSource.TransformSource = State.Action.XsltPath.AbsolutePath
+        xmlSource.Document = State.Action.DisplayXml
+        xmlSource.TransformArgumentList = GetXSLTArgumentList(State.WorkQueueItem.WorkQueueItemType)
+        lblQueueNameValue.Text = State.WorkQueueItem.WorkQueue.WorkQueue.Name
+        lblItemAssignmentTimestampValue.Text = State.WorkQueueItem.StartDate.ToString()
+        lblCompanyValue.Text = LookupListNew.GetDescriptionFromCode("COMPANIES", State.WorkQueueItem.WorkQueue.WorkQueue.CompanyCode)
         lblRequeueReason.Text = TranslationBase.TranslateLabelOrMessage("REQUEUE_REASONS_SELECT")
         lblRedirectModalTitle.Text = TranslationBase.TranslateLabelOrMessage("REDIRECT_REASONS")
         lblRequeueReasons.Text = TranslationBase.TranslateLabelOrMessage("REQUEUE_REASONS")
@@ -281,8 +281,8 @@ Public Class WorkQueueActionForm
 
         Dim wqList As ListItem()
         Dim wqReasonList As ListItem()
-        wqList = (From wq In GetWorkQueueList(Me.State.WorkQueueItem.WorkQueue.WorkQueue.CompanyCode, Me.State.WorkQueueItem.WorkQueue.WorkQueue.ActionCode) Select New ListItem(wq.Name, wq.Id.ToString())).ToArray()
-        Me.BindListControlToArray(ddlWorkQueueList, wqList, False, True, Guid.Empty.ToString())
+        wqList = (From wq In GetWorkQueueList(State.WorkQueueItem.WorkQueue.WorkQueue.CompanyCode, State.WorkQueueItem.WorkQueue.WorkQueue.ActionCode) Select New ListItem(wq.Name, wq.Id.ToString())).ToArray()
+        BindListControlToArray(ddlWorkQueueList, wqList, False, True, Guid.Empty.ToString())
         If (wqList.Count = 0) Then
             msgRedirectReasons.Text = TranslationBase.TranslateLabelOrMessage("MSG_NO_WORK_QUEUES_TO_POPULATE")
             modalMessageBoxRedirect.Attributes.Add("class", "infoMsg")
@@ -301,8 +301,8 @@ Public Class WorkQueueActionForm
             btnRedirectContinue.Visible = True
             btnRedirectCancel.Visible = True
         End If
-        wqReasonList = (From wqr In Me.State.WorkQueueItem.WorkQueue.ReQueueReasons Select New ListItem(wqr.Description, wqr.ItemStatusReason.Id.ToString())).ToArray()
-        Me.BindListControlToArray(rdbtlstRequeueReasons, wqReasonList, False, False, Guid.Empty.ToString())
+        wqReasonList = (From wqr In State.WorkQueueItem.WorkQueue.ReQueueReasons Select New ListItem(wqr.Description, wqr.ItemStatusReason.Id.ToString())).ToArray()
+        BindListControlToArray(rdbtlstRequeueReasons, wqReasonList, False, False, Guid.Empty.ToString())
         If (wqReasonList.Count = 0) Then
             msgRequeueReasons.Text = TranslationBase.TranslateLabelOrMessage("MSG_NO_REQUEUE_REASONS_TO_POPULATE")
             modalMessageBoxRequeue.Attributes.Add("class", "infoMsg")
@@ -318,7 +318,7 @@ Public Class WorkQueueActionForm
             btnRequeueCancel.Visible = True
         End If
 
-        If (Me.State.WorkQueueItem.WorkQueueItem.RequeueCount < Me.State.WorkQueueItem.WorkQueue.WorkQueue.MaxRequeue) Then
+        If (State.WorkQueueItem.WorkQueueItem.RequeueCount < State.WorkQueueItem.WorkQueue.WorkQueue.MaxRequeue) Then
             btnRequeue.Visible = True
         Else
             btnRequeue.Visible = False
@@ -330,32 +330,32 @@ Public Class WorkQueueActionForm
 
     Private Sub NavigateNext()
         If (Me.State.WorkQueueItem.WorkQueueItemType = WorkQueueItem.ItemType.Issue) Then
-            Dim claimBo As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(Me.State.WorkQueueItem.WorkQueueItem.ClaimId)
-            claimBo.CurrentWorkQueueItem = Me.State.WorkQueueItem
+            Dim claimBo As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(State.WorkQueueItem.WorkQueueItem.ClaimId)
+            claimBo.CurrentWorkQueueItem = State.WorkQueueItem
             If (claimBo.ClaimAuthorizationType = ClaimAuthorizationType.Single) Then
-                Me.NavController.FlowSession(FlowSessionKeys.SESSION_CLAIM) = claimBo
-                Me.NavController.Navigate(Me, FlowEvents.EVENT_GO_TO_CLAIM)
+                NavController.FlowSession(FlowSessionKeys.SESSION_CLAIM) = claimBo
+                NavController.Navigate(Me, FlowEvents.EVENT_GO_TO_CLAIM)
             Else
-                Me.NavController = Nothing
-                Me.callPage(ClaimWizardForm.URL, New ClaimWizardForm.Parameters(ClaimWizardForm.ClaimWizardSteps.Step3, Nothing, Nothing, claimBo))
+                NavController = Nothing
+                callPage(ClaimWizardForm.URL, New ClaimWizardForm.Parameters(ClaimWizardForm.ClaimWizardSteps.Step3, Nothing, Nothing, claimBo))
             End If
         ElseIf (Me.State.WorkQueueItem.WorkQueueItemType = WorkQueueItem.ItemType.Image) Then
-            Me.NavController.Navigate(Me, FlowEvents.EVENT_GO_TO_IMAGE, Me.State.WorkQueueItem)
+            NavController.Navigate(Me, FlowEvents.EVENT_GO_TO_IMAGE, State.WorkQueueItem)
         End If
     End Sub
 
-    Private Function GetWorkQueueRequeueReasons(ByVal workQueueId As Guid) As WorkQueueItemStatusReason()
-        Dim wkQ As WorkQueue = New WorkQueue(Me.State.WorkQueueItem.WorkQueueItem.WorkQueueId)
+    Private Function GetWorkQueueRequeueReasons(workQueueId As Guid) As WorkQueueItemStatusReason()
+        Dim wkQ As WorkQueue = New WorkQueue(State.WorkQueueItem.WorkQueueItem.WorkQueueId)
         Return wkQ.ReQueueReasons
     End Function
 
-    Private Function GetWorkQueueList(ByVal companyCode As String, ByVal actionCode As String) As WrkQueue.WorkQueue()
+    Private Function GetWorkQueueList(companyCode As String, actionCode As String) As WrkQueue.WorkQueue()
         Dim wkQList As WrkQueue.WorkQueue() = WorkQueue.GetList("*", companyCode, actionCode, Date.Now.UtcNow, False)
-        wkQList = (From wq In wkQList Where wq.Id <> Me.State.WorkQueueItem.WorkQueue.Id Select wq).ToArray()
+        wkQList = (From wq In wkQList Where wq.Id <> State.WorkQueueItem.WorkQueue.Id Select wq).ToArray()
         Return wkQList
     End Function
 
-    Private Function GetXSLTArgumentList(ByVal actionCode As WorkQueueItem.ItemType) As XsltArgumentList
+    Private Function GetXSLTArgumentList(actionCode As WorkQueueItem.ItemType) As XsltArgumentList
         Dim xsltArgList As New XsltArgumentList
         Select Case actionCode
             Case WorkQueueItem.ItemType.Issue
@@ -386,7 +386,7 @@ Public Class WorkQueueActionForm
         Dim userCompanies As DataView = ElitaPlusIdentity.Current.ActiveUser.GetSelectedCompanies(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, ElitaPlusIdentity.Current.ActiveUser.Id)
 
         For Each row As DataRowView In userCompanies
-            If (Me.State.WorkQueueItem.WorkQueue.WorkQueue.CompanyCode = CType(row("Code"), String)) Then
+            If (State.WorkQueueItem.WorkQueue.WorkQueue.CompanyCode = CType(row("Code"), String)) Then
                 flag = True
             End If
         Next
@@ -399,11 +399,11 @@ Public Class WorkQueueActionForm
     Public Const FLOW_NAME As String = "WORK_ON_QUEUE"
     Sub StartNavControl()
         Dim nav As New ElitaPlusNavigation
-        Me.NavController = New NavControllerBase(nav.Flow(FLOW_NAME))
+        NavController = New NavControllerBase(nav.Flow(FLOW_NAME))
     End Sub
 
     Function IsFlowStarted() As Boolean
-        Return Not Me.NavController Is Nothing AndAlso Me.NavController.CurrentFlow.Name = Me.FLOW_NAME
+        Return NavController IsNot Nothing AndAlso NavController.CurrentFlow.Name = FLOW_NAME
     End Function
 #End Region
 

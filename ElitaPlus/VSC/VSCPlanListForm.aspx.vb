@@ -15,7 +15,7 @@ Partial Class VSCPlanListForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -73,7 +73,7 @@ Partial Class VSCPlanListForm
             Get
                 Return mnPageSize
             End Get
-            Set(ByVal Value As Integer)
+            Set(Value As Integer)
                 mnPageSize = Value
             End Set
         End Property
@@ -82,7 +82,7 @@ Partial Class VSCPlanListForm
             Get
                 Return msPageSort
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 msPageSort = Value
             End Set
         End Property
@@ -91,7 +91,7 @@ Partial Class VSCPlanListForm
             Get
                 Return searchDV
             End Get
-            Set(ByVal Value As VSCPlan.VSCPlanSearchDV)
+            Set(Value As VSCPlan.VSCPlanSearchDV)
                 searchDV = Value
             End Set
         End Property
@@ -112,24 +112,24 @@ Partial Class VSCPlanListForm
 #Region "Page Return"
 
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            Me.MenuEnabled = True
-            Me.IsReturningFromChild = True
+            MenuEnabled = True
+            IsReturningFromChild = True
             Dim retObj As VSCPlanForm.ReturnType = CType(ReturnPar, VSCPlanForm.ReturnType)
 
-            Me.State.HasDataChanged = retObj.HasDataChanged
+            State.HasDataChanged = retObj.HasDataChanged
             Select Case retObj.LastOperation
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    If Not retObj Is Nothing Then
-                        Me.State.PlanId = retObj.EditingBo.Id
-                        Me.State.IsGridVisible = True
+                    If retObj IsNot Nothing Then
+                        State.PlanId = retObj.EditingBo.Id
+                        State.IsGridVisible = True
                     End If
                 Case ElitaPlusPage.DetailPageCommand.Delete
-                    Me.AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
+                    AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
             End Select
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
@@ -137,35 +137,35 @@ Partial Class VSCPlanListForm
 #End Region
 
 #Region "Page_Events"
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
-        Me.ErrorCtrl.Clear_Hide()
+        ErrorCtrl.Clear_Hide()
         Try
-            If Not Me.IsPostBack Then
-                If Me.IsReturningFromChild = True Then
+            If Not IsPostBack Then
+                If IsReturningFromChild = True Then
                     GetSession()
                 End If
-                Me.PopulateFormFromBOs()
+                PopulateFormFromBOs()
                 ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                If Me.State.IsGridVisible Then
-                    If Not (Me.State.selectedPageSize = DEFAULT_PAGE_SIZE) Then
-                        cboPageSize.SelectedValue = CType(Me.State.selectedPageSize, String)
-                        Grid.PageSize = Me.State.selectedPageSize
+                If State.IsGridVisible Then
+                    If Not (State.selectedPageSize = DEFAULT_PAGE_SIZE) Then
+                        cboPageSize.SelectedValue = CType(State.selectedPageSize, String)
+                        Grid.PageSize = State.selectedPageSize
                     End If
-                    Me.PopulateGrid()
+                    PopulateGrid()
                 End If
-                Me.SetGridItemStyleColor(Me.Grid)
+                SetGridItemStyleColor(Grid)
             Else
                 ClearErrLabels()
             End If
 
-            If Me.IsReturningFromChild = True Then
-                Me.IsReturningFromChild = False
+            If IsReturningFromChild = True Then
+                IsReturningFromChild = False
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
-        Me.ShowMissingTranslations(Me.ErrorCtrl)
+        ShowMissingTranslations(ErrorCtrl)
     End Sub
 #End Region
 
@@ -194,7 +194,7 @@ Partial Class VSCPlanListForm
                                         "multipleDropControl_lb_DropDown", _
                                         False, _
                                         0)
-            Me.TheVSCPlanControl.SelectedGuid = Me.State.SelectedDropdownPlanId
+            TheVSCPlanControl.SelectedGuid = State.SelectedDropdownPlanId
         Catch ex As Exception
             ErrorCtrl.AddError(VSCPLAN_LIST_FORM001)
             ErrorCtrl.AddError(ex.Message, False)
@@ -206,7 +206,7 @@ Partial Class VSCPlanListForm
 #Region "Clear"
 
     Private Sub ClearErrLabels()
-        Me.ClearLabelErrSign(TheVSCPlanControl.CaptionLabel)
+        ClearLabelErrSign(TheVSCPlanControl.CaptionLabel)
     End Sub
 
 #End Region
@@ -220,40 +220,40 @@ Partial Class VSCPlanListForm
         oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
         If TheVSCPlanControl.SelectedDesc = "" Then
-            Me.State.searchDV = VSCPlan.getList(oCompanyGroupIds)
+            State.searchDV = VSCPlan.getList(oCompanyGroupIds)
         Else
-            Me.State.searchDV = VSCPlan.getPlan(oCompanyGroupIds, TheVSCPlanControl.SelectedGuid)
+            State.searchDV = VSCPlan.getPlan(oCompanyGroupIds, TheVSCPlanControl.SelectedGuid)
         End If
 
-        Me.State.searchDV.Sort = Me.State.SortExpression
-        Me.Grid.AutoGenerateColumns = False
-        Me.Grid.Columns(Me.GRID_COL_PLAN_CODE_IDX).SortExpression = VSCPlan.VSCPlanSearchDV.COL_CODE
-        Me.Grid.Columns(Me.GRID_COL_PLAN_DESC_IDX).SortExpression = VSCPlan.VSCPlanSearchDV.COL_DESCRIPTION
+        State.searchDV.Sort = State.SortExpression
+        Grid.AutoGenerateColumns = False
+        Grid.Columns(GRID_COL_PLAN_CODE_IDX).SortExpression = VSCPlan.VSCPlanSearchDV.COL_CODE
+        Grid.Columns(GRID_COL_PLAN_DESC_IDX).SortExpression = VSCPlan.VSCPlanSearchDV.COL_DESCRIPTION
 
-        SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.PlanId, Me.Grid, Me.State.PageIndex)
-        Me.SortAndBindGrid()
+        SetPageAndSelectedIndexFromGuid(State.searchDV, State.PlanId, Grid, State.PageIndex)
+        SortAndBindGrid()
 
     End Sub
     Private Sub SortAndBindGrid()
-        Me.State.PageIndex = Me.Grid.CurrentPageIndex
-        Me.Grid.DataSource = Me.State.searchDV
-        HighLightSortColumn(Grid, Me.State.SortExpression)
-        Me.Grid.DataBind()
+        State.PageIndex = Grid.CurrentPageIndex
+        Grid.DataSource = State.searchDV
+        HighLightSortColumn(Grid, State.SortExpression)
+        Grid.DataBind()
 
-        ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
 
-        ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+        ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-        Session("recCount") = Me.State.searchDV.Count
+        Session("recCount") = State.searchDV.Count
 
-        If Me.State.searchDV.Count > 0 Then
+        If State.searchDV.Count > 0 Then
 
-            If Me.Grid.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         Else
-            If Me.Grid.Visible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         End If
     End Sub
@@ -263,92 +263,92 @@ Partial Class VSCPlanListForm
 #Region "Datagrid Related "
 
     'The Binding Logic is here
-    Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+    Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
         Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
-        If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-            e.Item.Cells(Me.GRID_COL_PLAN_CODE_IDX).Text = dvRow(VSCPlan.VSCPlanSearchDV.COL_CODE).ToString
-            e.Item.Cells(Me.GRID_COL_PLAN_DESC_IDX).Text = dvRow(VSCPlan.VSCPlanSearchDV.COL_DESCRIPTION).ToString
-            e.Item.Cells(Me.GRID_COL_PLAN_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(VSCPlan.VSCPlanSearchDV.COL_VSCPlan_ID), Byte()))
+        If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
+            e.Item.Cells(GRID_COL_PLAN_CODE_IDX).Text = dvRow(VSCPlan.VSCPlanSearchDV.COL_CODE).ToString
+            e.Item.Cells(GRID_COL_PLAN_DESC_IDX).Text = dvRow(VSCPlan.VSCPlanSearchDV.COL_DESCRIPTION).ToString
+            e.Item.Cells(GRID_COL_PLAN_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(VSCPlan.VSCPlanSearchDV.COL_VSCPlan_ID), Byte()))
         End If
     End Sub
 
-    Public Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+    Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
         Try
             If e.CommandName = "SelectAction" Then
-                Me.State.PlanId = New Guid(e.Item.Cells(Me.GRID_COL_PLAN_IDX).Text)
+                State.PlanId = New Guid(e.Item.Cells(GRID_COL_PLAN_IDX).Text)
                 SetSession()
-                Me.callPage(VSCPlanForm.URL, Me.State.PlanId)
+                callPage(VSCPlanForm.URL, State.PlanId)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
 
-    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs)
+    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.CurrentPageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-            Me.PopulateGrid()
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
+    Private Sub Grid_SortCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = e.NewPageIndex
-            Me.State.PlanId = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = e.NewPageIndex
+            State.PlanId = Guid.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 #End Region
 
 #Region "Button Clicks "
-    Private Sub btnAdd_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd_WRITE.Click
+    Private Sub btnAdd_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnAdd_WRITE.Click
         SetSession()
-        Me.callPage(VSCPlanForm.URL)
+        callPage(VSCPlanForm.URL)
     End Sub
 
-    Private Sub btnClearSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
         TheVSCPlanControl.SelectedIndex = 0
     End Sub
 
-    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
         Try
-            Me.State.PageIndex = 0
-            Me.State.PlanId = Guid.Empty
-            Me.State.IsGridVisible = True
-            Me.State.searchDV = Nothing
-            Me.State.HasDataChanged = False
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            State.PlanId = Guid.Empty
+            State.IsGridVisible = True
+            State.searchDV = Nothing
+            State.HasDataChanged = False
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 #End Region
@@ -356,19 +356,19 @@ Partial Class VSCPlanListForm
 #Region "State-Management"
 
     Private Sub SetSession()
-        With Me.State
-            .PlanId = Me.State.PlanId
+        With State
+            .PlanId = State.PlanId
             .PageIndex = Grid.CurrentPageIndex
             .PageSize = Grid.PageSize
-            .PageSort = Me.State.SortExpression
-            .SearchDataView = Me.State.searchDV
+            .PageSort = State.SortExpression
+            .SearchDataView = State.searchDV
             .SelectedDropdownPlanId = TheVSCPlanControl.SelectedGuid
         End With
     End Sub
 
     Private Sub GetSession()
-        With Me.State
-            Me.Grid.PageSize = .PageSize
+        With State
+            Grid.PageSize = .PageSize
             cboPageSize.SelectedValue = CType(.PageSize, String)
         End With
     End Sub

@@ -2,8 +2,8 @@
 Public Class FutureOverlapValidationVisitor
     Implements IVisitor
 
-    Public Function Visit(ByVal element As IElement) As Boolean Implements IVisitor.Visit
-        If Not element.GetType.GetInterface("IExpirable", True) Is Nothing Then
+    Public Function Visit(element As IElement) As Boolean Implements IVisitor.Visit
+        If element.GetType.GetInterface("IExpirable", True) IsNot Nothing Then
             Dim iface As IExpirable = DirectCast(element, IExpirable)
             'validation starts here
             Dim olapDal As New OverlapValidationVisitorDAL
@@ -15,11 +15,11 @@ Public Class FutureOverlapValidationVisitor
                     Dim OldEffDate As DateTime = row("EFFECTIVE")
                     Dim OldExpDate As DateTime = row("EXPIRATION")
 
-                    If OldEffDate > iface.Effective And (iface.Expiration > OldEffDate And iface.Expiration < OldExpDate) Then
+                    If OldEffDate > iface.Effective AndAlso (iface.Expiration > OldEffDate AndAlso iface.Expiration < OldExpDate) Then
                         Return True
                     End If
 
-                    If OldEffDate > iface.Effective And (iface.Expiration > OldEffDate And iface.Expiration > OldExpDate) Then
+                    If OldEffDate > iface.Effective AndAlso (iface.Expiration > OldEffDate AndAlso iface.Expiration > OldExpDate) Then
                         Return True
                     End If
                 Next

@@ -8,14 +8,14 @@ Public Class TranslationBase
 
 #Region "Properties"
 
-    Public Property TranslationMissingList() As ArrayList
+    Public Property TranslationMissingList As ArrayList
         Get
 
             Return mTranslationMissingList
 
         End Get
 
-        Set(ByVal Value As ArrayList)
+        Set
 
             mTranslationMissingList = Value
 
@@ -37,15 +37,15 @@ Public Class TranslationBase
 #Region "DATA ACCESS ROUTINES"
 
 
-    Public Shared Function GetTranslationsFromCache(ByRef TranslationList As String, ByVal LanguageID As Guid) As DataTable
+    Public Shared Function GetTranslationsFromCache(ByRef TranslationList As String, LanguageID As Guid) As DataTable
 
         Try
 
-            If System.Web.HttpContext.Current Is Nothing _
-                    OrElse System.Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageID.ToString)) Is Nothing Then
+            If Web.HttpContext.Current Is Nothing _
+                    OrElse Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageID.ToString)) Is Nothing Then
                 Return Nothing
             Else
-                Dim ds As DataSet = CType(System.Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageID.ToString)), DataSet)
+                Dim ds As DataSet = CType(Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageID.ToString)), DataSet)
                 Dim dr() As DataRow
 
                 dr = ds.Tables(0).Select(String.Format("{1} in ({0})", TranslationList, LabelDAL.COL_NAME_UI_PROG_CODE))
@@ -72,17 +72,17 @@ Public Class TranslationBase
         End Try
     End Function
 
-    Public Shared Sub PutTranslationsIntoCache(ByVal ds As DataSet, ByVal LanguageId As Guid)
+    Public Shared Sub PutTranslationsIntoCache(ds As DataSet, LanguageId As Guid)
 
         Try
 
-            If Not System.Web.HttpContext.Current Is Nothing Then
-                If System.Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageId.ToString)) Is Nothing Then
-                    System.Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageId.ToString)) = ds
+            If Web.HttpContext.Current IsNot Nothing Then
+                If Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageId.ToString)) Is Nothing Then
+                    Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageId.ToString)) = ds
                 Else
-                    Dim dsCache As DataSet = CType(System.Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageId.ToString)), DataSet)
+                    Dim dsCache As DataSet = CType(Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageId.ToString)), DataSet)
                     dsCache.Tables(0).Merge(ds.Tables(0))
-                    System.Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageId.ToString)) = dsCache
+                    Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageId.ToString)) = dsCache
                 End If
             End If
 
@@ -91,11 +91,11 @@ Public Class TranslationBase
         End Try
     End Sub
 
-    Public Shared Sub UpdateTranslationInCache(ByVal ds As DataSet, Optional ByVal LanguageId As String = "")
+    Public Shared Sub UpdateTranslationInCache(ds As DataSet, Optional ByVal LanguageId As String = "")
 
         Try
 
-            If Not System.Web.HttpContext.Current Is Nothing Then
+            If Web.HttpContext.Current IsNot Nothing Then
 
                 'If no languageId is passed, then we need to look in the dataset for languages
                 If LanguageId.Trim.Equals(String.Empty) Then
@@ -104,10 +104,10 @@ Public Class TranslationBase
                     Next
                 End If
 
-                If System.Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageId)) Is Nothing Then
+                If Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageId)) Is Nothing Then
                     Exit Sub
                 Else
-                    Dim dsCache As DataSet = CType(System.Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageId)), DataSet)
+                    Dim dsCache As DataSet = CType(Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageId)), DataSet)
                     Dim boolDirty As Boolean = False
 
                     For Each dr As DataRow In ds.Tables(DictItemTranslationDAL.TABLE_NAME).Rows
@@ -122,7 +122,7 @@ Public Class TranslationBase
                     Next
 
                     If boolDirty Then
-                        System.Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageId)) = dsCache
+                        Web.HttpContext.Current.Cache(String.Format("TRANSLATION_{0}", LanguageId)) = dsCache
                     End If
 
                 End If
@@ -135,7 +135,7 @@ Public Class TranslationBase
 
     End Sub
 
-    Public Shared Function GetTranslations(ByVal InClause As String, ByVal oLanguageID As Guid) As DataSet
+    Public Shared Function GetTranslations(InClause As String, oLanguageID As Guid) As DataSet
 
         Dim oDs As DataSet
         Dim dt As DataTable
@@ -194,7 +194,7 @@ Public Class TranslationBase
     'Input Values:
     'Uses:
     '-------------------------------------
-    Protected Function Translate(ByVal sUIProgCode As String, ByVal oView As DataView) As String
+    Protected Function Translate(sUIProgCode As String, oView As DataView) As String
 
         Dim oCurrentMissingTranslations As ArrayList
 
@@ -223,7 +223,7 @@ Public Class TranslationBase
 
     End Function
 
-    Private Function BuildStringFromTranslationArray(ByVal aryList As TranslationItemArray, Optional ByVal sCharToJoin As String = ", ") As String
+    Private Function BuildStringFromTranslationArray(aryList As TranslationItemArray, Optional ByVal sCharToJoin As String = ", ") As String
 
         Dim sItem As String
         Dim oWorkingArray(aryList.CurrentCount - 1) As String
@@ -245,7 +245,7 @@ Public Class TranslationBase
 
     End Function
 
-    Protected Shared Function BuildStringFromArray(ByVal aryList As ArrayList, Optional ByVal sCharToJoin As String = ", ") As String
+    Protected Shared Function BuildStringFromArray(aryList As ArrayList, Optional ByVal sCharToJoin As String = ", ") As String
 
         Dim sItem As String
         Dim oWorkingArray(aryList.Count - 1) As String
@@ -261,7 +261,7 @@ Public Class TranslationBase
         Return sResult
     End Function
 
-    Public Function TranslateList(ByVal aryItemsToTranslate As TranslationItemArray, ByVal CurrentLanguageID As Guid) As ArrayList
+    Public Function TranslateList(aryItemsToTranslate As TranslationItemArray, CurrentLanguageID As Guid) As ArrayList
 
 
         Dim oDS As DataSet
@@ -274,10 +274,10 @@ Public Class TranslationBase
         sResultString = BuildStringFromTranslationArray(aryItemsToTranslate) & ")"
 
         'Load the translation data from the database.
-        oDS = TranslationBase.GetTranslations(sResultString, CurrentLanguageID)
+        oDS = GetTranslations(sResultString, CurrentLanguageID)
 
         'set the view to use for the translation.
-        If Not oDS Is Nothing AndAlso oDS.Tables.Count > 0 Then
+        If oDS IsNot Nothing AndAlso oDS.Tables.Count > 0 Then
             oView.Table = oDS.Tables(0)
         End If
 
@@ -286,11 +286,11 @@ Public Class TranslationBase
         Next
 
         '  Return Me.GetCurrentMissingTranslations
-        Return Me.TranslationMissingList()
+        Return TranslationMissingList()
 
     End Function
 
-    Public Function TranslateList(ByVal aryItemsToTranslate As ArrayList) As ArrayList
+    Public Function TranslateList(aryItemsToTranslate As ArrayList) As ArrayList
 
         '  Dim oDB As New DbStruct
         Dim oDS As DataSet
@@ -316,7 +316,7 @@ Public Class TranslationBase
 
 
         'Load the translation data from the database.
-        oDS = TranslationBase.GetTranslations(sResultString, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+        oDS = GetTranslations(sResultString, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 
         'set the view to use for the translation.
         oView.Table = oDS.Tables(0)
@@ -327,7 +327,7 @@ Public Class TranslationBase
         Next
 
         '  Return Me.GetCurrentMissingTranslations
-        Return Me.TranslationMissingList
+        Return TranslationMissingList
 
     End Function
 
@@ -335,11 +335,11 @@ Public Class TranslationBase
 
 #Region "Shared Translate Messages"
 
-    Public Shared Function TranslateLabelOrMessage(ByVal UIProgCode As String) As String
+    Public Shared Function TranslateLabelOrMessage(UIProgCode As String) As String
         Return TranslateLabelOrMessage(UIProgCode, Authentication.LangId)
     End Function
 
-    Public Shared Function TranslateLabelOrMessage(ByVal UIProgCode As String, ByVal LangId As Guid) As String
+    Public Shared Function TranslateLabelOrMessage(UIProgCode As String, LangId As Guid) As String
         ' Dim TransProcObj As TranslationProcess = GetTranslationProcessReference()
         Dim TransProcObj As New TranslationBase
         Dim oTranslationItem As New TranslationItem
@@ -353,11 +353,11 @@ Public Class TranslationBase
         Return oTranslationItem.Translation
     End Function
 
-    Public Shared Function TranslateLabelOrMessageList(ByVal UIProgCodes() As String) As String()
+    Public Shared Function TranslateLabelOrMessageList(UIProgCodes() As String) As String()
         Return TranslateLabelOrMessageList(UIProgCodes, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
     End Function
 
-    Public Shared Function TranslateLabelOrMessageList(ByVal UIProgCodes() As String, ByVal LangId As Guid) As String()
+    Public Shared Function TranslateLabelOrMessageList(UIProgCodes() As String, LangId As Guid) As String()
         '  Dim TransProcObj As TranslationProcess = GetTranslationProcessReference()
         Dim TransProcObj As New TranslationBase
         Dim Coll As New TranslationItemArray
@@ -379,21 +379,21 @@ Public Class TranslationBase
         Return Result
     End Function
 
-    Public Shared Sub TranslateMessageList(ByVal aryItemsToTranslate As ArrayList)
+    Public Shared Sub TranslateMessageList(aryItemsToTranslate As ArrayList)
         Dim TransProcObj As New TranslationBase
 
         TransProcObj.TranslateList(aryItemsToTranslate)
         
     End Sub
 
-    Public Shared Function TranslateParameterizedMsg(ByVal strMSGText As String, ByVal intParamCnt As Integer, ByVal strParamList As String, Optional ByVal strParamListSeperator As Char = "¦") As String
+    Public Shared Function TranslateParameterizedMsg(strMSGText As String, intParamCnt As Integer, strParamList As String, Optional ByVal strParamListSeperator As Char = "¦") As String
         Dim strMsgTranslated As String = "", strPattern As String, blnReadyForParam As Boolean = True
         If strMSGText <> "" AndAlso strParamList <> "" AndAlso intParamCnt > 0 Then
             strMsgTranslated = strMSGText
             'First verify that message text has all the placeholders for parameters
             For i As Integer = 0 To intParamCnt - 1
                 strPattern = "\{" & i.ToString & "\}"
-                If Not System.Text.RegularExpressions.Regex.Match(strMsgTranslated, strPattern).Success Then
+                If Not Text.RegularExpressions.Regex.Match(strMsgTranslated, strPattern).Success Then
                     blnReadyForParam = False
                     strMsgTranslated = String.Empty
                     Exit For
@@ -424,7 +424,7 @@ Public Class TranslationBase
         Return strMsgTranslated
     End Function
 
-    Public Shared Function GetFormatedParameterString(ByVal strParam As String) As String
+    Public Shared Function GetFormatedParameterString(strParam As String) As String
         Dim intParam As Integer, dblParam As Double, dtParam As DateTime, strParamType As String
         Dim strFormatedParam As String = String.Empty
         If strParam.Length > 1 Then
@@ -432,18 +432,18 @@ Public Class TranslationBase
             strFormatedParam = strParam.Substring(1)
             Select Case strParamType.ToUpper
                 Case "N"
-                    If Double.TryParse(strFormatedParam, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.InvariantCulture, dblParam) Then
+                    If Double.TryParse(strFormatedParam, Globalization.NumberStyles.Number, Globalization.CultureInfo.InvariantCulture, dblParam) Then
                         strFormatedParam = dblParam.ToString("#,##0.00")
                     End If
                 Case "I"
-                    If Integer.TryParse(strFormatedParam, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, intParam) Then
+                    If Integer.TryParse(strFormatedParam, Globalization.NumberStyles.Integer, Globalization.CultureInfo.InvariantCulture, intParam) Then
                         strFormatedParam = intParam.ToString("#,###")
                     End If
                 Case "D"
                     'date1.ToString("dd-MMM-yyyy", CultureInfo.CurrentCulture)
-                    If strFormatedParam.Length = 8 AndAlso System.Text.RegularExpressions.Regex.Match(strFormatedParam, "\d{8}").Success Then
+                    If strFormatedParam.Length = 8 AndAlso Text.RegularExpressions.Regex.Match(strFormatedParam, "\d{8}").Success Then
                         If Date.TryParse(strFormatedParam.Substring(0, 4) & "-" & strFormatedParam.Substring(4, 2) & "-" & strFormatedParam.Substring(6, 2), Globalization.CultureInfo.InvariantCulture, Globalization.DateTimeStyles.None, dtParam) Then
-                            strFormatedParam = dtParam.ToString("dd-MMM-yyyy", System.Globalization.CultureInfo.CurrentCulture)
+                            strFormatedParam = dtParam.ToString("dd-MMM-yyyy", Globalization.CultureInfo.CurrentCulture)
                         End If
                     End If
             End Select

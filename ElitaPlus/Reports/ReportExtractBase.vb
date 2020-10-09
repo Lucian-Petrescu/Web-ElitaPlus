@@ -83,7 +83,7 @@ Namespace Reports
             Get
                 Return moError.status
             End Get
-            Set(ByVal Value As ReportExtractBase.RptStatus)
+            Set(Value As ReportExtractBase.RptStatus)
                 moError.status = Value
             End Set
         End Property
@@ -92,7 +92,7 @@ Namespace Reports
             Get
                 Return moError.msg
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 moError.msg = Value
             End Set
         End Property
@@ -113,7 +113,7 @@ Namespace Reports
                 Get
                     Return sError
                 End Get
-                Set(ByVal Value As ReportExtractBase.RptError)
+                Set(Value As ReportExtractBase.RptError)
                     sError = Value
                 End Set
             End Property
@@ -122,7 +122,7 @@ Namespace Reports
                 Get
                     Return sError.status
                 End Get
-                Set(ByVal Value As ReportExtractBase.RptStatus)
+                Set(Value As ReportExtractBase.RptStatus)
                     sError.status = Value
                 End Set
             End Property
@@ -131,7 +131,7 @@ Namespace Reports
                 Get
                     Return sError.msg
                 End Get
-                Set(ByVal Value As String)
+                Set(Value As String)
                     sError.msg = Value
                 End Set
             End Property
@@ -147,20 +147,20 @@ Namespace Reports
             MyBase.New(True)
         End Sub
 
-        Public Sub New(ByVal useExistingState As Boolean)
+        Public Sub New(useExistingState As Boolean)
             MyBase.New(useExistingState)
         End Sub
 
         Protected Shadows ReadOnly Property State() As MyState
             Get
                 Dim st As MyState = Nothing
-                Dim key As Type = Me.GetType()
-                If Me.StateSession.Contains(key) Then
-                    st = CType(Me.StateSession.Item(key), MyState)
+                Dim key As Type = [GetType]()
+                If StateSession.Contains(key) Then
+                    st = CType(StateSession.Item(key), MyState)
                 End If
                 If st Is Nothing Then
                     st = New MyState
-                    Me.StateSession.Item(key) = st
+                    StateSession.Item(key) = st
                 End If
                 Return st
             End Get
@@ -168,11 +168,11 @@ Namespace Reports
 
         Protected Sub SetStateProperties()
             SetStateProperties_NoErrStatus()
-            Me.State.ErrStatus = RptStatus.SUCCESS
+            State.ErrStatus = RptStatus.SUCCESS
         End Sub
 
         Protected Sub SetStateProperties_NoErrStatus()
-            Me.State.moParams = CType(Session(SESSION_PARAMETERS_KEY), Params)
+            State.moParams = CType(Session(SESSION_PARAMETERS_KEY), Params)
         End Sub
 
 #End Region
@@ -182,7 +182,7 @@ Namespace Reports
 
 #Region "View Report"
 
-        Private Sub CreateZipFiles(ByVal zipFileName As String, ByVal sourceDirectory As String)
+        Private Sub CreateZipFiles(zipFileName As String, sourceDirectory As String)
             Try
                 Dim sourceDir As String = sourceDirectory.Replace("/", "\")
                 Dim destinationFileName As String = sourceDir & "\" & zipFileName
@@ -193,7 +193,7 @@ Namespace Reports
             End Try
         End Sub
 
-        Private Sub DownloadFile(ByVal fileName As String, ByVal sourceDirectory As String)
+        Private Sub DownloadFile(fileName As String, sourceDirectory As String)
 
             Dim pathFileName As String = sourceDirectory & "\" & fileName
 
@@ -208,7 +208,7 @@ Namespace Reports
         End Sub
 
 
-        Private Sub SendResponse(ByVal mimeString As String, ByVal byteStream() As Byte, ByVal filename As String)
+        Private Sub SendResponse(mimeString As String, byteStream() As Byte, filename As String)
             Dim sAttachFilename As String
 
             sAttachFilename = "inline; filename=" & MiscUtil.RemoveInvalidChar(filename)
@@ -223,7 +223,7 @@ Namespace Reports
 
 
 
-        Private Sub CreateFolder(ByVal folderName As String)
+        Private Sub CreateFolder(folderName As String)
             Dim objDir As New DirectoryInfo(folderName)
             Try
                 If Not objDir.Exists() Then
@@ -241,7 +241,7 @@ Namespace Reports
 
 #Region "Formating & Validation"
 
-        Public Shared Function FormatDate(ByVal lbl As Label, ByVal sDate As String) As String
+        Public Shared Function FormatDate(lbl As Label, sDate As String) As String
             Dim sFormated As String
             Dim tempDate As Date
 
@@ -252,7 +252,7 @@ Namespace Reports
             Return sFormated
         End Function
 
-        Public Shared Sub ValidateBeginEndDate(ByVal beginLbl As Label, ByVal beginDate As String, ByVal endLbl As Label, ByVal endDate As String)
+        Public Shared Sub ValidateBeginEndDate(beginLbl As Label, beginDate As String, endLbl As Label, endDate As String)
             Dim tempEndDate As Date
             Dim tempBeginDate As Date
 
@@ -271,14 +271,14 @@ Namespace Reports
 
 #Region "JavaScript"
 
-        Protected Sub SendReportError(ByVal statusMsg As String, ByVal errorMsg As String)
+        Protected Sub SendReportError(statusMsg As String, errorMsg As String)
             Dim sJavaScript As String
             Dim transMsg As String = TranslationBase.TranslateLabelOrMessage(statusMsg)
 
             sJavaScript = "<SCRIPT>" & Environment.NewLine
             sJavaScript &= "parent.SendReportError('" & transMsg & "','" & errorMsg & "');" & Environment.NewLine
             sJavaScript &= "</SCRIPT>" & Environment.NewLine
-            Me.RegisterStartupScript("SendReportError", sJavaScript)
+            RegisterStartupScript("SendReportError", sJavaScript)
         End Sub
 
         Protected Sub ContinueWaitingForReport()
@@ -287,7 +287,7 @@ Namespace Reports
             sJavaScript = "<SCRIPT>" & Environment.NewLine
             sJavaScript &= "buttonContinueForReportClick();" & Environment.NewLine
             sJavaScript &= "</SCRIPT>" & Environment.NewLine
-            Me.RegisterStartupScript("ContinueWaitingForReport", sJavaScript)
+            RegisterStartupScript("ContinueWaitingForReport", sJavaScript)
         End Sub
 #End Region
 

@@ -30,7 +30,7 @@ Public Class CancellationQuery
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As CancellationQueryDs)
+    Public Sub New(ds As CancellationQueryDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -44,7 +44,7 @@ Public Class CancellationQuery
     Private _certId As Guid = Guid.Empty
     Private _dealerId As Guid = Guid.Empty
 
-    Private Sub MapDataSet(ByVal ds As CancellationQueryDs)
+    Private Sub MapDataSet(ds As CancellationQueryDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -57,8 +57,8 @@ Public Class CancellationQuery
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -66,13 +66,13 @@ Public Class CancellationQuery
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As CancellationQueryDs)
+    Private Sub Load(ds As CancellationQueryDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
         Catch ex As BOValidationException
             Throw ex
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -84,13 +84,13 @@ Public Class CancellationQuery
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As CancellationQueryDs)
+    Private Sub PopulateBOFromWebService(ds As CancellationQueryDs)
         Try
             If ds.CancellationQuery.Count = 0 Then Exit Sub
             With ds.CancellationQuery.Item(0)
-                Me.CertNumber = ds.CancellationQuery.Item(0).CERT_NUMBER
-                Me.DealerCode = ds.CancellationQuery.Item(0).DEALER_CODE
-                Me.CancellationDate = ds.CancellationQuery.Item(0).CANCELLATION_DATE
+                CertNumber = ds.CancellationQuery.Item(0).CERT_NUMBER
+                DealerCode = ds.CancellationQuery.Item(0).DEALER_CODE
+                CancellationDate = ds.CancellationQuery.Item(0).CANCELLATION_DATE
             End With
         Catch ex As BOValidationException
             Throw ex
@@ -107,37 +107,37 @@ Public Class CancellationQuery
 #Region "Properties"
 
     <ValueMandatory("")> _
-    Public Property CertNumber() As String
+    Public Property CertNumber As String
         Get
-            If Row(Me.DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CERT_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_CERT_NUMBER), String)
+                Return CType(Row(DATA_COL_NAME_CERT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CERT_NUMBER, Value)
+            SetValue(DATA_COL_NAME_CERT_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
-            If Row(Me.DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(Me.DATA_COL_NAME_DEALER_CODE), String)
+                Return CType(Row(DATA_COL_NAME_DEALER_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_DEALER_CODE, Value)
+            SetValue(DATA_COL_NAME_DEALER_CODE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CancellationDate() As DateType
+    Public Property CancellationDate As DateType
         Get
             CheckDeleted()
             If Row(DATA_COL_NAME_CANCELLATION_DATE) Is DBNull.Value Then
@@ -146,22 +146,22 @@ Public Class CancellationQuery
                 Return CType(Row(DATA_COL_NAME_CANCELLATION_DATE), DateTime)
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(DATA_COL_NAME_CANCELLATION_DATE, Value)
+            SetValue(DATA_COL_NAME_CANCELLATION_DATE, Value)
         End Set
     End Property
 
-    Private ReadOnly Property CertID() As Guid
+    Private ReadOnly Property CertID As Guid
         Get
             If _certId.Equals(Guid.Empty) Then
-                Dim dsCert As DataSet = Certificate.ClaimLogisticsGetCert(Me.CertNumber, Me.DealerCode)
+                Dim dsCert As DataSet = Certificate.ClaimLogisticsGetCert(CertNumber, DealerCode)
 
-                If Not dsCert Is Nothing AndAlso dsCert.Tables.Count > 0 AndAlso dsCert.Tables(0).Rows.Count = 1 Then
-                    If dsCert.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID) Is DBNull.Value Then
+                If dsCert IsNot Nothing AndAlso dsCert.Tables.Count > 0 AndAlso dsCert.Tables(0).Rows.Count = 1 Then
+                    If dsCert.Tables(0).Rows(0).Item(DATA_COL_NAME_CERT_ID) Is DBNull.Value Then
                         Throw New BOValidationException("CancellationQuery Error: ", CERTIFICATE_NOT_FOUND)
                     Else
-                        _certId = New Guid(CType(dsCert.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID), Byte()))
+                        _certId = New Guid(CType(dsCert.Tables(0).Rows(0).Item(DATA_COL_NAME_CERT_ID), Byte()))
 
                         If _certId.Equals(Guid.Empty) Then
                             Throw New BOValidationException("CancellationQuery Error: ", CERTIFICATE_NOT_FOUND)
@@ -172,7 +172,7 @@ Public Class CancellationQuery
                 End If
             End If
 
-            Return Me._certId
+            Return _certId
         End Get
     End Property
 
@@ -183,11 +183,11 @@ Public Class CancellationQuery
 
     Public Overrides Function ProcessWSRequest() As String
         Try
-            Me.Validate()
+            Validate()
 
             Dim oCancelCertificateData As New CertCancellationData
 
-            Dim oCert As New Certificate(Me.CertID)
+            Dim oCert As New Certificate(CertID)
 
             ' Check if the certificate is already closed
             If oCert.StatusCode = "C" Then
@@ -195,15 +195,15 @@ Public Class CancellationQuery
             End If
 
             ' Check if there is any claims that are not closed
-            If oCert.TotalClaimsNotClosedForCert(Me.DealerId, oCert.CertNumber) Then
+            If oCert.TotalClaimsNotClosedForCert(DealerId, oCert.CertNumber) Then
                 Throw New BOValidationException("CancellationQuery Error: ", ACTIVE_CLAIMS_EXIST)
             End If
 
             ' Get cancellation reason code from Contract record
             Dim oContract As Contract
-            oContract = Contract.GetContract(Me.DealerId, oCert.WarrantySalesDate.Value)
+            oContract = Contract.GetContract(DealerId, oCert.WarrantySalesDate.Value)
             If oContract Is Nothing Then
-                oContract = Contract.GetMaxExpirationContract(Me.DealerId)
+                oContract = Contract.GetMaxExpirationContract(DealerId)
                 If oContract Is Nothing Then
                     Throw New BOValidationException("CancellationQuery Error: ", Common.ErrorCodes.NO_CONTRACT_FOUND)
                 End If
@@ -212,7 +212,7 @@ Public Class CancellationQuery
             ' create a cancellation BO
             Dim certCancellationBO As New CertCancellation
             certCancellationBO.CancellationReasonId = oContract.CancellationReasonId
-            certCancellationBO.CancellationDate = Me.CancellationDate
+            certCancellationBO.CancellationDate = CancellationDate
 
             'Call QuoteCancellation
             oCert.QuoteCancellation(certCancellationBO, oCancelCertificateData)
@@ -221,16 +221,16 @@ Public Class CancellationQuery
             If Not oCancelCertificateData.errorExist Then
                 If oCancelCertificateData.errorExist2 = False Then
 
-                    Dim dsResult = New DataSet(Me.DATASET_NAME)
-                    Dim dt As DataTable = New DataTable(Me.TABLE_NAME)
-                    dt.Columns.Add(Me.DATA_COL_NAME_CERT_NUMBER, GetType(String))
-                    dt.Columns.Add(Me.DATA_COL_NAME_REFUND_AMOUNT, GetType(Decimal))
+                    Dim dsResult = New DataSet(DATASET_NAME)
+                    Dim dt As DataTable = New DataTable(TABLE_NAME)
+                    dt.Columns.Add(DATA_COL_NAME_CERT_NUMBER, GetType(String))
+                    dt.Columns.Add(DATA_COL_NAME_REFUND_AMOUNT, GetType(Decimal))
                     dsResult.Tables.Add(dt)
 
-                    Dim newRow As DataRow = dsResult.Tables(Me.TABLE_NAME).NewRow()
-                    newRow(Me.DATA_COL_NAME_CERT_NUMBER) = Me.CertNumber
-                    newRow(Me.DATA_COL_NAME_REFUND_AMOUNT) = oCancelCertificateData.refundAmount
-                    dsResult.Tables(Me.TABLE_NAME).Rows.Add(newRow)
+                    Dim newRow As DataRow = dsResult.Tables(TABLE_NAME).NewRow()
+                    newRow(DATA_COL_NAME_CERT_NUMBER) = CertNumber
+                    newRow(DATA_COL_NAME_REFUND_AMOUNT) = oCancelCertificateData.refundAmount
+                    dsResult.Tables(TABLE_NAME).Rows.Add(newRow)
                     Return XMLHelper.FromDatasetToXML(dsResult, Nothing, True)
 
                 Else
@@ -258,22 +258,22 @@ Public Class CancellationQuery
 
 #Region "Extended Properties"
 
-    Private ReadOnly Property DealerId() As Guid
+    Private ReadOnly Property DealerId As Guid
         Get
-            If Me._dealerId.Equals(Guid.Empty) Then
+            If _dealerId.Equals(Guid.Empty) Then
 
                 Dim list As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
                 If list Is Nothing Then
                     Throw New BOValidationException("SaveSerialNumberByCertNum Error: ", Common.ErrorCodes.WS_ERROR_ACCESSING_DATABASE)
                 End If
-                Me._dealerId = LookupListNew.GetIdFromCode(list, Me.DealerCode)
+                _dealerId = LookupListNew.GetIdFromCode(list, DealerCode)
                 If _dealerId.Equals(Guid.Empty) Then
                     Throw New BOValidationException("SaveSerialNumberByCertNum Error: ", Common.ErrorCodes.WS_DEALER_NOT_FOUND)
                 End If
                 list = Nothing
             End If
 
-            Return Me._dealerId
+            Return _dealerId
         End Get
     End Property
 

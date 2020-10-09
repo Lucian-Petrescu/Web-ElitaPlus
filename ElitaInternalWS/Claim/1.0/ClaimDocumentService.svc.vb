@@ -13,7 +13,7 @@ Namespace Claims
             Throw New NotSupportedException()
         End Function
 
-        Public Function AttachDocument(ByVal request As AttachDocumentRequest) As AttachDocumentResponse Implements IClaimDocumentServiceV1.AttachDocument
+        Public Function AttachDocument(request As AttachDocumentRequest) As AttachDocumentResponse Implements IClaimDocumentServiceV1.AttachDocument
 
             ExtensionMethods.Validate(request)
 
@@ -153,7 +153,7 @@ Namespace Claims
             Return response
         End Function
 
-        Public Function DownloadDocument(ByVal request As DownloadDocumentRequest) As DownloadDocumentResponse Implements IClaimDocumentServiceV1.DownloadDocument
+        Public Function DownloadDocument(request As DownloadDocumentRequest) As DownloadDocumentResponse Implements IClaimDocumentServiceV1.DownloadDocument
             Dim response As New DownloadDocumentResponse()
 
             Dim oClaim As ClaimBase = ClaimServiceHelper.GetClaim(request.ClaimsSearch)

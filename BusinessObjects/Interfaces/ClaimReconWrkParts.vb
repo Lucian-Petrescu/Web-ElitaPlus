@@ -16,29 +16,29 @@
         MyBase.New()
     End Sub
     'New BO
-    Public Sub New(ByVal dealerProcessedID As Guid)
+    Public Sub New(dealerProcessedID As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(dealerProcessedID)
+        Dataset = New DataSet
+        Load(dealerProcessedID)
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal oRow As DataRow, ByVal ds As DataSet)
+    Public Sub New(oRow As DataRow, ds As DataSet)
         MyBase.New()
-        Me.Dataset = ds
-        Me.Row = oRow
+        Dataset = ds
+        Row = oRow
     End Sub
 
 
-    Protected Sub Load(ByVal dealerFileProcessedID As Guid)
+    Protected Sub Load(dealerFileProcessedID As Guid)
         Try
             Dim dal As New ClaimReconWrkPartsDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset, dealerFileProcessedID)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset, dealerFileProcessedID)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -57,7 +57,7 @@
 #Region "Properties"
 
     <ValidStringLength("", Max:=2)> _
-    Public Property PartNumber() As String
+    Public Property PartNumber As String
         Get
             CheckDeleted()
             If Row(COL_PART_NUMBER) Is DBNull.Value Then
@@ -66,14 +66,14 @@
                 Return CType(Row(COL_PART_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(COL_PART_NUMBER, Value)
+            SetValue(COL_PART_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=18)> _
-    Public Property PartSKU() As String
+    Public Property PartSKU As String
         Get
             CheckDeleted()
             If Row(COL_PART_SKU) Is DBNull.Value Then
@@ -82,14 +82,14 @@
                 Return CType(Row(COL_PART_SKU), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(COL_PART_SKU, Value)
+            SetValue(COL_PART_SKU, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)> _
-    Public Property PartDescription() As String
+    Public Property PartDescription As String
         Get
             CheckDeleted()
             If Row(COL_PART_DESCRIPTION) Is DBNull.Value Then
@@ -98,9 +98,9 @@
                 Return CType(Row(COL_PART_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(COL_PART_DESCRIPTION, Value)
+            SetValue(COL_PART_DESCRIPTION, Value)
         End Set
     End Property
     
@@ -108,7 +108,7 @@
 
 #Region "External Properties"
 
-    Shared ReadOnly Property CompanyId(ByVal DealerfileProcessedId As Guid) As Guid
+    Shared ReadOnly Property CompanyId(DealerfileProcessedId As Guid) As Guid
         Get
             Dim oDealerfileProcessed As New DealerFileProcessed(DealerfileProcessedId)
             Dim oDealer As New Dealer(oDealerfileProcessed.DealerId)
@@ -124,7 +124,7 @@
         'Only validating
         MyBase.Validate()
     End Sub
-    Public Function SaveParts(ByVal ds As DataSet) As Integer
+    Public Function SaveParts(ds As DataSet) As Integer
         Try
             Dim dal As New ClaimReconWrkPartsDAL
             Return dal.SaveParts(ds)
@@ -136,7 +136,7 @@
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function LoadList(ByVal claimReconWrkId As Guid) As DataSet
+    Public Shared Function LoadList(claimReconWrkId As Guid) As DataSet
         Try
             Dim dal As New ClaimReconWrkPartsDAL
             Dim ds As DataSet

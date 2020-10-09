@@ -20,29 +20,29 @@
         MyBase.New()
     End Sub
     'New BO
-    Public Sub New(ByVal dealerProcessedID As Guid)
+    Public Sub New(dealerProcessedID As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(dealerProcessedID)
+        Dataset = New DataSet
+        Load(dealerProcessedID)
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal oRow As DataRow, ByVal ds As DataSet)
+    Public Sub New(oRow As DataRow, ds As DataSet)
         MyBase.New()
-        Me.Dataset = ds
-        Me.Row = oRow
+        Dataset = ds
+        Row = oRow
     End Sub
 
 
-    Protected Sub Load(ByVal dealerFileProcessedID As Guid)
+    Protected Sub Load(dealerFileProcessedID As Guid)
         Try
             Dim dal As New DealerReconWrkBundlesDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset, dealerFileProcessedID)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset, dealerFileProcessedID)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -61,7 +61,7 @@
 #Region "Properties"
 
     <ValidStringLength("", Max:=2)> _
-    Public Property ItemNumber() As String
+    Public Property ItemNumber As String
         Get
             CheckDeleted()
             If Row(COL_ITEM_NUMBER) Is DBNull.Value Then
@@ -70,14 +70,14 @@
                 Return CType(Row(COL_ITEM_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(COL_ITEM_NUMBER, Value)
+            SetValue(COL_ITEM_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)> _
-    Public Property ItemManufacturer() As String
+    Public Property ItemManufacturer As String
         Get
             CheckDeleted()
             If Row(COL_ITEM_MANUFACTURER) Is DBNull.Value Then
@@ -86,14 +86,14 @@
                 Return CType(Row(COL_ITEM_MANUFACTURER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(COL_ITEM_MANUFACTURER, Value)
+            SetValue(COL_ITEM_MANUFACTURER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)> _
-    Public Property ItemModel() As String
+    Public Property ItemModel As String
         Get
             CheckDeleted()
             If Row(COL_ITEM_MODEL) Is DBNull.Value Then
@@ -102,14 +102,14 @@
                 Return CType(Row(COL_ITEM_MODEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(COL_ITEM_MODEL, Value)
+            SetValue(COL_ITEM_MODEL, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=30)>
-    Public Property ItemSerialNumber() As String
+    Public Property ItemSerialNumber As String
         Get
             CheckDeleted()
             If Row(COL_ITEM_SERIAL_NUMBER) Is DBNull.Value Then
@@ -118,14 +118,14 @@
                 Return CType(Row(COL_ITEM_SERIAL_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(COL_ITEM_SERIAL_NUMBER, Value)
+            SetValue(COL_ITEM_SERIAL_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)> _
-    Public Property ItemDescription() As String
+    Public Property ItemDescription As String
         Get
             CheckDeleted()
             If Row(COL_ITEM_DESCRIPTION) Is DBNull.Value Then
@@ -134,14 +134,14 @@
                 Return CType(Row(COL_ITEM_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(COL_ITEM_DESCRIPTION, Value)
+            SetValue(COL_ITEM_DESCRIPTION, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=99999999.99)> _
-    Public Property ItemPrice() As DecimalType
+    Public Property ItemPrice As DecimalType
         Get
             CheckDeleted()
             If Row(COL_ITEM_PRICE) Is DBNull.Value Then
@@ -150,14 +150,14 @@
                 Return CType(Row(COL_ITEM_PRICE), Decimal)
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(COL_ITEM_PRICE, Value)
+            SetValue(COL_ITEM_PRICE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=20)> _
-    Public Property ItemBundleValue() As String
+    Public Property ItemBundleValue As String
         Get
             CheckDeleted()
             If Row(COL_ITEM_BUNDLE_VAL) Is DBNull.Value Then
@@ -166,14 +166,14 @@
                 Return CType(Row(COL_ITEM_BUNDLE_VAL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(COL_ITEM_BUNDLE_VAL, Value)
+            SetValue(COL_ITEM_BUNDLE_VAL, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=99999)> _
-    Public Property ItemManWarranty() As LongType
+    Public Property ItemManWarranty As LongType
         Get
             CheckDeleted()
             If Row(COL_ITEM_MAN_WARRANTY) Is DBNull.Value Then
@@ -182,16 +182,16 @@
                 Return CType(Row(COL_ITEM_MAN_WARRANTY), Long)
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(COL_ITEM_MAN_WARRANTY, Value)
+            SetValue(COL_ITEM_MAN_WARRANTY, Value)
         End Set
     End Property
 #End Region
 
 #Region "External Properties"
 
-    Shared ReadOnly Property CompanyId(ByVal DealerfileProcessedId As Guid) As Guid
+    Shared ReadOnly Property CompanyId(DealerfileProcessedId As Guid) As Guid
         Get
             Dim oDealerfileProcessed As New DealerFileProcessed(DealerfileProcessedId)
             Dim oDealer As New Dealer(oDealerfileProcessed.DealerId)
@@ -207,7 +207,7 @@
         'Only validating
         MyBase.Validate()
     End Sub
-    Public Function SaveBundles(ByVal ds As DataSet) As Integer
+    Public Function SaveBundles(ds As DataSet) As Integer
         Try
             Dim dal As New DealerReconWrkBundlesDAL
             Return dal.SaveBundles(ds)
@@ -219,7 +219,7 @@
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function LoadList(ByVal dealerReconWrkId As Guid) As DataSet
+    Public Shared Function LoadList(dealerReconWrkId As Guid) As DataSet
         Try
             Dim dal As New DealerReconWrkBundlesDAL
             Dim ds As DataSet

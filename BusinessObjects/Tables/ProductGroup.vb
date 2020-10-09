@@ -6,48 +6,48 @@ Public Class ProductGroup
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ProductGroupDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_PRODUCT_GROUP_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_PRODUCT_GROUP_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_PRODUCT_GROUP_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_PRODUCT_GROUP_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_PRODUCT_GROUP_NAME).NewRow
+            Dataset.Tables(dal.TABLE_PRODUCT_GROUP_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class ProductGroup
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New ProductGroupDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_PRODUCT_GROUP_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_PRODUCT_GROUP_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_PRODUCT_GROUP_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_PRODUCT_GROUP_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_PRODUCT_GROUP_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_PRODUCT_GROUP_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_PRODUCT_GROUP_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_PRODUCT_GROUP_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -90,7 +90,7 @@ Public Class ProductGroup
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(ProductGroupDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class ProductGroup
     End Property
 
     <ValueMandatory("")> _
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(ProductGroupDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -110,14 +110,14 @@ Public Class ProductGroup
                 Return New Guid(CType(Row(ProductGroupDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductGroupDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(ProductGroupDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=200)> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(ProductGroupDAL.COL_NAME_PRODUCT_GROUP_NAME) Is DBNull.Value Then
@@ -126,17 +126,17 @@ Public Class ProductGroup
                 Return CType(Row(ProductGroupDAL.COL_NAME_PRODUCT_GROUP_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ProductGroupDAL.COL_NAME_PRODUCT_GROUP_NAME, Value)
+            SetValue(ProductGroupDAL.COL_NAME_PRODUCT_GROUP_NAME, Value)
         End Set
     End Property
 
     Dim _Route As Route
-    Public ReadOnly Property moRoute() As Route
+    Public ReadOnly Property moRoute As Route
         Get
             If (_Route Is Nothing) Then
-                _Route = New Route(Me.Id, Nothing)
+                _Route = New Route(Id, Nothing)
             End If
 
             Return (_Route)
@@ -150,15 +150,15 @@ Public Class ProductGroup
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ProductGroupDAL
-                dal.UpdateFamily(Me.Dataset) 'New Code Added Manually
+                dal.UpdateFamily(Dataset) 'New Code Added Manually
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -166,18 +166,18 @@ Public Class ProductGroup
         End Try
     End Sub
 
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
             Return MyBase.IsFamilyDirty
         End Get
     End Property
 
-    Public Sub Copy(ByVal original As ProductGroup)
-        If Not Me.IsNew Then
+    Public Sub Copy(original As ProductGroup)
+        If Not IsNew Then
             Throw New BOInvalidOperationException("You cannot copy into an existing Product Group")
         End If
         'Copy myself
-        Me.CopyFrom(original)
+        CopyFrom(original)
 
     End Sub
 
@@ -185,30 +185,30 @@ Public Class ProductGroup
 
 #Region "Children Related"
 
-    Public Sub AttachProductcodes(ByVal selectedProductCodeStrCollection As ArrayList)
+    Public Sub AttachProductcodes(selectedProductCodeStrCollection As ArrayList)
         Dim pgPcIdStr As String
         For Each pgPcIdStr In selectedProductCodeStrCollection
-            Dim pgPcBO As ProductGroupPrc = New ProductGroupPrc(Me.Dataset)
-            If Not pgPcIdStr Is Nothing Then
-                pgPcBO.ProductGroupId = Me.Id
+            Dim pgPcBO As ProductGroupPrc = New ProductGroupPrc(Dataset)
+            If pgPcIdStr IsNot Nothing Then
+                pgPcBO.ProductGroupId = Id
                 pgPcBO.ProductCodeId = New Guid(pgPcIdStr)
                 pgPcBO.Save()
             End If
         Next
     End Sub
 
-    Public Sub DetachProductCodes(ByVal selectedProductCodeGuidStrCollection As ArrayList)
+    Public Sub DetachProductCodes(selectedProductCodeGuidStrCollection As ArrayList)
         Dim pgPcIdStr As String
         For Each pgPcIdStr In selectedProductCodeGuidStrCollection
-            Dim pgPcBO As ProductGroupPrc = New ProductGroupPrc(Me.Dataset, Me.Id, New Guid(pgPcIdStr))
-            If Not pgPcBO Is Nothing Then
+            Dim pgPcBO As ProductGroupPrc = New ProductGroupPrc(Dataset, Id, New Guid(pgPcIdStr))
+            If pgPcBO IsNot Nothing Then
                 pgPcBO.Delete()
                 pgPcBO.Save()
             End If
         Next
     End Sub
 
-    Public Shared Function GetAvailableProductCodes(ByVal dealerId As Guid, Optional ByVal ds As DataSet = Nothing) As DataSet
+    Public Shared Function GetAvailableProductCodes(dealerId As Guid, Optional ByVal ds As DataSet = Nothing) As DataSet
         If ds Is Nothing Then
             ds = New DataSet
         End If
@@ -218,7 +218,7 @@ Public Class ProductGroup
     End Function
 
 
-    Public Shared Function GetSelectedProductCodes(ByVal dealerId As Guid, Optional ByVal ds As DataSet = Nothing) As DataSet
+    Public Shared Function GetSelectedProductCodes(dealerId As Guid, Optional ByVal ds As DataSet = Nothing) As DataSet
         If ds Is Nothing Then
             ds = New DataSet
         End If
@@ -228,13 +228,13 @@ Public Class ProductGroup
     End Function
 
     Public Sub DeleteAndSave()
-        Me.CheckDeleted()
-        Me.BeginEdit()
+        CheckDeleted()
+        BeginEdit()
         Try
-            Me.Delete()
-            Me.Save()
+            Delete()
+            Save()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-            Me.cancelEdit()
+            cancelEdit()
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Sub
@@ -243,7 +243,7 @@ Public Class ProductGroup
 
 #Region "DataView Retrieving Methods"
 
-    Public Shared Function getList(ByVal groupName As String, ByVal dealerID As Guid, ByVal productCodeId As String, ByVal riskTypeId As String) As ProductGroupSearchDV
+    Public Shared Function getList(groupName As String, dealerID As Guid, productCodeId As String, riskTypeId As String) As ProductGroupSearchDV
         Try
             Dim dal As New ProductGroupDAL
             Return New ProductGroupSearchDV(dal.LoadList(Authentication.CompIds, dealerID, groupName, productCodeId, riskTypeId).Tables(0))
@@ -263,23 +263,23 @@ Public Class ProductGroup
         Public Const COL_NAME_PRODUCT_GROUP_ID As String = ProductGroupDAL.COL_NAME_PRODUCT_GROUP_ID
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property ProductGroupId(ByVal row) As Guid
+        Public Shared ReadOnly Property ProductGroupId(row) As Guid
             Get
                 Return New Guid(CType(row(COL_NAME_PRODUCT_GROUP_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Description(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property Description(row As DataRow) As String
             Get
                 Return row(COL_NAME_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property DealerCodeAndName(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property DealerCodeAndName(row As DataRow) As String
             Get
                 Return row(COL_NAME_DEALER).ToString + "-" + row(COL_NAME_DEALER_NAME)
             End Get

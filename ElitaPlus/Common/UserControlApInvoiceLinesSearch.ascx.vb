@@ -141,28 +141,28 @@ Namespace Common
         End Property
         Public Property AuthGridSortDirection() As String
             Get
-                If Not ViewState("AuthGridSortDirection") Is Nothing Then
+                If ViewState("AuthGridSortDirection") IsNot Nothing Then
                     Return ViewState("AuthGridSortDirection").ToString
                 Else
                     Return PageConstant.AuthGridDefaultSortColumn
                 End If
 
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 ViewState("AuthGridSortDirection") = value
             End Set
 
         End Property
         Public Property PoLinesGridSortDirection() As String
             Get
-                If Not ViewState("PoLinesGridSortDirection") Is Nothing Then
+                If ViewState("PoLinesGridSortDirection") IsNot Nothing Then
                     Return ViewState("PoLinesGridSortDirection").ToString
                 Else
                     Return ApInvoiceLines.APInvoiceLinesDV.COL_DESCRIPTION
                 End If
 
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 ViewState("PoLinesGridSortDirection") = value
             End Set
 
@@ -176,7 +176,7 @@ Namespace Common
 
 #Region "Control Status"
 
-        Private Sub SetControlState(ByVal isVisible As Boolean)
+        Private Sub SetControlState(isVisible As Boolean)
             ControlMgr.SetVisibleControl(ElitaHostPage, linesGridHeader, isVisible)
             ControlMgr.SetVisibleControl(ElitaHostPage, btnSearchLines, isVisible)
             ControlMgr.SetVisibleControl(ElitaHostPage, btnAddSelectedPoLines, isVisible)
@@ -229,9 +229,9 @@ Namespace Common
 
             End Try
         End sub
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
             Dim parentControl = Parent
-            While (Not TypeOf parentControl Is ElitaPlusPage And parentControl IsNot Nothing)
+            While (Not TypeOf parentControl Is ElitaPlusPage AndAlso parentControl IsNot Nothing)
                 parentControl = parentControl.Parent
             End While
             ElitaHostPage = DirectCast(parentControl, ElitaPlusPage)
@@ -240,36 +240,36 @@ Namespace Common
         End Sub
         Private Sub UserControlApInvoiceLinesSearch_PreRender(sender As Object, e As EventArgs) Handles Me.PreRender
            
-            If GridAuth.Visible = True  AndAlso Not GridAuth.HeaderRow is Nothing Then
+            If GridAuth.Visible = True  AndAlso GridAuth.HeaderRow IsNot Nothing Then
               
                 Dim chkboxAuth As WebControls.CheckBox
                 chkboxAuth = CType(GridAuth.HeaderRow.FindControl(PageConstant.GridColAuthSelectAllCtrl), WebControls.CheckBox)
-                If (Not chkboxAuth Is Nothing) Then
+                If (chkboxAuth IsNot Nothing) Then
                     chkboxAuth.InputAttributes("class") = "checkboxHeader"
                 End If
 
                 For Each row As GridViewRow In GridAuth.Rows
                     If row.RowType = DataControlRowType.DataRow Then
                         chkboxAuth = CType(row.Cells(PageConstant.GridColCheckBoxIdx).FindControl(PageConstant.GridColAuthSelectCtrl),  WebControls.CheckBox)
-                        If (Not chkboxAuth Is Nothing) Then
+                        If (chkboxAuth IsNot Nothing) Then
                             chkboxAuth.InputAttributes("class") = "checkboxLine"
                         End If
                     End If
                 Next
           End If
 
-            If GridPoLines.Visible = True AndAlso Not GridPoLines.HeaderRow is Nothing  Then
+            If GridPoLines.Visible = True AndAlso GridPoLines.HeaderRow IsNot Nothing  Then
               
                 Dim chkboxPoLine As WebControls.CheckBox
                 chkboxPoLine = CType(GridPoLines.HeaderRow.FindControl(PageConstant.GridColPoLineSelectAllCtrl), WebControls.CheckBox)
-                If (Not chkboxPoLine Is Nothing) Then
+                If (chkboxPoLine IsNot Nothing) Then
                     chkboxPoLine.InputAttributes("class") = "checkboxHeader"
                 End If
 
                 For Each row As GridViewRow In GridPoLines.Rows
                     If row.RowType = DataControlRowType.DataRow Then
                         chkboxPoLine = CType(row.Cells(PageConstant.GridColCheckBoxIdx).FindControl(PageConstant.GridColPoLineSelectCtrl),  WebControls.CheckBox)
-                        If (Not chkboxPoLine Is Nothing) Then
+                        If (chkboxPoLine IsNot Nothing) Then
                             chkboxPoLine.InputAttributes("class") = "checkboxLine"
                         End If
                     End If
@@ -428,7 +428,7 @@ Namespace Common
                 SortAndHighlightGridHeaderFunc.Invoke(GridAuth,AuthGridSortDirection)
                 UpdateRecordCount(authDv.Count)
                 Session("authRecCount") = authDv.Count
-            if Not authDv is Nothing AndAlso authDv.Count > 0 then
+            if authDv IsNot Nothing AndAlso authDv.Count > 0 then
                 ControlMgr.SetVisibleControl(ElitaHostPage, btnSearchLines, True)
             End If
 
@@ -438,7 +438,7 @@ Namespace Common
             Dim apInvoiceLinesBo As New ApInvoiceLines
             Return apInvoiceLinesBo.GetAuthorization(ServiceCenterId, txtClaimNumber.Text, txtAuthorizationNumber.Text)
         End Function
-        Private Sub GridAuth_PageIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles GridAuth.PageIndexChanged
+        Private Sub GridAuth_PageIndexChanged(sender As Object, e As EventArgs) Handles GridAuth.PageIndexChanged
             Try
                 PageIndex = GridAuth.PageIndex
                 PopulateAuthorizationGrid()
@@ -446,7 +446,7 @@ Namespace Common
                 HandleLocalException(ex)
             End Try
         End Sub
-        Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As GridViewPageEventArgs) Handles GridAuth.PageIndexChanging
+        Private Sub Grid_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles GridAuth.PageIndexChanging
             Try
                 GridAuth.PageIndex = e.NewPageIndex
                 PageIndex = GridAuth.PageIndex
@@ -454,7 +454,7 @@ Namespace Common
                 HandleLocalException(ex)
             End Try
         End Sub
-        Private Sub cboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 PageSize = CType(cboPageSize.SelectedValue, Integer)
                 PageIndex = NewCurrentPageIndexFunc.Invoke(GridAuth,  CType(Session("authRecCount"), Int32) , PageSize)
@@ -465,7 +465,7 @@ Namespace Common
                 HandleLocalException(ex)
             End Try
         End Sub
-        Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles GridAuth.RowDataBound
+        Private Sub Grid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles GridAuth.RowDataBound
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Try
                 If e.Row.RowType = DataControlRowType.DataRow Then
@@ -475,7 +475,7 @@ Namespace Common
                 HandleLocalException(ex)
             End Try
         End Sub
-        Private Function GetGuidStringFromByteArray(ByVal value As Byte()) As String
+        Private Function GetGuidStringFromByteArray(value As Byte()) As String
             If value  is Nothing Then
                 Return Guid.Empty.ToString()
             Else 
@@ -483,7 +483,7 @@ Namespace Common
             End If
        
         End Function
-        Private Sub Grid_SortCommand(ByVal sortSource As Object, ByVal e As GridViewSortEventArgs) Handles GridAuth.Sorting
+        Private Sub Grid_SortCommand(sortSource As Object, e As GridViewSortEventArgs) Handles GridAuth.Sorting
             Try
                 Dim spaceIndex As Integer = AuthGridSortDirection.LastIndexOf(" ", StringComparison.Ordinal)
 
@@ -510,7 +510,7 @@ Namespace Common
 #Region "Po Line Grid"
         Private Sub PopulatePoLinesGrid()
             Dim poLinesDv As DataView = GetPoLinesGridDataView()
-              If Not poLinesDv Is Nothing Then
+              If poLinesDv IsNot Nothing Then
                  GridPoLines.AutoGenerateColumns = False
                   GridPoLines.Columns(PageConstant.GridColVendorItemCode).SortExpression = PageConstant.AuthGridSortColumnItemCode
                   GridPoLines.Columns(PageConstant.GridColDescription).SortExpression = ApInvoiceLines.APInvoiceLinesDV.COL_DESCRIPTION
@@ -540,7 +540,7 @@ Namespace Common
             End If
             Return apInvoiceLinesBo.GetPoLines(selectedAuthIds)
         End Function
-        Private Sub GridPoLines_PageIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles GridPoLines.PageIndexChanged
+        Private Sub GridPoLines_PageIndexChanged(sender As Object, e As EventArgs) Handles GridPoLines.PageIndexChanged
             Try
                 PageIndex = GridPoLines.PageIndex
                 PopulatePoLinesGrid()
@@ -548,7 +548,7 @@ Namespace Common
                 HandleLocalException(ex)
             End Try
         End Sub
-        Private Sub GridPoLines_PageIndexChanging(ByVal sender As Object, ByVal e As GridViewPageEventArgs) Handles GridPoLines.PageIndexChanging
+        Private Sub GridPoLines_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles GridPoLines.PageIndexChanging
             Try
                 GridPoLines.PageIndex = e.NewPageIndex
                 PageIndex = GridPoLines.PageIndex
@@ -556,7 +556,7 @@ Namespace Common
                 HandleLocalException(ex)
             End Try
         End Sub
-        Private Sub PoLineCboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles PoLineCboPageSize.SelectedIndexChanged
+        Private Sub PoLineCboPageSize_SelectedIndexChanged(sender As Object, e As EventArgs) Handles PoLineCboPageSize.SelectedIndexChanged
             Try
                 PageSize = CType(PoLineCboPageSize.SelectedValue, Integer)
                 PageIndex = NewCurrentPageIndexFunc.Invoke(GridPoLines,  CType(Session("PoLineRecCount"), Int32), PageSize)
@@ -566,7 +566,7 @@ Namespace Common
                 HandleLocalException(ex)
             End Try
         End Sub
-        Private Sub PoLineGrid_SortCommand(ByVal sortSource As Object, ByVal e As GridViewSortEventArgs) Handles GridPoLines.Sorting
+        Private Sub PoLineGrid_SortCommand(sortSource As Object, e As GridViewSortEventArgs) Handles GridPoLines.Sorting
             Try
                 Dim spaceIndex As Integer = PoLinesGridSortDirection.LastIndexOf(" ", StringComparison.Ordinal)
 

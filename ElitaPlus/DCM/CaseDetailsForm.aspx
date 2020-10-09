@@ -125,11 +125,11 @@
             <asp:HiddenField ID="hdnDisabledTabs" runat="server" Value="" />            
             <div id="tabs" class="style-tabs" style="display: none;">
                 <ul>
-                    <li><a href="#tabsInteractionInfo"><asp:Label ID="Label8" runat="server" CssClass="tabHeaderText">CASE_INTERACTION</asp:Label></a></li>
-                    <li><a href="#tabsActionInfo"><asp:Label ID="Label17" runat="server" CssClass="tabHeaderText">CASE_ACTION</asp:Label></a></li>
-                    <li><a href="#tabsQuestionAnswerInfo"><asp:Label ID="Label1" runat="server" CssClass="tabHeaderText">CASE_QUESTION_ANSWER</asp:Label></a></li>
-                    <li><a href="#tabsDeniedReasonInfo"><asp:Label ID="LabelCaseDeniedReasons" runat="server" CssClass="tabHeaderText">DENIED_REASONS</asp:Label></a></li>
-                    <li><a href="#tabsCaseNotes"><asp:Label ID="LabelCaseNotes" runat="server" CssClass="tabHeaderText">CASE_NOTES</asp:Label></a></li>
+                    <li><a href="#tabsInteractionInfo" rel="noopener noreferrer"><asp:Label ID="Label8" runat="server" CssClass="tabHeaderText">CASE_INTERACTION</asp:Label></a></li>
+                    <li><a href="#tabsActionInfo" rel="noopener noreferrer"><asp:Label ID="Label17" runat="server" CssClass="tabHeaderText">CASE_ACTION</asp:Label></a></li>
+                    <li><a href="#tabsQuestionAnswerInfo" rel="noopener noreferrer"><asp:Label ID="Label1" runat="server" CssClass="tabHeaderText">CASE_QUESTION_ANSWER</asp:Label></a></li>
+                    <li><a href="#tabsDeniedReasonInfo" rel="noopener noreferrer"><asp:Label ID="LabelCaseDeniedReasons" runat="server" CssClass="tabHeaderText">DENIED_REASONS</asp:Label></a></li>
+                    <li><a href="#tabsCaseNotes" rel="noopener noreferrer"><asp:Label ID="LabelCaseNotes" runat="server" CssClass="tabHeaderText">CASE_NOTES</asp:Label></a></li>
                 </ul>
                 
                 <div id="tabsInteractionInfo">

@@ -1,5 +1,4 @@
 ﻿Imports System.Runtime.Caching
-Imports Assurant.ElitaPlus.Business
 Imports Assurant.ElitaPlus.DataAccessInterface
 Imports Assurant.ElitaPlus.DataEntities
 
@@ -7,17 +6,17 @@ Public Class ExpressionCacheManager
     Implements ICacheManager
 
     Private Property CommonRepository As ICommonRepository(Of Expression)
-    Friend Sub New(ByVal commonRepository As ICommonRepository(Of Expression))
+    Friend Sub New(commonRepository As ICommonRepository(Of Expression))
         Me.CommonRepository = commonRepository
     End Sub
 
     Private Const CacheKeyValue As String = "Expression"
 
-    Friend Function CacheKeyForExpression(ByVal pExpressionID As Guid) As String
+    Friend Function CacheKeyForExpression(pExpressionID As Guid) As String
         Return String.Format("{0}#{1}", CacheKeyValue, pExpressionID)
     End Function
 
-    Friend Function BuildCacheForExpression(ByVal pExpressionID As Guid) As Expression
+    Friend Function BuildCacheForExpression(pExpressionID As Guid) As Expression
         Return CommonRepository.Get(Function(e) e.ExpressionId = pExpressionID).FirstOrDefault()
     End Function
 

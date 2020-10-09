@@ -9,48 +9,48 @@ Public Class CountryPostalCodeFormat
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load(id)
+        Dataset = New Dataset
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load()
+        Dataset = New Dataset
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New CountryPostalCodeFormatDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -58,23 +58,23 @@ Public Class CountryPostalCodeFormat
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CountryPostalCodeFormatDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -92,7 +92,7 @@ Public Class CountryPostalCodeFormat
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CountryPostalCodeFormatDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -103,7 +103,7 @@ Public Class CountryPostalCodeFormat
     End Property
 
     <ValueMandatory("")> _
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             CheckDeleted()
             If Row(CountryPostalCodeFormatDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -112,15 +112,15 @@ Public Class CountryPostalCodeFormat
                 Return New Guid(CType(Row(CountryPostalCodeFormatDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CountryPostalCodeFormatDAL.COL_NAME_COUNTRY_ID, Value)
+            SetValue(CountryPostalCodeFormatDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property PostalCodeFormatId() As Guid
+    Public Property PostalCodeFormatId As Guid
         Get
             CheckDeleted()
             If Row(CountryPostalCodeFormatDAL.COL_NAME_POSTAL_CODE_FORMAT_ID) Is DBNull.Value Then
@@ -129,9 +129,9 @@ Public Class CountryPostalCodeFormat
                 Return New Guid(CType(Row(CountryPostalCodeFormatDAL.COL_NAME_POSTAL_CODE_FORMAT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CountryPostalCodeFormatDAL.COL_NAME_POSTAL_CODE_FORMAT_ID, Value)
+            SetValue(CountryPostalCodeFormatDAL.COL_NAME_POSTAL_CODE_FORMAT_ID, Value)
         End Set
     End Property
 
@@ -144,11 +144,11 @@ Public Class CountryPostalCodeFormat
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CountryPostalCodeFormatDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then Me.Load(Me.Id)
+                If Row.RowState <> DataRowState.Detached Then Load(Id)
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
@@ -157,7 +157,7 @@ Public Class CountryPostalCodeFormat
 #End Region
 
 #Region "List Methods"
-    Public Shared Sub LoadList(ByVal ds As Dataset, ByVal countryID As Guid, ByVal reloadData As Boolean)
+    Public Shared Sub LoadList(ds As Dataset, countryID As Guid, reloadData As Boolean)
         Try
             If reloadData Then
                 Dim tableIdx As Integer = ds.Tables.IndexOf(CountryPostalCodeFormatDAL.TABLE_NAME)
@@ -173,11 +173,11 @@ Public Class CountryPostalCodeFormat
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Public Shared Function Find(ByVal ds As Dataset, ByVal countryID As Guid, ByVal postalCodeID As Guid) As CountryPostalCodeFormat
+    Public Shared Function Find(ds As Dataset, countryID As Guid, postalCodeID As Guid) As CountryPostalCodeFormat
         Dim i As Integer
         For i = 0 To ds.Tables(CountryPostalCodeFormatDAL.TABLE_NAME).Rows.Count - 1
             Dim row As DataRow = ds.Tables(CountryPostalCodeFormatDAL.TABLE_NAME).Rows(i)
-            If Not (row.RowState = DataRowState.Deleted Or row.RowState = DataRowState.Detached) Then
+            If Not (row.RowState = DataRowState.Deleted OrElse row.RowState = DataRowState.Detached) Then
                 Dim couPosCode As New CountryPostalCodeFormat(row)
                 If couPosCode.CountryId.Equals(countryID) AndAlso couPosCode.PostalCodeFormatId.Equals(postalCodeID) Then
                     Return couPosCode
@@ -187,7 +187,7 @@ Public Class CountryPostalCodeFormat
         Return Nothing
     End Function
 
-    Public Shared Function Find(ByVal ds As Dataset, ByVal countryID As Guid) As CountryPostalCodeFormat
+    Public Shared Function Find(ds As Dataset, countryID As Guid) As CountryPostalCodeFormat
         Dim row As DataRow = FindRow(countryID, CountryPostalCodeFormatDAL.COL_NAME_COUNTRY_ID, ds.Tables(CountryPostalCodeFormatDAL.TABLE_NAME))
         If row Is Nothing Then
             Return Nothing
@@ -196,21 +196,21 @@ Public Class CountryPostalCodeFormat
         End If
     End Function
 
-    Public Shared Function GetSelectedPostalCodeFormat(ByVal ds As Dataset, ByVal countryID As Guid) As DataView
+    Public Shared Function GetSelectedPostalCodeFormat(ds As Dataset, countryID As Guid) As DataView
         Return GetFilteredPostalCodeFormat(ds, countryID, True)
     End Function
 
-    Public Shared Function GetAvailablePostalCodeFormat(ByVal ds As Dataset, ByVal countryID As Guid) As DataView
+    Public Shared Function GetAvailablePostalCodeFormat(ds As Dataset, countryID As Guid) As DataView
         Return GetFilteredPostalCodeFormat(ds, countryID, False)
     End Function
 
-    Protected Shared Function GetFilteredPostalCodeFormat(ByVal ds As Dataset, ByVal countryID As Guid, ByVal isFilterInclusive As Boolean) As DataView
+    Protected Shared Function GetFilteredPostalCodeFormat(ds As Dataset, countryID As Guid, isFilterInclusive As Boolean) As DataView
         Dim i As Integer
         Dim dv As New DataView(LookupListNew.GetPostalCodeFormatLookupList().Table)
         Dim inClause As String = "-1"
         For i = 0 To ds.Tables(CountryPostalCodeFormatDAL.TABLE_NAME).Rows.Count - 1
             Dim row As DataRow = ds.Tables(CountryPostalCodeFormatDAL.TABLE_NAME).Rows(i)
-            If Not (row.RowState = DataRowState.Deleted Or row.RowState = DataRowState.Detached) Then
+            If Not (row.RowState = DataRowState.Deleted OrElse row.RowState = DataRowState.Detached) Then
                 Dim pCode As New CountryPostalCodeFormat(row)
                 If pCode.CountryId.Equals(countryID) Then
                     inClause &= "," & LookupListNew.GetSequenceFromId(dv, pCode.PostalCodeFormatId)
@@ -218,12 +218,12 @@ Public Class CountryPostalCodeFormat
             End If
         Next
         Dim rowFilter As String = dv.RowFilter
-        If Not rowFilter Is Nothing AndAlso dv.RowFilter.Trim.Length > 0 Then
+        If rowFilter IsNot Nothing AndAlso dv.RowFilter.Trim.Length > 0 Then
             rowFilter = "(" & rowFilter & ") AND"
         Else
             rowFilter = ""
         End If
-        rowFilter &= BusinessObjectBase.SYSTEM_SEQUENCE_COL_NAME
+        rowFilter &= SYSTEM_SEQUENCE_COL_NAME
         If isFilterInclusive Then
             rowFilter &= " IN (" & inClause & ")"
         Else
@@ -233,7 +233,7 @@ Public Class CountryPostalCodeFormat
         Return dv
     End Function
 
-    Public Shared Sub LoadFormatList(ByVal ds As Dataset, ByVal countryID As Guid)
+    Public Shared Sub LoadFormatList(ds As Dataset, countryID As Guid)
         Try
             Dim cntryPostalFormatDAL As New CountryPostalCodeFormatDAL
             If ds.Tables.IndexOf(CountryPostalCodeFormatDAL.TABLE_NAME) < 0 Then
@@ -244,11 +244,11 @@ Public Class CountryPostalCodeFormat
         End Try
     End Sub
 
-    Public Shared Function IsValidFormat(ByVal countryID As Guid, ByVal postalCode As String, Optional ByVal reformatFlag As Boolean = False) As PostalCodeFormatResult
+    Public Shared Function IsValidFormat(countryID As Guid, postalCode As String, Optional ByVal reformatFlag As Boolean = False) As PostalCodeFormatResult
         Dim retPostalCodeFormatResult As PostalCodeFormatResult = New PostalCodeFormatResult
         retPostalCodeFormatResult.IsValid = False
         retPostalCodeFormatResult.PostalCode = postalCode
-        retPostalCodeFormatResult.ErrorMessage = Assurant.ElitaPlus.Common.ErrorCodes.INVALID_POSTALCODEFORMAT_ERR
+        retPostalCodeFormatResult.ErrorMessage = Common.ErrorCodes.INVALID_POSTALCODEFORMAT_ERR
 
         Try
             Dim ds As Dataset = New Dataset

@@ -19,7 +19,7 @@ Partial Class ClaimSuspenseReconForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -83,13 +83,13 @@ Partial Class ClaimSuspenseReconForm
 
 #Region "Handlers"
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
 
-        Me.moErrorController.Clear_Hide()
+        moErrorController.Clear_Hide()
 
         If Not Page.IsPostBack Then
-            Me.ShowMissingTranslations(moErrorController)
+            ShowMissingTranslations(moErrorController)
             BaseSetButtonsState(False)
 
             'Disable the process button until after searching
@@ -101,42 +101,42 @@ Partial Class ClaimSuspenseReconForm
         End If
 
         'Set default button to search
-        Me.SetDefaultButton(Me.moCertificateText, Me.btnSearch)
-        Me.SetDefaultButton(Me.moAuthorizationNumberText, Me.btnSearch)
-        Me.SetDefaultButton(Me.moFileNameText, Me.btnSearch)
+        SetDefaultButton(moCertificateText, btnSearch)
+        SetDefaultButton(moAuthorizationNumberText, btnSearch)
+        SetDefaultButton(moFileNameText, btnSearch)
 
 
 
         'Set message confirmation boxes
-        Me.AddConfirmationAndDisplayProgressBar(Me.btnSave_WRITE, TranslationBase.TranslateLabelOrMessage(ElitaPlusWebApp.Message.MSG_PROMPT_ARE_YOU_SURE), TranslationBase.TranslateLabelOrMessage(ElitaPlusWebApp.Message.MSG_PERFORMING_REQUEST), False)
-        Me.DisplayProgressBarOnClick(Me.btnSearch, ElitaPlusWebApp.Message.MSG_PERFORMING_REQUEST)
+        AddConfirmationAndDisplayProgressBar(btnSave_WRITE, TranslationBase.TranslateLabelOrMessage(ElitaPlusWebApp.Message.MSG_PROMPT_ARE_YOU_SURE), TranslationBase.TranslateLabelOrMessage(ElitaPlusWebApp.Message.MSG_PERFORMING_REQUEST), False)
+        DisplayProgressBarOnClick(btnSearch, ElitaPlusWebApp.Message.MSG_PERFORMING_REQUEST)
 
-        If Me.IsReturningFromChild Then
-            Me.moAuthorizationNumberText.Text = Me.State.retObj.AuthenticationNumber
-            Me.moCertificateText.Text = Me.State.retObj.CertificateNumber
-            Me.moFileNameText.Text = Me.State.retObj.FileName
+        If IsReturningFromChild Then
+            moAuthorizationNumberText.Text = State.retObj.AuthenticationNumber
+            moCertificateText.Text = State.retObj.CertificateNumber
+            moFileNameText.Text = State.retObj.FileName
             searchClick = True
             PopulateDataList()
-            Me.IsReturningFromChild = False
+            IsReturningFromChild = False
         End If
 
     End Sub
 
     'Undo button - Reload DS from database
-    Private Sub btnUndo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+    Private Sub btnUndo_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
 
-        Me.State.dsClaimSuspense = Nothing
-        Me.State.selectedPageIndex = Me.DEFAULT_PAGE_INDEX
+        State.dsClaimSuspense = Nothing
+        State.selectedPageIndex = DEFAULT_PAGE_INDEX
         PopulateDataList()
 
     End Sub
 
     'Build the datalist and page dataset on the search results
-    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
 
-        Me.State.dsClaimSuspense = Nothing
-        Me.State.arrCertificates = Nothing
-        Me.State.selectedPageIndex = Me.DEFAULT_PAGE_INDEX
+        State.dsClaimSuspense = Nothing
+        State.arrCertificates = Nothing
+        State.selectedPageIndex = DEFAULT_PAGE_INDEX
 
         searchClick = True
         PopulateDataList()
@@ -144,87 +144,87 @@ Partial Class ClaimSuspenseReconForm
     End Sub
 
     'Clear Search Fields
-    Private Sub btnClearSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
 
         ClearAll()
 
     End Sub
 
-    Private Sub cboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
 
         'Save the values in the grid before changing page size
         SaveCurrentGridValues()
 
-        Me.State.selectedPageSize = Integer.Parse(cboPageSize.SelectedValue)
-        Me.State.selectedPageIndex = Me.DEFAULT_PAGE_INDEX
+        State.selectedPageSize = Integer.Parse(cboPageSize.SelectedValue)
+        State.selectedPageIndex = DEFAULT_PAGE_INDEX
         PopulateDataList()
 
     End Sub
 
-    Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
 
         Dim boClaimSuspense As New BusinessObjectsNew.ClaimSuspense
         Dim ret As Integer
 
         Try
 
-            If Me.State.dsClaimSuspense Is Nothing Then
-                Me.moErrorController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, True)
+            If State.dsClaimSuspense Is Nothing Then
+                moErrorController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, True)
                 Exit Sub
             End If
 
-            Me.SaveCurrentGridValues()
-            ret = boClaimSuspense.Process(Me.State.dsClaimSuspense)
+            SaveCurrentGridValues()
+            ret = boClaimSuspense.Process(State.dsClaimSuspense)
 
             If ret >= 0 Then
-                Me.AddInfoMsg(ElitaPlusWebApp.Message.MSG_INTERFACES_HAS_COMPLETED)
+                AddInfoMsg(ElitaPlusWebApp.Message.MSG_INTERFACES_HAS_COMPLETED)
                 'Re-search the same criteria.  Determine if there are any remaining items in the batch.  If items remain, 
                 'redisplay the grid, otherwise, clear it all out.
 
-                Me.State.dsClaimSuspense = Nothing
-                Me.State.arrCertificates = Nothing
-                Me.State.selectedPageIndex = Me.DEFAULT_PAGE_INDEX
+                State.dsClaimSuspense = Nothing
+                State.arrCertificates = Nothing
+                State.selectedPageIndex = DEFAULT_PAGE_INDEX
 
-                Me.PopulateDataList()
+                PopulateDataList()
 
-                If Me.moDataGrid.Items.Count = 0 Then
+                If moDataGrid.Items.Count = 0 Then
                     ClearAll()
                 End If
             Else
-                Me.moErrorController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.UNEXPECTED_ERROR)
+                moErrorController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.UNEXPECTED_ERROR)
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.moErrorController)
+            HandleErrors(ex, moErrorController)
         End Try
 
     End Sub
 
-    Private Sub moDataGrid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moDataGrid.PageIndexChanged
+    Private Sub moDataGrid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moDataGrid.PageIndexChanged
 
         'Save the values in the grid before changing pages
         SaveCurrentGridValues()
 
-        Me.State.selectedPageIndex = e.NewPageIndex
-        Me.PopulateDataList()
+        State.selectedPageIndex = e.NewPageIndex
+        PopulateDataList()
     End Sub
 
-    Private Sub BtnRejectReport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnRejectReport.Click
+    Private Sub BtnRejectReport_Click(sender As System.Object, e As System.EventArgs) Handles BtnRejectReport.Click
         Try
 
 
             Dim rptState As New Reports.PrintClaimLoadRejectForm.MyState
 
-            rptState.SearchCertificate = Me.moCertificateText.Text.ToUpper
-            rptState.SearchAuthorization = Me.moAuthorizationNumberText.Text.ToUpper
-            rptState.SearchFilename = Me.moFileNameText.Text.ToUpper
+            rptState.SearchCertificate = moCertificateText.Text.ToUpper
+            rptState.SearchAuthorization = moAuthorizationNumberText.Text.ToUpper
+            rptState.SearchFilename = moFileNameText.Text.ToUpper
             rptState.moInterfaceTypeCode = ClaimFileProcessedData.InterfaceTypeCode.CLAIM_SUSPENSE
 
-            Me.callPage(Reports.PrintClaimLoadRejectForm.URL, rptState)
+            callPage(Reports.PrintClaimLoadRejectForm.URL, rptState)
 
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.moErrorController)
+            HandleErrors(ex, moErrorController)
         End Try
     End Sub
 
@@ -233,16 +233,16 @@ Partial Class ClaimSuspenseReconForm
 #Region "Page Return"
     Private IsReturningFromChild As Boolean = False
 
-    Public Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
-        Me.IsReturningFromChild = True
+    Public Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
+        IsReturningFromChild = True
         Dim retObj As ReturnType = CType(ReturnPar, ReturnType)
         Select Case retObj.LastOperation
             Case ElitaPlusPage.DetailPageCommand.Back
-                If Not retObj Is Nothing Then
+                If retObj IsNot Nothing Then
                     Try
-                        Me.State.retObj = retObj
+                        State.retObj = retObj
                     Catch ex As Exception
-                        Me.HandleErrors(ex, Me.moErrorController)
+                        HandleErrors(ex, moErrorController)
                     End Try
                 End If
         End Select
@@ -253,8 +253,8 @@ Partial Class ClaimSuspenseReconForm
         Public AuthenticationNumber As String
         Public FileName As String
         Public CertificateNumber As String
-        Public Sub New(ByVal LastOp As ElitaPlusPage.DetailPageCommand, ByVal AuthNumber As String, ByVal FName As String, ByVal CertNumber As String)
-            Me.LastOperation = LastOp
+        Public Sub New(LastOp As ElitaPlusPage.DetailPageCommand, AuthNumber As String, FName As String, CertNumber As String)
+            LastOperation = LastOp
             AuthenticationNumber = AuthNumber
             FileName = FName
             CertificateNumber = CertNumber
@@ -265,7 +265,7 @@ Partial Class ClaimSuspenseReconForm
 #Region "Controlling Logic"
 
     Protected Sub CheckIfComingFromSaveConfirm()
-        Dim confResponse As String = Me.HiddenSavePagePromptResponse.Value
+        Dim confResponse As String = HiddenSavePagePromptResponse.Value
 
         Try
             'If Not confResponse.Equals(EMPTY) Then
@@ -288,27 +288,27 @@ Partial Class ClaimSuspenseReconForm
             '    PopulateDataList()
             'End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.moErrorController)
+            HandleErrors(ex, moErrorController)
         End Try
     End Sub
 
     Private Sub BuildCertificateList()
 
-        Me.State.arrCertificates = New ArrayList
+        State.arrCertificates = New ArrayList
 
-        For Each dr As DataRow In Me.State.dsClaimSuspense.Tables(0).Rows
-            If (Not Microsoft.VisualBasic.IsDBNull(dr(ClaimSuspenseDAL.COL_NAME_CERTIFICATE))) AndAlso (Not Me.State.arrCertificates.Contains(dr(ClaimSuspenseDAL.COL_NAME_CERTIFICATE))) Then
-                Me.State.arrCertificates.Add(dr(ClaimSuspenseDAL.COL_NAME_CERTIFICATE))
+        For Each dr As DataRow In State.dsClaimSuspense.Tables(0).Rows
+            If (Not Microsoft.VisualBasic.IsDBNull(dr(ClaimSuspenseDAL.COL_NAME_CERTIFICATE))) AndAlso (Not State.arrCertificates.Contains(dr(ClaimSuspenseDAL.COL_NAME_CERTIFICATE))) Then
+                State.arrCertificates.Add(dr(ClaimSuspenseDAL.COL_NAME_CERTIFICATE))
             End If
         Next
 
-        Me.State.totalPages = CType(Math.Ceiling(Me.State.arrCertificates.Count / Me.State.selectedPageSize), Integer)
+        State.totalPages = CType(Math.Ceiling(State.arrCertificates.Count / State.selectedPageSize), Integer)
 
         'ALR 05/25/2007 : Modified  to determine if a filename has been entered.  If so, we don't limit the results
-        If Me.moFileNameText.Text.Trim.Length = 0 Then
-            Me.lblRecordCount.Text = IIf((Me.State.arrCertificates.Count > ClaimSuspenseDAL.MAX_NUMBER_OF_ROWS - 1), (ClaimSuspenseDAL.MAX_NUMBER_OF_ROWS - 1).ToString, Me.State.arrCertificates.Count.ToString).ToString + " " + TranslationBase.TranslateLabelOrMessage(ElitaPlus.ElitaPlusWebApp.Message.MSG_CERTIFICATES_FOUND)
+        If moFileNameText.Text.Trim.Length = 0 Then
+            lblRecordCount.Text = IIf((State.arrCertificates.Count > ClaimSuspenseDAL.MAX_NUMBER_OF_ROWS - 1), (ClaimSuspenseDAL.MAX_NUMBER_OF_ROWS - 1).ToString, State.arrCertificates.Count.ToString).ToString + " " + TranslationBase.TranslateLabelOrMessage(ElitaPlus.ElitaPlusWebApp.Message.MSG_CERTIFICATES_FOUND)
         Else
-            Me.lblRecordCount.Text = Me.State.arrCertificates.Count.ToString + " " + TranslationBase.TranslateLabelOrMessage(ElitaPlus.ElitaPlusWebApp.Message.MSG_CERTIFICATES_FOUND)
+            lblRecordCount.Text = State.arrCertificates.Count.ToString + " " + TranslationBase.TranslateLabelOrMessage(ElitaPlus.ElitaPlusWebApp.Message.MSG_CERTIFICATES_FOUND)
         End If
 
     End Sub
@@ -317,28 +317,28 @@ Partial Class ClaimSuspenseReconForm
 
         Try
 
-            If Me.moFileNameText.Text.Trim.Length = 0 AndAlso _
-                    Me.moCertificateText.Text.Trim.Length = 0 AndAlso _
-                    Me.moAuthorizationNumberText.Text.Trim.Length = 0 Then
+            If moFileNameText.Text.Trim.Length = 0 AndAlso _
+                    moCertificateText.Text.Trim.Length = 0 AndAlso _
+                    moAuthorizationNumberText.Text.Trim.Length = 0 Then
                 Dim errors() As Assurant.Common.Validation.ValidationError = {New Assurant.Common.Validation.ValidationError(SEARCH_EXCEPTION, GetType(ClaimSuspense), Nothing, "Search", Nothing)}
-                Throw New BOValidationException(errors, GetType(ClaimSuspense).ToString, Me.UniqueID)
+                Throw New BOValidationException(errors, GetType(ClaimSuspense).ToString, UniqueID)
             End If
 
-            If Me.State.dsClaimSuspense Is Nothing Then
-                Me.State.dsClaimSuspense = BusinessObjectsNew.ClaimSuspense.LoadList(Me.moCertificateText.Text.Trim, Me.moAuthorizationNumberText.Text.Trim, Me.moFileNameText.Text.Trim)
-                Me.BuildCertificateList()
+            If State.dsClaimSuspense Is Nothing Then
+                State.dsClaimSuspense = BusinessObjectsNew.ClaimSuspense.LoadList(moCertificateText.Text.Trim, moAuthorizationNumberText.Text.Trim, moFileNameText.Text.Trim)
+                BuildCertificateList()
             End If
 
             'Set these fields to mark and fill the key field in the dataset to be able to propogate changes later
-            Me.moDataGrid.DataKeyField = ClaimSuspense.COL_NAME_KEY_FIELD
+            moDataGrid.DataKeyField = ClaimSuspense.COL_NAME_KEY_FIELD
 
-            Me.moDataGrid.PageSize = Me.State.selectedPageSize
-            Me.moDataGrid.CurrentPageIndex = Me.State.selectedPageIndex
-            Me.moDataGrid.DataSource = Me.State.dsClaimSuspense
-            Me.moDataGrid.DataBind()
+            moDataGrid.PageSize = State.selectedPageSize
+            moDataGrid.CurrentPageIndex = State.selectedPageIndex
+            moDataGrid.DataSource = State.dsClaimSuspense
+            moDataGrid.DataBind()
 
-            ControlMgr.SetVisibleControl(Me, Me.moDataGrid, True)
-            ControlMgr.SetVisibleControl(Me, Me.trPageSize, True)
+            ControlMgr.SetVisibleControl(Me, moDataGrid, True)
+            ControlMgr.SetVisibleControl(Me, trPageSize, True)
 
             If moDataGrid.Items.Count > 0 Then
                 ControlMgr.SetEnableControl(Me, btnSave_WRITE, True)
@@ -349,13 +349,13 @@ Partial Class ClaimSuspenseReconForm
             End If
 
             'ALR 05/25/2007 : Modified to determine if a filename has been entered.  If so, we don't limit the results
-            If searchClick AndAlso Me.moFileNameText.Text.Trim.Length = 0 Then
-                ValidSearchResultCount(Me.State.dsClaimSuspense.Tables(0).Rows.Count, ClaimSuspenseDAL.MAX_NUMBER_OF_ROWS - 1, True)
+            If searchClick AndAlso moFileNameText.Text.Trim.Length = 0 Then
+                ValidSearchResultCount(State.dsClaimSuspense.Tables(0).Rows.Count, ClaimSuspenseDAL.MAX_NUMBER_OF_ROWS - 1, True)
             End If
             searchClick = False
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.moErrorController)
+            HandleErrors(ex, moErrorController)
         End Try
 
 
@@ -369,7 +369,7 @@ Partial Class ClaimSuspenseReconForm
         For Each dgItem In moDataGrid.Items
 
             Try
-                dr = Me.State.dsClaimSuspense.Tables(0).Rows.Find(moDataGrid.DataKeys.Item(dgItem.ItemIndex).ToString)
+                dr = State.dsClaimSuspense.Tables(0).Rows.Find(moDataGrid.DataKeys.Item(dgItem.ItemIndex).ToString)
 
                 dr(ClaimSuspenseDAL.COL_NAME_PROCESS_ORDER) = CType(dgItem.FindControl("moSequenceTextGrid"), TextBox).Text
                 dr(ClaimSuspenseDAL.COL_NAME_DO_NOT_PROCESS) = CType(dgItem.FindControl("moDoNotProcessTextGrid"), TextBox).Text
@@ -407,12 +407,12 @@ Partial Class ClaimSuspenseReconForm
 
     Private Sub ClearAll()
 
-        Me.moAuthorizationNumberText.Text = Me.EMPTY
-        Me.moCertificateText.Text = Me.EMPTY
-        Me.moFileNameText.Text = Me.EMPTY
-        Me.State.dsClaimSuspense = Nothing
-        ControlMgr.SetVisibleControl(Me, Me.moDataGrid, False)
-        ControlMgr.SetVisibleControl(Me, Me.trPageSize, False)
+        moAuthorizationNumberText.Text = EMPTY
+        moCertificateText.Text = EMPTY
+        moFileNameText.Text = EMPTY
+        State.dsClaimSuspense = Nothing
+        ControlMgr.SetVisibleControl(Me, moDataGrid, False)
+        ControlMgr.SetVisibleControl(Me, trPageSize, False)
 
     End Sub
 
@@ -420,10 +420,10 @@ Partial Class ClaimSuspenseReconForm
 
 #Region "DataBinding Related"
 
-    Protected Sub DataGridItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs)
+    Protected Sub DataGridItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
 
         'Fill the grid with the claim information
-        If e.Item.ItemType = ListItemType.AlternatingItem Or e.Item.ItemType = ListItemType.Item Then
+        If e.Item.ItemType = ListItemType.AlternatingItem OrElse e.Item.ItemType = ListItemType.Item Then
             Dim ctl As Control
             Dim lbl As Label
             Dim txt As TextBox
@@ -435,10 +435,10 @@ Partial Class ClaimSuspenseReconForm
                 CurrIndex = 0
 
                 'Set the item back color on the grid
-                If CurrColor = Me.GRID_ALT_ITEM_COLOR Then
-                    CurrColor = Me.GRID_ITEM_COLOR
+                If CurrColor = GRID_ALT_ITEM_COLOR Then
+                    CurrColor = GRID_ITEM_COLOR
                 Else
-                    CurrColor = Me.GRID_ALT_ITEM_COLOR
+                    CurrColor = GRID_ALT_ITEM_COLOR
                 End If
 
             End If
@@ -453,47 +453,47 @@ Partial Class ClaimSuspenseReconForm
                     ControlMgr.SetVisibleControl(Me, e.Item.FindControl("lblCertificateNumber"), False)
                 End If
 
-                Me.PopulateControlFromBOProperty(e.Item.FindControl("lblCertificateNumber"), dvRow(ClaimSuspenseDAL.COL_NAME_CERTIFICATE))
-                Me.PopulateControlFromBOProperty(e.Item.FindControl("moIdLabel"), dvRow(ClaimSuspenseDAL.COL_NAME_CLAIM_RECON_WRK_ID))
-                Me.PopulateControlFromBOProperty(e.Item.FindControl("moSequenceTextGrid"), CurrIndex)
-                Me.PopulateControlFromBOProperty(e.Item.FindControl("moDoNotProcessTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_DO_NOT_PROCESS))
-                Me.PopulateControlFromBOProperty(e.Item.FindControl("moFileNameLabelGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_FILENAME))
-                Me.PopulateControlFromBOProperty(e.Item.FindControl("moClaimActionLabelGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_CLAIM_ACTION))
-                Me.PopulateControlFromBOProperty(e.Item.FindControl("moAuthorizationNumberTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_AUTHORIZATION_NUMBER))
-                Me.PopulateControlFromBOProperty(e.Item.FindControl("moAuthorizationCreationDateTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_AUTHORIZATION_CREATION_DATE))
-                Me.PopulateControlFromBOProperty(e.Item.FindControl("moRejectReasonTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_REJECT_REASON))
-                Me.PopulateControlFromBOProperty(e.Item.FindControl("moDealerCodeTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_DEALER_CODE))
-                Me.PopulateControlFromBOProperty(e.Item.FindControl("moCertificateSalesDateTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_CERTIFICATE_SALES_DATE))
-                Me.PopulateControlFromBOProperty(e.Item.FindControl("moDateClaimClosedTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_DATE_CLAIM_CLOSED))
-                Me.PopulateControlFromBOProperty(e.Item.FindControl("moServiceCenterCodeTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_SERVICE_CENTER_CODE))
-                Me.PopulateControlFromBOProperty(e.Item.FindControl("moSerialNumberTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_SERIAL_NUMBER))
-                Me.PopulateControlFromBOProperty(e.Item.FindControl("moAmountTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_AMOUNT))
-                Me.PopulateControlFromBOProperty(e.Item.FindControl("moProductCodeTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_PRODUCT_CODE))
-                Me.PopulateControlFromBOProperty(e.Item.FindControl("moAdditionalProductCodeTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_ADDITIONAL_PRODUCT_CODE))
-                Me.PopulateControlFromBOProperty(e.Item.FindControl("moManufacturerTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_MANUFACTURER))
-                Me.PopulateControlFromBOProperty(e.Item.FindControl("moModelTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_MODEL))
-                Me.PopulateControlFromBOProperty(e.Item.FindControl("moAuthorizationCodeTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_AUTHORIZATION_CODE))
-                Me.PopulateControlFromBOProperty(e.Item.FindControl("moStatusCodeTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_STATUS_CODE))
-                Me.PopulateControlFromBOProperty(e.Item.FindControl("moProblemDescriptionTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_PROBLEM_DESCRIPTION))
+                PopulateControlFromBOProperty(e.Item.FindControl("lblCertificateNumber"), dvRow(ClaimSuspenseDAL.COL_NAME_CERTIFICATE))
+                PopulateControlFromBOProperty(e.Item.FindControl("moIdLabel"), dvRow(ClaimSuspenseDAL.COL_NAME_CLAIM_RECON_WRK_ID))
+                PopulateControlFromBOProperty(e.Item.FindControl("moSequenceTextGrid"), CurrIndex)
+                PopulateControlFromBOProperty(e.Item.FindControl("moDoNotProcessTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_DO_NOT_PROCESS))
+                PopulateControlFromBOProperty(e.Item.FindControl("moFileNameLabelGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_FILENAME))
+                PopulateControlFromBOProperty(e.Item.FindControl("moClaimActionLabelGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_CLAIM_ACTION))
+                PopulateControlFromBOProperty(e.Item.FindControl("moAuthorizationNumberTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_AUTHORIZATION_NUMBER))
+                PopulateControlFromBOProperty(e.Item.FindControl("moAuthorizationCreationDateTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_AUTHORIZATION_CREATION_DATE))
+                PopulateControlFromBOProperty(e.Item.FindControl("moRejectReasonTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_REJECT_REASON))
+                PopulateControlFromBOProperty(e.Item.FindControl("moDealerCodeTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_DEALER_CODE))
+                PopulateControlFromBOProperty(e.Item.FindControl("moCertificateSalesDateTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_CERTIFICATE_SALES_DATE))
+                PopulateControlFromBOProperty(e.Item.FindControl("moDateClaimClosedTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_DATE_CLAIM_CLOSED))
+                PopulateControlFromBOProperty(e.Item.FindControl("moServiceCenterCodeTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_SERVICE_CENTER_CODE))
+                PopulateControlFromBOProperty(e.Item.FindControl("moSerialNumberTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_SERIAL_NUMBER))
+                PopulateControlFromBOProperty(e.Item.FindControl("moAmountTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_AMOUNT))
+                PopulateControlFromBOProperty(e.Item.FindControl("moProductCodeTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_PRODUCT_CODE))
+                PopulateControlFromBOProperty(e.Item.FindControl("moAdditionalProductCodeTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_ADDITIONAL_PRODUCT_CODE))
+                PopulateControlFromBOProperty(e.Item.FindControl("moManufacturerTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_MANUFACTURER))
+                PopulateControlFromBOProperty(e.Item.FindControl("moModelTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_MODEL))
+                PopulateControlFromBOProperty(e.Item.FindControl("moAuthorizationCodeTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_AUTHORIZATION_CODE))
+                PopulateControlFromBOProperty(e.Item.FindControl("moStatusCodeTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_STATUS_CODE))
+                PopulateControlFromBOProperty(e.Item.FindControl("moProblemDescriptionTextGrid"), dvRow(ClaimSuspenseDAL.COL_NAME_PROBLEM_DESCRIPTION))
 
                 'Add Calendars
-                Me.AddCalendar(CType(e.Item.FindControl("ImgCertificateSalesDateTextGrid"), ImageButton), CType(e.Item.FindControl("moCertificateSalesDateTextGrid"), TextBox))
-                Me.AddCalendar(CType(e.Item.FindControl("ImgAuthorizationCreationDateTextGrid"), ImageButton), CType(e.Item.FindControl("moAuthorizationCreationDateTextGrid"), TextBox))
-                Me.AddCalendar(CType(e.Item.FindControl("ImgDateClaimClosedTextGrid"), ImageButton), CType(e.Item.FindControl("moDateClaimClosedTextGrid"), TextBox))
+                AddCalendar(CType(e.Item.FindControl("ImgCertificateSalesDateTextGrid"), ImageButton), CType(e.Item.FindControl("moCertificateSalesDateTextGrid"), TextBox))
+                AddCalendar(CType(e.Item.FindControl("ImgAuthorizationCreationDateTextGrid"), ImageButton), CType(e.Item.FindControl("moAuthorizationCreationDateTextGrid"), TextBox))
+                AddCalendar(CType(e.Item.FindControl("ImgDateClaimClosedTextGrid"), ImageButton), CType(e.Item.FindControl("moDateClaimClosedTextGrid"), TextBox))
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End If
 
     End Sub
 
-    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs)
+    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.moErrorController)
+            HandleErrors(ex, moErrorController)
         End Try
     End Sub
 

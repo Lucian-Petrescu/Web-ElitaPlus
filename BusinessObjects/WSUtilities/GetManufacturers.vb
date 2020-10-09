@@ -11,7 +11,7 @@ Public Class GetManufacturers
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetManufacturersDs)
+    Public Sub New(ds As GetManufacturersDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -24,7 +24,7 @@ Public Class GetManufacturers
 #Region "Private Members"
 
     Private _companyGroupId As Guid = Guid.Empty
-    Private Sub MapDataSet(ByVal ds As GetManufacturersDs)
+    Private Sub MapDataSet(ds As GetManufacturersDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -37,8 +37,8 @@ Public Class GetManufacturers
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -46,13 +46,13 @@ Public Class GetManufacturers
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetManufacturersDs)
+    Private Sub Load(ds As GetManufacturersDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
         Catch ex As BOValidationException
             Throw ex
@@ -65,15 +65,15 @@ Public Class GetManufacturers
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetManufacturersDs)
+    Private Sub PopulateBOFromWebService(ds As GetManufacturersDs)
         Try
             If ds.GetManufacturers.Count = 0 Then Exit Sub
             With ds.GetManufacturers.Item(0)
                 If Not .Iscompany_group_codeNull Then
-                    Me.CompanyGroupCode = .company_group_code
-                    Me.getCompanyGroupId(.company_group_code)
+                    CompanyGroupCode = .company_group_code
+                    getCompanyGroupId(.company_group_code)
                 Else
-                    Me._companyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
+                    _companyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
                 End If
 
             End With
@@ -87,12 +87,12 @@ Public Class GetManufacturers
 
     Protected Shadows Sub CheckDeleted()
     End Sub
-    Private Sub getCompanyGroupId(ByVal Code As String)
+    Private Sub getCompanyGroupId(Code As String)
         Dim dvCompanyGroups As DataView = LookupListNew.GetCompanyGroupLookupList()
-        If Not dvCompanyGroups Is Nothing AndAlso dvCompanyGroups.Count > 0 Then
-            Me._companyGroupId = LookupListNew.GetIdFromCode(dvCompanyGroups, Code)
+        If dvCompanyGroups IsNot Nothing AndAlso dvCompanyGroups.Count > 0 Then
+            _companyGroupId = LookupListNew.GetIdFromCode(dvCompanyGroups, Code)
             If _companyGroupId.Equals(Guid.Empty) Then
-                Throw New BOValidationException("GetManufacturers Error: ", Assurant.ElitaPlus.Common.ErrorCodes.ERR_INVALID_COMPANY_GROUP)
+                Throw New BOValidationException("GetManufacturers Error: ", Common.ErrorCodes.ERR_INVALID_COMPANY_GROUP)
             End If
         End If
     End Sub
@@ -100,21 +100,21 @@ Public Class GetManufacturers
 
 #Region "Properties"
 
-    Public Property CompanyGroupCode() As String
+    Public Property CompanyGroupCode As String
         Get
-            If Row(Me.DATA_COL_NAME_company_group_code) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_company_group_code) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_company_group_code), String))
+                Return (CType(Row(DATA_COL_NAME_company_group_code), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_company_group_code, Value)
+            SetValue(DATA_COL_NAME_company_group_code, Value)
         End Set
     End Property
 
-    Private ReadOnly Property CompanyGroupId() As Guid
+    Private ReadOnly Property CompanyGroupId As Guid
         Get
             Return _companyGroupId
         End Get
@@ -128,9 +128,9 @@ Public Class GetManufacturers
         Dim manufacturerList As DataView
 
         Try
-            Me.Validate()
+            Validate()
 
-            manufacturerList = manufacturerBO.LoadList(String.Empty, Me.CompanyGroupId)
+            manufacturerList = manufacturerBO.LoadList(String.Empty, CompanyGroupId)
 
             If manufacturerList Is Nothing OrElse manufacturerList.Count <= 0 Then
                 Throw New BOValidationException("GetManufacturers Error: ", Common.ErrorCodes.BO_ERROR_NO_MANUFACTURER_FOUND)

@@ -12,7 +12,7 @@ Public Class GetExtendedClaimStatusList
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetExtendedClaimStatusListDs)
+    Public Sub New(ds As GetExtendedClaimStatusListDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -25,7 +25,7 @@ Public Class GetExtendedClaimStatusList
 #Region "Private Members"
     Private _company_group_id As Guid = Guid.Empty
 
-    Private Sub MapDataSet(ByVal ds As GetExtendedClaimStatusListDs)
+    Private Sub MapDataSet(ds As GetExtendedClaimStatusListDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -38,8 +38,8 @@ Public Class GetExtendedClaimStatusList
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -47,13 +47,13 @@ Public Class GetExtendedClaimStatusList
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetExtendedClaimStatusListDs)
+    Private Sub Load(ds As GetExtendedClaimStatusListDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
         Catch ex As BOValidationException
             Throw ex
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -65,11 +65,11 @@ Public Class GetExtendedClaimStatusList
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetExtendedClaimStatusListDs)
+    Private Sub PopulateBOFromWebService(ds As GetExtendedClaimStatusListDs)
         Try
             If ds.GetExtendedClaimStatusList.Count = 0 Then Exit Sub
             With ds.GetExtendedClaimStatusList.Item(0)
-                If Not .IsCOMPANY_GROUP_CODENull Then Me.CompanyGroupCode = .COMPANY_GROUP_CODE
+                If Not .IsCOMPANY_GROUP_CODENull Then CompanyGroupCode = .COMPANY_GROUP_CODE
             End With
         Catch ex As BOValidationException
             Throw ex
@@ -85,39 +85,39 @@ Public Class GetExtendedClaimStatusList
 
 #Region "Properties"
 
-    Public Property CompanyGroupCode() As String
+    Public Property CompanyGroupCode As String
         Get
-            If Row(Me.DATA_COL_NAME_COMPANY_GROUP_CODE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_COMPANY_GROUP_CODE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_COMPANY_GROUP_CODE), String))
+                Return (CType(Row(DATA_COL_NAME_COMPANY_GROUP_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_COMPANY_GROUP_CODE, Value)
+            SetValue(DATA_COL_NAME_COMPANY_GROUP_CODE, Value)
         End Set
     End Property
 
 
-    Private ReadOnly Property CompanyGroupID() As Guid
+    Private ReadOnly Property CompanyGroupID As Guid
         Get
-            If Me._company_group_id.Equals(Guid.Empty) AndAlso Not Me.CompanyGroupCode Is Nothing AndAlso Me.CompanyGroupCode <> "" Then
+            If _company_group_id.Equals(Guid.Empty) AndAlso CompanyGroupCode IsNot Nothing AndAlso CompanyGroupCode <> "" Then
 
                 Dim list As DataView = LookupListNew.GetCompanyGroupLookupList()
                 If list Is Nothing Then
                     Throw New BOValidationException("Get Extended Claim Status List Error: ", Common.ErrorCodes.WS_ERROR_ACCESSING_DATABASE)
                 End If
-                Me._company_group_id = LookupListNew.GetIdFromCode(list, Me.CompanyGroupCode)
+                _company_group_id = LookupListNew.GetIdFromCode(list, CompanyGroupCode)
                 If _company_group_id.Equals(Guid.Empty) Then
                     Throw New BOValidationException("Get Extended Claim Status List Error: ", Common.ErrorCodes.ERR_INVALID_COMPANY_GROUP)
                 End If
                 list = Nothing
             Else
-                Me._company_group_id = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
+                _company_group_id = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
             End If
 
-            Return Me._company_group_id
+            Return _company_group_id
 
         End Get
     End Property
@@ -128,14 +128,14 @@ Public Class GetExtendedClaimStatusList
 
     Public Overrides Function ProcessWSRequest() As String
         Try
-            Me.Validate()
+            Validate()
 
-            Dim objStatusDs As DataSet = ClaimStatusByGroup.LoadListByCompanyGroup(Me.CompanyGroupID)
+            Dim objStatusDs As DataSet = ClaimStatusByGroup.LoadListByCompanyGroup(CompanyGroupID)
 
             If objStatusDs Is Nothing Then
                 Throw New BOValidationException("Get Extended Claim Status List Error: ", Common.ErrorCodes.WS_ERROR_ACCESSING_DATABASE)
             ElseIf objStatusDs.Tables.Count > 0 AndAlso objStatusDs.Tables(0).Rows.Count > 0 Then
-                objStatusDs.Tables(0).Columns.Remove(Me.COL_NAME_CLAIM_STATUS_BY_GROUP_ID)
+                objStatusDs.Tables(0).Columns.Remove(COL_NAME_CLAIM_STATUS_BY_GROUP_ID)
                 Return (XMLHelper.FromDatasetToXML(objStatusDs))
             ElseIf objStatusDs.Tables.Count > 0 AndAlso objStatusDs.Tables(0).Rows.Count = 0 Then
                 Throw New BOValidationException("Get Extended Claim Status List Error: ", Common.ErrorCodes.ERR_INVALID_NO_EXTENDED_CLAIM_STATUS_COMPANY_GROUP)

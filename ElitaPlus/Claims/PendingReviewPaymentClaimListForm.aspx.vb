@@ -1,8 +1,11 @@
-﻿Imports System.Threading
+﻿Imports System.Collections.Generic
+Imports System.Threading
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.Web.Forms
 Imports Assurant.Elita.CommonConfiguration.DataElements
+Imports Assurant.ElitaPlus.DALObjects
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.Reports
 
 Public Class PendingReviewPaymentClaimListForm
     Inherits ElitaPlusSearchPage
@@ -84,7 +87,7 @@ Public Class PendingReviewPaymentClaimListForm
         Public IsGridVisible As Boolean = False
         Public searchDV As Claim.PendingReviewPaymentClaimSearchDV = Nothing
         Public SearchClicked As Boolean
-        Public ActionInProgress As DetailPageCommand = ElitaPlusPage.DetailPageCommand.Nothing_
+        Public ActionInProgress As DetailPageCommand = DetailPageCommand.Nothing_
         Public cmdProcessRecord As String = String.Empty
 
         Sub New()
@@ -111,78 +114,78 @@ Public Class PendingReviewPaymentClaimListForm
 #Region "Page_Events"
 
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.PendingReviewForPaymentId = LookupListNew.GetIdFromCode(LookupListNew.LK_EXTENDED_CLAIM_STATUSES, Codes.CLAIM_EXTENDED_STATUS__PENDING_REVIEW_FOR_PAYMENT)
-        Page.RegisterHiddenField("__EVENTTARGET", Me.btnSearch.ClientID)
-        Me.MasterPage.MessageController.Clear()
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
+        PendingReviewForPaymentId = LookupListNew.GetIdFromCode(LookupListNew.LK_EXTENDED_CLAIM_STATUSES, Codes.CLAIM_EXTENDED_STATUS__PENDING_REVIEW_FOR_PAYMENT)
+        Page.RegisterHiddenField("__EVENTTARGET", btnSearch.ClientID)
+        MasterPage.MessageController.Clear()
         Try
             ' Populate the header and bredcrumb
-            Me.MasterPage.MessageController.Clear()
-            Me.MasterPage.UsePageTabTitleInBreadCrum = False
-            Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
-            Me.UpdateBreadCrum()
-            Me.Form.DefaultButton = btnSearch.UniqueID
-            If Not Me.IsPostBack Then
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
+            MasterPage.MessageController.Clear()
+            MasterPage.UsePageTabTitleInBreadCrum = False
+            MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            UpdateBreadCrum()
+            Form.DefaultButton = btnSearch.UniqueID
+            If Not IsPostBack Then
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
 
                 PopulateDropdowns()
 
-                Me.divbtns.Visible = False
+                divbtns.Visible = False
 
                 PopulateSearchFieldsFromState()
-                Me.TranslateGridHeader(Grid)
-                Me.TranslateGridControls(Grid)
-                If Me.State.IsGridVisible Then
-                    If Not (Me.State.selectedPageSize = Me.DEFAULT_NEW_UI_PAGE_SIZE) Then
-                        cboPageSize.SelectedValue = CType(Me.State.selectedPageSize, String)
-                        Me.Grid.PageSize = Me.State.selectedPageSize
+                TranslateGridHeader(Grid)
+                TranslateGridControls(Grid)
+                If State.IsGridVisible Then
+                    If Not (State.selectedPageSize = DEFAULT_NEW_UI_PAGE_SIZE) Then
+                        cboPageSize.SelectedValue = CType(State.selectedPageSize, String)
+                        Grid.PageSize = State.selectedPageSize
                     End If
-                    Me.PopulateGrid()
+                    PopulateGrid()
                 End If
-                Me.SetGridItemStyleColor(Me.Grid)
+                SetGridItemStyleColor(Grid)
 
             End If
-            Me.DisplayNewProgressBarOnClick(Me.btnSearch, "LOADING_R_AND_L_CLAIMS")
+            DisplayNewProgressBarOnClick(btnSearch, "LOADING_R_AND_L_CLAIMS")
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
     Private Sub UpdateBreadCrum()
 
-        If (Not Me.State Is Nothing) Then
-            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
+        If (State IsNot Nothing) Then
+            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
                 TranslationBase.TranslateLabelOrMessage(PAGETITLE)
         End If
 
     End Sub
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            If Me.CalledUrl = ClaimForm.URL Then
-                Me.MenuEnabled = True
-                Me.IsReturningFromChild = True
-                Dim retObj As ClaimForm.ReturnType = CType(Me.ReturnedValues, ClaimForm.ReturnType)
-                If Not retObj Is Nothing AndAlso retObj.BoChanged Then
-                    Me.State.searchDV = Nothing
+            If CalledUrl = ClaimForm.URL Then
+                MenuEnabled = True
+                IsReturningFromChild = True
+                Dim retObj As ClaimForm.ReturnType = CType(ReturnedValues, ClaimForm.ReturnType)
+                If retObj IsNot Nothing AndAlso retObj.BoChanged Then
+                    State.searchDV = Nothing
                 End If
             End If
 
-            If Me.CalledUrl = Reports.RepairLogisticsClaimsExportForm.URL Then
-                Me.MenuEnabled = True
-                Dim retObj As Reports.RepairLogisticsClaimsExportForm.ReturnType = CType(ReturnPar, Reports.RepairLogisticsClaimsExportForm.ReturnType)
+            If CalledUrl = RepairLogisticsClaimsExportForm.URL Then
+                MenuEnabled = True
+                Dim retObj As RepairLogisticsClaimsExportForm.ReturnType = CType(ReturnPar, RepairLogisticsClaimsExportForm.ReturnType)
                 'Me.State.HasDataChanged = retObj.HasDataChanged
-                If Not retObj Is Nothing AndAlso retObj.HasDataChanged Then
-                    Me.State.searchDV = Nothing
+                If retObj IsNot Nothing AndAlso retObj.HasDataChanged Then
+                    State.searchDV = Nothing
                 End If
-                Me.State.IsGridVisible = True
+                State.IsGridVisible = True
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
@@ -190,15 +193,15 @@ Public Class PendingReviewPaymentClaimListForm
 #End Region
 
 #Region "Controlling Logic"
-    Private Sub Country_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ddlcountry.SelectedIndexChanged
+    Private Sub Country_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlcountry.SelectedIndexChanged
         Try
-            Dim CountryId As Guid = Me.GetSelectedItem(Me.ddlcountry)
+            Dim CountryId As Guid = GetSelectedItem(ddlcountry)
 
             If CountryId.Equals(Guid.Empty) Then
                 ' Me.BindListControlToDataView(ddlservicecenter, LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Countries)) 'ServiceCenterListByCountry
-                Dim ServiceCenterList As New Collections.Generic.List(Of DataElements.ListItem)
+                Dim ServiceCenterList As New List(Of ListItem)
                 For Each Country_id As Guid In ElitaPlusIdentity.Current.ActiveUser.Countries
-                    Dim ServiceCenters As DataElements.ListItem() =
+                    Dim ServiceCenters As ListItem() =
                     CommonConfigManager.Current.ListManager.GetList(listCode:="ServiceCenterListByCountry",
                                                                     context:=New ListContext() With
                                                                     {
@@ -206,7 +209,7 @@ Public Class PendingReviewPaymentClaimListForm
                                                                     })
 
                     If ServiceCenters.Count > 0 Then
-                        If Not ServiceCenterList Is Nothing Then
+                        If ServiceCenterList IsNot Nothing Then
                             ServiceCenterList.AddRange(ServiceCenters)
                         Else
                             ServiceCenterList = ServiceCenters.Clone()
@@ -214,7 +217,7 @@ Public Class PendingReviewPaymentClaimListForm
                     End If
                 Next
 
-                Me.ddlservicecenter.Populate(ServiceCenterList.ToArray(), New PopulateOptions() With
+                ddlservicecenter.Populate(ServiceCenterList.ToArray(), New PopulateOptions() With
                     {
                         .AddBlankItem = True
                     })
@@ -224,14 +227,14 @@ Public Class PendingReviewPaymentClaimListForm
                 Dim listcontext As ListContext = New ListContext()
                 listcontext.CountryId = CountryId
                 Dim serviceCenterLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("ServiceCenterListByCountry", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
-                Me.ddlservicecenter.Populate(serviceCenterLkl, New PopulateOptions() With
+                ddlservicecenter.Populate(serviceCenterLkl, New PopulateOptions() With
                         {
                         .AddBlankItem = True
                         })
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
@@ -243,29 +246,29 @@ Public Class PendingReviewPaymentClaimListForm
             listcontext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
 
             Dim extendedStatusByGroupLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("ExtendedStatusByCompanyGroup", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
-            Me.ddlclaimextstatus.Populate(extendedStatusByGroupLkl, New PopulateOptions() With
+            ddlclaimextstatus.Populate(extendedStatusByGroupLkl, New PopulateOptions() With
                     {
                     .AddBlankItem = True
                     })
 
-            Dim countryList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="Country")
+            Dim countryList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="Country")
 
-            Dim filteredCountryList As DataElements.ListItem() = (From x In countryList
+            Dim filteredCountryList As ListItem() = (From x In countryList
                                                                   Where ElitaPlusIdentity.Current.ActiveUser.Countries.Contains(x.ListItemId)
                                                                   Select x).ToArray()
 
-            Me.ddlcountry.Populate(filteredCountryList, New PopulateOptions() With
+            ddlcountry.Populate(filteredCountryList, New PopulateOptions() With
                                                    {
                                                     .AddBlankItem = True
                                                    })
 
             If ddlcountry.Items.Count = 2 Then
                 ddlcountry.SelectedIndex = 1
-                Me.State.Countryid = New Guid(ddlcountry.SelectedValue.ToString())
+                State.Countryid = New Guid(ddlcountry.SelectedValue.ToString())
             End If
 
             Dim claimstatusLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("CLSTAT", Thread.CurrentPrincipal.GetLanguageCode())
-            Me.ddlclaimstatus.Populate(claimstatusLkl, New PopulateOptions() With
+            ddlclaimstatus.Populate(claimstatusLkl, New PopulateOptions() With
                     {
                     .AddBlankItem = True
                     })
@@ -277,38 +280,38 @@ Public Class PendingReviewPaymentClaimListForm
             ' Me.BindListControlToDataView(Me.ddlcoveragetype, ocoveragebycompgroup, , , True)
 
             Dim coverageTypeByCompanyGroupLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("CoverageTypeByCompanyGroup", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
-            Me.ddlcoveragetype.Populate(coverageTypeByCompanyGroupLkl, New PopulateOptions() With
+            ddlcoveragetype.Populate(coverageTypeByCompanyGroupLkl, New PopulateOptions() With
                     {
                     .AddBlankItem = True
                     })
 
             Dim servicelevelLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("SVC_LVL", Thread.CurrentPrincipal.GetLanguageCode())
-            Me.ddlservicelevel.Populate(servicelevelLkl, New PopulateOptions() With
+            ddlservicelevel.Populate(servicelevelLkl, New PopulateOptions() With
                     {
                     .AddBlankItem = True
                     })
 
             Dim replacementTypeLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("DEVICE", Thread.CurrentPrincipal.GetLanguageCode())
-            Me.ddlReplacementType.Populate(replacementTypeLkl, New PopulateOptions() With
+            ddlReplacementType.Populate(replacementTypeLkl, New PopulateOptions() With
                     {
                     .AddBlankItem = True
                     })
 
             Dim manufacturerLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("ManufacturerByCompanyGroup", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
-            Me.ddlmake.Populate(manufacturerLkl, New PopulateOptions() With
+            ddlmake.Populate(manufacturerLkl, New PopulateOptions() With
                 {
                 .AddBlankItem = True
                 })
 
             Dim RiskTypeLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("RiskTypeByCompanyGroup", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
-            Me.ddlrisktype.Populate(RiskTypeLkl, New PopulateOptions() With
+            ddlrisktype.Populate(RiskTypeLkl, New PopulateOptions() With
                 {
                 .AddBlankItem = True
                 })
 
-            Dim ServiceCenterList As New Collections.Generic.List(Of DataElements.ListItem)
+            Dim ServiceCenterList As New List(Of ListItem)
             For Each Country_id As Guid In ElitaPlusIdentity.Current.ActiveUser.Countries
-                Dim ServiceCenters As DataElements.ListItem() =
+                Dim ServiceCenters As ListItem() =
                     CommonConfigManager.Current.ListManager.GetList(listCode:="ServiceCenterListByCountry",
                                                                     context:=New ListContext() With
                                                                     {
@@ -316,7 +319,7 @@ Public Class PendingReviewPaymentClaimListForm
                                                                     })
 
                 If ServiceCenters.Count > 0 Then
-                    If Not ServiceCenterList Is Nothing Then
+                    If ServiceCenterList IsNot Nothing Then
                         ServiceCenterList.AddRange(ServiceCenters)
                     Else
                         ServiceCenterList = ServiceCenters.Clone()
@@ -324,12 +327,12 @@ Public Class PendingReviewPaymentClaimListForm
                 End If
             Next
 
-            Me.ddlservicecenter.Populate(ServiceCenterList.ToArray(), New PopulateOptions() With
+            ddlservicecenter.Populate(ServiceCenterList.ToArray(), New PopulateOptions() With
                     {
                     .AddBlankItem = True
                     })
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -338,58 +341,58 @@ Public Class PendingReviewPaymentClaimListForm
         Try
             PopulateStateFromSearchFields()
             Dim haserrors As Boolean = False
-            If (Not moClaimCreatedDate.IsEmpty) And Not moClaimCreatedDate.Validate() Then
+            If (Not moClaimCreatedDate.IsEmpty) AndAlso Not moClaimCreatedDate.Validate() Then
                 Exit Sub
             Else
-                Me.State.claimcreateddate = DirectCast(moClaimCreatedDate.Value, SearchCriteriaStructType(Of Date))
+                State.claimcreateddate = DirectCast(moClaimCreatedDate.Value, SearchCriteriaStructType(Of Date))
             End If
 
-            Me.State.claimstatus = LookupListNew.GetCodeFromId(LookupListNew.LK_CLAIM_STATUS, Me.State.claimstatusid)
-            If Me.State.claimstatus Is Nothing Then
-                Me.State.claimstatus = String.Empty
+            State.claimstatus = LookupListNew.GetCodeFromId(LookupListNew.LK_CLAIM_STATUS, State.claimstatusid)
+            If State.claimstatus Is Nothing Then
+                State.claimstatus = String.Empty
             End If
 
-            If (Me.State.searchDV Is Nothing) Then
-                Me.State.searchDV = Claim.GetPendingReviewPaymentClaimList(Me.State.claimNumber, Me.State.serialNumber, Me.State.certificate, Me.State.servicecenterid,
-                                                                           Me.State.Countryid, Me.State.Manufacturerid, Me.State.Model, Me.State.skuclaimed, Me.State.skureplaced,
-                                                                            Me.State.claimstatus, Me.State.extclaimstatusid, Me.State.coveragetypeid, Me.State.servicelevelid, Me.State.risktypeid,
-                                                                            Me.State.skureppart, Me.State.replacementtypeid, Me.State.claimcreateddate)
+            If (State.searchDV Is Nothing) Then
+                State.searchDV = Claim.GetPendingReviewPaymentClaimList(State.claimNumber, State.serialNumber, State.certificate, State.servicecenterid,
+                                                                           State.Countryid, State.Manufacturerid, State.Model, State.skuclaimed, State.skureplaced,
+                                                                            State.claimstatus, State.extclaimstatusid, State.coveragetypeid, State.servicelevelid, State.risktypeid,
+                                                                            State.skureppart, State.replacementtypeid, State.claimcreateddate)
 
 
             End If
 
-            Me.Grid.AutoGenerateColumns = False
+            Grid.AutoGenerateColumns = False
 
 
-            Me.Grid.PageSize = Me.State.selectedPageSize
+            Grid.PageSize = State.selectedPageSize
 
-            ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
-            Session("recCount") = Me.State.searchDV.Count
+            ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
+            Session("recCount") = State.searchDV.Count
 
-            If Me.State.searchDV.Count > 0 Then
+            If State.searchDV.Count > 0 Then
                 ControlMgr.SetVisibleControl(Me, mogridresults, True)
-                Me.divbtns.Visible = True
+                divbtns.Visible = True
                 ControlMgr.SetVisibleControl(Me, btnexport, True)
-                If Me.Grid.Visible Then
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIMS_FOUND)
+                If Grid.Visible Then
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIMS_FOUND)
                 End If
-                Me.Grid.DataSource = Me.State.searchDV
-                Me.Grid.AutoGenerateColumns = False
-                Me.Grid.Columns(Me.GRID_COL_SERVICE_CENTER_NAME_IDX).SortExpression = Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_SERVICE_CENTER_NAME
-                Me.Grid.Columns(Me.GRID_COL_CLAIM_NUMBER_IDX).SortExpression = Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_CLAIM_NUMBER
-                Me.Grid.Columns(Me.GRID_COL_COUNTRY_SERVICE_CENTER_IDX).SortExpression = Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_SERVICE_CENTER_COUNTRY
+                Grid.DataSource = State.searchDV
+                Grid.AutoGenerateColumns = False
+                Grid.Columns(GRID_COL_SERVICE_CENTER_NAME_IDX).SortExpression = Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_SERVICE_CENTER_NAME
+                Grid.Columns(GRID_COL_CLAIM_NUMBER_IDX).SortExpression = Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_CLAIM_NUMBER
+                Grid.Columns(GRID_COL_COUNTRY_SERVICE_CENTER_IDX).SortExpression = Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_SERVICE_CENTER_COUNTRY
 
-                SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.selectedClaimId, Me.Grid, Me.State.PageIndex)
-                Me.State.PageIndex = Me.Grid.PageIndex
-                HighLightSortColumn(Grid, Me.State.SortExpression, Me.IsNewUI)
-                Me.State.searchDV.Sort = Me.State.SortExpression
-                Me.Grid.DataBind()
+                SetPageAndSelectedIndexFromGuid(State.searchDV, State.selectedClaimId, Grid, State.PageIndex)
+                State.PageIndex = Grid.PageIndex
+                HighLightSortColumn(Grid, State.SortExpression, IsNewUI)
+                State.searchDV.Sort = State.SortExpression
+                Grid.DataBind()
 
 
             Else
                 ControlMgr.SetVisibleControl(Me, mogridresults, False)
-                Me.Grid.Visible = False
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIMS_FOUND)
+                Grid.Visible = False
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIMS_FOUND)
 
             End If
 
@@ -397,7 +400,7 @@ Public Class PendingReviewPaymentClaimListForm
 
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
@@ -405,24 +408,24 @@ Public Class PendingReviewPaymentClaimListForm
     Public Sub PopulateSearchFieldsFromState()
 
         Try
-            Me.TextBoxSearchCertificate.Text = Me.State.certificate
-            Me.TextBoxSearchClaimNumber.Text = Me.State.claimNumber
-            Me.TextBoxSearchSerialNumber.Text = Me.State.serialNumber
-            Me.txtSKUClaimed.Text = Me.State.skuclaimed
-            Me.txtSKUReplaced.Text = Me.State.skureplaced
-            Me.txtskureppart.Text = Me.State.skureppart
-            Me.TextBoxmodel.Text = Me.State.Model
-            Me.SetSelectedItem(ddlservicecenter, Me.State.servicecenterid)
-            Me.SetSelectedItem(ddlservicelevel, Me.State.servicelevelid)
-            Me.SetSelectedItem(ddlrisktype, Me.State.risktypeid)
-            Me.SetSelectedItem(ddlReplacementType, Me.State.replacementtypeid)
-            Me.SetSelectedItem(ddlmake, Me.State.Manufacturerid)
-            Me.SetSelectedItem(ddlcountry, Me.State.Countryid)
-            Me.SetSelectedItem(ddlclaimstatus, Me.State.claimstatusid)
-            Me.SetSelectedItem(ddlclaimextstatus, Me.State.extclaimstatusid)
-            Me.SetSelectedItem(ddlcoveragetype, Me.State.coveragetypeid)
+            TextBoxSearchCertificate.Text = State.certificate
+            TextBoxSearchClaimNumber.Text = State.claimNumber
+            TextBoxSearchSerialNumber.Text = State.serialNumber
+            txtSKUClaimed.Text = State.skuclaimed
+            txtSKUReplaced.Text = State.skureplaced
+            txtskureppart.Text = State.skureppart
+            TextBoxmodel.Text = State.Model
+            SetSelectedItem(ddlservicecenter, State.servicecenterid)
+            SetSelectedItem(ddlservicelevel, State.servicelevelid)
+            SetSelectedItem(ddlrisktype, State.risktypeid)
+            SetSelectedItem(ddlReplacementType, State.replacementtypeid)
+            SetSelectedItem(ddlmake, State.Manufacturerid)
+            SetSelectedItem(ddlcountry, State.Countryid)
+            SetSelectedItem(ddlclaimstatus, State.claimstatusid)
+            SetSelectedItem(ddlclaimextstatus, State.extclaimstatusid)
+            SetSelectedItem(ddlcoveragetype, State.coveragetypeid)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
@@ -430,49 +433,49 @@ Public Class PendingReviewPaymentClaimListForm
     Public Sub PopulateStateFromSearchFields()
 
         Try
-            Me.State.claimNumber = Me.TextBoxSearchClaimNumber.Text
-            Me.State.serialNumber = Me.TextBoxSearchSerialNumber.Text
-            Me.State.certificate = Me.TextBoxSearchCertificate.Text
-            Me.State.servicecenterid = GetSelectedItem(Me.ddlservicecenter)
-            Me.State.Manufacturerid = GetSelectedItem(Me.ddlmake)
-            Me.State.Model = Me.TextBoxmodel.Text
-            Me.State.skuclaimed = Me.txtSKUClaimed.Text
-            Me.State.skureplaced = Me.txtSKUReplaced.Text
-            Me.State.skureppart = Me.txtskureppart.Text
-            Me.State.Countryid = GetSelectedItem(Me.ddlcountry)
-            Me.State.claimstatusid = GetSelectedItem(Me.ddlclaimstatus)
-            Me.State.extclaimstatusid = GetSelectedItem(Me.ddlclaimextstatus)
-            Me.State.coveragetypeid = GetSelectedItem(Me.ddlcoveragetype)
-            Me.State.replacementtypeid = GetSelectedItem(Me.ddlReplacementType)
-            Me.State.risktypeid = GetSelectedItem(Me.ddlrisktype)
+            State.claimNumber = TextBoxSearchClaimNumber.Text
+            State.serialNumber = TextBoxSearchSerialNumber.Text
+            State.certificate = TextBoxSearchCertificate.Text
+            State.servicecenterid = GetSelectedItem(ddlservicecenter)
+            State.Manufacturerid = GetSelectedItem(ddlmake)
+            State.Model = TextBoxmodel.Text
+            State.skuclaimed = txtSKUClaimed.Text
+            State.skureplaced = txtSKUReplaced.Text
+            State.skureppart = txtskureppart.Text
+            State.Countryid = GetSelectedItem(ddlcountry)
+            State.claimstatusid = GetSelectedItem(ddlclaimstatus)
+            State.extclaimstatusid = GetSelectedItem(ddlclaimextstatus)
+            State.coveragetypeid = GetSelectedItem(ddlcoveragetype)
+            State.replacementtypeid = GetSelectedItem(ddlReplacementType)
+            State.risktypeid = GetSelectedItem(ddlrisktype)
             'Me.State.claimcreateddate = DirectCast(moClaimCreatedDate.Value, SearchCriteriaStructType(Of Date))
-            Me.State.datesearchtype = moClaimCreatedDate.SearchType.ToString()
-            Me.State.servicelevelid = GetSelectedItem(Me.ddlservicelevel)
+            State.datesearchtype = moClaimCreatedDate.SearchType.ToString()
+            State.servicelevelid = GetSelectedItem(ddlservicelevel)
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
     Public Sub ClearSearch()
-        Me.TextBoxSearchClaimNumber.Text = String.Empty
-        Me.TextBoxSearchSerialNumber.Text = String.Empty
-        Me.TextBoxSearchCertificate.Text = String.Empty
-        Me.moClaimCreatedDate.Clear()
-        Me.txtSKUClaimed.Text = String.Empty
-        Me.txtSKUReplaced.Text = String.Empty
-        Me.txtskureppart.Text = String.Empty
-        Me.TextBoxmodel.Text = String.Empty
-        Me.ddlservicecenter.SelectedIndex = Me.BLANK_ITEM_SELECTED
-        Me.ddlmake.SelectedIndex = Me.BLANK_ITEM_SELECTED
-        Me.ddlclaimextstatus.SelectedIndex = Me.BLANK_ITEM_SELECTED
-        Me.ddlclaimstatus.SelectedIndex = Me.BLANK_ITEM_SELECTED
-        Me.ddlcountry.SelectedIndex = Me.BLANK_ITEM_SELECTED
-        Me.ddlcoveragetype.SelectedIndex = Me.BLANK_ITEM_SELECTED
-        Me.ddlservicelevel.SelectedIndex = Me.BLANK_ITEM_SELECTED
-        Me.ddlrisktype.SelectedIndex = Me.BLANK_ITEM_SELECTED
-        Me.ddlReplacementType.SelectedIndex = Me.BLANK_ITEM_SELECTED
+        TextBoxSearchClaimNumber.Text = String.Empty
+        TextBoxSearchSerialNumber.Text = String.Empty
+        TextBoxSearchCertificate.Text = String.Empty
+        moClaimCreatedDate.Clear()
+        txtSKUClaimed.Text = String.Empty
+        txtSKUReplaced.Text = String.Empty
+        txtskureppart.Text = String.Empty
+        TextBoxmodel.Text = String.Empty
+        ddlservicecenter.SelectedIndex = BLANK_ITEM_SELECTED
+        ddlmake.SelectedIndex = BLANK_ITEM_SELECTED
+        ddlclaimextstatus.SelectedIndex = BLANK_ITEM_SELECTED
+        ddlclaimstatus.SelectedIndex = BLANK_ITEM_SELECTED
+        ddlcountry.SelectedIndex = BLANK_ITEM_SELECTED
+        ddlcoveragetype.SelectedIndex = BLANK_ITEM_SELECTED
+        ddlservicelevel.SelectedIndex = BLANK_ITEM_SELECTED
+        ddlrisktype.SelectedIndex = BLANK_ITEM_SELECTED
+        ddlReplacementType.SelectedIndex = BLANK_ITEM_SELECTED
 
     End Sub
     Private Sub ProcessCommand()
@@ -483,24 +486,24 @@ Public Class PendingReviewPaymentClaimListForm
         checkValueArray = checkRecords.Value.Split(":"c)
 
         For i = 0 To checkValueArray.Length - 1
-            If (Not checkValueArray(i) Is Nothing And checkValueArray(i) <> "") Then
+            If (checkValueArray(i) IsNot Nothing AndAlso checkValueArray(i) <> "") Then
                 checkValues = checkValueArray(i).ToString & ":" & checkValues
             End If
         Next
         checkRecords.Value = GetCheckedItemsValues()
         ProcessRecords()
         checkRecords.Value = ""
-        Me.State.searchDV = Nothing
+        State.searchDV = Nothing
         PopulateGrid()
     End Sub
 
     Private Function GetCheckedItemsValues() As String
         Dim checkedValues As String = String.Empty
-        For Each gvrow As GridViewRow In Me.Grid.Rows
+        For Each gvrow As GridViewRow In Grid.Rows
             Dim CheckBox1 As CheckBox = DirectCast(gvrow.FindControl(GRID_CLAIM_APPROVE_CHECKBOX), CheckBox)
 
             If CheckBox1.Checked Then
-                Dim claimId As Guid = New Guid(gvrow.Cells(Me.GRID_COL_CLAIM_ID_IDX).Text)
+                Dim claimId As Guid = New Guid(gvrow.Cells(GRID_COL_CLAIM_ID_IDX).Text)
 
                 checkedValues += GuidControl.GuidToHexString(claimId) & ":"
             End If
@@ -511,28 +514,28 @@ Public Class PendingReviewPaymentClaimListForm
 
     Protected Function ProcessRecords() As Boolean
         Try
-            Dim outputParameters() As DALObjects.DBHelper.DBHelperParameter
-            outputParameters = Claim.ApproveOrRejectClaims(Me.State.cmdProcessRecord, checkRecords.Value)
+            Dim outputParameters() As DBHelper.DBHelperParameter
+            outputParameters = Claim.ApproveOrRejectClaims(State.cmdProcessRecord, checkRecords.Value)
 
             If CType(outputParameters(0).Value, Integer) = 0 Then
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
-                Me.HiddenSaveChangesPromptResponse.Value = Me.MSG_BTN_OK
+                State.ActionInProgress = DetailPageCommand.OK
+                HiddenSaveChangesPromptResponse.Value = MSG_BTN_OK
                 'Me.DisplayMessageWithSubmit(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
             ElseIf CType(outputParameters(0).Value, Integer) = 300 Then
                 'Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR, Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR)
-                Me.ErrControllerMaster.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR)
+                ErrControllerMaster.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR)
             Else
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.OK
-                Me.HiddenSaveChangesPromptResponse.Value = Me.MSG_BTN_OK
+                State.ActionInProgress = DetailPageCommand.OK
+                HiddenSaveChangesPromptResponse.Value = MSG_BTN_OK
                 'Me.DisplayMessageWithSubmit(CType(outputParameters(1).Value, String), "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO, False)
-                Me.MasterPage.MessageController.AddErrorAndShow(Message.MSG_RECORD_NOT_SAVED, True)
+                MasterPage.MessageController.AddErrorAndShow(Message.MSG_RECORD_NOT_SAVED, True)
             End If
 
             PopulateGrid()
             Return True
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
             Return False
         End Try
     End Function
@@ -541,192 +544,192 @@ Public Class PendingReviewPaymentClaimListForm
 #Region " Datagrid Related "
 
     'The Binding LOgic is here
-    Private Sub Grid_ItemBound(ByVal source As Object, ByVal e As GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_ItemBound(source As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-        Dim chk As CheckBox = CType(e.Row.Cells(Me.GRID_COL_CHKBX_IDX).FindControl(Me.GRID_CLAIM_APPROVE_CHECKBOX), CheckBox)
+        Dim chk As CheckBox = CType(e.Row.Cells(GRID_COL_CHKBX_IDX).FindControl(GRID_CLAIM_APPROVE_CHECKBOX), CheckBox)
         Dim btnedit As LinkButton
         Try
             If (e.Row.RowType = DataControlRowType.Header) Then
 
-                Dim headerchk As CheckBox = CType(e.Row.Cells(Me.GRID_COL_CHKBX_IDX).FindControl(Me.GRID_ALL_CLAIMS_CHECKBOX), CheckBox)
-                If Not headerchk Is Nothing Then
+                Dim headerchk As CheckBox = CType(e.Row.Cells(GRID_COL_CHKBX_IDX).FindControl(GRID_ALL_CLAIMS_CHECKBOX), CheckBox)
+                If headerchk IsNot Nothing Then
                     headerchk.Attributes("onClick") = "javascript:SelectAll('" & headerchk.ClientID & "')"
                 End If
             End If
-            If Not dvRow Is Nothing Then
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+            If dvRow IsNot Nothing Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
-                    If (Not e.Row.Cells(Me.GRID_COL_CLAIM_NUMBER_IDX).FindControl(Me.GRID_CLAIM_Number_CTRL) Is Nothing) Then
-                        btnedit = CType(e.Row.Cells(Me.GRID_COL_CLAIM_NUMBER_IDX).FindControl(Me.GRID_CLAIM_Number_CTRL), LinkButton)
+                    If (e.Row.Cells(GRID_COL_CLAIM_NUMBER_IDX).FindControl(GRID_CLAIM_Number_CTRL) IsNot Nothing) Then
+                        btnedit = CType(e.Row.Cells(GRID_COL_CLAIM_NUMBER_IDX).FindControl(GRID_CLAIM_Number_CTRL), LinkButton)
                         btnedit.Text = dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_CLAIM_NUMBER).ToString
                         btnedit.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_CLAIM_ID), Byte()))
 
                     End If
 
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_CLAIM_ID_IDX), dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_CLAIM_ID))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_SERIAL_NUMBER_IDX), dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_SERIAL_NUMBER))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_SERVICE_CENTER_NAME_IDX), dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_SERVICE_CENTER_NAME))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_CLAIM_CREATED_DATE_IDX),
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_ID_IDX), dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_CLAIM_ID))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_SERIAL_NUMBER_IDX), dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_SERIAL_NUMBER))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_SERVICE_CENTER_NAME_IDX), dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_SERVICE_CENTER_NAME))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_CREATED_DATE_IDX),
                                                      If(dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_CLAIM_CREATED_DATE) Is DBNull.Value,
                                                         Nothing,
                                                         GetDateFormattedString(CType(dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_CLAIM_CREATED_DATE), Date))))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_COUNTRY_SERVICE_CENTER_IDX), dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_SERVICE_CENTER_COUNTRY))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_MAKE_IDX), dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_MAKE))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_MODEL_IDX), dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_MODEL))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_SKU_CLAIMED_IDX), dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_SKU_CLAIMED))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_SKU_REPLACED_IDX), dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_SKU_REPLACED))
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_COVERAGE_TYPE), dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_COVERAGE_TYPE))
-                    If (Not dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_REPAIR_DATE) Is DBNull.Value) Then
-                        Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_REPAIR_DATE), GetDateFormattedString(CType(dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_REPAIR_DATE), Date)))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_COUNTRY_SERVICE_CENTER_IDX), dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_SERVICE_CENTER_COUNTRY))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_MAKE_IDX), dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_MAKE))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_MODEL_IDX), dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_MODEL))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_SKU_CLAIMED_IDX), dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_SKU_CLAIMED))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_SKU_REPLACED_IDX), dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_SKU_REPLACED))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_COVERAGE_TYPE), dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_COVERAGE_TYPE))
+                    If (dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_REPAIR_DATE) IsNot DBNull.Value) Then
+                        PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_REPAIR_DATE), GetDateFormattedString(CType(dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_REPAIR_DATE), Date)))
                     End If
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_CLAIM_STATUS_IDX), dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_CLAIM_STATUS))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_STATUS_IDX), dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_CLAIM_STATUS))
 
-                    Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_CLAIM_EXT_STATUS), dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_CLAIM_EXT_STATUS))
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_EXT_STATUS), dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_CLAIM_EXT_STATUS))
 
-                    If ((Not dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_CLAIM_EXT_STATUS_ID) Is DBNull.Value) AndAlso
-                        (New Guid(DirectCast(dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_CLAIM_EXT_STATUS_ID), Byte())).Equals(Me.PendingReviewForPaymentId))) Then
+                    If ((dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_CLAIM_EXT_STATUS_ID) IsNot DBNull.Value) AndAlso
+                        (New Guid(DirectCast(dvRow(Claim.PendingReviewPaymentClaimSearchDV.COL_NAME_CLAIM_EXT_STATUS_ID), Byte())).Equals(PendingReviewForPaymentId))) Then
                         chk.Enabled = True
-                        Me.divbtns.Visible = True
+                        divbtns.Visible = True
                         ControlMgr.SetVisibleControl(Me, btnapproveclaims, True)
                     End If
 
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-            Me.State.selectedPageSize = CType(cboPageSize.SelectedValue, Int32)
-            Me.PopulateGrid()
+            State.selectedPageSize = CType(cboPageSize.SelectedValue, Int32)
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
 
-    Public Sub RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+    Public Sub RowCommand(source As Object, e As GridViewCommandEventArgs)
 
         Try
 
             If e.CommandName = "Select" Then
 
-                Me.State.selectedClaimId = New Guid(e.CommandArgument.ToString())
-                If Me.State Is Nothing Then
-                    Me.Trace(Me, "Restoring State")
-                    Me.RestoreState(New MyState)
+                State.selectedClaimId = New Guid(e.CommandArgument.ToString())
+                If State Is Nothing Then
+                    Trace(Me, "Restoring State")
+                    RestoreState(New MyState)
                 End If
 
-                Me.callPage(ClaimForm.URL, Me.State.selectedClaimId)
+                callPage(ClaimForm.URL, State.selectedClaimId)
 
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
 
     End Sub
 
-    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+    Public Sub ItemCreated(sender As Object, e As GridViewRowEventArgs)
         BaseItemCreated(sender, e)
     End Sub
 
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As EventArgs) Handles Grid.PageIndexChanged
         Try
 
-            Me.State.PageIndex = Grid.PageIndex
-            Me.State.selectedClaimId = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = Grid.PageIndex
+            State.selectedClaimId = Guid.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub Grid_SortCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As GridViewSortEventArgs) Handles Grid.Sorting
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
 
 #Region " Button Clicks "
 
-    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
             'Dim claimcreateddate As SearchCriteriaStructType(Of Date)
 
-            Me.State.SearchClicked = True
-            Me.State.PageIndex = 0
+            State.SearchClicked = True
+            State.PageIndex = 0
             ControlMgr.SetVisibleControl(Me, btnapproveclaims, False)
             ControlMgr.SetVisibleControl(Me, btnexport, False)
-            Me.State.selectedClaimId = Guid.Empty
-            Me.State.IsGridVisible = True
-            Me.State.searchDV = Nothing
-            Me.PopulateGrid()
-            Me.State.SearchClicked = False
-            If Not Me.State.searchDV Is Nothing Then
-                Me.ValidSearchResultCountNew(Me.State.searchDV.Count, True)
+            State.selectedClaimId = Guid.Empty
+            State.IsGridVisible = True
+            State.searchDV = Nothing
+            PopulateGrid()
+            State.SearchClicked = False
+            If State.searchDV IsNot Nothing Then
+                ValidSearchResultCountNew(State.searchDV.Count, True)
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnClearSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         Try
-            Me.ClearSearch()
+            ClearSearch()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub btnapproveclaims_click(ByVal Sender As System.Object, ByVal e As System.EventArgs) Handles btnapproveclaims.Click
+    Private Sub btnapproveclaims_click(Sender As Object, e As EventArgs) Handles btnapproveclaims.Click
 
         Try
             ControlMgr.SetVisibleControl(Me, btnapproveclaims, False)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
-            Me.State.cmdProcessRecord = DALObjects.ClaimDAL.CMD_APPROVE
-            Me.ProcessCommand()
+            State.ActionInProgress = DetailPageCommand.Accept
+            State.cmdProcessRecord = ClaimDAL.CMD_APPROVE
+            ProcessCommand()
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub btnExportResults_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnexport.Click
+    Protected Sub btnExportResults_Click(sender As Object, e As EventArgs) Handles btnexport.Click
         Try
 
-            Me.callPage(Reports.RepairLogisticsClaimsExportForm.URL, State)
+            callPage(RepairLogisticsClaimsExportForm.URL, State)
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 #End Region

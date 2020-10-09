@@ -52,40 +52,40 @@ Namespace Interfaces
             Public CountryCode As String
             Public ServiceCenterCode As String
 
-            Public Sub New(ByVal LastOp As ElitaPlusPage.DetailPageCommand, ByVal countryCode As String, ByVal serviceCenterCode As String)
-                Me.LastOperation = LastOp
+            Public Sub New(LastOp As ElitaPlusPage.DetailPageCommand, countryCode As String, serviceCenterCode As String)
+                LastOperation = LastOp
                 Me.CountryCode = countryCode
                 Me.ServiceCenterCode = serviceCenterCode
             End Sub
 
         End Class
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles Me.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles Me.PageReturn
             Try
-                Me.IsReturningFromChild = True
+                IsReturningFromChild = True
                 Dim retObj As ReturnType = CType(ReturnPar, ReturnType)
-                If Not retObj Is Nothing Then
-                    Me.State.searchDV = Nothing
+                If retObj IsNot Nothing Then
+                    State.searchDV = Nothing
                 End If
-                If Not retObj Is Nothing Then
+                If retObj IsNot Nothing Then
                     Select Case retObj.LastOperation
                         Case ElitaPlusPage.DetailPageCommand.Back
 
-                            Me.State.IsGridVisible = True
+                            State.IsGridVisible = True
                         Case ElitaPlusPage.DetailPageCommand.Delete
-                            Me.AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
+                            AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
 
                         Case Else
 
                     End Select
-                    Grid.PageIndex = Me.State.PageIndex
-                    cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
-                    Grid.PageSize = Me.State.PageSize
+                    Grid.PageIndex = State.PageIndex
+                    cboPageSize.SelectedValue = CType(State.PageSize, String)
+                    Grid.PageSize = State.PageSize
                     ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region
@@ -128,50 +128,50 @@ Namespace Interfaces
 
 
 #Region "Page event handlers"
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
             Try
-                Me.MasterPage.MessageController.Clear()
-                Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("Interfaces")
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PageTile)
-                Me.UpdateBreadCrum()
+                MasterPage.MessageController.Clear()
+                MasterPage.UsePageTabTitleInBreadCrum = False
+                MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("Interfaces")
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PageTile)
+                UpdateBreadCrum()
 
-                If Not Me.IsPostBack Then
+                If Not IsPostBack Then
                     PopulateDropdowns()
                     TranslateGridHeader(Grid)
 
-                    If Not Me.State.IsReturningFromChild Then
+                    If Not State.IsReturningFromChild Then
                         ControlMgr.SetVisibleControl(Me, trPageSize, False)
                     Else
                         ControlMgr.SetVisibleControl(Me, trPageSize, True)
                     End If
 
-                    If Me.State.IsGridVisible Then
-                        If Not (Me.State.SelectedPageSize = DEFAULT_PAGE_SIZE) Then
-                            cboPageSize.SelectedValue = CType(Me.State.SelectedPageSize, String)
-                            Grid.PageSize = Me.State.SelectedPageSize
+                    If State.IsGridVisible Then
+                        If Not (State.SelectedPageSize = DEFAULT_PAGE_SIZE) Then
+                            cboPageSize.SelectedValue = CType(State.SelectedPageSize, String)
+                            Grid.PageSize = State.SelectedPageSize
                         End If
                     End If
-                    Me.SetGridItemStyleColor(Me.Grid)
+                    SetGridItemStyleColor(Grid)
 
                     If IsReturningFromChild Then
                         PopulateDropdowns()
-                        Me.PopulateGrid(True)
+                        PopulateGrid(True)
 
                     End If
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
 
         End Sub
 
         Private Sub UpdateBreadCrum()
 
-            If (Not Me.State Is Nothing) Then
-                Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
+            If (State IsNot Nothing) Then
+                MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
                 TranslationBase.TranslateLabelOrMessage(PageTile)
             End If
 
@@ -199,28 +199,28 @@ Namespace Interfaces
 #Region "Grid Handles"
         Public Property SortDirection() As String
             Get
-                If Not ViewState("SortDirection") Is Nothing Then
+                If ViewState("SortDirection") IsNot Nothing Then
                     Return ViewState("SortDirection").ToString
                 Else
                     Return String.Empty
                 End If
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 ViewState("SortDirection") = value
             End Set
         End Property
 
-        Public Sub Grid_RowCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+        Public Sub Grid_RowCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+        Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As FileInfoDto = CType(e.Row.DataItem, FileInfoDto)
                 Dim btnEditItem As LinkButton
-                If Not dvRow Is Nothing And Not Me.State.bnoRow Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
                         If Not String.IsNullOrEmpty(dvRow.LogicalFileName) Then
                             btnEditItem = CType(e.Row.Cells(GridDefenitionEnum.Filename).FindControl("btnGridShow"), LinkButton)
@@ -231,7 +231,7 @@ Namespace Interfaces
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -241,11 +241,11 @@ Namespace Interfaces
 
         Public Sub PopulateSearchFieldsFromState()
             Try
-                Me.ddlCountry.SelectedValue = State.CountryCode
-                Me.ddlServiceCenter.SelectedValue = State.ServiceCenterCode
+                ddlCountry.SelectedValue = State.CountryCode
+                ddlServiceCenter.SelectedValue = State.ServiceCenterCode
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -256,7 +256,7 @@ Namespace Interfaces
                 Dim UserCountries As DataElements.ListItem() = (From Country In CountryList
                                                                 Where ElitaPlusIdentity.Current.ActiveUser.Countries.Contains(Country.ListItemId)
                                                                 Select Country).ToArray()
-                Me.ddlCountry.Populate(UserCountries.ToArray(),
+                ddlCountry.Populate(UserCountries.ToArray(),
                                     New PopulateOptions() With
                                     {
                                           .AddBlankItem = True,
@@ -276,7 +276,7 @@ Namespace Interfaces
                                                                     })
 
                     If ServiceCenters.Count > 0 Then
-                        If Not ServiceCenterList Is Nothing Then
+                        If ServiceCenterList IsNot Nothing Then
                             ServiceCenterList.AddRange(ServiceCenters)
                         Else
                             ServiceCenterList = ServiceCenters.Clone()
@@ -284,7 +284,7 @@ Namespace Interfaces
                     End If
                 Next
 
-                Me.ddlServiceCenter.Populate(ServiceCenterList.ToArray(), New PopulateOptions() With
+                ddlServiceCenter.Populate(ServiceCenterList.ToArray(), New PopulateOptions() With
                 {
                     .AddBlankItem = True,
                     .TextFunc = AddressOf .GetDescription,
@@ -293,25 +293,25 @@ Namespace Interfaces
                 })
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Public Sub ClearSearch()
             Try
-                Me.ddlCountry.SelectedValue = String.Empty
-                Me.ddlServiceCenter.SelectedValue = String.Empty
+                ddlCountry.SelectedValue = String.Empty
+                ddlServiceCenter.SelectedValue = String.Empty
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Public Shared Function GetUniqueDirectory(ByVal path As String, ByVal username As String) As String
+        Public Shared Function GetUniqueDirectory(path As String, username As String) As String
             Dim uniqueIdDirectory As String = path & username & "_" & RemoveInvalidChar(Date.Now.ToString)
             Return uniqueIdDirectory
         End Function
 
-        Public Shared Function RemoveInvalidChar(ByVal filename As String) As String
+        Public Shared Function RemoveInvalidChar(filename As String) As String
 
             Dim index As Integer
             For index = 0 To FILE_NAME_INVALID_CHARACTERS.Length - 1
@@ -321,7 +321,7 @@ Namespace Interfaces
             Return filename
         End Function
 
-        Public Shared Sub CreateFolder(ByVal folderName As String)
+        Public Shared Sub CreateFolder(folderName As String)
             Dim objDir As New IO.DirectoryInfo(folderName)
             If Not objDir.Exists() Then
                 objDir.Create()
@@ -334,12 +334,12 @@ Namespace Interfaces
         Private Sub PopulateGrid(Optional ByVal refreshData As Boolean = False)
             Try
 
-                If Me.State.searchDV Is Nothing OrElse refreshData Then SearchGBIFiles(refreshData)
+                If State.searchDV Is Nothing OrElse refreshData Then SearchGBIFiles(refreshData)
 
 
                 If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -354,7 +354,7 @@ Namespace Interfaces
                 Dim wsResponse = WcfClientHelper.Execute(Of FileAdminClient, FileAdmin, FileAdminService.GetFilesResponse)(
                                                             GetClient(),
                                                             New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                                                            Function(ByVal c As FileAdminClient)
+                                                            Function(c As FileAdminClient)
                                                                 Return c.GetFiles(request)
                                                             End Function)
                 If wsResponse IsNot Nothing Then
@@ -370,7 +370,7 @@ Namespace Interfaces
 
             If (response IsNot Nothing AndAlso
                 response.FileDetails IsNot Nothing) Then
-                Me.State.searchDV = response
+                State.searchDV = response
                 Grid.DataSource = response.FileDetails
                 Grid.DataBind()
             End If
@@ -391,22 +391,22 @@ Namespace Interfaces
 
 
         Private Sub ThrowWsFaultExceptions(fex As FaultException)
-            Me.Log(fex)
+            Log(fex)
             MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_RECORDING_SERVICE_ERR) & " - " & fex.Message, False)
 
         End Sub
 #End Region
 #Region "Button Event Handlers"
-        Protected Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClearSearch.Click
+        Protected Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
             Try
-                Me.ClearSearch()
+                ClearSearch()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Protected Sub btnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSearch.Click
+        Protected Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
             Try
 
                 If Not State.IsGridVisible Then
@@ -415,18 +415,18 @@ Namespace Interfaces
                         cboPageSize.SelectedValue = CType(State.PageSize, String)
                         Grid.PageSize = State.PageSize
                     End If
-                    Me.State.IsGridVisible = True
+                    State.IsGridVisible = True
                 End If
                 Grid.PageIndex = NO_PAGE_INDEX
                 Grid.DataMember = Nothing
-                Me.State.searchDV = Nothing
+                State.searchDV = Nothing
                 SetSession()
                 Grid.PageIndex = NO_PAGE_INDEX
                 Grid.DataMember = Nothing
-                Me.State.searchDV = Nothing
+                State.searchDV = Nothing
 
                 If Not (ddlServiceCenter.SelectedValue = String.Empty) AndAlso Not (ddlCountry.SelectedValue = String.Empty) Then
-                    Me.PopulateGrid()
+                    PopulateGrid()
                 Else
                     Throw New GUIException(Message.MSG_INVALID_SEARCH, Assurant.ElitaPlus.Common.ErrorCodes.WS_MISSING_SEARCH_CRITERIA)
                 End If
@@ -434,9 +434,9 @@ Namespace Interfaces
 
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
         Private Shadows ReadOnly Property ThePage() As ElitaPlusSearchPage
@@ -449,13 +449,13 @@ Namespace Interfaces
 #Region "State-Management"
 
         Private Sub SetSession()
-            With Me.State
+            With State
                 .PageIndex = Grid.PageIndex
                 .PageSize = Grid.PageSize
-                .PageSort = Me.State.SortExpression
-                .searchDV = Me.State.searchDV
-                .CountryCode = Me.ddlCountry.SelectedValue
-                .ServiceCenterCode = Me.ddlServiceCenter.SelectedValue
+                .PageSort = State.SortExpression
+                .searchDV = State.searchDV
+                .CountryCode = ddlCountry.SelectedValue
+                .ServiceCenterCode = ddlServiceCenter.SelectedValue
             End With
         End Sub
 
@@ -477,12 +477,12 @@ Namespace Interfaces
                     }
 
 
-                    Me.callPage(ClaimFulfillmentMileStonesReconWrkForm.URL, parameters)
+                    callPage(ClaimFulfillmentMileStonesReconWrkForm.URL, parameters)
                 End If
 
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
     End Class

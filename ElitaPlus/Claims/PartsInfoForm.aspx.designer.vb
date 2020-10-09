@@ -22,7 +22,7 @@ Partial Public Class PartsInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Form1 As Global.System.Web.UI.HtmlControls.HtmlForm
+    Protected WithEvents Form1 As HtmlForm
 
     '''<summary>
     '''TablesLabel control.
@@ -31,7 +31,7 @@ Partial Public Class PartsInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TablesLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents TablesLabel As Label
 
     '''<summary>
     '''MaintainPartsInfoLabel control.
@@ -40,7 +40,7 @@ Partial Public Class PartsInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents MaintainPartsInfoLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents MaintainPartsInfoLabel As Label
 
     '''<summary>
     '''WorkingPanel control.
@@ -49,7 +49,7 @@ Partial Public Class PartsInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents WorkingPanel As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents WorkingPanel As Panel
 
     '''<summary>
     '''LabelCustomerName control.
@@ -58,7 +58,7 @@ Partial Public Class PartsInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelCustomerName As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelCustomerName As Label
 
     '''<summary>
     '''LabelClaimNumber control.
@@ -67,7 +67,7 @@ Partial Public Class PartsInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelClaimNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelClaimNumber As Label
 
     '''<summary>
     '''LabelRiskGroup control.
@@ -76,7 +76,7 @@ Partial Public Class PartsInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelRiskGroup As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelRiskGroup As Label
 
     '''<summary>
     '''TextboxCustomerName control.
@@ -85,7 +85,7 @@ Partial Public Class PartsInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextboxCustomerName As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextboxCustomerName As TextBox
 
     '''<summary>
     '''TextboxClaimNumber control.
@@ -94,7 +94,7 @@ Partial Public Class PartsInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextboxClaimNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextboxClaimNumber As TextBox
 
     '''<summary>
     '''TextboxRiskGroup control.
@@ -103,7 +103,7 @@ Partial Public Class PartsInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextboxRiskGroup As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextboxRiskGroup As TextBox
 
     '''<summary>
     '''Grid control.
@@ -112,7 +112,7 @@ Partial Public Class PartsInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Grid As Global.System.Web.UI.WebControls.DataGrid
+    Protected WithEvents Grid As DataGrid
 
     '''<summary>
     '''LabelTotalCost control.
@@ -121,7 +121,7 @@ Partial Public Class PartsInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelTotalCost As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelTotalCost As Label
 
     '''<summary>
     '''TextTotalCost control.
@@ -130,7 +130,7 @@ Partial Public Class PartsInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextTotalCost As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextTotalCost As TextBox
 
     '''<summary>
     '''btnBack control.
@@ -139,7 +139,7 @@ Partial Public Class PartsInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnBack As Button
 
     '''<summary>
     '''NewButton_WRITE control.
@@ -148,7 +148,7 @@ Partial Public Class PartsInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents NewButton_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents NewButton_WRITE As Button
 
     '''<summary>
     '''SaveButton_WRITE control.
@@ -157,7 +157,7 @@ Partial Public Class PartsInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents SaveButton_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents SaveButton_WRITE As Button
 
     '''<summary>
     '''CancelButton control.
@@ -166,5 +166,5 @@ Partial Public Class PartsInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents CancelButton As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents CancelButton As Button
 End Class

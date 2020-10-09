@@ -16,7 +16,7 @@ Partial Class VSCPlanForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -61,16 +61,16 @@ Partial Class VSCPlanForm
         End Get
     End Property
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 'Get the id from the parent
-                Me.State.MyBO = New VSCPlan(CType(Me.CallingParameters, Guid))
+                State.MyBO = New VSCPlan(CType(CallingParameters, Guid))
             Else
-                Me.State.IsNew = True
+                State.IsNew = True
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
@@ -83,43 +83,43 @@ Partial Class VSCPlanForm
         Public EditingBo As VSCPlan
         Public HasDataChanged As Boolean
 
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As VSCPlan, ByVal hasDataChanged As Boolean)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(LastOp As DetailPageCommand, curEditingBo As VSCPlan, hasDataChanged As Boolean)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
             Me.HasDataChanged = hasDataChanged
         End Sub
     End Class
 #End Region
 
 #Region "Page Events"
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
-        Me.ErrorCtrl.Clear_Hide()
+        ErrorCtrl.Clear_Hide()
         Try
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
                 PopulateAll()
-                Me.MenuEnabled = False
-                Me.AddConfirmation(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT)
-                If Me.State.MyBO Is Nothing Then
-                    Me.State.MyBO = New VSCPlan
+                MenuEnabled = False
+                AddConfirmation(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT)
+                If State.MyBO Is Nothing Then
+                    State.MyBO = New VSCPlan
                 End If
 
-                If Me.State.IsNew = True Then
+                If State.IsNew = True Then
                     CreateNew()
                 End If
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
+                PopulateFormFromBOs()
+                EnableDisableFields()
             End If
             BindBoPropertiesToLabels()
             CheckIfComingFromSaveConfirm()
-            If Not Me.IsPostBack Then
-                Me.AddLabelDecorations(Me.State.MyBO)
+            If Not IsPostBack Then
+                AddLabelDecorations(State.MyBO)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
-        Me.ShowMissingTranslations(Me.ErrorCtrl)
+        ShowMissingTranslations(ErrorCtrl)
     End Sub
 #End Region
 
@@ -134,7 +134,7 @@ Partial Class VSCPlanForm
                 CommonConfigManager.Current.ListManager.GetList(listCode:="RGRP",
                                                                 languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
 
-        Me.cboRiskGroup.Populate(RiskGroups.ToArray(),
+        cboRiskGroup.Populate(RiskGroups.ToArray(),
                                 New PopulateOptions() With
                                 {
                                     .AddBlankItem = True
@@ -155,7 +155,7 @@ Partial Class VSCPlanForm
                                                                   .CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
                                                                 })
 
-        Me.cboRiskType.Populate(RiskTypes.ToArray(),
+        cboRiskType.Populate(RiskTypes.ToArray(),
                                  New PopulateOptions() With
                                  {
                                    .AddBlankItem = True
@@ -171,7 +171,7 @@ Partial Class VSCPlanForm
 
 #Region "Controlling Logic"
 
-    Private Sub cboRiskGroup_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboRiskGroup.SelectedIndexChanged
+    Private Sub cboRiskGroup_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboRiskGroup.SelectedIndexChanged
         PopulateRiskTypes()
     End Sub
 
@@ -181,7 +181,7 @@ Partial Class VSCPlanForm
         ControlMgr.SetEnableControl(Me, btnNew_WRITE, True)
         ControlMgr.SetEnableControl(Me, btnCopy_WRITE, True)
 
-        If Me.State.MyBO.IsNew Then
+        If State.MyBO.IsNew Then
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
             ControlMgr.SetEnableControl(Me, btnNew_WRITE, False)
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, False)
@@ -190,28 +190,28 @@ Partial Class VSCPlanForm
     End Sub
 
     Protected Sub BindBoPropertiesToLabels()
-        Me.BindBOPropertyToLabel(Me.State.MyBO, CODE_PROPERTY, Me.lblCode)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, DESCRIPTION_PROPERTY, Me.lblDesc)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, RISKTYPEID_PROPERTY, Me.lblRiskType)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, RISKGROUPID_PROPERTY, Me.lblRiskGroup)
-        Me.BindBOPropertyToLabel(Me.State.MyBO, ISWRAPPLAN_PROPERTY, Me.lblWrapPlan)
-        Me.ClearGridHeadersAndLabelsErrSign()
+        BindBOPropertyToLabel(State.MyBO, CODE_PROPERTY, lblCode)
+        BindBOPropertyToLabel(State.MyBO, DESCRIPTION_PROPERTY, lblDesc)
+        BindBOPropertyToLabel(State.MyBO, RISKTYPEID_PROPERTY, lblRiskType)
+        BindBOPropertyToLabel(State.MyBO, RISKGROUPID_PROPERTY, lblRiskGroup)
+        BindBOPropertyToLabel(State.MyBO, ISWRAPPLAN_PROPERTY, lblWrapPlan)
+        ClearGridHeadersAndLabelsErrSign()
     End Sub
 
     Protected Sub PopulateFormFromBOs()
-        With Me.State.MyBO
-            Me.PopulateControlFromBOProperty(Me.txtCode, .Code)
-            Me.PopulateControlFromBOProperty(Me.txtDesc, .Description)
+        With State.MyBO
+            PopulateControlFromBOProperty(txtCode, .Code)
+            PopulateControlFromBOProperty(txtDesc, .Description)
             If .IsWrapPlan = YES Then
-                Me.PopulateControlFromBOProperty(Me.chkWrapPlan, True)
+                PopulateControlFromBOProperty(chkWrapPlan, True)
             Else
-                Me.PopulateControlFromBOProperty(Me.chkWrapPlan, False)
+                PopulateControlFromBOProperty(chkWrapPlan, False)
             End If
-            Me.PopulateControlFromBOProperty(Me.cboRiskGroup, .RiskGroupId)
+            PopulateControlFromBOProperty(cboRiskGroup, .RiskGroupId)
             'If cboRiskType.Items.Count < 0 Then
             PopulateRiskTypes()
             'End If
-            Me.PopulateControlFromBOProperty(Me.cboRiskType, .RiskTypeId)
+            PopulateControlFromBOProperty(cboRiskType, .RiskTypeId)
         End With
 
     End Sub
@@ -219,185 +219,185 @@ Partial Class VSCPlanForm
     Protected Sub PopulateBOsFromForm()
         Dim oCompanyGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
 
-        With Me.State.MyBO
-            Me.PopulateBOProperty(Me.State.MyBO, "Code", Me.txtCode)
-            Me.PopulateBOProperty(Me.State.MyBO, "Description", Me.txtDesc)
-            Me.PopulateBOProperty(Me.State.MyBO, "CompanyGroupId", oCompanyGroupId)
+        With State.MyBO
+            PopulateBOProperty(State.MyBO, "Code", txtCode)
+            PopulateBOProperty(State.MyBO, "Description", txtDesc)
+            PopulateBOProperty(State.MyBO, "CompanyGroupId", oCompanyGroupId)
             If chkWrapPlan.Checked Then
-                Me.PopulateBOProperty(Me.State.MyBO, "IsWrapPlan", "Y")
+                PopulateBOProperty(State.MyBO, "IsWrapPlan", "Y")
             Else
-                Me.PopulateBOProperty(Me.State.MyBO, "IsWrapPlan", "N")
+                PopulateBOProperty(State.MyBO, "IsWrapPlan", "N")
             End If
-            Me.PopulateBOProperty(Me.State.MyBO, "RiskGroupId", Me.cboRiskGroup)
-            Me.PopulateBOProperty(Me.State.MyBO, "RiskTypeId", Me.cboRiskType)
+            PopulateBOProperty(State.MyBO, "RiskGroupId", cboRiskGroup)
+            PopulateBOProperty(State.MyBO, "RiskTypeId", cboRiskType)
         End With
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Sub
 
 
     Protected Sub CreateNew()
-        Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
-        Me.State.MyBO = New VSCPlan
-        Me.PopulateAll()
-        Me.PopulateFormFromBOs()
-        Me.EnableDisableFields()
+        State.ScreenSnapShotBO = Nothing 'Reset the backup copy
+        State.MyBO = New VSCPlan
+        PopulateAll()
+        PopulateFormFromBOs()
+        EnableDisableFields()
     End Sub
 
     Protected Sub CreateNewWithCopy()
 
-        Me.PopulateBOsFromForm()
+        PopulateBOsFromForm()
 
         Dim newObj As New VSCPlan
-        newObj.Copy(Me.State.MyBO)
+        newObj.Copy(State.MyBO)
 
-        Me.State.MyBO = newObj
-        Me.State.MyBO.Code = Nothing
-        Me.State.MyBO.Description = Nothing
+        State.MyBO = newObj
+        State.MyBO.Code = Nothing
+        State.MyBO.Description = Nothing
 
-        Me.PopulateFormFromBOs()
-        Me.EnableDisableFields()
+        PopulateFormFromBOs()
+        EnableDisableFields()
 
         'create the backup copy
-        Me.State.ScreenSnapShotBO = New VSCPlan
-        Me.State.ScreenSnapShotBO.Clone(Me.State.MyBO)
+        State.ScreenSnapShotBO = New VSCPlan
+        State.ScreenSnapShotBO.Clone(State.MyBO)
     End Sub
 
     Protected Sub CheckIfComingFromSaveConfirm()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-        If Not confResponse Is Nothing AndAlso confResponse = Me.CONFIRM_MESSAGE_OK Then
-            If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
-                Me.State.MyBO.Save()
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+        If confResponse IsNot Nothing AndAlso confResponse = CONFIRM_MESSAGE_OK Then
+            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
+                State.MyBO.Save()
             End If
-            Select Case Me.State.ActionInProgress
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                    Me.CreateNew()
+                    AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                    Me.CreateNewWithCopy()
+                    AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                    CreateNewWithCopy()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
             End Select
-        ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.CONFIRM_MESSAGE_CANCEL Then
-            Select Case Me.State.ActionInProgress
+        ElseIf confResponse IsNot Nothing AndAlso confResponse = CONFIRM_MESSAGE_CANCEL Then
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.CreateNew()
+                    CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    Me.CreateNewWithCopy()
+                    CreateNewWithCopy()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.ErrorCtrl.AddErrorAndShow(Me.State.LastErrMsg)
+                    ErrorCtrl.AddErrorAndShow(State.LastErrMsg)
             End Select
         End If
         'Clean after consuming the action
-        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-        Me.HiddenSaveChangesPromptResponse.Value = ""
+        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        HiddenSaveChangesPromptResponse.Value = ""
     End Sub
 
 #End Region
 
 #Region "Button Clicks"
 
-    Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
         Try
-            Me.PopulateBOsFromForm()
-            If Me.State.MyBO.IsDirty Then
+            PopulateBOsFromForm()
+            If State.MyBO.IsDirty Then
                 Dim iDirtyCols As Integer
-                iDirtyCols = Me.State.MyBO.DirtyColumns.Count
+                iDirtyCols = State.MyBO.DirtyColumns.Count
                 If iDirtyCols > VSCPlan_DIRTY_COLUMNS_COUNT Then
-                    Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                    AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 End If
             Else
-                Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
-            Me.AddConfirmMsg(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-            Me.State.LastErrMsg = Me.ErrorCtrl.Text
+            HandleErrors(ex, ErrorCtrl)
+            AddConfirmMsg(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, HiddenSaveChangesPromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+            State.LastErrMsg = ErrorCtrl.Text
         End Try
     End Sub
-    Private Sub btnCopy_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+    Private Sub btnCopy_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
         Try
-            Me.PopulateBOsFromForm()
-            If Me.State.MyBO.IsDirty Then
-                Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+            PopulateBOsFromForm()
+            If State.MyBO.IsDirty Then
+                AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
             Else
-                Me.CreateNewWithCopy()
+                CreateNewWithCopy()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
-    Private Sub btnDelete_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+    Private Sub btnDelete_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
         Try
-            Me.State.MyBO.DeleteAndSave()
-            Me.State.HasDataChanged = True
-            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.MyBO, Me.State.HasDataChanged))
+            State.MyBO.DeleteAndSave()
+            State.HasDataChanged = True
+            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, State.MyBO, State.HasDataChanged))
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
 
-    Private Sub btnNew_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+    Private Sub btnNew_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnNew_WRITE.Click
         Try
-            Me.PopulateBOsFromForm()
-            If (Me.State.MyBO.IsDirty) Then
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+            PopulateBOsFromForm()
+            If (State.MyBO.IsDirty) Then
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
             Else
-                Me.CreateNew()
+                CreateNew()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnApply_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnApply_WRITE.Click
+    Private Sub btnApply_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnApply_WRITE.Click
         Try
-            Me.PopulateBOsFromForm()
-            If Me.State.MyBO.IsDirty Then
-                Me.State.MyBO.Save()
-                Me.State.HasDataChanged = True
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
-                Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+            PopulateBOsFromForm()
+            If State.MyBO.IsDirty Then
+                State.MyBO.Save()
+                State.HasDataChanged = True
+                PopulateFormFromBOs()
+                EnableDisableFields()
+                AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
             Else
-                Me.AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
+                AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnUndo_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+    Private Sub btnUndo_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
         Try
-            If Not Me.State.MyBO.IsNew Then
+            If Not State.MyBO.IsNew Then
                 'Reload from the DB
-                Me.State.MyBO = New VSCPlan(Me.State.MyBO.Id)
-            ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+                State.MyBO = New VSCPlan(State.MyBO.Id)
+            ElseIf State.ScreenSnapShotBO IsNot Nothing Then
                 'It was a new with copy
-                Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                State.MyBO.Clone(State.ScreenSnapShotBO)
             Else
                 CreateNew()
             End If
             PopulateAll()
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
+            PopulateFormFromBOs()
+            EnableDisableFields()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 #End Region

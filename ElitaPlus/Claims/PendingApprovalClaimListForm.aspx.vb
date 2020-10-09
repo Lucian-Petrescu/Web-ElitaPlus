@@ -1,4 +1,6 @@
-﻿Namespace Claims
+﻿Imports System.Threading
+
+Namespace Claims
     Partial Public Class PendingApprovalClaimListForm
         Inherits ElitaPlusSearchPage
         'Implements IStateController
@@ -39,7 +41,7 @@
             Public certificate As String
             Public serviceCenterName As String
             Public selectedSortById As Guid = Guid.Empty
-            Public selectedPageSize As Int32 = ElitaPlusSearchPage.DEFAULT_PAGE_SIZE
+            Public selectedPageSize As Int32 = DEFAULT_PAGE_SIZE
             Public IsGridVisible As Boolean = False
             Public searchDV As Claim.PendingApprovalClaimSearchDV = Nothing
             Public SearchClicked As Boolean
@@ -69,48 +71,48 @@
 #Region "Page_Events"
 
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-            Page.RegisterHiddenField("__EVENTTARGET", Me.btnSearch.ClientID)
-            Me.ErrControllerMaster.Clear_Hide()
+        Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
+            Page.RegisterHiddenField("__EVENTTARGET", btnSearch.ClientID)
+            ErrControllerMaster.Clear_Hide()
             Try
-                If Not Me.IsPostBack Then
-                    Me.SetFormTitle(PAGETITLE)
-                    Me.SetFormTab(PAGETAB)
-                    Me.SetDefaultButton(Me.TextBoxSearchClaimNumber, btnSearch)
-                    Me.SetDefaultButton(Me.TextBoxSearchCertificate, btnSearch)
-                    Me.SetDefaultButton(Me.TextServiceCenterName, btnSearch)
+                If Not IsPostBack Then
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
+                    SetDefaultButton(TextBoxSearchClaimNumber, btnSearch)
+                    SetDefaultButton(TextBoxSearchCertificate, btnSearch)
+                    SetDefaultButton(TextServiceCenterName, btnSearch)
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
                     'Me.State.selectedSortById = LookupListNew.GetIdFromCode(LookupListNew.LK_PENDING_APPROVAL_CLAIM_SEARCH_FIELDS, Codes.PENDING_CLAIM_SORT_COLUMN__CLAIM_NUMBER)
                     PopulateSearchFieldsFromState()
-                    Me.TranslateGridHeader(Grid)
-                    Me.TranslateGridControls(Grid)
-                    If Me.State.IsGridVisible Then
-                        If Not (Me.State.selectedPageSize = 10) Then
-                            cboPageSize.SelectedValue = CType(Me.State.selectedPageSize, String)
-                            Me.Grid.PageSize = Me.State.selectedPageSize
+                    TranslateGridHeader(Grid)
+                    TranslateGridControls(Grid)
+                    If State.IsGridVisible Then
+                        If Not (State.selectedPageSize = 10) Then
+                            cboPageSize.SelectedValue = CType(State.selectedPageSize, String)
+                            Grid.PageSize = State.selectedPageSize
                         End If
-                        Me.PopulateGrid()
+                        PopulateGrid()
                     End If
-                    Me.SetGridItemStyleColor(Me.Grid)
-                    SetFocus(Me.TextBoxSearchClaimNumber)
+                    SetGridItemStyleColor(Grid)
+                    SetFocus(TextBoxSearchClaimNumber)
                 End If
-                Me.DisplayProgressBarOnClick(Me.btnSearch, "Loading_Pending_Approval_Claims")
+                DisplayProgressBarOnClick(btnSearch, "Loading_Pending_Approval_Claims")
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            ShowMissingTranslations(ErrControllerMaster)
         End Sub
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.MenuEnabled = True
-                Me.IsReturningFromChild = True
-                Dim retObj As ClaimForm.ReturnType = CType(Me.ReturnedValues, ClaimForm.ReturnType)
-                If Not retObj Is Nothing AndAlso retObj.BoChanged Then
-                    Me.State.searchDV = Nothing
+                MenuEnabled = True
+                IsReturningFromChild = True
+                Dim retObj As ClaimForm.ReturnType = CType(ReturnedValues, ClaimForm.ReturnType)
+                If retObj IsNot Nothing AndAlso retObj.BoChanged Then
+                    State.searchDV = Nothing
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
@@ -123,41 +125,41 @@
             Try
                 PopulateStateFromSearchFields()
 
-                If (Me.State.searchDV Is Nothing) Then
-                    Me.State.searchDV = Claim.GetPendingApprovalClaimList(Me.State.claimNumber, _
-                                                                      Me.State.certificate, _
-                                                                      Me.State.serviceCenterName)
-                    If (Me.State.SearchClicked) Then
-                        Me.ValidSearchResultCount(Me.State.searchDV.Count, True)
-                        Me.State.SearchClicked = False
+                If (State.searchDV Is Nothing) Then
+                    State.searchDV = Claim.GetPendingApprovalClaimList(State.claimNumber, _
+                                                                      State.certificate, _
+                                                                      State.serviceCenterName)
+                    If (State.SearchClicked) Then
+                        ValidSearchResultCount(State.searchDV.Count, True)
+                        State.SearchClicked = False
                     End If
 
-                    State.searchDV.Sort = Me.GetSortByColumn
+                    State.searchDV.Sort = GetSortByColumn
                 End If
 
-                Me.Grid.AutoGenerateColumns = False
-                SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.selectedClaimId, Me.Grid, Me.State.PageIndex)
-                Me.State.PageIndex = Me.Grid.PageIndex
+                Grid.AutoGenerateColumns = False
+                SetPageAndSelectedIndexFromGuid(State.searchDV, State.selectedClaimId, Grid, State.PageIndex)
+                State.PageIndex = Grid.PageIndex
 
-                ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+                ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
 
-                ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+                ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-                Session("recCount") = Me.State.searchDV.Count
+                Session("recCount") = State.searchDV.Count
 
-                If Me.State.searchDV.Count > 0 Then
-                    If Me.Grid.Visible Then
-                        Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIMS_FOUND)
+                If State.searchDV.Count > 0 Then
+                    If Grid.Visible Then
+                        lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIMS_FOUND)
                     End If
-                    Me.State.bnoRow = False
-                    Me.Grid.DataSource = Me.State.searchDV
-                    Me.Grid.AllowSorting = False
-                    Me.Grid.DataBind()
+                    State.bnoRow = False
+                    Grid.DataSource = State.searchDV
+                    Grid.AllowSorting = False
+                    Grid.DataBind()
                 Else
-                    If Me.Grid.Visible Then
-                        Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIMS_FOUND)
+                    If Grid.Visible Then
+                        lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIMS_FOUND)
                     End If
-                    Me.State.bnoRow = True
+                    State.bnoRow = True
                     CreateHeaderForEmptyGrid(Grid, " ASC")
                 End If
 
@@ -167,7 +169,7 @@
 
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
@@ -175,8 +177,8 @@
         Function GetSortByColumn() As String
             Dim sortbyCode As String
             Try
-                If (Not (Me.State.selectedSortById.Equals(Guid.Empty))) Then
-                    sortbyCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PENDING_CLAIM_SEARCH_FIELDS, Me.State.selectedSortById)
+                If (Not (State.selectedSortById.Equals(Guid.Empty))) Then
+                    sortbyCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PENDING_CLAIM_SEARCH_FIELDS, State.selectedSortById)
                 End If
                 Select Case sortbyCode
                     Case Codes.PENDING_CLAIM_SORT_COLUMN__CLAIM_NUMBER
@@ -192,18 +194,18 @@
                         Return Claim.PendingApprovalClaimSearchDV.COL_NAME_STATUS_DATE ' & " ASC"
                 End Select
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Function
 
         Public Sub PopulateSearchFieldsFromState()
 
             Try
-                Me.TextBoxSearchCertificate.Text = Me.State.certificate
-                Me.TextBoxSearchClaimNumber.Text = Me.State.claimNumber
-                Me.TextServiceCenterName.Text = Me.State.serviceCenterName
+                TextBoxSearchCertificate.Text = State.certificate
+                TextBoxSearchClaimNumber.Text = State.claimNumber
+                TextServiceCenterName.Text = State.serviceCenterName
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
@@ -211,19 +213,19 @@
         Public Sub PopulateStateFromSearchFields()
 
             Try
-                Me.State.claimNumber = Me.TextBoxSearchClaimNumber.Text
-                Me.State.certificate = Me.TextBoxSearchCertificate.Text
-                Me.State.serviceCenterName = Me.TextServiceCenterName.Text
+                State.claimNumber = TextBoxSearchClaimNumber.Text
+                State.certificate = TextBoxSearchCertificate.Text
+                State.serviceCenterName = TextServiceCenterName.Text
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
 
         Public Sub ClearSearch()
-            Me.TextBoxSearchClaimNumber.Text = String.Empty
-            Me.TextBoxSearchCertificate.Text = String.Empty
-            Me.TextServiceCenterName.Text = String.Empty
+            TextBoxSearchClaimNumber.Text = String.Empty
+            TextBoxSearchCertificate.Text = String.Empty
+            TextServiceCenterName.Text = String.Empty
         End Sub
 
 #End Region
@@ -232,18 +234,18 @@
 #Region " Datagrid Related "
 
         'The Binding LOgic is here
-        Private Sub Grid_ItemBound(ByVal source As Object, ByVal e As GridViewRowEventArgs) Handles Grid.RowDataBound
+        Private Sub Grid_ItemBound(source As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
             Try
-                If Not dvRow Is Nothing And Not Me.State.bnoRow Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                        Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_CLAIM_ID_IDX), dvRow(Claim.PendingApprovalClaimSearchDV.COL_NAME_CLAIM_ID))
-                        Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_CLAIM_NUMBER_IDX), dvRow(Claim.PendingApprovalClaimSearchDV.COL_NAME_CLAIM_NUMBER))
-                        Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_CUSTOMER_NAME_IDX), dvRow(Claim.PendingApprovalClaimSearchDV.COL_NAME_CUSTOMER_NAME))
-                        Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_SERVICE_CENTER_NAME_IDX), dvRow(Claim.PendingApprovalClaimSearchDV.COL_NAME_SERVICE_CENTER_NAME))
-                        Me.PopulateControlFromBOProperty(e.Row.Cells(Me.GRID_COL_STATUS_DATE_IDX), _
+                If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
+                        PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_ID_IDX), dvRow(Claim.PendingApprovalClaimSearchDV.COL_NAME_CLAIM_ID))
+                        PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CLAIM_NUMBER_IDX), dvRow(Claim.PendingApprovalClaimSearchDV.COL_NAME_CLAIM_NUMBER))
+                        PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_CUSTOMER_NAME_IDX), dvRow(Claim.PendingApprovalClaimSearchDV.COL_NAME_CUSTOMER_NAME))
+                        PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_SERVICE_CENTER_NAME_IDX), dvRow(Claim.PendingApprovalClaimSearchDV.COL_NAME_SERVICE_CENTER_NAME))
+                        PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_STATUS_DATE_IDX), _
                                                          If(dvRow(Claim.PendingApprovalClaimSearchDV.COL_NAME_STATUS_DATE) Is DBNull.Value, _
                                                             Nothing, _
                                                             GetLongDateFormattedString(CType(dvRow(Claim.PendingApprovalClaimSearchDV.COL_NAME_STATUS_DATE), Date))))
@@ -251,84 +253,84 @@
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.State.selectedPageSize = CType(cboPageSize.SelectedValue, Int32)
-                Me.PopulateGrid()
+                State.selectedPageSize = CType(cboPageSize.SelectedValue, Int32)
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
 
-        Public Sub RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+        Public Sub RowCommand(source As Object, e As GridViewCommandEventArgs)
 
             Try
                 Dim index As Integer = Nothing
-                If (Not e.CommandArgument Is Nothing) AndAlso (CType(e.CommandArgument, String)).Length > 0 Then
+                If (e.CommandArgument IsNot Nothing) AndAlso (CType(e.CommandArgument, String)).Length > 0 Then
                     index = Integer.Parse(CType(e.CommandArgument, String))
                 End If
                 If e.CommandName = "Select" Then
-                    Dim row As GridViewRow = Me.Grid.Rows(index)
-                    Me.State.selectedClaimId = New Guid(row.Cells(Me.GRID_COL_CLAIM_ID_IDX).Text)
+                    Dim row As GridViewRow = Grid.Rows(index)
+                    State.selectedClaimId = New Guid(row.Cells(GRID_COL_CLAIM_ID_IDX).Text)
                     'Dim claimBo As Claim = New Claim(Me.State.selectedClaimId)
                     'Me.NavController.FlowSession(FlowSessionKeys.SESSION_CLAIM) = claimBo
                     'Me.NavController.Navigate(Me, FlowEvents.EVENT_CLAIM_SELECTED)
-                    If Me.State Is Nothing Then
-                        Me.Trace(Me, "Restoring State")
-                        Me.RestoreState(New MyState)
+                    If State Is Nothing Then
+                        Trace(Me, "Restoring State")
+                        RestoreState(New MyState)
                     End If
                     'Me.State.selectedClaimId = New Guid(e.Item.Cells(Me.GRID_COL_CLAIM_ID_IDX).Text)
-                    Me.callPage(ClaimForm.URL, Me.State.selectedClaimId)
+                    callPage(ClaimForm.URL, State.selectedClaimId)
 
                 End If
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
 
         End Sub
 
-        Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+        Public Sub ItemCreated(sender As Object, e As GridViewRowEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+        Private Sub Grid_PageIndexChanged(source As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
             Try
-                Me.State.PageIndex = e.NewPageIndex
-                Me.State.selectedClaimId = Guid.Empty
-                Me.PopulateGrid()
+                State.PageIndex = e.NewPageIndex
+                State.selectedClaimId = Guid.Empty
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 #End Region
 
 #Region " Button Clicks "
 
-        Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+        Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
             Try
-                Me.State.SearchClicked = True
-                Me.State.PageIndex = 0
-                Me.State.selectedClaimId = Guid.Empty
-                Me.State.IsGridVisible = True
-                Me.State.searchDV = Nothing
-                Me.PopulateGrid()
+                State.SearchClicked = True
+                State.PageIndex = 0
+                State.selectedClaimId = Guid.Empty
+                State.IsGridVisible = True
+                State.searchDV = Nothing
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
-        Private Sub btnClearSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+        Private Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
             Try
-                Me.ClearSearch()
+                ClearSearch()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 

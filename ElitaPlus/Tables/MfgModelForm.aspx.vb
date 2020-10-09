@@ -33,7 +33,7 @@ Namespace Tables
 
         Public ReadOnly Property IsEditing() As Boolean
             Get
-                IsEditing = (Me.Grid.EditItemIndex > NO_ROW_SELECTED_INDEX)
+                IsEditing = (Grid.EditItemIndex > NO_ROW_SELECTED_INDEX)
             End Get
         End Property
 
@@ -94,7 +94,7 @@ Namespace Tables
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -145,21 +145,21 @@ Namespace Tables
 
 #Region "Button Click Handlers"
 
-        Private Sub SearchButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SearchButton.Click
+        Private Sub SearchButton_Click(sender As System.Object, e As System.EventArgs) Handles SearchButton.Click
             Try
-                Me.State.PageIndex = 0
-                Me.State.Id = Guid.Empty
-                Me.State.IsGridVisible = True
-                Me.State.searchDV = Nothing
+                State.PageIndex = 0
+                State.Id = Guid.Empty
+                State.IsGridVisible = True
+                State.searchDV = Nothing
                 PopulateGrid()
-                Me.State.PageIndex = Grid.CurrentPageIndex
+                State.PageIndex = Grid.CurrentPageIndex
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
 
         End Sub
 
-        Private Sub ClearButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ClearButton.Click
+        Private Sub ClearButton_Click(sender As System.Object, e As System.EventArgs) Handles ClearButton.Click
 
             ClearSearchCriteria()
 
@@ -174,64 +174,64 @@ Namespace Tables
                 cboManufacturer.SelectedIndex = 0
 
                 'Update Page State
-                With Me.State
+                With State
                     .DescriptionMask = SearchDescriptionTextBox.Text
                     .DealerSearchId = Guid.Empty
                     .ManufacturerSearchId = Guid.Empty
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
 
         End Sub
 
-        Private Sub NewButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles NewButton_WRITE.Click
+        Private Sub NewButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles NewButton_WRITE.Click
 
             Try
-                Me.State.IsEditMode = True
-                Me.State.IsGridVisible = True
-                Me.State.AddingNewRow = True
+                State.IsEditMode = True
+                State.IsGridVisible = True
+                State.AddingNewRow = True
                 AddNew()
                 SetButtonsState()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
 
         End Sub
 
-        Private Sub SaveButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SaveButton_WRITE.Click
+        Private Sub SaveButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles SaveButton_WRITE.Click
 
             Try
                 PopulateBOFromForm()
-                If (Me.State.myBO.IsDirty) Then
-                    Me.State.myBO.Save()
-                    Me.State.IsAfterSave = True
-                    Me.State.AddingNewRow = False
-                    Me.AddInfoMsg(Me.MSG_RECORD_SAVED_OK)
-                    Me.State.searchDV = Nothing
-                    Me.ReturnFromEditing()
+                If (State.myBO.IsDirty) Then
+                    State.myBO.Save()
+                    State.IsAfterSave = True
+                    State.AddingNewRow = False
+                    AddInfoMsg(MSG_RECORD_SAVED_OK)
+                    State.searchDV = Nothing
+                    ReturnFromEditing()
                 Else
-                    Me.AddInfoMsg(Me.MSG_RECORD_NOT_SAVED)
-                    Me.ReturnFromEditing()
+                    AddInfoMsg(MSG_RECORD_NOT_SAVED)
+                    ReturnFromEditing()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
 
         End Sub
 
-        Private Sub CancelButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CancelButton.Click
+        Private Sub CancelButton_Click(sender As System.Object, e As System.EventArgs) Handles CancelButton.Click
 
             Try
-                Me.Grid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
-                Me.State.Canceling = True
-                If (Me.State.AddingNewRow) Then
-                    Me.State.AddingNewRow = False
-                    Me.State.searchDV = Nothing
+                Grid.SelectedIndex = NO_ITEM_SELECTED_INDEX
+                State.Canceling = True
+                If (State.AddingNewRow) Then
+                    State.AddingNewRow = False
+                    State.searchDV = Nothing
                 End If
                 ReturnFromEditing()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
 
         End Sub
@@ -240,28 +240,28 @@ Namespace Tables
 
 #Region "Private Methods"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
 
             'Put user code to initialize the page here
             Try
                 ErrController.Clear_Hide()
-                Me.SetStateProperties()
+                SetStateProperties()
                 If Not Page.IsPostBack Then
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                    Me.SetDefaultButton(Me.SearchDescriptionTextBox, Me.SearchButton)
-                    Me.SetGridItemStyleColor(Me.Grid)
-                    If Me.State.MyBO Is Nothing Then
-                        Me.State.myBO = New MfgModel
+                    SetDefaultButton(SearchDescriptionTextBox, SearchButton)
+                    SetGridItemStyleColor(Grid)
+                    If State.MyBO Is Nothing Then
+                        State.myBO = New MfgModel
                     End If
                     PopulateDropdowns()
-                    Me.State.PageIndex = 0
+                    State.PageIndex = 0
                     SetButtonsState()
                 End If
                 BindBoPropertiesToGridHeaders()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
-            Me.ShowMissingTranslations(ErrController)
+            ShowMissingTranslations(ErrController)
         End Sub
 
         Private Sub PopulateGrid()
@@ -269,31 +269,31 @@ Namespace Tables
             Try
                 'Refresh the DataView and Call SetPageAndSelectedIndexFromGuid() to go to the Page 
                 'where the most recently saved Record exists in the DataView
-                If (Me.State.searchDV Is Nothing) Then
-                    Me.State.searchDV = GetGridDataView()
+                If (State.searchDV Is Nothing) Then
+                    State.searchDV = GetGridDataView()
                 End If
                 'Ticket # 748479 - Search grids in Tables tab should not show pop-up message when number of retrieved record is over 1,000
                 'Me.ValidSearchResultCount(Me.State.searchDV.Count, True)
-                Me.State.searchDV.Sort = Me.State.SortExpression
-                If (Me.State.IsAfterSave) Then
-                    Me.State.IsAfterSave = False
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.Id, Me.Grid, Me.State.PageIndex)
-                ElseIf (Me.State.IsEditMode) Then
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.Id, Me.Grid, Me.State.PageIndex, Me.State.IsEditMode)
+                State.searchDV.Sort = State.SortExpression
+                If (State.IsAfterSave) Then
+                    State.IsAfterSave = False
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.Id, Grid, State.PageIndex)
+                ElseIf (State.IsEditMode) Then
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.Id, Grid, State.PageIndex, State.IsEditMode)
                 Else
                     'In a Delete scenario...
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Guid.Empty, Me.Grid, Me.State.PageIndex, Me.State.IsEditMode)
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, Guid.Empty, Grid, State.PageIndex, State.IsEditMode)
                 End If
 
-                Me.Grid.AutoGenerateColumns = False
-                Me.Grid.Columns(Me.DEALER_COL_IDX).SortExpression = MfgModel.MfgModelSearchDV.COL_DEALER_NAME
-                Me.Grid.Columns(Me.MANUFACTURER_COL_IDX).SortExpression = MfgModel.MfgModelSearchDV.COL_MANUFACTURER_NAME
-                Me.Grid.Columns(Me.DESCRIPTION_COL_IDX).SortExpression = MfgModel.MfgModelSearchDV.COL_DESCRIPTION
+                Grid.AutoGenerateColumns = False
+                Grid.Columns(DEALER_COL_IDX).SortExpression = MfgModel.MfgModelSearchDV.COL_DEALER_NAME
+                Grid.Columns(MANUFACTURER_COL_IDX).SortExpression = MfgModel.MfgModelSearchDV.COL_MANUFACTURER_NAME
+                Grid.Columns(DESCRIPTION_COL_IDX).SortExpression = MfgModel.MfgModelSearchDV.COL_DESCRIPTION
 
-                Me.SortAndBindGrid()
+                SortAndBindGrid()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
 
         End Sub
@@ -308,19 +308,19 @@ Namespace Tables
 
         Private Sub SetStateProperties()
 
-            Me.State.DescriptionMask = SearchDescriptionTextBox.Text
-            If (Not TheDealerControl.SelectedGuid.ToString Is Nothing AndAlso TheDealerControl.SelectedDesc.ToString <> Me.NOTHING_SELECTED_TEXT) Then
-                Me.State.DealerSearchId = TheDealerControl.SelectedGuid
+            State.DescriptionMask = SearchDescriptionTextBox.Text
+            If (TheDealerControl.SelectedGuid.ToString IsNot Nothing AndAlso TheDealerControl.SelectedDesc.ToString <> NOTHING_SELECTED_TEXT) Then
+                State.DealerSearchId = TheDealerControl.SelectedGuid
             Else
-                Me.State.DealerSearchId = Guid.Empty
+                State.DealerSearchId = Guid.Empty
             End If
-            If (Not cboManufacturer.SelectedItem Is Nothing AndAlso cboManufacturer.SelectedItem.Value <> Me.NOTHING_SELECTED_TEXT) Then
-                Me.State.ManufacturerSearchId = Me.GetGuidFromString(cboManufacturer.SelectedItem.Value)
+            If (cboManufacturer.SelectedItem IsNot Nothing AndAlso cboManufacturer.SelectedItem.Value <> NOTHING_SELECTED_TEXT) Then
+                State.ManufacturerSearchId = GetGuidFromString(cboManufacturer.SelectedItem.Value)
             Else
-                Me.State.ManufacturerSearchId = Guid.Empty
+                State.ManufacturerSearchId = Guid.Empty
             End If
-            Me.State.CompanyId = ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID
-            Me.State.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
+            State.CompanyId = ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID
+            State.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
 
         End Sub
 
@@ -336,62 +336,62 @@ Namespace Tables
             TheDealerControl.BindData(oDataView)
             TheDealerControl.AutoPostBackDD = False
             TheDealerControl.NothingSelected = True
-            TheDealerControl.SelectedGuid = Me.State.DealerSearchId
+            TheDealerControl.SelectedGuid = State.DealerSearchId
             ' Me.BindListControlToDataView(Me.cboManufacturer, LookupListNew.GetManufacturerLookupList(Me.State.CompanyGroupId), MANUFACTURER_DESCRIPTION_COL_NAME, , True)
             Dim listcontext As ListContext = New ListContext()
-            listcontext.CompanyGroupId = Me.State.CompanyGroupId
+            listcontext.CompanyGroupId = State.CompanyGroupId
             Dim manufacturerLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("ManufacturerByCompanyGroup", Thread.CurrentPrincipal.GetLanguageCode(), ListContext)
-            Me.cboManufacturer.Populate(manufacturerLkl, New PopulateOptions() With
+            cboManufacturer.Populate(manufacturerLkl, New PopulateOptions() With
             {
               .AddBlankItem = True,
               .TextFunc = AddressOf .GetCode
             })
-            Me.SetSelectedItem(Me.cboManufacturer, Me.State.ManufacturerSearchId)
+            SetSelectedItem(cboManufacturer, State.ManufacturerSearchId)
 
         End Sub
 
         Private Sub AddNew()
 
-            Me.State.searchDV = GetGridDataView()
+            State.searchDV = GetGridDataView()
 
-            Me.State.myBO = New MfgModel
-            Me.State.Id = Me.State.myBO.Id
+            State.myBO = New MfgModel
+            State.Id = State.myBO.Id
 
-            Me.State.searchDV = Me.State.myBO.GetNewDataViewRow(Me.State.searchDV, Me.State.Id)
+            State.searchDV = State.myBO.GetNewDataViewRow(State.searchDV, State.Id)
 
-            Grid.DataSource = Me.State.searchDV
-            SetGridControls(Me.Grid, False)
-            Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.Id, Me.Grid, Me.State.PageIndex, Me.State.IsEditMode)
+            Grid.DataSource = State.searchDV
+            SetGridControls(Grid, False)
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.Id, Grid, State.PageIndex, State.IsEditMode)
 
-            Me.Grid.AutoGenerateColumns = False
-            Me.Grid.Columns(Me.DEALER_COL_IDX).SortExpression = MfgModel.MfgModelSearchDV.COL_DEALER_NAME
-            Me.Grid.Columns(Me.MANUFACTURER_COL_IDX).SortExpression = MfgModel.MfgModelSearchDV.COL_MANUFACTURER_NAME
-            Me.Grid.Columns(Me.DESCRIPTION_COL_IDX).SortExpression = MfgModel.MfgModelSearchDV.COL_DESCRIPTION
+            Grid.AutoGenerateColumns = False
+            Grid.Columns(DEALER_COL_IDX).SortExpression = MfgModel.MfgModelSearchDV.COL_DEALER_NAME
+            Grid.Columns(MANUFACTURER_COL_IDX).SortExpression = MfgModel.MfgModelSearchDV.COL_MANUFACTURER_NAME
+            Grid.Columns(DESCRIPTION_COL_IDX).SortExpression = MfgModel.MfgModelSearchDV.COL_DESCRIPTION
 
-            Me.SortAndBindGrid()
+            SortAndBindGrid()
 
             'Set focus on the Dealer dropdown list for the EditItemIndex row
-            Me.SetFocusOnEditableFieldInGrid(Me.Grid, Me.DEALER_COL_IDX, Me.Grid.EditItemIndex)
+            SetFocusOnEditableFieldInGrid(Grid, DEALER_COL_IDX, Grid.EditItemIndex)
 
         End Sub
 
         Private Sub SortAndBindGrid()
-            Me.State.PageIndex = Me.Grid.CurrentPageIndex
-            Me.Grid.DataSource = Me.State.searchDV
-            HighLightSortColumn(Grid, Me.State.SortExpression)
-            Me.Grid.DataBind()
+            State.PageIndex = Grid.CurrentPageIndex
+            Grid.DataSource = State.searchDV
+            HighLightSortColumn(Grid, State.SortExpression)
+            Grid.DataBind()
 
-            ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
 
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-            Session("recCount") = Me.State.searchDV.Count
+            Session("recCount") = State.searchDV.Count
 
-            If Me.Grid.Visible Then
-                If (Me.State.AddingNewRow) Then
-                    Me.lblRecordCount.Text = (Me.State.searchDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                If (State.AddingNewRow) Then
+                    lblRecordCount.Text = (State.searchDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 Else
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             End If
             ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, Grid)
@@ -400,13 +400,13 @@ Namespace Tables
         Private Sub PopulateBOFromForm()
 
             Try
-                With Me.State.myBO
-                    .Description = CType(Me.Grid.Items(Me.Grid.EditItemIndex).Cells(Me.DESCRIPTION_COL_IDX).FindControl(DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text
-                    .DealerId = Me.GetSelectedItem(CType(Grid.Items(Grid.EditItemIndex).Cells(Me.DEALER_COL_IDX).FindControl(DEALER_LIST_IN_GRID_CONTROL_NAME), DropDownList))
-                    .ManufacturerId = Me.GetSelectedItem(CType(Grid.Items(Grid.EditItemIndex).Cells(Me.MANUFACTURER_COL_IDX).FindControl(MANUFACTURER_LIST_IN_GRID_CONTROL_NAME), DropDownList))
+                With State.myBO
+                    .Description = CType(Grid.Items(Grid.EditItemIndex).Cells(DESCRIPTION_COL_IDX).FindControl(DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text
+                    .DealerId = GetSelectedItem(CType(Grid.Items(Grid.EditItemIndex).Cells(DEALER_COL_IDX).FindControl(DEALER_LIST_IN_GRID_CONTROL_NAME), DropDownList))
+                    .ManufacturerId = GetSelectedItem(CType(Grid.Items(Grid.EditItemIndex).Cells(MANUFACTURER_COL_IDX).FindControl(MANUFACTURER_LIST_IN_GRID_CONTROL_NAME), DropDownList))
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
 
         End Sub
@@ -415,30 +415,30 @@ Namespace Tables
 
             Grid.EditItemIndex = NO_ROW_SELECTED_INDEX
 
-            If Me.Grid.PageCount = 0 Then
+            If Grid.PageCount = 0 Then
                 'if returning to the "1st time in" screen
                 ControlMgr.SetVisibleControl(Me, Grid, False)
             Else
                 ControlMgr.SetVisibleControl(Me, Grid, True)
             End If
             SetGridControls(Grid, True)
-            Me.State.IsEditMode = False
-            Me.PopulateGrid()
-            Me.State.PageIndex = Grid.CurrentPageIndex
+            State.IsEditMode = False
+            PopulateGrid()
+            State.PageIndex = Grid.CurrentPageIndex
             SetButtonsState()
 
         End Sub
 
         Private Sub SetButtonsState()
 
-            If (Me.State.IsEditMode) Then
+            If (State.IsEditMode) Then
                 ControlMgr.SetVisibleControl(Me, SaveButton_WRITE, True)
                 ControlMgr.SetVisibleControl(Me, CancelButton, True)
                 ControlMgr.SetVisibleControl(Me, NewButton_WRITE, False)
                 ControlMgr.SetEnableControl(Me, SearchButton, False)
                 ControlMgr.SetEnableControl(Me, ClearButton, False)
-                Me.MenuEnabled = False
-                If (Me.cboPageSize.Visible) Then
+                MenuEnabled = False
+                If (cboPageSize.Visible) Then
                     ControlMgr.SetEnableControl(Me, cboPageSize, False)
                 End If
             Else
@@ -447,8 +447,8 @@ Namespace Tables
                 ControlMgr.SetVisibleControl(Me, NewButton_WRITE, True)
                 ControlMgr.SetEnableControl(Me, SearchButton, True)
                 ControlMgr.SetEnableControl(Me, ClearButton, True)
-                Me.MenuEnabled = True
-                If (Me.cboPageSize.Visible) Then
+                MenuEnabled = True
+                If (cboPageSize.Visible) Then
                     ControlMgr.SetEnableControl(Me, cboPageSize, True)
                 End If
             End If
@@ -460,7 +460,7 @@ Namespace Tables
 #Region " Datagrid Related "
 
         'The Binding Logic is here
-        Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+        Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
@@ -469,21 +469,21 @@ Namespace Tables
                     itemType = ListItemType.AlternatingItem OrElse
                     itemType = ListItemType.SelectedItem) Then
 
-                    If (Me.State.AddingNewRow Or Me.State.IsEditMode) Then
-                        CType(e.Item.Cells(Me.DELETE_BUTTON_IDX).FindControl(DELETE_IN_GRID_CONTROL_NAME), ImageButton).Visible = False
-                        CType(e.Item.Cells(Me.MODIFY_BUTTON_IDX).FindControl(MODIFY_IN_GRID_CONTROL_NAME), ImageButton).Visible = False
+                    If (State.AddingNewRow OrElse State.IsEditMode) Then
+                        CType(e.Item.Cells(DELETE_BUTTON_IDX).FindControl(DELETE_IN_GRID_CONTROL_NAME), ImageButton).Visible = False
+                        CType(e.Item.Cells(MODIFY_BUTTON_IDX).FindControl(MODIFY_IN_GRID_CONTROL_NAME), ImageButton).Visible = False
                     End If
 
-                    e.Item.Cells(Me.ID_COL_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(MfgModel.MfgModelSearchDV.COL_MFG_MODEL_ID), Byte()))
-                    e.Item.Cells(Me.DESCRIPTION_COL_IDX).Text = dvRow(MfgModel.MfgModelSearchDV.COL_DESCRIPTION).ToString
-                    e.Item.Cells(Me.DEALER_COL_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(MfgModel.MfgModelSearchDV.COL_DEALER_ID), Byte()))
-                    e.Item.Cells(Me.DEALER_COL_IDX).Text = dvRow(MfgModel.MfgModelSearchDV.COL_DEALER_NAME).ToString
-                    e.Item.Cells(Me.MANUFACTURER_COL_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(MfgModel.MfgModelSearchDV.COL_MANUFACTURER_ID), Byte()))
-                    e.Item.Cells(Me.MANUFACTURER_COL_IDX).Text = dvRow(MfgModel.MfgModelSearchDV.COL_MANUFACTURER_NAME).ToString
+                    e.Item.Cells(ID_COL_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(MfgModel.MfgModelSearchDV.COL_MFG_MODEL_ID), Byte()))
+                    e.Item.Cells(DESCRIPTION_COL_IDX).Text = dvRow(MfgModel.MfgModelSearchDV.COL_DESCRIPTION).ToString
+                    e.Item.Cells(DEALER_COL_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(MfgModel.MfgModelSearchDV.COL_DEALER_ID), Byte()))
+                    e.Item.Cells(DEALER_COL_IDX).Text = dvRow(MfgModel.MfgModelSearchDV.COL_DEALER_NAME).ToString
+                    e.Item.Cells(MANUFACTURER_COL_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(MfgModel.MfgModelSearchDV.COL_MANUFACTURER_ID), Byte()))
+                    e.Item.Cells(MANUFACTURER_COL_IDX).Text = dvRow(MfgModel.MfgModelSearchDV.COL_MANUFACTURER_NAME).ToString
 
                 ElseIf (itemType = ListItemType.EditItem) Then
-                    e.Item.Cells(Me.ID_COL_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(MfgModel.MfgModelSearchDV.COL_MFG_MODEL_ID), Byte()))
-                    CType(e.Item.Cells(Me.DESCRIPTION_COL_IDX).FindControl(DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text = dvRow(MfgModel.MfgModelSearchDV.COL_DESCRIPTION).ToString
+                    e.Item.Cells(ID_COL_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(MfgModel.MfgModelSearchDV.COL_MFG_MODEL_ID), Byte()))
+                    CType(e.Item.Cells(DESCRIPTION_COL_IDX).FindControl(DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text = dvRow(MfgModel.MfgModelSearchDV.COL_DESCRIPTION).ToString
 
                     ' Me.BindListControlToDataView(CType(e.Item.Cells(Me.DEALER_COL_IDX).FindControl(DEALER_LIST_IN_GRID_CONTROL_NAME), DropDownList), LookupListNew.GetDealerEditModelLookupList())
                     '<DEALER_EDIT_MODEL>
@@ -491,27 +491,27 @@ Namespace Tables
                     Dim dealerTextFunc As Func(Of DataElements.ListItem, String) = Function(li As DataElements.ListItem)
                                                                                        Return li.Code + "-" + li.Translation
                                                                                    End Function
-                    CType(e.Item.Cells(Me.DEALER_COL_IDX).FindControl(DEALER_LIST_IN_GRID_CONTROL_NAME), DropDownList).Populate(oDealerList, New PopulateOptions() With
+                    CType(e.Item.Cells(DEALER_COL_IDX).FindControl(DEALER_LIST_IN_GRID_CONTROL_NAME), DropDownList).Populate(oDealerList, New PopulateOptions() With
                                                    {
                                                     .AddBlankItem = True,
                                                     .TextFunc = dealerTextFunc,
                                                     .SortFunc = dealerTextFunc
                                                    })
-                    Me.SetSelectedItem(CType(e.Item.Cells(Me.DEALER_COL_IDX).FindControl(DEALER_LIST_IN_GRID_CONTROL_NAME), DropDownList), Me.State.myBO.DealerId)
+                    SetSelectedItem(CType(e.Item.Cells(DEALER_COL_IDX).FindControl(DEALER_LIST_IN_GRID_CONTROL_NAME), DropDownList), State.myBO.DealerId)
 
                     'Me.BindListControlToDataView(CType(e.Item.Cells(Me.MANUFACTURER_COL_IDX).FindControl(MANUFACTURER_LIST_IN_GRID_CONTROL_NAME), DropDownList), LookupListNew.GetManufacturerLookupList(Me.State.CompanyGroupId), MANUFACTURER_DESCRIPTION_COL_NAME, , True)
                     Dim listcontext As ListContext = New ListContext()
-                    listcontext.CompanyGroupId = Me.State.CompanyGroupId
+                    listcontext.CompanyGroupId = State.CompanyGroupId
                     Dim manufacturerLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("ManufacturerByCompanyGroup", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
-                    CType(e.Item.Cells(Me.MANUFACTURER_COL_IDX).FindControl(MANUFACTURER_LIST_IN_GRID_CONTROL_NAME), DropDownList).Populate(manufacturerLkl, New PopulateOptions() With
+                    CType(e.Item.Cells(MANUFACTURER_COL_IDX).FindControl(MANUFACTURER_LIST_IN_GRID_CONTROL_NAME), DropDownList).Populate(manufacturerLkl, New PopulateOptions() With
                     {
                    .AddBlankItem = True,
                    .TextFunc = AddressOf .GetCode
                    })
-                    Me.SetSelectedItem(CType(e.Item.Cells(Me.MANUFACTURER_COL_IDX).FindControl(MANUFACTURER_LIST_IN_GRID_CONTROL_NAME), DropDownList), Me.State.myBO.ManufacturerId)
+                    SetSelectedItem(CType(e.Item.Cells(MANUFACTURER_COL_IDX).FindControl(MANUFACTURER_LIST_IN_GRID_CONTROL_NAME), DropDownList), State.myBO.ManufacturerId)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
 
         End Sub
@@ -529,7 +529,7 @@ Namespace Tables
                 oListContext.CompanyId = _company.ListItemId
                 Dim oDealerListForCompany As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompanyAndEditModel", context:=oListContext)
                 If oDealerListForCompany.Count > 0 Then
-                    If Not oDealerList Is Nothing Then
+                    If oDealerList IsNot Nothing Then
                         oDealerList.AddRange(oDealerListForCompany)
                     Else
                         oDealerList = CType(oDealerListForCompany.Clone(),
@@ -543,32 +543,32 @@ Namespace Tables
 
         End Function
 
-        Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+        Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
 
             Try
-                If (Not (Me.State.IsEditMode)) Then
-                    Me.State.PageIndex = e.NewPageIndex
-                    Me.Grid.CurrentPageIndex = Me.State.PageIndex
-                    Me.PopulateGrid()
-                    Me.Grid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
+                If (Not (State.IsEditMode)) Then
+                    State.PageIndex = e.NewPageIndex
+                    Grid.CurrentPageIndex = State.PageIndex
+                    PopulateGrid()
+                    Grid.SelectedIndex = NO_ITEM_SELECTED_INDEX
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
 
         End Sub
 
-        Protected Sub ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+        Protected Sub ItemCommand(source As Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
 
             Try
                 Dim index As Integer = e.Item.ItemIndex
 
-                If (e.CommandName = Me.EDIT_COMMAND) Then
+                If (e.CommandName = EDIT_COMMAND) Then
                     'Do the Edit here
 
-                    Me.State.Id = New Guid(Me.Grid.Items(e.Item.ItemIndex).Cells(Me.ID_COL_IDX).Text)
+                    State.Id = New Guid(Grid.Items(e.Item.ItemIndex).Cells(ID_COL_IDX).Text)
 
-                    Me.State.myBO = New MfgModel(Me.State.Id)
+                    State.myBO = New MfgModel(State.Id)
 
                     ' Check if Dealer is in the List of Dealer with the Screen Enabled
                     Dim dealerDropDown As New DropDownList
@@ -583,120 +583,120 @@ Namespace Tables
                                                     .TextFunc = dealerTextFunc,
                                                     .SortFunc = dealerTextFunc
                                                    })
-                    If (dealerDropDown.Items.FindByValue(Me.State.myBO.DealerId.ToString) Is Nothing) Then
-                        Me.AddInfoMsg(Me.MSG_CAN_NOT_EDIT_EDIT_MODEL_NOT_ENABLED)
+                    If (dealerDropDown.Items.FindByValue(State.myBO.DealerId.ToString) Is Nothing) Then
+                        AddInfoMsg(MSG_CAN_NOT_EDIT_EDIT_MODEL_NOT_ENABLED)
                         Return
                     End If
                     'Set the IsEditMode flag to TRUE
-                    Me.State.IsEditMode = True
+                    State.IsEditMode = True
 
-                    Me.PopulateGrid()
+                    PopulateGrid()
 
-                    Me.State.PageIndex = Grid.CurrentPageIndex
+                    State.PageIndex = Grid.CurrentPageIndex
 
                     'Disable all Edit and Delete icon buttons on the Grid
-                    SetGridControls(Me.Grid, False)
+                    SetGridControls(Grid, False)
 
                     'Set focus on the Dealer dropdown list for the EditItemIndex row
-                    Me.SetFocusOnEditableFieldInGrid(Me.Grid, Me.DEALER_COL_IDX, index)
+                    SetFocusOnEditableFieldInGrid(Grid, DEALER_COL_IDX, index)
 
-                    Me.SetButtonsState()
+                    SetButtonsState()
 
-                ElseIf (e.CommandName = Me.DELETE_COMMAND) Then
+                ElseIf (e.CommandName = DELETE_COMMAND) Then
                     'Do the delete here
 
                     'Clear the SelectedItemStyle to remove the highlight from the previously saved row
-                    Grid.SelectedIndex = Me.NO_ROW_SELECTED_INDEX
+                    Grid.SelectedIndex = NO_ROW_SELECTED_INDEX
 
                     'Save the Id in the Session
-                    Me.State.Id = New Guid(Me.Grid.Items(e.Item.ItemIndex).Cells(Me.ID_COL_IDX).Text)
-                    Me.State.myBO = New MfgModel(Me.State.Id)
+                    State.Id = New Guid(Grid.Items(e.Item.ItemIndex).Cells(ID_COL_IDX).Text)
+                    State.myBO = New MfgModel(State.Id)
 
                     Try
-                        Me.State.myBO.Delete()
+                        State.myBO.Delete()
                         'Call the Save() method in the Business Object here
-                        Me.State.myBO.Save()
+                        State.myBO.Save()
                     Catch ex As Exception
-                        Me.State.myBO.RejectChanges()
+                        State.myBO.RejectChanges()
                         Throw ex
                     End Try
 
-                    Me.State.PageIndex = Grid.CurrentPageIndex
+                    State.PageIndex = Grid.CurrentPageIndex
 
                     'Set the IsAfterSave flag to TRUE so that the Paging logic gets invoked
-                    Me.State.IsAfterSave = True
+                    State.IsAfterSave = True
 
-                    Me.State.searchDV = Nothing
+                    State.searchDV = Nothing
                     PopulateGrid()
-                    Me.State.PageIndex = Grid.CurrentPageIndex
+                    State.PageIndex = Grid.CurrentPageIndex
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
 
         End Sub
 
-        Protected Sub ItemBound(ByVal source As Object, ByVal e As DataGridItemEventArgs) Handles Grid.ItemDataBound
+        Protected Sub ItemBound(source As Object, e As DataGridItemEventArgs) Handles Grid.ItemDataBound
             BaseItemBound(source, e)
         End Sub
 
-        Protected Sub ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs)
+        Protected Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 Grid.CurrentPageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
-                Me.PopulateGrid()
+                State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
         End Sub
 
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
+        Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
 
             Try
-                If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                    If Me.State.SortExpression.EndsWith(" DESC") Then
-                        Me.State.SortExpression = e.SortExpression
+                If State.SortExpression.StartsWith(e.SortExpression) Then
+                    If State.SortExpression.EndsWith(" DESC") Then
+                        State.SortExpression = e.SortExpression
                     Else
-                        Me.State.SortExpression &= " DESC"
+                        State.SortExpression &= " DESC"
                     End If
                 Else
-                    Me.State.SortExpression = e.SortExpression
+                    State.SortExpression = e.SortExpression
                 End If
                 'To handle the requirement of always going to the FIRST page on the Grid whenever the user switches the sorting criterion
                 'Set the Me.State.selectedClaimId = Guid.Empty and set Me.State.PageIndex = 0
-                Me.State.Id = Guid.Empty
-                Me.State.PageIndex = 0
+                State.Id = Guid.Empty
+                State.PageIndex = 0
 
-                Me.PopulateGrid()
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrController)
+                HandleErrors(ex, ErrController)
             End Try
 
         End Sub
 
         Protected Sub BindBoPropertiesToGridHeaders()
-            Me.BindBOPropertyToGridHeader(Me.State.myBO, "DealerId", Me.Grid.Columns(Me.DEALER_COL_IDX))
-            Me.BindBOPropertyToGridHeader(Me.State.myBO, "ManufacturerId", Me.Grid.Columns(Me.MANUFACTURER_COL_IDX))
-            Me.BindBOPropertyToGridHeader(Me.State.myBO, "Description", Me.Grid.Columns(Me.DESCRIPTION_COL_IDX))
-            Me.ClearGridHeadersAndLabelsErrSign()
+            BindBOPropertyToGridHeader(State.myBO, "DealerId", Grid.Columns(DEALER_COL_IDX))
+            BindBOPropertyToGridHeader(State.myBO, "ManufacturerId", Grid.Columns(MANUFACTURER_COL_IDX))
+            BindBOPropertyToGridHeader(State.myBO, "Description", Grid.Columns(DESCRIPTION_COL_IDX))
+            ClearGridHeadersAndLabelsErrSign()
         End Sub
 
-        Private Sub SetFocusOnEditableFieldInGrid(ByVal grid As DataGrid, ByVal cellPosition As Integer, ByVal itemIndex As Integer)
+        Private Sub SetFocusOnEditableFieldInGrid(grid As DataGrid, cellPosition As Integer, itemIndex As Integer)
 
             'Set focus on the specified control on the EditItemIndex row for the grid
             Dim ctrl As DropDownList = CType(grid.Items(itemIndex).Cells(cellPosition).FindControl(DEALER_LIST_IN_GRID_CONTROL_NAME), DropDownList)
-            ctrl.Style("width") = Me.DEALER_CELL_STYLE_WIDTH
-            Me.SetSelectedItem(ctrl, Me.State.myBO.DealerId)
+            ctrl.Style("width") = DEALER_CELL_STYLE_WIDTH
+            SetSelectedItem(ctrl, State.myBO.DealerId)
             SetFocus(ctrl)
             Dim ctrlManufacturer As DropDownList = CType(grid.Items(itemIndex).Cells(cellPosition + 1).FindControl(MANUFACTURER_LIST_IN_GRID_CONTROL_NAME), DropDownList)
-            ctrlManufacturer.Style("width") = Me.MANUFACTURER_CELL_STYLE_WIDTH
+            ctrlManufacturer.Style("width") = MANUFACTURER_CELL_STYLE_WIDTH
             Dim ctrlDescription As TextBox = CType(grid.Items(itemIndex).Cells(cellPosition + 2).FindControl(DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox)
-            ctrlDescription.Style("width") = Me.DESCRIPTION_CELL_STYLE_WIDTH
+            ctrlDescription.Style("width") = DESCRIPTION_CELL_STYLE_WIDTH
 
         End Sub
 

@@ -7,48 +7,48 @@ Public Class CertInstallment
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid, Optional ByVal useCertId As Boolean = False)
+    Public Sub New(id As Guid, Optional ByVal useCertId As Boolean = False)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id, useCertId)
+        Dataset = New DataSet
+        Load(id, useCertId)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New CertInstallmentDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -56,28 +56,28 @@ Public Class CertInstallment
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid, Optional ByVal useCertId As Boolean = False)
+    Protected Sub Load(id As Guid, Optional ByVal useCertId As Boolean = False)
         Try
             Dim dal As New CertInstallmentDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
 
-                dal.Load(Me.Dataset, id, useCertId)
+                dal.Load(Dataset, id, useCertId)
                 If useCertId Then
-                    Me.Row = Me.FindRow(id, dal.COL_NAME_CERT_ID, Me.Dataset.Tables(dal.TABLE_NAME))
+                    Row = FindRow(id, dal.COL_NAME_CERT_ID, Dataset.Tables(dal.TABLE_NAME))
                 Else
-                    Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+                    Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
                 End If
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -85,19 +85,19 @@ Public Class CertInstallment
         End Try
     End Sub
 
-    Public Sub SP_ChangeOfBillingStatus(ByVal statusId As Guid)
+    Public Sub SP_ChangeOfBillingStatus(statusId As Guid)
         Dim dal As New BillingDetailDAL
 
-        _newPaymentDueDate = dal.ExecuteSP(statusId, Me.CertId)
+        _newPaymentDueDate = dal.ExecuteSP(statusId, CertId)
         'If Not oErrMess Is Nothing Then
         '    Throw New ApplicationException("SP_ChangeOfBillingStatus falieu")
         'End If
     End Sub
 
     'REQ-5761
-    Public Sub SP_ChngOfBillingStatus(ByVal statusId As Guid)
+    Public Sub SP_ChngOfBillingStatus(statusId As Guid)
         Dim dal As New BillingPayDetailDAL
-        _newPaymentDueDate = dal.ExecuteSP(statusId, Me.CertId)
+        _newPaymentDueDate = dal.ExecuteSP(statusId, CertId)
     End Sub
 
 #End Region
@@ -112,7 +112,7 @@ Public Class CertInstallment
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(CertInstallmentDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -123,7 +123,7 @@ Public Class CertInstallment
     End Property
 
 
-    Public Property BillingFrequencyId() As Guid
+    Public Property BillingFrequencyId As Guid
         Get
             CheckDeleted()
             If row(CertInstallmentDAL.COL_NAME_BILLING_FREQUENCY_ID) Is DBNull.Value Then
@@ -132,15 +132,15 @@ Public Class CertInstallment
                 Return New Guid(CType(row(CertInstallmentDAL.COL_NAME_BILLING_FREQUENCY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertInstallmentDAL.COL_NAME_BILLING_FREQUENCY_ID, Value)
+            SetValue(CertInstallmentDAL.COL_NAME_BILLING_FREQUENCY_ID, Value)
         End Set
     End Property
 
 
 
-    Public Property BillingStatusId() As Guid
+    Public Property BillingStatusId As Guid
         Get
             CheckDeleted()
             If row(CertInstallmentDAL.COL_NAME_BILLING_STATUS_ID) Is DBNull.Value Then
@@ -149,15 +149,15 @@ Public Class CertInstallment
                 Return New Guid(CType(row(CertInstallmentDAL.COL_NAME_BILLING_STATUS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertInstallmentDAL.COL_NAME_BILLING_STATUS_ID, Value)
+            SetValue(CertInstallmentDAL.COL_NAME_BILLING_STATUS_ID, Value)
         End Set
     End Property
 
 
 
-    Public Property BankInfoId() As Guid
+    Public Property BankInfoId As Guid
         Get
             CheckDeleted()
             If row(CertInstallmentDAL.COL_NAME_BANK_INFO_ID) Is DBNull.Value Then
@@ -166,15 +166,15 @@ Public Class CertInstallment
                 Return New Guid(CType(row(CertInstallmentDAL.COL_NAME_BANK_INFO_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertInstallmentDAL.COL_NAME_BANK_INFO_ID, Value)
+            SetValue(CertInstallmentDAL.COL_NAME_BANK_INFO_ID, Value)
         End Set
     End Property
 
 
 
-    Public Property NumberOfInstallments() As LongType
+    Public Property NumberOfInstallments As LongType
         Get
             CheckDeleted()
             If row(CertInstallmentDAL.COL_NAME_NUMBER_OF_INSTALLMENTS) Is DBNull.Value Then
@@ -183,15 +183,15 @@ Public Class CertInstallment
                 Return New LongType(CType(row(CertInstallmentDAL.COL_NAME_NUMBER_OF_INSTALLMENTS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertInstallmentDAL.COL_NAME_NUMBER_OF_INSTALLMENTS, Value)
+            SetValue(CertInstallmentDAL.COL_NAME_NUMBER_OF_INSTALLMENTS, Value)
         End Set
     End Property
 
 
 
-    Public Property InstallmentAmount() As DecimalType
+    Public Property InstallmentAmount As DecimalType
         Get
             CheckDeleted()
             If row(CertInstallmentDAL.COL_NAME_INSTALLMENT_AMOUNT) Is DBNull.Value Then
@@ -200,15 +200,15 @@ Public Class CertInstallment
                 Return New DecimalType(CType(row(CertInstallmentDAL.COL_NAME_INSTALLMENT_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertInstallmentDAL.COL_NAME_INSTALLMENT_AMOUNT, Value)
+            SetValue(CertInstallmentDAL.COL_NAME_INSTALLMENT_AMOUNT, Value)
         End Set
     End Property
 
 
 
-    Public Property PaymentDueDate() As DateType
+    Public Property PaymentDueDate As DateType
         Get
             CheckDeleted()
             If row(CertInstallmentDAL.COL_NAME_PAYMENT_DUE_DATE) Is DBNull.Value Then
@@ -217,15 +217,15 @@ Public Class CertInstallment
                 Return New DateType(CType(row(CertInstallmentDAL.COL_NAME_PAYMENT_DUE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertInstallmentDAL.COL_NAME_PAYMENT_DUE_DATE, Value)
+            SetValue(CertInstallmentDAL.COL_NAME_PAYMENT_DUE_DATE, Value)
         End Set
     End Property
 
 
 
-    Public Property DateLetterSent() As DateType
+    Public Property DateLetterSent As DateType
         Get
             CheckDeleted()
             If row(CertInstallmentDAL.COL_NAME_DATE_LETTER_SENT) Is DBNull.Value Then
@@ -234,15 +234,15 @@ Public Class CertInstallment
                 Return New DateType(CType(row(CertInstallmentDAL.COL_NAME_DATE_LETTER_SENT), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertInstallmentDAL.COL_NAME_DATE_LETTER_SENT, Value)
+            SetValue(CertInstallmentDAL.COL_NAME_DATE_LETTER_SENT, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property CertId() As Guid
+    Public Property CertId As Guid
         Get
             CheckDeleted()
             If row(CertInstallmentDAL.COL_NAME_CERT_ID) Is DBNull.Value Then
@@ -251,13 +251,13 @@ Public Class CertInstallment
                 Return New Guid(CType(row(CertInstallmentDAL.COL_NAME_CERT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertInstallmentDAL.COL_NAME_CERT_ID, Value)
+            SetValue(CertInstallmentDAL.COL_NAME_CERT_ID, Value)
         End Set
     End Property
 
-    Public Property SendLetterId() As Guid
+    Public Property SendLetterId As Guid
         Get
             CheckDeleted()
             If Row(CertInstallmentDAL.COL_NAME_SEND_LETTER_ID) Is DBNull.Value Then
@@ -266,13 +266,13 @@ Public Class CertInstallment
                 Return New Guid(CType(Row(CertInstallmentDAL.COL_NAME_SEND_LETTER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertInstallmentDAL.COL_NAME_SEND_LETTER_ID, Value)
+            SetValue(CertInstallmentDAL.COL_NAME_SEND_LETTER_ID, Value)
         End Set
     End Property
 
-    Public Property CancellationDueDate() As DateType
+    Public Property CancellationDueDate As DateType
         Get
             CheckDeleted()
             If Row(CertInstallmentDAL.COL_NAME_CANCELLATION_DUE_DATE) Is DBNull.Value Then
@@ -281,13 +281,13 @@ Public Class CertInstallment
                 Return New DateType(CType(Row(CertInstallmentDAL.COL_NAME_CANCELLATION_DUE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertInstallmentDAL.COL_NAME_CANCELLATION_DUE_DATE, Value)
+            SetValue(CertInstallmentDAL.COL_NAME_CANCELLATION_DUE_DATE, Value)
         End Set
     End Property
 
-    Public Property CreditCardInfoId() As Guid
+    Public Property CreditCardInfoId As Guid
         Get
             CheckDeleted()
             If row(CertInstallmentDAL.COL_NAME_CREDIT_CARD_INFO_ID) Is DBNull.Value Then
@@ -296,15 +296,15 @@ Public Class CertInstallment
                 Return New Guid(CType(row(CertInstallmentDAL.COL_NAME_CREDIT_CARD_INFO_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CertInstallmentDAL.COL_NAME_CREDIT_CARD_INFO_ID, Value)
+            SetValue(CertInstallmentDAL.COL_NAME_CREDIT_CARD_INFO_ID, Value)
         End Set
     End Property
 
 
     'Req - 1016 Start
-    Public Property NextBillingDate() As DateType
+    Public Property NextBillingDate As DateType
         Get
             CheckDeleted()
             If Row(CertInstallmentDAL.COL_NAME_NEXT_BILLING_DATE) Is DBNull.Value Then
@@ -313,9 +313,9 @@ Public Class CertInstallment
                 Return New DateType(CType(Row(CertInstallmentDAL.COL_NAME_NEXT_BILLING_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CertInstallmentDAL.COL_NAME_NEXT_BILLING_DATE, Value)
+            SetValue(CertInstallmentDAL.COL_NAME_NEXT_BILLING_DATE, Value)
         End Set
     End Property
     'Req - 1016 End
@@ -324,27 +324,27 @@ Public Class CertInstallment
     Private _bankinfo As BankInfo = Nothing
     Private _creditCardInfo As CreditCardInfo = Nothing
 
-    Public ReadOnly Property BankInfo() As BankInfo
+    Public ReadOnly Property BankInfo As BankInfo
         Get
-            Me._bankinfo = New BankInfo(Me.BankInfoId, Me.Dataset)
-            Return Me._bankinfo
+            _bankinfo = New BankInfo(BankInfoId, Dataset)
+            Return _bankinfo
 
         End Get
     End Property
 
-    Public ReadOnly Property CreditCardInfo() As CreditCardInfo
+    Public ReadOnly Property CreditCardInfo As CreditCardInfo
         Get
-            If Me._creditCardInfo Is Nothing Then Me._creditCardInfo = New CreditCardInfo(Me.CreditCardInfoId, Me.Dataset)
-            Return Me._creditCardInfo
+            If _creditCardInfo Is Nothing Then _creditCardInfo = New CreditCardInfo(CreditCardInfoId, Dataset)
+            Return _creditCardInfo
 
         End Get
     End Property
 
     Private _currentBillingDetail As BillingDetail = Nothing
-    Public ReadOnly Property CurrentBillingDetail() As BillingDetail
+    Public ReadOnly Property CurrentBillingDetail As BillingDetail
         Get
-            If Me._currentBillingDetail Is Nothing Then Me._currentBillingDetail = New BillingDetail(Me.CertId, Me.Dataset, True)
-            Return Me._currentBillingDetail
+            If _currentBillingDetail Is Nothing Then _currentBillingDetail = New BillingDetail(CertId, Dataset, True)
+            Return _currentBillingDetail
 
         End Get
     End Property
@@ -352,19 +352,19 @@ Public Class CertInstallment
     'REQ-5761
     Private _currentBillingPayDetail As BillingPayDetail = Nothing
 
-    Public ReadOnly Property CurrentBillingPaydetail() As BillingPayDetail
+    Public ReadOnly Property CurrentBillingPaydetail As BillingPayDetail
         Get
-            If Me._currentBillingPayDetail Is Nothing Then Me._currentBillingPayDetail = New BillingPayDetail(Me.CertId, Me.Dataset, True)
-            Return Me._currentBillingPayDetail
+            If _currentBillingPayDetail Is Nothing Then _currentBillingPayDetail = New BillingPayDetail(CertId, Dataset, True)
+            Return _currentBillingPayDetail
         End Get
     End Property
 
     Private _newPaymentDueDate As DateType
-    Public Property newPaymentDueDate() As DateType
+    Public Property newPaymentDueDate As DateType
         Get
             Return _newPaymentDueDate
         End Get
-        Set(ByVal Value As DateType)
+        Set
             _newPaymentDueDate = Value
         End Set
     End Property
@@ -376,15 +376,15 @@ Public Class CertInstallment
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsFamilyDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsFamilyDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CertInstallmentDAL
-                dal.UpdateFamily(Me.Dataset)
+                dal.UpdateFamily(Dataset)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -394,25 +394,25 @@ Public Class CertInstallment
 #End Region
 
 #Region "Children"
-    Public Function AddCreditCardInfo(ByVal objCreditCardInfoID As Guid) As CreditCardInfo
+    Public Function AddCreditCardInfo(objCreditCardInfoID As Guid) As CreditCardInfo
         Dim objCreditCardInfo As CreditCardInfo
         CreditCardInfo.DeleteNewChildCreditCardInfo(Me)
         If objCreditCardInfoID.Equals(Guid.Empty) Then
-            objCreditCardInfo = New CreditCardInfo(Me.Dataset)
+            objCreditCardInfo = New CreditCardInfo(Dataset)
         Else
-            objCreditCardInfo = New CreditCardInfo(objCreditCardInfoID, Me.Dataset)
+            objCreditCardInfo = New CreditCardInfo(objCreditCardInfoID, Dataset)
         End If
 
         Return objCreditCardInfo
     End Function
 
-    Public Function AddBankInfo(ByVal objBankInfoID As Guid) As BankInfo
+    Public Function AddBankInfo(objBankInfoID As Guid) As BankInfo
         Dim objBankInfo As BankInfo
         BankInfo.DeleteNewChildBankInfo(Me)
         If objBankInfoID.Equals(Guid.Empty) Then
-            objBankInfo = New BankInfo(Me.Dataset)
+            objBankInfo = New BankInfo(Dataset)
         Else
-            objBankInfo = New BankInfo(objBankInfoID, Me.Dataset)
+            objBankInfo = New BankInfo(objBankInfoID, Dataset)
         End If
 
         Return objBankInfo

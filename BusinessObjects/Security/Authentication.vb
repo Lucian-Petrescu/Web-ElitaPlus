@@ -21,43 +21,43 @@ Public Class Authentication
 
 #Region "Logged In User Info Shortcuts"
 
-    Public Shared ReadOnly Property CurrentUser() As User
+    Public Shared ReadOnly Property CurrentUser As User
         Get
             Return ElitaPlusIdentity.Current.ActiveUser
         End Get
     End Property
 
-    Public Shared ReadOnly Property LangId() As Guid
+    Public Shared ReadOnly Property LangId As Guid
         Get
             Return ElitaPlusIdentity.Current.ActiveUser.LanguageId
         End Get
     End Property
 
-    Public Shared ReadOnly Property CompId() As Guid
+    Public Shared ReadOnly Property CompId As Guid
         Get
             Return ElitaPlusIdentity.Current.ActiveUser.CompanyId
         End Get
     End Property
 
-    Public Shared ReadOnly Property CompIds() As ArrayList
+    Public Shared ReadOnly Property CompIds As ArrayList
         Get
             Return ElitaPlusIdentity.Current.ActiveUser.Companies
         End Get
     End Property
 
-    Public Shared ReadOnly Property CountryIds() As ArrayList
+    Public Shared ReadOnly Property CountryIds As ArrayList
         Get
             Return ElitaPlusIdentity.Current.ActiveUser.Countries
         End Get
     End Property
 
-    Public Shared ReadOnly Property CompanyGroupId() As Guid
+    Public Shared ReadOnly Property CompanyGroupId As Guid
         Get
             Return ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
         End Get
     End Property
 
-    Public Shared ReadOnly Property CompanyGroupCode() As String
+    Public Shared ReadOnly Property CompanyGroupCode As String
         Get
             Return ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Code
         End Get
@@ -68,8 +68,8 @@ Public Class Authentication
 
 #Region "LDAP User-Group"
 
-    Public Shared Function GetLdapServer(ByVal path As String, ByVal userId As String,
-    ByVal password As String, ByVal authenticationType As AuthenticationTypes) As DirectoryEntry
+    Public Shared Function GetLdapServer(path As String, userId As String,
+    password As String, authenticationType As AuthenticationTypes) As DirectoryEntry
         Const LDAP_SERVER_PREFIX As String = "LDAP://"
         Dim entry As DirectoryEntry
         Dim fPath As String
@@ -90,7 +90,7 @@ Public Class Authentication
 
     End Function
 
-    Public Shared Function IsLdapUserInGroup(ByVal group As String, ByVal networkId As String, ByVal entry As DirectoryEntry) As Boolean
+    Public Shared Function IsLdapUserInGroup(group As String, networkId As String, entry As DirectoryEntry) As Boolean
         Dim oSearcher As New DirectorySearcher
         Dim oResult As SearchResult
         Dim ResultFields() As String = {"member", "cn"}
@@ -113,7 +113,7 @@ Public Class Authentication
                 oResult = .FindOne()
             End With
 
-            If (Not oResult Is Nothing) Then
+            If (oResult IsNot Nothing) Then
                 If (entry.Username Is String.Empty) Then
                     oUserCapitalCase = ("uid=" & networkId & ",").ToUpper
                     For Each sUserName As String In oResult.Properties("member")
@@ -138,7 +138,7 @@ Public Class Authentication
         Return isUserInGroup
     End Function
 
-    Public Shared Function IsLdapUserInGroup(ByVal group As String, ByVal networkId As String) As Boolean
+    Public Shared Function IsLdapUserInGroup(group As String, networkId As String) As Boolean
         Dim entry As DirectoryEntry
         Dim isUserInGroup As Boolean
         Dim path As String = "/cn=" & group & "," & LDAP_BASEDN
@@ -155,7 +155,7 @@ Public Class Authentication
     End Function
 
 
-    Public Shared Function GetLdapUser(ByVal group As String, ByVal networkId As String, ByVal password As String) As DirectoryEntry
+    Public Shared Function GetLdapUser(group As String, networkId As String, password As String) As DirectoryEntry
         Dim path As String = "/cn=" & LDAP_ELITAPLUS_GROUP & "," & LDAP_BASEDN
         Dim entry As DirectoryEntry
         Dim ldapUserId, userType As String
@@ -183,7 +183,7 @@ Public Class Authentication
     End Function
 
 
-    Public Shared Function IsLdapUser(ByVal group As String, ByVal networkId As String, ByVal password As String) As Boolean
+    Public Shared Function IsLdapUser(group As String, networkId As String, password As String) As Boolean
         Dim bValidUser As Boolean = True
         Dim userEntry As DirectoryEntry
 
@@ -199,7 +199,7 @@ Public Class Authentication
 
 #Region "LDAP-Read Properties"
 
-    Public Shared Function GetLdapFields(ByVal networkId As String, ByVal resultFields As String()) As IDictionary(Of String, Object)
+    Public Shared Function GetLdapFields(networkId As String, resultFields As String()) As IDictionary(Of String, Object)
         Dim searchResult As SearchResult
         Dim returnValue As New Dictionary(Of String, Object)
 
@@ -267,16 +267,16 @@ Public Class Authentication
     '    End Get
     'End Property
 
-    Public ReadOnly Property ApplicationHost() As String
+    Public ReadOnly Property ApplicationHost As String
         Get
             Dim oHost As String = String.Empty
-            If Not System.Web.HttpContext.Current Is Nothing Then
-                oHost = System.Web.HttpContext.Current.Request.Url.Host
-            ElseIf Not System.ServiceModel.OperationContext.Current Is Nothing Then
+            If Web.HttpContext.Current IsNot Nothing Then
+                oHost = Web.HttpContext.Current.Request.Url.Host
+            ElseIf ServiceModel.OperationContext.Current IsNot Nothing Then
                 ' WCF
-                oHost = System.ServiceModel.OperationContext.Current.Channel.LocalAddress.Uri.Host
-            ElseIf Not System.Net.Dns.GetHostName Is Nothing Then
-                oHost = System.Net.Dns.GetHostName
+                oHost = ServiceModel.OperationContext.Current.Channel.LocalAddress.Uri.Host
+            ElseIf Net.Dns.GetHostName IsNot Nothing Then
+                oHost = Net.Dns.GetHostName
             End If
             Return oHost
         End Get
@@ -315,13 +315,13 @@ Public Class Authentication
                      AppConfig.MANUAL_PREFIX & "HUB")
         If connType = String.Empty Then
             ' Get the hub from config file
-            connType = Assurant.Elita.Configuration.ElitaConfig.Current.General.Hub
+            connType = Elita.Configuration.ElitaConfig.Current.General.Hub
         End If
         Return connType
     End Function
 
     Private Sub StartLog()
-        Dim isDebug As String = System.Configuration.ConfigurationSettings.AppSettings("DEBUG_LOG")
+        Dim isDebug As String = Configuration.ConfigurationSettings.AppSettings("DEBUG_LOG")
         If isDebug Is Nothing Then
             isDebug = "FALSE"
         End If
@@ -333,10 +333,10 @@ Public Class Authentication
         End If
     End Sub
 
-    Private Function IsUserPrivacyGroup(ByVal networkId As String, ByVal privacyLevel As String) As Boolean
+    Private Function IsUserPrivacyGroup(networkId As String, privacyLevel As String) As Boolean
         Dim isInLdap As Boolean = False
         If privacyLevel = AppConfig.DB_PRIVACY_ADV Then
-            isInLdap = IsLdapUserInGroup(Assurant.Elita.Configuration.ElitaConfig.Current.Security.DataProtectionGroup, networkId)
+            isInLdap = IsLdapUserInGroup(Elita.Configuration.ElitaConfig.Current.Security.DataProtectionGroup, networkId)
             If isInLdap Then
                 _PrivacyUserType = AppConfig.DataProtectionPrivacyLevel.Privacy_DataProtection
             Else
@@ -361,7 +361,7 @@ Public Class Authentication
         End If
     End Function
 
-    Private Function getDataProtectionPrivacyLevel(ByVal privacyLevel As String, ByVal userPrivacyGroups As List(Of String)) As AppConfig.DataProtectionPrivacyLevel
+    Private Function getDataProtectionPrivacyLevel(privacyLevel As String, userPrivacyGroups As List(Of String)) As AppConfig.DataProtectionPrivacyLevel
         Dim isInDataProtectionGroup As Boolean = False
         Dim isInSecureGroup As Boolean = False
 
@@ -381,7 +381,7 @@ Public Class Authentication
         Return AppConfig.DataProtectionPrivacyLevel.Privacy_General
     End Function
 
-    Public Function CreateCorePrincipal(ByVal networkID As String, ByVal connType As String, ByVal machineDomain As String,
+    Public Function CreateCorePrincipal(networkID As String, connType As String, machineDomain As String,
                                         Optional ByVal webServiceName As String = Nothing,
                                         Optional ByVal webServiceFunctionName As String = Nothing,
                                         Optional ByVal userPrivacyGroups As List(Of String) = Nothing) As ElitaPlusPrincipal
@@ -389,8 +389,8 @@ Public Class Authentication
         'Dim appUserSuffix As String = String.Empty
         Dim oServers As Servers
         Dim bIsDebugLogin As Boolean = False
-        Dim isDebugLogin As String = System.Configuration.ConfigurationSettings.AppSettings("DEBUG_LOGIN")
-        Dim isTraceOn As String = System.Configuration.ConfigurationSettings.AppSettings("TRACE_ON")
+        Dim isDebugLogin As String = Configuration.ConfigurationSettings.AppSettings("DEBUG_LOGIN")
+        Dim isTraceOn As String = Configuration.ConfigurationSettings.AppSettings("TRACE_ON")
         'Now set the Principal
         Dim identity As New ElitaPlusIdentity("ASSURNET")
         With identity
@@ -401,9 +401,9 @@ Public Class Authentication
         End With
 
         Dim principal As New ElitaPlusPrincipal(identity)
-        System.Threading.Thread.CurrentPrincipal = DirectCast(principal, ElitaPlusPrincipal)
+        Threading.Thread.CurrentPrincipal = DirectCast(principal, ElitaPlusPrincipal)
         StartLog()
-        If Not isDebugLogin Is Nothing Then
+        If isDebugLogin IsNot Nothing Then
             isDebugLogin = isDebugLogin.ToUpper
             If isDebugLogin = "TRUE" Then
                 bIsDebugLogin = True
@@ -413,7 +413,7 @@ Public Class Authentication
             End If
         End If
 
-        If Not isTraceOn Is Nothing Then
+        If isTraceOn IsNot Nothing Then
             isTraceOn = isTraceOn.ToUpper
             If isTraceOn = "TRUE" Then
                 identity.TraceOn = True
@@ -430,12 +430,12 @@ Public Class Authentication
         identity.LdapIp = oServers.LdapIp
 
         ' Privacy groups
-        If Not userPrivacyGroups Is Nothing Then
+        If userPrivacyGroups IsNot Nothing Then
             ' We already have the user privacy groups
             _PrivacyUserType = getDataProtectionPrivacyLevel(oServers.PrivacyLevelXCD, userPrivacyGroups) 'PrivacyLeveXCD property will be tri-state 
             'Trace userprivacygroup issue
             Dim logEntry As String
-            If (Not principal.ActiveUser Is Nothing) Then
+            If (principal.ActiveUser IsNot Nothing) Then
                 logEntry = " Authentication Class: _privaceygroup is not nothing; UserID=" & principal.ActiveUser.NetworkId & "; PrivacyUserType=" & _PrivacyUserType & "; Time=" & Now.ToString
             Else
                 logEntry = " Authentication Class: _privaceygroup is not nothing; UserID= & principal.ActiveUser is still nothing & ; PrivacyUserType=" & _PrivacyUserType & "; Time=" & Now.ToString
@@ -447,7 +447,7 @@ Public Class Authentication
             IsUserPrivacyGroup(networkID, oServers.PrivacyLevelXCD) 'PrivacyLeveXCD property will be tri-state 
             'Trace userprivacygroup issue
             Dim logEntry As String
-            If (Not principal.ActiveUser Is Nothing) Then
+            If (principal.ActiveUser IsNot Nothing) Then
                 logEntry = " Authentication Class: _privaceygroup is nothing and calling LDAP; UserID=" & principal.ActiveUser.NetworkId & "; PrivacyUserType=" & _PrivacyUserType & "; Time=" & Now.ToString
             Else
                 logEntry = " Authentication Class: _privaceygroup is nothing and calling LDAP; UserID= & principal.ActiveUser is still nothing & ; PrivacyUserType=" & _PrivacyUserType & "; Time=" & Now.ToString
@@ -480,12 +480,12 @@ Public Class Authentication
  
         If bIsDebugLogin = True Then
             Dim trace As String
-            If (Not userPrivacyGroups Is Nothing) Then
+            If (userPrivacyGroups IsNot Nothing) Then
                 trace = String.Join(",", userPrivacyGroups.ToArray())
             End If
 
-            AppConfig.Debug("CompanyGroup=" & Authentication.CompanyGroupCode &
-               "@ Language =" & GuidControl.GuidToHexString(Authentication.LangId) &
+            AppConfig.Debug("CompanyGroup=" & CompanyGroupCode &
+               "@ Language =" & GuidControl.GuidToHexString(LangId) &
                "@Groups" & trace)
         End If
 
@@ -500,7 +500,7 @@ Public Class Authentication
 
     End Function
 
-    Public Function CreatePrincipalForServices(ByVal networkID As String, ByVal connTypeNTSvc As String, ByVal machineDomainSvc As String) As ElitaPlusPrincipal
+    Public Function CreatePrincipalForServices(networkID As String, connTypeNTSvc As String, machineDomainSvc As String) As ElitaPlusPrincipal
 
         Dim connType As String
         Dim machineDomain As String
@@ -511,7 +511,7 @@ Public Class Authentication
         Return CreateCorePrincipal(networkID, connType, machineDomain, Nothing)
 
     End Function
-    Public Function CreatePrincipalForServices(ByVal networkID As String, ByVal connTypeNTSvc As String, ByVal machineDomainSvc As String, ByVal webServiceName As String) As ElitaPlusPrincipal
+    Public Function CreatePrincipalForServices(networkID As String, connTypeNTSvc As String, machineDomainSvc As String, webServiceName As String) As ElitaPlusPrincipal
 
         Dim connType As String
         Dim machineDomain As String
@@ -522,7 +522,7 @@ Public Class Authentication
         Return CreateCorePrincipal(networkID, connType, machineDomain, webServiceName)
 
     End Function
-    Public Function CreatePrincipal(ByVal networkID As String, Optional ByVal webServiceName As String = Nothing,
+    Public Function CreatePrincipal(networkID As String, Optional ByVal webServiceName As String = Nothing,
                                     Optional ByVal webServiceFunctionName As String = Nothing,
                                     Optional ByVal hubRegion As String = Nothing,
                                     Optional ByVal machineDomainName As String = Nothing) As ElitaPlusPrincipal
@@ -540,8 +540,8 @@ Public Class Authentication
         If (String.IsNullOrWhiteSpace(machineDomainName)) Then
             machineDomain = GetMachineDomain()
         Else
-            If String.IsNullOrWhiteSpace(Assurant.Elita.Configuration.ElitaConfig.Current.General.MachineDomain) = False Then
-                If machineDomainName = Assurant.Elita.Configuration.ElitaConfig.Current.General.MachineDomain Then
+            If String.IsNullOrWhiteSpace(Elita.Configuration.ElitaConfig.Current.General.MachineDomain) = False Then
+                If machineDomainName = Elita.Configuration.ElitaConfig.Current.General.MachineDomain Then
                     machineDomain = machineDomainName
                 Else
                     machineDomain = GetMachineDomain()
@@ -554,8 +554,8 @@ Public Class Authentication
         Return CreateCorePrincipal(networkID, connType, machineDomain, webServiceName, webServiceFunctionName)
     End Function
 
-    Public Function CreatePrincipalBasedOnExternalGroups(ByVal networkID As String,
-                                            ByVal userPrivacyGroups As List(Of String)) As ElitaPlusPrincipal
+    Public Function CreatePrincipalBasedOnExternalGroups(networkID As String,
+                                            userPrivacyGroups As List(Of String)) As ElitaPlusPrincipal
         Dim sHostname As String = ApplicationHost.ToUpper
 
         Dim connType As String = GetConnectionType()
@@ -564,7 +564,7 @@ Public Class Authentication
         Return CreateCorePrincipal(networkID, connType, machineDomain, Nothing, Nothing, userPrivacyGroups)
     End Function
 
-    Public Function GetHubRegion(ByVal hubRegion As String, Optional ByVal hostName As String = Nothing) As String
+    Public Function GetHubRegion(hubRegion As String, Optional ByVal hostName As String = Nothing) As String
 
         If String.IsNullOrWhiteSpace(hubRegion) Then
             GetHubRegion = GetConnectionType()
@@ -574,15 +574,15 @@ Public Class Authentication
     End Function
 
     Public Shared Sub SetCulture()
-        If CType(System.Threading.Thread.CurrentPrincipal, Object).GetType Is GetType(ElitaPlusPrincipal) Then
+        If CType(Threading.Thread.CurrentPrincipal, Object).GetType Is GetType(ElitaPlusPrincipal) Then
             'Once the user is logged in we will be refreshing the culture with the user's language culture
             ' Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
             '  Dim langId As Guid = langId
-            Dim cultureName As String = LookupListNew.GetCodeFromId(LookupListNew.LK_LANGUAGE_CULTURES, LangId)
-            System.Threading.Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(cultureName)
+            Dim cultureName As String = LookupListNew.GetCodeFromId(LookupListCache.LK_LANGUAGE_CULTURES, LangId)
+            Threading.Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(cultureName)
 
-            if (System.Threading.Thread.CurrentThread.CurrentCulture.Name.ToUpper() = "ZH-CN") then
-                System.Threading.Thread.CurrentThread.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames = {"一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月",""}
+            if (Threading.Thread.CurrentThread.CurrentCulture.Name.ToUpper() = "ZH-CN") then
+                Threading.Thread.CurrentThread.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames = {"一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月",""}
             End If
 
         End If
@@ -596,7 +596,7 @@ Public Class Authentication
         Return AppConfig.WebService.ComplexName(CurrentUser.NetworkId)
     End Function
 
-    Public Shared Function CreateWSToken(ByVal networkId As String) As String
+    Public Shared Function CreateWSToken(networkId As String) As String
         Dim source, token As String
 
         source = EnvironmentContext.Current.EnvironmentShortName & AppConfig.FIELD_SEPARATOR &
@@ -612,7 +612,7 @@ Public Class Authentication
         Return token
     End Function
 
-    Public Shared Function VerifyWSToken(ByVal token As String, ByRef networkId As String, ByRef Env As String, ByRef Hub As String) As Boolean
+    Public Shared Function VerifyWSToken(token As String, ByRef networkId As String, ByRef Env As String, ByRef Hub As String) As Boolean
         Dim isValid As Boolean = False
         Dim source, sDate As String
         Dim tokenDate As Long

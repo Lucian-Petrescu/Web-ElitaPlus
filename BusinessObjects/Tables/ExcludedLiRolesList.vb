@@ -1,16 +1,16 @@
 ﻿Public Class ExcludedLiRolesList
     Inherits BusinessObjectListBase
 
-    Public Sub New(ByVal parent As ExcludeListitemByRole)
+    Public Sub New(parent As ExcludeListitemByRole)
         MyBase.New(LoadTable(parent), GetType(ExcludedLiRoles), parent)
     End Sub
 
 
-    Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+    Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
         Return CType(bo, ExcludedLiRoles).ExcludeListitemRoleId.Equals(CType(Parent, ExcludeListitemByRole).Id)
     End Function
 
-    Public Function Find(ByVal RoleId As Guid) As ExcludedLiRoles
+    Public Function Find(RoleId As Guid) As ExcludedLiRoles
         Dim bo As ExcludedLiRoles
         For Each bo In Me
             If bo.RoleId.Equals(RoleId) Then Return bo
@@ -20,7 +20,7 @@
 
 
 #Region "Class Methods"
-    Private Shared Function LoadTable(ByVal parent As ExcludeListitemByRole) As DataTable
+    Private Shared Function LoadTable(parent As ExcludeListitemByRole) As DataTable
         Try
             If Not parent.IsChildrenCollectionLoaded(GetType(ExcludedLiRolesList)) Then
                 Dim dal As New ExcludedLiRolesDAL

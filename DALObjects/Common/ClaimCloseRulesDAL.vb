@@ -42,35 +42,35 @@ Public Class ClaimCloseRulesDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("claim_close_rule_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function    
     
 
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
 		If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region
@@ -106,16 +106,16 @@ Public Class ClaimCloseRulesDAL
     '    End Try
     'End Function
 
-    Public Function LoadClaimCloseRules(ByVal companyId As Guid, ByVal dealerId As Guid) As DataSet
+    Public Function LoadClaimCloseRules(companyId As Guid, dealerId As Guid) As DataSet
 
         Try
             Dim selectStmt As String
             Dim parameters As OracleParameter()
             If (dealerId = Guid.Empty) Then
-                selectStmt = Me.Config("/SQL/LOAD_CLAIM_CLOSE_RULES_BY_COMPANY")
+                selectStmt = Config("/SQL/LOAD_CLAIM_CLOSE_RULES_BY_COMPANY")
                 parameters = New OracleParameter() {New OracleParameter(COL_NAME_COMPANY_ID, companyId.ToByteArray)}
             Else
-                selectStmt = Me.Config("/SQL/LOAD_CLAIM_CLOSE_RULES_BY_DEALER")
+                selectStmt = Config("/SQL/LOAD_CLAIM_CLOSE_RULES_BY_DEALER")
                 parameters = New OracleParameter() {New OracleParameter(COL_NAME_COMPANY_ID, companyId.ToByteArray), _
                                                     New OracleParameter(COL_NAME_COMPANY_ID, companyId.ToByteArray), _
                                                     New OracleParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray), _
@@ -125,7 +125,7 @@ Public Class ClaimCloseRulesDAL
             End If
 
             Dim ds As New DataSet
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
             Return ds
 
         Catch ex As Exception
@@ -134,26 +134,26 @@ Public Class ClaimCloseRulesDAL
     End Function
 
     'Def-25716: Added function to validate if the claim close rules is already exists.
-    Public Function ValidateClaimRule(ByVal companyId As Guid, ByVal dealerId As Guid, ByVal closeRuleBasedOnId As Guid, ByVal claimStatusByGroupId As Guid, ByVal entityType As String, claimIssueId As Guid) As Integer
+    Public Function ValidateClaimRule(companyId As Guid, dealerId As Guid, closeRuleBasedOnId As Guid, claimStatusByGroupId As Guid, entityType As String, claimIssueId As Guid) As Integer
         Try
             Dim selectStmt As String
 
             Dim parameters() As DBHelper.DBHelperParameter
             If entityType = "Dealer" Then
-                selectStmt = Me.Config("/SQL/VALIDATE_DEALER_CLAIM_CLOSE_RULES")
-                parameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_COMPANY_ID, companyId.ToByteArray),
-                                                New DBHelper.DBHelperParameter(Me.COL_NAME_DEALER_ID, dealerId.ToByteArray),
-                                                New DBHelper.DBHelperParameter(Me.COL_NAME_CLAIM_STATUS_BY_GROUP_ID, claimStatusByGroupId.ToByteArray),
-                                                New DBHelper.DBHelperParameter(Me.COL_NAME_CLOSE_RULE_BASED_ON_ID, closeRuleBasedOnId.ToByteArray),
-                                                New DBHelper.DBHelperParameter(Me.COL_NAME_CLAIM_ISSUE_ID, claimIssueId.ToByteArray)}
+                selectStmt = Config("/SQL/VALIDATE_DEALER_CLAIM_CLOSE_RULES")
+                parameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_COMPANY_ID, companyId.ToByteArray),
+                                                New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerId.ToByteArray),
+                                                New DBHelper.DBHelperParameter(COL_NAME_CLAIM_STATUS_BY_GROUP_ID, claimStatusByGroupId.ToByteArray),
+                                                New DBHelper.DBHelperParameter(COL_NAME_CLOSE_RULE_BASED_ON_ID, closeRuleBasedOnId.ToByteArray),
+                                                New DBHelper.DBHelperParameter(COL_NAME_CLAIM_ISSUE_ID, claimIssueId.ToByteArray)}
             End If
 
             If entityType = "Company" Then
-                selectStmt = Me.Config("/SQL/VALIDATE_COMPANY_CLAIM_CLOSE_RULES")
-                parameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_COMPANY_ID, companyId.ToByteArray),
-                                                New DBHelper.DBHelperParameter(Me.COL_NAME_CLAIM_STATUS_BY_GROUP_ID, claimStatusByGroupId.ToByteArray),
-                                                New DBHelper.DBHelperParameter(Me.COL_NAME_CLOSE_RULE_BASED_ON_ID, closeRuleBasedOnId.ToByteArray),
-                                                New DBHelper.DBHelperParameter(Me.COL_NAME_CLAIM_ISSUE_ID, claimIssueId.ToByteArray)}
+                selectStmt = Config("/SQL/VALIDATE_COMPANY_CLAIM_CLOSE_RULES")
+                parameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_COMPANY_ID, companyId.ToByteArray),
+                                                New DBHelper.DBHelperParameter(COL_NAME_CLAIM_STATUS_BY_GROUP_ID, claimStatusByGroupId.ToByteArray),
+                                                New DBHelper.DBHelperParameter(COL_NAME_CLOSE_RULE_BASED_ON_ID, closeRuleBasedOnId.ToByteArray),
+                                                New DBHelper.DBHelperParameter(COL_NAME_CLAIM_ISSUE_ID, claimIssueId.ToByteArray)}
             End If
 
 
@@ -169,14 +169,14 @@ Public Class ClaimCloseRulesDAL
         End Try
     End Function
 
-    Public Function UpdateClaimRuleInactive(ByVal claimCloseRuleId As Guid) As Integer
+    Public Function UpdateClaimRuleInactive(claimCloseRuleId As Guid) As Integer
         Try
-            Dim selectStmt As String = Me.Config("/SQL/UPDATE_CLAIM_RULE_IN_ACTIVE")
+            Dim selectStmt As String = Config("/SQL/UPDATE_CLAIM_RULE_IN_ACTIVE")
             Dim inParameters(0) As DBHelper.DBHelperParameter
-            inParameters(0) = New DBHelper.DBHelperParameter(Me.PAR_NAME_CLAIM_CLOSE_RULE, claimCloseRuleId.ToByteArray)
+            inParameters(0) = New DBHelper.DBHelperParameter(PAR_NAME_CLAIM_CLOSE_RULE, claimCloseRuleId.ToByteArray)
 
             Dim outParameters(0) As DBHelper.DBHelperParameter
-            outParameters(0) = New DBHelper.DBHelperParameter(Me.PAR_NAME_RETURN_CODE, GetType(Integer))
+            outParameters(0) = New DBHelper.DBHelperParameter(PAR_NAME_RETURN_CODE, GetType(Integer))
 
             DBHelper.ExecuteSp(selectStmt, inParameters, outParameters)
 
@@ -187,17 +187,17 @@ Public Class ClaimCloseRulesDAL
         End Try
     End Function
 
-    Public Function LoadClaimCloseRulesByCompany(ByVal companyId As Guid) As DataSet
+    Public Function LoadClaimCloseRulesByCompany(companyId As Guid) As DataSet
         Try
-            Dim selectStmt As String = Me.Config("/SQL/LOAD_CLAIM_CLOSE_RULES_BY_COMPANY")
+            Dim selectStmt As String = Config("/SQL/LOAD_CLAIM_CLOSE_RULES_BY_COMPANY")
             Dim inParameters(0) As DBHelper.DBHelperParameter
-            inParameters(0) = New DBHelper.DBHelperParameter(Me.PAR_NAME_COMPANY, companyId.ToByteArray)
+            inParameters(0) = New DBHelper.DBHelperParameter(PAR_NAME_COMPANY, companyId.ToByteArray)
 
             Dim outParameters(0) As DBHelper.DBHelperParameter
             outParameters(0) = New DBHelper.DBHelperParameter("po_claimCloseRulesinfo", GetType(DataSet))
 
             Dim ds As New DataSet
-            Dim tbl As String = Me.TABLE_NAME
+            Dim tbl As String = TABLE_NAME
 
             ' Call DBHelper Store Procedure
             DBHelper.FetchSp(selectStmt, inParameters, outParameters, ds, tbl)
@@ -208,18 +208,18 @@ Public Class ClaimCloseRulesDAL
         End Try
     End Function
 
-    Public Function LoadClaimCloseRulesByDealer(ByVal companyId As Guid, ByVal dealerId As Guid) As DataSet
+    Public Function LoadClaimCloseRulesByDealer(companyId As Guid, dealerId As Guid) As DataSet
         Try
-            Dim selectStmt As String = Me.Config("/SQL/LOAD_CLAIM_CLOSE_RULES_BY_DEALER")
+            Dim selectStmt As String = Config("/SQL/LOAD_CLAIM_CLOSE_RULES_BY_DEALER")
             Dim inParameters(1) As DBHelper.DBHelperParameter
-            inParameters(0) = New DBHelper.DBHelperParameter(Me.PAR_NAME_COMPANY, companyId.ToByteArray)
-            inParameters(1) = New DBHelper.DBHelperParameter(Me.PAR_NAME_DEALER, dealerId.ToByteArray)
+            inParameters(0) = New DBHelper.DBHelperParameter(PAR_NAME_COMPANY, companyId.ToByteArray)
+            inParameters(1) = New DBHelper.DBHelperParameter(PAR_NAME_DEALER, dealerId.ToByteArray)
 
             Dim outParameters(0) As DBHelper.DBHelperParameter
             outParameters(0) = New DBHelper.DBHelperParameter("po_claimCloseRulesinfo", GetType(DataSet))
 
             Dim ds As New DataSet
-            Dim tbl As String = Me.TABLE_NAME
+            Dim tbl As String = TABLE_NAME
 
             ' Call DBHelper Store Procedure
             DBHelper.FetchSp(selectStmt, inParameters, outParameters, ds, tbl)
@@ -230,15 +230,15 @@ Public Class ClaimCloseRulesDAL
         End Try
     End Function
 
-    Public Function CopyClaimCloseRulesToNewCompany(ByVal OldcompanyId As Guid, ByVal NewcompanyId As Guid) As Integer
+    Public Function CopyClaimCloseRulesToNewCompany(OldcompanyId As Guid, NewcompanyId As Guid) As Integer
         Try
-            Dim selectStmt As String = Me.Config("/SQL/COPY_CLAIM_CLOSE_RULES_To_NEW_COMPANY")
+            Dim selectStmt As String = Config("/SQL/COPY_CLAIM_CLOSE_RULES_To_NEW_COMPANY")
             Dim inParameters(1) As DBHelper.DBHelperParameter
-            inParameters(0) = New DBHelper.DBHelperParameter(Me.PAR_NAME_OLD_COMPANY, OldcompanyId.ToByteArray)
-            inParameters(1) = New DBHelper.DBHelperParameter(Me.PAR_NAME_NEW_COMPANY, NewcompanyId.ToByteArray)
+            inParameters(0) = New DBHelper.DBHelperParameter(PAR_NAME_OLD_COMPANY, OldcompanyId.ToByteArray)
+            inParameters(1) = New DBHelper.DBHelperParameter(PAR_NAME_NEW_COMPANY, NewcompanyId.ToByteArray)
 
             Dim outParameters(0) As DBHelper.DBHelperParameter
-            outParameters(0) = New DBHelper.DBHelperParameter(Me.PAR_NAME_RETURN_CODE, GetType(Integer))
+            outParameters(0) = New DBHelper.DBHelperParameter(PAR_NAME_RETURN_CODE, GetType(Integer))
 
             DBHelper.ExecuteSp(selectStmt, inParameters, outParameters)
 
@@ -249,16 +249,16 @@ Public Class ClaimCloseRulesDAL
         End Try
     End Function
 
-    Public Function CopyClaimCloseRulesToNewDealer(ByVal companyId As Guid, ByVal OlddealerId As Guid, ByVal NewDealerId As Guid) As Integer
+    Public Function CopyClaimCloseRulesToNewDealer(companyId As Guid, OlddealerId As Guid, NewDealerId As Guid) As Integer
         Try
-            Dim selectStmt As String = Me.Config("/SQL/COPY_CLAIM_CLOSE_RULES_To_NEW_DEALER")
+            Dim selectStmt As String = Config("/SQL/COPY_CLAIM_CLOSE_RULES_To_NEW_DEALER")
             Dim inParameters(2) As DBHelper.DBHelperParameter
-            inParameters(0) = New DBHelper.DBHelperParameter(Me.PAR_NAME_COMPANY, companyId.ToByteArray)
-            inParameters(1) = New DBHelper.DBHelperParameter(Me.PAR_NAME_OLD_DEALER, OlddealerId.ToByteArray)
-            inParameters(2) = New DBHelper.DBHelperParameter(Me.PAR_NAME_OLD_DEALER, NewDealerId.ToByteArray)
+            inParameters(0) = New DBHelper.DBHelperParameter(PAR_NAME_COMPANY, companyId.ToByteArray)
+            inParameters(1) = New DBHelper.DBHelperParameter(PAR_NAME_OLD_DEALER, OlddealerId.ToByteArray)
+            inParameters(2) = New DBHelper.DBHelperParameter(PAR_NAME_OLD_DEALER, NewDealerId.ToByteArray)
 
             Dim outParameters(0) As DBHelper.DBHelperParameter
-            outParameters(0) = New DBHelper.DBHelperParameter(Me.PAR_NAME_RETURN_CODE, GetType(Integer))
+            outParameters(0) = New DBHelper.DBHelperParameter(PAR_NAME_RETURN_CODE, GetType(Integer))
 
             DBHelper.ExecuteSp(selectStmt, inParameters, outParameters)
 

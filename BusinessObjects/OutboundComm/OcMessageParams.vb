@@ -4,48 +4,48 @@
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New OcMessageParamsDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -53,23 +53,23 @@
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New OcMessageParamsDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -87,7 +87,7 @@
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(OcMessageParamsDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -98,7 +98,7 @@
     End Property
 
     <ValueMandatory("")>
-    Public Property OcMessageId() As Guid
+    Public Property OcMessageId As Guid
         Get
             CheckDeleted()
             If Row(OcMessageParamsDAL.COL_NAME_OC_MESSAGE_ID) Is DBNull.Value Then
@@ -107,15 +107,15 @@
                 Return New Guid(CType(Row(OcMessageParamsDAL.COL_NAME_OC_MESSAGE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(OcMessageParamsDAL.COL_NAME_OC_MESSAGE_ID, Value)
+            SetValue(OcMessageParamsDAL.COL_NAME_OC_MESSAGE_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=600)>
-    Public Property ParamName() As String
+    Public Property ParamName As String
         Get
             CheckDeleted()
             If Row(OcMessageParamsDAL.COL_NAME_PARAM_NAME) Is DBNull.Value Then
@@ -124,15 +124,15 @@
                 Return CType(Row(OcMessageParamsDAL.COL_NAME_PARAM_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(OcMessageParamsDAL.COL_NAME_PARAM_NAME, Value)
+            SetValue(OcMessageParamsDAL.COL_NAME_PARAM_NAME, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=400)>
-    Public Property ParamValue() As String
+    Public Property ParamValue As String
         Get
             CheckDeleted()
             If Row(OcMessageParamsDAL.COL_NAME_PARAM_VALUE) Is DBNull.Value Then
@@ -141,9 +141,9 @@
                 Return CType(Row(OcMessageParamsDAL.COL_NAME_PARAM_VALUE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(OcMessageParamsDAL.COL_NAME_PARAM_VALUE, Value)
+            SetValue(OcMessageParamsDAL.COL_NAME_PARAM_VALUE, Value)
         End Set
     End Property
 
@@ -154,7 +154,7 @@
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetList(ByVal messageId As Guid) As DataView
+    Public Shared Function GetList(messageId As Guid) As DataView
         Try
             Dim dal As New OcMessageParamsDAL
             Return New DataView(dal.LoadList(messageId).Tables(0))
@@ -182,21 +182,21 @@
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
         Public Function AddNewRowToEmptyDV() As MessageParamsDV
-            Dim dt As DataTable = Me.Table.Clone()
+            Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(MessageParamsDV.COL_OC_MESSAGE_PARAMS_ID) = (New Guid()).ToByteArray
-            row(MessageParamsDV.COL_OC_MESSAGE_ID) = Guid.Empty.ToByteArray
-            row(MessageParamsDV.COL_PARAM_NAME) = DBNull.Value
-            row(MessageParamsDV.COL_PARAM_VALUE) = DBNull.Value
-            row(MessageParamsDV.COL_CREATED_BY) = DBNull.Value
-            row(MessageParamsDV.COL_CREATED_DATE) = DBNull.Value
-            row(MessageParamsDV.COL_MODIFIED_BY) = DBNull.Value
-            row(MessageParamsDV.COL_MODIFIED_DATE) = DBNull.Value
+            row(COL_OC_MESSAGE_PARAMS_ID) = (New Guid()).ToByteArray
+            row(COL_OC_MESSAGE_ID) = Guid.Empty.ToByteArray
+            row(COL_PARAM_NAME) = DBNull.Value
+            row(COL_PARAM_VALUE) = DBNull.Value
+            row(COL_CREATED_BY) = DBNull.Value
+            row(COL_CREATED_DATE) = DBNull.Value
+            row(COL_MODIFIED_BY) = DBNull.Value
+            row(COL_MODIFIED_DATE) = DBNull.Value
             dt.Rows.Add(row)
             Return New MessageParamsDV(dt)
         End Function

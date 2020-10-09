@@ -74,38 +74,38 @@ Public Class AppleGBIFileReconWrkDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(TABLE_KEY_NAME, id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function LoadSummary(ByVal FromDate As Date,
-                                ByVal ThruDate As Date) As DataSet
+    Public Function LoadSummary(FromDate As Date,
+                                ThruDate As Date) As DataSet
 
         Try
 
-            Dim strCommand As String = Me.Config("/SQL/SUMMARY")
+            Dim strCommand As String = Config("/SQL/SUMMARY")
             Using connection As New OracleConnection(DBHelper.ConnectString)
                 Using cmd As OracleCommand = OracleDbHelper.CreateCommand(strCommand, CommandType.StoredProcedure, connection)
                     cmd.BindByName = True
                     cmd.AddParameter(PAR_I_FROM_DATE, OracleDbType.Varchar2, 20, FromDate.ToString("MM/dd/yyyy"))
                     cmd.AddParameter(PAR_I_THRUE_DATE, OracleDbType.Varchar2, 20, ThruDate.ToString("MM/dd/yyyy"))
                     cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                    Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME)
+                    Return OracleDbHelper.Fetch(cmd, TABLE_NAME)
                 End Using
             End Using
         Catch ex As Exception
@@ -114,13 +114,13 @@ Public Class AppleGBIFileReconWrkDAL
 
     End Function
 
-    Public Function LoadDetail(ByVal FileProcessedId As Guid,
-                               ByVal Status As String,
-                               ByVal LanguageId As Guid) As DataSet
+    Public Function LoadDetail(FileProcessedId As Guid,
+                               Status As String,
+                               LanguageId As Guid) As DataSet
 
         Try
 
-            Dim strCommand As String = Me.Config("/SQL/DETAIL")
+            Dim strCommand As String = Config("/SQL/DETAIL")
             Using connection As New OracleConnection(DBHelper.ConnectString)
                 Using cmd As OracleCommand = OracleDbHelper.CreateCommand(strCommand, CommandType.StoredProcedure, connection)
                     cmd.BindByName = True
@@ -130,7 +130,7 @@ Public Class AppleGBIFileReconWrkDAL
                     cmd.AddParameter(PAR_I_LANGUAGE_ID, OracleDbType.Raw, 20, LanguageId.ToByteArray)
 
                     cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                    Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME)
+                    Return OracleDbHelper.Fetch(cmd, TABLE_NAME)
                 End Using
             End Using
         Catch ex As Exception
@@ -139,7 +139,7 @@ Public Class AppleGBIFileReconWrkDAL
 
     End Function
 
-    Public Sub ProcessFile(ByVal fileProcessedId As Guid)
+    Public Sub ProcessFile(fileProcessedId As Guid)
         Dim sqlStmt As String = Config("/SQL/PROCESS_CLAIM_FILE")
 
         Dim inputParameters(0) As DBHelperParameter

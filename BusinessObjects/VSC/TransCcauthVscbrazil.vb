@@ -6,48 +6,48 @@ Public Class TransCcauthVscbrazil
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New TransCcauthVscbrazilDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class TransCcauthVscbrazil
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New TransCcauthVscbrazilDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -90,7 +90,7 @@ Public Class TransCcauthVscbrazil
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(TransCcauthVscbrazilDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class TransCcauthVscbrazil
     End Property
 
     <ValidStringLength("", Max:=400)> _
-    Public Property CustomerName() As String
+    Public Property CustomerName As String
         Get
             CheckDeleted()
             If row(TransCcauthVscbrazilDAL.COL_NAME_CUSTOMER_NAME) Is DBNull.Value Then
@@ -110,15 +110,15 @@ Public Class TransCcauthVscbrazil
                 Return CType(row(TransCcauthVscbrazilDAL.COL_NAME_CUSTOMER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.COL_NAME_CUSTOMER_NAME, Value)
+            SetValue(TransCcauthVscbrazilDAL.COL_NAME_CUSTOMER_NAME, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=80)> _
-    Public Property DocumentNum() As String
+    Public Property DocumentNum As String
         Get
             CheckDeleted()
             If row(TransCcauthVscbrazilDAL.COL_NAME_DOCUMENT_NUM) Is DBNull.Value Then
@@ -127,15 +127,15 @@ Public Class TransCcauthVscbrazil
                 Return CType(row(TransCcauthVscbrazilDAL.COL_NAME_DOCUMENT_NUM), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.COL_NAME_DOCUMENT_NUM, Value)
+            SetValue(TransCcauthVscbrazilDAL.COL_NAME_DOCUMENT_NUM, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=200)> _
-    Public Property CertificateNum() As String
+    Public Property CertificateNum As String
         Get
             CheckDeleted()
             If row(TransCcauthVscbrazilDAL.COL_NAME_CERTIFICATE_NUM) Is DBNull.Value Then
@@ -144,15 +144,15 @@ Public Class TransCcauthVscbrazil
                 Return CType(row(TransCcauthVscbrazilDAL.COL_NAME_CERTIFICATE_NUM), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.COL_NAME_CERTIFICATE_NUM, Value)
+            SetValue(TransCcauthVscbrazilDAL.COL_NAME_CERTIFICATE_NUM, Value)
         End Set
     End Property
 
 
 
-    Public Property Amount() As DecimalType
+    Public Property Amount As DecimalType
         Get
             CheckDeleted()
             If row(TransCcauthVscbrazilDAL.COL_NAME_AMOUNT) Is DBNull.Value Then
@@ -161,15 +161,15 @@ Public Class TransCcauthVscbrazil
                 Return New DecimalType(CType(row(TransCcauthVscbrazilDAL.COL_NAME_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.COL_NAME_AMOUNT, Value)
+            SetValue(TransCcauthVscbrazilDAL.COL_NAME_AMOUNT, Value)
         End Set
     End Property
 
 
 
-    Public Property NumOfInstallments() As LongType
+    Public Property NumOfInstallments As LongType
         Get
             CheckDeleted()
             If row(TransCcauthVscbrazilDAL.COL_NAME_NUM_OF_INSTALLMENTS) Is DBNull.Value Then
@@ -178,15 +178,15 @@ Public Class TransCcauthVscbrazil
                 Return New LongType(CType(row(TransCcauthVscbrazilDAL.COL_NAME_NUM_OF_INSTALLMENTS), Long))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.COL_NAME_NUM_OF_INSTALLMENTS, Value)
+            SetValue(TransCcauthVscbrazilDAL.COL_NAME_NUM_OF_INSTALLMENTS, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=400)> _
-    Public Property NameOnCard() As String
+    Public Property NameOnCard As String
         Get
             CheckDeleted()
             If row(TransCcauthVscbrazilDAL.COL_NAME_NAME_ON_CARD) Is DBNull.Value Then
@@ -195,15 +195,15 @@ Public Class TransCcauthVscbrazil
                 Return CType(row(TransCcauthVscbrazilDAL.COL_NAME_NAME_ON_CARD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.COL_NAME_NAME_ON_CARD, Value)
+            SetValue(TransCcauthVscbrazilDAL.COL_NAME_NAME_ON_CARD, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=80)> _
-    Public Property CardNum() As String
+    Public Property CardNum As String
         Get
             CheckDeleted()
             If row(TransCcauthVscbrazilDAL.COL_NAME_CARD_NUM) Is DBNull.Value Then
@@ -212,15 +212,15 @@ Public Class TransCcauthVscbrazil
                 Return CType(row(TransCcauthVscbrazilDAL.COL_NAME_CARD_NUM), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.COL_NAME_CARD_NUM, Value)
+            SetValue(TransCcauthVscbrazilDAL.COL_NAME_CARD_NUM, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=40)>
-    Public Property CardSecurityCode() As String
+    Public Property CardSecurityCode As String
         Get
             CheckDeleted()
             If row(TransCcauthVscbrazilDAL.COL_NAME_CARD_SECURITY_CODE) Is DBNull.Value Then
@@ -229,14 +229,14 @@ Public Class TransCcauthVscbrazil
                 Return CType(row(TransCcauthVscbrazilDAL.COL_NAME_CARD_SECURITY_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.COL_NAME_CARD_SECURITY_CODE, Value)
+            SetValue(TransCcauthVscbrazilDAL.COL_NAME_CARD_SECURITY_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=40)>
-    Public Property DbsCompanyCode() As String
+    Public Property DbsCompanyCode As String
         Get
             CheckDeleted()
             If Row(TransCcauthVscbrazilDAL.DATA_COL_NAME_DBS_COMPANY_CODE) Is DBNull.Value Then
@@ -245,14 +245,14 @@ Public Class TransCcauthVscbrazil
                 Return CType(Row(TransCcauthVscbrazilDAL.DATA_COL_NAME_DBS_COMPANY_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.DATA_COL_NAME_DBS_COMPANY_CODE, Value)
+            SetValue(TransCcauthVscbrazilDAL.DATA_COL_NAME_DBS_COMPANY_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=40)>
-    Public Property DbsProductCode() As String
+    Public Property DbsProductCode As String
         Get
             CheckDeleted()
             If Row(TransCcauthVscbrazilDAL.DATA_COL_NAME_DBS_PRODUCT_CODE) Is DBNull.Value Then
@@ -261,14 +261,14 @@ Public Class TransCcauthVscbrazil
                 Return CType(Row(TransCcauthVscbrazilDAL.DATA_COL_NAME_DBS_PRODUCT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.DATA_COL_NAME_DBS_PRODUCT_CODE, Value)
+            SetValue(TransCcauthVscbrazilDAL.DATA_COL_NAME_DBS_PRODUCT_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=40)>
-    Public Property DbsSystemCode() As String
+    Public Property DbsSystemCode As String
         Get
             CheckDeleted()
             If Row(TransCcauthVscbrazilDAL.DATA_COL_NAME_DBS_SYSTEM_CODE) Is DBNull.Value Then
@@ -277,14 +277,14 @@ Public Class TransCcauthVscbrazil
                 Return CType(Row(TransCcauthVscbrazilDAL.DATA_COL_NAME_DBS_SYSTEM_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.DATA_COL_NAME_DBS_SYSTEM_CODE, Value)
+            SetValue(TransCcauthVscbrazilDAL.DATA_COL_NAME_DBS_SYSTEM_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=40)>
-    Public Property DealerCode() As String
+    Public Property DealerCode As String
         Get
             CheckDeleted()
             If Row(TransCcauthVscbrazilDAL.DATA_COL_NAME_DEALER_CODE) Is DBNull.Value Then
@@ -293,15 +293,15 @@ Public Class TransCcauthVscbrazil
                 Return CType(Row(TransCcauthVscbrazilDAL.DATA_COL_NAME_DEALER_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.DATA_COL_NAME_DEALER_CODE, Value)
+            SetValue(TransCcauthVscbrazilDAL.DATA_COL_NAME_DEALER_CODE, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=800)>
-    Public Property Email() As String
+    Public Property Email As String
         Get
             CheckDeleted()
             If Row(TransCcauthVscbrazilDAL.DATA_COL_NAME_EMAIL) Is DBNull.Value Then
@@ -310,14 +310,14 @@ Public Class TransCcauthVscbrazil
                 Return CType(Row(TransCcauthVscbrazilDAL.DATA_COL_NAME_EMAIL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.DATA_COL_NAME_EMAIL, Value)
+            SetValue(TransCcauthVscbrazilDAL.DATA_COL_NAME_EMAIL, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=80)>
-    Public Property MobileAreaCode() As String
+    Public Property MobileAreaCode As String
         Get
             CheckDeleted()
             If Row(TransCcauthVscbrazilDAL.DATA_COL_NAME_MOBILE_AREA_CODE) Is DBNull.Value Then
@@ -326,14 +326,14 @@ Public Class TransCcauthVscbrazil
                 Return CType(Row(TransCcauthVscbrazilDAL.DATA_COL_NAME_MOBILE_AREA_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.DATA_COL_NAME_MOBILE_AREA_CODE, Value)
+            SetValue(TransCcauthVscbrazilDAL.DATA_COL_NAME_MOBILE_AREA_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=80)>
-    Public Property Mobile() As String
+    Public Property Mobile As String
         Get
             CheckDeleted()
             If Row(TransCcauthVscbrazilDAL.DATA_COL_NAME_MOBILE) Is DBNull.Value Then
@@ -342,14 +342,14 @@ Public Class TransCcauthVscbrazil
                 Return CType(Row(TransCcauthVscbrazilDAL.DATA_COL_NAME_MOBILE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.DATA_COL_NAME_MOBILE, Value)
+            SetValue(TransCcauthVscbrazilDAL.DATA_COL_NAME_MOBILE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=80)>
-    Public Property PhoneAreaCode() As String
+    Public Property PhoneAreaCode As String
         Get
             CheckDeleted()
             If Row(TransCcauthVscbrazilDAL.DATA_COL_NAME_PHONE_AREA_CODE) Is DBNull.Value Then
@@ -358,14 +358,14 @@ Public Class TransCcauthVscbrazil
                 Return CType(Row(TransCcauthVscbrazilDAL.DATA_COL_NAME_PHONE_AREA_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.DATA_COL_NAME_PHONE_AREA_CODE, Value)
+            SetValue(TransCcauthVscbrazilDAL.DATA_COL_NAME_PHONE_AREA_CODE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=80)>
-    Public Property Phone() As String
+    Public Property Phone As String
         Get
             CheckDeleted()
             If Row(TransCcauthVscbrazilDAL.DATA_COL_NAME_PHONE) Is DBNull.Value Then
@@ -374,14 +374,14 @@ Public Class TransCcauthVscbrazil
                 Return CType(Row(TransCcauthVscbrazilDAL.DATA_COL_NAME_PHONE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.DATA_COL_NAME_PHONE, Value)
+            SetValue(TransCcauthVscbrazilDAL.DATA_COL_NAME_PHONE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=80)>
-    Public Property WarrantySalesDate() As String
+    Public Property WarrantySalesDate As String
         Get
             CheckDeleted()
             If Row(TransCcauthVscbrazilDAL.DATA_COL_NAME_WARRANTY_SALES_DATE) Is DBNull.Value Then
@@ -390,14 +390,14 @@ Public Class TransCcauthVscbrazil
                 Return CType(Row(TransCcauthVscbrazilDAL.DATA_COL_NAME_WARRANTY_SALES_DATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.DATA_COL_NAME_WARRANTY_SALES_DATE, Value)
+            SetValue(TransCcauthVscbrazilDAL.DATA_COL_NAME_WARRANTY_SALES_DATE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=400)>
-    Public Property CardOwnerTaxId() As String
+    Public Property CardOwnerTaxId As String
         Get
             CheckDeleted()
             If Row(TransCcauthVscbrazilDAL.DATA_COL_NAME_CARD_OWNER_TAX_ID) Is DBNull.Value Then
@@ -406,14 +406,14 @@ Public Class TransCcauthVscbrazil
                 Return CType(Row(TransCcauthVscbrazilDAL.DATA_COL_NAME_CARD_OWNER_TAX_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.DATA_COL_NAME_CARD_OWNER_TAX_ID, Value)
+            SetValue(TransCcauthVscbrazilDAL.DATA_COL_NAME_CARD_OWNER_TAX_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=80)>
-    Public Property CardExpiration() As String
+    Public Property CardExpiration As String
         Get
             CheckDeleted()
             If row(TransCcauthVscbrazilDAL.COL_NAME_CARD_EXPIRATION) Is DBNull.Value Then
@@ -422,14 +422,14 @@ Public Class TransCcauthVscbrazil
                 Return CType(row(TransCcauthVscbrazilDAL.COL_NAME_CARD_EXPIRATION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.COL_NAME_CARD_EXPIRATION, Value)
+            SetValue(TransCcauthVscbrazilDAL.COL_NAME_CARD_EXPIRATION, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=20)>
-    Public Property DbsPaymentType() As String
+    Public Property DbsPaymentType As String
         Get
             CheckDeleted()
             If Row(TransCcauthVscbrazilDAL.DATA_COL_NAME_DBS_PAYMENT_TYPE) Is DBNull.Value Then
@@ -438,14 +438,14 @@ Public Class TransCcauthVscbrazil
                 Return CType(Row(TransCcauthVscbrazilDAL.DATA_COL_NAME_DBS_PAYMENT_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.DATA_COL_NAME_DBS_PAYMENT_TYPE, Value)
+            SetValue(TransCcauthVscbrazilDAL.DATA_COL_NAME_DBS_PAYMENT_TYPE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=80)>
-    Public Property DueDate() As String
+    Public Property DueDate As String
         Get
             CheckDeleted()
             If Row(TransCcauthVscbrazilDAL.DATA_COL_NAME_DUE_DATE) Is DBNull.Value Then
@@ -454,14 +454,14 @@ Public Class TransCcauthVscbrazil
                 Return CType(Row(TransCcauthVscbrazilDAL.DATA_COL_NAME_DUE_DATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.DATA_COL_NAME_DUE_DATE, Value)
+            SetValue(TransCcauthVscbrazilDAL.DATA_COL_NAME_DUE_DATE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=80)>
-    Public Property ExpiredDate() As String
+    Public Property ExpiredDate As String
         Get
             CheckDeleted()
             If Row(TransCcauthVscbrazilDAL.DATA_COL_NAME_EXPIRED_DATE) Is DBNull.Value Then
@@ -470,14 +470,14 @@ Public Class TransCcauthVscbrazil
                 Return CType(Row(TransCcauthVscbrazilDAL.DATA_COL_NAME_EXPIRED_DATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.DATA_COL_NAME_EXPIRED_DATE, Value)
+            SetValue(TransCcauthVscbrazilDAL.DATA_COL_NAME_EXPIRED_DATE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=20)> _
-    Public Property CardType() As String
+    Public Property CardType As String
         Get
             CheckDeleted()
             If row(TransCcauthVscbrazilDAL.COL_NAME_CARD_TYPE) Is DBNull.Value Then
@@ -486,15 +486,15 @@ Public Class TransCcauthVscbrazil
                 Return CType(row(TransCcauthVscbrazilDAL.COL_NAME_CARD_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.COL_NAME_CARD_TYPE, Value)
+            SetValue(TransCcauthVscbrazilDAL.COL_NAME_CARD_TYPE, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=80)> _
-    Public Property AuthStatus() As String
+    Public Property AuthStatus As String
         Get
             CheckDeleted()
             If row(TransCcauthVscbrazilDAL.COL_NAME_AUTH_STATUS) Is DBNull.Value Then
@@ -503,15 +503,15 @@ Public Class TransCcauthVscbrazil
                 Return CType(row(TransCcauthVscbrazilDAL.COL_NAME_AUTH_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.COL_NAME_AUTH_STATUS, Value)
+            SetValue(TransCcauthVscbrazilDAL.COL_NAME_AUTH_STATUS, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=200)> _
-    Public Property AuthNum() As String
+    Public Property AuthNum As String
         Get
             CheckDeleted()
             If row(TransCcauthVscbrazilDAL.COL_NAME_AUTH_NUM) Is DBNull.Value Then
@@ -520,15 +520,15 @@ Public Class TransCcauthVscbrazil
                 Return CType(row(TransCcauthVscbrazilDAL.COL_NAME_AUTH_NUM), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.COL_NAME_AUTH_NUM, Value)
+            SetValue(TransCcauthVscbrazilDAL.COL_NAME_AUTH_NUM, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=200)> _
-    Public Property RejectCode() As String
+    Public Property RejectCode As String
         Get
             CheckDeleted()
             If row(TransCcauthVscbrazilDAL.COL_NAME_REJECT_CODE) Is DBNull.Value Then
@@ -537,15 +537,15 @@ Public Class TransCcauthVscbrazil
                 Return CType(row(TransCcauthVscbrazilDAL.COL_NAME_REJECT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.COL_NAME_REJECT_CODE, Value)
+            SetValue(TransCcauthVscbrazilDAL.COL_NAME_REJECT_CODE, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=1000)> _
-    Public Property RejectMsg() As String
+    Public Property RejectMsg As String
         Get
             CheckDeleted()
             If row(TransCcauthVscbrazilDAL.COL_NAME_REJECT_MSG) Is DBNull.Value Then
@@ -554,15 +554,15 @@ Public Class TransCcauthVscbrazil
                 Return CType(row(TransCcauthVscbrazilDAL.COL_NAME_REJECT_MSG), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.COL_NAME_REJECT_MSG, Value)
+            SetValue(TransCcauthVscbrazilDAL.COL_NAME_REJECT_MSG, Value)
         End Set
     End Property
 
 
 
-    Public Property AuthDate() As DateType
+    Public Property AuthDate As DateType
         Get
             CheckDeleted()
             If row(TransCcauthVscbrazilDAL.COL_NAME_AUTH_DATE) Is DBNull.Value Then
@@ -571,9 +571,9 @@ Public Class TransCcauthVscbrazil
                 Return New DateType(CType(row(TransCcauthVscbrazilDAL.COL_NAME_AUTH_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(TransCcauthVscbrazilDAL.COL_NAME_AUTH_DATE, Value)
+            SetValue(TransCcauthVscbrazilDAL.COL_NAME_AUTH_DATE, Value)
         End Set
     End Property
 
@@ -586,15 +586,15 @@ Public Class TransCcauthVscbrazil
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New TransCcauthVscbrazilDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException

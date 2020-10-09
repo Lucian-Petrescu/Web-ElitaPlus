@@ -45,33 +45,33 @@
 
 #Region "PAGE INITIALIZATION"
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
         'Put user code to initialize the page here
-        Me.ErrControllerMaster.Clear_Hide()
+        ErrControllerMaster.Clear_Hide()
 
         Try
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
 
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
-                Me.AddCalendar(Me.btnStartDate, Me.moTxtStartDate)
-                Me.AddCalendar(Me.btnEndDate, Me.moTxtEndDate)
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
+                AddCalendar(btnStartDate, moTxtStartDate)
+                AddCalendar(btnEndDate, moTxtEndDate)
 
                 'Fill Companies
                 Dim dv As DataView = LookupListNew.GetUserCompaniesLookupList()
-                Me.moUserCompanyMultipleDrop.NothingSelected = True
-                Me.moUserCompanyMultipleDrop.SetControl(True, Me.moUserCompanyMultipleDrop.MODES.NEW_MODE, True, dv, Me.moUserCompanyMultipleDrop.NO_CAPTION, True)
+                moUserCompanyMultipleDrop.NothingSelected = True
+                moUserCompanyMultipleDrop.SetControl(True, moUserCompanyMultipleDrop.MODES.NEW_MODE, True, dv, moUserCompanyMultipleDrop.NO_CAPTION, True)
                 If dv.Count.Equals(1) Then
-                    Me.moUserCompanyMultipleDrop.SelectedIndex = 1
-                    Me.moUserCompanyMultipleDrop.ChangeEnabledControlProperty(False)
+                    moUserCompanyMultipleDrop.SelectedIndex = 1
+                    moUserCompanyMultipleDrop.ChangeEnabledControlProperty(False)
                 End If
 
 
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
-        Me.ShowMissingTranslations(Me.ErrControllerMaster)
+        ShowMissingTranslations(ErrControllerMaster)
     End Sub
 
 
@@ -80,34 +80,34 @@
 #Region "CONTROLLING LOGIC"
 
 
-    Private Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+    Private Sub btnClearSearch_Click(sender As Object, e As System.EventArgs) Handles btnClearSearch.Click
 
-        Me.moTxtStartDate.Text = String.Empty
-        Me.moTxtEndDate.Text = String.Empty
-        Me.moTxtBatchNumber.Text = String.Empty
+        moTxtStartDate.Text = String.Empty
+        moTxtEndDate.Text = String.Empty
+        moTxtBatchNumber.Text = String.Empty
 
     End Sub
 
 
-    Private Sub btnSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As System.EventArgs) Handles btnSearch.Click
 
         'Check to be sure a company is selected
 
-        If Me.moUserCompanyMultipleDrop.SelectedGuid.ToString = Me.NOTHING_SELECTED Then
-            Me.ErrControllerMaster.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_COMPANY_IS_REQUIRED)
+        If moUserCompanyMultipleDrop.SelectedGuid.ToString = NOTHING_SELECTED Then
+            ErrControllerMaster.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_COMPANY_IS_REQUIRED)
             Exit Sub
         End If
 
         'Check if any search criteria submitted.  If not, return an error
-        If Me.moTxtStartDate.Text = String.Empty AndAlso Me.moTxtEndDate.Text = String.Empty AndAlso Me.moTxtBatchNumber.Text = String.Empty Then
-            Me.ErrControllerMaster.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR)
+        If moTxtStartDate.Text = String.Empty AndAlso moTxtEndDate.Text = String.Empty AndAlso moTxtBatchNumber.Text = String.Empty Then
+            ErrControllerMaster.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR)
             Exit Sub
         End If
 
         Dim dtStart, dtEnd As Date
-        If Date.TryParse(Me.moTxtStartDate.Text, dtStart) AndAlso Date.TryParse(Me.moTxtEndDate.Text, dtEnd) Then
+        If Date.TryParse(moTxtStartDate.Text, dtStart) AndAlso Date.TryParse(moTxtEndDate.Text, dtEnd) Then
             If dtStart > dtEnd Then
-                Me.ErrControllerMaster.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_BEGIN_END_DATE_ERR)
+                ErrControllerMaster.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_BEGIN_END_DATE_ERR)
                 Exit Sub
             End If
         End If
@@ -115,15 +115,15 @@
         Populate()
         PopulateGrid()
 
-        If Me.State.searchDV.Count = 0 Then
-            Me.AddInfoMsg(Message.MSG_NO_RECORDS_FOUND)
+        If State.searchDV.Count = 0 Then
+            AddInfoMsg(Message.MSG_NO_RECORDS_FOUND)
         End If
 
     End Sub
 
 
-    Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
-        Me.ReturnToTabHomePage()
+    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
+        ReturnToTabHomePage()
     End Sub
 
 #End Region
@@ -133,14 +133,14 @@
     Private Sub Populate()
 
         Try
-            If Me.moTxtBatchNumber.Text.Trim.Equals(String.Empty) Then
-                Me.State.searchDV = AcctTransmission.GetFilesForReversal(Me.moUserCompanyMultipleDrop.SelectedGuid, If(Me.moTxtStartDate.Text.Trim.Equals(String.Empty), Date.MinValue, DateHelper.GetDateValue(Me.moTxtStartDate.Text.Trim)), If(Me.moTxtEndDate.Text.Trim.Equals(String.Empty), Date.MinValue, DateHelper.GetDateValue(Me.moTxtEndDate.Text.Trim)))
+            If moTxtBatchNumber.Text.Trim.Equals(String.Empty) Then
+                State.searchDV = AcctTransmission.GetFilesForReversal(moUserCompanyMultipleDrop.SelectedGuid, If(moTxtStartDate.Text.Trim.Equals(String.Empty), Date.MinValue, DateHelper.GetDateValue(moTxtStartDate.Text.Trim)), If(moTxtEndDate.Text.Trim.Equals(String.Empty), Date.MinValue, DateHelper.GetDateValue(moTxtEndDate.Text.Trim)))
             Else
-                Me.State.searchDV = AcctTransmission.GetFilesForReversal(Me.moUserCompanyMultipleDrop.SelectedGuid, Me.moTxtBatchNumber.Text.Trim)
+                State.searchDV = AcctTransmission.GetFilesForReversal(moUserCompanyMultipleDrop.SelectedGuid, moTxtBatchNumber.Text.Trim)
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub
@@ -149,90 +149,90 @@
 
         Try
 
-            If Me.State.searchDV Is Nothing Then Populate()
+            If State.searchDV Is Nothing Then Populate()
 
-            If Me.State.searchDV.Count > 0 Then
-                Me.moDataGrid.Visible = True
-                Me.moDataGrid.PageSize = Me.State.selectedPageSize
-                Me.moDataGrid.DataSource = Me.State.searchDV
-                Me.moDataGrid.DataBind()
-                Me.trPageSize.Attributes("style") = ""
+            If State.searchDV.Count > 0 Then
+                moDataGrid.Visible = True
+                moDataGrid.PageSize = State.selectedPageSize
+                moDataGrid.DataSource = State.searchDV
+                moDataGrid.DataBind()
+                trPageSize.Attributes("style") = ""
             Else
-                Me.moDataGrid.Visible = False
-                Me.trPageSize.Attributes("style") = "display:none;"
+                moDataGrid.Visible = False
+                trPageSize.Attributes("style") = "display:none;"
             End If
 
-            Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub
 
-    Private Sub moDataGrid_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles moDataGrid.ItemCommand
+    Private Sub moDataGrid_ItemCommand(source As Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles moDataGrid.ItemCommand
 
         Try
-            If e.CommandName = Me.EDIT_COMMAND_NAME Then
+            If e.CommandName = EDIT_COMMAND_NAME Then
                 moDataGrid.SelectedIndex = e.Item.ItemIndex
-                Navigator.callPage(Me, AccountingReversalForm.URL, Me.State, New Guid(moDataGrid.SelectedItem.Cells(GRD_COL_ID_INX).Text))
+                Navigator.callPage(Me, AccountingReversalForm.URL, State, New Guid(moDataGrid.SelectedItem.Cells(GRD_COL_ID_INX).Text))
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub
 
-    Private Sub moDataGrid_ItemCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moDataGrid.ItemCreated
+    Private Sub moDataGrid_ItemCreated(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moDataGrid.ItemCreated
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub moDataGrid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moDataGrid.ItemDataBound
-        If e.Item.ItemType = ListItemType.AlternatingItem Or e.Item.ItemType = ListItemType.Item Then
+    Private Sub moDataGrid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moDataGrid.ItemDataBound
+        If e.Item.ItemType = ListItemType.AlternatingItem OrElse e.Item.ItemType = ListItemType.Item Then
             Dim drv As DataRowView = CType(e.Item.DataItem, DataRowView)
-            e.Item.Cells(Me.GRD_COL_ID_INX).Text = GuidControl.ByteArrayToGuid(CType(drv(AcctTransmission.AcctTransmissionSearchDV.COL_ACCT_TRANSMISSION_ID), Byte())).ToString
+            e.Item.Cells(GRD_COL_ID_INX).Text = GuidControl.ByteArrayToGuid(CType(drv(AcctTransmission.AcctTransmissionSearchDV.COL_ACCT_TRANSMISSION_ID), Byte())).ToString
         End If
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moDataGrid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moDataGrid.PageIndexChanged
         Try
-            Me.moDataGrid.CurrentPageIndex = e.NewPageIndex
-            Me.PopulateGrid()
+            moDataGrid.CurrentPageIndex = e.NewPageIndex
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Protected Sub cboPageSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Protected Sub cboPageSize_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
-            Me.State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.moDataGrid.CurrentPageIndex = 0
-            Me.PopulateGrid()
+            State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
+            moDataGrid.CurrentPageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
 
-    Private Sub moDataGrid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles moDataGrid.SortCommand
+    Private Sub moDataGrid_SortCommand(source As Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles moDataGrid.SortCommand
 
         Try
-            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                If Me.State.SortExpression.EndsWith(" DESC") Then
-                    Me.State.SortExpression = e.SortExpression
+            If State.SortExpression.StartsWith(e.SortExpression) Then
+                If State.SortExpression.EndsWith(" DESC") Then
+                    State.SortExpression = e.SortExpression
                 Else
-                    Me.State.SortExpression &= " DESC"
+                    State.SortExpression &= " DESC"
                 End If
             Else
-                Me.State.SortExpression = e.SortExpression
+                State.SortExpression = e.SortExpression
             End If
 
-            Me.moDataGrid.CurrentPageIndex = 0
+            moDataGrid.CurrentPageIndex = 0
 
-            Me.PopulateGrid()
+            PopulateGrid()
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 

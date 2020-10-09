@@ -6,48 +6,48 @@ Public Class CancellationReqException
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New TransactionLogHeaderDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
 
@@ -58,23 +58,23 @@ Public Class CancellationReqException
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New TransactionLogHeaderDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -82,13 +82,13 @@ Public Class CancellationReqException
         End Try
     End Sub
 
-    Public Function AddTransactionLogHeader(ByVal transactionLogHeaderId As Guid) As TransactionLogHeader
+    Public Function AddTransactionLogHeader(transactionLogHeaderId As Guid) As TransactionLogHeader
         Dim objTransLogHeader As TransactionLogHeader
 
         If Not transactionLogHeaderId.Equals(Guid.Empty) Then
-            objTransLogHeader = New TransactionLogHeader(transactionLogHeaderId, Me.Dataset)
+            objTransLogHeader = New TransactionLogHeader(transactionLogHeaderId, Dataset)
         Else
-            objTransLogHeader = New TransactionLogHeader(Me.Dataset)
+            objTransLogHeader = New TransactionLogHeader(Dataset)
         End If
 
         Return objTransLogHeader
@@ -113,7 +113,7 @@ Public Class CancellationReqException
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(TransactionLogHeaderDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -124,7 +124,7 @@ Public Class CancellationReqException
     End Property
 
     <ValueMandatory("")> _
-    Public Property CompanyGroupId() As Guid
+    Public Property CompanyGroupId As Guid
         Get
             CheckDeleted()
             If Row(TransactionLogHeaderDAL.COL_NAME_COMPANY_GROUP_ID) Is DBNull.Value Then
@@ -133,14 +133,14 @@ Public Class CancellationReqException
                 Return New Guid(CType(Row(TransactionLogHeaderDAL.COL_NAME_COMPANY_GROUP_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(TransactionLogHeaderDAL.COL_NAME_COMPANY_GROUP_ID, Value)
+            SetValue(TransactionLogHeaderDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property FunctionTypeID() As Guid
+    Public Property FunctionTypeID As Guid
         Get
             CheckDeleted()
             If Row(TransactionLogHeaderDAL.COL_NAME_FUNCTION_TYPE_ID) Is DBNull.Value Then
@@ -149,15 +149,15 @@ Public Class CancellationReqException
                 Return New Guid(CType(Row(TransactionLogHeaderDAL.COL_NAME_FUNCTION_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(TransactionLogHeaderDAL.COL_NAME_FUNCTION_TYPE_ID, Value)
+            SetValue(TransactionLogHeaderDAL.COL_NAME_FUNCTION_TYPE_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property TransactionXml() As Object
+    Public Property TransactionXml As Object
         Get
             CheckDeleted()
             If row(TransactionLogHeaderDAL.COL_NAME_TRANSACTION_XML) Is DBNull.Value Then
@@ -166,13 +166,13 @@ Public Class CancellationReqException
                 Return CType(Row(TransactionLogHeaderDAL.COL_NAME_TRANSACTION_XML), Object)
             End If
         End Get
-        Set(ByVal Value As Object)
+        Set
             CheckDeleted()
-            Me.SetValue(TransactionLogHeaderDAL.COL_NAME_TRANSACTION_XML, Value)
+            SetValue(TransactionLogHeaderDAL.COL_NAME_TRANSACTION_XML, Value)
         End Set
     End Property
 
-    Public Property TransactionProcessedDate() As DateType
+    Public Property TransactionProcessedDate As DateType
         Get
             CheckDeleted()
             If row(TransactionLogHeaderDAL.COL_NAME_TRANSACTION_PROCESSED_DATE) Is DBNull.Value Then
@@ -181,14 +181,14 @@ Public Class CancellationReqException
                 Return New DateType(CType(row(TransactionLogHeaderDAL.COL_NAME_TRANSACTION_PROCESSED_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(TransactionLogHeaderDAL.COL_NAME_TRANSACTION_PROCESSED_DATE, Value)
+            SetValue(TransactionLogHeaderDAL.COL_NAME_TRANSACTION_PROCESSED_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property TransactionStatusID() As Guid
+    Public Property TransactionStatusID As Guid
         Get
             CheckDeleted()
             If Row(TransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_ID) Is DBNull.Value Then
@@ -197,15 +197,15 @@ Public Class CancellationReqException
                 Return New Guid(CType(Row(TransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(TransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_ID, Value)
+            SetValue(TransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_ID, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=100)> _
-    Public Property GVSoriginalTransNo() As String
+    Public Property GVSoriginalTransNo As String
         Get
             CheckDeleted()
             If Row(TransactionLogHeaderDAL.COL_NAME_GVS_ORIGINAL_TRANS_NO) Is DBNull.Value Then
@@ -214,13 +214,13 @@ Public Class CancellationReqException
                 Return CType(Row(TransactionLogHeaderDAL.COL_NAME_GVS_ORIGINAL_TRANS_NO), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransactionLogHeaderDAL.COL_NAME_GVS_ORIGINAL_TRANS_NO, Value)
+            SetValue(TransactionLogHeaderDAL.COL_NAME_GVS_ORIGINAL_TRANS_NO, Value)
         End Set
     End Property
 
-    Public Property OriginalTransLogHdrID() As Guid
+    Public Property OriginalTransLogHdrID As Guid
         Get
             CheckDeleted()
             If Row(TransactionLogHeaderDAL.COL_NAME_ORIGINAL_TRANS_LOG_HDR_ID) Is DBNull.Value Then
@@ -229,20 +229,20 @@ Public Class CancellationReqException
                 Return New Guid(CType(Row(TransactionLogHeaderDAL.COL_NAME_ORIGINAL_TRANS_LOG_HDR_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(TransactionLogHeaderDAL.COL_NAME_ORIGINAL_TRANS_LOG_HDR_ID, Value)
+            SetValue(TransactionLogHeaderDAL.COL_NAME_ORIGINAL_TRANS_LOG_HDR_ID, Value)
         End Set
     End Property
 
 
-    Public ReadOnly Property MyDataSet() As DataSet
+    Public ReadOnly Property MyDataSet As DataSet
         Get
-            Return Me.Dataset
+            Return Dataset
         End Get
     End Property
 
-    Public Property KeyID() As Guid
+    Public Property KeyID As Guid
         Get
             CheckDeleted()
             If Row(TransactionLogHeaderDAL.COL_NAME_KEY_ID) Is DBNull.Value Then
@@ -251,14 +251,14 @@ Public Class CancellationReqException
                 Return New Guid(CType(Row(TransactionLogHeaderDAL.COL_NAME_KEY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(TransactionLogHeaderDAL.COL_NAME_KEY_ID, Value)
+            SetValue(TransactionLogHeaderDAL.COL_NAME_KEY_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1)> _
-    Public Property Hide() As String
+    Public Property Hide As String
         Get
             CheckDeleted()
             If Row(TransactionLogHeaderDAL.COL_NAME_HIDE) Is DBNull.Value Then
@@ -267,14 +267,14 @@ Public Class CancellationReqException
                 Return CType(Row(TransactionLogHeaderDAL.COL_NAME_HIDE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransactionLogHeaderDAL.COL_NAME_HIDE, Value)
+            SetValue(TransactionLogHeaderDAL.COL_NAME_HIDE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=1)> _
-    Public Property Resend() As String
+    Public Property Resend As String
         Get
             CheckDeleted()
             If Row(TransactionLogHeaderDAL.COL_NAME_RESEND) Is DBNull.Value Then
@@ -283,9 +283,9 @@ Public Class CancellationReqException
                 Return CType(Row(TransactionLogHeaderDAL.COL_NAME_RESEND), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(TransactionLogHeaderDAL.COL_NAME_RESEND, Value)
+            SetValue(TransactionLogHeaderDAL.COL_NAME_RESEND, Value)
         End Set
     End Property
 
@@ -295,16 +295,16 @@ Public Class CancellationReqException
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsFamilyDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsFamilyDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New TransactionLogHeaderDAL
-                MyBase.UpdateFamily(Me.Dataset)
-                dal.InsertCustom(Me.Dataset)
+                UpdateFamily(Dataset)
+                dal.InsertCustom(Dataset)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -315,15 +315,15 @@ Public Class CancellationReqException
     Public Sub UpdateTransaction()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New TransactionLogHeaderDAL
-                dal.UpdateCustom(Me.Row)
+                dal.UpdateCustom(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -595,20 +595,20 @@ Public Class CancellationReqException
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
         Public Function AddNewRowToEmptyDV() As ExceptionSearchDV
-            Dim dt As DataTable = Me.Table.Clone()
+            Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(ExceptionSearchDV.COL_TRANS_TMX_DEACTIVATE_ID) = (New Guid()).ToByteArray
-            row(ExceptionSearchDV.COL_CERT_NUMBER) = 0
-            row(ExceptionSearchDV.COL_MOBILE_NUMBER) = ""
-            row(ExceptionSearchDV.COL_TRANS_TYPE) = ""
-            row(ExceptionSearchDV.COL_TRANS_SCHEDULED_DATE) = DateTime.MinValue
-            row(ExceptionSearchDV.COL_ATTEMPT) = 0
-            row(ExceptionSearchDV.COL_ERROR_MSG) = ""
+            row(COL_TRANS_TMX_DEACTIVATE_ID) = (New Guid()).ToByteArray
+            row(COL_CERT_NUMBER) = 0
+            row(COL_MOBILE_NUMBER) = ""
+            row(COL_TRANS_TYPE) = ""
+            row(COL_TRANS_SCHEDULED_DATE) = DateTime.MinValue
+            row(COL_ATTEMPT) = 0
+            row(COL_ERROR_MSG) = ""
             dt.Rows.Add(Row)
             Return New ExceptionSearchDV(dt)
         End Function
@@ -627,7 +627,7 @@ Public Class CancellationReqException
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -639,21 +639,21 @@ Public Class CancellationReqException
                 Dim guidTemp As New Guid
                 blnEmptyTbl = True
                 dt = New DataTable
-                dt.Columns.Add(TransactionStatusDV.COL_TRANS_TMX_DEACTIVATE_ID, Guid.Empty.ToByteArray.GetType)
-                dt.Columns.Add(TransactionStatusDV.COL_ITEM_NUMBER, GetType(String))
-                dt.Columns.Add(TransactionStatusDV.COL_EXTENDED_STATUS_CODE, GetType(String))
-                dt.Columns.Add(TransactionStatusDV.COL_EXTENDED_STATUS_DATE, GetType(Date))
-                dt.Columns.Add(TransactionStatusDV.COL_EXTENDED_STATUS_COMMENT, GetType(String))
+                dt.Columns.Add(COL_TRANS_TMX_DEACTIVATE_ID, Guid.Empty.ToByteArray.GetType)
+                dt.Columns.Add(COL_ITEM_NUMBER, GetType(String))
+                dt.Columns.Add(COL_EXTENDED_STATUS_CODE, GetType(String))
+                dt.Columns.Add(COL_EXTENDED_STATUS_DATE, GetType(Date))
+                dt.Columns.Add(COL_EXTENDED_STATUS_COMMENT, GetType(String))
             Else
                 dt = dv.Table
             End If
 
             row = dt.NewRow
-            row(TransactionStatusDV.COL_TRANS_TMX_DEACTIVATE_ID) = (New Guid()).ToByteArray
-            row(TransactionStatusDV.COL_ITEM_NUMBER) = ""
-            row(TransactionStatusDV.COL_EXTENDED_STATUS_CODE) = ""
+            row(COL_TRANS_TMX_DEACTIVATE_ID) = (New Guid()).ToByteArray
+            row(COL_ITEM_NUMBER) = ""
+            row(COL_EXTENDED_STATUS_CODE) = ""
             'row(TransactionStatusDV.COL_EXTENDED_STATUS_DATE) = ""
-            row(TransactionStatusDV.COL_EXTENDED_STATUS_COMMENT) = ""
+            row(COL_EXTENDED_STATUS_COMMENT) = ""
             dt.Rows.Add(row)
 
             If blnEmptyTbl Then dv = New TransactionStatusDV(dt)
@@ -675,7 +675,7 @@ Public Class CancellationReqException
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -700,23 +700,23 @@ Public Class CancellationReqException
                 Dim guidTemp As New Guid
                 blnEmptyTbl = True
                 dt = New DataTable
-                dt.Columns.Add(TransactionPartDV.COL_TRANS_TMX_DEACTIVATE_ID, Guid.Empty.ToByteArray.GetType)
-                dt.Columns.Add(TransactionPartDV.COL_ITEM_NUMBER, GetType(String))
-                dt.Columns.Add(TransactionPartDV.COL_PART_CODE, GetType(String))
-                dt.Columns.Add(TransactionPartDV.COL_PART_COST, GetType(Decimal))
-                dt.Columns.Add(TransactionPartDV.COL_PART_DEFECT, GetType(String))
-                dt.Columns.Add(TransactionPartDV.COL_IN_STOCK, GetType(String))
+                dt.Columns.Add(COL_TRANS_TMX_DEACTIVATE_ID, Guid.Empty.ToByteArray.GetType)
+                dt.Columns.Add(COL_ITEM_NUMBER, GetType(String))
+                dt.Columns.Add(COL_PART_CODE, GetType(String))
+                dt.Columns.Add(COL_PART_COST, GetType(Decimal))
+                dt.Columns.Add(COL_PART_DEFECT, GetType(String))
+                dt.Columns.Add(COL_IN_STOCK, GetType(String))
             Else
                 dt = dv.Table
             End If
 
             row = dt.NewRow
-            row(TransactionPartDV.COL_TRANS_TMX_DEACTIVATE_ID) = (New Guid()).ToByteArray
-            row(TransactionPartDV.COL_ITEM_NUMBER) = ""
-            row(TransactionPartDV.COL_PART_CODE) = ""
-            row(TransactionPartDV.COL_PART_COST) = ""
-            row(TransactionPartDV.COL_PART_DEFECT) = ""
-            row(TransactionPartDV.COL_IN_STOCK) = ""
+            row(COL_TRANS_TMX_DEACTIVATE_ID) = (New Guid()).ToByteArray
+            row(COL_ITEM_NUMBER) = ""
+            row(COL_PART_CODE) = ""
+            row(COL_PART_COST) = ""
+            row(COL_PART_DEFECT) = ""
+            row(COL_IN_STOCK) = ""
             dt.Rows.Add(row)
 
             If blnEmptyTbl Then dv = New TransactionPartDV(dt)
@@ -749,7 +749,7 @@ Public Class CancellationReqException
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
     End Class
@@ -768,7 +768,7 @@ Public Class CancellationReqException
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -780,23 +780,23 @@ Public Class CancellationReqException
                 Dim guidTemp As New Guid
                 blnEmptyTbl = True
                 dt = New DataTable
-                dt.Columns.Add(TransactionFollowUpDV.COL_TRANS_TMX_DEACTIVATE_ID, Guid.Empty.ToByteArray.GetType)
-                dt.Columns.Add(TransactionFollowUpDV.COL_ITEM_NUMBER, GetType(String))
-                dt.Columns.Add(TransactionFollowUpDV.COL_COMMENT_CREATED_DATE, GetType(Date))
-                dt.Columns.Add(TransactionFollowUpDV.COL_COMMENT_TYPE_CODE, GetType(String))
-                dt.Columns.Add(TransactionFollowUpDV.COL_COMMENTS, GetType(String))
-                dt.Columns.Add(TransactionFollowUpDV.COL_CALLER_NAME, GetType(String))
+                dt.Columns.Add(COL_TRANS_TMX_DEACTIVATE_ID, Guid.Empty.ToByteArray.GetType)
+                dt.Columns.Add(COL_ITEM_NUMBER, GetType(String))
+                dt.Columns.Add(COL_COMMENT_CREATED_DATE, GetType(Date))
+                dt.Columns.Add(COL_COMMENT_TYPE_CODE, GetType(String))
+                dt.Columns.Add(COL_COMMENTS, GetType(String))
+                dt.Columns.Add(COL_CALLER_NAME, GetType(String))
             Else
                 dt = dv.Table
             End If
 
             row = dt.NewRow
-            row(TransactionFollowUpDV.COL_TRANS_TMX_DEACTIVATE_ID) = (New Guid()).ToByteArray
-            row(TransactionFollowUpDV.COL_ITEM_NUMBER) = ""
+            row(COL_TRANS_TMX_DEACTIVATE_ID) = (New Guid()).ToByteArray
+            row(COL_ITEM_NUMBER) = ""
             'row(TransactionFollowUpDV.COL_COMMENT_CREATED_DATE) = ""
-            row(TransactionFollowUpDV.COL_COMMENT_TYPE_CODE) = ""
-            row(TransactionFollowUpDV.COL_COMMENTS) = ""
-            row(TransactionFollowUpDV.COL_CALLER_NAME) = ""
+            row(COL_COMMENT_TYPE_CODE) = ""
+            row(COL_COMMENTS) = ""
+            row(COL_CALLER_NAME) = ""
             dt.Rows.Add(row)
 
             If blnEmptyTbl Then dv = New TransactionFollowUpDV(dt)
@@ -804,10 +804,10 @@ Public Class CancellationReqException
 
     End Class
 
-    Public Shared Function IsTransactionExist(ByVal gvsOriginalTransID As String) As Boolean
+    Public Shared Function IsTransactionExist(gvsOriginalTransID As String) As Boolean
         Dim objTransactionLogHeaderDAL As New TransactionLogHeaderDAL
         Dim ds As DataSet = objTransactionLogHeaderDAL.IsTransactionExist(gvsOriginalTransID)
-        If Not ds Is Nothing AndAlso ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0 Then
+        If ds IsNot Nothing AndAlso ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0 Then
             If CType(ds.Tables(0).Rows(0)(0), Integer) > 0 Then
                 Return True
             Else
@@ -858,8 +858,8 @@ Public Class CancellationReqException
 
         'Check Returned records for valid dates
         For Each dItem As DataRowView In dv
-            If Not dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_SYSTEM) Is Nothing AndAlso dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_SYSTEM).ToString = TransactionLogHeader.SYSTEM_TYPE_ELITA Then
-                If Not dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_DATE) Is Nothing AndAlso IsDate(dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_DATE)) Then
+            If dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_SYSTEM) IsNot Nothing AndAlso dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_SYSTEM).ToString = TransactionLogHeader.SYSTEM_TYPE_ELITA Then
+                If dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_DATE) IsNot Nothing AndAlso IsDate(dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_DATE)) Then
                     transDateElita = CType(dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_DATE), DateTime)
                     If transDateElita > DateAdd(DateInterval.Hour, NotifyInterval * -1, Now) Then
                         bValidElita = True
@@ -867,20 +867,20 @@ Public Class CancellationReqException
                     ElseIf transDateElita = DateTime.MinValue Then
                         transDateElitaStr = TranslationBase.TranslateLabelOrMessage("GREATERTHAN5", ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                     Else
-                        transDateElitaStr = transDateElita.ToString("dd-MMM-yyyy", System.Globalization.CultureInfo.CurrentCulture)
+                        transDateElitaStr = transDateElita.ToString("dd-MMM-yyyy", Globalization.CultureInfo.CurrentCulture)
                     End If
                 Else
                     transDateElitaStr = TranslationBase.TranslateLabelOrMessage("GREATERTHAN5", ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                 End If
-            ElseIf Not dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_SYSTEM) Is Nothing AndAlso dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_SYSTEM).ToString = TransactionLogHeader.SYSTEM_TYPE_GVS Then
-                If Not dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_DATE) Is Nothing AndAlso IsDate(dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_DATE)) Then
+            ElseIf dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_SYSTEM) IsNot Nothing AndAlso dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_SYSTEM).ToString = TransactionLogHeader.SYSTEM_TYPE_GVS Then
+                If dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_DATE) IsNot Nothing AndAlso IsDate(dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_DATE)) Then
                     transDateGVS = CType(dItem(objTransactionLogHeaderDAL.COL_NAME_TRANSACTION_STATUS_DATE), DateTime)
                     If transDateGVS > DateAdd(DateInterval.Hour, NotifyInterval * -1, Now) Then
                         bValidGVS = True
                     ElseIf transDateGVS = DateTime.MinValue Then
                         transDateGVSStr = TranslationBase.TranslateLabelOrMessage("GREATERTHAN5", ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                     Else
-                        transDateGVSStr = transDateGVS.ToString("dd-MMM-yyyy", System.Globalization.CultureInfo.CurrentCulture)
+                        transDateGVSStr = transDateGVS.ToString("dd-MMM-yyyy", Globalization.CultureInfo.CurrentCulture)
                     End If
                 Else
                     transDateGVSStr = TranslationBase.TranslateLabelOrMessage("GREATERTHAN5", ElitaPlusIdentity.Current.ActiveUser.LanguageId)
@@ -899,8 +899,8 @@ Public Class CancellationReqException
                     msg = New System.Net.Mail.MailMessage
                     msg.To.Add(String.Format("{0}", If(EnvironmentContext.Current.Environment = Environments.Production, ElitaPlusIdentity.Current.ActiveUser.Company.Email, TEST_EMAIL).ToString))
                     msg.From = New System.Net.Mail.MailAddress(ElitaPlusIdentity.Current.ActiveUser.Company.Email)
-                    msg.Subject = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_TRANSACTION_LOG_GVS_OVERDUE_SUBJ)
-                    msg.Body = String.Format(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_TRANSACTION_LOG_GVS_OVERDUE_BODY), Now.ToString("dd-MMM-yyyy", System.Globalization.CultureInfo.CurrentCulture), transDateGVSStr)
+                    msg.Subject = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.MSG_TRANSACTION_LOG_GVS_OVERDUE_SUBJ)
+                    msg.Body = String.Format(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.MSG_TRANSACTION_LOG_GVS_OVERDUE_BODY), Now.ToString("dd-MMM-yyyy", Globalization.CultureInfo.CurrentCulture), transDateGVSStr)
                     mail.Send(msg)
                 End If
 
@@ -909,8 +909,8 @@ Public Class CancellationReqException
                     msg = New System.Net.Mail.MailMessage
                     msg.To.Add(String.Format("{0}", If(EnvironmentContext.Current.Environment = Environments.Production, ElitaPlusIdentity.Current.ActiveUser.Company.Email, TEST_EMAIL).ToString))
                     msg.From = New System.Net.Mail.MailAddress(ElitaPlusIdentity.Current.ActiveUser.Company.Email)
-                    msg.Subject = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_TRANSACTION_LOG_ELITA_OVERDUE_SUBJ)
-                    msg.Body = String.Format(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_TRANSACTION_LOG_ELITA_OVERDUE_BODY), Now.ToString("dd-MMM-yyyy", System.Globalization.CultureInfo.CurrentCulture), transDateElitaStr)
+                    msg.Subject = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.MSG_TRANSACTION_LOG_ELITA_OVERDUE_SUBJ)
+                    msg.Body = String.Format(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.MSG_TRANSACTION_LOG_ELITA_OVERDUE_BODY), Now.ToString("dd-MMM-yyyy", Globalization.CultureInfo.CurrentCulture), transDateElitaStr)
                     mail.Send(msg)
                 End If
 
@@ -923,7 +923,7 @@ Public Class CancellationReqException
 
     End Function
 
-    Public Shared Function GetExceptionList(ByVal TransactionType As String, ByVal MobileNumber As String, ByVal langId As Guid, ByVal transDateFrom As Date, ByVal transDateTo As Date, ByVal errorCode As String) As ExceptionSearchDV
+    Public Shared Function GetExceptionList(TransactionType As String, MobileNumber As String, langId As Guid, transDateFrom As Date, transDateTo As Date, errorCode As String) As ExceptionSearchDV
         Try
             Dim dal As New CancellationReqExceptionDAL
             Return New ExceptionSearchDV(dal.GetExceptionList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, TransactionType, MobileNumber, langId, transDateFrom, transDateTo, errorCode).Tables(0))
@@ -932,7 +932,7 @@ Public Class CancellationReqException
         End Try
     End Function
 
-    Public Shared Function GetStatusList(ByVal transactionLogHeaderId As String) As TransactionStatusDV
+    Public Shared Function GetStatusList(transactionLogHeaderId As String) As TransactionStatusDV
         Try
             Dim dal As New TransactionLogHeaderDAL
             Return New TransactionStatusDV(dal.GetStatusList(transactionLogHeaderId, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
@@ -941,7 +941,7 @@ Public Class CancellationReqException
         End Try
     End Function
 
-    Public Shared Function GetPartList(ByVal transactionLogHeaderId As String) As TransactionPartDV
+    Public Shared Function GetPartList(transactionLogHeaderId As String) As TransactionPartDV
         Try
             Dim dal As New TransactionLogHeaderDAL
             Return New TransactionPartDV(dal.GetPartList(transactionLogHeaderId).Tables(0))
@@ -950,7 +950,7 @@ Public Class CancellationReqException
         End Try
     End Function
 
-    Public Shared Function GetFollowUpList(ByVal transactionLogHeaderId As String) As TransactionFollowUpDV
+    Public Shared Function GetFollowUpList(transactionLogHeaderId As String) As TransactionFollowUpDV
         Try
             Dim dal As New TransactionLogHeaderDAL
             Return New TransactionFollowUpDV(dal.GetFollowUpList(transactionLogHeaderId, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
@@ -959,7 +959,7 @@ Public Class CancellationReqException
         End Try
     End Function
 
-    Public Shared Function GetTransactionData(ByVal transactionLogHeaderId As String) As TransactionDataDV
+    Public Shared Function GetTransactionData(transactionLogHeaderId As String) As TransactionDataDV
         Try
             Dim dal As New TransactionLogHeaderDAL
             Return New TransactionDataDV(dal.GetTransactionData(transactionLogHeaderId, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
@@ -968,7 +968,7 @@ Public Class CancellationReqException
         End Try
     End Function
 
-    Public Shared Function ResendOrHideTransaction(ByVal cmd As String, ByVal transLogHeaderId As Guid, Optional ByVal newComunaValue As String = Nothing) As DBHelper.DBHelperParameter()
+    Public Shared Function ResendOrHideTransaction(cmd As String, transLogHeaderId As Guid, Optional ByVal newComunaValue As String = Nothing) As DBHelper.DBHelperParameter()
         Try
             Dim dal As New TransactionLogHeaderDAL
             Return dal.ResendOrHideTransaction(cmd, transLogHeaderId, newComunaValue)
@@ -977,7 +977,7 @@ Public Class CancellationReqException
         End Try
     End Function
 
-    Public Shared Function ProcessRecords(ByVal cmd As String, ByVal transLogHeaderIds As String) As DBHelper.DBHelperParameter()
+    Public Shared Function ProcessRecords(cmd As String, transLogHeaderIds As String) As DBHelper.DBHelperParameter()
         Try
             Dim dal As New CancellationReqExceptionDAL
             Return dal.ProcessRecords(cmd, transLogHeaderIds)
@@ -986,7 +986,7 @@ Public Class CancellationReqException
         End Try
     End Function
 
-    Public Shared Function HideRecords(ByVal cmd As String, ByVal transLogHeaderIds As String) As DBHelper.DBHelperParameter()
+    Public Shared Function HideRecords(cmd As String, transLogHeaderIds As String) As DBHelper.DBHelperParameter()
         Try
             Dim dal As New CancellationReqExceptionDAL
             Return dal.ProcessRecords(cmd, transLogHeaderIds)
@@ -995,7 +995,7 @@ Public Class CancellationReqException
         End Try
     End Function
 
-    Public Shared Function GetRejectionMessage(ByVal compGroupId As Guid, ByVal transLogHeaderId As Guid) As String
+    Public Shared Function GetRejectionMessage(compGroupId As Guid, transLogHeaderId As Guid) As String
         Try
             Dim dal As New TransactionLogHeaderDAL
             Return dal.GetRejectionMessage(compGroupId, transLogHeaderId)

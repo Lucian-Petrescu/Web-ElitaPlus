@@ -5,12 +5,12 @@
         Get
             Return _action
         End Get
-        Set(ByVal value As IPriceListSearch)
+        Set
             _action = value
         End Set
     End Property
 
-    Public Function GetPriceList(ByVal oPriceListSearch As PriceListSearchDC) As DataSet
+    Public Function GetPriceList(oPriceListSearch As PriceListSearchDC) As DataSet
         Return action.GetPriceList(oPriceListSearch)
     End Function
 

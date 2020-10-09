@@ -1,4 +1,4 @@
-<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="CountryForm.aspx.vb" Theme="Default"
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="CountryForm.aspx.vb" Theme="Default"
 	Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.CountryForm" EnableSessionState="True"
 	MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
 
@@ -269,7 +269,7 @@
             <div id="tabs" class="style-tabs">
 
                 <ul>
-                    <li><a href="#tabsLineOfBusiness">
+                    <li><a href="#tabsLineOfBusiness" rel="noopener noreferrer">
                         <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">LINE_OF_BUSINESS</asp:Label></a></li>
                 </ul>
                 <div id="tabsLineOfBusiness">
@@ -380,7 +380,7 @@
 			<div id="Div2" class="overlay_message_content" style="width: 630px;">
 				<p class="modalTitle">
                     <label id="Label1"></label>
-					<a href="javascript:void(0)" onclick="hideModal('ModalIssue');">
+					<a href="javascript:void(0)" onclick="hideModal('ModalIssue');" rel="noopener noreferrer">
 						<img id="img2" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
 							width="16" height="18" align="middle" class="floatR" /></a></p>
 				<table cellspacing="0" cellpadding="0" width="100%" bgcolor="#f4f3f8" border="0">

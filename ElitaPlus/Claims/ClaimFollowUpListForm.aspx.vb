@@ -1,3 +1,4 @@
+Imports System.Diagnostics
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
 Imports Assurant.ElitaPlus.BusinessObjectsNew.Doc
 Imports Microsoft.VisualBasic
@@ -15,7 +16,7 @@ Namespace Claims
 #Region " Web Form Designer Generated Code "
 
         'This call is required by the Web Form Designer.
-        <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+        <DebuggerStepThrough()> Private Sub InitializeComponent()
 
         End Sub
 
@@ -23,20 +24,20 @@ Namespace Claims
 
         'NOTE: The following placeholder declaration is required by the Web Form Designer.
         'Do not delete or move it.
-        Private designerPlaceholderDeclaration As System.Object
+        Private designerPlaceholderDeclaration As Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
         End Sub
 
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                If (Not Me.State Is Nothing) Then
-                    Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
+            If (State IsNot Nothing) Then
+                If (State IsNot Nothing) Then
+                    MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
                         TranslationBase.TranslateLabelOrMessage("CLAIM FOLLOW UP SEARCH")
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("CLAIM FOLLOW UP SEARCH")
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("CLAIM FOLLOW UP SEARCH")
                 End If
             End If
         End Sub
@@ -156,72 +157,72 @@ Namespace Claims
             End Get
         End Property
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
-            Me.MenuEnabled = True
-            Me.IsReturningFromChild = True
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
+            MenuEnabled = True
+            IsReturningFromChild = True
             Dim retObj As ClaimForm.ReturnType = CType(ReturnPar, ClaimForm.ReturnType)
             Try
                 Select Case retObj.LastOperation
-                    Case ElitaPlusPage.DetailPageCommand.Back
-                        If Not retObj Is Nothing Then
+                    Case DetailPageCommand.Back
+                        If retObj IsNot Nothing Then
                             If Not retObj.EditingBo.IsNew Then
-                                Me.State.selectedClaimId = retObj.EditingBo.Id
+                                State.selectedClaimId = retObj.EditingBo.Id
                             End If
-                            Me.State.IsGridVisible = True
+                            State.IsGridVisible = True
                             If retObj.BoChanged Then
-                                Me.State.searchDV = Nothing
+                                State.searchDV = Nothing
                             End If
                         End If
-                    Case ElitaPlusPage.DetailPageCommand.Delete
-                        Me.AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
+                    Case DetailPageCommand.Delete
+                        AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
                 End Select
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorCtrl)
+                HandleErrors(ex, ErrorCtrl)
             End Try
         End Sub
 
 #End Region
 
 #Region "Page_Events"
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
-            Page.RegisterHiddenField("__EVENTTARGET", Me.btnSearch.ClientID)
-            Me.MasterPage.MessageController.Clear_Hide()
+            Page.RegisterHiddenField("__EVENTTARGET", btnSearch.ClientID)
+            MasterPage.MessageController.Clear_Hide()
 
             Try
-                If Not Me.IsPostBack Then
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Claim Follow Up")
+                If Not IsPostBack Then
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Claim Follow Up")
                     UpdateBreadCrum()
 
                     setDefaultSearchButton()
 
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
 
-                    Me.PopulateDealerDropdown(Me.moDealerDrop)
+                    PopulateDealerDropdown(moDealerDrop)
                     '  Me.PopulateServiceCenterDropdown(cboSearchServiceCenter)
-                    Me.PopulateSortByDropDown()
-                    Me.PopulateClaimStatusDropDown()
+                    PopulateSortByDropDown()
+                    PopulateClaimStatusDropDown()
                     PopulateDropDowns()
 
-                    Me.GetStateProperties()
-                    If Me.State.IsGridVisible Then
-                        If Not (Me.State.PageSize = 10) Then
-                            cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
-                            Grid.PageSize = Me.State.PageSize
+                    GetStateProperties()
+                    If State.IsGridVisible Then
+                        If Not (State.PageSize = 10) Then
+                            cboPageSize.SelectedValue = CType(State.PageSize, String)
+                            Grid.PageSize = State.PageSize
                         End If
-                        Me.PopulateGrid()
+                        PopulateGrid()
                     End If
-                    Me.SetGridItemStyleColor(Me.Grid)
-                    Me.AddCalendar(Me.BtnFollowUpDate, Me.TextBoxFollowUpDate)
-                    SetFocus(Me.TextBoxSearchClaimNumber)
+                    SetGridItemStyleColor(Grid)
+                    AddCalendar(BtnFollowUpDate, TextBoxFollowUpDate)
+                    SetFocus(TextBoxSearchClaimNumber)
                 Else
-                    Me.ClearLabelErrSign(LabelFollowUpDate)
+                    ClearLabelErrSign(LabelFollowUpDate)
                 End If
-                Me.DisplayNewProgressBarOnClick(Me.btnSearch, "Loading_Claims")
+                DisplayNewProgressBarOnClick(btnSearch, "Loading_Claims")
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
         Sub PopulateDropDowns()
@@ -235,8 +236,8 @@ Namespace Claims
                     .AddBlankItem = True
                     })
 
-                If Not (Me.State.selectedClaimExtendedStatusOwnerId.Equals(Guid.Empty)) Then
-                    Me.SetSelectedItem(Me.moOwnerDD, Me.State.selectedClaimExtendedStatusOwnerId)
+                If Not (State.selectedClaimExtendedStatusOwnerId.Equals(Guid.Empty)) Then
+                    SetSelectedItem(moOwnerDD, State.selectedClaimExtendedStatusOwnerId)
                 End If
                 Dim listcontext As ListContext = New ListContext()
                 listcontext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
@@ -251,14 +252,14 @@ Namespace Claims
                     .AddBlankItem = True
                     })
 
-                    If Not (Me.State.selectedClaimExtendedStatusId.Equals(Guid.Empty)) Then
-                        Me.SetSelectedItem(Me.moClaimExtendedStatusDD, Me.State.selectedClaimExtendedStatusId)
+                    If Not (State.selectedClaimExtendedStatusId.Equals(Guid.Empty)) Then
+                        SetSelectedItem(moClaimExtendedStatusDD, State.selectedClaimExtendedStatusId)
                     End If
                 Else
-                    ControlMgr.SetVisibleControl(Me, Me.moClaimExtendedStatusDD, False)
-                    ControlMgr.SetVisibleControl(Me, Me.LabelSearchClaimExtendedStatus, False)
-                    ControlMgr.SetVisibleControl(Me, Me.moOwnerDD, False)
-                    ControlMgr.SetVisibleControl(Me, Me.lblOwner, False)
+                    ControlMgr.SetVisibleControl(Me, moClaimExtendedStatusDD, False)
+                    ControlMgr.SetVisibleControl(Me, LabelSearchClaimExtendedStatus, False)
+                    ControlMgr.SetVisibleControl(Me, moOwnerDD, False)
+                    ControlMgr.SetVisibleControl(Me, lblOwner, False)
                 End If
 
                 'Me.moClaimExtendedStatusDD.Attributes.Add("onchange", "ToggleSelection1('" & moClaimExtendedStatusDD.ClientID & "','" & moOwnerDD.ClientID & "')")
@@ -276,12 +277,12 @@ Namespace Claims
                     {
                     .AddBlankItem = True
                     })
-                    If Not (Me.State.selectedClaimTATId.Equals(Guid.Empty)) Then
-                        Me.SetSelectedItem(Me.moClaimTATRangeDD, Me.State.selectedClaimTATId)
+                    If Not (State.selectedClaimTATId.Equals(Guid.Empty)) Then
+                        SetSelectedItem(moClaimTATRangeDD, State.selectedClaimTATId)
                     End If
                 Else
-                    ControlMgr.SetVisibleControl(Me, Me.moClaimTATRangeDD, False)
-                    ControlMgr.SetVisibleControl(Me, Me.LabelSearchClaimTATRange, False)
+                    ControlMgr.SetVisibleControl(Me, moClaimTATRangeDD, False)
+                    ControlMgr.SetVisibleControl(Me, LabelSearchClaimTATRange, False)
                 End If
 
                 'No Activity Time Range list
@@ -290,16 +291,16 @@ Namespace Claims
 
                 If Not activityTimeRangeLkl.Count = 0 Then
 
-                    Me.moLastActivityDD.Populate(activityTimeRangeLkl, New PopulateOptions() With
+                    moLastActivityDD.Populate(activityTimeRangeLkl, New PopulateOptions() With
                     {
                     .AddBlankItem = True
                     })
-                    If Not (Me.State.selectedNoActivityTATId.Equals(Guid.Empty)) Then
-                        Me.SetSelectedItem(Me.moLastActivityDD, Me.State.selectedNoActivityTATId)
+                    If Not (State.selectedNoActivityTATId.Equals(Guid.Empty)) Then
+                        SetSelectedItem(moLastActivityDD, State.selectedNoActivityTATId)
                     End If
                 Else
-                    ControlMgr.SetVisibleControl(Me, Me.moLastActivityDD, False)
-                    ControlMgr.SetVisibleControl(Me, Me.LabelSearchLastActivity, False)
+                    ControlMgr.SetVisibleControl(Me, moLastActivityDD, False)
+                    ControlMgr.SetVisibleControl(Me, LabelSearchLastActivity, False)
                 End If
 
                 Dim oNonOperatedClaims As ListItem() = CommonConfigManager.Current.ListManager.GetList("YESNO", Thread.CurrentPrincipal.GetLanguageCode())
@@ -308,123 +309,123 @@ Namespace Claims
                                                         .AddBlankItem = True
                                                        })
 
-                If Not (Me.State.selectedNonOperatedClaimsId.Equals(Guid.Empty)) Then
-                    Me.SetSelectedItem(Me.cboNonOperatedClaims, Me.State.selectedNonOperatedClaimsId)
+                If Not (State.selectedNonOperatedClaimsId.Equals(Guid.Empty)) Then
+                    SetSelectedItem(cboNonOperatedClaims, State.selectedNonOperatedClaimsId)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub SetStateProperties()
             Try
-                If String.IsNullOrEmpty(Me.TextBoxFollowUpDate.Text) Then
-                    Me.State.followUpDate = Nothing
+                If String.IsNullOrEmpty(TextBoxFollowUpDate.Text) Then
+                    State.followUpDate = Nothing
                 Else
-                    Me.State.followUpDate = DateHelper.GetDateValue(Me.TextBoxFollowUpDate.Text)
+                    State.followUpDate = DateHelper.GetDateValue(TextBoxFollowUpDate.Text)
                 End If
 
             Catch ex As Exception
-                Me.SetLabelError(LabelFollowUpDate)
+                SetLabelError(LabelFollowUpDate)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Message.MSG_INVALID_DATE)
             End Try
             'Me.State.servCenterZip = Me.TextBoxSearchServiceCenterZIP.Text.ToUpper
-            Me.State.claimNumber = Me.TextBoxSearchClaimNumber.Text.ToUpper
-            Me.State.claimAdjuster = Me.TextBoxSearchClaimAdjuster.Text.ToUpper
-            Me.State.customerName = Me.TextBoxSearchCustomerName.Text.ToUpper
-            Me.State.dealerId = Me.GetSelectedItem(moDealerDrop)
-            Me.State.dealerName = Me.GetSelectedDescription(moDealerDrop)
-            Me.State.dealer = LookupListNew.GetCodeFromId(LookupListNew.LK_DEALERS, Me.State.dealerId)
+            State.claimNumber = TextBoxSearchClaimNumber.Text.ToUpper
+            State.claimAdjuster = TextBoxSearchClaimAdjuster.Text.ToUpper
+            State.customerName = TextBoxSearchCustomerName.Text.ToUpper
+            State.dealerId = GetSelectedItem(moDealerDrop)
+            State.dealerName = GetSelectedDescription(moDealerDrop)
+            State.dealer = LookupListNew.GetCodeFromId(LookupListNew.LK_DEALERS, State.dealerId)
             '  Me.State.serviceCenterId = Me.GetSelectedItem(cboSearchServiceCenter)
             '  Me.State.serviceCenterName = Me.GetSelectedDescription(cboSearchServiceCenter)
-            Me.State.serviceCenterName = moServiceCenterText.Text.ToUpper
-            Me.State.selectedSortById = Me.GetSelectedItem(Me.cboSortBy)
+            State.serviceCenterName = moServiceCenterText.Text.ToUpper
+            State.selectedSortById = GetSelectedItem(cboSortBy)
 
-            Me.State.selectedClaimExtendedStatusId = Me.GetSelectedItem(Me.moClaimExtendedStatusDD)
-            Me.State.selectedClaimExtendedStatusOwnerId = Me.GetSelectedItem(Me.moOwnerDD)
-            Me.State.selectedClaimTATId = Me.GetSelectedItem(Me.moClaimTATRangeDD)
-            Me.State.selectedNoActivityTATId = Me.GetSelectedItem(Me.moLastActivityDD)
-            Me.State.selectedNonOperatedClaimsId = Me.GetSelectedItem(Me.cboNonOperatedClaims)
+            State.selectedClaimExtendedStatusId = GetSelectedItem(moClaimExtendedStatusDD)
+            State.selectedClaimExtendedStatusOwnerId = GetSelectedItem(moOwnerDD)
+            State.selectedClaimTATId = GetSelectedItem(moClaimTATRangeDD)
+            State.selectedNoActivityTATId = GetSelectedItem(moLastActivityDD)
+            State.selectedNonOperatedClaimsId = GetSelectedItem(cboNonOperatedClaims)
             If cboClaimStatus.SelectedItem.Text = CLAIM_STATUS_DESCRIPTION_ACTIVE Then
-                Me.State.claimStatus = Codes.CLAIM_STATUS__ACTIVE
+                State.claimStatus = Codes.CLAIM_STATUS__ACTIVE
             ElseIf cboClaimStatus.SelectedItem.Text = CLAIM_STATUS_DESCRIPTION_DENIED Then
-                Me.State.claimStatus = Codes.CLAIM_STATUS__DENIED
+                State.claimStatus = Codes.CLAIM_STATUS__DENIED
             End If
 
         End Sub
 
         Private Sub GetStateProperties()
             Try
-                If Me.State.followUpDate Is Nothing Then
-                    Me.TextBoxFollowUpDate.Text = String.Empty
+                If State.followUpDate Is Nothing Then
+                    TextBoxFollowUpDate.Text = String.Empty
                 Else
-                    Me.TextBoxFollowUpDate.Text = CType(Me.State.followUpDate.Value, String)
+                    TextBoxFollowUpDate.Text = CType(State.followUpDate.Value, String)
                 End If
 
                 'Me.TextBoxSearchServiceCenterZIP.Text = Me.State.servCenterZip
-                Me.TextBoxSearchClaimNumber.Text = Me.State.claimNumber
-                Me.TextBoxSearchClaimAdjuster.Text = Me.State.claimAdjuster
-                Me.TextBoxSearchCustomerName.Text = Me.State.customerName
-                Me.SetSelectedItem(Me.moDealerDrop, Me.State.dealerId)
+                TextBoxSearchClaimNumber.Text = State.claimNumber
+                TextBoxSearchClaimAdjuster.Text = State.claimAdjuster
+                TextBoxSearchCustomerName.Text = State.customerName
+                SetSelectedItem(moDealerDrop, State.dealerId)
 
-                If Not Me.State.selectedClaimExtendedStatusId.Equals(Guid.Empty) Then
-                    Me.SetSelectedItem(Me.moClaimExtendedStatusDD, Me.State.selectedClaimExtendedStatusId)
+                If Not State.selectedClaimExtendedStatusId.Equals(Guid.Empty) Then
+                    SetSelectedItem(moClaimExtendedStatusDD, State.selectedClaimExtendedStatusId)
                 End If
 
-                If Not Me.State.selectedClaimExtendedStatusOwnerId.Equals(Guid.Empty) Then
-                    Me.SetSelectedItem(Me.moOwnerDD, Me.State.selectedClaimExtendedStatusOwnerId)
+                If Not State.selectedClaimExtendedStatusOwnerId.Equals(Guid.Empty) Then
+                    SetSelectedItem(moOwnerDD, State.selectedClaimExtendedStatusOwnerId)
                 End If
 
-                If Not Me.State.selectedClaimTATId.Equals(Guid.Empty) Then
-                    Me.SetSelectedItem(Me.moClaimTATRangeDD, Me.State.selectedClaimTATId)
+                If Not State.selectedClaimTATId.Equals(Guid.Empty) Then
+                    SetSelectedItem(moClaimTATRangeDD, State.selectedClaimTATId)
                 End If
 
-                If Not Me.State.selectedNoActivityTATId.Equals(Guid.Empty) Then
-                    Me.SetSelectedItem(Me.moClaimTATRangeDD, Me.State.selectedNoActivityTATId)
+                If Not State.selectedNoActivityTATId.Equals(Guid.Empty) Then
+                    SetSelectedItem(moClaimTATRangeDD, State.selectedNoActivityTATId)
                 End If
 
                 '   Me.SetSelectedItem(Me.cboSearchServiceCenter, Me.State.serviceCenterId)
-                moServiceCenterText.Text = Me.State.serviceCenterName
-                Me.SetSelectedItem(Me.cboSortBy, Me.State.selectedSortById)
+                moServiceCenterText.Text = State.serviceCenterName
+                SetSelectedItem(cboSortBy, State.selectedSortById)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub setDefaultSearchButton()
 
             Try
-                Me.SetDefaultButton(Me.TextBoxFollowUpDate, btnSearch)
-                Me.SetDefaultButton(Me.TextBoxSearchClaimAdjuster, btnSearch)
+                SetDefaultButton(TextBoxFollowUpDate, btnSearch)
+                SetDefaultButton(TextBoxSearchClaimAdjuster, btnSearch)
                 'Me.SetDefaultButton(Me.TextBoxSearchServiceCenterZIP, btnSearch)
-                Me.SetDefaultButton(Me.TextBoxSearchClaimNumber, btnSearch)
-                Me.SetDefaultButton(Me.TextBoxSearchCustomerName, btnSearch)
-                Me.SetDefaultButton(Me.moServiceCenterText, btnSearch)
+                SetDefaultButton(TextBoxSearchClaimNumber, btnSearch)
+                SetDefaultButton(TextBoxSearchCustomerName, btnSearch)
+                SetDefaultButton(moServiceCenterText, btnSearch)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub PopulateDealerDropdown(ByVal dealerDropDownList As DropDownList)
+        Private Sub PopulateDealerDropdown(dealerDropDownList As DropDownList)
             ' Dim oCompanyId As Guid = Me.GetApplicationUser.CompanyID
             Try
 
-                Me.BindListControlToDataView(dealerDropDownList,
+                BindListControlToDataView(dealerDropDownList,
                 LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies, False, "Code"), , , True)
                 '   Me.SetSelectedItem(dealerDropDownList, Me.State.dealerId)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
         Sub PopulateClaimStatusDropDown()
             Try
-                cboClaimStatus.Items.Add(New System.Web.UI.WebControls.ListItem(CLAIM_STATUS_DESCRIPTION_ACTIVE))
-                cboClaimStatus.Items.Add(New System.Web.UI.WebControls.ListItem(CLAIM_STATUS_DESCRIPTION_DENIED))
+                cboClaimStatus.Items.Add(New WebControls.ListItem(CLAIM_STATUS_DESCRIPTION_ACTIVE))
+                cboClaimStatus.Items.Add(New WebControls.ListItem(CLAIM_STATUS_DESCRIPTION_DENIED))
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -440,14 +441,14 @@ Namespace Claims
 
                 Dim defaultSelectedCodeId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_FOLLOWUP_SEARCH_FIELDS, "CFDAT")
 
-                If (Me.State.selectedSortById.Equals(Guid.Empty)) Then
-                    Me.SetSelectedItem(Me.cboSortBy, defaultSelectedCodeId)
-                    Me.State.selectedSortById = defaultSelectedCodeId
+                If (State.selectedSortById.Equals(Guid.Empty)) Then
+                    SetSelectedItem(cboSortBy, defaultSelectedCodeId)
+                    State.selectedSortById = defaultSelectedCodeId
                 Else
-                    Me.SetSelectedItem(Me.cboSortBy, Me.State.selectedSortById)
+                    SetSelectedItem(cboSortBy, State.selectedSortById)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -458,106 +459,106 @@ Namespace Claims
         Public Sub PopulateGrid()
             Dim foundLabel As String
             '   Dim oCompanyId As Guid = Me.GetApplicationUser.CompanyID
-            Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
+            Dim errors() As ValidationError = {New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
 
             Try
-                Me.GetSelectedItem(moDealerDrop)
+                GetSelectedItem(moDealerDrop)
                 '   Me.GetSelectedItem(cboSearchServiceCenter)
 
-                If (Me.State.searchDV Is Nothing) Then
+                If (State.searchDV Is Nothing) Then
 
                     Dim searchFollowUpDate As String = Nothing
 
-                    If Not (Me.State.followUpDate Is Nothing) Then
+                    If Not (State.followUpDate Is Nothing) Then
                         Dim tempFollowDate As DateTime = New DateTime
-                        tempFollowDate = DateHelper.GetDateValue(Me.State.followUpDate.ToString())
+                        tempFollowDate = DateHelper.GetDateValue(State.followUpDate.ToString())
                         searchFollowUpDate = tempFollowDate.ToString("MMddyyyy")
                     Else
                         searchFollowUpDate = String.Empty
                     End If
 
-                    Dim nonOperatedClaims As String = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, Me.State.selectedNonOperatedClaimsId)
+                    Dim nonOperatedClaims As String = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, State.selectedNonOperatedClaimsId)
 
                     Dim sortBy As String
 
-                    If (Not (Me.State.selectedSortById.Equals(Guid.Empty))) Then
-                        sortBy = LookupListNew.GetCodeFromId(LookupListNew.LK_CLAIM_FOLLOWUP_SEARCH_FIELDS, Me.State.selectedSortById)
+                    If (Not (State.selectedSortById.Equals(Guid.Empty))) Then
+                        sortBy = LookupListNew.GetCodeFromId(LookupListNew.LK_CLAIM_FOLLOWUP_SEARCH_FIELDS, State.selectedSortById)
 
-                        Me.State.searchDV = Claim.GetClaimFollowUpList(searchFollowUpDate,
-                                                                           Me.State.serviceCenterName,
-                                                                           Me.State.claimNumber,
-                                                                           Me.State.claimAdjuster,
-                                                                           Me.State.customerName,
-                                                                           Me.State.claimStatus,
-                                                                           Me.State.dealerId,
-                                                                           Me.State.selectedClaimTATId,
-                                                                           Me.State.selectedClaimExtendedStatusId,
-                                                                           Me.State.selectedNoActivityTATId,
-                                                                           Me.State.selectedClaimExtendedStatusOwnerId,
+                        State.searchDV = Claim.GetClaimFollowUpList(searchFollowUpDate,
+                                                                           State.serviceCenterName,
+                                                                           State.claimNumber,
+                                                                           State.claimAdjuster,
+                                                                           State.customerName,
+                                                                           State.claimStatus,
+                                                                           State.dealerId,
+                                                                           State.selectedClaimTATId,
+                                                                           State.selectedClaimExtendedStatusId,
+                                                                           State.selectedNoActivityTATId,
+                                                                           State.selectedClaimExtendedStatusOwnerId,
                                                                            ElitaPlusIdentity.Current.ActiveUser.LanguageId,
                                                                            nonOperatedClaims,
                                                                            sortBy)
                     Else
-                        Me.State.searchDV = Claim.GetClaimFollowUpList(searchFollowUpDate,
-                                                                          Me.State.serviceCenterName,
-                                                                          Me.State.claimNumber,
-                                                                          Me.State.claimAdjuster,
-                                                                          Me.State.customerName,
-                                                                          Me.State.claimStatus,
-                                                                          Me.State.dealerId,
-                                                                          Me.State.selectedClaimTATId,
-                                                                          Me.State.selectedClaimExtendedStatusId,
-                                                                          Me.State.selectedNoActivityTATId,
-                                                                          Me.State.selectedClaimExtendedStatusOwnerId,
+                        State.searchDV = Claim.GetClaimFollowUpList(searchFollowUpDate,
+                                                                          State.serviceCenterName,
+                                                                          State.claimNumber,
+                                                                          State.claimAdjuster,
+                                                                          State.customerName,
+                                                                          State.claimStatus,
+                                                                          State.dealerId,
+                                                                          State.selectedClaimTATId,
+                                                                          State.selectedClaimExtendedStatusId,
+                                                                          State.selectedNoActivityTATId,
+                                                                          State.selectedClaimExtendedStatusOwnerId,
                                                                           ElitaPlusIdentity.Current.ActiveUser.LanguageId,
                                                                           nonOperatedClaims)
                     End If
 
-                    Me.ValidSearchResultCount(Me.State.searchDV.Count, True)
+                    ValidSearchResultCount(State.searchDV.Count, True)
                 End If
 
                 'Me.State.searchDV.Sort = Grid.DataMember
-                Me.State.searchDV.Sort = Me.State.SortExpression
-                Me.Grid.AutoGenerateColumns = False
-                Me.Grid.PageSize = Me.State.PageSize
+                State.searchDV.Sort = State.SortExpression
+                Grid.AutoGenerateColumns = False
+                Grid.PageSize = State.PageSize
 
-                SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.selectedClaimId, Me.Grid, Me.State.PageIndex)
-                Me.State.PageIndex = Me.Grid.CurrentPageIndex
-                Me.Grid.DataSource = Me.State.searchDV
+                SetPageAndSelectedIndexFromGuid(State.searchDV, State.selectedClaimId, Grid, State.PageIndex)
+                State.PageIndex = Grid.CurrentPageIndex
+                Grid.DataSource = State.searchDV
                 'Me.Grid.AllowSorting = False
-                Me.Grid.Columns(Me.GRID_COL_FOLLOWUP_DATE_IDX).SortExpression = Claim.ClaimFollowUpSearchDV.COL_FOLLOWUP_DATE
-                Me.Grid.Columns(Me.GRID_COL_CLAIM_TAT_IDX).SortExpression = Claim.ClaimFollowUpSearchDV.COL_CLAIM_TAT
-                Me.Grid.Columns(Me.GRID_COL_SVC_TAT_IDX).SortExpression = Claim.ClaimFollowUpSearchDV.COL_SVC_TAT
-                Me.Grid.Columns(Me.GRID_COL_LAST_ACTIVITY_IDX).SortExpression = Claim.ClaimFollowUpSearchDV.COL_NO_ACTIVITY
-                Me.Grid.Columns(Me.GRID_COL_CLAIM_NUMBER_IDX).SortExpression = Claim.ClaimFollowUpSearchDV.COL_CLAIM_NUMBER
-                Me.Grid.Columns(Me.GRID_COL_CUST_NAME_IDX).SortExpression = Claim.ClaimFollowUpSearchDV.COL_CUST_NAME
-                Me.Grid.Columns(Me.GRID_COL_SERVICE_CENTER_NAME_IDX).SortExpression = Claim.ClaimFollowUpSearchDV.COL_SERVICE_CENTER_NAME
-                Me.Grid.Columns(Me.GRID_COL_CLAIMS_ADJUSTER_IDX).SortExpression = Claim.ClaimFollowUpSearchDV.COL_CLAIMS_AJDUSTER
-                Me.Grid.Columns(Me.GRID_COL_CLAIM_EXT_STATUS_IDX).SortExpression = Claim.ClaimFollowUpSearchDV.COL_EXTENDED_STATUS
-                Me.Grid.Columns(Me.GRID_COL_STATUS_OWNER_IDX).SortExpression = Claim.ClaimFollowUpSearchDV.COL_OWNER
-                Me.Grid.Columns(Me.GRID_COL_STATUS_IDX).SortExpression = Claim.ClaimFollowUpSearchDV.COL_STATUS_CODE
-                Me.Grid.Columns(Me.GRID_COL_DEALER_CODE_IDX).SortExpression = Claim.ClaimFollowUpSearchDV.COL_DEALER_CODE
+                Grid.Columns(GRID_COL_FOLLOWUP_DATE_IDX).SortExpression = Claim.ClaimFollowUpSearchDV.COL_FOLLOWUP_DATE
+                Grid.Columns(GRID_COL_CLAIM_TAT_IDX).SortExpression = Claim.ClaimFollowUpSearchDV.COL_CLAIM_TAT
+                Grid.Columns(GRID_COL_SVC_TAT_IDX).SortExpression = Claim.ClaimFollowUpSearchDV.COL_SVC_TAT
+                Grid.Columns(GRID_COL_LAST_ACTIVITY_IDX).SortExpression = Claim.ClaimFollowUpSearchDV.COL_NO_ACTIVITY
+                Grid.Columns(GRID_COL_CLAIM_NUMBER_IDX).SortExpression = Claim.ClaimFollowUpSearchDV.COL_CLAIM_NUMBER
+                Grid.Columns(GRID_COL_CUST_NAME_IDX).SortExpression = Claim.ClaimFollowUpSearchDV.COL_CUST_NAME
+                Grid.Columns(GRID_COL_SERVICE_CENTER_NAME_IDX).SortExpression = Claim.ClaimFollowUpSearchDV.COL_SERVICE_CENTER_NAME
+                Grid.Columns(GRID_COL_CLAIMS_ADJUSTER_IDX).SortExpression = Claim.ClaimFollowUpSearchDV.COL_CLAIMS_AJDUSTER
+                Grid.Columns(GRID_COL_CLAIM_EXT_STATUS_IDX).SortExpression = Claim.ClaimFollowUpSearchDV.COL_EXTENDED_STATUS
+                Grid.Columns(GRID_COL_STATUS_OWNER_IDX).SortExpression = Claim.ClaimFollowUpSearchDV.COL_OWNER
+                Grid.Columns(GRID_COL_STATUS_IDX).SortExpression = Claim.ClaimFollowUpSearchDV.COL_STATUS_CODE
+                Grid.Columns(GRID_COL_DEALER_CODE_IDX).SortExpression = Claim.ClaimFollowUpSearchDV.COL_DEALER_CODE
 
-                Me.Grid.DataBind()
+                Grid.DataBind()
 
-                ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+                ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
 
-                ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+                ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-                Session("recCount") = Me.State.searchDV.Count
+                Session("recCount") = State.searchDV.Count
 
-                foundLabel = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIMS_FOUND)
-                If Me.State.searchDV.Count > 0 Then
-                    If Me.Grid.Visible Then
-                        Me.lblRecordCount.Text = foundLabel
+                foundLabel = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIMS_FOUND)
+                If State.searchDV.Count > 0 Then
+                    If Grid.Visible Then
+                        lblRecordCount.Text = foundLabel
                     End If
                 Else
-                    If Me.Grid.Visible Then
-                        Me.lblRecordCount.Text = foundLabel
+                    If Grid.Visible Then
+                        lblRecordCount.Text = foundLabel
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -566,94 +567,94 @@ Namespace Claims
 #Region " Datagrid Related "
 
         'The Binding Logic is here
-        Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+        Private Sub Grid_ItemDataBound(sender As Object, e As DataGridItemEventArgs) Handles Grid.ItemDataBound
             Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
             Dim btnEditButtonCode As LinkButton
             Try
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
-                    If (Not e.Item.Cells(GRID_COL_CLAIM_NUMBER_IDX).FindControl(GRID_COL_CODE_CTRL) Is Nothing) Then
-                        btnEditButtonCode = CType(e.Item.Cells(Me.GRID_COL_CLAIM_NUMBER_IDX).FindControl(GRID_COL_CODE_CTRL), LinkButton)
+                    If (e.Item.Cells(GRID_COL_CLAIM_NUMBER_IDX).FindControl(GRID_COL_CODE_CTRL) IsNot Nothing) Then
+                        btnEditButtonCode = CType(e.Item.Cells(GRID_COL_CLAIM_NUMBER_IDX).FindControl(GRID_COL_CODE_CTRL), LinkButton)
                         btnEditButtonCode.Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_CLAIM_NUMBER).ToString
                         btnEditButtonCode.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(Claim.ClaimFollowUpSearchDV.COL_CLAIM_ID), Byte()))
                         btnEditButtonCode.CommandName = SELECT_ACTION_COMMAND
                     End If
 
-                    e.Item.Cells(Me.GRID_COL_CLAIM_ID_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(Claim.ClaimFollowUpSearchDV.COL_CLAIM_ID), Byte()))
-                    e.Item.Cells(Me.GRID_COL_FOLLOWUP_DATE_IDX).Text = Me.GetDateFormattedString(DateHelper.GetDateValue(dvRow(Claim.ClaimFollowUpSearchDV.COL_FOLLOWUP_DATE).ToString()))
-                    e.Item.Cells(Me.GRID_COL_LAST_ACTIVITY_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_NO_ACTIVITY).ToString
-                    e.Item.Cells(Me.GRID_COL_CLAIM_NUMBER_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_CLAIM_NUMBER).ToString
-                    e.Item.Cells(Me.GRID_COL_STATUS_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_STATUS_CODE).ToString
-                    e.Item.Cells(Me.GRID_COL_CLAIM_EXT_STATUS_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_EXTENDED_STATUS).ToString
-                    e.Item.Cells(Me.GRID_COL_STATUS_OWNER_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_OWNER).ToString
-                    e.Item.Cells(Me.GRID_COL_SERVICE_CENTER_NAME_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_SERVICE_CENTER_NAME).ToString
-                    e.Item.Cells(Me.GRID_COL_CLAIMS_ADJUSTER_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_CLAIMS_AJDUSTER).ToString
-                    e.Item.Cells(Me.GRID_COL_CUST_NAME_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_CUST_NAME).ToString
-                    e.Item.Cells(Me.GRID_COL_DEALER_CODE_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_DEALER_CODE).ToString
+                    e.Item.Cells(GRID_COL_CLAIM_ID_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(Claim.ClaimFollowUpSearchDV.COL_CLAIM_ID), Byte()))
+                    e.Item.Cells(GRID_COL_FOLLOWUP_DATE_IDX).Text = GetDateFormattedString(DateHelper.GetDateValue(dvRow(Claim.ClaimFollowUpSearchDV.COL_FOLLOWUP_DATE).ToString()))
+                    e.Item.Cells(GRID_COL_LAST_ACTIVITY_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_NO_ACTIVITY).ToString
+                    e.Item.Cells(GRID_COL_CLAIM_NUMBER_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_CLAIM_NUMBER).ToString
+                    e.Item.Cells(GRID_COL_STATUS_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_STATUS_CODE).ToString
+                    e.Item.Cells(GRID_COL_CLAIM_EXT_STATUS_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_EXTENDED_STATUS).ToString
+                    e.Item.Cells(GRID_COL_STATUS_OWNER_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_OWNER).ToString
+                    e.Item.Cells(GRID_COL_SERVICE_CENTER_NAME_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_SERVICE_CENTER_NAME).ToString
+                    e.Item.Cells(GRID_COL_CLAIMS_ADJUSTER_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_CLAIMS_AJDUSTER).ToString
+                    e.Item.Cells(GRID_COL_CUST_NAME_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_CUST_NAME).ToString
+                    e.Item.Cells(GRID_COL_DEALER_CODE_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_DEALER_CODE).ToString
 
 
-                    If Not dvRow(Claim.ClaimFollowUpSearchDV.COL_CLAIM_TAT) Is System.DBNull.Value Then
+                    If dvRow(Claim.ClaimFollowUpSearchDV.COL_CLAIM_TAT) IsNot DBNull.Value Then
                         Dim claim_TAT As Integer = CType(dvRow(Claim.ClaimFollowUpSearchDV.COL_CLAIM_TAT), Integer)
-                        e.Item.Cells(Me.GRID_COL_CLAIM_TAT_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_CLAIM_TAT).ToString
+                        e.Item.Cells(GRID_COL_CLAIM_TAT_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_CLAIM_TAT).ToString
 
                         Dim claim_TAT_colorCode As String = FindTATColor(claim_TAT)
-                        If Not claim_TAT_colorCode Is Nothing AndAlso Not claim_TAT_colorCode.Equals(String.Empty) Then e.Item.Cells(Me.GRID_COL_CLAIM_TAT_IDX).BackColor = System.Drawing.ColorTranslator.FromHtml(claim_TAT_colorCode)
+                        If claim_TAT_colorCode IsNot Nothing AndAlso Not claim_TAT_colorCode.Equals(String.Empty) Then e.Item.Cells(GRID_COL_CLAIM_TAT_IDX).BackColor = ColorTranslator.FromHtml(claim_TAT_colorCode)
                     Else
-                        e.Item.Cells(Me.GRID_COL_CLAIM_TAT_IDX).Text = "N/A"
+                        e.Item.Cells(GRID_COL_CLAIM_TAT_IDX).Text = "N/A"
                     End If
 
-                    If Not dvRow(Claim.ClaimFollowUpSearchDV.COL_NO_ACTIVITY) Is System.DBNull.Value Then
+                    If dvRow(Claim.ClaimFollowUpSearchDV.COL_NO_ACTIVITY) IsNot DBNull.Value Then
                         Dim no_activity As Integer = CType(dvRow(Claim.ClaimFollowUpSearchDV.COL_NO_ACTIVITY), Integer)
                         Dim no_activity_colorCode As String = FindTATColor(no_activity)
-                        If Not no_activity_colorCode Is Nothing AndAlso Not no_activity_colorCode.Equals(String.Empty) Then e.Item.Cells(Me.GRID_COL_LAST_ACTIVITY_IDX).BackColor = System.Drawing.ColorTranslator.FromHtml(no_activity_colorCode)
+                        If no_activity_colorCode IsNot Nothing AndAlso Not no_activity_colorCode.Equals(String.Empty) Then e.Item.Cells(GRID_COL_LAST_ACTIVITY_IDX).BackColor = ColorTranslator.FromHtml(no_activity_colorCode)
                     Else
-                        e.Item.Cells(Me.GRID_COL_LAST_ACTIVITY_IDX).Text = "N/A"
+                        e.Item.Cells(GRID_COL_LAST_ACTIVITY_IDX).Text = "N/A"
                     End If
 
-                    If Not dvRow(Claim.ClaimFollowUpSearchDV.COL_SVC_TAT) Is System.DBNull.Value Then
+                    If dvRow(Claim.ClaimFollowUpSearchDV.COL_SVC_TAT) IsNot DBNull.Value Then
                         Dim SVC_TAT As Integer = CType(dvRow(Claim.ClaimFollowUpSearchDV.COL_SVC_TAT), Integer)
-                        e.Item.Cells(Me.GRID_COL_SVC_TAT_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_SVC_TAT).ToString
+                        e.Item.Cells(GRID_COL_SVC_TAT_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_SVC_TAT).ToString
                         Dim SVC_TAT_colorCode As String = FindTATColor(SVC_TAT)
-                        If Not SVC_TAT_colorCode Is Nothing AndAlso Not SVC_TAT_colorCode.Equals(String.Empty) Then e.Item.Cells(Me.GRID_COL_SVC_TAT_IDX).BackColor = System.Drawing.ColorTranslator.FromHtml(SVC_TAT_colorCode)
+                        If SVC_TAT_colorCode IsNot Nothing AndAlso Not SVC_TAT_colorCode.Equals(String.Empty) Then e.Item.Cells(GRID_COL_SVC_TAT_IDX).BackColor = ColorTranslator.FromHtml(SVC_TAT_colorCode)
                     Else
-                        e.Item.Cells(Me.GRID_COL_SVC_TAT_IDX).Text = "N/A"
+                        e.Item.Cells(GRID_COL_SVC_TAT_IDX).Text = "N/A"
                     End If
 
                     If cboClaimStatus.SelectedItem.Text = CLAIM_STATUS_DESCRIPTION_DENIED Then
-                        Grid.Columns(Me.GRID_COL_DENIED_REASON_IDX).Visible = True
-                        Grid.Columns(Me.GRID_COL_COMMENT_TYPE_IDX).Visible = True
-                        e.Item.Cells(Me.GRID_COL_DENIED_REASON_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_DENIED_REASON).ToString
-                        e.Item.Cells(Me.GRID_COL_COMMENT_TYPE_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_COMMENT_TYPE).ToString
+                        Grid.Columns(GRID_COL_DENIED_REASON_IDX).Visible = True
+                        Grid.Columns(GRID_COL_COMMENT_TYPE_IDX).Visible = True
+                        e.Item.Cells(GRID_COL_DENIED_REASON_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_DENIED_REASON).ToString
+                        e.Item.Cells(GRID_COL_COMMENT_TYPE_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_COMMENT_TYPE).ToString
                     Else
-                        Grid.Columns(Me.GRID_COL_DENIED_REASON_IDX).Visible = False
-                        Grid.Columns(Me.GRID_COL_COMMENT_TYPE_IDX).Visible = False
+                        Grid.Columns(GRID_COL_DENIED_REASON_IDX).Visible = False
+                        Grid.Columns(GRID_COL_COMMENT_TYPE_IDX).Visible = False
                     End If
-                    e.Item.Cells(Me.GRID_COL_NUM_OF_REMINDERS_SENT_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_NUM_OF_REMINDERS).ToString
-                    If Not dvRow(Claim.ClaimFollowUpSearchDV.COL_LAST_REMINDER_SEND_DATE) Is System.DBNull.Value Then
-                        e.Item.Cells(Me.GRID_COL_LAST_REMINDER_SENT_ON_IDX).Text = Me.GetDateFormattedString(DateHelper.GetDateValue(dvRow(Claim.ClaimFollowUpSearchDV.COL_LAST_REMINDER_SEND_DATE).ToString()))
+                    e.Item.Cells(GRID_COL_NUM_OF_REMINDERS_SENT_IDX).Text = dvRow(Claim.ClaimFollowUpSearchDV.COL_NUM_OF_REMINDERS).ToString
+                    If dvRow(Claim.ClaimFollowUpSearchDV.COL_LAST_REMINDER_SEND_DATE) IsNot DBNull.Value Then
+                        e.Item.Cells(GRID_COL_LAST_REMINDER_SENT_ON_IDX).Text = GetDateFormattedString(DateHelper.GetDateValue(dvRow(Claim.ClaimFollowUpSearchDV.COL_LAST_REMINDER_SEND_DATE).ToString()))
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Public Function FindTATColor(ByVal TAT As Integer) As String
-            If Me.State.TATDV Is Nothing Then
-                Me.State.TATDV = TurnAroundTimeRange.LoadListWithColor()
+        Public Function FindTATColor(TAT As Integer) As String
+            If State.TATDV Is Nothing Then
+                State.TATDV = TurnAroundTimeRange.LoadListWithColor()
             End If
-            If Not Me.State.TATDV Is Nothing AndAlso Me.State.TATDV.Count > 0 Then
+            If State.TATDV IsNot Nothing AndAlso State.TATDV.Count > 0 Then
 
                 Dim i As Integer
-                For i = 0 To Me.State.TATDV.Count - 1
-                    If CType(Me.State.TATDV.Item(i)("min_days"), Integer) <= TAT AndAlso CType(Me.State.TATDV.Item(i)("max_days"), Integer) >= TAT Then
+                For i = 0 To State.TATDV.Count - 1
+                    If CType(State.TATDV.Item(i)("min_days"), Integer) <= TAT AndAlso CType(State.TATDV.Item(i)("max_days"), Integer) >= TAT Then
                         Try
-                            Dim c As Color = System.Drawing.ColorTranslator.FromHtml(Me.State.TATDV.Item(i)("color_code").ToString)
+                            Dim c As Color = ColorTranslator.FromHtml(State.TATDV.Item(i)("color_code").ToString)
                         Catch ex As Exception
                             Throw New GUIException(Message.MSG_INVALID_COLOR_CODE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_COLOR_CODE)
                         End Try
-                        Return (Me.State.TATDV.Item(i)("color_code").ToString)
+                        Return (State.TATDV.Item(i)("color_code").ToString)
                     End If
                 Next
             Else
@@ -678,61 +679,61 @@ Namespace Claims
         '    End If
         'End Function
 
-        Private Sub Grid_SortCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
+        Private Sub Grid_SortCommand(source As Object, e As DataGridSortCommandEventArgs) Handles Grid.SortCommand
             Try
-                If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                    If Me.State.SortExpression.EndsWith(" DESC") Then
-                        Me.State.SortExpression = e.SortExpression
+                If State.SortExpression.StartsWith(e.SortExpression) Then
+                    If State.SortExpression.EndsWith(" DESC") Then
+                        State.SortExpression = e.SortExpression
                     Else
-                        Me.State.SortExpression &= " DESC"
+                        State.SortExpression &= " DESC"
                     End If
                 Else
-                    Me.State.SortExpression = e.SortExpression
+                    State.SortExpression = e.SortExpression
                 End If
-                Me.State.PageIndex = 0
-                Me.PopulateGrid()
+                State.PageIndex = 0
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Public Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+        Public Sub ItemCommand(source As Object, e As DataGridCommandEventArgs)
             Try
                 If e.CommandName = "SelectAction" Then
-                    Me.State.selectedClaimId = New Guid(e.Item.Cells(Me.GRID_COL_CLAIM_ID_IDX).Text)
-                    Me.callPage(ClaimForm.URL, Me.State.selectedClaimId)
+                    State.selectedClaimId = New Guid(e.Item.Cells(GRID_COL_CLAIM_ID_IDX).Text)
+                    callPage(ClaimForm.URL, State.selectedClaimId)
                 End If
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs)
+        Public Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+        Private Sub Grid_PageIndexChanged(source As Object, e As DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
             Try
-                Me.State.PageIndex = e.NewPageIndex
-                Me.State.selectedClaimId = Guid.Empty
-                Me.PopulateGrid()
+                State.PageIndex = e.NewPageIndex
+                State.selectedClaimId = Guid.Empty
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 Grid.CurrentPageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.State.PageSize = Grid.PageSize
-                Me.PopulateGrid()
+                State.PageSize = Grid.PageSize
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -740,79 +741,79 @@ Namespace Claims
 
 #Region " Buttons Clicks "
 
-        Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+        Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
             Try
                 SetStateProperties()
-                Me.State.PageIndex = 0
-                Me.State.selectedClaimId = Guid.Empty
-                Me.State.IsGridVisible = True
-                Me.State.searchDV = Nothing
-                Me.PopulateGrid()
+                State.PageIndex = 0
+                State.selectedClaimId = Guid.Empty
+                State.IsGridVisible = True
+                State.searchDV = Nothing
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnClearSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+        Private Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
             Try
-                Me.TextBoxFollowUpDate.Text = String.Empty
+                TextBoxFollowUpDate.Text = String.Empty
                 'Me.TextBoxSearchServiceCenterZIP.Text = String.Empty
-                Me.TextBoxSearchClaimNumber.Text = String.Empty
-                Me.TextBoxSearchClaimAdjuster.Text = String.Empty
-                Me.TextBoxSearchCustomerName.Text = String.Empty
-                If Me.moDealerDrop.SelectedIndex > 0 Then
-                    Me.moDealerDrop.SelectedIndex = 0
+                TextBoxSearchClaimNumber.Text = String.Empty
+                TextBoxSearchClaimAdjuster.Text = String.Empty
+                TextBoxSearchCustomerName.Text = String.Empty
+                If moDealerDrop.SelectedIndex > 0 Then
+                    moDealerDrop.SelectedIndex = 0
                 End If
                 '  Me.cboSearchServiceCenter.SelectedIndex = 0
-                Me.moServiceCenterText.Text = String.Empty
-                If Me.moClaimExtendedStatusDD.SelectedIndex > 0 Then
-                    Me.moClaimExtendedStatusDD.SelectedIndex = 0
+                moServiceCenterText.Text = String.Empty
+                If moClaimExtendedStatusDD.SelectedIndex > 0 Then
+                    moClaimExtendedStatusDD.SelectedIndex = 0
                 End If
 
-                If Me.moClaimTATRangeDD.SelectedIndex > 0 Then
-                    Me.moClaimTATRangeDD.SelectedIndex = 0
+                If moClaimTATRangeDD.SelectedIndex > 0 Then
+                    moClaimTATRangeDD.SelectedIndex = 0
                 End If
 
-                If Me.moLastActivityDD.SelectedIndex > 0 Then
-                    Me.moLastActivityDD.SelectedIndex = 0
+                If moLastActivityDD.SelectedIndex > 0 Then
+                    moLastActivityDD.SelectedIndex = 0
                 End If
 
-                If Me.moOwnerDD.SelectedIndex > 0 Then
-                    Me.moOwnerDD.SelectedIndex = 0
+                If moOwnerDD.SelectedIndex > 0 Then
+                    moOwnerDD.SelectedIndex = 0
                 End If
 
-                If Me.cboNonOperatedClaims.SelectedIndex > 0 Then
-                    Me.cboNonOperatedClaims.SelectedIndex = 0
+                If cboNonOperatedClaims.SelectedIndex > 0 Then
+                    cboNonOperatedClaims.SelectedIndex = 0
                     ControlMgr.SetEnableControl(Me, cboClaimStatus, True)
                     ControlMgr.SetEnableControl(Me, moClaimExtendedStatusDD, True)
                 End If
                 'Update Page State
-                With Me.State
+                With State
                     .followUpDate = Nothing
                     '.servCenterZip = Me.TextBoxSearchServiceCenterZIP.Text
-                    .claimNumber = Me.TextBoxSearchClaimNumber.Text
-                    .claimAdjuster = Me.TextBoxSearchClaimAdjuster.Text
-                    .customerName = Me.TextBoxSearchCustomerName.Text
+                    .claimNumber = TextBoxSearchClaimNumber.Text
+                    .claimAdjuster = TextBoxSearchClaimAdjuster.Text
+                    .customerName = TextBoxSearchCustomerName.Text
                     .dealerId = Nothing
                     ' .serviceCenterId = Nothing
                     .serviceCenterName = moServiceCenterText.Text
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub cboNonOperatedClaims_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboNonOperatedClaims.SelectedIndexChanged
-            Dim nonOperatedClaims As String = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, Me.GetSelectedItem(Me.cboNonOperatedClaims))
+            Dim nonOperatedClaims As String = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, GetSelectedItem(cboNonOperatedClaims))
             If nonOperatedClaims = Codes.YESNO_Y Then
                 ControlMgr.SetEnableControl(Me, cboClaimStatus, False)
                 ControlMgr.SetEnableControl(Me, moClaimExtendedStatusDD, False)
-                Me.SetSelectedItem(cboClaimStatus, CLAIM_STATUS_DESCRIPTION_ACTIVE)
-                Me.moClaimExtendedStatusDD.SelectedIndex = 0
+                SetSelectedItem(cboClaimStatus, CLAIM_STATUS_DESCRIPTION_ACTIVE)
+                moClaimExtendedStatusDD.SelectedIndex = 0
             Else
                 ControlMgr.SetEnableControl(Me, cboClaimStatus, True)
                 ControlMgr.SetEnableControl(Me, moClaimExtendedStatusDD, True)
-                Me.moClaimExtendedStatusDD.SelectedIndex = 0
+                moClaimExtendedStatusDD.SelectedIndex = 0
             End If
         End Sub
 #End Region

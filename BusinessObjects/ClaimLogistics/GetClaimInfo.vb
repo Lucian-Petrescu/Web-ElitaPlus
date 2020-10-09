@@ -15,7 +15,7 @@ Public Class GetClaimInfo
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As GetClaimInfoDs)
+    Public Sub New(ds As GetClaimInfoDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -28,7 +28,7 @@ Public Class GetClaimInfo
 #Region "Private Members"
     Private _claimId As Guid = Guid.Empty
 
-    Private Sub MapDataSet(ByVal ds As GetClaimInfoDs)
+    Private Sub MapDataSet(ds As GetClaimInfoDs)
 
         Dim schema As String = ds.GetXmlSchema '.Replace(SOURCE_COL_MAKE, DATA_COL_NAME_MANUFACTURER).Replace(SOURCE_COL_MILEAGE, DATA_COL_NAME_ODOMETER).Replace(SOURCE_COL_NEWUSED, DATA_COL_NAME_CONDITION)
 
@@ -41,8 +41,8 @@ Public Class GetClaimInfo
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -50,13 +50,13 @@ Public Class GetClaimInfo
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As GetClaimInfoDs)
+    Private Sub Load(ds As GetClaimInfoDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
-            Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
+            Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
         Catch ex As BOValidationException
             Throw ex
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -68,31 +68,31 @@ Public Class GetClaimInfo
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As GetClaimInfoDs)
+    Private Sub PopulateBOFromWebService(ds As GetClaimInfoDs)
         Try
             If ds.GetClaimInfo.Count = 0 Then Exit Sub
             With ds.GetClaimInfo.Item(0)
                 If Not .IsELITA_CLAIM_NUMBERNull Then
-                    Me.ClaimNumber = ds.GetClaimInfo.Item(0).ELITA_CLAIM_NUMBER
+                    ClaimNumber = ds.GetClaimInfo.Item(0).ELITA_CLAIM_NUMBER
                 End If
 
                 If Not .IsBBY_CLAIM_NUMBERNull Then
-                    Me.AuthorizationNumber = ds.GetClaimInfo.Item(0).BBY_CLAIM_NUMBER
+                    AuthorizationNumber = ds.GetClaimInfo.Item(0).BBY_CLAIM_NUMBER
                 End If
 
                 If Not .IsCUSTOMER_NAMENull Then
-                    Me.CustomerName = ds.GetClaimInfo.Item(0).CUSTOMER_NAME
+                    CustomerName = ds.GetClaimInfo.Item(0).CUSTOMER_NAME
                 End If
 
                 If Not .IsCUSTOMER_PHONENull Then
-                    Me.CustomerPhone = ds.GetClaimInfo.Item(0).CUSTOMER_PHONE
+                    CustomerPhone = ds.GetClaimInfo.Item(0).CUSTOMER_PHONE
                 End If
 
-                If Me.ClaimNumber Is Nothing AndAlso Me.CustomerName Is Nothing AndAlso Me.CustomerPhone Is Nothing AndAlso Me.AuthorizationNumber Is Nothing Then
+                If ClaimNumber Is Nothing AndAlso CustomerName Is Nothing AndAlso CustomerPhone Is Nothing AndAlso AuthorizationNumber Is Nothing Then
                     Throw New BOValidationException("GetClaimInfo Error: ", Common.ErrorCodes.AT_LEAST_ONE_FIELD_REQUIRED)
                 End If
 
-                Me.IncludeStatusHistory = ds.GetClaimInfo.Item(0).INCLUDE_STATUS_HISTORY
+                IncludeStatusHistory = ds.GetClaimInfo.Item(0).INCLUDE_STATUS_HISTORY
             End With
         Catch ex As BOValidationException
             Throw ex
@@ -109,92 +109,92 @@ Public Class GetClaimInfo
 #Region "Properties"
 
     <ValidStringLength("", Max:=50)> _
-    Public Property ClaimNumber() As String
+    Public Property ClaimNumber As String
         Get
-            If Row(Me.DATA_COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_CLAIM_NUMBER), String))
+                Return (CType(Row(DATA_COL_NAME_CLAIM_NUMBER), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CLAIM_NUMBER, Value)
+            SetValue(DATA_COL_NAME_CLAIM_NUMBER, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)> _
-Public Property CustomerName() As String
+Public Property CustomerName As String
         Get
-            If Row(Me.DATA_COL_NAME_CUSTOMER_NAME) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CUSTOMER_NAME) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_CUSTOMER_NAME), String))
+                Return (CType(Row(DATA_COL_NAME_CUSTOMER_NAME), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CUSTOMER_NAME, Value)
+            SetValue(DATA_COL_NAME_CUSTOMER_NAME, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)> _
-Public Property CustomerPhone() As String
+Public Property CustomerPhone As String
         Get
-            If Row(Me.DATA_COL_NAME_CUSTOMER_PHONE) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_CUSTOMER_PHONE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_CUSTOMER_PHONE), String))
+                Return (CType(Row(DATA_COL_NAME_CUSTOMER_PHONE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_CUSTOMER_PHONE, Value)
+            SetValue(DATA_COL_NAME_CUSTOMER_PHONE, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=50)> _
-    Public Property AuthorizationNumber() As String
+    Public Property AuthorizationNumber As String
         Get
-            If Row(Me.DATA_COL_NAME_AUTHORIZATION_NUMBER) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_AUTHORIZATION_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_AUTHORIZATION_NUMBER), String))
+                Return (CType(Row(DATA_COL_NAME_AUTHORIZATION_NUMBER), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_AUTHORIZATION_NUMBER, Value)
+            SetValue(DATA_COL_NAME_AUTHORIZATION_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=1)> _
-    Public Property IncludeStatusHistory() As String
+    Public Property IncludeStatusHistory As String
         Get
-            If Row(Me.DATA_COL_NAME_INCLUDE_STATUS_HISTORY) Is DBNull.Value Then
+            If Row(DATA_COL_NAME_INCLUDE_STATUS_HISTORY) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return (CType(Row(Me.DATA_COL_NAME_INCLUDE_STATUS_HISTORY), String))
+                Return (CType(Row(DATA_COL_NAME_INCLUDE_STATUS_HISTORY), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(Me.DATA_COL_NAME_INCLUDE_STATUS_HISTORY, Value)
+            SetValue(DATA_COL_NAME_INCLUDE_STATUS_HISTORY, Value)
         End Set
     End Property
 
-    Private ReadOnly Property ClaimID() As Guid
+    Private ReadOnly Property ClaimID As Guid
         Get
-            If _claimId.Equals(Guid.Empty) And Not Me.ClaimNumber Is Nothing Then
-                Me._claimId = Claim.GetClaimID(ElitaPlusIdentity.Current.ActiveUser.Companies, Me.ClaimNumber)
+            If _claimId.Equals(Guid.Empty) AndAlso ClaimNumber IsNot Nothing Then
+                _claimId = Claim.GetClaimID(ElitaPlusIdentity.Current.ActiveUser.Companies, ClaimNumber)
 
-                If Me._claimId.Equals(Guid.Empty) Then
+                If _claimId.Equals(Guid.Empty) Then
                     Throw New BOValidationException("GetClaimInfo Error: ", Common.ErrorCodes.INVALID_CLAIM_NOT_FOUND)
                 End If
 
             End If
 
-            Return Me._claimId
+            Return _claimId
         End Get
     End Property
 
@@ -204,23 +204,23 @@ Public Property CustomerPhone() As String
 
     Public Overrides Function ProcessWSRequest() As String
         Try
-            Me.Validate()
+            Validate()
 
-            Dim dsClaim As DataSet = PickupListHeader.GetClaimInfo(Me.ClaimID, Me.IncludeStatusHistory, Me.CustomerName, Me.CustomerPhone, Me.AuthorizationNumber)
+            Dim dsClaim As DataSet = PickupListHeader.GetClaimInfo(ClaimID, IncludeStatusHistory, CustomerName, CustomerPhone, AuthorizationNumber)
 
-            If dsClaim Is Nothing Or dsClaim.Tables.Count <= 0 Or dsClaim.Tables(0).Rows.Count <> 1 Then
+            If dsClaim Is Nothing OrElse dsClaim.Tables.Count <= 0 OrElse dsClaim.Tables(0).Rows.Count <> 1 Then
                 Throw New BOValidationException("GetClaimInfo Error: ", Common.ErrorCodes.INVALID_CLAIM_NOT_FOUND)
             Else
                 'Dim oClaim As New Claim(New Guid(CType(dsClaim.Tables(0).Rows(0)(DALObjects.ClaimDAL.COL_NAME_CLAIM_ID), Byte())))
                 Dim oClaim As Claim
-                oClaim = ClaimFacade.Instance.GetClaim(Of Claim)((New Guid(CType(dsClaim.Tables(0).Rows(0)(DALObjects.ClaimDAL.COL_NAME_CLAIM_ID), Byte()))))
+                oClaim = ClaimFacade.Instance.GetClaim(Of Claim)((New Guid(CType(dsClaim.Tables(0).Rows(0)(ClaimDAL.COL_NAME_CLAIM_ID), Byte()))))
                 Dim assurantPay As String = CType(oClaim.AssurantPays, String)
-                dsClaim.DataSetName = Me.DATASET_NAME
+                dsClaim.DataSetName = DATASET_NAME
                 Dim excludeTags As ArrayList = New ArrayList()
                 excludeTags.Add("/GetClaimInfo/CLAIM/CLAIM_ID")
                 excludeTags.Add("/GetClaimInfo/CLAIM/CREATED_DATE")
 
-                If Not Me.IncludeStatusHistory Is Nothing AndAlso Me.IncludeStatusHistory = "Y" Then
+                If IncludeStatusHistory IsNot Nothing AndAlso IncludeStatusHistory = "Y" Then
                     excludeTags.Add("/GetClaimInfo/CLAIM_STATUS_HISTORY/CLAIM_ID")
                     excludeTags.Add("/GetClaimInfo/CLAIM_STATUS_HISTORY/CLAIM_NUMBER")
                 End If

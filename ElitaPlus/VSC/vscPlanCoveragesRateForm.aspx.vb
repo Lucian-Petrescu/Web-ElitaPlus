@@ -25,13 +25,13 @@ Partial Public Class vscPlanCoveragesRateForm
         Public ClaimAllowed As String
         Public DealerDiscount As String
 
-        Public Sub New(ByVal RateVersionId As Guid, ByVal VSCPlanID As Guid, ByVal VSCPlan As String,
-                        ByVal Dealer As String, ByVal DealerGroup As String, ByVal CoverageType As String,
-                        ByVal allocPctNew As Decimal, ByVal allocPctUsed As Decimal,
-                        ByVal AddToPlan As String, ByVal ClaimAllowed As String, ByVal DealerDiscount As String)
-            Me.VSC_RATE_VERSION_ID = RateVersionId
-            Me.VSC_PLAN_ID = VSCPlanID
-            Me.VSC_Plan = VSCPlan
+        Public Sub New(RateVersionId As Guid, VSCPlanID As Guid, VSCPlan As String,
+                        Dealer As String, DealerGroup As String, CoverageType As String,
+                        allocPctNew As Decimal, allocPctUsed As Decimal,
+                        AddToPlan As String, ClaimAllowed As String, DealerDiscount As String)
+            VSC_RATE_VERSION_ID = RateVersionId
+            VSC_PLAN_ID = VSCPlanID
+            VSC_Plan = VSCPlan
             Me.Dealer = Dealer
             Me.DealerGroup = DealerGroup
             Me.CoverageType = CoverageType
@@ -47,8 +47,8 @@ Partial Public Class vscPlanCoveragesRateForm
 #Region "Page Return Type"
     Public Class ReturnType
         Public LastOperation As DetailPageCommand
-        Public Sub New(ByVal LastOp As DetailPageCommand)
-            Me.LastOperation = LastOp
+        Public Sub New(LastOp As DetailPageCommand)
+            LastOperation = LastOp
         End Sub
     End Class
 #End Region
@@ -106,41 +106,41 @@ Partial Public Class vscPlanCoveragesRateForm
 #End Region
 
 #Region "Page events"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.ErrControllerMaster.Clear_Hide()
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        ErrControllerMaster.Clear_Hide()
         Try
-            If Not Me.IsPostBack Then
+            If Not IsPostBack Then
 
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
 
                 populatePage()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
         'Me.ShowMissingTranslations(Me.ErrControllerMaster)
     End Sub
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Dim objParam As Parameters
         Try
-            If Not Me.CallingParameters Is Nothing Then
-                objParam = CType(Me.CallingParameters, Parameters)
-                Me.State.RateVersionID = objParam.VSC_RATE_VERSION_ID
-                Me.State.VSCPlanID = objParam.VSC_PLAN_ID
-                Me.State.VSCPlan = objParam.VSC_Plan
-                Me.State.Dealer = objParam.Dealer
-                Me.State.DealerGroup = objParam.DealerGroup
-                Me.State.CoverageType = objParam.CoverageType
-                Me.State.ClaimAllowed = objParam.ClaimAllowed
-                Me.State.AddToPlan = objParam.AddToPlan
-                Me.State.DealerDiscount = objParam.DealerDiscount
-                Me.State.AllocPctNew = objParam.AllocPctNew
-                Me.State.AllocPctUsed = objParam.AllocPctUsed
+            If CallingParameters IsNot Nothing Then
+                objParam = CType(CallingParameters, Parameters)
+                State.RateVersionID = objParam.VSC_RATE_VERSION_ID
+                State.VSCPlanID = objParam.VSC_PLAN_ID
+                State.VSCPlan = objParam.VSC_Plan
+                State.Dealer = objParam.Dealer
+                State.DealerGroup = objParam.DealerGroup
+                State.CoverageType = objParam.CoverageType
+                State.ClaimAllowed = objParam.ClaimAllowed
+                State.AddToPlan = objParam.AddToPlan
+                State.DealerDiscount = objParam.DealerDiscount
+                State.AllocPctNew = objParam.AllocPctNew
+                State.AllocPctUsed = objParam.AllocPctUsed
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 #End Region
@@ -149,19 +149,19 @@ Partial Public Class vscPlanCoveragesRateForm
 
     Private Sub populatePage()
         Dim objRV As VSCRateVersion = New VSCRateVersion(State.RateVersionID)
-        Me.txtDealer.Text = State.Dealer
-        Me.txtDealerGroup.Text = State.DealerGroup
-        Me.txtPlan.Text = State.VSCPlan
-        Me.txtVersion.Text = objRV.VersionNumber.ToString
-        Me.txtEffectiveDate.Text = objRV.EffectiveDate.Value.ToString("dd-MMM-yyyy")
-        Me.txtExpirationDate.Text = objRV.ExpirationDate.Value.ToString("dd-MMM-yyyy")
+        txtDealer.Text = State.Dealer
+        txtDealerGroup.Text = State.DealerGroup
+        txtPlan.Text = State.VSCPlan
+        txtVersion.Text = objRV.VersionNumber.ToString
+        txtEffectiveDate.Text = objRV.EffectiveDate.Value.ToString("dd-MMM-yyyy")
+        txtExpirationDate.Text = objRV.ExpirationDate.Value.ToString("dd-MMM-yyyy")
 
-        Me.txtCoverageType.Text = State.CoverageType
-        Me.txtAllocPctNew.Text = State.AllocPctNew.ToString("#,##0.00")
-        Me.txtAllocPctUsed.Text = State.AllocPctUsed.ToString("#,##0.00")
-        Me.txtDealerDiscount.Text = State.DealerDiscount
-        Me.txtAddToPlan.Text = State.AddToPlan
-        Me.txtClaimAllowed.Text = State.ClaimAllowed
+        txtCoverageType.Text = State.CoverageType
+        txtAllocPctNew.Text = State.AllocPctNew.ToString("#,##0.00")
+        txtAllocPctUsed.Text = State.AllocPctUsed.ToString("#,##0.00")
+        txtDealerDiscount.Text = State.DealerDiscount
+        txtAddToPlan.Text = State.AddToPlan
+        txtClaimAllowed.Text = State.ClaimAllowed
 
         'Me.BindListControlToDataView(Me.ddlEngineWarranty, LookupListNew.GetVSCCoverageLimitLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id))
 
@@ -172,7 +172,7 @@ Partial Public Class vscPlanCoveragesRateForm
                                                                   .CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
                                                                 })
 
-        Me.ddlEngineWarranty.Populate(CoverageLimits.ToArray(),
+        ddlEngineWarranty.Populate(CoverageLimits.ToArray(),
                                         New PopulateOptions() With
                                         {
                                             .AddBlankItem = True
@@ -182,20 +182,20 @@ Partial Public Class vscPlanCoveragesRateForm
 
     Private Sub PopulateGrid()
 
-        If Me.State.searchDV Is Nothing Then SearchVSCRateVersion()
+        If State.searchDV Is Nothing Then SearchVSCRateVersion()
 
-        Me.Grid.AutoGenerateColumns = False
+        Grid.AutoGenerateColumns = False
 
-        SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Guid.Empty, Me.Grid, Me.State.PageIndex)
+        SetPageAndSelectedIndexFromGuid(State.searchDV, Guid.Empty, Grid, State.PageIndex)
 
-        Me.State.PageIndex = Me.Grid.CurrentPageIndex
-        Me.Grid.DataSource = Me.State.searchDV
-        Me.Grid.DataBind()
-        ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
-        ControlMgr.SetVisibleControl(Me, trPageSize, Me.State.IsGridVisible)
+        State.PageIndex = Grid.CurrentPageIndex
+        Grid.DataSource = State.searchDV
+        Grid.DataBind()
+        ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, trPageSize, State.IsGridVisible)
 
-        If Me.Grid.Visible Then
-            Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+        If Grid.Visible Then
+            lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
         End If
 
     End Sub
@@ -207,13 +207,13 @@ Partial Public Class vscPlanCoveragesRateForm
         Dim strTemp As String
         Dim errMsg() As String = New String() {}, hasErr As Boolean = False
 
-        If Me.rdoAllocNew.Checked Then
-            Me._blnAllocForNew = True
+        If rdoAllocNew.Checked Then
+            _blnAllocForNew = True
         Else
-            Me._blnAllocForNew = False
+            _blnAllocForNew = False
         End If
 
-        strTemp = Me.txtTermMon.Text.Trim()
+        strTemp = txtTermMon.Text.Trim()
         If strTemp <> "" Then
             If Not Integer.TryParse(strTemp, intTermMon) Then
                 hasErr = True
@@ -223,7 +223,7 @@ Partial Public Class vscPlanCoveragesRateForm
             End If
         End If
 
-        strTemp = Me.txtDeductible.Text.Trim()
+        strTemp = txtDeductible.Text.Trim()
         If strTemp <> "" Then
             If Not Decimal.TryParse(strTemp, dDeductible) Then
                 hasErr = True
@@ -233,7 +233,7 @@ Partial Public Class vscPlanCoveragesRateForm
             End If
         End If
 
-        strTemp = Me.txtOdometer.Text.Trim()
+        strTemp = txtOdometer.Text.Trim()
         If strTemp <> "" Then
             If Not Integer.TryParse(strTemp, intOdometer) Then
                 hasErr = True
@@ -243,7 +243,7 @@ Partial Public Class vscPlanCoveragesRateForm
             End If
         End If
 
-        strTemp = Me.txtVehiclevalue.Text.Trim()
+        strTemp = txtVehiclevalue.Text.Trim()
         If strTemp <> "" Then
             If Not Decimal.TryParse(strTemp, dVehiclevalue) Then
                 hasErr = True
@@ -253,13 +253,13 @@ Partial Public Class vscPlanCoveragesRateForm
             End If
         End If
 
-        gEngineWarranty = Me.GetSelectedItem(Me.ddlEngineWarranty)
+        gEngineWarranty = GetSelectedItem(ddlEngineWarranty)
 
         If hasErr Then
-            Me.ErrControllerMaster.AddErrorAndShow(errMsg)
+            ErrControllerMaster.AddErrorAndShow(errMsg)
             Throw New GUIException("", "")
         Else
-            State.searchDV = VscCoverageRate.GetCoverageRateList(State.RateVersionID, State.VSCPlanID, gEngineWarranty, Me.txtClassCode.Text.Trim, intTermMon,
+            State.searchDV = VscCoverageRate.GetCoverageRateList(State.RateVersionID, State.VSCPlanID, gEngineWarranty, txtClassCode.Text.Trim, intTermMon,
                                 dDeductible, intOdometer, dVehiclevalue)
         End If
 
@@ -269,44 +269,44 @@ Partial Public Class vscPlanCoveragesRateForm
 #End Region
 
 #Region "Button event handler"
-    Protected Sub btnBACK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBACK.Click
+    Protected Sub btnBACK_Click(sender As System.Object, e As System.EventArgs) Handles btnBACK.Click
         Try
-            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back))
+            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back))
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Protected Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+    Protected Sub btnSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnSearch.Click
         Try
-            Me.State.PageIndex = 0
-            Me.State.IsGridVisible = True
-            Me.State.searchDV = Nothing
-            Me.State.HasDataChanged = False
-            Me.PopulateGrid()
+            State.PageIndex = 0
+            State.IsGridVisible = True
+            State.searchDV = Nothing
+            State.HasDataChanged = False
+            PopulateGrid()
         Catch ex As Exception
-            Me.State.IsGridVisible = False
-            ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.State.IsGridVisible)
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            State.IsGridVisible = False
+            ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, State.IsGridVisible)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Protected Sub btnClearSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
-        Me.ddlEngineWarranty.SelectedIndex = 0
-        Me.txtClassCode.Text = ""
-        Me.txtDeductible.Text = ""
-        Me.txtOdometer.Text = ""
-        Me.txtTermMon.Text = ""
-        Me.txtVehiclevalue.Text = ""
-        Me.rdoAllocNew.Checked = True
-        Me.rdoAllocUsed.Checked = False
+    Protected Sub btnClearSearch_Click(sender As System.Object, e As System.EventArgs) Handles btnClearSearch.Click
+        ddlEngineWarranty.SelectedIndex = 0
+        txtClassCode.Text = ""
+        txtDeductible.Text = ""
+        txtOdometer.Text = ""
+        txtTermMon.Text = ""
+        txtVehiclevalue.Text = ""
+        rdoAllocNew.Checked = True
+        rdoAllocUsed.Checked = False
     End Sub
 #End Region
 
 #Region "Grid related"
-    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs)
+    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
         'Dim elemType As ListItemType = e.Item.ItemType
         '' make sure it is the pager bar
         'If elemType = ListItemType.Pager Then
@@ -316,24 +316,24 @@ Partial Public Class vscPlanCoveragesRateForm
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
         Try
-            Me.State.PageIndex = e.NewPageIndex
-            Me.State.RateVersionID = Guid.Empty
-            Me.PopulateGrid()
+            State.PageIndex = e.NewPageIndex
+            State.RateVersionID = Guid.Empty
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Protected Sub cboPageSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Protected Sub cboPageSize_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
-            Me.Grid.CurrentPageIndex = Me.State.PageIndex
-            Me.PopulateGrid()
+            State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
+            Grid.CurrentPageIndex = State.PageIndex
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 #End Region

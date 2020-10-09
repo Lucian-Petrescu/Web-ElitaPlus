@@ -54,50 +54,50 @@
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid, ByVal sModifiedDate As String)
+    Public Sub New(id As Guid, sModifiedDate As String)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
         'Me.VerifyConcurrency(sModifiedDate)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New AppleGBIFileReconWrkDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -105,23 +105,23 @@
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New AppleGBIFileReconWrkDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -132,29 +132,29 @@
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New AppleGBIFileReconWrkDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
-    Public Shared Function SearchFilesname(ByVal BeginDate As Date,
-                                           ByVal EndDate As Date) As DataView
+    Public Shared Function SearchFilesname(BeginDate As Date,
+                                           EndDate As Date) As DataView
         Dim dal As New AppleGBIFileReconWrkDAL
         Dim ds As DataSet
 
         Try
             ds = dal.LoadSummary(BeginDate, EndDate)
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return ds.Tables(0).DefaultView
             Else
                 Return New DataView
@@ -165,14 +165,14 @@
 
     End Function
 
-    Public Shared Function LoadDeatils(ByVal FileProcessedId As Guid,
-                                       ByVal Status As String) As DataView
+    Public Shared Function LoadDeatils(FileProcessedId As Guid,
+                                       Status As String) As DataView
         Dim dal As New AppleGBIFileReconWrkDAL
         Dim ds As DataSet
 
         Try
             ds = dal.LoadDetail(FileProcessedId, Status, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            If Not ds Is Nothing AndAlso ds.Tables.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables.Count > 0 Then
                 Return ds.Tables(0).DefaultView
             Else
                 Return New DataView
@@ -184,7 +184,7 @@
     End Function
 #End Region
 #Region "Public Members"
-    Public Shared Function ProcessFile(ByVal fileProcessedId As Guid) As Guid
+    Public Shared Function ProcessFile(fileProcessedId As Guid) As Guid
         Dim dal As New AppleGBIFileReconWrkDAL
         Try
             dal.ProcessFile(fileProcessedId)
@@ -202,7 +202,7 @@
 #End Region
 
 #Region "Properties"
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(AppleGBIFileReconWrkDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -211,7 +211,7 @@
             End If
         End Get
     End Property
-    Public ReadOnly Property FileProcessedId() As Guid
+    Public ReadOnly Property FileProcessedId As Guid
         Get
             If Row(AppleGBIFileReconWrkDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -220,7 +220,7 @@
             End If
         End Get
     End Property
-    Public ReadOnly Property Filename() As String
+    Public ReadOnly Property Filename As String
         Get
             CheckDeleted()
             If Row(AppleGBIFileReconWrkDAL.COL_NAME_FILE_NAME) Is DBNull.Value Then
@@ -232,7 +232,7 @@
 
     End Property
 
-    Public ReadOnly Property Received() As LongType
+    Public ReadOnly Property Received As LongType
         Get
             CheckDeleted()
             If Row(AppleGBIFileReconWrkDAL.COL_NAME_RECEIVED) Is DBNull.Value Then
@@ -244,7 +244,7 @@
 
     End Property
 
-    Public ReadOnly Property Counted() As LongType
+    Public ReadOnly Property Counted As LongType
         Get
             CheckDeleted()
             If Row(AppleGBIFileReconWrkDAL.COL_NAME_COUNTED) Is DBNull.Value Then
@@ -256,7 +256,7 @@
 
     End Property
 
-    Public ReadOnly Property Processed() As LongType
+    Public ReadOnly Property Processed As LongType
         Get
             CheckDeleted()
             If Row(AppleGBIFileReconWrkDAL.COL_NAME_PROCESSED) Is DBNull.Value Then
@@ -268,7 +268,7 @@
 
     End Property
 
-    Public ReadOnly Property Cancelled() As LongType
+    Public ReadOnly Property Cancelled As LongType
         Get
             CheckDeleted()
             If Row(AppleGBIFileReconWrkDAL.COL_NAME_CANCELLED) Is DBNull.Value Then
@@ -279,7 +279,7 @@
         End Get
 
     End Property
-    Public ReadOnly Property PendingValidation() As LongType
+    Public ReadOnly Property PendingValidation As LongType
         Get
             CheckDeleted()
             If Row(AppleGBIFileReconWrkDAL.COL_NAME_PENDING_VALIDATION) Is DBNull.Value Then
@@ -290,7 +290,7 @@
         End Get
 
     End Property
-    Public ReadOnly Property FailedReprocess() As LongType
+    Public ReadOnly Property FailedReprocess As LongType
         Get
             CheckDeleted()
             If Row(AppleGBIFileReconWrkDAL.COL_NAME_FAILED_REPROCESS) Is DBNull.Value Then
@@ -301,7 +301,7 @@
         End Get
 
     End Property
-    Public ReadOnly Property PendingClaimCreation() As LongType
+    Public ReadOnly Property PendingClaimCreation As LongType
         Get
             CheckDeleted()
             If Row(AppleGBIFileReconWrkDAL.COL_NAME_PENDING_CLAIM_CREATION) Is DBNull.Value Then
@@ -329,7 +329,7 @@
     '    End Set
     'End Property
 
-    Public Property RejectCode() As String
+    Public Property RejectCode As String
         Get
             CheckDeleted()
             If Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_REJECT_CODE) Is DBNull.Value Then
@@ -338,13 +338,13 @@
                 Return CType(Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_REJECT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_REJECT_CODE, Value)
+            SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_REJECT_CODE, Value)
         End Set
     End Property
 
-    Public Property RejectReason() As String
+    Public Property RejectReason As String
         Get
             CheckDeleted()
             If Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_REJECT_REASON) Is DBNull.Value Then
@@ -353,13 +353,13 @@
                 Return CType(Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_REJECT_REASON), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_REJECT_REASON, Value)
+            SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_REJECT_REASON, Value)
         End Set
     End Property
 
-    Public Property CustomerId() As String
+    Public Property CustomerId As String
         Get
             CheckDeleted()
             If Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_CUSTOMER_ID) Is DBNull.Value Then
@@ -368,13 +368,13 @@
                 Return CType(Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_CUSTOMER_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_CUSTOMER_ID, Value)
+            SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_CUSTOMER_ID, Value)
         End Set
     End Property
 
-    Public Property ShipToId() As String
+    Public Property ShipToId As String
         Get
             CheckDeleted()
             If Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_SHIP_TO_ID) Is DBNull.Value Then
@@ -383,13 +383,13 @@
                 Return CType(Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_SHIP_TO_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_SHIP_TO_ID, Value)
+            SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_SHIP_TO_ID, Value)
         End Set
     End Property
 
-    Public Property AgreementId() As String
+    Public Property AgreementId As String
         Get
             CheckDeleted()
             If Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_AGREEMENT_ID) Is DBNull.Value Then
@@ -398,13 +398,13 @@
                 Return CType(Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_AGREEMENT_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_AGREEMENT_ID, Value)
+            SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_AGREEMENT_ID, Value)
         End Set
     End Property
 
-    Public Property UniqueIdentifier() As String
+    Public Property UniqueIdentifier As String
         Get
             CheckDeleted()
             If Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_UNIQUE_IDENTIFIER) Is DBNull.Value Then
@@ -413,13 +413,13 @@
                 Return CType(Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_UNIQUE_IDENTIFIER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_UNIQUE_IDENTIFIER, Value)
+            SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_UNIQUE_IDENTIFIER, Value)
         End Set
     End Property
 
-    Public Property OriginalSerialNumber() As String
+    Public Property OriginalSerialNumber As String
         Get
             CheckDeleted()
             If Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_ORIGINAL_SERIAL_NUMBER) Is DBNull.Value Then
@@ -428,13 +428,13 @@
                 Return CType(Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_ORIGINAL_SERIAL_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_ORIGINAL_SERIAL_NUMBER, Value)
+            SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_ORIGINAL_SERIAL_NUMBER, Value)
         End Set
     End Property
 
-    Public Property OriginalImeiNumber() As String
+    Public Property OriginalImeiNumber As String
         Get
             CheckDeleted()
             If Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_ORIGINAL_IMEI_NUMBER) Is DBNull.Value Then
@@ -443,12 +443,12 @@
                 Return CType(Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_ORIGINAL_IMEI_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_ORIGINAL_IMEI_NUMBER, Value)
+            SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_ORIGINAL_IMEI_NUMBER, Value)
         End Set
     End Property
-    Public Property NewSerialNumber() As String
+    Public Property NewSerialNumber As String
         Get
             CheckDeleted()
             If Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_NEW_SERIAL_NUMBER) Is DBNull.Value Then
@@ -457,12 +457,12 @@
                 Return CType(Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_NEW_SERIAL_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_NEW_SERIAL_NUMBER, Value)
+            SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_NEW_SERIAL_NUMBER, Value)
         End Set
     End Property
-    Public Property NewImeiNumber() As String
+    Public Property NewImeiNumber As String
         Get
             CheckDeleted()
             If Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_NEW_IMEI_NUMBER) Is DBNull.Value Then
@@ -471,12 +471,12 @@
                 Return CType(Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_NEW_IMEI_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_NEW_IMEI_NUMBER, Value)
+            SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_NEW_IMEI_NUMBER, Value)
         End Set
     End Property
-    Public Property RepairCompletionDate() As String
+    Public Property RepairCompletionDate As String
         Get
             CheckDeleted()
             If Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_REPAIR_COMPLETION_DATE) Is DBNull.Value Then
@@ -485,12 +485,12 @@
                 Return CType(Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_REPAIR_COMPLETION_DATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_REPAIR_COMPLETION_DATE, Value)
+            SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_REPAIR_COMPLETION_DATE, Value)
         End Set
     End Property
-    Public Property ClaimType() As String
+    Public Property ClaimType As String
         Get
             CheckDeleted()
             If Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_CLAIM_TYPE) Is DBNull.Value Then
@@ -499,12 +499,12 @@
                 Return CType(Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_CLAIM_TYPE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_CLAIM_TYPE, Value)
+            SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_CLAIM_TYPE, Value)
         End Set
     End Property
-    Public Property Channel() As String
+    Public Property Channel As String
         Get
             CheckDeleted()
             If Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_CHANNEL) Is DBNull.Value Then
@@ -513,12 +513,12 @@
                 Return CType(Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_CHANNEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_CHANNEL, Value)
+            SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_CHANNEL, Value)
         End Set
     End Property
-    Public Property IncidentFee() As String
+    Public Property IncidentFee As String
         Get
             CheckDeleted()
             If Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_INCIDENT_FEE) Is DBNull.Value Then
@@ -527,12 +527,12 @@
                 Return CType(Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_INCIDENT_FEE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_INCIDENT_FEE, Value)
+            SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_INCIDENT_FEE, Value)
         End Set
     End Property
-    Public Property NotifCreateDate() As String
+    Public Property NotifCreateDate As String
         Get
             CheckDeleted()
             If Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_NOTIF_CREATE_DATE) Is DBNull.Value Then
@@ -541,12 +541,12 @@
                 Return CType(Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_NOTIF_CREATE_DATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_NOTIF_CREATE_DATE, Value)
+            SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_NOTIF_CREATE_DATE, Value)
         End Set
     End Property
-    Public Property RepairCompleted() As String
+    Public Property RepairCompleted As String
         Get
             CheckDeleted()
             If Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_REPAIR_COMPLETED) Is DBNull.Value Then
@@ -555,12 +555,12 @@
                 Return CType(Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_REPAIR_COMPLETED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_REPAIR_COMPLETED, Value)
+            SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_REPAIR_COMPLETED, Value)
         End Set
     End Property
-    Public Property RepairCompletedDate() As String
+    Public Property RepairCompletedDate As String
         Get
             CheckDeleted()
             If Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_REPAIR_COMPLETED_DATE) Is DBNull.Value Then
@@ -569,12 +569,12 @@
                 Return CType(Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_REPAIR_COMPLETED_DATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_REPAIR_COMPLETED_DATE, Value)
+            SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_REPAIR_COMPLETED_DATE, Value)
         End Set
     End Property
-    Public Property ClaimCancelled() As String
+    Public Property ClaimCancelled As String
         Get
             CheckDeleted()
             If Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_CLAIM_CANCELLED) Is DBNull.Value Then
@@ -583,12 +583,12 @@
                 Return CType(Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_CLAIM_CANCELLED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_CLAIM_CANCELLED, Value)
+            SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_CLAIM_CANCELLED, Value)
         End Set
     End Property
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_DESCRIPTION) Is DBNull.Value Then
@@ -597,13 +597,13 @@
                 Return CType(Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_DESCRIPTION, Value)
+            SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_DESCRIPTION, Value)
         End Set
     End Property
 
-    Public Property RecordStatus() As String
+    Public Property RecordStatus As String
         Get
             CheckDeleted()
             If Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_RECORD_STATUS) Is DBNull.Value Then
@@ -612,9 +612,9 @@
                 Return CType(Row(AppleGBIFileReconWrkDAL.COL_NAME_DET_RECORD_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_RECORD_STATUS, Value)
+            SetValue(AppleGBIFileReconWrkDAL.COL_NAME_DET_RECORD_STATUS, Value)
         End Set
     End Property
 #End Region

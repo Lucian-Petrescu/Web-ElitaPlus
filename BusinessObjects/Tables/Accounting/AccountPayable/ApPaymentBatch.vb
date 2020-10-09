@@ -6,48 +6,48 @@ Public Class ApPaymentBatch
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
     
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()             
         Try
             Dim dal As New ApPaymentBatchDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize() 
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class ApPaymentBatch
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)               
+    Protected Sub Load(id As Guid)               
         Try
             Dim dal As New ApPaymentBatchDAL            
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -90,7 +90,7 @@ Public Class ApPaymentBatch
 #Region "Properties"
     
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(ApPaymentBatchDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class ApPaymentBatch
     End Property
 	
     <ValueMandatory(""),ValidStringLength("", Max:=400)> _
-    Public Property BatchNumber() As String
+    Public Property BatchNumber As String
         Get
             CheckDeleted()
             If row(ApPaymentBatchDAL.COL_NAME_BATCH_NUMBER) Is DBNull.Value Then
@@ -110,15 +110,15 @@ Public Class ApPaymentBatch
                 Return CType(row(ApPaymentBatchDAL.COL_NAME_BATCH_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ApPaymentBatchDAL.COL_NAME_BATCH_NUMBER, Value)
+            SetValue(ApPaymentBatchDAL.COL_NAME_BATCH_NUMBER, Value)
         End Set
     End Property
 	
 	
     <ValueMandatory("")> _
-    Public Property VendorId() As Guid
+    Public Property VendorId As Guid
         Get
             CheckDeleted()
             If row(ApPaymentBatchDAL.COL_NAME_VENDOR_ID) Is DBNull.Value Then
@@ -127,15 +127,15 @@ Public Class ApPaymentBatch
                 Return New Guid(CType(row(ApPaymentBatchDAL.COL_NAME_VENDOR_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ApPaymentBatchDAL.COL_NAME_VENDOR_ID, Value)
+            SetValue(ApPaymentBatchDAL.COL_NAME_VENDOR_ID, Value)
         End Set
     End Property
 	
 	
     
-    Public Property VendorAddressId() As Guid
+    Public Property VendorAddressId As Guid
         Get
             CheckDeleted()
             If row(ApPaymentBatchDAL.COL_NAME_VENDOR_ADDRESS_ID) Is DBNull.Value Then
@@ -144,15 +144,15 @@ Public Class ApPaymentBatch
                 Return New Guid(CType(row(ApPaymentBatchDAL.COL_NAME_VENDOR_ADDRESS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(ApPaymentBatchDAL.COL_NAME_VENDOR_ADDRESS_ID, Value)
+            SetValue(ApPaymentBatchDAL.COL_NAME_VENDOR_ADDRESS_ID, Value)
         End Set
     End Property
 	
 	
     <ValueMandatory("")> _
-    Public Property Amount() As DecimalType
+    Public Property Amount As DecimalType
         Get
             CheckDeleted()
             If row(ApPaymentBatchDAL.COL_NAME_AMOUNT) Is DBNull.Value Then
@@ -161,15 +161,15 @@ Public Class ApPaymentBatch
                 Return New DecimalType(CType(row(ApPaymentBatchDAL.COL_NAME_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(ApPaymentBatchDAL.COL_NAME_AMOUNT, Value)
+            SetValue(ApPaymentBatchDAL.COL_NAME_AMOUNT, Value)
         End Set
     End Property
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=200)> _
-    Public Property AccountingPeriod() As String
+    Public Property AccountingPeriod As String
         Get
             CheckDeleted()
             If row(ApPaymentBatchDAL.COL_NAME_ACCOUNTING_PERIOD) Is DBNull.Value Then
@@ -178,15 +178,15 @@ Public Class ApPaymentBatch
                 Return CType(row(ApPaymentBatchDAL.COL_NAME_ACCOUNTING_PERIOD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ApPaymentBatchDAL.COL_NAME_ACCOUNTING_PERIOD, Value)
+            SetValue(ApPaymentBatchDAL.COL_NAME_ACCOUNTING_PERIOD, Value)
         End Set
     End Property
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=400)> _
-    Public Property PaymentStatusXcd() As String
+    Public Property PaymentStatusXcd As String
         Get
             CheckDeleted()
             If row(ApPaymentBatchDAL.COL_NAME_PAYMENT_STATUS_XCD) Is DBNull.Value Then
@@ -195,15 +195,15 @@ Public Class ApPaymentBatch
                 Return CType(row(ApPaymentBatchDAL.COL_NAME_PAYMENT_STATUS_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ApPaymentBatchDAL.COL_NAME_PAYMENT_STATUS_XCD, Value)
+            SetValue(ApPaymentBatchDAL.COL_NAME_PAYMENT_STATUS_XCD, Value)
         End Set
     End Property
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=4)> _
-    Public Property Distributed() As String
+    Public Property Distributed As String
         Get
             CheckDeleted()
             If row(ApPaymentBatchDAL.COL_NAME_DISTRIBUTED) Is DBNull.Value Then
@@ -212,15 +212,15 @@ Public Class ApPaymentBatch
                 Return CType(row(ApPaymentBatchDAL.COL_NAME_DISTRIBUTED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ApPaymentBatchDAL.COL_NAME_DISTRIBUTED, Value)
+            SetValue(ApPaymentBatchDAL.COL_NAME_DISTRIBUTED, Value)
         End Set
     End Property
 	
 	
     <ValueMandatory(""),ValidStringLength("", Max:=4)> _
-    Public Property Posted() As String
+    Public Property Posted As String
         Get
             CheckDeleted()
             If row(ApPaymentBatchDAL.COL_NAME_POSTED) Is DBNull.Value Then
@@ -229,15 +229,15 @@ Public Class ApPaymentBatch
                 Return CType(row(ApPaymentBatchDAL.COL_NAME_POSTED), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ApPaymentBatchDAL.COL_NAME_POSTED, Value)
+            SetValue(ApPaymentBatchDAL.COL_NAME_POSTED, Value)
         End Set
     End Property
 	
 	
     <ValidStringLength("", Max:=400)> _
-    Public Property Paymentsource() As String
+    Public Property Paymentsource As String
         Get
             CheckDeleted()
             If row(ApPaymentBatchDAL.COL_NAME_PAYMENTSOURCE) Is DBNull.Value Then
@@ -246,9 +246,9 @@ Public Class ApPaymentBatch
                 Return CType(row(ApPaymentBatchDAL.COL_NAME_PAYMENTSOURCE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(ApPaymentBatchDAL.COL_NAME_PAYMENTSOURCE, Value)
+            SetValue(ApPaymentBatchDAL.COL_NAME_PAYMENTSOURCE, Value)
         End Set
     End Property
 	
@@ -261,15 +261,15 @@ Public Class ApPaymentBatch
     Public Overrides Sub Save()         
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ApPaymentBatchDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -277,7 +277,7 @@ Public Class ApPaymentBatch
         End Try
     End Sub
 
-    Public Shared sub ValidatePaymentBatch(ByVal vendorId As Guid, ByVal batchNumber As String, ByRef errCode As Integer, ByRef errMsg As String)
+    Public Shared sub ValidatePaymentBatch(vendorId As Guid, batchNumber As String, ByRef errCode As Integer, ByRef errMsg As String)
         Dim dal As New ApPaymentBatchDAL
         dal.ValidatePaymentBatch(vendorId, batchNumber, errCode, errMsg)
     End sub

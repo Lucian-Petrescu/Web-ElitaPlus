@@ -104,7 +104,7 @@
                                             <td valign="middle" align="left" colspan="4">
                                                     <div id="tabs" class="style-tabs">
                                                         <ul>
-                                                            <li><a href="#tabsBestReplacement">
+                                                            <li><a href="#tabsBestReplacement" rel="noopener noreferrer">
                                                                 <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">BEST_REPLACEMENT</asp:Label></a></li>
                                                         </ul>
 

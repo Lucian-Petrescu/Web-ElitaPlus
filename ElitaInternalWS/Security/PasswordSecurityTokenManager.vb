@@ -11,12 +11,12 @@ Namespace Security
     Public Class PasswordSecurityTokenManager
         Inherits ServiceCredentialsSecurityTokenManager
 
-        Public Sub New(ByVal credentials As PasswordServiceCredentials)
+        Public Sub New(credentials As PasswordServiceCredentials)
             MyBase.New(credentials)
         End Sub
          
         Public Overrides Function CreateSecurityTokenAuthenticator( _
-             ByVal tokenRequirement As SecurityTokenRequirement, _
+             tokenRequirement As SecurityTokenRequirement, _
              ByRef outOfBandTokenResolver As SecurityTokenResolver) As SecurityTokenAuthenticator
 
             If (tokenRequirement.TokenType = SecurityTokenTypes.UserName) Then

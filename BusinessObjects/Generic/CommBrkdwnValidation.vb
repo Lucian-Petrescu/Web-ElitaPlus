@@ -31,7 +31,7 @@ Public Class CommBrkdwnValidation
 
 #Region "Constructors"
 
-    Public Sub New(ByVal ds As CommBrkdwnValidationDs)
+    Public Sub New(ds As CommBrkdwnValidationDs)
         MyBase.New()
 
         MapDataSet(ds)
@@ -40,7 +40,7 @@ Public Class CommBrkdwnValidation
         dsMyCommBrkdwnValidation = ds
     End Sub
 
-    Public Sub New(ByVal ds As CommBrkdwnValidationDs, ByVal xml As String)
+    Public Sub New(ds As CommBrkdwnValidationDs, xml As String)
         MyBase.New()
 
         MapDataSet(ds)
@@ -57,7 +57,7 @@ Public Class CommBrkdwnValidation
     Dim _uploadSessionId As String
     Dim _uploadSessionGuidId As Guid = Guid.Empty
 
-    Private Sub MapDataSet(ByVal ds As CommBrkdwnValidationDs)
+    Private Sub MapDataSet(ds As CommBrkdwnValidationDs)
 
         Dim schema As String = ds.GetXmlSchema
 
@@ -70,8 +70,8 @@ Public Class CommBrkdwnValidation
             Next
         Next
 
-        Me.Dataset = New DataSet
-        Me.Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
+        Dataset = New DataSet
+        Dataset.ReadXmlSchema(XMLHelper.GetXMLStream(schema))
 
     End Sub
 
@@ -79,11 +79,11 @@ Public Class CommBrkdwnValidation
     Private Sub Initialize()
     End Sub
 
-    Private Sub Load(ByVal ds As CommBrkdwnValidationDs)
+    Private Sub Load(ds As CommBrkdwnValidationDs)
         Try
             Initialize()
-            Dim newRow As DataRow = Me.Dataset.Tables(TABLE_NAME).NewRow
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(TABLE_NAME).NewRow
+            Row = newRow
             PopulateBOFromWebService(ds)
             'Me.Dataset.Tables(TABLE_NAME).Rows.Add(newRow)
 
@@ -98,11 +98,11 @@ Public Class CommBrkdwnValidation
         End Try
     End Sub
 
-    Private Sub PopulateBOFromWebService(ByVal ds As CommBrkdwnValidationDs)
+    Private Sub PopulateBOFromWebService(ds As CommBrkdwnValidationDs)
         Try
             If ds.CommBrkdwnValidation.Count = 0 Then Exit Sub
             With ds.CommBrkdwnValidation.Item(0)
-                Me.UploadSessionId = .UPLOAD_SESSION_ID
+                UploadSessionId = .UPLOAD_SESSION_ID
             End With
 
         Catch ex As Exception
@@ -117,11 +117,11 @@ Public Class CommBrkdwnValidation
 
 #Region "Properties"
 
-    Public Property UploadSessionId() As String
+    Public Property UploadSessionId As String
         Get
             Return _uploadSessionId
         End Get
-        Set(ByVal Value As String)
+        Set
             _uploadSessionId = Value
         End Set
     End Property
@@ -133,9 +133,9 @@ Public Class CommBrkdwnValidation
     Public Overrides Function ProcessWSRequest() As String
         Try
             'Load the pre-validated Dealer level Commission Entry Breakdown records
-            Dim dsPreValidatedDealerCommBrkdwnRecords As DataSet = CommEntyBrkdwnUpload.GetPreValidatedCommEntyBrkdwnsForDealer(Me.UploadSessionId)
+            Dim dsPreValidatedDealerCommBrkdwnRecords As DataSet = CommEntyBrkdwnUpload.GetPreValidatedCommEntyBrkdwnsForDealer(UploadSessionId)
 
-            If Not dsPreValidatedDealerCommBrkdwnRecords Is Nothing AndAlso Not dsPreValidatedDealerCommBrkdwnRecords.Tables(0) Is Nothing AndAlso dsPreValidatedDealerCommBrkdwnRecords.Tables(0).Rows.Count > 0 Then
+            If dsPreValidatedDealerCommBrkdwnRecords IsNot Nothing AndAlso dsPreValidatedDealerCommBrkdwnRecords.Tables(0) IsNot Nothing AndAlso dsPreValidatedDealerCommBrkdwnRecords.Tables(0).Rows.Count > 0 Then
                 Dim preValidatedDealerCommBrkdwnRow As DataRow
                 Dim commbrkdwnErrors As ValidationError()
                 Dim strCommonValidationErrors As String = String.Empty
@@ -158,7 +158,7 @@ Public Class CommBrkdwnValidation
                     Try
                         restrictMarkup = CommissionPeriod.GetRestrictMarkup(objCommissionPeriodData, False)
                     Catch boval As BOValidationException
-                        If Not boval Is Nothing Then
+                        If boval IsNot Nothing Then
                             Dim BOValidationErrors As ValidationError()
                             BOValidationErrors = boval.ValidationErrorList()
                             If BOValidationErrors.Length > 0 Then
@@ -225,9 +225,9 @@ Public Class CommBrkdwnValidation
                     objCommPeriod.AttachTolerance(objCommTolerance)
 
                     'Load the pre-validated Commission Entry Breakdown records
-                    Dim dsPreValidatedCommBrkdwnRecords As DataSet = CommEntyBrkdwnUpload.GetPreValidatedCommEntyBrkdwnsForUpload(Me.UploadSessionId, objCommPeriod.DealerId)
+                    Dim dsPreValidatedCommBrkdwnRecords As DataSet = CommEntyBrkdwnUpload.GetPreValidatedCommEntyBrkdwnsForUpload(UploadSessionId, objCommPeriod.DealerId)
 
-                    If Not dsPreValidatedCommBrkdwnRecords Is Nothing AndAlso Not dsPreValidatedCommBrkdwnRecords.Tables(0) Is Nothing AndAlso dsPreValidatedCommBrkdwnRecords.Tables(0).Rows.Count > 0 Then
+                    If dsPreValidatedCommBrkdwnRecords IsNot Nothing AndAlso dsPreValidatedCommBrkdwnRecords.Tables(0) IsNot Nothing AndAlso dsPreValidatedCommBrkdwnRecords.Tables(0).Rows.Count > 0 Then
 
                         Dim preValidatedCommBrkdwnRow As DataRow
                         For Each preValidatedCommBrkdwnRow In dsPreValidatedCommBrkdwnRecords.Tables(0).Rows
@@ -272,7 +272,7 @@ Public Class CommBrkdwnValidation
                             ' Validations
                             strValidationErrors &= strCommonValidationErrors
                             Dim commentityErrors As ValidationError()
-                            If Not objCommEntity Is Nothing Then
+                            If objCommEntity IsNot Nothing Then
                                 commentityErrors = objCommEntity.ValidationErrors()
                                 If commentityErrors.Length > 0 Then
                                     For index = 0 To commentityErrors.Length - 1
@@ -283,7 +283,7 @@ Public Class CommBrkdwnValidation
                             End If
 
                             Dim bankinfoErrors As ValidationError()
-                            If Not objBankInfo Is Nothing Then
+                            If objBankInfo IsNot Nothing Then
                                 bankinfoErrors = objBankInfo.ValidationErrors()
                                 If bankinfoErrors.Length > 0 Then
                                     For index = 0 To bankinfoErrors.Length - 1
@@ -294,7 +294,7 @@ Public Class CommBrkdwnValidation
                             End If
 
                             Dim associatecommissionErrors As ValidationError()
-                            If Not objAssociateCommissions Is Nothing Then
+                            If objAssociateCommissions IsNot Nothing Then
                                 associatecommissionErrors = objAssociateCommissions.ValidationErrors()
                                 If associatecommissionErrors.Length > 0 Then
                                     For index = 0 To associatecommissionErrors.Length - 1
@@ -305,7 +305,7 @@ Public Class CommBrkdwnValidation
                             End If
 
                             Dim commperiodErrors As ValidationError()
-                            If Not objCommPeriod Is Nothing Then
+                            If objCommPeriod IsNot Nothing Then
                                 commperiodErrors = objCommPeriod.ValidationErrors()
                                 If commperiodErrors.Length > 0 Then
                                     For index = 0 To commperiodErrors.Length - 1
@@ -343,7 +343,7 @@ Public Class CommBrkdwnValidation
 
     End Function
 
-    Public Function CheckDBNull(ByVal obj As Object) As Object
+    Public Function CheckDBNull(obj As Object) As Object
         If DBNull.Value.Equals(obj) Then
             If obj.GetType Is GetType(DecimalType) Then
                 Return 0
@@ -355,8 +355,8 @@ Public Class CommBrkdwnValidation
         End If
     End Function
 
-    Private Sub BuildCommPeriod(ByRef objCommPeriod As CommissionPeriod, ByVal objCommEntyBrkdwnUpload As CommEntyBrkdwnUpload)
-        If Not objCommEntyBrkdwnUpload Is Nothing Then
+    Private Sub BuildCommPeriod(ByRef objCommPeriod As CommissionPeriod, objCommEntyBrkdwnUpload As CommEntyBrkdwnUpload)
+        If objCommEntyBrkdwnUpload IsNot Nothing Then
             objCommPeriod = New CommissionPeriod
             With objCommPeriod
                 .DealerId = objCommEntyBrkdwnUpload.DealerId
@@ -386,8 +386,8 @@ Public Class CommBrkdwnValidation
         End If
     End Sub
 
-    Private Sub BuildCommEntity(ByRef objCommEntity As CommissionEntity, ByVal objCommEntyBrkdwnUpload As CommEntyBrkdwnUpload)
-        If Not objCommEntyBrkdwnUpload Is Nothing Then
+    Private Sub BuildCommEntity(ByRef objCommEntity As CommissionEntity, objCommEntyBrkdwnUpload As CommEntyBrkdwnUpload)
+        If objCommEntyBrkdwnUpload IsNot Nothing Then
             objCommEntity = New CommissionEntity()
             With objCommEntity
                 .EntityName = objCommEntyBrkdwnUpload.EntityName
@@ -408,8 +408,8 @@ Public Class CommBrkdwnValidation
         End If
     End Sub
 
-    Private Sub BuildAssociateCommissions(ByRef objAssociateCommissions As AssociateCommissions, ByVal objCommEntyBrkdwnUpload As CommEntyBrkdwnUpload)
-        If Not objCommEntyBrkdwnUpload Is Nothing Then
+    Private Sub BuildAssociateCommissions(ByRef objAssociateCommissions As AssociateCommissions, objCommEntyBrkdwnUpload As CommEntyBrkdwnUpload)
+        If objCommEntyBrkdwnUpload IsNot Nothing Then
             objAssociateCommissions = New AssociateCommissions
             With objAssociateCommissions
                 .CommissionPercent = objCommEntyBrkdwnUpload.CommissionPercent
@@ -418,8 +418,8 @@ Public Class CommBrkdwnValidation
         End If
     End Sub
 
-    Private Sub BuildBankInfo(ByRef objBankInfo As BankInfo, ByVal objCommEntyBrkdwnUpload As CommEntyBrkdwnUpload)
-        If Not objCommEntyBrkdwnUpload Is Nothing Then
+    Private Sub BuildBankInfo(ByRef objBankInfo As BankInfo, objCommEntyBrkdwnUpload As CommEntyBrkdwnUpload)
+        If objCommEntyBrkdwnUpload IsNot Nothing Then
             objBankInfo = New BankInfo()
             With objBankInfo
                 .CountryID = objCommEntyBrkdwnUpload.BankCountryId

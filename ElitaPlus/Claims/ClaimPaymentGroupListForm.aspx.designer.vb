@@ -20,7 +20,7 @@ Partial Public Class ClaimPaymentGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ScriptManager1 As Global.System.Web.UI.ScriptManager
+    Protected WithEvents ScriptManager1 As ScriptManager
 
     '''<summary>
     '''searchTable control.
@@ -29,7 +29,7 @@ Partial Public Class ClaimPaymentGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents searchTable As Global.System.Web.UI.HtmlControls.HtmlTable
+    Protected WithEvents searchTable As HtmlTable
 
     '''<summary>
     '''moCountryLabel control.
@@ -38,7 +38,7 @@ Partial Public Class ClaimPaymentGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moCountryLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moCountryLabel As Label
 
     '''<summary>
     '''ddlCountryDropDown control.
@@ -47,7 +47,7 @@ Partial Public Class ClaimPaymentGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlCountryDropDown As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlCountryDropDown As DropDownList
 
     '''<summary>
     '''moSvcCenterLabel control.
@@ -56,7 +56,7 @@ Partial Public Class ClaimPaymentGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moSvcCenterLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moSvcCenterLabel As Label
 
     '''<summary>
     '''ddlSvcCenterDropDown control.
@@ -65,7 +65,7 @@ Partial Public Class ClaimPaymentGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlSvcCenterDropDown As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlSvcCenterDropDown As DropDownList
 
     '''<summary>
     '''cboPageSize control.
@@ -74,7 +74,7 @@ Partial Public Class ClaimPaymentGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboPageSize As DropDownList
 
     '''<summary>
     '''lblPaymentGroupNumber control.
@@ -83,7 +83,7 @@ Partial Public Class ClaimPaymentGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPaymentGroupNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPaymentGroupNumber As Label
 
     '''<summary>
     '''moPaymentGroupNumber control.
@@ -92,7 +92,7 @@ Partial Public Class ClaimPaymentGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moPaymentGroupNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moPaymentGroupNumber As TextBox
 
     '''<summary>
     '''moPaymentGroupDateRange control.
@@ -101,7 +101,7 @@ Partial Public Class ClaimPaymentGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moPaymentGroupDateRange As Global.Assurant.ElitaPlus.ElitaPlusWebApp.FieldSearchCriteriaControl
+    Protected WithEvents moPaymentGroupDateRange As FieldSearchCriteriaControl
 
     '''<summary>
     '''Label1 control.
@@ -110,7 +110,7 @@ Partial Public Class ClaimPaymentGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label1 As Label
 
     '''<summary>
     '''PmntGrpStatusDropDown control.
@@ -119,7 +119,7 @@ Partial Public Class ClaimPaymentGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents PmntGrpStatusDropDown As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents PmntGrpStatusDropDown As DropDownList
 
     '''<summary>
     '''lblInvoiceGroupNumber control.
@@ -128,7 +128,7 @@ Partial Public Class ClaimPaymentGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblInvoiceGroupNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblInvoiceGroupNumber As Label
 
     '''<summary>
     '''moInvoiceGroupNumber control.
@@ -137,7 +137,7 @@ Partial Public Class ClaimPaymentGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moInvoiceGroupNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moInvoiceGroupNumber As TextBox
 
     '''<summary>
     '''lblInvoiceNumber control.
@@ -146,7 +146,7 @@ Partial Public Class ClaimPaymentGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblInvoiceNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblInvoiceNumber As Label
 
     '''<summary>
     '''moInvoiceNumber control.
@@ -155,7 +155,7 @@ Partial Public Class ClaimPaymentGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moInvoiceNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moInvoiceNumber As TextBox
 
     '''<summary>
     '''btnClearSearch control.
@@ -164,7 +164,7 @@ Partial Public Class ClaimPaymentGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnClearSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnClearSearch As Button
 
     '''<summary>
     '''btnSearch control.
@@ -173,7 +173,7 @@ Partial Public Class ClaimPaymentGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSearch As Button
 
     '''<summary>
     '''divDataContainer control.
@@ -182,7 +182,7 @@ Partial Public Class ClaimPaymentGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents divDataContainer As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents divDataContainer As HtmlGenericControl
 
     '''<summary>
     '''lblSearchResults control.
@@ -191,7 +191,7 @@ Partial Public Class ClaimPaymentGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblSearchResults As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblSearchResults As Label
 
     '''<summary>
     '''Grid control.
@@ -200,7 +200,7 @@ Partial Public Class ClaimPaymentGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Grid As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents Grid As GridView
 
     '''<summary>
     '''BtnNew_WRITE control.
@@ -209,5 +209,5 @@ Partial Public Class ClaimPaymentGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents BtnNew_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents BtnNew_WRITE As Button
 End Class

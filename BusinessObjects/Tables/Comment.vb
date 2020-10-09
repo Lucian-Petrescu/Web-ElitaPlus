@@ -6,36 +6,36 @@ Public Class Comment
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
@@ -58,15 +58,15 @@ Public Class Comment
     Protected Sub Load()
         Try
             Dim dal As New CommentDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            If Me.Dataset.Tables(dal.TABLE_NAME).Rows.Count = 1 Then
-                Me.Dataset.Tables(dal.TABLE_NAME).Rows(0).Delete()
+            If Dataset.Tables(dal.TABLE_NAME).Rows.Count = 1 Then
+                Dataset.Tables(dal.TABLE_NAME).Rows(0).Delete()
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -74,23 +74,23 @@ Public Class Comment
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CommentDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -114,7 +114,7 @@ Public Class Comment
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CommentDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -125,7 +125,7 @@ Public Class Comment
     End Property
 
     <MandatryCertOrForgetRequest("")>
-    Public Property CertId() As Guid
+    Public Property CertId As Guid
         Get
             CheckDeleted()
             If Row(CommentDAL.COL_NAME_CERT_ID) Is DBNull.Value Then
@@ -134,27 +134,27 @@ Public Class Comment
                 Return New Guid(CType(Row(CommentDAL.COL_NAME_CERT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CommentDAL.COL_NAME_CERT_ID, Value)
+            SetValue(CommentDAL.COL_NAME_CERT_ID, Value)
             'refresh the certifcate object
-            Me._cert = Nothing
+            _cert = Nothing
         End Set
     End Property
 
-    Public ReadOnly Property Certificate() As Certificate
+    Public ReadOnly Property Certificate As Certificate
         Get
-            If Me._cert Is Nothing Then
-                If Not Me.CertId.Equals(Guid.Empty) Then
-                    Me._cert = New Certificate(Me.CertId)
+            If _cert Is Nothing Then
+                If Not CertId.Equals(Guid.Empty) Then
+                    _cert = New Certificate(CertId)
                 End If
             End If
-            Return Me._cert
+            Return _cert
         End Get
     End Property
 
 
-    Public Property ClaimId() As Guid
+    Public Property ClaimId As Guid
         Get
             CheckDeleted()
             If Row(CommentDAL.COL_NAME_CLAIM_ID) Is DBNull.Value Then
@@ -163,28 +163,28 @@ Public Class Comment
                 Return New Guid(CType(Row(CommentDAL.COL_NAME_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CommentDAL.COL_NAME_CLAIM_ID, Value)
+            SetValue(CommentDAL.COL_NAME_CLAIM_ID, Value)
             'refresh the claim
-            Me._claim = Nothing
+            _claim = Nothing
         End Set
     End Property
 
-    Public ReadOnly Property Claim() As ClaimBase
+    Public ReadOnly Property Claim As ClaimBase
         Get
-            If Me._claim Is Nothing Then
-                If Not Me.ClaimId.Equals(Guid.Empty) Then
-                    Me._claim = ClaimFacade.Instance.GetClaim(Of ClaimBase)(Me.ClaimId)
+            If _claim Is Nothing Then
+                If Not ClaimId.Equals(Guid.Empty) Then
+                    _claim = ClaimFacade.Instance.GetClaim(Of ClaimBase)(ClaimId)
                 End If
             End If
-            Return Me._claim
+            Return _claim
         End Get
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)> _
-    Public Property CallerName() As String
+    Public Property CallerName As String
         Get
             CheckDeleted()
             If Row(CommentDAL.COL_NAME_CALLER_NAME) Is DBNull.Value Then
@@ -193,15 +193,15 @@ Public Class Comment
                 Return CType(Row(CommentDAL.COL_NAME_CALLER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CommentDAL.COL_NAME_CALLER_NAME, Value)
+            SetValue(CommentDAL.COL_NAME_CALLER_NAME, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property CommentTypeId() As Guid
+    Public Property CommentTypeId As Guid
         Get
             CheckDeleted()
             If Row(CommentDAL.COL_NAME_COMMENT_TYPE_ID) Is DBNull.Value Then
@@ -210,15 +210,15 @@ Public Class Comment
                 Return New Guid(CType(Row(CommentDAL.COL_NAME_COMMENT_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CommentDAL.COL_NAME_COMMENT_TYPE_ID, Value)
+            SetValue(CommentDAL.COL_NAME_COMMENT_TYPE_ID, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=1000)>
-    Public Property Comments() As String
+    Public Property Comments As String
         Get
             CheckDeleted()
             If Row(CommentDAL.COL_NAME_COMMENTS) Is DBNull.Value Then
@@ -227,14 +227,14 @@ Public Class Comment
                 Return CType(Row(CommentDAL.COL_NAME_COMMENTS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CommentDAL.COL_NAME_COMMENTS, Value)
+            SetValue(CommentDAL.COL_NAME_COMMENTS, Value)
         End Set
     End Property
 
     <MandatryCertOrForgetRequest("")>
-    Public Property ForgotRequestId() As Guid
+    Public Property ForgotRequestId As Guid
         Get
             CheckDeleted()
             If Row(CommentDAL.COL_NAME_FORGOT_REQUEST_ID) Is DBNull.Value Then
@@ -243,57 +243,57 @@ Public Class Comment
                 Return New Guid(CType(Row(CommentDAL.COL_NAME_FORGOT_REQUEST_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CommentDAL.COL_NAME_FORGOT_REQUEST_ID, Value)
+            SetValue(CommentDAL.COL_NAME_FORGOT_REQUEST_ID, Value)
         End Set
     End Property
 
-    Public ReadOnly Property AddedBy() As String
+    Public ReadOnly Property AddedBy As String
         Get
-            Dim userCode As String = Me.CreatedById
+            Dim userCode As String = CreatedById
             If userCode Is Nothing Then
                 userCode = ElitaPlusIdentity.Current.ActiveUser.NetworkId
             End If
-            Return LookupListNew.GetDescriptionFromCode(LookupListNew.LK_USERS, userCode)
+            Return LookupListNew.GetDescriptionFromCode(LookupListCache.LK_USERS, userCode)
         End Get
     End Property
 
 
-    Public ReadOnly Property CertificateNumber() As String
+    Public ReadOnly Property CertificateNumber As String
         Get
-            If Not Me.Certificate Is Nothing Then
-                Return Me.Certificate.CertNumber
+            If Certificate IsNot Nothing Then
+                Return Certificate.CertNumber
             Else
                 Return Nothing
             End If
         End Get
     End Property
 
-    Public ReadOnly Property ClaimNumber() As String
+    Public ReadOnly Property ClaimNumber As String
         Get
-            If Not Me.Claim Is Nothing Then
-                Return Me.Claim.ClaimNumber
+            If Claim IsNot Nothing Then
+                Return Claim.ClaimNumber
             Else
                 Return Nothing
             End If
         End Get
     End Property
 
-    Public ReadOnly Property ClaimStatus() As String
+    Public ReadOnly Property ClaimStatus As String
         Get
-            If Not Me.Claim Is Nothing Then
-                Return Me.Claim.StatusCode
+            If Claim IsNot Nothing Then
+                Return Claim.StatusCode
             Else
                 Return Nothing
             End If
         End Get
     End Property
 
-    Public ReadOnly Property Dealer() As String
+    Public ReadOnly Property Dealer As String
         Get
-            If Not Me.Certificate Is Nothing Then
-                Return LookupListNew.GetDescriptionFromId(LookupListNew.LK_DEALERS, Me.Certificate.DealerId)
+            If Certificate IsNot Nothing Then
+                Return LookupListNew.GetDescriptionFromId(LookupListCache.LK_DEALERS, Certificate.DealerId)
             Else
                 Return Nothing
             End If
@@ -310,11 +310,11 @@ Public Class Comment
     Public NotInheritable Class MandatryCertOrForgetRequest
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.MSG_CERT_Or_FORGOT_REQUEST_MANDATORY)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Comment = CType(objectToValidate, Comment)
 
             If Not obj.ForgotRequestId = Guid.Empty AndAlso obj.CertId = Guid.Empty Then
@@ -333,42 +333,42 @@ Public Class Comment
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CommentDAL
-                Me.UpdateFamily(Me.Dataset)
-                dal.UpdateFamily(Me.Dataset)
-                If (Not Me.Claim Is Nothing) AndAlso (Me.Claim.ClaimAuthorizationType = ClaimAuthorizationType.Single) Then
-                    CType(Me.Claim, Claim).HandleGVSTransactionCreation(Me.Id, Nothing)
+                UpdateFamily(Dataset)
+                dal.UpdateFamily(Dataset)
+                If (Claim IsNot Nothing) AndAlso (Me.Claim.ClaimAuthorizationType = ClaimAuthorizationType.Single) Then
+                    CType(Claim, Claim).HandleGVSTransactionCreation(Id, Nothing)
                 End If
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New Dataset
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New Dataset
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
-   Public Sub PopulateWithDefaultValues(ByVal certId As Guid, Optional ByVal claimId As Object = Nothing)
+   Public Sub PopulateWithDefaultValues(certId As Guid, Optional ByVal claimId As Object = Nothing)
         Dim cert As New Certificate(certId)
         Me.CertId = certId
-        Me.CallerName = cert.CustomerName
-        Me.SetValue(DALBase.COL_NAME_CREATED_BY, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
-        If Not claimId Is Nothing Then
+        CallerName = cert.CustomerName
+        SetValue(DALBase.COL_NAME_CREATED_BY, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
+        If claimId IsNot Nothing Then
             Me.ClaimId = CType(claimId, Guid)
         End If
     End Sub
 
-    Public Shared Function GetNewComment(ByVal certId As Guid, Optional ByVal claimId As Object = Nothing) As Comment
+    Public Shared Function GetNewComment(certId As Guid, Optional ByVal claimId As Object = Nothing) As Comment
         Dim c As New Comment
         c.PopulateWithDefaultValues(certId, claimId)
         Return c
     End Function
 
-    Public Shared Function GetNewComment(ByVal original As Comment) As Comment
+    Public Shared Function GetNewComment(original As Comment) As Comment
         Dim c As New Comment
         c.CopyFrom(original)
         c.SetValue(DALBase.COL_NAME_CREATED_BY, original.CreatedById)
@@ -376,10 +376,10 @@ Public Class Comment
         Return c
     End Function
 
-    Public Shared Function GetLatestComment(ByVal parentClaim As ClaimBase) As Comment
+    Public Shared Function GetLatestComment(parentClaim As ClaimBase) As Comment
         Dim dal As New CommentDAL
         Dim ds As DataSet = dal.LoadListForClaim(parentClaim.Id)
-        If Not ds.Tables(dal.TABLE_NAME) Is Nothing AndAlso ds.Tables(dal.TABLE_NAME).Rows.Count > 0 Then
+        If ds.Tables(dal.TABLE_NAME) IsNot Nothing AndAlso ds.Tables(dal.TABLE_NAME).Rows.Count > 0 Then
             Dim c As New Comment(ds.Tables(dal.TABLE_NAME).Rows(0))
             c._isDSCreator = True
             Return c
@@ -388,12 +388,12 @@ Public Class Comment
         End If
     End Function
 
-    Public Shared Function GetCommentsForClaim(ByVal ClaimId As Guid) As DataSet
+    Public Shared Function GetCommentsForClaim(ClaimId As Guid) As DataSet
         Dim dal As New CommentDAL
         Return dal.LoadListForClaim(ClaimId)
     End Function
 
-    Public Shared Sub DeleteNewChildComment(ByVal parentClaim As ClaimBase)
+    Public Shared Sub DeleteNewChildComment(parentClaim As ClaimBase)
         Dim row As DataRow
         If parentClaim.Dataset.Tables.IndexOf(CommentDAL.TABLE_NAME) >= 0 Then
             Dim rowIndex As Integer
@@ -411,7 +411,7 @@ Public Class Comment
         End If
     End Sub
     Public Sub AddClaimAuthComment()
-        Me._isDSCreator= true
+        _isDSCreator= true
         Save()
     End Sub
 
@@ -419,8 +419,8 @@ Public Class Comment
 
 #Region "Shared Methods"
 
-    Public Shared Sub SetProcessCancellationData(ByVal oCertCancelCommentInfoData As CommentData, _
-                                              ByVal oCommentInfo As Comment)
+    Public Shared Sub SetProcessCancellationData(oCertCancelCommentInfoData As CommentData, _
+                                              oCommentInfo As Comment)
         With oCertCancelCommentInfoData
             .CommentId = oCommentInfo.Id
             .Callername = oCommentInfo.CallerName
@@ -434,7 +434,7 @@ Public Class Comment
 #Region "DataView Retrieveing Methods"
     'Manually added method
 
-    Public Shared Function getList(ByVal certId As Guid) As CommentSearchDV
+    Public Shared Function getList(certId As Guid) As CommentSearchDV
 
         Try
             Dim dal As New CommentDAL
@@ -447,7 +447,7 @@ Public Class Comment
 
     End Function
 
-    Public Shared Function getExtList(ByVal claimId As Guid) As ExtCommentSearchDV
+    Public Shared Function getExtList(claimId As Guid) As ExtCommentSearchDV
 
         Try
             Dim dal As New CommentDAL
@@ -466,12 +466,12 @@ Public Class Comment
 #Region "Constants"
         Public Const COL_COMMENT_ID As String = CommentDAL.COL_NAME_COMMENT_ID
         Public Const COL_ADDED_BY As String = CommentDAL.COL_NAME_ADDED_BY
-        Public Const COL_CREATED_DATE As String = CommentDAL.COL_NAME_CREATED_DATE
+        Public Const COL_CREATED_DATE As String = DALBase.COL_NAME_CREATED_DATE
         Public Const COL_CALLER_NAME As String = CommentDAL.COL_NAME_CALLER_NAME
         Public Const COL_COMMENTS As String = CommentDAL.COL_NAME_COMMENTS
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -482,11 +482,11 @@ Public Class Comment
 #Region "ExtConstants"
         Public Const COL_EXT_COMMENT_ID As String = CommentDAL.COL_NAME_EXT_STATUS_ID
         Public Const COL_EXT_ADDED_BY As String = CommentDAL.COL_NAME_ADDED_BY
-        Public Const COL_EXT_CREATED_DATE As String = CommentDAL.COL_NAME_CREATED_DATE
+        Public Const COL_EXT_CREATED_DATE As String = DALBase.COL_NAME_CREATED_DATE
         Public Const COL_EXT_CALLER_NAME As String = CommentDAL.COL_NAME_CALLER_NAME
         Public Const COL_EXT_COMMENTS As String = CommentDAL.COL_NAME_COMMENTS
 #End Region
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
@@ -498,15 +498,15 @@ Public Class Comment
     Public Class ClaimCommentList
         Inherits BusinessObjectListBase
 
-        Public Sub New(ByVal parent As ClaimBase)
+        Public Sub New(parent As ClaimBase)
             MyBase.New(LoadTable(parent), GetType(Comment), parent)
         End Sub
 
-        Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
+        Public Overrides Function Belong(bo As BusinessObjectBase) As Boolean
             Return CType(bo, Comment).ClaimId.Equals(CType(Parent, ClaimBase).Id)
         End Function
 
-        Private Shared Function LoadTable(ByVal parent As ClaimBase) As DataTable
+        Private Shared Function LoadTable(parent As ClaimBase) As DataTable
             Try
                 If Not parent.IsChildrenCollectionLoaded(GetType(ClaimCommentList)) Then
                     Dim dal As New CommentDAL

@@ -10,7 +10,7 @@ Public Class ClaimContext
 
     Private Sub CheckDBConnection()
         If Me.Database.Connection.State = ConnectionState.Closed Then
-            Me.Database.Connection.Open()
+            Database.Connection.Open()
         End If
     End Sub
 
@@ -28,7 +28,7 @@ Public Class ClaimContext
                                  ByVal pServiceTypeCode As String,
                                  ByVal pCurrencyCode As String,
                                  ByVal pCurrencyConversionDate As Date) As IEnumerable(Of PriceListDetailRecord)
-        Dim dbCommand As OracleCommand = DirectCast(Me.Database.Connection.CreateCommand(), OracleCommand)
+        Dim dbCommand As OracleCommand = DirectCast(Database.Connection.CreateCommand(), OracleCommand)
         dbCommand.CommandType = CommandType.StoredProcedure
         If (String.IsNullOrEmpty(pServiceLevelCode)) Then
             dbCommand.CommandText = "ELP_PRICE_LIST_UTILITY.Find_Repair_Price"
@@ -108,7 +108,7 @@ Public Class ClaimContext
                                                ByVal pServiceLevelCode As String,
                                                ByVal pCurrencyCode As String,
                                                ByVal pCurrencyConversionDate As Date) As IEnumerable(Of PriceListDetailRecord)
-        Dim dbCommand As OracleCommand = DirectCast(Me.Database.Connection.CreateCommand(), OracleCommand)
+        Dim dbCommand As OracleCommand = DirectCast(Database.Connection.CreateCommand(), OracleCommand)
         dbCommand.CommandType = CommandType.StoredProcedure
         dbCommand.CommandText = "ELP_PRICE_LIST_UTILITY.GetPriceList"
 
@@ -163,7 +163,7 @@ Public Class ClaimContext
     End Function
 
     Friend Function GetNextClaimNumber(ByVal pCompanyId As Guid) As String
-        Dim dbCommand As OracleCommand = DirectCast(Me.Database.Connection.CreateCommand(), OracleCommand)
+        Dim dbCommand As OracleCommand = DirectCast(Database.Connection.CreateCommand(), OracleCommand)
         dbCommand.CommandType = CommandType.StoredProcedure
         dbCommand.CommandText = "elp_claims.next_claim_number"
         dbCommand.Parameters.Add(New OracleParameter() With {.ParameterName = "p_company_id", .OracleDbType = OracleDbType.Raw, .Size = 16, .Value = pCompanyId})
@@ -184,7 +184,7 @@ Public Class ClaimContext
 
     Friend Function GetProductRemainingLiabilityLimit(ByVal pCertificateId As Guid, ByVal pLossDate As Date) As Nullable(Of Decimal)
 
-        Dim dbCommand As OracleCommand = DirectCast(Me.Database.Connection.CreateCommand(), OracleCommand)
+        Dim dbCommand As OracleCommand = DirectCast(Database.Connection.CreateCommand(), OracleCommand)
 
         CheckDBConnection()
 
@@ -199,7 +199,7 @@ Public Class ClaimContext
         dbCommand.Parameters.Add(New OracleParameter() With {.ParameterName = "p_loss_date", .OracleDbType = OracleDbType.Date, .Value = pLossDate})
 
         dbCommand.ExecuteNonQuery()
-        Me.Database.Connection.Close()
+        Database.Connection.Close()
 
         Try
             Return Convert.ToDecimal(oLiabLimit.Value.ToString())
@@ -210,7 +210,7 @@ Public Class ClaimContext
     End Function
     Friend Function GetRemainingCoverageLiabilityLimit(ByVal pCertItemCoverageId As Guid, ByVal pLossDate As Date) As Nullable(Of Decimal)
 
-        Dim dbCommand As OracleCommand = DirectCast(Me.Database.Connection.CreateCommand(), OracleCommand)
+        Dim dbCommand As OracleCommand = DirectCast(Database.Connection.CreateCommand(), OracleCommand)
 
         CheckDBConnection()
 
@@ -225,7 +225,7 @@ Public Class ClaimContext
         dbCommand.Parameters.Add(New OracleParameter() With {.ParameterName = "p_loss_date", .OracleDbType = OracleDbType.Date, .Value = pLossDate})
 
         dbCommand.ExecuteNonQuery()
-        Me.Database.Connection.Close()
+        Database.Connection.Close()
 
         Try
             Return Convert.ToDecimal(oLiabLimit.Value.ToString())
@@ -241,7 +241,7 @@ Public Class ClaimContext
                                               ByVal pReplacementBasedOn As String,
                                               ByVal pInsuranceActivationDate As Date) As Boolean
 
-        Dim dbCommand As OracleCommand = DirectCast(Me.Database.Connection.CreateCommand(), OracleCommand)
+        Dim dbCommand As OracleCommand = DirectCast(Database.Connection.CreateCommand(), OracleCommand)
 
         CheckDBConnection()
 
@@ -258,7 +258,7 @@ Public Class ClaimContext
         dbCommand.Parameters.Add(New OracleParameter() With {.ParameterName = "pi_insurance_activation_date", .OracleDbType = OracleDbType.Date, .Value = pInsuranceActivationDate})
 
         dbCommand.ExecuteNonQuery()
-        Me.Database.Connection.Close()
+        Database.Connection.Close()
 
         Try
             Return If(oReplExceeded.Value.ToString() = "0", False, True)
@@ -275,7 +275,7 @@ Public Class ClaimContext
                                         ByVal pSalesPrice As Decimal,
                                         ByVal pServiceLevel As String) As Boolean
 
-        Dim dbCommand As OracleCommand = DirectCast(Me.Database.Connection.CreateCommand(), OracleCommand)
+        Dim dbCommand As OracleCommand = DirectCast(Database.Connection.CreateCommand(), OracleCommand)
 
         CheckDBConnection()
 
@@ -292,7 +292,7 @@ Public Class ClaimContext
         dbCommand.Parameters.Add(New OracleParameter() With {.ParameterName = "pi_servicelevel", .OracleDbType = OracleDbType.Varchar2, .Value = pServiceLevel})
 
         dbCommand.ExecuteNonQuery()
-        Me.Database.Connection.Close()
+        Database.Connection.Close()
 
         Try
             Return If(iSvcLevelValid.Value.ToString() = "0", False, True)
@@ -304,7 +304,7 @@ Public Class ClaimContext
     End Function
     Friend Function GetClaimsPaidAmountByCertificate(ByVal pCertificateId As Guid) As Decimal
 
-        Dim dbCommand As OracleCommand = DirectCast(Me.Database.Connection.CreateCommand(), OracleCommand)
+        Dim dbCommand As OracleCommand = DirectCast(Database.Connection.CreateCommand(), OracleCommand)
 
         CheckDBConnection()
 
@@ -317,7 +317,7 @@ Public Class ClaimContext
         dbCommand.Parameters.Add(New OracleParameter() With {.ParameterName = "pi_cert_id", .OracleDbType = OracleDbType.Raw, .Size = 16, .Value = pCertificateId})
 
         dbCommand.ExecuteNonQuery()
-        Me.Database.Connection.Close()
+        Database.Connection.Close()
 
         Return Convert.ToDecimal(oPaidAmount.Value.ToString())
 
@@ -329,7 +329,7 @@ Public Class ClaimContext
                                                        ByVal pCertItemCoverageId As Guid
                                                        ) As Guid
 
-        Dim dbCommand As OracleCommand = DirectCast(Me.Database.Connection.CreateCommand(), OracleCommand)
+        Dim dbCommand As OracleCommand = DirectCast(Database.Connection.CreateCommand(), OracleCommand)
         dbCommand.CommandType = CommandType.StoredProcedure
         dbCommand.CommandText = "elp_claim_interface_validate.ValidateManufByCompanyGroup"
         dbCommand.Parameters.Add(New OracleParameter() With {.ParameterName = "pi_manufacturer_desc", .OracleDbType = OracleDbType.Varchar2, .Value = pManufacturerDesc})
@@ -341,7 +341,7 @@ Public Class ClaimContext
         CheckDBConnection()
         dbCommand.ExecuteNonQuery()
 
-        If (Not dbCommand.Parameters(3).Value.IsNull AndAlso Not dbCommand.Parameters(3).Value Is Nothing) Then
+        If (Not dbCommand.Parameters(3).Value.IsNull AndAlso dbCommand.Parameters(3).Value IsNot Nothing) Then
             Return New Guid(DirectCast(dbCommand.Parameters(3).Value.Value, Byte())) '''' ManufacturerId
         End If
         Return Nothing
@@ -361,7 +361,7 @@ Public Class ClaimContext
                                  ByVal pServiceLevelCode As String,
                                  ByVal pCurrencyCode As String,
                                  ByVal pCurrencyConversionDate As Date) As IEnumerable(Of PriceListDetailRecord)
-        Dim dbCommand As OracleCommand = DirectCast(Me.Database.Connection.CreateCommand(), OracleCommand)
+        Dim dbCommand As OracleCommand = DirectCast(Database.Connection.CreateCommand(), OracleCommand)
         dbCommand.CommandType = CommandType.StoredProcedure
         dbCommand.CommandText = "ELP_PRICE_LIST_UTILITY.GetMethodofRepairPriceList"
 
@@ -422,7 +422,7 @@ Public Class ClaimContext
     Friend Function ReturnAdvanceExchange(ByVal pCert As String,
                                           ByVal pDealer As String,
                                           ByVal pCoverageTypeCode As String) As String
-        Dim dbCommand As OracleCommand = DirectCast(Me.Database.Connection.CreateCommand(), OracleCommand)
+        Dim dbCommand As OracleCommand = DirectCast(Database.Connection.CreateCommand(), OracleCommand)
         dbCommand.CommandType = CommandType.StoredProcedure
         dbCommand.CommandText = "elp_ws_policyservice.refund_credit"
         dbCommand.Parameters.Add(New OracleParameter() With {.ParameterName = "p_Cert_Number", .OracleDbType = OracleDbType.Varchar2, .Size = 30, .Value = pCert})
@@ -442,7 +442,7 @@ Public Class ClaimContext
 
     Friend Function GetClaimCaseReserve(ByVal pClaimId As Guid) As Decimal
 
-        Dim dbCommand As OracleCommand = DirectCast(Me.Database.Connection.CreateCommand(), OracleCommand)
+        Dim dbCommand As OracleCommand = DirectCast(Database.Connection.CreateCommand(), OracleCommand)
 
         CheckDBConnection()
 
@@ -453,7 +453,7 @@ Public Class ClaimContext
         dbCommand.Parameters.Add(New OracleParameter() With {.ParameterName = "P_CASE_RESERVE", .OracleDbType = OracleDbType.Int64, .Size = 10, .Direction = ParameterDirection.Output})
 
         dbCommand.ExecuteNonQuery()
-        Me.Database.Connection.Close()
+        Database.Connection.Close()
 
         Try
             Return Convert.ToDecimal(dbCommand.Parameters(1).Value.ToString())

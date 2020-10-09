@@ -63,7 +63,7 @@ Public Class FieldSearchCriteriaControl
         '</script>
     End Sub
 
-    Private Shared Function GetSearchType(ByVal value As String) As SearchTypeEnum
+    Private Shared Function GetSearchType(value As String) As SearchTypeEnum
         Select Case value
             Case Codes.SEARCH_TYPE__EQUALS
                 Return SearchTypeEnum.Equals
@@ -80,7 +80,7 @@ Public Class FieldSearchCriteriaControl
         End Select
     End Function
 
-    Private Shared Function GetSearchTypeCode(ByVal value As SearchTypeEnum, ByVal dataType As DataTypeEnum) As String
+    Private Shared Function GetSearchTypeCode(value As SearchTypeEnum, dataType As DataTypeEnum) As String
         Select Case value
             Case SearchTypeEnum.Equals
                 Return Codes.SEARCH_TYPE__EQUALS
@@ -112,14 +112,14 @@ Public Class FieldSearchCriteriaControl
 #End Region
 
 #Region "Events"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If (Not Me.IsPostBack) Then
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        If (Not IsPostBack) Then
             If (Me.DataType = DataTypeEnum.Date) Then
-                Me.ParentPage.AddCalendar_New(Me.imgCalender1, Me.moSearchCriteria1)
-                Me.ParentPage.AddCalendar_New(Me.imgCalender2, Me.moSearchCriteria2)
+                ParentPage.AddCalendar_New(imgCalender1, moSearchCriteria1)
+                ParentPage.AddCalendar_New(imgCalender2, moSearchCriteria2)
             ElseIf (Me.DataType = DataTypeEnum.DateTime) Then
-                Me.ParentPage.AddCalendarwithTime_New(Me.imgCalender1, Me.moSearchCriteria1)
-                Me.ParentPage.AddCalendarwithTime_New(Me.imgCalender2, Me.moSearchCriteria2)
+                ParentPage.AddCalendarwithTime_New(imgCalender1, moSearchCriteria1)
+                ParentPage.AddCalendarwithTime_New(imgCalender2, moSearchCriteria2)
             End If
 
             If (Me.DataType = DataTypeEnum.Date OrElse Me.DataType = DataTypeEnum.DateTime) Then
@@ -127,10 +127,10 @@ Public Class FieldSearchCriteriaControl
                 moSearchCriteria2.Style.Add("width", "135px")
             End If
         End If
-        ElitaPlusPage.ClearLabelError(Me.moSearchLabel)
+        ElitaPlusPage.ClearLabelError(moSearchLabel)
         '' Register Client Side Script
-        If (Not Me.ParentPage.ClientScript.IsClientScriptBlockRegistered(Me.GetType(), CLIENT_SCRIPT_KEY)) Then
-            Me.ParentPage.ClientScript.RegisterClientScriptBlock(Me.GetType(), CLIENT_SCRIPT_KEY, _javaScript)
+        If (Not ParentPage.ClientScript.IsClientScriptBlockRegistered([GetType](), CLIENT_SCRIPT_KEY)) Then
+            ParentPage.ClientScript.RegisterClientScriptBlock([GetType](), CLIENT_SCRIPT_KEY, _javaScript)
         End If
     End Sub
 #End Region
@@ -148,7 +148,7 @@ Public Class FieldSearchCriteriaControl
         Get
             Return _dataType
         End Get
-        Set(ByVal value As FieldSearchCriteriaControl.DataTypeEnum)
+        Set(value As FieldSearchCriteriaControl.DataTypeEnum)
             If (value = DataTypeEnum.None) Then Throw New ArgumentException("None is not valid value for DataType", "DataType")
             If (_dataType <> value) Then
                 _dataType = value
@@ -162,11 +162,11 @@ Public Class FieldSearchCriteriaControl
         MergableProperty(False), Bindable(False)>
     Public Property SearchType As SearchTypeEnum
         Get
-            Return FieldSearchCriteriaControl.GetSearchType(Me.ParentPage.GetSelectedValue(moSearchType))
+            Return FieldSearchCriteriaControl.GetSearchType(ParentPage.GetSelectedValue(moSearchType))
         End Get
-        Set(ByVal value As SearchTypeEnum)
-            If (Not Me.ParentPage.GetSelectedValue(moSearchType).Equals(FieldSearchCriteriaControl.GetSearchTypeCode(value, Me.DataType))) Then
-                Me.ParentPage.SetSelectedItem(moSearchType, FieldSearchCriteriaControl.GetSearchTypeCode(value, Me.DataType))
+        Set(value As SearchTypeEnum)
+            If (Not ParentPage.GetSelectedValue(moSearchType).Equals(FieldSearchCriteriaControl.GetSearchTypeCode(value, DataType))) Then
+                ParentPage.SetSelectedItem(moSearchType, FieldSearchCriteriaControl.GetSearchTypeCode(value, DataType))
             End If
         End Set
     End Property
@@ -175,10 +175,10 @@ Public Class FieldSearchCriteriaControl
         MergableProperty(False), Bindable(False)>
     Public Property Text As String
         Get
-            Return Me.moSearchLabel.Text
+            Return moSearchLabel.Text
         End Get
-        Set(ByVal value As String)
-            Me.moSearchLabel.Text = value
+        Set(value As String)
+            moSearchLabel.Text = value
         End Set
     End Property
 
@@ -192,7 +192,7 @@ Public Class FieldSearchCriteriaControl
         Get
             Return FromValueControl.Text
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             FromValueControl.Text = value
         End Set
     End Property
@@ -205,7 +205,7 @@ Public Class FieldSearchCriteriaControl
                 Return String.Empty
             End If
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             If (SearchType = SearchTypeEnum.Between) Then
                 moSearchCriteria2.Text = value
             Else
@@ -238,11 +238,11 @@ Public Class FieldSearchCriteriaControl
     ''' <remarks>Checks if FromValue is specified. If SearchType is Between then ToValue is also checked.</remarks>
     Public ReadOnly Property IsEmpty As Boolean
         Get
-            If (Not Me.FromValue Is Nothing AndAlso Me.FromValue.Trim() <> String.Empty) Then
+            If (FromValue IsNot Nothing AndAlso FromValue.Trim() <> String.Empty) Then
                 Return False
             End If
             If (Me.SearchType = SearchTypeEnum.Between) Then
-                If (Not Me.ToValue Is Nothing AndAlso Me.ToValue.Trim() <> String.Empty) Then
+                If (ToValue IsNot Nothing AndAlso ToValue.Trim() <> String.Empty) Then
                     Return False
                 End If
             End If
@@ -255,70 +255,70 @@ Public Class FieldSearchCriteriaControl
             If (Not IsValid) Then
                 Throw New Exception()
             End If
-            Select Case Me.DataType
+            Select Case DataType
                 Case DataTypeEnum.NumberString
-                    Return New SearchCriteriaStringType() With {.SearchType = Me.SearchType, .FromValue = Me.FromValue, .ToValue = Me.ToValue}
+                    Return New SearchCriteriaStringType() With {.SearchType = SearchType, .FromValue = FromValue, .ToValue = ToValue}
                 Case DataTypeEnum.Date
-                    Return New SearchCriteriaStructType(Of DateTime)(SearchDataType.Date) With {.SearchType = Me.SearchType, .FromValue = GetDateValue(Me.FromValue), .ToValue = GetDateValue(Me.ToValue)}
+                    Return New SearchCriteriaStructType(Of DateTime)(SearchDataType.Date) With {.SearchType = SearchType, .FromValue = GetDateValue(FromValue), .ToValue = GetDateValue(ToValue)}
                 Case DataTypeEnum.DateTime
-                    Return New SearchCriteriaStructType(Of DateTime)(SearchDataType.DateTime) With {.SearchType = Me.SearchType, .FromValue = GetDateValue(Me.FromValue), .ToValue = GetDateValue(Me.ToValue)}
+                    Return New SearchCriteriaStructType(Of DateTime)(SearchDataType.DateTime) With {.SearchType = SearchType, .FromValue = GetDateValue(FromValue), .ToValue = GetDateValue(ToValue)}
                 Case DataTypeEnum.NumberLong
-                    Return New SearchCriteriaStructType(Of Long)(SearchDataType.Number) With {.SearchType = Me.SearchType, .FromValue = GetLongValue(Me.FromValue), .ToValue = GetLongValue(Me.ToValue)}
+                    Return New SearchCriteriaStructType(Of Long)(SearchDataType.Number) With {.SearchType = SearchType, .FromValue = GetLongValue(FromValue), .ToValue = GetLongValue(ToValue)}
                 Case DataTypeEnum.NumberDouble
-                    Return New SearchCriteriaStructType(Of Double)(SearchDataType.Amount) With {.SearchType = Me.SearchType, .FromValue = GetDoubleValue(Me.FromValue), .ToValue = GetDoubleValue(Me.ToValue)}
+                    Return New SearchCriteriaStructType(Of Double)(SearchDataType.Amount) With {.SearchType = SearchType, .FromValue = GetDoubleValue(FromValue), .ToValue = GetDoubleValue(ToValue)}
                 Case Else
                     Throw New NotSupportedException()
             End Select
         End Get
-        Set(ByVal value As SearchCriteriaType)
-            Me.SearchType = value.SearchType
-            Select Case Me.DataType
+        Set(value As SearchCriteriaType)
+            SearchType = value.SearchType
+            Select Case DataType
                 Case DataTypeEnum.NumberString
                     With DirectCast(value, SearchCriteriaStringType)
-                        Me.FromValue = .FromValue
-                        If (Me.SearchType = SearchTypeEnum.Between) Then Me.ToValue = .ToValue
+                        FromValue = .FromValue
+                        If (Me.SearchType = SearchTypeEnum.Between) Then ToValue = .ToValue
                     End With
                 Case DataTypeEnum.Date
                     With DirectCast(value, SearchCriteriaStructType(Of Date))
                         If (.FromValue.HasValue) Then
-                            Me.FromValue = ElitaPlusPage.GetDateFormattedStringNullable(.FromValue.Value)
+                            FromValue = ElitaPlusPage.GetDateFormattedStringNullable(.FromValue.Value)
                         End If
                         If (Me.SearchType = SearchTypeEnum.Between) Then
                             If (.ToValue.HasValue) Then
-                                Me.ToValue = ElitaPlusPage.GetDateFormattedStringNullable(.ToValue.Value)
+                                ToValue = ElitaPlusPage.GetDateFormattedStringNullable(.ToValue.Value)
                             End If
                         End If
                     End With
                 Case DataTypeEnum.DateTime
                     With DirectCast(value, SearchCriteriaStructType(Of Date))
                         If (.FromValue.HasValue) Then
-                            Me.FromValue = ElitaPlusPage.GetLongDate12FormattedString(.FromValue.Value)
+                            FromValue = ElitaPlusPage.GetLongDate12FormattedString(.FromValue.Value)
                         End If
                         If (Me.SearchType = SearchTypeEnum.Between) Then
                             If (.ToValue.HasValue) Then
-                                Me.ToValue = ElitaPlusPage.GetLongDate12FormattedString(.ToValue.Value)
+                                ToValue = ElitaPlusPage.GetLongDate12FormattedString(.ToValue.Value)
                             End If
                         End If
                     End With
                 Case DataTypeEnum.NumberLong
                     With DirectCast(value, SearchCriteriaStructType(Of Long))
                         If (.FromValue.HasValue) Then
-                            Me.FromValue = .FromValue.Value.ToString()
+                            FromValue = .FromValue.Value.ToString()
                         End If
                         If (Me.SearchType = SearchTypeEnum.Between) Then
                             If (.ToValue.HasValue) Then
-                                Me.ToValue = .ToValue.Value.ToString()
+                                ToValue = .ToValue.Value.ToString()
                             End If
                         End If
                     End With
                 Case DataTypeEnum.NumberDouble
                     With DirectCast(value, SearchCriteriaStructType(Of Double))
                         If (.FromValue.HasValue) Then
-                            Me.FromValue = Me.ParentPage.GetAmountFormattedString(Convert.ToDecimal(.FromValue.Value))
+                            FromValue = ParentPage.GetAmountFormattedString(Convert.ToDecimal(.FromValue.Value))
                         End If
                         If (Me.SearchType = SearchTypeEnum.Between) Then
                             If (.ToValue.HasValue) Then
-                                Me.ToValue = Me.ParentPage.GetAmountFormattedString(Convert.ToDecimal(.ToValue.Value))
+                                ToValue = ParentPage.GetAmountFormattedString(Convert.ToDecimal(.ToValue.Value))
                             End If
                         End If
                     End With
@@ -336,8 +336,8 @@ Public Class FieldSearchCriteriaControl
     ''' </summary>
     ''' <remarks>Does not change Search Type</remarks>
     Public Sub Clear()
-        Me.FromValue = String.Empty
-        Me.ToValue = String.Empty
+        FromValue = String.Empty
+        ToValue = String.Empty
     End Sub
 
     ''' <summary>
@@ -355,7 +355,7 @@ Public Class FieldSearchCriteriaControl
     ''' <param name="updateUILabels"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function Validate(ByVal updateUILabels As Boolean) As Boolean
+    Private Function Validate(updateUILabels As Boolean) As Boolean
         Dim returnValue As Boolean = True
         Dim firstParameterSpecified As Boolean = False
         Dim secondParameterSpecified As Boolean = False
@@ -373,8 +373,8 @@ Public Class FieldSearchCriteriaControl
         If (Me.SearchType = SearchType.Between) Then
             returnValue = (firstParameterSpecified = secondParameterSpecified)
             If (updateUILabels AndAlso Not returnValue) Then
-                Me.ParentPage.MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_VALUE_FORMAT)
-                ElitaPlusPage.SetLabelError(Me.moSearchLabel)
+                ParentPage.MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_VALUE_FORMAT)
+                ElitaPlusPage.SetLabelError(moSearchLabel)
             End If
         End If
 
@@ -382,8 +382,8 @@ Public Class FieldSearchCriteriaControl
         If (returnValue AndAlso firstParameterSpecified) Then
             returnValue = IsValidDataType(moSearchCriteria1.Text)
             If (updateUILabels AndAlso Not returnValue) Then
-                Me.ParentPage.MasterPage.MessageController.AddError(String.Format("{0} : {1}", moSearchLabel.Text, TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_VALUE_FORMAT)), False)
-                ElitaPlusPage.SetLabelError(Me.moSearchLabel)
+                ParentPage.MasterPage.MessageController.AddError(String.Format("{0} : {1}", moSearchLabel.Text, TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_VALUE_FORMAT)), False)
+                ElitaPlusPage.SetLabelError(moSearchLabel)
             End If
         End If
 
@@ -391,8 +391,8 @@ Public Class FieldSearchCriteriaControl
         If (returnValue AndAlso secondParameterSpecified) Then
             returnValue = IsValidDataType(moSearchCriteria2.Text)
             If (updateUILabels AndAlso Not returnValue) Then
-                Me.ParentPage.MasterPage.MessageController.AddError(String.Format("{0} : {1}", moSearchLabel.Text, TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_VALUE_FORMAT)), False)
-                ElitaPlusPage.SetLabelError(Me.moSearchLabel)
+                ParentPage.MasterPage.MessageController.AddError(String.Format("{0} : {1}", moSearchLabel.Text, TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_VALUE_FORMAT)), False)
+                ElitaPlusPage.SetLabelError(moSearchLabel)
             End If
         End If
 
@@ -424,8 +424,8 @@ Public Class FieldSearchCriteriaControl
         End If
     End Sub
 
-    Private Function IsValidDataType(ByVal value As String) As Boolean
-        Select Case Me.DataType
+    Private Function IsValidDataType(value As String) As Boolean
+        Select Case DataType
             Case DataTypeEnum.Date, DataTypeEnum.DateTime
                 Dim dateValue As Date
                 value = DateHelper.GetDateValue(value)
@@ -441,7 +441,7 @@ Public Class FieldSearchCriteriaControl
         End Select
     End Function
 
-    Private Function GetDoubleValue(ByVal value As String) As Nullable(Of Double)
+    Private Function GetDoubleValue(value As String) As Nullable(Of Double)
         If (value Is Nothing OrElse value.Trim() = String.Empty) Then Return Nothing
         If (Me.DataType = DataTypeEnum.NumberDouble) Then
             Dim doubleValue As Double
@@ -455,7 +455,7 @@ Public Class FieldSearchCriteriaControl
         End If
     End Function
 
-    Private Function GetLongValue(ByVal value As String) As Nullable(Of Long)
+    Private Function GetLongValue(value As String) As Nullable(Of Long)
         If (value Is Nothing OrElse value.Trim() = String.Empty) Then Return Nothing
         If (Me.DataType = DataTypeEnum.NumberLong) Then
             Dim longValue As Long
@@ -469,7 +469,7 @@ Public Class FieldSearchCriteriaControl
         End If
     End Function
 
-    Private Function GetDateValue(ByVal value As String) As Nullable(Of DateTime)
+    Private Function GetDateValue(value As String) As Nullable(Of DateTime)
         If (value Is Nothing OrElse value.Trim() = String.Empty) Then Return Nothing
         If (Me.DataType = DataTypeEnum.Date OrElse Me.DataType = DataTypeEnum.DateTime) Then
             Dim dateValue As Date

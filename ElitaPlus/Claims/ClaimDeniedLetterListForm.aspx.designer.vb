@@ -23,7 +23,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents trPageSize As HtmlTableRow
 
         '''<summary>
         '''lblPageSize control.
@@ -32,7 +32,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblPageSize As Label
 
         '''<summary>
         '''cboPageSize control.
@@ -41,7 +41,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents cboPageSize As DropDownList
 
         '''<summary>
         '''lblRecordCount control.
@@ -50,7 +50,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblRecordCount As Label
 
         '''<summary>
         '''Grid control.
@@ -59,7 +59,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents Grid As Global.System.Web.UI.WebControls.GridView
+        Protected WithEvents Grid As GridView
 
         '''<summary>
         '''btnBack_WRITE control.
@@ -68,7 +68,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnBack_WRITE As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents btnBack_WRITE As Button
 
         '''<summary>
         '''btnNew_WRITE control.
@@ -77,6 +77,6 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnNew_WRITE As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents btnNew_WRITE As Button
     End Class
 End Namespace

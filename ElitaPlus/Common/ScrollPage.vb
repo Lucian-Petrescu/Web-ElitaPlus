@@ -21,7 +21,7 @@ Public Class ScrollPage
         Get
             Return m_UseScrollPersistence
         End Get
-        Set(ByVal Value As Boolean)
+        Set(Value As Boolean)
             m_UseScrollPersistence = Value
         End Set
     End Property
@@ -30,12 +30,12 @@ Public Class ScrollPage
         Get
             Return m_BodyID
         End Get
-        Set(ByVal Value As String)
+        Set(Value As String)
             m_BodyID = Value
         End Set
     End Property
 
-    Protected Overrides Sub OnPreRender(ByVal e As EventArgs)
+    Protected Overrides Sub OnPreRender(e As EventArgs)
         If UseScrollPersistence Then
             'call the routine to add the javascript 
             RetainScrollPosition()
@@ -44,8 +44,8 @@ Public Class ScrollPage
         MyBase.OnPreRender(e)
     End Sub
 
-    Protected Overrides Sub Render(ByVal writer As HtmlTextWriter)
-        If UseScrollPersistence And (BodyID = Nothing) Then
+    Protected Overrides Sub Render(writer As HtmlTextWriter)
+        If UseScrollPersistence AndAlso (BodyID = Nothing) Then
             Dim tempWriter As TextWriter = New StringWriter
             MyBase.Render(New HtmlTextWriter(tempWriter))
             writer.Write(Regex.Replace(tempWriter.ToString(), "<body", "<body id=""thebody"" ", RegexOptions.IgnoreCase))
@@ -55,7 +55,7 @@ Public Class ScrollPage
     End Sub
 
     Private Sub RetainScrollPosition()
-        Me.Page.RegisterHiddenField("__SCROLLPOS", "0")
+        Page.RegisterHiddenField("__SCROLLPOS", "0")
         Dim s_bodyID As String
         If BodyID = Nothing Then s_bodyID = "thebody" Else s_bodyID = BodyID
         RegisterStartupScript("saveScroll", String.Format(saveScrollPosition, s_bodyID))

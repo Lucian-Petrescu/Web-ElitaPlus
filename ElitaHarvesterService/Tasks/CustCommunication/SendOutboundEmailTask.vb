@@ -9,7 +9,7 @@ Imports System.Text
 Public Class SendOutboundEmailTask
     Inherits TaskBase
 #Region "Constructors"
-    Public Sub New(ByVal machineName As String, ByVal processThreadName As String)
+    Public Sub New(machineName As String, processThreadName As String)
         MyBase.New(machineName, processThreadName)
     End Sub
 #End Region
@@ -117,7 +117,7 @@ Public Class SendOutboundEmailTask
                             'update the attemp as success
                             strCommReferenceId = guid.Empty.ToString()
                             strStatus = "SUCCESS"
-                            strComments = "Email Block, not white listed in " + EnvironmentContext.Current.EnvironmentShortName
+                            strComments = "Email Block, not white listed in " & EnvironmentContext.Current.EnvironmentShortName
                             blnBlocked = True
                         End If
                     End If
@@ -186,7 +186,7 @@ Public Class SendOutboundEmailTask
                     intUpdateResult = PublishedTask.UpdateOutBoundMessageStatus(guidMsgId, strRecipient, strStatus, strCommReferenceId, strXml.ToString(), strComments)                     
                 Next
             Else 'fail task, error got email detail 
-                Throw New Exception("Get Message Err " + intErrCode.ToString() + " - " + strErrMsg)
+                Throw New Exception("Get Message Err " & intErrCode.ToString() & " - " & strErrMsg)
             End If            
         Catch ex As Exception
             Logger.AddError(ex)

@@ -59,23 +59,23 @@ Public Class UserDAL
 
 #Region "CRUD Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As OracleParameter = New OracleParameter() {New OracleParameter("user_id", id.ToByteArray)}
-        DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+        DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
     End Sub
 
-    Public Sub LoadByNetworkId(ByVal familyDS As DataSet, ByVal networkId As String)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_BY_NETWORK_ID")
+    Public Sub LoadByNetworkId(familyDS As DataSet, networkId As String)
+        Dim selectStmt As String = Config("/SQL/LOAD_BY_NETWORK_ID")
         Dim parameters() As OracleParameter = New OracleParameter() {New OracleParameter("network_id", networkId.ToUpper)}
-        DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+        DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
     End Sub
 
-    Private Sub CreateRelation(ByVal dsUsers As DataSet, ByVal dsRoles As DataSet, ByVal dsCompanies As DataSet)
+    Private Sub CreateRelation(dsUsers As DataSet, dsRoles As DataSet, dsCompanies As DataSet)
 
         'put the 3 data tables into one dataset
         Dim oTableRoleToAdd As DataTable
@@ -120,7 +120,7 @@ Public Class UserDAL
 
     End Sub
 
-    Private Function GetUserRolesAsString(ByVal oDSUsers As DataSet, ByVal sNetworkID As String) As String
+    Private Function GetUserRolesAsString(oDSUsers As DataSet, sNetworkID As String) As String
 
         Dim SingleRow As DataRow = oDSUsers.Tables(TABLE_USERS_SEARCH).Rows.Find(sNetworkID)
         Dim sResultString As String
@@ -147,7 +147,7 @@ Public Class UserDAL
 
     End Function
 
-    Private Function GetUserCompaniesAsString(ByVal oDSUsers As DataSet, ByVal sNetworkID As String) As String
+    Private Function GetUserCompaniesAsString(oDSUsers As DataSet, sNetworkID As String) As String
 
         Dim SingleRow As DataRow = oDSUsers.Tables(TABLE_USERS_SEARCH).Rows.Find(sNetworkID)
         Dim sResultString As String
@@ -174,7 +174,7 @@ Public Class UserDAL
 
     End Function
 
-    Private Function AddUserRoleValues(ByVal DSUsers As DataSet) As String
+    Private Function AddUserRoleValues(DSUsers As DataSet) As String
 
 
         Dim oSingleRow As DataRow
@@ -202,7 +202,7 @@ Public Class UserDAL
 
     End Function
 
-    Private Function AddUserCompaniesValues(ByVal DSUsers As DataSet) As String
+    Private Function AddUserCompaniesValues(DSUsers As DataSet) As String
 
 
         Dim oSingleRow As DataRow
@@ -232,14 +232,14 @@ Public Class UserDAL
 
     Public Function LoadList() As DataSet
         Dim DSUsers, dsRoles, dsCompanies As DataSet
-        Dim SQLUsers As String = Me.Config("/SQL/MAINTAIN_USER_GET_USERS")
-        Dim SQLRoles As String = Me.Config("/SQL/MAINTAIN_USER_ROLE_FETCH")
-        Dim SQLCompanies As String = Me.Config("/SQL/MAINTAIN_USER_COMPANY_FETCH")
+        Dim SQLUsers As String = Config("/SQL/MAINTAIN_USER_GET_USERS")
+        Dim SQLRoles As String = Config("/SQL/MAINTAIN_USER_ROLE_FETCH")
+        Dim SQLCompanies As String = Config("/SQL/MAINTAIN_USER_COMPANY_FETCH")
 
 
-        DSUsers = DBHelper.Fetch(SQLUsers, Me.TABLE_USERS_SEARCH)
-        dsRoles = DBHelper.Fetch(SQLRoles, Me.TABLE_ROLES_SEARCH)
-        dsCompanies = DBHelper.Fetch(SQLCompanies, Me.TABLE_COMPANIES_SEARCH)
+        DSUsers = DBHelper.Fetch(SQLUsers, TABLE_USERS_SEARCH)
+        dsRoles = DBHelper.Fetch(SQLRoles, TABLE_ROLES_SEARCH)
+        dsCompanies = DBHelper.Fetch(SQLCompanies, TABLE_COMPANIES_SEARCH)
         CreateRelation(DSUsers, dsRoles, dsCompanies)
         AddUserRoleValues(DSUsers)
         AddUserCompaniesValues(DSUsers)
@@ -247,32 +247,32 @@ Public Class UserDAL
         Return DSUsers
     End Function
 
-    Public Function LoadUserList(ByVal networkID As String, ByVal userName As String, _
-                               ByVal role As String, ByVal companyCode As String) As DataSet
+    Public Function LoadUserList(networkID As String, userName As String, _
+                               role As String, companyCode As String) As DataSet
 
         Dim DSUsers, dsRoles, dsCompanies As DataSet
-        Dim SQLUsers As String = Me.Config("/SQL/MAINTAIN_USER_GET_USERS")
-        Dim SQLRoles As String = Me.Config("/SQL/MAINTAIN_USER_ROLE_FETCH")
-        Dim SQLCompanies As String = Me.Config("/SQL/MAINTAIN_USER_COMPANY_FETCH")
+        Dim SQLUsers As String = Config("/SQL/MAINTAIN_USER_GET_USERS")
+        Dim SQLRoles As String = Config("/SQL/MAINTAIN_USER_ROLE_FETCH")
+        Dim SQLCompanies As String = Config("/SQL/MAINTAIN_USER_COMPANY_FETCH")
 
         Dim whereClauseConditions_Users As String = ""
         Dim whereClauseConditions_Roles As String = ""
         Dim whereClauseConditions_Companies As String = ""
 
-        If Me.FormatSearchMask(networkID) Then
-            whereClauseConditions_Users &= " WHERE " & Environment.NewLine & Me.COL_NAME_NETWORK_ID & " " & networkID
-            whereClauseConditions_Roles &= " AND " & Environment.NewLine & "UPPER(u." & Me.COL_NAME_NETWORK_ID & ") " & networkID
-            whereClauseConditions_Companies &= " AND " & Environment.NewLine & "UPPER(u." & Me.COL_NAME_NETWORK_ID & ") " & networkID
+        If FormatSearchMask(networkID) Then
+            whereClauseConditions_Users &= " WHERE " & Environment.NewLine & COL_NAME_NETWORK_ID & " " & networkID
+            whereClauseConditions_Roles &= " AND " & Environment.NewLine & "UPPER(u." & COL_NAME_NETWORK_ID & ") " & networkID
+            whereClauseConditions_Companies &= " AND " & Environment.NewLine & "UPPER(u." & COL_NAME_NETWORK_ID & ") " & networkID
         End If
 
-        If Me.FormatSearchMask(userName) Then
+        If FormatSearchMask(userName) Then
             If whereClauseConditions_Users = "" Then
-                whereClauseConditions_Users &= " WHERE " & Environment.NewLine & "UPPER(" & Me.COL_NAME_USER_NAME & ") " & userName
+                whereClauseConditions_Users &= " WHERE " & Environment.NewLine & "UPPER(" & COL_NAME_USER_NAME & ") " & userName
             Else
-                whereClauseConditions_Users &= " AND " & Environment.NewLine & "UPPER(" & Me.COL_NAME_USER_NAME & ") " & userName
+                whereClauseConditions_Users &= " AND " & Environment.NewLine & "UPPER(" & COL_NAME_USER_NAME & ") " & userName
             End If
-            whereClauseConditions_Roles &= " AND " & Environment.NewLine & "UPPER(" & Me.COL_NAME_USER_NAME & ") " & userName
-            whereClauseConditions_Companies &= " AND " & Environment.NewLine & "UPPER(" & Me.COL_NAME_USER_NAME & ") " & userName
+            whereClauseConditions_Roles &= " AND " & Environment.NewLine & "UPPER(" & COL_NAME_USER_NAME & ") " & userName
+            whereClauseConditions_Companies &= " AND " & Environment.NewLine & "UPPER(" & COL_NAME_USER_NAME & ") " & userName
         End If
 
         'If Me.FormatSearchMask(role) Then
@@ -287,21 +287,21 @@ Public Class UserDAL
         'whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("c." & Me.COL_NAME_COMPANY_ID, compIds, False)
 
         If Not whereClauseConditions_Users = "" Then
-            SQLUsers = SQLUsers.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions_Users)
+            SQLUsers = SQLUsers.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions_Users)
         Else
-            SQLUsers = SQLUsers.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            SQLUsers = SQLUsers.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         If Not whereClauseConditions_Roles = "" Then
-            SQLRoles = SQLRoles.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions_Roles)
+            SQLRoles = SQLRoles.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions_Roles)
         Else
-            SQLRoles = SQLRoles.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            SQLRoles = SQLRoles.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         If Not whereClauseConditions_Companies = "" Then
-            SQLCompanies = SQLCompanies.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions_Companies)
+            SQLCompanies = SQLCompanies.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions_Companies)
         Else
-            SQLCompanies = SQLCompanies.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            SQLCompanies = SQLCompanies.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         'If Not IsNothing(sortBy) Then
@@ -314,15 +314,15 @@ Public Class UserDAL
         Try
             Dim ds As New DataSet
             ''Dim compIdPar As New DBHelper.DBHelperParameter(Me.PAR_NAME_COMPANY_ID, compId)
-            Dim rowNum As New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, Me.MAX_NUMBER_OF_ROWS)
+            Dim rowNum As New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, MAX_NUMBER_OF_ROWS)
 
             'DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, _
             '                New DBHelper.DBHelperParameter() {rowNum})
             'Return ds
 
-            DSUsers = DBHelper.Fetch(SQLUsers, Me.TABLE_USERS_SEARCH)
-            dsRoles = DBHelper.Fetch(SQLRoles, Me.TABLE_ROLES_SEARCH)
-            dsCompanies = DBHelper.Fetch(SQLCompanies, Me.TABLE_COMPANIES_SEARCH)
+            DSUsers = DBHelper.Fetch(SQLUsers, TABLE_USERS_SEARCH)
+            dsRoles = DBHelper.Fetch(SQLRoles, TABLE_ROLES_SEARCH)
+            dsCompanies = DBHelper.Fetch(SQLCompanies, TABLE_COMPANIES_SEARCH)
             CreateRelation(DSUsers, dsRoles, dsCompanies)
             AddUserRoleValues(DSUsers)
             AddUserCompaniesValues(DSUsers)
@@ -334,7 +334,7 @@ Public Class UserDAL
 
     End Function
 
-    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim oUserRoleDal As New UserRoleDAL
         Dim oUserCompanyAssignedDal As New UserCompanyAssignedDAL
         Dim oUserCompanyDal As New UserCompanyDAL
@@ -353,10 +353,10 @@ Public Class UserDAL
             oUserPermissionDal.Update(familyDataset.GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
             oSpUserClaimsDAL.Update(familyDataset.GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
 
-            MyBase.Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
+            MyBase.Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
 
             'Second Pass updates additions and changes
-            Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
 
             oUserRoleDal.Update(familyDataset.GetChanges(DataRowState.Added), tr, DataRowState.Added Or DataRowState.Modified)
             oUserCompanyAssignedDal.Update(familyDataset.GetChanges(DataRowState.Added), tr, DataRowState.Added Or DataRowState.Modified)
@@ -378,7 +378,7 @@ Public Class UserDAL
         End Try
     End Sub
 
-    Public Overloads Sub Update(ByVal ds As DataSet)
+    Public Overloads Sub Update(ds As DataSet)
         Dim conn As OracleConnection
         Dim transaction As OracleTransaction
         Try
@@ -395,12 +395,12 @@ Public Class UserDAL
         End Try
     End Sub
 
-    Public Overloads Sub Update(ByVal ds As DataSet, ByVal transaction As OracleTransaction)
+    Public Overloads Sub Update(ds As DataSet, transaction As OracleTransaction)
         Dim da As OracleDataAdapter = configureDataAdapter(ds, transaction)
         da.Update(ds.Tables(TABLE_NAME))
     End Sub
 
-    Protected Function configureDataAdapter(ByVal ds As DataSet, ByVal transaction As OracleTransaction) As OracleDataAdapter
+    Protected Function configureDataAdapter(ds As DataSet, transaction As OracleTransaction) As OracleDataAdapter
         Dim da As New OracleDataAdapter
         'associate commands to data adapter
 
@@ -419,7 +419,7 @@ Public Class UserDAL
         Return da
     End Function
 
-    Protected Sub AddCommonParameters(ByVal cmd As OracleCommand)
+    Protected Sub AddCommonParameters(cmd As OracleCommand)
         cmd.Parameters.Add("network_id", OracleDbType.Varchar2, 8, "network_id")
         cmd.Parameters.Add("user_name", OracleDbType.Varchar2, 70, "user_name")
         cmd.Parameters.Add("authorization_limit", OracleDbType.Decimal, 0, "authorization_limit")
@@ -432,15 +432,15 @@ Public Class UserDAL
         cmd.Parameters.Add("sc_dealer_id", OracleDbType.Raw, 16, "sc_dealer_id")
     End Sub
 
-    Protected Sub AddWhereParameters(ByVal cmd As OracleCommand)
+    Protected Sub AddWhereParameters(cmd As OracleCommand)
         cmd.Parameters.Add("user_id", OracleDbType.Raw, 16, "user_id")
     End Sub
 
-    Protected Sub AddUpdateAuditParameters(ByVal cmd As OracleCommand)
+    Protected Sub AddUpdateAuditParameters(cmd As OracleCommand)
         cmd.Parameters.Add("modified_by", OracleDbType.Varchar2, 30, "modified_by")
     End Sub
 
-    Protected Sub AddInsertAuditParameters(ByVal cmd As OracleCommand)
+    Protected Sub AddInsertAuditParameters(cmd As OracleCommand)
         cmd.Parameters.Add("created_by", OracleDbType.Varchar2, 30, "created_by")
     End Sub
 
@@ -448,48 +448,48 @@ Public Class UserDAL
 
 #Region "User Methods"
 
-    Public Function LoadUserRoles(ByVal userId As Guid) As DataSet
+    Public Function LoadUserRoles(userId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_USER_ROLES")
+        Dim selectStmt As String = Config("/SQL/GET_USER_ROLES")
 
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_USER_ID, userId.ToByteArray)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_USER_ROLES, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_USER_ROLES, parameters)
     End Function
 
-    Public Function LoadUserIHQRoles(ByVal userId As Guid) As DataSet
+    Public Function LoadUserIHQRoles(userId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_USER_IHQ_ROLES")
+        Dim selectStmt As String = Config("/SQL/GET_USER_IHQ_ROLES")
 
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_USER_ID, userId.ToByteArray)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_USER_ROLES, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_USER_ROLES, parameters)
     End Function
 
-    Public Function LoadAvailableRoles(ByVal userId As Guid) As DataSet
+    Public Function LoadAvailableRoles(userId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_AVAILABLE_ROLES")
+        Dim selectStmt As String = Config("/SQL/GET_AVAILABLE_ROLES")
 
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_USER_ID, userId.ToByteArray)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_USER_ROLES, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_USER_ROLES, parameters)
     End Function
 
-    Public Function LoadUserCompanyAssigned(ByVal grpId As Guid, ByVal userId As Guid) As DataSet
+    Public Function LoadUserCompanyAssigned(grpId As Guid, userId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_USER_COMPANY_ASSIGNED")
+        Dim selectStmt As String = Config("/SQL/GET_USER_COMPANY_ASSIGNED")
 
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_USER_ID, userId.ToByteArray), _
                                             New OracleParameter(COMPANY_GROUP_ID, grpId.ToByteArray)}
 
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_USER_COMPANY_ASSIGNED, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_USER_COMPANY_ASSIGNED, parameters)
     End Function
 
-    Public Function LoadAvailableCompanies(ByVal grpId As Guid, ByVal userId As Guid) As DataSet
+    Public Function LoadAvailableCompanies(grpId As Guid, userId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_AVAILABLE_COMPANIES")
+        Dim selectStmt As String = Config("/SQL/GET_AVAILABLE_COMPANIES")
 
         parameters = New OracleParameter() {New OracleParameter(COMPANY_GROUP_ID, grpId.ToByteArray), _
                                             New OracleParameter(COL_NAME_USER_ID, userId.ToByteArray), _
@@ -498,111 +498,111 @@ Public Class UserDAL
                                             New OracleParameter(COL_NAME_USER_ID, userId.ToByteArray), _
                                             New OracleParameter(COL_NAME_USER_ID, userId.ToByteArray)}
 
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_USER_COMPANIES, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_USER_COMPANIES, parameters)
     End Function
 
-    Public Function LoadAvailableAssignedCompanies(ByVal userId As Guid) As DataSet
+    Public Function LoadAvailableAssignedCompanies(userId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_AVAILABLE_COMPANIES_ASSIGNED")
+        Dim selectStmt As String = Config("/SQL/GET_AVAILABLE_COMPANIES_ASSIGNED")
 
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_USER_ID, userId.ToByteArray)}
 
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_USER_COMPANIES, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_USER_COMPANIES, parameters)
     End Function
 
-    Public Function LoadSelectedAssignedCompanies(ByVal userId As Guid) As DataSet
+    Public Function LoadSelectedAssignedCompanies(userId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_SELECTED_COMPANIES_ASSIGNED")
+        Dim selectStmt As String = Config("/SQL/GET_SELECTED_COMPANIES_ASSIGNED")
 
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_USER_ID, userId.ToByteArray)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_USER_COMPANY_ASSIGNED, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_USER_COMPANY_ASSIGNED, parameters)
     End Function
 
-    Public Function LoadAvailableCompanyGroup(ByVal userId As Guid) As DataSet
+    Public Function LoadAvailableCompanyGroup(userId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_AVAILABLE_COMPANY_GROUPS")
+        Dim selectStmt As String = Config("/SQL/GET_AVAILABLE_COMPANY_GROUPS")
 
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_USER_ID, userId.ToByteArray)}
 
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_USER_COMPANY_GROUPS, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_USER_COMPANY_GROUPS, parameters)
     End Function
 
-    Public Function LoadSelectedCompanies(ByVal grpId As Guid, ByVal userId As Guid) As DataSet
+    Public Function LoadSelectedCompanies(grpId As Guid, userId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_SELECTED_COMPANIES")
+        Dim selectStmt As String = Config("/SQL/GET_SELECTED_COMPANIES")
 
         parameters = New OracleParameter() {New OracleParameter(COMPANY_GROUP_ID, grpId.ToByteArray), _
                                             New OracleParameter(COL_NAME_USER_ID, userId.ToByteArray)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_USER_COMPANIES, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_USER_COMPANIES, parameters)
     End Function
 
-    Public Function LoadUserCompanies(ByVal userId As Guid) As DataSet
+    Public Function LoadUserCompanies(userId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_USER_COMPANIES")
+        Dim selectStmt As String = Config("/SQL/GET_USER_COMPANIES")
 
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_USER_ID, userId.ToByteArray)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_USER_COMPANIES, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_USER_COMPANIES, parameters)
     End Function
 
-    Public Function LoadUserCompanies(ByVal userId As Guid, ByVal oCountryId As Guid) As DataSet
+    Public Function LoadUserCompanies(userId As Guid, oCountryId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_USER_COUNTRY_COMPANIES")
+        Dim selectStmt As String = Config("/SQL/GET_USER_COUNTRY_COMPANIES")
 
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_USER_ID, userId.ToByteArray),
                                             New OracleParameter(COL_NAME_COUNTRY_ID, oCountryId.ToByteArray)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_USER_COUNTRY_COMPANIES, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_USER_COUNTRY_COMPANIES, parameters)
     End Function
-    Public Function LoadUsersBasedOnPermission(ByVal country_id As Guid, ByVal permission_type_code As String) As DataSet
+    Public Function LoadUsersBasedOnPermission(country_id As Guid, permission_type_code As String) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_USERS_BASED_ON_PERMISSION")
+        Dim selectStmt As String = Config("/SQL/GET_USERS_BASED_ON_PERMISSION")
 
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_COUNTRY_ID, country_id.ToByteArray),
                                             New OracleParameter(COL_NAME_PERMISSION_TYPE_CODE, permission_type_code)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_USER_COMPANIES, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_USER_COMPANIES, parameters)
     End Function
 
-    Public Function LoadUsersBasedOnPermission(ByVal user_id As Guid, ByVal company_id As Guid, ByVal permission_type_code As String) As DataSet
+    Public Function LoadUsersBasedOnPermission(user_id As Guid, company_id As Guid, permission_type_code As String) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_USER_BASED_ON_INC_PERMISSION")
+        Dim selectStmt As String = Config("/SQL/GET_USER_BASED_ON_INC_PERMISSION")
 
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_COMPANY_ID, company_id.ToByteArray),
                                             New OracleParameter(COL_NAME_USER_ID, user_id.ToByteArray),
                                             New OracleParameter(COL_NAME_PERMISSION_TYPE_CODE, permission_type_code)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_USER_COMPANIES, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_USER_COMPANIES, parameters)
     End Function
 
-    Public Function LoadUserCountries(ByVal userId As Guid) As DataSet
+    Public Function LoadUserCountries(userId As Guid) As DataSet
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_USER_COUNTRIES")
+        Dim selectStmt As String = Config("/SQL/GET_USER_COUNTRIES")
 
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_USER_ID, userId.ToByteArray)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_USER_COMPANIES, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_USER_COMPANIES, parameters)
     End Function
 
 
 
-    Public Function LoadExternalUserServiceCenters(ByVal oServiceCenterId As Guid) As DataSet
+    Public Function LoadExternalUserServiceCenters(oServiceCenterId As Guid) As DataSet
         Dim ds As New DataSet
         Dim inputParameters(1) As DBHelper.DBHelperParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_EXTERNAL_USER_SERVICE_CENTERS")
+        Dim selectStmt As String = Config("/SQL/GET_EXTERNAL_USER_SERVICE_CENTERS")
 
         inputParameters(0) = New DBHelper.DBHelperParameter(UserDAL.COL_NAME_SERVICE_CENTER_ID, oServiceCenterId.ToByteArray)
         inputParameters(1) = New DBHelper.DBHelperParameter(UserDAL.COL_NAME_SERVICE_CENTER_ID, oServiceCenterId.ToByteArray)
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_EXTERNAL_USER_SERVICE_CENTER, inputParameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_EXTERNAL_USER_SERVICE_CENTER, inputParameters)
     End Function
 
-    Public Sub UpdateUserCompanies(ByVal oUserId As Guid, ByVal oDataset As DataSet)
+    Public Sub UpdateUserCompanies(oUserId As Guid, oDataset As DataSet)
         Dim tr As IDbTransaction = DBHelper.GetNewTransaction
-        Dim deleteStmt As String = Me.Config("/SQL/DELETE_USER_COMPANIES")
+        Dim deleteStmt As String = Config("/SQL/DELETE_USER_COMPANIES")
         Dim inputParameters(0) As DBHelper.DBHelperParameter
         Dim oUserCompanyDAL As New UserCompanyDAL
 
@@ -624,28 +624,28 @@ Public Class UserDAL
         End Try
     End Sub
 
-    Public Function LoadUserOtherCompaniesIDs(ByVal UserFirstCompany_id As Guid, ByVal companyGroup_id As Guid) As DataSet
+    Public Function LoadUserOtherCompaniesIDs(UserFirstCompany_id As Guid, companyGroup_id As Guid) As DataSet
         ' Since the Active user companies may not have all the companies of the user's company_group,
         ' this method is intended to provide the companies (IDs only) within the company group of the active user.
         ' The active user first company will be excluded.
         ' This fuction is being used by the AccountingCloseDates screen.
         Dim ds As New DataSet
         Dim parameters() As OracleParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_USER_OTHER_COMPANIES_IDs")
+        Dim selectStmt As String = Config("/SQL/GET_USER_OTHER_COMPANIES_IDs")
         parameters = New OracleParameter() {New OracleParameter(COMPANY_GROUP_ID, companyGroup_id.ToByteArray),
                                             New OracleParameter(COL_NAME_COMPANY_ID, UserFirstCompany_id.ToByteArray)}
-        Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_USER_COMPANIES, parameters)
+        Return DBHelper.Fetch(ds, selectStmt, TABLE_USER_COMPANIES, parameters)
     End Function
-    Public Function LoadSpUserClaims(ByVal userId As Guid, ByVal languageId As Guid, ByVal SpClaimCode As String) As DataSet
+    Public Function LoadSpUserClaims(userId As Guid, languageId As Guid, SpClaimCode As String) As DataSet
         Dim ds As New DataSet
         Dim parameters() As DBHelper.DBHelperParameter
-        Dim selectStmt As String = Me.Config("/SQL/GET_SP_USER_CLAIMS")
+        Dim selectStmt As String = Config("/SQL/GET_SP_USER_CLAIMS")
 
         parameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(SpClaimTypesDAL.COL_NAME_CODE, SpClaimCode),
                                                        New DBHelper.DBHelperParameter("lang_id", languageId.ToByteArray),
                                                        New DBHelper.DBHelperParameter(COL_NAME_USER_ID, userId.ToByteArray)}
         Try
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_USER_SP_USER_CLAIMS, parameters)
+            DBHelper.Fetch(ds, selectStmt, TABLE_USER_SP_USER_CLAIMS, parameters)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -657,7 +657,7 @@ Public Class UserDAL
     #Region "User Claims Validations"
 
     Public Function IsDealerValidForUserClaim(userId As Guid, dealerCode As String) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/CHECK_DEALER_FOR_USER_CLAIM")
+        Dim selectStmt As String = Config("/SQL/CHECK_DEALER_FOR_USER_CLAIM")
        
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("user_id", userId.ToByteArray),
                                                                                            New DBHelper.DBHelperParameter("dealer", dealerCode)}
@@ -676,7 +676,7 @@ Public Class UserDAL
     End Function
 
      Public Function IsDealerGroupValidForUserClaim(userId As Guid, dealerGroupCode As String) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/CHECK_DEALER_GROUP_FOR_USER_CLAIM")
+        Dim selectStmt As String = Config("/SQL/CHECK_DEALER_GROUP_FOR_USER_CLAIM")
        
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("user_id", userId.ToByteArray),
                                                                                            New DBHelper.DBHelperParameter("dealer_group_code", dealerGroupCode)}
@@ -695,7 +695,7 @@ Public Class UserDAL
     End Function
 
     Public Function IsCompanyGroupValidForUserClaim(userId As Guid, companyGroupCode As String) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/CHECK_COMPANY_GROUP_FOR_USER_CLAIM")
+        Dim selectStmt As String = Config("/SQL/CHECK_COMPANY_GROUP_FOR_USER_CLAIM")
        
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("user_id", userId.ToByteArray),
                                                                                            New DBHelper.DBHelperParameter("company_group_code", companyGroupCode)}
@@ -713,7 +713,7 @@ Public Class UserDAL
         End Try
     End Function
     Public Function IsServiceCenterValidForUserClaim(userId As Guid, serviceCenterCode As String, countryCode As string) As Boolean
-        Dim selectStmt As String = Me.Config("/SQL/CHECK_SERVICE_CENTER_FOR_USER_CLAIM")
+        Dim selectStmt As String = Config("/SQL/CHECK_SERVICE_CENTER_FOR_USER_CLAIM")
        
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("user_id", userId.ToByteArray),
                                                                                            New DBHelper.DBHelperParameter("country_code", countryCode),

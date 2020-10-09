@@ -56,10 +56,10 @@
 
 #Region "Page Init"
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
 
         'Put user code to initialize the page here
-        Me.ErrControllerMaster.Clear_Hide()
+        ErrControllerMaster.Clear_Hide()
 
         ' Disable Report button's Submit Behavior
         btnReport.UseSubmitBehavior = False
@@ -67,19 +67,19 @@
 
         Try
 
-            Me.DisplayProgressBarOnClick(Me.btnExecute, ElitaPlusWebApp.Message.MSG_PERFORMING_REQUEST)
-            Me.AddConfirmation(Me.btnDelete, Message.DELETE_RECORD_PROMPT)
+            DisplayProgressBarOnClick(btnExecute, ElitaPlusWebApp.Message.MSG_PERFORMING_REQUEST)
+            AddConfirmation(btnDelete, Message.DELETE_RECORD_PROMPT)
 
-            If Not Me.IsPostBack Then
-                Me.SetFormTitle(PAGETITLE)
-                Me.SetFormTab(PAGETAB)
+            If Not IsPostBack Then
+                SetFormTitle(PAGETITLE)
+                SetFormTab(PAGETAB)
 
                 PopulateAll()
 
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub
@@ -99,36 +99,36 @@
             UserCompanyMultipleDrop.NothingSelected = True
             UserCompanyMultipleDrop.SetControl(True, UserCompanyMultipleDrop.MODES.NEW_MODE, True, dv, UserCompanyMultipleDrop.NO_CAPTION, True)
             If dv.Count.Equals(ONE_ITEM) Then
-                UserCompanyMultipleDrop.SelectedIndex = Me.ONE_ITEM
+                UserCompanyMultipleDrop.SelectedIndex = ONE_ITEM
                 UserCompanyMultipleDrop.ChangeEnabledControlProperty(False)
                 Dim _company As New Company(UserCompanyMultipleDrop.SelectedGuid)
                 PopulateGrid(_company.Id)
-                Me.State.companyId = _company.Id
+                State.companyId = _company.Id
             Else
                 EnableDisableButtons()
             End If
 
         Catch ex As Exception
-            Me.ErrControllerMaster.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR)
+            ErrControllerMaster.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.DB_ERROR)
         End Try
 
 
     End Sub
 
-    Protected Sub PopulateGrid(ByVal CompanyId As Guid)
+    Protected Sub PopulateGrid(CompanyId As Guid)
 
         Try
-            Me.State.dvAcctTransFiles = AcctTransmission.GetFailures(CompanyId)
+            State.dvAcctTransFiles = AcctTransmission.GetFailures(CompanyId)
             Dim sTmpFileFilterCondition As String = "file_name not like '%.TMP'"
-            Me.State.dvAcctTransFiles.RowFilter = sTmpFileFilterCondition
+            State.dvAcctTransFiles.RowFilter = sTmpFileFilterCondition
             moDataGrid.SelectedIndex = -1
-            moDataGrid.DataSource = Me.State.dvAcctTransFiles
+            moDataGrid.DataSource = State.dvAcctTransFiles
             moDataGrid.DataBind()
 
             EnableDisableButtons()
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
         
 
@@ -139,99 +139,99 @@
 
 #Region "EVENT HANDLERS"
 
-    Private Sub moCompanyDropDown_SelectedIndexChanged(ByVal moUserCompanyMultipleDrop As Common.MultipleColumnDDLabelControl) Handles moUserCompanyMultipleDrop.SelectedDropChanged
+    Private Sub moCompanyDropDown_SelectedIndexChanged(moUserCompanyMultipleDrop As Common.MultipleColumnDDLabelControl) Handles moUserCompanyMultipleDrop.SelectedDropChanged
         Try
-            If Me.UserCompanyMultipleDrop.SelectedIndex = 0 Then
-                Me.ErrControllerMaster.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_COMPANY_IS_REQUIRED)
+            If UserCompanyMultipleDrop.SelectedIndex = 0 Then
+                ErrControllerMaster.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_COMPANY_IS_REQUIRED)
                 Exit Sub
             End If
-            Dim _company As New Company(Me.UserCompanyMultipleDrop.SelectedGuid)
+            Dim _company As New Company(UserCompanyMultipleDrop.SelectedGuid)
             PopulateGrid(_company.Id)
-            Me.State.companyId = _company.Id
+            State.companyId = _company.Id
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub moDataGrid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moDataGrid.ItemDataBound
+    Private Sub moDataGrid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moDataGrid.ItemDataBound
 
-        If e.Item.ItemType = ListItemType.AlternatingItem Or e.Item.ItemType = ListItemType.Item Then
+        If e.Item.ItemType = ListItemType.AlternatingItem OrElse e.Item.ItemType = ListItemType.Item Then
             Dim drv As DataRowView = CType(e.Item.DataItem, DataRowView)
             e.Item.Cells(GRID_COL_ACCT_TRANSMISSION_ID_IDX).Text = GuidControl.ByteArrayToGuid(CType(drv(AcctTransmission.AcctTransmissionSearchDV.COL_ACCT_TRANSMISSION_ID), Byte())).ToString
         End If
 
     End Sub
 
-    Private Sub moDataGrid_PageIndexChanged(ByVal source As System.Object, _
-               ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moDataGrid.PageIndexChanged
+    Private Sub moDataGrid_PageIndexChanged(source As System.Object, _
+               e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moDataGrid.PageIndexChanged
         Try
             moDataGrid.CurrentPageIndex = e.NewPageIndex
-            Me.State.pageIndex = moDataGrid.CurrentPageIndex
-            moDataGrid.DataSource = Me.State.dvAcctTransFiles
+            State.pageIndex = moDataGrid.CurrentPageIndex
+            moDataGrid.DataSource = State.dvAcctTransFiles
             moDataGrid.DataBind()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
 
     End Sub
 
-    Private Sub moDataGrid_ItemCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moDataGrid.ItemCreated
+    Private Sub moDataGrid_ItemCreated(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moDataGrid.ItemCreated
         Dim _epSearchPage As New ElitaPlusSearchPage
         _epSearchPage.BaseItemCreated(sender, e)
     End Sub
 
 
-    Public Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+    Public Sub ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
         Try
-            If e.CommandName = Me.EDIT_COMMAND_NAME Then
+            If e.CommandName = EDIT_COMMAND_NAME Then
                 moDataGrid.SelectedIndex = e.Item.ItemIndex
-                Me.State.selectedRecordId = New Guid(moDataGrid.SelectedItem.Cells(GRID_COL_ACCT_TRANSMISSION_ID_IDX).Text)
+                State.selectedRecordId = New Guid(moDataGrid.SelectedItem.Cells(GRID_COL_ACCT_TRANSMISSION_ID_IDX).Text)
                 EnableDisableButtons()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
-        Me.ReturnToTabHomePage()
+    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
+        ReturnToTabHomePage()
     End Sub
 
-    Private Sub btnExecute_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnExecute.Click
+    Private Sub btnExecute_Click(sender As Object, e As System.EventArgs) Handles btnExecute.Click
 
-        If Not Me.State.selectedRecordId.Equals(Guid.Empty) Then
+        If Not State.selectedRecordId.Equals(Guid.Empty) Then
 
             Try
-                Dim _felitaEngine As New FelitaEngine(New Company(Me.UserCompanyMultipleDrop.SelectedGuid).AcctCompanyId)
+                Dim _felitaEngine As New FelitaEngine(New Company(UserCompanyMultipleDrop.SelectedGuid).AcctCompanyId)
                 Dim strReturn As String = ""
 
-                strReturn = _felitaEngine.ResendFile(Me.State.selectedRecordId)
+                strReturn = _felitaEngine.ResendFile(State.selectedRecordId)
                 If strReturn = RETURN_SUCCESS Then
-                    Me.AddInfoMsg(ElitaPlusWebApp.Message.MSG_INTERFACES_HAS_COMPLETED)
+                    AddInfoMsg(ElitaPlusWebApp.Message.MSG_INTERFACES_HAS_COMPLETED)
                 Else
-                    Me.ErrControllerMaster.AddErrorAndShow(strReturn)
+                    ErrControllerMaster.AddErrorAndShow(strReturn)
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             Finally
                 'Empty the state selection and repopulate the grid
-                Me.State.selectedRecordId = Guid.Empty
-                PopulateGrid(New Company(Me.UserCompanyMultipleDrop.SelectedGuid).Id)
+                State.selectedRecordId = Guid.Empty
+                PopulateGrid(New Company(UserCompanyMultipleDrop.SelectedGuid).Id)
             End Try
            
         End If
 
     End Sub
 
-    Private Sub btnDelete_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnDelete.Click
+    Private Sub btnDelete_Click(sender As Object, e As System.EventArgs) Handles btnDelete.Click
 
-        If Not Me.State.selectedRecordId.Equals(Guid.Empty) Then
+        If Not State.selectedRecordId.Equals(Guid.Empty) Then
 
             Try
 
-                Dim _accttrans As New AcctTransmission(Me.State.selectedRecordId)
+                Dim _accttrans As New AcctTransmission(State.selectedRecordId)
 
                 'Grab associated files IF this is a vendor file.  Otherwise, only delete the current file
                 If _accttrans.FileTypeFlag = BusinessObjectsNew.FelitaEngine.EventType.VEND Then
@@ -249,27 +249,27 @@
                 _accttrans.Delete()
                 _accttrans.Save()
 
-                Me.AddInfoMsg(ElitaPlusWebApp.Message.MSG_DELETE_WAS_COMPLETED_SUCCESSFULLY)
+                AddInfoMsg(ElitaPlusWebApp.Message.MSG_DELETE_WAS_COMPLETED_SUCCESSFULLY)
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             Finally
                 'Empty the state selection and repopulate the grid
-                Me.State.selectedRecordId = Guid.Empty
-                PopulateGrid(New Company(Me.UserCompanyMultipleDrop.SelectedGuid).Id)
+                State.selectedRecordId = Guid.Empty
+                PopulateGrid(New Company(UserCompanyMultipleDrop.SelectedGuid).Id)
             End Try
 
         End If
 
     End Sub
 
-    Private Sub btnReport_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnReport.Click
+    Private Sub btnReport_Click(sender As Object, e As System.EventArgs) Handles btnReport.Click
 
         Try
-            If Not Me.State.selectedRecordId.Equals(Guid.Empty) Then
+            If Not State.selectedRecordId.Equals(Guid.Empty) Then
 
-                Dim _company As New Company(Me.State.companyId)
-                Dim _acctTrans As New AcctTransmission(Me.State.selectedRecordId, True)
+                Dim _company As New Company(State.companyId)
+                Dim _acctTrans As New AcctTransmission(State.selectedRecordId, True)
 
                 Dim param As New Reports.SmartStreamInterfaceDetail.MyState
                 param.CompanyId = _company.Id
@@ -280,7 +280,7 @@
                 param.EndDate = String.Format("{0:dd-MMM-yyyy}", _acctTrans.CreatedDate)
 
                 
-                Me.callPage(Reports.SmartStreamInterfaceDetail.URL, param)
+                callPage(Reports.SmartStreamInterfaceDetail.URL, param)
 
                
             Else
@@ -288,7 +288,7 @@
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
 
@@ -297,7 +297,7 @@
 
 #Region "Controlling Logic"
     Private Sub EnableDisableButtons()
-        If Not Me.State.selectedRecordId.Equals(Guid.Empty) Then
+        If Not State.selectedRecordId.Equals(Guid.Empty) Then
             EnableButtons()
         Else
             DisableButtons()

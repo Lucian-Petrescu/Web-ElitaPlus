@@ -6,48 +6,48 @@ Public Class EarningPattern
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New EarningPatternDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class EarningPattern
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New EarningPatternDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -102,7 +102,7 @@ Public Class EarningPattern
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(EarningPatternDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -113,7 +113,7 @@ Public Class EarningPattern
     End Property
 
     '***** JLR ****
-    Public ReadOnly Property Description() As String
+    Public ReadOnly Property Description As String
         Get
             CheckDeleted()
             If Row(EarningPatternDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -124,7 +124,7 @@ Public Class EarningPattern
         End Get
     End Property
 
-    Public ReadOnly Property Code() As String
+    Public ReadOnly Property Code As String
         Get
             CheckDeleted()
             If Row(EarningPatternDAL.COL_NAME_CODE) Is DBNull.Value Then
@@ -137,7 +137,7 @@ Public Class EarningPattern
     '***** JLR ****
 
     <ValueMandatory(""), ValidPatternDates(""), ValidPatternPeriod("")> _
-    Public Property Effective() As DateType
+    Public Property Effective As DateType
         Get
             CheckDeleted()
             If Row(EarningPatternDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -146,15 +146,15 @@ Public Class EarningPattern
                 Return New DateType(CType(Row(EarningPatternDAL.COL_NAME_EFFECTIVE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(EarningPatternDAL.COL_NAME_EFFECTIVE, Value)
+            SetValue(EarningPatternDAL.COL_NAME_EFFECTIVE, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property Expiration() As DateType
+    Public Property Expiration As DateType
         Get
             CheckDeleted()
             If Row(EarningPatternDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
@@ -163,15 +163,15 @@ Public Class EarningPattern
                 Return New DateType(CType(Row(EarningPatternDAL.COL_NAME_EXPIRATION), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(EarningPatternDAL.COL_NAME_EXPIRATION, Value)
+            SetValue(EarningPatternDAL.COL_NAME_EXPIRATION, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property EarningCodeId() As Guid
+    Public Property EarningCodeId As Guid
         Get
             CheckDeleted()
             If Row(EarningPatternDAL.COL_NAME_EARNING_CODE_ID) Is DBNull.Value Then
@@ -180,14 +180,14 @@ Public Class EarningPattern
                 Return New Guid(CType(Row(EarningPatternDAL.COL_NAME_EARNING_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(EarningPatternDAL.COL_NAME_EARNING_CODE_ID, Value)
+            SetValue(EarningPatternDAL.COL_NAME_EARNING_CODE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property EarningPatternStartsOnId() As Guid
+    Public Property EarningPatternStartsOnId As Guid
         Get
             CheckDeleted()
             If Row(EarningPatternDAL.COL_NAME_EARNING_PATTERN_STARTS_ON_ID) Is DBNull.Value Then
@@ -196,9 +196,9 @@ Public Class EarningPattern
                 Return New Guid(CType(Row(EarningPatternDAL.COL_NAME_EARNING_PATTERN_STARTS_ON_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(EarningPatternDAL.COL_NAME_EARNING_PATTERN_STARTS_ON_ID, Value)
+            SetValue(EarningPatternDAL.COL_NAME_EARNING_PATTERN_STARTS_ON_ID, Value)
         End Set
     End Property
 
@@ -209,15 +209,15 @@ Public Class EarningPattern
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New EarningPatternDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New Dataset
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New Dataset
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -227,7 +227,7 @@ Public Class EarningPattern
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetList(ByVal Description As String, ByVal Code As String, ByVal CompanyGroupId As Guid) As DataView
+    Public Shared Function GetList(Description As String, Code As String, CompanyGroupId As Guid) As DataView
         Try
             Dim dal As New EarningPatternDAL
             Return New DataView(dal.LoadList(Description, Code, CompanyGroupId).Tables(0))
@@ -250,7 +250,7 @@ Public Class EarningPattern
                 recCount = ds.Tables(0).Rows.Count
                 If recCount > 0 Then
                     maxExpiration = ds.Tables(0).Rows(recCount - 1)("EXPIRATION")
-                    If Me.Expiration.Value <> maxExpiration Then
+                    If Expiration.Value <> maxExpiration Then
                         Return False
                     End If
                 End If
@@ -274,7 +274,7 @@ Public Class EarningPattern
                 recCount = ds.Tables(0).Rows.Count
                 If recCount > 0 Then
                     minEffective = ds.Tables(0).Rows(0)("EFFECTIVE")
-                    If Me.Effective.Value <> minEffective Then
+                    If Effective.Value <> minEffective Then
                         Return False
                     End If
                 End If
@@ -293,11 +293,11 @@ Public Class EarningPattern
     Public NotInheritable Class ValidPatternDates
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, ElitaPlus.Common.ErrorCodes.EARNING_PATTERN_DATE_IS_INVALID)
+        Public Sub New(fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, Common.ErrorCodes.EARNING_PATTERN_DATE_IS_INVALID)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As EarningPattern = CType(objectToValidate, EarningPattern)
             If Not (obj.Effective Is Nothing Or obj.Expiration Is Nothing) Then
                 If obj.Effective.Value > obj.Expiration.Value Then
@@ -312,11 +312,11 @@ Public Class EarningPattern
     Public NotInheritable Class ValidPatternPeriod
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, ElitaPlus.Common.ErrorCodes.EARNING_PATTERN_RANGE_IS_INVALID)
+        Public Sub New(fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, Common.ErrorCodes.EARNING_PATTERN_RANGE_IS_INVALID)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
 
             Dim obj As EarningPattern = CType(objectToValidate, EarningPattern)
             Dim bValid As Boolean = True
@@ -352,7 +352,7 @@ Public Class EarningPattern
                                 obj.Effective.Value = currRow("EFFECTIVE") Then
                                 ' Trying to insert a Duplicate - Reject!
                                 Return False
-                            ElseIf Not prevRow Is Nothing Then
+                            ElseIf prevRow IsNot Nothing Then
                                 ' Inserting in the middle (Allow to fix any GAPS)
                                 If obj.Effective.Value.AddDays(-1) = prevRow("EXPIRATION") And _
                                    obj.Expiration.Value.AddDays(1) = currRow("EFFECTIVE") Then

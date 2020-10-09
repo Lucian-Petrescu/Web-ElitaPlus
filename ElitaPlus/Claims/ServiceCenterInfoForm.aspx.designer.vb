@@ -22,7 +22,7 @@ Partial Public Class ServiceCenterInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Form1 As Global.System.Web.UI.HtmlControls.HtmlForm
+    Protected WithEvents Form1 As HtmlForm
 
     '''<summary>
     '''LabelTables control.
@@ -31,7 +31,7 @@ Partial Public Class ServiceCenterInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelTables As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelTables As Label
 
     '''<summary>
     '''Label1 control.
@@ -40,7 +40,7 @@ Partial Public Class ServiceCenterInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label1 As Label
 
     '''<summary>
     '''moIndicatesLabel control.
@@ -49,7 +49,7 @@ Partial Public Class ServiceCenterInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moIndicatesLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moIndicatesLabel As Label
 
     '''<summary>
     '''WorkingPanel control.
@@ -58,7 +58,7 @@ Partial Public Class ServiceCenterInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents WorkingPanel As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents WorkingPanel As Panel
 
     '''<summary>
     '''EditPanel_WRITE control.
@@ -67,7 +67,7 @@ Partial Public Class ServiceCenterInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents EditPanel_WRITE As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents EditPanel_WRITE As Panel
 
     '''<summary>
     '''btnBack control.
@@ -76,7 +76,7 @@ Partial Public Class ServiceCenterInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnBack As Button
 
     '''<summary>
     '''HiddenSaveChangesPromptResponse control.
@@ -85,5 +85,5 @@ Partial Public Class ServiceCenterInfoForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents HiddenSaveChangesPromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents HiddenSaveChangesPromptResponse As HtmlInputHidden
 End Class

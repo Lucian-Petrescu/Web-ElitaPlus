@@ -12,54 +12,54 @@ Public Class VSCCoverage
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
     End Class
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load(id)
+        Dataset = New Dataset
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load()
+        Dataset = New Dataset
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(id As Guid, familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(familyDS As Dataset)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New VSCCoverageDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -67,23 +67,23 @@ Public Class VSCCoverage
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New VSCCoverageDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -107,7 +107,7 @@ Public Class VSCCoverage
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(VSCCoverageDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -118,7 +118,7 @@ Public Class VSCCoverage
     End Property
 
     <ValueMandatory("")> _
-    Public Property VscPlanId() As Guid
+    Public Property VscPlanId As Guid
         Get
             CheckDeleted()
             If Row(VSCCoverageDAL.COL_NAME_VSC_PLAN_ID) Is DBNull.Value Then
@@ -127,14 +127,14 @@ Public Class VSCCoverage
                 Return New Guid(CType(Row(VSCCoverageDAL.COL_NAME_VSC_PLAN_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCCoverageDAL.COL_NAME_VSC_PLAN_ID, Value)
+            SetValue(VSCCoverageDAL.COL_NAME_VSC_PLAN_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CoverageTypeId() As Guid
+    Public Property CoverageTypeId As Guid
         Get
             CheckDeleted()
             If Row(VSCCoverageDAL.COL_NAME_COVERAGE_TYPE_ID) Is DBNull.Value Then
@@ -143,14 +143,14 @@ Public Class VSCCoverage
                 Return New Guid(CType(Row(VSCCoverageDAL.COL_NAME_COVERAGE_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCCoverageDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
+            SetValue(VSCCoverageDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property AllocationPercentUsed() As DecimalType
+    Public Property AllocationPercentUsed As DecimalType
         Get
             CheckDeleted()
             If Row(VSCCoverageDAL.COL_NAME_ALLOCATION_PERCENT_USED) Is DBNull.Value Then
@@ -159,14 +159,14 @@ Public Class VSCCoverage
                 Return New DecimalType(CType(Row(VSCCoverageDAL.COL_NAME_ALLOCATION_PERCENT_USED), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCCoverageDAL.COL_NAME_ALLOCATION_PERCENT_USED, Value)
+            SetValue(VSCCoverageDAL.COL_NAME_ALLOCATION_PERCENT_USED, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property AllocationPercentNew() As DecimalType
+    Public Property AllocationPercentNew As DecimalType
         Get
             CheckDeleted()
             If Row(VSCCoverageDAL.COL_NAME_ALLOCATION_PERCENT_NEW) Is DBNull.Value Then
@@ -175,14 +175,14 @@ Public Class VSCCoverage
                 Return New DecimalType(CType(Row(VSCCoverageDAL.COL_NAME_ALLOCATION_PERCENT_NEW), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCCoverageDAL.COL_NAME_ALLOCATION_PERCENT_NEW, Value)
+            SetValue(VSCCoverageDAL.COL_NAME_ALLOCATION_PERCENT_NEW, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property IsBasePlanId() As Guid
+    Public Property IsBasePlanId As Guid
         Get
             CheckDeleted()
             If Row(VSCCoverageDAL.COL_NAME_IS_BASE_PLAN_ID) Is DBNull.Value Then
@@ -191,14 +191,14 @@ Public Class VSCCoverage
                 Return New Guid(CType(Row(VSCCoverageDAL.COL_NAME_IS_BASE_PLAN_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCCoverageDAL.COL_NAME_IS_BASE_PLAN_ID, Value)
+            SetValue(VSCCoverageDAL.COL_NAME_IS_BASE_PLAN_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property IsDealerDiscountId() As Guid
+    Public Property IsDealerDiscountId As Guid
         Get
             CheckDeleted()
             If Row(VSCCoverageDAL.COL_NAME_IS_DEALER_DISCOUNT_ID) Is DBNull.Value Then
@@ -207,14 +207,14 @@ Public Class VSCCoverage
                 Return New Guid(CType(Row(VSCCoverageDAL.COL_NAME_IS_DEALER_DISCOUNT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCCoverageDAL.COL_NAME_IS_DEALER_DISCOUNT_ID, Value)
+            SetValue(VSCCoverageDAL.COL_NAME_IS_DEALER_DISCOUNT_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property AddToPlanId() As Guid
+    Public Property AddToPlanId As Guid
         Get
             CheckDeleted()
             If Row(VSCCoverageDAL.COL_NAME_ADD_TO_PLAN_ID) Is DBNull.Value Then
@@ -223,14 +223,14 @@ Public Class VSCCoverage
                 Return New Guid(CType(Row(VSCCoverageDAL.COL_NAME_ADD_TO_PLAN_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCCoverageDAL.COL_NAME_ADD_TO_PLAN_ID, Value)
+            SetValue(VSCCoverageDAL.COL_NAME_ADD_TO_PLAN_ID, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property IsClaimAllowedId() As Guid
+    Public Property IsClaimAllowedId As Guid
         Get
             CheckDeleted()
             If Row(VSCCoverageDAL.COL_NAME_IS_CLAIM_ALLOWED_ID) Is DBNull.Value Then
@@ -239,13 +239,13 @@ Public Class VSCCoverage
                 Return New Guid(CType(Row(VSCCoverageDAL.COL_NAME_IS_CLAIM_ALLOWED_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCCoverageDAL.COL_NAME_IS_CLAIM_ALLOWED_ID, Value)
+            SetValue(VSCCoverageDAL.COL_NAME_IS_CLAIM_ALLOWED_ID, Value)
         End Set
     End Property
     <ValueMandatory("")> _
-       Public Property PLANID() As Guid
+       Public Property PLANID As Guid
         Get
             'CheckDeleted()
             If Row(VSCCoverageDAL.COL_NAME_VSC_PLAN_ID) Is DBNull.Value Then
@@ -254,13 +254,13 @@ Public Class VSCCoverage
                 Return New Guid(CType(Row(VSCCoverageDAL.COL_NAME_VSC_PLAN_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCCoverageDAL.COL_NAME_VSC_PLAN_ID, Value)
+            SetValue(VSCCoverageDAL.COL_NAME_VSC_PLAN_ID, Value)
         End Set
     End Property
     <ValueMandatory("")> _
-   Public Property DEALER_CODE() As String
+   Public Property DEALER_CODE As String
         Get
             'CheckDeleted()
             If Row(VSCCoverageDAL.COL_NAME_DEALER_CODE) Is DBNull.Value Then
@@ -269,13 +269,13 @@ Public Class VSCCoverage
                 Return New String(CType(Row(VSCCoverageDAL.COL_NAME_DEALER_CODE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCCoverageDAL.COL_NAME_DEALER_CODE, Value)
+            SetValue(VSCCoverageDAL.COL_NAME_DEALER_CODE, Value)
         End Set
     End Property
     <ValueMandatory("")> _
-Public Property DEALER_NAME() As String
+Public Property DEALER_NAME As String
         Get
             CheckDeleted()
             If Row(VSCCoverageDAL.COL_NAME_DEALER_NAME) Is DBNull.Value Then
@@ -284,13 +284,13 @@ Public Property DEALER_NAME() As String
                 Return New String(CType(Row(VSCCoverageDAL.COL_NAME_DEALER_NAME), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCCoverageDAL.COL_NAME_DEALER_NAME, Value)
+            SetValue(VSCCoverageDAL.COL_NAME_DEALER_NAME, Value)
         End Set
     End Property
     <ValueMandatory("")> _
-Public Property DEALER_GROUP() As String
+Public Property DEALER_GROUP As String
         Get
             CheckDeleted()
             If Row(VSCCoverageDAL.COL_NAME_DEALER_GROUP) Is DBNull.Value Then
@@ -299,13 +299,13 @@ Public Property DEALER_GROUP() As String
                 Return New String(CType(Row(VSCCoverageDAL.COL_NAME_DEALER_GROUP), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(VSCCoverageDAL.COL_NAME_DEALER_GROUP, Value)
+            SetValue(VSCCoverageDAL.COL_NAME_DEALER_GROUP, Value)
         End Set
     End Property
     <ValueMandatory("")> _
-Public Property Effective() As String
+Public Property Effective As String
         Get
             'CheckDeleted()
             If Row(VSCCoverageDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
@@ -314,9 +314,9 @@ Public Property Effective() As String
                 Return New String(CType(Row(VSCCoverageDAL.COL_NAME_EFFECTIVE_DATE), String))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             ' CheckDeleted()
-            Me.SetValue(VSCCoverageDAL.COL_NAME_EFFECTIVE_DATE, Value)
+            SetValue(VSCCoverageDAL.COL_NAME_EFFECTIVE_DATE, Value)
         End Set
     End Property
 #End Region
@@ -325,15 +325,15 @@ Public Property Effective() As String
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New VSCCoverageDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New Dataset
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New Dataset
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -344,7 +344,7 @@ Public Property Effective() As String
 
 #Region "DataView Retrieveing Methods"
     '.PLANID, .DEALER_CODE, .DEALER_NAME, .DEALER_GROUP, .EFFECTIVE_DATE
-    Public Shared Function GetList(ByVal PLANID As Guid, ByVal DEALER_CODE As String, ByVal DEALER_NAME As String, ByVal DEALER_GROUP As String, ByVal EFFECTIVE_DATE As String, ByVal companygroupId As Guid) As VSCCoverageDV '
+    Public Shared Function GetList(PLANID As Guid, DEALER_CODE As String, DEALER_NAME As String, DEALER_GROUP As String, EFFECTIVE_DATE As String, companygroupId As Guid) As VSCCoverageDV '
         Try
             Dim dal As New VSCCoverageDAL
 
@@ -354,7 +354,7 @@ Public Property Effective() As String
         End Try
     End Function
 
-    Public Shared Function GetCoverageRateList(ByVal PLANID As Guid) As VSCCoverageDV '
+    Public Shared Function GetCoverageRateList(PLANID As Guid) As VSCCoverageDV '
         Try
             Dim dal As New VSCCoverageDAL
 
@@ -364,7 +364,7 @@ Public Property Effective() As String
         End Try
     End Function
 
-    Public Shared Function GetCoverageList(ByVal LanguageID As Guid, ByVal PlanID As Guid) As DataView
+    Public Shared Function GetCoverageList(LanguageID As Guid, PlanID As Guid) As DataView
         Try
             Dim dal As New VSCCoverageDAL
             Return dal.LoadListByPlanID(LanguageID, PlanID).Tables(0).DefaultView

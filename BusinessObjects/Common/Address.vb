@@ -1,10 +1,12 @@
 '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE BusinessObject.cst (10/28/2004)  ********************
+Imports System.Collections.Generic
+Imports System.Text.RegularExpressions
 
 Public Class Address
     Inherits BusinessObjectBase
 
     Public Interface IAddressUser
-        Property AddressId() As Guid
+        Property AddressId As Guid
     End Interface
 
 #Region "Private Attributes"
@@ -16,67 +18,67 @@ Public Class Address
 
 
 #Region "Constructors"
-    Private _dataSet As Data.DataSet
+    Private _dataSet As DataSet
     Private _addressID As Guid
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet, ByVal userObj As IAddressUser)
+    Public Sub New(id As Guid, familyDS As DataSet, userObj As IAddressUser)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
-        Me._userObj = userObj
+        Dataset = familyDS
+        Load(id)
+        _userObj = userObj
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet, ByVal userObj As IAddressUser, ByVal Flg As Boolean)
+    Public Sub New(id As Guid, familyDS As DataSet, userObj As IAddressUser, Flg As Boolean)
         MyBase.New(Flg)
-        Me.Dataset = familyDS
-        Me.Load(id)
-        Me._userObj = userObj
+        Dataset = familyDS
+        Load(id)
+        _userObj = userObj
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet, ByVal userObj As IAddressUser)
+    Public Sub New(familyDS As DataSet, userObj As IAddressUser)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
-        Me._userObj = userObj
+        Dataset = familyDS
+        Load()
+        _userObj = userObj
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
-    Sub New(ByVal familyDS As Data.DataSet)
+    Sub New(familyDS As DataSet)
         ' TODO: Complete member initialization 
         '_dataSet = dataSet
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Sub New(ByVal addressid As Guid, ByVal dataset As Data.DataSet)
+    Sub New(addressid As Guid, dataset As DataSet)
         ' todo: complete member initialization 
 
         MyBase.New(False)
         Me.Dataset = dataset
-        Me.Load(addressid)
+        Load(addressid)
 
 
         _addressID = addressid
@@ -86,39 +88,39 @@ Public Class Address
     Protected Sub Load()
         Try
             Dim dal As New AddressDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             'Initialize()
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New AddressDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
@@ -132,11 +134,11 @@ Public Class Address
     Private _countryBO As Country
     Private _inforceFieldValidation As Boolean = False
 
-    Public ReadOnly Property countryBO() As Country
+    Public ReadOnly Property countryBO As Country
         Get
-            If Me._countryBO Is Nothing Then
-                If Not Me.CountryId.Equals(Guid.Empty) Then
-                    _countryBO = New Country(Me.CountryId)
+            If _countryBO Is Nothing Then
+                If Not CountryId.Equals(Guid.Empty) Then
+                    _countryBO = New Country(CountryId)
                 Else
                     _countryBO = ElitaPlusIdentity.Current.ActiveUser.Country(ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID)
                 End If
@@ -152,16 +154,16 @@ Public Class Address
         Dim mailAddrFormat As String = countryBO.MailAddrFormat
 
         mailAddrLabel = mailAddrFormat
-        mailAddrLabel = mailAddrLabel.Replace("[ADR1]", Me.Address1)
-        mailAddrLabel = mailAddrLabel.Replace("[ADR2]", Me.Address2)
-        mailAddrLabel = mailAddrLabel.Replace("[ADR3]", Me.Address3)
-        mailAddrLabel = mailAddrLabel.Replace("[CITY]", Me.City)
+        mailAddrLabel = mailAddrLabel.Replace("[ADR1]", Address1)
+        mailAddrLabel = mailAddrLabel.Replace("[ADR2]", Address2)
+        mailAddrLabel = mailAddrLabel.Replace("[ADR3]", Address3)
+        mailAddrLabel = mailAddrLabel.Replace("[CITY]", City)
         mailAddrLabel = mailAddrLabel.Replace("[COU]", countryBO.Description)
-        mailAddrLabel = mailAddrLabel.Replace("[ZIP]", Me.PostalCode)
+        mailAddrLabel = mailAddrLabel.Replace("[ZIP]", PostalCode)
         mailAddrLabel = mailAddrLabel.Replace("[Space]", " ")
 
-        If Not Me.RegionId.Equals(Guid.Empty) Then
-            Dim regionBO As Region = New Region(Me.RegionId)
+        If Not RegionId.Equals(Guid.Empty) Then
+            Dim regionBO As Region = New Region(RegionId)
             mailAddrLabel = mailAddrLabel.Replace("[RGNAME]", regionBO.Description)
             mailAddrLabel = mailAddrLabel.Replace("[RGCODE]", regionBO.ShortDesc)
         Else
@@ -185,17 +187,17 @@ Public Class Address
 
 
 
-    Public Property ProfileCode() As String
+    Public Property ProfileCode As String
         Get
             Return _profile_code
         End Get
 
-        Set(value As String)
+        Set
             _profile_code = value
         End Set
     End Property
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(AddressDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -206,7 +208,7 @@ Public Class Address
     End Property
 
     <ValidStringLength("", Max:=100), MandatoryForVscAttribute(""), MandatoryForServCenterAttribute(""), MandatoryForDartyGiftCardAttribute("Address1"), RequiredFieldBySetting("", Nothing, "[ADR1]")>
-    Public Property Address1() As String
+    Public Property Address1 As String
         Get
             CheckDeleted()
             If Row(AddressDAL.COL_NAME_ADDRESS1) Is DBNull.Value Then
@@ -215,15 +217,15 @@ Public Class Address
                 Return CType(Row(AddressDAL.COL_NAME_ADDRESS1), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AddressDAL.COL_NAME_ADDRESS1, Value)
+            SetValue(AddressDAL.COL_NAME_ADDRESS1, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=100), RequiredFieldBySetting("", Nothing, "[ADR2]")> _
-    Public Property Address2() As String
+    Public Property Address2 As String
         Get
             CheckDeleted()
             If Row(AddressDAL.COL_NAME_ADDRESS2) Is DBNull.Value Then
@@ -232,14 +234,14 @@ Public Class Address
                 Return CType(Row(AddressDAL.COL_NAME_ADDRESS2), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AddressDAL.COL_NAME_ADDRESS2, Value)
+            SetValue(AddressDAL.COL_NAME_ADDRESS2, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=100), RequiredFieldBySetting("", Nothing, "[ADR3]")> _
-    Public Property Address3() As String
+    Public Property Address3 As String
         Get
             CheckDeleted()
             If Row(AddressDAL.COL_NAME_ADDRESS3) Is DBNull.Value Then
@@ -248,15 +250,15 @@ Public Class Address
                 Return CType(Row(AddressDAL.COL_NAME_ADDRESS3), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AddressDAL.COL_NAME_ADDRESS3, Value)
+            SetValue(AddressDAL.COL_NAME_ADDRESS3, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=50), MandatoryForVscAttribute(""), MandatoryForServCenterAttribute(""), MandatoryForDartyGiftCardAttribute("City"), RequiredFieldBySetting("", Nothing, "[CITY]")>
-    Public Property City() As String
+    Public Property City As String
         Get
             CheckDeleted()
             If Row(AddressDAL.COL_NAME_CITY) Is DBNull.Value Then
@@ -265,13 +267,13 @@ Public Class Address
                 Return CType(Row(AddressDAL.COL_NAME_CITY), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AddressDAL.COL_NAME_CITY, Value)
+            SetValue(AddressDAL.COL_NAME_CITY, Value)
         End Set
     End Property
     <MandatoryForVscAttribute(""), MandatoryCountryAddressFormatAttribute("RegionId"), RequiredFieldBySetting("", Nothing, "[REGION]")> _
-    Public Property RegionId() As Guid
+    Public Property RegionId As Guid
         Get
             CheckDeleted()
             If Row(AddressDAL.COL_NAME_REGION_ID) Is DBNull.Value Then
@@ -280,15 +282,15 @@ Public Class Address
                 Return New Guid(CType(Row(AddressDAL.COL_NAME_REGION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(AddressDAL.COL_NAME_REGION_ID, Value)
+            SetValue(AddressDAL.COL_NAME_REGION_ID, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=25), MandatoryForVscAttribute(""), MandatoryCountryAddressFormatAttribute("PostalCode"), MandatoryForDartyGiftCardAttribute("PostalCode"), RequiredFieldBySetting("", Nothing, "[ZIP]")>
-    Public Property PostalCode() As String
+    Public Property PostalCode As String
         Get
             CheckDeleted()
             If Row(AddressDAL.COL_NAME_POSTAL_CODE) Is DBNull.Value Then
@@ -297,14 +299,14 @@ Public Class Address
                 Return CType(Row(AddressDAL.COL_NAME_POSTAL_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AddressDAL.COL_NAME_POSTAL_CODE, MiscUtil.ConvertToUpper(Value))
+            SetValue(AddressDAL.COL_NAME_POSTAL_CODE, MiscUtil.ConvertToUpper(Value))
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             CheckDeleted()
             If Row(AddressDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -313,15 +315,15 @@ Public Class Address
                 Return New Guid(CType(Row(AddressDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(AddressDAL.COL_NAME_COUNTRY_ID, Value)
+            SetValue(AddressDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
 
     <ValidStringLength("", Max:=25)> _
-    Public Property ZipLocator() As String
+    Public Property ZipLocator As String
         Get
             CheckDeleted()
             If Row(AddressDAL.COL_NAME_ZIP_LOCATOR) Is DBNull.Value Then
@@ -330,14 +332,14 @@ Public Class Address
                 Return CType(Row(AddressDAL.COL_NAME_ZIP_LOCATOR), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AddressDAL.COL_NAME_ZIP_LOCATOR, Value)
+            SetValue(AddressDAL.COL_NAME_ZIP_LOCATOR, Value)
         End Set
     End Property
 
 
-    Public ReadOnly Property MailingAddressLabel() As String
+    Public ReadOnly Property MailingAddressLabel As String
         Get
             Return GetMailingAddressLabel()
         End Get
@@ -349,53 +351,53 @@ Public Class Address
     Private _PaymentMethodId As Guid
     Private _PayeeId As Guid
 
-    Public Property AddressIsRequire() As Boolean
+    Public Property AddressIsRequire As Boolean
         Get
-            Return Me._AddressIsRequire
+            Return _AddressIsRequire
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             _AddressIsRequire = Value
         End Set
     End Property
-    Public Property AddressRequiredServCenter() As Boolean
+    Public Property AddressRequiredServCenter As Boolean
         Get
-            Return Me._AddressRequiredServCenter
+            Return _AddressRequiredServCenter
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             _AddressRequiredServCenter = Value
         End Set
     End Property
 
 
-    Public Property InforceFieldValidation() As Boolean
+    Public Property InforceFieldValidation As Boolean
         Get
             Return _inforceFieldValidation
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             _inforceFieldValidation = Value
         End Set
     End Property
 
-    Public Property PaymentMethodId() As Guid
+    Public Property PaymentMethodId As Guid
         Get
             Return _PaymentMethodId
         End Get
-        Set(ByVal Value As Guid)
+        Set
             _PaymentMethodId = Value
         End Set
     End Property
 
-    Public Property PayeeId() As Guid
+    Public Property PayeeId As Guid
         Get
             Return _payeeId
         End Get
-        Set(ByVal Value As Guid)
+        Set
             _payeeId = Value
         End Set
     End Property
 
     <ValidStringLength("", Max:=10)>
-    Public Property Source() As String
+    Public Property Source As String
         Get
             CheckDeleted()
             If Row(AddressDAL.COL_NAME_SOURCE) Is DBNull.Value Then
@@ -404,13 +406,13 @@ Public Class Address
                 Return CType(Row(AddressDAL.COL_NAME_SOURCE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(AddressDAL.COL_NAME_SOURCE, Value)
+            SetValue(AddressDAL.COL_NAME_SOURCE, Value)
         End Set
     End Property
 
-    Public Property SourceId() As Guid
+    Public Property SourceId As Guid
         Get
             CheckDeleted()
             If Row(AddressDAL.COL_NAME_SOURCE_ID) Is DBNull.Value Then
@@ -419,9 +421,9 @@ Public Class Address
                 Return New Guid(CType(Row(AddressDAL.COL_NAME_SOURCE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(AddressDAL.COL_NAME_SOURCE_ID, Value)
+            SetValue(AddressDAL.COL_NAME_SOURCE_ID, Value)
         End Set
     End Property
 
@@ -430,28 +432,28 @@ Public Class Address
 #Region "Public Members"
     Public Overrides Sub Save()
         Try
-            If Me.IsDirty Then
+            If IsDirty Then
                 'Me.SetPostalCodeLocator()
-                If Not Me._userObj Is Nothing Then
-                    If Me.IsNew And Me.IsEmpty Then
-                        Me._userObj.AddressId = Guid.Empty
-                        Me.Delete()
+                If _userObj IsNot Nothing Then
+                    If IsNew AndAlso IsEmpty Then
+                        _userObj.AddressId = Guid.Empty
+                        Delete()
                     End If
                 End If
             End If
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New AddressDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New Dataset
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New Dataset
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
@@ -474,18 +476,18 @@ Public Class Address
     '    End If
     'End Sub
 
-    Public ReadOnly Property IsEmpty() As Boolean
+    Public ReadOnly Property IsEmpty As Boolean
         Get
-            If (Not IsEmptyString(Me.Address1)) OrElse (Not IsEmptyString(Me.Address2)) OrElse (Not IsEmptyString(Me.Address3)) OrElse _
-            (Not IsEmptyString(Me.City)) OrElse (Not IsEmptyString(Me.PostalCode)) OrElse _
-            (Not Me.RegionId.Equals(Guid.Empty)) Then
+            If (Not IsEmptyString(Address1)) OrElse (Not IsEmptyString(Address2)) OrElse (Not IsEmptyString(Address3)) OrElse _
+            (Not IsEmptyString(City)) OrElse (Not IsEmptyString(PostalCode)) OrElse _
+            (Not RegionId.Equals(Guid.Empty)) Then
                 Return False
             End If
             Return True
         End Get
     End Property
 
-    Private Function IsEmptyString(ByVal value As String)
+    Private Function IsEmptyString(value As String)
         Return (value Is Nothing OrElse value.Trim.Length = 0)
     End Function
 #End Region
@@ -499,11 +501,11 @@ Public Class Address
 Public NotInheritable Class MandatoryForVscAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+        Public Sub New(fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Address = CType(objectToValidate, Address)
 
             If obj.AddressIsRequire Then
@@ -512,7 +514,7 @@ Public NotInheritable Class MandatoryForVscAttribute
                         Return False
                     End If
                 Else
-                    If valueToCheck Is Nothing Or valueToCheck Is String.Empty Then
+                    If valueToCheck Is Nothing OrElse valueToCheck Is String.Empty Then
                         Return False
                     End If
                 End If
@@ -530,11 +532,11 @@ Public NotInheritable Class MandatoryForVscAttribute
 Public NotInheritable Class MandatoryForServCenterAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+        Public Sub New(fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Address = CType(objectToValidate, Address)
 
             If obj.AddressRequiredServCenter Then
@@ -543,7 +545,7 @@ Public NotInheritable Class MandatoryForServCenterAttribute
                         Return False
                     End If
                 Else
-                    If valueToCheck Is Nothing Or valueToCheck Is String.Empty Then
+                    If valueToCheck Is Nothing OrElse valueToCheck Is String.Empty Then
                         Return False
                     End If
                 End If
@@ -558,11 +560,11 @@ Public NotInheritable Class MandatoryForServCenterAttribute
     Public NotInheritable Class MandatoryCountryAddressFormatAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+        Public Sub New(fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Address = CType(objectToValidate, Address)
 
             If obj.AddressRequiredServCenter Then
@@ -577,14 +579,14 @@ Public NotInheritable Class MandatoryForServCenterAttribute
 
                 'zip required
                 'If PropName_Zip.ToUpper = Me.DisplayName.ToUpper AndAlso strAddFmt.IndexOf("[ZIP]") > -1 Then
-                If PropName_Zip.ToUpper = Me.DisplayName.ToUpper AndAlso IsAddressComponentRequired(strAddFmt, "ZIP") Then
+                If PropName_Zip.ToUpper = DisplayName.ToUpper AndAlso IsAddressComponentRequired(strAddFmt, "ZIP") Then
                     If obj.PostalCode Is Nothing OrElse obj.PostalCode.Trim = String.Empty Then
                         Return False
                     End If
                 End If
                 'region required
                 'If PropName_Region.ToUpper = Me.DisplayName.ToUpper AndAlso (strAddFmt.IndexOf("[RGCODE]") > -1 OrElse strAddFmt.IndexOf("[RGNAME]") > -1) Then
-                If PropName_Region.ToUpper = Me.DisplayName.ToUpper AndAlso (IsAddressComponentRequired(strAddFmt, "RGCODE") OrElse IsAddressComponentRequired(strAddFmt, "RGNAME")) Then
+                If PropName_Region.ToUpper = DisplayName.ToUpper AndAlso (IsAddressComponentRequired(strAddFmt, "RGCODE") OrElse IsAddressComponentRequired(strAddFmt, "RGNAME")) Then
                     If obj.RegionId = Guid.Empty Then
                         Return False
                     End If
@@ -598,18 +600,18 @@ Public NotInheritable Class MandatoryForServCenterAttribute
     Public NotInheritable Class ValidUserCountry
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_USER_COUNTRY)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Address = CType(objectToValidate, Address)
             Dim valid As Boolean = False
 
             'ALR - REQ-400 - Check for mismatch between CountryID and Region.countryId.  If mismatched, set country to the region's country
             If Not obj.CountryId.Equals(Guid.Empty) AndAlso Not obj.RegionId.Equals(Guid.Empty) Then
                 Dim oReg As New Region(obj.RegionId)
-                If Not oReg Is Nothing Then
+                If oReg IsNot Nothing Then
                     If Not oReg.CountryId.Equals(obj.CountryId) Then
                         obj.CountryId = oReg.CountryId
                     End If
@@ -637,22 +639,22 @@ Public NotInheritable Class MandatoryForServCenterAttribute
     Public NotInheritable Class RequiredFieldBySetting
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String, ByVal x As String, ByVal shortName As String)
+        Public Sub New(fieldDisplayName As String, x As String, shortName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR)
             propertyShortName = shortName
         End Sub
 
         Private _propertyShortName As String = Nothing
-        Private Property propertyShortName() As String
+        Private Property propertyShortName As String
             Get
                 Return _propertyShortName
             End Get
-            Set(ByVal Value As String)
+            Set
                 _propertyShortName = Value
             End Set
         End Property
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Address = CType(objectToValidate, Address)
 
             If obj.InforceFieldValidation = False Then Return True
@@ -677,14 +679,14 @@ Public NotInheritable Class MandatoryForServCenterAttribute
     Public NotInheritable Class MandatoryForDartyGiftCardAttribute
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+        Public Sub New(fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, Messages.VALUE_MANDATORY_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Address = CType(objectToValidate, Address)
 
-            If (Not obj.PayeeId.Equals(Guid.Empty) And Not obj.PaymentMethodId.Equals(Guid.Empty)) Then
+            If (Not obj.PayeeId.Equals(Guid.Empty) AndAlso Not obj.PaymentMethodId.Equals(Guid.Empty)) Then
                 If TypeOf valueToCheck Is Guid Then
                     If valueToCheck.Equals(Guid.Empty) Then
                         Return False
@@ -713,35 +715,35 @@ Public NotInheritable Class MandatoryForServCenterAttribute
             _ItemName = String.Empty
             _Required = True
         End Sub
-        Public Sub New(ByVal ItemName As String, Optional ByVal Required As Boolean = True)
+        Public Sub New(ItemName As String, Optional ByVal Required As Boolean = True)
             _ItemName = ItemName
             _Required = Required
         End Sub
-        Public Property ItemName() As String
+        Public Property ItemName As String
             Get
                 Return _ItemName
             End Get
-            Set(ByVal Value As String)
+            Set
                 _ItemName = Value
             End Set
         End Property
-        Public Property Required() As Boolean
+        Public Property Required As Boolean
             Get
                 Return _Required
             End Get
-            Set(ByVal Value As Boolean)
+            Set
                 Required = Value
             End Set
         End Property
     End Class
-    Public Shared Sub SplitMailingAddressFormatString(ByVal MailAddrFmtStr As String, ByRef AddressComponents As Collections.Generic.List(Of MailAddressItem))
+    Public Shared Sub SplitMailingAddressFormatString(MailAddrFmtStr As String, ByRef AddressComponents As List(Of MailAddressItem))
         MailAddrFmtStr = MailAddrFmtStr.Trim
         'MailAddrFmtStr = "[ADR1][-][\n][ADR2][\n][ZIP][Space][CITY][Space][COU][\n][RGNAME]*[,][Space][RGCODE]"
         If MailAddrFmtStr.Trim <> "" Then
-            AddressComponents = New Collections.Generic.List(Of MailAddressItem)(15)
-            Dim RegExp As Text.RegularExpressions.Regex, blnRequired As Boolean
-            RegExp = New Text.RegularExpressions.Regex("\[(.)+?\](\*)*")
-            Dim m As Text.RegularExpressions.Match = RegExp.Match(MailAddrFmtStr)
+            AddressComponents = New List(Of MailAddressItem)(15)
+            Dim regExp As Regex, blnRequired As Boolean
+            regExp = New Regex("\[(.)+?\](\*)*", RegexOptions.None, new TimeSpan(0,0,0,0, 100))
+            Dim m As Match = regExp.Match(MailAddrFmtStr)
             While (m.Success)
                 blnRequired = True
                 If m.Value.Trim.EndsWith("]*") Then blnRequired = False
@@ -750,12 +752,12 @@ Public NotInheritable Class MandatoryForServCenterAttribute
             End While
         End If
     End Sub
-    Public Shared Function IsAddressComponentRequired(ByVal MailAddrFmtStr As String, ByVal strComponent As String) As Boolean
+    Public Shared Function IsAddressComponentRequired(MailAddrFmtStr As String, strComponent As String) As Boolean
         Dim blnRequired As Boolean = False
         MailAddrFmtStr = MailAddrFmtStr.Trim
         If MailAddrFmtStr.Trim <> "" Then
-            Dim RegExp As Text.RegularExpressions.Regex = New Text.RegularExpressions.Regex("\[(.+?)\](\*)*")
-            Dim m As Text.RegularExpressions.Match = RegExp.Match(MailAddrFmtStr)
+            Dim regExp = New Regex("\[(.+?)\](\*)*", RegexOptions.None, new TimeSpan(0,0,0,0, 100))
+            Dim m As Match = regExp.Match(MailAddrFmtStr)
             While (m.Success)
                 If m.Groups(1).Value.Trim = strComponent.Trim AndAlso (Not m.Value.Trim.EndsWith("]*")) Then
                     blnRequired = True

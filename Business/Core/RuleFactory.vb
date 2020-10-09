@@ -22,11 +22,11 @@ Friend Class RuleFactory
     Private ReadOnly CommonManager As ICommonManager
     Private ReadOnly CertificateManager As ICertificateManager
 
-    Private Sub New(ByVal pCommonManager As ICommonManager)
+    Private Sub New(pCommonManager As ICommonManager)
         CommonManager = pCommonManager
     End Sub
 
-    Friend Function GetRuleExecutor(ByVal pRule As Rule) As BaseRule
+    Friend Function GetRuleExecutor(pRule As Rule) As BaseRule
         Select Case pRule.Code.ToUpperInvariant()
             Case RuleCodes.PoliceReportRequired, RuleCodes.TheftDocumentationRules
                 Return New PoliceReportRequiredRule(pRule, CommonManager)

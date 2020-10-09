@@ -20,7 +20,7 @@ Namespace Certificates
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -289,10 +289,10 @@ Namespace Certificates
 
         Private Property CertId() As Guid
             Get
-                Return Me.State.CertificateId
+                Return State.CertificateId
             End Get
-            Set(ByVal Value As Guid)
-                Me.State.CertificateId = Value
+            Set(Value As Guid)
+                State.CertificateId = Value
             End Set
 
         End Property
@@ -372,28 +372,28 @@ Namespace Certificates
 
         Public Property WorkingPanelVisible As Boolean
             Get
-                Return Me.State.WorkingPanelVisible
+                Return State.WorkingPanelVisible
             End Get
-            Set(ByVal value As Boolean)
-                Me.State.WorkingPanelVisible = value
+            Set(value As Boolean)
+                State.WorkingPanelVisible = value
 
-                ControlMgr.SetVisibleControl(Me, CancellationPanel, Not Me.State.WorkingPanelVisible)
-                ControlMgr.SetVisibleControl(Me, moCertificateInfoCtrlCancel, Not Me.State.WorkingPanelVisible)
+                ControlMgr.SetVisibleControl(Me, CancellationPanel, Not State.WorkingPanelVisible)
+                ControlMgr.SetVisibleControl(Me, moCertificateInfoCtrlCancel, Not State.WorkingPanelVisible)
 
-                ControlMgr.SetVisibleControl(Me, WorkingPanel, Me.State.WorkingPanelVisible)
-                ControlMgr.SetVisibleControl(Me, moCertificateInfoController, Me.State.WorkingPanelVisible)
+                ControlMgr.SetVisibleControl(Me, WorkingPanel, State.WorkingPanelVisible)
+                ControlMgr.SetVisibleControl(Me, moCertificateInfoController, State.WorkingPanelVisible)
 
-                If Me.State.WorkingPanelVisible Then
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(Message.Certificate_Detail)
+                If State.WorkingPanelVisible Then
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(Message.Certificate_Detail)
                 Else
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(Message.Cancel_Certificate)
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(Message.Cancel_Certificate)
                 End If
             End Set
         End Property
 
         Public ReadOnly Property HasInstallment As Boolean
             Get
-                If Me.State.TheDirectDebitState.certInstallment Is Nothing Then
+                If State.TheDirectDebitState.certInstallment Is Nothing Then
                     Return False
                 Else
                     Return True
@@ -407,7 +407,7 @@ Namespace Certificates
                 If gIsSinglePremium Is Nothing Then
                     Dim oContract As New Contract
 
-                    oContract = Contract.GetContract(Me.State.MyBO.DealerId, Me.State.MyBO.WarrantySalesDate.Value)
+                    oContract = Contract.GetContract(State.MyBO.DealerId, State.MyBO.WarrantySalesDate.Value)
 
                     If oContract Is Nothing Then
                         Throw New GUIException(ElitaPlus.Common.ErrorCodes.ERR_CONTRACT_NOT_FOUND, ElitaPlus.Common.ErrorCodes.ERR_CONTRACT_NOT_FOUND)
@@ -434,7 +434,7 @@ Namespace Certificates
                 If mIsExtendCovByAutoRenew Is Nothing Then
                     Dim oContract As New Contract
 
-                    oContract = Contract.GetContract(Me.State.MyBO.DealerId, Me.State.MyBO.WarrantySalesDate.Value)
+                    oContract = Contract.GetContract(State.MyBO.DealerId, State.MyBO.WarrantySalesDate.Value)
 
                     If oContract Is Nothing Then
                         Throw New GUIException(ElitaPlus.Common.ErrorCodes.ERR_CONTRACT_NOT_FOUND, ElitaPlus.Common.ErrorCodes.ERR_CONTRACT_NOT_FOUND)
@@ -459,7 +459,7 @@ Namespace Certificates
         'KDDI
         Protected Sub EnableDisableAddressValidation()
             Dim btnValidate_Address As Button = AddressCtr.FindControl(ValidateAddressButton)
-            If Not Me.State.MyBO.Dealer Is Nothing AndAlso Me.State.MyBO.Dealer.Validate_Address = Codes.EXT_YESNO_Y Then
+            If State.MyBO.Dealer IsNot Nothing AndAlso State.MyBO.Dealer.Validate_Address = Codes.EXT_YESNO_Y Then
                 ControlMgr.SetVisibleControl(Me, btnValidate_Address, True)
             Else
                 ControlMgr.SetVisibleControl(Me, btnValidate_Address, False)
@@ -475,9 +475,9 @@ Namespace Certificates
             Public EditingBo As Certificate
             Public BoChanged As Boolean = False
             Public IsCallerAuthenticated As Boolean = False
-            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As Certificate, Optional ByVal boChanged As Boolean = False, Optional ByVal IsCallerAuthenticated As Boolean = False)
-                Me.LastOperation = LastOp
-                Me.EditingBo = curEditingBo
+            Public Sub New(LastOp As DetailPageCommand, curEditingBo As Certificate, Optional ByVal boChanged As Boolean = False, Optional ByVal IsCallerAuthenticated As Boolean = False)
+                LastOperation = LastOp
+                EditingBo = curEditingBo
                 Me.BoChanged = boChanged
                 Me.IsCallerAuthenticated = IsCallerAuthenticated
             End Sub
@@ -737,31 +737,31 @@ Namespace Certificates
         Protected Shadows ReadOnly Property State() As MyState
             Get
                 Dim retState As MyState
-                If ((Me.NavController Is Nothing) OrElse (Me.NavController.Context <> "CERT_DETAIL")) Then
+                If ((NavController Is Nothing) OrElse (NavController.Context <> "CERT_DETAIL")) Then
                     'Restart flow
-                    Me.StartNavControl()
-                    Me.NavController.State = CType(Session(Me.SESSION_KEY_BACKUP_STATE), MyState)
-                ElseIf Me.NavController.State Is Nothing Then
-                    Me.NavController.State = New MyState
-                ElseIf (Me.GetType.BaseType.FullName <>
-                        Me.NavController.State.GetType.ReflectedType.FullName) Then
+                    StartNavControl()
+                    NavController.State = CType(Session(SESSION_KEY_BACKUP_STATE), MyState)
+                ElseIf NavController.State Is Nothing Then
+                    NavController.State = New MyState
+                ElseIf ([GetType].BaseType.FullName <>
+                        NavController.State.GetType.ReflectedType.FullName) Then
                     'Restart flow
-                    Me.StartNavControl()
-                    Me.NavController.State = CType(Session(Me.SESSION_KEY_BACKUP_STATE), MyState)
+                    StartNavControl()
+                    NavController.State = CType(Session(SESSION_KEY_BACKUP_STATE), MyState)
                 Else
-                    If Me.NavController.IsFlowEnded Then
+                    If NavController.IsFlowEnded Then
                         'Restart flow
-                        Dim s As MyState = CType(Me.NavController.State, MyState)
-                        Me.StartNavControl()
-                        Me.NavController.State = s
+                        Dim s As MyState = CType(NavController.State, MyState)
+                        StartNavControl()
+                        NavController.State = s
 
                     End If
                 End If
-                If Me.NavController.State Is Nothing Then
-                    Me.NavController.State = New MyState
+                If NavController.State Is Nothing Then
+                    NavController.State = New MyState
                 End If
-                retState = CType(Me.NavController.State, MyState)
-                Session(Me.SESSION_KEY_BACKUP_STATE) = retState
+                retState = CType(NavController.State, MyState)
+                Session(SESSION_KEY_BACKUP_STATE) = retState
                 Return retState
             End Get
         End Property
@@ -771,17 +771,17 @@ Namespace Certificates
             Public CertificateId As Guid = Nothing
             Public IsCallerAuthenticated As Boolean = False
 
-            Public Sub New(ByVal certificateId As Guid, Optional IsCallerAuthenticated As Boolean = False)
+            Public Sub New(certificateId As Guid, Optional IsCallerAuthenticated As Boolean = False)
                 Me.CertificateId = certificateId
                 Me.IsCallerAuthenticated = IsCallerAuthenticated
             End Sub
 
         End Class
 
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Try
-                Me.WorkingPanelVisible = True
-                If Not Me.CallingParameters Is Nothing Then
+                WorkingPanelVisible = True
+                If CallingParameters IsNot Nothing Then
 
                     '   Me.StartNavControl() 'arf 12-20-04
 
@@ -789,27 +789,27 @@ Namespace Certificates
                     'Get the id from the parent
 
                     ' DEF-4245 Clean up old data on new search
-                    Me.State.CoveragesearchDV = Nothing
-                    Me.State.ClaimsearchDV = Nothing
+                    State.CoveragesearchDV = Nothing
+                    State.ClaimsearchDV = Nothing
 
                     Try
-                        Me.State.MyBO = New Certificate(CType(Me.CallingParameters, Guid))
+                        State.MyBO = New Certificate(CType(CallingParameters, Guid))
                     Catch ex As Exception
-                        Me.State.MyBO = New Certificate(CType(Me.CallingParameters, Parameters).CertificateId)
-                        Me.state.IsCallerAuthenticated = CType(Me.CallingParameters, Parameters).IsCallerAuthenticated
+                        State.MyBO = New Certificate(CType(CallingParameters, Parameters).CertificateId)
+                        state.IsCallerAuthenticated = CType(CallingParameters, Parameters).IsCallerAuthenticated
                     End Try
-                    Me.CertId = Me.State.MyBO.Id
-                    Me.State.ValFlag = Me.State.MyBO.GetValFlag()
-                    Me.State.certificateChanged = False
+                    CertId = State.MyBO.Id
+                    State.ValFlag = State.MyBO.GetValFlag()
+                    State.certificateChanged = False
 
-                    Me.State.PreviousCertificate = Nothing
-                    Me.State.OriginalCertificate = Nothing
+                    State.PreviousCertificate = Nothing
+                    State.OriginalCertificate = Nothing
 
                 Else
                     Throw New Exception("No Calling Parameters")
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
@@ -819,7 +819,7 @@ Namespace Certificates
 #Region "Page Events"
         Private Sub CertificateForm_PreRender(sender As Object, e As EventArgs) Handles Me.PreRender
             'set tab display info
-            hdnSelectedTab.Value = Me.State.selectedTab
+            hdnSelectedTab.Value = State.selectedTab
             Dim strTemp As String = String.Empty
             If listDisabledTabs.Count > 0 Then
                 For Each i As Integer In listDisabledTabs
@@ -827,25 +827,25 @@ Namespace Certificates
                 Next
                 strTemp = strTemp.Substring(1) 'remove the first comma
             End If
-            Me.State.disabledTabs = strTemp 'store the disabled state
-            hdnDisabledTabs.Value = Me.State.disabledTabs
+            State.disabledTabs = strTemp 'store the disabled state
+            hdnDisabledTabs.Value = State.disabledTabs
             If hdnInitDisabledTabs.Value = "NA" Then 'set once only
                 hdnInitDisabledTabs.Value = hdnDisabledTabs.Value
             End If
         End Sub
 
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                If (Not Me.State.MyBO Is Nothing) Then
-                    Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
-                                              TranslationBase.TranslateLabelOrMessage("Certificate") & " " & Me.State.MyBO.CertNumber
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(Message.Certificate_Detail) & " (<strong>" &
-                                              Me.State.MyBO.CertNumber & "</strong>) " & TranslationBase.TranslateLabelOrMessage("SUMMARY")
+            If (State IsNot Nothing) Then
+                If (State.MyBO IsNot Nothing) Then
+                    MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
+                                              TranslationBase.TranslateLabelOrMessage("Certificate") & " " & State.MyBO.CertNumber
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(Message.Certificate_Detail) & " (<strong>" &
+                                              State.MyBO.CertNumber & "</strong>) " & TranslationBase.TranslateLabelOrMessage("SUMMARY")
                 End If
             End If
         End Sub
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load, Me.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load, Me.Load
             If mbIsFirstPass = True Then
                 mbIsFirstPass = False
             Else
@@ -855,61 +855,61 @@ Namespace Certificates
 
             Try
                 ' This is an scenario where Dynamic Claim Recording is called from Certificate form
-                If Not Me.IsPostBack Then
-                    If (Not Me.NavController Is Nothing) AndAlso (Not Me.NavController.PrevNavState Is Nothing) AndAlso (Me.NavController.PrevNavState.Name = "SEND_SERVICE_ORDER") AndAlso
-                        (Not String.IsNullOrEmpty(Me.State.ClaimRecordingXcd)) AndAlso (Me.State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_DYNAMIC_QUESTIONS) OrElse Me.State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_BOTH)) Then
-                        If (Me.Navigator.NavStackCount > 1) Then
+                If Not IsPostBack Then
+                    If (NavController IsNot Nothing) AndAlso (NavController.PrevNavState IsNot Nothing) AndAlso (NavController.PrevNavState.Name = "SEND_SERVICE_ORDER") AndAlso
+                        (Not String.IsNullOrEmpty(State.ClaimRecordingXcd)) AndAlso (State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_DYNAMIC_QUESTIONS) OrElse State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_BOTH)) Then
+                        If (Navigator.NavStackCount > 1) Then
                             MyBase.SetPageOutOfNavigation()
                         End If
-                        Me.Navigator.SetCurrentPage(mobjPage, mobjState)
+                        Navigator.SetCurrentPage(mobjPage, mobjState)
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
-            Me.MasterPage.UsePageTabTitleInBreadCrum = False
-            Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("Certificates")
+            MasterPage.UsePageTabTitleInBreadCrum = False
+            MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("Certificates")
 
             UpdateBreadCrum()
 
             Try
-                If (Not Me.NavController Is Nothing) AndAlso (Not Me.NavController.PrevNavState Is Nothing) AndAlso (Me.NavController.PrevNavState.Name = "CERT_ITEM") Then
-                    Dim ciParamObj As Object = Me.NavController.ParametersPassed
+                If (NavController IsNot Nothing) AndAlso (NavController.PrevNavState IsNot Nothing) AndAlso (NavController.PrevNavState.Name = "CERT_ITEM") Then
+                    Dim ciParamObj As Object = NavController.ParametersPassed
                     Dim ciRetObj As Assurant.ElitaPlus.ElitaPlusWebApp.Certificates.CertItemForm.ReturnType = CType(ciParamObj, Assurant.ElitaPlus.ElitaPlusWebApp.Certificates.CertItemForm.ReturnType)
                     If ciRetObj.BoChanged Then
-                        Me.State.MyBO = New Certificate(Me.State.MyBO.Id)
+                        State.MyBO = New Certificate(State.MyBO.Id)
                     End If
                 End If
 
-                If (Not Me.NavController Is Nothing) AndAlso (Not Me.NavController.PrevNavState Is Nothing) AndAlso (Me.NavController.PrevNavState.Name = "CREATE_NEW_ENDORSEMENT") Then
-                    Dim enParamObj As Object = Me.NavController.ParametersPassed
+                If (NavController IsNot Nothing) AndAlso (NavController.PrevNavState IsNot Nothing) AndAlso (NavController.PrevNavState.Name = "CREATE_NEW_ENDORSEMENT") Then
+                    Dim enParamObj As Object = NavController.ParametersPassed
                     Dim enRetObj As Assurant.ElitaPlus.ElitaPlusWebApp.Certificates.EndorsementForm.ReturnType = CType(enParamObj, Assurant.ElitaPlus.ElitaPlusWebApp.Certificates.EndorsementForm.ReturnType)
-                    Me.State.blnMFGChanged = enRetObj.HasMFGCoverageChanged
+                    State.blnMFGChanged = enRetObj.HasMFGCoverageChanged
                     If enRetObj.HasDataChanged Then
-                        Me.State.MyBO = New Certificate(Me.State.MyBO.Id)
+                        State.MyBO = New Certificate(State.MyBO.Id)
                     Else
-                        Me.State.NavigateToEndorment = False ' No Changes on Endorsement page, so no need to navigate to Endorsement tab
+                        State.NavigateToEndorment = False ' No Changes on Endorsement page, so no need to navigate to Endorsement tab
                     End If
                 End If
 
                 ' if coming back from Linked Certificate, reset the source certificate.
-                If Me.State.MyBO Is Nothing AndAlso Not Session("SourceCertificateId") Is Nothing AndAlso Not CType(Session("SourceCertificateId"), Guid).Equals(Guid.Empty) Then
+                If State.MyBO Is Nothing AndAlso Session("SourceCertificateId") IsNot Nothing AndAlso Not CType(Session("SourceCertificateId"), Guid).Equals(Guid.Empty) Then
 
                     SourceCertificateId = CType(Session("SourceCertificateId"), Guid)
-                    Me.State.MyBO = New Certificate(SourceCertificateId)
+                    State.MyBO = New Certificate(SourceCertificateId)
 
                     SourceCertificateId = Guid.Empty
                     Session("SourceCertificateId") = SourceCertificateId
-                    Me.State.PreviousCertificate = Nothing
-                    Me.State.OriginalCertificate = Nothing
+                    State.PreviousCertificate = Nothing
+                    State.OriginalCertificate = Nothing
                 End If
 
-                If Not Me.State.MyBO Is Nothing AndAlso Not ElitaPlusIdentity.Current.ActiveUser.LanguageId.Equals(Guid.Empty) Then
-                    HoverMenuExtender1.DynamicContextKey = Me.State.MyBO.Id.ToString & ":" & ElitaPlusIdentity.Current.ActiveUser.LanguageId.ToString
+                If State.MyBO IsNot Nothing AndAlso Not ElitaPlusIdentity.Current.ActiveUser.LanguageId.Equals(Guid.Empty) Then
+                    HoverMenuExtender1.DynamicContextKey = State.MyBO.Id.ToString & ":" & ElitaPlusIdentity.Current.ActiveUser.LanguageId.ToString
                 End If
 
-                Me.State.selectedTab = 0
+                State.selectedTab = 0
                 '------------------------------------------------------------------------
 
                 Dim selectedCancellationReason As Guid
@@ -918,19 +918,19 @@ Namespace Certificates
 
                 'Put user code to initialize the page here
 
-                Me.MasterPage.MessageController.Clear()
-                Me.WorkingPanelVisible = Me.State.WorkingPanelVisible
+                MasterPage.MessageController.Clear()
+                WorkingPanelVisible = State.WorkingPanelVisible
 
-                Me.State.TheItemCoverageState.IsGridVisible = True
-                Me.State.IsGridVisible = True
+                State.TheItemCoverageState.IsGridVisible = True
+                State.IsGridVisible = True
 
-                Me.State.IsCommentsGridVisible = True
-                Me.State.IsEndorsementsGridVisible = True
-                Me.State.IsCertHistoryGridVisible = True
-                Me.State.IsCertExtFieldsGridVisible = True
+                State.IsCommentsGridVisible = True
+                State.IsEndorsementsGridVisible = True
+                State.IsCertHistoryGridVisible = True
+                State.IsCertExtFieldsGridVisible = True
                 ' Me.State.isItemsGridVisible = True
 
-                If Not Me.State.MyBO Is Nothing AndAlso Contract.HasContract(Me.State.MyBO.DealerId, Me.State.MyBO.WarrantySalesDate.Value) Then
+                If State.MyBO IsNot Nothing AndAlso Contract.HasContract(State.MyBO.DealerId, State.MyBO.WarrantySalesDate.Value) Then
                     ControlMgr.SetVisibleControl(Me, TNCButton_WRITE, True)
                 Else
                     ControlMgr.SetVisibleControl(Me, TNCButton_WRITE, False)
@@ -943,21 +943,21 @@ Namespace Certificates
                 '    ControlMgr.SetVisibleControl(Me, btnAddCheckPayment, False)
                 'End If
 
-                If Me.State.MyBO.CustomerId = Guid.Empty Then
+                If State.MyBO.CustomerId = Guid.Empty Then
                     ControlMgr.SetVisibleControl(Me, btnCustProfileHistory_Write, False)
                 End If
 
-                EnableDisableControls(Me.moCertificateDetailPanel, True)
+                EnableDisableControls(moCertificateDetailPanel, True)
                 ' Address Validation
                 EnableDisableAddressValidation()
 
                 'KDDI
-                If Me.State.AddressFlag = False Then
-                    EnableDisableControls(Me.moCertificateDetailPanel, False)
+                If State.AddressFlag = False Then
+                    EnableDisableControls(moCertificateDetailPanel, False)
                     'Dim btnValidate_Address1 As Button = AddressCtr.FindControl(ValidateAddressButton)
                     'ControlMgr.SetVisibleControl(Me, btnValidate_Address1, True)
                 Else
-                    EnableDisableControls(Me.moCertificateDetailPanel, True)
+                    EnableDisableControls(moCertificateDetailPanel, True)
                     'Dim btnValidate_Address1 As Button = AddressCtr.FindControl(ValidateAddressButton)
                     'ControlMgr.SetVisibleControl(Me, btnValidate_Address1, False)
                 End If
@@ -967,8 +967,8 @@ Namespace Certificates
                 'moTaxIdText.ReadOnly = False
                 'EnableDisableControls(Me.moPremiumInformationTabPanel_WRITE, True)
 
-                Me.moTaxIdText.Attributes.Add("OnChange", "fillTB(this,'" & moNewTaxIdText.ClientID & "')")
-                Me.moNewTaxIdText.Attributes.Add("OnChange", "fillTB(this,'" & moTaxIdText.ClientID & "')")
+                moTaxIdText.Attributes.Add("OnChange", "fillTB(this,'" & moNewTaxIdText.ClientID & "')")
+                moNewTaxIdText.Attributes.Add("OnChange", "fillTB(this,'" & moTaxIdText.ClientID & "')")
                 'Me.tsHoriz.Items(Me.CERT_ITEMS_INFO_TAB).Text = TranslationBase.TranslateLabelOrMessage("ITEMS")  'Added by Pedro
 
 
@@ -978,53 +978,53 @@ Namespace Certificates
                 'Me.cboDocumentTypeId.Attributes.Add("onChange", "doctypeFunction")
                 'END    DEF-1986
 
-                If Not Me.IsPostBack Then
-                    If Not Me.State.MyBO.CountryPurchaseId.Equals(Guid.Empty) Then
-                        Dim countryBO As Country = New Country(Me.State.MyBO.CountryPurchaseId)
-                        Me.State.CountryOfPurchase = countryBO.Description
-                        Me.State.AllowForget = countryBO.AllowForget
+                If Not IsPostBack Then
+                    If Not State.MyBO.CountryPurchaseId.Equals(Guid.Empty) Then
+                        Dim countryBO As Country = New Country(State.MyBO.CountryPurchaseId)
+                        State.CountryOfPurchase = countryBO.Description
+                        State.AllowForget = countryBO.AllowForget
                     End If
 
-                    Me.State.directDebitPayment = False
-                    Me.State.creditCardPayment = False
+                    State.directDebitPayment = False
+                    State.creditCardPayment = False
 
                     ObtainBooleanFlags()
 
                     PopulateFormFromBOs()
 
-                    Me.TranslateGridHeader(Me.CertOtherCustomers)
-                    Me.PopulateCustomerGrid()
+                    TranslateGridHeader(CertOtherCustomers)
+                    PopulateCustomerGrid()
 
-                    Me.PopulatePremiumInfoTab()
+                    PopulatePremiumInfoTab()
 
-                    If Me.State.TheItemCoverageState.IsGridVisible Then
-                        Me.PopulateCoveragesGrid()
+                    If State.TheItemCoverageState.IsGridVisible Then
+                        PopulateCoveragesGrid()
                     End If
 
-                    If Me.State.IsGridVisible Then
-                        Me.PopulateClaimsGrid()
+                    If State.IsGridVisible Then
+                        PopulateClaimsGrid()
                     End If
 
-                    If Me.State.IsCommentsGridVisible Then
-                        Me.PopulateCommentsGrid()
+                    If State.IsCommentsGridVisible Then
+                        PopulateCommentsGrid()
                     End If
 
-                    If Me.State.isItemsGridVisible Then
-                        Me.TranslateGridHeader(Me.ItemsGrid)
-                        Me.PopulateItemsGrid()
+                    If State.isItemsGridVisible Then
+                        TranslateGridHeader(ItemsGrid)
+                        PopulateItemsGrid()
                     End If
 
-                    If Me.State.isRegItemsGridVisible Then
-                        Me.TranslateGridHeader(Me.RegisteredItemsGrid)
-                        Me.PopulateRegisterItemsGrid()
+                    If State.isRegItemsGridVisible Then
+                        TranslateGridHeader(RegisteredItemsGrid)
+                        PopulateRegisterItemsGrid()
                     End If
 
-                    If Me.State.IsEndorsementsGridVisible Then
-                        Me.PopulateEndorsementsGrid()
+                    If State.IsEndorsementsGridVisible Then
+                        PopulateEndorsementsGrid()
                     End If
 
-                    If Me.State.IsCertExtFieldsGridVisible Then
-                        Me.PopulateCertExtendedFieldsGrid()
+                    If State.IsCertExtFieldsGridVisible Then
+                        PopulateCertExtendedFieldsGrid()
                     End If
 
                     'Certificate History tab
@@ -1038,14 +1038,14 @@ Namespace Certificates
 
                     EnableDisablePremiunBankInfoOption()
 
-                    If Me.State.MyBO.StatusCode = CLOSED Then
+                    If State.MyBO.StatusCode = CLOSED Then
                         'If the Cert was cancelled due to a replacement Policy, inform the user with a message
-                        If (Not Me.State.MyBO.TheCertCancellationBO Is Nothing) Then
-                            If LookupListNew.GetCodeFromId(LookupListNew.LK_CANCELLATION_REASONS, Me.State.MyBO.TheCertCancellationBO.CancellationReasonId) = "REP" Then
-                                Me.MasterPage.MessageController.AddInformation(Message.MSG_REINSTATEMENT_NOT_ALLOWED_FOR_REPLACEMENT_POLICY, True)
+                        If (State.MyBO.TheCertCancellationBO IsNot Nothing) Then
+                            If LookupListNew.GetCodeFromId(LookupListNew.LK_CANCELLATION_REASONS, State.MyBO.TheCertCancellationBO.CancellationReasonId) = "REP" Then
+                                MasterPage.MessageController.AddInformation(Message.MSG_REINSTATEMENT_NOT_ALLOWED_FOR_REPLACEMENT_POLICY, True)
                             End If
                         End If
-                        Me.PopulateCancellationInfoTab()
+                        PopulateCancellationInfoTab()
                         ControlMgr.SetVisibleControl(Me, btnCancelCertificate_WRITE, False)
                     Else
                         If allCoveragesExpired Then
@@ -1053,34 +1053,34 @@ Namespace Certificates
                         End If
                     End If
 
-                    Dim attvalue As AttributeValue = Me.State.MyBO.Dealer.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = Codes.ATTR_CANCEL_RULES_FOR_SFR).FirstOrDefault
+                    Dim attvalue As AttributeValue = State.MyBO.Dealer.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = Codes.ATTR_CANCEL_RULES_FOR_SFR).FirstOrDefault
                     If attvalue Is Nothing Then
-                        Me.State.CancelRulesForSFR = Codes.YESNO_N
+                        State.CancelRulesForSFR = Codes.YESNO_N
                     Else
-                        Me.State.CancelRulesForSFR = attvalue.Value
+                        State.CancelRulesForSFR = attvalue.Value
                     End If
 
-                    Dim attValueComputeCancellation As AttributeValue = Me.State.MyBO.Dealer.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = Codes.ATTR_COMPUTE_CANCELLATION_DATE_AS_EOFMONTH).FirstOrDefault
+                    Dim attValueComputeCancellation As AttributeValue = State.MyBO.Dealer.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = Codes.ATTR_COMPUTE_CANCELLATION_DATE_AS_EOFMONTH).FirstOrDefault
                     If attValueComputeCancellation Is Nothing Then
-                        Me.State.ComputeCancellationDateEOfM = Codes.YESNO_N
+                        State.ComputeCancellationDateEOfM = Codes.YESNO_N
                     Else
-                        Me.State.ComputeCancellationDateEOfM = attValueComputeCancellation.Value
+                        State.ComputeCancellationDateEOfM = attValueComputeCancellation.Value
                     End If
 
                     'PopulateCancelRequestReasonDropdown(Me.moCancelRequestReasonDrop)
-                    Me.State.CertCancelRequestId = Me.State.MyBO.getCertCancelRequestID
-                    If Me.State.MyBO.getCancelationRequestFlag = YES Then
-                        If Not Me.State.CertCancelRequestId.Equals(Guid.Empty) Then
-                            Me.State.certCancelRequestBO = New CertCancelRequest(Me.State.CertCancelRequestId)
-                            If Me.State.CancelRulesForSFR = Codes.YESNO_Y AndAlso Me.State.certCancelRequestBO.Status = CERT_CAN_REQ_ACCEPTED Or Me.State.certCancelRequestBO.Status = CERT_CAN_REQ_DENIED Then
+                    State.CertCancelRequestId = State.MyBO.getCertCancelRequestID
+                    If State.MyBO.getCancelationRequestFlag = YES Then
+                        If Not State.CertCancelRequestId.Equals(Guid.Empty) Then
+                            State.certCancelRequestBO = New CertCancelRequest(State.CertCancelRequestId)
+                            If State.CancelRulesForSFR = Codes.YESNO_Y AndAlso State.certCancelRequestBO.Status = CERT_CAN_REQ_ACCEPTED OrElse State.certCancelRequestBO.Status = CERT_CAN_REQ_DENIED Then
                                 ControlMgr.SetEnableControl(Me, btnCancelRequestEdit_WRITE, False)
                             End If
                         Else
-                            Me.State.certCancelRequestBO = New CertCancelRequest
+                            State.certCancelRequestBO = New CertCancelRequest
                         End If
                         populateCancelRequestInfoTab()
-                    ElseIf Not Me.State.CertCancelRequestId.Equals(Guid.Empty) Then
-                        Me.State.certCancelRequestBO = New CertCancelRequest(Me.State.CertCancelRequestId)
+                    ElseIf Not State.CertCancelRequestId.Equals(Guid.Empty) Then
+                        State.certCancelRequestBO = New CertCancelRequest(State.CertCancelRequestId)
                         ControlMgr.SetEnableControl(Me, btnCancelRequestEdit_WRITE, False)
                         populateCancelRequestInfoTab()
                     End If
@@ -1089,36 +1089,36 @@ Namespace Certificates
                     If ExpiredCoveragesExist Then
                         'ControlMgr.SetEnableTabStrip(Me, tsHoriz.Items(Me.CERT_COVERAGE_HISTORY_TAB), True)
                         EnableTab(CERT_COVERAGE_HISTORY_TAB, True)
-                        Me.PopulateCoveragesHistoryGrid()
+                        PopulateCoveragesHistoryGrid()
                     End If
 
-                    If Not Me.State.MyBO.Product.UpgFinanceInfoRequireId.Equals(Guid.Empty) Then
+                    If Not State.MyBO.Product.UpgFinanceInfoRequireId.Equals(Guid.Empty) Then
                         populateFinanceTab()
                     End If
 
                     'If ((tsHoriz.SelectedIndex < 0) AndAlso (tsHoriz.Items(0).Enabled = True)) Then
                     '    Me.tsHoriz.SelectedIndex = 0
                     'End If
-                    Me.EnableDisableFields()
-                    Me.AddCalendar(Me.BtnProductSalesDate, Me.moProductSalesDateText)
-                    Me.AddCalendar(Me.BtnDocumentIssueDate, Me.moDocumentIssueDateText)
-                    Me.AddCalendar(Me.BtnWarrantySoldDate, Me.moWarrantySoldText)
-                    Me.AddCalendar(Me.BtnDateOfBirth, Me.moDateOfBirthText)
-                    Me.AddCalendar(Me.moCancelDateImageButton, Me.moCancelDateTextBox)
-                    Me.AddCalendar(Me.moCancelRequestDateImagebutton, Me.moCancelRequestDateTextBox)
-                    Me.AddCalendar(Me.BtnCertificateVerificationDate, Me.moCertificateVerificationDateText)
-                    Me.AddCalendar(Me.BtnSEPAMandateDate, Me.moSEPAMandateDateText)
-                    Me.AddCalendar(Me.BtnCheckVerificationDate, Me.moCheckVerificationDateText)
-                    Me.AddCalendar(Me.BtnContractCheckCompleteDate, Me.moContractCheckCompleteDateText)
-                    Me.AddCalendar(Me.BtnServiceStartDate, Me.moServiceStartDateText)
+                    EnableDisableFields()
+                    AddCalendar(BtnProductSalesDate, moProductSalesDateText)
+                    AddCalendar(BtnDocumentIssueDate, moDocumentIssueDateText)
+                    AddCalendar(BtnWarrantySoldDate, moWarrantySoldText)
+                    AddCalendar(BtnDateOfBirth, moDateOfBirthText)
+                    AddCalendar(moCancelDateImageButton, moCancelDateTextBox)
+                    AddCalendar(moCancelRequestDateImagebutton, moCancelRequestDateTextBox)
+                    AddCalendar(BtnCertificateVerificationDate, moCertificateVerificationDateText)
+                    AddCalendar(BtnSEPAMandateDate, moSEPAMandateDateText)
+                    AddCalendar(BtnCheckVerificationDate, moCheckVerificationDateText)
+                    AddCalendar(BtnContractCheckCompleteDate, moContractCheckCompleteDateText)
+                    AddCalendar(BtnServiceStartDate, moServiceStartDateText)
                 Else 'page posted back
-                    Me.State.selectedTab = hdnSelectedTab.Value 'store the selected tab
+                    State.selectedTab = hdnSelectedTab.Value 'store the selected tab
                     'populate the disabled tab list
-                    If (Not Me.State Is Nothing) Then
-                        If Me.State.disabledTabs.Trim = String.Empty Then
+                    If (State IsNot Nothing) Then
+                        If State.disabledTabs.Trim = String.Empty Then
                             listDisabledTabs.Clear()
                         Else
-                            For Each str As String In Me.State.disabledTabs.Split(",")
+                            For Each str As String In State.disabledTabs.Split(",")
                                 Dim intTemp As Integer
                                 If str.Trim <> String.Empty AndAlso Integer.TryParse(str.Trim, intTemp) Then
                                     listDisabledTabs.Add(intTemp)
@@ -1134,16 +1134,16 @@ Namespace Certificates
                 CheckIfComingFromTransferOfOwnershipConfirm()
                 CheckIfComingFromSaveConfirm()
 
-                If Not Me.IsPostBack Then
-                    Me.AddLabelDecorations(Me.State.MyBO)
+                If Not IsPostBack Then
+                    AddLabelDecorations(State.MyBO)
                 End If
 
                 'Me.moCancellationReasonDrop.AutoPostBack = True
-                Me.PaymentMethodDrop.AutoPostBack = True
+                PaymentMethodDrop.AutoPostBack = True
 
                 '*ANI  Me.PaymentReasonDrop.AutoPostBack = True
-                selectedCancellationReason = Me.GetSelectedItem(moCancellationReasonDrop)
-                selectedPaymentMethod = Me.GetSelectedItem(PaymentMethodDrop)
+                selectedCancellationReason = GetSelectedItem(moCancellationReasonDrop)
+                selectedPaymentMethod = GetSelectedItem(PaymentMethodDrop)
 
                 If Not (selectedCancellationReason.Equals(Guid.Empty)) Then
                     oCancellatioReason = New Assurant.ElitaPlus.BusinessObjectsNew.CancellationReason(selectedCancellationReason)
@@ -1163,23 +1163,23 @@ Namespace Certificates
                 CheckIfCoverageGridRefreshNeeded()
 
                 'DEF-2486
-                If Not Me.State.IsClaimAllowed Then
+                If Not State.IsClaimAllowed Then
                     ControlMgr.SetVisibleControl(Me, btnNewClaim, False)
                     'ElseIf Not String.IsNullOrEmpty(Me.State.ClaimRecordingXcd) AndAlso Me.State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_DYNAMIC_QUESTIONS) Then
                     '    'REQ-6155
                     '    ControlMgr.SetVisibleControl(Me, btnNewClaim, False)
                 Else
-                    If (Me.State.AllowOldAndNewDCMClaims) Then
+                    If (State.AllowOldAndNewDCMClaims) Then
                         btnNewClaim.Text = TranslationBase.TranslateLabelOrMessage("NEW_CLAIM_OLD")
                     Else
                         btnNewClaim.Text = TranslationBase.TranslateLabelOrMessage("NEW_CLAIM")
                     End If
-                    ControlMgr.SetVisibleControl(Me, btnNewClaimDcm, Me.State.AllowOldAndNewDCMClaims)
+                    ControlMgr.SetVisibleControl(Me, btnNewClaimDcm, State.AllowOldAndNewDCMClaims)
                 End If
                 'DEF-2486
 
-                Dim dealerBO As Dealer = New Dealer(Me.State.MyBO.DealerId)
-                If Not Me.State.MyBO.CustomerId.Equals(Guid.Empty) Then
+                Dim dealerBO As Dealer = New Dealer(State.MyBO.DealerId)
+                If Not State.MyBO.CustomerId.Equals(Guid.Empty) Then
                     If dealerBO.AttributeValues.Contains(Codes.DLR_ATTR__ENABLE_ALT_CUSTOMER_NAME) Then
 
                         'If dealerBO.AttributeValues.Value(Codes.DLR_ATTR__ENABLE_ALT_CUSTOMER_NAME) = Codes.YESNO_Y Then
@@ -1206,9 +1206,9 @@ Namespace Certificates
                 'Data Protection
 
                 If Not Page.IsPostBack Then
-                    Me.TranslateGridHeader(Me.GridDataProtection)
+                    TranslateGridHeader(GridDataProtection)
 
-                    If (Me.State.MyBO.CertificateIsRestricted) Then
+                    If (State.MyBO.CertificateIsRestricted) Then
                         ControlMgr.SetVisibleControl(Me, btnRestrict, False)
                         ControlMgr.SetVisibleControl(Me, btnUnRestrict, True)
                         ControlMgr.SetVisibleControl(Me, btnCancelRequestEdit_WRITE, False)
@@ -1246,15 +1246,15 @@ Namespace Certificates
                     End If
 
 
-                    If Me.State.MyBO.StatusCode = Codes.CERTIFICATE_STATUS__CANCELLED AndAlso Not Me.State.MyBO.CertificateIsRestricted Then
-                        If Not Me.State.AllowForget Is Nothing AndAlso String.Compare(Me.State.AllowForget, Codes.EXT_YESNO_Y, True) = 0 Then
+                    If State.MyBO.StatusCode = Codes.CERTIFICATE_STATUS__CANCELLED AndAlso Not State.MyBO.CertificateIsRestricted Then
+                        If State.AllowForget IsNot Nothing AndAlso String.Compare(State.AllowForget, Codes.EXT_YESNO_Y, True) = 0 Then
                             btnRightToForgotten.Visible = True
                         End If
                     End If
 
                 End If
 
-                btnNewClaim.Visible = Not Me.State.MyBO.CertificateIsRestricted
+                btnNewClaim.Visible = Not State.MyBO.CertificateIsRestricted
 
 
                 ' Save Right To Forgotten after confirmation
@@ -1263,19 +1263,19 @@ Namespace Certificates
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
                 CleanPopupInput()
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
 
             '   Me.State.TheItemCoverageState.hi()
         End Sub
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.WorkingPanelVisible = True
-                If Me.CalledUrl = ClaimForm.URL And ClaimForm.Save_Ok = True Then
+                WorkingPanelVisible = True
+                If CalledUrl = ClaimForm.URL AndAlso ClaimForm.Save_Ok = True Then
                     ClaimForm.Save_Ok = False
-                    Me.State.ClaimsearchDV = Nothing
+                    State.ClaimsearchDV = Nothing
 
                 End If
 
@@ -1284,18 +1284,18 @@ Namespace Certificates
                         Dim retObjCRF As ClaimRecordingForm.ReturnType = CType(ReturnPar, ClaimRecordingForm.ReturnType)
                         Select Case retObjCRF.LastOperation
                             Case ElitaPlusPage.DetailPageCommand.Cancel
-                                If Not retObjCRF Is Nothing Then
-                                    Me.State.MyBO = New Certificate(retObjCRF.CertificateId)
-                                    Me.State.IsCallerAuthenticated = retObjCRF.IsCallerAuthenticated
+                                If retObjCRF IsNot Nothing Then
+                                    State.MyBO = New Certificate(retObjCRF.CertificateId)
+                                    State.IsCallerAuthenticated = retObjCRF.IsCallerAuthenticated
                                 End If
                         End Select
                     ElseIf TypeOf ReturnPar Is ClaimForm.ReturnType Then
                         Dim retObjCF As ClaimForm.ReturnType = CType(ReturnPar, ClaimForm.ReturnType)
                         Select Case retObjCF.LastOperation
                             Case ElitaPlusPage.DetailPageCommand.Back
-                                If Not retObjCF Is Nothing Then
-                                    Me.State.MyBO = New Certificate(retObjCF.EditingBo.CertificateId)
-                                    Me.State.IsCallerAuthenticated = retObjCF.IsCallerAuthenticated
+                                If retObjCF IsNot Nothing Then
+                                    State.MyBO = New Certificate(retObjCF.EditingBo.CertificateId)
+                                    State.IsCallerAuthenticated = retObjCF.IsCallerAuthenticated
                                 End If
                         End Select
                     End If
@@ -1303,116 +1303,116 @@ Namespace Certificates
                     Dim retObj As ClaimForm.ReturnType = CType(ReturnPar, ClaimForm.ReturnType)
                     Select Case retObj.LastOperation
                         Case ElitaPlusPage.DetailPageCommand.Back
-                            If Not retObj Is Nothing Then
-                                Me.State.MyBO = New Certificate(retObj.EditingBo.CertificateId)
-                                Me.State.IsCallerAuthenticated = retObj.IsCallerAuthenticated
+                            If retObj IsNot Nothing Then
+                                State.MyBO = New Certificate(retObj.EditingBo.CertificateId)
+                                State.IsCallerAuthenticated = retObj.IsCallerAuthenticated
                             End If
                     End Select
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub CheckIfComingFromComments()
-            If Me.State.NavigateToComment Then
-                If isTabEnabled(CERT_COMMENTS_TAB) = True Then Me.State.selectedTab = CERT_COMMENTS_TAB
-                Me.State.NavigateToComment = False
+            If State.NavigateToComment Then
+                If isTabEnabled(CERT_COMMENTS_TAB) = True Then State.selectedTab = CERT_COMMENTS_TAB
+                State.NavigateToComment = False
             End If
         End Sub
 
         Private Sub CheckIfComingFromCheckPayment()
-            If Me.State.NavigateToCheckPayment Then
-                If isTabEnabled(CERT_PREMIUM_INFO_TAB) = True Then Me.State.selectedTab = CERT_PREMIUM_INFO_TAB
-                Me.State.NavigateToCheckPayment = False
+            If State.NavigateToCheckPayment Then
+                If isTabEnabled(CERT_PREMIUM_INFO_TAB) = True Then State.selectedTab = CERT_PREMIUM_INFO_TAB
+                State.NavigateToCheckPayment = False
             End If
         End Sub
 
         Private Sub CheckIfComingFromEndorse()
-            If Me.State.NavigateToEndorment Then
+            If State.NavigateToEndorment Then
                 'If tsHoriz.Items(CERT_ENDORSEMENTS_TAB).Enabled = True Then Me.tsHoriz.SelectedIndex = CERT_ENDORSEMENTS_TAB
-                If isTabEnabled(CERT_ENDORSEMENTS_TAB) = True Then Me.State.selectedTab = CERT_ENDORSEMENTS_TAB
-                Me.State.NavigateToEndorment = False
-                Me.State.MyBO = New Certificate(Me.State.MyBO.Id)
+                If isTabEnabled(CERT_ENDORSEMENTS_TAB) = True Then State.selectedTab = CERT_ENDORSEMENTS_TAB
+                State.NavigateToEndorment = False
+                State.MyBO = New Certificate(State.MyBO.Id)
                 PopulateFormFromBOs()
             End If
 
         End Sub
 
         Private Sub CheckIfComingFromBillingHistory()
-            If Me.State.NavigateToBillingHistory Then
+            If State.NavigateToBillingHistory Then
                 'If tsHoriz.Items(CERT_PREMIUM_INFO_TAB).Enabled = True Then Me.tsHoriz.SelectedIndex = CERT_PREMIUM_INFO_TAB
-                If isTabEnabled(CERT_PREMIUM_INFO_TAB) = True Then Me.State.selectedTab = CERT_PREMIUM_INFO_TAB
-                Me.State.NavigateToBillingHistory = False
+                If isTabEnabled(CERT_PREMIUM_INFO_TAB) = True Then State.selectedTab = CERT_PREMIUM_INFO_TAB
+                State.NavigateToBillingHistory = False
             End If
 
         End Sub
 
         Private Sub CheckIfComingFromPaymentHistory()
-            If Me.State.NavigateToPaymentHistory Then
+            If State.NavigateToPaymentHistory Then
                 'If tsHoriz.Items(CERT_PREMIUM_INFO_TAB).Enabled = True Then Me.tsHoriz.SelectedIndex = CERT_PREMIUM_INFO_TAB
-                If isTabEnabled(CERT_PREMIUM_INFO_TAB) = True Then Me.State.selectedTab = CERT_PREMIUM_INFO_TAB
-                Me.State.NavigateToPaymentHistory = False
+                If isTabEnabled(CERT_PREMIUM_INFO_TAB) = True Then State.selectedTab = CERT_PREMIUM_INFO_TAB
+                State.NavigateToPaymentHistory = False
             End If
 
         End Sub
 
         Private Sub CheckIfComingFromBillPayHistory()
-            If Me.State.NavigateToBillpayHistory Then
+            If State.NavigateToBillpayHistory Then
                 'If tsHoriz.Items(CERT_PREMIUM_INFO_TAB).Enabled = True Then
                 '    Me.tsHoriz.SelectedIndex = CERT_PREMIUM_INFO_TAB
                 '    Me.State.NavigateToBillpayHistory = False
                 'End If
-                If isTabEnabled(CERT_PREMIUM_INFO_TAB) = True Then Me.State.selectedTab = CERT_PREMIUM_INFO_TAB
-                Me.State.NavigateToBillpayHistory = False
+                If isTabEnabled(CERT_PREMIUM_INFO_TAB) = True Then State.selectedTab = CERT_PREMIUM_INFO_TAB
+                State.NavigateToBillpayHistory = False
             End If
         End Sub
 
         Private Sub CheckIfCoverageGridRefreshNeeded()
-            If (Not Me.State.TheItemCoverageState Is Nothing) AndAlso Me.State.isCovgGridRefreshNeeded AndAlso Me.State.TheItemCoverageState.IsGridVisible Then
-                Me.State.CoveragesearchDV = Nothing
-                Me.PopulateCoveragesGrid()
-                Me.State.isCovgGridRefreshNeeded = False
+            If (State.TheItemCoverageState IsNot Nothing) AndAlso State.isCovgGridRefreshNeeded AndAlso State.TheItemCoverageState.IsGridVisible Then
+                State.CoveragesearchDV = Nothing
+                PopulateCoveragesGrid()
+                State.isCovgGridRefreshNeeded = False
             End If
         End Sub
 
 #End Region
 
 #Region "Controlling Logic"
-        Private Sub cboDocumentTypeId_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboDocumentTypeId.SelectedIndexChanged
+        Private Sub cboDocumentTypeId_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboDocumentTypeId.SelectedIndexChanged
             EnableDisableTaxIdControls(cboDocumentTypeId.SelectedItem.Text)
         End Sub
         Protected Sub EnableDisableFields()
 
-            Me.btnBack.Enabled = True
-            If Me.State.MyBO.getCancelationRequestFlag = YES Then
+            btnBack.Enabled = True
+            If State.MyBO.getCancelationRequestFlag = YES Then
                 ControlMgr.SetEnableControl(Me, btnCancelCertificate_WRITE, False)
             Else
-                If Me.State.MyBO.IsChildCertificate Then
+                If State.MyBO.IsChildCertificate Then
                     ControlMgr.SetEnableControl(Me, btnCancelCertificate_WRITE, False)
                 Else
                     ControlMgr.SetEnableControl(Me, btnCancelCertificate_WRITE, True)
                 End If
             End If
 
-            If Not (Me.State.MyBO.PaymentTypeId.Equals(Guid.Empty)) Then
-                If (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__CREDIT_CARD) _
-                   Or (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__FINANCED_BY_CREDIT_CARD) _
-                   Or (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS_PRE_AUTH And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__PRE_AUTH_CREDIT_CARD) _
-                   Or (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__FINANCED_BY_THRID_PARTY) _
-                   Or (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__PARTIAL_PAYMENT And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__CREDIT_CARD) Then
-                    Me.State.creditCardPayment = True
-                ElseIf (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__DEBIT_ACCOUNT) _
-                       Or (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__PARTIAL_PAYMENT And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__DEBIT_ACCOUNT) Then
-                    Me.State.directDebitPayment = True
+            If Not (State.MyBO.PaymentTypeId.Equals(Guid.Empty)) Then
+                If (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS AndAlso State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__CREDIT_CARD) _
+                   OrElse (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS AndAlso State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__FINANCED_BY_CREDIT_CARD) _
+                   OrElse (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS_PRE_AUTH AndAlso State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__PRE_AUTH_CREDIT_CARD) _
+                   OrElse (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS AndAlso State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__FINANCED_BY_THRID_PARTY) _
+                   OrElse (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__PARTIAL_PAYMENT AndAlso State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__CREDIT_CARD) Then
+                    State.creditCardPayment = True
+                ElseIf (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS AndAlso State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__DEBIT_ACCOUNT) _
+                       OrElse (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__PARTIAL_PAYMENT AndAlso State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__DEBIT_ACCOUNT) Then
+                    State.directDebitPayment = True
                 End If
             End If
 
 
-            If Not Me.State.IsEdit Then
+            If Not State.IsEdit Then
 
-                Me.EnableDisableTabs(Me.State.IsEdit)
+                EnableDisableTabs(State.IsEdit)
 
                 ControlMgr.SetEnableControl(Me, btnEditCertDetail_WRITE, True)
                 ControlMgr.SetEnableControl(Me, btnEditCertInfo_WRITE, True)
@@ -1428,13 +1428,13 @@ Namespace Certificates
                 ControlMgr.SetVisibleControl(Me, BtnSEPAMandateDate, False)
                 ControlMgr.SetVisibleControl(Me, BtnCheckVerificationDate, False)
                 ControlMgr.SetVisibleControl(Me, BtnDateOfBirth, False)
-                ControlMgr.SetVisibleControl(Me, Me.moSalutationText, False)
-                ControlMgr.SetVisibleControl(Me, Me.moSalutationLabel, False)
-                ControlMgr.SetVisibleControl(Me, Me.cboSalutationId, False)
-                ControlMgr.SetVisibleControl(Me, Me.moPostPaidLabel, False)
-                ControlMgr.SetVisibleControl(Me, Me.moPostPaidText, False)
-                ControlMgr.SetVisibleControl(Me, Me.moLangPrefText, False)
-                ControlMgr.SetVisibleControl(Me, Me.cboLangPref, False)
+                ControlMgr.SetVisibleControl(Me, moSalutationText, False)
+                ControlMgr.SetVisibleControl(Me, moSalutationLabel, False)
+                ControlMgr.SetVisibleControl(Me, cboSalutationId, False)
+                ControlMgr.SetVisibleControl(Me, moPostPaidLabel, False)
+                ControlMgr.SetVisibleControl(Me, moPostPaidText, False)
+                ControlMgr.SetVisibleControl(Me, moLangPrefText, False)
+                ControlMgr.SetVisibleControl(Me, cboLangPref, False)
 
                 ControlMgr.SetVisibleControl(Me, moCancelRequestDateImagebutton, False)
                 ControlMgr.SetVisibleControl(Me, moCancelDateImageButton, False)
@@ -1443,16 +1443,16 @@ Namespace Certificates
                 ControlMgr.SetVisibleControl(Me, moCommentsTextbox, False)
                 ControlMgr.SetVisibleControl(Me, moCommentsLabel, False)
 
-                Me.moCancelDateTextBox.ReadOnly = True
-                Me.moCancelDateTextBox.CssClass = "FLATTEXTBOX"
-                Me.moCancelRequestDateTextBox.ReadOnly = True
-                Me.moCancelRequestDateTextBox.CssClass = "FLATTEXTBOX"
+                moCancelDateTextBox.ReadOnly = True
+                moCancelDateTextBox.CssClass = "FLATTEXTBOX"
+                moCancelRequestDateTextBox.ReadOnly = True
+                moCancelRequestDateTextBox.CssClass = "FLATTEXTBOX"
                 ControlMgr.SetEnableControl(Me, moCancelRequestReasonDrop, False)
-                Me.moCancelRequestReasonDrop.CssClass = "FLATTEXTBOX"
+                moCancelRequestReasonDrop.CssClass = "FLATTEXTBOX"
 
                 ControlMgr.SetVisibleControl(Me, moCanReqJustificationLabel, False)
                 ControlMgr.SetVisibleControl(Me, moCancelRequestJustificationDrop, False)
-                Me.moCancelRequestJustificationDrop.CssClass = "FLATTEXTBOX"
+                moCancelRequestJustificationDrop.CssClass = "FLATTEXTBOX"
 
                 ControlMgr.SetVisibleControl(Me, BtnDocumentIssueDate, False)
                 ControlMgr.SetEnableControl(Me, btnSaveTaxID_WRITE, False)
@@ -1467,17 +1467,17 @@ Namespace Certificates
                 ControlMgr.SetEnableControl(Me, btnCancelRequestUndo_WRITE, False)
                 ControlMgr.SetEnableControl(Me, moFulfillmentConsentActionDrop, False)
 
-                If (Not Me.State.MyBO.StatusCode = CERT_CANCEL_STATUS) And Me.State.MyBO.getCancelationRequestFlag = YES Then
-                    If Me.State.certCancelRequestBO Is Nothing Then
-                        Me.State.CertCancelRequestId = Me.State.MyBO.getCertCancelRequestID
-                        If Not Me.State.CertCancelRequestId.Equals(Guid.Empty) Then
-                            Me.State.certCancelRequestBO = New CertCancelRequest(Me.State.CertCancelRequestId)
-                            If Me.State.CancelRulesForSFR = Codes.YESNO_Y AndAlso Me.State.certCancelRequestBO.Status = CERT_CAN_REQ_ACCEPTED Or Me.State.certCancelRequestBO.Status = CERT_CAN_REQ_DENIED Then
+                If (Not State.MyBO.StatusCode = CERT_CANCEL_STATUS) AndAlso State.MyBO.getCancelationRequestFlag = YES Then
+                    If State.certCancelRequestBO Is Nothing Then
+                        State.CertCancelRequestId = State.MyBO.getCertCancelRequestID
+                        If Not State.CertCancelRequestId.Equals(Guid.Empty) Then
+                            State.certCancelRequestBO = New CertCancelRequest(State.CertCancelRequestId)
+                            If State.CancelRulesForSFR = Codes.YESNO_Y AndAlso State.certCancelRequestBO.Status = CERT_CAN_REQ_ACCEPTED OrElse State.certCancelRequestBO.Status = CERT_CAN_REQ_DENIED Then
                                 ControlMgr.SetEnableControl(Me, btnCancelRequestEdit_WRITE, False)
                             Else
                                 ControlMgr.SetEnableControl(Me, btnCancelRequestEdit_WRITE, True)
                             End If
-                            If Me.State.CancelRulesForSFR = Codes.YESNO_Y AndAlso Me.State.certCancelRequestBO.Status = CERT_CAN_REQ_DENIED And Me.State.MyBO.StatusCode = Codes.CERTIFICATE_STATUS__ACTIVE Then
+                            If State.CancelRulesForSFR = Codes.YESNO_Y AndAlso State.certCancelRequestBO.Status = CERT_CAN_REQ_DENIED AndAlso State.MyBO.StatusCode = Codes.CERTIFICATE_STATUS__ACTIVE Then
                                 ControlMgr.SetVisibleControl(Me, btnCreateNewRequest_WRITE, True)
                             Else
                                 ControlMgr.SetVisibleControl(Me, btnCreateNewRequest_WRITE, False)
@@ -1485,21 +1485,21 @@ Namespace Certificates
                         Else
                             ControlMgr.SetEnableControl(Me, btnCancelRequestEdit_WRITE, True)
                         End If
-                    ElseIf Me.State.certCancelRequestBO Is Nothing And Not Me.State.MyBO.getCertCancelRequestID.Equals(guid.Empty) Then
-                        Me.State.CertCancelRequestId = Me.State.MyBO.getCertCancelRequestID
-                        Me.State.certCancelRequestBO = New CertCancelRequest(Me.State.CertCancelRequestId)
+                    ElseIf State.certCancelRequestBO Is Nothing AndAlso Not State.MyBO.getCertCancelRequestID.Equals(guid.Empty) Then
+                        State.CertCancelRequestId = State.MyBO.getCertCancelRequestID
+                        State.certCancelRequestBO = New CertCancelRequest(State.CertCancelRequestId)
                         ControlMgr.SetVisibleControl(Me, btnCreateNewRequest_WRITE, False)
                     Else
-                        If Me.State.CancelRulesForSFR = Codes.YESNO_Y Then
-                            If Me.State.certCancelRequestBO.Status = CERT_CAN_REQ_ACCEPTED Then
+                        If State.CancelRulesForSFR = Codes.YESNO_Y Then
+                            If State.certCancelRequestBO.Status = CERT_CAN_REQ_ACCEPTED Then
                                 ControlMgr.SetEnableControl(Me, btnCancelRequestEdit_WRITE, True)
-                            ElseIf Me.State.certCancelRequestBO.Status = CERT_CAN_REQ_DENIED Then
+                            ElseIf State.certCancelRequestBO.Status = CERT_CAN_REQ_DENIED Then
                                 ControlMgr.SetEnableControl(Me, btnCancelRequestEdit_WRITE, False)
                             End If
                         Else
                             ControlMgr.SetEnableControl(Me, btnCancelRequestEdit_WRITE, True)
                         End If
-                        If Me.State.CancelRulesForSFR = Codes.YESNO_Y AndAlso Me.State.certCancelRequestBO.Status = CERT_CAN_REQ_DENIED And Me.State.MyBO.StatusCode = Codes.CERTIFICATE_STATUS__ACTIVE Then
+                        If State.CancelRulesForSFR = Codes.YESNO_Y AndAlso State.certCancelRequestBO.Status = CERT_CAN_REQ_DENIED AndAlso State.MyBO.StatusCode = Codes.CERTIFICATE_STATUS__ACTIVE Then
                             ControlMgr.SetVisibleControl(Me, btnCreateNewRequest_WRITE, True)
                         Else
                             ControlMgr.SetVisibleControl(Me, btnCreateNewRequest_WRITE, False)
@@ -1511,7 +1511,7 @@ Namespace Certificates
 
                 ControlMgr.SetVisibleControl(Me, cboAccountType, True)
                 ControlMgr.SetVisibleControl(Me, moAccountNumberText, True)
-                If Me.State.MyBO.Dealer.ContractManualVerification = "YESNO-Y" Then
+                If State.MyBO.Dealer.ContractManualVerification = "YESNO-Y" Then
                     ControlMgr.SetVisibleControl(Me, moCertificateSignedLabel, True)
                     ControlMgr.SetVisibleControl(Me, moSEPAMandateSignedLabel, True)
                     ControlMgr.SetVisibleControl(Me, moCheckSignedLabel, True)
@@ -1531,15 +1531,15 @@ Namespace Certificates
                 End If
 
 
-                If Not (Me.State.IsNewBillPayBtnVisible) And Me.State.oPaymentCount > 0 Then
+                If Not (State.IsNewBillPayBtnVisible) AndAlso State.oPaymentCount > 0 Then
                     ControlMgr.SetEnableControl(Me, btnPaymentHistory, True)
                 Else
                     ControlMgr.SetEnableControl(Me, btnPaymentHistory, False)
                 End If
 
-                If Me.State.oBillingCount > 0 Then
-                    Dim dvBillingTotals As BillingDetail.BillingTotals = BillingDetail.getBillingTotals(Me.State.MyBO.Id)
-                    If Not dvBillingTotals Is Nothing And dvBillingTotals.Count > 0 And dvBillingTotals.Item(0).Row(0) > 0 Then
+                If State.oBillingCount > 0 Then
+                    Dim dvBillingTotals As BillingDetail.BillingTotals = BillingDetail.getBillingTotals(State.MyBO.Id)
+                    If dvBillingTotals IsNot Nothing AndAlso dvBillingTotals.Count > 0 And dvBillingTotals.Item(0).Row(0) > 0 Then
                         ControlMgr.SetEnableControl(Me, btnDebitHistory, True)
                     Else
                         ControlMgr.SetEnableControl(Me, btnDebitHistory, False)
@@ -1549,25 +1549,25 @@ Namespace Certificates
                 End If
                 'Bug-216874: Added condition to check bill pay total.
                 Dim dvBillPay As DataView
-                dvBillPay = BillingPayDetail.getBillPayTotals(Me.State.MyBO.Id)
+                dvBillPay = BillingPayDetail.getBillPayTotals(State.MyBO.Id)
                 Dim cnt = 0
-                If Not dvBillPay Is Nothing And dvBillPay.Count > 0 And dvBillPay.Table.Rows.Count > 0 Then
+                If dvBillPay IsNot Nothing AndAlso dvBillPay.Count > 0 AndAlso dvBillPay.Table.Rows.Count > 0 Then
                     cnt = CType(dvBillPay.Table.Rows(0).Item(0), Integer)
                 End If
 
-                If (Me.State.oBillPayCount > 0 Or cnt > 0) And Me.State.IsNewBillPayBtnVisible Then
+                If (State.oBillPayCount > 0 Or cnt > 0) And State.IsNewBillPayBtnVisible Then
                     ControlMgr.SetEnableControl(Me, btnBillPayHist, True)
                     ControlMgr.SetEnableControl(Me, btnDebitHistory, False)
                     ControlMgr.SetEnableControl(Me, btnPaymentHistory, False)
-                ElseIf (Me.State.oPayColltCount > 0) Then
+                ElseIf (State.oPayColltCount > 0) Then
                     ControlMgr.SetEnableControl(Me, btnPaymentHistory, True)
-                    If (Me.State.IsNewBillPayBtnVisible) Then
+                    If (State.IsNewBillPayBtnVisible) Then
                         ControlMgr.SetEnableControl(Me, btnBillPayHist, True)
                     Else
                         ControlMgr.SetEnableControl(Me, btnBillPayHist, False)
                     End If
                 Else
-                    If (Me.State.IsNewBillPayBtnVisible) Then
+                    If (State.IsNewBillPayBtnVisible) Then
                         ControlMgr.SetEnableControl(Me, btnBillPayHist, True)
                     Else
                         ControlMgr.SetEnableControl(Me, btnBillPayHist, False)
@@ -1581,43 +1581,41 @@ Namespace Certificates
 
                 ControlMgr.SetEnableControl(Me, moBillingStatusId, False)
                 ControlMgr.SetEnableControl(Me, moPaymentTypeId, False)
-                If Not Me.State.MyBO.StatusCode = CERT_STATUS Then
-                    ControlMgr.SetEnableControl(Me, Me.btnDebitEdit_WRITE, False)
+                If Not State.MyBO.StatusCode = CERT_STATUS Then
+                    ControlMgr.SetEnableControl(Me, btnDebitEdit_WRITE, False)
                 End If
 
-                If Me.State.isSalutation Then
-                    ControlMgr.SetVisibleControl(Me, Me.moSalutationText, True)
-                    ControlMgr.SetVisibleControl(Me, Me.moSalutationLabel, True)
+                If State.isSalutation Then
+                    ControlMgr.SetVisibleControl(Me, moSalutationText, True)
+                    ControlMgr.SetVisibleControl(Me, moSalutationLabel, True)
                 End If
 
-                If Me.State.isPostPrePaid Then
-                    ControlMgr.SetVisibleControl(Me, Me.moPostPaidLabel, True)
-                    ControlMgr.SetVisibleControl(Me, Me.moPostPaidText, True)
+                If State.isPostPrePaid Then
+                    ControlMgr.SetVisibleControl(Me, moPostPaidLabel, True)
+                    ControlMgr.SetVisibleControl(Me, moPostPaidText, True)
                 End If
                 ControlMgr.SetVisibleControl(Me, cboDocumentTypeId, False)
                 ControlMgr.SetVisibleControl(Me, moDocumentTypeText, True)
                 ControlMgr.SetVisibleControl(Me, cboLangPref, False)
                 ControlMgr.SetVisibleControl(Me, moLangPrefText, True)
 
-                If Me.State.isItemsGridVisible Then
-                    Me.PopulateItemsGrid()
+                If State.isItemsGridVisible Then
+                    PopulateItemsGrid()
                 End If
 
-                If Me.State.isRegItemsGridVisible Then
-                    Me.PopulateRegisterItemsGrid()
+                If State.isRegItemsGridVisible Then
+                    PopulateRegisterItemsGrid()
                 End If
 
-                If Me.State.MyBO.IsChildCertificate Then
+                If State.MyBO.IsChildCertificate Then
                     EnableTab(CERT_CANCEL_REQUEST_INFO_TAB, False)
-                ElseIf Me.State.MyBO.getCancelationRequestFlag = YES Or Not Me.State.CertCancelRequestId.Equals(Guid.Empty) Then
+                ElseIf State.MyBO.getCancelationRequestFlag = YES OrElse Not State.CertCancelRequestId.Equals(Guid.Empty) Then
                     EnableTab(CERT_CANCEL_REQUEST_INFO_TAB, True)
                 Else
                     EnableTab(CERT_CANCEL_REQUEST_INFO_TAB, False)
                 End If
                 'AA REQ-910 new fields added BEGIN
-                If Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) Or
-                   Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Or
-                   Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Then  ' 1= Display and Require When Cancelling or 2= Display Only or 3=Display and Require at enrollment
+                If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Then  ' 1= Display and Require When Cancelling or 2= Display Only or 3=Display and Require at enrollment
                     ControlMgr.SetVisibleControl(Me, cboIncomeRangeId, False)
                     ControlMgr.SetVisibleControl(Me, cboPoliticallyExposedId, False)
                     ControlMgr.SetVisibleControl(Me, moIncomeRangeText, True)
@@ -1629,9 +1627,7 @@ Namespace Certificates
                 'AA REQ-910 new fields added END
 
                 'REQ-1255 - AML Regulations - START
-                If Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) Or
-                   Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Or
-                   Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only or 3= Display and Require At Enrollment
+                If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only or 3= Display and Require At Enrollment
 
                     'Marital Status
                     ControlMgr.SetVisibleControl(Me, ddlMaritalStatus, False)
@@ -1699,24 +1695,24 @@ Namespace Certificates
                 End If
                 'REQ-1255 - END
 
-                EnableDisableControls(Me.moCertificateDetailPanel, True)
-                EnableDisableControls(Me.moItemsTabPanel_WRITE, True)
+                EnableDisableControls(moCertificateDetailPanel, True)
+                EnableDisableControls(moItemsTabPanel_WRITE, True)
                 'Calling the method EnableDisableControls to disable the Premium Tab contents.
 
-                EnableDisableControls(Me.moPremiumInformationTabPanel_WRITE, True)
+                EnableDisableControls(moPremiumInformationTabPanel_WRITE, True)
                 ' Start - REQ:5932
-                If Not Me.State.MyBO.CustomerId.Equals(Guid.Empty) Then
-                    If (Me.State.MyBO.CustomerFirstName Is Nothing) And (Me.State.MyBO.CustomerLastName Is Nothing) Then
-                        Me.moCustName1.Attributes("style") = "display: none"
-                        Me.moCustName2.Attributes("style") = "display: none"
+                If Not State.MyBO.CustomerId.Equals(Guid.Empty) Then
+                    If (State.MyBO.CustomerFirstName Is Nothing) AndAlso (State.MyBO.CustomerLastName Is Nothing) Then
+                        moCustName1.Attributes("style") = "display: none"
+                        moCustName2.Attributes("style") = "display: none"
                         moAltCustLasName.Attributes("style") = "display: none"
                         moAltCustFirstName.Attributes("style") = "display: none"
-                        Me.AdditionalCustomer.Attributes("style") = "display: none"
+                        AdditionalCustomer.Attributes("style") = "display: none"
                     Else
-                        Me.moCustName01.Attributes("style") = "display: none"
-                        Me.moCustName02.Attributes("style") = "display: none"
+                        moCustName01.Attributes("style") = "display: none"
+                        moCustName02.Attributes("style") = "display: none"
                         'Me.moCustLegalInfo1.Attributes("style") = "display: none"
-                        Me.moAMLRegulations3.Attributes("style") = "display: none"
+                        moAMLRegulations3.Attributes("style") = "display: none"
 
                         ControlMgr.SetVisibleControl(Me, moIncomeRangeLabel, False)
                         ControlMgr.SetVisibleControl(Me, moIncomeRangeText, False)
@@ -1725,11 +1721,11 @@ Namespace Certificates
                         ControlMgr.SetVisibleControl(Me, moCUIT_CUILText, False)
                     End If
                 Else
-                    Me.moCustName1.Attributes("style") = "display: none"
-                    Me.moCustName2.Attributes("style") = "display: none"
+                    moCustName1.Attributes("style") = "display: none"
+                    moCustName2.Attributes("style") = "display: none"
                     moAltCustLasName.Attributes("style") = "display: none"
                     moAltCustFirstName.Attributes("style") = "display: none"
-                    Me.AdditionalCustomer.Attributes("style") = "display: none"
+                    AdditionalCustomer.Attributes("style") = "display: none"
                 End If
                 ' End - REQ:5932
 
@@ -1738,51 +1734,51 @@ Namespace Certificates
             Else 'Edit Mode
                 '   Me.MenuEnabled = False
                 ControlMgr.SetEnableControl(Me, btnCancelCertificate_WRITE, False)
-                Select Case Me.State.selectedTab 'Me.tsHoriz.SelectedIndex
-                    Case Me.CERT_DETAIL_TAB
-                        If Me.State.isSalutation Then
+                Select Case State.selectedTab 'Me.tsHoriz.SelectedIndex
+                    Case CERT_DETAIL_TAB
+                        If State.isSalutation Then
                             ControlMgr.SetVisibleControl(Me, cboSalutationId, True)
                             ControlMgr.SetEnableControl(Me, cboSalutationId, True)
                             ControlMgr.SetVisibleControl(Me, moSalutationText, False)
                         End If
-                        If Me.State.isPostPrePaid Then
-                            ControlMgr.SetVisibleControl(Me, Me.moPostPaidLabel, True)
-                            ControlMgr.SetVisibleControl(Me, Me.moPostPaidText, True)
+                        If State.isPostPrePaid Then
+                            ControlMgr.SetVisibleControl(Me, moPostPaidLabel, True)
+                            ControlMgr.SetVisibleControl(Me, moPostPaidText, True)
                         End If
-                        Me.EnableDisableTabs(Me.State.IsEdit)
-                        Me.setCertDetailTab()
-                    Case Me.CERT_INFORMATION_TAB
-                        Me.EnableDisableTabs(Me.State.IsEdit)
-                        Me.setCertInfoTab()
-                    Case Me.CERT_TAX_ID_TAB
-                        Me.EnableDisableTabs(Me.State.IsEdit)
-                        Me.setTaxIdTab()
+                        EnableDisableTabs(State.IsEdit)
+                        setCertDetailTab()
+                    Case CERT_INFORMATION_TAB
+                        EnableDisableTabs(State.IsEdit)
+                        setCertInfoTab()
+                    Case CERT_TAX_ID_TAB
+                        EnableDisableTabs(State.IsEdit)
+                        setTaxIdTab()
                         'START  DEF-1986
-                        EnableDisableTaxIdControls(Me.cboDocumentTypeId.SelectedItem.Text)
+                        EnableDisableTaxIdControls(cboDocumentTypeId.SelectedItem.Text)
                         'END    DEF-1986
-                    Case Me.CERT_ITEMS_INFO_TAB
-                        Me.EnableDisableTabs(Me.State.IsEdit)
-                    Case Me.CERT_CANCEL_REQUEST_INFO_TAB
-                        If Me.State.MyBO.getCancelationRequestFlag = YES Then
-                            Me.EnableDisableTabs(Me.State.IsEdit)
-                        ElseIf Not Me.State.CertCancelRequestId.Equals(Guid.Empty) Then
-                            Me.EnableDisableTabs(True)
+                    Case CERT_ITEMS_INFO_TAB
+                        EnableDisableTabs(State.IsEdit)
+                    Case CERT_CANCEL_REQUEST_INFO_TAB
+                        If State.MyBO.getCancelationRequestFlag = YES Then
+                            EnableDisableTabs(State.IsEdit)
+                        ElseIf Not State.CertCancelRequestId.Equals(Guid.Empty) Then
+                            EnableDisableTabs(True)
                         Else
-                            Me.EnableDisableTabs(Me.State.IsEdit)
+                            EnableDisableTabs(State.IsEdit)
                         End If
-                        Me.setCancelRequestTab()
-                    Case Me.CERT_PREMIUM_INFO_TAB
-                        Me.EnableDisableTabs(Me.State.IsEdit)
-                        Dim oBillingCode As String = LookupListNew.GetCodeFromId(LookupListNew.GetBillingStatusListShort(ElitaPlusIdentity.Current.ActiveUser.LanguageId), Me.GetSelectedItem(Me.moBillingStatusId))
+                        setCancelRequestTab()
+                    Case CERT_PREMIUM_INFO_TAB
+                        EnableDisableTabs(State.IsEdit)
+                        Dim oBillingCode As String = LookupListNew.GetCodeFromId(LookupListNew.GetBillingStatusListShort(ElitaPlusIdentity.Current.ActiveUser.LanguageId), GetSelectedItem(moBillingStatusId))
                         If oBillingCode <> "A" Then
                             ControlMgr.SetEnableControl(Me, CheckBoxSendLetter, True)
-                            Me.CheckBoxSendLetter.CssClass = ""
+                            CheckBoxSendLetter.CssClass = ""
                         End If
                         ControlMgr.SetEnableControl(Me, btnUndoDebit_WRITE, True)
                         ControlMgr.SetEnableControl(Me, btnDebitEdit_WRITE, False)
                         ControlMgr.SetEnableControl(Me, btnDebitHistory, False)
                         ControlMgr.SetEnableControl(Me, btnPaymentHistory, False)
-                        If (Me.State.IsNewBillPayBtnVisible) Then
+                        If (State.IsNewBillPayBtnVisible) Then
                             ControlMgr.SetEnableControl(Me, btnBillPayHist, True)
                         Else
                             ControlMgr.SetEnableControl(Me, btnBillPayHist, False)
@@ -1790,18 +1786,18 @@ Namespace Certificates
                         ControlMgr.SetEnableControl(Me, btnDebitSave_WRITE, True)
                         ControlMgr.SetEnableControl(Me, moBillingStatusId, True)
                         ControlMgr.SetEnableControl(Me, moPaymentTypeId, False)
-                        If Me.State.directDebitPayment Then
+                        If State.directDebitPayment Then
                             ControlMgr.SetEnableControl(Me, moBankAccountOwnerText, True)
                             ControlMgr.SetEnableControl(Me, moBankRoutingNumberText, True)
                             ControlMgr.SetEnableControl(Me, moBankAccountNumberText, True)
-                            Me.moBillingStatusId.CssClass = ""
+                            moBillingStatusId.CssClass = ""
                             'Me.moBankAccountOwnerText.CssClass = ""
                             'Me.moBankAccountNumberText.CssClass = ""
                             'Me.moBankRoutingNumberText.CssClass = ""
                             moBankAccountOwnerText.ReadOnly = False
                             moBankRoutingNumberText.ReadOnly = False
                             moBankAccountNumberText.ReadOnly = False
-                        ElseIf Me.State.creditCardPayment Then
+                        ElseIf State.creditCardPayment Then
                             ControlMgr.SetEnableControl(Me, moCreditCardNumberText, True)
                             ControlMgr.SetEnableControl(Me, moCreditCardTypeIDDropDown, True)
                             ControlMgr.SetEnableControl(Me, moExpirationDateText, True)
@@ -1816,9 +1812,7 @@ Namespace Certificates
                         End If
                 End Select
                 'AA REQ-910 new fields added BEGIN
-                If Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) Or
-                   Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Or
-                   Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only  or 3= Display and Require At Enrollment
+                If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only  or 3= Display and Require At Enrollment
                     ControlMgr.SetVisibleControl(Me, cboIncomeRangeId, True)
                     ControlMgr.SetVisibleControl(Me, cboPoliticallyExposedId, True)
                     ControlMgr.SetVisibleControl(Me, moIncomeRangeText, False)
@@ -1830,9 +1824,7 @@ Namespace Certificates
                 End If
                 'AA REQ-910 new fields added END
                 'REQ-1255 - AML Regulations - START
-                If Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) Or
-                   Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Or
-                   Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only  or 3= Display and Require At Enrollment
+                If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only  or 3= Display and Require At Enrollment
                     'Marital Status
                     ControlMgr.SetVisibleControl(Me, ddlMaritalStatus, True)
                     ControlMgr.SetEnableControl(Me, ddlMaritalStatus, True)
@@ -1899,18 +1891,18 @@ Namespace Certificates
                 End If
                 'REQ-1255 - END
                 ' Start - REQ:5932
-                If Not Me.State.MyBO.CustomerId.Equals(Guid.Empty) Then
-                    If (Me.State.MyBO.CustomerFirstName Is Nothing) And (Me.State.MyBO.CustomerLastName Is Nothing) Then
-                        Me.moCustName1.Attributes("style") = "display: none"
-                        Me.moCustName2.Attributes("style") = "display: none"
+                If Not State.MyBO.CustomerId.Equals(Guid.Empty) Then
+                    If (State.MyBO.CustomerFirstName Is Nothing) AndAlso (State.MyBO.CustomerLastName Is Nothing) Then
+                        moCustName1.Attributes("style") = "display: none"
+                        moCustName2.Attributes("style") = "display: none"
                         moAltCustLasName.Attributes("style") = "display: none"
                         moAltCustFirstName.Attributes("style") = "display: none"
-                        Me.AdditionalCustomer.Attributes("style") = "display: none"
+                        AdditionalCustomer.Attributes("style") = "display: none"
                     Else
-                        Me.moCustName01.Attributes("style") = "display: none"
-                        Me.moCustName02.Attributes("style") = "display: none"
+                        moCustName01.Attributes("style") = "display: none"
+                        moCustName02.Attributes("style") = "display: none"
                         'Me.moCustLegalInfo1.Attributes("style") = "display: none"
-                        Me.moAMLRegulations3.Attributes("style") = "display: none"
+                        moAMLRegulations3.Attributes("style") = "display: none"
 
                         ControlMgr.SetVisibleControl(Me, moIncomeRangeLabel, False)
                         ControlMgr.SetVisibleControl(Me, moIncomeRangeText, False)
@@ -1919,14 +1911,14 @@ Namespace Certificates
                         ControlMgr.SetVisibleControl(Me, moCUIT_CUILText, False)
 
                         'To Check if Transfer Of Ownership flag is true, then disable Customer name and TAX ID
-                        Dim objComp As New Company(Me.State.MyBO.CompanyId)
+                        Dim objComp As New Company(State.MyBO.CompanyId)
                         Dim strTranferOfOwnership As String
                         If Not objComp.UseTransferOfOwnership.Equals(Guid.Empty) Then
                             strTranferOfOwnership = LookupListNew.GetCodeFromId(LookupListNew.GetYesNoLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), objComp.UseTransferOfOwnership)
                         Else
                             strTranferOfOwnership = String.Empty
                         End If
-                        If strTranferOfOwnership = YES And Me.State.MyBO.StatusCode = CERT_STATUS Then
+                        If strTranferOfOwnership = YES AndAlso State.MyBO.StatusCode = CERT_STATUS Then
                             ControlMgr.SetEnableControl(Me, moTaxIdText, False)
                             ControlMgr.SetEnableControl(Me, moCustomerFirstNameText, False)
                             ControlMgr.SetEnableControl(Me, moCustomerMiddleNameText, False)
@@ -1937,11 +1929,11 @@ Namespace Certificates
                         End If
                     End If
                 Else
-                    Me.moCustName1.Attributes("style") = "display: none"
-                    Me.moCustName2.Attributes("style") = "display: none"
+                    moCustName1.Attributes("style") = "display: none"
+                    moCustName2.Attributes("style") = "display: none"
                     moAltCustLasName.Attributes("style") = "display: none"
                     moAltCustFirstName.Attributes("style") = "display: none"
-                    Me.AdditionalCustomer.Attributes("style") = "display: none"
+                    AdditionalCustomer.Attributes("style") = "display: none"
                 End If
 
                 ControlMgr.SetVisibleControl(Me, BtnServiceStartDate, True)
@@ -1950,12 +1942,12 @@ Namespace Certificates
 
 
 
-            If Me.State.MyBO.IsChildCertificate Then
+            If State.MyBO.IsChildCertificate Then
                 'ControlMgr.SetEnableTabStrip(Me, tsHoriz.Items(Me.CERT_ENDORSEMENTS_TAB), False)
                 EnableTab(CERT_ENDORSEMENTS_TAB, False)
             End If
 
-            If Me.State.MyBO.StatusCode = CLOSED Then
+            If State.MyBO.StatusCode = CLOSED Then
                 'ControlMgr.SetEnableTabStrip(Me, tsHoriz.Items(Me.CERT_CANCELLATION_INFO_TAB), True)
                 EnableTab(CERT_CANCELLATION_INFO_TAB, True)
             Else
@@ -1963,12 +1955,12 @@ Namespace Certificates
                 EnableTab(CERT_CANCELLATION_INFO_TAB, False)
             End If
 
-            If Me.State.ValFlag = Me.State.MyBO.VALIDATION_FLAG_NONE Then
+            If State.ValFlag = State.MyBO.VALIDATION_FLAG_NONE Then
                 'ControlMgr.SetEnableTabStrip(Me, tsHoriz.Items(Me.CERT_TAX_ID_TAB), False)
                 EnableTab(CERT_TAX_ID_TAB, False)
             End If
 
-            If Not Me.State.isPremiumTAbVisible Then
+            If Not State.isPremiumTAbVisible Then
                 'ControlMgr.SetEnableTabStrip(Me, tsHoriz.Items(Me.CERT_PREMIUM_INFO_TAB), False)
                 EnableTab(CERT_PREMIUM_INFO_TAB, False)
             End If
@@ -1979,18 +1971,18 @@ Namespace Certificates
             End If
 
             ' This gets enable on the Top of this SUB, with  EnableDisableTabs 
-            If Me.State.MyBO.Product.UpgFinanceInfoRequireId.Equals(Guid.Empty) Then
+            If State.MyBO.Product.UpgFinanceInfoRequireId.Equals(Guid.Empty) Then
                 'ControlMgr.SetEnableTabStrip(Me, tsHoriz.Items(Me.CERT_FINANCED_TAB), False)
                 EnableTab(CERT_FINANCED_TAB, False)
             End If
 
 
-            If (Not Me.State.CertInstallmentHistoryDV Is Nothing AndAlso Me.State.CertInstallmentHistoryDV.Count = 0) Then
+            If (State.CertInstallmentHistoryDV IsNot Nothing AndAlso State.CertInstallmentHistoryDV.Count = 0) Then
                 'ControlMgr.SetEnableTabStrip(Me, tsHoriz.Items(CERT_REPRICE_TAB), False)
                 EnableTab(CERT_REPRICE_TAB, False)
             End If
 
-            If Me.State.ComputeCancellationDateEOfM.Equals(Codes.YESNO_Y) Then
+            If State.ComputeCancellationDateEOfM.Equals(Codes.YESNO_Y) Then
                 ControlMgr.SetVisibleControl(Me, CancelCertReqDateRowHeader, True)
                 ControlMgr.SetVisibleControl(Me, CancelCertDateImagebutton, False)
                 ControlMgr.SetEnableControl(Me, CancelCertDateTextbox, False)
@@ -2013,17 +2005,17 @@ Namespace Certificates
         Private Sub EnableDisablePremiunBankInfoOption()
             Dim result As Boolean = False
 
-            If Not Me.State.MyBO Is Nothing AndAlso Not Me.State.MyBO.Company Is Nothing Then
+            If State.MyBO IsNot Nothing AndAlso State.MyBO.Company IsNot Nothing Then
 
                 'Get Dealer Type
-                Dim dealerBO As Dealer = New Dealer(Me.State.MyBO.DealerId)
-                If Not dealerBO Is Nothing Then
+                Dim dealerBO As Dealer = New Dealer(State.MyBO.DealerId)
+                If dealerBO IsNot Nothing Then
 
                     If dealerBO.AttributeValues.Contains(Codes.DLR_ATTRBT__UPDATE_BANK_FOR_INSTALLMENTS) Then
 
                         If dealerBO.AttributeValues.Value(Codes.DLR_ATTRBT__UPDATE_BANK_FOR_INSTALLMENTS) = Codes.YESNO_Y Then
 
-                            Dim countryBO As Country = New Country(Me.State.MyBO.Company.CountryId)
+                            Dim countryBO As Country = New Country(State.MyBO.Company.CountryId)
                             Dim validBankInfoValue = LookupListNew.GetCodeFromId(LookupListNew.LK_VALIDATE_BANK_INFO, countryBO.ValidateBankInfoId)
                             If Not String.IsNullOrEmpty(validBankInfoValue) Then
                                 If String.Compare(validBankInfoValue, Codes.Country_Code_France, True) = 0 Then
@@ -2042,32 +2034,32 @@ Namespace Certificates
 
 
         'START  DEF-1986
-        Private Sub EnableDisableTaxIdControls(ByVal docType As String)
+        Private Sub EnableDisableTaxIdControls(docType As String)
             'START  DEF-1986
             If docType = "CNPJ" Then
-                ControlMgr.SetEnableControl(Me, Me.moIDTypeText, False)
-                ControlMgr.SetEnableControl(Me, Me.moDocumentAgencyText, False)
-                ControlMgr.SetEnableControl(Me, Me.moRGNumberText, False)
-                ControlMgr.SetEnableControl(Me, Me.moDocumentIssueDateText, False)
-                ControlMgr.SetEnableControl(Me, Me.BtnDocumentIssueDate, False)
+                ControlMgr.SetEnableControl(Me, moIDTypeText, False)
+                ControlMgr.SetEnableControl(Me, moDocumentAgencyText, False)
+                ControlMgr.SetEnableControl(Me, moRGNumberText, False)
+                ControlMgr.SetEnableControl(Me, moDocumentIssueDateText, False)
+                ControlMgr.SetEnableControl(Me, BtnDocumentIssueDate, False)
                 moIDTypeText.Text = String.Empty
                 moDocumentAgencyText.Text = String.Empty
                 moDocumentIssueDateText.Text = String.Empty
                 moRGNumberText.Text = String.Empty
             Else
-                ControlMgr.SetEnableControl(Me, Me.moIDTypeText, True)
-                ControlMgr.SetEnableControl(Me, Me.moDocumentAgencyText, True)
-                ControlMgr.SetEnableControl(Me, Me.moRGNumberText, True)
-                ControlMgr.SetEnableControl(Me, Me.moDocumentIssueDateText, True)
-                ControlMgr.SetEnableControl(Me, Me.BtnDocumentIssueDate, True)
+                ControlMgr.SetEnableControl(Me, moIDTypeText, True)
+                ControlMgr.SetEnableControl(Me, moDocumentAgencyText, True)
+                ControlMgr.SetEnableControl(Me, moRGNumberText, True)
+                ControlMgr.SetEnableControl(Me, moDocumentIssueDateText, True)
+                ControlMgr.SetEnableControl(Me, BtnDocumentIssueDate, True)
             End If
         End Sub
         'END DEF-1986
 
         Private Sub DisableCreditCardInformation()
 
-            Me.moCreditCardInformation1.Attributes("style") = "display: none"
-            Me.moCreditCardInformation2.Attributes("style") = "display: none"
+            moCreditCardInformation1.Attributes("style") = "display: none"
+            moCreditCardInformation2.Attributes("style") = "display: none"
 
         End Sub
 
@@ -2077,41 +2069,41 @@ Namespace Certificates
             ControlMgr.SetEnableControl(Me, btnCancelRequestUndo_WRITE, True)
 
             ControlMgr.SetEnableControl(Me, moCancelRequestReasonDrop, True)
-            Me.moCancelRequestReasonDrop.CssClass = "FLATTEXTBOX"
+            moCancelRequestReasonDrop.CssClass = "FLATTEXTBOX"
 
             ControlMgr.SetVisibleControl(Me, moCanReqJustificationLabel, True)
             ControlMgr.SetVisibleControl(Me, moCancelRequestJustificationDrop, True)
-            Me.moCancelRequestJustificationDrop.CssClass = "FLATTEXTBOX"
+            moCancelRequestJustificationDrop.CssClass = "FLATTEXTBOX"
 
-            Me.moCancelDateLabel.Enabled = True
-            Me.moCancelDateTextBox.ReadOnly = False
+            moCancelDateLabel.Enabled = True
+            moCancelDateTextBox.ReadOnly = False
             'Me.moCancelDateTextBox.BackColor = Color.White
             'Me.moCancelDateTextBox.CssClass = ""
 
-            Me.moCancelRequestDateLabel.Enabled = True
-            Me.moCancelRequestDateTextBox.ReadOnly = False
+            moCancelRequestDateLabel.Enabled = True
+            moCancelRequestDateTextBox.ReadOnly = False
             'Me.moCancelRequestDateTextBox.BackColor = Color.White
             'Me.moCancelRequestDateTextBox.CssClass = ""
 
             ControlMgr.SetVisibleControl(Me, moCallerNameLabel, True)
             ControlMgr.SetVisibleControl(Me, moCallerNameTextBox, True)
-            Me.moCallerNameLabel.Enabled = True
-            Me.moCallerNameTextBox.ReadOnly = False
+            moCallerNameLabel.Enabled = True
+            moCallerNameTextBox.ReadOnly = False
             'Me.moCallerNameTextBox.BackColor = Color.White
             'Me.moCallerNameTextBox.CssClass = ""
 
             ControlMgr.SetVisibleControl(Me, moCommentsLabel, True)
             ControlMgr.SetVisibleControl(Me, moCommentsTextbox, True)
-            Me.moCommentsLabel.Enabled = True
-            Me.moCommentsTextbox.ReadOnly = False
+            moCommentsLabel.Enabled = True
+            moCommentsTextbox.ReadOnly = False
             'Me.moCommentsTextbox.BackColor = Color.White
             'Me.moCommentsTextbox.CssClass = ""
 
             ControlMgr.SetVisibleControl(Me, moCancelRequestDateImagebutton, True)
-            Me.moCancelRequestDateImagebutton.Enabled = True
+            moCancelRequestDateImagebutton.Enabled = True
             ControlMgr.SetVisibleControl(Me, moCancelDateImageButton, True)
-            Me.moCancelDateImageButton.Enabled = True
-            If Me.State.CancelRulesForSFR = Codes.YESNO_Y Then
+            moCancelDateImageButton.Enabled = True
+            If State.CancelRulesForSFR = Codes.YESNO_Y Then
                 ControlMgr.SetEnableControl(Me, moCancelDateTextBox, False)
                 ControlMgr.SetVisibleControl(Me, moCancelDateImageButton, False)
             End If
@@ -2123,20 +2115,20 @@ Namespace Certificates
             ControlMgr.SetEnableControl(Me, btnUndoCertDetail_Write, True)
             ControlMgr.SetEnableControl(Me, btnSaveCertDetail_WRITE, True)
 
-            Me.moHomePhoneLabel.Enabled = True
-            Me.moHomePhoneText.ReadOnly = False
+            moHomePhoneLabel.Enabled = True
+            moHomePhoneText.ReadOnly = False
 
-            Me.moWorkPhoneLabel.Enabled = True
-            Me.moWorkPhoneText.ReadOnly = False
+            moWorkPhoneLabel.Enabled = True
+            moWorkPhoneText.ReadOnly = False
 
-            Me.moEmailAddressLabel.Enabled = True
-            Me.moEmailAddressText.ReadOnly = False
+            moEmailAddressLabel.Enabled = True
+            moEmailAddressText.ReadOnly = False
 
-            Me.moTaxIdLabel.Enabled = True
-            Me.moTaxIdText.ReadOnly = False
+            moTaxIdLabel.Enabled = True
+            moTaxIdText.ReadOnly = False
 
-            Dim dealerBO As Dealer = New Dealer(Me.State.MyBO.DealerId)
-            If Not Me.State.MyBO.CustomerId.Equals(Guid.Empty) Then
+            Dim dealerBO As Dealer = New Dealer(State.MyBO.DealerId)
+            If Not State.MyBO.CustomerId.Equals(Guid.Empty) Then
                 If dealerBO.AttributeValues.Contains(Codes.DLR_ATTR__ENABLE_ALT_CUSTOMER_NAME) Then
 
                     If dealerBO.AttributeValues.Value(Codes.DLR_ATTR__ENABLE_ALT_CUSTOMER_NAME) = Codes.YESNO_Y Then
@@ -2148,22 +2140,22 @@ Namespace Certificates
                 End If
             End If
 
-            If Not Me.State.MyBO.CustomerId.Equals(Guid.Empty) Then
-                Me.moCustomerFirstNameLabel.Enabled = True
-                Me.moCustomerFirstNameText.ReadOnly = False
-                Me.moCustomerMiddleNameLabel.Enabled = True
-                Me.moCustomerMiddleNameText.ReadOnly = False
-                Me.moCustomerLastNameLabel.Enabled = True
-                Me.moCustomerLastNameText.ReadOnly = False
-                Me.moAlternativeLastNameLabel.Enabled = True
-                Me.moAlternativeLastNameText.ReadOnly = False
-                Me.moAlternativeFirstNameLabel.Enabled = True
-                Me.moAlternativeFirstNameText.ReadOnly = False
-                Me.moCorporateNameLabel.Enabled = True
-                Me.moCorporateNameText.ReadOnly = False
+            If Not State.MyBO.CustomerId.Equals(Guid.Empty) Then
+                moCustomerFirstNameLabel.Enabled = True
+                moCustomerFirstNameText.ReadOnly = False
+                moCustomerMiddleNameLabel.Enabled = True
+                moCustomerMiddleNameText.ReadOnly = False
+                moCustomerLastNameLabel.Enabled = True
+                moCustomerLastNameText.ReadOnly = False
+                moAlternativeLastNameLabel.Enabled = True
+                moAlternativeLastNameText.ReadOnly = False
+                moAlternativeFirstNameLabel.Enabled = True
+                moAlternativeFirstNameText.ReadOnly = False
+                moCorporateNameLabel.Enabled = True
+                moCorporateNameText.ReadOnly = False
             Else
-                Me.moCustomerNameLabel.Enabled = True
-                Me.moCustomerNameText.ReadOnly = False
+                moCustomerNameLabel.Enabled = True
+                moCustomerNameText.ReadOnly = False
             End If
 
 
@@ -2173,23 +2165,23 @@ Namespace Certificates
             'If Me.State.MyBO.DateOfBirth Is Nothing Then
             '    ControlMgr.SetVisibleControl(Me, BtnDateOfBirth, False)
             'Else
-            Me.moDateOfBirthLabel.Enabled = True
-            Me.moDateOfBirthText.ReadOnly = False
+            moDateOfBirthLabel.Enabled = True
+            moDateOfBirthText.ReadOnly = False
             ControlMgr.SetVisibleControl(Me, BtnDateOfBirth, True)
-            Me.BtnDateOfBirth.Enabled = True
+            BtnDateOfBirth.Enabled = True
             'End If
             'DEF-21659 - END
 
-            If Not Me.State.MyBO.CustomerId.Equals(Guid.Empty) Then
-                Me.moCityOfBirthText.Enabled = True
-                Me.moCityOfBirthText.ReadOnly = False
+            If Not State.MyBO.CustomerId.Equals(Guid.Empty) Then
+                moCityOfBirthText.Enabled = True
+                moCityOfBirthText.ReadOnly = False
             End If
 
             ControlMgr.SetVisibleControl(Me, cboLangPref, True)
             ControlMgr.SetEnableControl(Me, cboLangPref, True)
             ControlMgr.SetVisibleControl(Me, moLangPrefText, False)
 
-            If Me.State.MyBO.IsChildCertificate OrElse Me.State.MyBO.IsParentCertificate Then
+            If State.MyBO.IsChildCertificate OrElse State.MyBO.IsParentCertificate Then
                 ControlMgr.SetVisibleControl(Me, cboLangPref, False)
                 ControlMgr.SetEnableControl(Me, cboLangPref, False)
                 ControlMgr.SetVisibleControl(Me, moLangPrefText, True)
@@ -2197,26 +2189,22 @@ Namespace Certificates
 
 
             'AA REQ-910 new fields added BEGIN
-            If Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) Or
-               Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Or
-               Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only or 3= Display and Require At Enrollment
-                Me.moOccupationLabel.Enabled = True
-                Me.moOccupationText.ReadOnly = False
+            If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only or 3= Display and Require At Enrollment
+                moOccupationLabel.Enabled = True
+                moOccupationText.ReadOnly = False
 
-                Me.moPoliticallyExposedLabel.Enabled = True
-                Me.moPoliticallyExposedText.ReadOnly = False
+                moPoliticallyExposedLabel.Enabled = True
+                moPoliticallyExposedText.ReadOnly = False
 
-                Me.moIncomeRangeLabel.Enabled = True
-                Me.moIncomeRangeText.ReadOnly = False
+                moIncomeRangeLabel.Enabled = True
+                moIncomeRangeText.ReadOnly = False
             End If
             'AA REQ-910 new fields added END
 
             'REQ-1255 -- START
-            If Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) Or
-               Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Or
-               Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only or 3= Display and Require At Enrollment
-                Me.moCUIT_CUILLabel.Enabled = True
-                Me.moCUIT_CUILText.ReadOnly = False
+            If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only or 3= Display and Require At Enrollment
+                moCUIT_CUILLabel.Enabled = True
+                moCUIT_CUILText.ReadOnly = False
             End If
             'REQ-1255 -- END
         End Sub
@@ -2226,40 +2214,40 @@ Namespace Certificates
             ControlMgr.SetEnableControl(Me, btnUndoCertInfo_Write, True)
             ControlMgr.SetEnableControl(Me, btnSaveCertInfo_WRITE, True)
 
-            Me.moInvoiceNumberLabel.Enabled = True
-            Me.moInvoiceNumberText.ReadOnly = False
+            moInvoiceNumberLabel.Enabled = True
+            moInvoiceNumberText.ReadOnly = False
 
-            If Me.State.MyBO.Source.ToUpper().Equals("VSC") Then
-                Me.moVehicleLicenseTagText.Enabled = True
-                Me.moVehicleLicenseTagText.ReadOnly = False
+            If State.MyBO.Source.ToUpper().Equals("VSC") Then
+                moVehicleLicenseTagText.Enabled = True
+                moVehicleLicenseTagText.ReadOnly = False
             End If
 
-            If Me.State.TheItemCoverageState.manufaturerWarranty Then
-                Me.moWarrantySoldLabel.Enabled = True
+            If State.TheItemCoverageState.manufaturerWarranty Then
+                moWarrantySoldLabel.Enabled = True
                 'Me.moWarrantySoldText.ReadOnly = False
                 ControlMgr.SetVisibleControl(Me, BtnWarrantySoldDate, True)
-                Me.BtnWarrantySoldDate.Enabled = True
+                BtnWarrantySoldDate.Enabled = True
             Else
-                Me.moProductSalesDateLabel.Enabled = True
-                Me.moProductSalesDateText.ReadOnly = False
+                moProductSalesDateLabel.Enabled = True
+                moProductSalesDateText.ReadOnly = False
                 ControlMgr.SetVisibleControl(Me, BtnProductSalesDate, True)
-                Me.BtnProductSalesDate.Enabled = True
+                BtnProductSalesDate.Enabled = True
             End If
 
-            If Not Me.State.TheItemCoverageState.IsRetailer Then
-                Me.moRetailerLabel.Enabled = True
-                Me.moRetailerText.ReadOnly = False
+            If Not State.TheItemCoverageState.IsRetailer Then
+                moRetailerLabel.Enabled = True
+                moRetailerText.ReadOnly = False
             End If
 
-            If Me.State.MyBO.Dealer.ContractManualVerification = "YESNO-Y" Then
+            If State.MyBO.Dealer.ContractManualVerification = "YESNO-Y" Then
                 ControlMgr.SetVisibleControl(Me, BtnContractCheckCompleteDate, True)
-                Me.BtnContractCheckCompleteDate.Enabled = True
+                BtnContractCheckCompleteDate.Enabled = True
                 ControlMgr.SetVisibleControl(Me, BtnCertificateVerificationDate, True)
-                Me.BtnCertificateVerificationDate.Enabled = True
+                BtnCertificateVerificationDate.Enabled = True
                 ControlMgr.SetVisibleControl(Me, BtnSEPAMandateDate, True)
-                Me.BtnSEPAMandateDate.Enabled = True
+                BtnSEPAMandateDate.Enabled = True
                 ControlMgr.SetVisibleControl(Me, BtnCheckVerificationDate, True)
-                Me.BtnCheckVerificationDate.Enabled = True
+                BtnCheckVerificationDate.Enabled = True
             End If
 
             moSalesRepNumberLabel.Enabled = True
@@ -2274,7 +2262,7 @@ Namespace Certificates
             moRegionText.Enabled = True
             moRegionText.ReadOnly = False
 
-            If Me.State.MyBO.IsParentCertificate OrElse Me.State.MyBO.IsChildCertificate Then
+            If State.MyBO.IsParentCertificate OrElse State.MyBO.IsChildCertificate Then
                 ControlMgr.SetEnableControl(Me, moProductSalesDateText, False)
                 ControlMgr.SetEnableControl(Me, moActivationDateText, False)
             End If
@@ -2288,10 +2276,10 @@ Namespace Certificates
             ControlMgr.SetEnableControl(Me, btnUndoTaxID_WRITE, True)
             ControlMgr.SetEnableControl(Me, btnSaveTaxID_WRITE, True)
 
-            ControlMgr.SetVisibleControl(Me, Me.moTaxIdText, True)
+            ControlMgr.SetVisibleControl(Me, moTaxIdText, True)
 
             ControlMgr.SetVisibleControl(Me, BtnDocumentIssueDate, True)
-            Me.BtnDocumentIssueDate.Enabled = True
+            BtnDocumentIssueDate.Enabled = True
 
             moDocumentIssueDateText.ReadOnly = False
 
@@ -2306,12 +2294,12 @@ Namespace Certificates
         End Sub
 
         Protected Sub BindInstallmentBoPropertiesToLabels()
-            Me.BindBOPropertyToLabel(Me.State.TheDirectDebitState.certInstallment, "BillingStatusId", Me.moBilling_StatusLabel)
-            Me.BindBOPropertyToLabel(Me.State.TheDirectDebitState.certInstallment, "SendLetterId", Me.moSendLetterIdLabel)
+            BindBOPropertyToLabel(State.TheDirectDebitState.certInstallment, "BillingStatusId", moBilling_StatusLabel)
+            BindBOPropertyToLabel(State.TheDirectDebitState.certInstallment, "SendLetterId", moSendLetterIdLabel)
 
-            Me.BindBOPropertyToLabel(Me.State.TheDirectDebitState.bankInfo, "Account_Name", Me.moBankAccountOwnerLabel)
-            Me.BindBOPropertyToLabel(Me.State.TheDirectDebitState.bankInfo, "Bank_Id", Me.moBankRoutingNumberLabel)
-            Me.BindBOPropertyToLabel(Me.State.TheDirectDebitState.bankInfo, "Account_Number", Me.moBankAccountNumberLabel)
+            BindBOPropertyToLabel(State.TheDirectDebitState.bankInfo, "Account_Name", moBankAccountOwnerLabel)
+            BindBOPropertyToLabel(State.TheDirectDebitState.bankInfo, "Bank_Id", moBankRoutingNumberLabel)
+            BindBOPropertyToLabel(State.TheDirectDebitState.bankInfo, "Account_Number", moBankAccountNumberLabel)
         End Sub
 
         Protected Sub BindCancelRequestBoPropertiesToLabels()
@@ -2423,77 +2411,77 @@ Namespace Certificates
 
         Protected Sub BindBoPropertiesToLabels()
             'pedro
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "CustomerName", Me.moCustomerNameLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "HomePhone", Me.moHomePhoneLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "WorkPhone", Me.moWorkPhoneLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "Email", Me.moEmailAddressLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "IdentificationNumber", Me.moTaxIdLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "InvoiceNumber", Me.moInvoiceNumberLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "ProductSalesDate", Me.moProductSalesDateLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "WarrantySalesDate", Me.moWarrantySoldLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "Retailer", Me.moRetailerLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "SalutationId", Me.moSalutationLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "LanguageId", Me.moLangPrefLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "PostPrePaidId", Me.moPostPaidLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "VehicleLicenseTag", Me.moVehicleLicenseTagLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "DocumentIssueDate", Me.moDocumentIssueDateLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "DocumentTypeID", Me.moDocumentTypeLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "RgNumber", Me.moRGNumberLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "DocumentAgency", Me.moDocumentAgencyLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "IdType", Me.moIDTypeLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "TaxIDNumb", Me.moNewTaxIdLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "SalesRepNumber", Me.moSalesRepNumberLabel)
+            BindBOPropertyToLabel(State.MyBO, "CustomerName", moCustomerNameLabel)
+            BindBOPropertyToLabel(State.MyBO, "HomePhone", moHomePhoneLabel)
+            BindBOPropertyToLabel(State.MyBO, "WorkPhone", moWorkPhoneLabel)
+            BindBOPropertyToLabel(State.MyBO, "Email", moEmailAddressLabel)
+            BindBOPropertyToLabel(State.MyBO, "IdentificationNumber", moTaxIdLabel)
+            BindBOPropertyToLabel(State.MyBO, "InvoiceNumber", moInvoiceNumberLabel)
+            BindBOPropertyToLabel(State.MyBO, "ProductSalesDate", moProductSalesDateLabel)
+            BindBOPropertyToLabel(State.MyBO, "WarrantySalesDate", moWarrantySoldLabel)
+            BindBOPropertyToLabel(State.MyBO, "Retailer", moRetailerLabel)
+            BindBOPropertyToLabel(State.MyBO, "SalutationId", moSalutationLabel)
+            BindBOPropertyToLabel(State.MyBO, "LanguageId", moLangPrefLabel)
+            BindBOPropertyToLabel(State.MyBO, "PostPrePaidId", moPostPaidLabel)
+            BindBOPropertyToLabel(State.MyBO, "VehicleLicenseTag", moVehicleLicenseTagLabel)
+            BindBOPropertyToLabel(State.MyBO, "DocumentIssueDate", moDocumentIssueDateLabel)
+            BindBOPropertyToLabel(State.MyBO, "DocumentTypeID", moDocumentTypeLabel)
+            BindBOPropertyToLabel(State.MyBO, "RgNumber", moRGNumberLabel)
+            BindBOPropertyToLabel(State.MyBO, "DocumentAgency", moDocumentAgencyLabel)
+            BindBOPropertyToLabel(State.MyBO, "IdType", moIDTypeLabel)
+            BindBOPropertyToLabel(State.MyBO, "TaxIDNumb", moNewTaxIdLabel)
+            BindBOPropertyToLabel(State.MyBO, "SalesRepNumber", moSalesRepNumberLabel)
 
-            Me.BindBOPropertyToLabel(Me.State.CreditCardInfoBO, "CreditCardFormatId", Me.moCreditCardTypeIDLabel)
-            Me.BindBOPropertyToLabel(Me.State.CreditCardInfoBO, "CreditCardNumber", Me.moCreditCardNumberLabel)
-            Me.BindBOPropertyToLabel(Me.State.CreditCardInfoBO, "ExpirationDate", Me.moExpirationDateLabel)
-            Me.BindBOPropertyToLabel(Me.State.CreditCardInfoBO, "NameOnCreditCard", Me.moNameOnCreditCardLabel)
+            BindBOPropertyToLabel(State.CreditCardInfoBO, "CreditCardFormatId", moCreditCardTypeIDLabel)
+            BindBOPropertyToLabel(State.CreditCardInfoBO, "CreditCardNumber", moCreditCardNumberLabel)
+            BindBOPropertyToLabel(State.CreditCardInfoBO, "ExpirationDate", moExpirationDateLabel)
+            BindBOPropertyToLabel(State.CreditCardInfoBO, "NameOnCreditCard", moNameOnCreditCardLabel)
 
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "DateOfBirth", Me.moDateOfBirthLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "VatNum", Me.moVATNumLabel)
+            BindBOPropertyToLabel(State.MyBO, "DateOfBirth", moDateOfBirthLabel)
+            BindBOPropertyToLabel(State.MyBO, "VatNum", moVATNumLabel)
 
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "CapitalizationSeries", Me.moCapSeriesLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "CapitalizationNumber", Me.moCapNumberLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "SubStatusChangeDate", Me.moSubStatusChangeDateLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "LinesOnAccount", Me.moLinesOnAccountLabel)
+            BindBOPropertyToLabel(State.MyBO, "CapitalizationSeries", moCapSeriesLabel)
+            BindBOPropertyToLabel(State.MyBO, "CapitalizationNumber", moCapNumberLabel)
+            BindBOPropertyToLabel(State.MyBO, "SubStatusChangeDate", moSubStatusChangeDateLabel)
+            BindBOPropertyToLabel(State.MyBO, "LinesOnAccount", moLinesOnAccountLabel)
 
-            Me.ClearGridHeadersAndLabelsErrSign()
+            ClearGridHeadersAndLabelsErrSign()
 
             'Added for Req-910 - Start
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "Occupation", Me.moOccupationLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "PoliticallyExposedId", Me.moPoliticallyExposedLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "IncomeRangeId", Me.moIncomeRangeLabel)
+            BindBOPropertyToLabel(State.MyBO, "Occupation", moOccupationLabel)
+            BindBOPropertyToLabel(State.MyBO, "PoliticallyExposedId", moPoliticallyExposedLabel)
+            BindBOPropertyToLabel(State.MyBO, "IncomeRangeId", moIncomeRangeLabel)
             'Added for Req-910 - End
 
             'REQ-1255 - AML Regulations - START
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "MaritalStatus", Me.moMaritalStatusLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "Nationality", Me.moNationalityLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "PlaceOfBirth", Me.moPlaceOfBirthLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "CityOfBirth", Me.mocityOfBirthLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "PersonType", Me.moPerson_typeLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "Gender", Me.moGenderLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "CUIT_CUIL", Me.moCUIT_CUILLabel)
+            BindBOPropertyToLabel(State.MyBO, "MaritalStatus", moMaritalStatusLabel)
+            BindBOPropertyToLabel(State.MyBO, "Nationality", moNationalityLabel)
+            BindBOPropertyToLabel(State.MyBO, "PlaceOfBirth", moPlaceOfBirthLabel)
+            BindBOPropertyToLabel(State.MyBO, "CityOfBirth", mocityOfBirthLabel)
+            BindBOPropertyToLabel(State.MyBO, "PersonType", moPerson_typeLabel)
+            BindBOPropertyToLabel(State.MyBO, "Gender", moGenderLabel)
+            BindBOPropertyToLabel(State.MyBO, "CUIT_CUIL", moCUIT_CUILLabel)
             'REQ-1255 - AML Regulations - END
 
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "Finance_Tab_Amount", Me.moFinanceAmountLabel)
+            BindBOPropertyToLabel(State.MyBO, "Finance_Tab_Amount", moFinanceAmountLabel)
             '  Me.BindBOPropertyToLabel(Me.State.MyBO, "", Me.moCurrentOutstandingBalanceLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "Finance_Term", Me.moFinanceTermLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "FinanceDate", Me.moFinanceDateLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "Finance_Frequency", Me.moFinanceFrequencyLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "DownPayment", Me.moDownPaymentLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "Finance_Installment_Number", Me.moFinanceInstallmentNumLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "Finance_Installment_Amount", Me.moFinanceInstallmentAmountLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "AdvancePayment", Me.moAdvancePaymentLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "NumOfConsecutivePayments", Me.moNumOfConsecutivePaymentsLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "BillingAccountNumber", Me.moBillingAccountNumberLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "DealerRewardPoints", Me.moDealerRewardPointsLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "DealerCurrentPlanCode", Me.moDealerCurrentPlanCodeLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "DealerScheduledPlanCode", Me.moDealerScheduledPlanCodeLabel)
+            BindBOPropertyToLabel(State.MyBO, "Finance_Term", moFinanceTermLabel)
+            BindBOPropertyToLabel(State.MyBO, "FinanceDate", moFinanceDateLabel)
+            BindBOPropertyToLabel(State.MyBO, "Finance_Frequency", moFinanceFrequencyLabel)
+            BindBOPropertyToLabel(State.MyBO, "DownPayment", moDownPaymentLabel)
+            BindBOPropertyToLabel(State.MyBO, "Finance_Installment_Number", moFinanceInstallmentNumLabel)
+            BindBOPropertyToLabel(State.MyBO, "Finance_Installment_Amount", moFinanceInstallmentAmountLabel)
+            BindBOPropertyToLabel(State.MyBO, "AdvancePayment", moAdvancePaymentLabel)
+            BindBOPropertyToLabel(State.MyBO, "NumOfConsecutivePayments", moNumOfConsecutivePaymentsLabel)
+            BindBOPropertyToLabel(State.MyBO, "BillingAccountNumber", moBillingAccountNumberLabel)
+            BindBOPropertyToLabel(State.MyBO, "DealerRewardPoints", moDealerRewardPointsLabel)
+            BindBOPropertyToLabel(State.MyBO, "DealerCurrentPlanCode", moDealerCurrentPlanCodeLabel)
+            BindBOPropertyToLabel(State.MyBO, "DealerScheduledPlanCode", moDealerScheduledPlanCodeLabel)
             '            Me.BindBOPropertyToLabel(Me.State.MyBO, "", Me.lblUpgradeTermUnitOfMeasure)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "UpgradeProgram", Me.moUpgradeProgramLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "UpgradeFixedTerm", Me.moUpgradeFixedTermLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "UpgradeTermFrom", Me.moUpgradeTermLabelFrom)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "UpgradeTermTo", Me.moUpgradeTermLabelTo)
+            BindBOPropertyToLabel(State.MyBO, "UpgradeProgram", moUpgradeProgramLabel)
+            BindBOPropertyToLabel(State.MyBO, "UpgradeFixedTerm", moUpgradeFixedTermLabel)
+            BindBOPropertyToLabel(State.MyBO, "UpgradeTermFrom", moUpgradeTermLabelFrom)
+            BindBOPropertyToLabel(State.MyBO, "UpgradeTermTo", moUpgradeTermLabelTo)
             If Not moCurrentOutstandingBalanceLabel.Text.EndsWith(":") Then
                 moCurrentOutstandingBalanceLabel.Text = moCurrentOutstandingBalanceLabel.Text & ":"
             End If
@@ -2501,65 +2489,65 @@ Namespace Certificates
                 lblUpgradeTermUnitOfMeasure.Text = lblUpgradeTermUnitOfMeasure.Text & ":"
             End If
 
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "PaymentShiftNumber", Me.moPaymentShiftNumberLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "LoanCode", Me.moLoanCodeLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "PenaltyFee", Me.moPenaltyFeeLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "CertificateSigned", Me.moCertificateSignedLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "SepaMandateSigned", Me.moSEPAMandateSignedLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "CheckSigned", Me.moCheckSignedLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "ContractCheckCompleteDate", Me.moContractCheckCompleteDateLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "CertificateVerificationDate", Me.moCertificateVerificationDateLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "SepaMandateDate", Me.moSEPAMandateDateLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "CheckVerificationDate", Me.moCheckVerificationDateLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "ContractCheckComplete", Me.moContractCheckCompleteLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "InsuranceOrderNumber", Me.moInsuranceOrderNumberLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "DeviceOrderNumber", Me.moDeviceOrderNumberLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "UpgradeType", Me.moUpgradeTypeLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "FulfillmentConsentAction", Me.moFulfillmentConsentAction)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "PlanType", Me.moPlanTypeLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "ServiceStartDate", Me.moServiceStartDateLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "ServiceID", Me.moServiceIdLabel)
+            BindBOPropertyToLabel(State.MyBO, "PaymentShiftNumber", moPaymentShiftNumberLabel)
+            BindBOPropertyToLabel(State.MyBO, "LoanCode", moLoanCodeLabel)
+            BindBOPropertyToLabel(State.MyBO, "PenaltyFee", moPenaltyFeeLabel)
+            BindBOPropertyToLabel(State.MyBO, "CertificateSigned", moCertificateSignedLabel)
+            BindBOPropertyToLabel(State.MyBO, "SepaMandateSigned", moSEPAMandateSignedLabel)
+            BindBOPropertyToLabel(State.MyBO, "CheckSigned", moCheckSignedLabel)
+            BindBOPropertyToLabel(State.MyBO, "ContractCheckCompleteDate", moContractCheckCompleteDateLabel)
+            BindBOPropertyToLabel(State.MyBO, "CertificateVerificationDate", moCertificateVerificationDateLabel)
+            BindBOPropertyToLabel(State.MyBO, "SepaMandateDate", moSEPAMandateDateLabel)
+            BindBOPropertyToLabel(State.MyBO, "CheckVerificationDate", moCheckVerificationDateLabel)
+            BindBOPropertyToLabel(State.MyBO, "ContractCheckComplete", moContractCheckCompleteLabel)
+            BindBOPropertyToLabel(State.MyBO, "InsuranceOrderNumber", moInsuranceOrderNumberLabel)
+            BindBOPropertyToLabel(State.MyBO, "DeviceOrderNumber", moDeviceOrderNumberLabel)
+            BindBOPropertyToLabel(State.MyBO, "UpgradeType", moUpgradeTypeLabel)
+            BindBOPropertyToLabel(State.MyBO, "FulfillmentConsentAction", moFulfillmentConsentAction)
+            BindBOPropertyToLabel(State.MyBO, "PlanType", moPlanTypeLabel)
+            BindBOPropertyToLabel(State.MyBO, "ServiceStartDate", moServiceStartDateLabel)
+            BindBOPropertyToLabel(State.MyBO, "ServiceID", moServiceIdLabel)
         End Sub
 
         Private Sub ObtainBooleanFlags()
-            Dim companyBO As Assurant.ElitaPlus.BusinessObjectsNew.Company = New Assurant.ElitaPlus.BusinessObjectsNew.Company(Me.State.MyBO.CompanyId)
-            Dim oDealer As Assurant.ElitaPlus.BusinessObjectsNew.Dealer = New Assurant.ElitaPlus.BusinessObjectsNew.Dealer(Me.State.MyBO.DealerId)
+            Dim companyBO As Assurant.ElitaPlus.BusinessObjectsNew.Company = New Assurant.ElitaPlus.BusinessObjectsNew.Company(State.MyBO.CompanyId)
+            Dim oDealer As Assurant.ElitaPlus.BusinessObjectsNew.Dealer = New Assurant.ElitaPlus.BusinessObjectsNew.Dealer(State.MyBO.DealerId)
             Dim oClaimSystem As New ClaimSystem(oDealer.ClaimSystemId) 'DEF-2486
             Dim noId As New Guid 'DEF-2486
 
-            Me.State.companyCode = companyBO.Code
+            State.companyCode = companyBO.Code
 
-            Me.State.isSalutation = Me.GetYesNo(ElitaPlusIdentity.Current.ActiveUser.LanguageId, companyBO.SalutationId)
+            State.isSalutation = GetYesNo(ElitaPlusIdentity.Current.ActiveUser.LanguageId, companyBO.SalutationId)
 
-            Me.State.IsNewBillPayBtnVisible = Me.GetYesNo(ElitaPlusIdentity.Current.ActiveUser.LanguageId, oDealer.UseNewBillForm)
+            State.IsNewBillPayBtnVisible = GetYesNo(ElitaPlusIdentity.Current.ActiveUser.LanguageId, oDealer.UseNewBillForm)
 
             'DEF-2486
             noId = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "N")
 
             If oClaimSystem.NewClaimId.Equals(noId) Then
-                Me.State.IsClaimAllowed = False
+                State.IsClaimAllowed = False
             End If
             'DEF-2486
 
             'Task-203459
             If oDealer.ClaimRecordingXcd = Codes.DEALER_CLAIM_RECORDING_BOTH Then
-                Me.State.AllowOldAndNewDCMClaims = True
+                State.AllowOldAndNewDCMClaims = True
             Else
-                Me.State.AllowOldAndNewDCMClaims = False
+                State.AllowOldAndNewDCMClaims = False
             End If
             'Task-203459
 
-            If Not (Me.State.MyBO.PostPrePaidId.Equals(Guid.Empty)) Then
-                Me.State.isPostPrePaid = True
+            If Not (State.MyBO.PostPrePaidId.Equals(Guid.Empty)) Then
+                State.isPostPrePaid = True
             Else
-                Me.State.isPostPrePaid = False
+                State.isPostPrePaid = False
             End If
-            Me.State.TheItemCoverageState.IsRetailer = Me.GetYesNo(ElitaPlusIdentity.Current.ActiveUser.LanguageId, oDealer.RetailerId)
-            Me.State.TheItemCoverageState.dealerName = oDealer.DealerName
-            Me.State.ClaimRecordingXcd = oDealer.ClaimRecordingXcd
+            State.TheItemCoverageState.IsRetailer = GetYesNo(ElitaPlusIdentity.Current.ActiveUser.LanguageId, oDealer.RetailerId)
+            State.TheItemCoverageState.dealerName = oDealer.DealerName
+            State.ClaimRecordingXcd = oDealer.ClaimRecordingXcd
         End Sub
 
-        Private Function GetYesNo(ByVal LanguageId As Guid, ByVal oId As Guid) As Boolean
+        Private Function GetYesNo(LanguageId As Guid, oId As Guid) As Boolean
             Dim oYesList As DataView = LookupListNew.GetListItemId(oId, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False)
             Dim oYesNo As String = oYesList.Item(FIRST_ROW).Item(CODE).ToString
             If oYesNo = YES Then
@@ -2573,38 +2561,38 @@ Namespace Certificates
             Dim typeOfEquip As String
             Dim IsDisplayMaskFlag As Boolean
 
-            If Me.State.isSalutation Then
+            If State.isSalutation Then
                 PopulateSalutationDropdown(cboSalutationId)
             End If
 
-            PopulateLangPrefDropdown(Me.cboLangPref)
+            PopulateLangPrefDropdown(cboLangPref)
 
-            If Not (Me.State.MyBO.LanguageId.Equals(Guid.Empty)) Then
-                Me.SetSelectedItem(Me.cboLangPref, Me.State.MyBO.LanguageId)
-                Me.PopulateControlFromBOProperty(Me.moLangPrefText, Me.State.MyBO.getLanguagePrefDesc)
+            If Not (State.MyBO.LanguageId.Equals(Guid.Empty)) Then
+                SetSelectedItem(cboLangPref, State.MyBO.LanguageId)
+                PopulateControlFromBOProperty(moLangPrefText, State.MyBO.getLanguagePrefDesc)
             End If
 
-            If Not (Me.State.MyBO.PostPrePaidId.Equals(Guid.Empty)) Then
-                Me.PopulateControlFromBOProperty(Me.moPostPaidText, Me.State.MyBO.getPostPrePaidDesc)
+            If Not (State.MyBO.PostPrePaidId.Equals(Guid.Empty)) Then
+                PopulateControlFromBOProperty(moPostPaidText, State.MyBO.getPostPrePaidDesc)
             End If
 
-            If Not (Me.State.MyBO.TypeOfEquipmentId.Equals(Guid.Empty)) Then
-                Dim dv As DataView = LookupListNew.GetListItemId(Me.State.MyBO.TypeOfEquipmentId, Authentication.LangId)
+            If Not (State.MyBO.TypeOfEquipmentId.Equals(Guid.Empty)) Then
+                Dim dv As DataView = LookupListNew.GetListItemId(State.MyBO.TypeOfEquipmentId, Authentication.LangId)
                 typeOfEquip = dv.Item(FIRST_ROW).Item(DESCRIPTION).ToString
             End If
 
-            If Not (Me.State.MyBO.PaymentTypeId.Equals(Guid.Empty)) Then
-                If (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__CREDIT_CARD) _
-                   OrElse (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__FINANCED_BY_CREDIT_CARD) _
-                   OrElse (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__FINANCED_BY_THRID_PARTY) _
-                   OrElse (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS_PRE_AUTH And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__PRE_AUTH_CREDIT_CARD) Then
-                    Me.State.creditCardPayment = True
+            If Not (State.MyBO.PaymentTypeId.Equals(Guid.Empty)) Then
+                If (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS AndAlso State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__CREDIT_CARD) _
+                   OrElse (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS AndAlso State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__FINANCED_BY_CREDIT_CARD) _
+                   OrElse (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS AndAlso State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__FINANCED_BY_THRID_PARTY) _
+                   OrElse (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS_PRE_AUTH AndAlso State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__PRE_AUTH_CREDIT_CARD) Then
+                    State.creditCardPayment = True
                 End If
-                Me.PopulateControlFromBOProperty(Me.moPaymentByText, Me.State.MyBO.getPaymentTypeDescription)
+                PopulateControlFromBOProperty(moPaymentByText, State.MyBO.getPaymentTypeDescription)
             End If
 
-            If Not (Me.State.MyBO.PurchaseCurrencyId.Equals(Guid.Empty)) Then
-                Me.PopulateControlFromBOProperty(Me.moCurrencyPurchaseText, Me.State.MyBO.getPurchaseCurrencyDescription)
+            If Not (State.MyBO.PurchaseCurrencyId.Equals(Guid.Empty)) Then
+                PopulateControlFromBOProperty(moCurrencyPurchaseText, State.MyBO.getPurchaseCurrencyDescription)
             End If
 
             'If Not (Me.State.MyBO.getClaimWaitingPeriod.Equals(Guid.Empty)) Then
@@ -2615,56 +2603,56 @@ Namespace Certificates
             '    Me.PopulateControlFromBOProperty(Me.moClaimWaitingPeriodEndDateText, Me.State.MyBO.WarrantySalesDate)
             'End If
 
-            moCertificateInfoController = Me.UserCertificateCtr
-            moCertificateInfoController.InitController(Me.State.MyBO, , Me.State.companyCode)
+            moCertificateInfoController = UserCertificateCtr
+            moCertificateInfoController.InitController(State.MyBO, , State.companyCode)
             UpdateBreadCrum()
 
-            With Me.State.MyBO
-                AddressCtr.Bind(.AddressChild, Me.State.MyBO.Product.ClaimProfile)
-                Me.PopulateControlFromBOProperty(Me.moCountryOfPurchaseTextBox, Me.State.CountryOfPurchase)
-                Me.PopulateControlFromBOProperty(Me.moCustomerNameText, .CustomerName)
-                Me.PopulateControlFromBOProperty(Me.moHomePhoneText, .HomePhone)
-                Me.PopulateControlFromBOProperty(Me.moWorkPhoneText, .WorkPhone)
+            With State.MyBO
+                AddressCtr.Bind(.AddressChild, State.MyBO.Product.ClaimProfile)
+                PopulateControlFromBOProperty(moCountryOfPurchaseTextBox, State.CountryOfPurchase)
+                PopulateControlFromBOProperty(moCustomerNameText, .CustomerName)
+                PopulateControlFromBOProperty(moHomePhoneText, .HomePhone)
+                PopulateControlFromBOProperty(moWorkPhoneText, .WorkPhone)
                 If .Email Is Nothing OrElse .Email.Equals(String.Empty) Then
-                    Me.State.EmailIsNull = TranslationBase.TranslateLabelOrMessage("THERE_IS_NO_VALUE")
-                    Me.PopulateControlFromBOProperty(Me.moEmailAddressText, Me.State.EmailIsNull)
+                    State.EmailIsNull = TranslationBase.TranslateLabelOrMessage("THERE_IS_NO_VALUE")
+                    PopulateControlFromBOProperty(moEmailAddressText, State.EmailIsNull)
                 Else
-                    Me.PopulateControlFromBOProperty(Me.moEmailAddressText, .Email)
+                    PopulateControlFromBOProperty(moEmailAddressText, .Email)
                 End If
 
-                Me.PopulateControlFromBOProperty(Me.moTaxIdText, .IdentificationNumber)
+                PopulateControlFromBOProperty(moTaxIdText, .IdentificationNumber)
                 ' Based on identification number type - change the label text
                 If Not (.IdentificationNumberType Is Nothing) AndAlso Not (.IdentificationNumberType = IDENTIFICATION_NUMBER_TYPE_DEFAULT) Then
                     moTaxIdLabel.Text = TranslationBase.TranslateLabelOrMessage(.IdentificationNumberType)
                 End If
 
-                Me.PopulateControlFromBOProperty(Me.moProductSalesDateText, .ProductSalesDate)
-                Me.PopulateControlFromBOProperty(Me.moActivationDateText, .InsuranceActivationDate)
-                Me.PopulateControlFromBOProperty(Me.moOldNumberText, .OldNumber)
-                Me.PopulateControlFromBOProperty(Me.moWarrantySoldText, .WarrantySalesDate)
-                Me.PopulateControlFromBOProperty(Me.moInvoiceNumberText, .InvoiceNumber)
-                Me.PopulateControlFromBOProperty(Me.moAccountNumberText, .MembershipNumber)
-                Me.PopulateControlFromBOProperty(Me.moCampaignNumberText, .CampaignNumber)
-                Me.PopulateControlFromBOProperty(Me.moDealerBranchCodeText, .DealerBranchCode)
-                Me.PopulateControlFromBOProperty(Me.moSalesRepNumberText, .SalesRepNumber)
-                Me.PopulateControlFromBOProperty(Me.moDealerItemText, .DealerItem)
-                Me.PopulateControlFromBOProperty(Me.moSalesPriceText, .SalesPrice)
-                Me.PopulateControlFromBOProperty(Me.moProductCodeText, .ProductCode)
-                Me.PopulateControlFromBOProperty(Me.moDealerProductCodeText, .DealerProductCode)
-                Me.PopulateControlFromBOProperty(Me.moDateAddedText, .DateAdded)
-                Me.PopulateControlFromBOProperty(Me.moLastMaintainedTextbox, .LastDateMaintained)
-                Me.PopulateControlFromBOProperty(Me.moBillingDateText, .DatePaidFor)
+                PopulateControlFromBOProperty(moProductSalesDateText, .ProductSalesDate)
+                PopulateControlFromBOProperty(moActivationDateText, .InsuranceActivationDate)
+                PopulateControlFromBOProperty(moOldNumberText, .OldNumber)
+                PopulateControlFromBOProperty(moWarrantySoldText, .WarrantySalesDate)
+                PopulateControlFromBOProperty(moInvoiceNumberText, .InvoiceNumber)
+                PopulateControlFromBOProperty(moAccountNumberText, .MembershipNumber)
+                PopulateControlFromBOProperty(moCampaignNumberText, .CampaignNumber)
+                PopulateControlFromBOProperty(moDealerBranchCodeText, .DealerBranchCode)
+                PopulateControlFromBOProperty(moSalesRepNumberText, .SalesRepNumber)
+                PopulateControlFromBOProperty(moDealerItemText, .DealerItem)
+                PopulateControlFromBOProperty(moSalesPriceText, .SalesPrice)
+                PopulateControlFromBOProperty(moProductCodeText, .ProductCode)
+                PopulateControlFromBOProperty(moDealerProductCodeText, .DealerProductCode)
+                PopulateControlFromBOProperty(moDateAddedText, .DateAdded)
+                PopulateControlFromBOProperty(moLastMaintainedTextbox, .LastDateMaintained)
+                PopulateControlFromBOProperty(moBillingDateText, .DatePaidFor)
 
-                Me.PopulateControlFromBOProperty(Me.moVehicleLicenseTagText, .VehicleLicenseTag)
+                PopulateControlFromBOProperty(moVehicleLicenseTagText, .VehicleLicenseTag)
 
                 'Added for Req-703 - Start
-                Me.PopulateControlFromBOProperty(Me.moCapSeriesText, .CapitalizationSeries)
-                Me.PopulateControlFromBOProperty(Me.moCapNumberText, .CapitalizationNumber)
+                PopulateControlFromBOProperty(moCapSeriesText, .CapitalizationSeries)
+                PopulateControlFromBOProperty(moCapNumberText, .CapitalizationNumber)
                 'Added for Req-703 - End               
 
-                Me.PopulateControlFromBOProperty(Me.moDatePaidText, .DatePaid)
+                PopulateControlFromBOProperty(moDatePaidText, .DatePaid)
 
-                Me.PopulateControlFromBOProperty(Me.moDocumentIssueDateText, .DocumentIssueDate)
+                PopulateControlFromBOProperty(moDocumentIssueDateText, .DocumentIssueDate)
 
                 PopulateDocumentTypeDropdown(cboDocumentTypeId)
                 SetSelectedItem(cboDocumentTypeId, .DocumentTypeID)
@@ -2672,82 +2660,82 @@ Namespace Certificates
                 PopulateMembershipTypeDropdown(cboAccountType)
                 SetSelectedItem(cboAccountType, .MembershipTypeId)
 
-                Me.PopulateControlFromBOProperty(Me.moDocumentTypeText, .getDocTypeDesc)
+                PopulateControlFromBOProperty(moDocumentTypeText, .getDocTypeDesc)
 
-                Me.PopulateControlFromBOProperty(Me.moRGNumberText, .RgNumber)
-                Me.PopulateControlFromBOProperty(Me.moDocumentAgencyText, .DocumentAgency)
-                Me.PopulateControlFromBOProperty(Me.moIDTypeText, .IdType)
-                Me.PopulateControlFromBOProperty(Me.moNewTaxIdText, .TaxIDNumb)
-                Me.PopulateControlFromBOProperty(Me.TextboxRatingPlan, .RatingPlan)
-                Me.PopulateControlFromBOProperty(Me.txtSource, .Source)
-                Me.PopulateControlFromBOProperty(Me.moServiceLineNumberText, .ServiceLineNumber)
-                Me.PopulateControlFromBOProperty(Me.moRegionText, .Region)
+                PopulateControlFromBOProperty(moRGNumberText, .RgNumber)
+                PopulateControlFromBOProperty(moDocumentAgencyText, .DocumentAgency)
+                PopulateControlFromBOProperty(moIDTypeText, .IdType)
+                PopulateControlFromBOProperty(moNewTaxIdText, .TaxIDNumb)
+                PopulateControlFromBOProperty(TextboxRatingPlan, .RatingPlan)
+                PopulateControlFromBOProperty(txtSource, .Source)
+                PopulateControlFromBOProperty(moServiceLineNumberText, .ServiceLineNumber)
+                PopulateControlFromBOProperty(moRegionText, .Region)
 
-                If Not .SubStatusChangeDate Is Nothing Then
-                    Me.PopulateControlFromBOProperty(Me.moSubStatusChangeDateText, .SubStatusChangeDate)
+                If .SubStatusChangeDate IsNot Nothing Then
+                    PopulateControlFromBOProperty(moSubStatusChangeDateText, .SubStatusChangeDate)
                 Else
-                    ControlMgr.SetVisibleControl(Me, Me.moSubStatusChangeDateLabel, False)
-                    ControlMgr.SetVisibleControl(Me, Me.moSubStatusChangeDateText, False)
+                    ControlMgr.SetVisibleControl(Me, moSubStatusChangeDateLabel, False)
+                    ControlMgr.SetVisibleControl(Me, moSubStatusChangeDateText, False)
                 End If
 
-                If Not .LinesOnAccount Is Nothing Then
-                    Me.PopulateControlFromBOProperty(Me.moLinesOnAccountText, .LinesOnAccount)
+                If .LinesOnAccount IsNot Nothing Then
+                    PopulateControlFromBOProperty(moLinesOnAccountText, .LinesOnAccount)
                 Else
-                    ControlMgr.SetVisibleControl(Me, Me.moLinesOnAccountLabel, False)
-                    ControlMgr.SetVisibleControl(Me, Me.moLinesOnAccountText, False)
+                    ControlMgr.SetVisibleControl(Me, moLinesOnAccountLabel, False)
+                    ControlMgr.SetVisibleControl(Me, moLinesOnAccountText, False)
                 End If
 
-                If Not .BillingPlan Is Nothing Then
-                    Me.PopulateControlFromBOProperty(Me.moBillingPlanText, .BillingPlan)
+                If .BillingPlan IsNot Nothing Then
+                    PopulateControlFromBOProperty(moBillingPlanText, .BillingPlan)
                 Else
-                    ControlMgr.SetVisibleControl(Me, Me.moBillingPlanLabel, False)
-                    ControlMgr.SetVisibleControl(Me, Me.moBillingPlanText, False)
+                    ControlMgr.SetVisibleControl(Me, moBillingPlanLabel, False)
+                    ControlMgr.SetVisibleControl(Me, moBillingPlanText, False)
                 End If
 
-                If Not .BillingCycle Is Nothing Then
-                    Me.PopulateControlFromBOProperty(Me.moBillingCycleText, .BillingCycle)
+                If .BillingCycle IsNot Nothing Then
+                    PopulateControlFromBOProperty(moBillingCycleText, .BillingCycle)
                 Else
-                    ControlMgr.SetVisibleControl(Me, Me.moBillingCycleLabel, False)
-                    ControlMgr.SetVisibleControl(Me, Me.moBillingCycleText, False)
+                    ControlMgr.SetVisibleControl(Me, moBillingCycleLabel, False)
+                    ControlMgr.SetVisibleControl(Me, moBillingCycleText, False)
                 End If
 
-                If Not .DocumentIssueDate Is Nothing _
-                   Or Not .IdType Is Nothing _
-                   Or Not .DocumentAgency Is Nothing _
-                   Or Not .RgNumber Is Nothing _
-                   Or Not .DocumentTypeID.Equals(Guid.Empty) Then
-                    ControlMgr.SetVisibleControl(Me, Me.moTaxIdLabel, False)
-                    ControlMgr.SetVisibleControl(Me, Me.moTaxIdText, False)
+                If .DocumentIssueDate IsNot Nothing _
+                   OrElse .IdType IsNot Nothing _
+                   OrElse .DocumentAgency IsNot Nothing _
+                   OrElse .RgNumber IsNot Nothing _
+                   OrElse Not .DocumentTypeID.Equals(Guid.Empty) Then
+                    ControlMgr.SetVisibleControl(Me, moTaxIdLabel, False)
+                    ControlMgr.SetVisibleControl(Me, moTaxIdText, False)
                 End If
 
-                If Me.State.isSalutation Then
-                    Me.SetSelectedItem(Me.cboSalutationId, .SalutationId)
-                    Me.PopulateControlFromBOProperty(Me.moSalutationText, .getSalutationDescription)
+                If State.isSalutation Then
+                    SetSelectedItem(cboSalutationId, .SalutationId)
+                    PopulateControlFromBOProperty(moSalutationText, .getSalutationDescription)
                 End If
 
-                If Me.State.isPostPrePaid Then
-                    Me.PopulateControlFromBOProperty(Me.moPostPaidText, .getPostPrePaidDesc)
+                If State.isPostPrePaid Then
+                    PopulateControlFromBOProperty(moPostPaidText, .getPostPrePaidDesc)
                 End If
 
-                If Me.State.TheItemCoverageState.IsRetailer Then
-                    Me.PopulateControlFromBOProperty(Me.moRetailerText, Me.State.TheItemCoverageState.dealerName)
+                If State.TheItemCoverageState.IsRetailer Then
+                    PopulateControlFromBOProperty(moRetailerText, State.TheItemCoverageState.dealerName)
                 Else
-                    Me.PopulateControlFromBOProperty(Me.moRetailerText, .Retailer)
+                    PopulateControlFromBOProperty(moRetailerText, .Retailer)
                 End If
 
                 If (.DatePaid Is Nothing) AndAlso (.DatePaidFor Is Nothing) Then
                     ControlMgr.SetVisibleControl(Me, moBillingDateText, False)
                     ControlMgr.SetVisibleControl(Me, moBillingDateLabel, False)
-                    Me.tdBillingDate.InnerHtml = ""
+                    tdBillingDate.InnerHtml = ""
                     ControlMgr.SetVisibleControl(Me, moDatePaidText, False)
                     ControlMgr.SetVisibleControl(Me, moDatePaidLabel, False)
-                    Me.tdDatePaid.InnerHtml = ""
+                    tdDatePaid.InnerHtml = ""
                 End If
 
-                If ((.Source Is Nothing) Or (Not .Source.ToUpper().Equals("VSC"))) Then 'Or (.VehicleLicenseTag Is Nothing Or .VehicleLicenseTag = "")) Then
+                If ((.Source Is Nothing) OrElse (Not .Source.ToUpper().Equals("VSC"))) Then 'Or (.VehicleLicenseTag Is Nothing Or .VehicleLicenseTag = "")) Then
                     ControlMgr.SetVisibleControl(Me, moVehicleLicenseTagText, False)
                     ControlMgr.SetVisibleControl(Me, moVehicleLicenseTagLabel, False)
-                    Me.tdVehicleLicenseTag.InnerHtml = ""
+                    tdVehicleLicenseTag.InnerHtml = ""
                 End If
 
                 'If (Me.State.MyBO.Company.EnablePeriodMileageVal.ToUpper().Equals("YESNO-N")) Then
@@ -2768,12 +2756,12 @@ Namespace Certificates
                 'Me.PopulateControlFromBOProperty(Me.moDateOfBirthText, .DateOfBirth)
                 'DEF-21659 - END
 
-                If Not blnPremiumEdit Then PopulatePaymentTypesDropdown(Me.moPaymentTypeId)
+                If Not blnPremiumEdit Then PopulatePaymentTypesDropdown(moPaymentTypeId)
 
-                If Me.State.creditCardPayment Then
+                If State.creditCardPayment Then
                     'Get the credit card types:
                     If Not blnPremiumEdit Then
-                        PopulateCreditCardTypesDropdown(Me.moCreditCardTypeIDDropDown)
+                        PopulateCreditCardTypesDropdown(moCreditCardTypeIDDropDown)
                     Else
                         'User cannot change the type from credit to bank or vis versa.
 
@@ -2784,33 +2772,33 @@ Namespace Certificates
                     DisableCreditCardInformation()
                 End If
 
-                Me.PopulateControlFromBOProperty(Me.moDescriptionText, .GetProdCodeDesc)
-                Me.PopulateControlFromBOProperty(Me.moTypeOfEquipmentText, typeOfEquip)
-                Me.PopulateControlFromBOProperty(Me.moVATNumText, .VatNum)
-                Me.PopulateControlFromBOProperty(Me.moSEPAMandateDateText, .SepaMandateDate)
-                Me.PopulateControlFromBOProperty(Me.moCheckVerificationDateText, .CheckVerificationDate)
-                Me.PopulateControlFromBOProperty(Me.moCertificateVerificationDateText, .CertificateVerificationDate)
-                Me.PopulateControlFromBOProperty(Me.moContractCheckCompleteDateText, .ContractCheckCompleteDate)
-                Me.PopulateControlFromBOProperty(Me.moServiceStartDateText, .ServiceStartDate)
-                Me.PopulateControlFromBOProperty(Me.moServiceIdText, .ServiceID)
+                PopulateControlFromBOProperty(moDescriptionText, .GetProdCodeDesc)
+                PopulateControlFromBOProperty(moTypeOfEquipmentText, typeOfEquip)
+                PopulateControlFromBOProperty(moVATNumText, .VatNum)
+                PopulateControlFromBOProperty(moSEPAMandateDateText, .SepaMandateDate)
+                PopulateControlFromBOProperty(moCheckVerificationDateText, .CheckVerificationDate)
+                PopulateControlFromBOProperty(moCertificateVerificationDateText, .CertificateVerificationDate)
+                PopulateControlFromBOProperty(moContractCheckCompleteDateText, .ContractCheckCompleteDate)
+                PopulateControlFromBOProperty(moServiceStartDateText, .ServiceStartDate)
+                PopulateControlFromBOProperty(moServiceIdText, .ServiceID)
 
                 'Me.PopulateControlFromBOProperty(Me.txtMfgBeginDate, .MfgBeginDate)
                 'Me.PopulateControlFromBOProperty(Me.txtMfgEndDate, .MfgEndDate)
                 'Me.PopulateControlFromBOProperty(Me.txtMfgBeginKm, .MfgBeginKm)
                 'Me.PopulateControlFromBOProperty(Me.txtMfgEndKm, .MfgEndKm)
                 'REQ-910 New fields BEGIN
-                If Me.State.ReqCustomerLegalInfoId.Equals(Guid.Empty) Then
-                    Me.State.ReqCustomerLegalInfoId = (New Company(Me.State.MyBO.CompanyId).ReqCustomerLegalInfoId)
+                If State.ReqCustomerLegalInfoId.Equals(Guid.Empty) Then
+                    State.ReqCustomerLegalInfoId = (New Company(State.MyBO.CompanyId).ReqCustomerLegalInfoId)
                 End If
 
-                If Me.State.MyBO.Dealer.DisplayDobXcd Is Nothing Then
+                If State.MyBO.Dealer.DisplayDobXcd Is Nothing Then
                     IsDisplayMaskFlag = False
                 Else
-                    IsDisplayMaskFlag = Me.State.MyBO.Dealer.DisplayDobXcd.ToUpper().Equals("YESNO-Y")
+                    IsDisplayMaskFlag = State.MyBO.Dealer.DisplayDobXcd.ToUpper().Equals("YESNO-Y")
                 End If
 
-                If Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "0")) Then '0= None
-                    Me.moCustLegalInfo1.Attributes("style") = "display: none"
+                If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "0")) Then '0= None
+                    moCustLegalInfo1.Attributes("style") = "display: none"
                     ControlMgr.SetVisibleControl(Me, moIncomeRangeLabel, False)   'Me.moCustLegalInfo2.Attributes("style") = "display: none"
                     ControlMgr.SetVisibleControl(Me, moIncomeRangeText, False)
                     ControlMgr.SetVisibleControl(Me, cboIncomeRangeId, False)
@@ -2826,55 +2814,55 @@ Namespace Certificates
                         'populate the dropdowns
                         PopulateIncomeRangeDropdown(cboIncomeRangeId)
                     PopulatePoliticallyExposedDropdown(cboPoliticallyExposedId)
-                    Me.PopulateControlFromBOProperty(Me.moOccupationText, .Occupation)
-                    Me.SetSelectedItem(Me.cboPoliticallyExposedId, .PoliticallyExposedId)
-                    Me.SetSelectedItem(Me.cboIncomeRangeId, .IncomeRangeId)
-                    Me.PopulateControlFromBOProperty(Me.moPoliticallyExposedText, Me.cboPoliticallyExposedId.SelectedItem.Text.ToString)
-                    Me.PopulateControlFromBOProperty(Me.moIncomeRangeText, Me.cboIncomeRangeId.SelectedItem.Text.ToString)
+                    PopulateControlFromBOProperty(moOccupationText, .Occupation)
+                    SetSelectedItem(cboPoliticallyExposedId, .PoliticallyExposedId)
+                    SetSelectedItem(cboIncomeRangeId, .IncomeRangeId)
+                    PopulateControlFromBOProperty(moPoliticallyExposedText, cboPoliticallyExposedId.SelectedItem.Text.ToString)
+                    PopulateControlFromBOProperty(moIncomeRangeText, cboIncomeRangeId.SelectedItem.Text.ToString)
                 End If
                 'REQ-910 New fields END
 
                 'REQ-1255 - AML Regulations - START
-                If Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "0")) Then '0= None
-                    Me.moAMLRegulations0.Attributes("style") = "display: none"
-                    Me.moAMLRegulations1.Attributes("style") = "display: none"
-                    Me.moAMLRegulations2.Attributes("style") = "display: none"
-                    Me.moAMLRegulations3.Attributes("style") = "display: none"
-                    Me.moAMLRegulations4.Attributes("style") = "display: none"
+                If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "0")) Then '0= None
+                    moAMLRegulations0.Attributes("style") = "display: none"
+                    moAMLRegulations1.Attributes("style") = "display: none"
+                    moAMLRegulations2.Attributes("style") = "display: none"
+                    moAMLRegulations3.Attributes("style") = "display: none"
+                    moAMLRegulations4.Attributes("style") = "display: none"
                 Else
                     'populate the dropdowns
                     'Marital Status
                     PopulateMaritalStatusDropdown(ddlMaritalStatus)
-                    Me.SetSelectedItem(Me.ddlMaritalStatus, .MaritalStatus)
-                    Me.PopulateControlFromBOProperty(Me.moMaritalStatusText, Me.ddlMaritalStatus.SelectedItem.Text) '.MaritalStatus
+                    SetSelectedItem(ddlMaritalStatus, .MaritalStatus)
+                    PopulateControlFromBOProperty(moMaritalStatusText, ddlMaritalStatus.SelectedItem.Text) '.MaritalStatus
                     'Nationality
                     PopulateNationalityDropdown(ddlNationality)
-                    Me.SetSelectedItem(Me.ddlNationality, .Nationality)
-                    Me.PopulateControlFromBOProperty(Me.moNationalityText, Me.ddlNationality.SelectedItem.Text) '.Nationality
+                    SetSelectedItem(ddlNationality, .Nationality)
+                    PopulateControlFromBOProperty(moNationalityText, ddlNationality.SelectedItem.Text) '.Nationality
                     'PlaceOfBirth
                     PopulatePlaceOfBirthDropdown(ddlPlaceOfBirth)
-                    Me.SetSelectedItem(Me.ddlPlaceOfBirth, .PlaceOfBirth)
-                    Me.PopulateControlFromBOProperty(Me.moPlaceOfBirthText, Me.ddlPlaceOfBirth.SelectedItem.Text) '.PlaceOfBirth
+                    SetSelectedItem(ddlPlaceOfBirth, .PlaceOfBirth)
+                    PopulateControlFromBOProperty(moPlaceOfBirthText, ddlPlaceOfBirth.SelectedItem.Text) '.PlaceOfBirth
                     'CityOfBirth
                     If Not .CustomerId.Equals(Guid.Empty) Then
-                        Me.PopulateControlFromBOProperty(Me.moCityOfBirthText, .CityOfBirth)
+                        PopulateControlFromBOProperty(moCityOfBirthText, .CityOfBirth)
                     End If
                     'Gender
                     PopulateGenderDropdown(ddlGender)
-                        Me.SetSelectedItem(Me.ddlGender, .Gender)
-                        Me.PopulateControlFromBOProperty(Me.moGenderText, Me.ddlGender.SelectedItem.Text) '.Gender
+                        SetSelectedItem(ddlGender, .Gender)
+                        PopulateControlFromBOProperty(moGenderText, ddlGender.SelectedItem.Text) '.Gender
                         'CUIT_CUIL
-                        Me.PopulateControlFromBOProperty(Me.moCUIT_CUILText, .CUIT_CUIL)
+                        PopulateControlFromBOProperty(moCUIT_CUILText, .CUIT_CUIL)
                         'Person Type
                         PopulatePersonTypeDropdown(ddlPersonType)
-                        Me.SetSelectedItem(Me.ddlPersonType, .PersonTypeId)
-                        Me.PopulateControlFromBOProperty(Me.moPersonTypeText, Me.ddlPersonType.SelectedItem.Text)
+                        SetSelectedItem(ddlPersonType, .PersonTypeId)
+                        PopulateControlFromBOProperty(moPersonTypeText, ddlPersonType.SelectedItem.Text)
                     End If
                     'REQ-1255 - AML Regulations - END
                     If Not .ReinsuranceStatusId.Equals(Guid.Empty) Then
                     ControlMgr.SetVisibleControl(Me, moReinsuranceStatusLabel, True)
                     ControlMgr.SetVisibleControl(Me, moReinsuranceStatusText, True)
-                    Me.PopulateControlFromBOProperty(Me.moReinsuranceStatusText, LookupListNew.GetDescriptionFromId(LookupListNew.LK_REINSURANCE_STATUSES, .ReinsuranceStatusId))
+                    PopulateControlFromBOProperty(moReinsuranceStatusText, LookupListNew.GetDescriptionFromId(LookupListNew.LK_REINSURANCE_STATUSES, .ReinsuranceStatusId))
                 Else
                     ControlMgr.SetVisibleControl(Me, moReinsuranceStatusLabel, False)
                     ControlMgr.SetVisibleControl(Me, moReinsuranceStatusText, False)
@@ -2882,7 +2870,7 @@ Namespace Certificates
                 If (Not .ReinsuranceStatusId.Equals(Guid.Empty)) AndAlso .ReinsuranceStatusId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_REINSURANCE_STATUSES, LookupListCache.LK_REINS_STATUS_REJECTED)) Then
                     ControlMgr.SetVisibleControl(Me, moReinsRejectReasonLabel, True)
                     ControlMgr.SetVisibleControl(Me, moReinsRejectReasonText, True)
-                    Me.PopulateControlFromBOProperty(Me.moReinsRejectReasonText, .ReinsuredRejectReason)
+                    PopulateControlFromBOProperty(moReinsRejectReasonText, .ReinsuredRejectReason)
                 Else
                     ControlMgr.SetVisibleControl(Me, moReinsRejectReasonLabel, False)
                     ControlMgr.SetVisibleControl(Me, moReinsRejectReasonText, False)
@@ -2890,45 +2878,45 @@ Namespace Certificates
                 ' REQ 5932
 
                 If Not .CustomerId.Equals(Guid.Empty) Then
-                    Me.PopulateControlFromBOProperty(Me.moCustomerFirstNameText, .CustomerFirstName)
-                    Me.PopulateControlFromBOProperty(Me.moCustomerMiddleNameText, .CustomerMiddleName)
-                    Me.PopulateControlFromBOProperty(Me.moCustomerLastNameText, .CustomerLastName)
-                    Me.PopulateControlFromBOProperty(Me.moAlternativeLastNameText, .AlternativeLastName)
-                    Me.PopulateControlFromBOProperty(Me.moAlternativeFirstNameText, .AlternativeFirstName)
-                    Me.PopulateControlFromBOProperty(Me.moCorporateNameText, .CorporateName)
+                    PopulateControlFromBOProperty(moCustomerFirstNameText, .CustomerFirstName)
+                    PopulateControlFromBOProperty(moCustomerMiddleNameText, .CustomerMiddleName)
+                    PopulateControlFromBOProperty(moCustomerLastNameText, .CustomerLastName)
+                    PopulateControlFromBOProperty(moAlternativeLastNameText, .AlternativeLastName)
+                    PopulateControlFromBOProperty(moAlternativeFirstNameText, .AlternativeFirstName)
+                    PopulateControlFromBOProperty(moCorporateNameText, .CorporateName)
                 End If
-                Me.moCertificateSigneddrop.PopulateOld("DOCUMENT_STATUS", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.AddBlankListItem, String.Empty, ListValueType.Description)
+                moCertificateSigneddrop.PopulateOld("DOCUMENT_STATUS", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.AddBlankListItem, String.Empty, ListValueType.Description)
                 'Me.SetSelectedItem(Me.moCertificateSigneddrop, .CertificateSigned)
-                BindSelectItem(.CertificateSigned, Me.moCertificateSigneddrop)
-                Me.moSEPAMandateSignedDrop.PopulateOld("DOCUMENT_STATUS", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.AddBlankListItem, String.Empty, ListValueType.Description)
-                BindSelectItem(.SepaMandateSigned, Me.moSEPAMandateSignedDrop)
-                Me.moCheckSignedDrop.PopulateOld("DOCUMENT_STATUS", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.AddBlankListItem, String.Empty, ListValueType.Description)
+                BindSelectItem(.CertificateSigned, moCertificateSigneddrop)
+                moSEPAMandateSignedDrop.PopulateOld("DOCUMENT_STATUS", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.AddBlankListItem, String.Empty, ListValueType.Description)
+                BindSelectItem(.SepaMandateSigned, moSEPAMandateSignedDrop)
+                moCheckSignedDrop.PopulateOld("DOCUMENT_STATUS", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.AddBlankListItem, String.Empty, ListValueType.Description)
                 'Check Signed Drop Down will not have Invalid Signature and Filled By Hand values.
                 Dim listItem1 As WebControls.ListItem = moCheckSignedDrop.Items.FindByText(LookupListNew.GetDescrionFromListCode("DOCUMENT_STATUS", "IS"))
-                Me.moCheckSignedDrop.Items.Remove(listItem1)
+                moCheckSignedDrop.Items.Remove(listItem1)
                 Dim listItem2 As WebControls.ListItem = moCheckSignedDrop.Items.FindByText(LookupListNew.GetDescrionFromListCode("DOCUMENT_STATUS", "FH"))
-                Me.moCheckSignedDrop.Items.Remove(listItem2)
-                BindSelectItem(.CheckSigned, Me.moCheckSignedDrop)
+                moCheckSignedDrop.Items.Remove(listItem2)
+                BindSelectItem(.CheckSigned, moCheckSignedDrop)
 
-                Me.moContractCheckCompleteDrop.PopulateOld("CONTRACT_CHECK_COMPLETE", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.AddBlankListItem, String.Empty, ListValueType.Description)
-                BindSelectItem(.ContractCheckComplete, Me.moContractCheckCompleteDrop)
+                moContractCheckCompleteDrop.PopulateOld("CONTRACT_CHECK_COMPLETE", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.AddBlankListItem, String.Empty, ListValueType.Description)
+                BindSelectItem(.ContractCheckComplete, moContractCheckCompleteDrop)
 
-                Me.PopulateControlFromBOProperty(Me.txtBillingDocType, .BillingDocumentType)
-                Me.PopulateControlFromBOProperty(Me.txtDealerUpdateReason, .DealerUpdateReason)
-                Me.PopulateControlFromBOProperty(Me.moInsuranceOrderNumberText, .InsuranceOrderNumber)
-                Me.PopulateControlFromBOProperty(Me.moDeviceOrderNumberText, .DeviceOrderNumber)
-                Me.PopulateControlFromBOProperty(Me.moUpgradeTypeText, .UpgradeType)
-                Me.PopulateControlFromBOProperty(Me.moPlanTypeText, .PlanType)
+                PopulateControlFromBOProperty(txtBillingDocType, .BillingDocumentType)
+                PopulateControlFromBOProperty(txtDealerUpdateReason, .DealerUpdateReason)
+                PopulateControlFromBOProperty(moInsuranceOrderNumberText, .InsuranceOrderNumber)
+                PopulateControlFromBOProperty(moDeviceOrderNumberText, .DeviceOrderNumber)
+                PopulateControlFromBOProperty(moUpgradeTypeText, .UpgradeType)
+                PopulateControlFromBOProperty(moPlanTypeText, .PlanType)
 
-                Me.moFulfillmentConsentActionDrop.PopulateOld("CONSENT_ACTION", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.AddBlankListItem, String.Empty, ListValueType.Description)
-                BindSelectItem(.FulfillmentConsentAction, Me.moFulfillmentConsentActionDrop)
+                moFulfillmentConsentActionDrop.PopulateOld("CONSENT_ACTION", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.AddBlankListItem, String.Empty, ListValueType.Description)
+                BindSelectItem(.FulfillmentConsentAction, moFulfillmentConsentActionDrop)
 
-                Me.PopulateControlFromBOProperty(Me.moClaimWaitingPeriodEndDateText, .WaitingPeriodEndDate)
+                PopulateControlFromBOProperty(moClaimWaitingPeriodEndDateText, .WaitingPeriodEndDate)
 
-                If Not Me.State.MyBO.PreviousCertificateId.Equals(Guid.Empty) Then
+                If Not State.MyBO.PreviousCertificateId.Equals(Guid.Empty) Then
 
-                    Me.State.PreviousCertificate = New Certificate(Me.State.MyBO.PreviousCertificateId)
-                    linkPrevCertId.Text = Me.State.PreviousCertificate.CertNumber
+                    State.PreviousCertificate = New Certificate(State.MyBO.PreviousCertificateId)
+                    linkPrevCertId.Text = State.PreviousCertificate.CertNumber
 
                     ControlMgr.SetVisibleControl(Me, moCertificatesLinkPanel, True)
                     'ControlMgr.SetVisibleControl(Me, linkPrevCertId, True)
@@ -2937,10 +2925,10 @@ Namespace Certificates
                     'ControlMgr.SetVisibleControl(Me, linkPrevCertId, False)
                 End If
 
-                If Not Me.State.MyBO.OriginalCertificateId.Equals(Guid.Empty) Then
+                If Not State.MyBO.OriginalCertificateId.Equals(Guid.Empty) Then
 
-                    Me.State.OriginalCertificate = New Certificate(Me.State.MyBO.OriginalCertificateId)
-                    linkOrigCertId.Text = Me.State.OriginalCertificate.CertNumber
+                    State.OriginalCertificate = New Certificate(State.MyBO.OriginalCertificateId)
+                    linkOrigCertId.Text = State.OriginalCertificate.CertNumber
 
                     ControlMgr.SetVisibleControl(Me, moCertificatesLinkPanel, True)
                     'ControlMgr.SetVisibleControl(Me, linkOrigCertId, True)
@@ -2949,55 +2937,55 @@ Namespace Certificates
                     'ControlMgr.SetVisibleControl(Me, linkOrigCertId, False)
                 End If
 
-                Me.PopulateControlFromBOProperty(Me.moDateOfBirthText, .DateOfBirth)
+                PopulateControlFromBOProperty(moDateOfBirthText, .DateOfBirth)
                 DisplayMaskDob()
 
             End With
         End Sub
         Protected Sub DisplayMaskDob()
             Dim IsDobDisplay As Boolean
-            If Me.State.MyBO.Dealer.DisplayDobXcd Is Nothing Then
+            If State.MyBO.Dealer.DisplayDobXcd Is Nothing Then
                 IsDobDisplay = False
             Else
-                IsDobDisplay = Me.State.MyBO.Dealer.DisplayDobXcd.ToUpper().Equals("YESNO-Y")
+                IsDobDisplay = State.MyBO.Dealer.DisplayDobXcd.ToUpper().Equals("YESNO-Y")
             End If
 
-            Dim IsCustomerLglInfo As Boolean = Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "0"))
+            Dim IsCustomerLglInfo As Boolean = State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "0"))
 
-            If (Not IsDobDisplay And IsCustomerLglInfo) Then
+            If (Not IsDobDisplay AndAlso IsCustomerLglInfo) Then
                 ControlMgr.SetVisibleControl(Me, moDateOfBirthLabel, False)
                 ControlMgr.SetVisibleControl(Me, moDateOfBirthText, False)
                 ControlMgr.SetVisibleControl(Me, BtnDateOfBirth, False)
                 ControlMgr.SetVisibleControl(Me, tdDateOfBirthCalTag, False)
             End If
 
-            If (Not IsDobDisplay And Not IsCustomerLglInfo) Then
-                If Not (Me.State.IsEdit) Then
-                    Me.moDateOfBirthText.Text = Me.State.MyBO.MaskDatePart(Me.moDateOfBirthText.Text, True)
+            If (Not IsDobDisplay AndAlso Not IsCustomerLglInfo) Then
+                If Not (State.IsEdit) Then
+                    moDateOfBirthText.Text = State.MyBO.MaskDatePart(moDateOfBirthText.Text, True)
                 End If
             End If
 
             If (IsDobDisplay) Then
-                If Not (Me.State.IsEdit) Then
-                    Me.moDateOfBirthText.Text = Me.State.MyBO.MaskDatePart(Me.moDateOfBirthText.Text, False)
+                If Not (State.IsEdit) Then
+                    moDateOfBirthText.Text = State.MyBO.MaskDatePart(moDateOfBirthText.Text, False)
                 End If
             End If
         End Sub
 
         Protected Sub PopulateCanceDueDateFromForm()
             '  If txtFutureCancelationDateEdit.Text.Trim = String.Empty Then
-            Me.PopulateBOProperty(Me.State.TheDirectDebitState.certInstallment, "CancellationDueDate", String.Empty)
+            PopulateBOProperty(State.TheDirectDebitState.certInstallment, "CancellationDueDate", String.Empty)
             '  End If
         End Sub
 
         Protected Sub PopulateInstalmenBoFromForm()
-            If Not Me.State.MyBO.PaymentTypeId.Equals(Guid.Empty) Then
+            If Not State.MyBO.PaymentTypeId.Equals(Guid.Empty) Then
 
 
                 Dim yesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y")
                 Dim noId As Guid = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "N")
 
-                Me.State.BillingStatusId = Me.State.TheDirectDebitState.certInstallment.BillingStatusId
+                State.BillingStatusId = State.TheDirectDebitState.certInstallment.BillingStatusId
 
                 'If (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS _
                 '    And (Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__CREDIT_CARD _
@@ -3006,33 +2994,33 @@ Namespace Certificates
                 '        And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__FINANCED_BY_CREDIT_CARD) Then
                 'If Me.State.directDebitPayment Or Me.State.creditCardPayment Or Me.State.dealerBillPayment Then
                 If HasInstallment Then
-                    Me.PopulateBOProperty(Me.State.TheDirectDebitState.certInstallment, "BillingStatusId", Me.moBillingStatusId)
+                    PopulateBOProperty(State.TheDirectDebitState.certInstallment, "BillingStatusId", moBillingStatusId)
 
                     If CheckBoxSendLetter.Checked = True Then
-                        Me.PopulateBOProperty(Me.State.TheDirectDebitState.certInstallment, "SendLetterId", yesId)
+                        PopulateBOProperty(State.TheDirectDebitState.certInstallment, "SendLetterId", yesId)
                     Else
-                        Me.PopulateBOProperty(Me.State.TheDirectDebitState.certInstallment, "SendLetterId", noId)
+                        PopulateBOProperty(State.TheDirectDebitState.certInstallment, "SendLetterId", noId)
                     End If
 
-                    Me.PopulateBOProperty(Me.State.TheDirectDebitState.certInstallment, "DateLetterSent", Me.moDateLetterSentText)
-                    Me.PopulateBOProperty(Me.State.TheDirectDebitState.certInstallment, "PaymentDueDate", Me.moNextDueDateText)
+                    PopulateBOProperty(State.TheDirectDebitState.certInstallment, "DateLetterSent", moDateLetterSentText)
+                    PopulateBOProperty(State.TheDirectDebitState.certInstallment, "PaymentDueDate", moNextDueDateText)
                     'Req - 1016 Start
-                    Me.PopulateBOProperty(Me.State.TheDirectDebitState.certInstallment, "NextBillingDate", Me.moNextBillingDateText)
+                    PopulateBOProperty(State.TheDirectDebitState.certInstallment, "NextBillingDate", moNextBillingDateText)
                     'Req - 1016 End
 
                     'If (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS _
                     '    And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__DEBIT_ACCOUNT) Then
-                    If Me.State.directDebitPayment Then
-                        If Me.IfDirectDebitInfoChanged() Then
-                            Me.State.BillingInformationChanged = True
-                            Me.State.BankInfoBO = New BankInfo
-                            Me.State.BankInfoBO.CopyFrom(Me.State.TheDirectDebitState.bankInfo)
-                            Me.State.TheDirectDebitState.bankInfo = Me.State.TheDirectDebitState.certInstallment.AddBankInfo(Guid.Empty)
-                            Me.State.TheDirectDebitState.bankInfo.CountryID = Me.State.BankInfoBO.CountryID
-                            Me.State.TheDirectDebitState.bankInfo.SourceCountryID = Me.State.BankInfoBO.SourceCountryID
-                            Me.PopulateBOProperty(Me.State.TheDirectDebitState.bankInfo, "Account_Name", Me.moBankAccountOwnerText)
-                            Me.PopulateBOProperty(Me.State.TheDirectDebitState.bankInfo, "Bank_Id", Me.moBankRoutingNumberText)
-                            Me.PopulateBOProperty(Me.State.TheDirectDebitState.bankInfo, "Account_Number", Me.moBankAccountNumberText)
+                    If State.directDebitPayment Then
+                        If IfDirectDebitInfoChanged() Then
+                            State.BillingInformationChanged = True
+                            State.BankInfoBO = New BankInfo
+                            State.BankInfoBO.CopyFrom(State.TheDirectDebitState.bankInfo)
+                            State.TheDirectDebitState.bankInfo = State.TheDirectDebitState.certInstallment.AddBankInfo(Guid.Empty)
+                            State.TheDirectDebitState.bankInfo.CountryID = State.BankInfoBO.CountryID
+                            State.TheDirectDebitState.bankInfo.SourceCountryID = State.BankInfoBO.SourceCountryID
+                            PopulateBOProperty(State.TheDirectDebitState.bankInfo, "Account_Name", moBankAccountOwnerText)
+                            PopulateBOProperty(State.TheDirectDebitState.bankInfo, "Bank_Id", moBankRoutingNumberText)
+                            PopulateBOProperty(State.TheDirectDebitState.bankInfo, "Account_Number", moBankAccountNumberText)
                         End If
 
 
@@ -3040,27 +3028,27 @@ Namespace Certificates
                         '        And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__CREDIT_CARD) _
                         '        Or (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS _
                         '            And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__FINANCED_BY_CREDIT_CARD) Then
-                    ElseIf Me.State.creditCardPayment Then
-                        If Me.IfCreditCardInfoChanged() Then
-                            Me.State.BillingInformationChanged = True
+                    ElseIf State.creditCardPayment Then
+                        If IfCreditCardInfoChanged() Then
+                            State.BillingInformationChanged = True
                             If State.CreditCardInfoBO Is Nothing Then
-                                Me.State.CreditCardInfoBO = New CreditCardInfo
-                                Me.State.CreditCardInfoBO.CopyFrom(Me.State.TheDirectDebitState.CreditCardInfo)
-                                Me.State.TheDirectDebitState.CreditCardInfo = Me.State.TheDirectDebitState.certInstallment.AddCreditCardInfo(Guid.Empty)
+                                State.CreditCardInfoBO = New CreditCardInfo
+                                State.CreditCardInfoBO.CopyFrom(State.TheDirectDebitState.CreditCardInfo)
+                                State.TheDirectDebitState.CreditCardInfo = State.TheDirectDebitState.certInstallment.AddCreditCardInfo(Guid.Empty)
                             End If
 
-                            Me.PopulateBOProperty(Me.State.TheDirectDebitState.CreditCardInfo, "ExpirationDate", Me.moExpirationDateText)
-                            Me.PopulateBOProperty(Me.State.TheDirectDebitState.CreditCardInfo, "NameOnCreditCard", Me.moNameOnCreditCardText)
-                            Me.PopulateBOProperty(Me.State.TheDirectDebitState.CreditCardInfo, "CreditCardFormatId", Me.moCreditCardTypeIDDropDown)
+                            PopulateBOProperty(State.TheDirectDebitState.CreditCardInfo, "ExpirationDate", moExpirationDateText)
+                            PopulateBOProperty(State.TheDirectDebitState.CreditCardInfo, "NameOnCreditCard", moNameOnCreditCardText)
+                            PopulateBOProperty(State.TheDirectDebitState.CreditCardInfo, "CreditCardFormatId", moCreditCardTypeIDDropDown)
 
-                            If Me.moCreditCardNumberText.Text = "****" & Me.State.CreditCardInfoBO.Last4Digits Then
-                                Me.State.TheDirectDebitState.CreditCardInfo.CreditCardNumber = Me.State.CreditCardInfoBO.CreditCardNumber
-                                Me.State.TheDirectDebitState.CreditCardInfo.Last4Digits = Me.State.CreditCardInfoBO.Last4Digits
+                            If moCreditCardNumberText.Text = "****" & State.CreditCardInfoBO.Last4Digits Then
+                                State.TheDirectDebitState.CreditCardInfo.CreditCardNumber = State.CreditCardInfoBO.CreditCardNumber
+                                State.TheDirectDebitState.CreditCardInfo.Last4Digits = State.CreditCardInfoBO.Last4Digits
                             Else
                                 CreditCardValidation(moCreditCardNumberText.Text, State.TheDirectDebitState.CreditCardInfo.CreditCardFormatId)
-                                Me.PopulateBOProperty(Me.State.TheDirectDebitState.CreditCardInfo, "CreditCardNumber", Me.moCreditCardNumberText)
-                                Dim strCC As String = Me.State.TheDirectDebitState.CreditCardInfo.CreditCardNumber.Trim
-                                Me.State.TheDirectDebitState.CreditCardInfo.Last4Digits = strCC.Substring(strCC.Length - 4, 4)
+                                PopulateBOProperty(State.TheDirectDebitState.CreditCardInfo, "CreditCardNumber", moCreditCardNumberText)
+                                Dim strCC As String = State.TheDirectDebitState.CreditCardInfo.CreditCardNumber.Trim
+                                State.TheDirectDebitState.CreditCardInfo.Last4Digits = strCC.Substring(strCC.Length - 4, 4)
                                 Try
                                     ' secure the credit card number
                                     State.TheDirectDebitState.CreditCardInfo.Secure()
@@ -3073,11 +3061,11 @@ Namespace Certificates
                     End If
 
                     'Validate that the next due date and next billing date are not less than the warranty sales date 
-                    If Me.State.TheDirectDebitState.certInstallment.PaymentDueDate.Value.Date < Me.State.MyBO.WarrantySalesDate.Value.Date Then
+                    If State.TheDirectDebitState.certInstallment.PaymentDueDate.Value.Date < State.MyBO.WarrantySalesDate.Value.Date Then
                         Throw New GUIException(Message.PAYMENT_DUE_DATE_LESS_THAN_WSD, Assurant.ElitaPlus.Common.ErrorCodes.PAYMENT_DUE_DATE_LESS_THAN_WSD)
                     End If
 
-                    If State.TheDirectDebitState.certInstallment.NextBillingDate Is Nothing OrElse State.TheDirectDebitState.certInstallment.NextBillingDate.Value.Date < Me.State.MyBO.WarrantySalesDate.Value.Date Then
+                    If State.TheDirectDebitState.certInstallment.NextBillingDate Is Nothing OrElse State.TheDirectDebitState.certInstallment.NextBillingDate.Value.Date < State.MyBO.WarrantySalesDate.Value.Date Then
                         Throw New GUIException(Message.NEXT_BILLING_DATE_LESS_THAN_WSD, Assurant.ElitaPlus.Common.ErrorCodes.NEXT_BILLING_DATE_LESS_THAN_WSD)
                     End If
 
@@ -3085,7 +3073,7 @@ Namespace Certificates
             End If
 
         End Sub
-        Private Sub CreditCardValidation(ByVal CreditCardNumber As String, ByVal CreditCardFormatId As Guid)
+        Private Sub CreditCardValidation(CreditCardNumber As String, CreditCardFormatId As Guid)
             If String.IsNullOrEmpty(CreditCardNumber) Then
                 Throw New GUIException(Message.MSG_CREDIT_CARD_NUMBER_MANDATORY, Assurant.ElitaPlus.Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR)
             ElseIf CreditCardNumber.Length > 16 Then
@@ -3100,8 +3088,8 @@ Namespace Certificates
             End If
         End Sub
         Private Function IfDirectDebitInfoChanged() As Boolean
-            With Me.State.TheDirectDebitState.bankInfo
-                If .Account_Name = Me.moBankAccountOwnerText.Text AndAlso .Bank_Id = Me.moBankRoutingNumberText.Text AndAlso .Account_Number = Me.moBankAccountNumberText.Text Then
+            With State.TheDirectDebitState.bankInfo
+                If .Account_Name = moBankAccountOwnerText.Text AndAlso .Bank_Id = moBankRoutingNumberText.Text AndAlso .Account_Number = moBankAccountNumberText.Text Then
                     Return False
                 Else
                     Return True
@@ -3110,11 +3098,11 @@ Namespace Certificates
 
         End Function
         Private Function IfCreditCardInfoChanged() As Boolean
-            With Me.State.TheDirectDebitState.CreditCardInfo
-                If .ExpirationDate = Me.moExpirationDateText.Text _
-                   AndAlso .NameOnCreditCard = Me.moNameOnCreditCardText.Text _
-                   AndAlso .CreditCardFormatId.Equals(GetSelectedItem(Me.moCreditCardTypeIDDropDown)) _
-                   AndAlso "****" & .Last4Digits = Me.moCreditCardNumberText.Text Then
+            With State.TheDirectDebitState.CreditCardInfo
+                If .ExpirationDate = moExpirationDateText.Text _
+                   AndAlso .NameOnCreditCard = moNameOnCreditCardText.Text _
+                   AndAlso .CreditCardFormatId.Equals(GetSelectedItem(moCreditCardTypeIDDropDown)) _
+                   AndAlso "****" & .Last4Digits = moCreditCardNumberText.Text Then
                     Return False
                 Else
                     Return True
@@ -3122,9 +3110,9 @@ Namespace Certificates
             End With
         End Function
         Protected Sub PopulateBOsFromForm()
-            With Me.State.MyBO
+            With State.MyBO
                 ' ValFlag()
-                Dim blnUpdateZipLocator = Me.State.MyBO.Company.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = Codes.COMP_ATTR__UPD_ZIP_LOCATOR).FirstOrDefault
+                Dim blnUpdateZipLocator = State.MyBO.Company.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = Codes.COMP_ATTR__UPD_ZIP_LOCATOR).FirstOrDefault
 
                 If blnUpdateZipLocator Is Nothing Then
                     blnUpdateZipLocator = False
@@ -3132,20 +3120,20 @@ Namespace Certificates
                     blnUpdateZipLocator = IIf(blnUpdateZipLocator.Value = Codes.YESNO_Y, True, False)
                 End If
 
-                Me.AddressCtr.PopulateBOFromControl(True, blnUpdateZipLocator)
-                If (Not Me.AddressCtr.MyBO Is Nothing AndAlso
-                    (Me.AddressCtr.MyBO.IsDeleted = False) AndAlso
-                    (Me.AddressCtr.MyBO.IsEmpty = False)) Then
-                    Me.State.MyBO.AddressId = Me.AddressCtr.MyBO.Id
+                AddressCtr.PopulateBOFromControl(True, blnUpdateZipLocator)
+                If (AddressCtr.MyBO IsNot Nothing AndAlso
+                    (AddressCtr.MyBO.IsDeleted = False) AndAlso
+                    (AddressCtr.MyBO.IsEmpty = False)) Then
+                    State.MyBO.AddressId = AddressCtr.MyBO.Id
                 End If
 
-                Me.PopulateBOProperty(Me.State.MyBO, "ServiceStartDate", Me.moServiceStartDateText)
-                Me.PopulateBOProperty(Me.State.MyBO, "ServiceID", Me.moServiceIdText)
-                Me.PopulateBOProperty(Me.State.MyBO, "DocumentIssueDate", Me.moDocumentIssueDateText)
-                Me.PopulateBOProperty(Me.State.MyBO, "DocumentTypeID", cboDocumentTypeId)
-                Me.PopulateBOProperty(Me.State.MyBO, "RgNumber", Me.moRGNumberText)
-                Me.PopulateBOProperty(Me.State.MyBO, "DocumentAgency", Me.moDocumentAgencyText)
-                Me.PopulateBOProperty(Me.State.MyBO, "IdType", Me.moIDTypeText)
+                PopulateBOProperty(State.MyBO, "ServiceStartDate", moServiceStartDateText)
+                PopulateBOProperty(State.MyBO, "ServiceID", moServiceIdText)
+                PopulateBOProperty(State.MyBO, "DocumentIssueDate", moDocumentIssueDateText)
+                PopulateBOProperty(State.MyBO, "DocumentTypeID", cboDocumentTypeId)
+                PopulateBOProperty(State.MyBO, "RgNumber", moRGNumberText)
+                PopulateBOProperty(State.MyBO, "DocumentAgency", moDocumentAgencyText)
+                PopulateBOProperty(State.MyBO, "IdType", moIDTypeText)
 
                 'Me.PopulateBOProperty(Me.State.MyBO, "MfgBeginDate", Me.txtMfgBeginDate)
                 'Me.PopulateBOProperty(Me.State.MyBO, "MfgEndDate", Me.txtMfgEndDate)
@@ -3153,271 +3141,267 @@ Namespace Certificates
                 'Me.PopulateBOProperty(Me.State.MyBO, "MfgEndKm", Me.txtMfgEndKm)
 
                 'If Me.tsHoriz.SelectedIndex = CERT_TAX_ID_TAB Then
-                If Me.State.selectedTab = CERT_TAX_ID_TAB Then
-                    Me.PopulateBOProperty(Me.State.MyBO, "TaxIDNumb", Me.moNewTaxIdText)
+                If State.selectedTab = CERT_TAX_ID_TAB Then
+                    PopulateBOProperty(State.MyBO, "TaxIDNumb", moNewTaxIdText)
                 End If
 
-                Me.PopulateBOProperty(Me.State.MyBO, "CustomerName", Me.moCustomerNameText)
-                Me.PopulateBOProperty(Me.State.MyBO, "HomePhone", Me.moHomePhoneText)
-                Me.PopulateBOProperty(Me.State.MyBO, "WorkPhone", Me.moWorkPhoneText)
-                If Not Me.moEmailAddressText.Text Is Nothing AndAlso Me.moEmailAddressText.Text.Equals(Me.State.EmailIsNull) Then
-                    Me.moEmailAddressText.Text = ""
+                PopulateBOProperty(State.MyBO, "CustomerName", moCustomerNameText)
+                PopulateBOProperty(State.MyBO, "HomePhone", moHomePhoneText)
+                PopulateBOProperty(State.MyBO, "WorkPhone", moWorkPhoneText)
+                If moEmailAddressText.Text IsNot Nothing AndAlso moEmailAddressText.Text.Equals(State.EmailIsNull) Then
+                    moEmailAddressText.Text = ""
                 End If
-                Me.PopulateBOProperty(Me.State.MyBO, "Email", Me.moEmailAddressText)
-                If Me.State.selectedTab = CERT_DETAIL_TAB Then
-                    Me.PopulateBOProperty(Me.State.MyBO, "IdentificationNumber", Me.moTaxIdText)
+                PopulateBOProperty(State.MyBO, "Email", moEmailAddressText)
+                If State.selectedTab = CERT_DETAIL_TAB Then
+                    PopulateBOProperty(State.MyBO, "IdentificationNumber", moTaxIdText)
                 End If
-                Me.PopulateBOProperty(Me.State.MyBO, "InvoiceNumber", Me.moInvoiceNumberText)
-                Me.PopulateBOProperty(Me.State.MyBO, "VehicleLicenseTag", Me.moVehicleLicenseTagText)
-                Me.PopulateBOProperty(Me.State.MyBO, "LanguageId", Me.cboLangPref)
+                PopulateBOProperty(State.MyBO, "InvoiceNumber", moInvoiceNumberText)
+                PopulateBOProperty(State.MyBO, "VehicleLicenseTag", moVehicleLicenseTagText)
+                PopulateBOProperty(State.MyBO, "LanguageId", cboLangPref)
 
-                If Me.State.isSalutation Then
-                    Me.PopulateBOProperty(Me.State.MyBO, "SalutationId", Me.cboSalutationId)
+                If State.isSalutation Then
+                    PopulateBOProperty(State.MyBO, "SalutationId", cboSalutationId)
                 End If
 
-                If Me.State.TheItemCoverageState.manufaturerWarranty Then
-                    Me.PopulateBOProperty(Me.State.MyBO, "WarrantySalesDate", Me.moWarrantySoldText)
+                If State.TheItemCoverageState.manufaturerWarranty Then
+                    PopulateBOProperty(State.MyBO, "WarrantySalesDate", moWarrantySoldText)
                 Else
-                    Me.PopulateBOProperty(Me.State.MyBO, "ProductSalesDate", Me.moProductSalesDateText)
+                    PopulateBOProperty(State.MyBO, "ProductSalesDate", moProductSalesDateText)
                 End If
 
-                Me.PopulateBOProperty(Me.State.MyBO, "SalesRepNumber", Me.moSalesRepNumberText)
+                PopulateBOProperty(State.MyBO, "SalesRepNumber", moSalesRepNumberText)
 
-                Me.PopulateBOProperty(Me.State.MyBO, "MembershipTypeId", Me.cboAccountType)
+                PopulateBOProperty(State.MyBO, "MembershipTypeId", cboAccountType)
 
-                Me.PopulateBOProperty(Me.State.MyBO, "MembershipNumber", Me.moAccountNumberText)
+                PopulateBOProperty(State.MyBO, "MembershipNumber", moAccountNumberText)
 
-                If Not Me.State.TheItemCoverageState.IsRetailer Then
-                    Me.PopulateBOProperty(Me.State.MyBO, "Retailer", Me.moRetailerText)
+                If Not State.TheItemCoverageState.IsRetailer Then
+                    PopulateBOProperty(State.MyBO, "Retailer", moRetailerText)
                 End If
 
                 'DEF-21659 - START
                 'If Not .DateOfBirth Is Nothing Then
-                If (Me.State.IsEdit) Then
-                    Me.PopulateBOProperty(Me.State.MyBO, "DateOfBirth", Me.moDateOfBirthText)
+                If (State.IsEdit) Then
+                    PopulateBOProperty(State.MyBO, "DateOfBirth", moDateOfBirthText)
                 End If
 
                 'End If
                 'DEF-21659 - END
 
                 'Me.PopulateBOProperty(Me.State.MyBO, "PaymentTypeId", Me.moPaymentTypeId)
-                Me.PopulateBOProperty(Me.State.MyBO, "VatNum", Me.moVATNumText)
-                Me.PopulateBOProperty(Me.State.MyBO, "Region", Me.moRegionText)
+                PopulateBOProperty(State.MyBO, "VatNum", moVATNumText)
+                PopulateBOProperty(State.MyBO, "Region", moRegionText)
 
                 'AA REQ-910 new fields added BEGIN
-                If Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) Or
-                   Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Or
-                   Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only or 3= Display and Require At Enrollment
-                    Me.PopulateBOProperty(Me.State.MyBO, "IncomeRangeId", Me.cboIncomeRangeId)
-                    Me.PopulateBOProperty(Me.State.MyBO, "Occupation", Me.moOccupationText)
-                    Me.PopulateBOProperty(Me.State.MyBO, "PoliticallyExposedId", Me.cboPoliticallyExposedId)
+                If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only or 3= Display and Require At Enrollment
+                    PopulateBOProperty(State.MyBO, "IncomeRangeId", cboIncomeRangeId)
+                    PopulateBOProperty(State.MyBO, "Occupation", moOccupationText)
+                    PopulateBOProperty(State.MyBO, "PoliticallyExposedId", cboPoliticallyExposedId)
                 End If
                 'AA REQ-910 new fields added END
                 'REQ-1255 - AML Regulations - START
-                If Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) Or
-                   Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Or
-                   Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only or 3= Display and Require At Enrollment  
-                    Me.PopulateBOProperty(Me.State.MyBO, "MaritalStatus", Me.ddlMaritalStatus)
-                    Me.PopulateBOProperty(Me.State.MyBO, "Nationality", Me.ddlNationality)
-                    Me.PopulateBOProperty(Me.State.MyBO, "PlaceOfBirth", Me.ddlPlaceOfBirth)
+                If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only or 3= Display and Require At Enrollment  
+                    PopulateBOProperty(State.MyBO, "MaritalStatus", ddlMaritalStatus)
+                    PopulateBOProperty(State.MyBO, "Nationality", ddlNationality)
+                    PopulateBOProperty(State.MyBO, "PlaceOfBirth", ddlPlaceOfBirth)
                     If Not .CustomerId.Equals(Guid.Empty) Then
-                        Me.PopulateBOProperty(Me.State.MyBO, "CityOfBirth", Me.moCityOfBirthText)
+                        PopulateBOProperty(State.MyBO, "CityOfBirth", moCityOfBirthText)
                     End If
-                    Me.PopulateBOProperty(Me.State.MyBO, "Gender", Me.ddlGender)
-                        Me.PopulateBOProperty(Me.State.MyBO, "PersonTypeId", Me.ddlPersonType)
-                        Me.PopulateBOProperty(Me.State.MyBO, "CUIT_CUIL", Me.moCUIT_CUILText)
+                    PopulateBOProperty(State.MyBO, "Gender", ddlGender)
+                        PopulateBOProperty(State.MyBO, "PersonTypeId", ddlPersonType)
+                        PopulateBOProperty(State.MyBO, "CUIT_CUIL", moCUIT_CUILText)
                     End If
                     'REQ-1255 - AML Regulations - END
                     If Not .CustomerId.Equals(Guid.Empty) Then
-                    Me.PopulateBOProperty(Me.State.MyBO, "CustomerFirstName", Me.moCustomerFirstNameText)
-                    Me.PopulateBOProperty(Me.State.MyBO, "CustomerMiddleName", Me.moCustomerMiddleNameText)
-                    Me.PopulateBOProperty(Me.State.MyBO, "CustomerLastName", Me.moCustomerLastNameText)
-                    Me.PopulateBOProperty(Me.State.MyBO, "AlternativeLastName", Me.moAlternativeLastNameText)
-                    Me.PopulateBOProperty(Me.State.MyBO, "AlternativeFirstName", Me.moAlternativeFirstNameText)
-                    Me.PopulateBOProperty(Me.State.MyBO, "CorporateName", Me.moCorporateNameText)
+                    PopulateBOProperty(State.MyBO, "CustomerFirstName", moCustomerFirstNameText)
+                    PopulateBOProperty(State.MyBO, "CustomerMiddleName", moCustomerMiddleNameText)
+                    PopulateBOProperty(State.MyBO, "CustomerLastName", moCustomerLastNameText)
+                    PopulateBOProperty(State.MyBO, "AlternativeLastName", moAlternativeLastNameText)
+                    PopulateBOProperty(State.MyBO, "AlternativeFirstName", moAlternativeFirstNameText)
+                    PopulateBOProperty(State.MyBO, "CorporateName", moCorporateNameText)
                 End If
             End With
-            If Me.State.MyBO.Dealer.ContractManualVerification = "YESNO-Y" Then
-                Me.PopulateBOProperty(Me.State.MyBO, "CertificateSigned", Me.moCertificateSigneddrop, False, True)
-                Me.PopulateBOProperty(Me.State.MyBO, "SepaMandateSigned", Me.moSEPAMandateSignedDrop, False, True)
-                Me.PopulateBOProperty(Me.State.MyBO, "ContractCheckCompleteDate", Me.moContractCheckCompleteDateText)
-                Me.PopulateBOProperty(Me.State.MyBO, "ContractCheckComplete", Me.moContractCheckCompleteDrop, False, True)
-                Me.PopulateBOProperty(Me.State.MyBO, "CertificateVerificationDate", Me.moCertificateVerificationDateText)
-                Me.PopulateBOProperty(Me.State.MyBO, "SepaMandateDate", Me.moSEPAMandateDateText)
-                Me.PopulateBOProperty(Me.State.MyBO, "CheckSigned", Me.moCheckSignedDrop, False, True)
-                Me.PopulateBOProperty(Me.State.MyBO, "CheckVerificationDate", Me.moCheckVerificationDateText)
+            If State.MyBO.Dealer.ContractManualVerification = "YESNO-Y" Then
+                PopulateBOProperty(State.MyBO, "CertificateSigned", moCertificateSigneddrop, False, True)
+                PopulateBOProperty(State.MyBO, "SepaMandateSigned", moSEPAMandateSignedDrop, False, True)
+                PopulateBOProperty(State.MyBO, "ContractCheckCompleteDate", moContractCheckCompleteDateText)
+                PopulateBOProperty(State.MyBO, "ContractCheckComplete", moContractCheckCompleteDrop, False, True)
+                PopulateBOProperty(State.MyBO, "CertificateVerificationDate", moCertificateVerificationDateText)
+                PopulateBOProperty(State.MyBO, "SepaMandateDate", moSEPAMandateDateText)
+                PopulateBOProperty(State.MyBO, "CheckSigned", moCheckSignedDrop, False, True)
+                PopulateBOProperty(State.MyBO, "CheckVerificationDate", moCheckVerificationDateText)
             End If
 
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
 
-            Me.State.MyBO.ValFlag = Me.State.ValFlag
+            State.MyBO.ValFlag = State.ValFlag
 
         End Sub
 
         Protected Sub PopulateBankInfoBOFromUserCtr()
-            With Me.State.BankInfoBO
-                Me.moBankInfoController.PopulateBOFromControl()
+            With State.BankInfoBO
+                moBankInfoController.PopulateBOFromControl()
             End With
         End Sub
         Protected Sub PopulatePaymentOrderInfoBOFromUserCtr()
-            With Me.State.PaymentOrderInfoBO
-                Me.moPaymentOrderInfoCtrl.PopulateBOFromControl()
+            With State.PaymentOrderInfoBO
+                moPaymentOrderInfoCtrl.PopulateBOFromControl()
             End With
         End Sub
 
         Public Sub PupulateCommEntityGrid()
             Dim dv As DataView
-            dv = Me.State.MyBO.GetCommissionForEntities(Me.State.MyBO.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId, Date.Today.ToString(SP_DATE_FORMAT))
+            dv = State.MyBO.GetCommissionForEntities(State.MyBO.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId, Date.Today.ToString(SP_DATE_FORMAT))
             If dv.Count = 0 Then
-                Me.moCommEntityInformationLine.Attributes("style") = "display: none"
+                moCommEntityInformationLine.Attributes("style") = "display: none"
             End If
-            Me.moCommEntityGrid.DataSource = dv
-            Me.moCommEntityGrid.DataBind()
+            moCommEntityGrid.DataSource = dv
+            moCommEntityGrid.DataBind()
         End Sub
 
         Public Sub PopulatePremiumInfoTab()
 
             Dim dv As DataView
-            dv = Me.State.MyBO.PremiumTotals(Me.State.MyBO.Id)
+            dv = State.MyBO.PremiumTotals(State.MyBO.Id)
 
             If dv.Count = 0 Then
-                Me.State.isPremiumTAbVisible = False
+                State.isPremiumTAbVisible = False
                 Exit Sub
             End If
 
-            Me.PopulateControlFromBOProperty(Me.TextboxCURRENCY_OF_CERT, LookupListNew.GetDescriptionFromId(LookupListNew.LK_CURRENCIES, Me.State.MyBO.CurrencyOfCertId))
+            PopulateControlFromBOProperty(TextboxCURRENCY_OF_CERT, LookupListNew.GetDescriptionFromId(LookupListNew.LK_CURRENCIES, State.MyBO.CurrencyOfCertId))
 
             ' Gross Amount received
             If dv.Table.Rows(0).IsNull(Certificate.COL_TOTAL_GROSS_AMT_RECEIVED) Then
-                Me.PopulateControlFromBOProperty(Me.moGrossAmtReceivedText, 0, Me.DECIMAL_FORMAT)
-                Me.State.grossAmtReceived = 0
+                PopulateControlFromBOProperty(moGrossAmtReceivedText, 0, DECIMAL_FORMAT)
+                State.grossAmtReceived = 0
             Else
-                Me.PopulateControlFromBOProperty(Me.moGrossAmtReceivedText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_GROSS_AMT_RECEIVED), Decimal), Me.DECIMAL_FORMAT)
-                Me.State.grossAmtReceived = CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_GROSS_AMT_RECEIVED), Decimal)
+                PopulateControlFromBOProperty(moGrossAmtReceivedText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_GROSS_AMT_RECEIVED), Decimal), DECIMAL_FORMAT)
+                State.grossAmtReceived = CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_GROSS_AMT_RECEIVED), Decimal)
             End If
 
             ' Total Premium Written
             If dv.Table.Rows(0).IsNull(Certificate.COL_TOTAL_PREMIUM_WRITTEN) Then
-                Me.PopulateControlFromBOProperty(Me.moPremiumWrittenText, 0, Me.DECIMAL_FORMAT)
+                PopulateControlFromBOProperty(moPremiumWrittenText, 0, DECIMAL_FORMAT)
             Else
-                Me.PopulateControlFromBOProperty(Me.moPremiumWrittenText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_PREMIUM_WRITTEN), Decimal), Me.DECIMAL_FORMAT)
+                PopulateControlFromBOProperty(moPremiumWrittenText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_PREMIUM_WRITTEN), Decimal), DECIMAL_FORMAT)
             End If
 
             ' Total Original Premium
             If dv.Table.Rows(0).IsNull(Certificate.COL_TOTAL_ORIGINAL_PREMIUM) Then
-                Me.PopulateControlFromBOProperty(Me.moOriginalPremiumText, 0, Me.DECIMAL_FORMAT)
+                PopulateControlFromBOProperty(moOriginalPremiumText, 0, DECIMAL_FORMAT)
             Else
-                Me.PopulateControlFromBOProperty(Me.moOriginalPremiumText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_ORIGINAL_PREMIUM), Decimal), Me.DECIMAL_FORMAT)
+                PopulateControlFromBOProperty(moOriginalPremiumText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_ORIGINAL_PREMIUM), Decimal), DECIMAL_FORMAT)
             End If
 
             ' Total Loss Cost
             If dv.Table.Rows(0).IsNull(Certificate.COL_TOTAL_LOSS_COST) Then
-                Me.PopulateControlFromBOProperty(Me.moLossCostText, 0, Me.DECIMAL_FORMAT)
+                PopulateControlFromBOProperty(moLossCostText, 0, DECIMAL_FORMAT)
             Else
-                Me.PopulateControlFromBOProperty(Me.moLossCostText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_LOSS_COST), Decimal), Me.DECIMAL_FORMAT)
+                PopulateControlFromBOProperty(moLossCostText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_LOSS_COST), Decimal), DECIMAL_FORMAT)
             End If
 
             ' Total Commission
             If dv.Table.Rows(0).IsNull(Certificate.COL_TOTAL_COMISSION) Then
-                Me.PopulateControlFromBOProperty(Me.moComissionsText, 0, Me.DECIMAL_FORMAT)
+                PopulateControlFromBOProperty(moComissionsText, 0, DECIMAL_FORMAT)
             Else
-                Me.PopulateControlFromBOProperty(Me.moComissionsText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_COMISSION), Decimal), Me.DECIMAL_FORMAT)
+                PopulateControlFromBOProperty(moComissionsText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_COMISSION), Decimal), DECIMAL_FORMAT)
             End If
 
             ' Total Admin expense
             If dv.Table.Rows(0).IsNull(Certificate.COL_TOTAL_ADMIN_EXPENSE) Then
-                Me.PopulateControlFromBOProperty(Me.moAdminExpensesText, 0, Me.DECIMAL_FORMAT)
+                PopulateControlFromBOProperty(moAdminExpensesText, 0, DECIMAL_FORMAT)
             Else
-                Me.PopulateControlFromBOProperty(Me.moAdminExpensesText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_ADMIN_EXPENSE), Decimal), Me.DECIMAL_FORMAT)
+                PopulateControlFromBOProperty(moAdminExpensesText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_ADMIN_EXPENSE), Decimal), DECIMAL_FORMAT)
             End If
 
             ' Total Marketing Expense
             If dv.Table.Rows(0).IsNull(Certificate.COL_TOTAL_MARKETING_EXPENSE) Then
-                Me.PopulateControlFromBOProperty(Me.moMarketingExpenseText, 0, Me.DECIMAL_FORMAT)
+                PopulateControlFromBOProperty(moMarketingExpenseText, 0, DECIMAL_FORMAT)
             Else
-                Me.PopulateControlFromBOProperty(Me.moMarketingExpenseText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_MARKETING_EXPENSE), Decimal), Me.DECIMAL_FORMAT)
+                PopulateControlFromBOProperty(moMarketingExpenseText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_MARKETING_EXPENSE), Decimal), DECIMAL_FORMAT)
             End If
 
             ' Total Other
             If dv.Table.Rows(0).IsNull(Certificate.COL_TOTAL_OTHER) Then
-                Me.PopulateControlFromBOProperty(Me.moOtherText, 0, Me.DECIMAL_FORMAT)
+                PopulateControlFromBOProperty(moOtherText, 0, DECIMAL_FORMAT)
             Else
-                Me.PopulateControlFromBOProperty(Me.moOtherText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_OTHER), Decimal), Me.DECIMAL_FORMAT)
+                PopulateControlFromBOProperty(moOtherText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_OTHER), Decimal), DECIMAL_FORMAT)
             End If
 
             ' Total Sales Tax
             If dv.Table.Rows(0).IsNull(Certificate.COL_TOTAL_SALES_TAX) Then
-                Me.PopulateControlFromBOProperty(Me.moSalesTaxText, 0, Me.DECIMAL_FORMAT)
+                PopulateControlFromBOProperty(moSalesTaxText, 0, DECIMAL_FORMAT)
 
             Else
-                Me.PopulateControlFromBOProperty(Me.moSalesTaxText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_SALES_TAX), Decimal), Me.DECIMAL_FORMAT)
+                PopulateControlFromBOProperty(moSalesTaxText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_SALES_TAX), Decimal), DECIMAL_FORMAT)
 
             End If
 
             ' Total MTD Payments
             If dv.Table.Rows(0).IsNull(Certificate.COL_TOTAL_MTD_PAYMENTS) Then
-                Me.PopulateControlFromBOProperty(Me.moMTDPaymentsText, 0, Me.DECIMAL_FORMAT)
+                PopulateControlFromBOProperty(moMTDPaymentsText, 0, DECIMAL_FORMAT)
             Else
-                Me.PopulateControlFromBOProperty(Me.moMTDPaymentsText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_MTD_PAYMENTS), Decimal), Me.DECIMAL_FORMAT)
+                PopulateControlFromBOProperty(moMTDPaymentsText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_MTD_PAYMENTS), Decimal), DECIMAL_FORMAT)
             End If
 
             ' Total YTD Payments
             If dv.Table.Rows(0).IsNull(Certificate.COL_TOTAL_YTD_PAYMENTS) Then
-                Me.PopulateControlFromBOProperty(Me.moYTDPaymentsText, 0, Me.DECIMAL_FORMAT)
+                PopulateControlFromBOProperty(moYTDPaymentsText, 0, DECIMAL_FORMAT)
             Else
-                Me.PopulateControlFromBOProperty(Me.moYTDPaymentsText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_YTD_PAYMENTS), Decimal), Me.DECIMAL_FORMAT)
+                PopulateControlFromBOProperty(moYTDPaymentsText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_YTD_PAYMENTS), Decimal), DECIMAL_FORMAT)
             End If
 
             ' Total MTD Incoming Payments
             If dv.Table.Rows(0).IsNull(Certificate.COL_TOTAL_MTD_INCOMING_PAYMENTS) Then
-                Me.PopulateControlFromBOProperty(Me.moMTDPaymentFromCustText, 0, Me.DECIMAL_FORMAT)
+                PopulateControlFromBOProperty(moMTDPaymentFromCustText, 0, DECIMAL_FORMAT)
             Else
-                Me.PopulateControlFromBOProperty(Me.moMTDPaymentFromCustText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_MTD_INCOMING_PAYMENTS), Decimal), Me.DECIMAL_FORMAT)
+                PopulateControlFromBOProperty(moMTDPaymentFromCustText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_MTD_INCOMING_PAYMENTS), Decimal), DECIMAL_FORMAT)
             End If
 
             ' Total YTD Incoming Payments
             If dv.Table.Rows(0).IsNull(Certificate.COL_TOTAL_YTD_INCOMING_PAYMENTS) Then
-                Me.PopulateControlFromBOProperty(Me.moYTDPaymentFromCustText, 0, Me.DECIMAL_FORMAT)
+                PopulateControlFromBOProperty(moYTDPaymentFromCustText, 0, DECIMAL_FORMAT)
             Else
-                Me.PopulateControlFromBOProperty(Me.moYTDPaymentFromCustText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_YTD_INCOMING_PAYMENTS), Decimal), Me.DECIMAL_FORMAT)
+                PopulateControlFromBOProperty(moYTDPaymentFromCustText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_YTD_INCOMING_PAYMENTS), Decimal), DECIMAL_FORMAT)
             End If
 
             ' Total Incoming Payments
             If dv.Table.Rows(0).IsNull(Certificate.COL_TOTAL_INCOMING_PAYMENTS) Then
-                Me.PopulateControlFromBOProperty(Me.moPaymentRcvdFromCustText, 0, Me.DECIMAL_FORMAT)
+                PopulateControlFromBOProperty(moPaymentRcvdFromCustText, 0, DECIMAL_FORMAT)
             Else
-                Me.PopulateControlFromBOProperty(Me.moPaymentRcvdFromCustText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_INCOMING_PAYMENTS), Decimal), Me.DECIMAL_FORMAT)
+                PopulateControlFromBOProperty(moPaymentRcvdFromCustText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_INCOMING_PAYMENTS), Decimal), DECIMAL_FORMAT)
             End If
 
             Try
-                Me.State.TheDirectDebitState.certInstallment = New CertInstallment(Me.State.MyBO.Id, True)
+                State.TheDirectDebitState.certInstallment = New CertInstallment(State.MyBO.Id, True)
             Catch ex As Exception
-                Me.State.TheDirectDebitState.certInstallment = Nothing
+                State.TheDirectDebitState.certInstallment = Nothing
             End Try
 
-            If Not Me.State.MyBO.PaymentTypeId.Equals(Guid.Empty) Then
+            If Not State.MyBO.PaymentTypeId.Equals(Guid.Empty) Then
                 If HasInstallment AndAlso Not (State.TheDirectDebitState.certInstallment.CreditCardInfoId = Guid.Empty) Then
-                    Me.State.creditCardPayment = True
+                    State.creditCardPayment = True
                 ElseIf HasInstallment AndAlso Not (State.TheDirectDebitState.certInstallment.BankInfoId = Guid.Empty) Then
-                    Me.State.directDebitPayment = True
-                ElseIf (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__DEALER_BILL) Then
-                    Me.State.dealerBillPayment = True
+                    State.directDebitPayment = True
+                ElseIf (State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS AndAlso State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__DEALER_BILL) Then
+                    State.dealerBillPayment = True
                 End If
             End If
 
-            Me.SetSelectedItem(Me.moPaymentTypeId, Me.State.MyBO.PaymentTypeId)
+            SetSelectedItem(moPaymentTypeId, State.MyBO.PaymentTypeId)
 
-            If Me.State.IsNewBillPayBtnVisible Then
-                dv = CollectedPayDetail.getCollectPayTotals(Me.State.MyBO.Id)
+            If State.IsNewBillPayBtnVisible Then
+                dv = CollectedPayDetail.getCollectPayTotals(State.MyBO.Id)
                 If dv.Count > 0 Then
-                    Me.State.oPayColltCount = CType(dv.Table.Rows(0).Item(CollectedPayDetail.CollectPayTotals.COL_DETAIL_COUNT), Integer)
-                    If Me.State.oPayColltCount > 0 Then
+                    State.oPayColltCount = CType(dv.Table.Rows(0).Item(CollectedPayDetail.CollectPayTotals.COL_DETAIL_COUNT), Integer)
+                    If State.oPayColltCount > 0 Then
                         ControlMgr.SetEnableControl(Me, btnBillPayHist, True)
                         ControlMgr.SetEnableControl(Me, btnPaymentHistory, False)
                     Else
-                        If (Me.State.IsNewBillPayBtnVisible) Then
+                        If (State.IsNewBillPayBtnVisible) Then
                             ControlMgr.SetEnableControl(Me, btnBillPayHist, True)
                         Else
                             ControlMgr.SetEnableControl(Me, btnBillPayHist, False)
@@ -3425,10 +3409,10 @@ Namespace Certificates
                     End If
                 End If
             Else
-                dv = PaymentDetail.getPaymentTotals(Me.State.MyBO.Id)
+                dv = PaymentDetail.getPaymentTotals(State.MyBO.Id)
                 If dv.Count > 0 Then
-                    Me.State.oPaymentCount = CType(dv.Table.Rows(0).Item(PaymentDetail.PaymentTotals.COL_DETAIL_COUNT), Integer)
-                    If Me.State.oPaymentCount > 0 Then
+                    State.oPaymentCount = CType(dv.Table.Rows(0).Item(PaymentDetail.PaymentTotals.COL_DETAIL_COUNT), Integer)
+                    If State.oPaymentCount > 0 Then
                         ControlMgr.SetEnableControl(Me, btnPaymentHistory, True)
                     Else
                         ControlMgr.SetEnableControl(Me, btnPaymentHistory, False)
@@ -3442,32 +3426,32 @@ Namespace Certificates
                 PopulateBillingStatusDropdown()
 
                 Try
-                    If Me.State.directDebitPayment Then Me.State.TheDirectDebitState.bankInfo = Me.State.TheDirectDebitState.certInstallment.BankInfo
-                    If Me.State.creditCardPayment Then Me.State.TheDirectDebitState.CreditCardInfo = Me.State.TheDirectDebitState.certInstallment.CreditCardInfo
+                    If State.directDebitPayment Then State.TheDirectDebitState.bankInfo = State.TheDirectDebitState.certInstallment.BankInfo
+                    If State.creditCardPayment Then State.TheDirectDebitState.CreditCardInfo = State.TheDirectDebitState.certInstallment.CreditCardInfo
 
-                    Me.PopulateControlFromBOProperty(Me.moBillingStatusId, Me.State.TheDirectDebitState.certInstallment.BillingStatusId)
+                    PopulateControlFromBOProperty(moBillingStatusId, State.TheDirectDebitState.certInstallment.BillingStatusId)
 
 
-                    If Me.State.IsNewBillPayBtnVisible Then
+                    If State.IsNewBillPayBtnVisible Then
 
-                        Me.State.oBillingTotalAmount = 0
+                        State.oBillingTotalAmount = 0
                         'dv = BillingPayDetail.getBillPayTotals(Me.State.MyBO.Id)
-                        dv = BillingPayDetail.getBillPayTotalsNew(Me.State.MyBO.Id)
+                        dv = BillingPayDetail.getBillPayTotalsNew(State.MyBO.Id)
 
-                        If Not dv Is Nothing AndAlso Not dv.Table Is Nothing AndAlso dv.Table.Rows.Count > 0 AndAlso Not dv.Table.Rows(0)(installments_Collected) Is Nothing AndAlso Not dv.Table.Rows(0)(installments_Collected).Equals(System.DBNull.Value) Then
-                            Me.State.oBillPayCount = dv.Table.Rows(0)(installments_Collected)
+                        If dv IsNot Nothing AndAlso dv.Table IsNot Nothing AndAlso dv.Table.Rows.Count > 0 AndAlso dv.Table.Rows(0)(installments_Collected) IsNot Nothing AndAlso Not dv.Table.Rows(0)(installments_Collected).Equals(System.DBNull.Value) Then
+                            State.oBillPayCount = dv.Table.Rows(0)(installments_Collected)
                         Else
-                            Me.State.oBillPayCount = 0
+                            State.oBillPayCount = 0
                         End If
 
-                        If Not dv Is Nothing AndAlso Not dv.Table Is Nothing AndAlso dv.Table.Rows.Count > 0 AndAlso Not dv.Table.Rows(0)(Amount_Collected) Is Nothing AndAlso Not dv.Table.Rows(0)(Amount_Collected).Equals(System.DBNull.Value) Then
-                            Me.State.oBillingTotalAmount = dv.Table.Rows(0)(Amount_Collected)
+                        If dv IsNot Nothing AndAlso dv.Table IsNot Nothing AndAlso dv.Table.Rows.Count > 0 AndAlso dv.Table.Rows(0)(Amount_Collected) IsNot Nothing AndAlso Not dv.Table.Rows(0)(Amount_Collected).Equals(System.DBNull.Value) Then
+                            State.oBillingTotalAmount = dv.Table.Rows(0)(Amount_Collected)
                         Else
-                            Me.State.oBillingTotalAmount = 0
+                            State.oBillingTotalAmount = 0
                         End If
-                        Me.PopulateControlFromBOProperty(Me.moBalanceRemainingText, dv.Table.Rows(0)(remaining_amount))
+                        PopulateControlFromBOProperty(moBalanceRemainingText, dv.Table.Rows(0)(remaining_amount))
                         'Me.PopulateControlFromBOProperty(Me.moNumberOfInstallmentText, dv.Table.Rows(0)(Total_installments)) 'remaining_amount
-                        Me.moNumberOfInstallmentText.Text = String.Empty
+                        moNumberOfInstallmentText.Text = String.Empty
                         ControlMgr.SetVisibleControl(Me, moNumberOfInstallmentText, False)
                         ControlMgr.SetVisibleControl(Me, moNumberOfInstallmentLabel, False)
                         ControlMgr.SetVisibleControl(Me, moNumberOfInstallmentCollectedLabel, False)
@@ -3477,109 +3461,109 @@ Namespace Certificates
 
 
                     Else
-                        Me.State.oBillingTotalAmount = 0
-                        dv = BillingDetail.getBillingTotals(Me.State.MyBO.Id)
-                        Me.State.oBillingCount = 0
+                        State.oBillingTotalAmount = 0
+                        dv = BillingDetail.getBillingTotals(State.MyBO.Id)
+                        State.oBillingCount = 0
 
                         If (Not dv.Table.Rows(0).IsNull(BillingDetail.BillingTotals.COL_DETAIL_COUNT)) AndAlso CType(dv.Table.Rows(0).Item(BillingDetail.BillingTotals.COL_DETAIL_COUNT), Integer) > 0 Then
                             If Not dv.Table.Rows(0).IsNull(BillingDetail.BillingTotals.COL_BILLED_AMOUNT_TOTAL) Then
-                                Me.State.oBillingTotalAmount = CType(dv.Table.Rows(0).Item(BillingDetail.BillingTotals.COL_BILLED_AMOUNT_TOTAL), Decimal)
+                                State.oBillingTotalAmount = CType(dv.Table.Rows(0).Item(BillingDetail.BillingTotals.COL_BILLED_AMOUNT_TOTAL), Decimal)
                             Else
-                                Me.State.oBillingTotalAmount = 0
+                                State.oBillingTotalAmount = 0
                             End If
-                            If Me.State.TheDirectDebitState.certInstallment.InstallmentAmount.Value = 0 Then
+                            If State.TheDirectDebitState.certInstallment.InstallmentAmount.Value = 0 Then
                                 If Not dv.Table.Rows(0).IsNull(BillingDetail.BillingTotals.COL_DETAIL_COUNT) Then
-                                    Me.State.oBillingCount = CType(dv.Table.Rows(0).Item(BillingDetail.BillingTotals.COL_DETAIL_COUNT), Integer)
+                                    State.oBillingCount = CType(dv.Table.Rows(0).Item(BillingDetail.BillingTotals.COL_DETAIL_COUNT), Integer)
                                 Else
-                                    Me.State.oBillingCount = 0
+                                    State.oBillingCount = 0
                                 End If
                             Else
-                                Me.State.oBillingCount = CType(Decimal.Round(Decimal.Divide(Me.State.oBillingTotalAmount, Me.State.TheDirectDebitState.certInstallment.InstallmentAmount.Value)), Integer)
+                                State.oBillingCount = CType(Decimal.Round(Decimal.Divide(State.oBillingTotalAmount, State.TheDirectDebitState.certInstallment.InstallmentAmount.Value)), Integer)
                             End If
                         Else
                             ControlMgr.SetEnableControl(Me, btnDebitHistory, False)
                         End If
-                        Me.PopulateControlFromBOProperty(Me.moBalanceRemainingText, Me.State.grossAmtReceived - Me.State.oBillingTotalAmount)
-                        Me.PopulateControlFromBOProperty(Me.moNumberOfInstallmentText, CType(Me.State.TheDirectDebitState.certInstallment.NumberOfInstallments, Integer))
-                        Me.moNumberOfInstallmentRemainingLabel.Text = Me.moNumberOfInstallmentRemainingLabel.Text & ":"
-                        Me.moNumberOfInstallmentLabel.Text = Me.moNumberOfInstallmentLabel.Text & ":"
-                        Me.moNumberOfInstallmentCollectedLabel.Text = Me.moNumberOfInstallmentCollectedLabel.Text & ":"
+                        PopulateControlFromBOProperty(moBalanceRemainingText, State.grossAmtReceived - State.oBillingTotalAmount)
+                        PopulateControlFromBOProperty(moNumberOfInstallmentText, CType(State.TheDirectDebitState.certInstallment.NumberOfInstallments, Integer))
+                        moNumberOfInstallmentRemainingLabel.Text = moNumberOfInstallmentRemainingLabel.Text & ":"
+                        moNumberOfInstallmentLabel.Text = moNumberOfInstallmentLabel.Text & ":"
+                        moNumberOfInstallmentCollectedLabel.Text = moNumberOfInstallmentCollectedLabel.Text & ":"
 
                     End If
 
-                    If Not Me.State.TheDirectDebitState.certInstallment.CancellationDueDate Is Nothing Then
-                        If Not Me.State.TheDirectDebitState.certInstallment.CancellationDueDate.Value < Date.Today Then
-                            ControlMgr.SetVisibleControl(Me, Me.lblFutureCancelationDate, True)
-                            ControlMgr.SetVisibleControl(Me, Me.txtFutureCancelationDate, True)
-                            ControlMgr.SetVisibleControl(Me, Me.btnRemoveCancelDueDate_WRITE, True)
-                            If Not Me.lblFutureCancelationDate.Text.EndsWith(":") Then
-                                Me.lblFutureCancelationDate.Text &= ":"
+                    If State.TheDirectDebitState.certInstallment.CancellationDueDate IsNot Nothing Then
+                        If Not State.TheDirectDebitState.certInstallment.CancellationDueDate.Value < Date.Today Then
+                            ControlMgr.SetVisibleControl(Me, lblFutureCancelationDate, True)
+                            ControlMgr.SetVisibleControl(Me, txtFutureCancelationDate, True)
+                            ControlMgr.SetVisibleControl(Me, btnRemoveCancelDueDate_WRITE, True)
+                            If Not lblFutureCancelationDate.Text.EndsWith(":") Then
+                                lblFutureCancelationDate.Text &= ":"
                             End If
-                            Me.PopulateControlFromBOProperty(Me.txtFutureCancelationDate, Me.State.TheDirectDebitState.certInstallment.CancellationDueDate)
+                            PopulateControlFromBOProperty(txtFutureCancelationDate, State.TheDirectDebitState.certInstallment.CancellationDueDate)
                         End If
                     Else
-                        ControlMgr.SetVisibleControl(Me, Me.lblFutureCancelationDate, False)
-                        ControlMgr.SetVisibleControl(Me, Me.txtFutureCancelationDate, False)
-                        ControlMgr.SetVisibleControl(Me, Me.btnRemoveCancelDueDate_WRITE, False)
+                        ControlMgr.SetVisibleControl(Me, lblFutureCancelationDate, False)
+                        ControlMgr.SetVisibleControl(Me, txtFutureCancelationDate, False)
+                        ControlMgr.SetVisibleControl(Me, btnRemoveCancelDueDate_WRITE, False)
                     End If
 
 
 
 
 
-                    Me.PopulateControlFromBOProperty(Me.moTotalAmountCollectedText, Me.State.oBillingTotalAmount)
+                    PopulateControlFromBOProperty(moTotalAmountCollectedText, State.oBillingTotalAmount)
 
                     'REQ-5761 Defect 29135
-                    If Me.State.IsNewBillPayBtnVisible Then
+                    If State.IsNewBillPayBtnVisible Then
                         'Me.PopulateControlFromBOProperty(Me.moNumberOfInstallmentCollectedText, Me.State.oBillPayCount)
-                        Me.moNumberOfInstallmentCollectedText.Text = String.Empty
+                        moNumberOfInstallmentCollectedText.Text = String.Empty
                         'Me.PopulateControlFromBOProperty(Me.moNumberOfInstallmentRemainingLText, dv.Table.Rows(0)(Remaining_Installments))
-                        Me.moNumberOfInstallmentRemainingLText.Text = String.Empty 'CType(Me.moNumberOfInstallmentRemainingLText.Text, Integer)
+                        moNumberOfInstallmentRemainingLText.Text = String.Empty 'CType(Me.moNumberOfInstallmentRemainingLText.Text, Integer)
                     Else
-                        Me.PopulateControlFromBOProperty(Me.moNumberOfInstallmentCollectedText, Me.State.oBillingCount)
-                        Me.PopulateControlFromBOProperty(Me.moNumberOfInstallmentRemainingLText, Me.State.TheDirectDebitState.certInstallment.NumberOfInstallments.Value - Me.State.oBillingCount)
+                        PopulateControlFromBOProperty(moNumberOfInstallmentCollectedText, State.oBillingCount)
+                        PopulateControlFromBOProperty(moNumberOfInstallmentRemainingLText, State.TheDirectDebitState.certInstallment.NumberOfInstallments.Value - State.oBillingCount)
 
                     End If
 
-                    Me.PopulateControlFromBOProperty(Me.moInstallAmountText, Me.State.TheDirectDebitState.certInstallment.InstallmentAmount)
-                    Me.PopulateControlFromBOProperty(Me.moNextDueDateText, Me.State.TheDirectDebitState.certInstallment.PaymentDueDate)
+                    PopulateControlFromBOProperty(moInstallAmountText, State.TheDirectDebitState.certInstallment.InstallmentAmount)
+                    PopulateControlFromBOProperty(moNextDueDateText, State.TheDirectDebitState.certInstallment.PaymentDueDate)
                     'Req - 1016 Start
-                    Me.PopulateControlFromBOProperty(Me.moNextBillingDateText, Me.State.TheDirectDebitState.certInstallment.NextBillingDate)
+                    PopulateControlFromBOProperty(moNextBillingDateText, State.TheDirectDebitState.certInstallment.NextBillingDate)
                     'Req - 1016 End
-                    Me.PopulateControlFromBOProperty(Me.moDateLetterSentText, Me.State.TheDirectDebitState.certInstallment.DateLetterSent)
+                    PopulateControlFromBOProperty(moDateLetterSentText, State.TheDirectDebitState.certInstallment.DateLetterSent)
 
-                    If Me.State.directDebitPayment Then
-                        Me.PopulateControlFromBOProperty(Me.moBankAccountNumberText, Me.State.TheDirectDebitState.bankInfo.Account_Number)
-                        Me.PopulateControlFromBOProperty(Me.moBankRoutingNumberText, Me.State.TheDirectDebitState.bankInfo.Bank_Id)
-                        Me.PopulateControlFromBOProperty(Me.moBankAccountOwnerText, Me.State.TheDirectDebitState.bankInfo.Account_Name)
-                        Me.moCreditCardInformation1.Attributes("style") = "display: none"
-                        Me.moCreditCardInformation2.Attributes("style") = "display: none"
-                    ElseIf Me.State.creditCardPayment Then
-                        Dim strCreditCardNumber As String = "****" & Me.State.TheDirectDebitState.CreditCardInfo.Last4Digits
-                        Me.PopulateControlFromBOProperty(Me.moCreditCardNumberText, strCreditCardNumber)
-                        Me.SetSelectedItem(Me.moCreditCardTypeIDDropDown, Me.State.TheDirectDebitState.CreditCardInfo.CreditCardFormatId)
-                        Me.PopulateControlFromBOProperty(Me.moExpirationDateText, Me.State.TheDirectDebitState.CreditCardInfo.ExpirationDate)
-                        Me.PopulateControlFromBOProperty(Me.moNameOnCreditCardText, Me.State.TheDirectDebitState.CreditCardInfo.NameOnCreditCard)
-                        Me.moDirectDebitInformation6.Attributes("style") = "display: none"
-                        Me.moDirectDebitInformation7.Attributes("style") = "display: none"
+                    If State.directDebitPayment Then
+                        PopulateControlFromBOProperty(moBankAccountNumberText, State.TheDirectDebitState.bankInfo.Account_Number)
+                        PopulateControlFromBOProperty(moBankRoutingNumberText, State.TheDirectDebitState.bankInfo.Bank_Id)
+                        PopulateControlFromBOProperty(moBankAccountOwnerText, State.TheDirectDebitState.bankInfo.Account_Name)
+                        moCreditCardInformation1.Attributes("style") = "display: none"
+                        moCreditCardInformation2.Attributes("style") = "display: none"
+                    ElseIf State.creditCardPayment Then
+                        Dim strCreditCardNumber As String = "****" & State.TheDirectDebitState.CreditCardInfo.Last4Digits
+                        PopulateControlFromBOProperty(moCreditCardNumberText, strCreditCardNumber)
+                        SetSelectedItem(moCreditCardTypeIDDropDown, State.TheDirectDebitState.CreditCardInfo.CreditCardFormatId)
+                        PopulateControlFromBOProperty(moExpirationDateText, State.TheDirectDebitState.CreditCardInfo.ExpirationDate)
+                        PopulateControlFromBOProperty(moNameOnCreditCardText, State.TheDirectDebitState.CreditCardInfo.NameOnCreditCard)
+                        moDirectDebitInformation6.Attributes("style") = "display: none"
+                        moDirectDebitInformation7.Attributes("style") = "display: none"
                     Else
-                        Me.moCreditCardInformation1.Attributes("style") = "display: none"
-                        Me.moCreditCardInformation2.Attributes("style") = "display: none"
-                        Me.moDirectDebitInformation6.Attributes("style") = "display: none"
-                        Me.moDirectDebitInformation7.Attributes("style") = "display: none"
+                        moCreditCardInformation1.Attributes("style") = "display: none"
+                        moCreditCardInformation2.Attributes("style") = "display: none"
+                        moDirectDebitInformation6.Attributes("style") = "display: none"
+                        moDirectDebitInformation7.Attributes("style") = "display: none"
                     End If
 
-                    If Me.State.MyBO.StatusCode = CERT_STATUS Then
+                    If State.MyBO.StatusCode = CERT_STATUS Then
                         PupulateCommEntityGrid()
                     Else
-                        Me.moCommEntityInformation.Attributes("style") = "display: none"
-                        Me.moCommEntityInformationLine.Attributes("style") = "display: none"
+                        moCommEntityInformation.Attributes("style") = "display: none"
+                        moCommEntityInformationLine.Attributes("style") = "display: none"
                     End If
 
                     Dim yesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y")
 
                     CheckBoxSendLetter.Checked = False
-                    If Me.State.TheDirectDebitState.certInstallment.SendLetterId = yesId Then
+                    If State.TheDirectDebitState.certInstallment.SendLetterId = yesId Then
                         CheckBoxSendLetter.Checked = True
                     End If
 
@@ -3587,29 +3571,29 @@ Namespace Certificates
 
                     If ex.GetType Is GetType(DataNotFoundException) Then
 
-                        Me.moCreditCardInformation1.Attributes("style") = "display: none"
-                        Me.moCreditCardInformation2.Attributes("style") = "display: none"
+                        moCreditCardInformation1.Attributes("style") = "display: none"
+                        moCreditCardInformation2.Attributes("style") = "display: none"
 
-                        Me.moDirectDebitInformation1.Attributes("style") = "display: none"
-                        Me.moDirectDebitInformation2.Attributes("style") = "display: none"
-                        Me.moDirectDebitInformation3.Attributes("style") = "display: none"
-                        Me.moDirectDebitInformation4.Attributes("style") = "display: none"
+                        moDirectDebitInformation1.Attributes("style") = "display: none"
+                        moDirectDebitInformation2.Attributes("style") = "display: none"
+                        moDirectDebitInformation3.Attributes("style") = "display: none"
+                        moDirectDebitInformation4.Attributes("style") = "display: none"
                         'Req-1016 Start
-                        Me.moDirectDebitInformation4A.Attributes("style") = "display: none"
+                        moDirectDebitInformation4A.Attributes("style") = "display: none"
                         'Req-1016 End
-                        Me.moDirectDebitInformation5.Attributes("style") = "display: none"
-                        Me.moDirectDebitInformation5A.Attributes("style") = "display: none"
-                        Me.moDirectDebitInformation6.Attributes("style") = "display: none"
-                        Me.moDirectDebitInformation7.Attributes("style") = "display: none"
+                        moDirectDebitInformation5.Attributes("style") = "display: none"
+                        moDirectDebitInformation5A.Attributes("style") = "display: none"
+                        moDirectDebitInformation6.Attributes("style") = "display: none"
+                        moDirectDebitInformation7.Attributes("style") = "display: none"
 
-                        Me.moCommEntityInformation.Attributes("style") = "display: none"
-                        Me.moCommEntityInformationLine.Attributes("style") = "display: none"
+                        moCommEntityInformation.Attributes("style") = "display: none"
+                        moCommEntityInformationLine.Attributes("style") = "display: none"
 
                         ControlMgr.SetVisibleControl(Me, btnDebitSave_WRITE, False)
                         ControlMgr.SetVisibleControl(Me, btnUndoDebit_WRITE, False)
                         ControlMgr.SetVisibleControl(Me, btnDebitEdit_WRITE, False)
                         ControlMgr.SetVisibleControl(Me, btnDebitHistory, False)
-                        If (Me.State.IsNewBillPayBtnVisible) Then
+                        If (State.IsNewBillPayBtnVisible) Then
                             ControlMgr.SetVisibleControl(Me, btnBillPayHist, True)
                         Else
                             ControlMgr.SetVisibleControl(Me, btnBillPayHist, False)
@@ -3620,23 +3604,23 @@ Namespace Certificates
 
             Else
 
-                Me.moCreditCardInformation1.Attributes("style") = "display: none"
-                Me.moCreditCardInformation2.Attributes("style") = "display: none"
+                moCreditCardInformation1.Attributes("style") = "display: none"
+                moCreditCardInformation2.Attributes("style") = "display: none"
 
-                Me.moDirectDebitInformation1.Attributes("style") = "display: none"
-                Me.moDirectDebitInformation2.Attributes("style") = "display: none"
-                Me.moDirectDebitInformation3.Attributes("style") = "display: none"
-                Me.moDirectDebitInformation4.Attributes("style") = "display: none"
+                moDirectDebitInformation1.Attributes("style") = "display: none"
+                moDirectDebitInformation2.Attributes("style") = "display: none"
+                moDirectDebitInformation3.Attributes("style") = "display: none"
+                moDirectDebitInformation4.Attributes("style") = "display: none"
                 'Req-1016 Start
-                Me.moDirectDebitInformation4A.Attributes("style") = "display: none"
+                moDirectDebitInformation4A.Attributes("style") = "display: none"
                 'Req-1016 End
-                Me.moDirectDebitInformation5.Attributes("style") = "display: none"
-                Me.moDirectDebitInformation5A.Attributes("style") = "display: none"
-                Me.moDirectDebitInformation6.Attributes("style") = "display: none"
-                Me.moDirectDebitInformation7.Attributes("style") = "display: none"
+                moDirectDebitInformation5.Attributes("style") = "display: none"
+                moDirectDebitInformation5A.Attributes("style") = "display: none"
+                moDirectDebitInformation6.Attributes("style") = "display: none"
+                moDirectDebitInformation7.Attributes("style") = "display: none"
 
-                Me.moCommEntityInformation.Attributes("style") = "display: none"
-                Me.moCommEntityInformationLine.Attributes("style") = "display: none"
+                moCommEntityInformation.Attributes("style") = "display: none"
+                moCommEntityInformationLine.Attributes("style") = "display: none"
 
                 ControlMgr.SetVisibleControl(Me, btnDebitSave_WRITE, False)
                 ControlMgr.SetVisibleControl(Me, btnUndoDebit_WRITE, False)
@@ -3645,20 +3629,20 @@ Namespace Certificates
             End If
 
             Dim oContract As New Contract
-            oContract = Contract.GetContract(Me.State.MyBO.DealerId, Me.State.MyBO.WarrantySalesDate.Value)
+            oContract = Contract.GetContract(State.MyBO.DealerId, State.MyBO.WarrantySalesDate.Value)
 
             If oContract Is Nothing Then
                 Throw New GUIException(ElitaPlus.Common.ErrorCodes.ERR_CONTRACT_NOT_FOUND, ElitaPlus.Common.ErrorCodes.ERR_CONTRACT_NOT_FOUND)
             Else
-                If (oContract.GetContract(Me.State.MyBO.DealerId, Me.State.MyBO.WarrantySalesDate.Value).InsPremiumFactor) Is Nothing Then
-                    Me.State.InsPremiumFactor = 0
-                    Me.moCustPaymentInfo1.Attributes("style") = "display: none"
-                    Me.moCustPaymentInfo2.Attributes("style") = "display: none"
+                If (oContract.GetContract(State.MyBO.DealerId, State.MyBO.WarrantySalesDate.Value).InsPremiumFactor) Is Nothing Then
+                    State.InsPremiumFactor = 0
+                    moCustPaymentInfo1.Attributes("style") = "display: none"
+                    moCustPaymentInfo2.Attributes("style") = "display: none"
                 Else
-                    Me.State.InsPremiumFactor = Contract.GetContract(Me.State.MyBO.DealerId, Me.State.MyBO.WarrantySalesDate.Value).InsPremiumFactor.Value
-                    If Me.State.InsPremiumFactor <= 0 Then
-                        Me.moCustPaymentInfo1.Attributes("style") = "display: none"
-                        Me.moCustPaymentInfo2.Attributes("style") = "display: none"
+                    State.InsPremiumFactor = Contract.GetContract(State.MyBO.DealerId, State.MyBO.WarrantySalesDate.Value).InsPremiumFactor.Value
+                    If State.InsPremiumFactor <= 0 Then
+                        moCustPaymentInfo1.Attributes("style") = "display: none"
+                        moCustPaymentInfo2.Attributes("style") = "display: none"
                     End If
                 End If
             End If
@@ -3676,21 +3660,21 @@ Namespace Certificates
             Dim certCancellationId As Guid
             Dim oCertCancellation As CertCancellation
 
-            If (Not Me.State.MyBO.TheCertCancellationBO Is Nothing) Then
-                With Me.State.MyBO.TheCertCancellationBO
-                    Me.PopulateControlFromBOProperty(Me.moCancellationReasonTextbox, .getCancellationReasonDescription)
-                    Me.PopulateControlFromBOProperty(Me.moCancellationDateTextbox, .CancellationDate)
-                    Me.PopulateControlFromBOProperty(Me.moSourceTextbox, .Source)
-                    Me.PopulateControlFromBOProperty(Me.moProcessedDateTextbox, .ProcessedDate)
-                    Me.PopulateControlFromBOProperty(Me.moOriginalStateProvinceTextbox, .getRegionDescription)
+            If (State.MyBO.TheCertCancellationBO IsNot Nothing) Then
+                With State.MyBO.TheCertCancellationBO
+                    PopulateControlFromBOProperty(moCancellationReasonTextbox, .getCancellationReasonDescription)
+                    PopulateControlFromBOProperty(moCancellationDateTextbox, .CancellationDate)
+                    PopulateControlFromBOProperty(moSourceTextbox, .Source)
+                    PopulateControlFromBOProperty(moProcessedDateTextbox, .ProcessedDate)
+                    PopulateControlFromBOProperty(moOriginalStateProvinceTextbox, .getRegionDescription)
 
-                    Dim dv As DataView = LookupListNew.GetListItemId(Me.State.MyBO.TheCertCancellationBO.getRefundComputeMethodId, Authentication.LangId)
+                    Dim dv As DataView = LookupListNew.GetListItemId(State.MyBO.TheCertCancellationBO.getRefundComputeMethodId, Authentication.LangId)
                     computationMethod = dv.Item(FIRST_ROW).Item(DESCRIPTION).ToString
                     computationMethodCode = dv.Item(FIRST_ROW).Item(CODE).ToString
-                    Me.PopulateControlFromBOProperty(Me.moRefundMethodMeaningTextbox, computationMethod)
+                    PopulateControlFromBOProperty(moRefundMethodMeaningTextbox, computationMethod)
                     policyCost = .getPolicyCost
-                    Me.PopulateControlFromBOProperty(Me.moPolicyCostTextbox, policyCost, Me.DECIMAL_FORMAT)
-                    Me.PopulateControlFromBOProperty(Me.moComputedRefundTextbox, .ComputedRefund)
+                    PopulateControlFromBOProperty(moPolicyCostTextbox, policyCost, DECIMAL_FORMAT)
+                    PopulateControlFromBOProperty(moComputedRefundTextbox, .ComputedRefund)
 
 
                     Dim CompRefund As Decimal
@@ -3706,14 +3690,14 @@ Namespace Certificates
                         ControlMgr.SetVisibleControl(Me, moCostRetainedTextbox, False)
                     Else
                         If moCostRetainedLabel.Text.IndexOf(":") <= 0 Then
-                            Me.moCostRetainedLabel.Text = Me.moCostRetainedLabel.Text & ":"
+                            moCostRetainedLabel.Text = moCostRetainedLabel.Text & ":"
                         End If
                         ControlMgr.SetVisibleControl(Me, moCostRetainedLabel, True)
                         ControlMgr.SetVisibleControl(Me, moCostRetainedTextbox, True)
                         costRetained = policyCost - .ComputedRefund.Value
-                        Me.PopulateControlFromBOProperty(Me.moCostRetainedTextbox, costRetained)
+                        PopulateControlFromBOProperty(moCostRetainedTextbox, costRetained)
                     End If
-                    Me.PopulateControlFromBOProperty(Me.moRefundAmtTextbox, .RefundAmt)
+                    PopulateControlFromBOProperty(moRefundAmtTextbox, .RefundAmt)
 
                     If .CreditIssuedFlag = NO Then
                         ControlMgr.SetVisibleControl(Me, moIssuedToLabel, False)
@@ -3726,19 +3710,19 @@ Namespace Certificates
                         Else
                             moIssuedToLabel.Text = moIssuedToLabel.Text & ":"
                         End If
-                        Dim dv2 As DataView = LookupListNew.GetListItemId(Me.State.MyBO.TheCertCancellationBO.RefundDestId, Authentication.LangId)
+                        Dim dv2 As DataView = LookupListNew.GetListItemId(State.MyBO.TheCertCancellationBO.RefundDestId, Authentication.LangId)
                         issuedTo = dv2.Item(FIRST_ROW).Item(DESCRIPTION).ToString
-                        Me.PopulateControlFromBOProperty(Me.moIssuedToTextbox, issuedTo)
+                        PopulateControlFromBOProperty(moIssuedToTextbox, issuedTo)
                     End If
 
-                    If (Me.State.MyBO.TheCertCancellationBO.PaymentMethodId.Equals(Guid.Empty)) Then
+                    If (State.MyBO.TheCertCancellationBO.PaymentMethodId.Equals(Guid.Empty)) Then
                         ControlMgr.SetVisibleControl(Me, moPaymentMethodLabel, False)
                         ControlMgr.SetVisibleControl(Me, moPaymentMethodTextbox, False)
                         ControlMgr.SetVisibleControl(Me, moBankInfoLabel, False)
-                        Me.moCancPaymentOrderInfoCtrl.Visible = False
-                        Me.moCancBankInfoController.Visible = False
+                        moCancPaymentOrderInfoCtrl.Visible = False
+                        moCancBankInfoController.Visible = False
                     Else
-                        If LookupListNew.GetCodeFromId(LookupListNew.LK_REFUND_DESTINATION, Me.State.MyBO.TheCertCancellationBO.RefundDestId) = Codes.REFUND_DESTINATION__CUSTOMER AndAlso Me.State.MyBO.TheCertCancellationBO.RefundAmt.Value > 0 Then
+                        If LookupListNew.GetCodeFromId(LookupListNew.LK_REFUND_DESTINATION, State.MyBO.TheCertCancellationBO.RefundDestId) = Codes.REFUND_DESTINATION__CUSTOMER AndAlso State.MyBO.TheCertCancellationBO.RefundAmt.Value > 0 Then
                             If moPaymentMethodLabel.Text.IndexOf(":") > 0 Then
                                 moPaymentMethodLabel.Text = moPaymentMethodLabel.Text
                             Else
@@ -3746,24 +3730,24 @@ Namespace Certificates
                             End If
                             ControlMgr.SetVisibleControl(Me, moPaymentMethodLabel, True)
                             ControlMgr.SetVisibleControl(Me, moPaymentMethodTextbox, True)
-                            PaymentMethod = LookupListNew.GetDescriptionFromId(LookupListNew.LK_PAYMENTMETHOD, Me.State.MyBO.TheCertCancellationBO.PaymentMethodId)
-                            Me.PopulateControlFromBOProperty(Me.moPaymentMethodTextbox, PaymentMethod)
-                            If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, Me.State.MyBO.TheCertCancellationBO.PaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
-                                Me.State.CancBankInfoBO = Me.State.MyBO.TheCertCancellationBO.bankinfo
-                                Me.State.CancBankInfoBO.SourceCountryID = Me.State.CancBankInfoBO.CountryID
-                                Me.moCancBankInfoController.Bind(Me.State.CancBankInfoBO)
-                                Me.moCancBankInfoController.DisableAllFields()
-                                Me.moCancBankInfoController.Visible = True
-                                Me.moCancPaymentOrderInfoCtrl.Visible = False
-                            ElseIf LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, Me.State.MyBO.TheCertCancellationBO.PaymentMethodId) = Codes.PAYMENT_METHOD__PAYMENT_ORDER Then
-                                Me.State.CancPaymentOrderInfoBO = Me.State.MyBO.TheCertCancellationBO.PmtOrderinfo(True)
-                                Me.moCancPaymentOrderInfoCtrl.Bind(Me.State.CancPaymentOrderInfoBO)
-                                Me.moCancPaymentOrderInfoCtrl.DisableAllFields()
-                                Me.moCancPaymentOrderInfoCtrl.Visible = True
-                                Me.moCancBankInfoController.Visible = False
+                            PaymentMethod = LookupListNew.GetDescriptionFromId(LookupListNew.LK_PAYMENTMETHOD, State.MyBO.TheCertCancellationBO.PaymentMethodId)
+                            PopulateControlFromBOProperty(moPaymentMethodTextbox, PaymentMethod)
+                            If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, State.MyBO.TheCertCancellationBO.PaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
+                                State.CancBankInfoBO = State.MyBO.TheCertCancellationBO.bankinfo
+                                State.CancBankInfoBO.SourceCountryID = State.CancBankInfoBO.CountryID
+                                moCancBankInfoController.Bind(State.CancBankInfoBO)
+                                moCancBankInfoController.DisableAllFields()
+                                moCancBankInfoController.Visible = True
+                                moCancPaymentOrderInfoCtrl.Visible = False
+                            ElseIf LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, State.MyBO.TheCertCancellationBO.PaymentMethodId) = Codes.PAYMENT_METHOD__PAYMENT_ORDER Then
+                                State.CancPaymentOrderInfoBO = State.MyBO.TheCertCancellationBO.PmtOrderinfo(True)
+                                moCancPaymentOrderInfoCtrl.Bind(State.CancPaymentOrderInfoBO)
+                                moCancPaymentOrderInfoCtrl.DisableAllFields()
+                                moCancPaymentOrderInfoCtrl.Visible = True
+                                moCancBankInfoController.Visible = False
                             Else
-                                Me.moCancPaymentOrderInfoCtrl.Visible = False
-                                Me.moCancBankInfoController.Visible = False
+                                moCancPaymentOrderInfoCtrl.Visible = False
+                                moCancBankInfoController.Visible = False
                             End If
                         Else
                             ControlMgr.SetVisibleControl(Me, moPaymentMethodLabel, False)
@@ -3777,33 +3761,33 @@ Namespace Certificates
                         .GrossAmtReceived = .GrossAmtReceived.Value
                     End If
 
-                    Me.PopulateControlFromBOProperty(Me.moCanGrossAmtReceivedTextbox, .GrossAmtReceived.Value, Me.DECIMAL_FORMAT)
-                    Me.PopulateControlFromBOProperty(Me.moCanOriginalPremiumTextbox, .OriginalPremium)
-                    Me.PopulateControlFromBOProperty(Me.moCanPremiumWrittenTextbox, .PremiumWritten)
-                    Me.PopulateControlFromBOProperty(Me.moCanLossCostTextbox, .LossCost)
-                    Me.PopulateControlFromBOProperty(Me.moCanComissionsTextbox, .Commission)
-                    Me.PopulateControlFromBOProperty(Me.moCanAdminExpensesTextbox, .AdminExpense)
-                    Me.PopulateControlFromBOProperty(Me.moCanMarketingExpensesTextbox, .MarketingExpense)
-                    Me.PopulateControlFromBOProperty(Me.moCanOtherTextbox, .Other)
-                    Me.PopulateControlFromBOProperty(Me.moCanSalesTaxTextbox, .SalesTax)
+                    PopulateControlFromBOProperty(moCanGrossAmtReceivedTextbox, .GrossAmtReceived.Value, DECIMAL_FORMAT)
+                    PopulateControlFromBOProperty(moCanOriginalPremiumTextbox, .OriginalPremium)
+                    PopulateControlFromBOProperty(moCanPremiumWrittenTextbox, .PremiumWritten)
+                    PopulateControlFromBOProperty(moCanLossCostTextbox, .LossCost)
+                    PopulateControlFromBOProperty(moCanComissionsTextbox, .Commission)
+                    PopulateControlFromBOProperty(moCanAdminExpensesTextbox, .AdminExpense)
+                    PopulateControlFromBOProperty(moCanMarketingExpensesTextbox, .MarketingExpense)
+                    PopulateControlFromBOProperty(moCanOtherTextbox, .Other)
+                    PopulateControlFromBOProperty(moCanSalesTaxTextbox, .SalesTax)
 
                     'following 3 fields added for showing the status information of accounting - Felita to elita passback WR
-                    AcctStatus = LookupListNew.GetDescriptionFromId(LookupListNew.LK_ACCTSTATUS, Me.State.MyBO.TheCertCancellationBO.StatusId)
-                    Me.PopulateControlFromBOProperty(Me.moAcctStatusTextbox, AcctStatus)
-                    Me.PopulateControlFromBOProperty(Me.moAcctStatusDateTextbox, .StatusDate)
-                    Me.PopulateControlFromBOProperty(Me.moAcctTrackNumTextbox, .TrackingNumber)
+                    AcctStatus = LookupListNew.GetDescriptionFromId(LookupListNew.LK_ACCTSTATUS, State.MyBO.TheCertCancellationBO.StatusId)
+                    PopulateControlFromBOProperty(moAcctStatusTextbox, AcctStatus)
+                    PopulateControlFromBOProperty(moAcctStatusDateTextbox, .StatusDate)
+                    PopulateControlFromBOProperty(moAcctTrackNumTextbox, .TrackingNumber)
                     Dim strRefundMethod As String = LookupListNew.GetDescriptionFromExtCode(LookupListNew.LK_CRST, ElitaPlusIdentity.Current.ActiveUser.LanguageId, .RefundStatus)
 
-                    Me.PopulateControlFromBOProperty(Me.moRefundRejectCodeText, .PayRejectCode)
-                    Me.PopulateControlFromBOProperty(Me.moRefundRejectStatusText, strRefundMethod)
+                    PopulateControlFromBOProperty(moRefundRejectCodeText, .PayRejectCode)
+                    PopulateControlFromBOProperty(moRefundRejectStatusText, strRefundMethod)
 
                     If Not .BankInfoId.Equals(Guid.Empty) Then
-                        Me.State.RefundBankInfoBO = New BankInfo(.BankInfoId)
-                        Me.PopulateControlFromBOProperty(Me.moRfAccountNumberText, Me.State.RefundBankInfoBO.Account_Number_Last4Digits)
-                        Me.PopulateControlFromBOProperty(Me.moRfIBANNumberText, Me.State.RefundBankInfoBO.IbanNumberLast4Digits)
+                        State.RefundBankInfoBO = New BankInfo(.BankInfoId)
+                        PopulateControlFromBOProperty(moRfAccountNumberText, State.RefundBankInfoBO.Account_Number_Last4Digits)
+                        PopulateControlFromBOProperty(moRfIBANNumberText, State.RefundBankInfoBO.IbanNumberLast4Digits)
                     End If
 
-                    If .RefundMethod = REFUND_METHOD_SEPA And (.PayRejectCode <> String.Empty Or .RefundStatus = Codes.REFUND_STATUS_PENDING) Then
+                    If .RefundMethod = REFUND_METHOD_SEPA AndAlso (.PayRejectCode <> String.Empty OrElse .RefundStatus = Codes.REFUND_STATUS_PENDING) Then
                         ControlMgr.SetEnableControl(Me, moRfIBANNumberText, True)
                         ControlMgr.SetEnableControl(Me, moRfAccountNumberText, True)
                         ControlMgr.SetVisibleControl(Me, UpdateBankInfoButton_WRITE, True)
@@ -3816,8 +3800,8 @@ Namespace Certificates
                 End With
             End If
             'Call the Common Logic to Enable Reverse Cancellation/Reinstatement
-            If Me.State.MyBO.IsReverseCancellationEnabled(Me.State.MyBO.Id) Then
-                If Me.State.MyBO.IsChildCertificate Then
+            If State.MyBO.IsReverseCancellationEnabled(State.MyBO.Id) Then
+                If State.MyBO.IsChildCertificate Then
                     ControlMgr.SetVisibleControl(Me, ReverseCancellationButton_WRITE, False)
                 Else
                     ControlMgr.SetVisibleControl(Me, ReverseCancellationButton_WRITE, True)
@@ -3831,7 +3815,7 @@ Namespace Certificates
 
 #Region "DropDowns"
 
-        Private Sub PopulateSalutationDropdown(ByVal salutationDropDownList As DropDownList)
+        Private Sub PopulateSalutationDropdown(salutationDropDownList As DropDownList)
 
             Try
                 Dim salutation As ListItem() = CommonConfigManager.Current.ListManager.GetList("SLTN", Thread.CurrentPrincipal.GetLanguageCode())
@@ -3840,12 +3824,12 @@ Namespace Certificates
                                                    .AddBlankItem = True
                                                    })
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Private Sub PopulateMembershipTypeDropdown(ByVal membershipTypeDropDownList As DropDownList)
+        Private Sub PopulateMembershipTypeDropdown(membershipTypeDropDownList As DropDownList)
 
             Try
                 Dim membershipType As ListItem() = CommonConfigManager.Current.ListManager.GetList("MEMTYPE", Thread.CurrentPrincipal.GetLanguageCode())
@@ -3855,12 +3839,12 @@ Namespace Certificates
                                                        .AddBlankItem = True
                                                        })
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Private Sub PopulateLangPrefDropdown(ByVal langPrefDropDownList As DropDownList)
+        Private Sub PopulateLangPrefDropdown(langPrefDropDownList As DropDownList)
 
             Try
 
@@ -3870,28 +3854,28 @@ Namespace Certificates
                                                  .AddBlankItem = True
                                                  })
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
-        Private Sub PopulateCreditCardTypesDropdown(ByVal cboCreditCardTypesDropDownList As DropDownList)
+        Private Sub PopulateCreditCardTypesDropdown(cboCreditCardTypesDropDownList As DropDownList)
 
             Try
 
                 Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
-                oListContext.CompanyId = Me.State.MyBO.CompanyId
+                oListContext.CompanyId = State.MyBO.CompanyId
                 Dim creditCardTypeList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("CreditCardByCompany", Thread.CurrentPrincipal.GetLanguageCode(), oListContext)
                 cboCreditCardTypesDropDownList.Populate(creditCardTypeList, New PopulateOptions() With
                                                            {
                                                            .AddBlankItem = True
                                                            })
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Private Sub PopulatePaymentTypesDropdown(ByVal cboPaymentTypesTypesDropDownList As DropDownList)
+        Private Sub PopulatePaymentTypesDropdown(cboPaymentTypesTypesDropDownList As DropDownList)
 
             Try
 
@@ -3919,7 +3903,7 @@ Namespace Certificates
 
                 SetSelectedItem(moPaymentInstrument, State.MyBO.getPaymentInstrumentCode)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
@@ -3933,18 +3917,18 @@ Namespace Certificates
                                                      .AddBlankItem = True
                                                      })
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Private Sub PopulateCancellationReasonDropdown(ByVal cancellationReasonDropDownList As DropDownList, ByVal filtercondition As String, ByVal defaultDescription As String)
+        Private Sub PopulateCancellationReasonDropdown(cancellationReasonDropDownList As DropDownList, filtercondition As String, defaultDescription As String)
 
             Try
 
                 Dim listcontext As ListContext = New ListContext()
                 listcontext.UserId = ElitaPlusIdentity.Current.ActiveUser.Id
-                listcontext.CompanyId = Me.State.MyBO.CompanyId
+                listcontext.CompanyId = State.MyBO.CompanyId
                 Dim cancellationReasolist As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("CancellationReasonsByRole", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
                 cancellationReasonDropDownList.Populate(cancellationReasolist, New PopulateOptions() With
                                                            {
@@ -3954,12 +3938,12 @@ Namespace Certificates
                 BindSelectItemByText(defaultDescription, cancellationReasonDropDownList)
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Private Sub PopulateCancelRequestReasonDropdown(ByVal cancellationReasonDropDownList As DropDownList, ByVal filtercondition As String)
+        Private Sub PopulateCancelRequestReasonDropdown(cancellationReasonDropDownList As DropDownList, filtercondition As String)
 
             Try
                 'Dim cancellationReasonDV As DataView = LookupListNew.GetCancellationReasonWithCodeLookupList(Me.State.MyBO.CompanyId)
@@ -3967,11 +3951,11 @@ Namespace Certificates
                 'BindListControlToDataView(cancellationReasonDropDownList, cancellationReasonDV, "DESCRIPTION", "ID", True)
 
                 Dim listcontext As ListContext = New ListContext()
-                listcontext.CompanyId = Me.State.MyBO.CompanyId
+                listcontext.CompanyId = State.MyBO.CompanyId
                 Dim cancellationRequestReason As ListItem() = CommonConfigManager.Current.ListManager.GetList("CancellationReasonsByCompany", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
 
                 Dim filteredCancellationReasonList As ListItem()
-                If Me.State.CancelRulesForSFR = Codes.YESNO_Y Then
+                If State.CancelRulesForSFR = Codes.YESNO_Y Then
                     filteredCancellationReasonList = (From x In cancellationRequestReason
                                                       Where x.Translation.Contains("SFR")
                                                       Select x).ToArray()
@@ -3987,7 +3971,7 @@ Namespace Certificates
                                                                        End Function
                                                            })
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
@@ -3996,7 +3980,7 @@ Namespace Certificates
             If (CancellationReasonDV.Count > 0) Then
                 Dim strRowFilter As String = CancellationReasonDV.RowFilter
 
-                If Me.State.CancelRulesForSFR = Codes.YESNO_Y Then
+                If State.CancelRulesForSFR = Codes.YESNO_Y Then
                     strRowFilter = "Description Like '%SFR%'"
                 Else
                     strRowFilter = "Description not like '%SFR%'"
@@ -4014,7 +3998,7 @@ Namespace Certificates
 
         End Function
 
-        Private Sub PopulateCancelCommentTypeDropdown(ByVal CancelCommentTypeDropDownList As DropDownList)
+        Private Sub PopulateCancelCommentTypeDropdown(CancelCommentTypeDropDownList As DropDownList)
 
             Try
                 Dim cancelComment As ListItem() = CommonConfigManager.Current.ListManager.GetList("COMMT", Thread.CurrentPrincipal.GetLanguageCode())
@@ -4026,19 +4010,19 @@ Namespace Certificates
                                                                       End Function
                                                           })
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
 
-        Private Sub PopulatePaymentMethodDropdown(ByVal PaymentMethodDropDownList As DropDownList)
+        Private Sub PopulatePaymentMethodDropdown(PaymentMethodDropDownList As DropDownList)
 
             Try
 
                 Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
                 oListContext.UserId = ElitaPlusIdentity.Current.ActiveUser.Id
-                oListContext.CompanyId = Me.State.MyBO.CompanyId
+                oListContext.CompanyId = State.MyBO.CompanyId
                 oListContext.LanguageId = ElitaPlusIdentity.Current.ActiveUser.LanguageId
 
                 Dim paymentMethodList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(ListCodes.PaymentMethodByRoleCompany, Thread.CurrentPrincipal.GetLanguageCode(), oListContext)
@@ -4048,12 +4032,12 @@ Namespace Certificates
                                                       .SortFunc = AddressOf PopulateOptions.GetDescription
                                                       })
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Private Sub PopulateMaritalStatusDropdown(ByVal MaritalStatusDropDownList As DropDownList)
+        Private Sub PopulateMaritalStatusDropdown(MaritalStatusDropDownList As DropDownList)
             Try
 
                 Dim maritalStatus As ListItem() = CommonConfigManager.Current.ListManager.GetList("MARITAL_STATUS", Thread.CurrentPrincipal.GetLanguageCode())
@@ -4062,11 +4046,11 @@ Namespace Certificates
                                                       .AddBlankItem = True
                                                       })
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub PopulateNationalityDropdown(ByVal nationalityDropDownList As DropDownList)
+        Private Sub PopulateNationalityDropdown(nationalityDropDownList As DropDownList)
             Try
                 Dim nationalities As ListItem() = CommonConfigManager.Current.ListManager.GetList("NATIONALITY", Thread.CurrentPrincipal.GetLanguageCode())
                 nationalityDropDownList.Populate(nationalities, New PopulateOptions() With
@@ -4074,11 +4058,11 @@ Namespace Certificates
                                                     .AddBlankItem = True
                                                     })
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub PopulatePlaceOfBirthDropdown(ByVal PlaceOfBirthDropDownList As DropDownList)
+        Private Sub PopulatePlaceOfBirthDropdown(PlaceOfBirthDropDownList As DropDownList)
             Try
 
                 Dim placeOfBirth As ListItem() = CommonConfigManager.Current.ListManager.GetList("PLACEOFBIRTH", Thread.CurrentPrincipal.GetLanguageCode())
@@ -4088,11 +4072,11 @@ Namespace Certificates
                                                      })
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub PopulateGenderDropdown(ByVal GenderDropDownList As DropDownList)
+        Private Sub PopulateGenderDropdown(GenderDropDownList As DropDownList)
             Try
 
                 Dim gender As ListItem() = CommonConfigManager.Current.ListManager.GetList("GENDER", Thread.CurrentPrincipal.GetLanguageCode())
@@ -4101,11 +4085,11 @@ Namespace Certificates
                                                .AddBlankItem = True
                                                })
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub PopulatePersonTypeDropdown(ByVal PersonTypeDropDownList As DropDownList)
+        Private Sub PopulatePersonTypeDropdown(PersonTypeDropDownList As DropDownList)
             Try
                 Dim personType As ListItem() = CommonConfigManager.Current.ListManager.GetList("PERSON_TYPE", Thread.CurrentPrincipal.GetLanguageCode())
                 PersonTypeDropDownList.Populate(personType, New PopulateOptions() With
@@ -4113,11 +4097,11 @@ Namespace Certificates
                                                    .AddBlankItem = True
                                                    })
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub PopulateIncomeRangeDropdown(ByVal IncomeRangeDropDownList As DropDownList)
+        Private Sub PopulateIncomeRangeDropdown(IncomeRangeDropDownList As DropDownList)
             Try
                 Dim incomeRange As ListItem() = CommonConfigManager.Current.ListManager.GetList("IRNG", Thread.CurrentPrincipal.GetLanguageCode())
 
@@ -4126,11 +4110,11 @@ Namespace Certificates
                                                     .AddBlankItem = True
                                                     })
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub PopulatePoliticallyExposedDropdown(ByVal PoliticallyExposedDropDownList As DropDownList)
+        Private Sub PopulatePoliticallyExposedDropdown(PoliticallyExposedDropDownList As DropDownList)
             Try
                 Dim politicallyExposed As ListItem() = CommonConfigManager.Current.ListManager.GetList("YESNO", Thread.CurrentPrincipal.GetLanguageCode())
 
@@ -4139,7 +4123,7 @@ Namespace Certificates
                                                            .AddBlankItem = True
                                                            })
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -4152,7 +4136,7 @@ Namespace Certificates
                                               .AddBlankItem = True
                                               })
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -4161,57 +4145,57 @@ Namespace Certificates
 
         Public Sub populateFormFromCertCancellationBO()
 
-            If Not Me.State.certCancellationBO Is Nothing AndAlso Not Me.State.certCancellationBO.CancellationRequestedDate Is Nothing Then
-                Me.CancelCertReqDateTextbox.Text = GetDateFormattedStringNullable(Me.State.certCancellationBO.CancellationRequestedDate.Value)
+            If State.certCancellationBO IsNot Nothing AndAlso State.certCancellationBO.CancellationRequestedDate IsNot Nothing Then
+                CancelCertReqDateTextbox.Text = GetDateFormattedStringNullable(State.certCancellationBO.CancellationRequestedDate.Value)
             Else
-                Me.CancelCertReqDateTextbox.Text = GetDateFormattedStringNullable(System.DateTime.Today)
+                CancelCertReqDateTextbox.Text = GetDateFormattedStringNullable(System.DateTime.Today)
             End If
-            Me.AddCalendar(Me.CancelCertReqDateImageButton, Me.CancelCertReqDateTextbox)
+            AddCalendar(CancelCertReqDateImageButton, CancelCertReqDateTextbox)
 
-            If Not Me.State.certCancellationBO Is Nothing AndAlso Not Me.State.certCancellationBO.CancellationDate Is Nothing Then
-                Me.CancelCertDateTextbox.Text = GetDateFormattedStringNullable(Me.State.certCancellationBO.CancellationDate.Value)
+            If State.certCancellationBO IsNot Nothing AndAlso State.certCancellationBO.CancellationDate IsNot Nothing Then
+                CancelCertDateTextbox.Text = GetDateFormattedStringNullable(State.certCancellationBO.CancellationDate.Value)
             Else
-                If Not Me.State.MyBO.PreviousCertificateId.Equals(Guid.Empty) And Me.State.MyBO.WarrantySalesDate.Value > System.DateTime.Today Then
-                    Me.CancelCertDateTextbox.Text = GetDateFormattedStringNullable(Me.State.MyBO.WarrantySalesDate.Value)
+                If Not State.MyBO.PreviousCertificateId.Equals(Guid.Empty) AndAlso State.MyBO.WarrantySalesDate.Value > System.DateTime.Today Then
+                    CancelCertDateTextbox.Text = GetDateFormattedStringNullable(State.MyBO.WarrantySalesDate.Value)
                     ControlMgr.SetEnableControl(Me, CancelCertDateTextbox, False)
                     ControlMgr.SetVisibleControl(Me, CancelCertDateImagebutton, False)
                 Else
-                    Me.CancelCertDateTextbox.Text = GetDateFormattedString(System.DateTime.Today)
+                    CancelCertDateTextbox.Text = GetDateFormattedString(System.DateTime.Today)
                 End If
             End If
-            Me.AddCalendar(Me.CancelCertDateImagebutton, Me.CancelCertDateTextbox)
+            AddCalendar(CancelCertDateImagebutton, CancelCertDateTextbox)
 
         End Sub
 
         Public Sub ClearCommentsControls()
-            Me.moCallerNameTextBox.Text = String.Empty
-            Me.moCommentsTextbox.Text = String.Empty
+            moCallerNameTextBox.Text = String.Empty
+            moCommentsTextbox.Text = String.Empty
         End Sub
         Public Sub PopulateCancellationDate()
             Dim iFullRefundDays As Integer
             Dim oContract As New Contract, dtCancellationDate As Date
-            If Me.State.CancelRulesForSFR = Codes.YESNO_Y Then
+            If State.CancelRulesForSFR = Codes.YESNO_Y Then
 
-                If Me.moCancelRequestDateTextBox.Text <> String.Empty Then
+                If moCancelRequestDateTextBox.Text <> String.Empty Then
                     If Not IsDate(moCancelRequestDateTextBox.Text) Then
                         ElitaPlusPage.SetLabelError(moCancelRequestDateLabel)
                         Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.MSG_INVALID_CANCEL_REQUEST_DATE)
                     Else
                         ClearLabelError(moCancelRequestDateLabel)
                         If IsNothing(State.certCancelRequestBO) Then
-                            Me.State.certCancelRequestBO = New CertCancelRequest
+                            State.certCancelRequestBO = New CertCancelRequest
                         End If
-                        Me.PopulateBOProperty(Me.State.certCancelRequestBO, "CancellationRequestDate", Me.moCancelRequestDateTextBox)
+                        PopulateBOProperty(State.certCancelRequestBO, "CancellationRequestDate", moCancelRequestDateTextBox)
 
                         If (State.certCancelRequestBO.CancellationRequestDate.Value > DateTime.Today) Then
                             ElitaPlusPage.SetLabelError(moCancelRequestDateLabel)
                             Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.MSG_INVALID_CANCEL_REQUEST_DATE)
                         End If
 
-                        oContract = Contract.GetContract(Me.State.MyBO.DealerId, Me.State.MyBO.WarrantySalesDate.Value)
+                        oContract = Contract.GetContract(State.MyBO.DealerId, State.MyBO.WarrantySalesDate.Value)
                         iFullRefundDays = oContract.FullRefundDays
-                        Me.State.CertTerm = State.MyBO.getCertTerm
-                        If Not GetSelectedItem(Me.moCancelRequestReasonDrop).Equals(Guid.Empty) Then
+                        State.CertTerm = State.MyBO.getCertTerm
+                        If Not GetSelectedItem(moCancelRequestReasonDrop).Equals(Guid.Empty) Then
                             Dim oCancellationReason As New CancellationReason(GetSelectedItem(moCancelRequestReasonDrop))
                             State.CancReasonIsLawful = oCancellationReason.IsLawful
                             State.RefundComputeMethod = LookupListNew.GetCodeFromId(LookupListNew.LK_REFUND_COMP_METHOD, oCancellationReason.RefundComputeMethodId)
@@ -4223,19 +4207,19 @@ Namespace Certificates
                             dtCancellationDate = State.certCancelRequestBO.CancellationRequestDate.Value
                         Else
 
-                            If DateDiff("D", Me.State.MyBO.WarrantySalesDate.Value, State.certCancelRequestBO.CancellationRequestDate.Value) <= iFullRefundDays Then
+                            If DateDiff("D", State.MyBO.WarrantySalesDate.Value, State.certCancelRequestBO.CancellationRequestDate.Value) <= iFullRefundDays Then
                                 dtCancellationDate = State.certCancelRequestBO.CancellationRequestDate.Value
                             Else
                                 If State.CancReasonIsLawful = Codes.EXT_YESNO_N Then
-                                    If State.certCancelRequestBO.CancellationRequestDate.Value < DateAdd("M", State.CertTerm, Me.State.MyBO.WarrantySalesDate.Value) Then
-                                        dtCancellationDate = DateAdd("D", -1, DateAdd("M", State.CertTerm, Me.State.MyBO.WarrantySalesDate.Value))
+                                    If State.certCancelRequestBO.CancellationRequestDate.Value < DateAdd("M", State.CertTerm, State.MyBO.WarrantySalesDate.Value) Then
+                                        dtCancellationDate = DateAdd("D", -1, DateAdd("M", State.CertTerm, State.MyBO.WarrantySalesDate.Value))
                                     Else
                                         dtCancellationDate = State.certCancelRequestBO.CancellationRequestDate.Value
                                     End If
                                 ElseIf State.CancReasonIsLawful = Codes.EXT_YESNO_Y Then
-                                    If State.CancReasonCode = Codes.SFR_CR_CHATELLAW And State.certCancelRequestBO.CancellationRequestDate.Value < DateAdd("M", State.CertTerm, Me.State.MyBO.WarrantySalesDate.Value) Then
-                                        dtCancellationDate = DateAdd("D", -1, DateAdd("M", State.CertTerm, Me.State.MyBO.WarrantySalesDate.Value))
-                                    ElseIf State.CancReasonCode = Codes.SFR_CR_HAMONLAW And State.certCancelRequestBO.CancellationRequestDate.Value > DateAdd("M", State.CertTerm, Me.State.MyBO.WarrantySalesDate.Value) Then
+                                    If State.CancReasonCode = Codes.SFR_CR_CHATELLAW AndAlso State.certCancelRequestBO.CancellationRequestDate.Value < DateAdd("M", State.CertTerm, State.MyBO.WarrantySalesDate.Value) Then
+                                        dtCancellationDate = DateAdd("D", -1, DateAdd("M", State.CertTerm, State.MyBO.WarrantySalesDate.Value))
+                                    ElseIf State.CancReasonCode = Codes.SFR_CR_HAMONLAW AndAlso State.certCancelRequestBO.CancellationRequestDate.Value > DateAdd("M", State.CertTerm, State.MyBO.WarrantySalesDate.Value) Then
                                         dtCancellationDate = DateAdd("D", +30, State.certCancelRequestBO.CancellationRequestDate.Value)
                                     Else
                                         dtCancellationDate = State.certCancelRequestBO.CancellationRequestDate.Value
@@ -4244,50 +4228,50 @@ Namespace Certificates
                             End If
                         End If
                     End If
-                    Me.PopulateControlFromBOProperty(Me.moCancelDateTextBox, dtCancellationDate)
+                    PopulateControlFromBOProperty(moCancelDateTextBox, dtCancellationDate)
                 End If
             End If
         End Sub
         Public Sub populateCancelRequestInfoTab()
             Try
 
-                PopulateCancelRequestReasonDropdown(Me.moCancelRequestReasonDrop, Nothing)
+                PopulateCancelRequestReasonDropdown(moCancelRequestReasonDrop, Nothing)
                 PopulateCancelCommentTypeDropdown(moCancelRequestJustificationDrop)
-                Me.moProofOfDocumentationDrop.PopulateOld("YESNO", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.AddBlankListItem, String.Empty, ListValueType.Description)
-                Me.moUseExistingBankDetailsDrop.PopulateOld("YESNO", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.AddBlankListItem, String.Empty, ListValueType.Description)
+                moProofOfDocumentationDrop.PopulateOld("YESNO", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.AddBlankListItem, String.Empty, ListValueType.Description)
+                moUseExistingBankDetailsDrop.PopulateOld("YESNO", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.AddBlankListItem, String.Empty, ListValueType.Description)
 
-                Me.State.CertInstalBankInfoId = Me.State.MyBO.getCertInstalBankInfoID
+                State.CertInstalBankInfoId = State.MyBO.getCertInstalBankInfoID
 
-                If Me.State.CertCancelRequestId.Equals(Guid.Empty) Then
+                If State.CertCancelRequestId.Equals(Guid.Empty) Then
                     ''status
                     ControlMgr.SetVisibleControl(Me, moCancelRequestStatusLabel, False)
                     ControlMgr.SetVisibleControl(Me, moCancelRequestStatusText, False)
 
-                    If Me.State.IsEdit = True Then
-                        If Me.State.CancelRulesForSFR = Codes.YESNO_Y Then
-                            Me.moCancelDateTextBox.Text = String.Empty
-                            Me.moCancelRequestDateTextBox.Text = String.Empty
+                    If State.IsEdit = True Then
+                        If State.CancelRulesForSFR = Codes.YESNO_Y Then
+                            moCancelDateTextBox.Text = String.Empty
+                            moCancelRequestDateTextBox.Text = String.Empty
                         Else
-                            Me.moCancelDateTextBox.Text = GetDateFormattedString(System.DateTime.Now)
-                            Me.moCancelRequestDateTextBox.Text = GetDateFormattedString(System.DateTime.Now)
+                            moCancelDateTextBox.Text = GetDateFormattedString(System.DateTime.Now)
+                            moCancelRequestDateTextBox.Text = GetDateFormattedString(System.DateTime.Now)
                         End If
                     Else
-                        Me.moCancelDateTextBox.Text = String.Empty
-                        Me.moCancelRequestDateTextBox.Text = String.Empty
-                        Me.moCancelRequestReasonDrop.SelectedIndex = NO_ITEM_SELECTED_INDEX
-                        Me.moCancelRequestJustificationDrop.SelectedIndex = NO_ITEM_SELECTED_INDEX
-                        Me.moProofOfDocumentationDrop.SelectedIndex = NO_ITEM_SELECTED_INDEX
-                        Me.moUseExistingBankDetailsDrop.SelectedIndex = NO_ITEM_SELECTED_INDEX
-                        Me.moCRIBANNumberText.Text = String.Empty
-                        If Me.State.CancelRulesForSFR = Codes.YESNO_Y Then
+                        moCancelDateTextBox.Text = String.Empty
+                        moCancelRequestDateTextBox.Text = String.Empty
+                        moCancelRequestReasonDrop.SelectedIndex = NO_ITEM_SELECTED_INDEX
+                        moCancelRequestJustificationDrop.SelectedIndex = NO_ITEM_SELECTED_INDEX
+                        moProofOfDocumentationDrop.SelectedIndex = NO_ITEM_SELECTED_INDEX
+                        moUseExistingBankDetailsDrop.SelectedIndex = NO_ITEM_SELECTED_INDEX
+                        moCRIBANNumberText.Text = String.Empty
+                        If State.CancelRulesForSFR = Codes.YESNO_Y Then
                             ControlMgr.SetEnableControl(Me, moCancelDateTextBox, False)
                             ControlMgr.SetVisibleControl(Me, moCancelDateImageButton, False)
                         End If
                     End If
-                    If Not Me.State.CertInstalBankInfoId.Equals(Guid.Empty) Then
+                    If Not State.CertInstalBankInfoId.Equals(Guid.Empty) Then
                         ControlMgr.SetVisibleControl(Me, moUseExistingBankDetailsDrop, True)
                         ControlMgr.SetVisibleControl(Me, moUseExistingBankDetailsLabel, True)
-                        If Me.State.IsEdit = True Then
+                        If State.IsEdit = True Then
                             ControlMgr.SetEnableControl(Me, moUseExistingBankDetailsDrop, True)
                             ControlMgr.SetEnableControl(Me, moUseExistingBankDetailsLabel, True)
                         Else
@@ -4306,35 +4290,35 @@ Namespace Certificates
                     '    ControlMgr.SetEnableControl(Me, moCancelDateTextBox, False)
                     '    ControlMgr.SetVisibleControl(Me, moCancelDateImageButton, False)
                     'End If
-                    With Me.State.certCancelRequestBO
-                        Me.PopulateControlFromBOProperty(Me.moCancelRequestReasonDrop, .CancellationReasonId)
-                        Me.PopulateControlFromBOProperty(Me.moCancelDateTextBox, .CancellationDate)
-                        Me.PopulateControlFromBOProperty(Me.moCancelRequestDateTextBox, .CancellationRequestDate)
+                    With State.certCancelRequestBO
+                        PopulateControlFromBOProperty(moCancelRequestReasonDrop, .CancellationReasonId)
+                        PopulateControlFromBOProperty(moCancelDateTextBox, .CancellationDate)
+                        PopulateControlFromBOProperty(moCancelRequestDateTextBox, .CancellationRequestDate)
                         ''status
                         ControlMgr.SetVisibleControl(Me, moCancelRequestStatusLabel, True)
                         ControlMgr.SetVisibleControl(Me, moCancelRequestStatusText, True)
-                        Me.PopulateControlFromBOProperty(Me.moCancelRequestStatusText, .StatusDescription)
+                        PopulateControlFromBOProperty(moCancelRequestStatusText, .StatusDescription)
 
-                        If (Me.State.CancelRulesForSFR = Codes.YESNO_Y) Then
+                        If (State.CancelRulesForSFR = Codes.YESNO_Y) Then
 
-                            If Not .ProofOfDocumentation Is Nothing AndAlso Not String.IsNullOrEmpty(.ProofOfDocumentation) Then
+                            If .ProofOfDocumentation IsNot Nothing AndAlso Not String.IsNullOrEmpty(.ProofOfDocumentation) Then
                                 BindSelectItem(.ProofOfDocumentation.ToString, moProofOfDocumentationDrop)
                             End If
-                            If Me.State.CancReasonIsLawful Is Nothing Then
+                            If State.CancReasonIsLawful Is Nothing Then
                                 Dim oCancellationReason As New CancellationReason(.CancellationReasonId)
-                                Me.State.CancReasonIsLawful = oCancellationReason.IsLawful
-                                Me.State.CancReasonCode = oCancellationReason.Code
+                                State.CancReasonIsLawful = oCancellationReason.IsLawful
+                                State.CancReasonCode = oCancellationReason.Code
                             End If
-                            If Not Me.State.certCancelRequestBO.BankInfoId.Equals(Guid.Empty) Then
-                                If Me.State.CertInstalBankInfoId.Equals(Me.State.certCancelRequestBO.BankInfoId) Then
+                            If Not State.certCancelRequestBO.BankInfoId.Equals(Guid.Empty) Then
+                                If State.CertInstalBankInfoId.Equals(State.certCancelRequestBO.BankInfoId) Then
                                     BindSelectItem(Codes.EXT_YESNO_Y, moUseExistingBankDetailsDrop)
                                     ControlMgr.SetVisibleControl(Me, moCRIBANNumberLabel, False)
                                     ControlMgr.SetVisibleControl(Me, moCRIBANNumberText, False)
-                                    Me.moCRIBANNumberText.Text = String.Empty
+                                    moCRIBANNumberText.Text = String.Empty
                                 Else
                                     BindSelectItem(Codes.EXT_YESNO_N, moUseExistingBankDetailsDrop)
-                                    Me.State.CRequestBankInfoBO = New BankInfo(Me.State.certCancelRequestBO.BankInfoId)
-                                    Me.PopulateControlFromBOProperty(Me.moCRIBANNumberText, Me.State.CRequestBankInfoBO.IbanNumberLast4Digits)
+                                    State.CRequestBankInfoBO = New BankInfo(State.certCancelRequestBO.BankInfoId)
+                                    PopulateControlFromBOProperty(moCRIBANNumberText, State.CRequestBankInfoBO.IbanNumberLast4Digits)
                                     ControlMgr.SetVisibleControl(Me, moCRIBANNumberLabel, True)
                                     ControlMgr.SetVisibleControl(Me, moCRIBANNumberText, True)
                                     'ControlMgr.SetEnableControl(Me, moCRIBANNumberText, False)
@@ -4350,13 +4334,13 @@ Namespace Certificates
                                 ControlMgr.SetVisibleControl(Me, moCRIBANNumberLabel, False)
                                 ControlMgr.SetVisibleControl(Me, moCRIBANNumberText, False)
                             End If
-                            If Me.State.IsEdit = False Then
+                            If State.IsEdit = False Then
                                 ControlMgr.SetEnableControl(Me, moProofOfDocumentationDrop, False)
                                 ControlMgr.SetEnableControl(Me, moUseExistingBankDetailsDrop, False)
 
                             End If
 
-                            If Me.State.CancReasonIsLawful = Codes.EXT_YESNO_Y And (Me.State.CancReasonCode = Codes.SFR_CR_DEATH Or Me.State.CancReasonCode = Codes.SFR_CR_MOVINGABROAD) Then
+                            If State.CancReasonIsLawful = Codes.EXT_YESNO_Y AndAlso (State.CancReasonCode = Codes.SFR_CR_DEATH OrElse State.CancReasonCode = Codes.SFR_CR_MOVINGABROAD) Then
                                 ControlMgr.SetVisibleControl(Me, moProofOfDocumentationDrop, True)
                                 ControlMgr.SetVisibleControl(Me, moProofOfDocumentationLabel, True)
                             End If
@@ -4364,12 +4348,12 @@ Namespace Certificates
                         End If
                     End With
                 End If
-                If (LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, Me.State.MyBO.Dealer.UseNewBillForm) = Codes.YESNO_Y) Then
+                If (LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, State.MyBO.Dealer.UseNewBillForm) = Codes.YESNO_Y) Then
                     Dim bankobj As BankInfo
-                    If Not Me.State.CertInstalBankInfoId.Equals(Guid.Empty) Then
-                        bankobj = New BankInfo(Me.State.CertInstalBankInfoId)
+                    If Not State.CertInstalBankInfoId.Equals(Guid.Empty) Then
+                        bankobj = New BankInfo(State.CertInstalBankInfoId)
                         If bankobj.IbanNumber Is Nothing Then
-                            If Me.State.IsEdit = True Then
+                            If State.IsEdit = True Then
                                 BindSelectItem(Codes.EXT_YESNO_N, moUseExistingBankDetailsDrop)
                                 Ibanoperation(True)
                             Else
@@ -4380,8 +4364,8 @@ Namespace Certificates
                         End If
                     End If
 
-                    If Me.State.CertInstalBankInfoId.Equals(Guid.Empty) Then
-                        If Me.State.IsEdit = True Then
+                    If State.CertInstalBankInfoId.Equals(Guid.Empty) Then
+                        If State.IsEdit = True Then
                             BindSelectItem(Codes.EXT_YESNO_N, moUseExistingBankDetailsDrop)
                             Ibanoperation(True)
                         Else
@@ -4390,91 +4374,91 @@ Namespace Certificates
                     End If
                 End If
 
-                If Not Me.State.CertCancelRequestId.Equals(Guid.Empty) And Not Me.State.MyBO.getCancelationRequestFlag = YES Then
+                If Not State.CertCancelRequestId.Equals(Guid.Empty) AndAlso Not State.MyBO.getCancelationRequestFlag = YES Then
                     ControlMgr.SetEnableControl(Me, moUseExistingBankDetailsDrop, False)
                 End If
 
                 ClearCommentsControls()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Public Sub populateFinanceTab()
 
-            With Me.State.MyBO
+            With State.MyBO
                 If Not String.IsNullOrEmpty(.Finance_Tab_Amount) Then
-                    Me.PopulateControlFromBOProperty(Me.moFinanceAmount, CType(.Finance_Tab_Amount, Decimal), Me.DECIMAL_FORMAT)
+                    PopulateControlFromBOProperty(moFinanceAmount, CType(.Finance_Tab_Amount, Decimal), DECIMAL_FORMAT)
                 Else
-                    Me.PopulateControlFromBOProperty(Me.moFinanceAmount, 0, Me.DECIMAL_FORMAT)
+                    PopulateControlFromBOProperty(moFinanceAmount, 0, DECIMAL_FORMAT)
                 End If
 
-                Me.PopulateControlFromBOProperty(Me.moFinanceTerm, .Finance_Term, Me.DECIMAL_FORMAT)
+                PopulateControlFromBOProperty(moFinanceTerm, .Finance_Term, DECIMAL_FORMAT)
 
                 If (Not String.IsNullOrEmpty(.Finance_Frequency)) AndAlso Convert.ToDecimal(.Finance_Frequency) > 0 Then
-                    Me.PopulateControlFromBOProperty(Me.moFinanceFrequency, LookupListNew.GetDescrionFromListCode("FINFREQ", .Finance_Frequency))
+                    PopulateControlFromBOProperty(moFinanceFrequency, LookupListNew.GetDescrionFromListCode("FINFREQ", .Finance_Frequency))
                 Else
-                    Me.PopulateControlFromBOProperty(Me.moFinanceFrequency, "")
+                    PopulateControlFromBOProperty(moFinanceFrequency, "")
                 End If
 
-                Me.PopulateControlFromBOProperty(Me.moFinanceInstallmentNum, .Finance_Installment_Number, Me.DECIMAL_FORMAT)
+                PopulateControlFromBOProperty(moFinanceInstallmentNum, .Finance_Installment_Number, DECIMAL_FORMAT)
 
                 If (Not String.IsNullOrEmpty(.Finance_Installment_Amount)) Then
-                    Me.PopulateControlFromBOProperty(Me.moFinanceInstallmentAmount, CType(.Finance_Installment_Amount, Decimal), Me.DECIMAL_FORMAT)
+                    PopulateControlFromBOProperty(moFinanceInstallmentAmount, CType(.Finance_Installment_Amount, Decimal), DECIMAL_FORMAT)
                 Else
-                    Me.PopulateControlFromBOProperty(Me.moFinanceInstallmentAmount, 0, Me.DECIMAL_FORMAT)
+                    PopulateControlFromBOProperty(moFinanceInstallmentAmount, 0, DECIMAL_FORMAT)
                 End If
 
-                Dim blnIncomingAmount As Boolean = Me.State.MyBO.Product.UpgradeFinanceBalanceComputationMethod.Equals(Codes.UPG_FINANCE_BAL_COMP_METH_IA)
+                Dim blnIncomingAmount As Boolean = State.MyBO.Product.UpgradeFinanceBalanceComputationMethod.Equals(Codes.UPG_FINANCE_BAL_COMP_METH_IA)
 
                 If ((Not String.IsNullOrEmpty(.Finance_Tab_Amount)) AndAlso Convert.ToDecimal(.Finance_Tab_Amount) > 0) OrElse blnIncomingAmount Then
-                    Me.PopulateControlFromBOProperty(Me.moCurrentOutstandingBalanceText, CType(.GetFinancialAmountprodcode, Decimal), Me.DECIMAL_FORMAT)
+                    PopulateControlFromBOProperty(moCurrentOutstandingBalanceText, CType(.GetFinancialAmountprodcode, Decimal), DECIMAL_FORMAT)
                     If blnIncomingAmount Then
-                        Me.PopulateControlFromBOProperty(Me.moOutstandingBalanceDueDateText, .OutstandingBalanceDueDate)
+                        PopulateControlFromBOProperty(moOutstandingBalanceDueDateText, .OutstandingBalanceDueDate)
                     Else
                         ControlMgr.SetVisibleControl(Me, moOutstandingBalanceDueDateLabel, False)
                         ControlMgr.SetVisibleControl(Me, moOutstandingBalanceDueDateText, False)
                     End If
-                    Me.PopulateControlFromBOProperty(Me.moFinanceDateText, .FinanceDate)
-                    Me.PopulateControlFromBOProperty(Me.moDownPaymentText, .DownPayment, Me.DECIMAL_FORMAT)
-                    Me.PopulateControlFromBOProperty(Me.moAdvancePaymentText, .AdvancePayment, Me.DECIMAL_FORMAT)
-                    Me.PopulateControlFromBOProperty(Me.moUpgradeFixedTermText, .UpgradeFixedTerm, Me.DECIMAL_FORMAT)
-                    Me.PopulateControlFromBOProperty(Me.moBillingAccountNumberText, .BillingAccountNumber)
+                    PopulateControlFromBOProperty(moFinanceDateText, .FinanceDate)
+                    PopulateControlFromBOProperty(moDownPaymentText, .DownPayment, DECIMAL_FORMAT)
+                    PopulateControlFromBOProperty(moAdvancePaymentText, .AdvancePayment, DECIMAL_FORMAT)
+                    PopulateControlFromBOProperty(moUpgradeFixedTermText, .UpgradeFixedTerm, DECIMAL_FORMAT)
+                    PopulateControlFromBOProperty(moBillingAccountNumberText, .BillingAccountNumber)
                 Else
-                    Me.PopulateControlFromBOProperty(Me.moCurrentOutstandingBalanceText, "")
-                    Me.PopulateControlFromBOProperty(Me.moFinanceDateText, "")
-                    Me.PopulateControlFromBOProperty(Me.moDownPaymentText, "")
-                    Me.PopulateControlFromBOProperty(Me.moAdvancePaymentText, "")
-                    Me.PopulateControlFromBOProperty(Me.moUpgradeFixedTermText, "")
-                    Me.PopulateControlFromBOProperty(Me.moBillingAccountNumberText, "")
+                    PopulateControlFromBOProperty(moCurrentOutstandingBalanceText, "")
+                    PopulateControlFromBOProperty(moFinanceDateText, "")
+                    PopulateControlFromBOProperty(moDownPaymentText, "")
+                    PopulateControlFromBOProperty(moAdvancePaymentText, "")
+                    PopulateControlFromBOProperty(moUpgradeFixedTermText, "")
+                    PopulateControlFromBOProperty(moBillingAccountNumberText, "")
                 End If
 
                 If .NumOfConsecutivePayments >= 0 Then
-                    Me.PopulateControlFromBOProperty(Me.moNumOfConsecutivePaymentsText, .NumOfConsecutivePayments)
+                    PopulateControlFromBOProperty(moNumOfConsecutivePaymentsText, .NumOfConsecutivePayments)
                 Else
-                    Me.PopulateControlFromBOProperty(Me.moNumOfConsecutivePaymentsText, "")
+                    PopulateControlFromBOProperty(moNumOfConsecutivePaymentsText, "")
                 End If
 
                 If (Not String.IsNullOrEmpty(.DealerCurrentPlanCode)) Then
-                    Me.PopulateControlFromBOProperty(Me.moDealerCurrentPlanCodeText, .DealerCurrentPlanCode)
+                    PopulateControlFromBOProperty(moDealerCurrentPlanCodeText, .DealerCurrentPlanCode)
                 Else
-                    Me.PopulateControlFromBOProperty(Me.moDealerCurrentPlanCodeText, "")
+                    PopulateControlFromBOProperty(moDealerCurrentPlanCodeText, "")
                 End If
 
                 If (Not String.IsNullOrEmpty(.DealerScheduledPlanCode)) Then
-                    Me.PopulateControlFromBOProperty(Me.moDealerScheduledPlanCodeText, .DealerScheduledPlanCode)
+                    PopulateControlFromBOProperty(moDealerScheduledPlanCodeText, .DealerScheduledPlanCode)
                 Else
-                    Me.PopulateControlFromBOProperty(Me.moDealerScheduledPlanCodeText, "")
+                    PopulateControlFromBOProperty(moDealerScheduledPlanCodeText, "")
                 End If
                 If (Not String.IsNullOrEmpty(.DealerRewardPoints)) Then
-                    Me.PopulateControlFromBOProperty(Me.moDealerRewardPointsText, .DealerRewardPoints)
+                    PopulateControlFromBOProperty(moDealerRewardPointsText, .DealerRewardPoints)
                 Else
-                    Me.PopulateControlFromBOProperty(Me.moDealerRewardPointsText, "")
+                    PopulateControlFromBOProperty(moDealerRewardPointsText, "")
                 End If
 
-                If Not Me.State.MyBO.UpgradeTermUomId.Equals(Guid.Empty) Then
-                    Dim strUpgradeTermUomCode As String = LookupListNew.GetCodeFromId(LookupListCache.LK_UPGRADE_TERM_UNIT_OF_MEASURE, Me.State.MyBO.UpgradeTermUomId)
-                    If strUpgradeTermUomCode.Equals(Codes.UPG_UNIT_OF_MEASURE__FIXED_NUMBER_Of_DAYS) Or strUpgradeTermUomCode.Equals(Codes.UPG_UNIT_OF_MEASURE__FIXED_NUMBER_Of_MONTHS) Then
+                If Not State.MyBO.UpgradeTermUomId.Equals(Guid.Empty) Then
+                    Dim strUpgradeTermUomCode As String = LookupListNew.GetCodeFromId(LookupListCache.LK_UPGRADE_TERM_UNIT_OF_MEASURE, State.MyBO.UpgradeTermUomId)
+                    If strUpgradeTermUomCode.Equals(Codes.UPG_UNIT_OF_MEASURE__FIXED_NUMBER_Of_DAYS) OrElse strUpgradeTermUomCode.Equals(Codes.UPG_UNIT_OF_MEASURE__FIXED_NUMBER_Of_MONTHS) Then
 
                         ControlMgr.SetVisibleControl(Me, lblUpgradeTermUnitOfMeasure, True)
                         ControlMgr.SetVisibleControl(Me, moUpgradeTermUnitOfMeasureText, True)
@@ -4487,10 +4471,10 @@ Namespace Certificates
                         ControlMgr.SetVisibleControl(Me, moUpgradeProgramLabel, True)
                         ControlMgr.SetVisibleControl(Me, moUpgradeProgramText, True)
 
-                        Me.PopulateControlFromBOProperty(Me.moUpgradeFixedTermText, .UpgradeFixedTerm)
-                        Dim strUpgradeTermUomDesc As String = LookupListNew.GetDescriptionFromId(LookupListCache.LK_UPGRADE_TERM_UNIT_OF_MEASURE, Me.State.MyBO.UpgradeTermUomId, True)
-                        Me.PopulateControlFromBOProperty(Me.moUpgradeTermUnitOfMeasureText, strUpgradeTermUomDesc)
-                    ElseIf strUpgradeTermUomCode.Equals(Codes.UPG_UNIT_OF_MEASURE__RANGE_IN_DAYS) Or strUpgradeTermUomCode.Equals(Codes.UPG_UNIT_OF_MEASURE__RANGE_IN_MONTHS) Then
+                        PopulateControlFromBOProperty(moUpgradeFixedTermText, .UpgradeFixedTerm)
+                        Dim strUpgradeTermUomDesc As String = LookupListNew.GetDescriptionFromId(LookupListCache.LK_UPGRADE_TERM_UNIT_OF_MEASURE, State.MyBO.UpgradeTermUomId, True)
+                        PopulateControlFromBOProperty(moUpgradeTermUnitOfMeasureText, strUpgradeTermUomDesc)
+                    ElseIf strUpgradeTermUomCode.Equals(Codes.UPG_UNIT_OF_MEASURE__RANGE_IN_DAYS) OrElse strUpgradeTermUomCode.Equals(Codes.UPG_UNIT_OF_MEASURE__RANGE_IN_MONTHS) Then
                         ControlMgr.SetVisibleControl(Me, lblUpgradeTermUnitOfMeasure, True)
                         ControlMgr.SetVisibleControl(Me, moUpgradeTermUnitOfMeasureText, True)
                         ControlMgr.SetVisibleControl(Me, moUpgradeFixedTermLabel, False)
@@ -4501,10 +4485,10 @@ Namespace Certificates
                         ControlMgr.SetVisibleControl(Me, moUpgradeTermTextTo, True)
                         ControlMgr.SetVisibleControl(Me, moUpgradeProgramLabel, True)
                         ControlMgr.SetVisibleControl(Me, moUpgradeProgramText, True)
-                        Me.PopulateControlFromBOProperty(Me.moUpgradeTermTextFROM, .UpgradeTermFrom)
-                        Me.PopulateControlFromBOProperty(Me.moUpgradeTermTextTo, .UpgradeTermTo)
-                        Dim strUpgradeTermUomDesc As String = LookupListNew.GetDescriptionFromId(LookupListCache.LK_UPGRADE_TERM_UNIT_OF_MEASURE, Me.State.MyBO.UpgradeTermUomId, True)
-                        Me.PopulateControlFromBOProperty(Me.moUpgradeTermUnitOfMeasureText, strUpgradeTermUomDesc)
+                        PopulateControlFromBOProperty(moUpgradeTermTextFROM, .UpgradeTermFrom)
+                        PopulateControlFromBOProperty(moUpgradeTermTextTo, .UpgradeTermTo)
+                        Dim strUpgradeTermUomDesc As String = LookupListNew.GetDescriptionFromId(LookupListCache.LK_UPGRADE_TERM_UNIT_OF_MEASURE, State.MyBO.UpgradeTermUomId, True)
+                        PopulateControlFromBOProperty(moUpgradeTermUnitOfMeasureText, strUpgradeTermUomDesc)
                     Else
                         ControlMgr.SetVisibleControl(Me, lblUpgradeTermUnitOfMeasure, True)
                         ControlMgr.SetVisibleControl(Me, moUpgradeTermUnitOfMeasureText, True)
@@ -4531,113 +4515,113 @@ Namespace Certificates
                     ControlMgr.SetVisibleControl(Me, moUpgradeProgramText, False)
                 End If
 
-                Me.PopulateControlFromBOProperty(Me.moLoanCodeText, .LoanCode)
-                Me.PopulateControlFromBOProperty(Me.moPaymentShiftNumberText, .PaymentShiftNumber)
+                PopulateControlFromBOProperty(moLoanCodeText, .LoanCode)
+                PopulateControlFromBOProperty(moPaymentShiftNumberText, .PaymentShiftNumber)
 
                 If (Not String.IsNullOrEmpty(.PenaltyFee)) Then
-                    Me.PopulateControlFromBOProperty(Me.moPenaltyFeeText, .PenaltyFee)
+                    PopulateControlFromBOProperty(moPenaltyFeeText, .PenaltyFee)
                 Else
-                    Me.PopulateControlFromBOProperty(Me.moPenaltyFeeText, "")
+                    PopulateControlFromBOProperty(moPenaltyFeeText, "")
                 End If
 
                 If (Not String.IsNullOrEmpty(.AppleCareFee)) Then
-                    Me.PopulateControlFromBOProperty(Me.moAppleCareFeeText, .AppleCareFee)
+                    PopulateControlFromBOProperty(moAppleCareFeeText, .AppleCareFee)
                 Else
-                    Me.PopulateControlFromBOProperty(Me.moAppleCareFeeText, "")
+                    PopulateControlFromBOProperty(moAppleCareFeeText, "")
                 End If
 
-                Me.PopulateControlFromBOProperty(Me.moUpgradeProgramText, .UpgradeProgram)
+                PopulateControlFromBOProperty(moUpgradeProgramText, .UpgradeProgram)
             End With
             PopulateUPgradeDataExtensionsGrid()
         End Sub
 
         Public Sub populateCertCancellationBOFromForm()
             Try
-                With Me.State.certCancellationBO
-                    Me.PopulateBOProperty(Me.State.certCancellationBO, "CancellationReasonId", Me.moCancellationReasonDrop)
-                    Me.PopulateBOProperty(Me.State.certCancellationBO, "CancellationDate", Me.CancelCertDateTextbox)
-                    Me.PopulateBOProperty(Me.State.certCancellationBO, "CancellationRequestedDate", Me.CancelCertReqDateTextbox)
-                    Me.PopulateBOProperty(Me.State.certCancellationBO, "Retailer", Me.moRetailerText)
+                With State.certCancellationBO
+                    PopulateBOProperty(State.certCancellationBO, "CancellationReasonId", moCancellationReasonDrop)
+                    PopulateBOProperty(State.certCancellationBO, "CancellationDate", CancelCertDateTextbox)
+                    PopulateBOProperty(State.certCancellationBO, "CancellationRequestedDate", CancelCertReqDateTextbox)
+                    PopulateBOProperty(State.certCancellationBO, "Retailer", moRetailerText)
                 End With
-                If Me.ErrCollection.Count > 0 Then
+                If ErrCollection.Count > 0 Then
                     Throw New PopulateBOErrorException
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Public Sub populateCertCancelCommentBOFromForm()
             Try
-                Me.State.CancCommentBO = Comment.GetNewComment(Me.State.MyBO.Id)
-                Me.PopulateBOProperty(Me.State.CancCommentBO, "CallerName", Me.CancelCallerNameTextbox)
-                Me.PopulateBOProperty(Me.State.CancCommentBO, "Comments", Me.moCancelCommentsTextbox)
-                Me.PopulateBOProperty(Me.State.CancCommentBO, "CommentTypeId", Me.moCancelCommentType)
+                State.CancCommentBO = Comment.GetNewComment(State.MyBO.Id)
+                PopulateBOProperty(State.CancCommentBO, "CallerName", CancelCallerNameTextbox)
+                PopulateBOProperty(State.CancCommentBO, "Comments", moCancelCommentsTextbox)
+                PopulateBOProperty(State.CancCommentBO, "CommentTypeId", moCancelCommentType)
 
-                If Me.ErrCollection.Count > 0 Then
+                If ErrCollection.Count > 0 Then
                     Throw New PopulateBOErrorException
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Public Sub populateCertCancelRequestBOFromForm()
             Try
-                If IsNothing(Me.State.certCancelRequestBO) Then
-                    Me.State.certCancelRequestBO = New CertCancelRequest
+                If IsNothing(State.certCancelRequestBO) Then
+                    State.certCancelRequestBO = New CertCancelRequest
                 End If
 
                 ' Me.PopulateBOProperty(Me.State.certCancelRequestBO, "CertId", Me.State.CertificateId)
-                Me.PopulateBOProperty(Me.State.certCancelRequestBO, "CancellationReasonId", Me.moCancelRequestReasonDrop)
-                Me.PopulateBOProperty(Me.State.certCancelRequestBO, "CancellationDate", Me.moCancelDateTextBox)
-                Me.PopulateBOProperty(Me.State.certCancelRequestBO, "CancellationRequestDate", Me.moCancelRequestDateTextBox)
-                Me.PopulateBOProperty(Me.State.certCancelRequestBO, "ProofOfDocumentation", Me.moProofOfDocumentationDrop, False, True)
+                PopulateBOProperty(State.certCancelRequestBO, "CancellationReasonId", moCancelRequestReasonDrop)
+                PopulateBOProperty(State.certCancelRequestBO, "CancellationDate", moCancelDateTextBox)
+                PopulateBOProperty(State.certCancelRequestBO, "CancellationRequestDate", moCancelRequestDateTextBox)
+                PopulateBOProperty(State.certCancelRequestBO, "ProofOfDocumentation", moProofOfDocumentationDrop, False, True)
 
-                Me.State.certCancelRequestBO.BankInfoId = Me.State.CertInstalBankInfoId
-                If IsNothing(Me.State.CRequestBankInfoBO) Then
-                    Me.State.CRequestBankInfoBO = New BankInfo
+                State.certCancelRequestBO.BankInfoId = State.CertInstalBankInfoId
+                If IsNothing(State.CRequestBankInfoBO) Then
+                    State.CRequestBankInfoBO = New BankInfo
                 End If
                 If GetSelectedValue(moUseExistingBankDetailsDrop) = Codes.EXT_YESNO_N Then
-                    Me.PopulateBOProperty(Me.State.CRequestBankInfoBO, "IbanNumber", Me.moCRIBANNumberText)
-                    Me.PopulateBOProperty(Me.State.CRequestBankInfoBO, "CountryID", Me.State.MyBO.Company.CountryId)
+                    PopulateBOProperty(State.CRequestBankInfoBO, "IbanNumber", moCRIBANNumberText)
+                    PopulateBOProperty(State.CRequestBankInfoBO, "CountryID", State.MyBO.Company.CountryId)
                     'Me.PopulateBOProperty(Me.State.CRequestBankInfoBO, "Account_Number", Me.moCRAccountNumberText)
-                    Me.State.useExistingBankInfo = Codes.YESNO_N
+                    State.useExistingBankInfo = Codes.YESNO_N
                 Else
-                    Me.State.useExistingBankInfo = Codes.YESNO_Y
+                    State.useExistingBankInfo = Codes.YESNO_Y
                 End If
 
-                If Me.ErrCollection.Count > 0 Then
+                If ErrCollection.Count > 0 Then
                     Throw New PopulateBOErrorException
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Public Sub populateCertCancelRequestCommentBOFromForm()
             Try
                 'Dim oCommTypeId As Guid
-                Me.State.CancReqCommentBO = Comment.GetNewComment(Me.State.MyBO.Id)
-                Me.PopulateBOProperty(Me.State.CancReqCommentBO, "CallerName", Me.moCallerNameTextBox)
-                Me.PopulateBOProperty(Me.State.CancReqCommentBO, "Comments", Me.moCommentsTextbox)
+                State.CancReqCommentBO = Comment.GetNewComment(State.MyBO.Id)
+                PopulateBOProperty(State.CancReqCommentBO, "CallerName", moCallerNameTextBox)
+                PopulateBOProperty(State.CancReqCommentBO, "Comments", moCommentsTextbox)
                 'oCommTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CERT_CANCEL_REQUEST)
                 'Me.PopulateBOProperty(Me.State.CancReqCommentBO, "CommentTypeId", oCommTypeId)
-                PopulateBOProperty(Me.State.CancReqCommentBO, "CommentTypeId", GetSelectedItem(Me.moCancelRequestJustificationDrop))
+                PopulateBOProperty(State.CancReqCommentBO, "CommentTypeId", GetSelectedItem(moCancelRequestJustificationDrop))
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         'This method will change the Page Index and the Selected Index
-        Public Function FindDVSelectedRowIndex(ByVal dv As CertItemCoverage.CertItemCoverageSearchDV) As Integer
-            If Me.State.TheItemCoverageState.selectedItemId.Equals(Guid.Empty) Then
+        Public Function FindDVSelectedRowIndex(dv As CertItemCoverage.CertItemCoverageSearchDV) As Integer
+            If State.TheItemCoverageState.selectedItemId.Equals(Guid.Empty) Then
                 Return -1
             Else
                 'Jump to the Right Page
                 Dim i As Integer
                 For i = 0 To dv.Count - 1
-                    If New Guid(CType(dv(i)(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_COVERAGE_ID), Byte())).Equals(Me.State.TheItemCoverageState.selectedItemId) Then
+                    If New Guid(CType(dv(i)(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_COVERAGE_ID), Byte())).Equals(State.TheItemCoverageState.selectedItemId) Then
                         Return i
                     End If
                 Next
@@ -4648,10 +4632,10 @@ Namespace Certificates
         ' Clean Popup Input
         Private Sub CleanPopupInput()
             Try
-                If Not Me.State Is Nothing Then
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                    Me.State.LastErrMsg = ""
-                    Me.HiddenSaveChangesPromptResponse.Value = ""
+                If State IsNot Nothing Then
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                    State.LastErrMsg = ""
+                    HiddenSaveChangesPromptResponse.Value = ""
                 End If
             Catch ex As Exception
                 '  Me.HandleErrors(ex, Me.ErrorCtrl)
@@ -4659,75 +4643,75 @@ Namespace Certificates
         End Sub
 
         Protected Sub CheckIfComingFromRemoveCancelDueDateConfirm()
-            Dim confResponse As String = Me.HiddenRemoveCancelDueDatePromptResponse.Value
-            If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
+            Dim confResponse As String = HiddenRemoveCancelDueDatePromptResponse.Value
+            If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
                 SaveCancellationDueDate()
                 PopulatePremiumInfoTab()
             End If
-            Me.HiddenRemoveCancelDueDatePromptResponse.Value = ""
+            HiddenRemoveCancelDueDatePromptResponse.Value = ""
         End Sub
 
         Protected Sub CheckIfComingFromTransferOfOwnershipConfirm()
             Try
-                Dim confResponse As String = Me.HiddenTransferOfOwnershipPromptResponse.Value
-                If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
-                    Me.State.IsEdit = False
-                    Me.State.NavigateToEndorment = True
-                    Me.PopulateBOsFromForm()
-                    Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = Me.State.MyBO
-                    Me.NavController.Navigate(Me, CREATE_NEW_ENDORSEMENT, New EndorsementForm.Parameters(Me.State.MyBO.Id, Me.State.TheItemCoverageState.manufaturerWarranty))
-                ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-                    Me.saveCertificate()
+                Dim confResponse As String = HiddenTransferOfOwnershipPromptResponse.Value
+                If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
+                    State.IsEdit = False
+                    State.NavigateToEndorment = True
+                    PopulateBOsFromForm()
+                    NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = State.MyBO
+                    NavController.Navigate(Me, CREATE_NEW_ENDORSEMENT, New EndorsementForm.Parameters(State.MyBO.Id, State.TheItemCoverageState.manufaturerWarranty))
+                ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+                    saveCertificate()
                 End If
-                Me.HiddenTransferOfOwnershipPromptResponse.Value = ""
+                HiddenTransferOfOwnershipPromptResponse.Value = ""
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Protected Sub CheckIfComingFromSaveConfirm()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-            Dim myBo As Certificate = Me.State.MyBO
-            Dim lastAction As ElitaPlusPage.DetailPageCommand = Me.State.ActionInProgress
-            Dim lastErrMsg As String = Me.State.LastErrMsg
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+            Dim myBo As Certificate = State.MyBO
+            Dim lastAction As ElitaPlusPage.DetailPageCommand = State.ActionInProgress
+            Dim lastErrMsg As String = State.LastErrMsg
             'Clean after consuming the action
             CleanPopupInput()
-            If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
+            If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
                 Select Case lastAction
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        Me.State.MyBO.Save()
-                        Me.saveCertificate()
-                        Me.State.certificateChanged = True
-                        Me.State.selectedTab = 0
-                        Me.State.CertHistoryDV = Nothing
-                        Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo, Me.State.certificateChanged)
-                        Me.NavController = Nothing
-                        Me.ReturnToCallingPage(retObj)
+                        State.MyBO.Save()
+                        saveCertificate()
+                        State.certificateChanged = True
+                        State.selectedTab = 0
+                        State.CertHistoryDV = Nothing
+                        Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo, State.certificateChanged)
+                        NavController = Nothing
+                        ReturnToCallingPage(retObj)
                     Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                        Me.State.selectedTab = 0
-                        Me.State.CertHistoryDV = Nothing
-                        Dim retObj As ReturnType = New ReturnType(lastAction, myBo, Me.State.certificateChanged)
-                        Me.NavController = Nothing
-                        Me.ReturnToCallingPage(retObj)
+                        State.selectedTab = 0
+                        State.CertHistoryDV = Nothing
+                        Dim retObj As ReturnType = New ReturnType(lastAction, myBo, State.certificateChanged)
+                        NavController = Nothing
+                        ReturnToCallingPage(retObj)
                 End Select
-            ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
+            ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
                 Select Case lastAction
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        Me.State.selectedTab = 0
-                        Me.State.CertHistoryDV = Nothing
-                        Dim retObj As ReturnType = New ReturnType(lastAction, myBo, Me.State.certificateChanged)
-                        Me.NavController = Nothing
-                        Me.ReturnToCallingPage(retObj)
+                        State.selectedTab = 0
+                        State.CertHistoryDV = Nothing
+                        Dim retObj As ReturnType = New ReturnType(lastAction, myBo, State.certificateChanged)
+                        NavController = Nothing
+                        ReturnToCallingPage(retObj)
                     Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                        Me.State.selectedTab = 0
-                        Me.State.CertHistoryDV = Nothing
-                        Me.MasterPage.MessageController.AddErrorAndShow(lastErrMsg)
+                        State.selectedTab = 0
+                        State.CertHistoryDV = Nothing
+                        MasterPage.MessageController.AddErrorAndShow(lastErrMsg)
                 End Select
             End If
         End Sub
 
-        Private Function CheckCUITCUIL(ByVal cuit As String) As Boolean
+        Private Function CheckCUITCUIL(cuit As String) As Boolean
             'Validation for CUIT size
             If cuit.Trim().Length <> 11 Then
                 Return False
@@ -4744,7 +4728,7 @@ Namespace Certificates
 
             'Validation based on Prefix
             Prefix = Int16.Parse(cuit.Substring(0, 2))
-            If (Prefix <> 20 And Prefix <> 23 And Prefix <> 24 And Prefix <> 27 And Prefix <> 30 And Prefix <> 33 And Prefix <> 34) Then
+            If (Prefix <> 20 AndAlso Prefix <> 23 AndAlso Prefix <> 24 AndAlso Prefix <> 27 AndAlso Prefix <> 30 AndAlso Prefix <> 33 AndAlso Prefix <> 34) Then
                 Return False
             End If
 
@@ -4778,29 +4762,28 @@ Namespace Certificates
         Public Sub saveCertificate()
             Try
 
-                If Me.moVehicleLicenseTagText.Text <> "" Then
+                If moVehicleLicenseTagText.Text <> "" Then
                     Dim dv As DataView, oCert As Certificate
                     Dim compGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-                    dv = oCert.ValidateLicenseFlag(Me.moVehicleLicenseTagText.Text, Me.State.MyBO.CertNumber, compGroupId)
+                    dv = oCert.ValidateLicenseFlag(moVehicleLicenseTagText.Text, State.MyBO.CertNumber, compGroupId)
                     If dv.Count > 0 Then
-                        ElitaPlusPage.SetLabelError(Me.moVehicleLicenseTagLabel)
+                        ElitaPlusPage.SetLabelError(moVehicleLicenseTagLabel)
                         Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_VEHICLE_LICENSE_TAG_ERR)
                     End If
                 End If
 
                 'REQ-1255 -- START
                 'Validate CUIT_CUIL field
-                If Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) Or
-                   Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Then  '1= Display and Require When Cancelling or 2= Display Only
-                    If Me.moCUIT_CUILText.Text <> String.Empty Then
+                If State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Then  '1= Display and Require When Cancelling or 2= Display Only
+                    If moCUIT_CUILText.Text <> String.Empty Then
                         Dim CUIT_CUIL_Number As Int64 = 0
                         Dim DigitCheckerResult As Boolean = False
                         'Checking for numeric
-                        If Me.moCUIT_CUILText.Text.Length > 11 Or Not Int64.TryParse(Me.moCUIT_CUILText.Text, CUIT_CUIL_Number) Then
+                        If moCUIT_CUILText.Text.Length > 11 OrElse Not Int64.TryParse(moCUIT_CUILText.Text, CUIT_CUIL_Number) Then
                             Throw New GUIException(Message.MSG_INVALID_CUIT_CUIL_NUMBER, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_CUIT_CUIL_NUMBER_ERR)
                         End If
                         'Checking for valid number
-                        DigitCheckerResult = CheckCUITCUIL(Me.moCUIT_CUILText.Text)
+                        DigitCheckerResult = CheckCUITCUIL(moCUIT_CUILText.Text)
                         If Not DigitCheckerResult Then
                             Throw New GUIException(Message.MSG_INVALID_CUIT_CUIL_NUMBER, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_CUIT_CUIL_NUMBER_ERR)
                         End If
@@ -4808,99 +4791,99 @@ Namespace Certificates
                 End If
                 'REQ-1255 -- END
 
-                Me.PopulateBOsFromForm()
+                PopulateBOsFromForm()
 
                 ' Validate User Selected Required Fields
                 ValidateRequiredFields()
 
-                If Me.State.MyBO.IsDirty Then
-                    Me.State.MyBO.Save()
+                If State.MyBO.IsDirty Then
+                    State.MyBO.Save()
                     PopulateFormFromBOs()
-                    Me.State.IsEdit = False
-                    Me.EnableDisableFields()
-                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
-                    Me.State.certificateChanged = True
+                    State.IsEdit = False
+                    EnableDisableFields()
+                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                    State.certificateChanged = True
                 Else
-                    Me.State.IsEdit = False
-                    Me.MasterPage.MessageController.AddSuccess(Message.MSG_RECORD_NOT_SAVED, True)
-                    Me.EnableDisableFields()
+                    State.IsEdit = False
+                    MasterPage.MessageController.AddSuccess(Message.MSG_RECORD_NOT_SAVED, True)
+                    EnableDisableFields()
                 End If
                 DisplayMaskDob()
             Catch ex As DataNotFoundException
-                Me.MasterPage.MessageController.AddError(ex.Message)
-                Me.State.IsEdit = True
-                Me.EnableDisableFields()
+                MasterPage.MessageController.AddError(ex.Message)
+                State.IsEdit = True
+                EnableDisableFields()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                Me.State.IsEdit = True
-                Me.EnableDisableFields()
+                HandleErrors(ex, MasterPage.MessageController)
+                State.IsEdit = True
+                EnableDisableFields()
             End Try
         End Sub
         Public Sub SaveCancellationDueDate()
-            Me.PopulateCanceDueDateFromForm()
-            Me.State.TheDirectDebitState.certInstallment.Save()
-            Me.EnableDisableFields()
+            PopulateCanceDueDateFromForm()
+            State.TheDirectDebitState.certInstallment.Save()
+            EnableDisableFields()
         End Sub
-        Public Sub saveCertInstallment(ByVal StatusChenge As Boolean)
+        Public Sub saveCertInstallment(StatusChenge As Boolean)
             Try
 
-                If Me.State.TheDirectDebitState.StatusChenge Then
+                If State.TheDirectDebitState.StatusChenge Then
 
                     'REQ-5761
-                    If Me.State.IsNewBillPayBtnVisible Then
-                        Me.State.TheDirectDebitState.certInstallment.SP_ChngOfBillingStatus(Me.GetSelectedItem(Me.moBillingStatusId))
+                    If State.IsNewBillPayBtnVisible Then
+                        State.TheDirectDebitState.certInstallment.SP_ChngOfBillingStatus(GetSelectedItem(moBillingStatusId))
                     Else
-                        Me.State.TheDirectDebitState.certInstallment.SP_ChangeOfBillingStatus(Me.GetSelectedItem(Me.moBillingStatusId))
+                        State.TheDirectDebitState.certInstallment.SP_ChangeOfBillingStatus(GetSelectedItem(moBillingStatusId))
                     End If
 
-                    Me.State.TheDirectDebitState.StatusChenge = False
-                    Me.PopulateControlFromBOProperty(Me.moNextDueDateText, Me.State.TheDirectDebitState.certInstallment.newPaymentDueDate)
+                    State.TheDirectDebitState.StatusChenge = False
+                    PopulateControlFromBOProperty(moNextDueDateText, State.TheDirectDebitState.certInstallment.newPaymentDueDate)
                 End If
 
-                Me.PopulateInstalmenBoFromForm()
-                If Me.State.TheDirectDebitState.certInstallment.IsFamilyDirty Then
-                    If Me.State.creditCardPayment Then
-                        Me.State.TheDirectDebitState.CreditCardInfo.Save()
-                        Me.State.TheDirectDebitState.certInstallment.CreditCardInfoId = Me.State.TheDirectDebitState.CreditCardInfo.Id
-                    ElseIf Me.State.directDebitPayment Then
-                        Me.State.TheDirectDebitState.bankInfo.DomesticTransfer = False
-                        Me.State.TheDirectDebitState.bankInfo.InternationalTransfer = False
-                        Me.State.TheDirectDebitState.bankInfo.InternationalTransfer = False
-                        Me.State.TheDirectDebitState.bankInfo.SourceCountryID = Me.State.TheDirectDebitState.bankInfo.CountryID
-                        Me.State.TheDirectDebitState.bankInfo.Save()
-                        Me.State.TheDirectDebitState.certInstallment.BankInfoId = Me.State.TheDirectDebitState.bankInfo.Id
+                PopulateInstalmenBoFromForm()
+                If State.TheDirectDebitState.certInstallment.IsFamilyDirty Then
+                    If State.creditCardPayment Then
+                        State.TheDirectDebitState.CreditCardInfo.Save()
+                        State.TheDirectDebitState.certInstallment.CreditCardInfoId = State.TheDirectDebitState.CreditCardInfo.Id
+                    ElseIf State.directDebitPayment Then
+                        State.TheDirectDebitState.bankInfo.DomesticTransfer = False
+                        State.TheDirectDebitState.bankInfo.InternationalTransfer = False
+                        State.TheDirectDebitState.bankInfo.InternationalTransfer = False
+                        State.TheDirectDebitState.bankInfo.SourceCountryID = State.TheDirectDebitState.bankInfo.CountryID
+                        State.TheDirectDebitState.bankInfo.Save()
+                        State.TheDirectDebitState.certInstallment.BankInfoId = State.TheDirectDebitState.bankInfo.Id
                     End If
 
-                    If Me.State.BillingInformationChanged Then AdjustTheBillingStatus()
+                    If State.BillingInformationChanged Then AdjustTheBillingStatus()
 
-                    Me.State.TheDirectDebitState.certInstallment.Save()
-                    Me.State.IsEdit = False
-                    Me.PopulatePremiumInfoTab()
-                    Me.EnableDisableFields()
-                    Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    State.TheDirectDebitState.certInstallment.Save()
+                    State.IsEdit = False
+                    PopulatePremiumInfoTab()
+                    EnableDisableFields()
+                    DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 Else
-                    Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                    DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 End If
             Catch ex As ApplicationException
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                Me.State.IsEdit = True
-                Me.EnableDisableFields()
+                HandleErrors(ex, MasterPage.MessageController)
+                State.IsEdit = True
+                EnableDisableFields()
             Catch ex As Exception
 
             End Try
         End Sub
 
         Private Sub AdjustTheBillingStatus()
-            With Me.State.TheDirectDebitState.certInstallment
-                Dim currentStatus As String = LookupListNew.GetCodeFromId(LookupListNew.GetBillingStatusListShort(ElitaPlusIdentity.Current.ActiveUser.LanguageId), Me.State.BillingStatusId)
-                Dim selectedStatus As String = LookupListNew.GetCodeFromId(LookupListNew.GetBillingStatusListShort(ElitaPlusIdentity.Current.ActiveUser.LanguageId), Me.GetSelectedItem(Me.moBillingStatusId))
+            With State.TheDirectDebitState.certInstallment
+                Dim currentStatus As String = LookupListNew.GetCodeFromId(LookupListNew.GetBillingStatusListShort(ElitaPlusIdentity.Current.ActiveUser.LanguageId), State.BillingStatusId)
+                Dim selectedStatus As String = LookupListNew.GetCodeFromId(LookupListNew.GetBillingStatusListShort(ElitaPlusIdentity.Current.ActiveUser.LanguageId), GetSelectedItem(moBillingStatusId))
                 Dim objBillingDetail As BillingDetail
                 Dim objBillingPayDetail As BillingPayDetail
 
                 ' There might not be any billingDetail records yet for this installment, so the next section is made to catch no data found error.
 
                 'REQ-5761
-                If Me.State.IsNewBillPayBtnVisible Then
+                If State.IsNewBillPayBtnVisible Then
                     Try
                         objBillingPayDetail = .CurrentBillingPaydetail
                     Catch ex As DataNotFoundException
@@ -4908,7 +4891,7 @@ Namespace Certificates
 
                     End Try
 
-                    If Not Me.State.MyBO Is Nothing AndAlso Not objBillingPayDetail Is Nothing _
+                    If State.MyBO IsNot Nothing AndAlso objBillingPayDetail IsNot Nothing _
                        AndAlso currentStatus = Codes.BILLING_STATUS__REJECTED _
                        AndAlso selectedStatus = Codes.BILLING_STATUS__ACTIVE Then
                         Throw New GUIException(Message.MSG_BILLING_STATUS_CANNOT_BE_CHANGED, Message.MSG_BILLING_STATUS_CANNOT_BE_CHANGED)
@@ -4921,23 +4904,23 @@ Namespace Certificates
 
                     End Try
 
-                    If Not Me.State.MyBO Is Nothing AndAlso Not objBillingDetail Is Nothing _
+                    If State.MyBO IsNot Nothing AndAlso objBillingDetail IsNot Nothing _
                        AndAlso currentStatus = Codes.BILLING_STATUS__REJECTED _
                        AndAlso selectedStatus = Codes.BILLING_STATUS__ACTIVE _
                        AndAlso Not objBillingDetail.ReAttemptCount.Equals(DBNull.Value) _
-                       AndAlso objBillingDetail.ReAttemptCount >= Contract.GetContract(Me.State.MyBO.DealerId, Me.State.MyBO.WarrantySalesDate.Value).CollectionReAttempts.Value Then
+                       AndAlso objBillingDetail.ReAttemptCount >= Contract.GetContract(State.MyBO.DealerId, State.MyBO.WarrantySalesDate.Value).CollectionReAttempts.Value Then
                         Throw New GUIException(Message.MSG_BILLING_STATUS_CANNOT_BE_CHANGED, Message.MSG_BILLING_STATUS_CANNOT_BE_CHANGED)
                     End If
                 End If
 
-                If currentStatus = Codes.BILLING_STATUS__REJECTED Or currentStatus = Codes.BILLING_STATUS__ON_HOLD Then
+                If currentStatus = Codes.BILLING_STATUS__REJECTED OrElse currentStatus = Codes.BILLING_STATUS__ON_HOLD Then
                     .BillingStatusId = LookupListNew.GetIdFromCode(LookupListNew.LK_BILLING_STATUS, Codes.BILLING_STATUS__ACTIVE)
                 End If
 
             End With
         End Sub
 
-        Public Function IsRetailerAssociated(ByVal odealer As Dealer) As Boolean
+        Public Function IsRetailerAssociated(odealer As Dealer) As Boolean
             Dim oYesList As DataView = LookupListNew.GetListItemId(odealer.RetailerId, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False)
             Dim oYesNo As String = oYesList.Item(FIRST_ROW).Item(CODE).ToString
             If oYesNo = "N" Then
@@ -4947,9 +4930,9 @@ Namespace Certificates
             End If
         End Function
 
-        Private Function IsEffectiveCoverage(ByVal BeginDate As Date, ByVal EndDate As Date) As Boolean
+        Private Function IsEffectiveCoverage(BeginDate As Date, EndDate As Date) As Boolean
             Dim todayDate As Date
-            If Me.State.MyBO.StatusCode = CLOSED Then
+            If State.MyBO.StatusCode = CLOSED Then
                 Return False
             Else
                 If todayDate.Today >= BeginDate AndAlso todayDate.Today <= EndDate Then
@@ -4963,44 +4946,44 @@ Namespace Certificates
         Private Sub ValidateAddressField()
             Dim addressErrorExist As Boolean = False
 
-            If Me.State.MyBO.CustomerName Is Nothing OrElse Me.State.MyBO.CustomerName.Trim = String.Empty Then
-                Me.MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.MISSING_CUSTOMER_NAME_ERR)
+            If State.MyBO.CustomerName Is Nothing OrElse State.MyBO.CustomerName.Trim = String.Empty Then
+                MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.MISSING_CUSTOMER_NAME_ERR)
                 addressErrorExist = True
             End If
 
-            Dim strAddFmt As String = New Country(Me.State.MyBO.AddressChild.CountryId).MailAddrFormat.ToUpper
-            If Me.State.MyBO.AddressChild.IsAddressComponentRequired(strAddFmt, "ADR1") Then
-                If Me.State.MyBO.AddressChild.Address1 Is Nothing OrElse Me.State.MyBO.AddressChild.Address1.Trim = String.Empty Then
-                    Me.MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.MISSING_ADDRESS_INFO_ERR)
+            Dim strAddFmt As String = New Country(State.MyBO.AddressChild.CountryId).MailAddrFormat.ToUpper
+            If State.MyBO.AddressChild.IsAddressComponentRequired(strAddFmt, "ADR1") Then
+                If State.MyBO.AddressChild.Address1 Is Nothing OrElse State.MyBO.AddressChild.Address1.Trim = String.Empty Then
+                    MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.MISSING_ADDRESS_INFO_ERR)
                     addressErrorExist = True
                 End If
             End If
 
-            If Me.State.MyBO.AddressChild.IsAddressComponentRequired(strAddFmt, "CITY") Then
-                If Me.State.MyBO.AddressChild.City Is Nothing OrElse Me.State.MyBO.AddressChild.City.Trim = String.Empty Then
-                    Me.MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.MISSING_ADDRESS_INFO_ERR)
+            If State.MyBO.AddressChild.IsAddressComponentRequired(strAddFmt, "CITY") Then
+                If State.MyBO.AddressChild.City Is Nothing OrElse State.MyBO.AddressChild.City.Trim = String.Empty Then
+                    MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.MISSING_ADDRESS_INFO_ERR)
                     addressErrorExist = True
                 End If
             End If
 
-            If Me.State.MyBO.AddressChild.IsAddressComponentRequired(strAddFmt, "ZIP") Then
-                If Me.State.MyBO.AddressChild.PostalCode Is Nothing OrElse Me.State.MyBO.AddressChild.PostalCode.Trim = String.Empty Then
-                    Me.MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.MISSING_ADDRESS_INFO_ERR)
+            If State.MyBO.AddressChild.IsAddressComponentRequired(strAddFmt, "ZIP") Then
+                If State.MyBO.AddressChild.PostalCode Is Nothing OrElse State.MyBO.AddressChild.PostalCode.Trim = String.Empty Then
+                    MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.MISSING_ADDRESS_INFO_ERR)
                     addressErrorExist = True
                 End If
             End If
 
-            If Me.State.MyBO.AddressChild.IsAddressComponentRequired(strAddFmt, "RGNAME") OrElse
-               Me.State.MyBO.AddressChild.IsAddressComponentRequired(strAddFmt, "RGCODE") Then
-                If Me.State.MyBO.AddressChild.RegionId.Equals(Guid.Empty) Then
-                    Me.MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.MISSING_ADDRESS_INFO_ERR)
+            If State.MyBO.AddressChild.IsAddressComponentRequired(strAddFmt, "RGNAME") OrElse
+               State.MyBO.AddressChild.IsAddressComponentRequired(strAddFmt, "RGCODE") Then
+                If State.MyBO.AddressChild.RegionId.Equals(Guid.Empty) Then
+                    MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.MISSING_ADDRESS_INFO_ERR)
                     addressErrorExist = True
                 End If
             End If
 
-            If Me.State.MyBO.AddressChild.IsAddressComponentRequired(strAddFmt, "COU") Then
-                If Me.State.MyBO.AddressChild.CountryId.Equals(Guid.Empty) Then
-                    Me.MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.MISSING_ADDRESS_INFO_ERR)
+            If State.MyBO.AddressChild.IsAddressComponentRequired(strAddFmt, "COU") Then
+                If State.MyBO.AddressChild.CountryId.Equals(Guid.Empty) Then
+                    MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.MISSING_ADDRESS_INFO_ERR)
                     addressErrorExist = True
                 End If
             End If
@@ -5016,10 +4999,10 @@ Namespace Certificates
             Dim _country As Country
             Dim strRequiredFieldSetting As String = String.Empty
 
-            If Me.State.MyBO.CountryPurchaseId = Nothing Then
+            If State.MyBO.CountryPurchaseId = Nothing Then
                 Throw New GUIException(Message.MSG_INVALID_COUNTRY, Message.MSG_INVALID_COUNTRY)
             Else
-                _country = New Country(Me.State.MyBO.CountryPurchaseId)
+                _country = New Country(State.MyBO.CountryPurchaseId)
                 If (Not (Nothing Is _country)) AndAlso (_country.AddressInfoReqFields <> Nothing) Then
                     strRequiredFieldSetting = _country.AddressInfoReqFields.ToUpper()
                 End If
@@ -5028,25 +5011,25 @@ Namespace Certificates
             If strRequiredFieldSetting.Trim().Length > 0 Then
                 ' Validating Customer Salutation
                 If strRequiredFieldSetting.Contains("[SALU]") Then
-                    If Me.State.MyBO.SalutationId = Nothing OrElse Me.State.MyBO.SalutationId = Guid.Empty Then
-                        Me.MasterPage.MessageController.AddErrorAndShow("INVALID_SALUTATION")
+                    If State.MyBO.SalutationId = Nothing OrElse State.MyBO.SalutationId = Guid.Empty Then
+                        MasterPage.MessageController.AddErrorAndShow("INVALID_SALUTATION")
                         requiredFieldsErrorExist = True
                     End If
                 End If
 
                 ' Validating Customer Name
                 If strRequiredFieldSetting.Contains("[NAME]") Then
-                    If Me.State.MyBO.CustomerId.Equals(Guid.Empty) Then
-                        If Me.State.MyBO.CustomerName Is Nothing OrElse Me.State.MyBO.CustomerName.Trim() = String.Empty Then
-                            Me.MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.MISSING_CUSTOMER_NAME_ERR)
+                    If State.MyBO.CustomerId.Equals(Guid.Empty) Then
+                        If State.MyBO.CustomerName Is Nothing OrElse State.MyBO.CustomerName.Trim() = String.Empty Then
+                            MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.MISSING_CUSTOMER_NAME_ERR)
                             requiredFieldsErrorExist = True
                         End If
                     Else
-                        If (Me.State.MyBO.CustomerFirstName Is Nothing OrElse Me.State.MyBO.CustomerFirstName.Trim() = String.Empty) Then
-                            Me.MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.MISSING_CUSTOMER_FIRST_NAME_ERR)
+                        If (State.MyBO.CustomerFirstName Is Nothing OrElse State.MyBO.CustomerFirstName.Trim() = String.Empty) Then
+                            MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.MISSING_CUSTOMER_FIRST_NAME_ERR)
                             requiredFieldsErrorExist = True
-                        ElseIf (Me.State.MyBO.CustomerLastName Is Nothing OrElse Me.State.MyBO.CustomerLastName.Trim() = String.Empty) Then
-                            Me.MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.MISSING_CUSTOMER_LAST_NAME_ERR)
+                        ElseIf (State.MyBO.CustomerLastName Is Nothing OrElse State.MyBO.CustomerLastName.Trim() = String.Empty) Then
+                            MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.MISSING_CUSTOMER_LAST_NAME_ERR)
                             requiredFieldsErrorExist = True
                         End If
                     End If
@@ -5054,99 +5037,99 @@ Namespace Certificates
 
                 ' Validating Customer Address1
                 If strRequiredFieldSetting.Contains("[ADR1]") Then
-                    If Me.State.MyBO.AddressChild.Address1 Is Nothing OrElse Me.State.MyBO.AddressChild.Address1.Trim() = String.Empty Then
-                        Me.MasterPage.MessageController.AddErrorAndShow("ADDRESS1_FIELD_IS_REQUIRED")
+                    If State.MyBO.AddressChild.Address1 Is Nothing OrElse State.MyBO.AddressChild.Address1.Trim() = String.Empty Then
+                        MasterPage.MessageController.AddErrorAndShow("ADDRESS1_FIELD_IS_REQUIRED")
                         requiredFieldsErrorExist = True
                     End If
                 End If
 
                 ' Validating Customer Address2
                 If strRequiredFieldSetting.Contains("[ADR2]") Then
-                    If Me.State.MyBO.AddressChild.Address2 Is Nothing OrElse Me.State.MyBO.AddressChild.Address2.Trim() = String.Empty Then
-                        Me.MasterPage.MessageController.AddErrorAndShow("ADDRESS_REQUIRED")
+                    If State.MyBO.AddressChild.Address2 Is Nothing OrElse State.MyBO.AddressChild.Address2.Trim() = String.Empty Then
+                        MasterPage.MessageController.AddErrorAndShow("ADDRESS_REQUIRED")
                         requiredFieldsErrorExist = True
                     End If
                 End If
 
                 ' Validating Customer Address3
                 If strRequiredFieldSetting.Contains("[ADR3]") Then
-                    If Me.State.MyBO.AddressChild.Address3 Is Nothing OrElse Me.State.MyBO.AddressChild.Address3.Trim() = String.Empty Then
-                        Me.MasterPage.MessageController.AddErrorAndShow("ADDRESS_REQUIRED")
+                    If State.MyBO.AddressChild.Address3 Is Nothing OrElse State.MyBO.AddressChild.Address3.Trim() = String.Empty Then
+                        MasterPage.MessageController.AddErrorAndShow("ADDRESS_REQUIRED")
                         requiredFieldsErrorExist = True
                     End If
                 End If
 
                 ' Validating Customer City
                 If strRequiredFieldSetting.Contains("[CITY]") Then
-                    If Me.State.MyBO.AddressChild.City Is Nothing OrElse Me.State.MyBO.AddressChild.City.Trim() = String.Empty Then
-                        Me.MasterPage.MessageController.AddErrorAndShow("CITY_REQUIRED")
+                    If State.MyBO.AddressChild.City Is Nothing OrElse State.MyBO.AddressChild.City.Trim() = String.Empty Then
+                        MasterPage.MessageController.AddErrorAndShow("CITY_REQUIRED")
                         requiredFieldsErrorExist = True
                     End If
                 End If
 
                 ' Validating Customer Zip
                 If strRequiredFieldSetting.Contains("[ZIP]") Then
-                    If Me.State.MyBO.AddressChild.PostalCode Is Nothing OrElse Me.State.MyBO.AddressChild.PostalCode.Trim() = String.Empty Then
-                        Me.MasterPage.MessageController.AddErrorAndShow("ZIP_IS_MISSING")
+                    If State.MyBO.AddressChild.PostalCode Is Nothing OrElse State.MyBO.AddressChild.PostalCode.Trim() = String.Empty Then
+                        MasterPage.MessageController.AddErrorAndShow("ZIP_IS_MISSING")
                         requiredFieldsErrorExist = True
                     End If
                 End If
 
                 ' Validating Customer State/Provience OR Region
                 If strRequiredFieldSetting.Contains("[PRO]") Then
-                    If Me.State.MyBO.AddressChild.RegionId = Nothing OrElse Me.State.MyBO.AddressChild.RegionId = Guid.Empty Then
-                        Me.MasterPage.MessageController.AddErrorAndShow("ERR_INVALID_STATE")
+                    If State.MyBO.AddressChild.RegionId = Nothing OrElse State.MyBO.AddressChild.RegionId = Guid.Empty Then
+                        MasterPage.MessageController.AddErrorAndShow("ERR_INVALID_STATE")
                         requiredFieldsErrorExist = True
                     End If
                 End If
 
                 ' Validating Country
                 If strRequiredFieldSetting.Contains("[COU]") Then
-                    If Me.State.MyBO.AddressChild.CountryId = Nothing OrElse Me.State.MyBO.AddressChild.CountryId = Guid.Empty Then
-                        Me.MasterPage.MessageController.AddErrorAndShow("ERR_INVALID_COUNTRY")
+                    If State.MyBO.AddressChild.CountryId = Nothing OrElse State.MyBO.AddressChild.CountryId = Guid.Empty Then
+                        MasterPage.MessageController.AddErrorAndShow("ERR_INVALID_COUNTRY")
                         requiredFieldsErrorExist = True
                     End If
                 End If
 
                 ' Validating Email
                 If strRequiredFieldSetting.Contains("[EMAIL]") Then
-                    If Me.State.MyBO.Email Is Nothing OrElse Me.State.MyBO.Email.Trim() = String.Empty Then
-                        Me.MasterPage.MessageController.AddErrorAndShow("EMAIL_IS_REQUIRED_ERR")
+                    If State.MyBO.Email Is Nothing OrElse State.MyBO.Email.Trim() = String.Empty Then
+                        MasterPage.MessageController.AddErrorAndShow("EMAIL_IS_REQUIRED_ERR")
                         requiredFieldsErrorExist = True
                     End If
                 End If
 
                 ' Validating Customer Work Phone
                 If strRequiredFieldSetting.Contains("[WPHONE]") Then
-                    If Me.State.MyBO.WorkPhone Is Nothing OrElse Me.State.MyBO.WorkPhone.Trim() = String.Empty Then
-                        Me.MasterPage.MessageController.AddErrorAndShow("CELL_PHONE_NUMBER_IS_REQUIRED")
+                    If State.MyBO.WorkPhone Is Nothing OrElse State.MyBO.WorkPhone.Trim() = String.Empty Then
+                        MasterPage.MessageController.AddErrorAndShow("CELL_PHONE_NUMBER_IS_REQUIRED")
                         requiredFieldsErrorExist = True
                     End If
                 End If
 
                 ' Validating Customer Home Phone
                 If strRequiredFieldSetting.Contains("[HPHONE]") Then
-                    If Me.State.MyBO.HomePhone Is Nothing OrElse Me.State.MyBO.HomePhone.Trim() = String.Empty Then
-                        Me.MasterPage.MessageController.AddErrorAndShow("HOME_PHONE_IS_REQUIRED")
+                    If State.MyBO.HomePhone Is Nothing OrElse State.MyBO.HomePhone.Trim() = String.Empty Then
+                        MasterPage.MessageController.AddErrorAndShow("HOME_PHONE_IS_REQUIRED")
                         requiredFieldsErrorExist = True
                     End If
                 End If
 
                 ' Validating Customer Region
                 If strRequiredFieldSetting.Contains("[RGN]") Then
-                    If Me.State.MyBO.AddressChild.RegionId = Nothing OrElse Me.State.MyBO.AddressChild.RegionId = Guid.Empty Then
-                        Me.MasterPage.MessageController.AddErrorAndShow("REGION_IS_REQUIRED")
+                    If State.MyBO.AddressChild.RegionId = Nothing OrElse State.MyBO.AddressChild.RegionId = Guid.Empty Then
+                        MasterPage.MessageController.AddErrorAndShow("REGION_IS_REQUIRED")
                         requiredFieldsErrorExist = True
                     End If
                 End If
 
             End If
 
-            If Me.State.MyBO.AddressChild.IsEmpty Then
-                If (Me.State.ClaimsearchDV Is Nothing) Then
-                    Me.State.ClaimsearchDV = Me.State.MyBO.ClaimsForCertificate(Me.State.CertificateId, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+            If State.MyBO.AddressChild.IsEmpty Then
+                If (State.ClaimsearchDV Is Nothing) Then
+                    State.ClaimsearchDV = State.MyBO.ClaimsForCertificate(State.CertificateId, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                 End If
-                If (Me.State.ClaimsearchDV.Table.Rows.Count > 0) Then
+                If (State.ClaimsearchDV.Table.Rows.Count > 0) Then
                     Throw New GUIException(Message.MSG_CANNOT_REMOVE_ADDRESS, Message.MSG_CANNOT_REMOVE_ADDRESS)
                 End If
             End If
@@ -5161,13 +5144,13 @@ Namespace Certificates
 
             Dim CanellProcErrorExist As Boolean = False
 
-            If Me.State.certCancellationBO.CancellationReasonId.Equals(Guid.Empty) Then
-                Me.MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.MSG_INVALID_CANCELLATION_REASON_FOR_CERTIFICATE)
+            If State.certCancellationBO.CancellationReasonId.Equals(Guid.Empty) Then
+                MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.MSG_INVALID_CANCELLATION_REASON_FOR_CERTIFICATE)
                 CanellProcErrorExist = True
             End If
 
-            If Me.State.certCancellationBO.CancellationDate.Equals(DBNull.Value) Then
-                Me.MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.MSG_INVALID_CANCELLATION_REASON_FOR_CERTIFICATE)
+            If State.certCancellationBO.CancellationDate.Equals(DBNull.Value) Then
+                MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.MSG_INVALID_CANCELLATION_REASON_FOR_CERTIFICATE)
                 CanellProcErrorExist = True
             End If
 
@@ -5185,8 +5168,8 @@ Namespace Certificates
             'End If
             ClearLabelError(moRfIBANNumberLabel)
             Try
-                If Me.State.RefundBankInfoBO.IbanNumber <> String.Empty Then
-                    Me.State.RefundBankInfoBO.Validate()
+                If State.RefundBankInfoBO.IbanNumber <> String.Empty Then
+                    State.RefundBankInfoBO.Validate()
                     'If Me.State.RefundBankInfoBO.IbanNumber.Length <= 4 Then
                     '    ElitaPlusPage.SetLabelError(moRfIBANNumberLabel)
                     '    Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_BANKIBANNO_LENGTH)
@@ -5206,18 +5189,18 @@ Namespace Certificates
 
             Dim CanellCommentErrorExist As Boolean = False
 
-            If Me.State.CancCommentBO.CallerName Is Nothing OrElse Me.State.CancCommentBO.CallerName.Trim = String.Empty Then
-                Me.MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.MSG_CALLER_NAME_REQUIRED)
+            If State.CancCommentBO.CallerName Is Nothing OrElse State.CancCommentBO.CallerName.Trim = String.Empty Then
+                MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.MSG_CALLER_NAME_REQUIRED)
                 CanellCommentErrorExist = True
             End If
 
-            If Me.State.CancCommentBO.CommentTypeId.Equals(Guid.Empty) Then
-                Me.MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.GUI_JUSTIFICATION_MUST_BE_SELECTED_ERR)
+            If State.CancCommentBO.CommentTypeId.Equals(Guid.Empty) Then
+                MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.GUI_JUSTIFICATION_MUST_BE_SELECTED_ERR)
                 CanellCommentErrorExist = True
             End If
 
-            If Me.State.CancCommentBO.Comments Is Nothing OrElse Me.State.CancCommentBO.Comments.Trim = String.Empty Then
-                Me.MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.GUI_COMMENTS_ARE_REQUIRED)
+            If State.CancCommentBO.Comments Is Nothing OrElse State.CancCommentBO.Comments.Trim = String.Empty Then
+                MasterPage.MessageController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.GUI_COMMENTS_ARE_REQUIRED)
                 CanellCommentErrorExist = True
             End If
 
@@ -5229,7 +5212,7 @@ Namespace Certificates
 
 #Region "Other Customer Information"
         <WebMethod(), Script.Services.ScriptMethod()>
-        Public Shared Function GetOtherCustomerDetails(ByVal customerId As String, ByVal custInfoExclude As String, ByVal cust_salutation_exclude As String, ByVal lang_id As String, ByVal identification_number_type As String) As String
+        Public Shared Function GetOtherCustomerDetails(customerId As String, custInfoExclude As String, cust_salutation_exclude As String, lang_id As String, identification_number_type As String) As String
             Try
                 Dim dv As Certificate.OtherCustomerInfoDV = Certificate.GetOtherCustomerDetails(New Guid(customerId), New Guid(lang_id), identification_number_type)
                 Dim ds As DataSet
@@ -5286,15 +5269,15 @@ Namespace Certificates
 
         Public Sub PopulateCustomerGrid()
 
-            Dim cert As Certificate = Me.State.MyBO
-            Dim dv As Certificate.OtherCustomerInfoDV = Certificate.GetOtherCustomerInfo(Me.State.MyBO.Id, Me.State.MyBO.IdentificationNumberType)
+            Dim cert As Certificate = State.MyBO
+            Dim dv As Certificate.OtherCustomerInfoDV = Certificate.GetOtherCustomerInfo(State.MyBO.Id, State.MyBO.IdentificationNumberType)
             Dim objDataColCustInfoExclude As DataColumn = New DataColumn()
             Dim objDataColCustSalutationExclude As DataColumn = New DataColumn()
             Dim objDataColLangID As DataColumn = New DataColumn()
             Dim objDataColIdentificationNumberType As DataColumn = New DataColumn()
 
-            If Me.State.ReqCustomerLegalInfoId.Equals(Guid.Empty) Then
-                Me.State.ReqCustomerLegalInfoId = (New Company(Me.State.MyBO.CompanyId).ReqCustomerLegalInfoId)
+            If State.ReqCustomerLegalInfoId.Equals(Guid.Empty) Then
+                State.ReqCustomerLegalInfoId = (New Company(State.MyBO.CompanyId).ReqCustomerLegalInfoId)
             End If
 
 
@@ -5302,16 +5285,16 @@ Namespace Certificates
 
 
             If dv.Count > 0 Then
-                Me.CustomerCount.Text = "(" + dv.Table.Rows.Count.ToString() + ")"
+                CustomerCount.Text = "(" + dv.Table.Rows.Count.ToString() + ")"
 
                 objDataColCustInfoExclude.ColumnName = "CUST_INFO_EXCLUDE"
                 objDataColCustInfoExclude.DataType = GetType(String)
-                objDataColCustInfoExclude.DefaultValue = Me.State.ReqCustomerLegalInfoId.ToString()
+                objDataColCustInfoExclude.DefaultValue = State.ReqCustomerLegalInfoId.ToString()
                 dv.Table.Columns.Add(objDataColCustInfoExclude)
 
                 objDataColCustSalutationExclude.ColumnName = "CUST_SALUTATION_EXCLUDE"
                 objDataColCustSalutationExclude.DataType = GetType(String)
-                If Me.State.isSalutation Then
+                If State.isSalutation Then
                     objDataColCustSalutationExclude.DefaultValue = "FALSE"
                 Else
                     objDataColCustSalutationExclude.DefaultValue = "TRUE"
@@ -5326,16 +5309,16 @@ Namespace Certificates
 
                 objDataColIdentificationNumberType.ColumnName = "IDENTIFICATION_NUMBER_TYPE"
                 objDataColIdentificationNumberType.DataType = GetType(String)
-                objDataColIdentificationNumberType.DefaultValue = Me.State.MyBO.IdentificationNumberType.ToString()
+                objDataColIdentificationNumberType.DefaultValue = State.MyBO.IdentificationNumberType.ToString()
                 dv.Table.Columns.Add(objDataColIdentificationNumberType)
 
 
-                Me.CertOtherCustomers.AutoGenerateColumns = False
-                Me.CertOtherCustomers.DataSource = dv
-                Me.CertOtherCustomers.DataBind()
-                ControlMgr.SetVisibleControl(Me, CertOtherCustomers, Me.State.isItemsGridVisible)
+                CertOtherCustomers.AutoGenerateColumns = False
+                CertOtherCustomers.DataSource = dv
+                CertOtherCustomers.DataBind()
+                ControlMgr.SetVisibleControl(Me, CertOtherCustomers, State.isItemsGridVisible)
             Else
-                Me.CustomerCount.Text = "(0)"
+                CustomerCount.Text = "(0)"
             End If
 
         End Sub
@@ -5345,13 +5328,13 @@ Namespace Certificates
         Public Sub PopulateCoveragesGrid()
             'Me.GetSelectedItem(moDealerDrop)
 
-            Dim dv As CertItemCoverage.CertItemCoverageSearchDV = CertItemCoverage.GetItemCoverages(Me.State.MyBO.Id)
+            Dim dv As CertItemCoverage.CertItemCoverageSearchDV = CertItemCoverage.GetItemCoverages(State.MyBO.Id)
             'Dim dv1 As CertItemCoverage.CertItemCoverageSearchDV = CertItemCoverage.GetCurrentProductCodeCoverages(Me.State.MyBO.Id)
             Dim Row As DataRowView
 
             ' Check if the Coverages Data is already fetched from the DB, else get the data from the DB 
-            If (Me.State.CoveragesearchDV Is Nothing) Or Me.State.blnMFGChanged Then
-                Me.State.CoveragesearchDV = CertItemCoverage.GetCurrentProductCodeCoverages(Me.State.MyBO.Id)
+            If (State.CoveragesearchDV Is Nothing) OrElse State.blnMFGChanged Then
+                State.CoveragesearchDV = CertItemCoverage.GetCurrentProductCodeCoverages(State.MyBO.Id)
             End If
 
 
@@ -5361,8 +5344,8 @@ Namespace Certificates
             'If dv1.Count > 0 Then
 
             'For Each Row In dv1
-            If Me.State.CoveragesearchDV.Count > 0 Then
-                For Each Row In Me.State.CoveragesearchDV
+            If State.CoveragesearchDV.Count > 0 Then
+                For Each Row In State.CoveragesearchDV
 
                     CertItemCoverageIds = CertItemCoverageIds & "'" & GuidControl.GuidToHexString(New Guid(CType(Row(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_COVERAGE_ID), Byte()))) & "',"
                 Next
@@ -5378,39 +5361,39 @@ Namespace Certificates
             '   dv.Sort = Me.State.CurrentSortExpresion
             Try
                 dv.Sort = Grid.DataMember
-                Me.Grid.AutoGenerateColumns = False
+                Grid.AutoGenerateColumns = False
 
-                SetPageAndSelectedIndexFromGuid(dv, Me.State.TheItemCoverageState.selectedItemId, Me.Grid, Me.State.TheItemCoverageState.PageIndex)
+                SetPageAndSelectedIndexFromGuid(dv, State.TheItemCoverageState.selectedItemId, Grid, State.TheItemCoverageState.PageIndex)
 
-                Me.State.TheItemCoverageState.PageIndex = Me.Grid.CurrentPageIndex
-                Me.Grid.DataSource = Me.State.CoveragesearchDV
-                Me.State.PageIndex = Me.Grid.CurrentPageIndex
+                State.TheItemCoverageState.PageIndex = Grid.CurrentPageIndex
+                Grid.DataSource = State.CoveragesearchDV
+                State.PageIndex = Grid.CurrentPageIndex
 
-                If (Not Me.State.CoverageSortExpression.Equals(String.Empty)) Then
-                    Me.State.CoveragesearchDV.Sort = Me.State.CoverageSortExpression
+                If (Not State.CoverageSortExpression.Equals(String.Empty)) Then
+                    State.CoveragesearchDV.Sort = State.CoverageSortExpression
 
                 End If
 
-                HighLightSortColumn(Me.Grid, Me.State.CoverageSortExpression, Me.IsNewUI)
+                HighLightSortColumn(Grid, State.CoverageSortExpression, IsNewUI)
 
-                Me.Grid.DataBind()
+                Grid.DataBind()
 
-                ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+                ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
 
-                If Me.IsSinglePremium Then
-                    Me.Grid.Columns(GRID_COL_SEQUENCE_IDX).Visible = False
+                If IsSinglePremium Then
+                    Grid.Columns(GRID_COL_SEQUENCE_IDX).Visible = False
                 Else
-                    Me.Grid.Columns(GRID_COL_SEQUENCE_IDX).Visible = True
+                    Grid.Columns(GRID_COL_SEQUENCE_IDX).Visible = True
                 End If
 
                 If IsExtendCovByAutoRenew Then
-                    Me.Grid.Columns(GRID_COL_NO_OF_RENEWALS_IDX).Visible = True
-                    Me.Grid.Columns(GRID_COL_RENEWAL_DATE_IDX).Visible = True
-                    Me.Grid.Columns(GRID_COL_COVERAGE_DURATION_IDX).Visible = True
+                    Grid.Columns(GRID_COL_NO_OF_RENEWALS_IDX).Visible = True
+                    Grid.Columns(GRID_COL_RENEWAL_DATE_IDX).Visible = True
+                    Grid.Columns(GRID_COL_COVERAGE_DURATION_IDX).Visible = True
                 Else
-                    Me.Grid.Columns(GRID_COL_NO_OF_RENEWALS_IDX).Visible = False
-                    Me.Grid.Columns(GRID_COL_RENEWAL_DATE_IDX).Visible = False
-                    Me.Grid.Columns(GRID_COL_COVERAGE_DURATION_IDX).Visible = False
+                    Grid.Columns(GRID_COL_NO_OF_RENEWALS_IDX).Visible = False
+                    Grid.Columns(GRID_COL_RENEWAL_DATE_IDX).Visible = False
+                    Grid.Columns(GRID_COL_COVERAGE_DURATION_IDX).Visible = False
                 End If
 
                 'If (Me.State.MyBO.Company.EnablePeriodMileageVal.ToUpper().Equals("YESNO-N")) Then
@@ -5437,11 +5420,11 @@ Namespace Certificates
 
 
                 'Check if there are expired coverages to enable coverage history tab
-                Me.State.TheItemCoverageState.CoverageHistoryDV = New DataView(dv.Table)
+                State.TheItemCoverageState.CoverageHistoryDV = New DataView(dv.Table)
                 If Not CertItemCoverageIds.Equals(String.Empty) Then
-                    Me.State.TheItemCoverageState.CoverageHistoryDV.RowFilter = " cert_item_coverage_id_hex not in (" & CertItemCoverageIds & ")"
+                    State.TheItemCoverageState.CoverageHistoryDV.RowFilter = " cert_item_coverage_id_hex not in (" & CertItemCoverageIds & ")"
                 End If
-                If Me.State.TheItemCoverageState.CoverageHistoryDV.Count > 0 Then
+                If State.TheItemCoverageState.CoverageHistoryDV.Count > 0 Then
                     ExpiredCoveragesExist = True
                 End If
 
@@ -5452,9 +5435,9 @@ Namespace Certificates
                 'ControlMgr.SetVisibleControl(Me, Grid, Me.State.TheItemCoverageState.IsGridVisible)
 
                 'PM 2/14/2006 begin
-                For Each cov As CertItemCoverage In Me.State.MyBO.AssociatedItemCoverages
+                For Each cov As CertItemCoverage In State.MyBO.AssociatedItemCoverages
                     If cov.CoverageTypeCode = Codes.COVERAGE_TYPE__MANUFACTURER Then
-                        Me.State.TheItemCoverageState.manufaturerWarranty = True
+                        State.TheItemCoverageState.manufaturerWarranty = True
                     End If
                 Next
 
@@ -5482,65 +5465,65 @@ Namespace Certificates
                 '    allCoveragesExpired = True
                 'End If
             Catch ex As DataNotFoundException
-                Me.MasterPage.MessageController.AddError(ex.Message)
-                Me.State.IsEdit = False
-                Me.EnableDisableFields()
+                MasterPage.MessageController.AddError(ex.Message)
+                State.IsEdit = False
+                EnableDisableFields()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
-        Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
+        Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
             Try
-                If Me.State.CoverageSortExpression.StartsWith(e.SortExpression) Then
-                    If Me.State.CoverageSortExpression.EndsWith(" DESC") Then
-                        Me.State.CoverageSortExpression = e.SortExpression
+                If State.CoverageSortExpression.StartsWith(e.SortExpression) Then
+                    If State.CoverageSortExpression.EndsWith(" DESC") Then
+                        State.CoverageSortExpression = e.SortExpression
                     Else
-                        Me.State.CoverageSortExpression &= " DESC"
+                        State.CoverageSortExpression &= " DESC"
                     End If
                 Else
-                    Me.State.CoverageSortExpression = e.SortExpression
+                    State.CoverageSortExpression = e.SortExpression
                 End If
-                Me.State.TheItemCoverageState.selectedItemId = Nothing
-                Me.State.PageIndex = 0
-                Me.PopulateCoveragesGrid()
+                State.TheItemCoverageState.selectedItemId = Nothing
+                State.PageIndex = 0
+                PopulateCoveragesGrid()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
 
-        Private Sub Grid_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles Grid.ItemCommand
+        Private Sub Grid_ItemCommand(source As Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles Grid.ItemCommand
             Try
                 If e.CommandName = SELECT_ACTION_COMMAND Then
-                    Me.State.TheItemCoverageState.selectedItemId = New Guid(e.CommandArgument.ToString())
+                    State.TheItemCoverageState.selectedItemId = New Guid(e.CommandArgument.ToString())
                     'Me.State.MyBO.SelectedCoverageId = Me.State.TheItemCoverageState.selectedItemId
                     'Me.callPage(CertItemForm.URL, Me.State.MyBO)
                     'arf 12-20-04 'Me.callPage(CertItemForm.URL, Me.State.TheItemCoverageState.selectedItemId)
                     'arf 12-20-04 begin
-                    Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = Me.State.MyBO
-                    Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_COVERAGE_ID) = Me.State.TheItemCoverageState.selectedItemId
-                    Me.NavController.Navigate(Me, "coverage_selected", New CertItemForm.Parameters("FromLink"))
+                    NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = State.MyBO
+                    NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_COVERAGE_ID) = State.TheItemCoverageState.selectedItemId
+                    NavController.Navigate(Me, "coverage_selected", New CertItemForm.Parameters("FromLink"))
                     'arf 12-20-04 end
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_ItemCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemCreated
+        Private Sub Grid_ItemCreated(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemCreated
             BaseItemCreated(sender, e)
         End Sub
 
 
-        private function CoverageExpirationDate(ByVal coverageBeginDate as Date, ByVal maxRenewalDuration as Integer) as Date?
+        private function CoverageExpirationDate(coverageBeginDate as Date, maxRenewalDuration as Integer) as Date?
             dim expirationDate as Date = DateAdd(DateInterval.Month, maxRenewalDuration, coverageBeginDate)
             return DateAdd(DateInterval.Day, -1, expirationDate)
         End function
 
-        private function NumberOfRenewalsRemaining(ByVal renewalDuration as Integer, ByVal coverageDuration as Integer, ByVal numberOfRenewals As Integer) As Integer
+        private function NumberOfRenewalsRemaining(renewalDuration as Integer, coverageDuration as Integer, numberOfRenewals As Integer) As Integer
             Dim renewalsRemaining as Integer = renewalDuration/coverageDuration - (numberOfRenewals + 1) '+1 for initial registration
 
             if renewalsRemaining < 0 then
@@ -5551,79 +5534,79 @@ Namespace Certificates
             return renewalsRemaining
         End function
 
-        Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+        Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
                 Dim btnEditCoverage As LinkButton
 
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
                     Dim maxRenewalDuration as String = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_MAX_RENEWAL_DURATION).ToString
                     Dim coverageBeginDate as Date = CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_BEGIN_DATE), Date)
                     Dim coverageDuration as String = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_COVERAGE_COVERAGE_DURATION).ToString
                     Dim numberOfRenewals as String = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_COVERAGE_NO_OF_RENEWALS).ToString
 
-                    e.Item.Cells(Me.GRID_COL_RISK_TYPE_DESCRIPTION_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_RISK_TYPE).ToString
-                    e.Item.Cells(Me.GRID_COL_BEGIN_DATE_IDX).Text = Me.GetDateFormattedStringNullable(coverageBeginDate)
-                    e.Item.Cells(Me.GRID_COL_END_DATE_IDX).Text = Me.GetDateFormattedStringNullable(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_END_DATE), Date))
-                    e.Item.Cells(Me.GRID_COL_SEQUENCE_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_COVERAGE_SEQUENCE).ToString
+                    e.Item.Cells(GRID_COL_RISK_TYPE_DESCRIPTION_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_RISK_TYPE).ToString
+                    e.Item.Cells(GRID_COL_BEGIN_DATE_IDX).Text = GetDateFormattedStringNullable(coverageBeginDate)
+                    e.Item.Cells(GRID_COL_END_DATE_IDX).Text = GetDateFormattedStringNullable(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_END_DATE), Date))
+                    e.Item.Cells(GRID_COL_SEQUENCE_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_COVERAGE_SEQUENCE).ToString
 
-                    e.Item.Cells(Me.GRID_COL_COVERAGE_DURATION_IDX).Text = coverageDuration
-                    e.Item.Cells(Me.GRID_COL_NO_OF_RENEWALS_IDX).Text = numberOfRenewals.ToInteger()
+                    e.Item.Cells(GRID_COL_COVERAGE_DURATION_IDX).Text = coverageDuration
+                    e.Item.Cells(GRID_COL_NO_OF_RENEWALS_IDX).Text = numberOfRenewals.ToInteger()
                     'e.Item.Cells(Me.GRID_COL_BEGIN_KM_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_Ext_Begin_KM_MI).ToString
                     'e.Item.Cells(Me.GRID_COL_END_KM_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_Ext_End_KM_MI).ToString
 
                     If (Not String.IsNullOrWhiteSpace(maxRenewalDuration)) then
-                        e.Item.Cells(Me.GRID_COL_MAX_RENEWAL_DURATION_IDX).Text = maxRenewalDuration
+                        e.Item.Cells(GRID_COL_MAX_RENEWAL_DURATION_IDX).Text = maxRenewalDuration
                         Dim renewalDuration as Integer = maxRenewalDuration.ToInteger()
                         If (0 < renewalDuration) Then
-                            e.Item.Cells(Me.GRID_COL_COVERAGE_EXPIRATION_DATE_IDX).Text = Me.GetDateFormattedStringNullable(CoverageExpirationDate(coverageBeginDate, renewalDuration))
+                            e.Item.Cells(GRID_COL_COVERAGE_EXPIRATION_DATE_IDX).Text = GetDateFormattedStringNullable(CoverageExpirationDate(coverageBeginDate, renewalDuration))
                         End If
                         Dim coverDuration as Integer = coverageDuration.ToInteger()
                         If (0 < coverDuration) Then
-                            e.Item.Cells(Me.GRID_COL_NO_OF_RENEWALS_REMAINING_IDX).Text = NumberOfRenewalsRemaining(renewalDuration, coverDuration, numberOfRenewals.ToInteger()).ToString
+                            e.Item.Cells(GRID_COL_NO_OF_RENEWALS_REMAINING_IDX).Text = NumberOfRenewalsRemaining(renewalDuration, coverDuration, numberOfRenewals.ToInteger()).ToString
                         End If
                     End If
 
                     If Not Convert.IsDBNull(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_COVERAGE_RENEWAL_DATE)) Then
-                        e.Item.Cells(Me.GRID_COL_RENEWAL_DATE_IDX).Text = Me.GetDateFormattedString(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_COVERAGE_RENEWAL_DATE), Date))
+                        e.Item.Cells(GRID_COL_RENEWAL_DATE_IDX).Text = GetDateFormattedString(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_COVERAGE_RENEWAL_DATE), Date))
                     End If
-                    e.Item.Cells(Me.GRID_COL_COVERAGE_TOTAL_PAID_AMOUNT_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_COVERAGE_TOTAL_PAID_AMOUNT).ToString
-                    e.Item.Cells(Me.GRID_COL_COVERAGE_REMAIN_LIABILITY_LIMIT_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_COVERAGE_REMAIN_LIABILITY_LIMIT).ToString
+                    e.Item.Cells(GRID_COL_COVERAGE_TOTAL_PAID_AMOUNT_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_COVERAGE_TOTAL_PAID_AMOUNT).ToString
+                    e.Item.Cells(GRID_COL_COVERAGE_REMAIN_LIABILITY_LIMIT_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_COVERAGE_REMAIN_LIABILITY_LIMIT).ToString
 
-                    If (Not e.Item.Cells(Me.GRID_COL_COVERAGE_TYPE_DESCRIPTION_IDX).FindControl(GRID_COL_COVERAGE_TYPE_DESCRIPTION_CTRL) Is Nothing) Then
-                        btnEditCoverage = CType(e.Item.Cells(Me.GRID_COL_COVERAGE_TYPE_DESCRIPTION_IDX).FindControl(GRID_COL_COVERAGE_TYPE_DESCRIPTION_CTRL), LinkButton)
+                    If (e.Item.Cells(GRID_COL_COVERAGE_TYPE_DESCRIPTION_IDX).FindControl(GRID_COL_COVERAGE_TYPE_DESCRIPTION_CTRL) IsNot Nothing) Then
+                        btnEditCoverage = CType(e.Item.Cells(GRID_COL_COVERAGE_TYPE_DESCRIPTION_IDX).FindControl(GRID_COL_COVERAGE_TYPE_DESCRIPTION_CTRL), LinkButton)
                         btnEditCoverage.Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_COVERAGE_TYPE).ToString
                         btnEditCoverage.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_COVERAGE_ID), Byte()))
                         btnEditCoverage.CommandName = SELECT_ACTION_COMMAND
                     End If
 
-                    If Me.IsEffectiveCoverage(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_BEGIN_DATE), Date), CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_END_DATE), Date)) Then
-                        e.Item.Cells(Me.GRID_COL_BEGIN_DATE_IDX).CssClass = "StatActive"
-                        e.Item.Cells(Me.GRID_COL_END_DATE_IDX).CssClass = "StatActive"
+                    If IsEffectiveCoverage(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_BEGIN_DATE), Date), CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_END_DATE), Date)) Then
+                        e.Item.Cells(GRID_COL_BEGIN_DATE_IDX).CssClass = "StatActive"
+                        e.Item.Cells(GRID_COL_END_DATE_IDX).CssClass = "StatActive"
                         'e.Item.Cells(Me.GRID_COL_BEGIN_KM_IDX).CssClass = "StatActive"
                         'e.Item.Cells(Me.GRID_COL_END_KM_IDX).CssClass = "StatActive"
                     Else
-                        e.Item.Cells(Me.GRID_COL_BEGIN_DATE_IDX).CssClass = "StatInactive"
-                        e.Item.Cells(Me.GRID_COL_END_DATE_IDX).CssClass = "StatInactive"
+                        e.Item.Cells(GRID_COL_BEGIN_DATE_IDX).CssClass = "StatInactive"
+                        e.Item.Cells(GRID_COL_END_DATE_IDX).CssClass = "StatInactive"
                         'e.Item.Cells(Me.GRID_COL_BEGIN_KM_IDX).CssClass = "StatInactive"
                         'e.Item.Cells(Me.GRID_COL_END_KM_IDX).CssClass = "StatInactive"
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+        Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
 
             Try
-                Me.State.TheItemCoverageState.PageIndex = e.NewPageIndex
-                Me.State.TheItemCoverageState.selectedItemId = Guid.Empty
-                Me.PopulateCoveragesGrid()
+                State.TheItemCoverageState.PageIndex = e.NewPageIndex
+                State.TheItemCoverageState.selectedItemId = Guid.Empty
+                PopulateCoveragesGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -5639,101 +5622,101 @@ Namespace Certificates
 
             '   dv.Sort = Me.State.CurrentSortExpresion
             Try
-                Me.State.TheItemCoverageState.CoverageHistoryDV.Sort = CoverageHistoryGrid.DataMember
-                Me.CoverageHistoryGrid.AutoGenerateColumns = False
+                State.TheItemCoverageState.CoverageHistoryDV.Sort = CoverageHistoryGrid.DataMember
+                CoverageHistoryGrid.AutoGenerateColumns = False
 
-                SetPageAndSelectedIndexFromGuid(Me.State.TheItemCoverageState.CoverageHistoryDV, Me.State.TheItemCoverageState.selectedItemId, Me.CoverageHistoryGrid, Me.State.TheItemCoverageState.PageIndex)
-                Me.State.TheItemCoverageState.PageIndex = Me.CoverageHistoryGrid.CurrentPageIndex
-                If Me.State.TheItemCoverageState.CoverageHistoryDV.Count = 0 Then
+                SetPageAndSelectedIndexFromGuid(State.TheItemCoverageState.CoverageHistoryDV, State.TheItemCoverageState.selectedItemId, CoverageHistoryGrid, State.TheItemCoverageState.PageIndex)
+                State.TheItemCoverageState.PageIndex = CoverageHistoryGrid.CurrentPageIndex
+                If State.TheItemCoverageState.CoverageHistoryDV.Count = 0 Then
                     Throw New DataNotFoundException(NO_COVERAGE_FOUND)
                 End If
 
                 'Filter only expired coverages 
                 'dv.RowFilter = "end_date < '" & todayDate.Today.ToString("d", System.Globalization.CultureInfo.InvariantCulture) & "'"
 
-                Me.CoverageHistoryGrid.DataSource = Me.State.TheItemCoverageState.CoverageHistoryDV
-                Me.CoverageHistoryGrid.DataBind()
+                CoverageHistoryGrid.DataSource = State.TheItemCoverageState.CoverageHistoryDV
+                CoverageHistoryGrid.DataBind()
 
-                ControlMgr.SetVisibleControl(Me, CoverageHistoryGrid, Me.State.TheItemCoverageState.IsGridVisible)
+                ControlMgr.SetVisibleControl(Me, CoverageHistoryGrid, State.TheItemCoverageState.IsGridVisible)
 
-                If Me.IsSinglePremium Then
-                    Me.CoverageHistoryGrid.Columns(GRID_COL_SEQUENCE_IDX).Visible = False
+                If IsSinglePremium Then
+                    CoverageHistoryGrid.Columns(GRID_COL_SEQUENCE_IDX).Visible = False
                 Else
-                    Me.CoverageHistoryGrid.Columns(GRID_COL_SEQUENCE_IDX).Visible = True
+                    CoverageHistoryGrid.Columns(GRID_COL_SEQUENCE_IDX).Visible = True
                 End If
 
             Catch ex As DataNotFoundException
-                Me.MasterPage.MessageController.AddError(ex.Message)
-                Me.State.IsEdit = False
-                Me.EnableDisableFields()
+                MasterPage.MessageController.AddError(ex.Message)
+                State.IsEdit = False
+                EnableDisableFields()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
 
-        Private Sub CoverageHistoryGrid_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles CoverageHistoryGrid.ItemCommand
+        Private Sub CoverageHistoryGrid_ItemCommand(source As Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles CoverageHistoryGrid.ItemCommand
             Try
                 If e.CommandName = "SelectAction" Then
-                    Me.State.TheItemCoverageState.selectedItemId = New Guid(e.CommandArgument.ToString())
+                    State.TheItemCoverageState.selectedItemId = New Guid(e.CommandArgument.ToString())
                     'Me.State.MyBO.SelectedCoverageId = Me.State.TheItemCoverageState.selectedItemId
                     'Me.callPage(CertItemForm.URL, Me.State.MyBO)
                     'arf 12-20-04 'Me.callPage(CertItemForm.URL, Me.State.TheItemCoverageState.selectedItemId)
                     'arf 12-20-04 begin
-                    Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = Me.State.MyBO
-                    Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_COVERAGE_ID) = Me.State.TheItemCoverageState.selectedItemId
-                    Me.NavController.Navigate(Me, "coverage_selected", New CertItemForm.Parameters("FromLink"))
+                    NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = State.MyBO
+                    NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_COVERAGE_ID) = State.TheItemCoverageState.selectedItemId
+                    NavController.Navigate(Me, "coverage_selected", New CertItemForm.Parameters("FromLink"))
                     'arf 12-20-04 end
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub CoverageHistoryGrid_ItemCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles CoverageHistoryGrid.ItemCreated
+        Private Sub CoverageHistoryGrid_ItemCreated(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles CoverageHistoryGrid.ItemCreated
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub CoverageHistoryGrid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles CoverageHistoryGrid.ItemDataBound
+        Private Sub CoverageHistoryGrid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles CoverageHistoryGrid.ItemDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
                 Dim btnEditCoverage As LinkButton
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                    e.Item.Cells(Me.GRID_COL_RISK_TYPE_DESCRIPTION_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_RISK_TYPE).ToString
-                    e.Item.Cells(Me.GRID_COL_BEGIN_DATE_IDX).Text = Me.GetDateFormattedStringNullable(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_BEGIN_DATE), Date))
-                    e.Item.Cells(Me.GRID_COL_END_DATE_IDX).Text = Me.GetDateFormattedStringNullable(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_END_DATE), Date))
-                    e.Item.Cells(Me.GRID_COL_SEQUENCE_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_COVERAGE_SEQUENCE).ToString
-                    If (Not e.Item.Cells(Me.GRID_COL_COVERAGE_TYPE_DESCRIPTION_IDX).FindControl(GRID_COL_COVERAGE_TYPE_DESCRIPTION_CTRL) Is Nothing) Then
-                        btnEditCoverage = CType(e.Item.Cells(Me.GRID_COL_COVERAGE_TYPE_DESCRIPTION_IDX).FindControl(GRID_COL_COVERAGE_TYPE_DESCRIPTION_CTRL), LinkButton)
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
+                    e.Item.Cells(GRID_COL_RISK_TYPE_DESCRIPTION_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_RISK_TYPE).ToString
+                    e.Item.Cells(GRID_COL_BEGIN_DATE_IDX).Text = GetDateFormattedStringNullable(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_BEGIN_DATE), Date))
+                    e.Item.Cells(GRID_COL_END_DATE_IDX).Text = GetDateFormattedStringNullable(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_END_DATE), Date))
+                    e.Item.Cells(GRID_COL_SEQUENCE_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_COVERAGE_SEQUENCE).ToString
+                    If (e.Item.Cells(GRID_COL_COVERAGE_TYPE_DESCRIPTION_IDX).FindControl(GRID_COL_COVERAGE_TYPE_DESCRIPTION_CTRL) IsNot Nothing) Then
+                        btnEditCoverage = CType(e.Item.Cells(GRID_COL_COVERAGE_TYPE_DESCRIPTION_IDX).FindControl(GRID_COL_COVERAGE_TYPE_DESCRIPTION_CTRL), LinkButton)
                         btnEditCoverage.Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_COVERAGE_TYPE).ToString
                         btnEditCoverage.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_COVERAGE_ID), Byte()))
                         btnEditCoverage.CommandName = SELECT_ACTION_COMMAND
                     End If
 
-                    If Me.IsEffectiveCoverage(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_BEGIN_DATE), Date), CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_END_DATE), Date)) Then
-                        e.Item.Cells(Me.GRID_COL_BEGIN_DATE_IDX).CssClass = "StatActive"
-                        e.Item.Cells(Me.GRID_COL_END_DATE_IDX).CssClass = "StatActive"
+                    If IsEffectiveCoverage(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_BEGIN_DATE), Date), CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_END_DATE), Date)) Then
+                        e.Item.Cells(GRID_COL_BEGIN_DATE_IDX).CssClass = "StatActive"
+                        e.Item.Cells(GRID_COL_END_DATE_IDX).CssClass = "StatActive"
                     Else
-                        e.Item.Cells(Me.GRID_COL_BEGIN_DATE_IDX).CssClass = "StatInactive"
-                        e.Item.Cells(Me.GRID_COL_END_DATE_IDX).CssClass = "StatInactive"
+                        e.Item.Cells(GRID_COL_BEGIN_DATE_IDX).CssClass = "StatInactive"
+                        e.Item.Cells(GRID_COL_END_DATE_IDX).CssClass = "StatInactive"
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub CoverageHistoryGrid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles CoverageHistoryGrid.PageIndexChanged
+        Private Sub CoverageHistoryGrid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles CoverageHistoryGrid.PageIndexChanged
 
             Try
-                Me.State.TheItemCoverageState.PageIndex = e.NewPageIndex
-                Me.State.TheItemCoverageState.selectedItemId = Guid.Empty
-                Me.PopulateCoveragesHistoryGrid()
+                State.TheItemCoverageState.PageIndex = e.NewPageIndex
+                State.TheItemCoverageState.selectedItemId = Guid.Empty
+                PopulateCoveragesHistoryGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -5747,132 +5730,132 @@ Namespace Certificates
 
             ' Check if the Claims Data is already fetched from the DB, else get the data from the DB 
             ' Dim dv As Certificate.CertificateClaimsDV = Me.State.MyBO.ClaimsForCertificate(Me.State.MyBO.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            If (Me.State.ClaimsearchDV Is Nothing) Then
-                Me.State.ClaimsearchDV = Me.State.MyBO.ClaimsForCertificate(Me.State.CertificateId, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+            If (State.ClaimsearchDV Is Nothing) Then
+                State.ClaimsearchDV = State.MyBO.ClaimsForCertificate(State.CertificateId, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
             End If
 
             ' remove the sort, since column wise sorting is to be implemented
             ' dv.Sort = Me.State.CurrentSortExpresion
             ' dv.Sort = moClaimsDatagrid.DataMember
-            Me.moClaimsDatagrid.AutoGenerateColumns = False
+            moClaimsDatagrid.AutoGenerateColumns = False
 
-            SetPageAndSelectedIndexFromGuid(Me.State.ClaimsearchDV, Me.State.selectedClaimItemId, Me.moClaimsDatagrid, Me.State.PageIndexClaimsGrid)
-            Me.State.PageIndexClaimsGrid = Me.moClaimsDatagrid.CurrentPageIndex
-            Me.moClaimsDatagrid.DataSource = Me.State.ClaimsearchDV
-            Me.State.PageIndex = Me.moClaimsDatagrid.CurrentPageIndex
-            If (Not Me.State.ClaimsSortExpression.Equals(String.Empty)) Then
-                Me.State.ClaimsearchDV.Sort = Me.State.ClaimsSortExpression
+            SetPageAndSelectedIndexFromGuid(State.ClaimsearchDV, State.selectedClaimItemId, moClaimsDatagrid, State.PageIndexClaimsGrid)
+            State.PageIndexClaimsGrid = moClaimsDatagrid.CurrentPageIndex
+            moClaimsDatagrid.DataSource = State.ClaimsearchDV
+            State.PageIndex = moClaimsDatagrid.CurrentPageIndex
+            If (Not State.ClaimsSortExpression.Equals(String.Empty)) Then
+                State.ClaimsearchDV.Sort = State.ClaimsSortExpression
             End If
 
-            HighLightSortColumn(Me.moClaimsDatagrid, Me.State.ClaimsSortExpression, Me.IsNewUI)
+            HighLightSortColumn(moClaimsDatagrid, State.ClaimsSortExpression, IsNewUI)
 
-            Me.moClaimsDatagrid.DataBind()
+            moClaimsDatagrid.DataBind()
 
-            ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
         End Sub
 
 
-        Private Sub moClaimsDatagrid_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles moClaimsDatagrid.ItemCommand
+        Private Sub moClaimsDatagrid_ItemCommand(source As Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles moClaimsDatagrid.ItemCommand
             Try
                 If e.CommandName = "SelectAction" Then
-                    Me.State.selectedClaimItemId = New Guid(CType(e.CommandArgument, String))
+                    State.selectedClaimItemId = New Guid(CType(e.CommandArgument, String))
                     ''Me.State.selectedClaimItemId = New Guid(e.Item.Cells(Me.GRID_COL_EDIT_CLAIM_IDX).Text)
-                    Me.State.MyBO.SelectedCoverageId = Me.State.TheItemCoverageState.selectedItemId
-                    Dim claimBo As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(Me.State.selectedClaimItemId)
+                    State.MyBO.SelectedCoverageId = State.TheItemCoverageState.selectedItemId
+                    Dim claimBo As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(State.selectedClaimItemId)
                     If claimBo.StatusCode = Codes.CLAIM_STATUS__PENDING Then
                         If (claimBo.ClaimAuthorizationType = ClaimAuthorizationType.Single) Then
-                            Me.NavController.FlowSession(FlowSessionKeys.SESSION_CLAIM) = claimBo
-                            Me.NavController.Navigate(Me, FlowEvents.EVENT_CLAIM_SELECTED)
+                            NavController.FlowSession(FlowSessionKeys.SESSION_CLAIM) = claimBo
+                            NavController.Navigate(Me, FlowEvents.EVENT_CLAIM_SELECTED)
                         Else
-                            Me.NavController = Nothing
-                            Me.callPage(ClaimWizardForm.URL, New ClaimWizardForm.Parameters(ClaimWizardForm.ClaimWizardSteps.Step3, Nothing, Nothing, claimBo))
+                            NavController = Nothing
+                            callPage(ClaimWizardForm.URL, New ClaimWizardForm.Parameters(ClaimWizardForm.ClaimWizardSteps.Step3, Nothing, Nothing, claimBo))
                         End If
 
                     Else
                         'Save the Current Flow NavCtrl
                         '  CType(MyBase.State, BaseState).NavCtrl = Me.NavController
-                        Me.callPage(ClaimForm.URL, Me.State.selectedClaimItemId)
+                        callPage(ClaimForm.URL, State.selectedClaimItemId)
                     End If
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
                 If (TypeOf ex Is System.Reflection.TargetInvocationException) AndAlso
                    (TypeOf ex.InnerException Is Threading.ThreadAbortException) Then Return
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub moClaimsDatagrid_ItemCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moClaimsDatagrid.ItemCreated
+        Private Sub moClaimsDatagrid_ItemCreated(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moClaimsDatagrid.ItemCreated
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub moClaimsDatagrid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moClaimsDatagrid.ItemDataBound
+        Private Sub moClaimsDatagrid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moClaimsDatagrid.ItemDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
                 Dim btnEditClaim As LinkButton
 
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                    If (Not e.Item.Cells(Me.GRID_COL_CLAIM_NUMBER).FindControl(GRID_COL_CLAIM_NUMBER_CTRL) Is Nothing) Then
-                        btnEditClaim = CType(e.Item.Cells(Me.GRID_COL_CLAIM_NUMBER).FindControl(GRID_COL_CLAIM_NUMBER_CTRL), LinkButton)
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
+                    If (e.Item.Cells(GRID_COL_CLAIM_NUMBER).FindControl(GRID_COL_CLAIM_NUMBER_CTRL) IsNot Nothing) Then
+                        btnEditClaim = CType(e.Item.Cells(GRID_COL_CLAIM_NUMBER).FindControl(GRID_COL_CLAIM_NUMBER_CTRL), LinkButton)
                         btnEditClaim.Text = dvRow(Certificate.CertificateClaimsDV.COL_CLAIM_NUMBER).ToString
                         btnEditClaim.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(Certificate.CertificateClaimsDV.COL_CLAIM_ID), Byte()))
                         btnEditClaim.CommandName = SELECT_ACTION_COMMAND
                     End If
 
-                    e.Item.Cells(Me.GRID_COL_CREATED_DATE).Text = Me.GetDateFormattedStringNullable(CType(dvRow(Certificate.CertificateClaimsDV.COL_CREATED_DATE), Date))
-                    e.Item.Cells(Me.GRID_COL_STATUS_CODE).Text = dvRow(Certificate.CertificateClaimsDV.COL_STATUS_CODE).ToString
+                    e.Item.Cells(GRID_COL_CREATED_DATE).Text = GetDateFormattedStringNullable(CType(dvRow(Certificate.CertificateClaimsDV.COL_CREATED_DATE), Date))
+                    e.Item.Cells(GRID_COL_STATUS_CODE).Text = dvRow(Certificate.CertificateClaimsDV.COL_STATUS_CODE).ToString
 
                     If Not dvRow.Row.IsNull(Certificate.CertificateClaimsDV.COL_AUTHORIZED_AMOUNT) Then
-                        e.Item.Cells(Me.GRID_COL_AUTHORIZED_AMOUNT).Text = Me.GetAmountFormattedString(CType(dvRow(Certificate.CertificateClaimsDV.COL_AUTHORIZED_AMOUNT), Decimal))
+                        e.Item.Cells(GRID_COL_AUTHORIZED_AMOUNT).Text = GetAmountFormattedString(CType(dvRow(Certificate.CertificateClaimsDV.COL_AUTHORIZED_AMOUNT), Decimal))
                     Else
-                        e.Item.Cells(Me.GRID_COL_AUTHORIZED_AMOUNT).Text = Me.GetAmountFormattedString(0)
+                        e.Item.Cells(GRID_COL_AUTHORIZED_AMOUNT).Text = GetAmountFormattedString(0)
                     End If
 
                     If Not dvRow.Row.IsNull(Certificate.CertificateClaimsDV.COL_TOTAL_PAID) Then
-                        e.Item.Cells(Me.GRID_COL_TOTAL_PAID).Text = Me.GetAmountFormattedString(CType(dvRow(Certificate.CertificateClaimsDV.COL_TOTAL_PAID), Decimal))
+                        e.Item.Cells(GRID_COL_TOTAL_PAID).Text = GetAmountFormattedString(CType(dvRow(Certificate.CertificateClaimsDV.COL_TOTAL_PAID), Decimal))
                     Else
-                        e.Item.Cells(Me.GRID_COL_TOTAL_PAID).Text = Me.GetAmountFormattedString(0)
+                        e.Item.Cells(GRID_COL_TOTAL_PAID).Text = GetAmountFormattedString(0)
                     End If
 
-                    e.Item.Cells(Me.GRID_COL_EXTENDED_STATUS).Text = dvRow(Certificate.CertificateClaimsDV.COL_EXTENDED_STATUS).ToString
+                    e.Item.Cells(GRID_COL_EXTENDED_STATUS).Text = dvRow(Certificate.CertificateClaimsDV.COL_EXTENDED_STATUS).ToString
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub moClaimsDatagrid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moClaimsDatagrid.PageIndexChanged
+        Private Sub moClaimsDatagrid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moClaimsDatagrid.PageIndexChanged
 
             Try
-                Me.State.PageIndexClaimsGrid = e.NewPageIndex
-                Me.State.selectedClaimItemId = Guid.Empty
-                Me.PopulateClaimsGrid()
+                State.PageIndexClaimsGrid = e.NewPageIndex
+                State.selectedClaimItemId = Guid.Empty
+                PopulateClaimsGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub moClaimsDatagrid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles moClaimsDatagrid.SortCommand
+        Private Sub moClaimsDatagrid_SortCommand(source As Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles moClaimsDatagrid.SortCommand
             Try
-                If Me.State.ClaimsSortExpression.StartsWith(e.SortExpression) Then
-                    If Me.State.ClaimsSortExpression.EndsWith(" DESC") Then
-                        Me.State.ClaimsSortExpression = e.SortExpression
+                If State.ClaimsSortExpression.StartsWith(e.SortExpression) Then
+                    If State.ClaimsSortExpression.EndsWith(" DESC") Then
+                        State.ClaimsSortExpression = e.SortExpression
                     Else
-                        Me.State.ClaimsSortExpression &= " DESC"
+                        State.ClaimsSortExpression &= " DESC"
                     End If
                 Else
-                    Me.State.ClaimsSortExpression = e.SortExpression
+                    State.ClaimsSortExpression = e.SortExpression
                 End If
-                Me.State.selectedClaimItemId = Nothing
-                Me.State.PageIndex = 0
-                Me.PopulateClaimsGrid()
+                State.selectedClaimItemId = Nothing
+                State.PageIndex = 0
+                PopulateClaimsGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -5885,8 +5868,8 @@ Namespace Certificates
             Dim blnAddItemAllowed, blnAddItemAfterExpired As Boolean
             Dim i As Integer, blnCoveragesExpired As Boolean
             Dim endDate, todayDate As Date
-            Dim cert As Certificate = Me.State.MyBO
-            Dim dv As CertItem.CertItemSearchDV = CertItem.GetItems(Me.State.MyBO.Id)
+            Dim cert As Certificate = State.MyBO
+            Dim dv As CertItem.CertItemSearchDV = CertItem.GetItems(State.MyBO.Id)
             'Me.tsHoriz.Items(Me.CERT_ITEMS_INFO_TAB).Text = TranslationBase.TranslateLabelOrMessage("ITEMS")
 
             Dim dvPrdSS As DataView
@@ -5902,7 +5885,7 @@ Namespace Certificates
                 blnAddItemAfterExpired = True
             End If
 
-            Dim dvItemCov As DataView = CertItemCoverage.GetItemCoverages(Me.State.MyBO.Id)
+            Dim dvItemCov As DataView = CertItemCoverage.GetItemCoverages(State.MyBO.Id)
             dvItemCov.RowFilter = "end_date >= '" & todayDate.Today.ToString("d", System.Globalization.CultureInfo.InvariantCulture) & "'"
             If dvItemCov.Count <= 0 Then
                 blnCoveragesExpired = True
@@ -5912,190 +5895,190 @@ Namespace Certificates
 
             ControlMgr.SetVisibleControl(Me, btnNewCertItem_WRITE, False)
             ControlMgr.SetVisibleControl(Me, btnNewCertRegItem_WRITE, False)
-            If (cert.Product.AllowRegisteredItems = Codes.EXT_YESNO_Y And cert.StatusCode = CERT_STATUS) Then
+            If (cert.Product.AllowRegisteredItems = Codes.EXT_YESNO_Y AndAlso cert.StatusCode = CERT_STATUS) Then
                 ControlMgr.SetVisibleControl(Me, btnNewCertRegItem_WRITE, True)
             End If
-            If (cert.StatusCode = CERT_STATUS And blnAddItemAllowed) Then
+            If (cert.StatusCode = CERT_STATUS AndAlso blnAddItemAllowed) Then
                 ControlMgr.SetVisibleControl(Me, btnNewCertItem_WRITE, True)
             End If
 
-            If (cert.StatusCode = CERT_STATUS And blnCoveragesExpired And blnAddItemAfterExpired And blnAddItemAllowed) Then
+            If (cert.StatusCode = CERT_STATUS AndAlso blnCoveragesExpired AndAlso blnAddItemAfterExpired AndAlso blnAddItemAllowed) Then
                 ControlMgr.SetVisibleControl(Me, btnNewCertItem_WRITE, True)
             End If
 
-            If (cert.StatusCode = CERT_CANCEL_STATUS And blnAddItemAfterExpired And blnAddItemAllowed) Then
-                If Me.State.MyBO.TheCertCancellationBO.getCancellationReasonCode = CANCEL_REASON_EXP Then
+            If (cert.StatusCode = CERT_CANCEL_STATUS AndAlso blnAddItemAfterExpired AndAlso blnAddItemAllowed) Then
+                If State.MyBO.TheCertCancellationBO.getCancellationReasonCode = CANCEL_REASON_EXP Then
                     ControlMgr.SetVisibleControl(Me, btnNewCertItem_WRITE, True)
                 End If
             End If
 
             If dv.Count < 1 Then
-                Me.State.isItemsGridVisible = False
+                State.isItemsGridVisible = False
                 'Me.EnableDisableTabs(False)
                 Exit Sub
             End If
             'dv.Sort = CertItemCoverage.CertItemCoverageSearchDV.COL_BEGIN_DATE
             Dim ItemsRow As DataRow = dv.Table.Rows(0)
-            Me.ItemsGrid.AutoGenerateColumns = False
-            Me.ItemsGrid.Columns(Me.ITEMS_GRID_COL_ITEM_NUMBER_IDX).SortExpression = CertItem.CertItemSearchDV.COL_ITEM_NUMBER
-            Me.ItemsGrid.Columns(Me.ITEMS_GRID_COL_RISK_TYPE_DESCRIPTION_IDX).SortExpression = CertItem.CertItemSearchDV.COL_RISK_TYPE
-            Me.ItemsGrid.Columns(Me.ITEMS_GRID_COL_ITEM_DESCIPTION_IDX).SortExpression = CertItem.CertItemSearchDV.COL_ITEM_DESCRIPTION
-            Me.ItemsGrid.Columns(Me.ITEMS_GRID_COL_MAKE_IDX).SortExpression = CertItem.CertItemSearchDV.COL_MAKE
-            Me.ItemsGrid.Columns(Me.ITEMS_GRID_COL_MODEL_IDX).SortExpression = CertItem.CertItemSearchDV.COL_MODEL
-            Me.ItemsGrid.Columns(Me.ITEMS_GRID_COL_EXPIRATION_DATE_IDX).SortExpression = CertItem.CertItemSearchDV.COL_EXPIRATION_DATE
-            Me.ItemsGrid.Columns(Me.ITEMS_GRID_COL_BENEFIT_STATUS_IDX).SortExpression = CertItem.CertItemSearchDV.COL_BENEFIT_STATUS
+            ItemsGrid.AutoGenerateColumns = False
+            ItemsGrid.Columns(ITEMS_GRID_COL_ITEM_NUMBER_IDX).SortExpression = CertItem.CertItemSearchDV.COL_ITEM_NUMBER
+            ItemsGrid.Columns(ITEMS_GRID_COL_RISK_TYPE_DESCRIPTION_IDX).SortExpression = CertItem.CertItemSearchDV.COL_RISK_TYPE
+            ItemsGrid.Columns(ITEMS_GRID_COL_ITEM_DESCIPTION_IDX).SortExpression = CertItem.CertItemSearchDV.COL_ITEM_DESCRIPTION
+            ItemsGrid.Columns(ITEMS_GRID_COL_MAKE_IDX).SortExpression = CertItem.CertItemSearchDV.COL_MAKE
+            ItemsGrid.Columns(ITEMS_GRID_COL_MODEL_IDX).SortExpression = CertItem.CertItemSearchDV.COL_MODEL
+            ItemsGrid.Columns(ITEMS_GRID_COL_EXPIRATION_DATE_IDX).SortExpression = CertItem.CertItemSearchDV.COL_EXPIRATION_DATE
+            ItemsGrid.Columns(ITEMS_GRID_COL_BENEFIT_STATUS_IDX).SortExpression = CertItem.CertItemSearchDV.COL_BENEFIT_STATUS
 
-            Me.ItemsGrid.EditIndex = -1
+            ItemsGrid.EditIndex = -1
             'SetPageAndSelectedIndexFromGuid(EndorseDV, Me.State.SelectedCommentId, Me.EndorsementsGrid, Me.State.EndorsementsPageIndex)
-            Me.ItemsGrid.PageIndex = Me.State.ItemsPageIndex
-            Me.ItemsGrid.DataSource = dv
-            Me.ItemsGrid.DataBind()
+            ItemsGrid.PageIndex = State.ItemsPageIndex
+            ItemsGrid.DataSource = dv
+            ItemsGrid.DataBind()
 
             'Dispaly benefit status column only if the flag is turned on
-            If (Not String.IsNullOrWhiteSpace(Me.State.MyBO.Product.BenefitEligibleFlagXCD) AndAlso Me.State.MyBO.Product.BenefitEligibleFlagXCD = Codes.EXT_YESNO_Y) Then
-                Me.ItemsGrid.Columns(ITEMS_GRID_COL_BENEFIT_STATUS_IDX).Visible = True
+            If (Not String.IsNullOrWhiteSpace(State.MyBO.Product.BenefitEligibleFlagXCD) AndAlso State.MyBO.Product.BenefitEligibleFlagXCD = Codes.EXT_YESNO_Y) Then
+                ItemsGrid.Columns(ITEMS_GRID_COL_BENEFIT_STATUS_IDX).Visible = True
             Else
-                Me.ItemsGrid.Columns(ITEMS_GRID_COL_BENEFIT_STATUS_IDX).Visible = False
+                ItemsGrid.Columns(ITEMS_GRID_COL_BENEFIT_STATUS_IDX).Visible = False
             End If
 
             ' Original retail price captured at cert item level. Populated in certificate generl tab working on the assumption that
             ' wireless customers using this field will have only one cert item -- VS
 
-            If Not (ItemsRow.Item(CertItem.CertItemSearchDV.COL_ORIGINAL_RETAIL_PRICE).Equals(DBNull.Value)) And dv.Count = 1 Then
-                Me.PopulateControlFromBOProperty(Me.moOriginalRetailPriceText, CType(ItemsRow.Item(CertItem.CertItemSearchDV.COL_ORIGINAL_RETAIL_PRICE), Decimal), Me.DECIMAL_FORMAT)
+            If Not (ItemsRow.Item(CertItem.CertItemSearchDV.COL_ORIGINAL_RETAIL_PRICE).Equals(DBNull.Value)) AndAlso dv.Count = 1 Then
+                PopulateControlFromBOProperty(moOriginalRetailPriceText, CType(ItemsRow.Item(CertItem.CertItemSearchDV.COL_ORIGINAL_RETAIL_PRICE), Decimal), DECIMAL_FORMAT)
             Else
-                Me.PopulateControlFromBOProperty(Me.moOriginalRetailPriceText, Nothing)
+                PopulateControlFromBOProperty(moOriginalRetailPriceText, Nothing)
             End If
 
-            ControlMgr.SetVisibleControl(Me, ItemsGrid, Me.State.isItemsGridVisible)
+            ControlMgr.SetVisibleControl(Me, ItemsGrid, State.isItemsGridVisible)
 
         End Sub
 
 
-        Public Sub ItemsGrid_ItemCommand(ByVal source As Object, ByVal e As GridViewCommandEventArgs) Handles ItemsGrid.RowCommand
+        Public Sub ItemsGrid_ItemCommand(source As Object, e As GridViewCommandEventArgs) Handles ItemsGrid.RowCommand
             Try
                 If e.CommandName = "SelectAction" Then
-                    Me.State.TheItemsState.selectedItemId = New Guid(e.CommandArgument.ToString())
-                    Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = Me.State.MyBO
-                    Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_ITEM_ID) = Me.State.TheItemsState.selectedItemId
-                    Me.State.NavigateToItems = True
-                    Me.NavController.Navigate(Me, "item_selected")
+                    State.TheItemsState.selectedItemId = New Guid(e.CommandArgument.ToString())
+                    NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = State.MyBO
+                    NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_ITEM_ID) = State.TheItemsState.selectedItemId
+                    State.NavigateToItems = True
+                    NavController.Navigate(Me, "item_selected")
                     'arf 12-20-04 end
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Public Sub ItemsGrid_ItemCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles ItemsGrid.RowCreated
+        Public Sub ItemsGrid_ItemCreated(sender As Object, e As GridViewRowEventArgs) Handles ItemsGrid.RowCreated
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub ItemsGrid_ItemDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles ItemsGrid.RowDataBound
+        Private Sub ItemsGrid_ItemDataBound(sender As Object, e As GridViewRowEventArgs) Handles ItemsGrid.RowDataBound
             Dim btnEditItem As LinkButton
             Try
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                    e.Row.Cells(Me.ITEMS_GRID_COL_ITEM_NUMBER_IDX).Text = dvRow(CertItem.CertItemSearchDV.COL_ITEM_NUMBER).ToString
-                    If (Not e.Row.Cells(Me.ITEMS_GRID_COL_RISK_TYPE_DESCRIPTION_IDX).FindControl(ITEMS_GRID_COL_EDIT_CTRL) Is Nothing) Then
-                        btnEditItem = CType(e.Row.Cells(Me.ITEMS_GRID_COL_RISK_TYPE_DESCRIPTION_IDX).FindControl(ITEMS_GRID_COL_EDIT_CTRL), LinkButton)
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
+                    e.Row.Cells(ITEMS_GRID_COL_ITEM_NUMBER_IDX).Text = dvRow(CertItem.CertItemSearchDV.COL_ITEM_NUMBER).ToString
+                    If (e.Row.Cells(ITEMS_GRID_COL_RISK_TYPE_DESCRIPTION_IDX).FindControl(ITEMS_GRID_COL_EDIT_CTRL) IsNot Nothing) Then
+                        btnEditItem = CType(e.Row.Cells(ITEMS_GRID_COL_RISK_TYPE_DESCRIPTION_IDX).FindControl(ITEMS_GRID_COL_EDIT_CTRL), LinkButton)
                         btnEditItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(CertItem.CertItemSearchDV.COL_CERT_ITEM_ID), Byte()))
                         btnEditItem.CommandName = SELECT_ACTION_COMMAND
                         btnEditItem.Text = dvRow(CertItem.CertItemSearchDV.COL_RISK_TYPE).ToString
                     End If
-                    e.Row.Cells(Me.ITEMS_GRID_COL_ITEM_DESCIPTION_IDX).Text = dvRow(CertItem.CertItemSearchDV.COL_ITEM_DESCRIPTION).ToString
-                    e.Row.Cells(Me.ITEMS_GRID_COL_MAKE_IDX).Text = dvRow(CertItem.CertItemSearchDV.COL_MAKE).ToString
-                    e.Row.Cells(Me.ITEMS_GRID_COL_MODEL_IDX).Text = dvRow(CertItem.CertItemSearchDV.COL_MODEL).ToString
-                    If (Not dvRow(CertItem.CertItemSearchDV.COL_EXPIRATION_DATE) Is DBNull.Value) Then
-                        e.Row.Cells(Me.ITEMS_GRID_COL_EXPIRATION_DATE_IDX).Text = Me.GetDateFormattedStringNullable(CType(dvRow(CertItem.CertItemSearchDV.COL_EXPIRATION_DATE), Date))
+                    e.Row.Cells(ITEMS_GRID_COL_ITEM_DESCIPTION_IDX).Text = dvRow(CertItem.CertItemSearchDV.COL_ITEM_DESCRIPTION).ToString
+                    e.Row.Cells(ITEMS_GRID_COL_MAKE_IDX).Text = dvRow(CertItem.CertItemSearchDV.COL_MAKE).ToString
+                    e.Row.Cells(ITEMS_GRID_COL_MODEL_IDX).Text = dvRow(CertItem.CertItemSearchDV.COL_MODEL).ToString
+                    If (dvRow(CertItem.CertItemSearchDV.COL_EXPIRATION_DATE) IsNot DBNull.Value) Then
+                        e.Row.Cells(ITEMS_GRID_COL_EXPIRATION_DATE_IDX).Text = GetDateFormattedStringNullable(CType(dvRow(CertItem.CertItemSearchDV.COL_EXPIRATION_DATE), Date))
                     End If
                     e.Row.Cells(ITEMS_GRID_COL_BENEFIT_STATUS_IDX).Text = dvRow(CertItem.CertItemSearchDV.COL_BENEFIT_STATUS).ToString()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub ItemsGrid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles ItemsGrid.PageIndexChanging
+        Private Sub ItemsGrid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles ItemsGrid.PageIndexChanging
             Try
-                Me.State.TheItemCoverageState.PageIndex = e.NewPageIndex
-                Me.State.TheItemCoverageState.selectedItemId = Guid.Empty
-                Me.PopulateItemsGrid()
+                State.TheItemCoverageState.PageIndex = e.NewPageIndex
+                State.TheItemCoverageState.selectedItemId = Guid.Empty
+                PopulateItemsGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region
 
 #Region "Registered Items Datagrid Related"
         Public Sub PopulateRegisterItemsGrid()
-            Dim cert As Certificate = Me.State.MyBO
-            Dim dv As CertItem.CertRegItemSearchDV = CertItem.GetRegisteredItems(Me.State.MyBO.Id)
+            Dim cert As Certificate = State.MyBO
+            Dim dv As CertItem.CertRegItemSearchDV = CertItem.GetRegisteredItems(State.MyBO.Id)
 
             ControlMgr.SetVisibleControl(Me, btnNewCertItem_WRITE, False)
             ControlMgr.SetVisibleControl(Me, btnNewCertRegItem_WRITE, False)
-            If (cert.Product.AllowRegisteredItems = Codes.EXT_YESNO_Y And cert.StatusCode = CERT_STATUS) Then
+            If (cert.Product.AllowRegisteredItems = Codes.EXT_YESNO_Y AndAlso cert.StatusCode = CERT_STATUS) Then
                 ControlMgr.SetVisibleControl(Me, btnNewCertRegItem_WRITE, True)
             End If
 
             If dv.Count < 1 Then
-                Me.State.isRegItemsGridVisible = False
+                State.isRegItemsGridVisible = False
                 Exit Sub
             End If
 
             Dim ItemsRow As DataRow = dv.Table.Rows(0)
-            Me.RegisteredItemsGrid.AutoGenerateColumns = False
-            Me.RegisteredItemsGrid.Columns(REG_ITEMS_COL_REGISTERED_ITEM_NAME_IDX).SortExpression = CertItem.CertRegItemSearchDV.COL_REGISTERED_ITEM_NAME
-            Me.RegisteredItemsGrid.Columns(REG_ITEMS_COL_DEVICE_TYPE_IDX).SortExpression = CertItem.CertRegItemSearchDV.COL_DEVICE_TYPE
-            Me.RegisteredItemsGrid.Columns(REG_ITEMS_COL_ITEM_DESCRIPTION_IDX).SortExpression = CertItem.CertRegItemSearchDV.COL_ITEM_DESCRIPTION
-            Me.RegisteredItemsGrid.Columns(REG_ITEMS_COL_MAKE_IDX).SortExpression = CertItem.CertRegItemSearchDV.COL_MAKE
-            Me.RegisteredItemsGrid.Columns(REG_ITEMS_COL_MODEL_IDX).SortExpression = CertItem.CertRegItemSearchDV.COL_MODEL
-            Me.RegisteredItemsGrid.Columns(REG_ITEMS_COL_PURCHASE_DATE_IDX).SortExpression = CertItem.CertRegItemSearchDV.COL_PURCHASE_DATE
-            Me.RegisteredItemsGrid.Columns(REG_ITEMS_COL_PURCHASE_PRICE_IDX).SortExpression = CertItem.CertRegItemSearchDV.COL_PURCHASE_PRICE
-            Me.RegisteredItemsGrid.Columns(REG_ITEMS_COL_SERIAL_NUMBER_IDX).SortExpression = CertItem.CertRegItemSearchDV.COL_SERIAL_NUMBER
+            RegisteredItemsGrid.AutoGenerateColumns = False
+            RegisteredItemsGrid.Columns(REG_ITEMS_COL_REGISTERED_ITEM_NAME_IDX).SortExpression = CertItem.CertRegItemSearchDV.COL_REGISTERED_ITEM_NAME
+            RegisteredItemsGrid.Columns(REG_ITEMS_COL_DEVICE_TYPE_IDX).SortExpression = CertItem.CertRegItemSearchDV.COL_DEVICE_TYPE
+            RegisteredItemsGrid.Columns(REG_ITEMS_COL_ITEM_DESCRIPTION_IDX).SortExpression = CertItem.CertRegItemSearchDV.COL_ITEM_DESCRIPTION
+            RegisteredItemsGrid.Columns(REG_ITEMS_COL_MAKE_IDX).SortExpression = CertItem.CertRegItemSearchDV.COL_MAKE
+            RegisteredItemsGrid.Columns(REG_ITEMS_COL_MODEL_IDX).SortExpression = CertItem.CertRegItemSearchDV.COL_MODEL
+            RegisteredItemsGrid.Columns(REG_ITEMS_COL_PURCHASE_DATE_IDX).SortExpression = CertItem.CertRegItemSearchDV.COL_PURCHASE_DATE
+            RegisteredItemsGrid.Columns(REG_ITEMS_COL_PURCHASE_PRICE_IDX).SortExpression = CertItem.CertRegItemSearchDV.COL_PURCHASE_PRICE
+            RegisteredItemsGrid.Columns(REG_ITEMS_COL_SERIAL_NUMBER_IDX).SortExpression = CertItem.CertRegItemSearchDV.COL_SERIAL_NUMBER
             'REQ-6002
-            Me.RegisteredItemsGrid.Columns(REG_ITEMS_COL_REGISTRATION_DATE_IDX).SortExpression = CertItem.CertRegItemSearchDV.COL_REGISTRATION_DATE
-            Me.RegisteredItemsGrid.Columns(REG_ITEMS_COL_RETAIL_PRICE_IDX).SortExpression = CertItem.CertRegItemSearchDV.COL_RETAIL_PRICE
-            Me.RegisteredItemsGrid.Columns(REG_ITEMS_COL_EXPIRATION_DATE_IDX).SortExpression = CertItem.CertRegItemSearchDV.COL_EXPIRATION_DATE
-            Me.RegisteredItemsGrid.Columns(REG_ITEMS_COL_ITEM_STATUS_IDX).SortExpression = CertItem.CertRegItemSearchDV.COL_ITEM_STATUS
+            RegisteredItemsGrid.Columns(REG_ITEMS_COL_REGISTRATION_DATE_IDX).SortExpression = CertItem.CertRegItemSearchDV.COL_REGISTRATION_DATE
+            RegisteredItemsGrid.Columns(REG_ITEMS_COL_RETAIL_PRICE_IDX).SortExpression = CertItem.CertRegItemSearchDV.COL_RETAIL_PRICE
+            RegisteredItemsGrid.Columns(REG_ITEMS_COL_EXPIRATION_DATE_IDX).SortExpression = CertItem.CertRegItemSearchDV.COL_EXPIRATION_DATE
+            RegisteredItemsGrid.Columns(REG_ITEMS_COL_ITEM_STATUS_IDX).SortExpression = CertItem.CertRegItemSearchDV.COL_ITEM_STATUS
 
-            Me.RegisteredItemsGrid.EditIndex = -1
-            Me.RegisteredItemsGrid.PageIndex = Me.State.ItemsPageIndex
-            Me.RegisteredItemsGrid.DataSource = dv
-            Me.RegisteredItemsGrid.DataBind()
+            RegisteredItemsGrid.EditIndex = -1
+            RegisteredItemsGrid.PageIndex = State.ItemsPageIndex
+            RegisteredItemsGrid.DataSource = dv
+            RegisteredItemsGrid.DataBind()
 
-            ControlMgr.SetVisibleControl(Me, RegisteredItemsGrid, Me.State.isRegItemsGridVisible)
+            ControlMgr.SetVisibleControl(Me, RegisteredItemsGrid, State.isRegItemsGridVisible)
 
         End Sub
 
-        Public Sub RegisteredItemsGrid_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles RegisteredItemsGrid.RowCommand
+        Public Sub RegisteredItemsGrid_ItemCommand(source As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles RegisteredItemsGrid.RowCommand
             Try
                 If e.CommandName = "SelectAction" Then
-                    Me.State.TheItemsState.selectedRegisteredItemId = New Guid(e.CommandArgument.ToString())
-                    Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERT_REGISTERED_ITEM_ID) = Me.State.TheItemsState.selectedRegisteredItemId
-                    Me.State.NavigateToItems = True
-                    Me.NavController.Navigate(Me, "register_item_selected")
+                    State.TheItemsState.selectedRegisteredItemId = New Guid(e.CommandArgument.ToString())
+                    NavController.FlowSession(FlowSessionKeys.SESSION_CERT_REGISTERED_ITEM_ID) = State.TheItemsState.selectedRegisteredItemId
+                    State.NavigateToItems = True
+                    NavController.Navigate(Me, "register_item_selected")
 
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Public Sub RegisteredItemsGrid_ItemCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles RegisteredItemsGrid.RowCreated
+        Public Sub RegisteredItemsGrid_ItemCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles RegisteredItemsGrid.RowCreated
             BaseItemCreated(sender, e)
         End Sub
-        Public Sub RegisteredItemsGrid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles RegisteredItemsGrid.RowDataBound
+        Public Sub RegisteredItemsGrid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles RegisteredItemsGrid.RowDataBound
             Dim btnRegEditItem As LinkButton
             Try
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                    If (Not e.Row.Cells(REG_ITEMS_COL_REGISTERED_ITEM_NAME_IDX).FindControl(REG_ITEMS_GRID_COL_EDIT_CTRL) Is Nothing) Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
+                    If (e.Row.Cells(REG_ITEMS_COL_REGISTERED_ITEM_NAME_IDX).FindControl(REG_ITEMS_GRID_COL_EDIT_CTRL) IsNot Nothing) Then
                         btnRegEditItem = CType(e.Row.Cells(REG_ITEMS_COL_REGISTERED_ITEM_NAME_IDX).FindControl(REG_ITEMS_GRID_COL_EDIT_CTRL), LinkButton)
                         btnRegEditItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(CertItem.CertRegItemSearchDV.COL_CERT_REGISTERED_ITEM_ID), Byte()))
                         btnRegEditItem.CommandName = SELECT_ACTION_COMMAND
@@ -6105,46 +6088,46 @@ Namespace Certificates
                     e.Row.Cells(REG_ITEMS_COL_ITEM_DESCRIPTION_IDX).Text = dvRow(CertItem.CertRegItemSearchDV.COL_ITEM_DESCRIPTION).ToString
                     e.Row.Cells(REG_ITEMS_COL_MAKE_IDX).Text = dvRow(CertItem.CertRegItemSearchDV.COL_MAKE).ToString
                     e.Row.Cells(REG_ITEMS_COL_MODEL_IDX).Text = dvRow(CertItem.CertRegItemSearchDV.COL_MODEL).ToString
-                    If (Not dvRow(CertItem.CertRegItemSearchDV.COL_PURCHASE_DATE) Is DBNull.Value) Then
+                    If (dvRow(CertItem.CertRegItemSearchDV.COL_PURCHASE_DATE) IsNot DBNull.Value) Then
                         e.Row.Cells(REG_ITEMS_COL_PURCHASE_DATE_IDX).Text = GetDateFormattedStringNullable(CType(dvRow(CertItem.CertRegItemSearchDV.COL_PURCHASE_DATE), Date))
                     End If
                     e.Row.Cells(REG_ITEMS_COL_PURCHASE_PRICE_IDX).Text = dvRow(CertItem.CertRegItemSearchDV.COL_PURCHASE_PRICE).ToString
                     e.Row.Cells(REG_ITEMS_COL_SERIAL_NUMBER_IDX).Text = dvRow(CertItem.CertRegItemSearchDV.COL_SERIAL_NUMBER).ToString
                     'REQ-6002
-                    If (Not dvRow(CertItem.CertRegItemSearchDV.COL_REGISTRATION_DATE) Is DBNull.Value) Then
+                    If (dvRow(CertItem.CertRegItemSearchDV.COL_REGISTRATION_DATE) IsNot DBNull.Value) Then
                         e.Row.Cells(REG_ITEMS_COL_REGISTRATION_DATE_IDX).Text = GetDateFormattedStringNullable(CType(dvRow(CertItem.CertRegItemSearchDV.COL_REGISTRATION_DATE), Date))
                     End If
-                    If (Not dvRow(CertItem.CertRegItemSearchDV.COL_RETAIL_PRICE) Is DBNull.Value) Then
+                    If (dvRow(CertItem.CertRegItemSearchDV.COL_RETAIL_PRICE) IsNot DBNull.Value) Then
                         e.Row.Cells(REG_ITEMS_COL_RETAIL_PRICE_IDX).Text = GetAmountFormattedString(CType(dvRow(CertItem.CertRegItemSearchDV.COL_RETAIL_PRICE), Decimal))
                     End If
-                    If (Not dvRow(CertItem.CertRegItemSearchDV.COL_EXPIRATION_DATE) Is DBNull.Value) Then
+                    If (dvRow(CertItem.CertRegItemSearchDV.COL_EXPIRATION_DATE) IsNot DBNull.Value) Then
                         e.Row.Cells(REG_ITEMS_COL_EXPIRATION_DATE_IDX).Text = dvRow(CertItem.CertRegItemSearchDV.COL_EXPIRATION_DATE)
                     End If
-                    If (Not dvRow(CertItem.CertRegItemSearchDV.COL_ITEM_STATUS) Is DBNull.Value) Then
+                    If (dvRow(CertItem.CertRegItemSearchDV.COL_ITEM_STATUS) IsNot DBNull.Value) Then
                         e.Row.Cells(REG_ITEMS_COL_ITEM_STATUS_IDX).Text = dvRow(CertItem.CertRegItemSearchDV.COL_ITEM_STATUS)
                     End If
 
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub RegisteredItemsGrid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles RegisteredItemsGrid.PageIndexChanging
+        Private Sub RegisteredItemsGrid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles RegisteredItemsGrid.PageIndexChanging
             Try
-                Me.State.TheItemCoverageState.PageIndex = e.NewPageIndex
-                Me.State.TheItemCoverageState.selectedItemId = Guid.Empty
-                Me.PopulateRegisterItemsGrid()
+                State.TheItemCoverageState.PageIndex = e.NewPageIndex
+                State.TheItemCoverageState.selectedItemId = Guid.Empty
+                PopulateRegisterItemsGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
         Private Sub CheckIfComingFromItems()
-            If Me.State.NavigateToItems Then
+            If State.NavigateToItems Then
                 'If tsHoriz.Items(CERT_ITEMS_INFO_TAB).Enabled = True Then Me.tsHoriz.SelectedIndex = CERT_ITEMS_INFO_TAB
-                If isTabEnabled(CERT_ITEMS_INFO_TAB) = True Then Me.State.selectedTab = CERT_ITEMS_INFO_TAB
+                If isTabEnabled(CERT_ITEMS_INFO_TAB) = True Then State.selectedTab = CERT_ITEMS_INFO_TAB
 
-                Me.State.NavigateToItems = False
+                State.NavigateToItems = False
             End If
 
         End Sub
@@ -6154,24 +6137,24 @@ Namespace Certificates
         Public Sub PopulateInstallmentHistoryGrid()
 
             Try
-                If (Me.State.CertInstallmentHistoryDV Is Nothing) Then
-                    Me.State.CertInstallmentHistoryDV = Certificate.GetCertInstallmentHistoryInfo(Me.State.MyBO.Id)
+                If (State.CertInstallmentHistoryDV Is Nothing) Then
+                    State.CertInstallmentHistoryDV = Certificate.GetCertInstallmentHistoryInfo(State.MyBO.Id)
                 End If
 
-                Me.CertInstallmentHistoryGrid.PageSize = Me.State.PageSize
-                If Me.State.CertInstallmentHistoryDV.Count > 0 Then
-                    Me.State.CertInstallmentHistoryDV.Sort = Me.State.CertInstallmentHistorySortExpression
+                CertInstallmentHistoryGrid.PageSize = State.PageSize
+                If State.CertInstallmentHistoryDV.Count > 0 Then
+                    State.CertInstallmentHistoryDV.Sort = State.CertInstallmentHistorySortExpression
 
-                    SetPageAndSelectedIndexFromGuid(Me.State.CertInstallmentHistoryDV, Guid.Empty, Me.CertInstallmentHistoryGrid, Me.State.PageIndex)
-                    Me.CertInstallmentHistoryGrid.DataSource = Me.State.CertInstallmentHistoryDV
-                    Me.State.PageIndex = Me.CertInstallmentHistoryGrid.PageIndex
+                    SetPageAndSelectedIndexFromGuid(State.CertInstallmentHistoryDV, Guid.Empty, CertInstallmentHistoryGrid, State.PageIndex)
+                    CertInstallmentHistoryGrid.DataSource = State.CertInstallmentHistoryDV
+                    State.PageIndex = CertInstallmentHistoryGrid.PageIndex
 
-                    HighLightSortColumn(Me.CertInstallmentHistoryGrid, Me.State.CertInstallmentHistorySortExpression, Me.IsNewUI)
-                    Me.CertInstallmentHistoryGrid.DataBind()
+                    HighLightSortColumn(CertInstallmentHistoryGrid, State.CertInstallmentHistorySortExpression, IsNewUI)
+                    CertInstallmentHistoryGrid.DataBind()
 
                     ControlMgr.SetVisibleControl(Me, CertInstallmentHistoryGrid, True)
-                    ControlMgr.SetVisibleControl(Me, trPageSize, Me.CertInstallmentHistoryGrid.Visible)
-                    Session("recCount") = Me.State.CertInstallmentHistoryDV.Count
+                    ControlMgr.SetVisibleControl(Me, trPageSize, CertInstallmentHistoryGrid.Visible)
+                    Session("recCount") = State.CertInstallmentHistoryDV.Count
                     'ControlMgr.SetEnableTabStrip(Me, tsHoriz.Items(CERT_REPRICE_TAB), True)
                     EnableTab(CERT_REPRICE_TAB, True)
                 End If
@@ -6187,102 +6170,102 @@ Namespace Certificates
 #Region "Comments Datagrid Related "
 
         'The Binding LOgic is here  
-        Private Sub CommentsGrid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles CommentsGrid.ItemDataBound
+        Private Sub CommentsGrid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles CommentsGrid.ItemDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
                 Dim btnEditItem As LinkButton
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                    If (Not e.Item.Cells(Me.GRID_COL_TIME_STAMP).FindControl(COMMENT_GRID_COL_EDIT_CTRL) Is Nothing) Then
-                        btnEditItem = CType(e.Item.Cells(Me.GRID_COL_TIME_STAMP).FindControl(ITEMS_GRID_COL_EDIT_CTRL), LinkButton)
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
+                    If (e.Item.Cells(GRID_COL_TIME_STAMP).FindControl(COMMENT_GRID_COL_EDIT_CTRL) IsNot Nothing) Then
+                        btnEditItem = CType(e.Item.Cells(GRID_COL_TIME_STAMP).FindControl(ITEMS_GRID_COL_EDIT_CTRL), LinkButton)
                         btnEditItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(Comment.CommentSearchDV.COL_COMMENT_ID), Byte()))
                         btnEditItem.CommandName = SELECT_ACTION_COMMAND
                         Dim createdDate As Date = CType(dvRow(Comment.CommentSearchDV.COL_CREATED_DATE), Date)
                         btnEditItem.Text = GetLongDateFormattedString(createdDate)
                     End If
-                    e.Item.Cells(Me.GRID_COL_CALLER_NAME).Text = dvRow(Comment.CommentSearchDV.COL_CALLER_NAME).ToString
-                    e.Item.Cells(Me.GRID_COL_ADDED_BY).Text = dvRow(Comment.CommentSearchDV.COL_ADDED_BY).ToString
-                    e.Item.Cells(Me.GRID_COL_COMMENT_TEXT).Text = dvRow(Comment.CommentSearchDV.COL_COMMENTS).ToString
+                    e.Item.Cells(GRID_COL_CALLER_NAME).Text = dvRow(Comment.CommentSearchDV.COL_CALLER_NAME).ToString
+                    e.Item.Cells(GRID_COL_ADDED_BY).Text = dvRow(Comment.CommentSearchDV.COL_ADDED_BY).ToString
+                    e.Item.Cells(GRID_COL_COMMENT_TEXT).Text = dvRow(Comment.CommentSearchDV.COL_COMMENTS).ToString
 
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub CommentsGrid_SortCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles CommentsGrid.SortCommand
+        Private Sub CommentsGrid_SortCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles CommentsGrid.SortCommand
             Try
-                If Me.State.CommentsSortExpression.StartsWith(e.SortExpression) Then
-                    If Me.State.CommentsSortExpression.EndsWith(" DESC") Then
-                        Me.State.CommentsSortExpression = e.SortExpression
+                If State.CommentsSortExpression.StartsWith(e.SortExpression) Then
+                    If State.CommentsSortExpression.EndsWith(" DESC") Then
+                        State.CommentsSortExpression = e.SortExpression
                     Else
-                        Me.State.CommentsSortExpression &= " DESC"
+                        State.CommentsSortExpression &= " DESC"
                     End If
                 Else
-                    Me.State.CommentsSortExpression = e.SortExpression
+                    State.CommentsSortExpression = e.SortExpression
                 End If
-                Me.State.SelectedCommentId = Nothing
-                Me.State.PageIndex = 0
-                Me.PopulateCommentsGrid()
+                State.SelectedCommentId = Nothing
+                State.PageIndex = 0
+                PopulateCommentsGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Public Sub CommentsGrid_ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles CommentsGrid.ItemCommand
+        Public Sub CommentsGrid_ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles CommentsGrid.ItemCommand
             Try
                 If e.CommandName = "SelectAction" Then
-                    Me.State.SelectedCommentId = New Guid(e.CommandArgument.ToString())
-                    Dim originalComment As Comment = New Comment(Me.State.SelectedCommentId)
+                    State.SelectedCommentId = New Guid(e.CommandArgument.ToString())
+                    Dim originalComment As Comment = New Comment(State.SelectedCommentId)
                     Dim newComment As Comment = Comment.GetNewComment(originalComment)
-                    Me.State.NavigateToComment = True
-                    Me.NavController.Navigate(Me, FlowEvents.EVENT_COMMENT_SELECTED, New CommentForm.Parameters(newComment))
+                    State.NavigateToComment = True
+                    NavController.Navigate(Me, FlowEvents.EVENT_COMMENT_SELECTED, New CommentForm.Parameters(newComment))
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Public Sub CommentsGrid_ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles CommentsGrid.ItemCreated
+        Public Sub CommentsGrid_ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles CommentsGrid.ItemCreated
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub CommentsGrid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles CommentsGrid.PageIndexChanged
+        Private Sub CommentsGrid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles CommentsGrid.PageIndexChanged
             Try
                 'Me.State.PageIndex = e.NewPageIndex
-                Me.State.CommentsPageIndex = e.NewPageIndex
-                Me.State.SelectedCommentId = Guid.Empty
-                Me.PopulateCommentsGrid()
+                State.CommentsPageIndex = e.NewPageIndex
+                State.SelectedCommentId = Guid.Empty
+                PopulateCommentsGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Public Sub PopulateCommentsGrid()
-            Dim cert As Certificate = Me.State.MyBO
-            Dim dv As Comment.CommentSearchDV = Comment.getList(Me.State.MyBO.Id)
-            dv.Sort = Me.State.CommentsSortExpression
+            Dim cert As Certificate = State.MyBO
+            Dim dv As Comment.CommentSearchDV = Comment.getList(State.MyBO.Id)
+            dv.Sort = State.CommentsSortExpression
 
-            Me.CommentsGrid.AutoGenerateColumns = False
-            Me.CommentsGrid.Columns(Me.GRID_COL_ADDED_BY).SortExpression = Comment.CommentSearchDV.COL_ADDED_BY
-            Me.CommentsGrid.Columns(Me.GRID_COL_CALLER_NAME).SortExpression = Comment.CommentSearchDV.COL_CALLER_NAME
-            Me.CommentsGrid.Columns(Me.GRID_COL_TIME_STAMP).SortExpression = Comment.CommentSearchDV.COL_CREATED_DATE
-            Me.CommentsGrid.EditItemIndex = -1
-            SetPageAndSelectedIndexFromGuid(dv, Me.State.SelectedCommentId, Me.CommentsGrid, Me.State.CommentsPageIndex)
-            Me.State.CommentsPageIndex = Me.CommentsGrid.CurrentPageIndex
-            Me.CommentsGrid.DataSource = dv
-            Me.CommentsGrid.DataBind()
+            CommentsGrid.AutoGenerateColumns = False
+            CommentsGrid.Columns(GRID_COL_ADDED_BY).SortExpression = Comment.CommentSearchDV.COL_ADDED_BY
+            CommentsGrid.Columns(GRID_COL_CALLER_NAME).SortExpression = Comment.CommentSearchDV.COL_CALLER_NAME
+            CommentsGrid.Columns(GRID_COL_TIME_STAMP).SortExpression = Comment.CommentSearchDV.COL_CREATED_DATE
+            CommentsGrid.EditItemIndex = -1
+            SetPageAndSelectedIndexFromGuid(dv, State.SelectedCommentId, CommentsGrid, State.CommentsPageIndex)
+            State.CommentsPageIndex = CommentsGrid.CurrentPageIndex
+            CommentsGrid.DataSource = dv
+            CommentsGrid.DataBind()
 
             'Me.tsHoriz.Items(Me.CERT_COMMENTS_TAB).Text = TranslationBase.TranslateLabelOrMessage("COMMENTS") & " : " & dv.Count.ToString()
             lblTabCommentHeader.Text = TranslationBase.TranslateLabelOrMessage("COMMENTS") & " : " & dv.Count.ToString()
 
-            ControlMgr.SetVisibleControl(Me, CommentsGrid, Me.State.IsCommentsGridVisible)
+            ControlMgr.SetVisibleControl(Me, CommentsGrid, State.IsCommentsGridVisible)
         End Sub
 #End Region
 
@@ -6291,49 +6274,49 @@ Namespace Certificates
         'Restrict functionality
         Public Sub PopulateDataProtection()
             Try
-                Dim dv As DataProtectionHistory.DataProtectionCommentDV = DataProtectionHistory.GetList(Me.State.MyBO.Id)
-                dv.Sort = Me.State.CommentsSortExpression
-                Me.GridDataProtection.AutoGenerateColumns = False
-                Me.GridDataProtection.DataSource = dv
-                Me.GridDataProtection.DataBind()
+                Dim dv As DataProtectionHistory.DataProtectionCommentDV = DataProtectionHistory.GetList(State.MyBO.Id)
+                dv.Sort = State.CommentsSortExpression
+                GridDataProtection.AutoGenerateColumns = False
+                GridDataProtection.DataSource = dv
+                GridDataProtection.DataBind()
                 AddGridLabelDecorations()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Protected Sub btnRestrict_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRestrict.Click
+        Protected Sub btnRestrict_Click(sender As Object, e As EventArgs) Handles btnRestrict.Click
             Try
-                Me.State.DataProtectionHistBO = New DataProtectionHistory()
+                State.DataProtectionHistBO = New DataProtectionHistory()
                 ControlMgr.SetVisibleControl(Me, btnCancel, True)
                 ControlMgr.SetVisibleControl(Me, btnSave, True)
                 ControlMgr.SetVisibleControl(Me, btnRestrict, False)
                 ControlMgr.SetVisibleControl(Me, btnRightToForgotten, False)
-                With Me.State.DataProtectionHistBO
-                    Me.State.DataProtectionHistBO.RestrictedStatus = RestrictCode
+                With State.DataProtectionHistBO
+                    State.DataProtectionHistBO.RestrictedStatus = RestrictCode
                 End With
                 AddNewRowToGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Protected Sub btnSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSave.Click
+        Protected Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
             Try
-                If (Me.State.DataProtectionHistBO.RestrictedStatus = RestrictCode Or Me.State.DataProtectionHistBO.RestrictedStatus = UnRestrictCode) Then
-                    Me.State.DBCommentBO = Me.State.DataProtectionHistBO.AddComments(Guid.Empty)
-                    Me.State.DBCertificateBO = Me.State.DataProtectionHistBO.AddCertificate(Me.State.MyBO.Id)
-                ElseIf (Me.State.CertForgotBO.RestrictedStatus = ForgottenCode) Then
-                    Me.State.DBCommentBO = Me.State.CertForgotBO.AddComment(Guid.Empty)
-                    Me.State.DBCertificateBO = Me.State.CertForgotBO.AddCertificate(Me.State.MyBO.Id)
+                If (State.DataProtectionHistBO.RestrictedStatus = RestrictCode OrElse State.DataProtectionHistBO.RestrictedStatus = UnRestrictCode) Then
+                    State.DBCommentBO = State.DataProtectionHistBO.AddComments(Guid.Empty)
+                    State.DBCertificateBO = State.DataProtectionHistBO.AddCertificate(State.MyBO.Id)
+                ElseIf (State.CertForgotBO.RestrictedStatus = ForgottenCode) Then
+                    State.DBCommentBO = State.CertForgotBO.AddComment(Guid.Empty)
+                    State.DBCertificateBO = State.CertForgotBO.AddCertificate(State.MyBO.Id)
                 End If
-                If (Me.State.DataProtectionHistBO.RestrictedStatus = RestrictCode) Then
+                If (State.DataProtectionHistBO.RestrictedStatus = RestrictCode) Then
                     'Save for Restriction
                     PopulateDataProtectionBOsFormFrom(RestrictCode)
                     If (ValidateDataProtectionFields(RestrictCode)) Then
-                        Me.State.DBCommentBO.Validate()
-                        Me.State.DataProtectionHistBO.Save()
-                        Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                        State.DBCommentBO.Validate()
+                        State.DataProtectionHistBO.Save()
+                        AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
                         ControlMgr.SetVisibleControl(Me, btnRestrict, False)
                         ControlMgr.SetVisibleControl(Me, btnNewClaim, False)
                         ControlMgr.SetVisibleControl(Me, btnUnRestrict, True)
@@ -6345,65 +6328,65 @@ Namespace Certificates
                         PopulateDataProtection()
                         ClearStateProperties()
                         ' To refresh user control 'Restricted' label
-                        moCertificateInfoController = Me.UserCertificateCtr
-                        moCertificateInfoController.InitController(Me.State.MyBO.Id, , Me.State.companyCode)
+                        moCertificateInfoController = UserCertificateCtr
+                        moCertificateInfoController.InitController(State.MyBO.Id, , State.companyCode)
                     End If
-                ElseIf (Me.State.DataProtectionHistBO.RestrictedStatus = UnRestrictCode) Then
+                ElseIf (State.DataProtectionHistBO.RestrictedStatus = UnRestrictCode) Then
                     'Save for UnRestriction
                     PopulateDataProtectionBOsFormFrom(UnRestrictCode)
                     If (ValidateDataProtectionFields(UnRestrictCode)) Then
-                        Me.State.DBCommentBO.Validate()
-                        Me.State.DataProtectionHistBO.Save()
-                        Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                        State.DBCommentBO.Validate()
+                        State.DataProtectionHistBO.Save()
+                        AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
                         ControlMgr.SetVisibleControl(Me, btnRestrict, True)
                         ControlMgr.SetVisibleControl(Me, btnNewClaim, True)
                         ControlMgr.SetVisibleControl(Me, btnUnRestrict, False)
                         ControlMgr.SetVisibleControl(Me, btnCancel, False)
                         ControlMgr.SetVisibleControl(Me, btnSave, False)
                         ControlMgr.SetVisibleControl(Me, btnCancelRequestEdit_WRITE, True)
-                        If Me.State.MyBO.StatusCode = Codes.CERTIFICATE_STATUS__CANCELLED Then
+                        If State.MyBO.StatusCode = Codes.CERTIFICATE_STATUS__CANCELLED Then
                             ControlMgr.SetVisibleControl(Me, btnRightToForgotten, True)
                         End If
                         GridDataProtection.ShowFooter = False
                         PopulateDataProtection()
                         ClearStateProperties()
                         ' To refresh user control 'Restricted' label
-                        moCertificateInfoController = Me.UserCertificateCtr
-                        moCertificateInfoController.InitController(Me.State.MyBO.Id, , Me.State.companyCode)
+                        moCertificateInfoController = UserCertificateCtr
+                        moCertificateInfoController.InitController(State.MyBO.Id, , State.companyCode)
                     End If
-                ElseIf (Me.State.CertForgotBO.RestrictedStatus = ForgottenCode) Then
+                ElseIf (State.CertForgotBO.RestrictedStatus = ForgottenCode) Then
                     PopulateDataProtectionBOsFormFrom(ForgottenCode)
                     If (ValidateDataProtectionFields(ForgottenCode)) Then
-                        Me.State.DBCommentBO.Validate()
-                        Me.State.CertForgotBO.Validate()
-                        Me.DisplayMessage(Message.MSG_PROMPT_FOR_FORGOTTEN, "", ElitaPlusPage.MSG_BTN_YES_NO, ElitaPlusPage.MSG_TYPE_CONFIRM, HiddenSavePromptResponse)
+                        State.DBCommentBO.Validate()
+                        State.CertForgotBO.Validate()
+                        DisplayMessage(Message.MSG_PROMPT_FOR_FORGOTTEN, "", ElitaPlusPage.MSG_BTN_YES_NO, ElitaPlusPage.MSG_TYPE_CONFIRM, HiddenSavePromptResponse)
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Protected Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
+        Protected Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
             Try
-                If (Not Me.State.DataProtectionHistBO Is Nothing AndAlso Me.State.DataProtectionHistBO.RestrictedStatus = RestrictCode) Then
+                If (State.DataProtectionHistBO IsNot Nothing AndAlso State.DataProtectionHistBO.RestrictedStatus = RestrictCode) Then
                     ControlMgr.SetVisibleControl(Me, btnRestrict, True)
                     ControlMgr.SetVisibleControl(Me, btnUnRestrict, False)
 
-                ElseIf (Not Me.State.DataProtectionHistBO Is Nothing AndAlso Me.State.DataProtectionHistBO.RestrictedStatus = UnRestrictCode) Then
+                ElseIf (State.DataProtectionHistBO IsNot Nothing AndAlso State.DataProtectionHistBO.RestrictedStatus = UnRestrictCode) Then
                     ControlMgr.SetVisibleControl(Me, btnUnRestrict, True)
                     ControlMgr.SetVisibleControl(Me, btnRestrict, False)
 
-                ElseIf (Not Me.State.CertForgotBO Is Nothing AndAlso Not Me.State.MyBO.CertificateIsRestricted AndAlso Me.State.CertForgotBO.RestrictedStatus = ForgottenCode) Then
+                ElseIf (State.CertForgotBO IsNot Nothing AndAlso Not State.MyBO.CertificateIsRestricted AndAlso State.CertForgotBO.RestrictedStatus = ForgottenCode) Then
                     ControlMgr.SetVisibleControl(Me, btnRestrict, True)
                     ControlMgr.SetVisibleControl(Me, btnUnRestrict, False)
 
-                ElseIf (Not Me.State.CertForgotBO Is Nothing AndAlso Me.State.CertForgotBO.RestrictedStatus = ForgottenCode) Then
+                ElseIf (State.CertForgotBO IsNot Nothing AndAlso State.CertForgotBO.RestrictedStatus = ForgottenCode) Then
                     ControlMgr.SetVisibleControl(Me, btnUnRestrict, True)
                     ControlMgr.SetVisibleControl(Me, btnRestrict, False)
 
                 End If
-                If Me.State.MyBO.StatusCode = Codes.CERTIFICATE_STATUS__CANCELLED AndAlso Not Me.State.MyBO.CertificateIsRestricted Then
+                If State.MyBO.StatusCode = Codes.CERTIFICATE_STATUS__CANCELLED AndAlso Not State.MyBO.CertificateIsRestricted Then
                     ControlMgr.SetVisibleControl(Me, btnRightToForgotten, True)
                 Else
                     ControlMgr.SetVisibleControl(Me, btnRightToForgotten, False)
@@ -6413,22 +6396,22 @@ Namespace Certificates
                 ControlMgr.SetVisibleControl(Me, btnCancel, False)
                 ControlMgr.SetVisibleControl(Me, btnSave, False)
 
-                If (Not Me.State.CertForgotBO Is Nothing) Then
-                    With Me.State.CertForgotBO
-                        Me.State.CertForgotBO.RestrictedStatus = String.Empty
+                If (State.CertForgotBO IsNot Nothing) Then
+                    With State.CertForgotBO
+                        State.CertForgotBO.RestrictedStatus = String.Empty
                     End With
                 End If
 
-                If (Not Me.State.DataProtectionHistBO Is Nothing) Then
-                    With Me.State.DataProtectionHistBO
-                        Me.State.DataProtectionHistBO.RestrictedStatus = String.Empty
+                If (State.DataProtectionHistBO IsNot Nothing) Then
+                    With State.DataProtectionHistBO
+                        State.DataProtectionHistBO.RestrictedStatus = String.Empty
                     End With
                 End If
 
                 GridDataProtection.ShowFooter = False
                 PopulateDataProtection()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -6436,14 +6419,14 @@ Namespace Certificates
             Try
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
                 If (e.Row.RowType = DataControlRowType.DataRow) Then
-                    e.Row.Cells(Me.GDP_COL_REQUEST_ID).Text = dvRow(DataProtectionHistory.DataProtectionCommentDV.COL_REQUEST_ID).ToString
-                    e.Row.Cells(Me.GDP_COL_COMMENTS).Text = dvRow(DataProtectionHistory.DataProtectionCommentDV.COL_COMMENTS).ToString
-                    e.Row.Cells(Me.GDP_COL_ADDED_BY).Text = dvRow(DataProtectionHistory.DataProtectionCommentDV.COL_ADDED_BY).ToString
-                    e.Row.Cells(Me.GDP_COL_TIME_STAMP).Text = dvRow(DataProtectionHistory.DataProtectionCommentDV.COL_CREATED_DATE).ToString
-                    e.Row.Cells(Me.GDP_COL_STATUS).Text = dvRow(DataProtectionHistory.DataProtectionCommentDV.COL_STATUS).ToString
+                    e.Row.Cells(GDP_COL_REQUEST_ID).Text = dvRow(DataProtectionHistory.DataProtectionCommentDV.COL_REQUEST_ID).ToString
+                    e.Row.Cells(GDP_COL_COMMENTS).Text = dvRow(DataProtectionHistory.DataProtectionCommentDV.COL_COMMENTS).ToString
+                    e.Row.Cells(GDP_COL_ADDED_BY).Text = dvRow(DataProtectionHistory.DataProtectionCommentDV.COL_ADDED_BY).ToString
+                    e.Row.Cells(GDP_COL_TIME_STAMP).Text = dvRow(DataProtectionHistory.DataProtectionCommentDV.COL_CREATED_DATE).ToString
+                    e.Row.Cells(GDP_COL_STATUS).Text = dvRow(DataProtectionHistory.DataProtectionCommentDV.COL_STATUS).ToString
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -6456,12 +6439,12 @@ Namespace Certificates
                 lblRequestHeader.Text = "<span class=""mandatory"">*</span>" & TranslationBase.TranslateLabelOrMessage(lblRequestHeader.Text)
                 lblCommentHeader.Text = "<span class=""mandatory"">*</span>" & TranslationBase.TranslateLabelOrMessage(lblCommentHeader.Text)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub AddNewRowToGrid()
-            Dim dv As DataProtectionHistory.DataProtectionCommentDV = DataProtectionHistory.GetList(Me.State.MyBO.Id)
+            Dim dv As DataProtectionHistory.DataProtectionCommentDV = DataProtectionHistory.GetList(State.MyBO.Id)
             Dim dt As DataTable, row As DataRow
             dt = dv.Table
             row = dt.NewRow
@@ -6474,99 +6457,99 @@ Namespace Certificates
             AddGridLabelDecorations()
         End Sub
 
-        Protected Sub PopulateDataProtectionBOsFormFrom(ByVal actionCode As String)
+        Protected Sub PopulateDataProtectionBOsFormFrom(actionCode As String)
             Try
                 Dim ind As Integer = GridDataProtection.EditIndex
                 Dim commentTypeId As Guid = LookupListNew.GetIdFromCode(LookupListNew.GetCommentTypeLookupList(Authentication.LangId), CommentCode)
                 Dim restrictionId As Guid = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(RestrictionListCode, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), actionCode)
 
-                If (actionCode.Equals("R") Or actionCode.Equals("UR")) Then
+                If (actionCode.Equals("R") OrElse actionCode.Equals("UR")) Then
                     'Logic For Restriction And  UnRestriction '
 
-                    With Me.State.DBCommentBO
-                        Me.PopulateBOProperty(Me.State.DBCommentBO, "Comments", CType(GridDataProtection.FooterRow.FindControl(GRID_CTRL_NAME_COMMENT), TextBox))
-                        Me.PopulateBOProperty(Me.State.DBCommentBO, "CommentTypeId", commentTypeId)
-                        Me.State.DBCommentBO.CertId = Me.State.MyBO.Id
-                        Me.State.DBCommentBO.CallerName = CallerName
+                    With State.DBCommentBO
+                        PopulateBOProperty(State.DBCommentBO, "Comments", CType(GridDataProtection.FooterRow.FindControl(GRID_CTRL_NAME_COMMENT), TextBox))
+                        PopulateBOProperty(State.DBCommentBO, "CommentTypeId", commentTypeId)
+                        State.DBCommentBO.CertId = State.MyBO.Id
+                        State.DBCommentBO.CallerName = CallerName
                     End With
 
-                    With Me.State.DBCertificateBO
+                    With State.DBCertificateBO
                         If (actionCode.Equals("R")) Then
-                            Me.State.DBCertificateBO.IsRestricted = "Y"
+                            State.DBCertificateBO.IsRestricted = "Y"
                         ElseIf (actionCode.Equals("UR")) Then
-                            Me.State.DBCertificateBO.IsRestricted = "N"
+                            State.DBCertificateBO.IsRestricted = "N"
                         End If
 
                     End With
-                    With Me.State.DataProtectionHistBO
-                        Me.PopulateBOProperty(Me.State.DataProtectionHistBO, "RequestId", CType(GridDataProtection.FooterRow.FindControl(GRID_CTRL_NAME_REQUEST_ID), TextBox))
-                        Me.State.DataProtectionHistBO.EntityId = Me.State.MyBO.Id
-                        Me.State.DataProtectionHistBO.CommentId = Me.State.DBCommentBO.Id
-                        Me.PopulateBOProperty(Me.State.DataProtectionHistBO, "AddedBy", ElitaPlusIdentity.Current.ActiveUser.NetworkId)
-                        Me.PopulateBOProperty(Me.State.DataProtectionHistBO, "EntityType", EntityType)
-                        Me.PopulateBOProperty(Me.State.DataProtectionHistBO, "Status", restrictionId)
-                        Me.State.DataProtectionHistBO.IsRequestIdUsed = Me.State.DataProtectionHistBO.GetRequestIdUsedInfo(Me.State.DataProtectionHistBO.RequestId, actionCode, Me.State.MyBO.Id)
+                    With State.DataProtectionHistBO
+                        PopulateBOProperty(State.DataProtectionHistBO, "RequestId", CType(GridDataProtection.FooterRow.FindControl(GRID_CTRL_NAME_REQUEST_ID), TextBox))
+                        State.DataProtectionHistBO.EntityId = State.MyBO.Id
+                        State.DataProtectionHistBO.CommentId = State.DBCommentBO.Id
+                        PopulateBOProperty(State.DataProtectionHistBO, "AddedBy", ElitaPlusIdentity.Current.ActiveUser.NetworkId)
+                        PopulateBOProperty(State.DataProtectionHistBO, "EntityType", EntityType)
+                        PopulateBOProperty(State.DataProtectionHistBO, "Status", restrictionId)
+                        State.DataProtectionHistBO.IsRequestIdUsed = State.DataProtectionHistBO.GetRequestIdUsedInfo(State.DataProtectionHistBO.RequestId, actionCode, State.MyBO.Id)
                     End With
                 ElseIf (actionCode.Equals("F")) Then
                     ' Logic For Right To Forgotten'
 
-                    With Me.State.CertForgotBO
-                        Me.State.CertForgotBO.CertId = Me.State.MyBO.Id
-                        Me.State.CertForgotBO.CertNumber = Me.State.MyBO.CertNumber
-                        Me.State.CertForgotBO.DealerId = Me.State.MyBO.DealerId
-                        Me.State.CertForgotBO.IsForgotten = "N"
-                        Me.PopulateBOProperty(Me.State.CertForgotBO, "RequestId", CType(GridDataProtection.FooterRow.FindControl(GRID_CTRL_NAME_REQUEST_ID), TextBox))
-                        Me.State.CertForgotBO.IsRequestIdUsed = Me.State.DataProtectionHistBO.GetRequestIdUsedInfo(Me.State.CertForgotBO.RequestId, actionCode, Me.State.MyBO.Id)
+                    With State.CertForgotBO
+                        State.CertForgotBO.CertId = State.MyBO.Id
+                        State.CertForgotBO.CertNumber = State.MyBO.CertNumber
+                        State.CertForgotBO.DealerId = State.MyBO.DealerId
+                        State.CertForgotBO.IsForgotten = "N"
+                        PopulateBOProperty(State.CertForgotBO, "RequestId", CType(GridDataProtection.FooterRow.FindControl(GRID_CTRL_NAME_REQUEST_ID), TextBox))
+                        State.CertForgotBO.IsRequestIdUsed = State.DataProtectionHistBO.GetRequestIdUsedInfo(State.CertForgotBO.RequestId, actionCode, State.MyBO.Id)
                     End With
 
 
-                    With Me.State.DBCommentBO
-                        Me.PopulateBOProperty(Me.State.DBCommentBO, "Comments", CType(GridDataProtection.FooterRow.FindControl(GRID_CTRL_NAME_COMMENT), TextBox))
-                        Me.PopulateBOProperty(Me.State.DBCommentBO, "CommentTypeId", commentTypeId)
-                        Me.State.DBCommentBO.CallerName = CallerName
-                        Me.State.DBCommentBO.ForgotRequestId = Me.State.CertForgotBO.Id
+                    With State.DBCommentBO
+                        PopulateBOProperty(State.DBCommentBO, "Comments", CType(GridDataProtection.FooterRow.FindControl(GRID_CTRL_NAME_COMMENT), TextBox))
+                        PopulateBOProperty(State.DBCommentBO, "CommentTypeId", commentTypeId)
+                        State.DBCommentBO.CallerName = CallerName
+                        State.DBCommentBO.ForgotRequestId = State.CertForgotBO.Id
 
                     End With
-                    With Me.State.DBCertificateBO
-                        Me.State.DBCertificateBO.IsRestricted = "D"
+                    With State.DBCertificateBO
+                        State.DBCertificateBO.IsRestricted = "D"
                     End With
                 End If
 
 
-                If Me.ErrCollection.Count > 0 Then
+                If ErrCollection.Count > 0 Then
                     Throw New PopulateBOErrorException
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Function ValidateDataProtectionFields(ByVal actionCode As String)
+        Private Function ValidateDataProtectionFields(actionCode As String)
             Dim blnSuccess As Boolean = True
 
-            If Me.State.DBCommentBO.Comments = String.Empty Then
-                Me.MasterPage.MessageController.AddErrorAndShow(TranslationBase.TranslateLabelOrMessage("COMMENT") & ":" & TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR))
+            If State.DBCommentBO.Comments = String.Empty Then
+                MasterPage.MessageController.AddErrorAndShow(TranslationBase.TranslateLabelOrMessage("COMMENT") & ":" & TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR))
                 blnSuccess = False
             End If
 
-            If (actionCode.Equals("R") Or actionCode.Equals("UR")) Then
-                If Me.State.DataProtectionHistBO.RequestId = String.Empty Then
-                    Me.MasterPage.MessageController.AddErrorAndShow(TranslationBase.TranslateLabelOrMessage("REQUEST_ID") & ":" & TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR))
+            If (actionCode.Equals("R") OrElse actionCode.Equals("UR")) Then
+                If State.DataProtectionHistBO.RequestId = String.Empty Then
+                    MasterPage.MessageController.AddErrorAndShow(TranslationBase.TranslateLabelOrMessage("REQUEST_ID") & ":" & TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR))
                     blnSuccess = False
                 End If
 
-                If Me.State.DataProtectionHistBO.IsRequestIdUsed Then
-                    Me.MasterPage.MessageController.AddErrorAndShow(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.REQUEST_ID_IS_USED_ERR))
+                If State.DataProtectionHistBO.IsRequestIdUsed Then
+                    MasterPage.MessageController.AddErrorAndShow(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.REQUEST_ID_IS_USED_ERR))
                     blnSuccess = False
                 End If
             ElseIf (actionCode.Equals("F")) Then
-                If Me.State.CertForgotBO.RequestId = String.Empty Then
-                    Me.MasterPage.MessageController.AddErrorAndShow(TranslationBase.TranslateLabelOrMessage("REQUEST_ID") & ":" & TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR))
+                If State.CertForgotBO.RequestId = String.Empty Then
+                    MasterPage.MessageController.AddErrorAndShow(TranslationBase.TranslateLabelOrMessage("REQUEST_ID") & ":" & TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR))
                     blnSuccess = False
                 End If
 
-                If Me.State.CertForgotBO.IsRequestIdUsed Then
-                    Me.MasterPage.MessageController.AddErrorAndShow(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.REQUEST_ID_IS_USED_ERR))
+                If State.CertForgotBO.IsRequestIdUsed Then
+                    MasterPage.MessageController.AddErrorAndShow(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.REQUEST_ID_IS_USED_ERR))
                     blnSuccess = False
                 End If
             End If
@@ -6580,7 +6563,7 @@ Namespace Certificates
                 .DBCommentBO.CommentTypeId = Guid.Empty
                 .DBCommentBO.CertId = Guid.Empty
                 .DBCommentBO.CallerName = ""
-                If (Not .CertForgotBO Is Nothing) Then
+                If (.CertForgotBO IsNot Nothing) Then
                     .CertForgotBO.IsForgotten = String.Empty
                     .CertForgotBO.CertId = Guid.Empty
                     .CertForgotBO.CertNumber = String.Empty
@@ -6598,21 +6581,21 @@ Namespace Certificates
         End Sub
 
         'UnRestrict functionality
-        Protected Sub btnUnRestrict_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnUnRestrict.Click
+        Protected Sub btnUnRestrict_Click(sender As Object, e As EventArgs) Handles btnUnRestrict.Click
             Try
-                Me.State.DataProtectionHistBO = New DataProtectionHistory()
+                State.DataProtectionHistBO = New DataProtectionHistory()
                 ControlMgr.SetVisibleControl(Me, btnCancel, True)
                 ControlMgr.SetVisibleControl(Me, btnSave, True)
                 ControlMgr.SetVisibleControl(Me, btnUnRestrict, False)
                 ControlMgr.SetVisibleControl(Me, btnRightToForgotten, False)
 
-                With Me.State.DataProtectionHistBO
-                    Me.State.DataProtectionHistBO.RestrictedStatus = UnRestrictCode
+                With State.DataProtectionHistBO
+                    State.DataProtectionHistBO.RestrictedStatus = UnRestrictCode
                 End With
                 AddNewRowToGrid()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -6620,35 +6603,35 @@ Namespace Certificates
 
 #Region "Right To Forgotten "
 
-        Protected Sub btnRightToForgotten_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRightToForgotten.Click
+        Protected Sub btnRightToForgotten_Click(sender As Object, e As EventArgs) Handles btnRightToForgotten.Click
             Try
-                Me.State.DataProtectionHistBO = New DataProtectionHistory()
-                Me.State.CertForgotBO = New CertForgotRequest()
+                State.DataProtectionHistBO = New DataProtectionHistory()
+                State.CertForgotBO = New CertForgotRequest()
                 ControlMgr.SetVisibleControl(Me, btnCancel, True)
                 ControlMgr.SetVisibleControl(Me, btnSave, True)
                 ControlMgr.SetVisibleControl(Me, btnRestrict, False)
                 ControlMgr.SetVisibleControl(Me, btnRightToForgotten, False)
                 ControlMgr.SetVisibleControl(Me, btnUnRestrict, False)
-                With Me.State.CertForgotBO
-                    Me.State.CertForgotBO.RestrictedStatus = ForgottenCode
+                With State.CertForgotBO
+                    State.CertForgotBO.RestrictedStatus = ForgottenCode
                 End With
                 AddNewRowForRightToForgotten()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
         Private Sub SaveRightToForgotten()
-            If Not Me.HiddenSavePromptResponse.Value Is Nothing AndAlso Me.HiddenSavePromptResponse.Value = Me.MSG_VALUE_YES Then
-                Me.State.CertForgotBO.Save()
+            If HiddenSavePromptResponse.Value IsNot Nothing AndAlso HiddenSavePromptResponse.Value = MSG_VALUE_YES Then
+                State.CertForgotBO.Save()
                 ClearStateProperties()
-                Me.Redirect(URL_CertList)
+                Redirect(URL_CertList)
             End If
-            Me.HiddenSavePromptResponse.Value = ""
+            HiddenSavePromptResponse.Value = ""
         End Sub
 
         Private Sub AddNewRowForRightToForgotten()
 
-            Dim dv As DataProtectionHistory.DataProtectionCommentDV = DataProtectionHistory.GetList(Me.State.MyBO.Id)
+            Dim dv As DataProtectionHistory.DataProtectionCommentDV = DataProtectionHistory.GetList(State.MyBO.Id)
             Dim dt As DataTable, row As DataRow
             dt = dv.Table.Clone()
             row = dt.NewRow
@@ -6665,43 +6648,43 @@ Namespace Certificates
 #Region "Endorsements Datagrid Related "
 
         'The Binding Logic is here  
-        Private Sub EndorsementsGrid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles EndorsementsGrid.ItemDataBound
+        Private Sub EndorsementsGrid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles EndorsementsGrid.ItemDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
                 Dim btnEditItem As LinkButton
 
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                    If (Not e.Item.Cells(Me.GRID_COL_ENDORSE_NUMBER).FindControl(ENDORSEMENT_GRID_COL_EDIT_CTRL) Is Nothing) Then
-                        btnEditItem = CType(e.Item.Cells(Me.GRID_COL_ENDORSE_NUMBER).FindControl(ENDORSEMENT_GRID_COL_EDIT_CTRL), LinkButton)
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
+                    If (e.Item.Cells(GRID_COL_ENDORSE_NUMBER).FindControl(ENDORSEMENT_GRID_COL_EDIT_CTRL) IsNot Nothing) Then
+                        btnEditItem = CType(e.Item.Cells(GRID_COL_ENDORSE_NUMBER).FindControl(ENDORSEMENT_GRID_COL_EDIT_CTRL), LinkButton)
                         btnEditItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(CertEndorse.EndorseSearchDV.COL_ENDORSEMENT_ID), Byte()))
                         btnEditItem.CommandName = SELECT_ACTION_COMMAND
                         btnEditItem.Text = dvRow(CertEndorse.EndorseSearchDV.COL_ENDORSE_NUMB).ToString
                     End If
-                    e.Item.Cells(Me.GRID_COL_ENDORSE_CREATED_BY).Text = dvRow(CertEndorse.EndorseSearchDV.COL_ADDED_BY).ToString
+                    e.Item.Cells(GRID_COL_ENDORSE_CREATED_BY).Text = dvRow(CertEndorse.EndorseSearchDV.COL_ADDED_BY).ToString
                     Dim createdDate As Date = CType(dvRow(CertEndorse.EndorseSearchDV.COL_CREATED_DATE), Date)
-                    e.Item.Cells(Me.GRID_COL_ENDORSE_CREATED_DATE).Text = GetLongDateFormattedString(createdDate)
-                    e.Item.Cells(Me.GRID_COL_ENDORSE_TYPE).Text = dvRow(CertEndorse.EndorseSearchDV.COL_ENDORSEMENT_TYPE).ToString
-                    e.Item.Cells(Me.GRID_COL_ENDORSE_ENDORSEMENT_REASON).Text = dvRow(CertEndorse.EndorseSearchDV.COL_ENDORSEMENT_REASON).ToString
+                    e.Item.Cells(GRID_COL_ENDORSE_CREATED_DATE).Text = GetLongDateFormattedString(createdDate)
+                    e.Item.Cells(GRID_COL_ENDORSE_TYPE).Text = dvRow(CertEndorse.EndorseSearchDV.COL_ENDORSEMENT_TYPE).ToString
+                    e.Item.Cells(GRID_COL_ENDORSE_ENDORSEMENT_REASON).Text = dvRow(CertEndorse.EndorseSearchDV.COL_ENDORSEMENT_REASON).ToString
 
-                    e.Item.Cells(Me.GRID_COL_ENDORSE_EFFECTIVE_DATE).Text = dvRow(CertEndorse.EndorseSearchDV.COL_EFFECTIVE_DATE).ToString
+                    e.Item.Cells(GRID_COL_ENDORSE_EFFECTIVE_DATE).Text = dvRow(CertEndorse.EndorseSearchDV.COL_EFFECTIVE_DATE).ToString
 
-                    e.Item.Cells(Me.GRID_COL_ENDORSE_EXPIRATION_DATE).Text = dvRow(CertEndorse.EndorseSearchDV.COL_EXPIRATION_DATE).ToString
+                    e.Item.Cells(GRID_COL_ENDORSE_EXPIRATION_DATE).Text = dvRow(CertEndorse.EndorseSearchDV.COL_EXPIRATION_DATE).ToString
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Public Sub EndorsementsGrid_ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles EndorsementsGrid.ItemCommand
+        Public Sub EndorsementsGrid_ItemCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles EndorsementsGrid.ItemCommand
 
             Try
                 If e.CommandName = "SelectAction" Then
-                    Me.State.TheItemCoverageState.selectedItemId = New Guid(e.CommandArgument.ToString())
-                    Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = Me.State.MyBO
-                    Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_ENDORSE_ID) = Me.State.TheItemCoverageState.selectedItemId
-                    Me.State.NavigateToEndorment = True
-                    Me.NavController.Navigate(Me, FlowEvents.EVENT_ENDORSEMENT_SELECTED, New EndorsementDetailForm.Parameters(Me.State.TheItemCoverageState.manufaturerWarranty))
+                    State.TheItemCoverageState.selectedItemId = New Guid(e.CommandArgument.ToString())
+                    NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = State.MyBO
+                    NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_ENDORSE_ID) = State.TheItemCoverageState.selectedItemId
+                    State.NavigateToEndorment = True
+                    NavController.Navigate(Me, FlowEvents.EVENT_ENDORSEMENT_SELECTED, New EndorsementDetailForm.Parameters(State.TheItemCoverageState.manufaturerWarranty))
 
                     'Me.NavController.Navigate(Me, CREATE_NEW_ENDORSEMENT, New EndorsementForm.Parameters(Me.State.MyBO.Id, Me.State.TheItemCoverageState.manufaturerWarranty))
 
@@ -6709,70 +6692,70 @@ Namespace Certificates
                 '"endorsement_detail"
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Public Sub EndorsementsGrid_ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles EndorsementsGrid.ItemCreated
+        Public Sub EndorsementsGrid_ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles EndorsementsGrid.ItemCreated
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub EndorsementsGrid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles EndorsementsGrid.PageIndexChanged
+        Private Sub EndorsementsGrid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles EndorsementsGrid.PageIndexChanged
             Try
                 'Me.State.PageIndex = e.NewPageIndex
-                Me.State.EndorsementsPageIndex = e.NewPageIndex
-                Me.State.SelectedEndorseId = Guid.Empty
-                Me.PopulateEndorsementsGrid()
+                State.EndorsementsPageIndex = e.NewPageIndex
+                State.SelectedEndorseId = Guid.Empty
+                PopulateEndorsementsGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Public Sub PopulateEndorsementsGrid()
 
-            If Not Me.State.IsEndorsementsGridVisible Then
+            If Not State.IsEndorsementsGridVisible Then
                 Exit Sub
             End If
 
-            Dim cert As Certificate = Me.State.MyBO
-            Dim ItemDV As CertItem.CertItemSearchDV = CertItem.GetItems(Me.State.MyBO.Id)
-            Dim dv As CertItemCoverage.CertItemCoverageSearchDV = CertItemCoverage.GetItemCoverages(Me.State.MyBO.Id)
+            Dim cert As Certificate = State.MyBO
+            Dim ItemDV As CertItem.CertItemSearchDV = CertItem.GetItems(State.MyBO.Id)
+            Dim dv As CertItemCoverage.CertItemCoverageSearchDV = CertItemCoverage.GetItemCoverages(State.MyBO.Id)
 
             dv.Sort = CertItemCoverage.CertItemCoverageSearchDV.COL_BEGIN_DATE
             If dv.Count > 0 Then
                 Dim coverageRow As DataRow = dv.Table.Rows(0)
             End If
 
-            If ItemDV.Count > 1 Or cert.StatusCode <> CERT_STATUS Or Me.State.MyBO.IsChildCertificate Then
-                Me.btnAddEndorsement_WRITE.Enabled = False
+            If ItemDV.Count > 1 OrElse cert.StatusCode <> CERT_STATUS OrElse State.MyBO.IsChildCertificate Then
+                btnAddEndorsement_WRITE.Enabled = False
             End If
 
-            Me.State.TheItemCoverageState.cert_item_id = New Guid(CType(ItemDV(0)(CertItem.CertItemSearchDV.COL_CERT_ITEM_ID), Byte()))
-            Dim EndorseDV As CertEndorse.EndorseSearchDV = CertEndorse.getList(Me.State.MyBO.Id)
+            State.TheItemCoverageState.cert_item_id = New Guid(CType(ItemDV(0)(CertItem.CertItemSearchDV.COL_CERT_ITEM_ID), Byte()))
+            Dim EndorseDV As CertEndorse.EndorseSearchDV = CertEndorse.getList(State.MyBO.Id)
 
-            Me.EndorsementsGrid.AutoGenerateColumns = False
-            Me.EndorsementsGrid.Columns(Me.GRID_COL_ENDORSE_NUMBER).SortExpression = CertEndorse.EndorseSearchDV.COL_ENDORSE_NUMB
-            Me.EndorsementsGrid.Columns(Me.GRID_COL_ENDORSE_CREATED_BY).SortExpression = CertEndorse.EndorseSearchDV.COL_ADDED_BY
-            Me.EndorsementsGrid.Columns(Me.GRID_COL_ENDORSE_CREATED_DATE).SortExpression = CertEndorse.EndorseSearchDV.COL_CREATED_DATE
-            Me.EndorsementsGrid.Columns(Me.GRID_COL_ENDORSE_TYPE).SortExpression = CertEndorse.EndorseSearchDV.COL_ENDORSEMENT_TYPE
-            Me.EndorsementsGrid.Columns(Me.GRID_COL_ENDORSE_ENDORSEMENT_REASON).SortExpression = CertEndorse.EndorseSearchDV.COL_ENDORSEMENT_REASON
-            Me.EndorsementsGrid.Columns(Me.GRID_COL_ENDORSE_EFFECTIVE_DATE).SortExpression = CertEndorse.EndorseSearchDV.COL_EFFECTIVE_DATE
-            Me.EndorsementsGrid.Columns(Me.GRID_COL_ENDORSE_EXPIRATION_DATE).SortExpression = CertEndorse.EndorseSearchDV.COL_EXPIRATION_DATE
+            EndorsementsGrid.AutoGenerateColumns = False
+            EndorsementsGrid.Columns(GRID_COL_ENDORSE_NUMBER).SortExpression = CertEndorse.EndorseSearchDV.COL_ENDORSE_NUMB
+            EndorsementsGrid.Columns(GRID_COL_ENDORSE_CREATED_BY).SortExpression = CertEndorse.EndorseSearchDV.COL_ADDED_BY
+            EndorsementsGrid.Columns(GRID_COL_ENDORSE_CREATED_DATE).SortExpression = CertEndorse.EndorseSearchDV.COL_CREATED_DATE
+            EndorsementsGrid.Columns(GRID_COL_ENDORSE_TYPE).SortExpression = CertEndorse.EndorseSearchDV.COL_ENDORSEMENT_TYPE
+            EndorsementsGrid.Columns(GRID_COL_ENDORSE_ENDORSEMENT_REASON).SortExpression = CertEndorse.EndorseSearchDV.COL_ENDORSEMENT_REASON
+            EndorsementsGrid.Columns(GRID_COL_ENDORSE_EFFECTIVE_DATE).SortExpression = CertEndorse.EndorseSearchDV.COL_EFFECTIVE_DATE
+            EndorsementsGrid.Columns(GRID_COL_ENDORSE_EXPIRATION_DATE).SortExpression = CertEndorse.EndorseSearchDV.COL_EXPIRATION_DATE
 
-            Me.EndorsementsGrid.EditItemIndex = -1
-            SetPageAndSelectedIndexFromGuid(EndorseDV, Me.State.SelectedCommentId, Me.EndorsementsGrid, Me.State.EndorsementsPageIndex)
-            Me.EndorsementsGrid.CurrentPageIndex = Me.State.EndorsementsPageIndex
-            Me.EndorsementsGrid.DataSource = EndorseDV
-            Me.EndorsementsGrid.DataBind()
+            EndorsementsGrid.EditItemIndex = -1
+            SetPageAndSelectedIndexFromGuid(EndorseDV, State.SelectedCommentId, EndorsementsGrid, State.EndorsementsPageIndex)
+            EndorsementsGrid.CurrentPageIndex = State.EndorsementsPageIndex
+            EndorsementsGrid.DataSource = EndorseDV
+            EndorsementsGrid.DataBind()
 
             'Me.tsHoriz.Items(Me.CERT_ENDORSEMENTS_TAB).Text = TranslationBase.TranslateLabelOrMessage("ENDORSEMENTS") '& " : " & EndorseDV.Count.ToString()
 
-            ControlMgr.SetVisibleControl(Me, EndorsementsGrid, Me.State.IsEndorsementsGridVisible)
+            ControlMgr.SetVisibleControl(Me, EndorsementsGrid, State.IsEndorsementsGridVisible)
         End Sub
 
 #End Region
@@ -6781,25 +6764,25 @@ Namespace Certificates
         Public Sub PopulateExtensionsGrid()
 
             Try
-                If (Me.State.CertExtensionsDV Is Nothing) Then
-                    Me.State.CertExtensionsDV = Certificate.GetCertExtensionsInfo(Me.State.MyBO.Id)
+                If (State.CertExtensionsDV Is Nothing) Then
+                    State.CertExtensionsDV = Certificate.GetCertExtensionsInfo(State.MyBO.Id)
                 End If
-                Me.trCertExtn.Visible = False
-                Me.CertExtnGrid.PageSize = Me.State.PageSize
-                If Me.State.CertExtensionsDV.Count > 0 Then
-                    Me.trCertExtn.Visible = True
-                    Me.State.CertExtensionsDV.Sort = Me.State.CertExtensionSortExpression
+                trCertExtn.Visible = False
+                CertExtnGrid.PageSize = State.PageSize
+                If State.CertExtensionsDV.Count > 0 Then
+                    trCertExtn.Visible = True
+                    State.CertExtensionsDV.Sort = State.CertExtensionSortExpression
 
-                    SetPageAndSelectedIndexFromGuid(Me.State.CertExtensionsDV, Guid.Empty, Me.CertExtnGrid, Me.State.PageIndex)
-                    Me.CertExtnGrid.DataSource = Me.State.CertExtensionsDV
-                    Me.State.PageIndex = Me.CertExtnGrid.PageIndex
+                    SetPageAndSelectedIndexFromGuid(State.CertExtensionsDV, Guid.Empty, CertExtnGrid, State.PageIndex)
+                    CertExtnGrid.DataSource = State.CertExtensionsDV
+                    State.PageIndex = CertExtnGrid.PageIndex
 
-                    HighLightSortColumn(Me.CertExtnGrid, Me.State.CertExtensionSortExpression, Me.IsNewUI)
-                    Me.CertExtnGrid.DataBind()
+                    HighLightSortColumn(CertExtnGrid, State.CertExtensionSortExpression, IsNewUI)
+                    CertExtnGrid.DataBind()
 
                     ControlMgr.SetVisibleControl(Me, CertExtnGrid, True)
-                    ControlMgr.SetVisibleControl(Me, trPageSize, Me.CertExtnGrid.Visible)
-                    Session("recCount") = Me.State.CertExtensionsDV.Count
+                    ControlMgr.SetVisibleControl(Me, trPageSize, CertExtnGrid.Visible)
+                    Session("recCount") = State.CertExtensionsDV.Count
                     'ControlMgr.SetEnableTabStrip(Me, tsHoriz.Items(CERT_REPRICE_TAB), True)
                 End If
             Catch ex As Exception
@@ -6807,13 +6790,13 @@ Namespace Certificates
             End Try
 
         End Sub
-        Private Sub ExtensionsGrid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles CertExtnGrid.PageIndexChanged
+        Private Sub ExtensionsGrid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles CertExtnGrid.PageIndexChanged
             Try
                 'Me.State.PageIndex = e.NewPageIndex
-                Me.State.ExtensionGridPageIndex = e.NewPageIndex
-                Me.PopulateExtensionsGrid()
+                State.ExtensionGridPageIndex = e.NewPageIndex
+                PopulateExtensionsGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -6823,25 +6806,25 @@ Namespace Certificates
         Public Sub PopulateUPgradeDataExtensionsGrid()
 
             Try
-                If (Me.State.CertUpgradeExtensionsDV Is Nothing) Then
-                    Me.State.CertUpgradeExtensionsDV = Certificate.GetCertUpgradeDataExtensionsInfo(Me.State.MyBO.Id)
+                If (State.CertUpgradeExtensionsDV Is Nothing) Then
+                    State.CertUpgradeExtensionsDV = Certificate.GetCertUpgradeDataExtensionsInfo(State.MyBO.Id)
                 End If
 
-                Me.UpgradeDataGridtr.Visible = False
-                Me.CertUpgradeDatagrid.PageSize = Me.State.PageSize
-                If Me.State.CertUpgradeExtensionsDV.Count > 0 Then
-                    Me.UpgradeDataGridtr.Visible = True
-                    Me.State.CertUpgradeExtensionsDV.Sort = Me.State.CertUpgradeExtensionSortExpression
+                UpgradeDataGridtr.Visible = False
+                CertUpgradeDatagrid.PageSize = State.PageSize
+                If State.CertUpgradeExtensionsDV.Count > 0 Then
+                    UpgradeDataGridtr.Visible = True
+                    State.CertUpgradeExtensionsDV.Sort = State.CertUpgradeExtensionSortExpression
 
-                    SetPageAndSelectedIndexFromGuid(Me.State.CertUpgradeExtensionsDV, Guid.Empty, Me.CertUpgradeDatagrid, Me.State.PageIndex)
-                    Me.CertUpgradeDatagrid.DataSource = Me.State.CertUpgradeExtensionsDV
+                    SetPageAndSelectedIndexFromGuid(State.CertUpgradeExtensionsDV, Guid.Empty, CertUpgradeDatagrid, State.PageIndex)
+                    CertUpgradeDatagrid.DataSource = State.CertUpgradeExtensionsDV
 
-                    HighLightSortColumn(Me.CertUpgradeDatagrid, Me.State.CertUpgradeExtensionSortExpression, Me.IsNewUI)
-                    Me.CertUpgradeDatagrid.DataBind()
+                    HighLightSortColumn(CertUpgradeDatagrid, State.CertUpgradeExtensionSortExpression, IsNewUI)
+                    CertUpgradeDatagrid.DataBind()
 
                     ControlMgr.SetVisibleControl(Me, CertUpgradeDatagrid, True)
-                    ControlMgr.SetVisibleControl(Me, trPageSize, Me.CertUpgradeDatagrid.Visible)
-                    Session("recCount") = Me.State.CertUpgradeExtensionsDV.Count
+                    ControlMgr.SetVisibleControl(Me, trPageSize, CertUpgradeDatagrid.Visible)
+                    Session("recCount") = State.CertUpgradeExtensionsDV.Count
                 End If
             Catch ex As Exception
 
@@ -6849,23 +6832,23 @@ Namespace Certificates
 
         End Sub
 
-        Private Sub CertUpgradeDatagrid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles CertUpgradeDatagrid.PageIndexChanged
+        Private Sub CertUpgradeDatagrid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles CertUpgradeDatagrid.PageIndexChanged
             Try
-                Me.State.ExtensionGridPageIndex = e.NewPageIndex
-                Me.PopulateUPgradeDataExtensionsGrid()
+                State.ExtensionGridPageIndex = e.NewPageIndex
+                PopulateUPgradeDataExtensionsGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
 #End Region
 
 #Region "Certificate Extended Fields grid Related"
-        Private Sub GridCertExtFields_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles GridCertExtFields.ItemDataBound
+        Private Sub GridCertExtFields_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles GridCertExtFields.ItemDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                     e.Item.Cells(CERT_EXT_CERT_ID_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_CERT_ID).ToString
                     e.Item.Cells(CERT_EXT_FIELD_NAME_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_FIELD_NAME).ToString
                     e.Item.Cells(CERT_EXT_FIELD_VALUE_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_FIELD_VALUE).ToString
@@ -6880,87 +6863,87 @@ Namespace Certificates
                     
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Private Sub GridCertExtFields_SortCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles GridCertExtFields.SortCommand
+        Private Sub GridCertExtFields_SortCommand(source As System.Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles GridCertExtFields.SortCommand
             Try
-                If Me.State.CertExtFieldsSortExpression.StartsWith(e.SortExpression) Then
-                    If Me.State.CertExtFieldsSortExpression.EndsWith(" DESC") Then
-                        Me.State.CertExtFieldsSortExpression = e.SortExpression
+                If State.CertExtFieldsSortExpression.StartsWith(e.SortExpression) Then
+                    If State.CertExtFieldsSortExpression.EndsWith(" DESC") Then
+                        State.CertExtFieldsSortExpression = e.SortExpression
                     Else
-                        Me.State.CertExtFieldsSortExpression &= " DESC"
+                        State.CertExtFieldsSortExpression &= " DESC"
                     End If
                 Else
-                    Me.State.CertExtFieldsSortExpression = e.SortExpression
+                    State.CertExtFieldsSortExpression = e.SortExpression
                 End If
-                Me.State.SelectedCertExtId = Nothing
-                Me.State.PageIndex = 0
-                Me.PopulateCertExtendedFieldsGrid()
+                State.SelectedCertExtId = Nothing
+                State.PageIndex = 0
+                PopulateCertExtendedFieldsGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Public Sub GridCertExtFields_ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles GridCertExtFields.ItemCreated
+        Public Sub GridCertExtFields_ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles GridCertExtFields.ItemCreated
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub GridCertExtFields_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles GridCertExtFields.PageIndexChanged
+        Private Sub GridCertExtFields_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles GridCertExtFields.PageIndexChanged
             Try
-                Me.State.CertExtFieldsPageIndex = e.NewPageIndex
-                Me.State.SelectedCertExtId = Guid.Empty
-                Me.PopulateCertExtendedFieldsGrid()
+                State.CertExtFieldsPageIndex = e.NewPageIndex
+                State.SelectedCertExtId = Guid.Empty
+                PopulateCertExtendedFieldsGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Public Sub PopulateCertExtendedFieldsGrid()
-            Dim cert As Certificate = Me.State.MyBO
-            Dim dv As Certificate.CertExtendedFieldsDv = Certificate.GetCertExtensionFieldsList(Me.State.MyBO.Id, Authentication.CurrentUser.LanguageId)
-            dv.Sort = Me.State.CertExtFieldsSortExpression
+            Dim cert As Certificate = State.MyBO
+            Dim dv As Certificate.CertExtendedFieldsDv = Certificate.GetCertExtensionFieldsList(State.MyBO.Id, Authentication.CurrentUser.LanguageId)
+            dv.Sort = State.CertExtFieldsSortExpression
 
-            Me.GridCertExtFields.AutoGenerateColumns = False
-            Me.GridCertExtFields.Columns(CERT_EXT_FIELD_NAME_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_FIELD_NAME
-            Me.GridCertExtFields.Columns(CERT_EXT_FIELD_VALUE_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_FIELD_VALUE
-            Me.GridCertExtFields.Columns(CERT_EXT_CREATED_BY_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_CREATED_BY
-            Me.GridCertExtFields.Columns(CERT_EXT_CREATED_DATE_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_CREATED_DATE
-            Me.GridCertExtFields.Columns(CERT_EXT_MODIFIED_BY_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_MODIFIED_BY
-            Me.GridCertExtFields.Columns(CERT_EXT_MODIFIED_DATE_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_MODIFIED_DATE
-            Me.GridCertExtFields.EditItemIndex = -1
-            SetPageAndSelectedIndexFromGuid(dv, Me.State.SelectedCertExtId, Me.GridCertExtFields, Me.State.CertExtFieldsPageIndex)
-            Me.State.CertExtFieldsPageIndex = Me.GridCertExtFields.CurrentPageIndex
-            Me.GridCertExtFields.DataSource = dv
-            Me.GridCertExtFields.DataBind()
+            GridCertExtFields.AutoGenerateColumns = False
+            GridCertExtFields.Columns(CERT_EXT_FIELD_NAME_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_FIELD_NAME
+            GridCertExtFields.Columns(CERT_EXT_FIELD_VALUE_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_FIELD_VALUE
+            GridCertExtFields.Columns(CERT_EXT_CREATED_BY_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_CREATED_BY
+            GridCertExtFields.Columns(CERT_EXT_CREATED_DATE_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_CREATED_DATE
+            GridCertExtFields.Columns(CERT_EXT_MODIFIED_BY_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_MODIFIED_BY
+            GridCertExtFields.Columns(CERT_EXT_MODIFIED_DATE_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_MODIFIED_DATE
+            GridCertExtFields.EditItemIndex = -1
+            SetPageAndSelectedIndexFromGuid(dv, State.SelectedCertExtId, GridCertExtFields, State.CertExtFieldsPageIndex)
+            State.CertExtFieldsPageIndex = GridCertExtFields.CurrentPageIndex
+            GridCertExtFields.DataSource = dv
+            GridCertExtFields.DataBind()
 
             lblCertificateExtendedFields.Text = TranslationBase.TranslateLabelOrMessage("CERT_EXT_FIELDS") & " : " & dv.Count.ToString()
 
-            ControlMgr.SetVisibleControl(Me, GridCertExtFields, Me.State.IsCertExtFieldsGridVisible)
+            ControlMgr.SetVisibleControl(Me, GridCertExtFields, State.IsCertExtFieldsGridVisible)
         End Sub
         
 #End Region
 
 #Region "Button Clicks"
 
-        Private Sub TNCButton_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles TNCButton_WRITE.Click
+        Private Sub TNCButton_WRITE_Click(sender As Object, e As System.EventArgs) Handles TNCButton_WRITE.Click
             Try
-                Me.callPage(Tables.TermAndConditionsForm.URL, Me.State.MyBO)
+                callPage(Tables.TermAndConditionsForm.URL, State.MyBO)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnAddComment_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddComment_WRITE.Click
+        Private Sub btnAddComment_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnAddComment_WRITE.Click
             Try
-                Me.State.NavigateToComment = True
-                Me.NavController.Navigate(Me, FlowEvents.EVENT_COMMENT_SELECTED, New CommentForm.Parameters(Comment.GetNewComment(Me.State.MyBO.Id)))
+                State.NavigateToComment = True
+                NavController.Navigate(Me, FlowEvents.EVENT_COMMENT_SELECTED, New CommentForm.Parameters(Comment.GetNewComment(State.MyBO.Id)))
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -6975,136 +6958,136 @@ Namespace Certificates
         '    End Try
         'End Sub
 
-        Private Sub btnAddEndorsement_WRITE__Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddEndorsement_WRITE.Click
+        Private Sub btnAddEndorsement_WRITE__Click(sender As System.Object, e As System.EventArgs) Handles btnAddEndorsement_WRITE.Click
 
             Try
-                Me.State.NavigateToEndorment = True
-                Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = Me.State.MyBO
-                Me.NavController.Navigate(Me, CREATE_NEW_ENDORSEMENT, New EndorsementForm.Parameters(Me.State.MyBO.Id, Me.State.TheItemCoverageState.manufaturerWarranty))
+                State.NavigateToEndorment = True
+                NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = State.MyBO
+                NavController.Navigate(Me, CREATE_NEW_ENDORSEMENT, New EndorsementForm.Parameters(State.MyBO.Id, State.TheItemCoverageState.manufaturerWarranty))
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnNewCertItem_WRITE__Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNewCertItem_WRITE.Click
+        Private Sub btnNewCertItem_WRITE__Click(sender As System.Object, e As System.EventArgs) Handles btnNewCertItem_WRITE.Click
 
             Try
-                Me.State.NavigateToNewCertItem = True
-                Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = Me.State.MyBO
-                Me.NavController.Navigate(Me, CREATE_NEW_ITEM, New CertAddNewItemForm.Parameters(Me.State.MyBO.Id))
+                State.NavigateToNewCertItem = True
+                NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = State.MyBO
+                NavController.Navigate(Me, CREATE_NEW_ITEM, New CertAddNewItemForm.Parameters(State.MyBO.Id))
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
-                Me.PopulateBOsFromForm()
-                If Me.State.MyBO.IsDirty Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                PopulateBOsFromForm()
+                If State.MyBO.IsDirty Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
-                    Dim myBo As Certificate = Me.State.MyBO
-                    Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo, Me.State.certificateChanged, Me.State.IsCallerAuthenticated)
-                    Me.State.selectedTab = 0
-                    Me.State.CertHistoryDV = Nothing
-                    Me.NavController = Nothing
-                    Session(Me.SESSION_KEY_BACKUP_STATE) = New MyState
-                    Me.ReturnToCallingPage(retObj)
+                    Dim myBo As Certificate = State.MyBO
+                    Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo, State.certificateChanged, State.IsCallerAuthenticated)
+                    State.selectedTab = 0
+                    State.CertHistoryDV = Nothing
+                    NavController = Nothing
+                    Session(SESSION_KEY_BACKUP_STATE) = New MyState
+                    ReturnToCallingPage(retObj)
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
                 Try
-                    If Me.AddressCtr.MyBO Is Nothing Then
-                        Dim myBo As Certificate = Me.State.MyBO
-                        Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo, Me.State.certificateChanged, Me.State.IsCallerAuthenticated)
-                        Me.NavController = Nothing
-                        Session(Me.SESSION_KEY_BACKUP_STATE) = New MyState
-                        Me.ReturnToCallingPage(retObj)
+                    If AddressCtr.MyBO Is Nothing Then
+                        Dim myBo As Certificate = State.MyBO
+                        Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo, State.certificateChanged, State.IsCallerAuthenticated)
+                        NavController = Nothing
+                        Session(SESSION_KEY_BACKUP_STATE) = New MyState
+                        ReturnToCallingPage(retObj)
                     End If
                 Catch ex2 As Threading.ThreadAbortException
                 Catch ex2 As Exception
-                    Me.HandleErrors(ex2, Me.MasterPage.MessageController)
+                    HandleErrors(ex2, MasterPage.MessageController)
                 End Try
 
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-                Me.State.LastErrMsg = Me.MasterPage.MessageController.Text
+                HandleErrors(ex, MasterPage.MessageController)
+                DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+                State.LastErrMsg = MasterPage.MessageController.Text
             End Try
         End Sub
 
 
-        Private Sub btnNewClaim_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNewClaim.Click
+        Private Sub btnNewClaim_Click(sender As Object, e As System.EventArgs) Handles btnNewClaim.Click
             Try
                 ' DEF-4245  Clean up the claim BO so any new claims added will be display when returning to this page.
-                Me.State.ClaimsearchDV = Nothing
+                State.ClaimsearchDV = Nothing
 
-                Me.NavController.FlowSession.Clear()
-                Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = Me.State.MyBO
-                Dim dealer As New Dealer(Me.State.MyBO.DealerId)
+                NavController.FlowSession.Clear()
+                NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = State.MyBO
+                Dim dealer As New Dealer(State.MyBO.DealerId)
 
-                If Not String.IsNullOrEmpty(Me.State.ClaimRecordingXcd) AndAlso
-                   Me.State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_DYNAMIC_QUESTIONS) Then
-                    callPage(ClaimRecordingForm.Url, New ClaimRecordingForm.Parameters(Me.State.MyBO.Id, Nothing, Nothing, Codes.CASE_PURPOSE__REPORT_CLAIM, Me.State.IsCallerAuthenticated))
+                If Not String.IsNullOrEmpty(State.ClaimRecordingXcd) AndAlso
+                   State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_DYNAMIC_QUESTIONS) Then
+                    callPage(ClaimRecordingForm.Url, New ClaimRecordingForm.Parameters(State.MyBO.Id, Nothing, Nothing, Codes.CASE_PURPOSE__REPORT_CLAIM, State.IsCallerAuthenticated))
                 Else
                     'REQ-863 Claims Payable
                     'Check whether to use new claim Authorization structure or not
                     If (LookupListNew.GetCodeFromId(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, dealer.UseClaimAuthorizationId) = Codes.YESNO_N) Then
-                        Me.NavController.Navigate(Me, "locate_eligible_coverages")
+                        NavController.Navigate(Me, "locate_eligible_coverages")
                     Else
-                        Dim certId As Guid = Me.State.MyBO.Id
-                        Me.NavController = Nothing
-                        Me.callPage(ClaimWizardForm.URL, New ClaimWizardForm.Parameters(ClaimWizardForm.ClaimWizardSteps.Step1, certId, Nothing, Nothing, True,, Me.State.IsCallerAuthenticated))
+                        Dim certId As Guid = State.MyBO.Id
+                        NavController = Nothing
+                        callPage(ClaimWizardForm.URL, New ClaimWizardForm.Parameters(ClaimWizardForm.ClaimWizardSteps.Step1, certId, Nothing, Nothing, True,, State.IsCallerAuthenticated))
                     End If
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnNewClaimDcm_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNewClaimDcm.Click
+        Private Sub btnNewClaimDcm_Click(sender As Object, e As System.EventArgs) Handles btnNewClaimDcm.Click
             Try
                 ' DEF-4245  Clean up the claim BO so any new claims added will be display when returning to this page.
-                Me.State.ClaimsearchDV = Nothing
+                State.ClaimsearchDV = Nothing
 
-                Me.NavController.FlowSession.Clear()
-                Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = Me.State.MyBO
-                Dim dealer As New Dealer(Me.State.MyBO.DealerId)
+                NavController.FlowSession.Clear()
+                NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = State.MyBO
+                Dim dealer As New Dealer(State.MyBO.DealerId)
 
-                If Not String.IsNullOrEmpty(Me.State.ClaimRecordingXcd) AndAlso
-                   (Me.State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_DYNAMIC_QUESTIONS) OrElse
-                    Me.State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_BOTH)) Then
-                    callPage(ClaimRecordingForm.Url, New ClaimRecordingForm.Parameters(Me.State.MyBO.Id, Nothing, Nothing, Codes.CASE_PURPOSE__REPORT_CLAIM))
+                If Not String.IsNullOrEmpty(State.ClaimRecordingXcd) AndAlso
+                   (State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_DYNAMIC_QUESTIONS) OrElse
+                    State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_BOTH)) Then
+                    callPage(ClaimRecordingForm.Url, New ClaimRecordingForm.Parameters(State.MyBO.Id, Nothing, Nothing, Codes.CASE_PURPOSE__REPORT_CLAIM))
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnSaveCertDetail_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSaveCertDetail_WRITE.Click
+        Private Sub btnSaveCertDetail_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSaveCertDetail_WRITE.Click
             Try
-                Dim objComp As New Company(Me.State.MyBO.CompanyId)
+                Dim objComp As New Company(State.MyBO.CompanyId)
                 Dim strTranferOfOwnership As String
                 If Not objComp.UseTransferOfOwnership.Equals(Guid.Empty) Then
                     strTranferOfOwnership = LookupListNew.GetCodeFromId(LookupListNew.GetYesNoLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), objComp.UseTransferOfOwnership)
                 Else
                     strTranferOfOwnership = String.Empty
                 End If
-                If strTranferOfOwnership = YES And Me.State.MyBO.StatusCode = CERT_STATUS Then
-                    If Not Me.State.MyBO.CustomerName Is Nothing Then
-                        If (Me.State.MyBO.CustomerName <> moCustomerNameText.Text And moCustomerNameText.Text.Trim <> String.Empty) Or (moTaxIdText.Visible = True And Me.State.MyBO.TaxIDNumb <> moTaxIdText.Text) Then
-                            Me.DisplayMessage(Message.MSG_TRANSFER_Of_OWNERSHIP_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenTransferOfOwnershipPromptResponse)
+                If strTranferOfOwnership = YES AndAlso State.MyBO.StatusCode = CERT_STATUS Then
+                    If State.MyBO.CustomerName IsNot Nothing Then
+                        If (State.MyBO.CustomerName <> moCustomerNameText.Text AndAlso moCustomerNameText.Text.Trim <> String.Empty) OrElse (moTaxIdText.Visible = True AndAlso State.MyBO.TaxIDNumb <> moTaxIdText.Text) Then
+                            DisplayMessage(Message.MSG_TRANSFER_Of_OWNERSHIP_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenTransferOfOwnershipPromptResponse)
                         Else
-                            Me.saveCertificate()
+                            saveCertificate()
                         End If
                     End If
                 Else
-                    Me.saveCertificate()
+                    saveCertificate()
                 End If
                 'KDDI
                 'Dim btnValidate_Address As Button = AddressCtr.FindControl(ValidateAddressButton)
@@ -7112,83 +7095,83 @@ Namespace Certificates
                 ' Address Validation
                 EnableDisableAddressValidation()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnSaveCertInfo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSaveCertInfo_WRITE.Click
+        Private Sub btnSaveCertInfo_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSaveCertInfo_WRITE.Click
             Try
-                Me.saveCertificate()
+                saveCertificate()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnSaveTaxID_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSaveTaxID_WRITE.Click
+        Private Sub btnSaveTaxID_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnSaveTaxID_WRITE.Click
             Try
-                Dim objComp As New Company(Me.State.MyBO.CompanyId)
+                Dim objComp As New Company(State.MyBO.CompanyId)
                 Dim strTranferOfOwnership As String
-                If Me.State.MyBO.TaxIDNumb Is Nothing Then
-                    Me.saveCertificate()
+                If State.MyBO.TaxIDNumb Is Nothing Then
+                    saveCertificate()
                 Else
                     If Not objComp.UseTransferOfOwnership.Equals(Guid.Empty) Then
                         strTranferOfOwnership = LookupListNew.GetCodeFromId(LookupListNew.GetYesNoLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), objComp.UseTransferOfOwnership)
                     Else
                         strTranferOfOwnership = String.Empty
                     End If
-                    If strTranferOfOwnership = YES And Me.State.MyBO.StatusCode = CERT_STATUS Then
-                        If Me.cboDocumentTypeId.SelectedIndex <= 0 Then
+                    If strTranferOfOwnership = YES AndAlso State.MyBO.StatusCode = CERT_STATUS Then
+                        If cboDocumentTypeId.SelectedIndex <= 0 Then
                             Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.GUI_DOCUMENT_TYPE_REQUIRED)
                         End If
-                        If (Me.State.MyBO.TaxIDNumb <> moNewTaxIdText.Text And moNewTaxIdText.Text.Trim <> String.Empty) Or (Me.cboDocumentTypeId.SelectedItem.Text <> Me.State.MyBO.getDocTypeDesc) Then
-                            Me.DisplayMessage(Message.MSG_TRANSFER_Of_OWNERSHIP_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenTransferOfOwnershipPromptResponse)
+                        If (State.MyBO.TaxIDNumb <> moNewTaxIdText.Text AndAlso moNewTaxIdText.Text.Trim <> String.Empty) OrElse (cboDocumentTypeId.SelectedItem.Text <> State.MyBO.getDocTypeDesc) Then
+                            DisplayMessage(Message.MSG_TRANSFER_Of_OWNERSHIP_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenTransferOfOwnershipPromptResponse)
                         Else
-                            Me.saveCertificate()
+                            saveCertificate()
                         End If
                     Else
-                        Me.saveCertificate()
+                        saveCertificate()
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnDebitSave_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnDebitSave_WRITE.Click
+        Private Sub btnDebitSave_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnDebitSave_WRITE.Click
             Try
                 BindInstallmentBoPropertiesToLabels()
-                Me.saveCertInstallment(Me.State.TheDirectDebitState.StatusChenge)
+                saveCertInstallment(State.TheDirectDebitState.StatusChenge)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnDebitHistory_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnDebitHistory.Click
+        Private Sub btnDebitHistory_Click(sender As Object, e As System.EventArgs) Handles btnDebitHistory.Click
             Try
-                Me.State.NavigateToBillingHistory = True
-                Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = Me.State.MyBO
-                Me.callPage(BillingHistoryListForm.URL, Me.State.MyBO.Id)
+                State.NavigateToBillingHistory = True
+                NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = State.MyBO
+                callPage(BillingHistoryListForm.URL, State.MyBO.Id)
                 'Me.NavController.Navigate(Me, BILLING_HISTORY_FORM_URL, New EndorsementForm.Parameters(Me.State.MyBO.Id, Me.State.TheItemCoverageState.manufaturerWarranty))
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
         'REQ-6189
-        Private Sub btnBankInfo_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBankInfo.Click
+        Private Sub btnBankInfo_Click(sender As Object, e As System.EventArgs) Handles btnBankInfo.Click
             Try
-                Me.State.NavigateToBankInfoHistory = True
+                State.NavigateToBankInfoHistory = True
 
-                If Not Me.State.MyBO Is Nothing AndAlso Not Me.State.MyBO.Id.Equals(Guid.Empty) Then
+                If State.MyBO IsNot Nothing AndAlso Not State.MyBO.Id.Equals(Guid.Empty) Then
 
-                    Me.State.certInstallment = New CertInstallment(Me.State.MyBO.Id, True)
+                    State.certInstallment = New CertInstallment(State.MyBO.Id, True)
 
-                    If Not Me.State.certInstallment Is Nothing Then
+                    If State.certInstallment IsNot Nothing Then
 
                         Dim bankInfo As BankInfo = New BankInfo()
-                        If Me.State.certInstallment.BankInfoId <> Guid.Empty Then
+                        If State.certInstallment.BankInfoId <> Guid.Empty Then
                             REM bankInfo = New BankInfo(Me.State.certInstallment.BankInfoId)
-                            Dim currentBankInfo = New BankInfo(Me.State.certInstallment.BankInfoId)
+                            Dim currentBankInfo = New BankInfo(State.certInstallment.BankInfoId)
 
                             With bankInfo
                                 .CountryID = currentBankInfo.CountryID
@@ -7222,17 +7205,17 @@ Namespace Certificates
                         Else
 
                             ' Verify this assumption: Set the countries of the bank info instance to the country of the cert.
-                            bankInfo.CountryID = Me.State.MyBO.Company.CountryId
-                            bankInfo.SourceCountryID = Me.State.MyBO.Company.CountryId
+                            bankInfo.CountryID = State.MyBO.Company.CountryId
+                            bankInfo.SourceCountryID = State.MyBO.Company.CountryId
                         End If
 
                         bankInfo.ValidateFieldsforFR = True
 
-                        Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = Me.State.MyBO
-                        Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_INSTALLMENT) = Me.State.certInstallment
-                        Me.NavController.FlowSession(FlowSessionKeys.SESSION_BANK_INFO) = bankInfo
+                        NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = State.MyBO
+                        NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_INSTALLMENT) = State.certInstallment
+                        NavController.FlowSession(FlowSessionKeys.SESSION_BANK_INFO) = bankInfo
 
-                        Me.callPage(URL_BANKINFO, Me.State.MyBO.Id)
+                        callPage(URL_BANKINFO, State.MyBO.Id)
                     End If
                 End If
 
@@ -7240,48 +7223,48 @@ Namespace Certificates
 
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         'Nandan
-        Private Sub btnPaymentHistory_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnPaymentHistory.Click
+        Private Sub btnPaymentHistory_Click(sender As Object, e As System.EventArgs) Handles btnPaymentHistory.Click
             Try
-                Me.State.NavigateToPaymentHistory = True
-                Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = Me.State.MyBO
-                Me.callPage(PaymentHistoryListForm.URL, Me.State.MyBO.Id)
+                State.NavigateToPaymentHistory = True
+                NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = State.MyBO
+                callPage(PaymentHistoryListForm.URL, State.MyBO.Id)
                 'Me.NavController.Navigate(Me, BILLING_HISTORY_FORM_URL, New EndorsementForm.Parameters(Me.State.MyBO.Id, Me.State.TheItemCoverageState.manufaturerWarranty))
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnBillpayHist_click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBillPayHist.Click
+        Private Sub btnBillpayHist_click(sender As Object, e As System.EventArgs) Handles btnBillPayHist.Click
             Try
-                Me.State.NavigateToBillpayHistory = True
-                Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = Me.State.MyBO
-                Me.NavController.Navigate(Me, CREATE_NEW_BILLING_PAYMENT, New BillingPaymentHistoryListForm.Parameters(Me.State.MyBO.Id))
+                State.NavigateToBillpayHistory = True
+                NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = State.MyBO
+                NavController.Navigate(Me, CREATE_NEW_BILLING_PAYMENT, New BillingPaymentHistoryListForm.Parameters(State.MyBO.Id))
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnUndoCertDetail_Write_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndoCertDetail_Write.Click
+        Private Sub btnUndoCertDetail_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnUndoCertDetail_Write.Click
             Try
-                If Not Me.State.MyBO.IsNew Then
+                If Not State.MyBO.IsNew Then
                     'Reload from the DB
-                    Me.State.MyBO = New Certificate(Me.State.MyBO.Id)
-                ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+                    State.MyBO = New Certificate(State.MyBO.Id)
+                ElseIf State.ScreenSnapShotBO IsNot Nothing Then
                     'It was a new with copy
-                    Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                    State.MyBO.Clone(State.ScreenSnapShotBO)
                 Else
-                    Me.State.MyBO = New Certificate
+                    State.MyBO = New Certificate
                 End If
-                Me.State.IsEdit = False
+                State.IsEdit = False
                 PopulateFormFromBOs()
-                Me.EnableDisableFields()
+                EnableDisableFields()
                 ControlMgr.SetVisibleControl(Me, BtnProductSalesDate, False)
                 ControlMgr.SetVisibleControl(Me, BtnWarrantySoldDate, False)
                 ControlMgr.SetVisibleControl(Me, BtnDateOfBirth, False)
@@ -7293,24 +7276,24 @@ Namespace Certificates
                 Dim btnValidate_Address As Button = AddressCtr.FindControl(ValidateAddressButton)
                 ControlMgr.SetVisibleControl(Me, btnValidate_Address, False)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnUndoCertInfo_Write_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndoCertInfo_Write.Click
+        Private Sub btnUndoCertInfo_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnUndoCertInfo_Write.Click
             Try
-                If Not Me.State.MyBO.IsNew Then
+                If Not State.MyBO.IsNew Then
                     'Reload from the DB
-                    Me.State.MyBO = New Certificate(Me.State.MyBO.Id)
-                ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+                    State.MyBO = New Certificate(State.MyBO.Id)
+                ElseIf State.ScreenSnapShotBO IsNot Nothing Then
                     'It was a new with copy
-                    Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                    State.MyBO.Clone(State.ScreenSnapShotBO)
                 Else
-                    Me.State.MyBO = New Certificate
+                    State.MyBO = New Certificate
                 End If
-                Me.State.IsEdit = False
+                State.IsEdit = False
                 PopulateFormFromBOs()
-                Me.EnableDisableFields()
+                EnableDisableFields()
                 ControlMgr.SetVisibleControl(Me, BtnProductSalesDate, False)
                 ControlMgr.SetVisibleControl(Me, BtnWarrantySoldDate, False)
                 ControlMgr.SetVisibleControl(Me, BtnCertificateVerificationDate, False)
@@ -7318,150 +7301,150 @@ Namespace Certificates
                 ControlMgr.SetVisibleControl(Me, BtnCheckVerificationDate, False)
                 ControlMgr.SetVisibleControl(Me, BtnContractCheckCompleteDate, False)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnUndoTaxID_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnUndoTaxID_WRITE.Click
+        Private Sub btnUndoTaxID_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnUndoTaxID_WRITE.Click
             Try
-                If Not Me.State.MyBO.IsNew Then
+                If Not State.MyBO.IsNew Then
                     'Reload from the DB
-                    Me.State.MyBO = New Certificate(Me.State.MyBO.Id)
-                ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+                    State.MyBO = New Certificate(State.MyBO.Id)
+                ElseIf State.ScreenSnapShotBO IsNot Nothing Then
                     'It was a new with copy
-                    Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                    State.MyBO.Clone(State.ScreenSnapShotBO)
                 Else
-                    Me.State.MyBO = New Certificate
+                    State.MyBO = New Certificate
                 End If
-                Me.State.IsEdit = False
+                State.IsEdit = False
                 PopulateFormFromBOs()
-                Me.EnableDisableFields()
+                EnableDisableFields()
                 ControlMgr.SetVisibleControl(Me, BtnDocumentIssueDate, False)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnUndoDebit_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnUndoDebit_WRITE.Click
+        Private Sub btnUndoDebit_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnUndoDebit_WRITE.Click
 
-            Me.State.IsEdit = False
-            Me.PopulatePremiumInfoTab()
-            Me.EnableDisableFields()
+            State.IsEdit = False
+            PopulatePremiumInfoTab()
+            EnableDisableFields()
 
         End Sub
 
-        Private Sub btnCancelRequestUndo_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCancelRequestUndo_WRITE.Click
+        Private Sub btnCancelRequestUndo_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnCancelRequestUndo_WRITE.Click
 
-            Me.State.IsEdit = False
+            State.IsEdit = False
             populateCancelRequestInfoTab()
-            Me.EnableDisableFields()
+            EnableDisableFields()
 
             SetFocus(moCancelRequestReasonDrop)
         End Sub
-        Private Sub btnEditCertDetail_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditCertDetail_WRITE.Click
+        Private Sub btnEditCertDetail_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnEditCertDetail_WRITE.Click
             Try
-                Me.State.IsEdit = True
-                Me.State.MyBO = New Certificate(Me.State.CertificateId)
+                State.IsEdit = True
+                State.MyBO = New Certificate(State.CertificateId)
                 PopulateFormFromBOs()
-                Me.EnableDisableFields()
-                If Not Me.moEmailAddressText.Text Is Nothing AndAlso Me.moEmailAddressText.Text.Equals(Me.State.EmailIsNull) Then
-                    Me.moEmailAddressText.Text = ""
+                EnableDisableFields()
+                If moEmailAddressText.Text IsNot Nothing AndAlso moEmailAddressText.Text.Equals(State.EmailIsNull) Then
+                    moEmailAddressText.Text = ""
                 End If
-                If Not Me.State.MyBO.CustomerId.Equals(Guid.Empty) Then
+                If Not State.MyBO.CustomerId.Equals(Guid.Empty) Then
                     SetFocus(moCustomerFirstNameText)
                 Else
                     SetFocus(moCustomerNameText)
                 End If
                 'KDDI
-                Me.EnableDisableAddressValidation()
-                Me.State.AddressFlag = False
+                EnableDisableAddressValidation()
+                State.AddressFlag = False
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnDebitEdit_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnDebitEdit_WRITE.Click
+        Private Sub btnDebitEdit_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnDebitEdit_WRITE.Click
             Try
-                Me.State.IsEdit = True
-                Me.State.MyBO = New Certificate(Me.State.CertificateId)
+                State.IsEdit = True
+                State.MyBO = New Certificate(State.CertificateId)
                 PopulateFormFromBOs(True)
-                Me.EnableDisableFields()
+                EnableDisableFields()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnEditCertInfo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditCertInfo_WRITE.Click
+        Private Sub btnEditCertInfo_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnEditCertInfo_WRITE.Click
             Try
-                Me.State.IsEdit = True
-                Me.State.MyBO = New Certificate(Me.State.CertificateId)
+                State.IsEdit = True
+                State.MyBO = New Certificate(State.CertificateId)
                 PopulateFormFromBOs()
-                Me.EnableDisableFields()
+                EnableDisableFields()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnEditTaxID_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnEditTaxID_WRITE.Click
+        Private Sub btnEditTaxID_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnEditTaxID_WRITE.Click
             Try
-                Me.State.IsEdit = True
-                Me.State.MyBO = New Certificate(Me.State.CertificateId)
+                State.IsEdit = True
+                State.MyBO = New Certificate(State.CertificateId)
                 PopulateFormFromBOs()
-                Me.EnableDisableFields()
+                EnableDisableFields()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnCancelRequestEdit_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCancelRequestEdit_WRITE.Click
+        Private Sub btnCancelRequestEdit_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnCancelRequestEdit_WRITE.Click
             Try
-                Me.State.IsEdit = True
-                Me.State.CertCancelRequestId = Me.State.MyBO.getCertCancelRequestID
+                State.IsEdit = True
+                State.CertCancelRequestId = State.MyBO.getCertCancelRequestID
                 populateCancelRequestInfoTab()
-                Me.EnableDisableFields()
+                EnableDisableFields()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Private Sub btnCreateNewRequest_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCreateNewRequest_WRITE.Click
+        Private Sub btnCreateNewRequest_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnCreateNewRequest_WRITE.Click
             Try
-                Me.State.IsEdit = True
-                Me.State.CertCancelRequestId = Guid.Empty
-                Me.State.certCancelRequestBO = New CertCancelRequest
+                State.IsEdit = True
+                State.CertCancelRequestId = Guid.Empty
+                State.certCancelRequestBO = New CertCancelRequest
                 ControlMgr.SetVisibleControl(Me, btnCreateNewRequest_WRITE, False)
                 populateCancelRequestInfoTab()
-                Me.EnableDisableFields()
+                EnableDisableFields()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Protected Sub btnRemoveCancelDueDate_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnRemoveCancelDueDate_WRITE.Click
+        Protected Sub btnRemoveCancelDueDate_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnRemoveCancelDueDate_WRITE.Click
             Try
-                Me.DisplayMessage(Message.REMOVE_CANCELDUEDATE_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenRemoveCancelDueDatePromptResponse)
+                DisplayMessage(Message.REMOVE_CANCELDUEDATE_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenRemoveCancelDueDatePromptResponse)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            End Try
-        End Sub
-
-        Private Sub DocumentsButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DocumentsButton.Click
-            Try
-                Me.callPage(CertificateDocumentForm.URL, Me.State.MyBO)
-            Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnCancelCertificate_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancelCertificate_WRITE.Click
+        Private Sub DocumentsButton_Click(sender As System.Object, e As System.EventArgs) Handles DocumentsButton.Click
             Try
-                Me.WorkingPanelVisible = False
+                callPage(CertificateDocumentForm.URL, State.MyBO)
+            Catch ex As Exception
+                HandleErrors(ex, MasterPage.MessageController)
+            End Try
+        End Sub
+
+        Private Sub btnCancelCertificate_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCancelCertificate_WRITE.Click
+            Try
+                WorkingPanelVisible = False
 
                 ControlMgr.SetVisibleControl(Me, RefundAmtTextbox, False)
                 ControlMgr.SetVisibleControl(Me, RefundAmtLabel, False)
                 If RefundAmtLabel.Text.IndexOf(":") > 0 Then
-                    Me.RefundAmtLabel.Text = Me.RefundAmtLabel.Text
+                    RefundAmtLabel.Text = RefundAmtLabel.Text
                 Else
-                    Me.RefundAmtLabel.Text = Me.RefundAmtLabel.Text & ":"
+                    RefundAmtLabel.Text = RefundAmtLabel.Text & ":"
                 End If
                 ControlMgr.SetVisibleControl(Me, LabelWarningRefundAmtBelowTolerance, False)
                 'ControlMgr.SetVisibleControl(Me, moAmtPaidTextbox, False)
@@ -7473,74 +7456,74 @@ Namespace Certificates
                 'ControlMgr.SetVisibleControl(Me, PaymentReasonDrpLabel, False)
                 '*ANI
                 ControlMgr.SetVisibleControl(Me, ProcessCancellationButton_WRITE, False)
-                Me.MasterPage.MessageController.Clear()
-                moCertificateInfoCtrlCancel = Me.UserCertificateCtrCancel
-                moBankInfoController = Me.UserBankInfoCtr
+                MasterPage.MessageController.Clear()
+                moCertificateInfoCtrlCancel = UserCertificateCtrCancel
+                moBankInfoController = UserBankInfoCtr
                 'moBankInfoController.InitController()
-                Me.moBankInfoController.Visible = False
+                moBankInfoController.Visible = False
                 'Me.State.BankInfoCtrVisible = False
 
-                moPaymentOrderInfoCtrl = Me.UserPaymentOrderInfoCtr
+                moPaymentOrderInfoCtrl = UserPaymentOrderInfoCtr
                 'moBankInfoController.InitController()
-                Me.moPaymentOrderInfoCtrl.Visible = False
+                moPaymentOrderInfoCtrl.Visible = False
                 'Me.State.BankInfoCtrVisible = False
 
-                moCertificateInfoCtrlCancel.InitController(Me.State.MyBO.Id, , Me.State.companyCode)
-                Me.State.certCancellationBO = New CertCancellation
-                If Me.State.ComputeCancellationDateEOfM = Codes.YESNO_Y Then
-                    Me.State.certCancellationBO.CancellationRequestedDate = Date.Today
-                    Me.State.certCancellationBO.CancellationDate = ComputeEndOfMonth(Date.Today)
+                moCertificateInfoCtrlCancel.InitController(State.MyBO.Id, , State.companyCode)
+                State.certCancellationBO = New CertCancellation
+                If State.ComputeCancellationDateEOfM = Codes.YESNO_Y Then
+                    State.certCancellationBO.CancellationRequestedDate = Date.Today
+                    State.certCancellationBO.CancellationDate = ComputeEndOfMonth(Date.Today)
                 End If
-                Me.PopulateCancellationReasonDropdown(Me.moCancellationReasonDrop, Nothing, Nothing)
+                PopulateCancellationReasonDropdown(moCancellationReasonDrop, Nothing, Nothing)
                 PopulateCancelCommentTypeDropdown(moCancelCommentType)
-                Me.PopulateControlFromBOProperty(Me.CancelCallerNameTextbox, Me.State.MyBO.CustomerName)
-                Me.populateFormFromCertCancellationBO()
+                PopulateControlFromBOProperty(CancelCallerNameTextbox, State.MyBO.CustomerName)
+                populateFormFromCertCancellationBO()
 
                 '** populate the paymentmethod drop down here ???
                 'Me.PopulatePaymentMethodDropdown(Me.PaymentMethodDrop)
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub BackCancelCertButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BackCancelCertButton.Click
+        Private Sub BackCancelCertButton_Click(sender As System.Object, e As System.EventArgs) Handles BackCancelCertButton.Click
             Try
-                Me.WorkingPanelVisible = True
+                WorkingPanelVisible = True
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
 
-        Private Sub QuoteButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles QuoteButton_WRITE.Click
+        Private Sub QuoteButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles QuoteButton_WRITE.Click
             Dim oCancelCertificateData As New CertCancellationData
 
             Try
-                Me.State.QuotedRefundAmt = Nothing
-                Me.State.QuotedInstallmentsPaid = Nothing
-                Me.WorkingPanelVisible = False
-                Me.MasterPage.MessageController.Clear()
-                Me.moBankInfoController.Visible = False
-                Me.moPaymentOrderInfoCtrl.Visible = False
+                State.QuotedRefundAmt = Nothing
+                State.QuotedInstallmentsPaid = Nothing
+                WorkingPanelVisible = False
+                MasterPage.MessageController.Clear()
+                moBankInfoController.Visible = False
+                moPaymentOrderInfoCtrl.Visible = False
                 oCancelCertificateData.refundAmount = Nothing
                 oCancelCertificateData.InstallmentsPaid = Nothing
-                Me.State.BankInfoBO = Nothing
+                State.BankInfoBO = Nothing
                 ControlMgr.SetVisibleControl(Me, PaymentMethodDrop, False)
                 ControlMgr.SetVisibleControl(Me, PaymentMethodDrpLabel, False)
                 ControlMgr.SetVisibleControl(Me, ProcessCancellationButton_WRITE, False)
                 'Me.trbank.Visible = True
 
-                Me.PopulateBOProperty(Me.State.certCancellationBO, "CancellationReasonId", Me.moCancellationReasonDrop)
-                Me.PopulateBOProperty(Me.State.certCancellationBO, "CancellationDate", Me.CancelCertDateTextbox)
-                Me.PopulateBOProperty(Me.State.certCancellationBO, "CancellationRequestedDate", Me.CancelCertReqDateTextbox)
+                PopulateBOProperty(State.certCancellationBO, "CancellationReasonId", moCancellationReasonDrop)
+                PopulateBOProperty(State.certCancellationBO, "CancellationDate", CancelCertDateTextbox)
+                PopulateBOProperty(State.certCancellationBO, "CancellationRequestedDate", CancelCertReqDateTextbox)
 
-                State.MyBO.QuoteCancellation(Me.State.certCancellationBO, oCancelCertificateData)
+                State.MyBO.QuoteCancellation(State.certCancellationBO, oCancelCertificateData)
                 If Not oCancelCertificateData.errorExist Then
                     If Not oCancelCertificateData.inputAmountRequiredMissing Then
                         ControlMgr.SetVisibleControl(Me, RefundAmtTextbox, True)
                         ControlMgr.SetVisibleControl(Me, RefundAmtLabel, True)
-                        Me.RefundAmtTextbox.ReadOnly = True
+                        RefundAmtTextbox.ReadOnly = True
 
                         'allow cancellation even if the computed refund is below company tolerance amt, but dont show the payment mthd
                         ' because refund_amount should be zero here.
@@ -7551,10 +7534,10 @@ Namespace Certificates
                         Else
                             ControlMgr.SetVisibleControl(Me, LabelWarningRefundAmtBelowTolerance, False)
                         End If
-                        Me.PopulateControlFromBOProperty(Me.RefundAmtTextbox, oCancelCertificateData.refundAmount)
-                        Me.PopulateControlFromBOProperty(Me.txtInstallmentsPaid, oCancelCertificateData.InstallmentsPaid)
-                        Me.State.QuotedRefundAmt = oCancelCertificateData.refundAmount
-                        Me.State.QuotedInstallmentsPaid = oCancelCertificateData.InstallmentsPaid
+                        PopulateControlFromBOProperty(RefundAmtTextbox, oCancelCertificateData.refundAmount)
+                        PopulateControlFromBOProperty(txtInstallmentsPaid, oCancelCertificateData.InstallmentsPaid)
+                        State.QuotedRefundAmt = oCancelCertificateData.refundAmount
+                        State.QuotedInstallmentsPaid = oCancelCertificateData.InstallmentsPaid
 
                         '  If Not Me.State.MyBO.getPaymentTypeCode = Me.State.MyBO.PAYMENT_PRE_AUTHORIZED Then
                         If ((LookupListNew.GetCodeFromId(LookupListNew.LK_REFUND_DESTINATION, oCancelCertificateData.refund_dest_id) = Codes.REFUND_DESTINATION__CUSTOMER AndAlso oCancelCertificateData.refundAmount > 0)) Then
@@ -7562,21 +7545,21 @@ Namespace Certificates
                             State.validateAddress = True
                             PopulatePaymentMethodDropdown(PaymentMethodDrop)
                             If PaymentMethodDrpLabel.Text.IndexOf(":") > 0 Then
-                                Me.PaymentMethodDrpLabel.Text = Me.PaymentMethodDrpLabel.Text
+                                PaymentMethodDrpLabel.Text = PaymentMethodDrpLabel.Text
                             Else
-                                Me.PaymentMethodDrpLabel.Text = Me.PaymentMethodDrpLabel.Text & ":"
+                                PaymentMethodDrpLabel.Text = PaymentMethodDrpLabel.Text & ":"
                             End If
                             ControlMgr.SetVisibleControl(Me, PaymentMethodDrop, True)
                             ControlMgr.SetVisibleControl(Me, PaymentMethodDrpLabel, True)
 
-                            Me.SetSelectedItem(Me.PaymentMethodDrop, oCancelCertificateData.def_refund_payment_method_id)
+                            SetSelectedItem(PaymentMethodDrop, oCancelCertificateData.def_refund_payment_method_id)
                         Else
                             '** do not show payment method if refund amt=0 or refund is not to customer
                             ControlMgr.SetVisibleControl(Me, PaymentMethodDrop, False)
                             ControlMgr.SetVisibleControl(Me, PaymentMethodDrpLabel, False)
                             State.validateAddress = False
                         End If
-                        Me.PopulateBOProperty(Me.State.certCancellationBO, "PaymentMethodId", Me.PaymentMethodDrop)
+                        PopulateBOProperty(State.certCancellationBO, "PaymentMethodId", PaymentMethodDrop)
                     End If 'Not inputAmountRequiredMissing
                 Else 'Not errorExist
                     ControlMgr.SetVisibleControl(Me, RefundAmtTextbox, False)
@@ -7591,21 +7574,21 @@ Namespace Certificates
                     '(provide the user has a role that is not excluded for this cancellation reason) 
                     'System should display a warning that the Certificate would not get reinstated manually
                     If oCancelCertificateData.cancellationCode = "REP" Then
-                        Me.MasterPage.MessageController.AddWarning(Message.MSG_PROMPT_FOR_REINSTATEMENT_NOT_ALLOWED_ON_REPLACEMENT, True)
+                        MasterPage.MessageController.AddWarning(Message.MSG_PROMPT_FOR_REINSTATEMENT_NOT_ALLOWED_ON_REPLACEMENT, True)
                     End If
                 Else
-                    Me.MasterPage.MessageController.AddErrorAndShow(oCancelCertificateData.errorCode)
+                    MasterPage.MessageController.AddErrorAndShow(oCancelCertificateData.errorCode)
                     ControlMgr.SetVisibleControl(Me, ProcessCancellationButton_WRITE, False)
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             Finally
-                Me.PopulatePremiumInfoTab()
+                PopulatePremiumInfoTab()
             End Try
         End Sub
 
-        Private Sub btnCancelRequestSave_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCancelRequestSave_WRITE.Click
+        Private Sub btnCancelRequestSave_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnCancelRequestSave_WRITE.Click
             Dim oCertCancelRequestData As New CertCancelRequestData
             Dim dblRefundAmount As Double, strMsg, strMsgCertCancelSuccess As String
             Try
@@ -7613,34 +7596,34 @@ Namespace Certificates
                 populateCertCancelRequestBOFromForm()
                 populateCertCancelRequestCommentBOFromForm()
                 ClearLabelError(moCRIBANNumberLabel)
-                Me.State.MyBO.ValidateCancelRequest(Me.State.certCancelRequestBO, Me.State.CancReqCommentBO, oCertCancelRequestData, Me.State.useExistingBankInfo, Me.State.CRequestBankInfoBO)
+                State.MyBO.ValidateCancelRequest(State.certCancelRequestBO, State.CancReqCommentBO, oCertCancelRequestData, State.useExistingBankInfo, State.CRequestBankInfoBO)
                 If Not oCertCancelRequestData.errorExist Then
 
-                    Me.State.MyBO.ProcessCancelRequest(Me.State.certCancelRequestBO, Me.State.useExistingBankInfo, Me.State.CRequestBankInfoBO, Me.State.CancReqCommentBO, oCertCancelRequestData, dblRefundAmount, strMsg)
+                    State.MyBO.ProcessCancelRequest(State.certCancelRequestBO, State.useExistingBankInfo, State.CRequestBankInfoBO, State.CancReqCommentBO, oCertCancelRequestData, dblRefundAmount, strMsg)
 
-                    Me.State.MyBO = New Certificate(Me.State.CertificateId)
+                    State.MyBO = New Certificate(State.CertificateId)
                     PopulateFormFromBOs()
-                    Me.State.CertCancelRequestId = Me.State.MyBO.getCertCancelRequestID
-                    Me.State.certCancelRequestBO = New CertCancelRequest(Me.State.CertCancelRequestId)
-                    Me.State.IsEdit = False
+                    State.CertCancelRequestId = State.MyBO.getCertCancelRequestID
+                    State.certCancelRequestBO = New CertCancelRequest(State.CertCancelRequestId)
+                    State.IsEdit = False
                     populateCancelRequestInfoTab()
                     PopulateCommentsGrid()
                     'Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                    Me.WorkingPanelVisible = True
-                    If Me.State.MyBO.StatusCode = "C" Then
+                    WorkingPanelVisible = True
+                    If State.MyBO.StatusCode = "C" Then
                         ControlMgr.SetVisibleControl(Me, btnCancelCertificate_WRITE, False)
-                        Me.State.certificateChanged = True
+                        State.certificateChanged = True
                         PopulateCancellationInfoTab()
                         If strMsg = SUCCESS Then
                             strMsgCertCancelSuccess = GetTranslation(Message.CANCEL_SUCCESS_WITH_REFUND)
                             strMsgCertCancelSuccess = strMsgCertCancelSuccess & " " & dblRefundAmount.ToString
-                            Me.MasterPage.MessageController.AddSuccess(strMsgCertCancelSuccess, False)
+                            MasterPage.MessageController.AddSuccess(strMsgCertCancelSuccess, False)
                         End If
                     Else
-                        If Me.State.MyBO.getCancelationRequestFlag = YES Then
+                        If State.MyBO.getCancelationRequestFlag = YES Then
                             ControlMgr.SetVisibleControl(Me, btnCancelCertificate_WRITE, False)
                         Else
-                            If Me.State.MyBO.IsChildCertificate Then
+                            If State.MyBO.IsChildCertificate Then
                                 ControlMgr.SetVisibleControl(Me, btnCancelCertificate_WRITE, False)
                             Else
                                 ControlMgr.SetVisibleControl(Me, btnCancelCertificate_WRITE, True)
@@ -7648,43 +7631,41 @@ Namespace Certificates
                         End If
                         MasterPage.MessageController.Clear()
                         If strMsg = FUTURE Then
-                            Me.MasterPage.MessageController.AddSuccess(Message.CANCEL_CERT_IN_FUTURE, True)
+                            MasterPage.MessageController.AddSuccess(Message.CANCEL_CERT_IN_FUTURE, True)
                         ElseIf strMsg = CNL_RSN_NOT_AVBL_FOR_SELECTED_PERIOD Then
-                            Me.MasterPage.MessageController.AddSuccess(Message.CNL_RSN_NOT_AVBL_FOR_SELECTED_PERIOD, True)
+                            MasterPage.MessageController.AddSuccess(Message.CNL_RSN_NOT_AVBL_FOR_SELECTED_PERIOD, True)
                         Else
-                            Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                            MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
                         End If
                     End If
                     'ControlMgr.SetEnableTabStrip(Me, tsHoriz.Items(Me.CERT_CANCELLATION_INFO_TAB), True)
                     EnableTab(CERT_CANCELLATION_INFO_TAB, True)
                     'If tsHoriz.Items(0).Enabled = True Then Me.tsHoriz.SelectedIndex = 0
-                    If isTabEnabled(0) = True Then Me.State.selectedTab = 0
-                    Me.State.IsEdit = False
-                    Me.EnableDisableFields()
-                    Me.State.isCovgGridRefreshNeeded = True
+                    If isTabEnabled(0) = True Then State.selectedTab = 0
+                    State.IsEdit = False
+                    EnableDisableFields()
+                    State.isCovgGridRefreshNeeded = True
                 Else
                     If oCertCancelRequestData.errorCode = Assurant.ElitaPlus.Common.ErrorCodes.INVALID_BANKIBANNO_INVALID Then
                         ElitaPlusPage.SetLabelError(moCRIBANNumberLabel)
                     End If
-                    Me.MasterPage.MessageController.AddError(oCertCancelRequestData.errorCode)
+                    MasterPage.MessageController.AddError(oCertCancelRequestData.errorCode)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Private Sub ProcessCancellationButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ProcessCancellationButton_WRITE.Click
+        Private Sub ProcessCancellationButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles ProcessCancellationButton_WRITE.Click
             Dim errorExist As Boolean = False
             Dim oCancelCertificateData As New CertCancellationData
 
             Try
                 'REQ-910 New fields BEGIN 
-                If (Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) _
-                    Or Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3"))) AndAlso (Me.State.QuotedRefundAmt > 0) Then ' 1 = Display and Require When Cancelling 
-                    If (Me.State.MyBO.Occupation Is Nothing OrElse Me.State.MyBO.Occupation.Equals(String.Empty)) Or
-                       (Me.State.MyBO.PoliticallyExposedId.Equals(Guid.Empty)) Or
-                       (Me.State.MyBO.IncomeRangeId.Equals(Guid.Empty)) Then
+                If (State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) _
+                    OrElse State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3"))) AndAlso (State.QuotedRefundAmt > 0) Then ' 1 = Display and Require When Cancelling 
+                    If (State.MyBO.Occupation Is Nothing OrElse State.MyBO.Occupation.Equals(String.Empty)) OrElse (State.MyBO.PoliticallyExposedId.Equals(Guid.Empty)) OrElse (State.MyBO.IncomeRangeId.Equals(Guid.Empty)) Then
                         Throw New GUIException(Message.MSG_CANCELLATION_CANNOT_BE_PROCESSED, Assurant.ElitaPlus.Common.ErrorCodes.CANNOT_CANCEL_CERT_CUST_LEGAL_INFO_MISSING)
                     End If
                 End If
@@ -7693,43 +7674,43 @@ Namespace Certificates
 
                 'REQ-910 New fields END
 
-                Me.MasterPage.MessageController.Clear()
-                Me.PopulateBOProperty(Me.State.certCancellationBO, "CancellationReasonId", Me.moCancellationReasonDrop)
-                Me.PopulateBOProperty(Me.State.certCancellationBO, "CancellationDate", Me.CancelCertDateTextbox)
-                Me.PopulateBOProperty(Me.State.certCancellationBO, "ComputedRefund", Me.RefundAmtTextbox)
-                Me.PopulateBOProperty(Me.State.certCancellationBO, "InstallmentsPaid", Me.txtInstallmentsPaid)
+                MasterPage.MessageController.Clear()
+                PopulateBOProperty(State.certCancellationBO, "CancellationReasonId", moCancellationReasonDrop)
+                PopulateBOProperty(State.certCancellationBO, "CancellationDate", CancelCertDateTextbox)
+                PopulateBOProperty(State.certCancellationBO, "ComputedRefund", RefundAmtTextbox)
+                PopulateBOProperty(State.certCancellationBO, "InstallmentsPaid", txtInstallmentsPaid)
                 populateCertCancelCommentBOFromForm()
 
                 validateCancellationProcessFields()
                 ValidateCancellationCommentsFields()
 
-                If Me.PaymentMethodDrop.Visible = True Then
-                    If (Me.State.certCancellationBO.PaymentMethodId.Equals(Guid.Empty)) Then
-                        Me.MasterPage.MessageController.AddErrorAndShow(Message.MSG_INVALID_PAYMENT_METHOD)
+                If PaymentMethodDrop.Visible = True Then
+                    If (State.certCancellationBO.PaymentMethodId.Equals(Guid.Empty)) Then
+                        MasterPage.MessageController.AddErrorAndShow(Message.MSG_INVALID_PAYMENT_METHOD)
                         errorExist = True
                     Else
                         If State.validateAddress Then
-                            If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, Me.State.certCancellationBO.PaymentMethodId) = Codes.PAYMENT_METHOD__CHECK_TO_CONSUMER Then
+                            If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, State.certCancellationBO.PaymentMethodId) = Codes.PAYMENT_METHOD__CHECK_TO_CONSUMER Then
                                 ValidateAddressField()
                             End If
                         End If
                     End If
                 Else
-                    Me.State.certCancellationBO.PaymentMethodId = System.Guid.Empty
+                    State.certCancellationBO.PaymentMethodId = System.Guid.Empty
                 End If
                 If Not errorExist Then
 
-                    If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, Me.State.certCancellationBO.PaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
-                        If Me.moBankInfoController.Visible = True Then
-                            Me.State.BankInfoCtrVisible = True
-                            Me.PopulateBankInfoBOFromUserCtr()
+                    If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, State.certCancellationBO.PaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
+                        If moBankInfoController.Visible = True Then
+                            State.BankInfoCtrVisible = True
+                            PopulateBankInfoBOFromUserCtr()
                         Else
-                            Me.State.BankInfoBO = Nothing
+                            State.BankInfoBO = Nothing
                         End If
-                    ElseIf LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, Me.State.certCancellationBO.PaymentMethodId) = Codes.PAYMENT_METHOD__PAYMENT_ORDER Then
-                        If Me.moPaymentOrderInfoCtrl.Visible = True Then
-                            Me.State.PaymentOrderInfoCtrVisible = True
-                            Me.PopulatePaymentOrderInfoBOFromUserCtr()
+                    ElseIf LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, State.certCancellationBO.PaymentMethodId) = Codes.PAYMENT_METHOD__PAYMENT_ORDER Then
+                        If moPaymentOrderInfoCtrl.Visible = True Then
+                            State.PaymentOrderInfoCtrVisible = True
+                            PopulatePaymentOrderInfoBOFromUserCtr()
 
                             'If ((Me.State.MyBO.CustomerName Is Nothing OrElse Me.State.MyBO.CustomerName.Equals(String.Empty)) Or
                             '    (Me.State.MyBO.IdentificationNumber.Equals(Guid.Empty)) Or _
@@ -7737,52 +7718,52 @@ Namespace Certificates
                             '    Throw New GUIException(Message.MSG_CANCELLATION_CANNOT_BE_PROCESSED, Assurant.ElitaPlus.Common.ErrorCodes.CANNOT_CANCEL_CERT_CUST_IDNUMBER_IDTYPE_INFO_MISSING)
                             'End If
 
-                            If ((Me.State.MyBO.CustomerName Is Nothing OrElse Me.State.MyBO.CustomerName.Equals(String.Empty))) Then
+                            If ((State.MyBO.CustomerName Is Nothing OrElse State.MyBO.CustomerName.Equals(String.Empty))) Then
                                 Throw New GUIException(Message.MSG_CANCELLATION_CANNOT_BE_PROCESSED, Assurant.ElitaPlus.Common.ErrorCodes.CANNOT_CANCEL_CERT_CUST_NAME_INFO_MISSING)
                             End If
                         Else
-                            Me.State.PaymentOrderInfoBO = Nothing
+                            State.PaymentOrderInfoBO = Nothing
                         End If
                     Else
-                        Me.State.BankInfoBO = Nothing
-                        Me.State.PaymentOrderInfoBO = Nothing
+                        State.BankInfoBO = Nothing
+                        State.PaymentOrderInfoBO = Nothing
                     End If
 
                     Dim oContract As New Contract
-                    oContract = Contract.GetContract(Me.State.MyBO.DealerId, Me.State.MyBO.WarrantySalesDate.Value)
+                    oContract = Contract.GetContract(State.MyBO.DealerId, State.MyBO.WarrantySalesDate.Value)
 
 
-                    If Me.State.certCancellationBO.CancellationDate > DateTime.Today Then
-                        If Me.State.MyBO.PreviousCertificateId.Equals(Guid.Empty) Then
+                    If State.certCancellationBO.CancellationDate > DateTime.Today Then
+                        If State.MyBO.PreviousCertificateId.Equals(Guid.Empty) Then
                             ' the cancellation will be in the future
-                            Me.State.MyBO.SetFutureCancellation(Me.State.certCancellationBO, Me.State.BankInfoBO, oContract, Me.State.CancCommentBO, , Me.State.PaymentOrderInfoBO)
+                            State.MyBO.SetFutureCancellation(State.certCancellationBO, State.BankInfoBO, oContract, State.CancCommentBO, , State.PaymentOrderInfoBO)
                         Else
-                            Me.State.MyBO.ProcessCancellation(Me.State.certCancellationBO, Me.State.BankInfoBO, oContract, Me.State.CancCommentBO, , Me.State.PaymentOrderInfoBO)
+                            State.MyBO.ProcessCancellation(State.certCancellationBO, State.BankInfoBO, oContract, State.CancCommentBO, , State.PaymentOrderInfoBO)
                         End If
                     Else
-                        Me.State.MyBO.ProcessCancellation(Me.State.certCancellationBO, Me.State.BankInfoBO, oContract, Me.State.CancCommentBO, , Me.State.PaymentOrderInfoBO)
+                        State.MyBO.ProcessCancellation(State.certCancellationBO, State.BankInfoBO, oContract, State.CancCommentBO, , State.PaymentOrderInfoBO)
                     End If
 
 
-                    If Me.IsSinglePremium Then
-                        Me.PopulateCoveragesGrid()
+                    If IsSinglePremium Then
+                        PopulateCoveragesGrid()
                     End If
 
-                    Me.State.MyBO = New Certificate(Me.State.CertificateId)
+                    State.MyBO = New Certificate(State.CertificateId)
 
                     PopulateFormFromBOs()
-                    Me.PopulateCancellationInfoTab()
+                    PopulateCancellationInfoTab()
 
                     PopulateCommentsGrid()
 
-                    Me.DisplayMessage(Message.MSG_CERTIFICATE_CANCELLATION_CONFIRM, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                    Me.WorkingPanelVisible = True
+                    DisplayMessage(Message.MSG_CERTIFICATE_CANCELLATION_CONFIRM, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                    WorkingPanelVisible = True
 
-                    If Me.State.MyBO.StatusCode = "C" Then
+                    If State.MyBO.StatusCode = "C" Then
                         ControlMgr.SetVisibleControl(Me, btnCancelCertificate_WRITE, False)
-                        Me.State.certificateChanged = True
+                        State.certificateChanged = True
                     Else
-                        If Me.State.MyBO.IsChildCertificate Then
+                        If State.MyBO.IsChildCertificate Then
                             ControlMgr.SetVisibleControl(Me, btnCancelCertificate_WRITE, False)
                         Else
                             ControlMgr.SetVisibleControl(Me, btnCancelCertificate_WRITE, True)
@@ -7794,65 +7775,65 @@ Namespace Certificates
                     EnableTab(CERT_CANCELLATION_INFO_TAB, True)
 
                     'If tsHoriz.Items(0).Enabled = True Then Me.tsHoriz.SelectedIndex = 0
-                    If isTabEnabled(0) = True Then Me.State.selectedTab = 0
+                    If isTabEnabled(0) = True Then State.selectedTab = 0
 
-                    Me.EnableDisableFields()
-                    Me.State.isCovgGridRefreshNeeded = True
+                    EnableDisableFields()
+                    State.isCovgGridRefreshNeeded = True
                 Else
                     ControlMgr.SetVisibleControl(Me, moBankInfoController, False)
-                    Me.State.BankInfoCtrVisible = False
+                    State.BankInfoCtrVisible = False
 
                     ControlMgr.SetVisibleControl(Me, moPaymentOrderInfoCtrl, False)
-                    Me.State.PaymentOrderInfoCtrVisible = False
+                    State.PaymentOrderInfoCtrVisible = False
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Private Sub ReverseCancellationButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ReverseCancellationButton_WRITE.Click
+        Private Sub ReverseCancellationButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles ReverseCancellationButton_WRITE.Click
             Try
                 Dim oReverseCancelCertificateData As New ReverseCancellationData
-                Dim compId As Guid = Me.State.MyBO.CompanyId
+                Dim compId As Guid = State.MyBO.CompanyId
 
                 With oReverseCancelCertificateData
                     .companyId = compId
-                    .dealerId = Me.State.MyBO.DealerId
-                    .certificate = Me.State.MyBO.CertNumber
+                    .dealerId = State.MyBO.DealerId
+                    .certificate = State.MyBO.CertNumber
                     .source = ElitaPlusIdentity.Current.ActiveUser.UserName
                     .sourceType = "USER"
                 End With
-                Dim cancDate As Date = Me.State.MyBO.TheCertCancellationBO.CancellationDate
-                Dim attvalue As AttributeValue = Me.State.MyBO.Dealer.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = Codes.ATTR_CAN_DT_GTRTHN_12_MNTHS).FirstOrDefault
+                Dim cancDate As Date = State.MyBO.TheCertCancellationBO.CancellationDate
+                Dim attvalue As AttributeValue = State.MyBO.Dealer.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = Codes.ATTR_CAN_DT_GTRTHN_12_MNTHS).FirstOrDefault
 
-                If (Me.State.MyBO.Dealer.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = Codes.ATTR_CAN_DT_GTRTHN_12_MNTHS).Count > 0) Then
+                If (State.MyBO.Dealer.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = Codes.ATTR_CAN_DT_GTRTHN_12_MNTHS).Count > 0) Then
                     If cancDate.AddYears(1) < DateTime.Now Then
-                        Me.MasterPage.MessageController.AddWarning(Assurant.ElitaPlus.Common.ErrorCodes.GUI_ERROR_MESSAGE_FUNCTIONALITY)
+                        MasterPage.MessageController.AddWarning(Assurant.ElitaPlus.Common.ErrorCodes.GUI_ERROR_MESSAGE_FUNCTIONALITY)
                         Throw New GUIException("", "")
                     End If
                 End If
 
-                Dim oContract As Contract = Contract.GetContract(Me.State.MyBO.DealerId, DateTime.Today)
+                Dim oContract As Contract = Contract.GetContract(State.MyBO.DealerId, DateTime.Today)
                 If oContract Is Nothing Then
-                    Me.MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.NO_CONTRACT_FOUND)
+                    MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.NO_CONTRACT_FOUND)
                     Throw New GUIException("", "")
                 End If
 
-                Me.State.certCancellationBO.ReverseCancellation(oReverseCancelCertificateData)
-                Me.State.MyBO = New Certificate(Me.State.CertificateId)
+                State.certCancellationBO.ReverseCancellation(oReverseCancelCertificateData)
+                State.MyBO = New Certificate(State.CertificateId)
                 PopulateFormFromBOs()
                 PopulatePremiumInfoTab()
                 PopulateCommentsGrid()
-                Me.DisplayMessage(Message.MSG_CERTIFICATE__REVERSE_CANCELLATION_CONFIRM, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                Me.WorkingPanelVisible = True
-                Me.State.certificateChanged = True
+                DisplayMessage(Message.MSG_CERTIFICATE__REVERSE_CANCELLATION_CONFIRM, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                WorkingPanelVisible = True
+                State.certificateChanged = True
 
-                If Me.State.MyBO.StatusCode = "C" Then
+                If State.MyBO.StatusCode = "C" Then
                     ControlMgr.SetVisibleControl(Me, btnCancelCertificate_WRITE, False)
                 Else
-                    If Me.State.MyBO.IsChildCertificate Then
+                    If State.MyBO.IsChildCertificate Then
                         ControlMgr.SetVisibleControl(Me, btnCancelCertificate_WRITE, False)
                     Else
                         ControlMgr.SetVisibleControl(Me, btnCancelCertificate_WRITE, True)
@@ -7860,50 +7841,50 @@ Namespace Certificates
                 End If
 
                 'If tsHoriz.Items(0).Enabled = True Then Me.tsHoriz.SelectedIndex = 0
-                If isTabEnabled(0) = True Then Me.State.selectedTab = 0
+                If isTabEnabled(0) = True Then State.selectedTab = 0
 
                 'ControlMgr.SetEnableTabStrip(Me, tsHoriz.Items(Me.CERT_CANCELLATION_INFO_TAB), False)
                 EnableTab(CERT_CANCELLATION_INFO_TAB, False)
 
-                Me.EnableDisableFields()
-                Me.State.isCovgGridRefreshNeeded = True
+                EnableDisableFields()
+                State.isCovgGridRefreshNeeded = True
 
             Catch ex As GUIException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub moBillingStatusId_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles moBillingStatusId.SelectedIndexChanged
+        Private Sub moBillingStatusId_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles moBillingStatusId.SelectedIndexChanged
 
-            Dim oBillingCode As String = LookupListNew.GetCodeFromId(LookupListNew.GetBillingStatusListShort(ElitaPlusIdentity.Current.ActiveUser.LanguageId), Me.GetSelectedItem(Me.moBillingStatusId))
-            Dim originalStatus As String = LookupListNew.GetCodeFromId(LookupListNew.GetBillingStatusListShort(ElitaPlusIdentity.Current.ActiveUser.LanguageId), Me.State.TheDirectDebitState.certInstallment.BillingStatusId)
-            Dim dv As DataView = BillingDetail.getBillingTotals(Me.State.MyBO.Id)
+            Dim oBillingCode As String = LookupListNew.GetCodeFromId(LookupListNew.GetBillingStatusListShort(ElitaPlusIdentity.Current.ActiveUser.LanguageId), GetSelectedItem(moBillingStatusId))
+            Dim originalStatus As String = LookupListNew.GetCodeFromId(LookupListNew.GetBillingStatusListShort(ElitaPlusIdentity.Current.ActiveUser.LanguageId), State.TheDirectDebitState.certInstallment.BillingStatusId)
+            Dim dv As DataView = BillingDetail.getBillingTotals(State.MyBO.Id)
             Dim oCount As Integer = 0
 
             ControlMgr.SetEnableControl(Me, btnDebitSave_WRITE, True)
 
             Try
                 If Not originalStatus = "A" AndAlso Not oBillingCode = "A" Then
-                    Me.PopulateControlFromBOProperty(Me.moBillingStatusId, Me.State.TheDirectDebitState.certInstallment.BillingStatusId)
+                    PopulateControlFromBOProperty(moBillingStatusId, State.TheDirectDebitState.certInstallment.BillingStatusId)
                     Throw New GUIException("Cannot Reject an On Hold Record or Vice-Versa", "Cannot Reject an On Hold Record or Vice-Versa")
                 End If
 
                 If originalStatus = "A" AndAlso oBillingCode = "R" Then
-                    Me.PopulateControlFromBOProperty(Me.moBillingStatusId, Me.State.TheDirectDebitState.certInstallment.BillingStatusId)
+                    PopulateControlFromBOProperty(moBillingStatusId, State.TheDirectDebitState.certInstallment.BillingStatusId)
                     Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.CANNOT_REJECT_ACTIVE_RECORD)
                 End If
 
 
                 If oBillingCode = "R" Then
-                    If Me.State.oBillingTotalAmount > 0 Then
-                        If Me.State.TheDirectDebitState.BillingLastRecord Is Nothing Then
-                            Me.State.TheDirectDebitState.BillingLastRecord = BillingDetail.getBillingLaterRow(Me.State.MyBO.Id)
+                    If State.oBillingTotalAmount > 0 Then
+                        If State.TheDirectDebitState.BillingLastRecord Is Nothing Then
+                            State.TheDirectDebitState.BillingLastRecord = BillingDetail.getBillingLaterRow(State.MyBO.Id)
                         End If
 
                         Dim lastBilledAmount As Decimal
-                        If Not Me.State.TheDirectDebitState.BillingLastRecord.Table.Rows(0).IsNull(BillingDetail.BillingLaterRow.COL_NAME_BILLED_AMOUNT) Then
-                            lastBilledAmount = CType(Me.State.TheDirectDebitState.BillingLastRecord.Table.Rows(0).Item(BillingDetail.BillingLaterRow.COL_NAME_BILLED_AMOUNT), Decimal)
+                        If Not State.TheDirectDebitState.BillingLastRecord.Table.Rows(0).IsNull(BillingDetail.BillingLaterRow.COL_NAME_BILLED_AMOUNT) Then
+                            lastBilledAmount = CType(State.TheDirectDebitState.BillingLastRecord.Table.Rows(0).Item(BillingDetail.BillingLaterRow.COL_NAME_BILLED_AMOUNT), Decimal)
                         End If
 
                         If lastBilledAmount < 0 Then
@@ -7914,27 +7895,27 @@ Namespace Certificates
                     End If
                 End If
 
-                Me.State.TheDirectDebitState.StatusChenge = False
+                State.TheDirectDebitState.StatusChenge = False
 
-                If (Not Me.State.TheDirectDebitState.certInstallment.BillingStatusId.Equals(Me.GetSelectedItem(Me.moBillingStatusId))) AndAlso oBillingCode = "H" AndAlso Me.State.oBillingTotalAmount > 0 Then
-                    Me.State.TheDirectDebitState.StatusChenge = True
+                If (Not State.TheDirectDebitState.certInstallment.BillingStatusId.Equals(GetSelectedItem(moBillingStatusId))) AndAlso oBillingCode = "H" AndAlso State.oBillingTotalAmount > 0 Then
+                    State.TheDirectDebitState.StatusChenge = True
                 End If
 
                 If Not oBillingCode = "A" Then
                     ControlMgr.SetEnableControl(Me, CheckBoxSendLetter, True)
-                    Me.CheckBoxSendLetter.CssClass = ""
+                    CheckBoxSendLetter.CssClass = ""
                 Else
                     CheckBoxSendLetter.Checked = False
                     ControlMgr.SetEnableControl(Me, CheckBoxSendLetter, False)
-                    Me.moDateLetterSentText.Text = ""
+                    moDateLetterSentText.Text = ""
                 End If
 
-                Me.State.IsEdit = True
-                Me.EnableDisableFields()
+                State.IsEdit = True
+                EnableDisableFields()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                Me.State.IsEdit = True
-                Me.EnableDisableFields()
+                HandleErrors(ex, MasterPage.MessageController)
+                State.IsEdit = True
+                EnableDisableFields()
                 ControlMgr.SetEnableControl(Me, btnDebitSave_WRITE, False)
             End Try
         End Sub
@@ -7956,65 +7937,65 @@ Namespace Certificates
 #Region "State Controller"
         Sub StartNavControl()
             Dim nav As New ElitaPlusNavigation
-            Me.NavController = New NavControllerBase(nav.Flow("CREATE_CLAIM_FROM_CERTIFICATE"))
+            NavController = New NavControllerBase(nav.Flow("CREATE_CLAIM_FROM_CERTIFICATE"))
         End Sub
 #End Region
 
 #Region "Dropdown Related"
 
-        Private Sub PaymentMethodDrop_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PaymentMethodDrop.SelectedIndexChanged
-            Dim objCompany As New Company(LookupListNew.GetIdFromCode(LookupListNew.LK_COMPANY, Me.State.companyCode))
+        Private Sub PaymentMethodDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles PaymentMethodDrop.SelectedIndexChanged
+            Dim objCompany As New Company(LookupListNew.GetIdFromCode(LookupListNew.LK_COMPANY, State.companyCode))
             Dim selectedPaymentMethod, selectedPaymentReason As Guid
-            selectedPaymentMethod = Me.GetSelectedItem(Me.PaymentMethodDrop)
-            Me.PopulateBOProperty(Me.State.certCancellationBO, "PaymentMethodId", Me.PaymentMethodDrop)
-            If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, Me.State.certCancellationBO.PaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
+            selectedPaymentMethod = GetSelectedItem(PaymentMethodDrop)
+            PopulateBOProperty(State.certCancellationBO, "PaymentMethodId", PaymentMethodDrop)
+            If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, State.certCancellationBO.PaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
 
 
                 ' SHOW THE BANK INFO USER CONTROL HERE -----
                 ' Me.trbank.Visible = True
-                Me.moBankInfoController.Visible = True
-                Me.State.BankInfoBO = Nothing
-                Me.State.BankInfoBO = Me.State.certCancellationBO.bankinfo
+                moBankInfoController.Visible = True
+                State.BankInfoBO = Nothing
+                State.BankInfoBO = State.certCancellationBO.bankinfo
 
-                Me.State.BankInfoBO.CountryID = Me.State.MyBO.AddressChild.CountryId
-                Me.State.BankInfoBO.SourceCountryID = objCompany.CountryId
-                Me.moBankInfoController.EnableDisableControls()
-                Me.State.BankInfoBO.Account_Name = Me.moCustomerNameText.Text.Trim
-                Me.State.BankInfoBO.PaymentMethodId = selectedPaymentMethod
+                State.BankInfoBO.CountryID = State.MyBO.AddressChild.CountryId
+                State.BankInfoBO.SourceCountryID = objCompany.CountryId
+                moBankInfoController.EnableDisableControls()
+                State.BankInfoBO.Account_Name = moCustomerNameText.Text.Trim
+                State.BankInfoBO.PaymentMethodId = selectedPaymentMethod
                 'Me.State.BankInfoBO.ACCOUNT_NUMBER = System.DBNull.Value
 
-                Me.moBankInfoController.Bind(Me.State.BankInfoBO)
-                Me.State.BankInfoCtrVisible = True
+                moBankInfoController.Bind(State.BankInfoBO)
+                State.BankInfoCtrVisible = True
 
-                Me.moPaymentOrderInfoCtrl.Visible = False
-                Me.State.PaymentOrderInfoCtrVisible = False
+                moPaymentOrderInfoCtrl.Visible = False
+                State.PaymentOrderInfoCtrVisible = False
 
                 'Me.moBankInfoController.
-            ElseIf LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, Me.State.certCancellationBO.PaymentMethodId) = Codes.PAYMENT_METHOD__PAYMENT_ORDER Then
-                Me.moBankInfoController.Visible = False
-                Me.State.BankInfoCtrVisible = False
+            ElseIf LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, State.certCancellationBO.PaymentMethodId) = Codes.PAYMENT_METHOD__PAYMENT_ORDER Then
+                moBankInfoController.Visible = False
+                State.BankInfoCtrVisible = False
 
-                Me.State.PaymentOrderInfoCtrVisible = True
-                Me.moPaymentOrderInfoCtrl.Visible = True
+                State.PaymentOrderInfoCtrVisible = True
+                moPaymentOrderInfoCtrl.Visible = True
 
-                Me.State.PaymentOrderInfoBO = Nothing
-                Me.State.PaymentOrderInfoBO = Me.State.certCancellationBO.PmtOrderinfo
+                State.PaymentOrderInfoBO = Nothing
+                State.PaymentOrderInfoBO = State.certCancellationBO.PmtOrderinfo
 
-                Me.State.PaymentOrderInfoBO.CountryID = objCompany.CountryId
-                Me.State.PaymentOrderInfoBO.SourceCountryID = objCompany.CountryId
-                Me.moPaymentOrderInfoCtrl.EnableDisableControls()
-                Me.State.PaymentOrderInfoBO.Account_Name = Me.moCustomerNameText.Text.Trim
-                Me.State.PaymentOrderInfoBO.PaymentMethodId = selectedPaymentMethod
-                Me.State.PaymentOrderInfoBO.CountryID = objCompany.CountryId
+                State.PaymentOrderInfoBO.CountryID = objCompany.CountryId
+                State.PaymentOrderInfoBO.SourceCountryID = objCompany.CountryId
+                moPaymentOrderInfoCtrl.EnableDisableControls()
+                State.PaymentOrderInfoBO.Account_Name = moCustomerNameText.Text.Trim
+                State.PaymentOrderInfoBO.PaymentMethodId = selectedPaymentMethod
+                State.PaymentOrderInfoBO.CountryID = objCompany.CountryId
                 'Me.State.BankInfoBO.ACCOUNT_NUMBER = System.DBNull.Value
 
-                Me.moPaymentOrderInfoCtrl.Bind(Me.State.PaymentOrderInfoBO)
+                moPaymentOrderInfoCtrl.Bind(State.PaymentOrderInfoBO)
 
             Else
-                Me.moBankInfoController.Visible = False
-                Me.State.BankInfoCtrVisible = False
-                Me.moPaymentOrderInfoCtrl.Visible = False
-                Me.State.PaymentOrderInfoCtrVisible = False
+                moBankInfoController.Visible = False
+                State.BankInfoCtrVisible = False
+                moPaymentOrderInfoCtrl.Visible = False
+                State.PaymentOrderInfoCtrVisible = False
             End If
 
         End Sub
@@ -8025,28 +8006,28 @@ Namespace Certificates
 
         Private Sub PopulateCertificateHistoryTabInfo()
             Try
-                moCertificateHistory_cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
-                If (Me.State.CertHistoryDV Is Nothing) Then
-                    Me.State.CertHistoryDV = Certificate.GetCertHistoryInfo(Me.State.MyBO.CertNumber, Me.State.MyBO.DealerId, IIf(chbShowUpdates.Checked, "true", "false").ToString())
+                moCertificateHistory_cboPageSize.SelectedValue = CType(State.PageSize, String)
+                If (State.CertHistoryDV Is Nothing) Then
+                    State.CertHistoryDV = Certificate.GetCertHistoryInfo(State.MyBO.CertNumber, State.MyBO.DealerId, IIf(chbShowUpdates.Checked, "true", "false").ToString())
                 End If
 
-                Me.CertHistoryGrid.PageSize = Me.State.PageSize
-                If Not (Me.State.CertHistoryDV Is Nothing) Then
-                    Me.State.CertHistoryDV.Sort = Me.State.CertHistorySortExpression
+                CertHistoryGrid.PageSize = State.PageSize
+                If Not (State.CertHistoryDV Is Nothing) Then
+                    State.CertHistoryDV.Sort = State.CertHistorySortExpression
 
-                    SetPageAndSelectedIndexFromGuid(Me.State.CertHistoryDV, Guid.Empty, Me.CertHistoryGrid, Me.State.PageIndex)
-                    Me.CertHistoryGrid.DataSource = Me.State.CertHistoryDV
-                    Me.State.PageIndex = Me.CertHistoryGrid.PageIndex
+                    SetPageAndSelectedIndexFromGuid(State.CertHistoryDV, Guid.Empty, CertHistoryGrid, State.PageIndex)
+                    CertHistoryGrid.DataSource = State.CertHistoryDV
+                    State.PageIndex = CertHistoryGrid.PageIndex
 
-                    HighLightSortColumn(Me.CertHistoryGrid, Me.State.CertHistorySortExpression, Me.IsNewUI)
-                    Me.CertHistoryGrid.DataBind()
+                    HighLightSortColumn(CertHistoryGrid, State.CertHistorySortExpression, IsNewUI)
+                    CertHistoryGrid.DataBind()
 
                     ControlMgr.SetVisibleControl(Me, CertHistoryGrid, True)
-                    ControlMgr.SetVisibleControl(Me, trPageSize, Me.CertHistoryGrid.Visible)
-                    Session("recCount") = Me.State.CertHistoryDV.Count
+                    ControlMgr.SetVisibleControl(Me, trPageSize, CertHistoryGrid.Visible)
+                    Session("recCount") = State.CertHistoryDV.Count
 
-                    If Me.CertHistoryGrid.Visible Then
-                        Me.lblRecordCount.Text = Me.State.CertHistoryDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                    If CertHistoryGrid.Visible Then
+                        lblRecordCount.Text = State.CertHistoryDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                     End If
 
                     If State.CertHistoryDV.Count = 0 Then
@@ -8075,11 +8056,11 @@ Namespace Certificates
             Get
                 Return ViewState("SortDirection").ToString
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 ViewState("SortDirection") = value
             End Set
         End Property
-        Private Sub CertHistoryGrid_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles CertHistoryGrid.RowDataBound
+        Private Sub CertHistoryGrid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles CertHistoryGrid.RowDataBound
             Try
                 If (e.Row.RowType = DataControlRowType.DataRow) _
                 OrElse (e.Row.RowType = DataControlRowType.Separator) Then
@@ -8110,55 +8091,55 @@ Namespace Certificates
             End Try
         End Sub
 
-        Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles CertHistoryGrid.RowCreated
+        Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles CertHistoryGrid.RowCreated
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles CertHistoryGrid.PageIndexChanging
+        Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles CertHistoryGrid.PageIndexChanging
             Try
-                Me.State.PageIndex = e.NewPageIndex
-                Me.PopulateCertificateHistoryTabInfo()
+                State.PageIndex = e.NewPageIndex
+                PopulateCertificateHistoryTabInfo()
 
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_Sorting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles CertHistoryGrid.Sorting
+        Private Sub Grid_Sorting(sender As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles CertHistoryGrid.Sorting
             Try
-                If Me.State.CertHistorySortExpression.StartsWith(e.SortExpression) Then
-                    If Me.State.CertHistorySortExpression.EndsWith(" DESC") Then
-                        Me.State.CertHistorySortExpression = e.SortExpression
+                If State.CertHistorySortExpression.StartsWith(e.SortExpression) Then
+                    If State.CertHistorySortExpression.EndsWith(" DESC") Then
+                        State.CertHistorySortExpression = e.SortExpression
                     Else
-                        Me.State.CertHistorySortExpression &= " DESC"
+                        State.CertHistorySortExpression &= " DESC"
                     End If
                 Else
-                    Me.State.CertHistorySortExpression = e.SortExpression
+                    State.CertHistorySortExpression = e.SortExpression
                 End If
-                Me.State.PageIndex = 0
-                Me.PopulateCertificateHistoryTabInfo()
+                State.PageIndex = 0
+                PopulateCertificateHistoryTabInfo()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles moCertificateHistory_cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles moCertificateHistory_cboPageSize.SelectedIndexChanged
             Try
                 CertHistoryGrid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(moCertificateHistory_cboPageSize.SelectedValue, Int32))
-                Me.State.PageSize = CType(moCertificateHistory_cboPageSize.SelectedValue, Integer)
-                Me.PopulateCertificateHistoryTabInfo()
+                State.PageSize = CType(moCertificateHistory_cboPageSize.SelectedValue, Integer)
+                PopulateCertificateHistoryTabInfo()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub chbShowUpdates_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chbShowUpdates.CheckedChanged
+        Private Sub chbShowUpdates_CheckedChanged(sender As Object, e As System.EventArgs) Handles chbShowUpdates.CheckedChanged
             Try
                 lblRecordCount.Text = "Panel Updated at " & DateTime.Now.ToString
 
-                Me.State.CertHistoryDV = Certificate.GetCertHistoryInfo(Me.State.MyBO.CertNumber, Me.State.MyBO.DealerId, IIf(chbShowUpdates.Checked, "true", "false").ToString())
+                State.CertHistoryDV = Certificate.GetCertHistoryInfo(State.MyBO.CertNumber, State.MyBO.DealerId, IIf(chbShowUpdates.Checked, "true", "false").ToString())
 
                 PopulateCertificateHistoryTabInfo()
 
@@ -8174,18 +8155,18 @@ Namespace Certificates
         Private Sub btnGetCertHistory_Click(sender As Object, e As EventArgs) Handles btnGetCertHistory.Click
             Try
                 'Certificate History Tab
-                If Me.State.IsCertHistoryGridVisible Then
-                    Me.TranslateGridHeader(Me.CertHistoryGrid)
-                    Me.PopulateCertificateHistoryTabInfo()
+                If State.IsCertHistoryGridVisible Then
+                    TranslateGridHeader(CertHistoryGrid)
+                    PopulateCertificateHistoryTabInfo()
                 End If
-                Me.uplCertHistory.Update()
+                uplCertHistory.Update()
             Catch ex As Exception
             End Try
         End Sub
 #End Region
 
 #Region "Tab related"
-        Private Sub EnableTab(ByVal tabInd As Integer, ByVal blnFlag As Boolean)
+        Private Sub EnableTab(tabInd As Integer, blnFlag As Boolean)
             If blnFlag = True Then 'enable - remove from disabled list
                 If listDisabledTabs.Contains(tabInd) = True Then
                     listDisabledTabs.Remove(tabInd)
@@ -8197,7 +8178,7 @@ Namespace Certificates
             End If
         End Sub
 
-        Private Function isTabEnabled(ByVal tabInd As Integer) As Boolean
+        Private Function isTabEnabled(tabInd As Integer) As Boolean
             If listDisabledTabs.Contains(tabInd) = True Then 'tab is diabled
                 Return False
             Else
@@ -8205,7 +8186,7 @@ Namespace Certificates
             End If
         End Function
 
-        Private Sub EnableDisableTabs(ByVal editMode As Boolean)
+        Private Sub EnableDisableTabs(editMode As Boolean)
             Dim i As Short = 0
             Dim limit As Integer = TAB_TOTAL_COUNT
 
@@ -8215,7 +8196,7 @@ Namespace Certificates
             Else
                 For i = 0 To CType((limit - 1), Short)
                     'enable only the selected tab when in edit mode
-                    If i = Me.State.selectedTab Then
+                    If i = State.selectedTab Then
                         EnableTab(i, True)
                     Else
                         EnableTab(i, False)
@@ -8226,35 +8207,35 @@ Namespace Certificates
 
         Private Sub btnCustProfileHistory_Write_Click(sender As Object, e As EventArgs) Handles btnCustProfileHistory_Write.Click
             Try
-                Me.State.NavigateToCustProfileHistory = True
-                Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = Me.State.MyBO
-                Me.callPage(CustomerProfileHistory.URL, Me.State.MyBO.Id)
+                State.NavigateToCustProfileHistory = True
+                NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = State.MyBO
+                callPage(CustomerProfileHistory.URL, State.MyBO.Id)
                 'Me.NavController.Navigate(Me, BILLING_HISTORY_FORM_URL, New EndorsementForm.Parameters(Me.State.MyBO.Id, Me.State.TheItemCoverageState.manufaturerWarranty))
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub btnOutboundCommHistory_Write_Click(sender As Object, e As EventArgs) Handles btnOutboundCommHistory.Click
             Try
-                Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = Me.State.MyBO
-                Me.callPage(Tables.OcMessageSearchForm.URL, New Tables.OcMessageSearchForm.CallType("cert_number", Me.State.MyBO.CertNumber, Me.State.MyBO.Id, Me.State.MyBO.DealerId))
+                NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = State.MyBO
+                callPage(Tables.OcMessageSearchForm.URL, New Tables.OcMessageSearchForm.CallType("cert_number", State.MyBO.CertNumber, State.MyBO.Id, State.MyBO.DealerId))
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnNewCertRegItem_WRITE__Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNewCertRegItem_WRITE.Click
+        Private Sub btnNewCertRegItem_WRITE__Click(sender As System.Object, e As System.EventArgs) Handles btnNewCertRegItem_WRITE.Click
 
             Try
-                Me.State.NavigateToNewCertItem = True
-                Me.State.isRegItemsGridVisible = True
-                Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = Me.State.MyBO
-                Me.NavController.Navigate(Me, CREATE_NEW_REGISTER_ITEM)
+                State.NavigateToNewCertItem = True
+                State.isRegItemsGridVisible = True
+                NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = State.MyBO
+                NavController.Navigate(Me, CREATE_NEW_REGISTER_ITEM)
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -8262,7 +8243,7 @@ Namespace Certificates
             Try
                 PopulateCancellationDate()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -8284,15 +8265,15 @@ Namespace Certificates
         End Sub
 
         Private Sub moCancelRequestReasonDrop_SelectedIndexChanged(sender As Object, e As EventArgs) Handles moCancelRequestReasonDrop.SelectedIndexChanged
-            If (Me.State.CancelRulesForSFR = Codes.YESNO_Y) Then
-                If GetSelectedItem(Me.moCancelRequestReasonDrop).Equals(Guid.Empty) Then
+            If (State.CancelRulesForSFR = Codes.YESNO_Y) Then
+                If GetSelectedItem(moCancelRequestReasonDrop).Equals(Guid.Empty) Then
                     ControlMgr.SetVisibleControl(Me, moProofOfDocumentationLabel, False)
                     ControlMgr.SetVisibleControl(Me, moProofOfDocumentationDrop, False)
                     moProofOfDocumentationDrop.SelectedIndex = -1
                 Else
                     Dim oCancellationReason As New CancellationReason(GetSelectedItem(moCancelRequestReasonDrop))
-                    Me.State.CancReasonIsLawful = oCancellationReason.IsLawful
-                    If Me.State.CancReasonIsLawful = Codes.EXT_YESNO_Y And (oCancellationReason.Code = Codes.SFR_CR_DEATH Or oCancellationReason.Code = Codes.SFR_CR_MOVINGABROAD) Then
+                    State.CancReasonIsLawful = oCancellationReason.IsLawful
+                    If State.CancReasonIsLawful = Codes.EXT_YESNO_Y AndAlso (oCancellationReason.Code = Codes.SFR_CR_DEATH OrElse oCancellationReason.Code = Codes.SFR_CR_MOVINGABROAD) Then
                         ControlMgr.SetVisibleControl(Me, moProofOfDocumentationLabel, True)
                         ControlMgr.SetVisibleControl(Me, moProofOfDocumentationDrop, True)
                         ControlMgr.SetEnableControl(Me, moProofOfDocumentationDrop, True)
@@ -8301,8 +8282,8 @@ Namespace Certificates
                         ControlMgr.SetVisibleControl(Me, moProofOfDocumentationDrop, False)
                         moProofOfDocumentationDrop.SelectedIndex = -1
                     End If
-                    Me.moCancelDateTextBox.Text = String.Empty
-                    Me.moCancelRequestDateTextBox.Text = String.Empty
+                    moCancelDateTextBox.Text = String.Empty
+                    moCancelRequestDateTextBox.Text = String.Empty
                 End If
             End If
 
@@ -8312,40 +8293,40 @@ Namespace Certificates
             Try
                 Dim oUpdateBankInfoForRejectsData As New UpdateBankInfoForRejectsData
 
-                Me.MasterPage.MessageController.Clear()
+                MasterPage.MessageController.Clear()
 
-                If IsNothing(Me.State.RefundBankInfoBO) Then
-                    Me.State.RefundBankInfoBO = New BankInfo
+                If IsNothing(State.RefundBankInfoBO) Then
+                    State.RefundBankInfoBO = New BankInfo
                 End If
-                Me.PopulateBOProperty(Me.State.RefundBankInfoBO, "IbanNumber", Me.moRfIBANNumberText)
-                Me.PopulateBOProperty(Me.State.RefundBankInfoBO, "Account_Number", Me.moRfAccountNumberText)
-                PopulateBOProperty(Me.State.RefundBankInfoBO, "CountryID", Me.State.MyBO.Company.CountryId)
+                PopulateBOProperty(State.RefundBankInfoBO, "IbanNumber", moRfIBANNumberText)
+                PopulateBOProperty(State.RefundBankInfoBO, "Account_Number", moRfAccountNumberText)
+                PopulateBOProperty(State.RefundBankInfoBO, "CountryID", State.MyBO.Company.CountryId)
 
                 validateUpdateBankInfoRefundFields()
 
                 With oUpdateBankInfoForRejectsData
-                    .certCancellationId = Me.State.MyBO.TheCertCancellationBO.Id
-                    .bankInfoId = Me.State.MyBO.TheCertCancellationBO.BankInfoId
-                    .accountNumber = Me.State.RefundBankInfoBO.Account_Number
-                    .IBANNumber = Me.State.RefundBankInfoBO.IbanNumber
+                    .certCancellationId = State.MyBO.TheCertCancellationBO.Id
+                    .bankInfoId = State.MyBO.TheCertCancellationBO.BankInfoId
+                    .accountNumber = State.RefundBankInfoBO.Account_Number
+                    .IBANNumber = State.RefundBankInfoBO.IbanNumber
                 End With
 
                 State.certCancellationBO.UpdateBankInfoForRejectsSP(oUpdateBankInfoForRejectsData)
-                Me.State.MyBO = New Certificate(Me.State.CertificateId)
+                State.MyBO = New Certificate(State.CertificateId)
                 PopulateFormFromBOs()
                 PopulateCancellationInfoTab()
 
-                Me.WorkingPanelVisible = True
-                Me.State.certificateChanged = True
-                Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                WorkingPanelVisible = True
+                State.certificateChanged = True
+                MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
 
                 ControlMgr.SetVisibleControl(Me, UpdateBankInfoButton_WRITE, False)
 
-                Me.EnableDisableFields()
+                EnableDisableFields()
             Catch ex As GUIException
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -8358,17 +8339,17 @@ Namespace Certificates
                     CancelCertDateTextbox.Text = GetDateFormattedStringNullable(endOfMonth)
                 Else
                     Dim userDate As Date
-                    userDate = GetDateFormattedStringNullable(Convert.ToDateTime(Me.CancelCertReqDateTextbox.Text))
+                    userDate = GetDateFormattedStringNullable(Convert.ToDateTime(CancelCertReqDateTextbox.Text))
                     endOfMonth = ComputeEndOfMonth(userDate)
                     CancelCertDateTextbox.Text = GetDateFormattedStringNullable(endOfMonth)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Private Sub Ibanoperation(ByVal enable As Boolean)
+        Private Sub Ibanoperation(enable As Boolean)
 
             ControlMgr.SetEnableControl(Me, moUseExistingBankDetailsDrop, False)
             ControlMgr.SetVisibleControl(Me, moUseExistingBankDetailsDrop, enable)
@@ -8379,16 +8360,16 @@ Namespace Certificates
 
         Private Sub linkPrevCertId_Click(sender As Object, e As EventArgs) Handles linkPrevCertId.Click
             ' Me.State.selectedCertificateId = New Guid(e.CommandArgument.ToString())
-            SourceCertificateId = Me.State.MyBO.Id
+            SourceCertificateId = State.MyBO.Id
             Session("SourceCertificateId") = SourceCertificateId
 
-            Me.callPage(CertificateForm.URL, Me.State.MyBO.PreviousCertificateId)
+            callPage(CertificateForm.URL, State.MyBO.PreviousCertificateId)
         End Sub
 
         Private Sub linkOrigCertId_Click(sender As Object, e As EventArgs) Handles linkOrigCertId.Click
-            SourceCertificateId = Me.State.MyBO.Id
+            SourceCertificateId = State.MyBO.Id
             Session("SourceCertificateId") = SourceCertificateId
-            Me.callPage(CertificateForm.URL, Me.State.MyBO.OriginalCertificateId)
+            callPage(CertificateForm.URL, State.MyBO.OriginalCertificateId)
         End Sub
 #End Region
 #Region "Tax Details WebService"

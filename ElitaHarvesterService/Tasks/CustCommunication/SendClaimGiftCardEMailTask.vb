@@ -21,7 +21,7 @@ Public Class SendClaimGiftCardEMailTask
 
 #Region "Constructors"
 
-    Public Sub New(ByVal machineName As String, ByVal processThreadName As String)
+    Public Sub New(machineName As String, processThreadName As String)
         MyBase.New(machineName, processThreadName)
         Logger.AddInfo("In SendClaimGiftCardEmailTask class ")
     End Sub
@@ -55,7 +55,7 @@ Public Class SendClaimGiftCardEMailTask
         Get
             Return _claimId
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             _claimId = value
         End Set
     End Property
@@ -64,7 +64,7 @@ Public Class SendClaimGiftCardEMailTask
         Get
             Return _certificate
         End Get
-        Set(ByVal value As Certificate)
+        Set(value As Certificate)
             _certificate = value
         End Set
     End Property
@@ -73,7 +73,7 @@ Public Class SendClaimGiftCardEMailTask
         Get
             Return _claimbase
         End Get
-        Set(ByVal value As ClaimBase)
+        Set(value As ClaimBase)
             _claimbase = value
         End Set
     End Property
@@ -82,7 +82,7 @@ Public Class SendClaimGiftCardEMailTask
         Get
             Return _claimAuthorization
         End Get
-        Set(ByVal value As ClaimAuthorization)
+        Set(value As ClaimAuthorization)
             _claimAuthorization = value
         End Set
     End Property
@@ -92,7 +92,7 @@ Public Class SendClaimGiftCardEMailTask
         Get
             Return _disbursement
         End Get
-        Set(ByVal value As Disbursement)
+        Set(value As Disbursement)
             _disbursement = value
         End Set
     End Property
@@ -128,25 +128,25 @@ Public Class SendClaimGiftCardEMailTask
             request = GenerateRequest(GiftCardRequestFor.Certificate, GuidControl.ByteArrayToGuid(GuidControl.HexToByteArray(MyBase.PublishedTask(PublishedTask.CERTIFICATE_ID))))
         End If
 
-        Logger.AddInfo("Application Source from app setting for Giftcard:" + ConfigurationManager.AppSettings(DartyApplicationSource))
-        Logger.AddInfo("Amount from Arugment:" + PublishedTask.Argument(PublishedTask.GiftCardAmount))
-        Logger.AddInfo("Giftcard Type from Argument:" + PublishedTask.Argument(PublishedTask.GiftCardType))
-        Logger.AddInfo("Email for Giftcard from certificate:" + oCertificate.Email)
-        Logger.AddInfo("Operation For:" + oCertificate.Email)
+        Logger.AddInfo("Application Source from app setting for Giftcard:" & ConfigurationManager.AppSettings(DartyApplicationSource))
+        Logger.AddInfo("Amount from Arugment:" & PublishedTask.Argument(PublishedTask.GiftCardAmount))
+        Logger.AddInfo("Giftcard Type from Argument:" & PublishedTask.Argument(PublishedTask.GiftCardType))
+        Logger.AddInfo("Email for Giftcard from certificate:" & oCertificate.Email)
+        Logger.AddInfo("Operation For:" & oCertificate.Email)
 
         Try
             Logger.AddInfo("Begin - calling Darty Giftcard Service")
 
             response = dsm.ActivateDartyGiftCard(request.GiftcardRequest)
 
-            Logger.AddInfo("End - calling Darty Giftcard Service, response code from Darty :" + response.ReturnCode)
-            Logger.AddInfo("End - calling Darty Giftcard Service, BarCode and Exp Date response from Darty :" + response.GiftCardBarCodeNumber + "-" + response.GiftCardSerialNumber + "-" + response.GiftCardExpirationDate.ToShortDateString())
+            Logger.AddInfo("End - calling Darty Giftcard Service, response code from Darty :" & response.ReturnCode)
+            Logger.AddInfo("End - calling Darty Giftcard Service, BarCode and Exp Date response from Darty :" & response.GiftCardBarCodeNumber & "-" & response.GiftCardSerialNumber & "-" & response.GiftCardExpirationDate.ToShortDateString())
 
             If (String.IsNullOrEmpty(response.ErrorCode)) Then
 
                 If String.IsNullOrEmpty(response.GiftCardSerialNumber) Then
-                    Logger.AddError("GiftCardSerialNumber is blank for the Reference Number and Dealer {0}:{1}:{2}:{3}" + request.GiftcardRequest.ReferenceNumber + ":" + oCertificate.Dealer.DealerName + ":" + response.ErrorCode + ":" + response.ErrorMessage)
-                    Me.FailReason = "Gift Card Serial Number is blank"
+                    Logger.AddError("GiftCardSerialNumber is blank for the Reference Number and Dealer {0}:{1}:{2}:{3}" & request.GiftcardRequest.ReferenceNumber & ":" & oCertificate.Dealer.DealerName & ":" & response.ErrorCode & ":" & response.ErrorMessage)
+                    FailReason = "Gift Card Serial Number is blank"
                     Throw New Exception(FailReason)
                 End If
 
@@ -157,7 +157,7 @@ Public Class SendClaimGiftCardEMailTask
                         InsertGiftCardInfo(response, _giftCardRequestId)
                     End With
                 Catch ex As Exception
-                    Logger.AddError("Inserting Gift Card data Failed for the Reference Number and Dealer {0}:{1}:" + request.GiftcardRequest.ReferenceNumber + ":" + oCertificate.Dealer.DealerName, ex)
+                    Logger.AddError("Inserting Gift Card data Failed for the Reference Number and Dealer {0}:{1}:" & request.GiftcardRequest.ReferenceNumber & ":" & oCertificate.Dealer.DealerName, ex)
                 End Try
 
                 Dim errorMessage As String = String.Empty
@@ -183,13 +183,13 @@ Public Class SendClaimGiftCardEMailTask
                 Logger.AddInfo("End - Updated Gift Card Status")
 
             Else
-                Logger.AddError("Darty Service Failed for the Reference Number and Dealer {0}:{1}:{2}" + request.GiftcardRequest.ReferenceNumber + ":" + oCertificate.Dealer.DealerName + ":" + response.ErrorMessage)
-                Me.FailReason = "Error Received: " + response.ErrorCode
+                Logger.AddError("Darty Service Failed for the Reference Number and Dealer {0}:{1}:{2}" & request.GiftcardRequest.ReferenceNumber & ":" & oCertificate.Dealer.DealerName & ":" & response.ErrorMessage)
+                FailReason = "Error Received: " & response.ErrorCode
                 Throw New Exception(FailReason)
             End If
         Catch ex As Exception
             'Throw New DataBaseAccessException(ErrorTypes.ERROR_GENERAL, ex, "Claim Gift Card Failed for the Reference Number and Dealer {0}:{1}:" + request.ReferenceNumber + ":" + oCertificate.Dealer.DealerName)
-            Logger.AddError("Claim Gift Card Failed for the Reference Number and Dealer {0}:{1}:" + request.GiftcardRequest.ReferenceNumber + ":" + oCertificate.Dealer.DealerName, ex)
+            Logger.AddError("Claim Gift Card Failed for the Reference Number and Dealer {0}:{1}:" & request.GiftcardRequest.ReferenceNumber & ":" & oCertificate.Dealer.DealerName, ex)
             Throw
         End Try
     End Sub
@@ -230,7 +230,7 @@ Public Class SendClaimGiftCardEMailTask
         request.GiftcardRequest = giftCardRequest
         request.EntityName = Codes.ENTITY_NAME_CERT
         request.EntityId = CertificateId
-        Logger.AddInfo("Task found for Certificate: " + oCertificate.CertNumber + " and Dealer:" + oCertificate.Dealer.Dealer)
+        Logger.AddInfo("Task found for Certificate: " & oCertificate.CertNumber & " and Dealer:" & oCertificate.Dealer.Dealer)
         Return request
 
     End Function
@@ -248,7 +248,7 @@ Public Class SendClaimGiftCardEMailTask
         request.GiftcardRequest = giftCardRequest
         request.EntityName = Codes.ENTITY_NAME_CLAIM
         request.EntityId = ClaimId
-        Logger.AddInfo("Task found for Claim: " + oClaim.ClaimNumber + ":" + oClaim.Dealer.DealerName)
+        Logger.AddInfo("Task found for Claim: " & oClaim.ClaimNumber & ":" & oClaim.Dealer.DealerName)
         Return request
 
     End Function
@@ -267,12 +267,12 @@ Public Class SendClaimGiftCardEMailTask
         request.GiftcardRequest = giftCardRequest
         request.EntityName = Codes.ENTITY_NAME_CLAIM
         request.EntityId = ClaimAuthorizationId
-        Logger.AddInfo("Task found for Claim: " + oClaimAuthorization.Claim.ClaimNumber + " and Auth Number :" + oClaimAuthorization.AuthorizationNumber)
+        Logger.AddInfo("Task found for Claim: " & oClaimAuthorization.Claim.ClaimNumber & " and Auth Number :" & oClaimAuthorization.AuthorizationNumber)
         Return request
 
     End Function
 
-    Private Function PopulateCustomerAndGiftCardStaticInfo(ByVal certificate As Certificate) As GenerateGiftCardRequest
+    Private Function PopulateCustomerAndGiftCardStaticInfo(certificate As Certificate) As GenerateGiftCardRequest
 
         Dim request As New GenerateGiftCardRequest With {
             .FirstName = certificate.CustomerFirstName,
@@ -717,7 +717,7 @@ Public Class SendClaimGiftCardEMailTask
     '    End Try
     'End Function
 
-    Private Function GenerateEncryptedGiftCardLink(ByVal response As GenerateGiftCardResponse, ByVal certificate As Certificate, ByVal claim As ClaimBase) As String
+    Private Function GenerateEncryptedGiftCardLink(response As GenerateGiftCardResponse, certificate As Certificate, claim As ClaimBase) As String
 
         Dim giftcardData As String = String.Empty
         Dim encryptionSource As String = String.Empty
@@ -725,29 +725,29 @@ Public Class SendClaimGiftCardEMailTask
         Try
 
 
-            If (Not response Is Nothing) Then
+            If (response IsNot Nothing) Then
                 If (Not certificate.AddressId.Equals(Guid.Empty)) Then
                     customerAddress = New Assurant.ElitaPlus.BusinessObjectsNew.Address(certificate.AddressId)
                 End If
 
                 With response
-                    encryptionSource = "FN:" + certificate.CustomerFirstName + "|"
-                    encryptionSource = encryptionSource + "LN:" + certificate.CustomerLastName + "|"
-                    encryptionSource = encryptionSource + "Add1:" + customerAddress.Address1 + "|"
-                    encryptionSource = encryptionSource + "Add2:" + customerAddress.Address2 + "|"
-                    encryptionSource = encryptionSource + "City:" + customerAddress.City + "|"
-                    encryptionSource = encryptionSource + "Zip:" + customerAddress.PostalCode + "|"
-                    encryptionSource = encryptionSource + "BarCode:" + .GiftCardBarCodeNumber + "|"
-                    encryptionSource = encryptionSource + "Pin1:" + .CodePin1 + "|"
-                    encryptionSource = encryptionSource + "Pin2:" + .CodePin2 + "|"
-                    encryptionSource = encryptionSource + "Amount:" + .Amount + "|"
-                    encryptionSource = encryptionSource + "Exp:" + .GiftCardExpirationDate.ToString("MM/dd/yyyy") + "|"
-                    encryptionSource = encryptionSource + "SNO:" + .GiftCardSerialNumber + "|"
-                    encryptionSource = encryptionSource + "Created:" + DateTime.UtcNow.ToString("MM/dd/yyyy") + "|"
-                    encryptionSource = encryptionSource + "ClaimNo:" + If(claim Is Nothing, oCertificate.CertNumber, claim.ClaimNumber) + "|"
-                    If (Not claim Is Nothing AndAlso Not claim.ClaimedEquipment Is Nothing) Then
-                        encryptionSource = encryptionSource + "Make:" + If(Not String.IsNullOrEmpty(claim.ClaimedEquipment.Manufacturer), claim.ClaimedEquipment.Manufacturer, String.Empty) + "|"
-                        encryptionSource = encryptionSource + "Model:" + claim.ClaimedEquipment.Model + "|"
+                    encryptionSource = "FN:" & certificate.CustomerFirstName & "|"
+                    encryptionSource = encryptionSource & "LN:" & certificate.CustomerLastName & "|"
+                    encryptionSource = encryptionSource & "Add1:" & customerAddress.Address1 & "|"
+                    encryptionSource = encryptionSource & "Add2:" & customerAddress.Address2 & "|"
+                    encryptionSource = encryptionSource & "City:" & customerAddress.City & "|"
+                    encryptionSource = encryptionSource & "Zip:" & customerAddress.PostalCode & "|"
+                    encryptionSource = encryptionSource & "BarCode:" & .GiftCardBarCodeNumber & "|"
+                    encryptionSource = encryptionSource & "Pin1:" & .CodePin1 & "|"
+                    encryptionSource = encryptionSource & "Pin2:" & .CodePin2 & "|"
+                    encryptionSource = encryptionSource & "Amount:" & .Amount & "|"
+                    encryptionSource = encryptionSource & "Exp:" & .GiftCardExpirationDate.ToString("MM/dd/yyyy") & "|"
+                    encryptionSource = encryptionSource & "SNO:" & .GiftCardSerialNumber & "|"
+                    encryptionSource = encryptionSource & "Created:" & DateTime.UtcNow.ToString("MM/dd/yyyy") & "|"
+                    encryptionSource = encryptionSource & "ClaimNo:" & If(claim Is Nothing, oCertificate.CertNumber, claim.ClaimNumber) & "|"
+                    If (claim IsNot Nothing AndAlso claim.ClaimedEquipment IsNot Nothing) Then
+                        encryptionSource = encryptionSource & "Make:" & If(Not String.IsNullOrEmpty(claim.ClaimedEquipment.Manufacturer), claim.ClaimedEquipment.Manufacturer, String.Empty) & "|"
+                        encryptionSource = encryptionSource & "Model:" & claim.ClaimedEquipment.Model & "|"
                     End If
 
                 End With
@@ -759,7 +759,7 @@ Public Class SendClaimGiftCardEMailTask
 
         Catch ex As Exception
             'Throw New DataBaseAccessException(ErrorTypes.ERROR_GENERAL, ex, "OC Gift Card Encryption Failed for the claim and Dealer {0}:{1}:" + If(claim Is Nothing, oCertificate.CertNumber, claim.ClaimNumber) + ":" + oCertificate.Dealer.DealerName)
-            Logger.AddError("OC Gift Card Encryption Failed for the claim and Dealer {0}:{1}:" + If(claim Is Nothing, oCertificate.CertNumber, claim.ClaimNumber) + ":" + oCertificate.Dealer.DealerName, ex)
+            Logger.AddError("OC Gift Card Encryption Failed for the claim and Dealer {0}:{1}:" & If(claim Is Nothing, oCertificate.CertNumber, claim.ClaimNumber) & ":" & oCertificate.Dealer.DealerName, ex)
             Throw
         End Try
     End Function
@@ -890,7 +890,7 @@ Public Class Request
         Get
             Return _giftcardRequest
         End Get
-        Set(ByVal value As GenerateGiftCardRequest)
+        Set(value As GenerateGiftCardRequest)
             _giftcardRequest = value
         End Set
     End Property
@@ -898,7 +898,7 @@ Public Class Request
         Get
             Return _entityName
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             _entityName = value
         End Set
     End Property
@@ -907,7 +907,7 @@ Public Class Request
         Get
             Return _entityId
         End Get
-        Set(ByVal value As Guid)
+        Set(value As Guid)
             _entityId = value
         End Set
     End Property

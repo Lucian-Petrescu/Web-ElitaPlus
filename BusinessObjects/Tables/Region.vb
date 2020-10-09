@@ -8,57 +8,57 @@ Public Class Region
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New Dataset
-        Me.Load(id)
+        Dataset = New Dataset
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
         Dim company As New ElitaPlus.BusinessObjectsNew.Company(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
-        Me.SetValue(RegionDAL.COL_NAME_COUNTRY_ID, company.BusinessCountryId)
+        SetValue(RegionDAL.COL_NAME_COUNTRY_ID, company.BusinessCountryId)
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
     Protected Sub Load()
         Dim dal As New RegionDAL
-        If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-            dal.LoadSchema(Me.Dataset)
+        If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+            dal.LoadSchema(Dataset)
         End If
-        Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-        Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-        Me.Row = newRow
+        Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+        Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+        Row = newRow
         setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
-        Me.Row = Nothing
+    Protected Sub Load(id As Guid)
+        Row = Nothing
         Dim dal As New RegionDAL
-        If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-            Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+        If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+            Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
         End If
-        If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-            dal.Load(Me.Dataset, id)
-            Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+        If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+            dal.Load(Dataset, id)
+            Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
         End If
-        If Me.Row Is Nothing Then
+        If Row Is Nothing Then
             Throw New DataNotFoundException
         End If
     End Sub
@@ -67,7 +67,7 @@ Public Class Region
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(RegionDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -78,7 +78,7 @@ Public Class Region
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=30), RegionDescriptionValidator("")> _
-    Public Property Description() As String
+    Public Property Description As String
         Get
             CheckDeleted()
             If Row(RegionDAL.COL_NAME_DESCRIPTION) Is DBNull.Value Then
@@ -87,18 +87,18 @@ Public Class Region
                 Return CType(Row(RegionDAL.COL_NAME_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            If Not Value Is Nothing Then
-                Me.SetValue(RegionDAL.COL_NAME_DESCRIPTION, Value.Trim())
+            If Value IsNot Nothing Then
+                SetValue(RegionDAL.COL_NAME_DESCRIPTION, Value.Trim())
             Else
-                Me.SetValue(RegionDAL.COL_NAME_DESCRIPTION, Value)
+                SetValue(RegionDAL.COL_NAME_DESCRIPTION, Value)
             End If
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property CountryId() As Guid
+    Public Property CountryId As Guid
         Get
             CheckDeleted()
             If Row(RegionDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
@@ -107,14 +107,14 @@ Public Class Region
                 Return New Guid(CType(Row(RegionDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(RegionDAL.COL_NAME_COUNTRY_ID, Value)
+            SetValue(RegionDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=5), RegionCodeValidator("")> _
-    Public Property ShortDesc() As String
+    Public Property ShortDesc As String
         Get
             CheckDeleted()
             If Row(RegionDAL.COL_NAME_SHORT_DESC) Is DBNull.Value Then
@@ -123,19 +123,19 @@ Public Class Region
                 Return CType(Row(RegionDAL.COL_NAME_SHORT_DESC), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            If Not Value Is Nothing Then
-                Me.SetValue(RegionDAL.COL_NAME_SHORT_DESC, Value.Trim())
+            If Value IsNot Nothing Then
+                SetValue(RegionDAL.COL_NAME_SHORT_DESC, Value.Trim())
             Else
-                Me.SetValue(RegionDAL.COL_NAME_SHORT_DESC, Value)
+                SetValue(RegionDAL.COL_NAME_SHORT_DESC, Value)
             End If
 
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=5)> _
-       Public Property AccountingCode() As String
+       Public Property AccountingCode As String
         Get
             CheckDeleted()
             If Row(RegionDAL.COL_NAME_ACCOUNTING_CODE) Is DBNull.Value Then
@@ -144,19 +144,19 @@ Public Class Region
                 Return CType(Row(RegionDAL.COL_NAME_ACCOUNTING_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            If Not Value Is Nothing Then
-                Me.SetValue(RegionDAL.COL_NAME_ACCOUNTING_CODE, Value.Trim())
+            If Value IsNot Nothing Then
+                SetValue(RegionDAL.COL_NAME_ACCOUNTING_CODE, Value.Trim())
             Else
-                Me.SetValue(RegionDAL.COL_NAME_ACCOUNTING_CODE, Value)
+                SetValue(RegionDAL.COL_NAME_ACCOUNTING_CODE, Value)
             End If
 
         End Set
     End Property
 
     <ValidStringLength("", Max:=15)>
-    Public Property InvoiceTaxGLAcct() As String
+    Public Property InvoiceTaxGLAcct As String
         Get
             CheckDeleted()
             If Row(RegionDAL.COL_NAME_INVOICE_TAX_GL) Is DBNull.Value Then
@@ -165,19 +165,19 @@ Public Class Region
                 Return CType(Row(RegionDAL.COL_NAME_INVOICE_TAX_GL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            If Not Value Is Nothing Then
-                Me.SetValue(RegionDAL.COL_NAME_INVOICE_TAX_GL, Value.Trim())
+            If Value IsNot Nothing Then
+                SetValue(RegionDAL.COL_NAME_INVOICE_TAX_GL, Value.Trim())
             Else
-                Me.SetValue(RegionDAL.COL_NAME_INVOICE_TAX_GL, Value)
+                SetValue(RegionDAL.COL_NAME_INVOICE_TAX_GL, Value)
             End If
 
         End Set
     End Property
 
     <ValidStringLength("", Max:=15)>
-    Public Property ExtendedCode() As String
+    Public Property ExtendedCode As String
         Get
             CheckDeleted()
             If Row(RegionDAL.COL_NAME_EXTENDED_CODE) Is DBNull.Value Then
@@ -186,12 +186,12 @@ Public Class Region
                 Return CType(Row(RegionDAL.COL_NAME_EXTENDED_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            If Not Value Is Nothing Then
-                Me.SetValue(RegionDAL.COL_NAME_EXTENDED_CODE, Value.Trim())
+            If Value IsNot Nothing Then
+                SetValue(RegionDAL.COL_NAME_EXTENDED_CODE, Value.Trim())
             Else
-                Me.SetValue(RegionDAL.COL_NAME_EXTENDED_CODE, Value)
+                SetValue(RegionDAL.COL_NAME_EXTENDED_CODE, Value)
             End If
 
         End Set
@@ -203,20 +203,20 @@ Public Class Region
     Public Overrides Sub Save()
         MyBase.Save()
         Dim dal As New RegionDAL
-        dal.Update(Me.Dataset)
+        dal.Update(Dataset)
         'Reload the Data
-        If Me._isDSCreator AndAlso Me.Row.RowState <> DataRowState.Detached Then
+        If _isDSCreator AndAlso Row.RowState <> DataRowState.Detached Then
             'Reload the Data from the DB
-            Me.Load(Me.Id)
+            Load(Id)
         End If
     End Sub
 #End Region
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function LoadList(ByVal descriptionMask As String, _
-                                    ByVal codeMask As String, _
-                                    ByVal countryID As Guid) As DataView
+    Public Shared Function LoadList(descriptionMask As String, _
+                                    codeMask As String, _
+                                    countryID As Guid) As DataView
         Try
             Dim dal As New RegionDAL
             Dim ds As Dataset
@@ -229,7 +229,7 @@ Public Class Region
 
     End Function
 
-    Public Shared Function LoadList(ByVal countryID As Guid) As Dataset
+    Public Shared Function LoadList(countryID As Guid) As Dataset
         Try
             Dim dal As New RegionDAL
             Return dal.LoadList(countryID)
@@ -240,7 +240,7 @@ Public Class Region
 
     End Function
 
-    Public Shared Function GetRegionsAndComunas(ByVal countryID As Guid, Optional regionCode As String = "") As DataView
+    Public Shared Function GetRegionsAndComunas(countryID As Guid, Optional regionCode As String = "") As DataView
         Try
             Dim dal As New RegionDAL
             Dim ds As DataSet
@@ -254,9 +254,9 @@ Public Class Region
 
     End Function
 
-    Public Shared Function LoadList(ByVal descriptionMask As String, _
-                                ByVal codeMask As String, _
-                                ByVal userCompanies As ArrayList) As DataView
+    Public Shared Function LoadList(descriptionMask As String, _
+                                codeMask As String, _
+                                userCompanies As ArrayList) As DataView
         Try
             Dim dal As New RegionDAL
             Dim ds As Dataset
@@ -264,7 +264,7 @@ Public Class Region
             If userCompanies.Count > 0 Then
                 ds = dal.LoadList(descriptionMask, codeMask, Country.GetCountries(userCompanies))
             Else
-                Dim err As New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_COMPANYID_REQUIRED, GetType(Region), Nothing, "CompanyID", Nothing)
+                Dim err As New ValidationError(Common.ErrorCodes.INVALID_COMPANYID_REQUIRED, GetType(Region), Nothing, "CompanyID", Nothing)
                 Throw New BOValidationException(New ValidationError() {err}, "Company ID")
             End If
 
@@ -276,7 +276,7 @@ Public Class Region
 
     End Function
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, id As Guid) As DataView
 
         Dim dt As DataTable
         dt = dv.Table
@@ -292,7 +292,7 @@ Public Class Region
 
     End Function
 
-    Public Shared Function LoadListForWS(ByVal oCountriesIds As ArrayList) As DataSet
+    Public Shared Function LoadListForWS(oCountriesIds As ArrayList) As DataSet
         Try
             Dim dal As New RegionDAL
             Return dal.LoadListForWS(oCountriesIds)
@@ -304,7 +304,7 @@ Public Class Region
 
     End Function
 
-    Public Shared Function GetRegionsByUserCountries(ByVal CountryId As Guid) As DataView
+    Public Shared Function GetRegionsByUserCountries(CountryId As Guid) As DataView
         Try
             Dim dal As New RegionDAL
             Dim ds As DataSet
@@ -323,15 +323,15 @@ Public Class Region
     Public NotInheritable Class RegionCodeValidator
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.REGION_CODE_ALREADY_EXIST)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Region = CType(objectToValidate, Region)
             Dim dal As New RegionDAL
 
-            If (Not obj.ShortDesc Is Nothing) AndAlso (obj.ShortDesc.Trim <> String.Empty) Then
+            If (obj.ShortDesc IsNot Nothing) AndAlso (obj.ShortDesc.Trim <> String.Empty) Then
 
                 If Not dal.IsRegionCodeUnique(obj.CountryId, obj.ShortDesc.Trim, obj.Id) Then
                     Return False
@@ -347,15 +347,15 @@ Public Class Region
     Public NotInheritable Class RegionDescriptionValidator
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.REGION_DESCRIPTION_ALREADY_EXIST)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Region = CType(objectToValidate, Region)
             Dim dal As New RegionDAL
 
-            If (Not obj.Description Is Nothing) AndAlso (obj.Description.Trim <> String.Empty) Then
+            If (obj.Description IsNot Nothing) AndAlso (obj.Description.Trim <> String.Empty) Then
 
                 If Not dal.IsRegionDescriptionUnique(obj.CountryId, obj.Description.Trim, obj.Id) Then
                     Return False
@@ -390,7 +390,7 @@ Public Class Region
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 

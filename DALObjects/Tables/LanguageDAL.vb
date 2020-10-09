@@ -27,82 +27,82 @@ Public Class LanguageDAL
 
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ByVal ds As DataSet)
+    Public Sub LoadSchema(ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    Public Sub Load(familyDS As DataSet, id As Guid)
+        Dim selectStmt As String = Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("language_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 
-    Public Function LoadList(ByVal strCode As String, ByVal strDec As String, ByVal strCulture As String, ByVal strTerritory As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    Public Function LoadList(strCode As String, strDec As String, strCulture As String, strTerritory As String) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
         'Me.Config("/SQL/LOAD_LIST")
         Dim whereClauseConditions As String = ""
 
-        If Me.FormatSearchMask(strCode) Then
-            whereClauseConditions &= " WHERE " & Environment.NewLine & "UPPER(" & Me.COL_NAME_CODE & ") " & strCode.ToUpper
+        If FormatSearchMask(strCode) Then
+            whereClauseConditions &= " WHERE " & Environment.NewLine & "UPPER(" & COL_NAME_CODE & ") " & strCode.ToUpper
         End If
 
 
-        If Me.FormatSearchMask(strDec) Then
+        If FormatSearchMask(strDec) Then
             If whereClauseConditions = "" Then
-                whereClauseConditions &= " WHERE " & Environment.NewLine & "UPPER(" & Me.COL_NAME_DESCRIPTION & ") " & strDec.ToUpper
+                whereClauseConditions &= " WHERE " & Environment.NewLine & "UPPER(" & COL_NAME_DESCRIPTION & ") " & strDec.ToUpper
             Else
-                whereClauseConditions &= Environment.NewLine & "AND  UPPER(" & Me.COL_NAME_DESCRIPTION & ") " & strDec.ToUpper
+                whereClauseConditions &= Environment.NewLine & "AND  UPPER(" & COL_NAME_DESCRIPTION & ") " & strDec.ToUpper
             End If
         End If
 
-        If Me.FormatSearchMask(strCulture) Then
+        If FormatSearchMask(strCulture) Then
             If whereClauseConditions = "" Then
-                whereClauseConditions &= " WHERE " & Environment.NewLine & "UPPER(" & Me.COL_NAME_CULTURE_CODE & ") " & strCulture.ToUpper
+                whereClauseConditions &= " WHERE " & Environment.NewLine & "UPPER(" & COL_NAME_CULTURE_CODE & ") " & strCulture.ToUpper
             Else
-                whereClauseConditions &= Environment.NewLine & "AND  UPPER(" & Me.COL_NAME_CULTURE_CODE & ") " & strCulture.ToUpper
+                whereClauseConditions &= Environment.NewLine & "AND  UPPER(" & COL_NAME_CULTURE_CODE & ") " & strCulture.ToUpper
             End If
         End If
 
-        If Me.FormatSearchMask(strTerritory) Then
+        If FormatSearchMask(strTerritory) Then
             If whereClauseConditions = "" Then
-                whereClauseConditions &= " WHERE " & Environment.NewLine & "UPPER(" & Me.COL_NAME_TERRITORY & ") " & strTerritory.ToUpper
+                whereClauseConditions &= " WHERE " & Environment.NewLine & "UPPER(" & COL_NAME_TERRITORY & ") " & strTerritory.ToUpper
             Else
-                whereClauseConditions &= Environment.NewLine & "AND  UPPER(" & Me.COL_NAME_TERRITORY & ") " & strTerritory.ToUpper
+                whereClauseConditions &= Environment.NewLine & "AND  UPPER(" & COL_NAME_TERRITORY & ") " & strTerritory.ToUpper
             End If
         End If
 
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
-            Return (DBHelper.Fetch(selectStmt, Me.TABLE_NAME))
+            Return (DBHelper.Fetch(selectStmt, TABLE_NAME))
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Return DBHelper.Fetch(selectStmt, TABLE_NAME)
     End Function
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

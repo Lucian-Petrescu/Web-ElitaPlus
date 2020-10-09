@@ -11,7 +11,7 @@ Public Class ElitaBase
 
     Public Const Sperator As String = "|"
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
         ''<link href="../Styles2.css" type="text/css" rel="STYLESHEET" />
         lblCopyrights.Text = "&copy;" + Date.Now.Year.ToString() + " Assurant. All rights reserved. "
     End Sub
@@ -32,7 +32,7 @@ Public Class ElitaBase
         Get
             Return m_PageTitle
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             m_PageTitle = value.Trim
             PageHeader.InnerHtml = m_PageTitle
             If (UsePageTabTitleInBreadCrum) Then UpdateBreadCrum()
@@ -43,16 +43,16 @@ Public Class ElitaBase
         Get
             Return m_PageTab
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             m_PageTab = value.Trim
             If (UsePageTabTitleInBreadCrum) Then UpdateBreadCrum()
         End Set
     End Property
 
-    Public Overrides ReadOnly Property PageForm(ByVal FormName As String) As System.Web.UI.HtmlControls.HtmlForm
+    Public Overrides ReadOnly Property PageForm(FormName As String) As System.Web.UI.HtmlControls.HtmlForm
         Get
-            If Not Me.FindControl(FormName) Is Nothing Then
-                Return CType(Me.FindControl(FormName), HtmlForm)
+            If FindControl(FormName) IsNot Nothing Then
+                Return CType(FindControl(FormName), HtmlForm)
             Else
                 Return Nothing
             End If
@@ -64,7 +64,7 @@ Public Class ElitaBase
         Get
             Return m_UsePageTabTitleInBreadCrum
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             m_UsePageTabTitleInBreadCrum = value
             UpdateBreadCrum()
         End Set
@@ -82,7 +82,7 @@ Public Class ElitaBase
         Get
             Return m_DisplayRequiredFieldNote
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             m_DisplayRequiredFieldNote = value
             UpdateBreadCrum()
         End Set
@@ -92,7 +92,7 @@ Public Class ElitaBase
         Get
             Return m_BreadCrum
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             m_BreadCrum = value.Trim
             UpdateBreadCrum()
         End Set
@@ -109,21 +109,21 @@ Public Class ElitaBase
         Dim isFirst As Boolean = True
         Dim breadCrumString As String
         BreadCrumDiv.Visible = False
-        If (Me.UsePageTabTitleInBreadCrum) Then
-            If (Not String.IsNullOrEmpty(Me.PageTitle)) Then
-                breadCrumString = Me.PageTitle
+        If (UsePageTabTitleInBreadCrum) Then
+            If (Not String.IsNullOrEmpty(PageTitle)) Then
+                breadCrumString = PageTitle
             End If
-            If (Not String.IsNullOrEmpty(Me.PageTab)) Then
-                breadCrumString = Me.PageTab & Sperator & breadCrumString
+            If (Not String.IsNullOrEmpty(PageTab)) Then
+                breadCrumString = PageTab & Sperator & breadCrumString
             End If
         End If
-        breadCrumString = breadCrumString & Sperator & Me.BreadCrum
+        breadCrumString = breadCrumString & Sperator & BreadCrum
 
         If (breadCrumString.Length > 0) Then
             breadCrumBuilder = New StringBuilder(TranslationBase.TranslateLabelOrMessage("YOU_ARE_HERE")).Append(" : ")
 
             For Each breadCrumItem As String In breadCrumString.Split(Sperator.ToCharArray())
-                If ((Not breadCrumItem Is Nothing) AndAlso (breadCrumItem.Trim.Length > 0)) Then
+                If ((breadCrumItem IsNot Nothing) AndAlso (breadCrumItem.Trim.Length > 0)) Then
                     If (Not isFirst) Then
                         breadCrumBuilder.Append("&nbsp;<img style='vertical-align:middle' width='9' height='10' src='" & BreadArrowImageUrl & "' />&nbsp;")
                     End If
@@ -136,7 +136,7 @@ Public Class ElitaBase
         If (DisplayRequiredFieldNote) Then
             breadCrumBuilder.Append(String.Format("<p><span>*</span>{0}</p>", TranslationBase.TranslateLabelOrMessage("INDICATES_REQUIRED_FIELDS")))
         End If
-        If (isFirst And Not DisplayRequiredFieldNote) Then
+        If (isFirst AndAlso Not DisplayRequiredFieldNote) Then
             BreadCrumDiv.Visible = False
         Else
             BreadCrumDiv.InnerHtml = breadCrumBuilder.ToString()

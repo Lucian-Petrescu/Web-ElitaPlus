@@ -103,7 +103,7 @@ Namespace business
             Get
                 Return rdoActive.Checked
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 If Value = True Then
                     rdoActive.Checked = True
                 Else
@@ -116,7 +116,7 @@ Namespace business
             Get
                 Return rdoExternal.Checked
             End Get
-            Set(ByVal Value As Boolean)
+            Set(Value As Boolean)
                 rdoInternal.Checked = Not Value
                 rdoExternal.Checked = Value
             End Set
@@ -129,9 +129,9 @@ Namespace business
             Public LastOperation As DetailPageCommand
             Public EditingBo As Assurant.ElitaPlus.BusinessObjectsNew.User
             Public HasDataChanged As Boolean
-            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As Assurant.ElitaPlus.BusinessObjectsNew.User, ByVal hasDataChanged As Boolean)
-                Me.LastOperation = LastOp
-                Me.EditingBo = curEditingBo
+            Public Sub New(LastOp As DetailPageCommand, curEditingBo As Assurant.ElitaPlus.BusinessObjectsNew.User, hasDataChanged As Boolean)
+                LastOperation = LastOp
+                EditingBo = curEditingBo
                 Me.HasDataChanged = hasDataChanged
             End Sub
         End Class
@@ -173,14 +173,14 @@ Namespace business
             End Get
         End Property
 
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Try
-                If Not Me.CallingParameters Is Nothing Then
+                If CallingParameters IsNot Nothing Then
                     'Get the id from the parent
-                    Me.State.MyBO = New Assurant.ElitaPlus.BusinessObjectsNew.User(CType(Me.CallingParameters, Guid))
+                    State.MyBO = New Assurant.ElitaPlus.BusinessObjectsNew.User(CType(CallingParameters, Guid))
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
@@ -208,7 +208,7 @@ Namespace business
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -219,7 +219,7 @@ Namespace business
 #Region "Handlers-Init"
 
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             MasterPage.MessageController.Clear_Hide()
             Try
@@ -265,54 +265,54 @@ Namespace business
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnSaveCompany_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BtnSaveCompany.Click
+        Private Sub btnSaveCompany_Click(sender As Object, e As EventArgs) Handles BtnSaveCompany.Click
             Try
-                If (Not Me.State.IsEditing) Then Return
+                If (Not State.IsEditing) Then Return
                 Dim oCompanyId As String
                 Dim dr As DataRow
                 Dim index As Integer = Grid.EditIndex
-                Me.State.DataChanged = True
-                oCompanyId = Me.Grid.Rows(index).Cells(Me.GRID_COL_COMPANY_ID_IDX).Text
-                For Each dr In Me.State.UserCompanyAssigned.Table.Rows
+                State.DataChanged = True
+                oCompanyId = Grid.Rows(index).Cells(GRID_COL_COMPANY_ID_IDX).Text
+                For Each dr In State.UserCompanyAssigned.Table.Rows
                     If (GetGuidStringFromByteArray(CType(dr(UserCompanyAssigned.COL_COMPANY_ID), Byte())) = oCompanyId) Then
 
                         Dim result As Decimal
 
-                        If (Not (Decimal.TryParse(CType(Me.Grid.Rows(index).Cells(Me.GRID_COL_PAYMENT_LIMIT).FindControl(Me.PAYMENT_LIMIT_TEXT), TextBox).Text, result))) Then
+                        If (Not (Decimal.TryParse(CType(Grid.Rows(index).Cells(GRID_COL_PAYMENT_LIMIT).FindControl(PAYMENT_LIMIT_TEXT), TextBox).Text, result))) Then
                             Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PAYMENT_AMOUNT_ERR, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PAYMENT_AMOUNT_ERR)
                         End If
 
-                        If (Not (Decimal.TryParse(CType(Me.Grid.Rows(index).Cells(Me.GRID_COL_AUTHORIZATION_LIMIT).FindControl(Me.AUTHORIZATION_LIMIT_TEXT), TextBox).Text, result))) Then
+                        If (Not (Decimal.TryParse(CType(Grid.Rows(index).Cells(GRID_COL_AUTHORIZATION_LIMIT).FindControl(AUTHORIZATION_LIMIT_TEXT), TextBox).Text, result))) Then
                             Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AUTHORIZED_AMOUNT_ERR, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AUTHORIZED_AMOUNT_ERR)
                         End If
 
-                        If (Not (Decimal.TryParse(CType(Me.Grid.Rows(index).Cells(Me.GRID_COL_LIABILITY_OVERRIDE_LIMIT).FindControl(Me.LIABILITY_OVERRIDE_LIMIT_TEXT), TextBox).Text, result))) Then
+                        If (Not (Decimal.TryParse(CType(Grid.Rows(index).Cells(GRID_COL_LIABILITY_OVERRIDE_LIMIT).FindControl(LIABILITY_OVERRIDE_LIMIT_TEXT), TextBox).Text, result))) Then
                             Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_LIABILITY_OVERRIDE_AMOUNT_ERR, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_LIABILITY_OVERRIDE_AMOUNT_ERR)
                         End If
 
                         dr(UserCompanyAssigned.COL_PAYMENT_LIMIT) =
-                            CType(Me.Grid.Rows(index).Cells(Me.GRID_COL_PAYMENT_LIMIT).FindControl(Me.PAYMENT_LIMIT_TEXT), TextBox).Text
+                            CType(Grid.Rows(index).Cells(GRID_COL_PAYMENT_LIMIT).FindControl(PAYMENT_LIMIT_TEXT), TextBox).Text
                         dr(UserCompanyAssigned.COL_AUTHORIZATION_LIMIT) =
-                            CType(Me.Grid.Rows(index).Cells(Me.GRID_COL_AUTHORIZATION_LIMIT).FindControl(Me.AUTHORIZATION_LIMIT_TEXT), TextBox).Text
+                            CType(Grid.Rows(index).Cells(GRID_COL_AUTHORIZATION_LIMIT).FindControl(AUTHORIZATION_LIMIT_TEXT), TextBox).Text
                         dr(UserCompanyAssigned.COL_LIABILITY_OVERRIDE_LIMIT) =
-                            CType(Me.Grid.Rows(index).Cells(Me.GRID_COL_LIABILITY_OVERRIDE_LIMIT).FindControl(Me.LIABILITY_OVERRIDE_LIMIT_TEXT), TextBox).Text
+                            CType(Grid.Rows(index).Cells(GRID_COL_LIABILITY_OVERRIDE_LIMIT).FindControl(LIABILITY_OVERRIDE_LIMIT_TEXT), TextBox).Text
                         Exit For
                     End If
                 Next
 
                 Grid.EditIndex = -1
-                Me.State.IsEditing = False
+                State.IsEditing = False
                 SetButtons(True)
                 RefreshAssignedCompany()
-                Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub UpdateSpClaimButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles UpdateSpClaimButton.Click
+        Private Sub UpdateSpClaimButton_Click(sender As Object, e As EventArgs) Handles UpdateSpClaimButton.Click
             Try
-                If (Not Me.State.IsEditing) Then Return
+                If (Not State.IsEditing) Then Return
 
                 Dim SelectedSpUserClaimID As String
                 Dim dr As DataRow
@@ -323,13 +323,13 @@ Namespace business
                 Dim IsValidSPClaim As Boolean = False
                 Dim SPClaimTypeId As String
 
-                SelectedSpUserClaimID = CType(Me.GridViewUserSecurity.Rows(index).Cells(USER_SECURITY_GRID_COL_SP_USER_CLAIMS_ID_IDX).FindControl(SP_USER_CLAIMS_ID_LABEL), Label).Text
+                SelectedSpUserClaimID = CType(GridViewUserSecurity.Rows(index).Cells(USER_SECURITY_GRID_COL_SP_USER_CLAIMS_ID_IDX).FindControl(SP_USER_CLAIMS_ID_LABEL), Label).Text
 
-                For Each dr In Me.State.SpUserClaimDv.Table.Rows
+                For Each dr In State.SpUserClaimDv.Table.Rows
                     If (GetGuidStringFromByteArray(CType(dr(SpUserClaims.COL_NAME_SP_USER_CLAIMS_ID), Byte())) = SelectedSpUserClaimID) Then
 
-                        ExpirationDate = CType(Me.GridViewUserSecurity.Rows(index).Cells(USER_SECURITY_GRID_COL_SP_CLAIM_VALID_TO_IDX).FindControl(SP_CLAIM_EXPIRATIONDATE_TEXT), TextBox).Text
-                        EffectiveDateresult = CType(CType(Me.GridViewUserSecurity.Rows(index).Cells(USER_SECURITY_GRID_COL_SP_CLAIM_VALID_FROM_IDX).FindControl(SP_CLAIM_EFFECTIVEDATE_LABEL), Label).Text, Date)
+                        ExpirationDate = CType(GridViewUserSecurity.Rows(index).Cells(USER_SECURITY_GRID_COL_SP_CLAIM_VALID_TO_IDX).FindControl(SP_CLAIM_EXPIRATIONDATE_TEXT), TextBox).Text
+                        EffectiveDateresult = CType(CType(GridViewUserSecurity.Rows(index).Cells(USER_SECURITY_GRID_COL_SP_CLAIM_VALID_FROM_IDX).FindControl(SP_CLAIM_EFFECTIVEDATE_LABEL), Label).Text, Date)
 
                         If (Not (Date.TryParse(ExpirationDate, ExpirationDateresult))) Then
                             Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DATE_ERR, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DATE_ERR)
@@ -350,119 +350,119 @@ Namespace business
                 Next
 
                 GridViewUserSecurity.EditIndex = -1
-                Me.State.IsEditing = False
+                State.IsEditing = False
                 SetUserSecurityButtons(True)
-                Me.State.EnabledUserSecurityEditButton = True
-                Me.State.UserSecurityDataChanged = True
+                State.EnabledUserSecurityEditButton = True
+                State.UserSecurityDataChanged = True
                 RefreshSpUserClaims()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Private Sub CancelUpdateSpClaimButton_Click(ByVal sender As Object, ByVal e As EventArgs) Handles CancelUpdateSpClaimButton.Click
+        Private Sub CancelUpdateSpClaimButton_Click(sender As Object, e As EventArgs) Handles CancelUpdateSpClaimButton.Click
             SetUserSecurityButtons(True)
-            Me.State.IsEditing = False
+            State.IsEditing = False
             GridViewUserSecurity.EditIndex = -1
-            Me.State.EnabledUserSecurityEditButton = True
+            State.EnabledUserSecurityEditButton = True
             RefreshSpUserClaims()
         End Sub
 
-        Private Sub btnCancelCompany_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BtnCancelCompany.Click
+        Private Sub btnCancelCompany_Click(sender As Object, e As EventArgs) Handles BtnCancelCompany.Click
             SetButtons(True)
-            Me.State.IsEditing = False
+            State.IsEditing = False
             Grid.EditIndex = -1
             RefreshAssignedCompany()
         End Sub
-        Private Sub btnApply_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply_WRITE.Click
+        Private Sub btnApply_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnApply_WRITE.Click
             Try
-                Me.State.HasDataChanged = False
-                Me.PopulateBOsFormFrom()
-                If Me.State.MyBO.IsFamilyDirty Then
-                    Me.State.HasDataChanged = True
-                    Me.State.MyBO.ValidateUserRolesAssigned()
-                    Me.State.MyBO.Save()
-                    Me.PopulateFormFromBOs()
-                    Me.EnableDisableFields()
+                State.HasDataChanged = False
+                PopulateBOsFormFrom()
+                If State.MyBO.IsFamilyDirty Then
+                    State.HasDataChanged = True
+                    State.MyBO.ValidateUserRolesAssigned()
+                    State.MyBO.Save()
+                    PopulateFormFromBOs()
+                    EnableDisableFields()
                     ' User Security - SP Claims
-                    If Me.State.UserSecurityDataChanged = True Then
-                        Me.State.EnabledUserSecurityEditButton = True
+                    If State.UserSecurityDataChanged = True Then
+                        State.EnabledUserSecurityEditButton = True
                         RefreshSpUserClaims()
-                        Me.State.UserSecurityDataChanged = False
+                        State.UserSecurityDataChanged = False
                     End If
 
-                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
                     '  ElitaPlusPage.BindListControlToDataView(Me.State.MyCurrentSelectedList, Me.State.UserCompanyAssigned, COL_DESCRIPTION_NAME, UserCompanyAssigned.COL_COMPANY_ID, False)
                     Dim listcontext As ListContext = New ListContext()
-                    listcontext.UserId = Me.State.MyBO.Id
+                    listcontext.UserId = State.MyBO.Id
                     Dim comLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("SelectedUserCompanyAssigned", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
-                    Me.State.MyCurrentSelectedList.Populate(comLkl, New PopulateOptions())
+                    State.MyCurrentSelectedList.Populate(comLkl, New PopulateOptions())
                 Else
-                    Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
+                    MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
-                Me.PopulateBOsFormFrom()
+                PopulateBOsFormFrom()
 
-                If Me.State.MyBO.IsFamilyDirty And IsDataChanged() And btnSave_WRITE.Enabled = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                If State.MyBO.IsFamilyDirty AndAlso IsDataChanged() AndAlso btnSave_WRITE.Enabled = True Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
-                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-                Me.State.LastErrMsg = Me.MasterPage.MessageController.Text
+                HandleErrors(ex, MasterPage.MessageController)
+                DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+                State.LastErrMsg = MasterPage.MessageController.Text
             End Try
         End Sub
 
-        Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+        Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
             Try
-                Me.State.MyBO.UserPermission.RevokeAll()
+                State.MyBO.UserPermission.RevokeAll()
                 DeleteAllRoles()
-                Me.State.UserCompanyAssigned.Table.Rows.Clear()
+                State.UserCompanyAssigned.Table.Rows.Clear()
                 RefreshAssignedCompany()
 
                 ' User Security - SP Claims
                 ExpirySecurityPermissionClaim()
-                Me.State.SpUserClaimDv.Table.Rows.Clear()
+                State.SpUserClaimDv.Table.Rows.Clear()
                 RefreshSpUserClaims()
 
                 DeleteAllCompanies()
-                Me.State.MyBO.Delete()
-                Me.State.MyBO.Save()
-                Me.State.HasDataChanged = True
-                Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.MyBO, Me.State.HasDataChanged))
+                State.MyBO.Delete()
+                State.MyBO.Save()
+                State.HasDataChanged = True
+                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, State.MyBO, State.HasDataChanged))
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
                 'undo the delete
-                Me.State.MyBO.RejectChanges()
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                State.MyBO.RejectChanges()
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Private Sub btnAddPermissionToSelected_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddPermissionToSelected.Click
+        Private Sub btnAddPermissionToSelected_Click(sender As System.Object, e As System.EventArgs) Handles btnAddPermissionToSelected.Click
             Try
                 If lstAvailablePermission.SelectedItem Is Nothing Then Exit Sub
-                Me.State.MyBO.UserPermission.Grant(New Guid(lstAvailablePermission.SelectedItem.Value))
+                State.MyBO.UserPermission.Grant(New Guid(lstAvailablePermission.SelectedItem.Value))
                 LoadUserPermissions()
                 LoadAvailablePermissions()
-                Me.State.DataChanged = True
+                State.DataChanged = True
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnAddToSelected_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddToSelected.Click
+        Private Sub btnAddToSelected_Click(sender As System.Object, e As System.EventArgs) Handles btnAddToSelected.Click
             Dim oListItem As New System.Web.UI.WebControls.ListItem
             Dim oArrayList As New ArrayList
             Try
@@ -472,29 +472,29 @@ Namespace business
                     .Value = lstAvailable.SelectedItem.Value
                 End With
                 oArrayList.Add(lstAvailable.SelectedItem.Value)
-                Me.State.MyBO.AttachUserRoles(oArrayList)
+                State.MyBO.AttachUserRoles(oArrayList)
                 UpdateView(lstAvailable, lstSelected)
                 'AA648971
                 CheckUserRoles()
-                Me.State.DataChanged = True
+                State.DataChanged = True
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnRemovePermission_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemovePermission.Click
+        Private Sub btnRemovePermission_Click(sender As System.Object, e As System.EventArgs) Handles btnRemovePermission.Click
             Try
                 If lstSelectedPermission.SelectedItem Is Nothing Then Exit Sub
-                Me.State.MyBO.UserPermission.Revoke(New Guid(lstSelectedPermission.SelectedItem.Value))
+                State.MyBO.UserPermission.Revoke(New Guid(lstSelectedPermission.SelectedItem.Value))
                 LoadUserPermissions()
                 LoadAvailablePermissions()
-                Me.State.DataChanged = True
+                State.DataChanged = True
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemove.Click
+        Private Sub btnRemove_Click(sender As System.Object, e As System.EventArgs) Handles btnRemove.Click
             Try
                 If lstSelected.SelectedItem Is Nothing Then Exit Sub
                 Dim oListItem As New System.Web.UI.WebControls.ListItem
@@ -504,168 +504,168 @@ Namespace business
                     .Value = lstSelected.SelectedItem.Value
                 End With
                 oArrayList.Add(lstSelected.SelectedItem.Value)
-                Me.State.MyBO.DetachUserRoles(oArrayList)
+                State.MyBO.DetachUserRoles(oArrayList)
                 UpdateView(lstSelected, lstAvailable)
                 'AA648971
                 CheckUserRoles()
-                Me.State.DataChanged = True
+                State.DataChanged = True
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnCopy_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+        Private Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
             Try
-                Me.PopulateBOsFormFrom()
-                If Me.State.MyBO.IsFamilyDirty And IsDataChanged() Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                PopulateBOsFormFrom()
+                If State.MyBO.IsFamilyDirty AndAlso IsDataChanged() Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
                 Else
                     CreateNewWithCopy()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
         Protected Sub CreateNewWithCopy()
-            Dim objOldBO As User = Me.State.MyBO
-            Me.State.MyBO = New Assurant.ElitaPlus.BusinessObjectsNew.User
-            Me.txtNetworkID.Text = ""
-            Me.txtUserName.Text = ""
+            Dim objOldBO As User = State.MyBO
+            State.MyBO = New Assurant.ElitaPlus.BusinessObjectsNew.User
+            txtNetworkID.Text = ""
+            txtUserName.Text = ""
 
             'Copy the user roles from existing BO
-            Dim selectedDv As DataView = Me.State.MyBO.GetUserRoles(objOldBO.Id)
+            Dim selectedDv As DataView = State.MyBO.GetUserRoles(objOldBO.Id)
             Dim dr As DataRowView, roleID As Guid
             For Each dr In selectedDv
                 roleID = New Guid(CType(dr.Row(COL_ID_NAME), Byte()))
-                Me.State.MyBO.AddRoleChild(roleID)
+                State.MyBO.AddRoleChild(roleID)
             Next
 
 
-            Me.State.SpUserClaimDv = Me.State.MyBO.GetSpUserClaims(objOldBO.Id, objOldBO.LanguageId, SP_CLAIM_CODE)
-            Me.State.SpUserClaimDv.Table.DefaultView.Sort = SpUserClaims.COL_NAME_SP_CLAIM_TYPE_ID & " ASC," & SpUserClaims.COL_NAME_SP_CLAIM_VALUE & " ASC," & SpUserClaims.COL_NAME_EFFECTIVE_DATE & " DESC," & SpUserClaims.COL_NAME_EXPIRATION_DATE & " DESC"
+            State.SpUserClaimDv = State.MyBO.GetSpUserClaims(objOldBO.Id, objOldBO.LanguageId, SP_CLAIM_CODE)
+            State.SpUserClaimDv.Table.DefaultView.Sort = SpUserClaims.COL_NAME_SP_CLAIM_TYPE_ID & " ASC," & SpUserClaims.COL_NAME_SP_CLAIM_VALUE & " ASC," & SpUserClaims.COL_NAME_EFFECTIVE_DATE & " DESC," & SpUserClaims.COL_NAME_EXPIRATION_DATE & " DESC"
             CloneSecurityPermissionClaim()
             RefreshSpUserClaims()
 
-            Me.EnableDisableFields()
+            EnableDisableFields()
         End Sub
-        Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
-            Me.State.HasDataChanged = False
+        Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
+            State.HasDataChanged = False
             Try
-                Me.PopulateBOsFormFrom()
-                If Me.State.MyBO.IsFamilyDirty Then
-                    Me.State.HasDataChanged = True
-                    Me.State.MyBO.ValidateUserRolesAssigned()
-                    Me.State.MyBO.Save()
-                    Me.PopulateFormFromBOs()
+                PopulateBOsFormFrom()
+                If State.MyBO.IsFamilyDirty Then
+                    State.HasDataChanged = True
+                    State.MyBO.ValidateUserRolesAssigned()
+                    State.MyBO.Save()
+                    PopulateFormFromBOs()
 
                     ' User Security - SP Claims
-                    If Me.State.UserSecurityDataChanged = True Then
-                        Me.State.EnabledUserSecurityEditButton = True
+                    If State.UserSecurityDataChanged = True Then
+                        State.EnabledUserSecurityEditButton = True
                         RefreshSpUserClaims()
-                        Me.State.UserSecurityDataChanged = False
+                        State.UserSecurityDataChanged = False
                     End If
 
-                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+        Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
             Try
-                Me.PopulateBOsFormFrom()
-                If Me.State.MyBO.IsFamilyDirty And IsDataChanged() Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                PopulateBOsFormFrom()
+                If State.MyBO.IsFamilyDirty AndAlso IsDataChanged() Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
                 Else
                     CreateNew()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
         Protected Sub CreateNew()
-            Me.State.MyBO = New Assurant.ElitaPlus.BusinessObjectsNew.User
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
+            State.MyBO = New Assurant.ElitaPlus.BusinessObjectsNew.User
+            PopulateFormFromBOs()
+            EnableDisableFields()
         End Sub
 
-        Private Sub btnAddCompany_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddCompany.Click
+        Private Sub btnAddCompany_Click(sender As System.Object, e As System.EventArgs) Handles btnAddCompany.Click
             Try
-                If Me.cboCompanyAvailable.SelectedItem Is Nothing Then Exit Sub
+                If cboCompanyAvailable.SelectedItem Is Nothing Then Exit Sub
 
                 Dim dr As DataRow
-                dr = Me.State.UserCompanyAssigned.Table.NewRow()
+                dr = State.UserCompanyAssigned.Table.NewRow()
                 dr(UserCompanyAssigned.COL_AUTHORIZATION_LIMIT) = 0
                 dr(UserCompanyAssigned.COL_PAYMENT_LIMIT) = 0
                 dr(UserCompanyAssigned.COL_LIABILITY_OVERRIDE_LIMIT) = 0
-                dr(UserCompanyAssigned.COL_USER_ID) = Me.State.MyBO.Id.ToByteArray()
+                dr(UserCompanyAssigned.COL_USER_ID) = State.MyBO.Id.ToByteArray()
                 dr(UserCompanyAssigned.COL_COMPANY_ID) = (New Guid(cboCompanyAvailable.SelectedItem.Value)).ToByteArray()
                 dr(UserCompanyAssigned.COL_DESCRIPTION) = cboCompanyAvailable.SelectedItem.Text
                 dr(UserCompanyAssigned.COL_IS_LOADED) = "F"
-                Me.State.UserCompanyAssigned.Table.Rows.Add(dr)
+                State.UserCompanyAssigned.Table.Rows.Add(dr)
                 RefreshAssignedCompany()
-                Me.State.DataChanged = True
+                State.DataChanged = True
                 If cboCompanyAvailable.SelectedItem Is Nothing Then Exit Sub
                 cboCompanyAvailable.Items.Remove(cboCompanyAvailable.SelectedItem)
 
                 LoadCompanyGrpDropDownLists()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub RefreshAssignedCompany()
-            Me.Grid.DataSource = Me.State.UserCompanyAssigned
-            Me.Grid.DataBind()
+            Grid.DataSource = State.UserCompanyAssigned
+            Grid.DataBind()
         End Sub
 
 
         Protected Sub CheckIfComingFromSaveConfirm()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
 
-            If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
-                If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
-                    If Me.State.MyBO.IsFamilyDirty Then
-                        Me.State.HasDataChanged = True
-                        Me.State.MyBO.ValidateUserRolesAssigned()
-                        Me.State.MyBO.Save()
+            If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
+                If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
+                    If State.MyBO.IsFamilyDirty Then
+                        State.HasDataChanged = True
+                        State.MyBO.ValidateUserRolesAssigned()
+                        State.MyBO.Save()
                     End If
                 End If
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                        ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                     Case ElitaPlusPage.DetailPageCommand.New_
-                        Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                        Me.CreateNew()
+                        AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                        CreateNew()
                     Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                        Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                        Me.CreateNewWithCopy()
+                        AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                        CreateNewWithCopy()
                     Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                        Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
+                        ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
                 End Select
-            ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-                Select Case Me.State.ActionInProgress
+            ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Back
-                        Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                        ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                     Case ElitaPlusPage.DetailPageCommand.New_
-                        Me.CreateNew()
+                        CreateNew()
                     Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                        Me.CreateNewWithCopy()
+                        CreateNewWithCopy()
                     Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                        Me.MasterPage.MessageController.AddErrorAndShow(Me.State.LastErrMsg)
+                        MasterPage.MessageController.AddErrorAndShow(State.LastErrMsg)
                 End Select
             End If
             'Clean after consuming the action
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-            Me.HiddenSaveChangesPromptResponse.Value = ""
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            HiddenSaveChangesPromptResponse.Value = ""
         End Sub
 #End Region
 
@@ -682,20 +682,20 @@ Namespace business
         '    End Try
         'End Sub
 
-        Private Sub rdoExternal_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles rdoExternal.CheckedChanged
+        Private Sub rdoExternal_CheckedChanged(sender As Object, e As System.EventArgs) Handles rdoExternal.CheckedChanged
             Try
-                ControlMgr.SetVisibleControl(Me, Me.tblExternalUserDetails, True)
+                ControlMgr.SetVisibleControl(Me, tblExternalUserDetails, True)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Private Sub rdoInternal_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles rdoInternal.CheckedChanged
+        Private Sub rdoInternal_CheckedChanged(sender As Object, e As System.EventArgs) Handles rdoInternal.CheckedChanged
             Try
-                ControlMgr.SetVisibleControl(Me, Me.tblExternalUserDetails, False)
+                ControlMgr.SetVisibleControl(Me, tblExternalUserDetails, False)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -706,7 +706,7 @@ Namespace business
 #Region "Enable-Disable"
 
         Private Sub EnableDisableFields()
-            ControlMgr.SetVisibleControl(Me, Me.tblExternalUserDetails, Me.rdoExternal.Checked)
+            ControlMgr.SetVisibleControl(Me, tblExternalUserDetails, rdoExternal.Checked)
             HideControlsForSpClaims()
         End Sub
 
@@ -720,10 +720,10 @@ Namespace business
 
         Protected Sub BindBoPropertiesToLabels()
 
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "LanguageId", Me.moLanguageLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "NetworkId", Me.moNetworkLabel)
-            Me.BindBOPropertyToLabel(Me.State.MyBO, "UserName", Me.moUserLabel)
-            Me.ClearGridHeadersAndLabelsErrSign()
+            BindBOPropertyToLabel(State.MyBO, "LanguageId", moLanguageLabel)
+            BindBOPropertyToLabel(State.MyBO, "NetworkId", moNetworkLabel)
+            BindBOPropertyToLabel(State.MyBO, "UserName", moUserLabel)
+            ClearGridHeadersAndLabelsErrSign()
         End Sub
 
 #End Region
@@ -740,13 +740,13 @@ Namespace business
             LoadCompanyInfo()
             LoadLanguageInfo()
             LoadCompanyAssignedInfo()
-            Me.LoadCompanyGrpDropDownLists()
+            LoadCompanyGrpDropDownLists()
             LoadSpUserClaims()  ' Load SP User Claim Grid
         End Sub
 
 
 
-        Private Function SetSelectedValue(ByVal sCurrentValue As String, ByVal oListControl As ListControl) As Integer
+        Private Function SetSelectedValue(sCurrentValue As String, oListControl As ListControl) As Integer
             oListControl.SelectedItem.Selected = False
             Dim oItem As System.Web.UI.WebControls.ListItem
 
@@ -758,12 +758,12 @@ Namespace business
         End Function
 
         Private Sub LoadCompanyAssignedInfo()
-            Me.State.UserCompanyAssigned = Me.State.MyBO.GetSelectedAssignedCompanies(Me.State.MyBO.Id)
+            State.UserCompanyAssigned = State.MyBO.GetSelectedAssignedCompanies(State.MyBO.Id)
             '     ElitaPlusPage.BindListControlToDataView(Me.State.MyCurrentSelectedList, Me.State.UserCompanyAssigned, COL_DESCRIPTION_NAME, UserCompanyAssigned.COL_COMPANY_ID, False)
             Dim listcontext As ListContext = New ListContext()
-            listcontext.UserId = Me.State.MyBO.Id
-            Me.State.usercomAssignedLkl = CommonConfigManager.Current.ListManager.GetList("SelectedUserCompanyAssigned", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
-            Me.State.MyCurrentSelectedList.Populate(Me.State.usercomAssignedLkl, New PopulateOptions())
+            listcontext.UserId = State.MyBO.Id
+            State.usercomAssignedLkl = CommonConfigManager.Current.ListManager.GetList("SelectedUserCompanyAssigned", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
+            State.MyCurrentSelectedList.Populate(State.usercomAssignedLkl, New PopulateOptions())
             RefreshAssignedCompany()
         End Sub
 
@@ -771,7 +771,7 @@ Namespace business
             ' Me.BindListControlToDataView(cboLanguagesId, LookupListNew.GetLanguageLookupList(False), , , False)
             Dim langLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList(ListCodes.LanguageList, Thread.CurrentPrincipal.GetLanguageCode())
             cboLanguagesId.Populate(langLkl, New PopulateOptions())
-            BindSelectItem(Me.State.MyBO.LanguageId.ToString, cboLanguagesId)
+            BindSelectItem(State.MyBO.LanguageId.ToString, cboLanguagesId)
         End Sub
 
         Private Sub LoadCompanyInfo()
@@ -786,7 +786,7 @@ Namespace business
             txtNetworkID.Text = Nothing
         End Sub
 
-        Private Function CopyListBox(ByVal source As ListControl) As ArrayList
+        Private Function CopyListBox(source As ListControl) As ArrayList
             Dim oItem As System.Web.UI.WebControls.ListItem
             Dim target As New ArrayList
 
@@ -809,14 +809,14 @@ Namespace business
                     lstSelected.SelectedValue = .Value
                 End With
                 oArrayList.Add(lstSelected.SelectedItem.Value)
-                Me.State.MyBO.DetachUserRoles(oArrayList)
+                State.MyBO.DetachUserRoles(oArrayList)
                 UpdateView(lstSelected, lstAvailable)
             Next
         End Sub
 
         Private Sub RemoveSelectedCompanies()
             Dim oItem As System.Web.UI.WebControls.ListItem
-            Dim tempSelected As ArrayList = CopyListBox(Me.cboCompanyAvailable)
+            Dim tempSelected As ArrayList = CopyListBox(cboCompanyAvailable)
 
             For Each oItem In tempSelected
                 Dim oListItem As New System.Web.UI.WebControls.ListItem
@@ -829,7 +829,7 @@ Namespace business
             Next
         End Sub
 
-        Private Sub UpdateView(ByVal oSourceList As ListControl, ByVal oTargetList As ListControl)
+        Private Sub UpdateView(oSourceList As ListControl, oTargetList As ListControl)
             Dim CurrentListItem As New System.Web.UI.WebControls.ListItem
 
             If oSourceList.SelectedItem Is Nothing Then Exit Sub
@@ -863,9 +863,9 @@ Namespace business
             rdoInActive.Checked = False
         End Sub
 
-        Private Sub SetButtons(ByVal enable As Boolean)
-            Dim actionEnabled As Boolean = enable And Not State.ViewOnly
-            Dim actionNotEnabled As Boolean = Not enable And Not State.ViewOnly
+        Private Sub SetButtons(enable As Boolean)
+            Dim actionEnabled As Boolean = enable AndAlso Not State.ViewOnly
+            Dim actionNotEnabled As Boolean = Not enable AndAlso Not State.ViewOnly
             ControlMgr.SetEnableControl(Me, btnSave_WRITE, actionEnabled)
             ControlMgr.SetEnableControl(Me, btnApply_WRITE, True)
             ControlMgr.SetEnableControl(Me, btnBack, enable)
@@ -890,12 +890,12 @@ Namespace business
                 If blnIHQ_Role Then Exit For
             Next
             If blnIHQ_Role Then
-                Me.IsExternal = False
+                IsExternal = False
                 rdoExternal.Checked = False
                 rdoInternal.Checked = True
                 rdoExternal.Enabled = False
                 rdoInternal.Enabled = False
-                ControlMgr.SetVisibleControl(Me, Me.tblExternalUserDetails, False)
+                ControlMgr.SetVisibleControl(Me, tblExternalUserDetails, False)
             Else
                 rdoExternal.Enabled = True
                 rdoInternal.Enabled = True
@@ -913,16 +913,16 @@ Namespace business
 
 #Region "Business"
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                If (Not Me.State Is Nothing) Then
-                    Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("User")
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("User")
+            If (State IsNot Nothing) Then
+                If (State IsNot Nothing) Then
+                    MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("User")
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("User")
                 End If
             End If
         End Sub
 
         Private Function IsDataChanged() As Boolean
-            If Me.State.MyBO.IsDirty Or Me.State.DataChanged = True Or Me.State.UserSecurityDataChanged = True Then
+            If State.MyBO.IsDirty OrElse State.DataChanged = True OrElse State.UserSecurityDataChanged = True Then
                 Return True
             Else
                 Return False
@@ -940,11 +940,11 @@ Namespace business
         'End Sub
 
         Private Sub PopulateFormFromBOs()
-            With Me.State.MyBO
+            With State.MyBO
                 AccountStatus = .Active = "Y"
                 IsExternal = .External = "Y"
-                Me.PopulateControlFromBOProperty(txtNetworkID, .NetworkId)
-                Me.PopulateControlFromBOProperty(txtUserName, .UserName)
+                PopulateControlFromBOProperty(txtNetworkID, .NetworkId)
+                PopulateControlFromBOProperty(txtUserName, .UserName)
 
             End With
             LoadUserDetails()
@@ -958,46 +958,46 @@ Namespace business
 
         Private Sub PopulateBOsFormFrom()
 
-            If Me.State.UserCompanyAssigned.Count = 0 Then
+            If State.UserCompanyAssigned.Count = 0 Then
                 Throw New GUIException(Message.MSG_COMPANY_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_COMPANY_REQUIRED)
             End If
 
             ' ApplyAllRoleChanges()
             ApplyAllCompanyChanges()
-            If Me.State.UserSecurityDataChanged = True Then
+            If State.UserSecurityDataChanged = True Then
                 AddSecurityPermissionClaim()
             End If
 
-            With Me.State.MyBO
+            With State.MyBO
                 If AccountStatus Then
                     .Active = "Y"
                 Else
                     .Active = "N"
                 End If
 
-                Me.PopulateBOProperty(Me.State.MyBO, "LanguageId", cboLanguagesId)
-                Me.PopulateBOProperty(Me.State.MyBO, "NetworkId", txtNetworkID)
-                Me.PopulateBOProperty(Me.State.MyBO, "UserName", txtUserName)
+                PopulateBOProperty(State.MyBO, "LanguageId", cboLanguagesId)
+                PopulateBOProperty(State.MyBO, "NetworkId", txtNetworkID)
+                PopulateBOProperty(State.MyBO, "UserName", txtUserName)
 
                 If IsExternal Then
                     .External = "Y"
-                    If Not Me.GetSelectedItem(Me.cboDealerGroupId).Equals(Guid.Empty) Then
+                    If Not GetSelectedItem(cboDealerGroupId).Equals(Guid.Empty) Then
                         .ExternalTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__DEALER_GROUP)
-                        .ScDealerId = Me.GetSelectedItem(Me.cboDealerGroupId)
-                    ElseIf Not Me.GetSelectedItem(Me.cboDealerId).Equals(Guid.Empty) Then
+                        .ScDealerId = GetSelectedItem(cboDealerGroupId)
+                    ElseIf Not GetSelectedItem(cboDealerId).Equals(Guid.Empty) Then
                         .ExternalTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__DEALER)
-                        .ScDealerId = Me.GetSelectedItem(Me.cboDealerId)
-                    ElseIf Not Me.GetSelectedItem(Me.cboServiceCenterId).Equals(Guid.Empty) Then
+                        .ScDealerId = GetSelectedItem(cboDealerId)
+                    ElseIf Not GetSelectedItem(cboServiceCenterId).Equals(Guid.Empty) Then
                         .ExternalTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__SERVICE_CENTER)
-                        .ScDealerId = Me.GetSelectedItem(Me.cboServiceCenterId)
-                    ElseIf Me.chkOther.Checked Then
+                        .ScDealerId = GetSelectedItem(cboServiceCenterId)
+                    ElseIf chkOther.Checked Then
                         .ExternalTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__OTHER)
                         .ScDealerId = Nothing
                     Else
-                        ElitaPlusPage.SetLabelError(Me.moDealerGroupLabel)
-                        ElitaPlusPage.SetLabelError(Me.moDealerLabel)
-                        ElitaPlusPage.SetLabelError(Me.LabelSearchServiceCenter)
-                        ElitaPlusPage.SetLabelError(Me.lblOther)
+                        ElitaPlusPage.SetLabelError(moDealerGroupLabel)
+                        ElitaPlusPage.SetLabelError(moDealerLabel)
+                        ElitaPlusPage.SetLabelError(LabelSearchServiceCenter)
+                        ElitaPlusPage.SetLabelError(lblOther)
                         Throw New GUIException(Message.MSG_EXTERNAL_USER_DEALER_OR_SC_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_EXTERNAL_USER_DEALER_OR_SC_REQUIRED)
                     End If
                 Else
@@ -1006,7 +1006,7 @@ Namespace business
                     .ScDealerId = Nothing
                 End If
             End With
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
 
@@ -1018,7 +1018,7 @@ Namespace business
         Private Sub LoadCompanyGrpDropDownLists()
             Dim selectedCompanies, selectedCountries As ArrayList
 
-            If Me.State.UserCompanyAssigned.Count > 0 Then
+            If State.UserCompanyAssigned.Count > 0 Then
                 selectedCompanies = GetSelectedCompanies()
                 selectedCountries = Country.GetCountries(selectedCompanies) 'dg.code || ' - ' || dg.description
                 ' Me.BindListControlToDataView(Me.cboDealerGroupId, LookupListNew.GetDealersGroupsByCompanyLookupList(selectedCompanies), , , True) 'GetDealerGroupListByCompanyForUser changes
@@ -1026,7 +1026,7 @@ Namespace business
                 Dim textFun As Func(Of DataElements.ListItem, String) = Function(li As DataElements.ListItem)
                                                                             Return li.Code + "-" + li.Translation
                                                                         End Function
-                Me.cboDealerGroupId.Populate(dealLkl, New PopulateOptions() With
+                cboDealerGroupId.Populate(dealLkl, New PopulateOptions() With
                                            {
                                             .TextFunc = textFun,
                                             .SortFunc = textFun,
@@ -1037,7 +1037,7 @@ Namespace business
                 Dim dealerTextFunc As Func(Of DataElements.ListItem, String) = Function(li As DataElements.ListItem)
                                                                                    Return li.ExtendedCode + "-" + li.Translation
                                                                                End Function
-                Me.cboDealerId.Populate(oDealerList, New PopulateOptions() With
+                cboDealerId.Populate(oDealerList, New PopulateOptions() With
                                            {
                                             .TextFunc = dealerTextFunc,
                                             .SortFunc = dealerTextFunc,
@@ -1045,7 +1045,7 @@ Namespace business
                                            })
                 ' Me.BindListControlToDataView(Me.cboServiceCenterId, LookupListNew.GetServiceCenterLookupList(selectedCountries), , , True)
                 Dim SvcListLkl = GetSVCList()
-                Me.cboServiceCenterId.Populate(SvcListLkl, New PopulateOptions() With
+                cboServiceCenterId.Populate(SvcListLkl, New PopulateOptions() With
                                            {
                                             .AddBlankItem = True
                                            })
@@ -1067,7 +1067,7 @@ Namespace business
                 oListContext.CompanyId = UserCompanies(Index)
                 Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
                 If oDealerListForCompany.Count > 0 Then
-                    If Not oDealerList Is Nothing Then
+                    If oDealerList IsNot Nothing Then
                         oDealerList.AddRange(oDealerListForCompany)
                     Else
                         oDealerList = oDealerListForCompany.Clone()
@@ -1094,7 +1094,7 @@ Namespace business
                 oListContext.CompanyId = UserCompanies(Index)
                 Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerGroupByCompany", context:=oListContext)
                 If oDealerListForCompany.Count > 0 Then
-                    If Not oDealerList Is Nothing Then
+                    If oDealerList IsNot Nothing Then
                         oDealerList.AddRange(oDealerListForCompany)
                     Else
                         oDealerList = oDealerListForCompany.Clone()
@@ -1123,7 +1123,7 @@ Namespace business
                 oListContext.CountryId = UserCountries(Index)
                 Dim oSvcListByCountry As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(ListCodes.ServiceCenterListByCountry, context:=oListContext)
                 If oSvcListByCountry.Count > 0 Then
-                    If Not oSVCList Is Nothing Then
+                    If oSVCList IsNot Nothing Then
                         oSVCList.AddRange(oSvcListByCountry)
                     Else
                         oSVCList = oSvcListByCountry.Clone()
@@ -1139,22 +1139,22 @@ Namespace business
 #Region "Permissions"
         Private Sub LoadAvailablePermissions()
 
-            Dim availableDv As DataView = Me.State.MyBO.UserPermission.GetAvailablePermissions()
+            Dim availableDv As DataView = State.MyBO.UserPermission.GetAvailablePermissions()
             lstAvailablePermission.Items.Clear()
-            ElitaPlusPage.BindListControlToDataView(Me.lstAvailablePermission, availableDv, COL_DESCRIPTION_NAME, COL_ID_NAME, False)
+            ElitaPlusPage.BindListControlToDataView(lstAvailablePermission, availableDv, COL_DESCRIPTION_NAME, COL_ID_NAME, False)
 
         End Sub
 
         Private Sub LoadUserPermissions()
             Try
-                Dim selectedDv As DataView = Me.State.MyBO.UserPermission.GetSelectedPermissions()
+                Dim selectedDv As DataView = State.MyBO.UserPermission.GetSelectedPermissions()
                 lstSelectedPermission.Items.Clear()
-                ElitaPlusPage.BindListControlToDataView(Me.lstSelectedPermission, selectedDv, COL_DESCRIPTION_NAME, COL_ID_NAME, False)
+                ElitaPlusPage.BindListControlToDataView(lstSelectedPermission, selectedDv, COL_DESCRIPTION_NAME, COL_ID_NAME, False)
 
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(MAINTAIN_USER_FORM003)
-                Me.MasterPage.MessageController.AddError(ex.Message)
-                Me.MasterPage.MessageController.Show()
+                MasterPage.MessageController.AddError(MAINTAIN_USER_FORM003)
+                MasterPage.MessageController.AddError(ex.Message)
+                MasterPage.MessageController.Show()
 
             End Try
 
@@ -1169,10 +1169,10 @@ Namespace business
             lstAvailable.Items.Clear()
             '  ElitaPlusPage.BindListControlToDataView(Me.lstAvailable, availableDv, COL_DESCRIPTION_NAME, COL_ID_NAME, False)
             Dim listcontext As ListContext = New ListContext()
-            listcontext.UserId = Me.State.MyBO.Id
+            listcontext.UserId = State.MyBO.Id
             Dim availRoleLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("AvailableRolesByUser", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
 
-            Me.lstAvailable.Populate(availRoleLkl, New PopulateOptions())
+            lstAvailable.Populate(availRoleLkl, New PopulateOptions())
 
         End Sub
 
@@ -1182,14 +1182,14 @@ Namespace business
                 lstSelected.Items.Clear()
                 '  ElitaPlusPage.BindListControlToDataView(Me.lstSelected, selectedDv, COL_DESCRIPTION_NAME, COL_ID_NAME, False)
                 Dim listcontext As ListContext = New ListContext()
-                listcontext.UserId = Me.State.MyBO.Id
+                listcontext.UserId = State.MyBO.Id
                 Dim roleLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList(ListCodes.UserRoles, Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
 
-                Me.lstSelected.Populate(roleLkl, New PopulateOptions())
+                lstSelected.Populate(roleLkl, New PopulateOptions())
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(MAINTAIN_USER_FORM003)
-                Me.MasterPage.MessageController.AddError(ex.Message)
-                Me.MasterPage.MessageController.Show()
+                MasterPage.MessageController.AddError(MAINTAIN_USER_FORM003)
+                MasterPage.MessageController.AddError(ex.Message)
+                MasterPage.MessageController.Show()
 
             End Try
 
@@ -1197,18 +1197,18 @@ Namespace business
 
         Private Sub LoadExternalUserDetail()
             If IsExternal Then
-                If Me.State.MyBO.ExternalTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__DEALER_GROUP)) Then
+                If State.MyBO.ExternalTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__DEALER_GROUP)) Then
                     'User is dealer group
-                    BindSelectItem(Me.State.MyBO.ScDealerId.ToString, Me.cboDealerGroupId)
-                ElseIf Me.State.MyBO.ExternalTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__DEALER)) Then
+                    BindSelectItem(State.MyBO.ScDealerId.ToString, cboDealerGroupId)
+                ElseIf State.MyBO.ExternalTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__DEALER)) Then
                     'User is dealer
-                    BindSelectItem(Me.State.MyBO.ScDealerId.ToString, Me.cboDealerId)
-                ElseIf Me.State.MyBO.ExternalTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__SERVICE_CENTER)) Then
+                    BindSelectItem(State.MyBO.ScDealerId.ToString, cboDealerId)
+                ElseIf State.MyBO.ExternalTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__SERVICE_CENTER)) Then
                     'User is Service Center
-                    BindSelectItem(Me.State.MyBO.ScDealerId.ToString, Me.cboServiceCenterId)
-                ElseIf Me.State.MyBO.ExternalTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__OTHER)) Then
+                    BindSelectItem(State.MyBO.ScDealerId.ToString, cboServiceCenterId)
+                ElseIf State.MyBO.ExternalTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__OTHER)) Then
                     'User is Other
-                    Me.chkOther.Checked = True
+                    chkOther.Checked = True
                 End If
             End If
 
@@ -1260,38 +1260,38 @@ Namespace business
 
         Private Sub LoadAvailableCompany()
 
-            Me.cboCompanyAvailable.Items.Clear()
+            cboCompanyAvailable.Items.Clear()
             'Dim availableDv As DataView = Me.State.MyBO.GetAvailableAssignedCompanies(Me.State.MyBO.Id)
             cboCompanyAvailable.Items.Clear()
             ' ElitaPlusPage.BindListControlToDataView(Me.cboCompanyAvailable, availableDv, COL_DESCRIPTION_NAME, COL_ID_NAME, False)
             Dim listcontext As ListContext = New ListContext()
-            listcontext.UserId = Me.State.MyBO.Id
+            listcontext.UserId = State.MyBO.Id
             Dim comUesrLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("SelectedUserCompanyAssigned", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
             Dim comLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList(ListCodes.Company, Thread.CurrentPrincipal.GetLanguageCode())
             Dim FilteredRecord As ListItem() = (From x In comLkl
                                                 Where Not (comUesrLkl).Contains(x)
                                                 Select x).ToArray()
-            Me.cboCompanyAvailable.Populate(FilteredRecord, New PopulateOptions())
+            cboCompanyAvailable.Populate(FilteredRecord, New PopulateOptions())
 
         End Sub
 
         Private Sub LoadUserCompanys()
 
             Try
-                Me.Grid.DataSource = Me.State.UserCompanyAssigned
-                Me.Grid.DataBind()
+                Grid.DataSource = State.UserCompanyAssigned
+                Grid.DataBind()
 
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(MAINTAIN_USER_FORM003)
-                Me.MasterPage.MessageController.AddError(ex.Message)
-                Me.MasterPage.MessageController.Show()
+                MasterPage.MessageController.AddError(MAINTAIN_USER_FORM003)
+                MasterPage.MessageController.AddError(ex.Message)
+                MasterPage.MessageController.Show()
             End Try
 
         End Sub
 
-        Sub EndCompanyChildEdit(ByVal lastop As ElitaPlusPage.DetailPageCommand)
+        Sub EndCompanyChildEdit(lastop As ElitaPlusPage.DetailPageCommand)
             Try
-                With Me.State
+                With State
                     Select Case lastop
                         Case ElitaPlusPage.DetailPageCommand.OK
                             .MyCompanyChildBO.Save()
@@ -1307,13 +1307,13 @@ Namespace business
                     End Select
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Sub EndUserCompanyChildEdit(ByVal lastop As ElitaPlusPage.DetailPageCommand)
+        Sub EndUserCompanyChildEdit(lastop As ElitaPlusPage.DetailPageCommand)
             Try
-                With Me.State
+                With State
                     Select Case lastop
                         Case ElitaPlusPage.DetailPageCommand.OK
                             .MyUserCompanyChildBO.Save()
@@ -1329,20 +1329,20 @@ Namespace business
                     End Select
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
 
-        Private Sub ApplyCompanyChange(ByVal oCompanyId As Guid, ByVal oAuthorizationLimit As Decimal, ByVal oPaymentLimit As Decimal, ByVal oLiabilityOverrideLimit As Decimal)
-            Me.State.MyCompanyChildBO = Me.State.MyBO.AddCompanyGrpChild(oCompanyId, oAuthorizationLimit, oPaymentLimit, oLiabilityOverrideLimit)
-            Me.EndCompanyChildEdit(ElitaPlusPage.DetailPageCommand.OK)
+        Private Sub ApplyCompanyChange(oCompanyId As Guid, oAuthorizationLimit As Decimal, oPaymentLimit As Decimal, oLiabilityOverrideLimit As Decimal)
+            State.MyCompanyChildBO = State.MyBO.AddCompanyGrpChild(oCompanyId, oAuthorizationLimit, oPaymentLimit, oLiabilityOverrideLimit)
+            EndCompanyChildEdit(ElitaPlusPage.DetailPageCommand.OK)
         End Sub
 
-        Private Sub DeleteCompany(ByVal CurrentListItem As System.Web.UI.WebControls.ListItem)
+        Private Sub DeleteCompany(CurrentListItem As System.Web.UI.WebControls.ListItem)
             Dim oCompanyId As New Guid(CurrentListItem.Value)
-            Me.State.MyCompanyChildBO = Me.State.MyBO.GetCompanyGrpChild(oCompanyId)
-            Me.EndCompanyChildEdit(ElitaPlusPage.DetailPageCommand.Delete)
+            State.MyCompanyChildBO = State.MyBO.GetCompanyGrpChild(oCompanyId)
+            EndCompanyChildEdit(ElitaPlusPage.DetailPageCommand.Delete)
         End Sub
 
         Private Sub DeleteAllCompanies()
@@ -1356,10 +1356,10 @@ Namespace business
             Dim oFirstCompanyAssignedId As Guid = Guid.Empty
             Dim oFirstCompnayAssignedName As String = String.Empty
 
-            Me.State.MyBO.InitCompanyGrpTable()
+            State.MyBO.InitCompanyGrpTable()
 
             ' Delete companies that are in the DB 
-            For Each oListItem In Me.State.MyCurrentSelectedList.Items
+            For Each oListItem In State.MyCurrentSelectedList.Items
                 Try
                     DeleteCompany(oListItem)
                 Catch ex As Exception
@@ -1368,7 +1368,7 @@ Namespace business
 
             ' Add Selected Companies
             Dim dr As DataRow
-            For Each dr In Me.State.UserCompanyAssigned.Table.Rows
+            For Each dr In State.UserCompanyAssigned.Table.Rows
                 Try
                     Dim oCurrentCompanyId As Guid = New Guid(CType(dr(Assurant.ElitaPlus.DALObjects.UserDAL.COL_NAME_COMPANY_ID), Byte()))
                     ApplyCompanyChange(oCurrentCompanyId,
@@ -1385,7 +1385,7 @@ Namespace business
                         End If
                     End If
                 Catch ex As Exception
-                    Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                    HandleErrors(ex, MasterPage.MessageController)
                 End Try
             Next
 
@@ -1396,9 +1396,9 @@ Namespace business
             Dim flag As Boolean = False
             For Each oCompanyID In State.MyBO.Companies
                 Try
-                    If BusinessObjectBase.FindRow(oCompanyID, UserCompanyAssigned.COL_COMPANY_ID, Me.State.UserCompanyAssigned.Table) Is Nothing Then
-                        Me.State.MyUserCompanyChildBO = Me.State.MyBO.GetUserCompanyGrpChild(oCompanyID)
-                        Me.EndUserCompanyChildEdit(ElitaPlusPage.DetailPageCommand.Delete)
+                    If BusinessObjectBase.FindRow(oCompanyID, UserCompanyAssigned.COL_COMPANY_ID, State.UserCompanyAssigned.Table) Is Nothing Then
+                        State.MyUserCompanyChildBO = State.MyBO.GetUserCompanyGrpChild(oCompanyID)
+                        EndUserCompanyChildEdit(ElitaPlusPage.DetailPageCommand.Delete)
                     Else
                         flag = True
                     End If
@@ -1410,16 +1410,16 @@ Namespace business
             'If there is not a single assigned company add the first one of Usr Assigned Companies
             If Not flag Then
                 'Added condition to check If UserCompanyAssigned has no value then skip adding User Assigned Companies. Def-24047.
-                If (Me.State.UserCompanyAssigned.Table IsNot Nothing And Me.State.UserCompanyAssigned.Table.Rows.Count > 0) Then
-                    Me.State.MyUserCompanyChildBO = Me.State.MyBO.AddUserCompanyGrpChild(New Guid(CType(Me.State.UserCompanyAssigned.Table.Rows(0)(Assurant.ElitaPlus.DALObjects.UserDAL.COL_NAME_COMPANY_ID), Byte())))
-                    Me.EndUserCompanyChildEdit(ElitaPlusPage.DetailPageCommand.OK)
+                If (State.UserCompanyAssigned.Table IsNot Nothing AndAlso State.UserCompanyAssigned.Table.Rows.Count > 0) Then
+                    State.MyUserCompanyChildBO = State.MyBO.AddUserCompanyGrpChild(New Guid(CType(State.UserCompanyAssigned.Table.Rows(0)(Assurant.ElitaPlus.DALObjects.UserDAL.COL_NAME_COMPANY_ID), Byte())))
+                    EndUserCompanyChildEdit(ElitaPlusPage.DetailPageCommand.OK)
                 End If
             End If
         End Sub
 
         Private Sub ClearCompanies()
             ClearList(cboCompanyAvailable)
-            Me.State.UserCompanyAssigned.Table.Rows.Clear()
+            State.UserCompanyAssigned.Table.Rows.Clear()
             RefreshAssignedCompany()
         End Sub
 
@@ -1427,7 +1427,7 @@ Namespace business
             Dim dr As DataRow
             Dim selectedCompanyArray As New ArrayList
 
-            For Each dr In Me.State.UserCompanyAssigned.Table.Rows
+            For Each dr In State.UserCompanyAssigned.Table.Rows
                 selectedCompanyArray.Add(GetGuidFromString(GetGuidStringFromByteArray(CType(dr(UserCompanyAssigned.COL_COMPANY_ID), Byte()))))
             Next
             Return selectedCompanyArray
@@ -1437,13 +1437,13 @@ Namespace business
 
 #Region "User Grid Releated"
         'The Binding LOgic is here
-        Public Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+        Public Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
             Try
 
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-                If Not dvRow Is Nothing Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                If dvRow IsNot Nothing Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
                         If State.IsEditing OrElse State.ViewOnly Then
                             e.Row.Cells(GRID_COL_EDIT_BUTTON_IDX).FindControl(EDIT_COMPANY_BUTTON).Visible = False
                             e.Row.Cells(GRID_COL_EDIT_BUTTON_IDX).FindControl(DELETE_COMPANY_BUTTON).Visible = False
@@ -1465,68 +1465,68 @@ Namespace business
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
 
-        Protected Sub Grid_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
+        Protected Sub Grid_ItemCommand(source As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
             Try
-                If e.CommandName = Me.DELETE_ACTION Then
+                If e.CommandName = DELETE_ACTION Then
                     Dim index As Integer = CInt(e.CommandArgument)
 
                     'REQ 861
                     'Check if the Company you are trying to remove has any work queue assigned for this user
                     'if yes then don't allow to remove/delete that company from assigned company
-                    Dim Comp_id As Guid = New Guid(Me.Grid.Rows(index).Cells(Me.GRID_COL_COMPANY_ID_IDX).Text)
-                    If Not Me.State.MyBO.CheckWorkQueueAssigned(Comp_id) Then
+                    Dim Comp_id As Guid = New Guid(Grid.Rows(index).Cells(GRID_COL_COMPANY_ID_IDX).Text)
+                    If Not State.MyBO.CheckWorkQueueAssigned(Comp_id) Then
                         Throw New GUIException(Message.WRkQueue_COMPANY_USER_EXISTS, Assurant.ElitaPlus.Common.ErrorCodes.WORKQUEUE_COMPANY_EXISTS)
                     End If
 
                     Dim oCompanyListItem As New System.Web.UI.WebControls.ListItem
                     With oCompanyListItem
-                        .Text = Me.Grid.Rows(index).Cells(Me.GRID_COL_COMPANY_NAME_IDX).Text
-                        .Value = Me.Grid.Rows(index).Cells(Me.GRID_COL_COMPANY_ID_IDX).Text
+                        .Text = Grid.Rows(index).Cells(GRID_COL_COMPANY_NAME_IDX).Text
+                        .Value = Grid.Rows(index).Cells(GRID_COL_COMPANY_ID_IDX).Text
                     End With
                     cboCompanyAvailable.Items.Add(oCompanyListItem)
                     Dim dr As DataRow
-                    For Each dr In Me.State.UserCompanyAssigned.Table.Rows
+                    For Each dr In State.UserCompanyAssigned.Table.Rows
                         If (GetGuidStringFromByteArray(CType(dr(UserCompanyAssigned.COL_COMPANY_ID), Byte())) = oCompanyListItem.Value) Then
-                            Me.State.UserCompanyAssigned.Table.Rows.Remove(dr)
+                            State.UserCompanyAssigned.Table.Rows.Remove(dr)
                             Exit For
                         End If
                     Next
                     RefreshAssignedCompany()
                     LoadCompanyGrpDropDownLists()
                     Grid.EditIndex = -1
-                    Me.State.IsEditing = False
-                    Me.State.DataChanged = True
-                ElseIf e.CommandName = Me.EDIT_ACTION Then
+                    State.IsEditing = False
+                    State.DataChanged = True
+                ElseIf e.CommandName = EDIT_ACTION Then
                     Dim index As Integer = CInt(e.CommandArgument)
                     Grid.EditIndex = index
                     Grid.SelectedIndex = index
                     SetButtons(False)
-                    Me.State.IsEditing = True
+                    State.IsEditing = True
                     RefreshAssignedCompany()
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
 #End Region
 
 #Region "User Security - Grid related events"
-        Public Sub GridViewUserSecurity_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridViewUserSecurity.RowDataBound
+        Public Sub GridViewUserSecurity_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridViewUserSecurity.RowDataBound
             Try
 
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-                If Not dvRow Is Nothing Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                        If Me.State.IsEditing Then
-                            e.Row.Cells(Me.USER_SECURITY_GRID_COL_EDIT_BUTTON_IDX).FindControl(Me.EDIT_SP_CLAIM_BUTTON).Visible = False
+                If dvRow IsNot Nothing Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
+                        If State.IsEditing Then
+                            e.Row.Cells(USER_SECURITY_GRID_COL_EDIT_BUTTON_IDX).FindControl(EDIT_SP_CLAIM_BUTTON).Visible = False
                         End If
 
                         Dim SpUserClaimsID As String
@@ -1535,18 +1535,18 @@ Namespace business
                         Else
                             SpUserClaimsID = GetGuidStringFromByteArray(CType(dvRow(SpUserClaims.COL_NAME_SP_USER_CLAIMS_ID), Byte()), "true")
                         End If
-                        CType(e.Row.Cells(Me.USER_SECURITY_GRID_COL_SP_USER_CLAIMS_ID_IDX).FindControl(Me.SP_USER_CLAIMS_ID_LABEL), Label).Text = SpUserClaimsID
-                        CType(e.Row.Cells(Me.USER_SECURITY_GRID_COL_SP_CLAIM_TYPE_ID_IDX).FindControl(Me.SP_CLAIM_TYPE_ID_LABEL), Label).Text = GetGuidStringFromByteArray(CType(dvRow(SpUserClaims.COL_NAME_SP_CLAIM_TYPE_ID), Byte()))
-                        CType(e.Row.Cells(Me.USER_SECURITY_GRID_COL_SP_CLAIM_CODE_DESCRIPTION_IDX).FindControl(Me.SP_CLAIM_CODE_DESCRIPTION_LABEL), Label).Text = dvRow(SpUserClaims.COL_NAME_SP_CLAIM_CODE_DESCRIPTION).ToString
-                        CType(e.Row.Cells(Me.USER_SECURITY_GRID_COL_SP_CLAIM_VALUE_IDX).FindControl(Me.SP_CLAIM_VALUE_LABEL), Label).Text = dvRow(SpUserClaims.COL_NAME_SP_CLAIM_VALUE).ToString
+                        CType(e.Row.Cells(USER_SECURITY_GRID_COL_SP_USER_CLAIMS_ID_IDX).FindControl(SP_USER_CLAIMS_ID_LABEL), Label).Text = SpUserClaimsID
+                        CType(e.Row.Cells(USER_SECURITY_GRID_COL_SP_CLAIM_TYPE_ID_IDX).FindControl(SP_CLAIM_TYPE_ID_LABEL), Label).Text = GetGuidStringFromByteArray(CType(dvRow(SpUserClaims.COL_NAME_SP_CLAIM_TYPE_ID), Byte()))
+                        CType(e.Row.Cells(USER_SECURITY_GRID_COL_SP_CLAIM_CODE_DESCRIPTION_IDX).FindControl(SP_CLAIM_CODE_DESCRIPTION_LABEL), Label).Text = dvRow(SpUserClaims.COL_NAME_SP_CLAIM_CODE_DESCRIPTION).ToString
+                        CType(e.Row.Cells(USER_SECURITY_GRID_COL_SP_CLAIM_VALUE_IDX).FindControl(SP_CLAIM_VALUE_LABEL), Label).Text = dvRow(SpUserClaims.COL_NAME_SP_CLAIM_VALUE).ToString
 
                         'If (dvRow(SpUserClaims.COL_NAME_SP_CLAIM_CODE_DESCRIPTION).ToString = "Client IP Address") Then
-                        CType(e.Row.Cells(Me.USER_SECURITY_GRID_COL_SP_CLAIM_VALID_FROM_IDX).FindControl(Me.SP_CLAIM_EFFECTIVEDATE_LABEL), Label).Text = GetDateFormattedStringNullable(dvRow(SpUserClaims.COL_NAME_EFFECTIVE_DATE))
+                        CType(e.Row.Cells(USER_SECURITY_GRID_COL_SP_CLAIM_VALID_FROM_IDX).FindControl(SP_CLAIM_EFFECTIVEDATE_LABEL), Label).Text = GetDateFormattedStringNullable(dvRow(SpUserClaims.COL_NAME_EFFECTIVE_DATE))
 
-                        If (e.Row.DataItemIndex = Me.GridViewUserSecurity.EditIndex) Then
-                            CType(e.Row.Cells(Me.USER_SECURITY_GRID_COL_SP_CLAIM_VALID_TO_IDX).FindControl(Me.SP_CLAIM_EXPIRATIONDATE_TEXT), TextBox).Text = GetDateFormattedStringNullable(dvRow(SpUserClaims.COL_NAME_EXPIRATION_DATE))
+                        If (e.Row.DataItemIndex = GridViewUserSecurity.EditIndex) Then
+                            CType(e.Row.Cells(USER_SECURITY_GRID_COL_SP_CLAIM_VALID_TO_IDX).FindControl(SP_CLAIM_EXPIRATIONDATE_TEXT), TextBox).Text = GetDateFormattedStringNullable(dvRow(SpUserClaims.COL_NAME_EXPIRATION_DATE))
                         Else
-                            CType(e.Row.Cells(Me.USER_SECURITY_GRID_COL_SP_CLAIM_VALID_TO_IDX).FindControl(Me.SP_CLAIM_EXPIRATIONDATE_LABEL), Label).Text = GetDateFormattedStringNullable(dvRow(SpUserClaims.COL_NAME_EXPIRATION_DATE))
+                            CType(e.Row.Cells(USER_SECURITY_GRID_COL_SP_CLAIM_VALID_TO_IDX).FindControl(SP_CLAIM_EXPIRATIONDATE_LABEL), Label).Text = GetDateFormattedStringNullable(dvRow(SpUserClaims.COL_NAME_EXPIRATION_DATE))
                         End If
                         'Else
                         '    CType(e.Row.Cells(Me.USER_SECURITY_GRID_COL_SP_CLAIM_VALID_FROM_IDX).FindControl(Me.SP_CLAIM_EFFECTIVEDATE_LABEL), Label).Text = String.Empty
@@ -1555,33 +1555,33 @@ Namespace business
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Protected Sub GridViewUserSecurity_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles GridViewUserSecurity.RowCommand
+        Protected Sub GridViewUserSecurity_ItemCommand(source As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles GridViewUserSecurity.RowCommand
             Dim oGridViewrow As GridViewRow
             Dim effectiveDateImageButton As ImageButton
             Dim effectiveDateText As TextBox
             Try
-                If e.CommandName = Me.EDIT_ACTION Then
+                If e.CommandName = EDIT_ACTION Then
                     Dim index As Integer = CInt(e.CommandArgument)
                     GridViewUserSecurity.EditIndex = index
                     GridViewUserSecurity.SelectedIndex = index
                     SetUserSecurityButtons(False)
-                    Me.State.IsEditing = True
-                    Me.State.EnabledUserSecurityEditButton = False
+                    State.IsEditing = True
+                    State.EnabledUserSecurityEditButton = False
                     RefreshSpUserClaims()
 
                     'Date Calendars
                     oGridViewrow = GridViewUserSecurity.Rows(index)
                     effectiveDateImageButton = CType(oGridViewrow.FindControl(SP_CLAIM_EXPIRATIONDATE_IMAGEBUTTON_NAME), ImageButton)
                     effectiveDateText = CType(oGridViewrow.FindControl(SP_CLAIM_EXPIRATIONDATE_TEXT), TextBox)
-                    Me.AddCalendar_New(effectiveDateImageButton, effectiveDateText)
+                    AddCalendar_New(effectiveDateImageButton, effectiveDateText)
 
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -1589,9 +1589,9 @@ Namespace business
 
 #Region "User Security - SP Claim Related Events"
         Protected Sub SpClaimCodeDropDown_SelectedIndexChanged(sender As Object, e As EventArgs) Handles SpClaimCodeDropDown.SelectedIndexChanged
-            If (Me.SpClaimCodeDropDown.SelectedItem.Value = "") Then
+            If (SpClaimCodeDropDown.SelectedItem.Value = "") Then
                 HideControlsForSpClaims()
-            ElseIf (Me.SpClaimCodeDropDown.SelectedItem.Value = SP_CLAIM_X509_CERTIFICATE_CODE) Then
+            ElseIf (SpClaimCodeDropDown.SelectedItem.Value = SP_CLAIM_X509_CERTIFICATE_CODE) Then
                 CertificateFile.Visible = True
                 SpClaimValue.Visible = False
                 SpClaimEffectiveDate.Visible = False
@@ -1622,7 +1622,7 @@ Namespace business
                 SpClaimDealer.Visible = False
                 SpClaimValueLabel.Text = TranslationBase.TranslateLabelOrMessage(SpClaimCodeDropDown.SelectedItem.Value)
 
-                If (Me.SpClaimCodeDropDown.SelectedItem.Value = SP_CLAIM_SERVICE_CENTER) Then
+                If (SpClaimCodeDropDown.SelectedItem.Value = SP_CLAIM_SERVICE_CENTER) Then
                     SpClaimCountry.Visible = True
                 End If
 
@@ -1631,20 +1631,20 @@ Namespace business
 
         Protected Sub AddSpClaimButton_Click(sender As Object, e As EventArgs) Handles AddSpClaimButton.Click
             Try
-                If Me.SpClaimCodeDropDown.SelectedItem Is Nothing Then Exit Sub
+                If SpClaimCodeDropDown.SelectedItem Is Nothing Then Exit Sub
 
                 Dim IsSPClaimValid As Boolean = False
                 Dim EffectiveDateresult As Date
                 Dim ExpirationDateresult As Date
 
                 Dim dr As DataRow
-                dr = Me.State.SpUserClaimDv.Table.NewRow()
+                dr = State.SpUserClaimDv.Table.NewRow()
 
-                Dim oSpClaimType As New SpClaimTypes(Me.SpClaimCodeDropDown.SelectedItem.Value.ToString())
+                Dim oSpClaimType As New SpClaimTypes(SpClaimCodeDropDown.SelectedItem.Value.ToString())
 
-                If (Me.SpClaimCodeDropDown.SelectedItem.Value = SP_CLAIM_X509_CERTIFICATE_CODE) Then
-                    If (Me.CertificateFileUpload.Value Is Nothing) OrElse
-                        (Me.CertificateFileUpload.PostedFile.ContentLength = 0) Then
+                If (SpClaimCodeDropDown.SelectedItem.Value = SP_CLAIM_X509_CERTIFICATE_CODE) Then
+                    If (CertificateFileUpload.Value Is Nothing) OrElse
+                        (CertificateFileUpload.PostedFile.ContentLength = 0) Then
                         ' OrElse (Me.CertificateFileUpload.PostedFile.ContentType <> "application/x-x509-ca-cert") Then
                         Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_CERTIFICATE_FILE_ERR, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_CERTIFICATE_FILE_ERR)
                     End If
@@ -1665,22 +1665,22 @@ Namespace business
                         Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_CERTIFICATE_FILE_ERR, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_CERTIFICATE_FILE_ERR)
                     End Try
 
-                ElseIf (Me.SpClaimCodeDropDown.SelectedItem.Value = SP_CLAIM_CLIENT_IP_ADDRESS) Then
+                ElseIf (SpClaimCodeDropDown.SelectedItem.Value = SP_CLAIM_CLIENT_IP_ADDRESS) Then
                     Dim ValidIPaddress As IPAddress
-                    If IPAddress.TryParse(Me.SpClaimValueTextBox.Text, ValidIPaddress) Then
-                        dr(SpUserClaims.COL_NAME_SP_CLAIM_VALUE) = Me.SpClaimValueTextBox.Text
+                    If IPAddress.TryParse(SpClaimValueTextBox.Text, ValidIPaddress) Then
+                        dr(SpUserClaims.COL_NAME_SP_CLAIM_VALUE) = SpClaimValueTextBox.Text
                     Else
                         Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_IP_ADDRESS_ERR, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_IP_ADDRESS_ERR)
                     End If                    
 
-                ElseIf (Me.SpClaimCodeDropDown.SelectedItem.Value = SP_CLAIM_DEALER) Then
-                    dr(SpUserClaims.COL_NAME_SP_CLAIM_VALUE) = Me.txtDealerCode.Text.ToUpper()                   
+                ElseIf (SpClaimCodeDropDown.SelectedItem.Value = SP_CLAIM_DEALER) Then
+                    dr(SpUserClaims.COL_NAME_SP_CLAIM_VALUE) = txtDealerCode.Text.ToUpper()                   
 
                 Else
-                    If (Me.SpClaimCodeDropDown.SelectedItem.Value = SP_CLAIM_SERVICE_CENTER) Then
-                        dr(SpUserClaims.COL_NAME_SP_CLAIM_VALUE) = Me.SpClaimCountryTextBox.Text.ToUpper() + "#" + Me.SpClaimValueTextBox.Text.ToUpper()
+                    If (SpClaimCodeDropDown.SelectedItem.Value = SP_CLAIM_SERVICE_CENTER) Then
+                        dr(SpUserClaims.COL_NAME_SP_CLAIM_VALUE) = SpClaimCountryTextBox.Text.ToUpper() + "#" + SpClaimValueTextBox.Text.ToUpper()
                     Else
-                        dr(SpUserClaims.COL_NAME_SP_CLAIM_VALUE) = Me.SpClaimValueTextBox.Text.ToUpper()
+                        dr(SpUserClaims.COL_NAME_SP_CLAIM_VALUE) = SpClaimValueTextBox.Text.ToUpper()
                     End If
                    
                     ''''check for newly added claims whether user is allowed to access
@@ -1690,14 +1690,14 @@ Namespace business
                 End If
 
                 ''''Date Validations
-                If (Me.SpClaimCodeDropDown.SelectedItem.Value <> SP_CLAIM_X509_CERTIFICATE_CODE) Then
-                    If Date.TryParse(Me.ValidFromText.Text, EffectiveDateresult) Then
+                If (SpClaimCodeDropDown.SelectedItem.Value <> SP_CLAIM_X509_CERTIFICATE_CODE) Then
+                    If Date.TryParse(ValidFromText.Text, EffectiveDateresult) Then
                         dr(SpUserClaims.COL_NAME_EFFECTIVE_DATE) = GetDateFormattedStringNullable(EffectiveDateresult)
                     Else
                         Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.GUI_VALID_FROM_DATE_REQUIRED_ERR, Assurant.ElitaPlus.Common.ErrorCodes.GUI_VALID_FROM_DATE_REQUIRED_ERR)
                     End If
 
-                    If Date.TryParse(Me.ValidToText.Text, ExpirationDateresult) Then
+                    If Date.TryParse(ValidToText.Text, ExpirationDateresult) Then
                         dr(SpUserClaims.COL_NAME_EXPIRATION_DATE) = GetDateFormattedStringNullable(ExpirationDateresult)
                     Else
                         Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.GUI_VALID_TO_DATE_REQUIRED_ERR, Assurant.ElitaPlus.Common.ErrorCodes.GUI_VALID_TO_DATE_REQUIRED_ERR)
@@ -1716,26 +1716,26 @@ Namespace business
                 
 
                 dr(SpUserClaims.COL_NAME_SP_CLAIM_TYPE_ID) = oSpClaimType.Id.ToByteArray()
-                dr(SpUserClaims.COL_NAME_SP_CLAIM_CODE_DESCRIPTION) = Me.SpClaimCodeDropDown.SelectedItem.Text
-                dr(SpUserClaims.COL_NAME_USER_ID) = Me.State.MyBO.Id.ToByteArray()
+                dr(SpUserClaims.COL_NAME_SP_CLAIM_CODE_DESCRIPTION) = SpClaimCodeDropDown.SelectedItem.Text
+                dr(SpUserClaims.COL_NAME_USER_ID) = State.MyBO.Id.ToByteArray()
 
-                Me.State.SpUserClaimDv.Table.Rows.Add(dr)
-                Me.State.EnabledUserSecurityEditButton = False
-                Me.State.UserSecurityDataChanged = True
+                State.SpUserClaimDv.Table.Rows.Add(dr)
+                State.EnabledUserSecurityEditButton = False
+                State.UserSecurityDataChanged = True
                 RefreshSpUserClaims()
                 ClearSpClaimForm()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Private Function ValidateSpClaim(ByVal NewSpClaimTypeId As String, ByVal NewSpClaimValue As String, ByVal NewClaimEffectiveDate As Date, ByVal NewClaimExpirationDate As Date, Optional ByVal isNewSpClaim As Boolean = True) As Boolean
+        Private Function ValidateSpClaim(NewSpClaimTypeId As String, NewSpClaimValue As String, NewClaimEffectiveDate As Date, NewClaimExpirationDate As Date, Optional ByVal isNewSpClaim As Boolean = True) As Boolean
 
             Dim SPClaimTypeId As String
             Dim SPClaimValue As String
             Dim EffectiveDate As Date
             Dim ExpirationDate As Date
-            Dim SPClaimDV As DataView = Me.State.SpUserClaimDv.Table.DefaultView
+            Dim SPClaimDV As DataView = State.SpUserClaimDv.Table.DefaultView
             Dim dr As DataRow
 
             For Each dr In SPClaimDV.Table.Rows
@@ -1758,7 +1758,7 @@ Namespace business
                     End If
 
                 Catch ex As Exception
-                    Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                    HandleErrors(ex, MasterPage.MessageController)
                 End Try
             Next
             Return True
@@ -1767,38 +1767,38 @@ Namespace business
             Try
                 ClearSpClaimForm()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region
 
 #Region "User Security - Others"
         Private Sub ClearSpClaimForm()
-            Me.SpClaimValueTextBox.Text = String.Empty
-            Me.ValidFromText.Text = String.Empty
-            Me.ValidToText.Text = String.Empty
-            Me.SpClaimCountryTextBox.Text = String.Empty
-            Me.txtDealerCode.Text = String.Empty
+            SpClaimValueTextBox.Text = String.Empty
+            ValidFromText.Text = String.Empty
+            ValidToText.Text = String.Empty
+            SpClaimCountryTextBox.Text = String.Empty
+            txtDealerCode.Text = String.Empty
         End Sub
         Private Sub LoadSpUserClaims()
-            Me.State.SpUserClaimDv = Me.State.MyBO.GetSpUserClaims(Me.State.MyBO.Id, Me.State.MyBO.LanguageId, SP_CLAIM_CODE)
-            Me.State.SpUserClaimDv.Table.DefaultView.Sort = SpUserClaims.COL_NAME_SP_CLAIM_TYPE_ID & " ASC," & SpUserClaims.COL_NAME_SP_CLAIM_VALUE & " ASC," & SpUserClaims.COL_NAME_EFFECTIVE_DATE & " DESC," & SpUserClaims.COL_NAME_EXPIRATION_DATE & " DESC"
+            State.SpUserClaimDv = State.MyBO.GetSpUserClaims(State.MyBO.Id, State.MyBO.LanguageId, SP_CLAIM_CODE)
+            State.SpUserClaimDv.Table.DefaultView.Sort = SpUserClaims.COL_NAME_SP_CLAIM_TYPE_ID & " ASC," & SpUserClaims.COL_NAME_SP_CLAIM_VALUE & " ASC," & SpUserClaims.COL_NAME_EFFECTIVE_DATE & " DESC," & SpUserClaims.COL_NAME_EXPIRATION_DATE & " DESC"
             RefreshSpUserClaims()
         End Sub
         Private Sub RefreshSpUserClaims()
-            If Me.State.EnabledUserSecurityEditButton = True Then
-                Me.GridViewUserSecurity.Columns(USER_SECURITY_GRID_COL_EDIT_BUTTON_IDX).Visible = True
+            If State.EnabledUserSecurityEditButton = True Then
+                GridViewUserSecurity.Columns(USER_SECURITY_GRID_COL_EDIT_BUTTON_IDX).Visible = True
             Else
-                Me.GridViewUserSecurity.Columns(USER_SECURITY_GRID_COL_EDIT_BUTTON_IDX).Visible = False
+                GridViewUserSecurity.Columns(USER_SECURITY_GRID_COL_EDIT_BUTTON_IDX).Visible = False
             End If
-            Me.GridViewUserSecurity.DataSource = Me.State.SpUserClaimDv.Table.DefaultView
-            Me.GridViewUserSecurity.DataBind()
+            GridViewUserSecurity.DataSource = State.SpUserClaimDv.Table.DefaultView
+            GridViewUserSecurity.DataBind()
         End Sub
-        Private Sub SetUserSecurityButtons(ByVal enable As Boolean)
+        Private Sub SetUserSecurityButtons(enable As Boolean)
             SetButtons(enable)
 
-            Dim actionEnabled As Boolean = enable And Not State.ViewOnly
-            Dim actionNotEnabled As Boolean = Not enable And Not State.ViewOnly
+            Dim actionEnabled As Boolean = enable AndAlso Not State.ViewOnly
+            Dim actionNotEnabled As Boolean = Not enable AndAlso Not State.ViewOnly
 
             ControlMgr.SetEnableControl(Me, ClearButton, actionEnabled)
             ControlMgr.SetEnableControl(Me, AddSpClaimButton, True)
@@ -1808,16 +1808,16 @@ Namespace business
         End Sub
         Protected Sub PopulateSpClaimCodeDropdowns()
             'Me.SpClaimCodeDropDown.PopulateOld("SP_CLAIM_CODE", ListValueType.Description, ListValueType.Code, PopulateBehavior.AddBlankListItem, String.Empty, ListValueType.Description)
-            Me.SpClaimCodeDropDown.Populate(CommonConfigManager.Current.ListManager.GetList("SP_CLAIM_CODE", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+            SpClaimCodeDropDown.Populate(CommonConfigManager.Current.ListManager.GetList("SP_CLAIM_CODE", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                {
                  .ValueFunc = AddressOf .GetCode,
                  .AddBlankItem = True,
                  .BlankItemValue = String.Empty
                })
         End Sub
-        Private Sub UserSecurityBoAction(ByVal LastAction As ElitaPlusPage.DetailPageCommand)
+        Private Sub UserSecurityBoAction(LastAction As ElitaPlusPage.DetailPageCommand)
             Try
-                With Me.State
+                With State
                     Select Case LastAction
                         Case ElitaPlusPage.DetailPageCommand.OK
                             .SpUserClaim.Save()
@@ -1836,14 +1836,14 @@ Namespace business
                     End Select
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub AddSecurityPermissionClaim()
             Dim dr As DataRow
             Dim oCurrentSpClaimsId As Guid
-            For Each dr In Me.State.SpUserClaimDv.Table.Rows
+            For Each dr In State.SpUserClaimDv.Table.Rows
                 Try
                     If dr(SpUserClaims.COL_NAME_SP_USER_CLAIMS_ID).ToString = String.Empty Then
                         oCurrentSpClaimsId = Guid.Empty
@@ -1853,44 +1853,44 @@ Namespace business
 
                     If oCurrentSpClaimsId.Equals(Guid.Empty) Then
                         Dim oCurrentSpClaimTypeId As Guid = New Guid(CType(dr(SpUserClaims.COL_NAME_SP_CLAIM_TYPE_ID), Byte()))
-                        Me.State.SpUserClaim = Me.State.MyBO.AddSecurityClaim(oCurrentSpClaimTypeId, CType(dr(SpUserClaims.COL_NAME_SP_CLAIM_VALUE), String), CType(dr(SpUserClaims.COL_NAME_EFFECTIVE_DATE), DateTime), CType(dr(SpUserClaims.COL_NAME_EXPIRATION_DATE), DateTime))
-                        Me.UserSecurityBoAction(ElitaPlusPage.DetailPageCommand.OK)
+                        State.SpUserClaim = State.MyBO.AddSecurityClaim(oCurrentSpClaimTypeId, CType(dr(SpUserClaims.COL_NAME_SP_CLAIM_VALUE), String), CType(dr(SpUserClaims.COL_NAME_EFFECTIVE_DATE), DateTime), CType(dr(SpUserClaims.COL_NAME_EXPIRATION_DATE), DateTime))
+                        UserSecurityBoAction(ElitaPlusPage.DetailPageCommand.OK)
                     Else
-                        Me.State.SpUserClaim = Me.State.MyBO.GetSecurityClaim(oCurrentSpClaimsId)
-                        If CType(dr(SpUserClaims.COL_NAME_EXPIRATION_DATE), DateTime) <> Me.State.SpUserClaim.ExpirationDate Then
-                            Me.State.SpUserClaim.ExpirationDate = CType(dr(SpUserClaims.COL_NAME_EXPIRATION_DATE), DateTime)
-                            Me.UserSecurityBoAction(ElitaPlusPage.DetailPageCommand.Save)
+                        State.SpUserClaim = State.MyBO.GetSecurityClaim(oCurrentSpClaimsId)
+                        If CType(dr(SpUserClaims.COL_NAME_EXPIRATION_DATE), DateTime) <> State.SpUserClaim.ExpirationDate Then
+                            State.SpUserClaim.ExpirationDate = CType(dr(SpUserClaims.COL_NAME_EXPIRATION_DATE), DateTime)
+                            UserSecurityBoAction(ElitaPlusPage.DetailPageCommand.Save)
                         End If
                     End If
                 Catch ex As Exception
-                    Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                    HandleErrors(ex, MasterPage.MessageController)
                 End Try
             Next
         End Sub
         Private Sub CloneSecurityPermissionClaim()
             Dim dr As DataRow
-            For Each dr In Me.State.SpUserClaimDv.Table.Rows
+            For Each dr In State.SpUserClaimDv.Table.Rows
                 Try
                     dr(SpUserClaims.COL_NAME_SP_USER_CLAIMS_ID) = Guid.Empty.ToByteArray()
                 Catch ex As Exception
-                    Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                    HandleErrors(ex, MasterPage.MessageController)
                 End Try
             Next
-            Me.State.UserSecurityDataChanged = True
-            Me.State.EnabledUserSecurityEditButton = False
+            State.UserSecurityDataChanged = True
+            State.EnabledUserSecurityEditButton = False
 
         End Sub
         Private Sub ExpirySecurityPermissionClaim()
             Dim dr As DataRow
-            For Each dr In Me.State.SpUserClaimDv.Table.Rows
+            For Each dr In State.SpUserClaimDv.Table.Rows
                 Try
                     If dr(SpUserClaims.COL_NAME_SP_USER_CLAIMS_ID).ToString <> String.Empty Then
                         Dim oCurrentSpClaimsId As Guid = New Guid(CType(dr(SpUserClaims.COL_NAME_SP_USER_CLAIMS_ID), Byte()))
-                        Me.State.SpUserClaim = Me.State.MyBO.GetSecurityClaim(oCurrentSpClaimsId)
-                        Me.UserSecurityBoAction(ElitaPlusPage.DetailPageCommand.Delete)
+                        State.SpUserClaim = State.MyBO.GetSecurityClaim(oCurrentSpClaimsId)
+                        UserSecurityBoAction(ElitaPlusPage.DetailPageCommand.Delete)
                     End If
                 Catch ex As Exception
-                    Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                    HandleErrors(ex, MasterPage.MessageController)
                 End Try
             Next
         End Sub
@@ -1918,22 +1918,22 @@ Namespace business
         End Function
         Private Function isDealerCodeValid(dealerCode As String) As Boolean
             Try
-                Return BusinessObjectsNew.User.IsDealerValidForUserClaim(Me.State.MyBO.Id, dealerCode)
+                Return BusinessObjectsNew.User.IsDealerValidForUserClaim(State.MyBO.Id, dealerCode)
             Catch ex As Exception
 
             End Try
         End Function
 
         Private Function isDealerGroupValid(dealerGroupCode As String) As Boolean
-            Return BusinessObjectsNew.User.IsDealerGroupValidForUserClaim(Me.State.MyBO.Id, dealerGroupCode)
+            Return BusinessObjectsNew.User.IsDealerGroupValidForUserClaim(State.MyBO.Id, dealerGroupCode)
         End Function
 
         Private Function isCompanyGroupValid(companyGroupCode As String) As Boolean
-            Return BusinessObjectsNew.User.IsCompanyGroupValidForUserClaim(Me.State.MyBO.Id, companyGroupCode)
+            Return BusinessObjectsNew.User.IsCompanyGroupValidForUserClaim(State.MyBO.Id, companyGroupCode)
         End Function
 
         Private Function isServiceCenterCodeValid(serviceCenterCode As String, countryCode As String) As Boolean
-            Return BusinessObjectsNew.User.IsServiceCenterValidForUserClaim(Me.State.MyBO.Id, serviceCenterCode, countryCode)
+            Return BusinessObjectsNew.User.IsServiceCenterValidForUserClaim(State.MyBO.Id, serviceCenterCode, countryCode)
         End Function
 
 

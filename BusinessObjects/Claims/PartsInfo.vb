@@ -6,48 +6,48 @@ Public Class PartsInfo
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New PartsInfoDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class PartsInfo
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New PartsInfoDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -89,7 +89,7 @@ Public Class PartsInfo
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(PartsInfoDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -100,7 +100,7 @@ Public Class PartsInfo
     End Property
 
     <ValueMandatory("")> _
-    Public Property ClaimId() As Guid
+    Public Property ClaimId As Guid
         Get
             CheckDeleted()
             If row(PartsInfoDAL.COL_NAME_CLAIM_ID) Is DBNull.Value Then
@@ -109,15 +109,15 @@ Public Class PartsInfo
                 Return New Guid(CType(row(PartsInfoDAL.COL_NAME_CLAIM_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(PartsInfoDAL.COL_NAME_CLAIM_ID, Value)
+            SetValue(PartsInfoDAL.COL_NAME_CLAIM_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory("")> _
-    Public Property PartsDescriptionId() As Guid
+    Public Property PartsDescriptionId As Guid
         Get
             CheckDeleted()
             If row(PartsInfoDAL.COL_NAME_PARTS_DESCRIPTION_ID) Is DBNull.Value Then
@@ -126,15 +126,15 @@ Public Class PartsInfo
                 Return New Guid(CType(row(PartsInfoDAL.COL_NAME_PARTS_DESCRIPTION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(PartsInfoDAL.COL_NAME_PARTS_DESCRIPTION_ID, Value)
+            SetValue(PartsInfoDAL.COL_NAME_PARTS_DESCRIPTION_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidNumericRange("", Max:=NEW_MAX_LONG, Min:=0)> _
-    Public Property Cost() As DecimalType
+    Public Property Cost As DecimalType
         Get
             CheckDeleted()
             If Row(PartsInfoDAL.COL_NAME_COST) Is DBNull.Value Then
@@ -143,14 +143,14 @@ Public Class PartsInfo
                 Return New DecimalType(CType(Row(PartsInfoDAL.COL_NAME_COST), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(PartsInfoDAL.COL_NAME_COST, Value)
+            SetValue(PartsInfoDAL.COL_NAME_COST, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property InStockID() As Guid
+    Public Property InStockID As Guid
         Get
             CheckDeleted()
             If Row(PartsInfoDAL.COL_NAME_IN_STOCK_ID) Is DBNull.Value Then
@@ -159,9 +159,9 @@ Public Class PartsInfo
                 Return New Guid(CType(Row(PartsInfoDAL.COL_NAME_IN_STOCK_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(PartsInfoDAL.COL_NAME_IN_STOCK_ID, Value)
+            SetValue(PartsInfoDAL.COL_NAME_IN_STOCK_ID, Value)
         End Set
     End Property
 
@@ -173,15 +173,15 @@ Public Class PartsInfo
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New PartsInfoDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -191,7 +191,7 @@ Public Class PartsInfo
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function getTotalCost(ByVal claimID As Guid) As DecimalType
+    Public Shared Function getTotalCost(claimID As Guid) As DecimalType
         Dim retVal As Decimal = 0
         Try
             Dim dal As New PartsInfoDAL
@@ -211,7 +211,7 @@ Public Class PartsInfo
         End Try
     End Function
 
-    Public Shared Function getAvailList(ByVal riskGroupID As Guid, ByVal claimID As Guid) As PartsInfoDV
+    Public Shared Function getAvailList(riskGroupID As Guid, claimID As Guid) As PartsInfoDV
         Try
             Dim dal As New PartsInfoDAL
             Return New PartsInfoDV(dal.LoadAvailList(riskGroupID, claimID, ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id).Tables(0))
@@ -223,7 +223,7 @@ Public Class PartsInfo
     End Function
 
     ' for populating the grid to edit,we make sure the part we are editing is populated in this data set we are returning.
-    Public Shared Function getAvailListWithCurrentPart(ByVal riskGroupID As Guid, ByVal claimID As Guid, ByVal partsDescId As Guid) As PartsInfoDV
+    Public Shared Function getAvailListWithCurrentPart(riskGroupID As Guid, claimID As Guid, partsDescId As Guid) As PartsInfoDV
         Try
             Dim dal As New PartsInfoDAL
 
@@ -235,7 +235,7 @@ Public Class PartsInfo
 
     End Function
 
-    Public Shared Function getSelectedList(ByVal claimID As Guid) As PartsInfoDV
+    Public Shared Function getSelectedList(claimID As Guid) As PartsInfoDV
 
         Try
             Dim dal As New PartsInfoDAL
@@ -262,36 +262,36 @@ Public Class PartsInfo
         Public Const COL_NAME_CODE As String = "code"
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property PartsDesc(ByVal row) As String
+        Public Shared ReadOnly Property PartsDesc(row) As String
             Get
                 Return row(COL_NAME_PARTS_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property InStockDesc(ByVal row) As String
+        Public Shared ReadOnly Property InStockDesc(row) As String
             Get
                 Return row(COL_NAME_IN_STOCK_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property Cost(ByVal row As DataRow) As DecimalType
+        Public Shared ReadOnly Property Cost(row As DataRow) As DecimalType
             Get
                 Return New DecimalType(CType(row(COL_NAME_COST), Decimal))
             End Get
         End Property
 
-        Public Shared ReadOnly Property Code(ByVal row) As String
+        Public Shared ReadOnly Property Code(row) As String
             Get
                 Return row(COL_NAME_CODE).ToString
             End Get
         End Property
     End Class
 
-    Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal partsInfoId As Guid, ByVal claimID As Guid) As DataView
+    Public Shared Function GetNewDataViewRow(dv As DataView, partsInfoId As Guid, claimID As Guid) As DataView
 
         Dim dt As DataTable
         dt = dv.Table
@@ -310,19 +310,19 @@ Public Class PartsInfo
 
     End Function
 
-    Public Function AddTransactionLogHeader(ByVal tranLogHeaderId As Guid) As TransactionLogHeader
+    Public Function AddTransactionLogHeader(tranLogHeaderId As Guid) As TransactionLogHeader
         Dim objTranLogHeader As TransactionLogHeader
 
         If Not tranLogHeaderId.Equals(Guid.Empty) Then
-            objTranLogHeader = New TransactionLogHeader(tranLogHeaderId, Me.Dataset)
+            objTranLogHeader = New TransactionLogHeader(tranLogHeaderId, Dataset)
         Else
-            objTranLogHeader = New TransactionLogHeader(Me.Dataset)
+            objTranLogHeader = New TransactionLogHeader(Dataset)
         End If
 
         Return objTranLogHeader
     End Function
 
-    Public Shared Sub AddNewRowToPartsInfoSearchDV(ByRef dv As PartsInfoDV, ByVal NewPartsInfoBO As PartsInfo)
+    Public Shared Sub AddNewRowToPartsInfoSearchDV(ByRef dv As PartsInfoDV, NewPartsInfoBO As PartsInfo)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         If NewPartsInfoBO.IsNew Then

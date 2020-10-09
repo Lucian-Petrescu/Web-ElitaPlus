@@ -12,7 +12,7 @@ Namespace Core
                 Throw New ArgumentNullException("container")
             End If
 
-            For Each contractDefinition As ContractDescription In Me.ImplementedContracts.Values
+            For Each contractDefinition As ContractDescription In ImplementedContracts.Values
                 contractDefinition.Behaviors.Add(New UnityInstanceProvider(container))
             Next
         End Sub

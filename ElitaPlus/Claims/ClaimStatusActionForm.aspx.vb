@@ -1,5 +1,7 @@
 ﻿Option Strict On
 Option Explicit On
+
+Imports System.Diagnostics
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.CommonConfiguration
@@ -32,7 +34,7 @@ Partial Class ClaimStatusActionForm
 
     Public ReadOnly Property IsEditing() As Boolean
         Get
-            IsEditing = (Me.Grid.EditIndex > NO_ROW_SELECTED_INDEX)
+            IsEditing = (Grid.EditIndex > NO_ROW_SELECTED_INDEX)
         End Get
     End Property
 
@@ -41,7 +43,7 @@ Partial Class ClaimStatusActionForm
 #Region "Page State"
     Class MyState
         Public PageIndex As Integer = 0
-        Public ClaimStatusAction As BusinessObjectsNew.ClaimStatusAction
+        Public ClaimStatusAction As ClaimStatusAction
 
         Public ClaimStatusActionId As Guid
         Public IsGridVisible As Boolean
@@ -76,15 +78,15 @@ Partial Class ClaimStatusActionForm
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -132,8 +134,8 @@ Partial Class ClaimStatusActionForm
         Public dealerId As Guid = Guid.Empty
         Public ObjectType As TargetType
 
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal dealerId As Guid, ByVal objectType As TargetType, ByVal hasDataChanged As Boolean)
-            Me.LastOperation = LastOp
+        Public Sub New(LastOp As DetailPageCommand, dealerId As Guid, objectType As TargetType, hasDataChanged As Boolean)
+            LastOperation = LastOp
             Me.HasDataChanged = hasDataChanged
             Me.dealerId = dealerId
             Me.ObjectType = objectType
@@ -149,38 +151,38 @@ Partial Class ClaimStatusActionForm
 
 #Region "Private Methods"
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         'Put user code to initialize the page here
         Try
             ErrController.Clear_Hide()
             If Not Page.IsPostBack Then
-                Me.SortDirection = Me.State.SortExpression
+                SortDirection = State.SortExpression
 
                 ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                Me.TranslateGridHeader(Me.Grid)
-                Me.TranslateGridControls(Me.Grid)
-                Me.SetGridItemStyleColor(Grid)
-                Me.State.PageIndex = 0
+                TranslateGridHeader(Grid)
+                TranslateGridControls(Grid)
+                SetGridItemStyleColor(Grid)
+                State.PageIndex = 0
                 SetButtonsState()
-                Me.Search()
+                Search()
             End If
             BindBoPropertiesToGridHeaders()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
-        Me.ShowMissingTranslations(ErrController)
+        ShowMissingTranslations(ErrController)
     End Sub
 
-    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If Not Me.CallingParameters Is Nothing Then
-                Me.State.searchBy = CType(CType(CallingPar, ArrayList)(0), Integer)
-                Me.State.dealerId = CType(CType(CallingPar, ArrayList)(1), Guid)
-                Me.State.isNew = CType(CType(CallingPar, ArrayList)(2), String)
+            If CallingParameters IsNot Nothing Then
+                State.searchBy = CType(CType(CallingPar, ArrayList)(0), Integer)
+                State.dealerId = CType(CType(CallingPar, ArrayList)(1), Guid)
+                State.isNew = CType(CType(CallingPar, ArrayList)(2), String)
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
 
     End Sub
@@ -189,28 +191,28 @@ Partial Class ClaimStatusActionForm
 
         Dim dv As DataView
         Try
-            If (Me.State.searchDV Is Nothing) Then
-                Me.State.searchDV = GetDV()
+            If (State.searchDV Is Nothing) Then
+                State.searchDV = GetDV()
             End If
 
-            Me.State.searchDV.Sort = Me.State.SortExpression
-            If (Me.State.IsAfterSave) Then
-                Me.State.IsAfterSave = False
-                Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.ClaimStatusActionId, Me.Grid, Me.State.PageIndex)
-            ElseIf (Me.State.IsEditMode) Then
-                Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.ClaimStatusActionId, Me.Grid, Me.State.PageIndex, Me.State.IsEditMode)
+            State.searchDV.Sort = State.SortExpression
+            If (State.IsAfterSave) Then
+                State.IsAfterSave = False
+                SetPageAndSelectedIndexFromGuid(State.searchDV, State.ClaimStatusActionId, Grid, State.PageIndex)
+            ElseIf (State.IsEditMode) Then
+                SetPageAndSelectedIndexFromGuid(State.searchDV, State.ClaimStatusActionId, Grid, State.PageIndex, State.IsEditMode)
             Else
-                Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Guid.Empty, Me.Grid, Me.State.PageIndex)
+                SetPageAndSelectedIndexFromGuid(State.searchDV, Guid.Empty, Grid, State.PageIndex)
             End If
 
-            Me.Grid.AutoGenerateColumns = False
-            Me.Grid.Columns(Me.ACTION_COL).SortExpression = ClaimStatusAction.COL_NAME_ACTION
+            Grid.AutoGenerateColumns = False
+            Grid.Columns(ACTION_COL).SortExpression = ClaimStatusAction.COL_NAME_ACTION
 
-            Me.SortAndBindGrid()
+            SortAndBindGrid()
 
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
 
     End Sub
@@ -219,10 +221,10 @@ Partial Class ClaimStatusActionForm
 
         Dim dv As DataView
 
-        Me.State.searchDV = Assurant.ElitaPlus.BusinessObjectsNew.ClaimStatusAction.LoadList()
-        Me.State.searchDV.Sort = Grid.DataMember()
+        State.searchDV = ClaimStatusAction.LoadList()
+        State.searchDV.Sort = Grid.DataMember()
 
-        Return (Me.State.searchDV)
+        Return (State.searchDV)
 
     End Function
 
@@ -230,59 +232,59 @@ Partial Class ClaimStatusActionForm
 
     Private Sub AddNewClaimStatusAction()
 
-        Me.State.searchDV = Assurant.ElitaPlus.BusinessObjectsNew.ClaimStatusAction.LoadList()
+        State.searchDV = ClaimStatusAction.LoadList()
 
-        Me.State.ClaimStatusAction = New Assurant.ElitaPlus.BusinessObjectsNew.ClaimStatusAction
-        Me.State.ClaimStatusActionId = Me.State.ClaimStatusAction.Id
+        State.ClaimStatusAction = New ClaimStatusAction
+        State.ClaimStatusActionId = State.ClaimStatusAction.Id
 
-        Me.State.searchDV = Me.State.ClaimStatusAction.GetNewDataViewRow(Me.State.searchDV, Me.State.ClaimStatusActionId)
+        State.searchDV = State.ClaimStatusAction.GetNewDataViewRow(State.searchDV, State.ClaimStatusActionId)
 
-        Grid.DataSource = Me.State.searchDV
-        SetGridControls(Me.Grid, False)
-        Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.ClaimStatusActionId, Me.Grid, Me.State.PageIndex, Me.State.IsEditMode)
+        Grid.DataSource = State.searchDV
+        SetGridControls(Grid, False)
+        SetPageAndSelectedIndexFromGuid(State.searchDV, State.ClaimStatusActionId, Grid, State.PageIndex, State.IsEditMode)
 
-        Me.Grid.AutoGenerateColumns = False
-        Me.Grid.Columns(Me.ACTION_COL).SortExpression = ClaimStatusAction.COL_NAME_ACTION
-        Me.SortAndBindGrid()
+        Grid.AutoGenerateColumns = False
+        Grid.Columns(ACTION_COL).SortExpression = ClaimStatusAction.COL_NAME_ACTION
+        SortAndBindGrid()
 
     End Sub
 
     Private Sub SortAndBindGrid()
         Dim dv As New DataView
-        Me.State.PageIndex = Me.Grid.PageIndex
+        State.PageIndex = Grid.PageIndex
 
-        If (Me.State.searchDV.Count = 0) Then
+        If (State.searchDV.Count = 0) Then
 
-            dv = Assurant.ElitaPlus.BusinessObjectsNew.ClaimStatusAction.LoadList()
+            dv = ClaimStatusAction.LoadList()
 
-            Me.State.bnoRow = True
+            State.bnoRow = True
             dv = ClaimStatusAction.getEmptyList(dv)
-            Me.Grid.DataSource = dv
-            Me.Grid.DataBind()
-            Me.Grid.Rows(0).Visible = False
+            Grid.DataSource = dv
+            Grid.DataBind()
+            Grid.Rows(0).Visible = False
 
 
         Else
-            Me.State.bnoRow = False
-            Me.Grid.Enabled = True
-            Me.Grid.DataSource = Me.State.searchDV
-            HighLightSortColumn(Grid, Me.SortDirection)
-            Me.Grid.DataBind()
+            State.bnoRow = False
+            Grid.Enabled = True
+            Grid.DataSource = State.searchDV
+            HighLightSortColumn(Grid, SortDirection)
+            Grid.DataBind()
         End If
 
         If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
 
-        ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
 
-        ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+        ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
 
-        Session("recCount") = Me.State.searchDV.Count
+        Session("recCount") = State.searchDV.Count
 
-        If Me.Grid.Visible Then
-            If (Me.State.AddingNewRow) Then
-                Me.lblRecordCount.Text = (Me.State.searchDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+        If Grid.Visible Then
+            If (State.AddingNewRow) Then
+                lblRecordCount.Text = (State.searchDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             Else
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         End If
         ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, Grid)
@@ -291,12 +293,12 @@ Partial Class ClaimStatusActionForm
     Private Sub PopulateBOFromForm()
 
         Try
-            With Me.State.ClaimStatusAction
+            With State.ClaimStatusAction
 
 
-                .ActionId = Me.GetSelectedItem(CType(Me.Grid.Rows(Me.Grid.EditIndex).Cells(Me.ACTION_COL).FindControl(Me.ACTION_CONTROL_NAME), DropDownList))
-                .CurrentStatusId = Me.GetSelectedItem(CType(Me.Grid.Rows(Me.Grid.EditIndex).Cells(Me.CURRENT_STATUS_COL).FindControl(Me.CURRENT_STATUS_CONTROL_NAME), DropDownList))
-                .NextStatusId = Me.GetSelectedItem(CType(Me.Grid.Rows(Me.Grid.EditIndex).Cells(Me.NEXT_STATUS_COL).FindControl(Me.NEXT_STATUS_CONTROL_NAME), DropDownList))
+                .ActionId = GetSelectedItem(CType(Grid.Rows(Grid.EditIndex).Cells(ACTION_COL).FindControl(ACTION_CONTROL_NAME), DropDownList))
+                .CurrentStatusId = GetSelectedItem(CType(Grid.Rows(Grid.EditIndex).Cells(CURRENT_STATUS_COL).FindControl(CURRENT_STATUS_CONTROL_NAME), DropDownList))
+                .NextStatusId = GetSelectedItem(CType(Grid.Rows(Grid.EditIndex).Cells(NEXT_STATUS_COL).FindControl(NEXT_STATUS_CONTROL_NAME), DropDownList))
                 .CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
                 If .CurrentStatusId.Equals(.NextStatusId) Then
                     Throw New GUIException(Message.MSG_INVALID_MIN_MAX_VALUE, Assurant.ElitaPlus.Common.ErrorCodes.NEXT_STATUS_MUST_BE_DIFF_THAN_CURRENT_STATUS)
@@ -331,49 +333,49 @@ Partial Class ClaimStatusActionForm
 
         Grid.EditIndex = NO_ROW_SELECTED_INDEX
 
-        If Me.Grid.PageCount = 0 Then
+        If Grid.PageCount = 0 Then
             'if returning to the "1st time in" screen
             ControlMgr.SetVisibleControl(Me, Grid, False)
         Else
             ControlMgr.SetVisibleControl(Me, Grid, True)
         End If
 
-        Me.State.IsEditMode = False
-        Me.PopulateGrid()
-        Me.State.PageIndex = Grid.PageIndex
+        State.IsEditMode = False
+        PopulateGrid()
+        State.PageIndex = Grid.PageIndex
         SetButtonsState()
 
     End Sub
 
     Private Sub SetButtonsState()
 
-        If (Me.State.IsEditMode) Then
+        If (State.IsEditMode) Then
             ControlMgr.SetVisibleControl(Me, SaveButton_WRITE, True)
             ControlMgr.SetVisibleControl(Me, CancelButton, True)
             ControlMgr.SetVisibleControl(Me, NewButton_WRITE, False)
-            Me.MenuEnabled = False
-            If (Me.cboPageSize.Visible) Then
+            MenuEnabled = False
+            If (cboPageSize.Visible) Then
                 ControlMgr.SetEnableControl(Me, cboPageSize, False)
             End If
         Else
             ControlMgr.SetVisibleControl(Me, SaveButton_WRITE, False)
             ControlMgr.SetVisibleControl(Me, CancelButton, False)
             ControlMgr.SetVisibleControl(Me, NewButton_WRITE, True)
-            Me.MenuEnabled = False
-            If (Me.cboPageSize.Visible) Then
+            MenuEnabled = False
+            If (cboPageSize.Visible) Then
                 ControlMgr.SetEnableControl(Me, cboPageSize, True)
             End If
         End If
 
     End Sub
 
-    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-            Me.State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.PopulateGrid()
+            State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
     End Sub
 
@@ -384,64 +386,64 @@ Partial Class ClaimStatusActionForm
 
     Private Sub Search()
         Try
-            Me.State.IsGridVisible = True
-            Me.State.searchDV = Nothing
+            State.IsGridVisible = True
+            State.searchDV = Nothing
             PopulateGrid()
             'Me.State.PageIndex = Grid.CurrentPageIndex
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
 
     End Sub
 
-    Private Sub NewButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles NewButton_WRITE.Click
+    Private Sub NewButton_WRITE_Click(sender As Object, e As EventArgs) Handles NewButton_WRITE.Click
 
         Try
-            Me.State.IsEditMode = True
-            Me.State.IsGridVisible = True
-            Me.State.AddingNewRow = True
+            State.IsEditMode = True
+            State.IsGridVisible = True
+            State.AddingNewRow = True
             AddNewClaimStatusAction()
-            Me.SetGridControls(Me.Grid, False)
+            SetGridControls(Grid, False)
             SetButtonsState()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
 
     End Sub
 
-    Private Sub SaveButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SaveButton_WRITE.Click
+    Private Sub SaveButton_WRITE_Click(sender As Object, e As EventArgs) Handles SaveButton_WRITE.Click
 
         Try
             PopulateBOFromForm()
-            If (Me.State.ClaimStatusAction.IsDirty) Then
-                Me.State.ClaimStatusAction.Save()
-                Me.State.IsAfterSave = True
-                Me.State.AddingNewRow = False
-                Me.AddInfoMsg(Me.MSG_RECORD_SAVED_OK)
-                Me.State.searchDV = Nothing
-                Me.ReturnFromEditing()
+            If (State.ClaimStatusAction.IsDirty) Then
+                State.ClaimStatusAction.Save()
+                State.IsAfterSave = True
+                State.AddingNewRow = False
+                AddInfoMsg(MSG_RECORD_SAVED_OK)
+                State.searchDV = Nothing
+                ReturnFromEditing()
             Else
-                Me.AddInfoMsg(Me.MSG_RECORD_NOT_SAVED)
-                Me.ReturnFromEditing()
+                AddInfoMsg(MSG_RECORD_NOT_SAVED)
+                ReturnFromEditing()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
 
     End Sub
 
-    Private Sub CancelButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CancelButton.Click
+    Private Sub CancelButton_Click(sender As Object, e As EventArgs) Handles CancelButton.Click
 
         Try
-            Me.Grid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
-            Me.State.Canceling = True
-            If (Me.State.AddingNewRow) Then
-                Me.State.AddingNewRow = False
-                Me.State.searchDV = Nothing
+            Grid.SelectedIndex = NO_ITEM_SELECTED_INDEX
+            State.Canceling = True
+            If (State.AddingNewRow) Then
+                State.AddingNewRow = False
+                State.searchDV = Nothing
             End If
             ReturnFromEditing()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
 
     End Sub
@@ -452,120 +454,120 @@ Partial Class ClaimStatusActionForm
         Get
             Return ViewState("SortDirection").ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             ViewState("SortDirection") = value
         End Set
     End Property
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanged(source As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
 
         Try
-            If (Not (Me.State.IsEditMode)) Then
-                Me.State.PageIndex = e.NewPageIndex
-                Me.Grid.PageIndex = Me.State.PageIndex
-                Me.PopulateGrid()
-                Me.Grid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
+            If (Not (State.IsEditMode)) Then
+                State.PageIndex = e.NewPageIndex
+                Grid.PageIndex = State.PageIndex
+                PopulateGrid()
+                Grid.SelectedIndex = NO_ITEM_SELECTED_INDEX
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
 
     End Sub
 
-    Protected Sub ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+    Protected Sub ItemCommand(source As Object, e As GridViewCommandEventArgs)
 
         Try
             Dim index As Integer
 
-            If (e.CommandName = Me.EDIT_COMMAND) Then
+            If (e.CommandName = EDIT_COMMAND) Then
                 'Do the Edit here
                 index = CInt(e.CommandArgument)
                 'Set the IsEditMode flag to TRUE
-                Me.State.IsEditMode = True
+                State.IsEditMode = True
 
-                Me.State.ClaimStatusActionId = New Guid(CType(Me.Grid.Rows(index).Cells(Me.ID_COL).FindControl(Me.ID_CONTROL_NAME), Label).Text)
+                State.ClaimStatusActionId = New Guid(CType(Grid.Rows(index).Cells(ID_COL).FindControl(ID_CONTROL_NAME), Label).Text)
 
-                Me.State.ClaimStatusAction = New Assurant.ElitaPlus.BusinessObjectsNew.ClaimStatusAction(Me.State.ClaimStatusActionId)
+                State.ClaimStatusAction = New ClaimStatusAction(State.ClaimStatusActionId)
 
-                Me.PopulateGrid()
+                PopulateGrid()
 
-                Me.State.PageIndex = Grid.PageIndex
+                State.PageIndex = Grid.PageIndex
 
                 'Disable all Edit and Delete icon buttons on the Grid
-                SetGridControls(Me.Grid, False)
+                SetGridControls(Grid, False)
 
                 'Set focus on the Description TextBox for the EditItemIndex row
-                Me.SetFocusOnEditableFieldInGrid(Me.Grid, Me.ACTION_COL, Me.ACTION_CONTROL_NAME, index)
+                SetFocusOnEditableFieldInGrid(Grid, ACTION_COL, ACTION_CONTROL_NAME, index)
 
                 ' Me.PopulateFormFromBO()
 
-                Me.SetButtonsState()
+                SetButtonsState()
 
-            ElseIf (e.CommandName = Me.DELETE_COMMAND) Then
+            ElseIf (e.CommandName = DELETE_COMMAND) Then
                 'Do the delete here
                 index = CInt(e.CommandArgument)
                 'Clear the SelectedItemStyle to remove the highlight from the previously saved row
-                Grid.SelectedIndex = Me.NO_ROW_SELECTED_INDEX
+                Grid.SelectedIndex = NO_ROW_SELECTED_INDEX
 
                 'Save the Id in the Session
 
-                Me.State.ClaimStatusActionId = New Guid(CType(Me.Grid.Rows(index).Cells(Me.ID_COL).FindControl(Me.ID_CONTROL_NAME), Label).Text)
+                State.ClaimStatusActionId = New Guid(CType(Grid.Rows(index).Cells(ID_COL).FindControl(ID_CONTROL_NAME), Label).Text)
 
-                Me.State.ClaimStatusAction = New Assurant.ElitaPlus.BusinessObjectsNew.ClaimStatusAction(Me.State.ClaimStatusActionId)
+                State.ClaimStatusAction = New ClaimStatusAction(State.ClaimStatusActionId)
                 Try
-                    Me.State.ClaimStatusAction.Delete()
+                    State.ClaimStatusAction.Delete()
                     'Call the Save() method in the ClaimStatusAction Business Object here
-                    Me.State.ClaimStatusAction.Save()
+                    State.ClaimStatusAction.Save()
                 Catch ex As Exception
-                    Me.State.ClaimStatusAction.RejectChanges()
+                    State.ClaimStatusAction.RejectChanges()
                     Throw ex
                 End Try
 
-                Me.State.PageIndex = Grid.PageIndex
+                State.PageIndex = Grid.PageIndex
 
                 'Set the IsAfterSave flag to TRUE so that the Paging logic gets invoked
-                Me.State.IsAfterSave = True
-                Me.State.searchDV = Nothing
+                State.IsAfterSave = True
+                State.searchDV = Nothing
                 PopulateGrid()
-                Me.State.PageIndex = Grid.PageIndex
+                State.PageIndex = Grid.PageIndex
 
-            ElseIf ((e.CommandName = Me.SORT_COMMAND) AndAlso Not (Me.IsEditing)) Then
+            ElseIf ((e.CommandName = SORT_COMMAND) AndAlso Not (IsEditing)) Then
 
 
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
 
     End Sub
 
-    Protected Sub ItemBound(ByVal source As Object, ByVal e As GridViewRowEventArgs) Handles Grid.RowDataBound
+    Protected Sub ItemBound(source As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
 
         Try
             BaseItemBound(source, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
     End Sub
     'The Binding Logic is here
-    Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_ItemDataBound(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
         Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-        If Not dvRow Is Nothing And Not Me.State.bnoRow Then
+        If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
 
-            If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                CType(e.Row.Cells(Me.ID_COL).FindControl(Me.ID_CONTROL_NAME), Label).Text = GetGuidStringFromByteArray(CType(dvRow("claim_status_action_id"), Byte()))
+            If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
+                CType(e.Row.Cells(ID_COL).FindControl(ID_CONTROL_NAME), Label).Text = GetGuidStringFromByteArray(CType(dvRow("claim_status_action_id"), Byte()))
 
 
-                If (Me.State.IsEditMode = True _
-                        AndAlso Me.State.ClaimStatusActionId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow("claim_status_action_id"), Byte())))) Then
+                If (State.IsEditMode = True _
+                        AndAlso State.ClaimStatusActionId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow("claim_status_action_id"), Byte())))) Then
 
                     'Me.BindListControlToDataView(CType(e.Row.Cells(Me.ACTION_COL).FindControl(Me.ACTION_CONTROL_NAME), DropDownList), LookupListNew.GetClaimStatsActionLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId))
 
                     Dim actionDropDown As New DropDownList
-                    actionDropDown = CType(e.Row.Cells(Me.ACTION_COL).FindControl(Me.ACTION_CONTROL_NAME), DropDownList)
+                    actionDropDown = CType(e.Row.Cells(ACTION_COL).FindControl(ACTION_CONTROL_NAME), DropDownList)
 
                     Dim actionList As ListItem() = CommonConfigManager.Current.ListManager.GetList("ACTION", Thread.CurrentPrincipal.GetLanguageCode())
                     actionDropDown.Populate(actionList, New PopulateOptions() With
@@ -574,7 +576,7 @@ Partial Class ClaimStatusActionForm
                                            })
 
                     'Me.SetSelectedItem(CType(e.Row.Cells(Me.ACTION_COL).FindControl(Me.ACTION_CONTROL_NAME), DropDownList), Me.State.ClaimStatusAction.ActionId)
-                    Me.SetSelectedItem(actionDropDown, Me.State.ClaimStatusAction.ActionId)
+                    SetSelectedItem(actionDropDown, State.ClaimStatusAction.ActionId)
                     'Me.BindListControlToDataView(CType(e.Row.Cells(Me.CURRENT_STATUS_COL).FindControl(Me.CURRENT_STATUS_CONTROL_NAME), DropDownList), LookupListNew.GetExtendedStatusByGroupLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId))
 
 
@@ -582,7 +584,7 @@ Partial Class ClaimStatusActionForm
                     listcontext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
 
                     Dim currentStatusDropDown As New DropDownList
-                    currentStatusDropDown = CType(e.Row.Cells(Me.CURRENT_STATUS_COL).FindControl(Me.CURRENT_STATUS_CONTROL_NAME), DropDownList)
+                    currentStatusDropDown = CType(e.Row.Cells(CURRENT_STATUS_COL).FindControl(CURRENT_STATUS_CONTROL_NAME), DropDownList)
 
                     Dim currentStatusList As ListItem() = CommonConfigManager.Current.ListManager.GetList("ExtendedStatusByCompanyGroup", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
                     currentStatusDropDown.Populate(currentStatusList, New PopulateOptions() With
@@ -591,11 +593,11 @@ Partial Class ClaimStatusActionForm
                                                    })
 
                     'Me.SetSelectedItem(CType(e.Row.Cells(Me.CURRENT_STATUS_COL).FindControl(Me.CURRENT_STATUS_CONTROL_NAME), DropDownList), Me.State.ClaimStatusAction.CurrentStatusId)
-                    Me.SetSelectedItem(currentStatusDropDown, Me.State.ClaimStatusAction.CurrentStatusId)
+                    SetSelectedItem(currentStatusDropDown, State.ClaimStatusAction.CurrentStatusId)
 
                     'Me.BindListControlToDataView(CType(e.Row.Cells(Me.NEXT_STATUS_COL).FindControl(Me.NEXT_STATUS_CONTROL_NAME), DropDownList), LookupListNew.GetExtendedStatusByGroupLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId))
                     Dim nextStatusDropDown As New DropDownList
-                    nextStatusDropDown = CType(e.Row.Cells(Me.CURRENT_STATUS_COL).FindControl(Me.NEXT_STATUS_CONTROL_NAME), DropDownList)
+                    nextStatusDropDown = CType(e.Row.Cells(CURRENT_STATUS_COL).FindControl(NEXT_STATUS_CONTROL_NAME), DropDownList)
 
                     Dim nextStatusList As ListItem() = CommonConfigManager.Current.ListManager.GetList("ExtendedStatusByCompanyGroup", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
                     nextStatusDropDown.Populate(nextStatusList, New PopulateOptions() With
@@ -603,54 +605,54 @@ Partial Class ClaimStatusActionForm
                                                     .AddBlankItem = True
                                                    })
                     'Me.SetSelectedItem(CType(e.Row.Cells(Me.NEXT_STATUS_COL).FindControl(Me.NEXT_STATUS_CONTROL_NAME), DropDownList), Me.State.ClaimStatusAction.NextStatusId)
-                    Me.SetSelectedItem(nextStatusDropDown, Me.State.ClaimStatusAction.NextStatusId)
+                    SetSelectedItem(nextStatusDropDown, State.ClaimStatusAction.NextStatusId)
                 Else
-                    CType(e.Row.Cells(Me.ACTION_COL).FindControl("ACTIONLabel"), Label).Text = dvRow("action").ToString
-                    CType(e.Row.Cells(Me.CURRENT_STATUS_COL).FindControl("CurrentStatusLabel"), Label).Text = dvRow("Current_Status").ToString
-                    CType(e.Row.Cells(Me.NEXT_STATUS_COL).FindControl("NextStatusLabel"), Label).Text = dvRow("Next_Status").ToString
+                    CType(e.Row.Cells(ACTION_COL).FindControl("ACTIONLabel"), Label).Text = dvRow("action").ToString
+                    CType(e.Row.Cells(CURRENT_STATUS_COL).FindControl("CurrentStatusLabel"), Label).Text = dvRow("Current_Status").ToString
+                    CType(e.Row.Cells(NEXT_STATUS_COL).FindControl("NextStatusLabel"), Label).Text = dvRow("Next_Status").ToString
                 End If
 
             End If
         End If
     End Sub
 
-    Protected Sub ItemCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs)
+    Protected Sub ItemCreated(sender As Object, e As GridViewRowEventArgs)
         BaseItemCreated(sender, e)
 
 
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As GridViewSortEventArgs) Handles Grid.Sorting
         Try
-            Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
+            Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
 
-            If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                If Me.SortDirection.EndsWith(" ASC") Then
-                    Me.SortDirection = e.SortExpression + " DESC"
+            If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                If SortDirection.EndsWith(" ASC") Then
+                    SortDirection = e.SortExpression + " DESC"
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
             Else
-                Me.SortDirection = e.SortExpression + " ASC"
+                SortDirection = e.SortExpression + " ASC"
             End If
-            Me.State.SortExpression = Me.SortDirection
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.SortExpression = SortDirection
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
     End Sub
 
     Protected Sub BindBoPropertiesToGridHeaders()
-        Me.BindBOPropertyToGridHeader(Me.State.ClaimStatusAction, "ActionId", Me.Grid.Columns(Me.ACTION_COL))
-        Me.BindBOPropertyToGridHeader(Me.State.ClaimStatusAction, "CurrentStatusId", Me.Grid.Columns(Me.CURRENT_STATUS_COL))
-        Me.BindBOPropertyToGridHeader(Me.State.ClaimStatusAction, "NextStatusId", Me.Grid.Columns(Me.NEXT_STATUS_COL))
+        BindBOPropertyToGridHeader(State.ClaimStatusAction, "ActionId", Grid.Columns(ACTION_COL))
+        BindBOPropertyToGridHeader(State.ClaimStatusAction, "CurrentStatusId", Grid.Columns(CURRENT_STATUS_COL))
+        BindBOPropertyToGridHeader(State.ClaimStatusAction, "NextStatusId", Grid.Columns(NEXT_STATUS_COL))
 
-        Me.ClearGridViewHeadersAndLabelsErrSign()
+        ClearGridViewHeadersAndLabelsErrSign()
     End Sub
 
-    Private Sub SetFocusOnEditableFieldInGrid(ByVal grid As GridView, ByVal cellPosition As Integer, ByVal controlName As String, ByVal itemIndex As Integer)
+    Private Sub SetFocusOnEditableFieldInGrid(grid As GridView, cellPosition As Integer, controlName As String, itemIndex As Integer)
         'Set focus on the Description TextBox for the EditItemIndex row
         Dim desc As DropDownList = CType(grid.Rows(itemIndex).Cells(cellPosition).FindControl(controlName), DropDownList)
         SetFocus(desc)
@@ -658,20 +660,20 @@ Partial Class ClaimStatusActionForm
 
 #End Region
 
-    Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         Try
-            Me.Back(ElitaPlusPage.DetailPageCommand.Back)
-        Catch ex As Threading.ThreadAbortException
+            Back(DetailPageCommand.Back)
+        Catch ex As ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrController)
+            HandleErrors(ex, ErrController)
         End Try
     End Sub
 
-    Protected Sub Back(ByVal cmd As ElitaPlusPage.DetailPageCommand)
-        If Me.State.searchBy = SearchByType.CompanyGroup Then
-            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Nothing, ReturnType.TargetType.CompanyGroup, False))
+    Protected Sub Back(cmd As DetailPageCommand)
+        If State.searchBy = SearchByType.CompanyGroup Then
+            ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, Nothing, ReturnType.TargetType.CompanyGroup, False))
         Else
-            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.dealerId, ReturnType.TargetType.Dealer, False))
+            ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.dealerId, ReturnType.TargetType.Dealer, False))
         End If
     End Sub
 End Class

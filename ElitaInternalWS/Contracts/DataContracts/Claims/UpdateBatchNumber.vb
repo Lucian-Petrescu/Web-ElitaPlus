@@ -12,13 +12,13 @@ Public Class UpdateBatchNumber
     Required(ErrorMessage:="BatchNumber is Required")> _
     Public Property BatchNumber As String
 
-    Public Overrides Sub Execute(ByVal oClaim As ClaimBase)
+    Public Overrides Sub Execute(oClaim As ClaimBase)
         If (oClaim.ClaimAuthorizationType <> ClaimAuthorizationType.Single) Then
             Throw New FaultException(Of ClaimOperationNotSupportedFault)(New ClaimOperationNotSupportedFault() With {.Message = "Multi-Auth Claims not supported", .OperationName = "UpdateBatchNumber"})
         End If
 
         Dim oSingleAuthClaim As Claim = DirectCast(oClaim, Claim)
-        oSingleAuthClaim.BatchNumber = Me.BatchNumber
+        oSingleAuthClaim.BatchNumber = BatchNumber
 
     End Sub
 

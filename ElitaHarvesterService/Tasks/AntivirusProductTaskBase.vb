@@ -11,7 +11,7 @@ Public MustInherit Class AntivirusProductTaskBase
 #End Region
 
 #Region "Constructors"
-    Public Sub New(ByVal machineName As String, ByVal processThreadName As String)
+    Public Sub New(machineName As String, processThreadName As String)
         MyBase.New(machineName, processThreadName)
     End Sub
 #End Region
@@ -19,25 +19,25 @@ Public MustInherit Class AntivirusProductTaskBase
 #Region "Private Methods"
 
     Private Function GetProductCode() As String
-        Dim dealerCode As String = Me.Dealer.Dealer
+        Dim dealerCode As String = Dealer.Dealer
         Dim productCode As String = String.Empty
 
         'TODO more generic implementation to find Product codes.
         Select Case dealerCode
             Case "TIMS"
-                Select Case Me.EquipmentType
+                Select Case EquipmentType
                     Case Codes.EQUIPMENT_TYPE__SMARTPHONE
                         productCode = Codes.MCAFEE_PROD_CODE_PHONE
                     Case Codes.EQUIPMENT_TYPE__TABLET
                         productCode = Codes.MCAFEE_PROD_CODE_TABLET
                     Case Else
-                        Logger.AddError(String.Format("McAfee Product Code not configured for Equipment Type : {0}", Me.EquipmentType))
-                        Me.FailReason = String.Format("McAfee Product Code not configured for Equipment Type : {0}", Me.EquipmentType)
+                        Logger.AddError(String.Format("McAfee Product Code not configured for Equipment Type : {0}", EquipmentType))
+                        FailReason = String.Format("McAfee Product Code not configured for Equipment Type : {0}", EquipmentType)
                         Throw New NotImplementedException()
                 End Select
             Case Else
                 Logger.AddError(String.Format("Task not configured for dealer code  : {0}", dealerCode))
-                Me.FailReason = String.Format("McAfee Product Code not configured for Equipment Type : {0}", Me.EquipmentType)
+                FailReason = String.Format("McAfee Product Code not configured for Equipment Type : {0}", EquipmentType)
                 Throw New NotImplementedException()
         End Select
 
@@ -48,11 +48,11 @@ Public MustInherit Class AntivirusProductTaskBase
     Private Function GetDeviceType() As String
         Dim equipmentId As Guid
         Dim eqp As Equipment
-        equipmentId = Equipment.FindEquipment(Me.Dealer.Dealer, Me.CustomerItem.Make, Me.CustomerItem.Model, Me.CustomerItem.RegistrationDate.Value)
+        equipmentId = Equipment.FindEquipment(Dealer.Dealer, CustomerItem.Make, CustomerItem.Model, CustomerItem.RegistrationDate.Value)
         If (equipmentId = Nothing) Then
-            Dim str As String = String.Format("Unable to find Equipment Id for Make:{0}, Model:{1},LookUpDate:{2}  for Customer Registration Item Id : {3}", Me.CustomerItem.Make, Me.CustomerItem.Model, Me.CustomerItem.RegistrationDate, GuidControl.GuidToHexString(Me.CustomerItem.Id))
+            Dim str As String = String.Format("Unable to find Equipment Id for Make:{0}, Model:{1},LookUpDate:{2}  for Customer Registration Item Id : {3}", CustomerItem.Make, CustomerItem.Model, CustomerItem.RegistrationDate, GuidControl.GuidToHexString(CustomerItem.Id))
             Logger.AddError(str)
-            Me.FailReason = str
+            FailReason = str
             Throw New ArgumentException(str)
         End If
         eqp = New Equipment(equipmentId)
@@ -68,7 +68,7 @@ Public MustInherit Class AntivirusProductTaskBase
         If (Not String.IsNullOrEmpty(MyBase.PublishedTask(PublishedTask.REGISTRATION_ID))) Then
             custRegistrationId = GuidControl.ByteArrayToGuid(GuidControl.HexToByteArray(MyBase.PublishedTask(PublishedTask.REGISTRATION_ID)))
             If (Not custRegistrationId.Equals(Guid.Empty)) Then
-                Me.CustRegistration = New CustRegistration(custRegistrationId)
+                CustRegistration = New CustRegistration(custRegistrationId)
             End If
         End If
 
@@ -76,32 +76,32 @@ Public MustInherit Class AntivirusProductTaskBase
         If (Not String.IsNullOrEmpty(MyBase.PublishedTask(PublishedTask.REGISTRATION_ITEM_ID))) Then
             custRegistrationItemId = GuidControl.ByteArrayToGuid(GuidControl.HexToByteArray(MyBase.PublishedTask(PublishedTask.REGISTRATION_ITEM_ID)))
             If (Not custRegistrationItemId.Equals(Guid.Empty)) Then
-                Me.CustomerItem = New CustItem(custRegistrationItemId)
+                CustomerItem = New CustItem(custRegistrationItemId)
             End If
         End If
 
         ' If Registration is not initialized then check if Certificate Number is supplied
-        If (Me._custRegistration Is Nothing OrElse Me._custRegistration Is Nothing) Then
+        If (_custRegistration Is Nothing OrElse _custRegistration Is Nothing) Then
             If (Not String.IsNullOrEmpty(MyBase.PublishedTask(PublishedTask.CERTIFICATE_ID))) Then
                 certificateId = GuidControl.ByteArrayToGuid(GuidControl.HexToByteArray(MyBase.PublishedTask(PublishedTask.CERTIFICATE_ID)))
                 Dim registrationDetails As CustItemDAL.RegistrationDetails
                 registrationDetails = CustItem.FindRegistration(certificateId)
                 If (Not String.IsNullOrEmpty(registrationDetails.RegistrationId)) Then
-                    Me.CustRegistration = New CustRegistration(GuidControl.ByteArrayToGuid(GuidControl.HexToByteArray(registrationDetails.RegistrationId)))
+                    CustRegistration = New CustRegistration(GuidControl.ByteArrayToGuid(GuidControl.HexToByteArray(registrationDetails.RegistrationId)))
                 End If
                 If (Not String.IsNullOrEmpty(registrationDetails.RegistrationItemId)) Then
-                    Me.CustomerItem = New CustItem(GuidControl.ByteArrayToGuid(GuidControl.HexToByteArray(registrationDetails.RegistrationItemId)))
+                    CustomerItem = New CustItem(GuidControl.ByteArrayToGuid(GuidControl.HexToByteArray(registrationDetails.RegistrationItemId)))
                 End If
 
-                If (Me._custRegistration Is Nothing OrElse Me._customerItem Is Nothing) Then
+                If (_custRegistration Is Nothing OrElse _customerItem Is Nothing) Then
                     Logger.AddError("Invalid Argument Certificate ID, can not resolve RegistrationId and RegistrationItemId")
-                    Me.FailReason = "Invalid Argument Certificate ID, can not resolve RegistrationId and RegistrationItemId"
+                    FailReason = "Invalid Argument Certificate ID, can not resolve RegistrationId and RegistrationItemId"
                     Throw New ArgumentException("Invalid Argument Certificate ID, can not resolve RegistrationId and RegistrationItemId")
                 End If
 
             Else
                 Logger.AddError("Missing Arguments, expecting CertificateId Or (RegistrationId and RegistrationItemId)")
-                Me.FailReason = "Missing Arguments, expecting CertificateId Or (RegistrationId and RegistrationItemId)"
+                FailReason = "Missing Arguments, expecting CertificateId Or (RegistrationId and RegistrationItemId)"
                 Throw New ArgumentException("Missing Arguments, expecting CertificateId Or (RegistrationId and RegistrationItemId)")
             End If
         End If
@@ -122,7 +122,7 @@ Public MustInherit Class AntivirusProductTaskBase
             InitializeRegistrationInformation()
             Return _customerItem
         End Get
-        Private Set(ByVal value As CustItem)
+        Private Set(value As CustItem)
             _customerItem = value
         End Set
     End Property
@@ -133,7 +133,7 @@ Public MustInherit Class AntivirusProductTaskBase
             InitializeRegistrationInformation()
             Return _custRegistration
         End Get
-        Private Set(ByVal value As CustRegistration)
+        Private Set(value As CustRegistration)
             _custRegistration = value
         End Set
     End Property
@@ -142,7 +142,7 @@ Public MustInherit Class AntivirusProductTaskBase
     Protected ReadOnly Property Dealer() As Dealer
         Get
             If (_dealer Is Nothing) Then
-                _dealer = New Dealer(Me.CustRegistration.DealerId)
+                _dealer = New Dealer(CustRegistration.DealerId)
             End If
             Return _dealer
         End Get
@@ -166,14 +166,14 @@ Public MustInherit Class AntivirusProductTaskBase
             End If
             Return _equipmentType
         End Get
-        Private Set(ByVal value As String)
+        Private Set(value As String)
             _equipmentType = value
         End Set
     End Property
 
     Public ReadOnly Property DeviceType As String
         Get
-            Select Case Me.EquipmentType
+            Select Case EquipmentType
                 Case Codes.EQUIPMENT_TYPE__SMARTPHONE
                     Return AntivirusProductTaskBase.DEVICE_TYPE__PHONE
                 Case Codes.EQUIPMENT_TYPE__TABLET
@@ -215,7 +215,7 @@ Public MustInherit Class AntivirusProductTaskBase
         Get
             Return _userName
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             _userName = value
         End Set
     End Property
@@ -225,14 +225,14 @@ Public MustInherit Class AntivirusProductTaskBase
         Get
             Return _password
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             _password = value
         End Set
     End Property
 
     Protected ReadOnly Property SubscriberId As String
         Get
-            Return Me.CustomerItem.OrderRefNum
+            Return CustomerItem.OrderRefNum
         End Get
     End Property
 
@@ -241,14 +241,14 @@ Public MustInherit Class AntivirusProductTaskBase
         Get
             Select Case DeviceType
                 Case DEVICE_TYPE__PHONE
-                    If (Me.CustomerItem.CellPhone.Trim = String.Empty) Then
-                        Me.FailReason = String.Format("Phone number is required for Phone for customer registration Item Id {0} ", GuidControl.GuidToHexString(Me.CustomerItem.Id))
-                        Throw New Exception(Me.FailReason)
+                    If (CustomerItem.CellPhone.Trim = String.Empty) Then
+                        FailReason = String.Format("Phone number is required for Phone for customer registration Item Id {0} ", GuidControl.GuidToHexString(CustomerItem.Id))
+                        Throw New Exception(FailReason)
                     Else
-                        _phoneNumber = AppendCountryCode(Me.CustomerItem.CellPhone)
+                        _phoneNumber = AppendCountryCode(CustomerItem.CellPhone)
                     End If
                 Case DEVICE_TYPE__TABLET
-                    _phoneNumber = If(Me.CustomerItem.CellPhone = String.Empty, Me.CustomerItem.CellPhone, AppendCountryCode(Me.CustomerItem.CellPhone))
+                    _phoneNumber = If(CustomerItem.CellPhone = String.Empty, CustomerItem.CellPhone, AppendCountryCode(CustomerItem.CellPhone))
             End Select
 
             Return _phoneNumber
@@ -256,7 +256,7 @@ Public MustInherit Class AntivirusProductTaskBase
     End Property
 
 
-    Protected Function AppendCountryCode(ByVal value As String) As String
+    Protected Function AppendCountryCode(value As String) As String
         Select Case CountryCode
             Case "IT"
                 value = String.Format("39{0}", value)

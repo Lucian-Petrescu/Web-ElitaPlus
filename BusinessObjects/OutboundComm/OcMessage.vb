@@ -6,48 +6,48 @@ Public Class OcMessage
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New OcMessageDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -55,23 +55,23 @@ Public Class OcMessage
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New OcMessageDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -90,7 +90,7 @@ Public Class OcMessage
 
 #Region "Properties"
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(OcMessageDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -100,7 +100,7 @@ Public Class OcMessage
         End Get
     End Property
 
-    Public Property OcTemplateId() As Guid
+    Public Property OcTemplateId As Guid
         Get
             CheckDeleted()
             If Row(OcMessageDAL.COL_NAME_OC_TEMPLATE_ID) Is DBNull.Value Then
@@ -109,13 +109,13 @@ Public Class OcMessage
                 Return New Guid(CType(Row(OcMessageDAL.COL_NAME_OC_TEMPLATE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(OcMessageDAL.COL_NAME_OC_TEMPLATE_ID, Value)
+            SetValue(OcMessageDAL.COL_NAME_OC_TEMPLATE_ID, Value)
         End Set
     End Property
 
-    Public Property TemplateCode() As String
+    Public Property TemplateCode As String
         Get
             CheckDeleted()
             If Row(OcMessageDAL.COL_NAME_TEMPLATE_CODE) Is DBNull.Value Then
@@ -124,13 +124,13 @@ Public Class OcMessage
                 Return CType(Row(OcMessageDAL.COL_NAME_TEMPLATE_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(OcMessageDAL.COL_NAME_TEMPLATE_CODE, Value)
+            SetValue(OcMessageDAL.COL_NAME_TEMPLATE_CODE, Value)
         End Set
     End Property
 
-    Public Property TemplateDescription() As String
+    Public Property TemplateDescription As String
         Get
             CheckDeleted()
             If Row(OcMessageDAL.COL_NAME_TEMPLATE_DESCRIPTION) Is DBNull.Value Then
@@ -139,13 +139,13 @@ Public Class OcMessage
                 Return CType(Row(OcMessageDAL.COL_NAME_TEMPLATE_DESCRIPTION), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(OcMessageDAL.COL_NAME_TEMPLATE_DESCRIPTION, Value)
+            SetValue(OcMessageDAL.COL_NAME_TEMPLATE_DESCRIPTION, Value)
         End Set
     End Property
 
-    Public Property SenderReason() As String
+    Public Property SenderReason As String
         Get
             CheckDeleted()
             If Row(OcMessageDAL.COL_NAME_SENDER_REASON) Is DBNull.Value Then
@@ -154,13 +154,13 @@ Public Class OcMessage
                 Return CType(Row(OcMessageDAL.COL_NAME_SENDER_REASON), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(OcMessageDAL.COL_NAME_SENDER_REASON, Value)
+            SetValue(OcMessageDAL.COL_NAME_SENDER_REASON, Value)
         End Set
     End Property
 
-    Public Property RecipientAddress() As String
+    Public Property RecipientAddress As String
         Get
             CheckDeleted()
             If Row(OcMessageDAL.COL_NAME_RECIPIENT_ADDRESS) Is DBNull.Value Then
@@ -169,13 +169,13 @@ Public Class OcMessage
                 Return CType(Row(OcMessageDAL.COL_NAME_RECIPIENT_ADDRESS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(OcMessageDAL.COL_NAME_RECIPIENT_ADDRESS, Value)
+            SetValue(OcMessageDAL.COL_NAME_RECIPIENT_ADDRESS, Value)
         End Set
     End Property
 
-    Public Property LastAttemptedOn() As DateTime
+    Public Property LastAttemptedOn As DateTime
         Get
             CheckDeleted()
             If Row(OcMessageDAL.COL_NAME_LAST_ATTEMPTED_ON) Is DBNull.Value Then
@@ -184,13 +184,13 @@ Public Class OcMessage
                 Return CType(Row(OcMessageDAL.COL_NAME_LAST_ATTEMPTED_ON), String)
             End If
         End Get
-        Set(ByVal Value As DateTime)
+        Set
             CheckDeleted()
-            Me.SetValue(OcMessageDAL.COL_NAME_LAST_ATTEMPTED_ON, Value)
+            SetValue(OcMessageDAL.COL_NAME_LAST_ATTEMPTED_ON, Value)
         End Set
     End Property
 
-    Public Property LastAttemptedStatus() As String
+    Public Property LastAttemptedStatus As String
         Get
             CheckDeleted()
             If Row(OcMessageDAL.COL_NAME_LAST_ATTEMPTED_STATUS) Is DBNull.Value Then
@@ -199,13 +199,13 @@ Public Class OcMessage
                 Return CType(Row(OcMessageDAL.COL_NAME_LAST_ATTEMPTED_STATUS), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(OcMessageDAL.COL_NAME_LAST_ATTEMPTED_STATUS, Value)
+            SetValue(OcMessageDAL.COL_NAME_LAST_ATTEMPTED_STATUS, Value)
         End Set
     End Property
 
-    Public Property CertificateNumber() As String
+    Public Property CertificateNumber As String
         Get
             CheckDeleted()
             If Row(OcMessageDAL.COL_NAME_CERT_NUMBER) Is DBNull.Value Then
@@ -214,13 +214,13 @@ Public Class OcMessage
                 Return CType(Row(OcMessageDAL.COL_NAME_CERT_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(OcMessageDAL.COL_NAME_CERT_NUMBER, Value)
+            SetValue(OcMessageDAL.COL_NAME_CERT_NUMBER, Value)
         End Set
     End Property
 
-    Public Property ClaimNumber() As String
+    Public Property ClaimNumber As String
         Get
             CheckDeleted()
             If Row(OcMessageDAL.COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then
@@ -229,13 +229,13 @@ Public Class OcMessage
                 Return CType(Row(OcMessageDAL.COL_NAME_CLAIM_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(OcMessageDAL.COL_NAME_CLAIM_NUMBER, Value)
+            SetValue(OcMessageDAL.COL_NAME_CLAIM_NUMBER, Value)
         End Set
     End Property
 
-    Public Property CaseNumber() As String
+    Public Property CaseNumber As String
         Get
             CheckDeleted()
             If Row(OcMessageDAL.COL_NAME_CASE_NUMBER) Is DBNull.Value Then
@@ -244,13 +244,13 @@ Public Class OcMessage
                 Return CType(Row(OcMessageDAL.COL_NAME_CASE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(OcMessageDAL.COL_NAME_CASE_NUMBER, Value)
+            SetValue(OcMessageDAL.COL_NAME_CASE_NUMBER, Value)
         End Set
     End Property
 
-    Public ReadOnly Property MessageParametersList() As OcMessageParamsList
+    Public ReadOnly Property MessageParametersList As OcMessageParamsList
         Get
             Return New OcMessageParamsList(Me)
         End Get
@@ -268,35 +268,35 @@ Public Class OcMessage
 
 #Region "Public Members"
 
-    Public Function GetParameterChild(ByVal childId As Guid) As OcMessageParams
-        Return Me.MessageParametersList.Find(childId)
+    Public Function GetParameterChild(childId As Guid) As OcMessageParams
+        Return MessageParametersList.Find(childId)
     End Function
 
     Public Function GetNewParameterChild() As OcMessageParams
-        Dim child As OcMessageParams = Me.MessageParametersList.GetNewChild
-        child.OcMessageId = Me.Id
+        Dim child As OcMessageParams = MessageParametersList.GetNewChild
+        child.OcMessageId = Id
         Return child
     End Function
 
-    Public Function GetMessageAttemptChild(ByVal childId As Guid) As OcMessageAttempts
-        Return Me.MessageAttemptsList.Find(childId)
+    Public Function GetMessageAttemptChild(childId As Guid) As OcMessageAttempts
+        Return MessageAttemptsList.Find(childId)
     End Function
 
     Public Function GetNewMessageAttemptChild() As OcMessageAttempts
-        Dim child As OcMessageAttempts = Me.MessageAttemptsList.GetNewChild
-        child.OcMessageId = Me.Id
+        Dim child As OcMessageAttempts = MessageAttemptsList.GetNewChild
+        child.OcMessageId = Id
         Return child
     End Function
 
-    Public Sub SendAdhocMessage(ByVal dealer_id As Guid,
-                                ByVal msg_for As String,
-                                ByVal id As Guid,
-                                ByVal template_code As String,
-                                ByVal std_recipient As String,
-                                ByVal cst_recipient As String,
-                                ByVal std_parameter As String,
-                                ByVal cst_parameter As String,
-                                ByVal sender As String,
+    Public Sub SendAdhocMessage(dealer_id As Guid,
+                                msg_for As String,
+                                id As Guid,
+                                template_code As String,
+                                std_recipient As String,
+                                cst_recipient As String,
+                                std_parameter As String,
+                                cst_parameter As String,
+                                sender As String,
                                 ByRef message_id As Guid,
                                 ByRef err_no As Integer,
                                 ByRef err_msg As String)
@@ -347,15 +347,15 @@ Public Class OcMessage
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
     End Class
 
-    Shared Function GetMessageSearchDV(ByVal dealerId As Guid,
-                                       ByVal searchBy As String,
-                                       ByVal conditionMask As String,
-                                       ByVal languageId As Guid) As MessageSearchDV
+    Shared Function GetMessageSearchDV(dealerId As Guid,
+                                       searchBy As String,
+                                       conditionMask As String,
+                                       languageId As Guid) As MessageSearchDV
         Try
             Dim dal As New OcMessageDAL
             Dim ds As DataSet = dal.LoadList(dealerId, searchBy, conditionMask, languageId)
@@ -399,29 +399,29 @@ Public Class OcMessage
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
         Public Function AddNewRowToEmptyDV() As MessageDV
-            Dim dt As DataTable = Me.Table.Clone()
+            Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(MessageDV.COL_MESSAGE_ID) = (New Guid()).ToByteArray
-            row(MessageDV.COL_TEMPLATE_ID) = Guid.Empty.ToByteArray
-            row(MessageDV.COL_TEMPLATE_CODE) = DBNull.Value
-            row(MessageDV.COL_DESCRIPTION) = DBNull.Value
-            row(MessageDV.COL_SENDER_REASON) = DBNull.Value
-            row(MessageDV.COL_RECIPIENT_ADDRESS) = DBNull.Value
-            row(MessageDV.COL_CERTIFICATE_NUMBER) = DBNull.Value
-            row(MessageDV.COL_CERT_ID) = DBNull.Value
-            row(MessageDV.COL_CLAIM_NUMBER) = DBNull.Value
-            row(MessageDV.COL_CLAIM_ID) = DBNull.Value
-            row(MessageDV.COL_CASE_NUMBER) = DBNull.Value
-            row(MessageDV.COL_CASE_ID) = DBNull.Value
-            row(MessageDV.COL_CREATED_BY) = DBNull.Value
-            row(MessageDV.COL_CREATED_DATE) = DBNull.Value
-            row(MessageDV.COL_MODIFIED_BY) = DBNull.Value
-            row(MessageDV.COL_MODIFIED_DATE) = DBNull.Value
+            row(COL_MESSAGE_ID) = (New Guid()).ToByteArray
+            row(COL_TEMPLATE_ID) = Guid.Empty.ToByteArray
+            row(COL_TEMPLATE_CODE) = DBNull.Value
+            row(COL_DESCRIPTION) = DBNull.Value
+            row(COL_SENDER_REASON) = DBNull.Value
+            row(COL_RECIPIENT_ADDRESS) = DBNull.Value
+            row(COL_CERTIFICATE_NUMBER) = DBNull.Value
+            row(COL_CERT_ID) = DBNull.Value
+            row(COL_CLAIM_NUMBER) = DBNull.Value
+            row(COL_CLAIM_ID) = DBNull.Value
+            row(COL_CASE_NUMBER) = DBNull.Value
+            row(COL_CASE_ID) = DBNull.Value
+            row(COL_CREATED_BY) = DBNull.Value
+            row(COL_CREATED_DATE) = DBNull.Value
+            row(COL_MODIFIED_BY) = DBNull.Value
+            row(COL_MODIFIED_DATE) = DBNull.Value
             dt.Rows.Add(row)
             Return New MessageDV(dt)
         End Function

@@ -5,19 +5,18 @@ Public Class ClaimNotFoundException
     Inherits Exception
 
     Public ReadOnly ClaimNumber As String
-    Public ReadOnly CompanyId As Nullable(Of Guid)
+    Public ReadOnly CompanyId As Guid?
 
-
-    Public Sub New(ByVal pCompanyId As Nullable(Of Guid), ByVal pClaimNUmber As String)
+    Public Sub New(pCompanyId As Guid?, pClaimNUmber As String)
         ClaimNumber = pClaimNUmber
         CompanyId = pCompanyId
     End Sub
-    Public Sub New(ByVal pCompanyId As Nullable(Of Guid), ByVal pClaimNUmber As String, pMessage As String)
+    Public Sub New(pCompanyId As Guid?, pClaimNUmber As String, pMessage As String)
         MyBase.New(pMessage)
         ClaimNumber = pClaimNUmber
         CompanyId = pCompanyId
     End Sub
-    Public Sub New(ByVal pCompanyId As Nullable(Of Guid), ByVal pClaimNUmber As String, pMessage As String, pInner As Exception)
+    Public Sub New(pCompanyId As Guid?, pClaimNUmber As String, pMessage As String, pInner As Exception)
         MyBase.New(pMessage, pInner)
         ClaimNumber = pClaimNUmber
         CompanyId = pCompanyId

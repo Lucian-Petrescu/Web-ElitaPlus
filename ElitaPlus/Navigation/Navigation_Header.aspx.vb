@@ -49,7 +49,7 @@ Partial Class Navigation_Header
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -127,7 +127,7 @@ Partial Class Navigation_Header
 #Region "PAGE ROUTINES"
 
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         '-------------------------------------
         'Name:Page_Load
@@ -146,7 +146,7 @@ Partial Class Navigation_Header
 
             imgDisplayMode.Attributes.Add("onclick", "toggleHeaderView();")
             imgDisplayMode.Attributes.Add("style", "height:21px;width:21px;CURSOR: hand")
-            Me.LoadTabs()
+            LoadTabs()
         End If
 
         If ELPWebConstants.GetMenuState = ELPWebConstants.enumMenu_State.Editing_Page_Mode Then
@@ -159,20 +159,20 @@ Partial Class Navigation_Header
             Session("DisplayMode") = "visible"
         End If
 
-        If Not Session("DisplayMode") Is Nothing Then
-            Me.displayMode.Value = CType(Session("DisplayMode"), String)
+        If Session("DisplayMode") IsNot Nothing Then
+            displayMode.Value = CType(Session("DisplayMode"), String)
         End If
 
         'If Not Session(ELPWebConstants.SELECTED_TAB) Is Nothing AndAlso Not (CType(Session(ELPWebConstants.SELECTED_TAB), String).Equals(CType(Application(ELPWebConstants.HOME_PAGE_TAB_ID), String)) AndAlso Not Page.IsPostBack()) Then
         If EnvironmentContext.Current.Environment = Environments.Production Then
-            Me.lblEnv.Text = ""
+            lblEnv.Text = ""
         Else
-            Me.lblEnv.Text = "Env: " & EnvironmentContext.Current.EnvironmentName
-            Me.lblEnv.Text &= "&nbsp;&nbsp;&nbsp;"
+            lblEnv.Text = "Env: " & EnvironmentContext.Current.EnvironmentName
+            lblEnv.Text &= "&nbsp;&nbsp;&nbsp;"
             If ((EnvironmentContext.Current.Environment = Environments.Development) OrElse
                  (EnvironmentContext.Current.Environment = Environments.Test)) Then
-                Me.lblEnv.Text &= ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Description
-                Me.lblEnv.Text &= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                lblEnv.Text &= ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Description
+                lblEnv.Text &= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
             End If
         End If
 
@@ -201,32 +201,32 @@ Partial Class Navigation_Header
 
             End If
 
-            If Not moDS Is Nothing Then
+            If moDS IsNot Nothing Then
                 xmlSource.Data = moDS.GetXml
             End If
 
             If Not String.IsNullOrEmpty(xmlSource.Data) Then
                 xmlSource.Transform = ElitaPlus.Common.XMLHelper.GetXMLElementsToAttributesTransformScript
-                Me.mnu.DataSource = xmlSource
-                Me.mnu.DataBind()
+                mnu.DataSource = xmlSource
+                mnu.DataBind()
             End If
 
-            If Me.mnu.Items.Count <= 0 Then
+            If mnu.Items.Count <= 0 Then
                 System.Threading.Thread.Sleep(3000)
                 LoadTabs("retry")
             End If
 
         Catch ex As NullReferenceException
-            ELPWebConstants.ShowPopup(ex.Message, Me.Page)
+            ELPWebConstants.ShowPopup(ex.Message, Page)
 
         Catch ex As DataNotFoundException
-            ELPWebConstants.ShowPopup(ex.Message, Me.Page)
+            ELPWebConstants.ShowPopup(ex.Message, Page)
 
         Catch ex As ApplicationException
-            ELPWebConstants.ShowPopup(ex.Message, Me.Page)
+            ELPWebConstants.ShowPopup(ex.Message, Page)
 
         Catch ex As Exception
-            ELPWebConstants.ShowPopup(ex.Message, Me.Page)
+            ELPWebConstants.ShowPopup(ex.Message, Page)
 
         End Try
 
@@ -250,14 +250,14 @@ Partial Class Navigation_Header
 
             End If
 
-            If Not moDS Is Nothing Then
+            If moDS IsNot Nothing Then
                 xmlSource.Data = moDS.GetXml
             End If
 
             If Not String.IsNullOrEmpty(xmlSource.Data) Then
                 xmlSource.Transform = ElitaPlus.Common.XMLHelper.GetXMLElementsToAttributesTransformScript
-                Me.mnu.DataSource = xmlSource
-                Me.mnu.DataBind()
+                mnu.DataSource = xmlSource
+                mnu.DataBind()
             End If
 
         Catch ex As NullReferenceException
@@ -276,7 +276,7 @@ Partial Class Navigation_Header
 
     End Sub
 
-    Public Function GetTabIcon(ByVal CODE As String) As String
+    Public Function GetTabIcon(CODE As String) As String
         '-------------------------------------
         'Name:GetTabIcon
         'Purpose:Retrieve the icon for a specific imageid.
@@ -288,7 +288,7 @@ Partial Class Navigation_Header
         Return moTabMgr.TabIconPath(CODE, sIconPath)
     End Function
 
-    Public Function GetTabTitle(ByVal CODE As String) As String
+    Public Function GetTabTitle(CODE As String) As String
         '-------------------------------------
         'Name:GetTabTitle
         'Purpose:Return the text for the title of the tab for a specific imageid.
@@ -299,7 +299,7 @@ Partial Class Navigation_Header
         Return moTabMgr.TabTitle(CODE, ElitaPlusIdentity.Current.ActiveUser.LanguageId).ToUpper
     End Function
 
-    Public Function GetTabImage(ByVal nAlignment As Long, ByVal CODE As String) As String
+    Public Function GetTabImage(nAlignment As Long, CODE As String) As String
         '-------------------------------------
         'Name:GetTabImage
         'Purpose:build the left center and right outlines for the rounded tabs.
@@ -312,7 +312,7 @@ Partial Class Navigation_Header
         Return Request.ApplicationPath & PATH_TO_IMAGES & sTabImage
     End Function
 
-    Private Sub DisableLinks(ByVal bEnabled As Boolean)
+    Private Sub DisableLinks(bEnabled As Boolean)
         'make all the navigation links either enabled or disabled.
 
         'dlstTabs.Enabled = bEnabled

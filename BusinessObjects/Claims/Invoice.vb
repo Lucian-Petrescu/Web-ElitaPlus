@@ -8,48 +8,48 @@ Public NotInheritable Class Invoice
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New InvoiceDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -57,23 +57,23 @@ Public NotInheritable Class Invoice
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New InvoiceDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -85,10 +85,10 @@ Public NotInheritable Class Invoice
 #Region "Private Members"
     'Initialization code for new objects
     Private Sub Initialize()
-        Me.InvoiceDate = Date.Today
+        InvoiceDate = Date.Today
         Me.InvoiceAmount = 0D
-        Me.InvoiceStatusId = LookupListNew.GetIdFromCode(LookupListNew.LK_INVOICE_STATUS, Codes.INVOICE_STATUS__NEW)
-        Me.IsComplete = False
+        InvoiceStatusId = LookupListNew.GetIdFromCode(LookupListCache.LK_INVOICE_STATUS, Codes.INVOICE_STATUS__NEW)
+        IsComplete = False
     End Sub
 
     ''' <summary>
@@ -97,13 +97,13 @@ Public NotInheritable Class Invoice
     ''' <returns>True if Due Date is valid, False otherwise.</returns>
     ''' <remarks>Check if Due Date is supplied, if not supplied then it's valid. If Due date is supplied and Invoice date is not OR Due date &lt; Invoice Date then it's not valid.</remarks>
     Private Function IsDueDateValid()
-        If (Me.DueDate Is Nothing) Then
+        If (DueDate Is Nothing) Then
             Return True
         Else
-            If (Me.InvoiceDate Is Nothing) Then
+            If (InvoiceDate Is Nothing) Then
                 Return False
             Else
-                Return Me.DueDate.Value >= Me.InvoiceDate.Value
+                Return DueDate.Value >= InvoiceDate.Value
             End If
         End If
     End Function
@@ -125,14 +125,14 @@ Public NotInheritable Class Invoice
 #Region "Derived Propertes"
     Public ReadOnly Property InvoiceStatusCode As String
         Get
-            Return LookupListNew.GetCodeFromId(LookupListNew.LK_INVOICE_STATUS, Me.InvoiceStatusId)
+            Return LookupListNew.GetCodeFromId(LookupListCache.LK_INVOICE_STATUS, InvoiceStatusId)
         End Get
     End Property
 
     Public ReadOnly Property [ReadOnly] As Boolean
         Get
-            If (Me.CanAddAuthorization) Then Return False
-            For Each oClaimAuthorization As ClaimAuthorization In Me.ClaimAuthorizations
+            If (CanAddAuthorization) Then Return False
+            For Each oClaimAuthorization As ClaimAuthorization In ClaimAuthorizations
                 If (oClaimAuthorization.ClaimAuthStatus = ClaimAuthorizationStatus.Fulfilled OrElse oClaimAuthorization.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized) Then
                     Return False
                 End If
@@ -150,12 +150,12 @@ Public NotInheritable Class Invoice
     Public ReadOnly Property DifferenceAmount As DecimalType
         Get
             Dim sumAmount As Decimal = 0D
-            For Each item As InvoiceItem In Me.InvoiceItemChildren
+            For Each item As InvoiceItem In InvoiceItemChildren
                 If (item.AdjustmentReasonId.Equals(Guid.Empty)) Then
                     sumAmount += item.Amount.Value
                 End If
             Next
-            Return Me.InvoiceAmount.Value - sumAmount - PerceptionIVA.Value - PerceptionIIBB.Value
+            Return InvoiceAmount.Value - sumAmount - PerceptionIVA.Value - PerceptionIIBB.Value
         End Get
     End Property
 
@@ -168,7 +168,7 @@ Public NotInheritable Class Invoice
     Public ReadOnly Property LineItemTotalAmount As DecimalType
         Get
             Dim sumAmount As Decimal = 0D
-            For Each item As InvoiceItem In Me.InvoiceItemChildren
+            For Each item As InvoiceItem In InvoiceItemChildren
                 sumAmount += item.Amount.Value
             Next
             Return sumAmount
@@ -183,8 +183,8 @@ Public NotInheritable Class Invoice
     ''' <remarks></remarks>
     Public ReadOnly Property CanAddAuthorization
         Get
-            If (Me.IsNew) Then Return True
-            If (Me.IsComplete) Then Return False
+            If (IsNew) Then Return True
+            If (IsComplete) Then Return False
             Return True
         End Get
     End Property
@@ -199,8 +199,8 @@ Public NotInheritable Class Invoice
     ''' <remarks></remarks>
     Public ReadOnly Property IsPaidFull
         Get
-            If (Me.CanAddAuthorization) Then Return False
-            For Each oClaimAuth As ClaimAuthorization In Me.ClaimAuthorizations
+            If (CanAddAuthorization) Then Return False
+            For Each oClaimAuth As ClaimAuthorization In ClaimAuthorizations
                 If (oClaimAuth.ClaimAuthStatus <> ClaimAuthorizationStatus.Paid) Then
                     Return False
                 End If
@@ -215,13 +215,13 @@ Public NotInheritable Class Invoice
             If (Not _isPerceptionTaxDefined.HasValue) Then
                 SyncLock _syncRoot
                     If (Not _isPerceptionTaxDefined.HasValue) Then
-                        If (Me.ServiceCenter Is Nothing) Then
+                        If (ServiceCenter Is Nothing) Then
                             _isPerceptionTaxDefined = False
                         Else
                             ' Read Taxes for Tax Type = 4 (Invoice Tax)
-                            Dim taxTypeId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_TAX_TYPES, "4")
+                            Dim taxTypeId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_TAX_TYPES, "4")
                             Dim ds As DataSet
-                            ds = InvoiceTrans.CheckInvoiceTaxTypeByCountry(Me.ServiceCenter.CountryId, taxTypeId, Guid.Empty)
+                            ds = InvoiceTrans.CheckInvoiceTaxTypeByCountry(ServiceCenter.CountryId, taxTypeId, Guid.Empty)
 
                             If ds.Tables(0).Rows.Count > 0 Then
                                 Dim taxColumnCount As Integer
@@ -235,7 +235,7 @@ Public NotInheritable Class Invoice
                                     taxColumnCount = CInt(IIf(dr(COL_TAX6_COMPUTE_METHOD).ToString = COMPUTE_TYPE_MANUALLY, taxColumnCount + 1, taxColumnCount + 0))
 
                                     If taxColumnCount <> MAX_MANUALLY_ENTERED_TAXES Then
-                                        Throw New ElitaPlusException(TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.ERR_TWO_TAXES_FOR_INVOICE_TAX_TYPE), Common.ErrorCodes.UNEXPECTED_ERROR)
+                                        Throw New ElitaPlusException(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.ERR_TWO_TAXES_FOR_INVOICE_TAX_TYPE), Common.ErrorCodes.UNEXPECTED_ERROR)
                                     End If
                                     _isPerceptionTaxDefined = True
 
@@ -253,7 +253,7 @@ Public NotInheritable Class Invoice
 
     Public ReadOnly Property IsAnyClaimAuthorizationPaid As Boolean
         Get
-            For Each auth As ClaimAuthorization In Me.ClaimAuthorizations
+            For Each auth As ClaimAuthorization In ClaimAuthorizations
                 If auth.ClaimAuthStatus = ClaimAuthorizationStatus.Paid Then
                     Return True
                 End If
@@ -270,7 +270,7 @@ Public NotInheritable Class Invoice
     Public ReadOnly Property AttributeValues As AttributeValueList(Of IAttributable) Implements IAttributable.AttributeValues
         Get
             If (_AttributeValueList Is Nothing) Then
-                _AttributeValueList = New AttributeValueList(Of IAttributable)(Me.Dataset, Me)
+                _AttributeValueList = New AttributeValueList(Of IAttributable)(Dataset, Me)
             End If
             Return _AttributeValueList
         End Get
@@ -278,7 +278,7 @@ Public NotInheritable Class Invoice
 
     'Key Property
     <ValidateAtLeastOneItem(""), ValidateAuthorizationRepairDate(""), ValidateDuplicateServiceClassType("")> _
-    Public ReadOnly Property Id() As Guid Implements IAttributable.Id
+    Public ReadOnly Property Id As Guid Implements IAttributable.Id
         Get
             If Row(InvoiceDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -289,7 +289,7 @@ Public NotInheritable Class Invoice
     End Property
 
     <ValueMandatory("")> _
-    Public Property ServiceCenterId() As Guid
+    Public Property ServiceCenterId As Guid
         Get
             CheckDeleted()
             If Row(InvoiceDAL.COL_NAME_SERVICE_CENTER_ID) Is DBNull.Value Then
@@ -298,16 +298,16 @@ Public NotInheritable Class Invoice
                 Return New Guid(CType(Row(InvoiceDAL.COL_NAME_SERVICE_CENTER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(InvoiceDAL.COL_NAME_SERVICE_CENTER_ID, Value)
-            Me.ServiceCenter = Nothing
+            SetValue(InvoiceDAL.COL_NAME_SERVICE_CENTER_ID, Value)
+            ServiceCenter = Nothing
             _isPerceptionTaxDefined = Nothing
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=120), ValidateUniqueInvoiceNumber("")> _
-    Public Property InvoiceNumber() As String
+    Public Property InvoiceNumber As String
         Get
             CheckDeleted()
             If Row(InvoiceDAL.COL_NAME_INVOICE_NUMBER) Is DBNull.Value Then
@@ -316,14 +316,14 @@ Public NotInheritable Class Invoice
                 Return CType(Row(InvoiceDAL.COL_NAME_INVOICE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(InvoiceDAL.COL_NAME_INVOICE_NUMBER, Value)
+            SetValue(InvoiceDAL.COL_NAME_INVOICE_NUMBER, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidateInvoiceDate("")> _
-    Public Property InvoiceDate() As DateType
+    Public Property InvoiceDate As DateType
         Get
             CheckDeleted()
             If Row(InvoiceDAL.COL_NAME_INVOICE_DATE) Is DBNull.Value Then
@@ -332,14 +332,14 @@ Public NotInheritable Class Invoice
                 Return New DateType(CType(Row(InvoiceDAL.COL_NAME_INVOICE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(InvoiceDAL.COL_NAME_INVOICE_DATE, Value)
+            SetValue(InvoiceDAL.COL_NAME_INVOICE_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidNumericRange("", Message:=INVOICE_FORM002, Min:=0D, MinExclusive:=True)> _
-    Public Property InvoiceAmount() As DecimalType
+    Public Property InvoiceAmount As DecimalType
         Get
             CheckDeleted()
             If Row(InvoiceDAL.COL_NAME_INVOICE_AMOUNT) Is DBNull.Value Then
@@ -348,14 +348,14 @@ Public NotInheritable Class Invoice
                 Return New DecimalType(CType(Row(InvoiceDAL.COL_NAME_INVOICE_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(InvoiceDAL.COL_NAME_INVOICE_AMOUNT, Value)
+            SetValue(InvoiceDAL.COL_NAME_INVOICE_AMOUNT, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property InvoiceStatusId() As Guid
+    Public Property InvoiceStatusId As Guid
         Get
             CheckDeleted()
             If Row(InvoiceDAL.COL_NAME_INVOICE_STATUS_ID) Is DBNull.Value Then
@@ -364,14 +364,14 @@ Public NotInheritable Class Invoice
                 Return New Guid(CType(Row(InvoiceDAL.COL_NAME_INVOICE_STATUS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(InvoiceDAL.COL_NAME_INVOICE_STATUS_ID, Value)
+            SetValue(InvoiceDAL.COL_NAME_INVOICE_STATUS_ID, Value)
         End Set
     End Property
 
     <ValidStringLength("", Max:=200)> _
-    Public Property Source() As String
+    Public Property Source As String
         Get
             CheckDeleted()
             If Row(InvoiceDAL.COL_NAME_SOURCE) Is DBNull.Value Then
@@ -380,14 +380,14 @@ Public NotInheritable Class Invoice
                 Return CType(Row(InvoiceDAL.COL_NAME_SOURCE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(InvoiceDAL.COL_NAME_SOURCE, Value)
+            SetValue(InvoiceDAL.COL_NAME_SOURCE, Value)
         End Set
     End Property
 
     <ValidateDueDateAfterInvoiceDate("")> _
-    Public Property DueDate() As DateType
+    Public Property DueDate As DateType
         Get
             CheckDeleted()
             If Row(InvoiceDAL.COL_NAME_DUE_DATE) Is DBNull.Value Then
@@ -396,14 +396,14 @@ Public NotInheritable Class Invoice
                 Return New DateType(CType(Row(InvoiceDAL.COL_NAME_DUE_DATE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(InvoiceDAL.COL_NAME_DUE_DATE, Value)
+            SetValue(InvoiceDAL.COL_NAME_DUE_DATE, Value)
         End Set
     End Property
 
     <ValueMandatory("")> _
-    Public Property IsCompleteId() As Guid
+    Public Property IsCompleteId As Guid
         Get
             CheckDeleted()
             If Row(InvoiceDAL.COL_NAME_IS_COMPLETE_ID) Is DBNull.Value Then
@@ -412,9 +412,9 @@ Public NotInheritable Class Invoice
                 Return New Guid(CType(Row(InvoiceDAL.COL_NAME_IS_COMPLETE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(InvoiceDAL.COL_NAME_IS_COMPLETE_ID, Value)
+            SetValue(InvoiceDAL.COL_NAME_IS_COMPLETE_ID, Value)
         End Set
     End Property
 #End Region
@@ -429,13 +429,13 @@ Public NotInheritable Class Invoice
     <ValidStringLength("", Max:=255)> _
     Public Property BatchNumber As String
         Get
-            Return Me.AttributeValues.Value(Codes.ATTRIBUTE__BATCH_NUMBER)
+            Return AttributeValues.Value(Codes.ATTRIBUTE__BATCH_NUMBER)
         End Get
-        Set(ByVal value As String)
+        Set
             If (value Is Nothing OrElse value.Trim.Length = 0) Then
-                Me.AttributeValues.Value(Codes.ATTRIBUTE__BATCH_NUMBER) = Nothing
+                AttributeValues.Value(Codes.ATTRIBUTE__BATCH_NUMBER) = Nothing
             Else
-                Me.AttributeValues.Value(Codes.ATTRIBUTE__BATCH_NUMBER) = value
+                AttributeValues.Value(Codes.ATTRIBUTE__BATCH_NUMBER) = value
             End If
 
         End Set
@@ -443,39 +443,39 @@ Public NotInheritable Class Invoice
 
     Public Property PerceptionIVA As DecimalType
         Get
-            Return Me.AttributeValues.Value(Codes.ATTRIBUTE__PERCEPTION_IVA).ToDecimal(0D)
+            Return AttributeValues.Value(Codes.ATTRIBUTE__PERCEPTION_IVA).ToDecimal(0D)
         End Get
-        Set(ByVal value As DecimalType)
+        Set
             If (value Is Nothing) Then
-                Me.AttributeValues.Value(Codes.ATTRIBUTE__PERCEPTION_IVA) = Nothing
+                AttributeValues.Value(Codes.ATTRIBUTE__PERCEPTION_IVA) = Nothing
             Else
-                Me.AttributeValues.Value(Codes.ATTRIBUTE__PERCEPTION_IVA) = value
+                AttributeValues.Value(Codes.ATTRIBUTE__PERCEPTION_IVA) = value
             End If
         End Set
     End Property
 
     Public Property PerceptionIIBB As DecimalType
         Get
-            Return Me.AttributeValues.Value(Codes.ATTRIBUTE__PERCEPTION_IIBB).ToDecimal(0D)
+            Return AttributeValues.Value(Codes.ATTRIBUTE__PERCEPTION_IIBB).ToDecimal(0D)
         End Get
-        Set(ByVal value As DecimalType)
+        Set
             If (value Is Nothing) Then
-                Me.AttributeValues.Value(Codes.ATTRIBUTE__PERCEPTION_IIBB) = Nothing
+                AttributeValues.Value(Codes.ATTRIBUTE__PERCEPTION_IIBB) = Nothing
             Else
-                Me.AttributeValues.Value(Codes.ATTRIBUTE__PERCEPTION_IIBB) = value
+                AttributeValues.Value(Codes.ATTRIBUTE__PERCEPTION_IIBB) = value
             End If
         End Set
     End Property
 
     Public Property PerceptionIIBBRegion As Guid
         Get
-            Return Me.AttributeValues.Value(Codes.ATTRIBUTE__PERCEPTION_IIBB_REGION_ID).ToGuid(Guid.Empty)
+            Return AttributeValues.Value(Codes.ATTRIBUTE__PERCEPTION_IIBB_REGION_ID).ToGuid(Guid.Empty)
         End Get
-        Set(ByVal value As Guid)
+        Set
             If (value.Equals(Guid.Empty)) Then
-                Me.AttributeValues.Value(Codes.ATTRIBUTE__PERCEPTION_IIBB_REGION_ID) = Nothing
+                AttributeValues.Value(Codes.ATTRIBUTE__PERCEPTION_IIBB_REGION_ID) = Nothing
             Else
-                Me.AttributeValues.Value(Codes.ATTRIBUTE__PERCEPTION_IIBB_REGION_ID) = GuidControl.GuidToHexString(value)
+                AttributeValues.Value(Codes.ATTRIBUTE__PERCEPTION_IIBB_REGION_ID) = GuidControl.GuidToHexString(value)
             End If
 
         End Set
@@ -485,13 +485,13 @@ Public NotInheritable Class Invoice
 #Region "Derived Properties"
     Public Property IsComplete As Boolean
         Get
-            Return Me.IsCompleteId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y))
+            Return IsCompleteId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_Y))
         End Get
-        Set(ByVal value As Boolean)
+        Set
             If value Then
-                Me.IsCompleteId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
+                IsCompleteId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_Y)
             Else
-                Me.IsCompleteId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
+                IsCompleteId = LookupListNew.GetIdFromCode(LookupListCache.LK_YESNO, Codes.YESNO_N)
             End If
         End Set
     End Property
@@ -507,29 +507,29 @@ Public NotInheritable Class Invoice
 #Region "Public Members"
     Public Overrides Sub Save()
         Try
-            If (Not Me.IsDeleted) Then
+            If (Not IsDeleted) Then
                 ' Clear Invoice Tax Attributes if Invoice Taxes are not Defined
-                If (Not Me.IsPerceptionTaxDefined) Then
-                    Me.PerceptionIIBB = Nothing
-                    Me.PerceptionIVA = Nothing
-                    Me.PerceptionIIBBRegion = Nothing
-                    Me.BatchNumber = Nothing
+                If (Not IsPerceptionTaxDefined) Then
+                    PerceptionIIBB = Nothing
+                    PerceptionIVA = Nothing
+                    PerceptionIIBBRegion = Nothing
+                    BatchNumber = Nothing
                 End If
                 ' If Difference Amount is not Zero, Invoice is Incomplete. This is only applicable when Source is blank
-                If ((Me.Source Is Nothing) OrElse (Me.Source.Trim() = String.Empty)) Then
-                    Me.IsComplete = (Me.DifferenceAmount.Value = 0)
+                If ((Source Is Nothing) OrElse (Source.Trim() = String.Empty)) Then
+                    IsComplete = (DifferenceAmount.Value = 0)
                 End If
                 ' Re-Calculate the Status of Invoice
-                If (Me.InvoiceAmount.Value = Me.LineItemTotalAmount.Value + Me.PerceptionIVA.Value + Me.PerceptionIIBB.Value) Then
-                    Me.InvoiceStatusId = LookupListNew.GetIdFromCode(LookupListNew.LK_INVOICE_STATUS, Codes.INVOICE_STATUS__BALANCED)
-                ElseIf (Me.InvoiceAmount.Value < Me.LineItemTotalAmount.Value + Me.PerceptionIVA.Value + Me.PerceptionIIBB.Value) Then
-                    Me.InvoiceStatusId = LookupListNew.GetIdFromCode(LookupListNew.LK_INVOICE_STATUS, Codes.INVOICE_STATUS__OVER)
+                If (InvoiceAmount.Value = LineItemTotalAmount.Value + PerceptionIVA.Value + PerceptionIIBB.Value) Then
+                    InvoiceStatusId = LookupListNew.GetIdFromCode(LookupListCache.LK_INVOICE_STATUS, Codes.INVOICE_STATUS__BALANCED)
+                ElseIf (InvoiceAmount.Value < LineItemTotalAmount.Value + PerceptionIVA.Value + PerceptionIIBB.Value) Then
+                    InvoiceStatusId = LookupListNew.GetIdFromCode(LookupListCache.LK_INVOICE_STATUS, Codes.INVOICE_STATUS__OVER)
                 Else
-                    Me.InvoiceStatusId = LookupListNew.GetIdFromCode(LookupListNew.LK_INVOICE_STATUS, Codes.INVOICE_STATUS__UNDER)
+                    InvoiceStatusId = LookupListNew.GetIdFromCode(LookupListCache.LK_INVOICE_STATUS, Codes.INVOICE_STATUS__UNDER)
                 End If
 
                 ' Explicitly Save all Claim Authorizations so that Status will be Updated Automatically
-                For Each oClaimAuthorization As ClaimAuthorization In Me.ClaimAuthorizations
+                For Each oClaimAuthorization As ClaimAuthorization In ClaimAuthorizations
                     oClaimAuthorization.Save()
                     ' This call is important, this recalculates Repair Date on Claim and Marks Claim Dirty
                     oClaimAuthorization.Claim.Save()
@@ -538,16 +538,16 @@ Public NotInheritable Class Invoice
             If IsNew Then
                 MyBase.Save()
             End If
-            Me.SetModifiedAuditInfo()
-            If Me._isDSCreator AndAlso Me.IsFamilyDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            SetModifiedAuditInfo()
+            If _isDSCreator AndAlso IsFamilyDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New InvoiceDAL
-                dal.UpdateFamily(Me.Dataset)
+                dal.UpdateFamily(Dataset)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -555,11 +555,11 @@ Public NotInheritable Class Invoice
         End Try
     End Sub
 
-    Public Sub RemoveAuthorization(ByVal claimAuthorizationId As Guid)
+    Public Sub RemoveAuthorization(claimAuthorizationId As Guid)
         Dim oClaimAuthorization As ClaimAuthorization
-        oClaimAuthorization = Me.ClaimAuthorizations.Where(Function(item) item.Id = claimAuthorizationId).First()
+        oClaimAuthorization = ClaimAuthorizations.Where(Function(item) item.Id = claimAuthorizationId).First()
         For Each invoiceItem As InvoiceItem In ( _
-            From oInvoiceItem As InvoiceItem In Me.InvoiceItemChildren _
+            From oInvoiceItem As InvoiceItem In InvoiceItemChildren _
             Where oInvoiceItem.ClaimAuthorizationId = claimAuthorizationId _
             Select oInvoiceItem)
             invoiceItem.Delete()
@@ -567,11 +567,11 @@ Public NotInheritable Class Invoice
         oClaimAuthorization.RejectInvoiceChanges()
     End Sub
 
-    Public Sub AddAuthorization(ByVal claimAuthorizationId As Guid)
-        Dim claimAuth As New ClaimAuthorization(claimAuthorizationId, Me.Dataset)
-        Dim lineItemNumber As Integer = Me.InvoiceItemChildren.Count
+    Public Sub AddAuthorization(claimAuthorizationId As Guid)
+        Dim claimAuth As New ClaimAuthorization(claimAuthorizationId, Dataset)
+        Dim lineItemNumber As Integer = InvoiceItemChildren.Count
         For Each detail As ClaimAuthItem In claimAuth.ClaimAuthorizationItemChildren
-            Dim invItem As InvoiceItem = Me.GetNewInvoiceItemChild()
+            Dim invItem As InvoiceItem = GetNewInvoiceItemChild()
             invItem.ClaimAuthorizationId = detail.ClaimAuthorizationId
             lineItemNumber = lineItemNumber + 1
             invItem.LineItemNumber = lineItemNumber
@@ -602,22 +602,22 @@ Public NotInheritable Class Invoice
         End Get
     End Property
 
-    Private Sub BalanceAuthorization(ByVal claimAuthorization As ClaimAuthorization)
-        Dim deductibleServiceClassId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_SERVICE_CLASS, Codes.SERVICE_CLASS__DEDUCTIBLE)
-        Dim deductibleServiceTypeId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_SERVICE_TYPE_NEW, Codes.SERVICE_TYPE__DEDUCTIBLE)
-        Dim payDeductibleServiceTypeId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_SERVICE_TYPE_NEW, Codes.SERVICE_TYPE__PAY_DEDUCTIBLE)
+    Private Sub BalanceAuthorization(claimAuthorization As ClaimAuthorization)
+        Dim deductibleServiceClassId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_SERVICE_CLASS, Codes.SERVICE_CLASS__DEDUCTIBLE)
+        Dim deductibleServiceTypeId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_SERVICE_TYPE_NEW, Codes.SERVICE_TYPE__DEDUCTIBLE)
+        Dim payDeductibleServiceTypeId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_SERVICE_TYPE_NEW, Codes.SERVICE_TYPE__PAY_DEDUCTIBLE)
 
-        Dim miscellaneousServiceClassId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_SERVICE_CLASS, Codes.SERVICE_CLASS__MISCELLANEOUS)
-        Dim aboveLiabilityLimitServiceTypeId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_SERVICE_TYPE_NEW, Codes.SERVICE_TYPE__ABOVE_LIABILITY_LIMIT)
+        Dim miscellaneousServiceClassId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_SERVICE_CLASS, Codes.SERVICE_CLASS__MISCELLANEOUS)
+        Dim aboveLiabilityLimitServiceTypeId As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_SERVICE_TYPE_NEW, Codes.SERVICE_TYPE__ABOVE_LIABILITY_LIMIT)
 
-        Dim invoiceReconciliationStatusReconsiled As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_INV_RECON_STAT, Codes.INVOICE_RECON_STATUS_RECONCILED)
+        Dim invoiceReconciliationStatusReconsiled As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_INV_RECON_STAT, Codes.INVOICE_RECON_STATUS_RECONCILED)
 
-        Dim autoAdjustmentReasonDeductible As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_ADJUSTMENT_REASON, Codes.ADJUSTMENT_REASON__AA_DEDUCTIBLE)
-        Dim autoAdjustmentReasonPayDeductible As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_ADJUSTMENT_REASON, Codes.ADJUSTMENT_REASON__AA_PAY_DEDUCTIBLE)
-        Dim autoAdjustmentReasonAutoAdjusted As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_ADJUSTMENT_REASON, Codes.ADJUSTMENT_REASON__AA_AUTO_ADJUSTED)
-        Dim autoAdjustmentReasonInvoiceAmountGreaterThanAuthorizedAmount = LookupListNew.GetIdFromCode(LookupListNew.LK_ADJUSTMENT_REASON, Codes.ADJUSTMENT_REASON__INV_AMT_GT_AUTH_AMT)
-        Dim autoAdjustmentReasonNotIncludedInAuthorization As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_ADJUSTMENT_REASON, Codes.ADJUSTMENT_REASON__NOT_INCLUDED_ON_AUTHORIZATION)
-        Dim autoAdjustmentReasonAboveLiabilityLimit As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_ADJUSTMENT_REASON, Codes.ADJUSTMENT_REASON__ABOVE_LIABILITY_LIMIT)
+        Dim autoAdjustmentReasonDeductible As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_ADJUSTMENT_REASON, Codes.ADJUSTMENT_REASON__AA_DEDUCTIBLE)
+        Dim autoAdjustmentReasonPayDeductible As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_ADJUSTMENT_REASON, Codes.ADJUSTMENT_REASON__AA_PAY_DEDUCTIBLE)
+        Dim autoAdjustmentReasonAutoAdjusted As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_ADJUSTMENT_REASON, Codes.ADJUSTMENT_REASON__AA_AUTO_ADJUSTED)
+        Dim autoAdjustmentReasonInvoiceAmountGreaterThanAuthorizedAmount = LookupListNew.GetIdFromCode(LookupListCache.LK_ADJUSTMENT_REASON, Codes.ADJUSTMENT_REASON__INV_AMT_GT_AUTH_AMT)
+        Dim autoAdjustmentReasonNotIncludedInAuthorization As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_ADJUSTMENT_REASON, Codes.ADJUSTMENT_REASON__NOT_INCLUDED_ON_AUTHORIZATION)
+        Dim autoAdjustmentReasonAboveLiabilityLimit As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_ADJUSTMENT_REASON, Codes.ADJUSTMENT_REASON__ABOVE_LIABILITY_LIMIT)
 
         Dim oClaimAuthorization As ClaimAuthorization = claimAuthorization
         Dim oInvoiceReconciliation As InvoiceReconciliation
@@ -631,7 +631,7 @@ Public NotInheritable Class Invoice
         Dim count As Integer
 
         If (oClaimAuthorization.ClaimAuthStatus <> ClaimAuthorizationStatus.Fulfilled) Then
-            Throw New BOInvalidOperationException(String.Format(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_AUTH_EXPECTED_IN_STATUS), oClaimAuthorization.AuthorizationNumber, oClaimAuthorization.ClaimNumber, LookupListNew.GetDescriptionFromCode(LookupListNew.LK_CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__FULFILLED)))
+            Throw New BOInvalidOperationException(String.Format(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.GUI_CLAIM_AUTH_EXPECTED_IN_STATUS), oClaimAuthorization.AuthorizationNumber, oClaimAuthorization.ClaimNumber, LookupListNew.GetDescriptionFromCode(LookupListCache.LK_CLAIM_AUTHORIZATION_STATUS, Codes.CLAIM_AUTHORIZATION_STATUS__FULFILLED)))
         End If
 
         If (oClaimAuthorization.ContainsDeductible) Then
@@ -660,23 +660,23 @@ Public NotInheritable Class Invoice
                     item.ServiceTypeId = deductibleServiceTypeId _
                     Select item).First()
             Else
-                Throw New BOInvalidOperationException(String.Format(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_MULTIPLE_DEDUCTIBLE_LINES_IN_CLAIM_AUTH), oClaimAuthorization.AuthorizationNumber, oClaimAuthorization.ClaimNumber))
+                Throw New BOInvalidOperationException(String.Format(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.GUI_MULTIPLE_DEDUCTIBLE_LINES_IN_CLAIM_AUTH), oClaimAuthorization.AuthorizationNumber, oClaimAuthorization.ClaimNumber))
             End If
 
             ' Step #2 - If the authorization line item detail contains a deductible line item (Service Class = Deductible and Service Type = Deductible) 
             '           and invoice line item detail does not contain a deductible line item, then the system shall add a deductible line item type to 
             '           the invoice line item detail with the amount equal to “0.00” and the reconciled amount equal to the authorization line item _
             '           deductible amount with a adjustment reason of “Auto-adjusted-Deductible”
-            count = (From item As InvoiceItem In Me.InvoiceItemChildren Where item.ClaimAuthorizationId = claimAuthorization.Id AndAlso _
+            count = (From item As InvoiceItem In InvoiceItemChildren Where item.ClaimAuthorizationId = claimAuthorization.Id AndAlso _
                 item.ServiceClassId = deductibleServiceClassId AndAlso item.ServiceTypeId = deductibleServiceTypeId).Count()
             If (count = 0) Then
                 ' Add Line Item to Invoice
-                oInvoiceItem = Me.GetNewInvoiceItemChild()
+                oInvoiceItem = GetNewInvoiceItemChild()
                 With oInvoiceItem
                     .AdjustmentReasonId = autoAdjustmentReasonAutoAdjusted
                     .Amount = 0
                     .ClaimAuthorizationId = oClaimAuthorization.Id
-                    .LineItemNumber = Me.InvoiceItemChildren.Count + 1
+                    .LineItemNumber = InvoiceItemChildren.Count + 1
                     .ServiceClassId = deductibleServiceClassId
                     .ServiceTypeId = deductibleServiceTypeId
                     .VendorSku = Codes.VENDOR_SKU_DEDUCTIBLE
@@ -684,10 +684,10 @@ Public NotInheritable Class Invoice
                     .Save()
                 End With
             ElseIf (count = 1) Then
-                oInvoiceItem = (From item As InvoiceItem In Me.InvoiceItemChildren Where item.ClaimAuthorizationId = claimAuthorization.Id AndAlso _
+                oInvoiceItem = (From item As InvoiceItem In InvoiceItemChildren Where item.ClaimAuthorizationId = claimAuthorization.Id AndAlso _
                     item.ServiceClassId = deductibleServiceClassId AndAlso item.ServiceTypeId = deductibleServiceTypeId).First()
             Else
-                Throw New BOInvalidOperationException(String.Format(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_MULTIPLE_DEDUCTIBLE_LINES_IN_INVOICE), Me.InvoiceNumber, oClaimAuthorization.AuthorizationNumber, oClaimAuthorization.ClaimNumber))
+                Throw New BOInvalidOperationException(String.Format(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.GUI_MULTIPLE_DEDUCTIBLE_LINES_IN_INVOICE), InvoiceNumber, oClaimAuthorization.AuthorizationNumber, oClaimAuthorization.ClaimNumber))
             End If
 
             ' Step #3 - When Invoice Deductible >= Pay Deductible Amount
@@ -704,23 +704,23 @@ Public NotInheritable Class Invoice
                 item.ServiceTypeId = payDeductibleServiceTypeId _
                 Select item).Count()
             If (count > 1) Then
-                Throw New BOInvalidOperationException(String.Format(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_MULTIPLE_PAY_DEDUCTIBLE_LINES_IN_CLAIM_AUTH), oClaimAuthorization.AuthorizationNumber, oClaimAuthorization.ClaimNumber))
+                Throw New BOInvalidOperationException(String.Format(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.GUI_MULTIPLE_PAY_DEDUCTIBLE_LINES_IN_CLAIM_AUTH), oClaimAuthorization.AuthorizationNumber, oClaimAuthorization.ClaimNumber))
             ElseIf (count = 1) Then
                 oClaimAuthItem = (From item As ClaimAuthItem In oClaimAuthorization.ClaimAuthorizationItemChildren Where _
                     item.ServiceClassId = deductibleServiceClassId AndAlso _
                     item.ServiceTypeId = payDeductibleServiceTypeId _
                     Select item).First()
 
-                count = (From item As InvoiceItem In Me.InvoiceItemChildren Where item.ClaimAuthorizationId = claimAuthorization.Id AndAlso _
+                count = (From item As InvoiceItem In InvoiceItemChildren Where item.ClaimAuthorizationId = claimAuthorization.Id AndAlso _
                     item.ServiceClassId = deductibleServiceClassId AndAlso item.ServiceTypeId = payDeductibleServiceTypeId).Count()
                 Dim invoicePayDeductibleLineItem As InvoiceItem
                 If (count = 0) Then
-                    invoicePayDeductibleLineItem = Me.GetNewInvoiceItemChild()
+                    invoicePayDeductibleLineItem = GetNewInvoiceItemChild()
                     With invoicePayDeductibleLineItem
                         .AdjustmentReasonId = autoAdjustmentReasonAutoAdjusted
                         .Amount = 0
                         .ClaimAuthorizationId = oClaimAuthorization.Id
-                        .LineItemNumber = Me.InvoiceItemChildren.Count + 1
+                        .LineItemNumber = InvoiceItemChildren.Count + 1
                         .ServiceClassId = deductibleServiceClassId
                         .ServiceTypeId = payDeductibleServiceTypeId
                         .VendorSku = Codes.VENDOR_SKU_PAY_DEDUCTIBLE
@@ -728,10 +728,10 @@ Public NotInheritable Class Invoice
                         .Save()
                     End With
                 ElseIf (count = 1) Then
-                    invoicePayDeductibleLineItem = (From item As InvoiceItem In Me.InvoiceItemChildren Where item.ClaimAuthorizationId = claimAuthorization.Id AndAlso _
+                    invoicePayDeductibleLineItem = (From item As InvoiceItem In InvoiceItemChildren Where item.ClaimAuthorizationId = claimAuthorization.Id AndAlso _
                         item.ServiceClassId = deductibleServiceClassId AndAlso item.ServiceTypeId = payDeductibleServiceTypeId).First()
                 Else
-                    Throw New BOInvalidOperationException(String.Format(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_MULTIPLE_PAY_DEDUCTIBLE_LINES_IN_INVOICE), Me.InvoiceNumber, oClaimAuthorization.AuthorizationNumber, oClaimAuthorization.ClaimNumber))
+                    Throw New BOInvalidOperationException(String.Format(TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.GUI_MULTIPLE_PAY_DEDUCTIBLE_LINES_IN_INVOICE), InvoiceNumber, oClaimAuthorization.AuthorizationNumber, oClaimAuthorization.ClaimNumber))
                 End If
 
                 If (oInvoiceItem.Amount.Value * -1D >= oClaimAuthItem.Amount.Value) Then
@@ -749,11 +749,11 @@ Public NotInheritable Class Invoice
                     ' If Invoice contains Pay Deductible Line Item then Add Reverse Entry to Invoice for Pay Deductible with Amount same 
                     ' as Invoice Pay Deductible Amount
                     If (invoicePayDeductibleLineItem.Amount.Value > 0) Then
-                        With Me.GetNewInvoiceItemChild()
+                        With GetNewInvoiceItemChild()
                             .AdjustmentReasonId = autoAdjustmentReasonPayDeductible
                             .Amount = invoicePayDeductibleLineItem.Amount.Value * -1D
                             .ClaimAuthorizationId = oClaimAuthorization.Id
-                            .LineItemNumber = Me.InvoiceItemChildren.Count + 1
+                            .LineItemNumber = InvoiceItemChildren.Count + 1
                             .ServiceClassId = deductibleServiceClassId
                             .ServiceTypeId = payDeductibleServiceTypeId
                             .VendorSku = Codes.VENDOR_SKU_PAY_DEDUCTIBLE
@@ -763,7 +763,7 @@ Public NotInheritable Class Invoice
                     End If
 
                     ' Add Reconciliation Record
-                    oInvoiceReconciliation = New InvoiceReconciliation(Me.Dataset)
+                    oInvoiceReconciliation = New InvoiceReconciliation(Dataset)
                     With oInvoiceReconciliation
                         .InvoiceItemId = invoicePayDeductibleLineItem.Id
                         .ClaimAuthItemId = oClaimAuthItem.Id
@@ -787,11 +787,11 @@ Public NotInheritable Class Invoice
 
                     ' Add Entry to Invoice for Pay Deductible with Amount = Claim Auth Pay Deductible – Invoice Deductible – Invoice Pay Deductible
                     If (oClaimAuthItem.Amount.Value + oInvoiceItem.Amount.Value - invoicePayDeductibleLineItem.Amount.Value <> 0) Then
-                        With Me.GetNewInvoiceItemChild()
+                        With GetNewInvoiceItemChild()
                             .AdjustmentReasonId = autoAdjustmentReasonPayDeductible
                             .Amount = oClaimAuthItem.Amount.Value + oInvoiceItem.Amount.Value - invoicePayDeductibleLineItem.Amount.Value
                             .ClaimAuthorizationId = oClaimAuthorization.Id
-                            .LineItemNumber = Me.InvoiceItemChildren.Count + 1
+                            .LineItemNumber = InvoiceItemChildren.Count + 1
                             .ServiceClassId = deductibleServiceClassId
                             .ServiceTypeId = payDeductibleServiceTypeId
                             .VendorSku = Codes.VENDOR_SKU_PAY_DEDUCTIBLE
@@ -801,7 +801,7 @@ Public NotInheritable Class Invoice
                     End If
 
                     ' Add Reconciliation Record for Pay Deductible with Amount = Claim Auth Pay Deductible – Invoice Deductible
-                    oInvoiceReconciliation = New InvoiceReconciliation(Me.Dataset)
+                    oInvoiceReconciliation = New InvoiceReconciliation(Dataset)
                     With oInvoiceReconciliation
                         .InvoiceItemId = invoicePayDeductibleLineItem.Id
                         .ClaimAuthItemId = oClaimAuthItem.Id
@@ -813,7 +813,7 @@ Public NotInheritable Class Invoice
             End If
         End If
 
-        For Each oInvoiceItem In (From item In Me.InvoiceItemChildren Where item.ClaimAuthorizationId = claimAuthorization.Id Select item)
+        For Each oInvoiceItem In (From item In InvoiceItemChildren Where item.ClaimAuthorizationId = claimAuthorization.Id Select item)
             ' Try to find Line Item from Authorization with same Service Class and Type
             oClaimAuthItem = (From item As ClaimAuthItem In oClaimAuthorization.ClaimAuthorizationItemChildren _
                              Where item.ServiceClassId = oInvoiceItem.ServiceClassId AndAlso item.ServiceTypeId = oInvoiceItem.ServiceTypeId _
@@ -821,7 +821,7 @@ Public NotInheritable Class Invoice
 
             If (Not ((oInvoiceItem.ServiceClassId = deductibleServiceClassId AndAlso oInvoiceItem.ServiceTypeId = payDeductibleServiceTypeId) _
                      OrElse (Not oClaimAuthorization.ContainsDeductible AndAlso oInvoiceItem.ServiceClassId = deductibleServiceClassId AndAlso oInvoiceItem.ServiceTypeId = deductibleServiceTypeId))) Then
-                If (Not oClaimAuthItem Is Nothing) Then
+                If (oClaimAuthItem IsNot Nothing) Then
                     ' Step 4 - Compare the amount from each line item with service class/type where service class not equal to Deductible (Example: Service Warranty, 
                     '          Home Price, Carry-in Price, Send-in Price, Pick-up Price, Cleaning Price, Estimate Price etc) from the authorization to the invoice. 
                     '          •    If the invoice amount is less than the authorization amount: The system shall enter the difference in amount as a negative adjustment 
@@ -858,12 +858,12 @@ Public NotInheritable Class Invoice
                         End With
                     ElseIf (oInvoiceItem.Amount.Value > oClaimAuthItem.Amount.Value) Then
                         ' Add Negative Adjustment to Invoice
-                        oAdjustmentInvoiceItem = Me.GetNewInvoiceItemChild()
+                        oAdjustmentInvoiceItem = GetNewInvoiceItemChild()
                         With oAdjustmentInvoiceItem
                             .AdjustmentReasonId = autoAdjustmentReasonInvoiceAmountGreaterThanAuthorizedAmount
                             .Amount = oClaimAuthItem.Amount.Value - oInvoiceItem.Amount.Value
                             .ClaimAuthorizationId = oClaimAuthorization.Id
-                            .LineItemNumber = Me.InvoiceItemChildren.Count + 1
+                            .LineItemNumber = InvoiceItemChildren.Count + 1
                             .ServiceClassId = oInvoiceItem.ServiceClassId
                             .ServiceTypeId = oInvoiceItem.ServiceTypeId
                             .VendorSku = oInvoiceItem.VendorSku
@@ -872,7 +872,7 @@ Public NotInheritable Class Invoice
                         End With
                     End If
                     ' Add Reconciliation Record
-                    oInvoiceReconciliation = New InvoiceReconciliation(Me.Dataset)
+                    oInvoiceReconciliation = New InvoiceReconciliation(Dataset)
                     With oInvoiceReconciliation
                         .InvoiceItemId = oInvoiceItem.Id
                         .ClaimAuthItemId = oClaimAuthItem.Id
@@ -886,12 +886,12 @@ Public NotInheritable Class Invoice
                     '          charge for that invoice line item type in the invoice line item adjustment amount field with the reason of “Not Included on Authorization” 
                     '          in the invoice line item type adjustment reason.
                     ' Add Negative Adjustment to Invoice
-                    oAdjustmentInvoiceItem = Me.GetNewInvoiceItemChild()
+                    oAdjustmentInvoiceItem = GetNewInvoiceItemChild()
                     With oAdjustmentInvoiceItem
                         .AdjustmentReasonId = autoAdjustmentReasonNotIncludedInAuthorization
                         .Amount = oInvoiceItem.Amount.Value * -1
                         .ClaimAuthorizationId = oClaimAuthorization.Id
-                        .LineItemNumber = Me.InvoiceItemChildren.Count + 1
+                        .LineItemNumber = InvoiceItemChildren.Count + 1
                         .ServiceClassId = oInvoiceItem.ServiceClassId
                         .ServiceTypeId = oInvoiceItem.ServiceTypeId
                         .VendorSku = oInvoiceItem.VendorSku
@@ -919,12 +919,12 @@ Public NotInheritable Class Invoice
                 claimAuthorizationTotal += oClaimAuthItem.Amount.Value
             Next
             If (claimAuthorizationTotal > LiabilityLimit) Then
-                oAdjustmentInvoiceItem = Me.GetNewInvoiceItemChild()
+                oAdjustmentInvoiceItem = GetNewInvoiceItemChild()
                 With oAdjustmentInvoiceItem
                     .AdjustmentReasonId = autoAdjustmentReasonAboveLiabilityLimit
                     .Amount = LiabilityLimit - claimAuthorizationTotal
                     .ClaimAuthorizationId = oClaimAuthorization.Id
-                    .LineItemNumber = Me.InvoiceItemChildren.Count + 1
+                    .LineItemNumber = InvoiceItemChildren.Count + 1
                     .ServiceClassId = miscellaneousServiceClassId
                     .ServiceTypeId = aboveLiabilityLimitServiceTypeId
                     .VendorSku = Codes.VENDOR_SKU_ABOVE_LIABILITY_LIMIT
@@ -941,7 +941,7 @@ Public NotInheritable Class Invoice
                     .VendorSkuDescription = Codes.VENDOR_SKU_DESC_ABOVE_LIABILITY_LIMIT
                     .Save()
                 End With
-                oInvoiceReconciliation = New InvoiceReconciliation(Me.Dataset)
+                oInvoiceReconciliation = New InvoiceReconciliation(Dataset)
                 With oInvoiceReconciliation
                     .InvoiceItemId = oAdjustmentInvoiceItem.Id
                     .ClaimAuthItemId = oAdjustmentClaimAuthItem.Id
@@ -956,7 +956,7 @@ Public NotInheritable Class Invoice
         Dim invoiceAuthorizationTotal As Decimal = 0D
         claimAuthorizationTotal = 0D
 
-        For Each oInvoiceItem In Me.InvoiceItemChildren
+        For Each oInvoiceItem In InvoiceItemChildren
             If (oInvoiceItem.ClaimAuthorizationId = claimAuthorization.Id) Then
                 invoiceAuthorizationTotal += oInvoiceItem.Amount.Value
             End If
@@ -969,14 +969,14 @@ Public NotInheritable Class Invoice
         If (invoiceAuthorizationTotal = claimAuthorizationTotal) Then
             oClaimAuthorization.ClaimAuthStatus = ClaimAuthorizationStatus.Reconsiled
         Else
-            For iCnt As Integer = Me.Dataset.Tables(InvoiceReconciliationDAL.TABLE_NAME).Rows().Count - 1 To 0 Step -1
-                oInvoiceReconciliation = New InvoiceReconciliation(Me.Dataset.Tables(InvoiceReconciliationDAL.TABLE_NAME).Rows(iCnt))
+            For iCnt As Integer = Dataset.Tables(InvoiceReconciliationDAL.TABLE_NAME).Rows().Count - 1 To 0 Step -1
+                oInvoiceReconciliation = New InvoiceReconciliation(Dataset.Tables(InvoiceReconciliationDAL.TABLE_NAME).Rows(iCnt))
                 If (oInvoiceReconciliation.ClaimAuthorizationItem.ClaimAuthorizationId.Equals(claimAuthorization.Id)) Then
                     oInvoiceReconciliation.Delete()
                 End If
             Next
 
-            For Each oInvoiceItem In Me.InvoiceItemChildren
+            For Each oInvoiceItem In InvoiceItemChildren
                 If (Not oInvoiceItem.AdjustmentReasonId.Equals(Guid.Empty)) Then
                     oInvoiceItem.Delete()
                 End If
@@ -993,23 +993,23 @@ Public NotInheritable Class Invoice
     Private Sub BalanceInvoice()
         Dim oClaimAuthorization As ClaimAuthorization
 
-        For Each claimAuthId As Guid In (From item As InvoiceItem In Me.InvoiceItemChildren Select item.ClaimAuthorizationId).Distinct()
-            oClaimAuthorization = New ClaimAuthorization(claimAuthId, Me.Dataset)
+        For Each claimAuthId As Guid In (From item As InvoiceItem In InvoiceItemChildren Select item.ClaimAuthorizationId).Distinct()
+            oClaimAuthorization = New ClaimAuthorization(claimAuthId, Dataset)
             ' Process Only Authorizations which are Fulfilled
             If (oClaimAuthorization.ClaimAuthStatus = ClaimAuthorizationStatus.Fulfilled) Then
                 BalanceAuthorization(oClaimAuthorization)
             End If
         Next
-        Me.Save()
+        Save()
     End Sub
 
     Private Shadows Sub DeleteInvoice()
         MyBase.Delete()
-        Me.Save()
+        Save()
     End Sub
 
-    Private Sub UndoBalanceAuthorization(ByVal claimAuthorization As ClaimAuthorization)
-        For Each oInvoiceItem As InvoiceItem In Me.InvoiceItemChildren
+    Private Sub UndoBalanceAuthorization(claimAuthorization As ClaimAuthorization)
+        For Each oInvoiceItem As InvoiceItem In InvoiceItemChildren
             If (oInvoiceItem.ClaimAuthorizationId = claimAuthorization.Id) Then
                 If (oInvoiceItem.InvoiceReconciliationId <> Guid.Empty) Then
                     oInvoiceItem.InvoiceReconciliation.Delete()
@@ -1033,9 +1033,9 @@ Public NotInheritable Class Invoice
         Dim oInvoiceReconciliation As New InvoiceReconciliationDAL
         Dim oClaimAuthorization As ClaimAuthorization
         Dim claimAuthorizationList As List(Of Guid)
-        claimAuthorizationList = (From item As InvoiceItem In Me.InvoiceItemChildren Select item.ClaimAuthorizationId).Distinct().ToList()
+        claimAuthorizationList = (From item As InvoiceItem In InvoiceItemChildren Select item.ClaimAuthorizationId).Distinct().ToList()
         For Each claimAuthId As Guid In claimAuthorizationList
-            oClaimAuthorization = New ClaimAuthorization(claimAuthId, Me.Dataset)
+            oClaimAuthorization = New ClaimAuthorization(claimAuthId, Dataset)
             ' Process Only Authorizations which are Reconsiled
             If (oClaimAuthorization.ClaimAuthStatus = ClaimAuthorizationStatus.Reconsiled) Then
                 If (Not oClaimAuthorization.IsAddedToInvoiceGroup) Then
@@ -1043,14 +1043,14 @@ Public NotInheritable Class Invoice
                 End If
             End If
         Next
-        Me.Save()
+        Save()
     End Sub
 
     Public Class DeleteInvoiceCommand
         Inherits BusinessCommandBase(Of Invoice)
         Implements IBusinessCommand
 
-        Friend Sub New(ByVal invoice As Invoice)
+        Friend Sub New(invoice As Invoice)
             MyBase.New(invoice)
         End Sub
 
@@ -1062,8 +1062,8 @@ Public NotInheritable Class Invoice
         ''' <remarks></remarks>
         Public ReadOnly Property CanExecute As Boolean Implements IBusinessCommand.CanExecute
             Get
-                If (Me.BusinessObject.InvoiceStatusCode = Codes.INVOICE_STATUS__NEW) Then Return False
-                For Each oClaimAuthorization As ClaimAuthorization In Me.BusinessObject.ClaimAuthorizations
+                If (BusinessObject.InvoiceStatusCode = Codes.INVOICE_STATUS__NEW) Then Return False
+                For Each oClaimAuthorization As ClaimAuthorization In BusinessObject.ClaimAuthorizations
                     If (oClaimAuthorization.ClaimAuthStatus <> ClaimAuthorizationStatus.Fulfilled) Then
                         Return False
                     End If
@@ -1074,7 +1074,7 @@ Public NotInheritable Class Invoice
 
         Public Sub Execute() Implements IBusinessCommand.Execute
             MyBase.Execute()
-            MyBase.BusinessObject.DeleteInvoice()
+            BusinessObject.DeleteInvoice()
         End Sub
     End Class
 
@@ -1082,7 +1082,7 @@ Public NotInheritable Class Invoice
         Inherits BusinessCommandBase(Of Invoice)
         Implements IBusinessCommand
 
-        Friend Sub New(ByVal invoice As Invoice)
+        Friend Sub New(invoice As Invoice)
             MyBase.New(invoice)
         End Sub
 
@@ -1094,8 +1094,8 @@ Public NotInheritable Class Invoice
         ''' <remarks></remarks>
         Public ReadOnly Property CanExecute As Boolean Implements IBusinessCommand.CanExecute
             Get
-                If (Me.BusinessObject.InvoiceStatusCode = Codes.INVOICE_STATUS__NEW) Then Return False
-                For Each oClaimAuthorization As ClaimAuthorization In Me.BusinessObject.ClaimAuthorizations
+                If (BusinessObject.InvoiceStatusCode = Codes.INVOICE_STATUS__NEW) Then Return False
+                For Each oClaimAuthorization As ClaimAuthorization In BusinessObject.ClaimAuthorizations
                     If (oClaimAuthorization.ClaimAuthStatus = ClaimAuthorizationStatus.Fulfilled) Then
                         Return True
                     End If
@@ -1106,7 +1106,7 @@ Public NotInheritable Class Invoice
 
         Public Sub Execute() Implements IBusinessCommand.Execute
             MyBase.Execute()
-            MyBase.BusinessObject.BalanceInvoice()
+            BusinessObject.BalanceInvoice()
         End Sub
     End Class
 
@@ -1114,7 +1114,7 @@ Public NotInheritable Class Invoice
         Inherits BusinessCommandBase(Of Invoice)
         Implements IBusinessCommand
 
-        Friend Sub New(ByVal invoice As Invoice)
+        Friend Sub New(invoice As Invoice)
             MyBase.New(invoice)
         End Sub
 
@@ -1126,8 +1126,8 @@ Public NotInheritable Class Invoice
         ''' <remarks></remarks>
         Public ReadOnly Property CanExecute As Boolean Implements IBusinessCommand.CanExecute
             Get
-                If (Me.BusinessObject.InvoiceStatusCode = Codes.INVOICE_STATUS__NEW) Then Return False
-                For Each oClaimAuthorization As ClaimAuthorization In Me.BusinessObject.ClaimAuthorizations
+                If (BusinessObject.InvoiceStatusCode = Codes.INVOICE_STATUS__NEW) Then Return False
+                For Each oClaimAuthorization As ClaimAuthorization In BusinessObject.ClaimAuthorizations
                     If (oClaimAuthorization.ClaimAuthStatus = ClaimAuthorizationStatus.Reconsiled) Then
                         If (Not oClaimAuthorization.IsAddedToInvoiceGroup) Then
                             Return True
@@ -1140,7 +1140,7 @@ Public NotInheritable Class Invoice
 
         Public Sub Execute() Implements IBusinessCommand.Execute
             MyBase.Execute()
-            MyBase.BusinessObject.UndoBalanceInvoice()
+            BusinessObject.UndoBalanceInvoice()
         End Sub
     End Class
 
@@ -1161,14 +1161,14 @@ Public NotInheritable Class Invoice
     ''' <returns>Data View of Type <see cref="Invoice.InvoiceSearchDV" /> with result set.</returns>
     ''' <remarks>Search results are always restricted by Companies selected by current user defined in <see cref="ElitaPlusIdentity"/></remarks>
     ''' <exception cref="BOValidationException">When all search criteria are empty then throws exception <see cref="BOValidationException" /> with message 'Enter At Least One Search Criterion'</exception>
-    Public Shared Function GetList(ByVal invoiceNumber As SearchCriteriaStringType, _
-                                   ByVal invoiceAmount As SearchCriteriaStructType(Of Double), _
-                                   ByVal invoiceDate As SearchCriteriaStructType(Of Date), _
-                                   ByVal serviceCenterName As String, _
-                                   ByVal batchNumber As SearchCriteriaStringType, _
-                                   ByVal claimNumber As SearchCriteriaStringType, _
-                                   ByVal dateCreated As SearchCriteriaStructType(Of Date), _
-                                   ByVal authorizationNumber As SearchCriteriaStringType) As Invoice.InvoiceSearchDV
+    Public Shared Function GetList(invoiceNumber As SearchCriteriaStringType, _
+                                   invoiceAmount As SearchCriteriaStructType(Of Double), _
+                                   invoiceDate As SearchCriteriaStructType(Of Date), _
+                                   serviceCenterName As String, _
+                                   batchNumber As SearchCriteriaStringType, _
+                                   claimNumber As SearchCriteriaStringType, _
+                                   dateCreated As SearchCriteriaStructType(Of Date), _
+                                   authorizationNumber As SearchCriteriaStringType) As Invoice.InvoiceSearchDV
         Try
             Dim dal As New InvoiceDAL
 
@@ -1181,7 +1181,7 @@ Public NotInheritable Class Invoice
                 (dateCreated Is Nothing OrElse dateCreated.IsEmpty) AndAlso _
                 (authorizationNumber Is Nothing OrElse authorizationNumber.IsEmpty) AndAlso _
                 (serviceCenterName Is Nothing OrElse serviceCenterName.Trim() = String.Empty)) Then
-                Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
+                Dim errors() As ValidationError = {New ValidationError(Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
                 Throw New BOValidationException(errors, GetType(Invoice).FullName)
             End If
 
@@ -1192,7 +1192,7 @@ Public NotInheritable Class Invoice
         End Try
     End Function
 
-    Public Shared Function GetAuthorizationList(ByVal invoiceId As Guid) As InvoiceAuthorizationSearchDV
+    Public Shared Function GetAuthorizationList(invoiceId As Guid) As InvoiceAuthorizationSearchDV
         Try
             Dim dal As New InvoiceDAL
             Return New InvoiceAuthorizationSearchDV(dal.LoadAuthorizationList(invoiceId, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
@@ -1208,16 +1208,16 @@ Public NotInheritable Class Invoice
 #End Region
 
 #Region "Lazy Initialize Properties"
-    Public Property ServiceCenter() As ServiceCenter
+    Public Property ServiceCenter As ServiceCenter
         Get
             If (_serviceCenter Is Nothing) Then
-                If Not Me.ServiceCenterId.Equals(Guid.Empty) Then
-                    Me.ServiceCenter = New ServiceCenter(Me.ServiceCenterId, Me.Dataset)
+                If Not ServiceCenterId.Equals(Guid.Empty) Then
+                    Me.ServiceCenter = New ServiceCenter(ServiceCenterId, Dataset)
                 End If
             End If
             Return _serviceCenter
         End Get
-        Private Set(ByVal value As ServiceCenter)
+        Private Set
             If (value Is Nothing OrElse _serviceCenter Is Nothing OrElse Not _serviceCenter.Equals(value)) Then
                 _serviceCenter = value
             End If
@@ -1226,21 +1226,21 @@ Public NotInheritable Class Invoice
 #End Region
 
 #Region "Claim Authorization"
-    Public ReadOnly Property ClaimAuthorizations() As List(Of ClaimAuthorization)
+    Public ReadOnly Property ClaimAuthorizations As List(Of ClaimAuthorization)
         Get
             Return (From claimAuthId As Guid In _
-                    (From item As InvoiceItem In Me.InvoiceItemChildren Select item.ClaimAuthorizationId).Distinct() _
-                    Select New ClaimAuthorization(claimAuthId, Me.Dataset)).ToList()
+                    (From item As InvoiceItem In InvoiceItemChildren Select item.ClaimAuthorizationId).Distinct() _
+                    Select New ClaimAuthorization(claimAuthId, Dataset)).ToList()
         End Get
     End Property
 
-    Public ReadOnly Property CanModifyClaimAuthorization(ByVal claimAuthorizationId As Guid) As Boolean
+    Public ReadOnly Property CanModifyClaimAuthorization(claimAuthorizationId As Guid) As Boolean
         Get
             ' If Authorization has all the Reconciled Records with Reconciliation Status = 'Reconsiled' OR
             '   Authorization has no records in Reconciliation then Authorization can be Modified
             Dim oClaimAuthorization As ClaimAuthorization
-            oClaimAuthorization = Me.ClaimAuthorizations.Where(Function(item) item.ClaimAuthorizationId = claimAuthorizationId).FirstOrDefault
-            If (Not oClaimAuthorization Is Nothing) Then
+            oClaimAuthorization = ClaimAuthorizations.Where(Function(item) item.ClaimAuthorizationId = claimAuthorizationId).FirstOrDefault
+            If (oClaimAuthorization IsNot Nothing) Then
                 If (Not (oClaimAuthorization.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized OrElse oClaimAuthorization.ClaimAuthStatus = ClaimAuthorizationStatus.Fulfilled)) Then
                     Return False
                 End If
@@ -1251,19 +1251,19 @@ Public NotInheritable Class Invoice
 #End Region
 
 #Region "Invoice Item"
-    Public ReadOnly Property InvoiceItemChildren() As InvoiceItemList
+    Public ReadOnly Property InvoiceItemChildren As InvoiceItemList
         Get
             Return New InvoiceItemList(Me)
         End Get
     End Property
 
-    Public Function GetInvoiceItemChild(ByVal childId As Guid) As InvoiceItem
-        Return CType(Me.InvoiceItemChildren.GetChild(childId), InvoiceItem)
+    Public Function GetInvoiceItemChild(childId As Guid) As InvoiceItem
+        Return CType(InvoiceItemChildren.GetChild(childId), InvoiceItem)
     End Function
 
     Public Function GetNewInvoiceItemChild() As InvoiceItem
-        Dim newInvoiceItem As InvoiceItem = CType(Me.InvoiceItemChildren.GetNewChild, InvoiceItem)
-        newInvoiceItem.InvoiceId = Me.Id
+        Dim newInvoiceItem As InvoiceItem = CType(InvoiceItemChildren.GetNewChild, InvoiceItem)
+        newInvoiceItem.InvoiceId = Id
         Return newInvoiceItem
     End Function
 
@@ -1272,7 +1272,7 @@ Public NotInheritable Class Invoice
         Dim detail As InvoiceItem
         Dim claimAuthorizationIds As New List(Of Guid)
 
-        For Each detail In Me.InvoiceItemChildren
+        For Each detail In InvoiceItemChildren
             If (Not claimAuthorizationIds.Contains(detail.ClaimAuthorization.Id)) Then
                 Dim row As DataRow = invoiceAuthorizationTable.NewRow
                 row(InvoiceAuthorizationSelectionView.COL_NAME_IS_SELECTED) = True
@@ -1289,23 +1289,23 @@ Public NotInheritable Class Invoice
                 Else
                     row(InvoiceAuthorizationSelectionView.COL_NAME_DEDUCTIBLE) = detail.ClaimAuthorization.Claim.Deductible.Value
                 End If
-                row(InvoiceAuthorizationSelectionView.COL_NAME_INVOICE_AUTH_AMOUNT) = (From item As InvoiceItem In Me.InvoiceItemChildren Where item.ClaimAuthorizationId = detail.ClaimAuthorizationId AndAlso item.AdjustmentReasonId.Equals(Guid.Empty) Select item.Amount.Value).Sum()
-                If (Not detail.ClaimAuthorization.RepairDate Is Nothing) Then row(InvoiceAuthorizationSelectionView.COL_NAME_REPAIR_DATE) = detail.ClaimAuthorization.RepairDate.Value
-                If (Not detail.ClaimAuthorization.PickUpDate Is Nothing) Then row(InvoiceAuthorizationSelectionView.COL_NAME_PICK_UP_DATE) = detail.ClaimAuthorization.PickUpDate.Value
+                row(InvoiceAuthorizationSelectionView.COL_NAME_INVOICE_AUTH_AMOUNT) = (From item As InvoiceItem In InvoiceItemChildren Where item.ClaimAuthorizationId = detail.ClaimAuthorizationId AndAlso item.AdjustmentReasonId.Equals(Guid.Empty) Select item.Amount.Value).Sum()
+                If (detail.ClaimAuthorization.RepairDate IsNot Nothing) Then row(InvoiceAuthorizationSelectionView.COL_NAME_REPAIR_DATE) = detail.ClaimAuthorization.RepairDate.Value
+                If (detail.ClaimAuthorization.PickUpDate IsNot Nothing) Then row(InvoiceAuthorizationSelectionView.COL_NAME_PICK_UP_DATE) = detail.ClaimAuthorization.PickUpDate.Value
                 invoiceAuthorizationTable.Rows.Add(row)
                 claimAuthorizationIds.Add(detail.ClaimAuthorization.Id)
             End If
         Next
 
-        If (Me.CanAddAuthorization) Then
+        If (CanAddAuthorization) Then
             Dim oInvoiceDal As New InvoiceDAL
-            For Each detailRow As DataRow In oInvoiceDal.LoadAuthorizationList(Me.ServiceCenterId, Me.BatchNumber).Tables(InvoiceDAL.TABLE_NAME).Rows
+            For Each detailRow As DataRow In oInvoiceDal.LoadAuthorizationList(ServiceCenterId, BatchNumber).Tables(InvoiceDAL.TABLE_NAME).Rows
                 Dim claimAuthorizationId As Guid
                 claimAuthorizationId = New Guid(CType(detailRow(InvoiceAuthorizationSelectionView.COL_NAME_CLAIM_AUTHORIZATION_ID), Byte()))
                 If (Not claimAuthorizationIds.Contains(claimAuthorizationId)) Then
                     Dim row As DataRow = invoiceAuthorizationTable.NewRow
                     row(InvoiceAuthorizationSelectionView.COL_NAME_IS_SELECTED) = False
-                    row(InvoiceAuthorizationSelectionView.COL_NAME_INVOICE_ID) = Me.Id.ToByteArray()
+                    row(InvoiceAuthorizationSelectionView.COL_NAME_INVOICE_ID) = Id.ToByteArray()
                     row(InvoiceAuthorizationSelectionView.COL_NAME_CLAIM_AUTHORIZATION_ID) = claimAuthorizationId.ToByteArray()
                     row(InvoiceAuthorizationSelectionView.COL_NAME_CLAIM_NUMBER) = detailRow(InvoiceAuthorizationSelectionView.COL_NAME_CLAIM_NUMBER).ToString()
                     row(InvoiceAuthorizationSelectionView.COL_NAME_AUTHORIZATION_NUMBER) = detailRow(InvoiceAuthorizationSelectionView.COL_NAME_AUTHORIZATION_NUMBER).ToString()
@@ -1315,8 +1315,8 @@ Public NotInheritable Class Invoice
                     row(InvoiceAuthorizationSelectionView.COL_NAME_RESERVE_AMOUNT) = detailRow(InvoiceAuthorizationSelectionView.COL_NAME_RESERVE_AMOUNT).ToString()
                     row(InvoiceAuthorizationSelectionView.COL_NAME_DEDUCTIBLE) = detailRow(InvoiceAuthorizationSelectionView.COL_NAME_DEDUCTIBLE).ToString()
                     row(InvoiceAuthorizationSelectionView.COL_NAME_INVOICE_AUTH_AMOUNT) = detailRow(InvoiceAuthorizationSelectionView.COL_NAME_INVOICE_AUTH_AMOUNT).ToString()
-                    If (Not detailRow(InvoiceAuthorizationSelectionView.COL_NAME_REPAIR_DATE) Is DBNull.Value) Then row(InvoiceAuthorizationSelectionView.COL_NAME_REPAIR_DATE) = detailRow(InvoiceAuthorizationSelectionView.COL_NAME_REPAIR_DATE)
-                    If (Not detailRow(InvoiceAuthorizationSelectionView.COL_NAME_PICK_UP_DATE) Is DBNull.Value) Then row(InvoiceAuthorizationSelectionView.COL_NAME_PICK_UP_DATE) = detailRow(InvoiceAuthorizationSelectionView.COL_NAME_PICK_UP_DATE)
+                    If (detailRow(InvoiceAuthorizationSelectionView.COL_NAME_REPAIR_DATE) IsNot DBNull.Value) Then row(InvoiceAuthorizationSelectionView.COL_NAME_REPAIR_DATE) = detailRow(InvoiceAuthorizationSelectionView.COL_NAME_REPAIR_DATE)
+                    If (detailRow(InvoiceAuthorizationSelectionView.COL_NAME_PICK_UP_DATE) IsNot DBNull.Value) Then row(InvoiceAuthorizationSelectionView.COL_NAME_PICK_UP_DATE) = detailRow(InvoiceAuthorizationSelectionView.COL_NAME_PICK_UP_DATE)
                     invoiceAuthorizationTable.Rows.Add(row)
                 End If
             Next
@@ -1342,7 +1342,7 @@ Public NotInheritable Class Invoice
         Public Const COL_NAME_PICK_UP_DATE As String = ClaimAuthorizationDAL.COL_NAME_PICK_UP_DATE
 
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -1365,38 +1365,38 @@ Public NotInheritable Class Invoice
         End Function
     End Class
 
-    Public Function GetInvoiceAuthorizationItemSelectionView(ByVal claimAuthorizationId) As InvoiceAuthorizationItemSelectionView
+    Public Function GetInvoiceAuthorizationItemSelectionView(claimAuthorizationId) As InvoiceAuthorizationItemSelectionView
         Dim invoiceAuthorizationItemTable As DataTable = InvoiceAuthorizationItemSelectionView.CreateTable
         Dim detail As InvoiceItem
         Dim claimAuthItemIds As New List(Of Guid)
 
 
-        For Each detail In (From item As InvoiceItem In Me.InvoiceItemChildren Where item.ClaimAuthorizationId = claimAuthorizationId Select item Order By item.LineItemNumber)
+        For Each detail In (From item As InvoiceItem In InvoiceItemChildren Where item.ClaimAuthorizationId = claimAuthorizationId Select item Order By item.LineItemNumber)
             Dim row As DataRow = invoiceAuthorizationItemTable.NewRow
             row(InvoiceAuthorizationItemSelectionView.COL_NAME_INVOICE_ITEM_ID) = GuidControl.GuidToHexString(detail.Id)
             row(InvoiceAuthorizationItemSelectionView.COL_NAME_LINE_ITEM_NUMBER) = detail.LineItemNumber
             row(InvoiceAuthorizationItemSelectionView.COL_NAME_VENDOR_SKU) = detail.VendorSku
             row(InvoiceAuthorizationItemSelectionView.COL_NAME_VENDOR_SKU_DESCRIPTION) = detail.VendorSkuDescription
             row(InvoiceAuthorizationItemSelectionView.COL_NAME_AMOUNT) = detail.Amount.Value
-            row(InvoiceAuthorizationItemSelectionView.COL_NAME_SERVICE_CLASS_DESCRIPTION) = LookupListNew.GetDescriptionFromId(LookupListNew.LK_SERVICE_CLASS, detail.ServiceClassId)
-            If (Me.InvoiceStatusCode <> Codes.INVOICE_STATUS__NEW) Then
-                If ((Not detail.InvoiceReconciliation Is Nothing) AndAlso (Not detail.InvoiceReconciliation.ReconciledAmount Is Nothing)) Then
+            row(InvoiceAuthorizationItemSelectionView.COL_NAME_SERVICE_CLASS_DESCRIPTION) = LookupListNew.GetDescriptionFromId(LookupListCache.LK_SERVICE_CLASS, detail.ServiceClassId)
+            If (InvoiceStatusCode <> Codes.INVOICE_STATUS__NEW) Then
+                If ((detail.InvoiceReconciliation IsNot Nothing) AndAlso (detail.InvoiceReconciliation.ReconciledAmount IsNot Nothing)) Then
                     row(InvoiceAuthorizationItemSelectionView.COL_NAME_RECONCILED_AMOUNT) = detail.InvoiceReconciliation.ReconciledAmount.Value
                 End If
-                If ((Not detail.InvoiceReconciliation Is Nothing) AndAlso (Not detail.InvoiceReconciliation.ClaimAuthorizationItem.Amount Is Nothing)) Then
+                If ((detail.InvoiceReconciliation IsNot Nothing) AndAlso (detail.InvoiceReconciliation.ClaimAuthorizationItem.Amount IsNot Nothing)) Then
                     row(InvoiceAuthorizationItemSelectionView.COL_NAME_AUTHORIZED_AMOUNT) = detail.InvoiceReconciliation.ClaimAuthorizationItem.Amount.Value
                 End If
             End If
 
-            If (Not detail.ServiceTypeId.Equals(Guid.Empty)) Then row(InvoiceAuthorizationItemSelectionView.COL_NAME_SERVICE_TYPE_DESCRIPTION) = LookupListNew.GetDescriptionFromId(LookupListNew.LK_SERVICE_TYPE_NEW, detail.ServiceTypeId)
+            If (Not detail.ServiceTypeId.Equals(Guid.Empty)) Then row(InvoiceAuthorizationItemSelectionView.COL_NAME_SERVICE_TYPE_DESCRIPTION) = LookupListNew.GetDescriptionFromId(LookupListCache.LK_SERVICE_TYPE_NEW, detail.ServiceTypeId)
             invoiceAuthorizationItemTable.Rows.Add(row)
-            If (Not detail.InvoiceReconciliation Is Nothing) Then
+            If (detail.InvoiceReconciliation IsNot Nothing) Then
                 claimAuthItemIds.Add(detail.InvoiceReconciliation.ClaimAuthItemId)
             End If
         Next
 
         Dim oClaimAuthorization As ClaimAuthorization
-        oClaimAuthorization = (Me.ClaimAuthorizations.Where(Function(item) item.ClaimAuthorizationId = claimAuthorizationId)).FirstOrDefault()
+        oClaimAuthorization = (ClaimAuthorizations.Where(Function(item) item.ClaimAuthorizationId = claimAuthorizationId)).FirstOrDefault()
         If (oClaimAuthorization.ClaimAuthStatus = ClaimAuthorizationStatus.Reconsiled OrElse oClaimAuthorization.ClaimAuthStatus = ClaimAuthorizationStatus.ToBePaid _
             OrElse oClaimAuthorization.ClaimAuthStatus = ClaimAuthorizationStatus.Paid) Then
             For Each oClaimAuthItem As ClaimAuthItem In oClaimAuthorization.ClaimAuthorizationItemChildren
@@ -1406,9 +1406,9 @@ Public NotInheritable Class Invoice
                     row(InvoiceAuthorizationItemSelectionView.COL_NAME_LINE_ITEM_NUMBER) = Nothing
                     row(InvoiceAuthorizationItemSelectionView.COL_NAME_VENDOR_SKU) = oClaimAuthItem.VendorSku
                     row(InvoiceAuthorizationItemSelectionView.COL_NAME_VENDOR_SKU_DESCRIPTION) = oClaimAuthItem.VendorSkuDescription
-                    row(InvoiceAuthorizationItemSelectionView.COL_NAME_SERVICE_CLASS_DESCRIPTION) = LookupListNew.GetDescriptionFromId(LookupListNew.LK_SERVICE_CLASS, oClaimAuthItem.ServiceClassId)
+                    row(InvoiceAuthorizationItemSelectionView.COL_NAME_SERVICE_CLASS_DESCRIPTION) = LookupListNew.GetDescriptionFromId(LookupListCache.LK_SERVICE_CLASS, oClaimAuthItem.ServiceClassId)
                     row(InvoiceAuthorizationItemSelectionView.COL_NAME_AUTHORIZED_AMOUNT) = oClaimAuthItem.Amount.Value
-                    If (Not oClaimAuthItem.ServiceTypeId.Equals(Guid.Empty)) Then row(InvoiceAuthorizationItemSelectionView.COL_NAME_SERVICE_TYPE_DESCRIPTION) = LookupListNew.GetDescriptionFromId(LookupListNew.LK_SERVICE_TYPE_NEW, oClaimAuthItem.ServiceTypeId)
+                    If (Not oClaimAuthItem.ServiceTypeId.Equals(Guid.Empty)) Then row(InvoiceAuthorizationItemSelectionView.COL_NAME_SERVICE_TYPE_DESCRIPTION) = LookupListNew.GetDescriptionFromId(LookupListCache.LK_SERVICE_TYPE_NEW, oClaimAuthItem.ServiceTypeId)
                     invoiceAuthorizationItemTable.Rows.Add(row)
                 End If
             Next
@@ -1428,7 +1428,7 @@ Public NotInheritable Class Invoice
         Public Const COL_NAME_RECONCILED_AMOUNT As String = InvoiceReconciliationDAL.COL_NAME_RECONCILED_AMOUNT
         Public Const COL_NAME_AUTHORIZED_AMOUNT As String = "AUTHORIZED_AMOUNT"
 
-        Public Sub New(ByVal Table As DataTable)
+        Public Sub New(Table As DataTable)
             MyBase.New(Table)
         End Sub
 
@@ -1458,66 +1458,66 @@ Public NotInheritable Class Invoice
         Public Const COL_NAME_INVOICE_NUMBER As String = InvoiceDAL.COL_NAME_INVOICE_NUMBER
         Public Const COL_NAME_INVOICE_DATE As String = InvoiceDAL.COL_NAME_INVOICE_DATE
         Public Const COL_NAME_SERVICE_CENTER_DESCRIPTION As String = "service_center_description"
-        Public Const COL_NAME_CREATED_DATE As String = InvoiceDAL.COL_NAME_CREATED_DATE
+        Public Const COL_NAME_CREATED_DATE As String = DALBase.COL_NAME_CREATED_DATE
         Public Const COL_NAME_INVOICE_AMOUNT As String = InvoiceDAL.COL_NAME_INVOICE_AMOUNT
         Public Const COL_NAME_INVOICE_STATUS As String = "invoice_status"
         Public Const COL_NAME_INVOICE_STATUS_CODE As String = "invoice_status_code"
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property InvoiceId(ByVal row) As Guid
+        Public Shared ReadOnly Property InvoiceId(row) As Guid
             Get
                 If row(COL_NAME_INVOICE_ID) Is DBNull.Value Then Return Nothing
                 Return New Guid(CType(row(COL_NAME_INVOICE_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property InvoiceNumber(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property InvoiceNumber(row As DataRow) As String
             Get
                 If row(COL_NAME_INVOICE_NUMBER) Is DBNull.Value Then Return Nothing
                 Return row(COL_NAME_INVOICE_NUMBER).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property InvoiceStatusCode(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property InvoiceStatusCode(row As DataRow) As String
             Get
                 If row(COL_NAME_INVOICE_STATUS_CODE) Is DBNull.Value Then Return Nothing
                 Return row(COL_NAME_INVOICE_STATUS_CODE).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property InvoiceDate(ByVal row As DataRow) As DateType
+        Public Shared ReadOnly Property InvoiceDate(row As DataRow) As DateType
             Get
                 If row(COL_NAME_INVOICE_DATE) Is DBNull.Value Then Return Nothing
                 Return New DateType(CType(row(COL_NAME_INVOICE_DATE), Date))
             End Get
         End Property
 
-        Public Shared ReadOnly Property ServiceCenterDescription(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property ServiceCenterDescription(row As DataRow) As String
             Get
                 If row(COL_NAME_SERVICE_CENTER_DESCRIPTION) Is DBNull.Value Then Return Nothing
                 Return row(COL_NAME_SERVICE_CENTER_DESCRIPTION).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property DateCreated(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property DateCreated(row As DataRow) As String
             Get
                 If row(COL_NAME_CREATED_DATE) Is DBNull.Value Then Return Nothing
                 Return New DateType(CType(row(COL_NAME_CREATED_DATE), Date))
             End Get
         End Property
 
-        Public Shared ReadOnly Property InvoiceStatus(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property InvoiceStatus(row As DataRow) As String
             Get
                 If row(COL_NAME_INVOICE_STATUS) Is DBNull.Value Then Return Nothing
                 Return row(COL_NAME_INVOICE_STATUS).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property InvoiceAmount(ByVal row As DataRow) As DecimalType
+        Public Shared ReadOnly Property InvoiceAmount(row As DataRow) As DecimalType
             Get
                 If row(COL_NAME_INVOICE_AMOUNT) Is DBNull.Value Then Return Nothing
                 Return New DecimalType(CType(row(COL_NAME_INVOICE_AMOUNT), Decimal))
@@ -1539,46 +1539,46 @@ Public NotInheritable Class Invoice
         Public Const COL_NAME_AUTHORIZATION_STATUS As String = "authorization_status"
 #End Region
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property InvoiceId(ByVal row) As Guid
+        Public Shared ReadOnly Property InvoiceId(row) As Guid
             Get
                 If row(COL_NAME_INVOICE_ID) Is DBNull.Value Then Return Nothing
                 Return New Guid(CType(row(COL_NAME_INVOICE_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property ClaimNumber(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property ClaimNumber(row As DataRow) As String
             Get
                 If row(COL_NAME_CLAIM_NUMBER) Is DBNull.Value Then Return Nothing
                 Return row(COL_NAME_CLAIM_NUMBER).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property AuthorizationNumber(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property AuthorizationNumber(row As DataRow) As String
             Get
                 If row(COL_NAME_AUTHORIZATION_NUMBER) Is DBNull.Value Then Return Nothing
                 Return row(COL_NAME_AUTHORIZATION_NUMBER).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property BatchNumber(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property BatchNumber(row As DataRow) As String
             Get
                 If row(COL_NAME_BATCH_NUMBER) Is DBNull.Value Then Return Nothing
                 Return row(COL_NAME_BATCH_NUMBER).ToString
             End Get
         End Property
 
-        Public Shared ReadOnly Property InvoiceAuthorizationAmount(ByVal row As DataRow) As DecimalType
+        Public Shared ReadOnly Property InvoiceAuthorizationAmount(row As DataRow) As DecimalType
             Get
                 If row(COL_NAME_INVOICE_AUTH_AMOUNT) Is DBNull.Value Then Return Nothing
                 Return New DecimalType(CType(row(COL_NAME_INVOICE_AUTH_AMOUNT), Decimal))
             End Get
         End Property
 
-        Public Shared ReadOnly Property AuthorizationStatus(ByVal row As DataRow) As String
+        Public Shared ReadOnly Property AuthorizationStatus(row As DataRow) As String
             Get
                 If row(COL_NAME_AUTHORIZATION_STATUS) Is DBNull.Value Then Return Nothing
                 Return row(COL_NAME_AUTHORIZATION_STATUS).ToString
@@ -1592,12 +1592,12 @@ Public NotInheritable Class Invoice
     Public NotInheritable Class ValidateDueDateAfterInvoiceDate
         Inherits ValidBaseAttribute
         Private _fieldDisplayName As String
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, INVOICE_FORM001)
             _fieldDisplayName = fieldDisplayName
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Invoice = CType(objectToValidate, Invoice)
             Return obj.IsDueDateValid()
         End Function
@@ -1607,12 +1607,12 @@ Public NotInheritable Class Invoice
     Public NotInheritable Class ValidateAtLeastOneItem
         Inherits ValidBaseAttribute
         Private _fieldDisplayName As String
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, INVOICE_FORM003)
             _fieldDisplayName = fieldDisplayName
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Invoice = CType(objectToValidate, Invoice)
             Return obj.InvoiceItemChildren.Count > 0
         End Function
@@ -1622,12 +1622,12 @@ Public NotInheritable Class Invoice
     Public NotInheritable Class ValidateAuthorizationRepairDate
         Inherits ValidBaseAttribute
         Private _fieldDisplayName As String
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, INVOICE_FORM004)
             _fieldDisplayName = fieldDisplayName
         End Sub
 
-        Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Invoice = CType(objectToValidate, Invoice)
             For Each oClaimAuthorization As ClaimAuthorization In obj.ClaimAuthorizations
                 If (oClaimAuthorization.RepairDate Is Nothing) Then
@@ -1642,15 +1642,15 @@ Public NotInheritable Class Invoice
     Public NotInheritable Class ValidateUniqueInvoiceNumber
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVOICE_NUM_ALREADY_EXISTS)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Invoice = CType(objectToValidate, Invoice)
             Dim result As Invoice.InvoiceSearchDV
            
-            If (Not obj.ServiceCenter Is Nothing) Then
+            If (obj.ServiceCenter IsNot Nothing) Then
                 result = obj.GetList(New SearchCriteriaStringType() With {.SearchType = SearchTypeEnum.Equals, .FromValue = obj.InvoiceNumber}, _
                                      New SearchCriteriaStructType(Of Double)(SearchDataType.Amount) With {.SearchType = SearchTypeEnum.Equals}, _
                                      New SearchCriteriaStructType(Of Date)(SearchDataType.Date) With {.SearchType = SearchTypeEnum.Equals}, _
@@ -1660,10 +1660,10 @@ Public NotInheritable Class Invoice
                                      New SearchCriteriaStructType(Of Date)(SearchDataType.DateTime) With {.SearchType = SearchTypeEnum.Equals}, _
                                      New SearchCriteriaStringType() With {.SearchType = SearchTypeEnum.Equals})
             End If
-            If (Not result Is Nothing AndAlso result.Count > 0) Then
+            If (result IsNot Nothing AndAlso result.Count > 0) Then
                 For Each oRow As DataRowView In result
-                    If Invoice.InvoiceSearchDV.InvoiceNumber(oRow.Row).Equals(obj.InvoiceNumber) _
-                        AndAlso Not (Invoice.InvoiceSearchDV.InvoiceId(oRow.Row).Equals(obj.Id)) Then
+                    If InvoiceSearchDV.InvoiceNumber(oRow.Row).Equals(obj.InvoiceNumber) _
+                        AndAlso Not (InvoiceSearchDV.InvoiceId(oRow.Row).Equals(obj.Id)) Then
                         Return False
                     End If
                 Next
@@ -1676,11 +1676,11 @@ Public NotInheritable Class Invoice
     Public NotInheritable Class ValidateInvoiceDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_INVOICE_DATE_ERR)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Invoice = CType(objectToValidate, Invoice)
             If (obj.InvoiceDate.Value.Date > DateTime.Now) Then
                 Return False
@@ -1692,11 +1692,11 @@ Public NotInheritable Class Invoice
     Public NotInheritable Class ValidateDuplicateServiceClassType
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, Common.ErrorCodes.DUPLICATE_SERVICE_CLASS_TYPE_IN_INVOICE)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Invoice = CType(objectToValidate, Invoice)
             For Each oClaimAuthorization As ClaimAuthorization In obj.ClaimAuthorizations
                 For Each oInvoiceItem As InvoiceItem In obj.InvoiceItemChildren.Where(Function(item) oClaimAuthorization.ClaimAuthorizationId.Equals(item.ClaimAuthorizationId) AndAlso item.AdjustmentReasonId.Equals(Guid.Empty))

@@ -42,7 +42,7 @@ Public Class DSHelper
 
 #Region "Constructors"
 
-    Public Sub New(ByVal DataSet As DataSet)
+    Public Sub New(DataSet As DataSet)
         ds = DataSet
     End Sub
 
@@ -54,7 +54,7 @@ Public Class DSHelper
 
 #Region "Helper Functions"
 
-    Private Sub ParseFieldList(ByVal FieldList As String, Optional ByVal AllowRelation As Boolean = False)
+    Private Sub ParseFieldList(FieldList As String, Optional ByVal AllowRelation As Boolean = False)
         '
         ' Parses FieldList into FieldInfo objects and then adds them to the m_FieldInfo private member
         '
@@ -101,7 +101,7 @@ Public Class DSHelper
         Next
     End Sub
 
-    Private Sub ParseGroupByFieldList(ByVal FieldList As String)
+    Private Sub ParseGroupByFieldList(FieldList As String)
         '
         ' Parses FieldList into FieldInfo objects and then adds them to the GroupByFieldInfo private member
         '
@@ -153,7 +153,7 @@ Public Class DSHelper
         GroupByFieldList = FieldList
     End Sub
 
-    Private Function LocateFieldInfoByName(ByVal FieldList As ArrayList, ByVal Name As String) As FieldInfo
+    Private Function LocateFieldInfoByName(FieldList As ArrayList, Name As String) As FieldInfo
         '
         ' Looks up a FieldInfo record based on FieldName
         '
@@ -163,9 +163,9 @@ Public Class DSHelper
         Next
     End Function
 
-    Private Function CreateGroupByTable(ByVal TableName As String, _
-                                  ByVal SourceTable As DataTable, _
-                                  ByVal FieldList As String) As DataTable
+    Private Function CreateGroupByTable(TableName As String, _
+                                  SourceTable As DataTable, _
+                                  FieldList As String) As DataTable
         '
         ' Creates a table based on aggregates of fields of another table
         '
@@ -195,9 +195,9 @@ Public Class DSHelper
         End If
     End Function
 
-    Private Sub InsertGroupByInto(ByVal DestTable As DataTable, _
-                             ByVal SourceTable As DataTable, _
-                             ByVal FieldList As String, _
+    Private Sub InsertGroupByInto(DestTable As DataTable, _
+                             SourceTable As DataTable, _
+                             FieldList As String, _
                              Optional ByVal RowFilter As String = "", _
                              Optional ByVal GroupBy As String = "", _
                              Optional ByVal Rollup As Boolean = False)
@@ -345,9 +345,9 @@ Public Class DSHelper
         End If
     End Sub
 
-    Private Function SelectGroupByInto(ByVal TableName As String, _
-                                      ByVal SourceTable As DataTable, _
-                                      ByVal FieldList As String, _
+    Private Function SelectGroupByInto(TableName As String, _
+                                      SourceTable As DataTable, _
+                                      FieldList As String, _
                                       Optional ByVal RowFilter As String = "", _
                                       Optional ByVal GroupBy As String = "", _
                                       Optional ByVal Rollup As Boolean = False) As DataTable
@@ -360,7 +360,7 @@ Public Class DSHelper
         Return dt
     End Function
 
-    Private Function GetTablePath(ByVal dt As DataTable, ByVal IncludeFullPath As Boolean) As String
+    Private Function GetTablePath(dt As DataTable, IncludeFullPath As Boolean) As String
 
         Dim str As String
 
@@ -396,8 +396,8 @@ Public Class DSHelper
 
     End Function
 
-    Private Function ParseTable(ByVal Dt As DataTable, ByVal Nested As Boolean, ByVal OmitTags() As String, _
-                                ByVal CharacterData() As String, ByVal IncludeEmptyTags As Boolean, Optional ByVal loopRows As Boolean = False) As String
+    Private Function ParseTable(Dt As DataTable, Nested As Boolean, OmitTags() As String, _
+                                CharacterData() As String, IncludeEmptyTags As Boolean, Optional ByVal loopRows As Boolean = False) As String
 
         Dim strBuilder As New System.Text.StringBuilder
         Dim strTag As String
@@ -481,7 +481,7 @@ Public Class DSHelper
 
 #Region "Aggregate Functions"
 
-    Private Function ColumnEqual(ByVal A As Object, ByVal B As Object) As Boolean
+    Private Function ColumnEqual(A As Object, B As Object) As Boolean
         '
         ' Compares two values to determine if they are equal. Also compares DBNULL.Value.
         '
@@ -493,7 +493,7 @@ Public Class DSHelper
         Return A = B                                                ' Value type standard comparison
     End Function
 
-    Private Function Min(ByVal A As Object, ByVal B As Object) As Object
+    Private Function Min(A As Object, B As Object) As Object
         '
         ' Returns MIN of two values. DBNull is less than all others.
         '
@@ -501,7 +501,7 @@ Public Class DSHelper
         If A < B Then Return A Else Return B
     End Function
 
-    Private Function Max(ByVal A As Object, ByVal B As Object) As Object
+    Private Function Max(A As Object, B As Object) As Object
         '
         ' Returns Max of two values. DBNull is less than all others.
         '
@@ -510,7 +510,7 @@ Public Class DSHelper
         If A > B Then Return A Else Return B
     End Function
 
-    Private Function Add(ByVal A As Object, ByVal B As Object) As Object
+    Private Function Add(A As Object, B As Object) As Object
         '
         ' Adds two values. If one is DBNull, returns the other.
         '
@@ -524,7 +524,7 @@ Public Class DSHelper
 
 #Region "Public Functions"
 
-    Public Function SelectDistinct(ByVal TableName As String, ByVal SourceTable As DataTable, ByVal FieldName As String) As DataTable
+    Public Function SelectDistinct(TableName As String, SourceTable As DataTable, FieldName As String) As DataTable
 
         Dim dt As New DataTable(TableName)
         dt.Columns.Add(FieldName, SourceTable.Columns(FieldName).DataType)
@@ -556,9 +556,9 @@ Public Class DSHelper
     ''' <param name="FieldList">Grouping field list.  Use the syntax:  fieldname[ alias]|aggregatefunction(fieldname)[ alias], ...</param>
     ''' <returns>DataTable</returns>
     ''' <remarks></remarks>
-    Public Function GroupByWithCreate(ByVal TableName As String, _
-                                  ByVal SourceTable As DataTable, _
-                                  ByVal FieldList As String) As DataTable
+    Public Function GroupByWithCreate(TableName As String, _
+                                  SourceTable As DataTable, _
+                                  FieldList As String) As DataTable
 
         Return CreateGroupByTable(TableName, SourceTable, FieldList)
 
@@ -575,9 +575,9 @@ Public Class DSHelper
     ''' <param name="Rollup">True / False - whether to rollup results</param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function GroupByWithInsert(ByVal DestTable As DataTable, _
-                             ByVal SourceTable As DataTable, _
-                             ByVal FieldList As String, _
+    Public Function GroupByWithInsert(DestTable As DataTable, _
+                             SourceTable As DataTable, _
+                             FieldList As String, _
                              Optional ByVal RowFilter As String = "", _
                              Optional ByVal SortBy As String = "", _
                              Optional ByVal Rollup As Boolean = False)
@@ -600,9 +600,9 @@ Public Class DSHelper
     ''' <param name="Rollup">True / False - whether to rollup results</param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function GroupBySelectandInsert(ByVal TableName As String, _
-                                      ByVal SourceTable As DataTable, _
-                                      ByVal FieldList As String, _
+    Public Function GroupBySelectandInsert(TableName As String, _
+                                      SourceTable As DataTable, _
+                                      FieldList As String, _
                                       Optional ByVal RowFilter As String = "", _
                                       Optional ByVal SortBy As String = "", _
                                       Optional ByVal Rollup As Boolean = False) As DataTable
@@ -619,7 +619,7 @@ Public Class DSHelper
     ''' <param name="Ds">The dataset to use for data</param>
     ''' <returns>An XML document as a string</returns>
     ''' <remarks></remarks>
-    Public Function ParseXSLT(ByVal StyleSheet As String, ByVal Ds As DataSet) As String
+    Public Function ParseXSLT(StyleSheet As String, Ds As DataSet) As String
 
         Dim encode As New System.Text.UTF8Encoding
         Dim bytes As Byte() = encode.GetBytes(StyleSheet)
@@ -636,7 +636,7 @@ Public Class DSHelper
     ''' <param name="Ds">The dataset to use for data</param>
     ''' <returns>An XML document as a string</returns>
     ''' <remarks></remarks>
-    Public Function ParseXSLT(ByVal StyleSheet As Stream, ByVal Ds As DataSet) As String
+    Public Function ParseXSLT(StyleSheet As Stream, Ds As DataSet) As String
 
         Dim xmlr As XmlReader
         Dim xlTransform As New Xml.Xsl.XslCompiledTransform
@@ -680,7 +680,7 @@ Public Class DSHelper
     ''' <param name="cDataFields">Optional. A white-space separated list of elements whose text contents should be written as CDATA sections</param>
     ''' <returns>A string value of an xml document</returns>
     ''' <remarks></remarks>
-    Public Function ParseXSLT(ByVal Ds As DataSet, ByVal IncludeEmptyTags As Boolean, Optional ByVal OmitTags As String = "", _
+    Public Function ParseXSLT(Ds As DataSet, IncludeEmptyTags As Boolean, Optional ByVal OmitTags As String = "", _
                                 Optional ByVal Nested As Boolean = False, Optional ByVal StartingTable As String = "", _
                                 Optional ByVal OutputMeth As XMLOutputMethod = XMLOutputMethod.xml, _
                                 Optional ByVal charDataFields As String = "") As String

@@ -32,48 +32,48 @@ Public Class CoverageConseqDamage
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New CoverageConseqDamageDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -81,23 +81,23 @@ Public Class CoverageConseqDamage
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CoverageConseqDamageDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -116,7 +116,7 @@ Public Class CoverageConseqDamage
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CoverageConseqDamageDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -127,7 +127,7 @@ Public Class CoverageConseqDamage
     End Property
 
     <ValueMandatory("")>
-    Public Property CoverageId() As Guid
+    Public Property CoverageId As Guid
         Get
             CheckDeleted()
             If Row(CoverageConseqDamageDAL.COL_NAME_COVERAGE_ID) Is DBNull.Value Then
@@ -136,15 +136,15 @@ Public Class CoverageConseqDamage
                 Return New Guid(CType(Row(CoverageConseqDamageDAL.COL_NAME_COVERAGE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CoverageConseqDamageDAL.COL_NAME_COVERAGE_ID, Value)
+            SetValue(CoverageConseqDamageDAL.COL_NAME_COVERAGE_ID, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)>
-    Public Property ConseqDamageTypeXcd() As String
+    Public Property ConseqDamageTypeXcd As String
         Get
             CheckDeleted()
             If Row(CoverageConseqDamageDAL.COL_NAME_CONSEQ_DAMAGE_TYPE_XCD) Is DBNull.Value Then
@@ -153,15 +153,15 @@ Public Class CoverageConseqDamage
                 Return CType(Row(CoverageConseqDamageDAL.COL_NAME_CONSEQ_DAMAGE_TYPE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CoverageConseqDamageDAL.COL_NAME_CONSEQ_DAMAGE_TYPE_XCD, Value)
+            SetValue(CoverageConseqDamageDAL.COL_NAME_CONSEQ_DAMAGE_TYPE_XCD, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)>
-    Public Property LiabilityLimitBaseXcd() As String
+    Public Property LiabilityLimitBaseXcd As String
         Get
             CheckDeleted()
             If Row(CoverageConseqDamageDAL.COL_NAME_LIABILITY_LIMIT_BASE_XCD) Is DBNull.Value Then
@@ -170,14 +170,14 @@ Public Class CoverageConseqDamage
                 Return CType(Row(CoverageConseqDamageDAL.COL_NAME_LIABILITY_LIMIT_BASE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CoverageConseqDamageDAL.COL_NAME_LIABILITY_LIMIT_BASE_XCD, Value)
+            SetValue(CoverageConseqDamageDAL.COL_NAME_LIABILITY_LIMIT_BASE_XCD, Value)
         End Set
     End Property
 
     <ValueMandatory(""), ValidStringLength("", Max:=50)>
-    Public Property FulfilmentMethodXcd() As String
+    Public Property FulfilmentMethodXcd As String
         Get
             CheckDeleted()
             If Row(CoverageConseqDamageDAL.COL_NAME_FULFILMENT_METHOD_XCD) Is DBNull.Value Then
@@ -186,14 +186,14 @@ Public Class CoverageConseqDamage
                 Return CType(Row(CoverageConseqDamageDAL.COL_NAME_FULFILMENT_METHOD_XCD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CoverageConseqDamageDAL.COL_NAME_FULFILMENT_METHOD_XCD, Value)
+            SetValue(CoverageConseqDamageDAL.COL_NAME_FULFILMENT_METHOD_XCD, Value)
         End Set
     End Property
 
     <ValidNumericRange("", Min:=0, Max:=Decimal.MaxValue)>
-    Public Property LiabilityLimitPerIncident() As DecimalType
+    Public Property LiabilityLimitPerIncident As DecimalType
         Get
             CheckDeleted()
             If Row(CoverageConseqDamageDAL.COL_NAME_LIABILITY_LIMIT_PER_INCIDENT) Is DBNull.Value Then
@@ -202,15 +202,15 @@ Public Class CoverageConseqDamage
                 Return New DecimalType(CType(Row(CoverageConseqDamageDAL.COL_NAME_LIABILITY_LIMIT_PER_INCIDENT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CoverageConseqDamageDAL.COL_NAME_LIABILITY_LIMIT_PER_INCIDENT, Value)
+            SetValue(CoverageConseqDamageDAL.COL_NAME_LIABILITY_LIMIT_PER_INCIDENT, Value)
         End Set
     End Property
 
 
     <RequiredConditionally_Liability_Limit_Cumulative(""), ValidNumericRange("", Min:=0, Max:=Decimal.MaxValue)>
-    Public Property LiabilityLimitCumulative() As DecimalType
+    Public Property LiabilityLimitCumulative As DecimalType
         Get
             CheckDeleted()
             If Row(CoverageConseqDamageDAL.COL_NAME_LIABILITY_LIMIT_CUMULATIVE) Is DBNull.Value Then
@@ -219,15 +219,15 @@ Public Class CoverageConseqDamage
                 Return New DecimalType(CType(Row(CoverageConseqDamageDAL.COL_NAME_LIABILITY_LIMIT_CUMULATIVE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set
             CheckDeleted()
-            Me.SetValue(CoverageConseqDamageDAL.COL_NAME_LIABILITY_LIMIT_CUMULATIVE, Value)
+            SetValue(CoverageConseqDamageDAL.COL_NAME_LIABILITY_LIMIT_CUMULATIVE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidateEffectiveDate("")>
-    Public Property Effective() As DateType
+    Public Property Effective As DateType
         Get
             CheckDeleted()
             If Row(CoverageConseqDamageDAL.COL_NAME_EFFECTIVE) Is DBNull.Value Then
@@ -236,15 +236,15 @@ Public Class CoverageConseqDamage
                 Return New DateType(CType(Row(CoverageConseqDamageDAL.COL_NAME_EFFECTIVE), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CoverageConseqDamageDAL.COL_NAME_EFFECTIVE, Value)
+            SetValue(CoverageConseqDamageDAL.COL_NAME_EFFECTIVE, Value)
         End Set
     End Property
 
 
     <ValueMandatory(""), ValidExpirationDate("")>
-    Public Property Expiration() As DateType
+    Public Property Expiration As DateType
         Get
             CheckDeleted()
             If Row(CoverageConseqDamageDAL.COL_NAME_EXPIRATION) Is DBNull.Value Then
@@ -253,9 +253,9 @@ Public Class CoverageConseqDamage
                 Return New DateType(CType(Row(CoverageConseqDamageDAL.COL_NAME_EXPIRATION), Date))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set
             CheckDeleted()
-            Me.SetValue(CoverageConseqDamageDAL.COL_NAME_EXPIRATION, Value)
+            SetValue(CoverageConseqDamageDAL.COL_NAME_EXPIRATION, Value)
         End Set
     End Property
 
@@ -268,15 +268,15 @@ Public Class CoverageConseqDamage
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CoverageConseqDamageDAL
-                dal.Update(Me.Row)
+                dal.Update(Row)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -305,22 +305,22 @@ Public Class CoverageConseqDamage
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal table As DataTable)
+        Public Sub New(table As DataTable)
             MyBase.New(table)
         End Sub
 
         Public Function AddNewRowToEmptyDV() As ConseqDamageSearchDV
-            Dim dt As DataTable = Me.Table.Clone()
+            Dim dt As DataTable = Table.Clone()
             Dim row As DataRow = dt.NewRow
-            row(ConseqDamageSearchDV.COL_COVERAGE_CONSEQ_DAMAGE_ID) = (New Guid()).ToByteArray
-            row(ConseqDamageSearchDV.COL_COVERAGE_ID) = Guid.Empty.ToByteArray
-            row(ConseqDamageSearchDV.COL_CONSEQ_DAMAGE_TYPE_XCD) = DBNull.Value
-            row(ConseqDamageSearchDV.COL_LIABILITY_LIMIT_BASE_XCD) = DBNull.Value
-            row(ConseqDamageSearchDV.COL_LIABILITY_LIMIT_PER_INCIDENT) = DBNull.Value
-            row(ConseqDamageSearchDV.COL_LIABILITY_LIMIT_CUMULATIVE) = DBNull.Value
-            row(ConseqDamageSearchDV.COL_EFFECTIVE) = DBNull.Value
-            row(ConseqDamageSearchDV.COL_EXPIRATION) = DBNull.Value
-            row(ConseqDamageSearchDV.COL_FULFILMENT_METHOD_XCD) = DBNull.Value
+            row(COL_COVERAGE_CONSEQ_DAMAGE_ID) = (New Guid()).ToByteArray
+            row(COL_COVERAGE_ID) = Guid.Empty.ToByteArray
+            row(COL_CONSEQ_DAMAGE_TYPE_XCD) = DBNull.Value
+            row(COL_LIABILITY_LIMIT_BASE_XCD) = DBNull.Value
+            row(COL_LIABILITY_LIMIT_PER_INCIDENT) = DBNull.Value
+            row(COL_LIABILITY_LIMIT_CUMULATIVE) = DBNull.Value
+            row(COL_EFFECTIVE) = DBNull.Value
+            row(COL_EXPIRATION) = DBNull.Value
+            row(COL_FULFILMENT_METHOD_XCD) = DBNull.Value
             dt.Rows.Add(row)
             Return New ConseqDamageSearchDV(dt)
         End Function
@@ -330,7 +330,7 @@ Public Class CoverageConseqDamage
 
 #Region "DataView Retrieveing Methods"
 
-    Public Shared Function GetList(ByVal CoverageId As Guid, ByVal LanguageId As Guid) As DataView
+    Public Shared Function GetList(CoverageId As Guid, LanguageId As Guid) As DataView
         Try
             Dim dal As New CoverageConseqDamageDAL
             Return New DataView(dal.LoadList(CoverageId, LanguageId).Tables(0))
@@ -345,11 +345,11 @@ Public Class CoverageConseqDamage
     Public NotInheritable Class RequiredConditionally_Liability_Limit_Cumulative
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, COVERAGE_CONSEQ_DAMAGE_FORM005)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
 
             Dim obj As CoverageConseqDamage = CType(objectToValidate, CoverageConseqDamage)
             If Not String.IsNullOrEmpty(obj.LiabilityLimitBaseXcd) AndAlso Not obj.LiabilityLimitBaseXcd.Equals(Codes.COVERAGE_CONSEQ_DAMAGE_LIABILITY_LIMIT_BASED_ON_NOTAPPL) Then
@@ -365,11 +365,11 @@ Public Class CoverageConseqDamage
     Public NotInheritable Class ValidExpirationDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, COVERAGE_CONSEQ_DAMAGE_FORM001)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CoverageConseqDamage = CType(objectToValidate, CoverageConseqDamage)
 
             Dim bValid As Boolean = True
@@ -377,16 +377,16 @@ Public Class CoverageConseqDamage
             If obj IsNot Nothing AndAlso obj.ConseqDamageTypeXcd IsNot Nothing AndAlso obj.Effective IsNot Nothing AndAlso obj.Expiration IsNot Nothing Then
                 If Convert.ToDateTime(obj.Expiration.Value) > DateTime.Now Then
                     If Convert.ToDateTime(obj.Effective.Value) > Convert.ToDateTime(obj.Expiration.Value) Then
-                        Me.Message = COVERAGE_CONSEQ_DAMAGE_FORM001
+                        Message = COVERAGE_CONSEQ_DAMAGE_FORM001
                         bValid = False
                     Else
                         If CheckEffectiveDate(obj.Effective, obj.Expiration, obj.ConseqDamageTypeXcd, obj) = False Then
-                            Me.Message = COVERAGE_CONSEQ_DAMAGE_FORM002
+                            Message = COVERAGE_CONSEQ_DAMAGE_FORM002
                             Return False
                         End If
                     End If
                 Else
-                    Me.Message = COVERAGE_CONSEQ_DAMAGE_FORM003
+                    Message = COVERAGE_CONSEQ_DAMAGE_FORM003
                     bValid = False
                 End If
 
@@ -396,7 +396,7 @@ Public Class CoverageConseqDamage
             Return bValid
 
         End Function
-        Private Function CheckEffectiveDate(ByVal sNewEffective As Assurant.Common.Types.DateType, ByVal sNewExpiration As Assurant.Common.Types.DateType, ByVal sNewConseqDamageType As String, ByVal oCoverageConseqDamage As CoverageConseqDamage) As Boolean
+        Private Function CheckEffectiveDate(sNewEffective As Assurant.Common.Types.DateType, sNewExpiration As Assurant.Common.Types.DateType, sNewConseqDamageType As String, oCoverageConseqDamage As CoverageConseqDamage) As Boolean
             Dim bValid As Boolean = True
             Dim oNewEffective As DateTime = Convert.ToDateTime(sNewEffective.Value)
             Dim oNewExpiration As DateTime = Convert.ToDateTime(sNewExpiration.Value)
@@ -435,17 +435,17 @@ Public Class CoverageConseqDamage
     Public NotInheritable Class ValidateEffectiveDate
         Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
+        Public Sub New(fieldDisplayName As String)
             MyBase.New(fieldDisplayName, COVERAGE_CONSEQ_DAMAGE_FORM002)
         End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As CoverageConseqDamage = CType(objectToValidate, CoverageConseqDamage)
             If obj IsNot Nothing AndAlso obj.Effective IsNot Nothing Then
                 If Convert.ToDateTime(obj.Effective.Value) > DateTime.Now Then
                     Return True
                 Else
-                    Me.Message = COVERAGE_CONSEQ_DAMAGE_FORM004
+                    Message = COVERAGE_CONSEQ_DAMAGE_FORM004
                     Return False
                 End If
             End If

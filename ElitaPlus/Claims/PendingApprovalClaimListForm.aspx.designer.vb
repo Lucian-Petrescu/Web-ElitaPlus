@@ -23,7 +23,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents LabelSearchClaimNumber As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents LabelSearchClaimNumber As Label
 
         '''<summary>
         '''LabelSearchCustomerCertificate control.
@@ -32,7 +32,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents LabelSearchCustomerCertificate As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents LabelSearchCustomerCertificate As Label
 
         '''<summary>
         '''TextBoxSearchClaimNumber control.
@@ -41,7 +41,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents TextBoxSearchClaimNumber As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents TextBoxSearchClaimNumber As TextBox
 
         '''<summary>
         '''TextBoxSearchCertificate control.
@@ -50,7 +50,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents TextBoxSearchCertificate As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents TextBoxSearchCertificate As TextBox
 
         '''<summary>
         '''LabelSearchServiceCenter control.
@@ -59,7 +59,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents LabelSearchServiceCenter As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents LabelSearchServiceCenter As Label
 
         '''<summary>
         '''TextServiceCenterName control.
@@ -68,7 +68,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents TextServiceCenterName As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents TextServiceCenterName As TextBox
 
         '''<summary>
         '''btnClearSearch control.
@@ -77,7 +77,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnClearSearch As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents btnClearSearch As Button
 
         '''<summary>
         '''btnSearch control.
@@ -86,7 +86,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnSearch As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents btnSearch As Button
 
         '''<summary>
         '''trPageSize control.
@@ -95,7 +95,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents trPageSize As HtmlTableRow
 
         '''<summary>
         '''lblPageSize control.
@@ -104,7 +104,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblPageSize As Label
 
         '''<summary>
         '''cboPageSize control.
@@ -113,7 +113,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents cboPageSize As DropDownList
 
         '''<summary>
         '''lblRecordCount control.
@@ -122,7 +122,7 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblRecordCount As Label
 
         '''<summary>
         '''Grid control.
@@ -131,6 +131,6 @@ Namespace Claims
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents Grid As Global.System.Web.UI.WebControls.GridView
+        Protected WithEvents Grid As GridView
     End Class
 End Namespace

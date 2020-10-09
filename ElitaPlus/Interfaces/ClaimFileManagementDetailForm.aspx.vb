@@ -21,7 +21,7 @@ Namespace Interfaces
             Private ReadOnly mLifeCycleRecordState As LifeCycleRecordStateType
             Private ReadOnly mRecordCount As Integer
 
-            Public Sub New(ByVal RecordState As RecordStateType, ByVal LifeCycleRecordState As LifeCycleRecordStateType, ByVal RecordCount As Integer)
+            Public Sub New(RecordState As RecordStateType, LifeCycleRecordState As LifeCycleRecordStateType, RecordCount As Integer)
                 mRecordState = RecordState
                 mLifeCycleRecordState = LifeCycleRecordState
                 mRecordCount = RecordCount
@@ -50,7 +50,7 @@ Namespace Interfaces
             Private ReadOnly mDataItemInfo As DataItemLocator
             Private ReadOnly mFileInfoParams As ClaimFileInfoParams
 
-            Public Sub New(ByVal FileIdentifier As String, ByVal FileInfoParams As ClaimFileInfoParams)
+            Public Sub New(FileIdentifier As String, FileInfoParams As ClaimFileInfoParams)
                 System.Diagnostics.Debug.Assert(Not String.IsNullOrWhiteSpace(FileIdentifier))
                 System.Diagnostics.Debug.Assert(FileInfoParams IsNot Nothing)
 
@@ -225,24 +225,24 @@ Namespace Interfaces
 #End Region
 
 #Region "Handlers-Buttons-Methods"
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
             Try
                 GoBack()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
 
             End Try
         End Sub
 
-        Private Sub SaveButton_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SaveButton_WRITE.Click
+        Private Sub SaveButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles SaveButton_WRITE.Click
             Try
                 For Each oRow As GridViewRow In Grid.Rows
                     SaveFileDetailRecord(oRow)
                 Next
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
 
             End Try
         End Sub
@@ -250,7 +250,7 @@ Namespace Interfaces
         Private Sub GoBack()
             Dim retType As New ClaimFileManagementSearchForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back)
 
-            Me.ReturnToCallingPage(retType)
+            ReturnToCallingPage(retType)
         End Sub
 
         Protected Sub ShowHideGridInfo_Click(sender As Object, e As EventArgs)
@@ -275,7 +275,7 @@ Namespace Interfaces
 
 #Region "Page Events"
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
             Try
                 MasterPage.MessageController.Clear()
                 MasterPage.UsePageTabTitleInBreadCrum = False
@@ -287,7 +287,7 @@ Namespace Interfaces
                 If Not IsPostBack Then
                     ThePage.PopulateControlFromBOProperty(lblRecordCountValue, State.CallingPageParams.FileInfoParams.RecordCount.ToString())
 
-                    SetGridItemStyleColor(Me.Grid)
+                    SetGridItemStyleColor(Grid)
                     State.PagingInfo = New PagingFilter With {.PageIndex = DEFAULT_PAGE_INDEX, .PageSize = DEFAULT_PAGE_SIZE}
 
                     TranslateGridHeader(Grid)
@@ -296,14 +296,14 @@ Namespace Interfaces
 
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
 
             End Try
 
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
-        Private Function FindGridControl(ByVal Item As Control, ByVal ItemName As String) As Control
+        Private Function FindGridControl(Item As Control, ItemName As String) As Control
 
             Dim ReturnItem As Control = Nothing
 
@@ -321,18 +321,18 @@ Namespace Interfaces
 
         End Function
 
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Try
-                If Not CallingParameters Is Nothing Then
-                    Dim PageParameters As ClaimFileDetailPageParams = CType(Me.CallingParameters, ClaimFileDetailPageParams)
+                If CallingParameters IsNot Nothing Then
+                    Dim PageParameters As ClaimFileDetailPageParams = CType(CallingParameters, ClaimFileDetailPageParams)
 
-                    If Not PageParameters Is Nothing Then
+                    If PageParameters IsNot Nothing Then
                         State.CallingPageParams = PageParameters
                     End If
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
 
             End Try
         End Sub
@@ -340,10 +340,10 @@ Namespace Interfaces
 
 #Region "Methods"
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                If (Not Me.State Is Nothing) Then
-                    Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("CLAIM_FILE_DETAILS")
-                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("CLAIM_FILE_DETAILS")
+            If (State IsNot Nothing) Then
+                If (State IsNot Nothing) Then
+                    MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & TranslationBase.TranslateLabelOrMessage("CLAIM_FILE_DETAILS")
+                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("CLAIM_FILE_DETAILS")
                 End If
             End If
         End Sub
@@ -384,7 +384,7 @@ Namespace Interfaces
             Grid.Columns(GRID_COLUMN_SAVE_IMAGE).Visible = TextBoxIsEnabled
         End Sub
 
-        Private Sub EnableDisableGridTextBoxControls(ByRef oControl As Control, ByVal IsEnabled As Boolean)
+        Private Sub EnableDisableGridTextBoxControls(ByRef oControl As Control, IsEnabled As Boolean)
             Dim oTextBox As TextBox = Nothing
 
             For Each ChildControl As Control In oControl.Controls
@@ -404,7 +404,7 @@ Namespace Interfaces
         Protected WithEvents gvAdditionalInfo As GridView = Nothing
         Protected WithEvents gvFinancialLineInfo As GridView = Nothing
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 Dim PageSize As Integer = CType(cboPageSize.SelectedValue, Int32)
 
@@ -412,23 +412,23 @@ Namespace Interfaces
                 PopulateGrid(True)
 
             Catch ex As Exception
-                HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
 
             End Try
         End Sub
 
-        Private Sub Grid_PageIndexChanging(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+        Private Sub Grid_PageIndexChanging(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
             Try
                 State.PagingInfo = New PagingFilter With {.PageIndex = e.NewPageIndex, .PageSize = State.PagingInfo.PageSize}
                 PopulateGrid(True)
 
             Catch ex As Exception
-                HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
 
             End Try
         End Sub
 
-        Public Sub Grid_RowCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+        Public Sub Grid_RowCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
             BaseItemCreated(sender, e)
         End Sub
 
@@ -449,7 +449,7 @@ Namespace Interfaces
 
         End Sub
 
-        Private Sub SaveFileDetailRecord(ByVal oRow As GridViewRow)
+        Private Sub SaveFileDetailRecord(oRow As GridViewRow)
 
             Dim oLabel As Label = TryCast(oRow.FindControl(GRID_RECORD_IDENTIFIER), Label)
 
@@ -471,16 +471,16 @@ Namespace Interfaces
 
                     ' Save the resulting oFileInfo using the web service call "SaveFileInfoRecord"
                     If (SaveFileDetailRecord(oFileDetailsRecord)) Then
-                        Me.MasterPage.MessageController.AddSuccess(MSG_RECORD_SAVED_OK, True)
+                        MasterPage.MessageController.AddSuccess(MSG_RECORD_SAVED_OK, True)
                     Else
-                        Me.MasterPage.MessageController.AddSuccess(MSG_RECORD_NOT_SAVED, True)
+                        MasterPage.MessageController.AddSuccess(MSG_RECORD_NOT_SAVED, True)
                     End If
 
                 End If
             End If
         End Sub
 
-        Private Function UpdateFileDetailRecord(ByRef FileDetailsRecord As FileDetailsRecordDto, ByVal Row As GridViewRow) As Boolean
+        Private Function UpdateFileDetailRecord(ByRef FileDetailsRecord As FileDetailsRecordDto, Row As GridViewRow) As Boolean
 
             Dim oGridView As GridView = Nothing
             Dim TextValue As String = Nothing
@@ -601,7 +601,7 @@ Namespace Interfaces
 
         End Function
 
-        Private Function PopulateBO(ByRef OriginalString As String, ByVal TextValue As String) As Boolean
+        Private Function PopulateBO(ByRef OriginalString As String, TextValue As String) As Boolean
             Dim UpdateOriginalValue As Boolean = False
 
             If (Not String.IsNullOrWhiteSpace(TextValue)) Then
@@ -622,7 +622,7 @@ Namespace Interfaces
 
         End Function
 
-        Private Function PopulateBO(ByRef OriginalAmount As FormattedAmount, ByVal TextValue As String) As Boolean
+        Private Function PopulateBO(ByRef OriginalAmount As FormattedAmount, TextValue As String) As Boolean
             Dim UpdateOriginalValue As Boolean = False
 
             If (Not String.IsNullOrWhiteSpace(TextValue)) Then
@@ -649,7 +649,7 @@ Namespace Interfaces
 
         End Function
 
-        Private Function PopulateBO(ByRef OriginalDate As FormattedDate, ByVal TextValue As String) As Boolean
+        Private Function PopulateBO(ByRef OriginalDate As FormattedDate, TextValue As String) As Boolean
             Dim UpdateOriginalValue As Boolean = False
 
             If (Not String.IsNullOrWhiteSpace(TextValue)) Then
@@ -676,7 +676,7 @@ Namespace Interfaces
 
         End Function
 
-        Private Function PopulateBO(ByRef OriginalTimeSpan As TimeSpan, ByVal TextValue As String) As Boolean
+        Private Function PopulateBO(ByRef OriginalTimeSpan As TimeSpan, TextValue As String) As Boolean
             Dim UpdateOriginalValue As Boolean = False
 
             If (Not String.IsNullOrWhiteSpace(TextValue)) Then
@@ -698,7 +698,7 @@ Namespace Interfaces
 
         End Function
 
-        Private Function PopulateBOFinancialLineItems(ByRef ClaimInfo As ReportClaim, ByVal Row As GridViewRow) As Boolean
+        Private Function PopulateBOFinancialLineItems(ByRef ClaimInfo As ReportClaim, Row As GridViewRow) As Boolean
 
             Dim Grid As GridView = CType(Row.FindControl(GRID_FINANCIAL_LINE_INFO), GridView)
             Dim TextValue As String = Nothing
@@ -775,7 +775,7 @@ Namespace Interfaces
 
         End Function
 
-        Private Sub PopulateBOAdditionalInformationItems(ByRef ClaimInfo As ReportClaim, ByVal Row As GridViewRow)
+        Private Sub PopulateBOAdditionalInformationItems(ByRef ClaimInfo As ReportClaim, Row As GridViewRow)
 
             Dim Grid As GridView = CType(Row.FindControl(GRID_ADDITIONAL_INFO), GridView)
             Dim TextValue As String = Nothing
@@ -800,12 +800,12 @@ Namespace Interfaces
 
         End Sub
 
-        Private Function TextBoxValue(ByRef Row As GridViewRow, ByVal TextBoxName As String) As String
+        Private Function TextBoxValue(ByRef Row As GridViewRow, TextBoxName As String) As String
 
             Dim oTextBox As TextBox = CType(Row.FindControl(TextBoxName), TextBox)
             Dim Value As String = Nothing
 
-            If (oTextBox IsNot Nothing And Not String.IsNullOrWhiteSpace(oTextBox.Text)) Then
+            If (oTextBox IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(oTextBox.Text)) Then
                 Value = oTextBox.Text
             End If
 
@@ -815,10 +815,10 @@ Namespace Interfaces
 
         Private Sub Grid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
             Try
-                If (e.Row.DataItem IsNot Nothing And (e.Row.RowType = DataControlRowType.DataRow) OrElse (e.Row.RowType = DataControlRowType.Separator)) Then
+                If (e.Row.DataItem IsNot Nothing AndAlso (e.Row.RowType = DataControlRowType.DataRow) OrElse (e.Row.RowType = DataControlRowType.Separator)) Then
                     Dim DetailRecord As FileDetailsRecordDto = CType(e.Row.DataItem, FileDetailsRecordDto)
 
-                    If (DetailRecord IsNot Nothing And DetailRecord.RecordContents IsNot Nothing) Then
+                    If (DetailRecord IsNot Nothing AndAlso DetailRecord.RecordContents IsNot Nothing) Then
                         Dim ClaimInfo As ReportClaim = CType(DetailRecord.RecordContents, ReportClaim)
 
                         With e.Row
@@ -1044,7 +1044,7 @@ Namespace Interfaces
             Try
                 Dim AdditionalInfoGrid As GridView = TryCast(sender, GridView)
 
-                If (AdditionalInfoGrid IsNot Nothing And e.Row.DataItem IsNot Nothing) Then
+                If (AdditionalInfoGrid IsNot Nothing AndAlso e.Row.DataItem IsNot Nothing) Then
                     Dim oTextBox As TextBox = Nothing
                     Dim AdditionalInfoItem As AdditionalInfo = TryCast(e.Row.DataItem, AdditionalInfo)
 
@@ -1106,7 +1106,7 @@ Namespace Interfaces
             Try
                 Dim FinancialInfoGrid As GridView = TryCast(sender, GridView)
 
-                If (FinancialInfoGrid IsNot Nothing And e.Row.DataItem IsNot Nothing) Then
+                If (FinancialInfoGrid IsNot Nothing AndAlso e.Row.DataItem IsNot Nothing) Then
                     Dim oTextBox As TextBox = Nothing
                     Dim FinancialInfoItem As FinancialInfo = TryCast(e.Row.DataItem, FinancialInfo)
 
@@ -1207,7 +1207,7 @@ Namespace Interfaces
             End Try
         End Sub
 
-        Private Function ConvertToString(ByVal Amount As Decimal?) As String
+        Private Function ConvertToString(Amount As Decimal?) As String
             If (Amount Is Nothing) Then
                 Return String.Empty
             Else
@@ -1215,7 +1215,7 @@ Namespace Interfaces
             End If
         End Function
 
-        Private Function ConcatenatedErrorCodeMessage(ByVal Errors As FileManagerAdminService.Error()) As String
+        Private Function ConcatenatedErrorCodeMessage(Errors As FileManagerAdminService.Error()) As String
 
             Dim result As String = String.Empty
 
@@ -1251,7 +1251,7 @@ Namespace Interfaces
                 End If
 
             Catch ex As Exception
-                HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
 
             End Try
         End Sub
@@ -1260,9 +1260,7 @@ Namespace Interfaces
             Try
                 Dim SearchInfo As SearchCriteria = Nothing
 
-                If (State.CallingPageParams IsNot Nothing And
-                    State.CallingPageParams.FileInfoParams IsNot Nothing And
-                    State.PagingInfo IsNot Nothing) Then
+                If (State.CallingPageParams IsNot Nothing AndAlso State.CallingPageParams.FileInfoParams IsNot Nothing AndAlso State.PagingInfo IsNot Nothing) Then
 
                     SearchInfo = New SearchCriteria With
                     {
@@ -1276,7 +1274,7 @@ Namespace Interfaces
                 State.SearchDV = WcfClientHelper.Execute(Of FileManagerRelayClient, FileManagerRelay, FileDetailsRecordDto())(
                     GetClient(),
                     New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                    Function(ByVal c As FileManagerRelayClient)
+                    Function(c As FileManagerRelayClient)
                         Return c.SearchFileDetailsRecords(State.CallingPageParams.DataItemLocatorInfo, SearchInfo)
                     End Function)
 
@@ -1286,7 +1284,7 @@ Namespace Interfaces
             End Try
         End Sub
 
-        Private Function SaveFileDetailRecord(ByVal FileDetailsRecord As FileDetailsRecordDto, Optional ByVal refreshData As Boolean = False) As Boolean
+        Private Function SaveFileDetailRecord(FileDetailsRecord As FileDetailsRecordDto, Optional ByVal refreshData As Boolean = False) As Boolean
 
             Dim wsResponse As Boolean = False
 
@@ -1294,7 +1292,7 @@ Namespace Interfaces
                 wsResponse = WcfClientHelper.Execute(Of FileManagerRelayClient, FileManagerRelay, Boolean)(
                     GetClient(),
                     New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                    Function(ByVal c As FileManagerRelayClient)
+                    Function(c As FileManagerRelayClient)
                         Return c.SaveFileDetailsRecord(
                             FileDetailsRecord.Locator,
                             FileDetailsRecord)

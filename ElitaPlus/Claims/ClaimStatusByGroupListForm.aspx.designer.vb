@@ -10,6 +10,7 @@
 Option Strict On
 Option Explicit On
 
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
 
 Partial Public Class ClaimStatusByGroupListForm
     
@@ -20,7 +21,7 @@ Partial Public Class ClaimStatusByGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents rdoDealer As Global.System.Web.UI.WebControls.RadioButton
+    Protected WithEvents rdoDealer As RadioButton
     
     '''<summary>
     '''multipleDropControl control.
@@ -29,7 +30,7 @@ Partial Public Class ClaimStatusByGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents multipleDropControl As Global.Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl
+    Protected WithEvents multipleDropControl As MultipleColumnDDLabelControl
     
     '''<summary>
     '''rdoCompanyGroup control.
@@ -38,7 +39,7 @@ Partial Public Class ClaimStatusByGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents rdoCompanyGroup As Global.System.Web.UI.WebControls.RadioButton
+    Protected WithEvents rdoCompanyGroup As RadioButton
     
     '''<summary>
     '''btnClearSearch control.
@@ -47,7 +48,7 @@ Partial Public Class ClaimStatusByGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnClearSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnClearSearch As Button
     
     '''<summary>
     '''btnSearch control.
@@ -56,7 +57,7 @@ Partial Public Class ClaimStatusByGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSearch As Button
     
     '''<summary>
     '''trPageSize control.
@@ -65,7 +66,7 @@ Partial Public Class ClaimStatusByGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trPageSize As HtmlTableRow
     
     '''<summary>
     '''lblPageSize control.
@@ -74,7 +75,7 @@ Partial Public Class ClaimStatusByGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPageSize As Label
     
     '''<summary>
     '''cboPageSize control.
@@ -83,7 +84,7 @@ Partial Public Class ClaimStatusByGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboPageSize As DropDownList
     
     '''<summary>
     '''lblRecordCount control.
@@ -92,7 +93,7 @@ Partial Public Class ClaimStatusByGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblRecordCount As Label
     
     '''<summary>
     '''Grid control.
@@ -101,7 +102,7 @@ Partial Public Class ClaimStatusByGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Grid As Global.System.Web.UI.WebControls.DataGrid
+    Protected WithEvents Grid As DataGrid
     
     '''<summary>
     '''BtnNew_WRITE control.
@@ -110,5 +111,5 @@ Partial Public Class ClaimStatusByGroupListForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents BtnNew_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents BtnNew_WRITE As Button
 End Class

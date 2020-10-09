@@ -5,7 +5,7 @@ Imports System.Web
 
 
 
-<Serializable()>
+<Serializable>
 Public NotInheritable Class ElitaPlusPrincipal
     Implements IPrincipal
 
@@ -29,11 +29,11 @@ Public NotInheritable Class ElitaPlusPrincipal
 #Region " Constructors "
 
 
-    Public Sub New(ByVal identity As ElitaPlusIdentity)
-        Me.Initialize()
+    Public Sub New(identity As ElitaPlusIdentity)
+        Initialize()
 
-        If (Not identity Is Nothing) Then
-            Me._identity = identity
+        If (identity IsNot Nothing) Then
+            _identity = identity
         End If
 
     End Sub
@@ -47,9 +47,9 @@ Public NotInheritable Class ElitaPlusPrincipal
 
 
     Private Sub Initialize()
-        Me._identity = Nothing
-        Me._roles = Nothing
-        Me._unitCodesManaged = Nothing
+        _identity = Nothing
+        _roles = Nothing
+        _unitCodesManaged = Nothing
     End Sub
 
 
@@ -61,33 +61,33 @@ Public NotInheritable Class ElitaPlusPrincipal
 #Region " Public Properties "
 
 
-    Public ReadOnly Property Identity() As System.Security.Principal.IIdentity Implements System.Security.Principal.IPrincipal.Identity
+    Public ReadOnly Property Identity As System.Security.Principal.IIdentity Implements System.Security.Principal.IPrincipal.Identity
         Get
-            Return Me._identity
+            Return _identity
         End Get
     End Property
-    Public Property WebServiceOffLineMessage() As String
+    Public Property WebServiceOffLineMessage As String
         Get
             Return _webServiceOffLineMessage
         End Get
-        Set(ByVal value As String)
+        Set
             _webServiceOffLineMessage = value
         End Set
     End Property
 
-    Public Property WebServiceFunctionOffLineMessage() As String
+    Public Property WebServiceFunctionOffLineMessage As String
         Get
             Return _webServiceFunctionOffLineMessage
         End Get
-        Set(ByVal value As String)
+        Set
             _webServiceFunctionOffLineMessage = value
         End Set
     End Property
-    Public Property IdToken() As String
+    Public Property IdToken As String
         Get
-            Return Me._idToken
+            Return _idToken
         End Get
-        Set(ByVal value As String)
+        Set
             _idToken = value
         End Set
     End Property
@@ -100,11 +100,11 @@ Public NotInheritable Class ElitaPlusPrincipal
 
     <Obsolete("Create/Use one of extension method from Assurant.Elita.Security.IdentityExtensions")>
     Public Function ActiveUser() As User
-        Return CType(Me.Identity, ElitaPlusIdentity).ActiveUser
+        Return CType(Identity, ElitaPlusIdentity).ActiveUser
     End Function
 
-    Public Function IsInRole(ByVal role As String) As Boolean Implements System.Security.Principal.IPrincipal.IsInRole
-        Return CType(Me.Identity, ElitaPlusIdentity).ActiveUser.isInRole(role)
+    Public Function IsInRole(role As String) As Boolean Implements System.Security.Principal.IPrincipal.IsInRole
+        Return CType(Identity, ElitaPlusIdentity).ActiveUser.isInRole(role)
     End Function
 
 #End Region
@@ -115,23 +115,23 @@ Public NotInheritable Class ElitaPlusPrincipal
 
 
 
-    Public Shared ReadOnly Property Current() As ElitaPlusPrincipal
+    Public Shared ReadOnly Property Current As ElitaPlusPrincipal
         Get
-            If (TypeOf System.Threading.Thread.CurrentPrincipal Is ElitaPlusPrincipal) Then
-                Return CType(System.Threading.Thread.CurrentPrincipal, ElitaPlusPrincipal)
+            If (TypeOf Thread.CurrentPrincipal Is ElitaPlusPrincipal) Then
+                Return CType(Thread.CurrentPrincipal, ElitaPlusPrincipal)
             Else
                 If (TypeOf HttpContext.Current.User Is ElitaPlusPrincipal) Then
-                    System.Threading.Thread.CurrentPrincipal = HttpContext.Current.User
+                    Thread.CurrentPrincipal = HttpContext.Current.User
                     Authentication.SetCulture()
                 Else
                     If (TypeOf HttpContext.Current.Session("PRINCIPAL_SESSION_KEY") Is ElitaPlusPrincipal) Then
-                        System.Threading.Thread.CurrentPrincipal = DirectCast(HttpContext.Current.Session("PRINCIPAL_SESSION_KEY"), ElitaPlusPrincipal)
-                        HttpContext.Current.User = System.Threading.Thread.CurrentPrincipal
+                        Thread.CurrentPrincipal = DirectCast(HttpContext.Current.Session("PRINCIPAL_SESSION_KEY"), ElitaPlusPrincipal)
+                        HttpContext.Current.User = Thread.CurrentPrincipal
                         Authentication.SetCulture()
                     End If
                 End If
 
-                Return CType(System.Threading.Thread.CurrentPrincipal, ElitaPlusPrincipal)
+                Return CType(Thread.CurrentPrincipal, ElitaPlusPrincipal)
             End If
         End Get
     End Property

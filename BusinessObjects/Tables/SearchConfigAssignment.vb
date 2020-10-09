@@ -6,7 +6,7 @@ Public Class SearchConfigAssignment
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
         Dataset = New DataSet
         Load(id)
@@ -20,20 +20,20 @@ Public Class SearchConfigAssignment
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDs As DataSet)
+    Public Sub New(id As Guid, familyDs As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDs As DataSet)
+    Public Sub New(familyDs As DataSet)
         MyBase.New(False)
         Dataset = familyDS
         Load()
     End Sub
     
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
@@ -55,10 +55,10 @@ Public Class SearchConfigAssignment
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)               
+    Protected Sub Load(id As Guid)               
         Try
             If _isDSCreator Then
-                If Not Row Is Nothing Then
+                If Row IsNot Nothing Then
                     Dataset.Tables(SearchConfigAssignmentDAL.TableName).Rows.Remove(Row)
                 End If
             End If
@@ -90,7 +90,7 @@ Public Class SearchConfigAssignment
 #Region "Properties"
     
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If row(SearchConfigAssignmentDAL.TableKeyName) Is DBNull.Value Then
                 Return Nothing
@@ -101,7 +101,7 @@ Public Class SearchConfigAssignment
     End Property
 	
     <ValueMandatory("")> _
-    Public Property SearchConfigId() As Guid
+    Public Property SearchConfigId As Guid
         Get
             CheckDeleted()
             If row(SearchConfigAssignmentDAL.ColNameSearchConfigId) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class SearchConfigAssignment
                 Return New Guid(CType(row(SearchConfigAssignmentDAL.ColNameSearchConfigId), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(SearchConfigAssignmentDAL.ColNameSearchConfigId, Value)
         End Set
@@ -118,7 +118,7 @@ Public Class SearchConfigAssignment
 	
 	
     <ValueMandatory("")> _
-    Public Property CompanyId() As Guid
+    Public Property CompanyId As Guid
         Get
             CheckDeleted()
             If row(SearchConfigAssignmentDAL.ColNameCompanyId) Is DBNull.Value Then
@@ -127,7 +127,7 @@ Public Class SearchConfigAssignment
                 Return New Guid(CType(row(SearchConfigAssignmentDAL.ColNameCompanyId), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(SearchConfigAssignmentDAL.ColNameCompanyId, Value)
         End Set
@@ -135,7 +135,7 @@ Public Class SearchConfigAssignment
 	
 	
     
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If row(SearchConfigAssignmentDAL.ColNameDealerId) Is DBNull.Value Then
@@ -144,7 +144,7 @@ Public Class SearchConfigAssignment
                 Return New Guid(CType(row(SearchConfigAssignmentDAL.ColNameDealerId), Byte()))
             End If
         End Get
-        Set(ByVal value As Guid)
+        Set
             CheckDeleted()
             SetValue(SearchConfigAssignmentDAL.ColNameDealerId, Value)
         End Set
@@ -177,7 +177,7 @@ Public Class SearchConfigAssignment
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetDynamicSearchCriteriaFields(ByVal companyId As Guid, ByVal dealerId As Guid, ByVal languageCode As String, ByVal searchType As String) As DataView
+    Public Shared Function GetDynamicSearchCriteriaFields(companyId As Guid, dealerId As Guid, languageCode As String, searchType As String) As DataView
         Try
             Dim dal As New SearchConfigAssignmentDAL
             Dim ds As DataSet

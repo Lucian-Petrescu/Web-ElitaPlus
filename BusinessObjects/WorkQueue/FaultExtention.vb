@@ -3,27 +3,27 @@ Imports System.ServiceModel
 Imports System.Reflection
 
 Public Module FaultExtention
-    <Extension()> _
-    Public Function AsBOValidationException(ByVal ex As FaultException(Of WrkQueue.ValidationFault)) As BOValidationException
+    <Extension> _
+    Public Function AsBOValidationException(ex As FaultException(Of WrkQueue.ValidationFault)) As BOValidationException
         Return AsBOValidationException(ex, Nothing)
     End Function
-    <Extension()> _
-    Public Function AsBOValidationException(ByVal ex As FaultException(Of WrkQueue.ValidationFault), ByVal businessObject As Object) As BOValidationException
+    <Extension> _
+    Public Function AsBOValidationException(ex As FaultException(Of WrkQueue.ValidationFault), businessObject As Object) As BOValidationException
         Dim boEx As New BOValidationException
         Dim oValue As Object
         Dim oType As Type = Nothing
         Dim validationErrors(ex.Detail.Details.Length - 1) As ValidationError
         Dim propInfo As PropertyInfo
-        If (Not businessObject Is Nothing) Then
+        If (businessObject IsNot Nothing) Then
             oType = businessObject.GetType()
         Else
             oType = GetType(BusinessObjectBase)
         End If
         For i As Integer = 0 To validationErrors.Length - 1
             With ex.Detail.Details(i)
-                If (Not businessObject Is Nothing) Then
+                If (businessObject IsNot Nothing) Then
                     propInfo = businessObject.GetType().GetProperty(.Key)
-                    If (Not propInfo Is Nothing) Then
+                    If (propInfo IsNot Nothing) Then
                         oValue = propInfo.GetValue(businessObject, Nothing)
                     Else
                         oValue = Nothing
@@ -37,27 +37,27 @@ Public Module FaultExtention
         Return New BOValidationException(validationErrors, oType.Name)
     End Function
 
-    <Extension()> _
-    Public Function AsBOValidationException(ByVal ex As FaultException(Of DocAdmin.ValidationFault)) As BOValidationException
+    <Extension> _
+    Public Function AsBOValidationException(ex As FaultException(Of DocAdmin.ValidationFault)) As BOValidationException
         Return AsBOValidationException(ex, Nothing)
     End Function
-    <Extension()> _
-    Public Function AsBOValidationException(ByVal ex As FaultException(Of DocAdmin.ValidationFault), ByVal businessObject As Object) As BOValidationException
+    <Extension> _
+    Public Function AsBOValidationException(ex As FaultException(Of DocAdmin.ValidationFault), businessObject As Object) As BOValidationException
         Dim boEx As New BOValidationException
         Dim oValue As Object
         Dim oType As Type = Nothing
         Dim validationErrors(ex.Detail.Details.Length - 1) As ValidationError
         Dim propInfo As PropertyInfo
-        If (Not businessObject Is Nothing) Then
+        If (businessObject IsNot Nothing) Then
             oType = businessObject.GetType()
         Else
             oType = GetType(BusinessObjectBase)
         End If
         For i As Integer = 0 To validationErrors.Length - 1
             With ex.Detail.Details(i)
-                If (Not businessObject Is Nothing) Then
+                If (businessObject IsNot Nothing) Then
                     propInfo = businessObject.GetType().GetProperty(.Key)
-                    If (Not propInfo Is Nothing) Then
+                    If (propInfo IsNot Nothing) Then
                         oValue = propInfo.GetValue(businessObject, Nothing)
                     Else
                         oValue = Nothing
@@ -71,27 +71,27 @@ Public Module FaultExtention
         Return New BOValidationException(validationErrors, oType.Name)
     End Function
 
-    <Extension()> _
-    Public Function AsBOValidationException(ByVal ex As FaultException(Of Doc.ValidationFault)) As BOValidationException
+    <Extension> _
+    Public Function AsBOValidationException(ex As FaultException(Of Doc.ValidationFault)) As BOValidationException
         Return AsBOValidationException(ex, Nothing)
     End Function
-    <Extension()> _
-    Public Function AsBOValidationException(ByVal ex As FaultException(Of Doc.ValidationFault), ByVal businessObject As Object) As BOValidationException
+    <Extension> _
+    Public Function AsBOValidationException(ex As FaultException(Of Doc.ValidationFault), businessObject As Object) As BOValidationException
         Dim boEx As New BOValidationException
         Dim oValue As Object
         Dim oType As Type = Nothing
         Dim validationErrors(ex.Detail.Details.Length - 1) As ValidationError
         Dim propInfo As PropertyInfo
-        If (Not businessObject Is Nothing) Then
+        If (businessObject IsNot Nothing) Then
             oType = businessObject.GetType()
         Else
             oType = GetType(BusinessObjectBase)
         End If
         For i As Integer = 0 To validationErrors.Length - 1
             With ex.Detail.Details(i)
-                If (Not businessObject Is Nothing) Then
+                If (businessObject IsNot Nothing) Then
                     propInfo = businessObject.GetType().GetProperty(.Key)
-                    If (Not propInfo Is Nothing) Then
+                    If (propInfo IsNot Nothing) Then
                         oValue = propInfo.GetValue(businessObject, Nothing)
                     Else
                         oValue = Nothing
@@ -105,27 +105,27 @@ Public Module FaultExtention
         Return New BOValidationException(validationErrors, oType.Name)
     End Function
 
-    <Extension()> _
-    Public Function AsBOValidationException(ByVal ex As FaultException(Of Auth.ValidationFault)) As BOValidationException
+    <Extension> _
+    Public Function AsBOValidationException(ex As FaultException(Of Auth.ValidationFault)) As BOValidationException
         Return AsBOValidationException(ex, Nothing)
     End Function
-    <Extension()> _
-    Public Function AsBOValidationException(ByVal ex As FaultException(Of Auth.ValidationFault), ByVal businessObject As Object) As BOValidationException
+    <Extension> _
+    Public Function AsBOValidationException(ex As FaultException(Of Auth.ValidationFault), businessObject As Object) As BOValidationException
         Dim boEx As New BOValidationException
         Dim oValue As Object
         Dim oType As Type = Nothing
         Dim validationErrors(ex.Detail.Details.Length - 1) As ValidationError
         Dim propInfo As PropertyInfo
-        If (Not businessObject Is Nothing) Then
+        If (businessObject IsNot Nothing) Then
             oType = businessObject.GetType()
         Else
             oType = GetType(BusinessObjectBase)
         End If
         For i As Integer = 0 To validationErrors.Length - 1
             With ex.Detail.Details(i)
-                If (Not businessObject Is Nothing) Then
+                If (businessObject IsNot Nothing) Then
                     propInfo = businessObject.GetType().GetProperty(.Key)
-                    If (Not propInfo Is Nothing) Then
+                    If (propInfo IsNot Nothing) Then
                         oValue = propInfo.GetValue(businessObject, Nothing)
                     Else
                         oValue = Nothing

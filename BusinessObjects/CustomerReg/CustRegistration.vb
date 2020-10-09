@@ -17,36 +17,36 @@ Public Class CustRegistration
 #Region "Constructors"
 
     'Exiting BO
-    Public Sub New(ByVal id As Guid)
+    Public Sub New(id As Guid)
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load(id)
+        Dataset = New DataSet
+        Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New DataSet
-        Me.Load()
+        Dataset = New DataSet
+        Load()
     End Sub
 
     'Exiting BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
+    Public Sub New(id As Guid, familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load(id)
+        Dataset = familyDS
+        Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As DataSet)
+    Public Sub New(familyDS As DataSet)
         MyBase.New(False)
-        Me.Dataset = familyDS
-        Me.Load()
+        Dataset = familyDS
+        Load()
     End Sub
 
-    Public Sub New(ByVal row As DataRow)
+    Public Sub New(row As DataRow)
         MyBase.New(False)
-        Me.Dataset = row.Table.DataSet
+        Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
@@ -54,12 +54,12 @@ Public Class CustRegistration
     Protected Sub Load()
         Try
             Dim dal As New CustRegistrationDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -67,23 +67,23 @@ Public Class CustRegistration
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)
+    Protected Sub Load(id As Guid)
         Try
             Dim dal As New CustRegistrationDAL
-            If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+            If _isDSCreator Then
+                If Row IsNot Nothing Then
+                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
                 End If
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -103,7 +103,7 @@ Public Class CustRegistration
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    Public ReadOnly Property Id As Guid
         Get
             If Row(CustRegistrationDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
@@ -114,7 +114,7 @@ Public Class CustRegistration
     End Property
 
     <ValidStringLength("", Max:=80)> _
-    Public Property TaxId() As String
+    Public Property TaxId As String
         Get
             CheckDeleted()
             If Row(CustRegistrationDAL.COL_NAME_TAX_ID) Is DBNull.Value Then
@@ -123,13 +123,13 @@ Public Class CustRegistration
                 Return CType(Row(CustRegistrationDAL.COL_NAME_TAX_ID), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set
             CheckDeleted()
-            Me.SetValue(CustRegistrationDAL.COL_NAME_TAX_ID, Value)
+            SetValue(CustRegistrationDAL.COL_NAME_TAX_ID, Value)
         End Set
     End Property
 
-    Public Property DealerId() As Guid
+    Public Property DealerId As Guid
         Get
             CheckDeleted()
             If Row(CustRegistrationDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -138,13 +138,13 @@ Public Class CustRegistration
                 Return New Guid(CType(Row(CustRegistrationDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CustRegistrationDAL.COL_NAME_DEALER_ID, Value)
+            SetValue(CustRegistrationDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
-    Public Property ContactInfoId() As Guid Implements IContactInfoUser.ContactInfoId
+    Public Property ContactInfoId As Guid Implements IContactInfoUser.ContactInfoId
         Get
             CheckDeleted()
             If Row(CustRegistrationDAL.COL_NAME_CONTACT_INFO_ID) Is DBNull.Value Then
@@ -153,28 +153,28 @@ Public Class CustRegistration
                 Return New Guid(CType(Row(CustRegistrationDAL.COL_NAME_CONTACT_INFO_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set
             CheckDeleted()
-            Me.SetValue(CustRegistrationDAL.COL_NAME_CONTACT_INFO_ID, Value)
+            SetValue(CustRegistrationDAL.COL_NAME_CONTACT_INFO_ID, Value)
         End Set
     End Property
 
     Private _contactInfo As ContactInfo = Nothing
-    Public ReadOnly Property ContactInfo() As ContactInfo
+    Public ReadOnly Property ContactInfo As ContactInfo
         Get
-            If Me._contactInfo Is Nothing Then
-                If Me.ContactInfoId.Equals(Guid.Empty) Then
-                    Me._contactInfo = New ContactInfo(Me.Dataset, Me)
-                    Me.ContactInfoId = Me._contactInfo.Id
+            If _contactInfo Is Nothing Then
+                If ContactInfoId.Equals(Guid.Empty) Then
+                    _contactInfo = New ContactInfo(Dataset, Me)
+                    ContactInfoId = _contactInfo.Id
                 Else
-                    Me._contactInfo = New ContactInfo(Me.ContactInfoId, Me.Dataset, Me)
+                    _contactInfo = New ContactInfo(ContactInfoId, Dataset, Me)
                 End If
             End If
-            Return Me._contactInfo
+            Return _contactInfo
         End Get
     End Property
 
-    Public Shared Function GetCountryID(ByVal countryCode As String) As Guid
+    Public Shared Function GetCountryID(countryCode As String) As Guid
         Dim countryID As Guid = Guid.Empty
         Dim list As DataView = LookupListNew.GetCountryLookupList()
 
@@ -188,7 +188,7 @@ Public Class CustRegistration
         Return countryID
     End Function
 
-    Public Shared Function GetRegionID(ByVal regionCode As String, ByVal countryID As Guid) As Guid
+    Public Shared Function GetRegionID(regionCode As String, countryID As Guid) As Guid
         Dim regionID As Guid = Guid.Empty
         If Not regionCode.Trim = String.Empty Then
             Dim list As DataView = LookupListNew.GetRegionLookupList(countryID)
@@ -203,7 +203,7 @@ Public Class CustRegistration
         Return regionID
     End Function
 
-    Public Shared Function GetDealerID(ByVal dealerCode As String) As Guid
+    Public Shared Function GetDealerID(dealerCode As String) As Guid
         Dim dealerId As Guid = Guid.Empty
         Dim list As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
 
@@ -217,7 +217,7 @@ Public Class CustRegistration
         Return dealerId
     End Function
 
-    Public Shared Function GetAddressTypeID(ByVal addressTypeCode As String) As Guid
+    Public Shared Function GetAddressTypeID(addressTypeCode As String) As Guid
         Dim addressTypeId As Guid = Guid.Empty
         Dim list As DataView = LookupListNew.GetAddressTypeList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 
@@ -226,7 +226,7 @@ Public Class CustRegistration
         Return addressTypeId
     End Function
 
-    Public Shared Function IsEmailIDValid(ByVal emailId As String) As Boolean
+    Public Shared Function IsEmailIDValid(emailId As String) As Boolean
         If MiscUtil.EmailAddressValidation(emailId) = False Then
             Dim errors() As ValidationError = {New ValidationError(Common.ErrorCodes.GUI_EMAIL_IS_INVALID_ERR, GetType(CustRegistration), Nothing, "", Nothing)}
             Throw New BOValidationException(errors, GetType(CustRegistration).FullName)
@@ -235,7 +235,7 @@ Public Class CustRegistration
         End If
     End Function
 
-    Public Function IsEmailIDUsed(ByVal emailId As String, ByVal dealerId As Guid) As Boolean
+    Public Function IsEmailIDUsed(emailId As String, dealerId As Guid) As Boolean
         Dim dal As New CustRegistrationDAL
 
         Dim cnt As Integer
@@ -254,7 +254,7 @@ Public Class CustRegistration
 #End Region
 
 #Region "Public Members"
-    Public Function CreateRegistrationElements(ByVal customerRegistration As CustRegistrationDC) As String
+    Public Function CreateRegistrationElements(customerRegistration As CustRegistrationDC) As String
         Try
             Dim countryId As Guid
             Dim regionID As Guid
@@ -264,7 +264,7 @@ Public Class CustRegistration
 
             If IsEmailIDValid(customerRegistration.EmailID) Then
                 countryId = GetCountryID(customerRegistration.CountryCode)
-                If Not customerRegistration.State Is Nothing Then
+                If customerRegistration.State IsNot Nothing Then
                     regionID = GetRegionID(customerRegistration.State, countryId)
                 End If
                 dealerId = GetDealerID(customerRegistration.DealerCode)
@@ -272,32 +272,32 @@ Public Class CustRegistration
 
                 If Not IsEmailIDUsed(customerRegistration.EmailID, dealerId) Then
                     'assign properties to the BO and child BOs
-                    Me.TaxId = customerRegistration.TaxID
+                    TaxId = customerRegistration.TaxID
                     Me.DealerId = dealerId
                     'add other properties
-                    Me.ContactInfo.AddressTypeId = addressTypeId
-                    Me.ContactInfo.FirstName = customerRegistration.FirstName
-                    Me.ContactInfo.LastName = customerRegistration.LastName
-                    Me.ContactInfo.Name = customerRegistration.FirstName + customerRegistration.LastName
+                    ContactInfo.AddressTypeId = addressTypeId
+                    ContactInfo.FirstName = customerRegistration.FirstName
+                    ContactInfo.LastName = customerRegistration.LastName
+                    ContactInfo.Name = customerRegistration.FirstName + customerRegistration.LastName
                     If customerRegistration.Phone Is Nothing OrElse customerRegistration.Phone.Trim = String.Empty Then
-                        Me.ContactInfo.CellPhone = DEFAULT_CELL_NUMBER
+                        ContactInfo.CellPhone = DEFAULT_CELL_NUMBER
                     Else
-                        Me.ContactInfo.CellPhone = customerRegistration.Phone
+                        ContactInfo.CellPhone = customerRegistration.Phone
                     End If
-                    Me.ContactInfo.Email = customerRegistration.EmailID
+                    ContactInfo.Email = customerRegistration.EmailID
                     'add other properties
-                    Me.ContactInfo.Address(Me.Dataset).Address1 = customerRegistration.Address1
-                    Me.ContactInfo.Address(Me.Dataset).Address2 = customerRegistration.Address2
-                    Me.ContactInfo.Address(Me.Dataset).City = customerRegistration.City
-                    Me.ContactInfo.Address(Me.Dataset).RegionId = regionID
-                    Me.ContactInfo.Address(Me.Dataset).PostalCode = customerRegistration.PostalCode
-                    Me.ContactInfo.Address(Me.Dataset).CountryId = countryId
+                    ContactInfo.Address(Dataset).Address1 = customerRegistration.Address1
+                    ContactInfo.Address(Dataset).Address2 = customerRegistration.Address2
+                    ContactInfo.Address(Dataset).City = customerRegistration.City
+                    ContactInfo.Address(Dataset).RegionId = regionID
+                    ContactInfo.Address(Dataset).PostalCode = customerRegistration.PostalCode
+                    ContactInfo.Address(Dataset).CountryId = countryId
 
                     'Calls required to invoke validator
-                    Me.ContactInfo.Address.Save()
-                    Me.ContactInfo.Save()
+                    ContactInfo.Address.Save()
+                    ContactInfo.Save()
 
-                    Me.Save()
+                    Save()
                     Return OK_RESPONSE
                 End If
 
@@ -309,7 +309,7 @@ Public Class CustRegistration
         End Try
     End Function
 
-    Public Function UpdateRegistrationElements(ByVal customerRegistration As CustRegistrationDC) As String
+    Public Function UpdateRegistrationElements(customerRegistration As CustRegistrationDC) As String
         Try
             Dim countryId As Guid
             Dim regionID As Guid
@@ -319,7 +319,7 @@ Public Class CustRegistration
 
             If IsEmailIDValid(customerRegistration.EmailID) Then
                 countryId = GetCountryID(customerRegistration.CountryCode)
-                If Not customerRegistration.State Is Nothing Then
+                If customerRegistration.State IsNot Nothing Then
                     regionID = GetRegionID(customerRegistration.State, countryId)
                 End If
                 'dealerId = GetDealerID(customerRegistration.DealerCode)
@@ -330,28 +330,28 @@ Public Class CustRegistration
                 'Me.TaxId = customerRegistration.TaxID
 
                 'add other properties                
-                Me.ContactInfo.FirstName = customerRegistration.FirstName
-                Me.ContactInfo.LastName = customerRegistration.LastName
-                Me.ContactInfo.Name = customerRegistration.FirstName + customerRegistration.LastName
+                ContactInfo.FirstName = customerRegistration.FirstName
+                ContactInfo.LastName = customerRegistration.LastName
+                ContactInfo.Name = customerRegistration.FirstName + customerRegistration.LastName
                 If customerRegistration.Phone Is Nothing OrElse customerRegistration.Phone.Trim = String.Empty Then
-                    Me.ContactInfo.CellPhone = DEFAULT_CELL_NUMBER
+                    ContactInfo.CellPhone = DEFAULT_CELL_NUMBER
                 Else
-                    Me.ContactInfo.CellPhone = customerRegistration.Phone
+                    ContactInfo.CellPhone = customerRegistration.Phone
                 End If
 
                 'add other properties
-                Me.ContactInfo.Address(Me.Dataset).Address1 = customerRegistration.Address1
-                Me.ContactInfo.Address(Me.Dataset).Address2 = customerRegistration.Address2
-                Me.ContactInfo.Address(Me.Dataset).City = customerRegistration.City
-                Me.ContactInfo.Address(Me.Dataset).RegionId = regionID
-                Me.ContactInfo.Address(Me.Dataset).PostalCode = customerRegistration.PostalCode
-                Me.ContactInfo.Address(Me.Dataset).CountryId = countryId
+                ContactInfo.Address(Dataset).Address1 = customerRegistration.Address1
+                ContactInfo.Address(Dataset).Address2 = customerRegistration.Address2
+                ContactInfo.Address(Dataset).City = customerRegistration.City
+                ContactInfo.Address(Dataset).RegionId = regionID
+                ContactInfo.Address(Dataset).PostalCode = customerRegistration.PostalCode
+                ContactInfo.Address(Dataset).CountryId = countryId
 
                 'Calls required to invoke validator
-                Me.ContactInfo.Address.Save()
-                Me.ContactInfo.Save()
+                ContactInfo.Address.Save()
+                ContactInfo.Save()
 
-                Me.Save()
+                Save()
 
                 Return OK_RESPONSE
 
@@ -366,16 +366,16 @@ Public Class CustRegistration
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CustRegistrationDAL
                 'dal.Update(Me.Row)
-                dal.UpdateFamily(Me.Dataset)
+                dal.UpdateFamily(Dataset)
                 'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -384,15 +384,15 @@ Public Class CustRegistration
     End Sub
 
     'Added manually to the code
-    Public Overrides ReadOnly Property IsDirty() As Boolean
+    Public Overrides ReadOnly Property IsDirty As Boolean
         Get
-            Return MyBase.IsDirty OrElse Me.IsFamilyDirty
+            Return MyBase.IsDirty OrElse IsFamilyDirty
         End Get
     End Property
 #End Region
 
 #Region "Data Retrieveing Methods"
-    Public Shared Function GetRegistration(ByVal emailId As String, ByVal dealerId As Guid) As DataSet
+    Public Shared Function GetRegistration(emailId As String, dealerId As Guid) As DataSet
         Try
             Dim dal As New CustRegistrationDAL
             Dim ds As DataSet
@@ -414,7 +414,7 @@ Public Class CustRegistration
         End Try
     End Function
 
-    Public Shared Function GetRegistration(ByVal emailId As String, ByVal dealerCode As String) As Guid
+    Public Shared Function GetRegistration(emailId As String, dealerCode As String) As Guid
         Try
             'call methods to retrieve addressTypeId and dealerId from code
             Dim dealerId As Guid

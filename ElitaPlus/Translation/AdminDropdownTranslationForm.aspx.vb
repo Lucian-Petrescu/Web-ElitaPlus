@@ -16,7 +16,7 @@ Namespace Translation
         'Do not delete or move it.
         Private designerPlaceholderDeclaration As System.Object
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -63,16 +63,16 @@ Namespace Translation
 
 
 #Region "Page Events"
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
-                Me.ErrorControl.Clear_Hide()
+                ErrorControl.Clear_Hide()
 
                 If Not Page.IsPostBack Then
-                    Me.ShowMissingTranslations(ErrorControl)
+                    ShowMissingTranslations(ErrorControl)
 
-                    If Not Session(DROPDOWN_ID) Is Nothing Then
-                        Me.State.isADropdown = True
+                    If Session(DROPDOWN_ID) IsNot Nothing Then
+                        State.isADropdown = True
                         Session(DROPDOWN_ID) = Nothing
                     End If
                     PopulateGrid()
@@ -80,14 +80,14 @@ Namespace Translation
                     CheckIfComingFromCancelConfirm()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorControl)
+                HandleErrors(ex, ErrorControl)
             End Try
         End Sub
 #End Region
 
 #Region "Datagrid Related "
 
-        Public Sub ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs)
+        Public Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
             '-------------------------------------
             'Name:ReasorbTranslation
             'Purpose:Translate any message to be display
@@ -148,7 +148,7 @@ Namespace Translation
             End If
         End Sub
 
-        Public Function GetTransItemId(ByVal DICT_ITEM_TRANSLATION_ID As Byte()) As String
+        Public Function GetTransItemId(DICT_ITEM_TRANSLATION_ID As Byte()) As String
 
             Return GuidConversion.ConvertToString(DICT_ITEM_TRANSLATION_ID)
 
@@ -157,7 +157,7 @@ Namespace Translation
 #End Region
 
 #Region "Button Clicks"
-        Private Sub btnCancel_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+        Private Sub btnCancel_Click(sender As Object, e As System.EventArgs) Handles btnCancel.Click
 
             Try
                 If IsDirty() Then
@@ -166,22 +166,22 @@ Namespace Translation
                 End If
                 ConfirmedCancel()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorControl)
+                HandleErrors(ex, ErrorControl)
             End Try
         End Sub
 
-        Private Sub btnSave_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSave.Click
+        Private Sub btnSave_Click(sender As Object, e As System.EventArgs) Handles btnSave.Click
             '-------------------------------------
             'Name:btnSave
             'Purpose:Save any modification to the selected Label and/or to its translations and 
             '             return to the Labels grid 
             '-------------------------------------
             Try
-                Me.ErrorControl.Clear_Hide()
+                ErrorControl.Clear_Hide()
                 SaveChanges()
-                Me.ErrorControl.Show()
+                ErrorControl.Show()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrorControl)
+                HandleErrors(ex, ErrorControl)
             End Try
         End Sub
 
@@ -194,23 +194,23 @@ Namespace Translation
             Dim i As Integer
             Dim DataChanged As Boolean
 
-            For i = 0 To Me.grdTranslation.Items.Count - 1
-                sTranslation = CType(Me.grdTranslation.Items(i).Cells(DG_TRANS_TRANSLATION).FindControl("txtNewTranslation"), TextBox).Text
-                oLabel = CType(Me.grdTranslation.Items(i).Cells(DG_DICT_ITEM_GUID_ID).FindControl("TransItemIDGuid"), Label)
+            For i = 0 To grdTranslation.Items.Count - 1
+                sTranslation = CType(grdTranslation.Items(i).Cells(DG_TRANS_TRANSLATION).FindControl("txtNewTranslation"), TextBox).Text
+                oLabel = CType(grdTranslation.Items(i).Cells(DG_DICT_ITEM_GUID_ID).FindControl("TransItemIDGuid"), Label)
                 nDictItemTranslationID = New Guid(oLabel.Text)
                 Dim isDirty As Boolean = False
-                isDirty = isDirty Or (sTranslation.Trim <> Me.grdTranslation.Items(i).Cells(DG_OLD_TRANSLATION).Text.Trim)
+                isDirty = isDirty OrElse (sTranslation.Trim <> grdTranslation.Items(i).Cells(DG_OLD_TRANSLATION).Text.Trim)
                 If isDirty Then
                     Try
                         retVal = dropdownBO.UpdateTranslation(nDictItemTranslationID, sTranslation.Trim, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
                         If retVal = 0 Then
-                            Me.MenuEnabled = True
+                            MenuEnabled = True
                             DataChanged = True
                         Else
-                            Me.ErrorControl.AddError(Message.ERR_SAVING_DATA)
+                            ErrorControl.AddError(Message.ERR_SAVING_DATA)
                         End If
                     Catch ex As Exception
-                        Me.ErrorControl.AddError(Message.ERR_SAVING_DATA)
+                        ErrorControl.AddError(Message.ERR_SAVING_DATA)
                     End Try
                 End If
             Next
@@ -225,16 +225,16 @@ Namespace Translation
         Private Sub ConfirmedCancel()
             ErrorControl.Clear_Hide()
             NavigationHistory.LastPage() 'does a pop of the last page
-            Me.ReturnToCallingPage()
+            ReturnToCallingPage()
         End Sub
 
         Protected Sub LoadData()
-            If Me.State.isADropdown = True Then
+            If State.isADropdown = True Then
                 'Load List data
-                Me.State.searchDV = Dropdown.AdminLoadListTranslation(CType(Me.CallingParameters, Guid))
+                State.searchDV = Dropdown.AdminLoadListTranslation(CType(CallingParameters, Guid))
             Else
                 'Load List Item data
-                Me.State.searchDV = DropdownItem.AdminLoadListItemTranslation(CType(Me.CallingParameters, Guid))
+                State.searchDV = DropdownItem.AdminLoadListItemTranslation(CType(CallingParameters, Guid))
             End If
         End Sub
 
@@ -243,19 +243,19 @@ Namespace Translation
             'Name:PopulateGrid
             'Purpose:Load translations in the grid for the selected Label 
             '-------------------------------------
-            Me.ErrorControl.Clear_Hide()
+            ErrorControl.Clear_Hide()
             LoadData()
-            If Me.State.isADropdown Then
-                grdTranslation.DataSource = Me.State.searchDV
-                Me.TitleName.Text = DROPDOWN_NAME
-                If Me.State.searchDV.Count > 0 Then
-                    Me.lblDropdownItemNam.Text = Me.State.searchDV.Item(0)(COL_NAME_CODE).ToString
+            If State.isADropdown Then
+                grdTranslation.DataSource = State.searchDV
+                TitleName.Text = DROPDOWN_NAME
+                If State.searchDV.Count > 0 Then
+                    lblDropdownItemNam.Text = State.searchDV.Item(0)(COL_NAME_CODE).ToString
                 End If
             Else
-                grdTranslation.DataSource = Me.State.searchDV
-                Me.TitleName.Text = DROPDOWN_ITEM_NAME
-                If Me.State.searchDV.Count > 0 Then
-                    Me.lblDropdownItemNam.Text = Me.State.searchDV.Item(0)(COL_NAME_CODE).ToString
+                grdTranslation.DataSource = State.searchDV
+                TitleName.Text = DROPDOWN_ITEM_NAME
+                If State.searchDV.Count > 0 Then
+                    lblDropdownItemNam.Text = State.searchDV.Item(0)(COL_NAME_CODE).ToString
                 End If
             End If
 
@@ -264,31 +264,31 @@ Namespace Translation
         End Sub
 
         Protected Sub CheckIfComingFromCancelConfirm()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-            If Not confResponse Is Nothing AndAlso confResponse = Me.CONFIRM_MESSAGE_OK Then
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+            If confResponse IsNot Nothing AndAlso confResponse = CONFIRM_MESSAGE_OK Then
                 ConfirmedCancel()
             End If
-            Me.HiddenSaveChangesPromptResponse.Value = ""
+            HiddenSaveChangesPromptResponse.Value = ""
         End Sub
 
         Private Function IsDirty() As Boolean
             Dim sTranslation As String
             Dim objItem As DataGridItem
             Dim i As Integer
-            For i = 0 To Me.grdTranslation.Items.Count - 1
-                sTranslation = CType(Me.grdTranslation.Items(i).Cells(DG_TRANS_TRANSLATION).FindControl("txtNewTranslation"), TextBox).Text
+            For i = 0 To grdTranslation.Items.Count - 1
+                sTranslation = CType(grdTranslation.Items(i).Cells(DG_TRANS_TRANSLATION).FindControl("txtNewTranslation"), TextBox).Text
                 Dim isPageDirty As Boolean = False
-                isPageDirty = isPageDirty Or (sTranslation.Trim.ToUpper <> Me.grdTranslation.Items(i).Cells(DG_OLD_TRANSLATION).Text.Trim.ToUpper)
+                isPageDirty = isPageDirty OrElse (sTranslation.Trim.ToUpper <> grdTranslation.Items(i).Cells(DG_OLD_TRANSLATION).Text.Trim.ToUpper)
                 If isPageDirty Then
                     Return True
                 End If
             Next
         End Function
 
-        Private Sub ConfirmMessage(ByVal Message As String)
-            Me.AddConfirmMsg(Message, HiddenSaveChangesPromptResponse)
-            Me.DisplayMessage(Message, "", Me.MSG_BTN_OK_CANCEL, Me.MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-            Me.ErrorControl.Show()
+        Private Sub ConfirmMessage(Message As String)
+            AddConfirmMsg(Message, HiddenSaveChangesPromptResponse)
+            DisplayMessage(Message, "", MSG_BTN_OK_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            ErrorControl.Show()
         End Sub
 #End Region
 

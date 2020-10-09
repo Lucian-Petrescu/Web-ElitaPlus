@@ -11,7 +11,7 @@ Public Class RoleReport
 
 #Region "Properties"
 
-    Public ReadOnly Property DataList() As DataView
+    Public ReadOnly Property DataList As DataView
         Get
             If moDataList Is Nothing Then
                 moDataList = PopulateRoleMenus()
@@ -21,7 +21,7 @@ Public Class RoleReport
 
     End Property
 
-    Public ReadOnly Property TheDataSet() As DataSet
+    Public ReadOnly Property TheDataSet As DataSet
         Get
             If moDataSet Is Nothing Then
                 moDataSet = GetDataset()
@@ -39,7 +39,7 @@ Public Class RoleReport
 
     End Sub
 
-    Public Sub New(ByVal oLanguageId As Guid, ByVal rolesIds As String, ByVal tabsIds As String)
+    Public Sub New(oLanguageId As Guid, rolesIds As String, tabsIds As String)
         msRolesIds = rolesIds
         msTabsIds = tabsIds
         moLanguageId = oLanguageId
@@ -71,7 +71,7 @@ Public Class RoleReport
 
 #Region "Tabs"
 
-    Public Shared Function PopulateAvailableList(ByVal oLanguageId As Guid, ByVal aRoleList As ArrayList) As DataView
+    Public Shared Function PopulateAvailableList(oLanguageId As Guid, aRoleList As ArrayList) As DataView
         Dim oDs As DataSet
 
         Try

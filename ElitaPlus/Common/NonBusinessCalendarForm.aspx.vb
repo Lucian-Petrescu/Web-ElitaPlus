@@ -62,7 +62,7 @@ Partial Class NonBusinessCalendarForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -76,9 +76,9 @@ Partial Class NonBusinessCalendarForm
         Public EditingBo As NonbusinessCalendar
         Public HasDataChanged As Boolean
 
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As NonbusinessCalendar, ByVal hasDataChanged As Boolean)
-            Me.LastOperation = LastOp
-            Me.EditingBo = curEditingBo
+        Public Sub New(LastOp As DetailPageCommand, curEditingBo As NonbusinessCalendar, hasDataChanged As Boolean)
+            LastOperation = LastOp
+            EditingBo = curEditingBo
             Me.HasDataChanged = hasDataChanged
         End Sub
     End Class
@@ -89,14 +89,14 @@ Partial Class NonBusinessCalendarForm
     ' *************************************************************************** '
     '   Sub Page_Load: User code to initialize the page
     ' *************************************************************************** '
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Dim dateParam As String
         Dim sOpenerButton As String
         Dim sJavaScript As String
         Dim fieldNameParam As String
 
-        Me.ErrorCtrl.Clear_Hide()
+        ErrorCtrl.Clear_Hide()
         fieldNameParam = "NonBusinessCalendarForm" 'HttpContext.Current.Request.QueryString("formname")
         sOpenerButton = fieldNameParam.Replace("Form1.", "")
 
@@ -114,9 +114,9 @@ Partial Class NonBusinessCalendarForm
                 dateParam = Nothing
             End If
 
-            If Not dateParam Is Nothing AndAlso dateParam <> "" Then
-                Me.MyCalendar.SelectedDate = DateHelper.GetDateValue(dateParam)
-                Me.MyCalendar.VisibleDate = Me.MyCalendar.SelectedDate
+            If dateParam IsNot Nothing AndAlso dateParam <> "" Then
+                MyCalendar.SelectedDate = DateHelper.GetDateValue(dateParam)
+                MyCalendar.VisibleDate = MyCalendar.SelectedDate
             End If
 
             LoadMonthYear(dateParam)
@@ -132,11 +132,11 @@ Partial Class NonBusinessCalendarForm
 #Region "Member Function"
 
     Public Sub InitDates()
-        If (Not checkDates.Value Is Nothing) Then
+        If (checkDates.Value IsNot Nothing) Then
             checkDatesArray = checkDates.Value.Split("|"c)
         End If
 
-        If (Not uncheckDates.Value Is Nothing) Then
+        If (uncheckDates.Value IsNot Nothing) Then
             uncheckDatesArray = uncheckDates.Value.Split("|"c)
         End If
 
@@ -149,22 +149,22 @@ Partial Class NonBusinessCalendarForm
 
     Private Sub LoadNonBusinessCalender()
         Try
-            Me.State.nonBusinessDayDV = NonbusinessCalendar.LoadList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
+            State.nonBusinessDayDV = NonbusinessCalendar.LoadList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
 
     End Sub
 
-    Public Function IsChecked(ByVal dateStr As String) As Boolean
+    Public Function IsChecked(dateStr As String) As Boolean
         Dim retVar As Boolean = False
         Dim enCulture As New CultureInfo("en-us")
         Dim dt As DateTime = DateHelper.GetDateInMonddyyyy(dateStr)
-        dateStr = dt.ToString(Me.MMM_DD_YYYY, enCulture)
+        dateStr = dt.ToString(MMM_DD_YYYY, enCulture)
 
-        If Not Me.State.nonBusinessDayDV Is Nothing Then
-            Me.State.nonBusinessDayDV.RowFilter = "NonBusiness_Date = '" & dateStr & "'"
-            If Me.State.nonBusinessDayDV.Count >= 1 Then
+        If State.nonBusinessDayDV IsNot Nothing Then
+            State.nonBusinessDayDV.RowFilter = "NonBusiness_Date = '" & dateStr & "'"
+            If State.nonBusinessDayDV.Count >= 1 Then
                 retVar = True
             Else
                 retVar = False
@@ -175,13 +175,13 @@ Partial Class NonBusinessCalendarForm
 
     End Function
 
-    Public Function GetNonbusinessCalendarID(ByVal dateStr As String) As Guid
+    Public Function GetNonbusinessCalendarID(dateStr As String) As Guid
         Dim retVar As Guid = Guid.Empty
 
-        If Not Me.State.nonBusinessDayDV Is Nothing Then
-            Me.State.nonBusinessDayDV.RowFilter = "NonBusiness_Date = '" & dateStr & "'"
-            If Me.State.nonBusinessDayDV.Count >= 1 Then
-                retVar = GuidControl.ByteArrayToGuid(Me.State.nonBusinessDayDV(0).Item("nonbusiness_calendar_id"))
+        If State.nonBusinessDayDV IsNot Nothing Then
+            State.nonBusinessDayDV.RowFilter = "NonBusiness_Date = '" & dateStr & "'"
+            If State.nonBusinessDayDV.Count >= 1 Then
+                retVar = GuidControl.ByteArrayToGuid(State.nonBusinessDayDV(0).Item("nonbusiness_calendar_id"))
             End If
         End If
 
@@ -190,33 +190,33 @@ Partial Class NonBusinessCalendarForm
     End Function
 
     Protected Sub CheckIfComingFromSaveConfirm()
-        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-        If Not confResponse Is Nothing AndAlso confResponse = Me.CONFIRM_MESSAGE_OK Then
-            If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
-                Me.SaveNonBusinessCalendar()
+        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+        If confResponse IsNot Nothing AndAlso confResponse = CONFIRM_MESSAGE_OK Then
+            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
+                SaveNonBusinessCalendar()
             End If
-            Select Case Me.State.ActionInProgress
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
                     NavAction()
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                    Me.SaveNonBusinessCalendar()
+                    AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                    SaveNonBusinessCalendar()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
                     NavAction()
             End Select
-        ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.CONFIRM_MESSAGE_CANCEL Then
-            Select Case Me.State.ActionInProgress
+        ElseIf confResponse IsNot Nothing AndAlso confResponse = CONFIRM_MESSAGE_CANCEL Then
+            Select Case State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
                     NavAction()
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    Me.SaveNonBusinessCalendar()
+                    SaveNonBusinessCalendar()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    Me.ErrorCtrl.AddErrorAndShow(Me.State.LastErrMsg)
+                    ErrorCtrl.AddErrorAndShow(State.LastErrMsg)
             End Select
         End If
         'Clean after consuming the action
-        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-        Me.HiddenSaveChangesPromptResponse.Value = ""
+        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        HiddenSaveChangesPromptResponse.Value = ""
     End Sub
 
     Private Sub SaveNonBusinessCalendar()
@@ -224,9 +224,9 @@ Partial Class NonBusinessCalendarForm
         Dim enCulture As New CultureInfo("en-us")
 
         For i = 0 To checkDatesArray.Length - 1
-            If (Not checkDatesArray(i) Is Nothing And checkDatesArray(i) <> "") Then
+            If (checkDatesArray(i) IsNot Nothing AndAlso checkDatesArray(i) <> "") Then
                 Dim dt As DateTime = DateHelper.GetDateInMonddyyyy(checkDatesArray(i))
-                Dim dateStr As String = dt.ToString(Me.MMM_DD_YYYY, enCulture)
+                Dim dateStr As String = dt.ToString(MMM_DD_YYYY, enCulture)
                 Dim id As Guid = GetNonbusinessCalendarID(dateStr)
 
                 If id = Guid.Empty Then
@@ -237,9 +237,9 @@ Partial Class NonBusinessCalendarForm
         Next
 
         For i = 0 To uncheckDatesArray.Length - 1
-            If (Not uncheckDatesArray(i) Is Nothing And uncheckDatesArray(i) <> "") Then
+            If (uncheckDatesArray(i) IsNot Nothing AndAlso uncheckDatesArray(i) <> "") Then
                 Dim dt As DateTime = DateHelper.GetDateInMonddyyyy(uncheckDatesArray(i))
-                Dim dateStr As String = dt.ToString(Me.MMM_DD_YYYY, enCulture)
+                Dim dateStr As String = dt.ToString(MMM_DD_YYYY, enCulture)
                 Dim id As Guid = GetNonbusinessCalendarID(dateStr)
 
                 If Not id = Guid.Empty Then
@@ -256,29 +256,29 @@ Partial Class NonBusinessCalendarForm
     End Sub
 
     Function IsPageDirty() As Boolean
-        Return (checkDates.Value <> "" Or uncheckDates.Value <> "")
+        Return (checkDates.Value <> "" OrElse uncheckDates.Value <> "")
     End Function
 
     Private Sub ConfirmationCheck()
         Try
             If IsPageDirty() Then
-                Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
             Else
                 NavAction()
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
-            Me.AddConfirmMsg(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-            Me.State.LastErrMsg = Me.ErrorCtrl.Text
+            HandleErrors(ex, ErrorCtrl)
+            AddConfirmMsg(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, HiddenSaveChangesPromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+            State.LastErrMsg = ErrorCtrl.Text
         End Try
     End Sub
 
     Private Sub NavAction()
-        If Not isBtnBackClicked Is Nothing And isBtnBackClicked.Value = "Y" Then
-            Me.ReturnToTabHomePage()
+        If isBtnBackClicked IsNot Nothing AndAlso isBtnBackClicked.Value = "Y" Then
+            ReturnToTabHomePage()
         Else
             ResetDates()
         End If
@@ -288,26 +288,26 @@ Partial Class NonBusinessCalendarForm
 
 #Region "Button Click"
 
-    Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
         Try
-            If Me.IsPageDirty Then
+            If IsPageDirty Then
                 SaveNonBusinessCalendar()
-                Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
             Else
-                Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
+                DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.ErrorCtrl)
+            HandleErrors(ex, ErrorCtrl)
         End Try
     End Sub
 
-    Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
         isBtnBackClicked.Value = "Y"
         ConfirmationCheck()
     End Sub
 
-    Private Sub btnUndo_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+    Private Sub btnUndo_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
         ResetDates()
     End Sub
 
@@ -318,11 +318,11 @@ Partial Class NonBusinessCalendarForm
 
     Public Sub TranslatePageLabels()
         Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
-        Me.TranslateControlByPropertyInfo(Me.LabelMonth, langId)
-        Me.TranslateControlByPropertyInfo(Me.LabelYear, langId)
+        TranslateControlByPropertyInfo(LabelMonth, langId)
+        TranslateControlByPropertyInfo(LabelYear, langId)
     End Sub
 
-    Public Function TranslateLabelOrMessage(ByVal UIProgCode As String, ByVal LangId As Guid) As String
+    Public Function TranslateLabelOrMessage(UIProgCode As String, LangId As Guid) As String
         Dim TransProcObj As New TranslationProcess
         Dim oTranslationItem As New TranslationItem
         Dim Coll As New TranslationItemArray
@@ -334,12 +334,12 @@ Partial Class NonBusinessCalendarForm
         Return oTranslationItem.Translation
     End Function
 
-    Private Sub TranslateControlByPropertyInfo(ByVal Control As WebControl, ByVal LangId As Guid)
+    Private Sub TranslateControlByPropertyInfo(Control As WebControl, LangId As Guid)
         Dim ControlType As Type = Control.GetType
         Dim propInfo As System.Reflection.PropertyInfo = ControlType.GetProperty("Text", Reflection.BindingFlags.Instance Or Reflection.BindingFlags.Public)
-        If Not propInfo Is Nothing Then
+        If propInfo IsNot Nothing Then
             Dim originalValue As String = CType(propInfo.GetValue(Control, Nothing), String)
-            If Not originalValue Is Nothing Then
+            If originalValue IsNot Nothing Then
                 Dim newValue As String = TranslateLabelOrMessage(originalValue, LangId)
                 propInfo.SetValue(Control, newValue, Nothing)
             End If
@@ -350,7 +350,7 @@ Partial Class NonBusinessCalendarForm
     ' *************************************************************************** '
     '   Sub MyCalendar_SelectionChanged: Handles the selection change event of the calendar
     ' *************************************************************************** '
-    Protected Sub MyCalendar_SelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyCalendar.SelectionChanged
+    Protected Sub MyCalendar_SelectionChanged(sender As System.Object, e As System.EventArgs) Handles MyCalendar.SelectionChanged
 
         Dim sJscript As String
         Dim fieldNameParam As String
@@ -365,22 +365,22 @@ Partial Class NonBusinessCalendarForm
         If Request.QueryString("caller") = "ts" Then
             ' need to get the previous sat date from selected date
 
-            Dim day As DayOfWeek = Me.MyCalendar.SelectedDate().DayOfWeek
+            Dim day As DayOfWeek = MyCalendar.SelectedDate().DayOfWeek
             Dim dSelStartDate As Date
             Dim i As Int32 = 1
 
             'ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
 
             While day <> DayOfWeek.Saturday
-                dSelStartDate = Me.MyCalendar.SelectedDate().AddDays(-i)
+                dSelStartDate = MyCalendar.SelectedDate().AddDays(-i)
                 day = dSelStartDate.DayOfWeek
                 i += 1
             End While
 
             If Not dSelStartDate = #12:00:00 AM# Then
-                Me.MyCalendar.SelectedDate() = dSelStartDate
+                MyCalendar.SelectedDate() = dSelStartDate
             Else
-                Me.MyCalendar.SelectedDate() = Me.MyCalendar.SelectedDate()
+                MyCalendar.SelectedDate() = MyCalendar.SelectedDate()
             End If
 
         End If
@@ -388,14 +388,14 @@ Partial Class NonBusinessCalendarForm
         ' sets the corresponding text field's value to the selected date from the calendar
         If fieldNameParam.IndexOf(":") < 0 Then
             sJscript &= "    window.opener.document." & HttpContext.Current.Request.QueryString("formname") & ".value = '" & _
-              ElitaPlusPage.GetDateFormattedString(Me.MyCalendar.SelectedDate) & "';" & Environment.NewLine
+              ElitaPlusPage.GetDateFormattedString(MyCalendar.SelectedDate) & "';" & Environment.NewLine
             'sJscript &= "window.opener.document." & HttpContext.Current.Request.QueryString("formname") & ".fireEvent('onchange')" & Environment.NewLine
             sJscript &= " var element = window.opener.document.getElementById('" & HttpContext.Current.Request.QueryString("formname") & "'); if(element.onchange) { element.onchange();} " & Environment.NewLine
 
         Else
             fieldNameParam = fieldNameParam.Replace(":", "_")
             sJscript &= "    window.opener.document.getElementById('" & fieldNameParam & "').value = '" & _
-              ElitaPlusPage.GetDateFormattedString(Me.MyCalendar.SelectedDate) & "';" & Environment.NewLine
+              ElitaPlusPage.GetDateFormattedString(MyCalendar.SelectedDate) & "';" & Environment.NewLine
         End If
 
         sJscript &= "    window.close();" & Environment.NewLine
@@ -407,7 +407,7 @@ Partial Class NonBusinessCalendarForm
         sJscript &= "</script>"
 
         'Set the literal control's text to the JScript code
-        Me.Literal1.Text = sJscript
+        Literal1.Text = sJscript
 
     End Sub
 
@@ -416,22 +416,22 @@ Partial Class NonBusinessCalendarForm
     '                         Indicates the error and reset to Today Year
     '                       Otherwise, it sets the selected year
     ' ************************************************************************************ '
-    Private Sub ValidateYear(ByVal oYear As String)
-        Dim yearItem As ListItem = Me.cboYearList.Items.FindByText(oYear)
-        If Not yearItem Is Nothing Then
+    Private Sub ValidateYear(oYear As String)
+        Dim yearItem As ListItem = cboYearList.Items.FindByText(oYear)
+        If yearItem IsNot Nothing Then
             ' The year is OK
             yearItem.Selected = True
         Else
             ' The Year is incorrect
             ' It Will Send the error Message
             Dim sJavaScript As String
-            Dim sMsg As String = Me.TranslateLabelOrMessage(Message.MSG_INVALID_DATE, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+            Dim sMsg As String = TranslateLabelOrMessage(Message.MSG_INVALID_DATE, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
             sJavaScript = "<SCRIPT>" & Environment.NewLine
             sJavaScript &= "showMessageWithSubmit('" & sMsg & "', '" & sMsg & "', '" & ElitaPlusPage.MSG_BTN_OK & "', '" & ElitaPlusPage.MSG_TYPE_ALERT & "');" & Environment.NewLine
             sJavaScript &= "</SCRIPT>" & Environment.NewLine
-            Me.RegisterStartupScript("ShowConfirmation", sJavaScript)
+            RegisterStartupScript("ShowConfirmation", sJavaScript)
             ' It will set today's year
-            Me.cboYearList.Items.FindByText(Date.Today.Year.ToString( _
+            cboYearList.Items.FindByText(Date.Today.Year.ToString( _
                                             LocalizationMgr.CurrentFormatProvider)).Selected = True
         End If
     End Sub
@@ -439,7 +439,7 @@ Partial Class NonBusinessCalendarForm
     '   Sub MyCalendar_VisibleMonthChanged: Handles the visible month change event
     '                                       of the calendar and sets the dropdown lists
     ' *************************************************************************** '
-    Private Sub MyCalendar_VisibleMonthChanged(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.MonthChangedEventArgs) Handles MyCalendar.VisibleMonthChanged
+    Private Sub MyCalendar_VisibleMonthChanged(sender As System.Object, e As System.Web.UI.WebControls.MonthChangedEventArgs) Handles MyCalendar.VisibleMonthChanged
         ConfirmationCheck()
         SetMonthYear(MyCalendar.VisibleDate.ToString("MMM", LocalizationMgr.CurrentFormatProvider), MyCalendar.VisibleDate.Year.ToString(LocalizationMgr.CurrentFormatProvider))
     End Sub
@@ -447,21 +447,21 @@ Partial Class NonBusinessCalendarForm
     ' *************************************************************************** '
     '   Sub LoadMonthYear: Loads the dropdown lists and sets the default values
     ' *************************************************************************** '
-    Private Sub LoadMonthYear(ByVal selectedDate As String)
+    Private Sub LoadMonthYear(selectedDate As String)
 
         Dim i As Int32 = 0
         Dim strMonth As String = ""
         Dim dCurrDate As DateTime = #1/1/1995#
         Dim myCal As Calendar = LocalizationMgr.CurrentCulture.Calendar()
 
-        For i = Date.Today.Year - Me.PREVIOUS_YEARS_COUNT To Date.Today.Year + (4 * Me.PREVIOUS_YEARS_COUNT)
-            Me.cboYearList.Items.Add(New ListItem(i.ToString(LocalizationMgr.CurrentFormatProvider), i.ToString(LocalizationMgr.CurrentFormatProvider)))
+        For i = Date.Today.Year - PREVIOUS_YEARS_COUNT To Date.Today.Year + (4 * PREVIOUS_YEARS_COUNT)
+            cboYearList.Items.Add(New ListItem(i.ToString(LocalizationMgr.CurrentFormatProvider), i.ToString(LocalizationMgr.CurrentFormatProvider)))
         Next
 
-        If Not selectedDate Is Nothing AndAlso selectedDate <> "" Then
+        If selectedDate IsNot Nothing AndAlso selectedDate <> "" Then
            ValidateYear(DateHelper.GetDateValue(selectedDate).Year.ToString())
         Else
-            Me.cboYearList.Items.FindByText(Date.Today.Year.ToString(LocalizationMgr.CurrentFormatProvider)).Selected = True
+            cboYearList.Items.FindByText(Date.Today.Year.ToString(LocalizationMgr.CurrentFormatProvider)).Selected = True
         End If
 
         For i = 1 To 12
@@ -470,10 +470,10 @@ Partial Class NonBusinessCalendarForm
             cboMonthList.Items.Add(New ListItem(strMonth, i.ToString(LocalizationMgr.CurrentFormatProvider)))
         Next i
 
-        If Not selectedDate Is Nothing AndAlso selectedDate <> "" Then
-            Me.cboMonthList.Items.FindByText(DateHelper.GetDateValue(selectedDate).ToString("MMM", LocalizationMgr.CurrentFormatProvider)).Selected = True
+        If selectedDate IsNot Nothing AndAlso selectedDate <> "" Then
+            cboMonthList.Items.FindByText(DateHelper.GetDateValue(selectedDate).ToString("MMM", LocalizationMgr.CurrentFormatProvider)).Selected = True
         Else
-            Me.cboMonthList.Items.FindByText(Date.Today.ToString("MMM", LocalizationMgr.CurrentFormatProvider)).Selected = True
+            cboMonthList.Items.FindByText(Date.Today.ToString("MMM", LocalizationMgr.CurrentFormatProvider)).Selected = True
         End If
         SetNewVisibleDate(cboMonthList.SelectedItem.Text, cboYearList.SelectedItem.Text)
 
@@ -483,14 +483,14 @@ Partial Class NonBusinessCalendarForm
     ' *************************************************************************** '
     '   Sub SetMonthYear: Sets the month and year dropdown values to the calendar values
     ' *************************************************************************** '
-    Private Sub SetMonthYear(ByVal month As String, ByVal year As String)
-        Me.cboYearList.SelectedIndex = -1
-        Me.cboMonthList.SelectedIndex = -1
+    Private Sub SetMonthYear(month As String, year As String)
+        cboYearList.SelectedIndex = -1
+        cboMonthList.SelectedIndex = -1
 
         ValidateYear(year)
 
         '  Me.cboYearList.Items.FindByText(year).Selected = True
-        Me.cboMonthList.Items.FindByText(month).Selected = True
+        cboMonthList.Items.FindByText(month).Selected = True
         SetNewVisibleDate(cboMonthList.SelectedItem.Text, cboYearList.SelectedItem.Text)
     End Sub
 
@@ -498,7 +498,7 @@ Partial Class NonBusinessCalendarForm
     '   Sub MonthSelected: Handles the select change event of the month dropdown and
     '                      sets the visible month of the calendar
     ' *************************************************************************** '
-    Private Sub MonthSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboMonthList.SelectedIndexChanged
+    Private Sub MonthSelected(sender As System.Object, e As System.EventArgs) Handles cboMonthList.SelectedIndexChanged
         ConfirmationCheck()
         Dim strSelMonth As String = cboMonthList.SelectedItem.Text
         SetNewVisibleDate(strSelMonth, cboYearList.SelectedItem.Text)
@@ -508,7 +508,7 @@ Partial Class NonBusinessCalendarForm
     '   Sub YearSelected: Handles the select change event of the year dropdown and
     '                     sets the visible year of the calendar
     ' *************************************************************************** '
-    Private Sub YearSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboYearList.SelectedIndexChanged
+    Private Sub YearSelected(sender As System.Object, e As System.EventArgs) Handles cboYearList.SelectedIndexChanged
         ConfirmationCheck()
         Dim strSelYear As String = cboYearList.SelectedItem.Text
         SetNewVisibleDate(cboMonthList.SelectedItem.Text, strSelYear)
@@ -517,7 +517,7 @@ Partial Class NonBusinessCalendarForm
     ' *************************************************************************** '
     '   Sub SetNewVisibleDate: Sets the visible date of the calendar
     ' *************************************************************************** '
-    Private Sub SetNewVisibleDate(ByVal month As String, ByVal year As String)
+    Private Sub SetNewVisibleDate(month As String, year As String)
         Dim sNewDate As Date
         Dim strDateVal As String
         Try
@@ -535,7 +535,7 @@ Partial Class NonBusinessCalendarForm
     ' *************************************************************************** '
     '   Sub Calendar1_DayRender: Add checkbox to the calendar
     ' *************************************************************************** '
-    Private Sub Calendar1_DayRender(ByVal sender As Object, ByVal e As DayRenderEventArgs) Handles MyCalendar.DayRender
+    Private Sub Calendar1_DayRender(sender As Object, e As DayRenderEventArgs) Handles MyCalendar.DayRender
 
         Dim d As CalendarDay = e.Day
         Dim cb As CheckBox = New CheckBox

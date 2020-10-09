@@ -6,11 +6,11 @@ Public Class WorkQueueAction
         ImageIndex
     End Enum
 
-    Property Target() As TargetPage
+    Property Target As TargetPage
         Get
 
         End Get
-        Set(ByVal value As TargetPage)
+        Set
 
         End Set
     End Property

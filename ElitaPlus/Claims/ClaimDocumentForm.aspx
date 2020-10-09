@@ -203,7 +203,7 @@
         <div id="Div3" class="overlay_message_content" style="width: 1100px; left: 8%">
             <p class="modalTitle">
                 <asp:Label ID="lblClaimImage" runat="server" Text="CLAIM_IMAGE"></asp:Label>
-                <a href="javascript:void(0)" onclick="hideModal('modalClaimImages');">
+                <a href="javascript:void(0)" onclick="hideModal('modalClaimImages');" rel="noopener noreferrer">
                     <img id="img3" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                         width="16" height="18" align="absmiddle" class="floatR" /></a></p>
             <iframe class="pdfContainer" align="left" runat="server" id="pdfIframe"></iframe>

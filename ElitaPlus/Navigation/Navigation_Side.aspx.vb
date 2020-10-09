@@ -10,7 +10,7 @@ Partial Class Navigation_Side
 
     End Sub
 
-    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -56,7 +56,7 @@ Partial Class Navigation_Side
     End Property
 
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
 
         Dim sCODE As String = Request.QueryString(CURRENT_TABID)
@@ -64,12 +64,12 @@ Partial Class Navigation_Side
 
         If Not Page.IsPostBack Then
 
-            Me.btnMinimize.Attributes.Add("onclick", "toggleSideMenu();")
+            btnMinimize.Attributes.Add("onclick", "toggleSideMenu();")
             If (sCODE <> Nothing) AndAlso (sCODE <> Assurant.ElitaPlus.BusinessObjectsNew.Codes.TAB_HOME_PAGE) Then
                 LoadSecondaryNavigationLinks(sCODE)
             End If
 
-            If Not Session(ELPWebConstants.MENUSTATE) Is Nothing Then
+            If Session(ELPWebConstants.MENUSTATE) IsNot Nothing Then
                 If CType(Session(ELPWebConstants.MENUSTATE), ELPWebConstants.enumMenu_State) = ELPWebConstants.enumMenu_State.Editing_Page_Mode Then
                     DisableLinks(False)
                 Else
@@ -77,18 +77,18 @@ Partial Class Navigation_Side
                 End If
             End If
 
-            If Not Session("ScrollPos") Is Nothing Then
-                Me.scrollPos.Value = CType(Session("ScrollPos"), String)
+            If Session("ScrollPos") IsNot Nothing Then
+                scrollPos.Value = CType(Session("ScrollPos"), String)
             End If
 
         Else
-            Session("ScrollPos") = Me.scrollPos.Value
+            Session("ScrollPos") = scrollPos.Value
         End If
-        If sCODE = Assurant.ElitaPlus.BusinessObjectsNew.Codes.TAB_HOME_PAGE Or sCODE Is Nothing Then
+        If sCODE = Assurant.ElitaPlus.BusinessObjectsNew.Codes.TAB_HOME_PAGE OrElse sCODE Is Nothing Then
             isHomeTab.Value = "true"
         Else
             isHomeTab.Value = "false"
-            If Not Session("SideMenuMinimized") Is Nothing Then
+            If Session("SideMenuMinimized") IsNot Nothing Then
                 isMinimized.Value = CType(Session("SideMenuMinimized"), String)
                 If isMinimized.Value = "true" Then
                     btnMinimize.ImageUrl = "../Navigation/images/maximize.gif"
@@ -107,7 +107,7 @@ Partial Class Navigation_Side
 
     End Sub
 
-    Private Sub MinimizeMenu(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs)
+    Private Sub MinimizeMenu(sender As System.Object, e As System.Web.UI.ImageClickEventArgs)
 
         If btnMinimize.ImageUrl = "../Navigation/images/minimize.gif" Then
             btnMinimize.ImageUrl = "../Navigation/images/maximize.gif"
@@ -135,7 +135,7 @@ Partial Class Navigation_Side
         Return TabIconPath(Request.QueryString(CURRENT_TABID), sIconPath)
     End Function
 
-    Public Function TabIconPath(ByVal code As String, ByVal iconPath As String) As String
+    Public Function TabIconPath(code As String, iconPath As String) As String
         Dim strIconPath As String
 
         Select Case code
@@ -159,11 +159,11 @@ Partial Class Navigation_Side
         Return strIconPath
     End Function
 
-    Function GetLinkText(ByVal sTranslation As String) As String
+    Function GetLinkText(sTranslation As String) As String
         Return sTranslation
     End Function
 
-    Private Sub LoadSecondaryNavigationLinks(ByVal sCODE As String)
+    Private Sub LoadSecondaryNavigationLinks(sCODE As String)
         Dim dvLinks As DataView = FormAuthorization.Load(sCODE)
 
         If dvLinks.Count > 0 Then
@@ -174,7 +174,7 @@ Partial Class Navigation_Side
     End Sub
 
 
-    Public Sub DisplayContentArea(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+    Public Sub DisplayContentArea(source As System.Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
         '-------------------------------------
         'Name:grdNavigationLinks_ItemCommand
         'Purpose Retrieve the value of the allow_nav column.
@@ -216,7 +216,7 @@ Partial Class Navigation_Side
         'run the code to change the page inside the content frame.
         sScript = "parent.document.frames('Navigation_Content').document.body.style.cursor = 'wait'; "
         sScript &= "parent.document.frames('Navigation_Content').location.href = '" & sURL & "'"
-        ELPWebConstants.ExecuteJavascript(sScript, Me.Page)
+        ELPWebConstants.ExecuteJavascript(sScript, Page)
 
 
     End Sub
@@ -225,11 +225,11 @@ Partial Class Navigation_Side
     Sub DisableTabs()
         Dim sScript As String
         sScript = "parent.document.frames('Navigation_Header').location.href = 'Navigation_Header.aspx'"
-        ELPWebConstants.ExecuteJavascript("RefreshTheHeader", sScript, Me.Page)
+        ELPWebConstants.ExecuteJavascript("RefreshTheHeader", sScript, Page)
     End Sub
 
 
-    Sub DisableLinks(ByVal bEnabled As Boolean)
+    Sub DisableLinks(bEnabled As Boolean)
         'make all the navigation links either enabled or disabled.
 
         grdNavigationLinks.Enabled = bEnabled
@@ -243,12 +243,12 @@ Partial Class Navigation_Side
     'Input Values:blnEnableNow - flag to indicate whether to enable or disable navigation.
     '-------------------------------------
 
-    Private Sub EnableNavigation(ByVal enableNow As Boolean)
+    Private Sub EnableNavigation(enableNow As Boolean)
         Dim sScript As String
 
         Try
             If enableNow = False Then
-                ELPWebConstants.ShowPopup(NoNavMessage, Me.Page)
+                ELPWebConstants.ShowPopup(NoNavMessage, Page)
             End If
 
             DisableLinks(enableNow)
@@ -256,15 +256,15 @@ Partial Class Navigation_Side
             'Catch ex As MessageNotFoundException
             '    ELPWebConstants.ShowPopup(ex.Message, Me.Page)
         Catch ex As ApplicationException
-            ELPWebConstants.ShowPopup(ex.Message, Me.Page)
+            ELPWebConstants.ShowPopup(ex.Message, Page)
         Catch ex As Exception
-            ELPWebConstants.ShowPopup(ex.Message, Me.Page)
+            ELPWebConstants.ShowPopup(ex.Message, Page)
         End Try
 
 
     End Sub
 
-    Sub ItemCreated(ByVal sender As Object, ByVal e As DataGridItemEventArgs)
+    Sub ItemCreated(sender As Object, e As DataGridItemEventArgs)
         Dim elemType As ListItemType = e.Item.ItemType
 
         'If elemType = ListItemType.AlternatingItem Or elemType = ListItemType.Item Then

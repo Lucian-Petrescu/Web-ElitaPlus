@@ -50,10 +50,10 @@ Partial Public Class InventorySearchForm
         Public PageIndex As Integer = 0
         Public PageSize As Integer = 30
         Public SortColumn As String = DefaultSortColumn
-        Public SortDirection As WebControls.SortDirection = WebControls.SortDirection.Ascending
+        Public SortDirection As SortDirection = SortDirection.Ascending
         Public ReadOnly Property SortExpression As String
             Get
-                Return String.Format("{0} {1}", SortColumn, If(SortDirection = WebControls.SortDirection.Ascending, "ASC", "DESC"))
+                Return String.Format("{0} {1}", SortColumn, If(SortDirection = SortDirection.Ascending, "ASC", "DESC"))
             End Get
         End Property
 
@@ -73,7 +73,7 @@ Partial Public Class InventorySearchForm
 #Region "Handlers-Init, page events"
 
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
 
         Try
             MasterPage.MessageController.Clear()
@@ -102,7 +102,7 @@ Partial Public Class InventorySearchForm
 #End Region
 
 #Region "Handlers-DropDown"
-    Private Sub cboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.PageSize = CType(cboPageSize.SelectedValue, Integer)
             State.PageIndex = NewCurrentPageIndex(Grid, State.VendorInventoryData.Count, State.PageSize)
@@ -113,7 +113,7 @@ Partial Public Class InventorySearchForm
         End Try
     End Sub
 
-    Private Sub ddlDealer_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlDealer.SelectedIndexChanged
+    Private Sub ddlDealer_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlDealer.SelectedIndexChanged
         Try
             ClearStateValues()
             SetStateDealer(GetSelectedItem(ddlDealer))
@@ -142,7 +142,7 @@ Partial Public Class InventorySearchForm
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Protected Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClearSearch.Click
+    Protected Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         Try
 
             ' Clear all search options typed or selected by the user
@@ -191,18 +191,18 @@ Partial Public Class InventorySearchForm
         End If
     End Sub
 
-    Private Function GetDealerListByCompanyForUser() As Assurant.Elita.CommonConfiguration.DataElements.ListItem()
+    Private Function GetDealerListByCompanyForUser() As ListItem()
         Dim Index As Integer
-        Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
+        Dim oListContext As New ListContext
 
         Dim UserCompanies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
-        Dim oDealerList As New Collections.Generic.List(Of Assurant.Elita.CommonConfiguration.DataElements.ListItem)
+        Dim oDealerList As New List(Of ListItem)
 
         For Index = 0 To UserCompanies.Count - 1
             oListContext.CompanyId = UserCompanies(Index)
-            Dim oDealerListForCompany As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
+            Dim oDealerListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
             If oDealerListForCompany.Count > 0 Then
-                If Not oDealerList Is Nothing Then
+                If oDealerList IsNot Nothing Then
                     oDealerList.AddRange(oDealerListForCompany)
                 Else
                     oDealerList = oDealerListForCompany.Clone()
@@ -309,7 +309,7 @@ Partial Public Class InventorySearchForm
             Else
                 keySelector = Function(vi) vi.VendorSku
             End If
-            Dim dataSource = If(State.SortDirection = WebControls.SortDirection.Ascending, State.VendorInventoryData.OrderBy(Of String)(keySelector), State.VendorInventoryData.OrderByDescending(Of String)(keySelector))
+            Dim dataSource = If(State.SortDirection = SortDirection.Ascending, State.VendorInventoryData.OrderBy(Of String)(keySelector), State.VendorInventoryData.OrderByDescending(Of String)(keySelector))
 
             Grid.DataSource = dataSource.ToList()
             HighLightSortColumn(Grid, State.SortExpression, True)
@@ -358,7 +358,7 @@ Partial Public Class InventorySearchForm
             PopulateServiceCenterDropdown()
         End If
     End Sub
-    Private Sub SetStateDealer(ByVal dealerId As Guid)
+    Private Sub SetStateDealer(dealerId As Guid)
         If Not dealerId.Equals(Guid.Empty) Then
             Dim oDealer As New Dealer(dealerId)
             State.DealerId = oDealer.Id
@@ -450,13 +450,13 @@ Partial Public Class InventorySearchForm
         End If
         Return blnValid
     End Function
-    Private Sub DisplayWsErrorMessage(ByVal errCode As String, ByVal errDescription As String)
+    Private Sub DisplayWsErrorMessage(errCode As String, errDescription As String)
         MasterPage.MessageController.AddError(errCode & " - " & errDescription, False)
     End Sub
 #End Region
 #Region "Grid Action"
 
-    Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(sender As Object, e As EventArgs) Handles Grid.PageIndexChanged
         Try
             State.PageIndex = Grid.PageIndex
             PopulateGrid()
@@ -464,7 +464,7 @@ Partial Public Class InventorySearchForm
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
@@ -472,12 +472,12 @@ Partial Public Class InventorySearchForm
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_SortCommand(source As Object, e As GridViewSortEventArgs) Handles Grid.Sorting
         Try
             If (State.SortColumn = e.SortExpression) Then
-                State.SortDirection = If(State.SortDirection = WebControls.SortDirection.Ascending, WebControls.SortDirection.Descending, WebControls.SortDirection.Ascending)
+                State.SortDirection = If(State.SortDirection = SortDirection.Ascending, SortDirection.Descending, SortDirection.Ascending)
             Else
-                State.SortDirection = WebControls.SortDirection.Ascending
+                State.SortDirection = SortDirection.Ascending
             End If
             State.SortColumn = e.SortExpression
             State.PageIndex = 0
@@ -487,7 +487,7 @@ Partial Public Class InventorySearchForm
         End Try
 
     End Sub
-    Private Sub Grid_RowCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles Grid.RowCreated
+    Private Sub Grid_RowCreated(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
@@ -531,11 +531,11 @@ Partial Public Class InventorySearchForm
             wsResponse = WcfClientHelper.Execute(Of FulfillmentServiceClient, IFulfillmentService, SearchVendorInventoryResponse)(
                                                        GetClient(),
                                                        New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                                                       Function(ByVal c As FulfillmentServiceClient)
+                                                       Function(c As FulfillmentServiceClient)
                                                            Return c.SearchVendorInventory(wsRequest)
                                                        End Function)
         Catch ex As Exception
-            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
+            MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
             Throw
         End Try
 

@@ -2,8 +2,8 @@
 
 Namespace Auth
     Partial Public Class ExtendedUser
-        Public Function HasPermission(ByVal permission As Permission) As Boolean
-            If (Not Me.IsActive) Then
+        Public Function HasPermission(permission As Permission) As Boolean
+            If (Not IsActive) Then
                 Return False
             End If
 
@@ -14,7 +14,7 @@ Namespace Auth
 
         Public Function GetDistinctPermissions() As IQueryable(Of Auth.Permission)
             Dim permissions = New List(Of Permission)(Me.Permissions)
-            For Each grp As Auth.ExtendedGroup In Me.Groups
+            For Each grp As Auth.ExtendedGroup In Groups
                 permissions.AddRange(grp.Permissions)
             Next
             Return permissions.Distinct(New PermissionComparer()).AsQueryable()
@@ -22,11 +22,11 @@ Namespace Auth
 
         Private Class PermissionComparer
             Implements IEqualityComparer(Of Permission)
-            Public Function Equals(ByVal x As Permission, ByVal y As Permission) As Boolean Implements IEqualityComparer(Of Permission).Equals
+            Public Function Equals(x As Permission, y As Permission) As Boolean Implements IEqualityComparer(Of Permission).Equals
                 Return x.Id = y.Id
             End Function
 
-            Public Function GetHashCode(ByVal obj As Permission) As Integer Implements IEqualityComparer(Of Permission).GetHashCode
+            Public Function GetHashCode(obj As Permission) As Integer Implements IEqualityComparer(Of Permission).GetHashCode
                 Return MyBase.GetHashCode()
             End Function
         End Class

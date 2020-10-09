@@ -20,7 +20,7 @@ Namespace Tables
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -59,29 +59,29 @@ Namespace Tables
 
 #Region "Page Return"
 
-        Public Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Public Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.IsReturningFromChild = True
+                IsReturningFromChild = True
                 Dim retObj As ReturnType = CType(ReturnPar, ReturnType)
-                If Not retObj Is Nothing AndAlso retObj.BoChanged Then
-                    Me.State.searchDV = Nothing
+                If retObj IsNot Nothing AndAlso retObj.BoChanged Then
+                    State.searchDV = Nothing
                 End If
 
-                If Not retObj Is Nothing Then
+                If retObj IsNot Nothing Then
                     Select Case retObj.LastOperation
                         Case ElitaPlusPage.DetailPageCommand.Back
-                            Me.State.CompanyCreditCardId = retObj.moCompanyCreditCardId
+                            State.CompanyCreditCardId = retObj.moCompanyCreditCardId
                         Case Else
-                            Me.State.CompanyCreditCardId = Guid.Empty
+                            State.CompanyCreditCardId = Guid.Empty
                     End Select
-                    Me.Grid.PageIndex = Me.State.PageIndex
-                    Me.Grid.PageSize = Me.State.PageSize
-                    cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
-                    Me.Grid.PageSize = Me.State.PageSize
-                    ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+                    Grid.PageIndex = State.PageIndex
+                    Grid.PageSize = State.PageSize
+                    cboPageSize.SelectedValue = CType(State.PageSize, String)
+                    Grid.PageSize = State.PageSize
+                    ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, ErrControllerMaster)
             End Try
         End Sub
 
@@ -90,9 +90,9 @@ Namespace Tables
             Public moCompanyCreditCardId As Guid
             Public BoChanged As Boolean = False
 
-            Public Sub New(ByVal LastOp As ElitaPlusPage.DetailPageCommand, ByVal omoCompanyCreditCardId As Guid, Optional ByVal boChanged As Boolean = False)
-                Me.LastOperation = LastOp
-                Me.moCompanyCreditCardId = omoCompanyCreditCardId
+            Public Sub New(LastOp As ElitaPlusPage.DetailPageCommand, omoCompanyCreditCardId As Guid, Optional ByVal boChanged As Boolean = False)
+                LastOperation = LastOp
+                moCompanyCreditCardId = omoCompanyCreditCardId
                 Me.BoChanged = boChanged
             End Sub
         End Class
@@ -156,7 +156,7 @@ Namespace Tables
                     CompanyCreditCardId = moCompanyCreditCard.Id.ToString
                 Else
                     ' For updating, deleting
-                    Dim oCompanyCreditCardId As Guid = Me.GetGuidFromString(CompanyCreditCardId)
+                    Dim oCompanyCreditCardId As Guid = GetGuidFromString(CompanyCreditCardId)
                     moCompanyCreditCard = New CompanyCreditCard(oCompanyCreditCardId)
                 End If
 
@@ -166,14 +166,14 @@ Namespace Tables
 
         Private Property CompanyCreditCardId() As String
             Get
-                If Grid.SelectedIndex > Me.NO_ITEM_SELECTED_INDEX Then
-                    moCompanyCreditCardId = Me.GetSelectedGridText(Grid, COMPANY_CREDIT_CARD_ID)
+                If Grid.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+                    moCompanyCreditCardId = GetSelectedGridText(Grid, COMPANY_CREDIT_CARD_ID)
                 End If
                 Return moCompanyCreditCardId
             End Get
-            Set(ByVal Value As String)
-                If Grid.SelectedIndex > Me.NO_ITEM_SELECTED_INDEX Then
-                    Me.SetSelectedGridText(Grid, COMPANY_CREDIT_CARD_ID, Value)
+            Set(Value As String)
+                If Grid.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+                    SetSelectedGridText(Grid, COMPANY_CREDIT_CARD_ID, Value)
                 End If
                 moCompanyCreditCardId = Value
             End Set
@@ -181,10 +181,10 @@ Namespace Tables
 
         Private Property IsNewCompanyCreditCard() As Boolean
             Get
-                Return Me.State.IsNew
+                Return State.IsNew
             End Get
-            Set(ByVal Value As Boolean)
-                Me.State.IsNew = Value
+            Set(Value As Boolean)
+                State.IsNew = Value
             End Set
         End Property
 
@@ -199,70 +199,70 @@ Namespace Tables
 
 #Region "Handlers_Init"
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
                 moErrorController.Clear_Hide()
                 moCompanyCreditCardId = Guid.Empty.ToString
                 If Not Page.IsPostBack Then
-                    Me.SetGridItemStyleColor(Grid)
+                    SetGridItemStyleColor(Grid)
                     IsNewCompanyCreditCard = False
-                    If Me.State.MyBO Is Nothing Then
-                        Me.State.MyBO = New CompanyCreditCard
+                    If State.MyBO Is Nothing Then
+                        State.MyBO = New CompanyCreditCard
                     End If
-                    Me.State.PageIndex = 0
+                    State.PageIndex = 0
                     SetButtonsState(False)
-                    Me.TranslateGridHeader(Me.Grid)
-                    Me.TranslateGridControls(Me.Grid)
+                    TranslateGridHeader(Grid)
+                    TranslateGridControls(Grid)
                     PopulateCompanyCreditCardGrid()
                 Else
                     CheckIfComingFromDeleteConfirm()
                 End If
                 BindBoPropertiesToGridHeaders()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
-            Me.ShowMissingTranslations(moErrorController)
+            ShowMissingTranslations(moErrorController)
         End Sub
 
         Protected Sub CheckIfComingFromDeleteConfirm()
-            Dim confResponse As String = Me.HiddenDeletePromptResponse.Value
-            If Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_YES Then
+            Dim confResponse As String = HiddenDeletePromptResponse.Value
+            If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
                 If Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete Then
                     DoDelete()
                 End If
-                Select Case Me.State.ActionInProgress
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Delete
                 End Select
-            ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
-                Select Case Me.State.ActionInProgress
+            ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
+                Select Case State.ActionInProgress
                     Case ElitaPlusPage.DetailPageCommand.Delete
                 End Select
             End If
             'Clean after consuming the action
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-            Me.HiddenDeletePromptResponse.Value = ""
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            HiddenDeletePromptResponse.Value = ""
         End Sub
 
         Private Sub DoDelete()
-            Me.State.MyBO = New CompanyCreditCard(Me.State.Id)
+            State.MyBO = New CompanyCreditCard(State.Id)
             Try
-                Me.State.MyBO.Delete()
+                State.MyBO.Delete()
                 'Call the Save() method in the DealerGroup Business Object here
-                Me.State.MyBO.Save()
+                State.MyBO.Save()
 
             Catch ex As Exception
-                Me.State.MyBO.RejectChanges()
+                State.MyBO.RejectChanges()
                 Throw ex
             End Try
 
-            Me.State.PageIndex = Grid.PageIndex
+            State.PageIndex = Grid.PageIndex
 
             'Set the IsAfterSave flag to TRUE so that the Paging logic gets invoked
-            Me.State.IsAfterSave = True
-            Me.State.searchDV = Nothing
+            State.IsAfterSave = True
+            State.searchDV = Nothing
             PopulateCompanyCreditCardGrid(ACTION_NO_EDIT)
-            Me.State.PageIndex = Grid.PageIndex
+            State.PageIndex = Grid.PageIndex
 
         End Sub
 
@@ -270,12 +270,12 @@ Namespace Tables
 
 #Region "Handlers_DropDowns"
 
-        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.PopulateCompanyCreditCardGrid()
+                PopulateCompanyCreditCardGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
@@ -283,192 +283,192 @@ Namespace Tables
 
 #Region "Handlers_buttons"
 
-        Private Sub BtnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnNew_WRITE.Click
+        Private Sub BtnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnNew_WRITE.Click
             Try
-                Me.State.IsEditMode = True
-                Me.State.searchDV = Nothing
+                State.IsEditMode = True
+                State.searchDV = Nothing
                 AddNew()
                 SetButtonsState(True)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
-        Private Sub BtnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnCancel.Click
+        Private Sub BtnCancel_Click(sender As System.Object, e As System.EventArgs) Handles BtnCancel.Click
             Try
                 IsNewCompanyCreditCard = True
-                SetGridControls(Me.Grid, True)
+                SetGridControls(Grid, True)
                 If (IsNewCompanyCreditCard) Then
-                    Me.State.searchDV = Nothing
+                    State.searchDV = Nothing
                 End If
                 ReturnFromEditing()
                 IsNewCompanyCreditCard = False
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
-        Private Sub BtnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSave_WRITE.Click
+        Private Sub BtnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnSave_WRITE.Click
             Try
                 PopulateBOFromForm()
-                If (Me.State.MyBO.IsDirty) Then
-                    Me.State.MyBO.Save()
-                    Me.State.IsAfterSave = True
-                    Me.State.AddingNewRow = False
-                    Me.AddInfoMsg(Me.MSG_RECORD_SAVED_OK)
-                    Me.State.searchDV = Nothing
-                    Me.ReturnFromEditing()
+                If (State.MyBO.IsDirty) Then
+                    State.MyBO.Save()
+                    State.IsAfterSave = True
+                    State.AddingNewRow = False
+                    AddInfoMsg(MSG_RECORD_SAVED_OK)
+                    State.searchDV = Nothing
+                    ReturnFromEditing()
                 Else
-                    Me.AddInfoMsg(Me.MSG_RECORD_NOT_SAVED)
-                    Me.ReturnFromEditing()
+                    AddInfoMsg(MSG_RECORD_NOT_SAVED)
+                    ReturnFromEditing()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 #End Region
 
 #Region "Handlers_Grid"
 
-        Protected Sub RowCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+        Protected Sub RowCommand(source As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
             Dim nIndex As Integer
             Dim paramList As New ArrayList
             Dim creditCardType As String
             Dim companyName As String
-            Dim isEditing As Boolean = Me.State.IsEditMode
+            Dim isEditing As Boolean = State.IsEditMode
 
             Try
-                If e.CommandName = Me.EDIT_COMMAND_NAME Then
+                If e.CommandName = EDIT_COMMAND_NAME Then
                     nIndex = CInt(e.CommandArgument)
                     Grid.EditIndex = nIndex
 
                     Grid.SelectedIndex = nIndex
-                    Me.State.IsEditMode = True
-                    Me.State.Id = New Guid(CType(Me.Grid.Rows(nIndex).Cells(Me.COMPANY_CREDIT_CARD_ID).FindControl(Me.ID_CONTROL_NAME), Label).Text)
-                    Me.State.MyBO = New CompanyCreditCard(Me.State.Id)
+                    State.IsEditMode = True
+                    State.Id = New Guid(CType(Grid.Rows(nIndex).Cells(COMPANY_CREDIT_CARD_ID).FindControl(ID_CONTROL_NAME), Label).Text)
+                    State.MyBO = New CompanyCreditCard(State.Id)
                     PopulateCompanyCreditCardGrid(ACTION_EDIT)
 
                     'Disable all Edit and Delete icon buttons on the Grid
-                    SetGridControls(Me.Grid, False)
-                    Me.State.PageIndex = Grid.PageIndex
+                    SetGridControls(Grid, False)
+                    State.PageIndex = Grid.PageIndex
                     PopulateFormFromBO(nIndex)
                     SetButtonsState(True)
-                ElseIf (e.CommandName = Me.DELETE_COMMAND_NAME) Then
+                ElseIf (e.CommandName = DELETE_COMMAND_NAME) Then
 
                     nIndex = CInt(e.CommandArgument)
-                    Grid.SelectedIndex = Me.NO_ROW_SELECTED_INDEX
+                    Grid.SelectedIndex = NO_ROW_SELECTED_INDEX
 
-                    Me.State.Id = New Guid(CType(Me.Grid.Rows(nIndex).Cells(Me.COMPANY_CREDIT_CARD_ID).FindControl(Me.ID_CONTROL_NAME), Label).Text)
+                    State.Id = New Guid(CType(Grid.Rows(nIndex).Cells(COMPANY_CREDIT_CARD_ID).FindControl(ID_CONTROL_NAME), Label).Text)
 
-                    Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenDeletePromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
-                ElseIf (e.CommandName = Me.SELECT_COMMAND_NAME) Then
+                    DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenDeletePromptResponse)
+                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+                ElseIf (e.CommandName = SELECT_COMMAND_NAME) Then
 
                     nIndex = CInt(e.CommandArgument)
-                    Grid.SelectedIndex = Me.NO_ROW_SELECTED_INDEX
+                    Grid.SelectedIndex = NO_ROW_SELECTED_INDEX
 
-                    If Not Me.State.IsEditMode Then
-                        Me.State.Id = New Guid(CType(Me.Grid.Rows(nIndex).Cells(Me.COMPANY_CREDIT_CARD_ID).FindControl(Me.ID_CONTROL_NAME), Label).Text)
-                        creditCardType = CType(Me.Grid.Rows(nIndex).Cells(Me.CREDIT_CARD).FindControl(Me.CREDIT_CARD_LABEL_CONTROL_NAME), Label).Text.ToString
-                        companyName = CType(Me.Grid.Rows(nIndex).Cells(Me.COMPANY).FindControl(Me.COMPANY_LABEL_CONTROL_NAME), Label).Text.ToString
-                        paramList.Add(Me.State.Id)
+                    If Not State.IsEditMode Then
+                        State.Id = New Guid(CType(Grid.Rows(nIndex).Cells(COMPANY_CREDIT_CARD_ID).FindControl(ID_CONTROL_NAME), Label).Text)
+                        creditCardType = CType(Grid.Rows(nIndex).Cells(CREDIT_CARD).FindControl(CREDIT_CARD_LABEL_CONTROL_NAME), Label).Text.ToString
+                        companyName = CType(Grid.Rows(nIndex).Cells(COMPANY).FindControl(COMPANY_LABEL_CONTROL_NAME), Label).Text.ToString
+                        paramList.Add(State.Id)
                         paramList.Add(creditCardType)
                         paramList.Add(companyName)
-                        Me.callPage(CompanyCreditCardScheduleForm.URL, paramList)
+                        callPage(CompanyCreditCardScheduleForm.URL, paramList)
                     End If
                 End If
 
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
 
-        Protected Sub RowCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs)
+        Protected Sub RowCreated(sender As Object, e As GridViewRowEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub Grid_Sorting(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+        Private Sub Grid_Sorting(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
 
             Try
-                If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-                    If Me.State.SortExpression.EndsWith(" DESC") Then
-                        Me.State.SortExpression = e.SortExpression
+                If State.SortExpression.StartsWith(e.SortExpression) Then
+                    If State.SortExpression.EndsWith(" DESC") Then
+                        State.SortExpression = e.SortExpression
                     Else
-                        Me.State.SortExpression &= " DESC"
+                        State.SortExpression &= " DESC"
                     End If
                 Else
-                    Me.State.SortExpression = e.SortExpression
+                    State.SortExpression = e.SortExpression
                 End If
 
-                Me.State.Id = Guid.Empty
-                Me.Grid.PageIndex = 0
-                Me.Grid.SelectedIndex = -1
-                Me.PopulateCompanyCreditCardGrid()
+                State.Id = Guid.Empty
+                Grid.PageIndex = 0
+                Grid.SelectedIndex = -1
+                PopulateCompanyCreditCardGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
 
-        Private Sub Grid_PageIndexChanging(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+        Private Sub Grid_PageIndexChanging(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
             Try
-                If (Not (Me.State.IsEditMode)) Then
-                    Me.State.PageIndex = e.NewPageIndex
-                    Me.Grid.PageIndex = Me.State.PageIndex
-                    Me.PopulateCompanyCreditCardGrid(ACTION_NO_EDIT)
-                    Me.Grid.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
+                If (Not (State.IsEditMode)) Then
+                    State.PageIndex = e.NewPageIndex
+                    Grid.PageIndex = State.PageIndex
+                    PopulateCompanyCreditCardGrid(ACTION_NO_EDIT)
+                    Grid.SelectedIndex = NO_ITEM_SELECTED_INDEX
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
 
-        Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+        Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
             Try
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-                If Not dvRow Is Nothing And Not State.searchDV.Count > 0 Then
-                    If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                        CType(e.Row.Cells(Me.COMPANY_CREDIT_CARD_ID).FindControl(Me.ID_CONTROL_NAME), Label).Text = GetGuidStringFromByteArray(CType(dvRow(CompanyCreditCard.CompanyCreditCardSearchDV.COL_COMPANY_CREDIT_CARD_ID), Byte()))
-                        If (Me.State.IsEditMode = True AndAlso Me.State.Id.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(CompanyCreditCard.CompanyCreditCardSearchDV.COL_COMPANY_CREDIT_CARD_ID), Byte())))) Then
+                If dvRow IsNot Nothing AndAlso Not State.searchDV.Count > 0 Then
+                    If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
+                        CType(e.Row.Cells(COMPANY_CREDIT_CARD_ID).FindControl(ID_CONTROL_NAME), Label).Text = GetGuidStringFromByteArray(CType(dvRow(CompanyCreditCard.CompanyCreditCardSearchDV.COL_COMPANY_CREDIT_CARD_ID), Byte()))
+                        If (State.IsEditMode = True AndAlso State.Id.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(CompanyCreditCard.CompanyCreditCardSearchDV.COL_COMPANY_CREDIT_CARD_ID), Byte())))) Then
                             Dim companyLst As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="Company")
-                            CType(e.Row.Cells(Me.COMPANY).FindControl(Me.COMPANY_CONTROL_NAME), DropDownList).Populate(companyLst, New PopulateOptions() With
+                            CType(e.Row.Cells(COMPANY).FindControl(COMPANY_CONTROL_NAME), DropDownList).Populate(companyLst, New PopulateOptions() With
                                 {
                                     .AddBlankItem = True
                                 })
                             'Me.BindListControlToDataView(CType(e.Row.Cells(Me.COMPANY).FindControl(Me.COMPANY_CONTROL_NAME), DropDownList), LookupListNew.GetCompanyLookupList())
-                            Me.SetSelectedItem(CType(e.Row.Cells(Me.COMPANY).FindControl(Me.COMPANY_CONTROL_NAME), DropDownList), Me.State.MyBO.CompanyId)
+                            SetSelectedItem(CType(e.Row.Cells(COMPANY).FindControl(COMPANY_CONTROL_NAME), DropDownList), State.MyBO.CompanyId)
 
                             Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
                             oListContext.LanguageId = Thread.CurrentPrincipal.GetLanguageId()
                             Dim creditcardFormatLst As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="CreditCardFormat", context:=oListContext, languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
-                            CType(e.Row.Cells(Me.CREDIT_CARD).FindControl(Me.CREDIT_CARD_CONTROL_NAME), DropDownList).Populate(creditcardFormatLst, New PopulateOptions() With
+                            CType(e.Row.Cells(CREDIT_CARD).FindControl(CREDIT_CARD_CONTROL_NAME), DropDownList).Populate(creditcardFormatLst, New PopulateOptions() With
                                 {
                                     .AddBlankItem = True
                                 })
                             'Me.BindListControlToDataView(CType(e.Row.Cells(Me.CREDIT_CARD).FindControl(Me.CREDIT_CARD_CONTROL_NAME), DropDownList), LookupListNew.GetCompanyCreditCardsFormatLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId))
-                            Me.SetSelectedItem(CType(e.Row.Cells(Me.CREDIT_CARD).FindControl(Me.CREDIT_CARD_CONTROL_NAME), DropDownList), Me.State.MyBO.Id)
+                            SetSelectedItem(CType(e.Row.Cells(CREDIT_CARD).FindControl(CREDIT_CARD_CONTROL_NAME), DropDownList), State.MyBO.Id)
                         Else
-                            CType(e.Row.Cells(Me.COMPANY).FindControl(COMPANY_LABEL_CONTROL_NAME), Label).Text = dvRow(CompanyCreditCard.CompanyCreditCardSearchDV.COL_COMPANY_CODE).ToString
-                            CType(e.Row.Cells(Me.CREDIT_CARD).FindControl(CREDIT_CARD_LABEL_CONTROL_NAME), Label).Text = dvRow(CompanyCreditCard.CompanyCreditCardSearchDV.COL_CREDIT_CARD_TYPE).ToString
-                            CType(e.Row.Cells(Me.BILLING_DATE).FindControl(BILLING_DATE_LABEL_CONTROL_NAME), Label).Text = dvRow(CompanyCreditCard.CompanyCreditCardSearchDV.COL_BILLING_DATE).ToString
+                            CType(e.Row.Cells(COMPANY).FindControl(COMPANY_LABEL_CONTROL_NAME), Label).Text = dvRow(CompanyCreditCard.CompanyCreditCardSearchDV.COL_COMPANY_CODE).ToString
+                            CType(e.Row.Cells(CREDIT_CARD).FindControl(CREDIT_CARD_LABEL_CONTROL_NAME), Label).Text = dvRow(CompanyCreditCard.CompanyCreditCardSearchDV.COL_CREDIT_CARD_TYPE).ToString
+                            CType(e.Row.Cells(BILLING_DATE).FindControl(BILLING_DATE_LABEL_CONTROL_NAME), Label).Text = dvRow(CompanyCreditCard.CompanyCreditCardSearchDV.COL_BILLING_DATE).ToString
                         End If
                     End If
                 End If
-                If Not dvRow Is Nothing And State.searchDV.Count > 0 Then
+                If dvRow IsNot Nothing AndAlso State.searchDV.Count > 0 Then
                     If CType(dvRow(CompanyCreditCard.CompanyCreditCardSearchDV.COL_BILLING_DATE), Long) = 0 Then
-                        ControlMgr.SetEnableControl(Me, CType(e.Row.Cells(Me.BILLING_SCHEDULE).FindControl(Me.BILLING_SCHEDULE_CONTROL_NAME), ImageButton), True)
+                        ControlMgr.SetEnableControl(Me, CType(e.Row.Cells(BILLING_SCHEDULE).FindControl(BILLING_SCHEDULE_CONTROL_NAME), ImageButton), True)
 
                     Else
-                        ControlMgr.SetEnableControl(Me, CType(e.Row.Cells(Me.BILLING_SCHEDULE).FindControl(Me.BILLING_SCHEDULE_CONTROL_NAME), ImageButton), False)
+                        ControlMgr.SetEnableControl(Me, CType(e.Row.Cells(BILLING_SCHEDULE).FindControl(BILLING_SCHEDULE_CONTROL_NAME), ImageButton), False)
                     End If
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
         End Sub
 
@@ -478,19 +478,19 @@ Namespace Tables
 
 #Region "Buttons-Management"
 
-        Private Sub SetButtonsState(ByVal bIsEdit As Boolean)
+        Private Sub SetButtonsState(bIsEdit As Boolean)
 
             If (bIsEdit) Then
                 ControlMgr.SetVisibleControl(Me, BtnSave_WRITE, True)
                 ControlMgr.SetVisibleControl(Me, BtnCancel, True)
                 ControlMgr.SetVisibleControl(Me, BtnNew_WRITE, False)
-                Me.MenuEnabled = False
+                MenuEnabled = False
 
             Else
                 ControlMgr.SetVisibleControl(Me, BtnSave_WRITE, False)
                 ControlMgr.SetVisibleControl(Me, BtnCancel, False)
                 ControlMgr.SetVisibleControl(Me, BtnNew_WRITE, True)
-                Me.MenuEnabled = True
+                MenuEnabled = True
 
             End If
 
@@ -503,37 +503,37 @@ Namespace Tables
 
             Dim oDataView As DataView
             Try
-                If Me.State.searchDV Is Nothing Then
-                    Me.State.searchDV = GetDV()
+                If State.searchDV Is Nothing Then
+                    State.searchDV = GetDV()
                 End If
                 Dim dv As CompanyCreditCard.CompanyCreditCardSearchDV
 
                 If State.searchDV.Count = 0 Then
                     dv = State.searchDV.AddNewRowToEmptyDV
-                    SetPageAndSelectedIndexFromGuid(dv, Me.State.Id, Me.Grid, Me.State.PageIndex)
-                    Me.Grid.DataSource = dv
+                    SetPageAndSelectedIndexFromGuid(dv, State.Id, Grid, State.PageIndex)
+                    Grid.DataSource = dv
                 Else
-                    SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.Id, Me.Grid, Me.State.PageIndex)
-                    Me.Grid.DataSource = Me.State.searchDV
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.Id, Grid, State.PageIndex)
+                    Grid.DataSource = State.searchDV
                 End If
 
-                Me.State.searchDV.Sort = Me.State.SortExpression
-                If (Me.State.IsAfterSave) Then
-                    Me.State.IsAfterSave = False
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.Id, Me.Grid, Me.Grid.PageIndex)
-                ElseIf (Me.State.IsEditMode) Then
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.Id, Me.Grid, Me.Grid.PageIndex, Me.State.IsEditMode)
+                State.searchDV.Sort = State.SortExpression
+                If (State.IsAfterSave) Then
+                    State.IsAfterSave = False
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.Id, Grid, Grid.PageIndex)
+                ElseIf (State.IsEditMode) Then
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.Id, Grid, Grid.PageIndex, State.IsEditMode)
                 Else
                     'In a Delete scenario...
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Guid.Empty, Me.Grid, Me.Grid.PageIndex, Me.State.IsEditMode)
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, Guid.Empty, Grid, Grid.PageIndex, State.IsEditMode)
                 End If
 
-                Me.Grid.AutoGenerateColumns = False
+                Grid.AutoGenerateColumns = False
 
                 If State.searchDV.Count = 0 Then
                     SortAndBindGrid(dv)
                 Else
-                    SortAndBindGrid(Me.State.searchDV)
+                    SortAndBindGrid(State.searchDV)
                 End If
 
                 If State.searchDV.Count = 0 Then
@@ -544,37 +544,37 @@ Namespace Tables
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
         Private Sub SortAndBindGridxx()
-            Me.State.PageIndex = Me.Grid.PageIndex
-            If (Me.State.searchDV.Count > 0) Then
-                Me.Grid.DataSource = Me.State.searchDV
-                HighLightSortColumn(Grid, Me.State.SortExpression)
-                Me.Grid.DataBind()
+            State.PageIndex = Grid.PageIndex
+            If (State.searchDV.Count > 0) Then
+                Grid.DataSource = State.searchDV
+                HighLightSortColumn(Grid, State.SortExpression)
+                Grid.DataBind()
                 Grid.PagerSettings.Visible = True
-                ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+                ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
                 If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
             End If
 
-            Session("recCount") = Me.State.searchDV.Count
+            Session("recCount") = State.searchDV.Count
 
-            If Me.Grid.Visible Then
-                If (Me.State.AddingNewRow) Then
-                    Me.lblRecordCount.Text = (Me.State.searchDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Grid.Visible Then
+                If (State.AddingNewRow) Then
+                    lblRecordCount.Text = (State.searchDV.Count - 1) & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 Else
-                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             End If
             ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, Grid)
         End Sub
 
-        Private Sub SortAndBindGrid(ByVal dvBinding As DataView, Optional ByVal blnEmptyList As Boolean = False)
-            Me.Grid.DataSource = dvBinding
-            HighLightSortColumn(Grid, Me.State.SortExpression)
-            Me.Grid.DataBind()
+        Private Sub SortAndBindGrid(dvBinding As DataView, Optional ByVal blnEmptyList As Boolean = False)
+            Grid.DataSource = dvBinding
+            HighLightSortColumn(Grid, State.SortExpression)
+            Grid.DataBind()
             If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
             If blnEmptyList Then
                 For Each gvRow As GridViewRow In Grid.Rows
@@ -585,41 +585,41 @@ Namespace Tables
         End Sub
 
         Private Sub AddNew()
-            Me.State.searchDV = GetDV()
+            State.searchDV = GetDV()
 
 
-            Me.State.MyBO = New CompanyCreditCard
-            Me.State.Id = Me.State.MyBO.Id
+            State.MyBO = New CompanyCreditCard
+            State.Id = State.MyBO.Id
 
-            Me.State.searchDV = Me.State.MyBO.GetNewDataViewRow(Me.State.searchDV, Me.State.Id, Me.State.MyBO)
+            State.searchDV = State.MyBO.GetNewDataViewRow(State.searchDV, State.Id, State.MyBO)
             'Me.State.searchDV = Me.State.searchDV.AddNewRowToEmptyDV
-            Grid.DataSource = Me.State.searchDV
+            Grid.DataSource = State.searchDV
 
-            Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.Id, Me.Grid, Me.State.PageIndex, Me.State.IsEditMode)
+            SetPageAndSelectedIndexFromGuid(State.searchDV, State.Id, Grid, State.PageIndex, State.IsEditMode)
 
-            Me.Grid.AutoGenerateColumns = False
+            Grid.AutoGenerateColumns = False
 
-            SortAndBindGrid(Me.State.searchDV)
+            SortAndBindGrid(State.searchDV)
 
-            SetGridControls(Me.Grid, False)
+            SetGridControls(Grid, False)
 
             PopulateFormFromBO()
         End Sub
 
-        Private Sub SetFocusOnEditableFieldInGrid(ByVal grid As GridView, ByVal cellPosition As Integer, ByVal controlName As String, ByVal itemIndex As Integer)
+        Private Sub SetFocusOnEditableFieldInGrid(grid As GridView, cellPosition As Integer, controlName As String, itemIndex As Integer)
             'Set focus on the Description TextBox for the EditItemIndex row
             Dim code As TextBox = CType(grid.Rows(itemIndex).Cells(cellPosition).FindControl(controlName), TextBox)
             SetFocus(code)
         End Sub
-        Public Overrides Sub BaseSetButtonsState(ByVal bIsEdit As Boolean)
+        Public Overrides Sub BaseSetButtonsState(bIsEdit As Boolean)
             SetButtonsState(bIsEdit)
         End Sub
 
         Protected Sub BindBoPropertiesToGridHeaders()
-            Me.BindBOPropertyToGridHeader(Me.State.MyBO, "CompanyId", Me.Grid.Columns(Me.COMPANY_ID))
-            Me.BindBOPropertyToGridHeader(Me.State.MyBO, "CreditCardFormatId", Me.Grid.Columns(Me.CREDIT_CARD))
-            Me.BindBOPropertyToGridHeader(Me.State.MyBO, "BillingDate", Me.Grid.Columns(Me.BILLING_DATE))
-            Me.ClearGridViewHeadersAndLabelsErrSign()
+            BindBOPropertyToGridHeader(State.MyBO, "CompanyId", Grid.Columns(COMPANY_ID))
+            BindBOPropertyToGridHeader(State.MyBO, "CreditCardFormatId", Grid.Columns(CREDIT_CARD))
+            BindBOPropertyToGridHeader(State.MyBO, "BillingDate", Grid.Columns(BILLING_DATE))
+            ClearGridViewHeadersAndLabelsErrSign()
         End Sub
 
 #End Region
@@ -629,29 +629,29 @@ Namespace Tables
         Private Sub PopulateBOFromForm()
             Try
 
-                Dim cboCompany As DropDownList = CType(Me.Grid.Rows(Me.Grid.EditIndex).Cells(Me.COMPANY_ID).FindControl(Me.COMPANY_CONTROL_NAME), DropDownList)
-                Dim cboCreditCardFormat As DropDownList = CType(Me.Grid.Rows(Me.Grid.EditIndex).Cells(Me.CREDIT_CARD).FindControl(Me.CREDIT_CARD_CONTROL_NAME), DropDownList)
-                Dim txtBilling As TextBox = CType(Me.Grid.Rows(Me.Grid.EditIndex).Cells(Me.BILLING_DATE).FindControl(Me.BILLING_DATE_CONTROL_NAME), TextBox)
+                Dim cboCompany As DropDownList = CType(Grid.Rows(Grid.EditIndex).Cells(COMPANY_ID).FindControl(COMPANY_CONTROL_NAME), DropDownList)
+                Dim cboCreditCardFormat As DropDownList = CType(Grid.Rows(Grid.EditIndex).Cells(CREDIT_CARD).FindControl(CREDIT_CARD_CONTROL_NAME), DropDownList)
+                Dim txtBilling As TextBox = CType(Grid.Rows(Grid.EditIndex).Cells(BILLING_DATE).FindControl(BILLING_DATE_CONTROL_NAME), TextBox)
 
-                Me.PopulateBOProperty(Me.State.MyBO, "CompanyId", cboCompany)
-                Me.PopulateBOProperty(Me.State.MyBO, "CreditCardFormatId", cboCreditCardFormat)
-                Me.PopulateBOProperty(Me.State.MyBO, "BillingDate", txtBilling)
+                PopulateBOProperty(State.MyBO, "CompanyId", cboCompany)
+                PopulateBOProperty(State.MyBO, "CreditCardFormatId", cboCreditCardFormat)
+                PopulateBOProperty(State.MyBO, "BillingDate", txtBilling)
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
 
         Private Sub PopulateFormFromBO(Optional ByVal gridRowIdx As Integer = Nothing)
 
-            If gridRowIdx.Equals(Nothing) Then gridRowIdx = Me.Grid.EditIndex
+            If gridRowIdx.Equals(Nothing) Then gridRowIdx = Grid.EditIndex
 
             Dim companyList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="Company")
             Dim filteredCompanyList As DataElements.ListItem() = (From x In companyList
                                                                   Where ElitaPlusIdentity.Current.ActiveUser.Companies.Contains(x.ListItemId)
                                                                   Select x).ToArray()
-            CType(Me.Grid.Rows(gridRowIdx).Cells(Me.COMPANY).FindControl(Me.COMPANY_CONTROL_NAME), DropDownList).Populate(filteredCompanyList, New PopulateOptions() With
+            CType(Grid.Rows(gridRowIdx).Cells(COMPANY).FindControl(COMPANY_CONTROL_NAME), DropDownList).Populate(filteredCompanyList, New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
@@ -661,35 +661,35 @@ Namespace Tables
             Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
             oListContext.LanguageId = Thread.CurrentPrincipal.GetLanguageId()
             Dim creditcardFormatLst As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="CreditCardFormat", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=oListContext)
-            CType(Me.Grid.Rows(gridRowIdx).Cells(Me.CREDIT_CARD).FindControl(Me.CREDIT_CARD_CONTROL_NAME), DropDownList).Populate(creditcardFormatLst, New PopulateOptions() With
+            CType(Grid.Rows(gridRowIdx).Cells(CREDIT_CARD).FindControl(CREDIT_CARD_CONTROL_NAME), DropDownList).Populate(creditcardFormatLst, New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
             'Me.BindListControlToDataView(CType(Me.Grid.Rows(gridRowIdx).Cells(Me.CREDIT_CARD).FindControl(Me.CREDIT_CARD_CONTROL_NAME), DropDownList), LookupListNew.GetCompanyCreditCardsFormatLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId))
 
             Try
-                With Me.State.MyBO
+                With State.MyBO
 
                     If (Not .CompanyId.Equals(Guid.Empty)) Then
-                        Dim cboCompany As DropDownList = CType(Me.Grid.Rows(gridRowIdx).Cells(Me.COMPANY).FindControl(COMPANY_CONTROL_NAME), DropDownList)
-                        Me.PopulateControlFromBOProperty(cboCompany, .CompanyId)
+                        Dim cboCompany As DropDownList = CType(Grid.Rows(gridRowIdx).Cells(COMPANY).FindControl(COMPANY_CONTROL_NAME), DropDownList)
+                        PopulateControlFromBOProperty(cboCompany, .CompanyId)
                     End If
                     If (Not .CreditCardFormatId.Equals(Guid.Empty)) Then
-                        Dim cboCreditCardFormat As DropDownList = CType(Me.Grid.Rows(gridRowIdx).Cells(Me.CREDIT_CARD).FindControl(CREDIT_CARD_CONTROL_NAME), DropDownList)
-                        Me.PopulateControlFromBOProperty(cboCreditCardFormat, .CreditCardFormatId)
+                        Dim cboCreditCardFormat As DropDownList = CType(Grid.Rows(gridRowIdx).Cells(CREDIT_CARD).FindControl(CREDIT_CARD_CONTROL_NAME), DropDownList)
+                        PopulateControlFromBOProperty(cboCreditCardFormat, .CreditCardFormatId)
                     End If
 
-                    Dim txtBilling As TextBox = CType(Me.Grid.Rows(gridRowIdx).Cells(Me.BILLING_DATE).FindControl(BILLING_DATE_CONTROL_NAME), TextBox)
-                    Me.PopulateControlFromBOProperty(txtBilling, .BillingDate)
+                    Dim txtBilling As TextBox = CType(Grid.Rows(gridRowIdx).Cells(BILLING_DATE).FindControl(BILLING_DATE_CONTROL_NAME), TextBox)
+                    PopulateControlFromBOProperty(txtBilling, .BillingDate)
 
-                    CType(Me.Grid.Rows(gridRowIdx).Cells(Me.COMPANY_CREDIT_CARD_ID).FindControl(Me.ID_CONTROL_NAME), Label).Text = .Id.ToString
-                    CType(Me.Grid.Rows(gridRowIdx).Cells(Me.COMPANY_ID).FindControl(Me.COMPANY_LABEL_CONTROL_NAME), Label).Text = .CompanyId.ToString
-                    CType(Me.Grid.Rows(gridRowIdx).Cells(Me.CREDIT_CARD_ID).FindControl(Me.CREDIT_CARD_FORMAT_LABEL_CONTROL_NAME), Label).Text = .CreditCardFormatId.ToString
+                    CType(Grid.Rows(gridRowIdx).Cells(COMPANY_CREDIT_CARD_ID).FindControl(ID_CONTROL_NAME), Label).Text = .Id.ToString
+                    CType(Grid.Rows(gridRowIdx).Cells(COMPANY_ID).FindControl(COMPANY_LABEL_CONTROL_NAME), Label).Text = .CompanyId.ToString
+                    CType(Grid.Rows(gridRowIdx).Cells(CREDIT_CARD_ID).FindControl(CREDIT_CARD_FORMAT_LABEL_CONTROL_NAME), Label).Text = .CreditCardFormatId.ToString
 
 
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.moErrorController)
+                HandleErrors(ex, moErrorController)
             End Try
 
         End Sub
@@ -698,7 +698,7 @@ Namespace Tables
 
             Grid.EditIndex = NO_ROW_SELECTED_INDEX
 
-            If Me.Grid.PageCount = 0 Then
+            If Grid.PageCount = 0 Then
                 'if returning to the "1st time in" screen
                 ControlMgr.SetVisibleControl(Me, Grid, False)
             Else
@@ -706,9 +706,9 @@ Namespace Tables
             End If
 
             SetGridControls(Grid, True)
-            Me.State.IsEditMode = False
-            Me.PopulateCompanyCreditCardGrid(ACTION_SAVE)
-            Me.State.PageIndex = Grid.PageIndex
+            State.IsEditMode = False
+            PopulateCompanyCreditCardGrid(ACTION_SAVE)
+            State.PageIndex = Grid.PageIndex
             SetButtonsState(False)
 
         End Sub
