@@ -78,17 +78,17 @@ Namespace Tables
         Public Const EARNING_PATTERN_START_ON_PROPERTY As String = "EarningPatternStartsOnId"
         Private Const EARNINGPATTERN_LIST As String = "EarningPatternListForm.aspx"
         Public Const URL As String = "EarningPatternForm.aspx"
-        Public Const COL_EARNING_TERM As String = "EARNING_TERM"
-        Public Const COL_EARNING_PERCENT As String = "EARNING_PERCENT"
+        Public Const COL_EARNING_TERM As String = "EarningTermConstant"
+        Public Const COL_EARNING_PERCENT As String = "EarningPercentConstant"
         Private Const INCORRECT_FORMAT As String = "Input string was not in a correct format."
 
 #End Region
 
 #Region "Earning Percentage Constants"
 
-        Private Const EARNING_PERCENT_ID As Integer = 2
-        Private Const EARNING_TERM As Integer = 3
-        Private Const EARNING_PERCENT As Integer = 4
+        Private Const EarningPercentIdConstant As Integer = 2
+        Private Const EarningTermConstant As Integer = 3
+        Private Const EarningPercentConstant As Integer = 4
 
         ' DataView Elements
         Private Const DBEARNING_PERCENT_ID As Integer = 0
@@ -388,15 +388,15 @@ Namespace Tables
                         oEarningPercent(i) = New EarningPercent
                         oEarningPercent(i).EarningPatternId = TheEarningPattern.Id
 
-                        If moDataGrid.Rows(i).Cells(EARNING_TERM).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                            PopulateBOProperty(oEarningPercent(i), "EarningTerm", CType(moDataGrid.Rows(i).Cells(EARNING_TERM).Controls(1), Label).Text)
+                        If moDataGrid.Rows(i).Cells(EarningTermConstant).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
+                            PopulateBOProperty(oEarningPercent(i), "EarningTerm", CType(moDataGrid.Rows(i).Cells(EarningTermConstant).Controls(1), Label).Text)
                         Else
-                            PopulateBOProperty(oEarningPercent(i), "EarningTerm", CType(moDataGrid.Rows(i).Cells(EARNING_TERM).Controls(1), TextBox).Text)
+                            PopulateBOProperty(oEarningPercent(i), "EarningTerm", CType(moDataGrid.Rows(i).Cells(EarningTermConstant).Controls(1), TextBox).Text)
                         End If
-                        If moDataGrid.Rows(i).Cells(EARNING_PERCENT).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                            PopulateBOProperty(oEarningPercent(i), "EarningPercent", CType(moDataGrid.Rows(i).Cells(EARNING_PERCENT).Controls(1), Label).Text)
+                        If moDataGrid.Rows(i).Cells(EarningPercentConstant).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
+                            PopulateBOProperty(oEarningPercent(i), "EarningPercent", CType(moDataGrid.Rows(i).Cells(EarningPercentConstant).Controls(1), Label).Text)
                         Else
-                            PopulateBOProperty(oEarningPercent(i), "EarningPercent", CType(moDataGrid.Rows(i).Cells(EARNING_PERCENT).Controls(1), TextBox).Text)
+                            PopulateBOProperty(oEarningPercent(i), "EarningPercent", CType(moDataGrid.Rows(i).Cells(EarningPercentConstant).Controls(1), TextBox).Text)
                         End If
                     Next
                     State.moPercentList = oEarningPercent
@@ -492,8 +492,8 @@ Namespace Tables
         End Sub
 
         Private Sub BindBoPropertiesToGridHeader()
-            BindBOPropertyToGridHeader(TheEarningPercent, EARNING_TERM_PROPERTY, moDataGrid.Columns(EARNING_TERM))
-            BindBOPropertyToGridHeader(TheEarningPercent, EARNING_PERCENT_PROPERTY, moDataGrid.Columns(EARNING_PERCENT))
+            BindBOPropertyToGridHeader(TheEarningPercent, EARNING_TERM_PROPERTY, moDataGrid.Columns(EarningTermConstant))
+            BindBOPropertyToGridHeader(TheEarningPercent, EARNING_PERCENT_PROPERTY, moDataGrid.Columns(EarningPercentConstant))
         End Sub
 
 #End Region
@@ -551,12 +551,12 @@ Namespace Tables
                     PopulatePercentList(ACTION_EDIT)
                     PopulateEarningPercent()
                     SetGridControls(moDataGrid, False)
-                    SetFocusInGrid(moDataGrid, nIndex, EARNING_PERCENT)
+                    SetFocusInGrid(moDataGrid, nIndex, EarningPercentConstant)
                     EnableDisableControls(moEarningPatternEditPanel, True)
                     setbuttons(False)
                 ElseIf (e.CommandName = DELETE_COMMAND_NAME) Then
                     nIndex = CInt(e.CommandArgument)
-                    EarningPercentID = GetGridText(moDataGrid, nIndex, EARNING_PERCENT_ID)
+                    EarningPercentID = GetGridText(moDataGrid, nIndex, EarningPercentIdConstant)
                     If DeleteSelectedPercent(nIndex) = True Then
                         PopulatePercentList(ACTION_CANCEL_DELETE)
                     End If
@@ -660,7 +660,7 @@ Namespace Tables
                 EarningPercentID = Guid.Empty.ToString
                 PopulatePercentList(ACTION_NEW)
                 SetGridControls(moDataGrid, False)
-                SetFocusInGrid(moDataGrid, moDataGrid.SelectedIndex, EARNING_PERCENT)
+                SetFocusInGrid(moDataGrid, moDataGrid.SelectedIndex, EarningPercentConstant)
                 EnableDisableControls(moEarningPatternEditPanel, True)
                 setbuttons(False)
             Catch ex As Exception
@@ -1012,7 +1012,7 @@ Namespace Tables
                         If State.IsNewWithCopy Then
                             EarningPercentID = State.moPercentList(moDataGrid.SelectedIndex).Id.ToString
                         Else
-                            EarningPercentID = GetGridText(moDataGrid, moDataGrid.SelectedIndex, EARNING_PERCENT_ID)
+                            EarningPercentID = GetGridText(moDataGrid, moDataGrid.SelectedIndex, EarningPercentIdConstant)
                         End If
                         SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(EarningPercentID), moDataGrid, _
                                     moDataGrid.PageIndex, True)
@@ -1080,21 +1080,21 @@ Namespace Tables
 
         Private Sub ModifyGridHeader()
 
-            moDataGrid.Columns(EARNING_TERM).HeaderText = moDataGrid.Columns(EARNING_TERM).HeaderText.Replace("%", "<br>%")
-            moDataGrid.Columns(EARNING_PERCENT).HeaderText = moDataGrid.Columns(EARNING_PERCENT).HeaderText.Replace("%", "<br>%")
+            moDataGrid.Columns(EarningTermConstant).HeaderText = moDataGrid.Columns(EarningTermConstant).HeaderText.Replace("%", "<br>%")
+            moDataGrid.Columns(EarningPercentConstant).HeaderText = moDataGrid.Columns(EarningPercentConstant).HeaderText.Replace("%", "<br>%")
 
         End Sub
 
         Private Sub PopulateEarningPercent()
             If State.IsNewWithCopy Then
                 With State.moPercentList(moDataGrid.SelectedIndex)
-                    SetSelectedGridText(moDataGrid, EARNING_TERM, .EarningTerm.ToString)
-                    SetSelectedGridText(moDataGrid, EARNING_PERCENT, .EarningPercent.ToString)
+                    SetSelectedGridText(moDataGrid, EarningTermConstant, .EarningTerm.ToString)
+                    SetSelectedGridText(moDataGrid, EarningPercentConstant, .EarningPercent.ToString)
                 End With
             Else
                 With TheEarningPercent
-                    SetSelectedGridText(moDataGrid, EARNING_TERM, .EarningTerm.ToString)
-                    SetSelectedGridText(moDataGrid, EARNING_PERCENT, .EarningPercent.Value.ToString)
+                    SetSelectedGridText(moDataGrid, EarningTermConstant, .EarningTerm.ToString)
+                    SetSelectedGridText(moDataGrid, EarningPercentConstant, .EarningPercent.Value.ToString)
                 End With
             End If
 
@@ -1107,15 +1107,15 @@ Namespace Tables
         Private Sub PopulatePercentBOFromForm()
             With TheEarningPercent
                 .EarningPatternId = TheEarningPattern.Id
-                PopulateBOProperty(TheEarningPercent, "EarningTerm", GetGridText(moDataGrid, moDataGrid.SelectedIndex, EARNING_TERM))
-                PopulateBOProperty(TheEarningPercent, "EarningPercent", GetGridText(moDataGrid, moDataGrid.SelectedIndex, EARNING_PERCENT))
+                PopulateBOProperty(TheEarningPercent, "EarningTerm", GetGridText(moDataGrid, moDataGrid.SelectedIndex, EarningTermConstant))
+                PopulateBOProperty(TheEarningPercent, "EarningPercent", GetGridText(moDataGrid, moDataGrid.SelectedIndex, EarningPercentConstant))
             End With
         End Sub
 
         Private Function IsDirtyPercentBO() As Boolean
             Dim bIsDirty As Boolean = True
             If moDataGrid.EditIndex = NO_ITEM_SELECTED_INDEX Then Return False
-            Dim sEarningPercentID As String = GetGridText(moDataGrid, moDataGrid.SelectedIndex, EARNING_PERCENT_ID)
+            Dim sEarningPercentID As String = GetGridText(moDataGrid, moDataGrid.SelectedIndex, EarningPercentIdConstant)
             Try
                 With TheEarningPercent
                     PopulatePercentBOFromForm()
@@ -1138,7 +1138,7 @@ Namespace Tables
                 Return bIsOk
             End If
             If IsNewPercent = False Then
-                EarningPercentID = GetGridText(moDataGrid, moDataGrid.SelectedIndex, EARNING_PERCENT_ID)
+                EarningPercentID = GetGridText(moDataGrid, moDataGrid.SelectedIndex, EarningPercentIdConstant)
             End If
             BindBoPropertiesToGridHeader()
             With TheEarningPercent
