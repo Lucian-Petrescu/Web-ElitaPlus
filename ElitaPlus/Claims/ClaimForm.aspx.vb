@@ -2098,9 +2098,9 @@ Partial Class ClaimForm
         If (deniedReasonsString.IndexOf(";", StringComparison.Ordinal) > 0) Then
             For Each extendedcode As String In deniedReasonsString.Split(";")
                 
-                stringDeniedReason.Append(stringDeniedReason) _
+                strDeniedReason = stringDeniedReason.Append(strDeniedReason) _
                     .Append(dv.ToTable().Select("extended_code ='" & extendedcode & "'").First()("description")) _
-                    .Append(Environment.NewLine)      
+                    .Append(Environment.NewLine).ToString()      
             Next
         Else
             strDeniedReason = dv.ToTable().Select("extended_code ='" & Me.State.MyBO.DeniedReasons & "'").First()("description")
