@@ -21,6 +21,8 @@ Public Class CertificateDAL
     Public Const TABLE_PROD_SS As String = "ProductCodeSS"
     Public Const TABLE_MAXLOSSDATE As String = "MaxLossDate"
     Public Const TABLE_CLAIMS_CANCEL_CERT As String = "ClaimsCancelCert"
+    Public Const BANKINFO_TABLE_NAME As String = "elp_bank_info"
+
 
     Public Const COL_NAME_PAYMENT_ACT_DATE As String = "PaymentActDate"
     Public Const COL_NAME_MONTHSPASSED As String = "MonthsPassed"
@@ -341,6 +343,7 @@ Public Class CertificateDAL
 
     'REQ 5932
     Public Const PO_CURSOR_CUSTOMER_INFO As Integer = 0
+    Public Const PO_CURSOR_CUSTOMERBANK_INFO As Integer = 0
     Public Const PO_CURSOR_SERIAL_NUMBER As Integer = 0
     Public Const SP_PARAM_NAME_CUST_INFO As String = "po_customer_info"
     Public Const PO_CURSOR_CUSTOMER_DETAILS As Integer = 0
@@ -2340,7 +2343,7 @@ Public Class CertificateDAL
     Public Function GetCertificateByImei(ByVal companyCode As String, ByVal dealerCode As String,
                                          ByVal imeiNumber As String, ByVal certStatus As String,
                                          ByVal userId As String,
-                                         ByRef oErrCode As Integer, ByRef oErrMsg As String) As dataset
+                                         ByRef oErrCode As Integer, ByRef oErrMsg As String) As DataSet
         Dim selectStmt As String = Me.Config("/SQL/Get_Certificate_By_IMEI")
         Dim dsResult As New DataSet
         oErrCode = 0
@@ -2826,6 +2829,44 @@ Public Class CertificateDAL
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
+    Public Function GetCustomerCurrentBankInfo(ByVal CertId As Guid) As DataSet
+
+        Dim ds As New DataSet
+
+
+        Dim selectstmt As String = Me.Config("/SQL/GET_CUSTOMER_CURRENTBANKINFO")
+
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                        {New DBHelper.DBHelperParameter(COL_NAME_CERT_ID, CertId.ToByteArray)
+                        }
+        Try
+            DBHelper.Fetch(ds, selectstmt, Me.BANKINFO_TABLE_NAME, parameters)
+            Return ds
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+
+    End Function
+    'Public Function GetCustomerCurrentBankInfo(ByVal Cert_id As Guid) As DataSet
+    '    Dim selectStmt As String = Me.Config("/SQL/GET_CUSTOMER_CURRENTBANKINFO")
+    '    Dim ds As DataSet = New DataSet
+    '    Dim outputParameter(Me.PO_CURSOR_CUSTOMERBANK_INFO) As DBHelper.DBHelperParameter
+    '    Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
+    '    Dim param As DBHelper.DBHelperParameter
+
+    '    param = New DBHelper.DBHelperParameter("pi_cert_id", Cert_id.ToByteArray)
+    '    inParameters.Add(param)
+
+    '    outputParameter(Me.PO_CURSOR_CUSTOMER_INFO) = New DBHelper.DBHelperParameter(Me.SP_PARAM_NAME_CUST_INFO, GetType(DataSet))
+
+    '    Try
+    '        DBHelper.FetchSp(selectStmt, inParameters.ToArray, outputParameter, ds, "GetOtherCustomerInfo")
+    '        ds.Tables(0).TableName = "GetCustomerCurrentBankInfo"
+    '        Return ds
+    '    Catch ex As Exception
+    '        Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+    '    End Try
+    'End Function
     Public Sub UpdateCustomerDetails(ByVal CertId As Guid, ByVal CustomerId As Guid, ByVal SalutationId As Guid, ByVal CustomerFirstName As String, ByVal CustomerMiddleName As String, ByVal CustomerLastName As String, ByVal Modified_By As String,
                                           ByVal Email As String, ByVal HomePhone As String, ByVal IdentificationNumber As String, ByVal IdentificationNumberType As String, ByVal WorkPhone As String,
                                           ByVal MartialStatus As Guid, ByVal Nationality As Guid, ByVal PlaceOfBirth As Guid, ByVal Gender As Guid, ByVal CorporateName As String, ByVal AltFirstName As String, ByVal AltLastName As String, ByVal CityofBirth As String,
@@ -3389,7 +3430,7 @@ Public Class CertificateDAL
             DBHelper.FetchSp(selectStmt, parameters, outputParameter, ds, "GetCertPymtPassedDueExtnData")
             ds.Tables(0).TableName = "GetCertPymtPassedDueExtnData"
 
-            If ds.Tables(0).Rows.count > 0 Then
+            If ds.Tables(0).Rows.Count > 0 Then
                 paymentPasseddue = Convert.ToInt16(ds.Tables(0).Rows(0)("field_value").ToString())
             End If
 
