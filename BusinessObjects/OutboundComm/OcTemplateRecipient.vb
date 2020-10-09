@@ -289,7 +289,7 @@ Public Class OcTemplateRecipient
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As OcTemplateRecipient = CType(objectToValidate, OcTemplateRecipient)
-            Dim emailExpression As New Regex("^[_a-z0-9-]+(.[a-z0-9-]+)@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$", RegexOptions.None, new TimeSpan(0,0,0,0, 100))
+            Dim emailExpression As New Regex("^[_a-z0-9-]+(.[a-z0-9-]+)@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$", RegexOptions.None, TimeSpan.FromSeconds(.5))
 
             If Not String.IsNullOrEmpty(obj.RecipientAddress) AndAlso Not emailExpression.IsMatch(obj.RecipientAddress) Then
                 Return False

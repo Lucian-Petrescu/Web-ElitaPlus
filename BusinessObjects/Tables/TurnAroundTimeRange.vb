@@ -134,7 +134,7 @@ Public Class TurnAroundTimeRange
                         Dim id As Guid = New Guid(CType(dv.Table.Rows(i)(TurnAroundTimeRangeDAL.COL_NAME_TURN_AROUND_TIME_RANGE_ID), Byte()))
                         Dim minV = CType(dv.Table.Rows(i)(TurnAroundTimeRangeDAL.COL_NAME_MIN_DAYS), Integer)
                         Dim maxV = CType(dv.Table.Rows(i)(TurnAroundTimeRangeDAL.COL_NAME_MAX_DAYS), Integer)
-                        If ModefiedObjectId.Equals(id) AndAlso maxV = MaxDays.Value AndAlso MinDays.Value < MaxDays.Value And MinDays.Value >= 0 Then
+                        If ModefiedObjectId.Equals(id) AndAlso maxV = MaxDays.Value AndAlso MinDays.Value < MaxDays.Value AndAlso MinDays.Value >= 0 Then
                             Return True
                         End If
                     End If
@@ -143,7 +143,7 @@ Public Class TurnAroundTimeRange
                         Dim id As Guid = New Guid(CType(dv.Table.Rows(i)(TurnAroundTimeRangeDAL.COL_NAME_TURN_AROUND_TIME_RANGE_ID), Byte()))
                         Dim minV = CType(dv.Table.Rows(i)(TurnAroundTimeRangeDAL.COL_NAME_MIN_DAYS), Integer)
                         Dim maxV = CType(dv.Table.Rows(i)(TurnAroundTimeRangeDAL.COL_NAME_MAX_DAYS), Integer)
-                        If ModefiedObjectId.Equals(id) AndAlso minV = MinDays.Value AndAlso MinDays.Value < MaxDays.Value And MaxDays.Value <= 9999 Then
+                        If ModefiedObjectId.Equals(id) AndAlso minV = MinDays.Value AndAlso MinDays.Value < MaxDays.Value AndAlso MaxDays.Value <= 9999 Then
                             Return True
                         End If
                     End If
@@ -155,7 +155,7 @@ Public Class TurnAroundTimeRange
                     End If
                 Next
 
-                Return (editingOnOtherFieldsOccurs Or False)
+                Return (editingOnOtherFieldsOccurs OrElse False)
 
             End If
 

@@ -562,7 +562,7 @@ Public Class UpdateClaimData
 
                             If (LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, oClaim.Dealer.UseEquipmentId) = Codes.YESNO_Y) Then
                                 equipConditionId = LookupListNew.GetIdFromCode(LookupListCache.LK_CONDITION, Codes.EQUIPMENT_COND__NEW) 'sending condition type as 'NEW'
-                                If oClaim.ClaimedEquipment Is Nothing Or oClaim.ClaimedEquipment.EquipmentBO Is Nothing Then
+                                If oClaim.ClaimedEquipment Is Nothing OrElse oClaim.ClaimedEquipment.EquipmentBO Is Nothing Then
                                     Dim errors() As ValidationError = {New ValidationError(Codes.EQUIPMENT_NOT_FOUND, GetType(ClaimEquipment), Nothing, "", Nothing)}
                                     Throw New BOValidationException(errors, GetType(ClaimEquipment).FullName, "Test")
                                 End If

@@ -220,7 +220,7 @@ Public Class NumericRegEx
                 End If
             End If
             For iAllowedArray As Integer = 1 To allowedArray.Length - 1
-                If (iAllowedArray <> 1) And ((CType(allowedArray(iAllowedArray), Integer) - CType(allowedArray(iAllowedArray - 1), Integer)) > 1) Then
+                If (iAllowedArray <> 1) AndAlso ((CType(allowedArray(iAllowedArray), Integer) - CType(allowedArray(iAllowedArray - 1), Integer)) > 1) Then
                     retStr = retStr & allowedArray(iAllowedArray - 1) & allowedArray(iAllowedArray)
                 ElseIf retStr.Substring(retStr.Length - 1, 1) <> "-" Then
                     retStr = retStr & "-"
@@ -304,7 +304,7 @@ Public Class AlphaRegEx
             End If
         End If
         For iAllowedArray As Integer = 1 To allowedArray.Length - 1
-            If (iAllowedArray <> 1) And ((Asc(allowedArray(iAllowedArray)) - Asc(allowedArray(iAllowedArray - 1))) > 1) Then
+            If (iAllowedArray <> 1) AndAlso ((Asc(allowedArray(iAllowedArray)) - Asc(allowedArray(iAllowedArray - 1))) > 1) Then
                 retStr = retStr & allowedArray(iAllowedArray - 1) & allowedArray(iAllowedArray)
             ElseIf retStr.Substring(retStr.Length - 1, 1) <> "-" Then
                 retStr = retStr & "-"
@@ -404,7 +404,7 @@ Public Class AlphaNumericRegEx
                 End If
             End If
             For iAllowedArray As Integer = 1 To allowedArray.Length - 1
-                If (iAllowedArray <> 1) And ((CType(allowedArray(iAllowedArray), Integer) - CType(allowedArray(iAllowedArray - 1), Integer)) > 1) Then
+                If (iAllowedArray <> 1) AndAlso ((CType(allowedArray(iAllowedArray), Integer) - CType(allowedArray(iAllowedArray - 1), Integer)) > 1) Then
                     retStr = retStr & allowedArray(iAllowedArray - 1) & allowedArray(iAllowedArray)
                 ElseIf retStr.Substring(retStr.Length - 1, 1) <> "-" Then
                     retStr = retStr & "-"
@@ -462,7 +462,7 @@ Public Class AlphaNumericRegEx
             End If
         End If
         For iAllowedArray As Integer = 1 To allowedArray.Length - 1
-            If (iAllowedArray <> 1) And ((Asc(allowedArray(iAllowedArray)) - Asc(allowedArray(iAllowedArray - 1))) > 1) Then
+            If (iAllowedArray <> 1) AndAlso ((Asc(allowedArray(iAllowedArray)) - Asc(allowedArray(iAllowedArray - 1))) > 1) Then
                 retStr = retStr & allowedArray(iAllowedArray - 1) & allowedArray(iAllowedArray)
             ElseIf retStr.Substring(retStr.Length - 1, 1) <> "-" Then
                 retStr = retStr & "-"
@@ -597,7 +597,7 @@ Public Class GenericRegExFactory
         Dim openBracketStart As Integer = strVal.IndexOf("{")
         Dim closeBracketStart As Integer = strVal.IndexOf("}")
 
-        If openBracketStart <> -1 And closeBracketStart <> -1 Then
+        If openBracketStart <> -1 AndAlso closeBracketStart <> -1 Then
             Dim tempStr As String = strVal.Substring(openBracketStart + 1, closeBracketStart - openBracketStart - 1)
             If tempStr.Trim().Length > 0 Then
                 Dim tempLengths As String() = tempStr.Split(",".Chars(0))
@@ -622,7 +622,7 @@ Public Class GenericRegExFactory
         Dim closeBracketStart As Integer = strVal.IndexOf("]")
 
         disallowedVal = ""
-        If openBracketStart <> -1 And closeBracketStart <> -1 Then
+        If openBracketStart <> -1 AndAlso closeBracketStart <> -1 Then
             Dim tempStr As String = strVal.Substring(openBracketStart, closeBracketStart - openBracketStart + 1)
             If tempStr.Trim().Length > 0 Then
                 tempStr = "^" + tempStr + "{1}$"
@@ -650,7 +650,7 @@ Public Class GenericRegExFactory
                     End If
                 Next
 
-                If (regExType = RegExTypeValues.AlphaRegEx) Or (regExType = RegExTypeValues.AlphaNumericRegEx) Then
+                If (regExType = RegExTypeValues.AlphaRegEx) OrElse (regExType = RegExTypeValues.AlphaNumericRegEx) Then
                     If disallowedVal.Trim().IndexOf(upperAlphaString) <> -1 Then
                         caseType = CaseValues.LowerCase
                         If disallowedVal.Trim() = upperAlphaString.Trim() Then
@@ -679,10 +679,10 @@ Public Class GenericRegExFactory
         Dim openBracketStart As Integer = strVal.IndexOf("[")
         Dim closeBracketStart As Integer = strVal.IndexOf("]")
 
-        If openBracketStart <> -1 And closeBracketStart <> -1 Then
+        If openBracketStart <> -1 AndAlso closeBracketStart <> -1 Then
             Dim tempStr As String = strVal.Substring(openBracketStart + 1, closeBracketStart - openBracketStart - 1)
             For Each chrVal As Char In tempStr.ToCharArray()
-                If (Asc(chrVal) >= Asc("0")) And (Asc(chrVal) <= Asc("9")) Then
+                If (Asc(chrVal) >= Asc("0")) AndAlso (Asc(chrVal) <= Asc("9")) Then
                     Return True
                 End If
             Next
@@ -694,10 +694,10 @@ Public Class GenericRegExFactory
         Dim openBracketStart As Integer = strVal.IndexOf("[")
         Dim closeBracketStart As Integer = strVal.IndexOf("]")
 
-        If openBracketStart <> -1 And closeBracketStart <> -1 Then
+        If openBracketStart <> -1 AndAlso closeBracketStart <> -1 Then
             Dim tempStr As String = strVal.Substring(openBracketStart + 1, closeBracketStart - openBracketStart - 1)
             For Each chrVal As Char In tempStr.ToCharArray()
-                If ((Asc(chrVal) >= Asc("a")) And (Asc(chrVal) <= Asc("z"))) Or ((Asc(chrVal) >= Asc("A")) And (Asc(chrVal) <= Asc("Z"))) Then
+                If ((Asc(chrVal) >= Asc("a")) AndAlso (Asc(chrVal) <= Asc("z"))) OrElse ((Asc(chrVal) >= Asc("A")) AndAlso (Asc(chrVal) <= Asc("Z"))) Then
                     Return True
                 End If
             Next
@@ -705,7 +705,7 @@ Public Class GenericRegExFactory
         Return False
     End Function
     Private Function HasAlphaNumericVal(strVal As String) As Boolean
-        Return HasNumbers(strVal) And HasAlphaVal(strVal)
+        Return HasNumbers(strVal) AndAlso HasAlphaVal(strVal)
     End Function
 
 End Class

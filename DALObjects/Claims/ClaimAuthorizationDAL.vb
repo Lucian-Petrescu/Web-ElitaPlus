@@ -272,7 +272,7 @@ Public Class ClaimAuthorizationDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing AndAlso ds.Tables(TABLE_NAME).Rows.Count > 0 Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing AndAlso ds.Tables(TABLE_NAME).Rows.Count > 0 Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
@@ -316,7 +316,7 @@ Public Class ClaimAuthorizationDAL
     End Sub
 
     Protected Sub SetValue(Row As DataRow, columnName As String, newValue As Object)
-        If Not newValue Is Nothing And Row(columnName) Is DBNull.Value Then
+        If newValue IsNot Nothing AndAlso Row(columnName) Is DBNull.Value Then
             'new value is something and old value is DBNULL
             If newValue.GetType Is GetType(BooleanType) Then
                 '- BooleanType, special case - convert to string Y or N
@@ -350,7 +350,7 @@ Public Class ClaimAuthorizationDAL
                 '- let the DataColumn convert the value to its internal data type
                 Row(columnName) = newValue
             End If
-        ElseIf Not newValue Is Nothing Then
+        ElseIf newValue IsNot Nothing Then
             'new value is something and old value is also something
             '- convert current value to a string
             Dim currentValue As Object = Row(columnName)
@@ -364,7 +364,7 @@ Public Class ClaimAuthorizationDAL
                 Dim types() As Type = {GetType(String)}
                 '- see if the 'newValue Type' has a 'Parse(String)' method taking a String parameter
                 Dim miMethodInfo As System.Reflection.MethodInfo = newValue.GetType.GetMethod("Parse", types)
-                If Not miMethodInfo Is Nothing Then
+                If miMethodInfo IsNot Nothing Then
                     '- it does have a Parse method, newValue must be a number type.
                     '- extract the current value as a string
                     Dim args() As Object = {Row(columnName).ToString}
@@ -402,7 +402,7 @@ Public Class ClaimAuthorizationDAL
                 End If
                 Row(columnName) = newValue
             End If
-        ElseIf newValue Is Nothing And Not Row(columnName) Is DBNull.Value Then
+        ElseIf newValue Is Nothing AndAlso Row(columnName) IsNot DBNull.Value Then
             Row(columnName) = DBNull.Value
         End If
     End Sub
@@ -448,7 +448,7 @@ Public Class ClaimAuthorizationDAL
                 End Using
             End Using
             Dim par = parameters.FirstOrDefault(Function(p As OracleParameter) p.ParameterName.Equals(PAR_OUT_NAME_RETURN_CODE))
-            If (Not par Is Nothing AndAlso par.Value = 200) Then
+            If (par IsNot Nothing AndAlso par.Value = 200) Then
                 Throw New ElitaPlusException("ClaimAuthorization - " + methodName, Common.ErrorCodes.DB_READ_ERROR)
             End If
         Catch ex As Exception
@@ -494,7 +494,7 @@ Public Class ClaimAuthorizationDAL
             outputParameter(0) = New DBHelper.DBHelperParameter("po_status_return", GetType(String), 32)
             ' Call DBHelper Store Procedure
             DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameter)
-            If (Not outputParameter(0).Value Is Nothing) Then
+            If (outputParameter(0).Value IsNot Nothing) Then
                 If (outputParameter(0).Value = "Y") Then
                     requestSuccess = True
                 End If
@@ -516,7 +516,7 @@ Public Class ClaimAuthorizationDAL
             outputParameter(0) = New DBHelper.DBHelperParameter("po_status_return", GetType(String), 32)
             ' Call DBHelper Store Procedure
             DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameter)
-            If (Not outputParameter(0).Value Is Nothing) Then
+            If (outputParameter(0).Value IsNot Nothing) Then
                 If (outputParameter(0).Value = "Y") Then
                     requestSuccess = True
                 End If
@@ -539,7 +539,7 @@ Public Class ClaimAuthorizationDAL
             outputParameter(1) = New DBHelper.DBHelperParameter("po_error_msg", GetType(String), 2000)
             ' Call DBHelper Store Procedure
             DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameter)
-            If (Not outputParameter(0).Value Is Nothing) Then
+            If (outputParameter(0).Value IsNot Nothing) Then
                 errCode = outputParameter(0).Value
                 errMsg = outputParameter(1).Value
                 If errCode = 0 Then
@@ -562,7 +562,7 @@ Public Class ClaimAuthorizationDAL
             outputParameter(0) = New DBHelper.DBHelperParameter("po_status_return", GetType(String), 32)
             ' Call DBHelper Store Procedure
             DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameter)
-            If (Not outputParameter(0).Value Is Nothing) Then
+            If (outputParameter(0).Value IsNot Nothing) Then
                 If (outputParameter(0).Value = "Y") Then
                     requestSuccess = True
                 End If
@@ -589,7 +589,7 @@ Public Class ClaimAuthorizationDAL
             outputParameter(1) = New DBHelper.DBHelperParameter("po_error_msg", GetType(String), 2000)
             ' Call DBHelper Store Procedure
             DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameter)
-            If (Not outputParameter(0).Value Is Nothing) Then
+            If (outputParameter(0).Value IsNot Nothing) Then
                 errCode = outputParameter(0).Value
                 errMsg = outputParameter(1).Value
                 If errCode = 0 Then

@@ -912,9 +912,7 @@ Public NotInheritable Class Invoice
         '          f. Adjustment Reason – “ABOVE_LIABILITY_LIMIT”
         Dim claimAuthorizationTotal As Decimal = 0D
         Dim LiabilityLimit As Decimal = oClaimAuthorization.Claim.LiabilityLimit.Value
-        If (LiabilityLimit <> 0 Or ((CDec(oClaimAuthorization.Claim.Certificate.ProductLiabilityLimit.ToString) > 0 Or
-                                     CDec(oClaimAuthorization.Claim.CertificateItemCoverage.CoverageLiabilityLimit.ToString) > 0) And
-                                     LiabilityLimit = 0)) Then
+        If (LiabilityLimit <> 0 OrElse ((CDec(oClaimAuthorization.Claim.Certificate.ProductLiabilityLimit.ToString) > 0 OrElse CDec(oClaimAuthorization.Claim.CertificateItemCoverage.CoverageLiabilityLimit.ToString) > 0) AndAlso LiabilityLimit = 0)) Then
             For Each oClaimAuthItem In oClaimAuthorization.ClaimAuthorizationItemChildren.Where(Function(item) item.ServiceClassId <> deductibleServiceClassId)
                 claimAuthorizationTotal += oClaimAuthItem.Amount.Value
             Next

@@ -692,7 +692,7 @@ Public NotInheritable Class MandatoryForServCenterAttribute
                         Return False
                     End If
                 Else
-                    If valueToCheck Is Nothing Or valueToCheck Is String.Empty Then
+                    If valueToCheck Is Nothing OrElse valueToCheck Is String.Empty Then
                         Return False
                     End If
                 End If
@@ -742,7 +742,7 @@ Public NotInheritable Class MandatoryForServCenterAttribute
         If MailAddrFmtStr.Trim <> "" Then
             AddressComponents = New List(Of MailAddressItem)(15)
             Dim regExp As Regex, blnRequired As Boolean
-            regExp = New Regex("\[(.)+?\](\*)*", RegexOptions.None, new TimeSpan(0,0,0,0, 100))
+            regExp = New Regex("\[(.)+?\]\*?", RegexOptions.None, TimeSpan.FromSeconds(100))
             Dim m As Match = regExp.Match(MailAddrFmtStr)
             While (m.Success)
                 blnRequired = True
@@ -756,7 +756,7 @@ Public NotInheritable Class MandatoryForServCenterAttribute
         Dim blnRequired As Boolean = False
         MailAddrFmtStr = MailAddrFmtStr.Trim
         If MailAddrFmtStr.Trim <> "" Then
-            Dim regExp = New Regex("\[(.+?)\](\*)*", RegexOptions.None, new TimeSpan(0,0,0,0, 100))
+            Dim regExp = New Regex("\[(.)+?\]\*?", RegexOptions.None, TimeSpan.FromMilliseconds(100))
             Dim m As Match = regExp.Match(MailAddrFmtStr)
             While (m.Success)
                 If m.Groups(1).Value.Trim = strComponent.Trim AndAlso (Not m.Value.Trim.EndsWith("]*")) Then

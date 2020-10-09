@@ -295,7 +295,7 @@ Public Class CertCancellationDAL
 
 #Region "Overloaded Methods"
     Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
@@ -321,7 +321,7 @@ Public Class CertCancellationDAL
             inputParameters(5) = New DBHelperParameter(COL_NAME_P_CANCELLATION_REQUESTED_DATE, cancellationRequestedDate)
             inputParameters(6) = New DBHelperParameter(COL_NAME_P_CANCELLATION_CODE, .cancellationCode)
 
-            If Not oCommentData Is Nothing Then
+            If oCommentData IsNot Nothing Then
                 With oCommentData
                     inputParameters(7) = New DBHelperParameter(COL_NAME_P_COMMENT_ID, .CommentId.ToByteArray)
                     inputParameters(8) = New DBHelperParameter(COL_NAME_P_CALLER_NAME, .Callername)
@@ -374,7 +374,7 @@ Public Class CertCancellationDAL
                 inputParameters(P_PAYMENT_METHOD_ID) = New DBHelperParameter(COL_NAME_P_PAYMENT_METHOD_ID, .payment_method_Id.ToByteArray)
             End If
 
-            If Not oBankInfoData Is Nothing Then
+            If oBankInfoData IsNot Nothing Then
                 With oBankInfoData
                     inputParameters(P_BANK_INFO_ID) = New DBHelperParameter(COL_NAME_P_BANK_INFO_ID, .bankinfoId.ToByteArray)
                     inputParameters(P_BANK_ACCOUNT_NAME) = New DBHelperParameter(COL_NAME_BANK_ACCOUNT_NAME, .AccountName)
@@ -426,7 +426,7 @@ Public Class CertCancellationDAL
             outputParameter(P_INSTALLMENTS_PAID) = New DBHelperParameter(COL_NAME_P_INSTALLMENTS_PAID, GetType(Integer))
             outputParameter(P_AUTH_NUMBER) = New DBHelperParameter(COL_NAME_P_AUTH_NUMBER, GetType(String))
 
-            If Not oCommentData Is Nothing Then
+            If oCommentData IsNot Nothing Then
                 With oCommentData
                     inputParameters(P_COMMENT_ID) = New DBHelperParameter(COL_NAME_P_COMMENT_ID, .CommentId.ToByteArray)
                     inputParameters(P_CALLER_NAME) = New DBHelperParameter(COL_NAME_P_CALLER_NAME, .Callername)
@@ -440,7 +440,7 @@ Public Class CertCancellationDAL
                 inputParameters(P_COMMENTS) = New DBHelperParameter(COL_NAME_P_COMMENT, System.DBNull.Value)
             End If
 
-            If Not oBankInfoData Is Nothing Then
+            If oBankInfoData IsNot Nothing Then
                 With oBankInfoData
                     inputParameters(P_BRANCH_DIGIT) = New DBHelperParameter(COL_NAME_P_BRANCH_DIGIT, .BranchDigit)
                     inputParameters(P_ACCOUNT_DIGIT) = New DBHelperParameter(COL_NAME_P_ACCOUNT_DIGIT, .AccountDigit)
@@ -455,7 +455,7 @@ Public Class CertCancellationDAL
             inputParameters(P_COMPUTED_REFUND_RCVD) = New DBHelperParameter(COL_NAME_P_COMPUTED_REFUND_RCVD, .refundAmountRcvd)
             inputParameters(P_INSTALLMENTS_PAID_RCVD) = New DBHelperParameter(COL_NAME_P_INSTALLMENTS_PAID_RCVD, .InstallmentsPaid)
 
-            If Not oBankInfoData Is Nothing Then
+            If oBankInfoData IsNot Nothing Then
                 With oBankInfoData
                     inputParameters(P_BANK_NAME) = New DBHelperParameter(COL_NAME_P_BANK_NAME, .BankName)
                 End With

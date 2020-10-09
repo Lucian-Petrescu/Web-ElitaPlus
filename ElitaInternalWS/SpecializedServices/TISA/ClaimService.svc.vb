@@ -167,7 +167,7 @@ Namespace SpecializedServices.Tisa
             End If
 
             ''Repair claim should be active
-            If Not oClaim.ClaimNumber.ToUpper.EndsWith("S") Or Not oClaim.ClaimNumber.ToUpper.EndsWith("R") Then
+            If Not oClaim.ClaimNumber.ToUpper.EndsWith("S") OrElse Not oClaim.ClaimNumber.ToUpper.EndsWith("R") Then
                 If (oClaim.StatusCode <> "A") Then
                     Throw New FaultException(Of ClaimNotFoundFault)(New ClaimNotFoundFault(),
                                                                     businessObj.TranslationBase.TranslateLabelOrMessage(ErrorCodes.ERR_REPAIR_CLAIM_SHOULD_BE_ACTIVE,
@@ -262,7 +262,7 @@ Namespace SpecializedServices.Tisa
             End Try
 
             ''c.Repair Claim Is Not active
-            If Not pRepairClaim.ClaimNumber.ToUpper.EndsWith("S") Or Not pRepairClaim.ClaimNumber.ToUpper.EndsWith("R") Then
+            If Not pRepairClaim.ClaimNumber.ToUpper.EndsWith("S") OrElse Not pRepairClaim.ClaimNumber.ToUpper.EndsWith("R") Then
                 If pRepairClaim.StatusCode <> "A" Then
                     Throw New FaultException(Of ClaimNotFoundFault)(New ClaimNotFoundFault(),
                                                                     businessObj.TranslationBase.TranslateLabelOrMessage(ErrorCodes.ERR_REPAIR_CLAIM_SHOULD_BE_ACTIVE,
@@ -492,7 +492,7 @@ Namespace SpecializedServices.Tisa
             ''''Get the Repair claim information
             Dim oRepairClaim As Claim
             Try
-                If (request.ClaimNumber.ToUpperInvariant.EndsWith("R") Or request.ClaimNumber.ToUpperInvariant.EndsWith("S")) Then
+                If (request.ClaimNumber.ToUpperInvariant.EndsWith("R") OrElse request.ClaimNumber.ToUpperInvariant.EndsWith("S")) Then
                     request.ClaimNumber = request.ClaimNumber.Substring(0, request.ClaimNumber.Length - 1)
                 End If
                 oRepairClaim = ClaimManager.GetClaim(request.ClaimNumber, oCompany.CompanyId)
@@ -546,7 +546,7 @@ Namespace SpecializedServices.Tisa
             ''''Get the Repair claim information
             Dim oRepairClaim As Claim
             Try
-                If (request.ClaimNumber.ToUpperInvariant.EndsWith("R") Or request.ClaimNumber.ToUpperInvariant.EndsWith("S")) Then
+                If (request.ClaimNumber.ToUpperInvariant.EndsWith("R") OrElse request.ClaimNumber.ToUpperInvariant.EndsWith("S")) Then
                     request.ClaimNumber = request.ClaimNumber.Substring(0, request.ClaimNumber.Length - 1)
                 End If
                 oRepairClaim = ClaimManager.GetClaim(request.ClaimNumber, oCompany.CompanyId)
@@ -638,7 +638,7 @@ Namespace SpecializedServices.Tisa
             '''''if thef/loss coverage found and claim type in request is Repair
             If ((request.CoverageTypeCode = CoverageTypeCodes.Theft OrElse
             request.CoverageTypeCode = CoverageTypeCodes.TheftLoss OrElse
-                    request.CoverageTypeCode = CoverageTypeCodes.Loss) And request.ClaimType = ClaimTypeCodes.Repair) Then
+                    request.CoverageTypeCode = CoverageTypeCodes.Loss) AndAlso request.ClaimType = ClaimTypeCodes.Repair) Then
                 Throw New FaultException(Of CoverageNotFoundFault)(New CoverageNotFoundFault(),
                                                                    businessObj.TranslationBase.TranslateLabelOrMessage(ErrorCodes.ERR_INVALID_COVERAGE_CODE,
                                                                                         businessObj.ElitaPlusIdentity.Current.ActiveUser.LanguageId))
@@ -646,7 +646,7 @@ Namespace SpecializedServices.Tisa
             '''''if thef/loss coverage found and claim type in request is Repair
             If ((request.CoverageTypeCode = CoverageTypeCodes.Theft OrElse
             request.CoverageTypeCode = CoverageTypeCodes.TheftLoss OrElse
-                    request.CoverageTypeCode = CoverageTypeCodes.Loss) And request.ClaimType = ClaimTypeCodes.ServiceWarranty) Then
+                    request.CoverageTypeCode = CoverageTypeCodes.Loss) AndAlso request.ClaimType = ClaimTypeCodes.ServiceWarranty) Then
                 Throw New FaultException(Of CoverageNotFoundFault)(New CoverageNotFoundFault(),
                                                                    businessObj.TranslationBase.TranslateLabelOrMessage(ErrorCodes.ERR_INVALID_COVERAGE_CODE,
                                                                                         businessObj.ElitaPlusIdentity.Current.ActiveUser.LanguageId))
@@ -793,7 +793,7 @@ Namespace SpecializedServices.Tisa
             If request.DealerCode = falabellaCode Then
 
                 '''logic to sepparate the work order number from the problem description in Falabella 
-                If (request.WorkOrderNumber Is Nothing Or String.IsNullOrEmpty(request.WorkOrderNumber)) AndAlso
+                If (request.WorkOrderNumber Is Nothing OrElse String.IsNullOrEmpty(request.WorkOrderNumber)) AndAlso
                    request.ProblemDescription.Contains(sepparator) Then
                     Dim workOrderAndProblem = request.ProblemDescription.Split(sepparator)
                     request.WorkOrderNumber = workOrderAndProblem(0)

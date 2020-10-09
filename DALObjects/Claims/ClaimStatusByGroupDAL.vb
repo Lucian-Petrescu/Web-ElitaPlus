@@ -147,7 +147,7 @@ Public Class ClaimStatusByGroupDAL
 
         Dim ds As DataSet = DBHelper.Fetch(selectStmt, TABLE_NAME)
 
-        If Not ds Is Nothing AndAlso Not ds.Tables(0) Is Nothing AndAlso CType(ds.Tables(0).Rows(0)(0), Integer) > 0 Then
+        If ds IsNot Nothing AndAlso ds.Tables(0) IsNot Nothing AndAlso CType(ds.Tables(0).Rows(0)(0), Integer) > 0 Then
             retVal = True
         Else
             retVal = False
@@ -172,7 +172,7 @@ Public Class ClaimStatusByGroupDAL
 
         Dim ds As DataSet = DBHelper.Fetch(selectStmt, TABLE_NAME)
 
-        If Not ds Is Nothing AndAlso Not ds.Tables(0) Is Nothing AndAlso CType(ds.Tables(0).Rows(0)(0), Integer) > 0 Then
+        If ds IsNot Nothing AndAlso ds.Tables(0) IsNot Nothing AndAlso CType(ds.Tables(0).Rows(0)(0), Integer) > 0 Then
             retVal = True
         Else
             retVal = False
@@ -199,7 +199,7 @@ Public Class ClaimStatusByGroupDAL
 
         Dim ds As DataSet = DBHelper.Fetch(selectStmt, TABLE_NAME)
 
-        If Not ds Is Nothing AndAlso Not ds.Tables(0) Is Nothing AndAlso CType(ds.Tables(0).Rows(0)(0), Integer) = 0 Then
+        If ds IsNot Nothing AndAlso ds.Tables(0) IsNot Nothing AndAlso CType(ds.Tables(0).Rows(0)(0), Integer) = 0 Then
             retVal = True
         Else
             retVal = False
@@ -229,7 +229,7 @@ Public Class ClaimStatusByGroupDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub

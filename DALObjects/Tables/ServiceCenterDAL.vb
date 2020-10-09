@@ -271,7 +271,7 @@ Public Class ServiceCenterDAL
             'At the end delete the Address
             AddressDAL.Update(familyDataset.GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
             BankInfoDAL.Update(familyDataset.GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
-            If Not familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME).Rows.Count > 0 Then
+            If familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME) IsNot Nothing AndAlso familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim oTransactionLogHeaderDAL As New TransactionLogHeaderDAL
                 oTransactionLogHeaderDAL.Update(familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
             End If
@@ -293,7 +293,7 @@ Public Class ServiceCenterDAL
 
 
     Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
@@ -305,7 +305,7 @@ Public Class ServiceCenterDAL
         Dim selectStmt As String
         Dim whereClauseConditions As String = String.Empty
         selectStmt = Config("/SQL/GET_SERVICE_CENTER_DETAILS")
-        If (Not serviceCenterIds Is Nothing) Then
+        If (serviceCenterIds IsNot Nothing) Then
             whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("elp_service_center." & COL_NAME_SERVICE_CENTER_ID, serviceCenterIds, False)
         End If
         selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
@@ -360,7 +360,7 @@ Public Class ServiceCenterDAL
 
         'If city Is Nothing OrElse city.Trim.Length = 0 Then city = ""
         If isSearchByCity Then
-            If (Not city Is Nothing) AndAlso (city.Trim.Length > 0) Then
+            If (city IsNot Nothing) AndAlso (city.Trim.Length > 0) Then
                 city = city.Trim("*").ToUpper & IIf(city.EndsWith("*"), "%", "")
             Else
                 city = ""
@@ -746,7 +746,7 @@ Public Class ServiceCenterDAL
                 End Using
             End Using
             Dim par = parameters.FirstOrDefault(Function(p As OracleParameter) p.ParameterName.Equals(PAR_OUT_NAME_RETURN_CODE))
-            If (Not par Is Nothing AndAlso par.Value = 200) Then
+            If (par IsNot Nothing AndAlso par.Value = 200) Then
                 Throw New ElitaPlusException("ServiceCenter - " + methodName, Common.ErrorCodes.DB_READ_ERROR)
             End If
         Catch ex As Exception

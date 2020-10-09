@@ -129,11 +129,11 @@ Public Class CoverageDAL
                 whereClauseConditions &= Environment.NewLine & "AND " & "COVERAGE_TYPE_ID = " & MiscUtil.GetDbStringFromGuid(coverageTypeId)
             End If
 
-            If Not certificateDuration Is Nothing Then
+            If certificateDuration IsNot Nothing Then
                 whereClauseConditions &= Environment.NewLine & "AND " & "CERTIFICATE_DURATION = " & certificateDuration.ToString
             End If
 
-            If Not coverageDuration Is Nothing Then
+            If coverageDuration IsNot Nothing Then
                 whereClauseConditions &= Environment.NewLine & "AND " & "COVERAGE_DURATION = " & coverageDuration.ToString
             End If
 
@@ -341,7 +341,7 @@ Public Class CoverageDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
             oAttributeValueDAL.Update(ds.GetChanges(), Transaction)
         End If

@@ -399,17 +399,17 @@ Public Class DepreciationScdDetails
             Dim obj As DepreciationScdDetails = CType(objectToValidate, DepreciationScdDetails)
             Dim bValid As Boolean = True
 
-            If obj.LowMonth IsNot Nothing And obj.HighMonth IsNot Nothing Then
-                If (obj.Percent Is Nothing And obj.Amount Is Nothing) Then
+            If obj.LowMonth IsNot Nothing AndAlso obj.HighMonth IsNot Nothing Then
+                If (obj.Percent Is Nothing AndAlso obj.Amount Is Nothing) Then
                     Message = DepreciationScheduleForm010
                     bValid = False
-                ElseIf (obj.Percent IsNot Nothing And obj.Amount IsNot Nothing) Then
+                ElseIf (obj.Percent IsNot Nothing AndAlso obj.Amount IsNot Nothing) Then
                     Message = DepreciationScheduleForm007
                     bValid = False
                 Else
                     bValid = ValidateRange(obj)
                     If _bValidMonth = True Then
-                        If _ar IsNot Nothing And _ar.Count > 0 Then
+                        If _ar IsNot Nothing AndAlso _ar.Count > 0 Then
                             Message = CType(_ar(0), String)
                         End If
                     Else
@@ -461,22 +461,22 @@ Public Class DepreciationScdDetails
                             bValid = True
                             _bValidMonth = True
                             Exit For
-                        ElseIf oRows.Count = oCount And prevHigh + Threshold = oNewLow Then
+                        ElseIf oRows.Count = oCount AndAlso prevHigh + Threshold = oNewLow Then
                             ' Updating the last record
                             _bValidMonth = True
                             bValid = ValidateDepreciationSequence(oDepreciationSchedule.Percent, prePercent, oDepreciationSchedule.Amount, preAmount)
                             Exit For
                         End If
                     Else
-                        If prevHigh < MinMonth And oNewHigh + Threshold = oLow Then
+                        If prevHigh < MinMonth AndAlso oNewHigh + Threshold = oLow Then
                             _bValidMonth = True
                             bValid = ValidateDepreciationSequence(oPercent, oDepreciationSchedule.Percent, oAmount, oDepreciationSchedule.Amount)
                             Exit For
-                        ElseIf oCount = oRows.Count And oHigh + Threshold = oNewLow Then
+                        ElseIf oCount = oRows.Count AndAlso oHigh + Threshold = oNewLow Then
                             _bValidMonth = True
                             bValid = ValidateDepreciationSequence(oDepreciationSchedule.Percent, oPercent, oDepreciationSchedule.Amount, oAmount)
                             Exit For
-                        ElseIf prevHigh + Threshold = oNewLow And oNewHigh + Threshold = oLow Then
+                        ElseIf prevHigh + Threshold = oNewLow AndAlso oNewHigh + Threshold = oLow Then
                             _bValidMonth = True
                             bValid = ValidateDepreciationSequence(oPercent, oDepreciationSchedule.Percent, oAmount, oDepreciationSchedule.Amount)
                             Exit For

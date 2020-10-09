@@ -2156,7 +2156,7 @@ Public Class Dealer
 
     Public ReadOnly Property IsGracePeriodSpecified As Boolean
         Get
-            If GracePeriodDays IsNot Nothing Or GracePeriodMonths IsNot Nothing Then
+            If GracePeriodDays IsNot Nothing OrElse GracePeriodMonths IsNot Nothing Then
                 Return True
 
             Else
@@ -2870,7 +2870,7 @@ Public Class Dealer
             For index As Integer = 0 To dealerContractsView.Count - 1
                 drv = dealerContractsView.Item(index)
                 If (Date.Compare(todayDate, CType(drv.Item(ContractDAL.COL_NAME_EFFECTIVE), Date)) <= 0) _
-                   Or ((Date.Compare(todayDate, CType(drv.Item(ContractDAL.COL_NAME_EFFECTIVE), Date)) > 0) And (Date.Compare(todayDate, CType(drv.Item(ContractDAL.COL_NAME_EXPIRATION), Date)) <= 0)) Then
+                   OrElse ((Date.Compare(todayDate, CType(drv.Item(ContractDAL.COL_NAME_EFFECTIVE), Date)) > 0) AndAlso (Date.Compare(todayDate, CType(drv.Item(ContractDAL.COL_NAME_EXPIRATION), Date)) <= 0)) Then
                     blnValidContract = True
                     Exit For
                 Else
@@ -2922,8 +2922,7 @@ Public Class Dealer
         Dim blnDateWithinContract As Boolean
         Dim contractEffective As Date = oContract.Effective.Value
         Dim contractExpiration As Date = oContract.Expiration.Value
-        If (CType(EnteredEffectiveDate, Date) >= contractEffective) And (CType(EnteredEffectiveDate, Date) <= contractExpiration) And
-           (CType(EnteredExpirationDate, Date) >= contractEffective) And (CType(EnteredExpirationDate, Date) <= contractExpiration) Then
+        If (CType(EnteredEffectiveDate, Date) >= contractEffective) AndAlso (CType(EnteredEffectiveDate, Date) <= contractExpiration) AndAlso (CType(EnteredExpirationDate, Date) >= contractEffective) AndAlso (CType(EnteredExpirationDate, Date) <= contractExpiration) Then
             blnDateWithinContract = True
         Else
             blnDateWithinContract = False
@@ -3321,7 +3320,7 @@ Public Class Dealer
             Dim obj As Dealer = CType(objectToValidate, Dealer)
             If obj.STATIBNRFactor Is Nothing Then Return True
             Dim str As String = obj.STATIBNRFactor.ToString
-            If obj.STATIBNRFactor.Value >= 1 Or obj.STATIBNRFactor.Value < 0 Then 'Or str.Substring(str.LastIndexOf(".") + 1).Length > 4 Then
+            If obj.STATIBNRFactor.Value >= 1 OrElse obj.STATIBNRFactor.Value < 0 Then 'Or str.Substring(str.LastIndexOf(".") + 1).Length > 4 Then
                 Return False
             End If
 
@@ -3340,7 +3339,7 @@ Public Class Dealer
             Dim obj As Dealer = CType(objectToValidate, Dealer)
             If obj.LAEIBNRFactor Is Nothing Then Return True
             Dim str As String = obj.LAEIBNRFactor.ToString
-            If obj.LAEIBNRFactor.Value >= 1 Or obj.LAEIBNRFactor.Value < 0 Then 'Or str.Substring(str.LastIndexOf(".") + 1).Length > 4 Then
+            If obj.LAEIBNRFactor.Value >= 1 OrElse obj.LAEIBNRFactor.Value < 0 Then 'Or str.Substring(str.LastIndexOf(".") + 1).Length > 4 Then
                 Return False
             End If
 

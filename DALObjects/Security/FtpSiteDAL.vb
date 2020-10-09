@@ -50,12 +50,12 @@ Public Class FtpSiteDAL
         Dim whereClauseConditions As String = ""
 
         code = code.Trim()
-        If (Not code.Equals(String.Empty) Or Not code = "") AndAlso (FormatSearchMask(code)) Then
+        If (Not code.Equals(String.Empty) OrElse Not code = "") AndAlso (FormatSearchMask(code)) Then
             whereClauseConditions &= Environment.NewLine & "Upper(ftp.code)" & code.ToUpper
         End If
 
         description = description.Trim()
-        If (Not description.Equals(String.Empty) Or Not description = "") AndAlso (FormatSearchMask(description)) Then
+        If (Not description.Equals(String.Empty) OrElse Not description = "") AndAlso (FormatSearchMask(description)) Then
             If Not whereClauseConditions = "" Then
                 whereClauseConditions &= " AND "
             End If
@@ -94,7 +94,7 @@ Public Class FtpSiteDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub

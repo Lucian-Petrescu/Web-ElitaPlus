@@ -411,7 +411,7 @@ Public Class ClaimAuthDetail
         End If
 
         oCompany = New Company(objClaim.CompanyId)
-        If oCompany IsNot Nothing And oCompany.AuthDetailRqrdId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_AUTH_DTL, "ADR")) Then
+        If oCompany IsNot Nothing AndAlso oCompany.AuthDetailRqrdId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_AUTH_DTL, "ADR")) Then
             Total = subTotal + tax
             DirectCast(objClaim, Claim).AuthorizedAmount = Total
         End If

@@ -433,7 +433,7 @@ Public Class AttributeValueList(Of TParent As {IAttributable})
         Dim list As New List(Of AttributeValue)
         Dim row As DataRow
         For Each row In AttributeValuesTable.Rows
-            If Not (row.RowState = DataRowState.Deleted Or row.RowState = DataRowState.Detached) Then
+            If Not (row.RowState = DataRowState.Deleted OrElse row.RowState = DataRowState.Detached) Then
                 Dim bo As AttributeValue = New AttributeValue(row)
                 If bo.ReferenceId = _Parent.Id Then
                     list.Add(bo)

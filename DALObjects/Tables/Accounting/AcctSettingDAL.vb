@@ -187,7 +187,7 @@ Public Class AcctSettingDAL
 
             ret = DBHelper.ExecuteScalar(selectStmt)
 
-            If Not ret Is Nothing Then
+            If ret IsNot Nothing Then
                 Return GuidControl.ByteArrayToGuid(ret)
             Else
                 Return Guid.Empty
@@ -342,7 +342,7 @@ Public Class AcctSettingDAL
         Dim ret As Object
         Try
             ret = DBHelper.ExecuteScalar(selectStmt)
-            If Not ret Is Nothing Then
+            If ret IsNot Nothing Then
                 Return GuidControl.ByteArrayToGuid(ret)
             Else
                 Return Guid.Empty
@@ -362,7 +362,7 @@ Public Class AcctSettingDAL
         Dim strSVCIDs As String, sbBuilder As System.Text.StringBuilder, blnStartPos As Boolean = True
         Dim I As Integer, BATCH_SIZE As Integer = 50, SVCId As Guid, intBatch As Integer = 1
 
-        If (Not oSVCIDs Is Nothing) AndAlso (oSVCIDs.Count > 0) Then
+        If (oSVCIDs IsNot Nothing) AndAlso (oSVCIDs.Count > 0) Then
             sbBuilder = New Text.StringBuilder
             For Each SVCId In oSVCIDs
                 If blnStartPos Then
@@ -609,7 +609,7 @@ Public Class AcctSettingDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
 

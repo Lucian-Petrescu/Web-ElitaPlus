@@ -44,7 +44,7 @@
             Throw New BOValidationException("GetPriceList Error: Invalid Company Code ", Common.ErrorCodes.WS_INVALID_COMPANY_CODE)
         End If
 
-        If (Not DealerCode = Nothing) And (GetDealerID(companyId, DealerCode).Equals(Guid.Empty)) Then
+        If (Not DealerCode = Nothing) AndAlso (GetDealerID(companyId, DealerCode).Equals(Guid.Empty)) Then
             Throw New BOValidationException("GetPriceList Error: Invalid Dealer Code ", Common.ErrorCodes.INVALID_DEALER_CODE)
         End If
 

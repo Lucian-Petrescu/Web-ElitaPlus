@@ -410,7 +410,7 @@ Public Class ClaimInvoiceDAL
                 Throw New StoredProcedureGeneratedException("Data Base Generated Error: ", strErrorMsg)
 
             Else
-                If Not ds Is Nothing AndAlso Not ds.Tables(0) Is Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
+                If ds IsNot Nothing AndAlso ds.Tables(0) IsNot Nothing AndAlso ds.Tables(0).Rows.Count > 0 Then
 
                     .taxRateClaimSuperDefault = GetDecimalValue(ds.Tables(0).Rows(0).Item(0))
                     .computeMethodCodeClaimSuperDefault = ds.Tables(0).Rows(0).Item(1).ToString
@@ -599,19 +599,19 @@ Public Class ClaimInvoiceDAL
             End If
 
             'Claim Ext. status if one is added.
-            If Not familyDataset.Tables(ClaimStatusDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(ClaimStatusDAL.TABLE_NAME).Rows.Count > 0 Then
+            If familyDataset.Tables(ClaimStatusDAL.TABLE_NAME) IsNot Nothing AndAlso familyDataset.Tables(ClaimStatusDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim oClaimStatusDAL As New ClaimStatusDAL
                 oClaimStatusDAL.Update(familyDataset.Tables(ClaimStatusDAL.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
             End If
 
             'GVS Transactions if one is added.
-            If Not familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME).Rows.Count > 0 Then
+            If familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME) IsNot Nothing AndAlso familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim oTransactionLogHeaderDAL As New TransactionLogHeaderDAL
                 oTransactionLogHeaderDAL.Update(familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
             End If
 
             'Cancel Certificate if needed
-            If Not oCancelCertificateData Is Nothing Then
+            If oCancelCertificateData IsNot Nothing Then
                 If oCancelCertificateData.certificatestatus = "A" Then
                     Dim dal As New CertCancellationDAL
                     dal.ExecuteCancelSP(oCancelCertificateData)

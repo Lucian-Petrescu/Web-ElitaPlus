@@ -638,7 +638,7 @@ Public Class DealerDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
@@ -893,7 +893,7 @@ Public Class DealerDAL
         parameters(COMPANY_ID) = New DBHelper.DBHelperParameter(COL_NAME_COMPANY_ID, companyID.ToByteArray())
         parameters(COUNT_LEVEL) = New DBHelper.DBHelperParameter(COL_NAME_COUNT_LEVEL, countLevel)
 
-        If Not certificatesAutonumberPrefix Is Nothing AndAlso Not certificatesAutonumberPrefix.Equals(String.Empty) Then
+        If certificatesAutonumberPrefix IsNot Nothing AndAlso Not certificatesAutonumberPrefix.Equals(String.Empty) Then
             Dim WhereClause As String = " and upper(CERTIFICATES_AUTONUMBER_PREFIX) = '" & certificatesAutonumberPrefix.ToUpper & "'"
             selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, WhereClause)
         End If

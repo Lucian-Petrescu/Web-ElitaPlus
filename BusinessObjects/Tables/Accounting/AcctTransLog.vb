@@ -1142,7 +1142,7 @@ Public Class AcctTransLog
             'Loop through each table in the dataset and determine if it has an Acct_Trans_log_id column.  
             '  If so, loop through the rows and add the IDs to the arraylist
             For Each tbl In ds.Tables
-                If PurgeVendors = True Or Not tbl.TableName = AcctTransLogDAL.Table_VENDOR Then
+                If PurgeVendors = True OrElse Not tbl.TableName = AcctTransLogDAL.Table_VENDOR Then
                     If tbl.Columns.Contains(AcctTransLogDAL.COL_NAME_ACCT_TRANS_LOG_ID) Then
                         For Each dr As DataRow In tbl.Rows
                             If Not IsDBNull(dr(AcctTransLogDAL.COL_NAME_ACCT_TRANS_LOG_ID)) Then arrIDs.Add(dr(AcctTransLogDAL.COL_NAME_ACCT_TRANS_LOG_ID))
@@ -1455,7 +1455,7 @@ Public Class AcctTransLog
 
             For Each dtTemp As DataTable In ds.Tables
 
-                If dtTemp.TableName = AcctTransLogDAL.Table_LINEITEM Or dtTemp.TableName = AcctTransLogDAL.Table_AP_LINEITEM Then
+                If dtTemp.TableName = AcctTransLogDAL.Table_LINEITEM OrElse dtTemp.TableName = AcctTransLogDAL.Table_AP_LINEITEM Then
 
                     If dtTemp.Columns("LINENUM") Is Nothing Then
                         dtTemp.Columns.Add(New DataColumn("LINENUM", GetType(String)))

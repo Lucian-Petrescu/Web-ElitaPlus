@@ -78,7 +78,7 @@ Public Class DALBase
 
     Public Shared Function GetOracleDate(dateColumn As String, Optional ByVal formatStr As String = "") As String
 
-        If (formatStr Is Nothing) Or (formatStr = String.Empty) Or (formatStr.Length = 0) Then
+        If (formatStr Is Nothing) OrElse (formatStr = String.Empty) OrElse (formatStr.Length = 0) Then
             formatStr = ORACLE_QUERY_DATEFORMAT
         End If
         Return " to_char(" & dateColumn & " , '" & formatStr & "' )"
@@ -287,8 +287,8 @@ Public Class DALBase
 
         ' When Filter is blank then do not do anything.
         If (Not (changesFilter Or DataRowState.Added = DataRowState.Added OrElse
-                 changesFilter Or DataRowState.Modified = DataRowState.Modified OrElse
-                 changesFilter Or DataRowState.Deleted = DataRowState.Deleted)) Then
+                 changesFilter OrElse DataRowState.Modified = DataRowState.Modified OrElse
+                 changesFilter OrElse DataRowState.Deleted = DataRowState.Deleted)) Then
             Return
         End If
 

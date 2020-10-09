@@ -1461,7 +1461,7 @@ Public NotInheritable Class ClaimAuthorization
     End Sub
 
     Friend Sub PopulateClaimAuthItems(priceListDetailDV As PriceListDetail.PriceListResultsDV)
-        If (priceListDetailDV Is Nothing Or priceListDetailDV.Count = 0) Then
+        If (priceListDetailDV Is Nothing OrElse priceListDetailDV.Count = 0) Then
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.BusinessErr, Nothing, Messages.PRICE_LIST_NOT_FOUND)
         End If
         ContainsDeductible = False
@@ -1505,9 +1505,7 @@ Public NotInheritable Class ClaimAuthorization
     Private Function CalculateAuthorizationAmount() As DecimalType
         Dim amount As Decimal = New Decimal(0)
         For Each Item As ClaimAuthItem In ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False)
-            If Item.AdjustmentReasonId.Equals(Guid.Empty) And
-               Not ((Item.ServiceClassCode = Codes.SERVICE_CLASS__DEDUCTIBLE AndAlso Item.Amount = 0) Or
-                    Item.ServiceClassCode = Codes.SERVICE_CLASS__MISCELLANEOUS) Then
+            If Item.AdjustmentReasonId.Equals(Guid.Empty) AndAlso Not ((Item.ServiceClassCode = Codes.SERVICE_CLASS__DEDUCTIBLE AndAlso Item.Amount = 0) OrElse Item.ServiceClassCode = Codes.SERVICE_CLASS__MISCELLANEOUS) Then
                 amount = amount + If(Item.Amount Is Nothing, New Decimal(0D), Item.Amount.Value)
             End If
         Next
@@ -1620,7 +1618,7 @@ Public NotInheritable Class ClaimAuthorization
         Dim ServiceCenter As ServiceCenter = New ServiceCenter(serviceCenterId)
 
         If (Claim.Dealer.UseEquipmentId = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y")) Then
-            If Claim.ClaimedEquipment IsNot Nothing Or Claim.ClaimedEquipment.EquipmentBO IsNot Nothing Then
+            If Claim.ClaimedEquipment IsNot Nothing OrElse Claim.ClaimedEquipment.EquipmentBO IsNot Nothing Then
                 equipmentId = Claim.ClaimedEquipment.EquipmentId
                 equipmentclassId = Claim.ClaimedEquipment.EquipmentBO.EquipmentClassId
                 conditionId = LookupListNew.GetIdFromCode(LookupListCache.LK_CONDITION, Codes.EQUIPMENT_COND__NEW)
@@ -1683,8 +1681,7 @@ Public NotInheritable Class ClaimAuthorization
     Friend Sub EvaluateContainsDeductible()
         ContainsDeductible = ContainsDeductibleLineItem
         If Not ContainsDeductible Then
-            Dim item As ClaimAuthItem = ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False AndAlso (i.ServiceClassCode = Codes.SERVICE_CLASS__DEDUCTIBLE And
-                                                                  i.ServiceTypeCode = Codes.SERVICE_TYPE__PAY_DEDUCTIBLE)).FirstOrDefault()
+            Dim item As ClaimAuthItem = ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False AndAlso (i.ServiceClassCode = Codes.SERVICE_CLASS__DEDUCTIBLE AndAlso i.ServiceTypeCode = Codes.SERVICE_TYPE__PAY_DEDUCTIBLE)).FirstOrDefault()
             If item IsNot Nothing Then item.IsDeleted = True
         End If
     End Sub
@@ -1960,8 +1957,7 @@ Public NotInheritable Class ClaimAuthorization
                 obj.ContainsDeductible = obj.ContainsDeductibleLineItem
                 If obj.ContainsDeductible AndAlso obj.Claim.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetPayDeductLookupList(Authentication.LangId), Codes.AUTH_LESS_DEDUCT_Y) Then
                     Dim hasDeductibleLineItem As Boolean = obj.ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False AndAlso
-                                                                                                       (i.ServiceClassCode = Codes.SERVICE_CLASS__DEDUCTIBLE And
-                                                                                                        i.ServiceTypeCode = Codes.SERVICE_TYPE__PAY_DEDUCTIBLE)).Count > 0
+                                                                                                       (i.ServiceClassCode = Codes.SERVICE_CLASS__DEDUCTIBLE AndAlso i.ServiceTypeCode = Codes.SERVICE_TYPE__PAY_DEDUCTIBLE)).Count > 0
                     If Not hasDeductibleLineItem Then Return False
                 End If
             End If
@@ -1983,8 +1979,7 @@ Public NotInheritable Class ClaimAuthorization
                 obj.ContainsDeductible = obj.ContainsDeductibleLineItem
                 If obj.ContainsDeductible AndAlso obj.Claim.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetPayDeductLookupList(Authentication.LangId), Codes.AUTH_LESS_DEDUCT_Y) Then
                     Dim flag As Boolean = obj.ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False AndAlso
-                                                                                                       (i.ServiceClassCode = Codes.SERVICE_CLASS__DEDUCTIBLE And
-                                                                                                        i.ServiceTypeCode = Codes.SERVICE_TYPE__PAY_DEDUCTIBLE) _
+                                                                                                       (i.ServiceClassCode = Codes.SERVICE_CLASS__DEDUCTIBLE AndAlso i.ServiceTypeCode = Codes.SERVICE_TYPE__PAY_DEDUCTIBLE) _
                                                                                                         AndAlso i.AdjustmentReasonId.Equals(Guid.Empty)).Count > 1
                     If flag Then Return False
                 End If
@@ -2006,8 +2001,7 @@ Public NotInheritable Class ClaimAuthorization
                 obj.ContainsDeductible = obj.ContainsDeductibleLineItem
                 If Not obj.ContainsDeductible Then
                     Dim hasDeductibleLineItem As Boolean = obj.ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False AndAlso
-                                                                                                       (i.ServiceClassCode = Codes.SERVICE_CLASS__DEDUCTIBLE And
-                                                                                                        i.ServiceTypeCode = Codes.SERVICE_TYPE__PAY_DEDUCTIBLE)).Count > 0
+                                                                                                       (i.ServiceClassCode = Codes.SERVICE_CLASS__DEDUCTIBLE AndAlso i.ServiceTypeCode = Codes.SERVICE_TYPE__PAY_DEDUCTIBLE)).Count > 0
                     If hasDeductibleLineItem Then Return False
                 End If
             End If

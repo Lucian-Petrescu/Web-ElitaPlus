@@ -1011,7 +1011,7 @@ Public Class CountryTax
             Dim obj As CountryTax = CType(objectToValidate, CountryTax)
 
             If Not obj.IsDeleted Then 'Edit or add new
-                If (obj.EffectiveDate IsNot Nothing) And (obj.ExpirationDate IsNot Nothing) Then
+                If (obj.EffectiveDate IsNot Nothing) AndAlso (obj.ExpirationDate IsNot Nothing) Then
                     If (obj.EffectiveDate.Value >= obj.ExpirationDate.Value) Then
                         Return False
                     End If

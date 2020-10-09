@@ -438,7 +438,7 @@ Public Class XMLHelper
 
         If Not IsNothing(ds) AndAlso ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0 Then
 
-            If includeEmptyTag Or xmlCoded Then
+            If includeEmptyTag OrElse xmlCoded Then
                 Dim i As Integer
 
                 For Each dt As DataTable In ds.Tables
@@ -494,8 +494,7 @@ Public Class XMLHelper
                                             Dim k As Integer
                                             For k = 0 To ds.Relations.Count - 1
                                                 If hasRelation = False Then
-                                                    hasRelation = ds.Relations(k).ParentColumns().Contains(dt.Columns(i)) Or _
-                                                                  ds.Relations(k).ChildColumns().Contains(dt.Columns(i))
+                                                    hasRelation = ds.Relations(k).ParentColumns().Contains(dt.Columns(i)) OrElse ds.Relations(k).ChildColumns().Contains(dt.Columns(i))
                                                 End If
                                             Next
                                         End If

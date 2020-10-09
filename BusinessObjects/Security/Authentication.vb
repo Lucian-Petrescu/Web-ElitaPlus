@@ -374,7 +374,7 @@ Public Class Authentication
             ElseIf isInSecureGroup Then
                 Return AppConfig.DataProtectionPrivacyLevel.Privacy_Basic
             End If
-        ElseIf privacyLevel = AppConfig.DB_PRIVACY_BASIC And isInSecureGroup Then
+        ElseIf privacyLevel = AppConfig.DB_PRIVACY_BASIC AndAlso isInSecureGroup Then
             Return AppConfig.DataProtectionPrivacyLevel.Privacy_Basic
         End If
 

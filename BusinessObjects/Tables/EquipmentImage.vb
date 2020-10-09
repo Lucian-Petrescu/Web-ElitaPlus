@@ -268,7 +268,7 @@
     Protected Function CheckDuplicateCode() As Boolean
         Dim row As DataRow
         For Each row In Dataset.Tables(EquipmentImageDAL.TABLE_NAME).Rows
-            If row.RowState <> DataRowState.Deleted And row.RowState <> DataRowState.Detached Then
+            If row.RowState <> DataRowState.Deleted AndAlso row.RowState <> DataRowState.Detached Then
                 Dim bo As New EquipmentImage(row)
                 ' Check if Code is Unique
                 If Not bo.Id.Equals(Id) AndAlso Code = bo.Code Then
@@ -282,7 +282,7 @@
     Protected Function CheckDuplicatePath() As Boolean
         Dim row As DataRow
         For Each row In Dataset.Tables(EquipmentImageDAL.TABLE_NAME).Rows
-            If row.RowState <> DataRowState.Deleted And row.RowState <> DataRowState.Detached Then
+            If row.RowState <> DataRowState.Deleted AndAlso row.RowState <> DataRowState.Detached Then
                 Dim bo As New EquipmentImage(row)
                 ' Check if Path is Unique
                 If Not bo.Id.Equals(Id) AndAlso Path = bo.Path Then

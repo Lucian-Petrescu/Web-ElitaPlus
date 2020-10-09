@@ -457,7 +457,7 @@
 
             Dim bValid As Boolean = True
 
-            If obj.ExpirationDate IsNot Nothing And obj.EffectiveDate IsNot Nothing Then
+            If obj.ExpirationDate IsNot Nothing AndAlso obj.EffectiveDate IsNot Nothing Then
                 If Convert.ToDateTime(obj.EffectiveDate.Value) > Convert.ToDateTime(obj.ExpirationDate.Value) Then
                     Message = PRODUCT_EQUIPMENT_FORM001
                     bValid = False
@@ -574,7 +574,7 @@
 
             Dim bValid As Boolean = True
 
-            If obj.FromRenewal IsNot Nothing And obj.ToRenewal IsNot Nothing Then
+            If obj.FromRenewal IsNot Nothing AndAlso obj.ToRenewal IsNot Nothing Then
                 If obj.FromRenewal.Value > obj.ToRenewal.Value Then
                     Message = PRODUCT_REWARDS_FORM005
                     bValid = False
@@ -603,7 +603,7 @@
             Dim ProductRewardsRows As DataRowCollection = oProductRewards.Table.Rows
             Dim ProductRewardsRow As DataRow
 
-            If oProductRewards.Count = 1 And obj.FromRenewal IsNot Nothing Then
+            If oProductRewards.Count = 1 AndAlso obj.FromRenewal IsNot Nothing Then
                 If oProductRewards.Item(0)(0).ToString = String.Empty Then
                     bValid = True
                 Else

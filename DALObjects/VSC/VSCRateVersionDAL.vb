@@ -179,8 +179,8 @@ Public Class VSCRateVersionDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
+            Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

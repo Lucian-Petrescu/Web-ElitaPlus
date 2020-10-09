@@ -894,10 +894,9 @@ Public NotInheritable Class Claim
 
             If Not (NotificationTypeId.Equals(Guid.Empty)) Then
                 Return True
-            ElseIf ((Source Is Nothing) Or (Source IsNot Nothing AndAlso Source.Equals(String.Empty))) _
-                             And ((ClaimActivityCode Is Nothing) Or ((ClaimActivityCode IsNot Nothing) AndAlso
-                             ((ClaimActivityCode <> Codes.CLAIM_ACTIVITY__REPLACED) And
-                               ClaimActivityCode <> Codes.CLAIM_ACTIVITY__PENDING_REPLACEMENT))) Then
+            ElseIf ((Source Is Nothing) OrElse (Source IsNot Nothing AndAlso Source.Equals(String.Empty))) _
+                             AndAlso ((ClaimActivityCode Is Nothing) OrElse ((ClaimActivityCode IsNot Nothing) AndAlso
+                             ((ClaimActivityCode <> Codes.CLAIM_ACTIVITY__REPLACED) AndAlso ClaimActivityCode <> Codes.CLAIM_ACTIVITY__PENDING_REPLACEMENT))) Then
                 Return True
             Else
                 Return False
@@ -1393,7 +1392,7 @@ Public NotInheritable Class Claim
         Dim blnGVSCall As Boolean = False
         If _isDSCreator AndAlso IsFamilyDirty AndAlso Row.RowState <> DataRowState.Detached Then
             ' Create transaction log header if the service center is integrated with GVS 
-            If ServiceCenterObject IsNot Nothing AndAlso ServiceCenterObject.IntegratedWithGVS AndAlso ServiceCenterObject.IntegratedAsOf IsNot Nothing AndAlso (IsNew Or (Not IsNew AndAlso CreatedDateTime.Value >= ServiceCenterObject.IntegratedAsOf.Value)) Then
+            If ServiceCenterObject IsNot Nothing AndAlso ServiceCenterObject.IntegratedWithGVS AndAlso ServiceCenterObject.IntegratedAsOf IsNot Nothing AndAlso (IsNew OrElse (Not IsNew AndAlso CreatedDateTime.Value >= ServiceCenterObject.IntegratedAsOf.Value)) Then
                 If IsNew Then
                     ' Add a NEW extended claim status when open a new claim with GVS integrated
                     Dim newClaimStatusByGroupId As Guid = ClaimStatusByGroup.GetClaimStatusByGroupID(ClaimStatusDAL.NEW_EXTENDED_CLAIM_STATUS)
@@ -2096,7 +2095,7 @@ Public NotInheritable Class Claim
 
     Public Sub HandleGVSTransactionCreation(commentId As Guid, pIsNew As Nullable(Of Boolean)) Implements IInvoiceable.HandleGVSTransactionCreation
         ' Create transaction log header if the service center is integrated with GVS
-        If ServiceCenterObject IsNot Nothing AndAlso ServiceCenterObject.IntegratedWithGVS AndAlso ServiceCenterObject.IntegratedAsOf IsNot Nothing AndAlso (IsNew Or (Not IsNew AndAlso CreatedDateTime.Value >= ServiceCenterObject.IntegratedAsOf.Value)) Then
+        If ServiceCenterObject IsNot Nothing AndAlso ServiceCenterObject.IntegratedWithGVS AndAlso ServiceCenterObject.IntegratedAsOf IsNot Nothing AndAlso (IsNew OrElse (Not IsNew AndAlso CreatedDateTime.Value >= ServiceCenterObject.IntegratedAsOf.Value)) Then
             ' GVS Function Type = NEW_CLAIM or UPDATE_CLAIM
             ' Question: need to create the log for Replace or Service Warranty claim?
             Dim dal As New ClaimDAL
@@ -2481,7 +2480,7 @@ Public NotInheritable Class Claim
         Dim dal As New ClaimDAL
         Dim ds As DataSet = dal.GetClaimID(companyIds, claimNumber)
 
-        If (ds.Tables.Count > 0 And ds.Tables(0).Rows.Count > 0) Then
+        If (ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0) Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)
             claimID = New Guid(CType(dr(dal.COL_NAME_CLAIM_ID), Byte()))
         End If
@@ -3419,7 +3418,7 @@ Public NotInheritable Class Claim
             If obj.RepairDate Is Nothing Then Return True
 
             'if backend claim then both dates will be not null...then skip validation
-            If obj.RepairDate IsNot Nothing And obj.PickUpDate IsNot Nothing Then
+            If obj.RepairDate IsNot Nothing AndAlso obj.PickUpDate IsNot Nothing Then
                 Return True
             End If
 
@@ -3793,10 +3792,10 @@ Public NotInheritable Class Claim
     Public Overrides Function CanIssuesReopen() As Boolean
         Dim flag As Boolean = False
 
-        If (RepairDate Is Nothing And PickUpDate Is Nothing) Then
+        If (RepairDate Is Nothing AndAlso PickUpDate Is Nothing) Then
             Dim claimNumber As String = If(Me.ClaimNumber = String.Empty, "0", Me.ClaimNumber)
             If (ClaimInvoice.getPaymentsList(CompanyId, claimNumber).Count = 0) Then
-                If (StatusCode = Codes.CLAIM_STATUS__ACTIVE Or StatusCode = Codes.CLAIM_STATUS__PENDING Or StatusCode = Codes.CLAIM_STATUS__DENIED) Then
+                If (StatusCode = Codes.CLAIM_STATUS__ACTIVE OrElse StatusCode = Codes.CLAIM_STATUS__PENDING OrElse StatusCode = Codes.CLAIM_STATUS__DENIED) Then
                     flag = True
                 End If
             End If

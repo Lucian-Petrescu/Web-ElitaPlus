@@ -762,7 +762,7 @@ Public Class CertificateDAL
 
         whereClauseConditions &= Environment.NewLine & " AND  elp_utl_user.Has_access_to_data('" & networkId & "', d.company_id, d.dealer_id)  = 'Y'"
 
-        If (Not inforceDate.Equals(String.Empty)) Or (Not (serialNumberMask.Equals(String.Empty))) Then
+        If (Not inforceDate.Equals(String.Empty)) OrElse (Not (serialNumberMask.Equals(String.Empty))) Then
             If Not joinCondition = "" Then
                 selectStmt = selectStmt.Replace(DYNAMIC_JOIN_CLAUSE_PLACE_HOLDER, joinCondition)
             End If
@@ -1242,7 +1242,7 @@ Public Class CertificateDAL
         End If
 
         'REQ-743
-        If Not InvoiceNumberMask Is Nothing AndAlso Not InvoiceNumberMask.Equals(String.Empty) Then
+        If InvoiceNumberMask IsNot Nothing AndAlso Not InvoiceNumberMask.Equals(String.Empty) Then
             whereClauseConditions &= Environment.NewLine & " AND UPPER(C.INVOICE_NUMBER) = '" & InvoiceNumberMask.ToUpper & "'"
 
         Else
@@ -1408,7 +1408,7 @@ Public Class CertificateDAL
 
         Dim fromClauseConditions As String = ""
 
-        If Not forCancellation Is Nothing AndAlso forCancellation.Equals("Y") Then
+        If forCancellation IsNot Nothing AndAlso forCancellation.Equals("Y") Then
             fromClauseConditions = ",elp_contract contract, elp_product_code pc"
             whereClauseConditions &= "and contract.dealer_id = d.dealer_id" & Environment.NewLine &
                                     "and pc.dealer_id = d.dealer_id" & Environment.NewLine &
@@ -1504,7 +1504,7 @@ Public Class CertificateDAL
 
         bIsLikeClause = IsThereALikeClause(CertificateNumberMask, CertificateNumberMask, CertificateNumberMask)
 
-        If (Not CertificateNumberMask Is Nothing) Then
+        If (CertificateNumberMask IsNot Nothing) Then
             whereClauseConditions &= Environment.NewLine & "AND UPPER(C.CERT_NUMBER) = '" & CertificateNumberMask.ToUpper & "'"
         End If
 
@@ -1555,7 +1555,7 @@ Public Class CertificateDAL
         parameters = New OracleParameter() {New OracleParameter(COL_NAME_DEALER_ID, DealerId.ToByteArray),
                                             New OracleParameter(COL_NAME_CERT_NUMBER, CertificateNumber)}
 
-        If Not forCancellation Is Nothing AndAlso forCancellation.Equals("Y") Then
+        If forCancellation IsNot Nothing AndAlso forCancellation.Equals("Y") Then
             fromClauseConditions = ",elp_contract contract, elp_product_code pc"
             whereClauseConditions &= "and contract.dealer_id = d.dealer_id" & Environment.NewLine &
                                     "and pc.dealer_id = d.dealer_id" & Environment.NewLine &
@@ -1852,7 +1852,7 @@ Public Class CertificateDAL
             DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameter)
 
 
-            If (Not outputParameter(0).Value Is Nothing) Then
+            If (outputParameter(0).Value IsNot Nothing) Then
 
                 intMonthsPassed = outputParameter(0).Value
 
@@ -2253,15 +2253,15 @@ Public Class CertificateDAL
 
             DBHelper.ExecuteSpParamBindByName(sqlStmt, inParameters.ToArray, outParameters)
 
-            If Not outParameters(0).Value Is Nothing Then
+            If outParameters(0).Value IsNot Nothing Then
                 ErrMsg = outParameters(0).Value.ToString().Trim
-                If Not outParameters(1).Value Is Nothing Then
+                If outParameters(1).Value IsNot Nothing Then
                     ErrMsgUIProgCode = outParameters(1).Value.ToString().Trim
                 End If
-                If Not outParameters(2).Value Is Nothing Then
+                If outParameters(2).Value IsNot Nothing Then
                     ErrMsgParamList = outParameters(2).Value.ToString().Trim
                 End If
-                If Not outParameters(3).Value Is Nothing Then
+                If outParameters(3).Value IsNot Nothing Then
                     Try
                         ErrMsgParamCnt = CType(outParameters(3).Value, Integer)
                     Catch ex As Exception
@@ -2270,7 +2270,7 @@ Public Class CertificateDAL
                 End If
             End If
 
-            If ErrMsg.Trim = "" AndAlso (Not outParameters(4).Value Is Nothing) Then
+            If ErrMsg.Trim = "" AndAlso (outParameters(4).Value IsNot Nothing) Then
                 CertID = CType(outParameters(4).Value, Guid)
             End If
         Catch ex As Exception
@@ -2316,19 +2316,19 @@ Public Class CertificateDAL
 
             DBHelper.ExecuteSpParamBindByName(sqlStmt, inParameters.ToArray, outParameters)
 
-            If Not outParameters(0).Value Is Nothing Then
+            If outParameters(0).Value IsNot Nothing Then
                 oDealerCode = outParameters(0).Value.ToString().Trim
             End If
 
-            If Not outParameters(1).Value Is Nothing Then
+            If outParameters(1).Value IsNot Nothing Then
                 oCertificateNum = outParameters(1).Value.ToString().Trim
             End If
 
-            If Not outParameters(2).Value Is Nothing Then
+            If outParameters(2).Value IsNot Nothing Then
                 oErrCode = outParameters(2).Value.ToString().Trim
             End If
 
-            If Not outParameters(3).Value Is Nothing Then
+            If outParameters(3).Value IsNot Nothing Then
                 oErrMsg = outParameters(3).Value.ToString().Trim
             End If
 
@@ -2546,7 +2546,7 @@ Public Class CertificateDAL
 
 #Region "Overloaded Methods"
     Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
@@ -2561,11 +2561,11 @@ Public Class CertificateDAL
         Dim outputParameter(TOTAL_PARAM_OUT) As DBHelper.DBHelperParameter
         Dim selectStmt As String = Config("/SQL/VALIDATE_BR_DOCUMENT")
 
-        If Not docType Is Nothing Then
+        If docType IsNot Nothing Then
             inputParameters(IN_DOC_TYPE) = New DBHelper.DBHelperParameter(PARAM_NAME_DOCUMENT_TYPE, docType)
         End If
 
-        If Not IdentificationNumber Is Nothing Then
+        If IdentificationNumber IsNot Nothing Then
             inputParameters(IN_ID_NUMBER) = New DBHelper.DBHelperParameter(COL_NAME_IDENTIFICATION_NUMBER, IdentificationNumber)
         Else
             inputParameters(IN_ID_NUMBER) = New DBHelper.DBHelperParameter(COL_NAME_IDENTIFICATION_NUMBER, DBNull.Value)
@@ -3051,7 +3051,7 @@ Public Class CertificateDAL
             Else
 
 
-                If (Not outputParameter(0).Value Is Nothing) Then
+                If (outputParameter(0).Value IsNot Nothing) Then
 
                     If (outputParameter(0).Value.GetType Is GetType(String)) Then
 
@@ -3098,7 +3098,7 @@ Public Class CertificateDAL
             Else
 
 
-                If (Not outputParameter(0).Value Is Nothing) Then
+                If (outputParameter(0).Value IsNot Nothing) Then
 
                     If (outputParameter(0).Value.GetType Is GetType(String)) Then
 
@@ -3142,7 +3142,7 @@ Public Class CertificateDAL
 
             Select Case CType(outputParameter(1).Value, Integer)
                 Case 0
-                    If (Not outputParameter(0).Value Is Nothing) Then
+                    If (outputParameter(0).Value IsNot Nothing) Then
 
                         If (outputParameter(0).Value.GetType Is GetType(String)) Then
 

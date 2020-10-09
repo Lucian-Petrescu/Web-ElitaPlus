@@ -67,7 +67,7 @@ Public Class ClaimAuthDetailDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
@@ -89,7 +89,7 @@ Public Class ClaimAuthDetailDAL
             Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Deleted)
             oClaimDAL.Update(familyDataset, tr, DataRowState.Deleted)
 
-            If Not familyDataset.Tables(ClaimStatusDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(ClaimStatusDAL.TABLE_NAME).Rows.Count > 0 Then
+            If familyDataset.Tables(ClaimStatusDAL.TABLE_NAME) IsNot Nothing AndAlso familyDataset.Tables(ClaimStatusDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim oClaimStatusDAL As New ClaimStatusDAL
                 oClaimStatusDAL.Update(familyDataset.Tables(ClaimStatusDAL.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
             End If

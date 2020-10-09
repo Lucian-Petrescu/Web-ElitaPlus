@@ -110,7 +110,7 @@ Namespace SpecializedServices.Tisa
             End If
 
 
-            If (response.CustomerInfo.Count = 0 Or response Is Nothing) Then
+            If (response.CustomerInfo.Count = 0 OrElse response Is Nothing) Then
                 Throw New FaultException(Of CertificateNotFoundFault)(New CertificateNotFoundFault(), "Certificate not found")
             End If
 

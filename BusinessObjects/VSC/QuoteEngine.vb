@@ -475,11 +475,11 @@ Public Class QuoteEngine
     End Function
 
     Private Function RemoveExcessData(xmlStringOutput As String) As String
-        xmlStringOutput = Regex.Replace(xmlStringOutput, 
-                                        "<QUOTE_ITEM_ID>[^>]+</QUOTE_ITEM_ID>|<QUOTE_ITEM_PARENT_ID>[^>]+</QUOTE_ITEM_PARENT_ID>|<Quote_Item_id_String>[^>]+</Quote_Item_id_String>|<QUOTE_ID>[^>]+</QUOTE_ID>", 
+        xmlStringOutput = Regex.Replace(xmlStringOutput,
+                                        "<QUOTE_ITEM_ID>[^>]+</QUOTE_ITEM_ID>|<QUOTE_ITEM_PARENT_ID>[^>]+</QUOTE_ITEM_PARENT_ID>|<Quote_Item_id_String>[^>]+</Quote_Item_id_String>|<QUOTE_ID>[^>]+</QUOTE_ID>",
                                         String.Empty,
-                                        RegexOptions.None, 
-                                        new TimeSpan(0,0,0,0, 100))
+                                        RegexOptions.None,
+                                        TimeSpan.FromSeconds(.5))
         Return xmlStringOutput
     End Function
 

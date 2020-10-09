@@ -370,7 +370,7 @@ Public Class PriceGroup
             '               (Today.Subtract(pgDetailBO.EffectiveDate.Value).Days < minDaysDifference)) Then
             'This is the Closest Effective Date so far
             '          minDaysDifference = Today.Subtract(pgDetailBO.EffectiveDate.Value).Days
-            If ProductPrice >= pgDetailBO.PriceBandRangeFrom.Value And ProductPrice <= pgDetailBO.PriceBandRangeTo.Value Then
+            If ProductPrice >= pgDetailBO.PriceBandRangeFrom.Value AndAlso ProductPrice <= pgDetailBO.PriceBandRangeTo.Value Then
                 effectivePGDetailBO = pgDetailBO
             End If
         Next

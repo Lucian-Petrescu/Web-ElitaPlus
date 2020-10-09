@@ -32,14 +32,14 @@ Public Class OcTemplateParams
         Dataset = familyDS
         Load()
     End Sub
-    
+
     Public Sub New(row As DataRow)
         MyBase.New(False)
         Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
-    Protected Sub Load()             
+    Protected Sub Load()
         Try
             Dim dal As New OcTemplateParamsDAL
             If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
@@ -49,15 +49,15 @@ Public Class OcTemplateParams
             Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
             Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
-            Initialize() 
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Initialize()
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Protected Sub Load(id As Guid)               
+    Protected Sub Load(id As Guid)
         Try
-            Dim dal As New OcTemplateParamsDAL            
+            Dim dal As New OcTemplateParamsDAL
             If _isDSCreator Then
                 If Row IsNot Nothing Then
                     Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
@@ -74,7 +74,7 @@ Public Class OcTemplateParams
             If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
@@ -82,13 +82,13 @@ Public Class OcTemplateParams
 
 #Region "Private Members"
     'Initialization code for new objects
-    Private Sub Initialize()        
+    Private Sub Initialize()
     End Sub
 #End Region
 
 
 #Region "Properties"
-    
+
     'Key Property
     Public ReadOnly Property Id As Guid
         Get
@@ -99,7 +99,7 @@ Public Class OcTemplateParams
             End If
         End Get
     End Property
-	
+
     <ValueMandatory("")> _
     Public Property OcTemplateId As Guid
         Get
@@ -115,9 +115,9 @@ Public Class OcTemplateParams
             SetValue(OcTemplateParamsDAL.COL_NAME_OC_TEMPLATE_ID, Value)
         End Set
     End Property
-	
-	
-    <ValueMandatory(""),ValidStringLength("", Max:=600)> _
+
+
+    <ValueMandatory(""), ValidStringLength("", Max:=600)> _
     Public Property ParamName As String
         Get
             CheckDeleted()
@@ -277,7 +277,7 @@ Public Class OcTemplateParams
 #End Region
 
 #Region "Public Members"
-    Public Overrides Sub Save()         
+    Public Overrides Sub Save()
         Try
             MyBase.Save()
             If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
@@ -291,7 +291,7 @@ Public Class OcTemplateParams
                     Load(objId)
                 End If
             End If
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
@@ -302,7 +302,7 @@ Public Class OcTemplateParams
         Try
             Dim dal As New OcTemplateParamsDAL
             Return New DataView(dal.LoadList(templateId, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
@@ -375,7 +375,6 @@ Public Class OcTemplateParams
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As OcTemplateParams = CType(objectToValidate, OcTemplateParams)
-            Dim emailExpression As New System.Text.RegularExpressions.Regex("^[_a-z0-9-]+(.[a-z0-9-]+)@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$")
 
             If Not String.IsNullOrEmpty(obj.ParamDataTypeXcd) AndAlso Not String.IsNullOrEmpty(obj.ParamValue) Then
                 Select Case obj.ParamDataTypeXcd

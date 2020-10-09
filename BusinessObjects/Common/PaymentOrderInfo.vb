@@ -280,7 +280,7 @@
 
             Dim objCountry As New Country(obj.CountryID)
             If LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Brasil _
-                 And obj.ValidateFieldsforBR = True Then
+                 AndAlso obj.ValidateFieldsforBR = True Then
 
                 'Bank Number
                 If obj.IsEmptyString(obj.BankName) Then
@@ -313,7 +313,7 @@
 
             Dim objCountry As New Country(obj.CountryID)
             If LookupListNew.GetCodeFromId(LookupListCache.LK_VALIDATE_BANK_INFO, objCountry.ValidateBankInfoId) = Codes.Country_Code_Brasil _
-                 And obj.ValidateFieldsforBR = True Then
+                 AndAlso obj.ValidateFieldsforBR = True Then
 
                 'Bank Id
                 If obj.IsEmptyString(obj.Bank_Id) Then

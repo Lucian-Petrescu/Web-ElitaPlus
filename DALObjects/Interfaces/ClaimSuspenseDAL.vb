@@ -120,7 +120,7 @@ Public Class ClaimSuspenseDAL
         Dim selectStmt As String = Config("/SQL/PROCESS")
 
         'Ticket # 1054112 - Remove the problem descriptio ncolumn from the dataset prior to passing back to oracle.
-        If Not ds.Tables(0).Columns(COL_NAME_PROBLEM_DESCRIPTION) Is Nothing Then
+        If ds.Tables(0).Columns(COL_NAME_PROBLEM_DESCRIPTION) IsNot Nothing Then
             ds.Tables(0).Columns.Remove(COL_NAME_PROBLEM_DESCRIPTION)
         End If
 

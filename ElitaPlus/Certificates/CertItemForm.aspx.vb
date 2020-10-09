@@ -1,6 +1,7 @@
 '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE BOEditingWebFormCodeBehind.cst (11/9/2004)  ********************
 
 Imports System.Collections.Generic
+Imports System.Diagnostics
 Imports System.Web.Services
 Imports System.Threading
 Imports Assurant.Elita.Web.Forms
@@ -17,24 +18,24 @@ Namespace Certificates
         Inherits ElitaPlusPage
         Protected WithEvents ErrorCtrl As ErrorController
 
-        Protected WithEvents LabelCoverageTypeId As System.Web.UI.WebControls.Label
-        Protected WithEvents cboCoverageTypeId As System.Web.UI.WebControls.DropDownList
-        Protected WithEvents ManufacturerMissinsLabel As System.Web.UI.WebControls.Label
-        Protected WithEvents ButtonPolicyInvoiceInfo As System.Web.UI.WebControls.Button
-        Protected WithEvents moWarrantySoldOnLabel As System.Web.UI.WebControls.Label
-        Protected WithEvents moDealerNameLabel As System.Web.UI.WebControls.Label
-        Protected WithEvents TableVSC As System.Web.UI.HtmlControls.HtmlTable
-        Protected WithEvents TDYear As System.Web.UI.HtmlControls.HtmlTableCell
+        Protected WithEvents LabelCoverageTypeId As Label
+        Protected WithEvents cboCoverageTypeId As DropDownList
+        Protected WithEvents ManufacturerMissinsLabel As Label
+        Protected WithEvents ButtonPolicyInvoiceInfo As Button
+        Protected WithEvents moWarrantySoldOnLabel As Label
+        Protected WithEvents moDealerNameLabel As Label
+        Protected WithEvents TableVSC As HtmlTable
+        Protected WithEvents TDYear As HtmlTableCell
 
 
 #Region " Web Form Designer Generated Code "
 
         'This call is required by the Web Form Designer.
-        <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+        <DebuggerStepThrough()> Private Sub InitializeComponent()
 
         End Sub
 
-        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -278,7 +279,7 @@ Namespace Certificates
                     Me.State.certificateCoverageId = moCertItemCoverage.Id
 
                     Me.State.MyBO = New CertItem(moCertItemCoverage.CertItemId)
-                    Me.State.certificateItemId = Me.State.MyBO.Id
+                    Me.State.certificateItemId = State.MyBO.Id
 
                     moCertificate = Me.State.MyBO.GetCertificate(Me.State.MyBO.CertId)
                     Me.State.certificateId = moCertificate.Id
@@ -353,7 +354,7 @@ Namespace Certificates
             End If
         End Sub
 
-        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             If mbIsFirstPass = True Then
                 mbIsFirstPass = False
@@ -444,7 +445,7 @@ Namespace Certificates
                     End If
                 End If
 
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
                 CleanPopupInput()
                 HandleErrors(ex, MasterPage.MessageController)
@@ -1097,7 +1098,7 @@ Namespace Certificates
             Try
                 If State IsNot Nothing Then
                     'Clean after consuming the action
-                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+                    State.ActionInProgress = DetailPageCommand.Nothing_
                     HiddenSaveChangesPromptResponse.Value = ""
                 End If
             Catch ex As Exception
@@ -1144,48 +1145,48 @@ Namespace Certificates
 
 
             Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
-            Dim actionInProgress As ElitaPlusPage.DetailPageCommand = State.ActionInProgress
+            Dim actionInProgress As DetailPageCommand = State.ActionInProgress
             CleanPopupInput()
             Try
                 If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
-                    If actionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
+                    If actionInProgress <> DetailPageCommand.BackOnErr Then
                         State.MyBO.Save()
                     End If
                     Select Case actionInProgress
-                        Case ElitaPlusPage.DetailPageCommand.Back
+                        Case DetailPageCommand.Back
                             'arf 12-20-04 'Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO))
                             State.boChanged = True
-                            Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.boChanged)
+                            Dim retObj As ReturnType = New ReturnType(DetailPageCommand.Back, State.MyBO, State.boChanged)
                             NavController.Navigate(Me, "back", retObj) 'arf 12-20-04  
-                        Case ElitaPlusPage.DetailPageCommand.New_
+                        Case DetailPageCommand.New_
                             'Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
                             MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
                             CreateNew()
-                        Case ElitaPlusPage.DetailPageCommand.NewAndCopy
+                        Case DetailPageCommand.NewAndCopy
                             'Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
                             MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
                             CreateNewWithCopy()
-                        Case ElitaPlusPage.DetailPageCommand.BackOnErr
+                        Case DetailPageCommand.BackOnErr
                             'arf 12-20-04 'Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyBO))
-                            Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.boChanged)
+                            Dim retObj As ReturnType = New ReturnType(DetailPageCommand.Back, State.MyBO, State.boChanged)
                             NavController.Navigate(Me, "back", retObj) 'arf 12-20-04  
-                        Case ElitaPlusPage.DetailPageCommand.Redirect_
+                        Case DetailPageCommand.Redirect_
                             'pm 06-07-06 '
                             LocateServiceCenter()
-                        Case ElitaPlusPage.DetailPageCommand.Cancel
+                        Case DetailPageCommand.Cancel
                             NavController.Navigate(Me, "cancel", State.certificateId)
                     End Select
                 ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
                     Select Case actionInProgress
-                        Case ElitaPlusPage.DetailPageCommand.Back
+                        Case DetailPageCommand.Back
                             'arf 12-20-04 'Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO))
-                            Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.boChanged)
+                            Dim retObj As ReturnType = New ReturnType(DetailPageCommand.Back, State.MyBO, State.boChanged)
                             NavController.Navigate(Me, "back", retObj) 'arf 12-20-04  
-                        Case ElitaPlusPage.DetailPageCommand.New_
+                        Case DetailPageCommand.New_
                             CreateNew()
-                        Case ElitaPlusPage.DetailPageCommand.NewAndCopy
+                        Case DetailPageCommand.NewAndCopy
                             CreateNewWithCopy()
-                        Case ElitaPlusPage.DetailPageCommand.BackOnErr
+                        Case DetailPageCommand.BackOnErr
                             'Me.ErrorCtrl.AddErrorAndShow(Me.State.LastErrMsg)
                             MasterPage.MessageController.AddErrorAndShow(State.LastErrMsg)
                     End Select
@@ -1377,33 +1378,33 @@ Namespace Certificates
 
 #Region "Button Clicks"
 
-        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             Try
                 moCertificate = State.MyBO.GetCertificate(State.certificateId)
                 PopulateBOsFormFrom()
                 If State.MyBO.IsFamilyDirty Then
                     DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                    State.ActionInProgress = DetailPageCommand.Back
                 Else
                     'arf 12-20-04  'Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO))
                     'Me.NavController.FlowSession(FlowSessionKeys.SESSION_SOFTQUESTION_COMMENTADDED) = Nothing                    
-                    Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.boChanged)
+                    Dim retObj As ReturnType = New ReturnType(DetailPageCommand.Back, State.MyBO, State.boChanged)
                     If NavController.PrevNavState.Name = "LOCATE_ELIGIBLE_COVERAGES" Then
                         NavController.Navigate(Me, "back_to_locate_eligible_coverage", retObj)
                     Else
                         NavController.Navigate(Me, "back", retObj) 'arf 12-20-04  
                     End If
                 End If
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
                 DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+                State.ActionInProgress = DetailPageCommand.BackOnErr
                 State.LastErrMsg = MasterPage.MessageController.Text
             End Try
         End Sub
 
-        Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
+        Private Sub btnSave_WRITE_Click(sender As Object, e As EventArgs) Handles btnSave_WRITE.Click
             Try
                 moCertificate = State.MyBO.GetCertificate(State.certificateId)
                 moCertItemCoverage = New CertItemCoverage(State.certificateCoverageId)
@@ -1449,7 +1450,7 @@ Namespace Certificates
             End Try
         End Sub
 
-        Private Sub btnUndo_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_Write.Click
+        Private Sub btnUndo_Write_Click(sender As Object, e As EventArgs) Handles btnUndo_Write.Click
             Try
                 If Not State.MyBO.IsNew Then
                     'Reload from the DB
@@ -1485,7 +1486,7 @@ Namespace Certificates
         End Sub
 
 
-        Private Sub btnEdit_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnEdit_WRITE.Click
+        Private Sub btnEdit_WRITE_Click(sender As Object, e As EventArgs) Handles btnEdit_WRITE.Click
             Try
                 IsEdit = True
                 EnableDisableFields()
@@ -1522,12 +1523,12 @@ Namespace Certificates
             'DEF-2035
             callCenterAgent = ElitaPlusPrincipal.Current.IsInRole(CertItemForm.CallCenterAgent)
             callCenterSupervisor = ElitaPlusPrincipal.Current.IsInRole(CertItemForm.CallCenterSupervisor)
-            claimsRole = ElitaPlusPrincipal.Current.IsInRole(CertItemForm.Claims)
+            claimsRole = ElitaPlusPrincipal.Current.IsInRole(Claims)
             claimsAnalyst = ElitaPlusPrincipal.Current.IsInRole(CertItemForm.ClaimsAnalyst)
             claimSupport = ElitaPlusPrincipal.Current.IsInRole(CertItemForm.ClaimSupport)
-            commentsRole = ElitaPlusPrincipal.Current.IsInRole(CertItemForm.Comments)
-            csrRole = ElitaPlusPrincipal.Current.IsInRole(CertItemForm.CSR)
-            csr2Role = ElitaPlusPrincipal.Current.IsInRole(CertItemForm.CSR2)
+            commentsRole = ElitaPlusPrincipal.Current.IsInRole(Comments)
+            csrRole = ElitaPlusPrincipal.Current.IsInRole(CSR)
+            csr2Role = ElitaPlusPrincipal.Current.IsInRole(CSR2)
             countySuperUser = ElitaPlusPrincipal.Current.IsInRole(CertItemForm.CountySuperUser)
             otherAllowedRoles = callCenterAgent OrElse callCenterSupervisor OrElse claimsRole OrElse claimsAnalyst OrElse claimSupport OrElse commentsRole OrElse csrRole OrElse csr2Role OrElse countySuperUser
             'End of DEF-2035
@@ -1554,7 +1555,7 @@ Namespace Certificates
                     If oContract Is Nothing Then
                         If Not State.noContractFoundErrorAdded Then
                             State.noContractFoundErrorAdded = True
-                            Dim errors() As ValidationError = {New ValidationError(ElitaPlus.Common.ErrorCodes.ERR_CONTRACT_NOT_FOUND, GetType(Contract), Nothing, "", Nothing)}
+                            Dim errors() As ValidationError = {New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.ERR_CONTRACT_NOT_FOUND, GetType(Contract), Nothing, "", Nothing)}
                             Throw New BOValidationException(errors, GetType(Contract).FullName, Nothing)
                         End If
                     ElseIf Not (IsManufacturerMissing()) AndAlso Not (IsZipMissing()) AndAlso Not (IsDepreciationScheduleNotDefined(oContract.Id)) Then
@@ -1606,12 +1607,12 @@ Namespace Certificates
                 'DEF-2035
                 callCenterAgent = ElitaPlusPrincipal.Current.IsInRole(CertItemForm.CallCenterAgent)
                 callCenterSupervisor = ElitaPlusPrincipal.Current.IsInRole(CertItemForm.CallCenterSupervisor)
-                claimsRole = ElitaPlusPrincipal.Current.IsInRole(CertItemForm.Claims)
+                claimsRole = ElitaPlusPrincipal.Current.IsInRole(Claims)
                 claimsAnalyst = ElitaPlusPrincipal.Current.IsInRole(CertItemForm.ClaimsAnalyst)
                 claimSupport = ElitaPlusPrincipal.Current.IsInRole(CertItemForm.ClaimSupport)
-                commentsRole = ElitaPlusPrincipal.Current.IsInRole(CertItemForm.Comments)
-                csrRole = ElitaPlusPrincipal.Current.IsInRole(CertItemForm.CSR)
-                csr2Role = ElitaPlusPrincipal.Current.IsInRole(CertItemForm.CSR2)
+                commentsRole = ElitaPlusPrincipal.Current.IsInRole(Comments)
+                csrRole = ElitaPlusPrincipal.Current.IsInRole(CSR)
+                csr2Role = ElitaPlusPrincipal.Current.IsInRole(CSR2)
                 countySuperUser = ElitaPlusPrincipal.Current.IsInRole(CertItemForm.CountySuperUser)
                 otherAllowedRoles = callCenterAgent OrElse callCenterSupervisor OrElse claimsRole OrElse claimsAnalyst OrElse claimSupport OrElse commentsRole OrElse csrRole OrElse csr2Role OrElse countySuperUser
 
@@ -1629,7 +1630,7 @@ Namespace Certificates
         End Function
 
 
-        Private Sub ButtonLocateCenter_Click(sender As System.Object, e As System.EventArgs) Handles ButtonLocateCenter.Click
+        Private Sub ButtonLocateCenter_Click(sender As Object, e As EventArgs) Handles ButtonLocateCenter.Click
 
             Try
                 Dim msg As String
@@ -1658,7 +1659,7 @@ Namespace Certificates
                     End If
                 Else
                     DisplayMessage(msg, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Redirect_
+                    State.ActionInProgress = DetailPageCommand.Redirect_
                 End If
             Catch ex As Exception
                 'Me.HandleErrors(ex, Me.ErrorCtrl)
@@ -1666,7 +1667,7 @@ Namespace Certificates
             End Try
         End Sub
 
-        Private Sub ButtonSoftQuestions_Click(sender As Object, e As System.EventArgs) Handles ButtonSoftQuestions.Click
+        Private Sub ButtonSoftQuestions_Click(sender As Object, e As EventArgs) Handles ButtonSoftQuestions.Click
             Try
                 'Me.callPage(SoftQuestionsList.URL, New SoftQuestionsList.Parameters(Me.State.MyBO.RiskTypeId, Me.State.certificateId))
 
@@ -1685,7 +1686,7 @@ Namespace Certificates
             End Try
         End Sub
 
-        Protected Sub btnDenyClaim_Click(sender As System.Object, e As System.EventArgs) Handles btnDenyClaim.Click
+        Protected Sub btnDenyClaim_Click(sender As Object, e As EventArgs) Handles btnDenyClaim.Click
             Try
                 NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_COVERAGE) = State._moCertItemCoverage
                 NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_ITEM) = State.MyBO
@@ -1699,7 +1700,7 @@ Namespace Certificates
         Protected Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
             Try
                 NavController.Navigate(Me, "back")
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
@@ -1742,7 +1743,7 @@ Namespace Certificates
 #End Region
 
 #Region "Page Control Events"
-        Private Sub cboMethodOfRepair_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboMethodOfRepair.SelectedIndexChanged
+        Private Sub cboMethodOfRepair_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboMethodOfRepair.SelectedIndexChanged
             Try
                 PopulateFormDeductibleFormBOs(GetSelectedItem(cboMethodOfRepair))
             Catch ex As Exception

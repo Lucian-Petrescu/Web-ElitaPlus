@@ -304,7 +304,7 @@ Public Class AcselXToElitaClaimFileLoad
             End If
         Next
 
-        If sOutcome.Contains("Y") And iQuestionCount = claimIssue.ClaimIssueQuestionListByDealer(claim.Dealer.Id).Table.Rows.Count Then
+        If sOutcome.Contains("Y") AndAlso iQuestionCount = claimIssue.ClaimIssueQuestionListByDealer(claim.Dealer.Id).Table.Rows.Count Then
             sStatus = STATUS_RESOLVED
         End If
         If sOutcome.Contains("P") Then

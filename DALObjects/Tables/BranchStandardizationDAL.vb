@@ -114,7 +114,7 @@ Public Class BranchStandardizationDAL
         Dim parameters() As OracleParameter
         Dim ds As New DataSet
 
-        If (Not description Is Nothing AndAlso Not (description.Equals(String.Empty))) AndAlso (FormatSearchMask(description)) Then
+        If (description IsNot Nothing AndAlso Not (description.Equals(String.Empty))) AndAlso (FormatSearchMask(description)) Then
             selectStmt &= Environment.NewLine & "AND brchstand." & COL_NAME_DEALER_BRANCH_CODE & description
         End If
 

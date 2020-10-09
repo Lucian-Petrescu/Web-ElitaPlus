@@ -95,7 +95,7 @@ Public Class PickupListHeaderDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
@@ -123,7 +123,7 @@ Public Class PickupListHeaderDAL
 
         Try
             ds = GetNewOpenClaimPickList(ds, routeId, companies)
-            If ds.Tables.Count > 0 AndAlso Not ds.Tables(TABLE_NAME_PICKLIST) Is Nothing AndAlso ds.Tables(TABLE_NAME_PICKLIST).Rows.Count > 1 Then
+            If ds.Tables.Count > 0 AndAlso ds.Tables(TABLE_NAME_PICKLIST) IsNot Nothing AndAlso ds.Tables(TABLE_NAME_PICKLIST).Rows.Count > 1 Then
                 doNotCatch = True
                 Throw New ElitaPlusException("GetNewOpenClaims ", Common.ErrorCodes.MORE_THAN_ONE_PICKLIST_FOUND)
             End If
@@ -633,7 +633,7 @@ Public Class PickupListHeaderDAL
 
         Try
             ds = GetClaimsPickListHeader(ds, HeaderID, StoreServiceCenterID, ServiceCenterID, companies)
-            If ds.Tables.Count > 0 AndAlso Not ds.Tables(TABLE_NAME_PICKLIST) Is Nothing AndAlso ds.Tables(TABLE_NAME_PICKLIST).Rows.Count > 1 Then
+            If ds.Tables.Count > 0 AndAlso ds.Tables(TABLE_NAME_PICKLIST) IsNot Nothing AndAlso ds.Tables(TABLE_NAME_PICKLIST).Rows.Count > 1 Then
                 doNotCatch = True
                 Throw New ElitaPlusException("GetClaimsByPickList ", Common.ErrorCodes.MORE_THAN_ONE_PICKLIST_FOUND)
             End If

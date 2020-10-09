@@ -41,14 +41,14 @@ Namespace AppServices.SA
                                                                                                           " : " & request.CompanyCode)
             End If
 
-            If (Not String.IsNullOrEmpty(request.DealerCode)) And (GetDealerId(companyId, request.DealerCode).Equals(Guid.Empty)) Then
+            If (Not String.IsNullOrEmpty(request.DealerCode)) AndAlso (GetDealerId(companyId, request.DealerCode).Equals(Guid.Empty)) Then
                 Throw New FaultException(Of DealerNotFoundFault)(New DealerNotFoundFault(), TranslationBase.TranslateLabelOrMessage(ERR_DEALER_NOT_FOUND) &
                                                                                                           " : " & request.DealerCode)
             Else
                 DealerId = GetDealerId(companyId, request.DealerCode)
             End If
 
-            If (String.IsNullOrEmpty(request.NewSKU)) AndAlso (String.IsNullOrEmpty(request.NewMake) Or String.IsNullOrEmpty(request.NewModel)) Then
+            If (String.IsNullOrEmpty(request.NewSKU)) AndAlso (String.IsNullOrEmpty(request.NewMake) OrElse String.IsNullOrEmpty(request.NewModel)) Then
                 Throw New FaultException(Of Faults.InvalidRequestFault)(New Faults.InvalidRequestFault("SKU_MAKE_MODEL_ERROR", TranslationBase.TranslateLabelOrMessage("SKU_MAKE_MODEL_ERROR")), "Invalid Request")
             End If
 
@@ -100,7 +100,7 @@ Namespace AppServices.SA
                 Dim endorseRequest As EndorsePolicyRequest = New EndorsePolicyRequest
                 Dim iteminfo As New UpdateItemInfo()
 
-                If Not (String.IsNullOrEmpty(request.NewSKU)) And (ValidateSku(DealerId, request.NewSKU)) = True Then
+                If Not (String.IsNullOrEmpty(request.NewSKU)) AndAlso (ValidateSku(DealerId, request.NewSKU)) = True Then
                     iteminfo.Manufacturer = _make
                 ElseIf Not String.IsNullOrEmpty(request.NewMake) Then
                     iteminfo.Manufacturer = request.NewMake
@@ -108,7 +108,7 @@ Namespace AppServices.SA
                     Throw New FaultException(Of Faults.InvalidRequestFault)(New Faults.InvalidRequestFault("SKU_MAKE_MODEL_ERROR", TranslationBase.TranslateLabelOrMessage("SKU_MAKE_MODEL_ERROR")), "Invalid Request")
                 End If
 
-                If Not (String.IsNullOrEmpty(request.NewSKU)) And (ValidateSku(DealerId, request.NewSKU)) = True Then
+                If Not (String.IsNullOrEmpty(request.NewSKU)) AndAlso (ValidateSku(DealerId, request.NewSKU)) = True Then
                     iteminfo.Model = _model
                 ElseIf Not String.IsNullOrEmpty(request.NewModel) Then
                     iteminfo.Model = request.NewModel

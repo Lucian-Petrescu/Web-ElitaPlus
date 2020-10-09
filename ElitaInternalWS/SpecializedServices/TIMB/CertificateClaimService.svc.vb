@@ -176,7 +176,7 @@ Namespace SpecializedServices.Timb
         End Function
 
         Private Function GetStringValue(fieldValue As Object) As String
-            Return If(fieldValue Is Nothing Or fieldValue Is DBNull.Value, String.Empty, fieldValue.ToString)
+            Return If(fieldValue Is Nothing OrElse fieldValue Is DBNull.Value, String.Empty, fieldValue.ToString)
         End Function
 
     End Class

@@ -906,7 +906,7 @@ Public Class FelitaEngine
             xnBatch = xmlTempDoc.CreateElement(DATA_COL_NAME_TIMESTAMP, xmlTempDoc.FirstChild.NamespaceURI)
             xnBatch.InnerText = TimeStamp.ToString
             For Each xn As XmlNode In xmlTempDoc.FirstChild.ChildNodes
-                If xn.Name.Contains(AcctTransLogDAL.Table_LINEITEM) Or xn.Name.Contains(AcctTransLogDAL.TABLE_POSTINGPARAMETERS) Then
+                If xn.Name.Contains(AcctTransLogDAL.Table_LINEITEM) OrElse xn.Name.Contains(AcctTransLogDAL.TABLE_POSTINGPARAMETERS) Then
                     xn.AppendChild(xnBatch.Clone)
                 End If
             Next
@@ -1105,7 +1105,7 @@ Public Class FelitaEngine
                 Exit Select
             Case CType(ProcessMethod.HOLD_ALL, String)
                 For i As Integer = 0 To FileSet.Count - 1
-                    If CType(FileSet(i), AccountingFiles).FileSubType = FileSubType.AP Or CType(FileSet(i), AccountingFiles).FileSubType = FileSubType.GL Then
+                    If CType(FileSet(i), AccountingFiles).FileSubType = FileSubType.AP OrElse CType(FileSet(i), AccountingFiles).FileSubType = FileSubType.GL Then
                         _acctTransmission = New AcctTransmission(CType(FileSet(i), AccountingFiles).AcctTransmissionId, True)
                         _acctTransmission.StatusId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), AcctTransmission.STATUS_CODE_PENDING)
                         _acctTransmission.Save()
@@ -1116,7 +1116,7 @@ Public Class FelitaEngine
                 Next
             Case CType(ProcessMethod.HOLD_AP, String)
                 For i As Integer = 0 To FileSet.Count - 1
-                    If (CType(FileSet(i), AccountingFiles).FileSubType = FileSubType.AP) OrElse (CType(FileSet(i), AccountingFiles).FileSubType = FileSubType.GL And _acctExtension = FELITA_PREFIX) Then
+                    If (CType(FileSet(i), AccountingFiles).FileSubType = FileSubType.AP) OrElse (CType(FileSet(i), AccountingFiles).FileSubType = FileSubType.GL AndAlso _acctExtension = FELITA_PREFIX) Then
                         _acctTransmission = New AcctTransmission(CType(FileSet(i), AccountingFiles).AcctTransmissionId, True)
                         _acctTransmission.StatusId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), AcctTransmission.STATUS_CODE_PENDING)
                         _acctTransmission.Save()
@@ -1127,7 +1127,7 @@ Public Class FelitaEngine
                 Next
             Case CType(ProcessMethod.HOLD_GL, String)
                 For i As Integer = 0 To FileSet.Count - 1
-                    If (CType(FileSet(i), AccountingFiles).FileSubType = FileSubType.GL) OrElse (CType(FileSet(i), AccountingFiles).FileSubType = FileSubType.AP And _acctExtension = FELITA_PREFIX) Then
+                    If (CType(FileSet(i), AccountingFiles).FileSubType = FileSubType.GL) OrElse (CType(FileSet(i), AccountingFiles).FileSubType = FileSubType.AP AndAlso _acctExtension = FELITA_PREFIX) Then
                         _acctTransmission = New AcctTransmission(CType(FileSet(i), AccountingFiles).AcctTransmissionId, True)
                         _acctTransmission.StatusId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCOUNTING_TRANS_STATUS, ElitaPlusIdentity.Current.ActiveUser.LanguageId), AcctTransmission.STATUS_CODE_PENDING)
                         _acctTransmission.Save()
@@ -1217,9 +1217,7 @@ Public Class FelitaEngine
 
                 For i As Integer = 0 To FileSet.Count - 1
 
-                    If CType(FileSet(i), AccountingFiles).FileSubType = FileSubType.AP1 Or
-                        CType(FileSet(i), AccountingFiles).FileSubType = FileSubType.AP2 Or
-                        _acctExtension.Equals(FELITA_PREFIX) Then
+                    If CType(FileSet(i), AccountingFiles).FileSubType = FileSubType.AP1 OrElse CType(FileSet(i), AccountingFiles).FileSubType = FileSubType.AP2 OrElse _acctExtension.Equals(FELITA_PREFIX) Then
 
                         'Get an instance of the file
                         If Not FileSet(i).FileType = FileType.trigger Then

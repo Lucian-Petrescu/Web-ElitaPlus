@@ -54,7 +54,7 @@ Public Class ProductGroupDAL
         Dim bIsLikeClause As Boolean = False
 
 
-        If (Not productCodeId.Equals(String.Empty) AndAlso Not New Guid(productCodeId).Equals(Guid.Empty)) And (Not riskTypeId.Equals(String.Empty) AndAlso Not New Guid(riskTypeId).Equals(Guid.Empty)) Then
+        If (Not productCodeId.Equals(String.Empty) AndAlso Not New Guid(productCodeId).Equals(Guid.Empty)) AndAlso (Not riskTypeId.Equals(String.Empty) AndAlso Not New Guid(riskTypeId).Equals(Guid.Empty)) Then
             inClausecondition &= Environment.NewLine & " inner join elp_product_code pc on pg.dealer_id = pc.dealer_id" & _
                                                     " inner join elp_product_group_detail pgd" & _
                                                     " on pg.product_group_id = pgd.product_group_id and pgd.product_code_id = pc.product_code_id" & _
@@ -77,7 +77,7 @@ Public Class ProductGroupDAL
         End If
 
         groupName = groupName.Trim()
-        If (Not groupName.Equals(String.Empty) Or Not groupName = "") AndAlso (FormatSearchMask(groupName)) Then
+        If (Not groupName.Equals(String.Empty) OrElse Not groupName = "") AndAlso (FormatSearchMask(groupName)) Then
             whereClauseConditions &= Environment.NewLine & "AND " & "Upper(pg.PRODUCT_GROUP_NAME)" & groupName.ToUpper
         End If
 
@@ -195,7 +195,7 @@ Public Class ProductGroupDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_PRODUCT_GROUP_NAME) Is Nothing Then
+        If ds.Tables(TABLE_PRODUCT_GROUP_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_PRODUCT_GROUP_NAME), Transaction, changesFilter)
         End If
     End Sub

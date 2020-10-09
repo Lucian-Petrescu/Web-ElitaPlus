@@ -145,7 +145,7 @@ Public Class QuestionListDAL
             whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & COL_NAME_CODE & ")" & code.ToUpper
             bIsWhereClause = True
         End If
-        If (Not String.IsNullOrEmpty(effective) And Not String.IsNullOrEmpty(expiration)) Then
+        If (Not String.IsNullOrEmpty(effective) AndAlso Not String.IsNullOrEmpty(expiration)) Then
             whereClauseConditions &= " AND " & Environment.NewLine & "TO_DATE('" & DateHelper.GetDateValue(expiration).ToString("MM/dd/yyyy HH:mm:ss") & "', 'mm-dd-yyyy hh24:mi:ss') BETWEEN " & COL_NAME_EFFECTIVE & " AND " & COL_NAME_EXPIRATION
             bIsWhereClause = True
         End If
@@ -194,7 +194,7 @@ Public Class QuestionListDAL
                 whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & COL_NAME_CODE & ")" & code.ToUpper
                 bIsWhereClause = True
             End If
-            If (Not String.IsNullOrEmpty(effective) And Not String.IsNullOrEmpty(expiration)) Then
+            If (Not String.IsNullOrEmpty(effective) AndAlso Not String.IsNullOrEmpty(expiration)) Then
                 whereClauseConditions &= " AND " & Environment.NewLine & "TO_DATE('" & DateTime.Parse(expiration).ToString("MM/dd/yyyy HH:mm:ss") & "', 'mm-dd-yyyy hh24:mi:ss') BETWEEN " & COL_NAME_EFFECTIVE & " AND " & COL_NAME_EXPIRATION
                 bIsWhereClause = True
             End If
@@ -400,7 +400,7 @@ Public Class QuestionListDAL
         Try
             listCodeParam = New DBHelper.DBHelperParameter(COL_NAME_CODE, listCode)
             id = DBHelper.Fetch(ds, selectStmt, TABLE_LIST, New DBHelper.DBHelperParameter() {listCodeParam}).Tables(TABLE_LIST).Rows(0)(COL_NAME_LIST_ID)
-            If Not id Is Nothing Then
+            If id IsNot Nothing Then
                 Return New Guid(id)
             Else
                 Return Guid.Empty
@@ -480,7 +480,7 @@ Public Class QuestionListDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub

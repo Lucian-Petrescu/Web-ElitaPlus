@@ -61,7 +61,7 @@ Public Class PreInvoiceDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
@@ -141,13 +141,13 @@ Public Class PreInvoiceDAL
                                                 New OracleParameter(COL_NAME_COMPANY_CODE, CompanyCode),
                                                 New OracleParameter(COL_NAME_SERVICE_CENTER_CODE, ServiceCenterCode)}
 
-        If (SCPreInvoiceDateFrom = Nothing) And (Not SCPreInvoiceDateTo = Nothing) Then
+        If (SCPreInvoiceDateFrom = Nothing) AndAlso (Not SCPreInvoiceDateTo = Nothing) Then
             whereClauseCondition = " AND pi.sc_display_date < to_date('" & SCPreInvoiceDateTo.ToString("MM/dd/yyyy") & "','MM/dd/yyyy')"
             'selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseCondition)
-        ElseIf (Not SCPreInvoiceDateFrom = Nothing) And (SCPreInvoiceDateTo = Nothing) Then
+        ElseIf (Not SCPreInvoiceDateFrom = Nothing) AndAlso (SCPreInvoiceDateTo = Nothing) Then
             whereClauseCondition = " AND pi.sc_display_date between to_date('" & SCPreInvoiceDateFrom.ToString("MM/dd/yyyy") & "','MM/dd/yyyy')" & " and " & " to_date('" & Date.Today.AddDays(-1).ToString("MM/dd/yyyy") & "','MM/dd/yyyy')"
             'selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseCondition)
-        ElseIf (Not SCPreInvoiceDateFrom = Nothing) And (Not SCPreInvoiceDateTo = Nothing) Then
+        ElseIf (Not SCPreInvoiceDateFrom = Nothing) AndAlso (Not SCPreInvoiceDateTo = Nothing) Then
             whereClauseCondition = " AND pi.sc_display_date between to_date('" & SCPreInvoiceDateFrom.ToString("MM/dd/yyyy") & "','MM/dd/yyyy')" & " and " & " to_date('" & SCPreInvoiceDateTo.ToString("MM/dd/yyyy") & "','MM/dd/yyyy')"
             'selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseCondition)
         Else

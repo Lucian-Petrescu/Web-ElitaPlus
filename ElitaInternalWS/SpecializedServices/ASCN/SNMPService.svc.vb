@@ -375,7 +375,7 @@ Namespace SpecializedServices.Ascn
 
             Try
                 dsClaim = Claim.ClaimDetailForWS(request.ClaimNumber, CompanyId, request.ForServiceCenterUse, request.IncludePartDescriptions)
-                If dsClaim Is Nothing Or dsClaim.Tables.Count <= 0 Or dsClaim.Tables(0).Rows.Count = 0 Then
+                If dsClaim Is Nothing OrElse dsClaim.Tables.Count <= 0 OrElse dsClaim.Tables(0).Rows.Count = 0 Then
                     Throw New FaultException(Of ClaimNotFoundFault)(New ClaimNotFoundFault(), TranslationBase.TranslateLabelOrMessage(ERR_CLAIM_NOT_FOUND,
                                                                                                           ElitaPlusIdentity.Current.ActiveUser.LanguageId) & " : " & request.ClaimNumber)
                 Else
@@ -707,7 +707,7 @@ Namespace SpecializedServices.Ascn
                 End If
             End If
 
-            If request.PartAmount = 0.0 And request.ShipmentAmount = 0.0 And request.LabourAmount = 0.0 And request.ServiceChargeAmount = 0.0 And request.TripAmount = 0.0 And request.OtherAmount = 0.0 And ClaimBO.ClaimNumber.EndsWith("S") Then
+            If request.PartAmount = 0.0 AndAlso request.ShipmentAmount = 0.0 AndAlso request.LabourAmount = 0.0 AndAlso request.ServiceChargeAmount = 0.0 AndAlso request.TripAmount = 0.0 AndAlso request.OtherAmount = 0.0 AndAlso ClaimBO.ClaimNumber.EndsWith("S") Then
                 ByPassClaimAuthValidation = True
             End If
 

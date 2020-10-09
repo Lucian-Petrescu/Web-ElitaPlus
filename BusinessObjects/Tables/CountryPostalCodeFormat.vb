@@ -259,7 +259,7 @@ Public Class CountryPostalCodeFormat
             If ds.Tables.Count > 0 Then
                 For Each row As DataRow In ds.Tables(0).Rows
                     Dim pFormat As String = CType(row("FORMAT"), String)
-                    Dim reformatInputFlag As Boolean = reformatFlag And (CType(row("REFORMAT_FILE_INPUT_FLAG"), String) = "Y")
+                    Dim reformatInputFlag As Boolean = reformatFlag AndAlso (CType(row("REFORMAT_FILE_INPUT_FLAG"), String) = "Y")
 
                     Dim regExpValidator As RegExValidator = New RegExValidator(pFormat, postalCode, reformatInputFlag)
                     If regExpValidator.IsValid Then

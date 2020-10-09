@@ -69,7 +69,7 @@ Public Class AcctBusinessUnitDAL
             whereClauseConditions &= " AND UPPER(" & COL_NAME_ACCT_COMPANY_ID_ALIAS & ")" & strAcctcompanyMask.ToUpper
         End If
 
-        If Not myAcctCompany Is Nothing Then
+        If myAcctCompany IsNot Nothing Then
             whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql(AcctBusinessUnitDAL.COL_NAME_ACCT_COMPANY_ID_ALIAS, myAcctCompany, False)
         End If
 
@@ -96,7 +96,7 @@ Public Class AcctBusinessUnitDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub

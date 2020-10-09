@@ -63,7 +63,7 @@ Public Class DataProtectionHistoryDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
@@ -110,7 +110,7 @@ Public Class DataProtectionHistoryDAL
             outputParameter(0) = New DBHelper.DBHelperParameter("po_status_return", GetType(String), 32)
             ' Call DBHelper Store Procedure
             DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameter)
-            If (Not outputParameter(0).Value Is Nothing) Then
+            If (outputParameter(0).Value IsNot Nothing) Then
                 If (outputParameter(0).Value = "Y") Then
                     requestIdAlreadyUsed = True
                 End If

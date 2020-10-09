@@ -67,7 +67,7 @@
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TableName) Is Nothing Then
+        If ds.Tables(TableName) IsNot Nothing Then
             Update(ds.Tables(TableName), transaction, changesFilter)
         End If
     End Sub

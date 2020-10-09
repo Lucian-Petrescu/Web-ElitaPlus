@@ -255,7 +255,7 @@ Public Class EarningPercent
             Dim obj As EarningPercent = CType(objectToValidate, EarningPercent)
             Dim bValid As Boolean = True
 
-            If Not (obj.EarningPercent Is Nothing Or obj.EarningTerm Is Nothing) Then
+            If Not (obj.EarningPercent Is Nothing OrElse obj.EarningTerm Is Nothing) Then
                 If obj.EarningPercent.Value <= MAX_PERCENT Then ' Check only if value is valid to avoid double msg.
                     Dim dal As New EarningPercentDAL
                     Dim prevPct As Integer = dal.TermPercent(obj.EarningTerm.Value - 1.0, obj.EarningPatternId) * 10000
@@ -263,7 +263,7 @@ Public Class EarningPercent
                     Dim currPct As Integer = obj.EarningPercent.Value * 10000
                     If prevPct < 0 Then prevPct = MIN_PERCENT * 10000
                     If nextPct < 0 Then nextPct = MAX_PERCENT * 10000
-                    If prevPct > currPct Or currPct > nextPct Then bValid = False
+                    If prevPct > currPct OrElse currPct > nextPct Then bValid = False
                 End If
             End If
 

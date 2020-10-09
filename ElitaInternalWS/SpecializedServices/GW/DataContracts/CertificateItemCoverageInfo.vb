@@ -109,7 +109,7 @@ Namespace SpecializedServices.GW
                        pLangauge As String)
             ' Copy properties from Certificate Item to current instance
             Dim oCoverage As Coverage
-            If pProduct.Items.Count >= 0 And Not pProduct.Items.Where(Function(i) i.ItemNumber = pCertficateItemCoverage.Item.ItemNumber).FirstOrDefault Is Nothing Then
+            If pProduct.Items.Count >= 0 AndAlso Not pProduct.Items.Where(Function(i) i.ItemNumber = pCertficateItemCoverage.Item.ItemNumber).FirstOrDefault Is Nothing Then
                 oCoverage = pProduct.Items.Where(Function(i) i.ItemNumber = pCertficateItemCoverage.Item.ItemNumber).FirstOrDefault.Coverages.Where(Function(c) c.CoverageTypeId = pCertficateItemCoverage.CoverageTypeId).FirstOrDefault
             End If
 

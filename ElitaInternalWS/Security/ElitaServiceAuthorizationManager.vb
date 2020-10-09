@@ -95,7 +95,7 @@ Namespace Security
 
         Private Function ValidateCertificateExpirationDate(x509Certificate As X509Certificate2) As Boolean
             ''validate the certifiate 
-            If DateTime.Now < Convert.ToDateTime(x509Certificate.GetEffectiveDateString()) Or Convert.ToDateTime(x509Certificate.GetExpirationDateString()) < DateTime.Now Then
+            If DateTime.Now < Convert.ToDateTime(x509Certificate.GetEffectiveDateString()) OrElse Convert.ToDateTime(x509Certificate.GetExpirationDateString()) < DateTime.Now Then
                 Return False
             Else
                 Return True

@@ -2208,7 +2208,7 @@ Public Class ProductCode
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
-            If obj.NumOfClaims IsNot Nothing And obj.NumOfRepairClaims Is Nothing Then
+            If obj.NumOfClaims IsNot Nothing AndAlso obj.NumOfRepairClaims Is Nothing Then
                 Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
                 Return mandatAttr.IsValid(valueToCheck, objectToValidate)
             Else
@@ -2228,9 +2228,9 @@ Public Class ProductCode
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
 
-            If obj.NumOfClaims Is Nothing Or obj.NumOfRepairClaims Is Nothing Then
+            If obj.NumOfClaims Is Nothing OrElse obj.NumOfRepairClaims Is Nothing Then
                 Return True
-            ElseIf obj.NumOfClaims IsNot Nothing And obj.NumOfRepairClaims IsNot Nothing Then
+            ElseIf obj.NumOfClaims IsNot Nothing AndAlso obj.NumOfRepairClaims IsNot Nothing Then
                 If obj.NumOfRepairClaims.Value > obj.NumOfClaims.Value Then
                     Return False
                 Else
@@ -2249,7 +2249,7 @@ Public Class ProductCode
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
-            If obj.NumOfClaims IsNot Nothing And obj.NumOfReplacementClaims Is Nothing Then
+            If obj.NumOfClaims IsNot Nothing AndAlso obj.NumOfReplacementClaims Is Nothing Then
                 Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
                 Return mandatAttr.IsValid(valueToCheck, objectToValidate)
             Else
@@ -2268,9 +2268,9 @@ Public Class ProductCode
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
 
-            If obj.NumOfClaims Is Nothing Or obj.NumOfReplacementClaims Is Nothing Then
+            If obj.NumOfClaims Is Nothing OrElse obj.NumOfReplacementClaims Is Nothing Then
                 Return True
-            ElseIf obj.NumOfClaims IsNot Nothing And obj.NumOfReplacementClaims IsNot Nothing Then
+            ElseIf obj.NumOfClaims IsNot Nothing AndAlso obj.NumOfReplacementClaims IsNot Nothing Then
                 If obj.NumOfReplacementClaims.Value > obj.NumOfClaims.Value Then
                     Return False
                 Else
@@ -2290,7 +2290,7 @@ Public Class ProductCode
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
 
-            If obj.AllowRegisteredItems IsNot Nothing And obj.AllowRegisteredItems = "YESNO-Y" Then
+            If obj.AllowRegisteredItems IsNot Nothing AndAlso obj.AllowRegisteredItems = "YESNO-Y" Then
                 If obj.ListForDeviceGroups = Guid.Empty Then
                     Return False
                 End If
@@ -2310,8 +2310,7 @@ Public Class ProductCode
             Dim obj As ProductCode = CType(objectToValidate, ProductCode)
 
             Return (obj.AllowRegisteredItems IsNot Nothing) AndAlso
-                ((obj.AllowRegisteredItems = "YESNO-Y" And obj.UpdateReplaceRegItemsId <> Guid.Empty) Or
-                (obj.AllowRegisteredItems = "YESNO-N" AndAlso obj.UpdateReplaceRegItemsId = Guid.Empty))
+                ((obj.AllowRegisteredItems = "YESNO-Y" AndAlso obj.UpdateReplaceRegItemsId <> Guid.Empty) OrElse (obj.AllowRegisteredItems = "YESNO-N" AndAlso obj.UpdateReplaceRegItemsId = Guid.Empty))
         End Function
     End Class
 
@@ -2387,16 +2386,12 @@ Public Class ProductCode
                     ' When ProdLiabilityLimitBasedOnId is set to NOTAPPL,
                     ' the following fields should be empty
 
-                    If obj.ProdLiabilityLimit IsNot Nothing Or
-obj.ProdLiabilityLimitPercent IsNot Nothing Or
-                        Not obj.ProdLiabilityLimitPolicyId.Equals(Guid.Empty) Or
-                        Not String.IsNullOrEmpty(obj.ProductLimitApplicableToXCD) Then
+                    If obj.ProdLiabilityLimit IsNot Nothing OrElse obj.ProdLiabilityLimitPercent IsNot Nothing OrElse Not obj.ProdLiabilityLimitPolicyId.Equals(Guid.Empty) OrElse Not String.IsNullOrEmpty(obj.ProductLimitApplicableToXCD) Then
 
                         Return False
                     End If
                 Else
-                    If obj.ProdLiabilityLimitPolicyId.Equals(Guid.Empty) Or
-                        String.IsNullOrEmpty(obj.ProductLimitApplicableToXCD) Then
+                    If obj.ProdLiabilityLimitPolicyId.Equals(Guid.Empty) OrElse String.IsNullOrEmpty(obj.ProductLimitApplicableToXCD) Then
 
                         Return False
                     End If
@@ -2432,7 +2427,7 @@ obj.ProdLiabilityLimitPercent IsNot Nothing Or
 
                             If Not String.IsNullOrEmpty(obj.ProductLimitApplicableToXCD) _
                                 AndAlso (obj.ProductLimitApplicableToXCD = LookupListCache.LK_PROD_LIMIT_APPLICABLE_TO_ALL _
-                                Or obj.ProductLimitApplicableToXCD = LookupListCache.LK_PROD_LIMIT_APPLICABLE_TO_CLAIMONLY) Then
+                                OrElse obj.ProductLimitApplicableToXCD = LookupListCache.LK_PROD_LIMIT_APPLICABLE_TO_CLAIMONLY) Then
 
                                 If obj.NumOfClaims Is Nothing OrElse obj.NumOfClaims.Value = 0 Then
                                     Return False

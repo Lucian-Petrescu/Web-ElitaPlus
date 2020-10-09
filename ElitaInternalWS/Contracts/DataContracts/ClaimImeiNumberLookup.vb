@@ -29,23 +29,23 @@ Public Class ClaimImeiNumberLookup
             End If
         End If
 
-        If String.IsNullOrEmpty(DealerCode) And String.IsNullOrEmpty(CompanyCode) And String.IsNullOrEmpty(CountryCode) Then
+        If String.IsNullOrEmpty(DealerCode) AndAlso String.IsNullOrEmpty(CompanyCode) AndAlso String.IsNullOrEmpty(CountryCode) Then
             Throw New FaultException(Of InvalidRequestFault)(New InvalidRequestFault(), "Please enter either Country Code or Company Code or Dealer Code")
         End If
 
-        If Not String.IsNullOrEmpty(DealerCode) And Not String.IsNullOrEmpty(CompanyCode) And Not String.IsNullOrEmpty(CountryCode) Then
+        If Not String.IsNullOrEmpty(DealerCode) AndAlso Not String.IsNullOrEmpty(CompanyCode) AndAlso Not String.IsNullOrEmpty(CountryCode) Then
             Throw New FaultException(Of InvalidRequestFault)(New InvalidRequestFault(), "Please enter either Country Code or Company Code or Dealer Code")
         End If
 
-        If String.IsNullOrEmpty(DealerCode) And Not String.IsNullOrEmpty(CompanyCode) And Not String.IsNullOrEmpty(CountryCode) Then
+        If String.IsNullOrEmpty(DealerCode) AndAlso Not String.IsNullOrEmpty(CompanyCode) AndAlso Not String.IsNullOrEmpty(CountryCode) Then
             Throw New FaultException(Of InvalidRequestFault)(New InvalidRequestFault(), "Please enter either Country Code or Company Code or Dealer Code")
         End If
 
-        If Not String.IsNullOrEmpty(DealerCode) And String.IsNullOrEmpty(CompanyCode) And Not String.IsNullOrEmpty(CountryCode) Then
+        If Not String.IsNullOrEmpty(DealerCode) AndAlso String.IsNullOrEmpty(CompanyCode) AndAlso Not String.IsNullOrEmpty(CountryCode) Then
             Throw New FaultException(Of InvalidRequestFault)(New InvalidRequestFault(), "Please enter either Country Code or Company Code or Dealer Code")
         End If
 
-        If Not String.IsNullOrEmpty(DealerCode) And Not String.IsNullOrEmpty(CompanyCode) And String.IsNullOrEmpty(CountryCode) Then
+        If Not String.IsNullOrEmpty(DealerCode) AndAlso Not String.IsNullOrEmpty(CompanyCode) AndAlso String.IsNullOrEmpty(CountryCode) Then
             Throw New FaultException(Of InvalidRequestFault)(New InvalidRequestFault(), "Please enter either Country Code or Company Code or Dealer Code")
         End If
     End Sub

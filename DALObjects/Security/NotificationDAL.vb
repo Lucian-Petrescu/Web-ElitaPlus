@@ -113,21 +113,21 @@ Public Class NotificationDAL
         'End If
 
         'NOTIFICATION DATE RANGE SEARCH
-        If BeginDate <> String.Empty And EndDate = String.Empty Then
+        If BeginDate <> String.Empty AndAlso EndDate = String.Empty Then
 
             DateParam = CDate(BeginDate)
             whereClauseConditions &= Environment.NewLine & " AND ((to_date('" & DateParam.ToString("MM-dd-yyyy HH:mm:ss") & "', 'mm-dd-yyyy hh24:mi:ss') between note.NOTIFICATION_BEGIN_DATE" _
                 & Environment.NewLine & " and note.NOTIFICATION_END_DATE )" & Environment.NewLine & _
                 "or (note.NOTIFICATION_BEGIN_DATE >=to_date('" & DateParam.ToString("MM-dd-yyyy HH:mm:ss") & "', 'mm-dd-yyyy hh24:mi:ss')))"
 
-        ElseIf EndDate <> String.Empty And BeginDate = String.Empty Then
+        ElseIf EndDate <> String.Empty AndAlso BeginDate = String.Empty Then
 
             DateParam = CDate(EndDate)
             whereClauseConditions &= Environment.NewLine & " AND ((to_date('" & DateParam.ToString("MM-dd-yyyy HH:mm:ss") & "', 'mm-dd-yyyy hh24:mi:ss') between note.NOTIFICATION_BEGIN_DATE" _
                 & Environment.NewLine & " and note.NOTIFICATION_END_DATE )" & Environment.NewLine & _
                 "or (note.NOTIFICATION_END_DATE <= to_date('" & DateParam.ToString("MM-dd-yyyy HH:mm:ss") & "', 'mm-dd-yyyy hh24:mi:ss')))"
 
-        ElseIf EndDate <> String.Empty And BeginDate <> String.Empty Then
+        ElseIf EndDate <> String.Empty AndAlso BeginDate <> String.Empty Then
             DateParam1 = CDate(BeginDate)
             DateParam = CDate(EndDate)
             whereClauseConditions &= Environment.NewLine & " AND ((to_date('" & DateParam1.ToString("MM-dd-yyyy HH:mm:ss") & "','mm-dd-yyyy hh24:mi:ss')" _
@@ -142,21 +142,21 @@ Public Class NotificationDAL
         End If
 
         'OUTAGE DATE RANGE SEARCH
-        If BeginDateOutage <> String.Empty And EndDateOutage = String.Empty Then
+        If BeginDateOutage <> String.Empty AndAlso EndDateOutage = String.Empty Then
 
             DateParam = CDate(BeginDateOutage)
             whereClauseConditions &= Environment.NewLine & " AND ((to_date('" & DateParam.ToString("MM-dd-yyyy HH:mm:ss") & "', 'mm-dd-yyyy hh24:mi:ss') between note.OUTAGE_BEGIN_DATE" _
                 & Environment.NewLine & " and note.OUTAGE_END_DATE )" & Environment.NewLine & _
                 "or (note.OUTAGE_BEGIN_DATE >=to_date('" & DateParam.ToString("MM-dd-yyyy HH:mm:ss") & "', 'mm-dd-yyyy hh24:mi:ss')))"
 
-        ElseIf EndDateOutage <> String.Empty And BeginDateOutage = String.Empty Then
+        ElseIf EndDateOutage <> String.Empty AndAlso BeginDateOutage = String.Empty Then
 
             DateParam = CDate(EndDateOutage)
             whereClauseConditions &= Environment.NewLine & " AND ((to_date('" & DateParam.ToString("MM-dd-yyyy HH:mm:ss") & "', 'mm-dd-yyyy hh24:mi:ss') between note.OUTAGE_BEGIN_DATE" _
                 & Environment.NewLine & " and note.OUTAGE_END_DATE )" & Environment.NewLine & _
                 "or (note.OUTAGE_END_DATE <= to_date('" & DateParam.ToString("MM-dd-yyyy HH:mm:ss") & "', 'mm-dd-yyyy hh24:mi:ss')))"
 
-        ElseIf EndDateOutage <> String.Empty And BeginDateOutage <> String.Empty Then
+        ElseIf EndDateOutage <> String.Empty AndAlso BeginDateOutage <> String.Empty Then
 
             DateParam = CDate(EndDateOutage)
             DateParam1 = CDate(BeginDateOutage)
@@ -280,7 +280,7 @@ Public Class NotificationDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub

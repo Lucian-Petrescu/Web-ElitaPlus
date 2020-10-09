@@ -1351,11 +1351,11 @@ Public Class User
                 Dim dFound As Boolean = False
                 For Each Str As String In SelectedQueue
                     Dim WorkQueue_id As Guid = New Guid(Str)
-                    If WQ_user.WorkqueueId = WorkQueue_id And WQ_user.CompanyId = SelectedCompanyId Then
+                    If WQ_user.WorkqueueId = WorkQueue_id AndAlso WQ_user.CompanyId = SelectedCompanyId Then
                         dFound = True : Exit For
                     End If
                 Next
-                If Not dFound And WQ_user.CompanyId = SelectedCompanyId Then
+                If Not dFound AndAlso WQ_user.CompanyId = SelectedCompanyId Then
                     'Revoke Work queue permission - Process
                     WorkQueue.RevokeProcessWQPermission((New WorkQueue(WQ_user.WorkqueueId)).WorkQueue.Name, NetworkId)
                     WQ_user.BeginEdit()
@@ -1370,7 +1370,7 @@ Public Class User
                 Dim dFound As Boolean = False
                 For Each WQ_user As WorkQueueAssign In WorkQueueAssignChildren
                     Dim WorkQueue_id As Guid = New Guid(Str)
-                    If WQ_user.WorkqueueId = WorkQueue_id And WQ_user.CompanyId = SelectedCompanyId Then
+                    If WQ_user.WorkqueueId = WorkQueue_id AndAlso WQ_user.CompanyId = SelectedCompanyId Then
                         dFound = True : Exit For
                     End If
                 Next

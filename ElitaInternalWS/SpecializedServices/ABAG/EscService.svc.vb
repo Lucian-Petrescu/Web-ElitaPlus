@@ -379,7 +379,7 @@ Namespace SpecializedServices.Abag
 
             Try
                 dsClaim = Claim.ClaimDetailForWS(request.ClaimNumber, CompanyId, request.ForServiceCenterUse, request.IncludePartDescriptions)
-                If dsClaim Is Nothing Or dsClaim.Tables.Count <= 0 Or dsClaim.Tables(0).Rows.Count = 0 Then
+                If dsClaim Is Nothing OrElse dsClaim.Tables.Count <= 0 OrElse dsClaim.Tables(0).Rows.Count = 0 Then
                     Throw New FaultException(Of ClaimNotFoundFault)(New ClaimNotFoundFault(), TranslationBase.TranslateLabelOrMessage(ERR_CLAIM_NOT_FOUND,
                                                                                                           ElitaPlusIdentity.Current.ActiveUser.LanguageId) & " : " & request.ClaimNumber)
                 Else
@@ -879,7 +879,7 @@ Namespace SpecializedServices.Abag
                 Dim oSearch As New PriceListSearch
 
                 If Not request.ClaimNumber = Nothing AndAlso Not request.CompanyCode = Nothing _
-                    AndAlso Not request.ServiceCenterCode = Nothing And (Not request.EquipmentClassCode = Nothing Or Not request.RiskTypeCode = Nothing) Then
+                    AndAlso Not request.ServiceCenterCode = Nothing AndAlso (Not request.EquipmentClassCode = Nothing OrElse Not request.RiskTypeCode = Nothing) Then
 
                     Throw New BOValidationException("GetPriceList Error: Search must be based on Claim or Service Center", WS_PRICELIST_INVALID_INPUT)
                 End If
@@ -903,7 +903,7 @@ Namespace SpecializedServices.Abag
                     dsPriceList = oSearch.GetPriceList(New PriceListSearchDC()) 'dummy empty PriceListSearchDC
 
                 ElseIf (Not request.ServiceCenterCode = Nothing AndAlso Not request.RiskTypeCode = Nothing) _
-                    Or (Not request.ServiceCenterCode = Nothing AndAlso Not request.EquipmentClassCode = Nothing) Then
+                    OrElse (Not request.ServiceCenterCode = Nothing AndAlso Not request.EquipmentClassCode = Nothing) Then
 
                     If request.CompanyCode = Nothing Then
                         Dim userCompany As Company = ElitaPlusIdentity.Current.ActiveUser.Company

@@ -119,7 +119,7 @@ Public Class CertRegisteredItemDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
@@ -170,20 +170,20 @@ Public Class CertRegisteredItemDAL
 
             DBHelper.ExecuteSp(sqlStmt, inputParameters, outputParameter)
 
-            If Not outputParameter(1).Value Is Nothing Then
+            If outputParameter(1).Value IsNot Nothing Then
 
                 ErrRejectCode = outputParameter(1).Value.ToString().Trim
                 ErrRejectReason = outputParameter(2).Value.ToString().Trim
-                If Not outputParameter(3).Value Is Nothing Then
+                If outputParameter(3).Value IsNot Nothing Then
                     ErrMsgUIProgCode = outputParameter(3).Value.ToString().Trim
                 End If
-                If Not outputParameter(4).Value Is Nothing Then
+                If outputParameter(4).Value IsNot Nothing Then
                     ErrMsgParam = outputParameter(4).Value.ToString().Trim
                 End If
 
             End If
 
-            If ErrRejectCode = Nothing AndAlso (Not outputParameter(0).Value Is Nothing) Then
+            If ErrRejectCode = Nothing AndAlso (outputParameter(0).Value IsNot Nothing) Then
                 CertRegItemID = CType(outputParameter(0).Value, Guid)
             End If
 
@@ -240,20 +240,20 @@ Public Class CertRegisteredItemDAL
 
             DBHelper.ExecuteSp(sqlStmt, inputParameters, outputParameter)
 
-            If Not outputParameter(1).Value Is Nothing Then
+            If outputParameter(1).Value IsNot Nothing Then
 
                 ErrRejectCode = outputParameter(1).Value.ToString().Trim
                 ErrRejectReason = outputParameter(2).Value.ToString().Trim
-                If Not outputParameter(3).Value Is Nothing Then
+                If outputParameter(3).Value IsNot Nothing Then
                     ErrMsgUIProgCode = outputParameter(3).Value.ToString().Trim
                 End If
-                If Not outputParameter(4).Value Is Nothing Then
+                If outputParameter(4).Value IsNot Nothing Then
                     ErrMsgParam = outputParameter(4).Value.ToString().Trim
                 End If
 
             End If
 
-            If ErrRejectCode = Nothing AndAlso (Not outputParameter(0).Value Is Nothing) Then
+            If ErrRejectCode = Nothing AndAlso (outputParameter(0).Value IsNot Nothing) Then
                 CertRegItemID = CType(outputParameter(0).Value, Guid)
             End If
 
@@ -274,7 +274,7 @@ Public Class CertRegisteredItemDAL
         Try
             Dim obj As Object
             obj = DBHelper.ExecuteScalar(selectStmt, parameters)
-            If (Not obj Is Nothing) Then
+            If (obj IsNot Nothing) Then
                 Return New Guid(CType(obj, Byte()))
             End If
             Return Guid.Empty
@@ -290,7 +290,7 @@ Public Class CertRegisteredItemDAL
         Try
             Dim obj As Object
             obj = DBHelper.ExecuteScalar(selectStmt, parameters)
-            If (Not obj Is Nothing) Then
+            If (obj IsNot Nothing) Then
                 Return New Guid(CType(obj, Byte()))
             End If
             Return Guid.Empty

@@ -88,7 +88,7 @@ Public Class ElitaService
             Dim inputDS As Object = ObjectFromClassName(ElitaWebServiceConstants.SETTING_BO_PATH, className)
 
             ' Validate and load XML
-            If binding Is Nothing Or (Not binding Is Nothing AndAlso binding.Equals(ElitaWebServiceConstants.BINDING_XML)) Then
+            If binding Is Nothing OrElse (Not binding Is Nothing AndAlso binding.Equals(ElitaWebServiceConstants.BINDING_XML)) Then
                 ValidateXML(isWcf, _xml, inputDS, schemaName)
             End If
 
@@ -172,7 +172,7 @@ Public Class ElitaService
 
         Try
 
-            If webServiceName Is Nothing Or webServiceFunctionName Is Nothing Or xmlStringDataIn Is Nothing Then
+            If webServiceName Is Nothing OrElse webServiceFunctionName Is Nothing OrElse xmlStringDataIn Is Nothing Then
 
                 Dim strIncomingString As String = OperationContext.Current.RequestContext.RequestMessage.ToString()
                 Dim doc As System.Xml.XmlDocument = New System.Xml.XmlDocument()
@@ -226,7 +226,7 @@ Public Class ElitaService
             If Authentication.VerifyWSToken(token, networkID, Token_Env, Token_Hub) = True Then
                 LoginElita(isWcf, networkID, webServiceName, webServiceFunctionName)
 
-                If Token_Env.ToUpper.Trim <> EnvironmentContext.Current.EnvironmentShortName.ToUpper.Trim Or Token_Hub.ToUpper.Trim <> AppConfig.ConnType.ToUpper.Trim Then
+                If Token_Env.ToUpper.Trim <> EnvironmentContext.Current.EnvironmentShortName.ToUpper.Trim OrElse Token_Hub.ToUpper.Trim <> AppConfig.ConnType.ToUpper.Trim Then
                     bDisplayError = True
                 End If
             Else
@@ -440,7 +440,7 @@ Public Class ElitaService
 
             ' Elita+ Exception coming from the BO
             If (Not exc.GetType Is GetType(ElitaWSException) AndAlso _
-            exc.GetType.IsSubclassOf(GetType(ElitaPlusException))) Or exc.GetType Is GetType(ElitaPlusException) Then
+            exc.GetType.IsSubclassOf(GetType(ElitaPlusException))) OrElse exc.GetType Is GetType(ElitaPlusException) Then
                 ' exc.GetType.IsSubclassOf(GetType(ElitaPlusException)) Then ex = New ElitaWSException(CType(exc, ElitaPlusException))
                 ex = New ElitaWSException(CType(exc, ElitaPlusException))
                 errMsg = MiscUtil.CleanseSQLInjectChars(ex.Code)

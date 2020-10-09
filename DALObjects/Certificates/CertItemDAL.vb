@@ -153,7 +153,7 @@ Public Class CertItemDAL
 
 #Region "Overloaded Methods"
     Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
@@ -173,7 +173,7 @@ Public Class CertItemDAL
             'certDAL.Update(familyDataset, tr, DataRowState.Modified)
             certDAL.UpdateFamily(familyDataset, tr)
 
-            If Not familyDataset.Tables(ClaimStatusDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(ClaimStatusDAL.TABLE_NAME).Rows.Count > 0 Then
+            If familyDataset.Tables(ClaimStatusDAL.TABLE_NAME) IsNot Nothing AndAlso familyDataset.Tables(ClaimStatusDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim ClaimStatusDAL As New ClaimStatusDAL
                 ClaimStatusDAL.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
             End If
@@ -198,10 +198,10 @@ Public Class CertItemDAL
             tr = DBHelper.GetNewTransaction
         End If
         Try
-            If Not familyDataset.Tables(TABLE_NAME) Is Nothing Then
+            If familyDataset.Tables(TABLE_NAME) IsNot Nothing Then
                 MyBase.Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Added)
             End If
-            If Not familyDataset.Tables(TABLE_CERT_ITEM_COV) Is Nothing Then
+            If familyDataset.Tables(TABLE_CERT_ITEM_COV) IsNot Nothing Then
                 certItemCoverageDAL.Update(familyDataset.Tables(TABLE_CERT_ITEM_COV), tr, DataRowState.Added)
             End If
 
@@ -288,7 +288,7 @@ Public Class CertItemDAL
                      New DBHelper.DBHelperParameter(PARAM_EQUIPMENTID, DALBase.GuidToSQLString(equipmentId))}
         Try
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
-            If Not ds Is Nothing AndAlso Not ds.Tables(TABLE_NAME) Is Nothing AndAlso ds.Tables(TABLE_NAME).Rows.Count > 0 Then
+            If ds IsNot Nothing AndAlso ds.Tables(TABLE_NAME) IsNot Nothing AndAlso ds.Tables(TABLE_NAME).Rows.Count > 0 Then
                 Return New DataView(ds.Tables(TABLE_NAME))
             Else
                 Return Nothing

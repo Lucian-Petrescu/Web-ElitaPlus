@@ -139,7 +139,7 @@ Namespace Claims
 
                     For Each row As DataRow In dtClaimInfo.Rows
                         extendedStatusCount = extendedStatusCount + 1
-                        If Not row.Field(Of String)("EXTENDED_STATUS") Is Nothing And (Not extendedStatusList.Contains(row.Field(Of String)("EXTENDED_STATUS"))) Then
+                        If Not row.Field(Of String)("EXTENDED_STATUS") Is Nothing AndAlso (Not extendedStatusList.Contains(row.Field(Of String)("EXTENDED_STATUS"))) Then
                             returnClaimStatuses.Add(New ExtendedStatus() With
                                 {
                                   .Code = row.Field(Of String)("EXTENDED_STATUS"),
