@@ -1010,9 +1010,9 @@ group  by c.cert_number
     Elita.elp_certificate.getCertUpgExtensionInfo
   </GET_CERT_UPG_EXT_INFO>
   <GET_FRAUD_CERT_EXT>
-    ELITA.ELP_CERTIFICATE.GetFraudulentCertExtensions
+      ELITA.ELP_CERTIFICATE.GetFraudulentCertExtensions
   </GET_FRAUD_CERT_EXT>
-  <GET_OTHER_CUSTOMER_INFO>
+    <GET_OTHER_CUSTOMER_INFO>
     Elita.elp_customer_ops.get_other_customers
   </GET_OTHER_CUSTOMER_INFO>
   <GET_OTHER_CUSTOMER_DETAILS>
@@ -1095,44 +1095,27 @@ group  by c.cert_number
   </LOAD_CUST_CONTACT_HISTORY>
   <LOAD_CUST_BANK_DETAIL_HISTORY>
     select distinct
-    bih.account_name,
-    bih.bank_name,
-    bih.bank_id,
-    elp_utl_lov.Description(bih.account_type_id) account_type_id,
-    bih.bank_lookup_code,
-    bih.bank_sort_code,
-    bih.branch_name,
-    bih.bank_sub_code,
-    SUBSTR(bih.account_number,-4,4) as account_number,
-    get_cert_ext_field_value(c.cert_id, 'PaymentReferenceNumber') as mandate_id,
-    SUBSTR(bih.iban_number,1,4)  ||'***' ||SUBSTR(bih.iban_number,-4,4)   as iban_number,
-    bih.created_by,
-    bih.hist_created_date created_date
-    from elp_bank_info_hist bih
-    join elp_cert_installment ci on ci.bank_info_id=bih.bank_info_id
-    join elp_cert c on c.cert_id = ci.cert_id
-    where c.cert_id =:cert_id
-    order by bih.hist_created_date
-  </LOAD_CUST_BANK_DETAIL_HISTORY>
-  <GET_CUSTOMER_CURRENTBANKINFO>
-    select bi.account_name,
-    bi.branch_name,
+    bi.account_name,
     bi.bank_name,
-    bi.bank_sort_code,
-    bi.iban_number,
-    bi.swift_code,
-    elp_utl_lov.Description(bi.account_type_id) account_type,
     bi.bank_id,
-    bi.account_number,
+    bi.account_type_id,
     bi.bank_lookup_code,
-    bi.branch_number
+    bi.bank_sort_code,
+    bi.branch_name,
+    bi.bank_sub_code,
+    SUBSTR(bi.account_number,-4,4) as account_number,
+    get_cert_ext_field_value(ap.reference_id, 'PaymentReferenceNumber') as mandate_id,
+    SUBSTR(bi.iban_number,1,4)  ||'***' ||SUBSTR(bi.iban_number,-4,4)   as iban_number,
+    bi.created_by,
+    bi.created_date
     from elp_bank_info bi
-    join elp_cert_installment ci on ci.bank_info_id=bi.bank_info_id
-    join elp_cert c on c.cert_id=ci.cert_id
-    where 1=1
-    and c.cert_id=:cert_id
-  </GET_CUSTOMER_CURRENTBANKINFO>
-
+    left join elp_dealer_group dg on dg.bank_info_id = bi.bank_info_id
+    join elp_ar_payments ap on ap.bank_info_id = bi.bank_info_id
+    join elp_cert c on c.cert_id = ap.reference_id
+    where ap.reference_id = :cert_id
+    and   ap.reference = 'ELP_CERT'
+  </LOAD_CUST_BANK_DETAIL_HISTORY>
+  
   <CANCEL_CERT_BY_EXTERNAL_NUMBER>
     Elita.elp_certificate.CancelCertByExternalCertNum
   </CANCEL_CERT_BY_EXTERNAL_NUMBER>
@@ -1212,7 +1195,7 @@ group  by c.cert_number
     elita.elp_serialnumber_search
   </LOAD_SERIAL_NUMBER>
   <LOAD_CERT_PHONE_SEARCH_LIST>
-    elita.elp_cert_phone_search
+			elita.elp_cert_phone_search
   </LOAD_CERT_PHONE_SEARCH_LIST>
   <GET_CERT_TERM>
     select (max(coverage_duration))
@@ -1231,4 +1214,7 @@ group  by c.cert_number
   <GET_CERT_PYMT_PASSED_DUE_EXT_INFO>
     Elita.elp_certificate.getCertPaymentPassedDueExtInfo
   </GET_CERT_PYMT_PASSED_DUE_EXT_INFO>
+  <GET_CERT_EXT_FIELDS_LIST>
+    elita.elp_tbl_cert_ext.load
+  </GET_CERT_EXT_FIELDS_LIST>
 </SQL>

@@ -5254,6 +5254,14 @@ Public Class Certificate
 
     End Function
 
+    Public Shared Function GetCertExtensionFieldsList(ByVal CertId As Guid, ByVal languageId As Guid) As CertExtendedFieldsDv
+        
+        Dim dal As New CertificateDAL
+
+        Return New CertExtendedFieldsDv(dal.GetCertExtFieldsList(CertId, languageId).Tables(0))
+
+    End Function
+
     Public Function MaskDatePart(txtDate As String, Optional noMask As Boolean = True) As String
         If Not (String.IsNullOrEmpty(txtDate)) Then
             If (CultureInfo.CurrentCulture.Name.Equals("ja-JP")) Then
@@ -5376,6 +5384,29 @@ Public Class Certificate
         Public Const COL_VOUCHER_NUMBER As String = "voucher_number"
         Public Const COL_UPGRADE_FEE As String = "upgrade_fee"
         Public Const COL_RMA As String = "RMA"
+
+        Public Sub New()
+            MyBase.New()
+        End Sub
+        Public Sub New(ByVal table As DataTable)
+            MyBase.New(table)
+        End Sub
+#End Region
+    End Class
+#End Region
+
+#Region "CertExtendedFieldsDV"
+    Public Class CertExtendedFieldsDv
+        Inherits DataView
+#Region "Constants"
+        Public Const COL_CERT_EXT_ID As String = "cert_ext_id"
+        Public Const COL_CERT_ID As String = "cert_id"
+        Public Const COL_FIELD_NAME As String = "field_name"
+        Public Const COL_FIELD_VALUE As String = "field_value"
+        Public Const COL_CREATED_DATE As String = "created_date"
+        Public Const COL_CREATED_BY As String = "created_by"
+        Public Const COL_MODIFIED_DATE As String = "modified_date"
+        Public Const COL_MODIFIED_BY As String = "modified_by"
 
         Public Sub New()
             MyBase.New()
@@ -5569,3 +5600,6 @@ Public Class Certificate
 #End Region
 
 End Class
+
+
+
