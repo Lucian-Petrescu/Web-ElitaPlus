@@ -1132,7 +1132,7 @@ group  by c.cert_number
     where 1=1
     and c.cert_id=:cert_id
   </GET_CUSTOMER_CURRENTBANKINFO>
-
+  
   <CANCEL_CERT_BY_EXTERNAL_NUMBER>
     Elita.elp_certificate.CancelCertByExternalCertNum
   </CANCEL_CERT_BY_EXTERNAL_NUMBER>
