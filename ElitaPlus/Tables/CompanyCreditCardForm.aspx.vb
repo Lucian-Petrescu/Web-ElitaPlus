@@ -1,16 +1,13 @@
-﻿Imports Microsoft.VisualBasic
-Imports System.Globalization
-Imports System.Threading
-Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
-Imports Assurant.ElitaPlus.Security
+﻿Imports System.Threading
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.Web.Forms
 Imports Assurant.ElitaPlus.DALObjects
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
+Imports Assurant.ElitaPlus.Security
 
 Namespace Tables
     Partial Class CompanyCreditCardForm
         Inherits ElitaPlusSearchPage
-        'Inherits System.Web.UI.Page
 
 
 #Region " Web Form Designer Generated Code "
@@ -107,13 +104,13 @@ Namespace Tables
         Private Const ACTION_EDIT As String = "ACTION_EDIT"
         Private Const ACTION_NEW As String = "ACTION_NEW"
 
-        Private Const COMPANY_CREDIT_CARD_ID As Integer = 2
-        Private Const CREDIT_CARD_ID As Integer = 3
-        Private Const COMPANY_ID As Integer = 4
-        Private Const COMPANY As Integer = 5
-        Private Const CREDIT_CARD As Integer = 6
-        Private Const BILLING_DATE As Integer = 7
-        Private Const BILLING_SCHEDULE As Integer = 8
+        Private Const CompanyCreditCardIdConstant As Integer = 2
+        Private Const CreditCardIdConstant As Integer = 3
+        Private Const CompanyIdConstant As Integer = 4
+        Private Const CompanyConstant As Integer = 5
+        Private Const CreditCardConstant As Integer = 6
+        Private Const BillingDateConstant As Integer = 7
+        Private Const BillingScheduleConstant As Integer = 8
 
         Private Const COMPANY_CONTROL_NAME As String = "cboCompanyInGrid"
         Private Const ID_CONTROL_NAME As String = "IdLabel"
@@ -124,7 +121,6 @@ Namespace Tables
         Private Const BILLING_DATE_CONTROL_NAME As String = "BillingDateTextBox"
         Private Const BILLING_DATE_LABEL_CONTROL_NAME As String = "BillingDateLabel"
 
-        Private Const MSG_RECORD_DELETED_OK As String = "MSG_RECORD_DELETED_OK"
         Private Const MSG_RECORD_SAVED_OK As String = "MSG_RECORD_SAVED_OK"
         Private Const MSG_RECORD_NOT_SAVED As String = "MSG_RECORD_NOT_SAVED"
         Private Const NO_ROW_SELECTED_INDEX As Integer = -1
@@ -167,13 +163,13 @@ Namespace Tables
         Private Property CompanyCreditCardId() As String
             Get
                 If Grid.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-                    moCompanyCreditCardId = GetSelectedGridText(Grid, COMPANY_CREDIT_CARD_ID)
+                    moCompanyCreditCardId = GetSelectedGridText(Grid, CompanyCreditCardIdConstant)
                 End If
                 Return moCompanyCreditCardId
             End Get
             Set(Value As String)
                 If Grid.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-                    SetSelectedGridText(Grid, COMPANY_CREDIT_CARD_ID, Value)
+                    SetSelectedGridText(Grid, CompanyCreditCardIdConstant, Value)
                 End If
                 moCompanyCreditCardId = Value
             End Set
@@ -343,7 +339,7 @@ Namespace Tables
 
                     Grid.SelectedIndex = nIndex
                     State.IsEditMode = True
-                    State.Id = New Guid(CType(Grid.Rows(nIndex).Cells(COMPANY_CREDIT_CARD_ID).FindControl(ID_CONTROL_NAME), Label).Text)
+                    State.Id = New Guid(CType(Grid.Rows(nIndex).Cells(CompanyCreditCardIdConstant).FindControl(ID_CONTROL_NAME), Label).Text)
                     State.MyBO = New CompanyCreditCard(State.Id)
                     PopulateCompanyCreditCardGrid(ACTION_EDIT)
 
@@ -357,7 +353,7 @@ Namespace Tables
                     nIndex = CInt(e.CommandArgument)
                     Grid.SelectedIndex = NO_ROW_SELECTED_INDEX
 
-                    State.Id = New Guid(CType(Grid.Rows(nIndex).Cells(COMPANY_CREDIT_CARD_ID).FindControl(ID_CONTROL_NAME), Label).Text)
+                    State.Id = New Guid(CType(Grid.Rows(nIndex).Cells(CompanyCreditCardIdConstant).FindControl(ID_CONTROL_NAME), Label).Text)
 
                     DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenDeletePromptResponse)
                     State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
@@ -367,9 +363,9 @@ Namespace Tables
                     Grid.SelectedIndex = NO_ROW_SELECTED_INDEX
 
                     If Not State.IsEditMode Then
-                        State.Id = New Guid(CType(Grid.Rows(nIndex).Cells(COMPANY_CREDIT_CARD_ID).FindControl(ID_CONTROL_NAME), Label).Text)
-                        creditCardType = CType(Grid.Rows(nIndex).Cells(CREDIT_CARD).FindControl(CREDIT_CARD_LABEL_CONTROL_NAME), Label).Text.ToString
-                        companyName = CType(Grid.Rows(nIndex).Cells(COMPANY).FindControl(COMPANY_LABEL_CONTROL_NAME), Label).Text.ToString
+                        State.Id = New Guid(CType(Grid.Rows(nIndex).Cells(CompanyCreditCardIdConstant).FindControl(ID_CONTROL_NAME), Label).Text)
+                        creditCardType = CType(Grid.Rows(nIndex).Cells(CreditCardConstant).FindControl(CREDIT_CARD_LABEL_CONTROL_NAME), Label).Text.ToString
+                        companyName = CType(Grid.Rows(nIndex).Cells(CompanyConstant).FindControl(COMPANY_LABEL_CONTROL_NAME), Label).Text.ToString
                         paramList.Add(State.Id)
                         paramList.Add(creditCardType)
                         paramList.Add(companyName)
@@ -432,38 +428,38 @@ Namespace Tables
 
                 If dvRow IsNot Nothing AndAlso Not State.searchDV.Count > 0 Then
                     If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
-                        CType(e.Row.Cells(COMPANY_CREDIT_CARD_ID).FindControl(ID_CONTROL_NAME), Label).Text = GetGuidStringFromByteArray(CType(dvRow(CompanyCreditCard.CompanyCreditCardSearchDV.COL_COMPANY_CREDIT_CARD_ID), Byte()))
+                        CType(e.Row.Cells(CompanyCreditCardIdConstant).FindControl(ID_CONTROL_NAME), Label).Text = GetGuidStringFromByteArray(CType(dvRow(CompanyCreditCard.CompanyCreditCardSearchDV.COL_COMPANY_CREDIT_CARD_ID), Byte()))
                         If (State.IsEditMode = True AndAlso State.Id.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(CompanyCreditCard.CompanyCreditCardSearchDV.COL_COMPANY_CREDIT_CARD_ID), Byte())))) Then
                             Dim companyLst As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="Company")
-                            CType(e.Row.Cells(COMPANY).FindControl(COMPANY_CONTROL_NAME), DropDownList).Populate(companyLst, New PopulateOptions() With
+                            CType(e.Row.Cells(CompanyConstant).FindControl(COMPANY_CONTROL_NAME), DropDownList).Populate(companyLst, New PopulateOptions() With
                                 {
                                     .AddBlankItem = True
                                 })
-                            'Me.BindListControlToDataView(CType(e.Row.Cells(Me.COMPANY).FindControl(Me.COMPANY_CONTROL_NAME), DropDownList), LookupListNew.GetCompanyLookupList())
-                            SetSelectedItem(CType(e.Row.Cells(COMPANY).FindControl(COMPANY_CONTROL_NAME), DropDownList), State.MyBO.CompanyId)
+                            'Me.BindListControlToDataView(CType(e.Row.Cells(Me.CompanyConstant).FindControl(Me.COMPANY_CONTROL_NAME), DropDownList), LookupListNew.GetCompanyLookupList())
+                            SetSelectedItem(CType(e.Row.Cells(CompanyConstant).FindControl(COMPANY_CONTROL_NAME), DropDownList), State.MyBO.CompanyId)
 
                             Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
                             oListContext.LanguageId = Thread.CurrentPrincipal.GetLanguageId()
                             Dim creditcardFormatLst As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="CreditCardFormat", context:=oListContext, languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
-                            CType(e.Row.Cells(CREDIT_CARD).FindControl(CREDIT_CARD_CONTROL_NAME), DropDownList).Populate(creditcardFormatLst, New PopulateOptions() With
+                            CType(e.Row.Cells(CreditCardConstant).FindControl(CREDIT_CARD_CONTROL_NAME), DropDownList).Populate(creditcardFormatLst, New PopulateOptions() With
                                 {
                                     .AddBlankItem = True
                                 })
-                            'Me.BindListControlToDataView(CType(e.Row.Cells(Me.CREDIT_CARD).FindControl(Me.CREDIT_CARD_CONTROL_NAME), DropDownList), LookupListNew.GetCompanyCreditCardsFormatLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId))
-                            SetSelectedItem(CType(e.Row.Cells(CREDIT_CARD).FindControl(CREDIT_CARD_CONTROL_NAME), DropDownList), State.MyBO.Id)
+                            'Me.BindListControlToDataView(CType(e.Row.Cells(Me.CreditCardConstant).FindControl(Me.CREDIT_CARD_CONTROL_NAME), DropDownList), LookupListNew.GetCompanyCreditCardsFormatLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId))
+                            SetSelectedItem(CType(e.Row.Cells(CreditCardConstant).FindControl(CREDIT_CARD_CONTROL_NAME), DropDownList), State.MyBO.Id)
                         Else
-                            CType(e.Row.Cells(COMPANY).FindControl(COMPANY_LABEL_CONTROL_NAME), Label).Text = dvRow(CompanyCreditCard.CompanyCreditCardSearchDV.COL_COMPANY_CODE).ToString
-                            CType(e.Row.Cells(CREDIT_CARD).FindControl(CREDIT_CARD_LABEL_CONTROL_NAME), Label).Text = dvRow(CompanyCreditCard.CompanyCreditCardSearchDV.COL_CREDIT_CARD_TYPE).ToString
-                            CType(e.Row.Cells(BILLING_DATE).FindControl(BILLING_DATE_LABEL_CONTROL_NAME), Label).Text = dvRow(CompanyCreditCard.CompanyCreditCardSearchDV.COL_BILLING_DATE).ToString
+                            CType(e.Row.Cells(CompanyConstant).FindControl(COMPANY_LABEL_CONTROL_NAME), Label).Text = dvRow(CompanyCreditCard.CompanyCreditCardSearchDV.COL_COMPANY_CODE).ToString
+                            CType(e.Row.Cells(CreditCardConstant).FindControl(CREDIT_CARD_LABEL_CONTROL_NAME), Label).Text = dvRow(CompanyCreditCard.CompanyCreditCardSearchDV.COL_CREDIT_CARD_TYPE).ToString
+                            CType(e.Row.Cells(BillingDateConstant).FindControl(BILLING_DATE_LABEL_CONTROL_NAME), Label).Text = dvRow(CompanyCreditCard.CompanyCreditCardSearchDV.COL_BILLING_DATE).ToString
                         End If
                     End If
                 End If
                 If dvRow IsNot Nothing AndAlso State.searchDV.Count > 0 Then
                     If CType(dvRow(CompanyCreditCard.CompanyCreditCardSearchDV.COL_BILLING_DATE), Long) = 0 Then
-                        ControlMgr.SetEnableControl(Me, CType(e.Row.Cells(BILLING_SCHEDULE).FindControl(BILLING_SCHEDULE_CONTROL_NAME), ImageButton), True)
+                        ControlMgr.SetEnableControl(Me, CType(e.Row.Cells(BillingScheduleConstant).FindControl(BILLING_SCHEDULE_CONTROL_NAME), ImageButton), True)
 
                     Else
-                        ControlMgr.SetEnableControl(Me, CType(e.Row.Cells(BILLING_SCHEDULE).FindControl(BILLING_SCHEDULE_CONTROL_NAME), ImageButton), False)
+                        ControlMgr.SetEnableControl(Me, CType(e.Row.Cells(BillingScheduleConstant).FindControl(BILLING_SCHEDULE_CONTROL_NAME), ImageButton), False)
                     End If
                 End If
 
@@ -616,9 +612,9 @@ Namespace Tables
         End Sub
 
         Protected Sub BindBoPropertiesToGridHeaders()
-            BindBOPropertyToGridHeader(State.MyBO, "CompanyId", Grid.Columns(COMPANY_ID))
-            BindBOPropertyToGridHeader(State.MyBO, "CreditCardFormatId", Grid.Columns(CREDIT_CARD))
-            BindBOPropertyToGridHeader(State.MyBO, "BillingDate", Grid.Columns(BILLING_DATE))
+            BindBOPropertyToGridHeader(State.MyBO, "CompanyId", Grid.Columns(CompanyIdConstant))
+            BindBOPropertyToGridHeader(State.MyBO, "CreditCardFormatId", Grid.Columns(CreditCardConstant))
+            BindBOPropertyToGridHeader(State.MyBO, "BillingDate", Grid.Columns(BillingDateConstant))
             ClearGridViewHeadersAndLabelsErrSign()
         End Sub
 
@@ -629,9 +625,9 @@ Namespace Tables
         Private Sub PopulateBOFromForm()
             Try
 
-                Dim cboCompany As DropDownList = CType(Grid.Rows(Grid.EditIndex).Cells(COMPANY_ID).FindControl(COMPANY_CONTROL_NAME), DropDownList)
-                Dim cboCreditCardFormat As DropDownList = CType(Grid.Rows(Grid.EditIndex).Cells(CREDIT_CARD).FindControl(CREDIT_CARD_CONTROL_NAME), DropDownList)
-                Dim txtBilling As TextBox = CType(Grid.Rows(Grid.EditIndex).Cells(BILLING_DATE).FindControl(BILLING_DATE_CONTROL_NAME), TextBox)
+                Dim cboCompany As DropDownList = CType(Grid.Rows(Grid.EditIndex).Cells(CompanyIdConstant).FindControl(COMPANY_CONTROL_NAME), DropDownList)
+                Dim cboCreditCardFormat As DropDownList = CType(Grid.Rows(Grid.EditIndex).Cells(CreditCardConstant).FindControl(CREDIT_CARD_CONTROL_NAME), DropDownList)
+                Dim txtBilling As TextBox = CType(Grid.Rows(Grid.EditIndex).Cells(BillingDateConstant).FindControl(BILLING_DATE_CONTROL_NAME), TextBox)
 
                 PopulateBOProperty(State.MyBO, "CompanyId", cboCompany)
                 PopulateBOProperty(State.MyBO, "CreditCardFormatId", cboCreditCardFormat)
@@ -651,40 +647,40 @@ Namespace Tables
             Dim filteredCompanyList As DataElements.ListItem() = (From x In companyList
                                                                   Where ElitaPlusIdentity.Current.ActiveUser.Companies.Contains(x.ListItemId)
                                                                   Select x).ToArray()
-            CType(Grid.Rows(gridRowIdx).Cells(COMPANY).FindControl(COMPANY_CONTROL_NAME), DropDownList).Populate(filteredCompanyList, New PopulateOptions() With
+            CType(Grid.Rows(gridRowIdx).Cells(CompanyConstant).FindControl(COMPANY_CONTROL_NAME), DropDownList).Populate(filteredCompanyList, New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
 
-            'Me.BindListControlToDataView(CType(Me.Grid.Rows(gridRowIdx).Cells(Me.COMPANY).FindControl(Me.COMPANY_CONTROL_NAME), DropDownList), LookupListNew.GetUserCompaniesLookupList())
+            'Me.BindListControlToDataView(CType(Me.Grid.Rows(gridRowIdx).Cells(Me.CompanyConstant).FindControl(Me.COMPANY_CONTROL_NAME), DropDownList), LookupListNew.GetUserCompaniesLookupList())
 
             Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
             oListContext.LanguageId = Thread.CurrentPrincipal.GetLanguageId()
             Dim creditcardFormatLst As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="CreditCardFormat", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=oListContext)
-            CType(Grid.Rows(gridRowIdx).Cells(CREDIT_CARD).FindControl(CREDIT_CARD_CONTROL_NAME), DropDownList).Populate(creditcardFormatLst, New PopulateOptions() With
+            CType(Grid.Rows(gridRowIdx).Cells(CreditCardConstant).FindControl(CREDIT_CARD_CONTROL_NAME), DropDownList).Populate(creditcardFormatLst, New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
-            'Me.BindListControlToDataView(CType(Me.Grid.Rows(gridRowIdx).Cells(Me.CREDIT_CARD).FindControl(Me.CREDIT_CARD_CONTROL_NAME), DropDownList), LookupListNew.GetCompanyCreditCardsFormatLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId))
+            'Me.BindListControlToDataView(CType(Me.Grid.Rows(gridRowIdx).Cells(Me.CreditCardConstant).FindControl(Me.CREDIT_CARD_CONTROL_NAME), DropDownList), LookupListNew.GetCompanyCreditCardsFormatLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId))
 
             Try
                 With State.MyBO
 
                     If (Not .CompanyId.Equals(Guid.Empty)) Then
-                        Dim cboCompany As DropDownList = CType(Grid.Rows(gridRowIdx).Cells(COMPANY).FindControl(COMPANY_CONTROL_NAME), DropDownList)
+                        Dim cboCompany As DropDownList = CType(Grid.Rows(gridRowIdx).Cells(CompanyConstant).FindControl(COMPANY_CONTROL_NAME), DropDownList)
                         PopulateControlFromBOProperty(cboCompany, .CompanyId)
                     End If
                     If (Not .CreditCardFormatId.Equals(Guid.Empty)) Then
-                        Dim cboCreditCardFormat As DropDownList = CType(Grid.Rows(gridRowIdx).Cells(CREDIT_CARD).FindControl(CREDIT_CARD_CONTROL_NAME), DropDownList)
+                        Dim cboCreditCardFormat As DropDownList = CType(Grid.Rows(gridRowIdx).Cells(CreditCardConstant).FindControl(CREDIT_CARD_CONTROL_NAME), DropDownList)
                         PopulateControlFromBOProperty(cboCreditCardFormat, .CreditCardFormatId)
                     End If
 
-                    Dim txtBilling As TextBox = CType(Grid.Rows(gridRowIdx).Cells(BILLING_DATE).FindControl(BILLING_DATE_CONTROL_NAME), TextBox)
+                    Dim txtBilling As TextBox = CType(Grid.Rows(gridRowIdx).Cells(BillingDateConstant).FindControl(BILLING_DATE_CONTROL_NAME), TextBox)
                     PopulateControlFromBOProperty(txtBilling, .BillingDate)
 
-                    CType(Grid.Rows(gridRowIdx).Cells(COMPANY_CREDIT_CARD_ID).FindControl(ID_CONTROL_NAME), Label).Text = .Id.ToString
-                    CType(Grid.Rows(gridRowIdx).Cells(COMPANY_ID).FindControl(COMPANY_LABEL_CONTROL_NAME), Label).Text = .CompanyId.ToString
-                    CType(Grid.Rows(gridRowIdx).Cells(CREDIT_CARD_ID).FindControl(CREDIT_CARD_FORMAT_LABEL_CONTROL_NAME), Label).Text = .CreditCardFormatId.ToString
+                    CType(Grid.Rows(gridRowIdx).Cells(CompanyCreditCardIdConstant).FindControl(ID_CONTROL_NAME), Label).Text = .Id.ToString
+                    CType(Grid.Rows(gridRowIdx).Cells(CompanyIdConstant).FindControl(COMPANY_LABEL_CONTROL_NAME), Label).Text = .CompanyId.ToString
+                    CType(Grid.Rows(gridRowIdx).Cells(CreditCardIdConstant).FindControl(CREDIT_CARD_FORMAT_LABEL_CONTROL_NAME), Label).Text = .CreditCardFormatId.ToString
 
 
                 End With
