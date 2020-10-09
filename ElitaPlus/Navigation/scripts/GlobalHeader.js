@@ -1004,7 +1004,7 @@ function ShowWaitMsg() {
         defaultMessage = new String('Please Wait');
 
     mintElipsis += 1;
-    objDivMsg.innerText = defaultMessage + AddElipsis(mintElipsis) + ' Elapsed Time: ' + ElapsedTime(elapsedTime);
+    objDivMsg.innerText = defaultMessage + AddElipsis(mintElipsis) + ' Elapsed Time: ' + ElapsedTime();
     objDivMsg.style.visibility = 'visible';
 
     //reset after five seconds

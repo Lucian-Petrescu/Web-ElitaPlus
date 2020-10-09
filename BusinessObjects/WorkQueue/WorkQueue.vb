@@ -1,7 +1,5 @@
-﻿Imports System.Collections.Generic
-Imports System.Linq
+﻿Imports System.ServiceModel
 Imports System.Text.RegularExpressions
-Imports System.ServiceModel
 
 Partial Public Class WorkQueue
     Inherits BusinessObjectBase
@@ -257,7 +255,6 @@ Partial Public Class WorkQueue
 #End Region
 
 #Region "Instance Fields"
-    Private _isNew As Boolean = False
     Private _timeZoneInfo As TimeZoneInfo
     Private _workQueue As WrkQueue.WorkQueue
     Private _workQueueId As Guid = Guid.NewGuid()
@@ -274,7 +271,6 @@ Partial Public Class WorkQueue
     Private Sub BuildWorkQueue(id As Guid)
         Dataset = New DataSet
         CreateEmptyTable()
-        _isNew = False
         Dim userName As String = ElitaPlusIdentity.Current.ActiveUser.NetworkId
         Try
             _workQueue = WorkQueueClientProxy.GetWorkQueueById(id, userName)
@@ -321,7 +317,6 @@ Partial Public Class WorkQueue
         MyBase.New()
         Dataset = New DataSet
         CreateEmptyTable()
-        _isNew = True
         _workQueue = New WrkQueue.WorkQueue()
         _workQueue.ActiveOn = DateTime.UtcNow
         _workQueue.InActiveOn = DEFAULT_EXPIRATION_DATE

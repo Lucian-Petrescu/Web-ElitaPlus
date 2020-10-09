@@ -1,5 +1,4 @@
 ﻿Imports System.ComponentModel
-Imports Assurant.ElitaPlus.BusinessObjects.Common
 Imports Assurant.ElitaPlus.DALObjects
 
 Partial Class UserControlClaimCloseRules
@@ -18,9 +17,6 @@ Partial Class UserControlClaimCloseRules
     Public Event RequestClaimCloseRulesData As RequestData
     Public Event CloneDealerData As RequestData
     Public Event PropertyChanged As PropertyChangedEventHandler
-
-    Private _companyId As Guid
-    Private _dealerId As Nullable(Of Guid)
 
 #Region "Constants"
     Private moState As MyState
@@ -77,7 +73,6 @@ Partial Class UserControlClaimCloseRules
     ' This class keeps the current state for the search page.
     Class MyState
         Public MyBO As ClaimCloseRules
-        Public dtClaimCloseRules As DataTable
         Public DefaultClaimCloseRuleID As Guid
         Public PageIndex As Integer = 0
         Public PageSize As Integer = 10

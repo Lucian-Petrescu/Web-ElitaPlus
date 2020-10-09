@@ -32,8 +32,7 @@
     Private _claimId As Guid = Guid.Empty
     Private _manufacturerId As Guid = Guid.Empty
     Private _validateSku As String = String.Empty
-    Private _make As String = String.Empty
-    Private _model As String = String.Empty
+    Private _warrantyMasterModel As String = String.Empty
 #End Region
 
 #Region "Constructors"
@@ -331,12 +330,12 @@
             If dsMakeModel IsNot Nothing AndAlso dsMakeModel.Tables.Count > 0 AndAlso dsMakeModel.Tables(0).Rows.Count = 1 Then
 
                 _manufacturerId = New Guid(CType(dsMakeModel.Tables(0).Rows(0)("Internal_manufacturer_id"), Byte()))
-                _model = dsMakeModel.Tables(0).Rows(0)("Model_Number")
+                _warrantyMasterModel = dsMakeModel.Tables(0).Rows(0)("Model_Number")
 
                 'check whether this make and model are present in elp_mfg_model table
 
                 Dim MfgModelDAL As New MfgModelDAL
-                dsMfgModel = MfgModelDAL.GetMakeAndModelForDealer(_manufacturerId, _model, _dealerId)
+                dsMfgModel = MfgModelDAL.GetMakeAndModelForDealer(_manufacturerId, _warrantyMasterModel, _dealerId)
 
                 'reject if the make and model are available in the table
                 If dsMfgModel IsNot Nothing AndAlso dsMfgModel.Tables.Count > 0 AndAlso dsMfgModel.Tables(0).Rows.Count = 1 Then
@@ -394,7 +393,7 @@
             Dim ClaimEquipBO As ClaimEquipment = myBO.ClaimedEquipment
             ClaimEquipBO.ClaimEquipmentDate = NewIMEIDate
             ClaimEquipBO.ManufacturerId = _manufacturerId
-            ClaimEquipBO.Model = _model
+            ClaimEquipBO.Model = _warrantyMasterModel
             ClaimEquipBO.SerialNumber = SerialNumber
             ClaimEquipBO.SKU = SKU
 

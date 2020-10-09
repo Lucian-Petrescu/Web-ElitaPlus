@@ -40,7 +40,7 @@
     </UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -494,7 +494,7 @@
     </Compile>
     <Compile Include="AcctFinanceAutomation\DealerInvoicePreview.aspx.vb">
       <DependentUpon>DealerInvoicePreview.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="AcctFinanceAutomation\AFAProductForm.aspx.designer.vb">
       <DependentUpon>AFAProductForm.aspx</DependentUpon>
@@ -9016,14 +9016,14 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <WebReferenceUrl Include="http://localhost:80/ElitaInternalWS/MyTest.asmx">
+    <WebReferenceUrl Include="http://localhost:8082/ElitaInternalWS/MyTest.asmx">
       <RelPath>Web References\MyTestWSRef\</RelPath>
       <UrlBehavior>Static</UrlBehavior>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://localhost:80/ElitaInternalWS/Olita/OlitaWS.asmx">
+    <WebReferenceUrl Include="http://localhost:8082/ElitaInternalWS/Olita/OlitaWS.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\OlitaWSRef\</RelPath>
-      <UpdateFromURL>http://localhost:80/ElitaInternalWS/Olita/OlitaWS.asmx</UpdateFromURL>
+      <UpdateFromURL>http://localhost:8082/ElitaInternalWS/Olita/OlitaWS.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -9031,10 +9031,10 @@
       <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>Assurant_ElitaPlus_WebApp_OlitaWSRef_OlitaWS</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://localhost:80/ElitaInternalWS/Vsc/VscWS.asmx">
+    <WebReferenceUrl Include="http://localhost:8082/ElitaInternalWS/Vsc/VscWS.asmx">
       <RelPath>Web References\VscWSRef\</RelPath>
       <UrlBehavior>Dynamic</UrlBehavior>
-      <UpdateFromURL>http://localhost:80/ElitaInternalWS/Vsc/VscWS.asmx</UpdateFromURL>
+      <UpdateFromURL>http://localhost:8082/ElitaInternalWS/Vsc/VscWS.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -9090,7 +9090,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2550</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/ElitaPlus</IISUrl>
+          <IISUrl>http://localhost:8082/ElitaPlus</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

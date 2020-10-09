@@ -85,30 +85,17 @@ Namespace Tables
 #Region "Constants"
 
         'Cols
-        Private Const MFGStandardization_ID As Integer = 2
-        Private Const MFG_ID As Integer = 3
+        Private Const MfgStandardizationIdConstant As Integer = 2
         Private Const GRID_COL_MFG_ALIAS As Integer = 4
         Private Const GRID_COL_MFG As Integer = 5
 
         Private Const DESCRIPTION_IN_GRID_CONTROL_NAME As String = "TextBoxGridDescription"
         Private Const MANUFACTURER_LIST_IN_GRID_CONTROL_NAME As String = "moMfgDropDown"
 
-        'Actions
-        Private Const ACTION_NONE As String = "ACTION_NONE"
-        Private Const ACTION_SAVE As String = "ACTION_SAVE"
-        Private Const ACTION_NO_EDIT As String = "ACTION_NO_EDIT"
-        Private Const ACTION_EDIT As String = "ACTION_EDIT"
-        Private Const ACTION_NEW As String = "ACTION_NEW"
-
-        Private Const MSG_CONFIRM_PROMPT As String = "MSG_CONFIRM_PROMPT"
-        Private Const MSG_RECORD_DELETED_OK As String = "MSG_RECORD_DELETED_OK"
         Private Const MSG_RECORD_SAVED_OK As String = "MSG_RECORD_SAVED_OK"
         Private Const MSG_RECORD_NOT_SAVED As String = "MSG_RECORD_NOT_SAVED"
 
         Private Const NO_ROW_SELECTED_INDEX As Integer = -1
-
-        Private Const MANUFACTURER_DESCRIPTION_COL_NAME As String = "CODE"
-
 
 #End Region
 
@@ -150,7 +137,7 @@ Namespace Tables
             End Get
             Set(Value As String)
                 If moMfgGrid.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-                    SetSelectedGridText(moMfgGrid, MFGStandardization_ID, Value)
+                    SetSelectedGridText(moMfgGrid, MfgStandardizationIdConstant, Value)
                 End If
                 moMfgStandardizationId = Value
             End Set
@@ -326,7 +313,7 @@ Namespace Tables
                         If (State.IsEditMode = True _
                             AndAlso State.Id.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(MfgStandardization.MfgStandardizationSearchDV.COL_MFG_STANDARDIZATION_ID), Byte())))) Then
 
-                            e.Row.Cells(MFGStandardization_ID).Text = GetGuidStringFromByteArray(CType(dvRow(MfgStandardization.MfgStandardizationSearchDV.COL_MFG_STANDARDIZATION_ID), Byte()))
+                            e.Row.Cells(MfgStandardizationIdConstant).Text = GetGuidStringFromByteArray(CType(dvRow(MfgStandardization.MfgStandardizationSearchDV.COL_MFG_STANDARDIZATION_ID), Byte()))
                             CType(e.Row.Cells(GRID_COL_MFG_ALIAS).FindControl(DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text = dvRow(MfgStandardization.MfgStandardizationSearchDV.COL_MFG_ALIAS).ToString
 
                             'Me.BindListControlToDataView(CType(e.Row.Cells(Me.GRID_COL_MFG).FindControl(MANUFACTURER_LIST_IN_GRID_CONTROL_NAME), DropDownList), LookupListNew.GetManufacturerLookupList(Me.State.CompanyGroupId), MANUFACTURER_DESCRIPTION_COL_NAME, , True)
@@ -341,20 +328,20 @@ Namespace Tables
                             SetSelectedItem(CType(e.Row.Cells(GRID_COL_MFG).FindControl(MANUFACTURER_LIST_IN_GRID_CONTROL_NAME), DropDownList), State.myBO.MfgId)
 
                         Else
-                            e.Row.Cells(MFGStandardization_ID).Text = GetGuidStringFromByteArray(CType(dvRow(MfgStandardization.MfgStandardizationSearchDV.COL_MFG_STANDARDIZATION_ID), Byte()))
+                            e.Row.Cells(MfgStandardizationIdConstant).Text = GetGuidStringFromByteArray(CType(dvRow(MfgStandardization.MfgStandardizationSearchDV.COL_MFG_STANDARDIZATION_ID), Byte()))
                             e.Row.Cells(GRID_COL_MFG_ALIAS).Text = dvRow(MfgStandardization.MfgStandardizationSearchDV.COL_MFG_ALIAS).ToString
                             e.Row.Cells(GRID_COL_MFG).Text = GetGuidStringFromByteArray(CType(dvRow(MfgStandardization.MfgStandardizationSearchDV.COL_MANUFACTURER_ID), Byte()))
                             e.Row.Cells(GRID_COL_MFG).Text = dvRow(MfgStandardization.MfgStandardizationSearchDV.COL_MFG).ToString
 
                         End If
 
-                        '    e.Row.Cells(Me.MFGStandardization_ID).Text = GetGuidStringFromByteArray(CType(dvRow(MfgStandardization.MfgStandardizationSearchDV.COL_MFG_STANDARDIZATION_ID), Byte()))
+                        '    e.Row.Cells(Me.MfgStandardizationIdConstant).Text = GetGuidStringFromByteArray(CType(dvRow(MfgStandardization.MfgStandardizationSearchDV.COL_MFG_STANDARDIZATION_ID), Byte()))
                         '    e.Row.Cells(Me.GRID_COL_MFG_ALIAS).Text = dvRow(MfgStandardization.MfgStandardizationSearchDV.COL_MFG_ALIAS).ToString
                         '    e.Row.Cells(Me.GRID_COL_MFG).Text = GetGuidStringFromByteArray(CType(dvRow(MfgStandardization.MfgStandardizationSearchDV.COL_MANUFACTURER_ID), Byte()))
                         '    e.Row.Cells(Me.GRID_COL_MFG).Text = dvRow(MfgStandardization.MfgStandardizationSearchDV.COL_MFG).ToString
 
                         'ElseIf (itemType = ListItemType.EditItem) Then
-                        '    e.Row.Cells(Me.MFGStandardization_ID).Text = GetGuidStringFromByteArray(CType(dvRow(MfgStandardization.MfgStandardizationSearchDV.COL_MFG_STANDARDIZATION_ID), Byte()))
+                        '    e.Row.Cells(Me.MfgStandardizationIdConstant).Text = GetGuidStringFromByteArray(CType(dvRow(MfgStandardization.MfgStandardizationSearchDV.COL_MFG_STANDARDIZATION_ID), Byte()))
                         '    CType(e.Row.Cells(Me.GRID_COL_MFG_ALIAS).FindControl(DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text = dvRow(MfgStandardization.MfgStandardizationSearchDV.COL_MFG_ALIAS).ToString
 
                         '    Me.BindListControlToDataView(CType(e.Row.Cells(Me.GRID_COL_MFG).FindControl(MANUFACTURER_LIST_IN_GRID_CONTROL_NAME), DropDownList), LookupListNew.GetManufacturerLookupList(Me.State.CompanyGroupId), MANUFACTURER_DESCRIPTION_COL_NAME, , True)
@@ -410,7 +397,7 @@ Namespace Tables
                     'Set the IsEditMode flag to TRUE
                     State.IsEditMode = True
                     'Me.moMfgGrid.Rows(index)
-                    State.Id = New Guid(moMfgGrid.Rows(index).Cells(MFGStandardization_ID).Text)
+                    State.Id = New Guid(moMfgGrid.Rows(index).Cells(MfgStandardizationIdConstant).Text)
 
                     State.myBO = New MfgStandardization(State.Id)
 
@@ -433,7 +420,7 @@ Namespace Tables
                     moMfgGrid.SelectedIndex = NO_ROW_SELECTED_INDEX
 
                     'Save the Id in the Session
-                    State.Id = New Guid(moMfgGrid.Rows(index).Cells(MFGStandardization_ID).Text)
+                    State.Id = New Guid(moMfgGrid.Rows(index).Cells(MfgStandardizationIdConstant).Text)
                     State.myBO = New MfgStandardization(State.Id)
 
                     Try
@@ -653,7 +640,7 @@ Namespace Tables
         ''        Me.moMfgGrid.AutoGenerateColumns = False
         ''        Me.moMfgGrid.Columns(Me.GRID_COL_MFG_ALIAS).SortExpression = BusinessObjectsNew.MfgStandardization.COL_NAME_DESCRIPTION
         ''        Me.moMfgGrid.Columns(Me.GRID_COL_MFG).SortExpression = BusinessObjectsNew.MfgStandardization.MfgStandardizationSearchDV.COL_MFG
-        ''        Me.moMfgGrid.Columns(Me.MFGStandardization_ID).SortExpression = BusinessObjectsNew.MfgStandardization.MfgStandardizationSearchDV.COL_MFG_STANDARDIZATION_ID
+        ''        Me.moMfgGrid.Columns(Me.MfgStandardizationIdConstant).SortExpression = BusinessObjectsNew.MfgStandardization.MfgStandardizationSearchDV.COL_MFG_STANDARDIZATION_ID
         ''        HighLightSortColumn(moMfgGrid, Me.State.SortExpression)
         ''        ControlMgr.SetVisibleControl(Me, trPageSize, Me.moMfgGrid.Visible)
         ''        If oAction <> "ACTION_NEW" Then
