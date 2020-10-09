@@ -4151,6 +4151,7 @@ Public Class Certificate
         End Sub
     End Class
 #End Region
+
 #Region "History DataViews"
     Public Class CustPersonelHistoryDV
         Inherits DataView
@@ -4175,6 +4176,32 @@ Public Class Certificate
             MyBase.New(table)
         End Sub
     End Class
+#Region "CustomerBankDetailDV"
+    Public Class CustomerBankDetailDV
+        Inherits DataView
+#Region "Constants"
+        Public Const COL_ACCOUNT_NAME As String = "account_name"
+        Public Const COL_BANK_NAME As String = "bank_name"
+        Public Const COL_BANK_ID As String = "bank_id"
+        Public Const COL_ACCOUNT_TYPE_ID As String = "account_type_id"
+        Public Const COL_BANK_LOOKUP_CODE As String = "bank_lookup_code"
+        Public Const COL_BANK_SORT_CODE As String = "bank_sort_code"
+        Public Const COL_BRANCH_NAME As String = "branch_name"
+        Public Const COL_BANK_SUB_CODE As String = "bank_sub_code"
+        Public Const COL_ACCOUNT_NUMBER As String = "account_number"
+        Public Const COL_IBAN_NUMBER As String = "iban_number"
+        Public Const COL_CREATED_BY As String = "created_by"
+        Public Const COL_CREATED_DATE As String = "created_date"
+#End Region
+        Public Sub New()
+            MyBase.New()
+        End Sub
+
+        Public Sub New(ByVal table As DataTable)
+            MyBase.New(table)
+        End Sub
+    End Class
+#End Region
 
     Public Class CustAddressHistoryDV
         Inherits DataView
@@ -5147,14 +5174,15 @@ Public Class Certificate
     Public Shared Function GetCertHistoryInfo(ByVal certNumber As String, ByVal DealerId As Guid, ByVal PremChanges As String) As CertificateHistoryDV
         'Dim userId As Guid = ElitaPlusIdentity.Current.ActiveUser.Id
         Dim dal As New CertificateDAL
-
         Return New CertificateHistoryDV(dal.GetCertHistory(certNumber, DealerId, PremChanges).Tables(0))
-
     End Function
-
     Public Shared Function GetOtherCustomerInfo(ByVal CertId As Guid, ByVal IdentificationNumberType As String) As OtherCustomerInfoDV
         Dim dal As New CertificateDAL
         Return New OtherCustomerInfoDV(dal.GetOtherCustomerInfo(CertId, IdentificationNumberType).Tables("GetOtherCustomerInfo"))
+    End Function
+    Public Shared Function GetCustomerCurrentBankInfo(ByVal CertId As Guid) As CustomerBankDetailDV
+        Dim dal As New CertificateDAL
+        Return New CustomerBankDetailDV(dal.GetCustomerCurrentBankInfo(CertId).Tables("elp_bank_info"))
     End Function
     Public Shared Function GetOtherCustomerDetails(ByVal CustomerId As Guid, ByVal LangId As Guid, ByVal IdentificationNumberType As String) As OtherCustomerInfoDV
         Dim dal As New CertificateDAL

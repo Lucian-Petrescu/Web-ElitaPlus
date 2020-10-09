@@ -19,6 +19,7 @@ Namespace Certificates
 
             Public oCert As Certificate
             Public oDealer As Dealer
+            Public oCustBankInfo As Certificate.CustomerBankDetailDV = Nothing
             Public CustPersonalHistDV As Certificate.CustPersonelHistoryDV = Nothing
             Public CustAddressHistDV As Certificate.CustAddressHistoryDV = Nothing
             Public CustContactHistDV As Certificate.CustContactHistoryDV = Nothing
@@ -54,6 +55,7 @@ Namespace Certificates
             Try
                 If Not Me.IsPostBack Then
                     PopulateCustomerProfileInfo()
+                    PopulateCustomerBankInfo()
                     Me.TranslateGridHeader(Me.CustPersonalHistory)
                     PopulateCustPersonalHistory()
                     Me.TranslateGridHeader(Me.CustAddressHistory)
@@ -136,6 +138,46 @@ Namespace Certificates
                     If Not dv.Table.Rows(0)("corporate_name") Is System.DBNull.Value Then
                         Me.CorporateNameTD.InnerText = dv.Table.Rows(0)("corporate_name")
                     End If
+                End If
+            End If
+        End Sub
+        Public Sub PopulateCustomerBankInfo()
+            If Not Me.State.oCert Is Nothing Then
+                Dim dv As DataView = Me.State.oCert.GetCustomerCurrentBankInfo(Me.State.oCert.Id)
+
+                If Not dv.Table Is Nothing AndAlso dv.Table.Rows.Count > 0 Then
+
+                    If Not dv.Table.Rows(0)("account_name") Is System.DBNull.Value Then
+                        Me.NameOnAccountTD.InnerText = dv.Table.Rows(0)("account_name")
+                    End If
+                    If Not dv.Table.Rows(0)("bank_name") Is System.DBNull.Value Then
+                        Me.BankNameTD.InnerText = dv.Table.Rows(0)("bank_name")
+                    End If
+                    If Not dv.Table.Rows(0)("bank_id") Is System.DBNull.Value Then
+                        Me.BankIDTD.InnerText = dv.Table.Rows(0)("bank_id")
+                    End If
+                    If Not dv.Table.Rows(0)("account_type") Is System.DBNull.Value Then
+                        Me.AccountTypeTD.InnerText = dv.Table.Rows(0)("account_type")
+                    End If
+                    If Not dv.Table.Rows(0)("bank_lookup_code") Is System.DBNull.Value Then
+                        Me.BankLookupCodeTD.InnerText = dv.Table.Rows(0)("bank_lookup_code")
+                    End If
+                    If Not dv.Table.Rows(0)("bank_sort_code") Is System.DBNull.Value Then
+                        Me.BankSortCodeTD.InnerText = dv.Table.Rows(0)("bank_sort_code")
+                    End If
+                    If Not dv.Table.Rows(0)("branch_name") Is System.DBNull.Value Then
+                        Me.BranchNameTD.InnerText = dv.Table.Rows(0)("branch_name")
+                    End If
+                    'If Not dv.Table.Rows(0)("bank_sub_code") Is System.DBNull.Value Then
+                    '    Me.BankSubCodeTD.InnerText = dv.Table.Rows(0)("bank_sub_code")
+                    'End If
+                    If Not dv.Table.Rows(0)("account_number") Is System.DBNull.Value Then
+                        Me.AccountNumberTD.InnerText = dv.Table.Rows(0)("account_number")
+                    End If
+                    If Not dv.Table.Rows(0)("iban_number") Is System.DBNull.Value Then
+                        Me.IBANNumberTD.InnerText = dv.Table.Rows(0)("iban_number")
+                    End If
+
                 End If
             End If
         End Sub
