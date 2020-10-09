@@ -223,20 +223,20 @@ Public Class ElitaPlusPage
         'Dim sPageName As String = Path.GetFileNameWithoutExtension(Request.Url.ToString)
 
         mPagePermissionType = FormAuthorization.GetPermissions(sPageName)
-        'If mPagePermissionType = FormAuthorization.enumPermissionType.NONE Then
+        If mPagePermissionType = FormAuthorization.enumPermissionType.NONE Then
 
-        '    'redirect to the message page if they are not authorized.
-        '    sMessage = TranslationBase.TranslateLabelOrMessage(ELPWebConstants.AUTHORIZATION_DENIED, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-        '    'Response.Redirect(ELPWebConstants.MESSAGE_PAGE_WITH_ERROR_INFO & sMessage)
-        '    Throw New GUIException(sMessage, ELPWebConstants.AUTHORIZATION_DENIED)
+            'redirect to the message page if they are not authorized.
+            sMessage = TranslationBase.TranslateLabelOrMessage(ELPWebConstants.AUTHORIZATION_DENIED, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+            'Response.Redirect(ELPWebConstants.MESSAGE_PAGE_WITH_ERROR_INFO & sMessage)
+            Throw New GUIException(sMessage, ELPWebConstants.AUTHORIZATION_DENIED)
 
-        'ElseIf mPagePermissionType = FormAuthorization.enumPermissionType.VIEWONLY Then
+        ElseIf mPagePermissionType = FormAuthorization.enumPermissionType.VIEWONLY Then
 
-        '    'disable all the controls within the page.
-        '    '{vcp} assuming that at the page level, everything is allowed (_WRITE is not set)
-        '    DisableControlGroup(oRootControl, False)
+            'disable all the controls within the page.
+            '{vcp} assuming that at the page level, everything is allowed (_WRITE is not set)
+            DisableControlGroup(oRootControl, False)
 
-        'End If
+        End If
 
     End Sub
 
