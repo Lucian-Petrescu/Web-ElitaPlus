@@ -1,37 +1,18 @@
 Option Strict On
 Option Explicit On
-Imports System.Globalization
+Imports System.Threading
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.CommonConfiguration.DataElements
-Imports System.Threading
-Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.Web.Forms
+Imports Assurant.ElitaPlus.Security
 
 Partial Class RegionForm
     Inherits ElitaPlusSearchPage
 
 #Region "Page State"
-    'Class MyState
-    '    Public PageIndex As Integer = 0
-    '    Public myBO As BusinessObjectsNew.Region
-    '    Public DescriptionMask As String
-    '    Public CodeMask As String
-    '    Public CompanyId As Guid
-    '    Public SearchCountryId As Guid = Guid.Empty
-    '    Public Id As Guid
-    '    Public IsAfterSave As Boolean
-    '    Public IsEditMode As Boolean
-    '    Public IsGridVisible As Boolean
-    '    Public searchDV As DataView = Nothing
-    '    Public SortExpression As String = BusinessObjectsNew.Region.RegionSearchDV.COL_DESCRIPTION
-    '    Public selectedPageSize As Integer = DEFAULT_PAGE_SIZE
-    '    Public AddingNewRow As Boolean
-    '    Public Canceling As Boolean
-    'End Class
-
     Class MyState
         Public PageIndex As Integer = 0
-        Public MyBO As BusinessObjectsNew.Region  '= New DealerGroup
+        Public MyBo As BusinessObjectsNew.Region  '= New DealerGroup
         Public DescriptionMask As String
         Public CodeMask As String
         Public Id As Guid
@@ -56,99 +37,75 @@ Partial Class RegionForm
         End Get
     End Property
 
-    'Private Class PageStatus
-
-    '    Public Sub New()
-    '        pageIndex = 0
-    '        pageCount = 0
-    '    End Sub
-
-    'End Class
-
-
 #End Region
 
 #Region "Constants"
 
-    Private Const NO_ROW_SELECTED_INDEX As Integer = -1
-    Private Const REGION_ID As Integer = 2
-    Private Const COUNTRY_ID As Integer = 3
-    Private Const DESCRIPTION As Integer = 4
-    Private Const REGION_CODE As Integer = 5
-    Private Const ACCOUNTING_CODE As Integer = 6
-    Private Const INVOICE_TAX As Integer = 7
-    Private Const SORT_VALUE As Integer = 8
+    Private Const NoRowSelectedIndexConstant As Integer = -1
+    Private Const RegionIdConstant As Integer = 2
+    Private Const CountryIdConstant As Integer = 3
+    Private Const DescriptionConstant As Integer = 4
+    Private Const RegionCodeConstant As Integer = 5
+    Private Const AccountingCodeConstant As Integer = 6
+    Private Const InvoiceTaxConstant As Integer = 7
+    Private Const SortValueConstant As Integer = 8
 
-    'Actions
-    Private Const ACTION_NONE As String = "ACTION_NONE"
-    Private Const ACTION_SAVE As String = "ACTION_SAVE"
-    Private Const ACTION_NO_EDIT As String = "ACTION_NO_EDIT"
-    Private Const ACTION_EDIT As String = "ACTION_EDIT"
-    Private Const ACTION_NEW As String = "ACTION_NEW"
+    Private Const CountryInGridControlName As String = "cboCountryInGrid"
+    Private Const DescriptionInGridControlName As String = "TextBoxGridDescription"
+    Private Const ShortDescInGridControlName As String = "TextBoxShortDesc"
+    Private Const AcctCodeInGridControlName As String = "TextBoxAcctCode"
+    Private Const InvoiceTaxInGridControlName As String = "TextBoxInvoiceTaxGL"
+    Private Const ExtendedCodeInGridControlName As String = "TextBoxExtendedCode"
+    Private Const RegionIdLabel As String = "LABELRegionId"
+    Private Const LabelDescription As String = "DescriptionLabel"
+    Private Const LabelShortDescription As String = "ShortDescriptionLabel"
+    Private Const LabelAccountingCode As String = "AccountingCodeLabel"
+    Private Const LabelCountry As String = "CountryLabel"
+    Private Const LabelInvoiceTax As String = "InvoiceTaxGLLabel"
+    Private Const LabelExtendedCode As String = "ExtendedCodeLabel"
 
-    Private Const COUNTRY_IN_GRID_CONTROL_NAME As String = "cboCountryInGrid"
-    Private Const DESCRIPTION_IN_GRID_CONTROL_NAME As String = "TextBoxGridDescription"
-    Private Const SHORT_DESC_IN_GRID_CONTROL_NAME As String = "TextBoxShortDesc"
-    Private Const ACCT_CODE_IN_GRID_CONTROL_NAME As String = "TextBoxAcctCode"
-    Private Const INVOICE_TAX_IN_GRID_CONTROL_NAME As String = "TextBoxInvoiceTaxGL"
-    Private Const EXTENDED_CODE_IN_GRID_CONTROL_NAME As String = "TextBoxExtendedCode"
-    Private Const REGION_ID_LABEL As String = "LABELRegionId"
-    Private Const LABEL_DESCRIPTION As String = "DescriptionLabel"
-    Private Const LABEL_SHORTDESCRIPTION As String = "ShortDescriptionLabel"
-    Private Const LABEL_ACCTCODE As String = "AccountingCodeLabel"
-    Private Const LABEL_COUNTRY As String = "CountryLabel"
-    Private Const LABEL_INVOICE_TAX As String = "InvoiceTaxGLLabel"
-    Private Const LABEL_EXTENDED_CODE As String = "ExtendedCodeLabel"
-
-    Private Const MSG_CONFIRM_PROMPT As String = "MSG_CONFIRM_PROMPT"
-    Private Const MSG_RECORD_DELETED_OK As String = "MSG_RECORD_DELETED_OK"
-    Private Const MSG_RECORD_SAVED_OK As String = "MSG_RECORD_SAVED_OK"
-    Private Const MSG_RECORD_NOT_SAVED As String = "MSG_RECORD_NOT_SAVED"
+    Private Const MsgRecordSavedOk As String = "MSG_RECORD_SAVED_OK"
+    Private Const MsgRecordNotSaved As String = "MSG_RECORD_NOT_SAVED"
 
 
 #End Region
 
 #Region "Variables"
 
-    Private moRegion As BusinessObjectsNew.Region
-    Private moRegionId As String
-    Private isReturning As Boolean = False
-
-
-    'Private Shared pageCount As Integer
-    'Private Shared pageIndex As Integer
+    Private _moRegion As BusinessObjectsNew.Region
+    Private _moRegionId As String
 
 #End Region
 
 #Region "Properties"
 
-    Private ReadOnly Property theRegion() As BusinessObjectsNew.Region
+    Private ReadOnly Property TheRegion() As BusinessObjectsNew.Region
         Get
             If IsNewRegion() = True Then
                 ' For creating, inserting
-                moRegion = New BusinessObjectsNew.Region
-                RegionId = moRegion.Id.ToString
+                _moRegion = New BusinessObjectsNew.Region
+                RegionId = _moRegion.Id.ToString
             Else
                 ' For updating, deleting
-                moRegion = New BusinessObjectsNew.Region(State.Id)
+                _moRegion = New BusinessObjectsNew.Region(State.Id)
             End If
 
-            Return moRegion
+            Return _moRegion
         End Get
     End Property
 
     Private Property RegionId() As String
         Get
             If Grid.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-                moRegionId = CType(Grid.Rows(Grid.SelectedIndex).Cells(REGION_ID).FindControl(REGION_ID_LABEL), Label).Text
+                _moRegionId = CType(Grid.Rows(Grid.SelectedIndex).Cells(RegionIdConstant).FindControl(RegionIdLabel), Label).Text
             End If
-            Return moRegionId
+            Return _moRegionId
         End Get
-        Set(Value As String)
+        Set(value As String)
             If Grid.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-                SetSelectedGridText(Grid, REGION_ID, Value)
+                SetSelectedGridText(Grid, RegionIdConstant, value)
             End If
-            moRegionId = Value
+            _moRegionId = value
         End Set
     End Property
 
@@ -156,8 +113,8 @@ Partial Class RegionForm
         Get
             Return State.AddingNewRow
         End Get
-        Set(Value As Boolean)
-            State.AddingNewRow = Value
+        Set(value As Boolean)
+            State.AddingNewRow = value
         End Set
     End Property
 
@@ -177,7 +134,7 @@ Partial Class RegionForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As System.Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -187,14 +144,14 @@ Partial Class RegionForm
 
 #Region "Handlers-Init"
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As System.Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Try
             moErrorController.Clear_Hide()
             If RegionId Is Nothing Then
-                moRegionId = Guid.Empty.ToString
+                _moRegionId = Guid.Empty.ToString
             Else
-                moRegionId = RegionId
+                _moRegionId = RegionId
             End If
 
             If Not Page.IsPostBack Then
@@ -222,7 +179,7 @@ Partial Class RegionForm
 
 #Region "Handlers-Buttons"
 
-    Private Sub SearchButton_Click(sender As System.Object, e As System.EventArgs) Handles SearchButton.Click
+    Private Sub SearchButton_Click(sender As System.Object, e As EventArgs) Handles SearchButton.Click
         Try
             Grid.PageIndex = NO_PAGE_INDEX
             State.IsGridVisible = True
@@ -234,12 +191,12 @@ Partial Class RegionForm
 
     End Sub
 
-    Private Sub ClearButton_Click(sender As System.Object, e As System.EventArgs) Handles ClearButton.Click
+    Private Sub ClearButton_Click(sender As System.Object, e As EventArgs) Handles ClearButton.Click
         ClearSearchCriteria()
 
     End Sub
 
-    Private Sub NewButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles NewButton_WRITE.Click
+    Private Sub NewButton_WRITE_Click(sender As System.Object, e As EventArgs) Handles NewButton_WRITE.Click
         Try
             State.IsEditMode = True
             State.IsGridVisible = True
@@ -252,7 +209,7 @@ Partial Class RegionForm
 
     End Sub
 
-    Private Sub SaveButton_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles SaveButton_WRITE.Click
+    Private Sub SaveButton_WRITE_Click(sender As System.Object, e As EventArgs) Handles SaveButton_WRITE.Click
         Try
             SaveChanges()
 
@@ -262,7 +219,7 @@ Partial Class RegionForm
 
     End Sub
 
-    Private Sub CancelButton_Click(sender As System.Object, e As System.EventArgs) Handles CancelButton.Click
+    Private Sub CancelButton_Click(sender As System.Object, e As EventArgs) Handles CancelButton.Click
         Try
             Grid.SelectedIndex = NO_ITEM_SELECTED_INDEX
             State.Canceling = True
@@ -318,8 +275,8 @@ Partial Class RegionForm
                 SetPageAndSelectedIndexFromGuid(State.searchDV, Guid.Empty, Grid, State.PageIndex, State.IsEditMode)
             End If
             Grid.AutoGenerateColumns = False
-            'Me.Grid.Columns(Me.DESCRIPTION).SortExpression = DealerGroup.DealerGroupSearchDV.COL_DESCRIPTION
-            'Me.Grid.Columns(Me.REGION_ID).SortExpression = DealerGroup.DealerGroupSearchDV.COL_CODE
+            'Me.Grid.Columns(Me.DescriptionConstant).SortExpression = DealerGroup.DealerGroupSearchDV.COL_DESCRIPTION
+            'Me.Grid.Columns(Me.RegionIdConstant).SortExpression = DealerGroup.DealerGroupSearchDV.COL_CODE
 
             SortAndBindGrid()
 
@@ -353,8 +310,8 @@ Partial Class RegionForm
                 SetPageAndSelectedIndexFromGuid(State.searchDV, Guid.Empty, Grid, State.PageIndex, State.IsEditMode)
             End If
             Grid.AutoGenerateColumns = False
-            'Me.Grid.Columns(Me.DESCRIPTION).SortExpression = DealerGroup.DealerGroupSearchDV.COL_DESCRIPTION
-            'Me.Grid.Columns(Me.REGION_ID).SortExpression = DealerGroup.DealerGroupSearchDV.COL_CODE
+            'Me.Grid.Columns(Me.DescriptionConstant).SortExpression = DealerGroup.DealerGroupSearchDV.COL_DESCRIPTION
+            'Me.Grid.Columns(Me.RegionIdConstant).SortExpression = DealerGroup.DealerGroupSearchDV.COL_CODE
 
             'SortAndBindGrid()
 
@@ -377,10 +334,10 @@ Partial Class RegionForm
     Private Sub SortAndBindGrid()
         State.PageIndex = Grid.PageIndex
 
-        If BusinessObjectsNew.CountryTax.isInvoiceTaxEnabled Then
-            Grid.Columns(INVOICE_TAX).Visible = True
+        If CountryTax.isInvoiceTaxEnabled Then
+            Grid.Columns(InvoiceTaxConstant).Visible = True
         Else
-            Grid.Columns(INVOICE_TAX).Visible = False
+            Grid.Columns(InvoiceTaxConstant).Visible = False
         End If
 
         If (State.searchDV.Count = 0) Then
@@ -413,20 +370,20 @@ Partial Class RegionForm
     End Sub
 
     'The Binding Logic is here
-    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
         Try
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
             If dvRow IsNot Nothing AndAlso State.searchDV.Count > 0 Then
                 If (itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem) AndAlso CType(e.Row.RowState, Int16) < 4 Then
-                    CType(e.Row.Cells(REGION_ID).FindControl(REGION_ID_LABEL), Label).Text = GetGuidStringFromByteArray(CType(dvRow(BusinessObjectsNew.Region.RegionSearchDV.COL_REGION_ID), Byte()))
-                    CType(e.Row.Cells(DESCRIPTION).FindControl(LABEL_DESCRIPTION), Label).Text = dvRow(BusinessObjectsNew.Region.RegionSearchDV.COL_DESCRIPTION).ToString
-                    CType(e.Row.Cells(REGION_CODE).FindControl(LABEL_SHORTDESCRIPTION), Label).Text = dvRow(BusinessObjectsNew.Region.RegionSearchDV.COL_CODE).ToString
-                    CType(e.Row.Cells(ACCOUNTING_CODE).FindControl(LABEL_ACCTCODE), Label).Text = dvRow(BusinessObjectsNew.Region.RegionSearchDV.COL_ACCOUNTING_CODE).ToString
-                    CType(e.Row.Cells(COUNTRY_ID).FindControl(LABEL_COUNTRY), Label).Text = dvRow(BusinessObjectsNew.Region.RegionSearchDV.COL_COUNTRY_NAME).ToString
-                    CType(e.Row.Cells(INVOICE_TAX).FindControl(LABEL_INVOICE_TAX), Label).Text = dvRow(BusinessObjectsNew.Region.RegionSearchDV.COL_INVOICE_TAX_GL).ToString
-                    CType(e.Row.Cells(SORT_VALUE).FindControl(LABEL_EXTENDED_CODE), Label).Text = dvRow(BusinessObjectsNew.Region.RegionSearchDV.COL_EXTENDED_CODE).ToString
+                    CType(e.Row.Cells(RegionIdConstant).FindControl(RegionIdLabel), Label).Text = GetGuidStringFromByteArray(CType(dvRow(BusinessObjectsNew.Region.RegionSearchDV.COL_REGION_ID), Byte()))
+                    CType(e.Row.Cells(DescriptionConstant).FindControl(LabelDescription), Label).Text = dvRow(BusinessObjectsNew.Region.RegionSearchDV.COL_DESCRIPTION).ToString
+                    CType(e.Row.Cells(RegionCodeConstant).FindControl(LabelShortDescription), Label).Text = dvRow(BusinessObjectsNew.Region.RegionSearchDV.COL_CODE).ToString
+                    CType(e.Row.Cells(AccountingCodeConstant).FindControl(LabelAccountingCode), Label).Text = dvRow(BusinessObjectsNew.Region.RegionSearchDV.COL_ACCOUNTING_CODE).ToString
+                    CType(e.Row.Cells(CountryIdConstant).FindControl(LabelCountry), Label).Text = dvRow(BusinessObjectsNew.Region.RegionSearchDV.COL_COUNTRY_NAME).ToString
+                    CType(e.Row.Cells(InvoiceTaxConstant).FindControl(LabelInvoiceTax), Label).Text = dvRow(BusinessObjectsNew.Region.RegionSearchDV.COL_INVOICE_TAX_GL).ToString
+                    CType(e.Row.Cells(SortValueConstant).FindControl(LabelExtendedCode), Label).Text = dvRow(BusinessObjectsNew.Region.RegionSearchDV.COL_EXTENDED_CODE).ToString
 
                 End If
             End If
@@ -435,7 +392,7 @@ Partial Class RegionForm
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(source As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
 
         Try
             If (Not (State.IsEditMode)) Then
@@ -450,7 +407,7 @@ Partial Class RegionForm
 
     End Sub
 
-    Protected Sub RowCommand(source As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+    Protected Sub RowCommand(source As Object, e As GridViewCommandEventArgs)
 
         Try
             Dim index As Integer
@@ -464,8 +421,8 @@ Partial Class RegionForm
                 'Set the IsEditMode flag to TRUE
                 State.IsEditMode = True
 
-                State.Id = New Guid(CType(Grid.Rows(index).Cells(REGION_ID).FindControl(REGION_ID_LABEL), Label).Text)
-                State.MyBO = New BusinessObjectsNew.Region(State.Id)
+                State.Id = New Guid(CType(Grid.Rows(index).Cells(RegionIdConstant).FindControl(RegionIdLabel), Label).Text)
+                State.MyBo = New BusinessObjectsNew.Region(State.Id)
 
                 PopulateGrid()
 
@@ -475,9 +432,9 @@ Partial Class RegionForm
                 SetGridControls(Grid, False)
 
                 'Set focus on the Description TextBox for the EditItemIndex row
-                SetFocusOnEditableFieldInGrid(Grid, DESCRIPTION, DESCRIPTION_IN_GRID_CONTROL_NAME, index)
+                SetFocusOnEditableFieldInGrid(Grid, DescriptionConstant, DescriptionInGridControlName, index)
 
-                PopulateFormFromBO()
+                PopulateFormFromBo()
 
                 SetButtonsState()
 
@@ -485,11 +442,11 @@ Partial Class RegionForm
                 index = CInt(e.CommandArgument)
 
                 'Clear the SelectedItemStyle to remove the highlight from the previously saved row
-                Grid.SelectedIndex = NO_ROW_SELECTED_INDEX
-                State.Id = New Guid(CType(Grid.Rows(index).Cells(REGION_ID).FindControl(REGION_ID_LABEL), Label).Text)
+                Grid.SelectedIndex = NoRowSelectedIndexConstant
+                State.Id = New Guid(CType(Grid.Rows(index).Cells(RegionIdConstant).FindControl(RegionIdLabel), Label).Text)
 
                 DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenDeletePromptResponse)
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+                State.ActionInProgress = DetailPageCommand.Delete
             End If
 
         Catch ex As Exception
@@ -497,31 +454,31 @@ Partial Class RegionForm
         End Try
 
     End Sub
-    Private Sub PopulateFormFromBO()
+    Private Sub PopulateFormFromBo()
 
         Dim gridRowIdx As Integer = Grid.EditIndex
         Dim txtShortDesc, txtAcctCode, txtInvoiceTax, txtExtendedCode As TextBox
 
         Try
-            With State.MyBO
+            With State.MyBo
 
                 'populateAcctCode()
 
-                txtShortDesc = CType(Grid.Rows(gridRowIdx).Cells(REGION_CODE).FindControl(SHORT_DESC_IN_GRID_CONTROL_NAME), TextBox)
+                txtShortDesc = CType(Grid.Rows(gridRowIdx).Cells(RegionCodeConstant).FindControl(ShortDescInGridControlName), TextBox)
                 If (.ShortDesc IsNot Nothing) Then
                     txtShortDesc.Text = .ShortDesc
                 End If
 
                 If (.Description IsNot Nothing) Then
-                    CType(Grid.Rows(gridRowIdx).Cells(DESCRIPTION).FindControl(DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text = .Description
+                    CType(Grid.Rows(gridRowIdx).Cells(DescriptionConstant).FindControl(DescriptionInGridControlName), TextBox).Text = .Description
                 End If
 
-                txtAcctCode = CType(Grid.Rows(gridRowIdx).Cells(ACCOUNTING_CODE).FindControl(ACCT_CODE_IN_GRID_CONTROL_NAME), TextBox)
+                txtAcctCode = CType(Grid.Rows(gridRowIdx).Cells(AccountingCodeConstant).FindControl(AcctCodeInGridControlName), TextBox)
                 If (.AccountingCode IsNot Nothing) Then
                     txtAcctCode.Text = .AccountingCode
                 End If
 
-                txtInvoiceTax = CType(Grid.Rows(gridRowIdx).Cells(INVOICE_TAX).FindControl(INVOICE_TAX_IN_GRID_CONTROL_NAME), TextBox)
+                txtInvoiceTax = CType(Grid.Rows(gridRowIdx).Cells(InvoiceTaxConstant).FindControl(InvoiceTaxInGridControlName), TextBox)
                 If (.AccountingCode IsNot Nothing) Then
                     'Def-26691: Added condition to check if the value for InvoiceTaxGLAcct is not null.
                     If (.InvoiceTaxGLAcct IsNot Nothing) Then
@@ -529,16 +486,16 @@ Partial Class RegionForm
                     End If
                 End If
 
-                txtExtendedCode = CType(Grid.Rows(gridRowIdx).Cells(SORT_VALUE).FindControl(EXTENDED_CODE_IN_GRID_CONTROL_NAME), TextBox)
+                txtExtendedCode = CType(Grid.Rows(gridRowIdx).Cells(SortValueConstant).FindControl(ExtendedCodeInGridControlName), TextBox)
                 If (.ExtendedCode IsNot Nothing) Then
                     txtExtendedCode.Text = .ExtendedCode
                 End If
 
                 txtShortDesc.Attributes.Add("onBlur", "populateAcctCode(this, getElementById('" + txtAcctCode.ClientID + "'));")
 
-                CType(Grid.Rows(gridRowIdx).Cells(REGION_ID).FindControl(REGION_ID_LABEL), Label).Text = .Id.ToString
+                CType(Grid.Rows(gridRowIdx).Cells(RegionIdConstant).FindControl(RegionIdLabel), Label).Text = .Id.ToString
 
-                Dim oCboCountry As DropDownList = CType(Grid.Rows(gridRowIdx).Cells(COUNTRY_ID).FindControl(COUNTRY_IN_GRID_CONTROL_NAME), DropDownList)
+                Dim oCboCountry As DropDownList = CType(Grid.Rows(gridRowIdx).Cells(CountryIdConstant).FindControl(CountryInGridControlName), DropDownList)
                 '   Me.BindListControlToDataView(oCboCountry, LookupListNew.GetUserCountriesLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies))
                 Dim countryLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList(ListCodes.Country, Thread.CurrentPrincipal.GetLanguageCode())
                 Dim list As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Countries
@@ -562,7 +519,7 @@ Partial Class RegionForm
         BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub Grid_Sorting(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+    Private Sub Grid_Sorting(source As Object, e As GridViewSortEventArgs) Handles Grid.Sorting
 
         Try
             If State.SortExpression.StartsWith(e.SortExpression) Then
@@ -587,11 +544,11 @@ Partial Class RegionForm
     End Sub
 
     Protected Sub BindBoPropertiesToGridHeaders()
-        BindBOPropertyToGridHeader(State.MyBO, "Description", Grid.Columns(DESCRIPTION))
-        BindBOPropertyToGridHeader(State.MyBO, "ShortDesc", Grid.Columns(REGION_CODE))
-        BindBOPropertyToGridHeader(State.MyBO, "AccountingCode", Grid.Columns(ACCOUNTING_CODE))
-        BindBOPropertyToGridHeader(State.MyBO, "CountryId", Grid.Columns(COUNTRY_ID))
-        BindBOPropertyToGridHeader(State.MyBO, "InvoiceTaxGLAcct", Grid.Columns(INVOICE_TAX))
+        BindBOPropertyToGridHeader(State.MyBo, "Description", Grid.Columns(DescriptionConstant))
+        BindBOPropertyToGridHeader(State.MyBo, "ShortDesc", Grid.Columns(RegionCodeConstant))
+        BindBOPropertyToGridHeader(State.MyBo, "AccountingCode", Grid.Columns(AccountingCodeConstant))
+        BindBOPropertyToGridHeader(State.MyBo, "CountryId", Grid.Columns(CountryIdConstant))
+        BindBOPropertyToGridHeader(State.MyBo, "InvoiceTaxGLAcct", Grid.Columns(InvoiceTaxConstant))
         ClearGridViewHeadersAndLabelsErrSign()
     End Sub
 
@@ -603,26 +560,26 @@ Partial Class RegionForm
     Protected Sub CheckIfComingFromDeleteConfirm()
         Dim confResponse As String = HiddenDeletePromptResponse.Value
         If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
-            If Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete Then
+            If State.ActionInProgress = DetailPageCommand.Delete Then
                 DeleteSelectedRegion()
             End If
             Select Case State.ActionInProgress
-                Case ElitaPlusPage.DetailPageCommand.Delete
+                Case DetailPageCommand.Delete
             End Select
         ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
             Select Case State.ActionInProgress
-                Case ElitaPlusPage.DetailPageCommand.Delete
+                Case DetailPageCommand.Delete
             End Select
         End If
         'Clean after consuming the action
-        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        State.ActionInProgress = DetailPageCommand.Nothing_
         HiddenDeletePromptResponse.Value = ""
     End Sub
 #End Region
 
 #Region "Handlers_DropDowns"
 
-    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
             State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
@@ -719,23 +676,23 @@ Partial Class RegionForm
 
 #Region "Business"
 
-    Private Sub PopulateBOFromForm(oRegion As BusinessObjectsNew.Region)
+    Private Sub PopulateBoFromForm(oRegion As BusinessObjectsNew.Region)
 
         Try
             With oRegion
-                .Description = CType(Grid.Rows(Grid.EditIndex).Cells(DESCRIPTION).FindControl(DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text
-                .ShortDesc = CType(Grid.Rows(Grid.EditIndex).Cells(REGION_CODE).FindControl(SHORT_DESC_IN_GRID_CONTROL_NAME), TextBox).Text
-                .AccountingCode = CType(Grid.Rows(Grid.EditIndex).Cells(ACCOUNTING_CODE).FindControl(ACCT_CODE_IN_GRID_CONTROL_NAME), TextBox).Text
-                .ExtendedCode = CType(Grid.Rows(Grid.EditIndex).Cells(SORT_VALUE).FindControl(EXTENDED_CODE_IN_GRID_CONTROL_NAME), TextBox).Text
+                .Description = CType(Grid.Rows(Grid.EditIndex).Cells(DescriptionConstant).FindControl(DescriptionInGridControlName), TextBox).Text
+                .ShortDesc = CType(Grid.Rows(Grid.EditIndex).Cells(RegionCodeConstant).FindControl(ShortDescInGridControlName), TextBox).Text
+                .AccountingCode = CType(Grid.Rows(Grid.EditIndex).Cells(AccountingCodeConstant).FindControl(AcctCodeInGridControlName), TextBox).Text
+                .ExtendedCode = CType(Grid.Rows(Grid.EditIndex).Cells(SortValueConstant).FindControl(ExtendedCodeInGridControlName), TextBox).Text
 
                 'Def-26691: Added condition to check if the value for invoice tax is not empty.
-                If Not (CType(Grid.Rows(Grid.EditIndex).Cells(INVOICE_TAX).FindControl(INVOICE_TAX_IN_GRID_CONTROL_NAME), TextBox).Text = String.Empty) AndAlso _
-                    Not CType(Grid.Rows(Grid.EditIndex).Cells(INVOICE_TAX).FindControl(INVOICE_TAX_IN_GRID_CONTROL_NAME), TextBox).Text.Equals("") Then
-                    .InvoiceTaxGLAcct = CType(Grid.Rows(Grid.EditIndex).Cells(INVOICE_TAX).FindControl(INVOICE_TAX_IN_GRID_CONTROL_NAME), TextBox).Text
+                If Not (CType(Grid.Rows(Grid.EditIndex).Cells(InvoiceTaxConstant).FindControl(InvoiceTaxInGridControlName), TextBox).Text = String.Empty) AndAlso _
+                    Not CType(Grid.Rows(Grid.EditIndex).Cells(InvoiceTaxConstant).FindControl(InvoiceTaxInGridControlName), TextBox).Text.Equals("") Then
+                    .InvoiceTaxGLAcct = CType(Grid.Rows(Grid.EditIndex).Cells(InvoiceTaxConstant).FindControl(InvoiceTaxInGridControlName), TextBox).Text
                 End If
 
-                Dim CountryIdList As DropDownList = CType(Grid.Rows(Grid.EditIndex).Cells(COUNTRY_ID).FindControl(COUNTRY_IN_GRID_CONTROL_NAME), DropDownList)
-                PopulateBOProperty(State.MyBO, "CountryId", CountryIdList)
+                Dim countryIdList As DropDownList = CType(Grid.Rows(Grid.EditIndex).Cells(CountryIdConstant).FindControl(CountryInGridControlName), DropDownList)
+                PopulateBOProperty(State.MyBo, "CountryId", countryIdList)
 
             End With
         Catch ex As Exception
@@ -745,23 +702,23 @@ Partial Class RegionForm
     End Sub
     Private Sub SaveChanges()
         Try
-            PopulateBOFromForm(State.MyBO)
-            If (State.MyBO.IsDirty) Then
-                State.MyBO.Save()
+            PopulateBoFromForm(State.MyBo)
+            If (State.MyBo.IsDirty) Then
+                State.MyBo.Save()
                 State.IsAfterSave = True
                 State.AddingNewRow = False
-                AddInfoMsg(MSG_RECORD_SAVED_OK)
+                AddInfoMsg(MsgRecordSavedOk)
                 State.searchDV = Nothing
                 ReturnFromEditing()
             Else
-                AddInfoMsg(MSG_RECORD_NOT_SAVED)
+                AddInfoMsg(MsgRecordNotSaved)
                 ReturnFromEditing()
             End If
         Catch ex As Exception
             HandleErrors(ex, moErrorController)
         End Try
     End Sub
-    Private Function GetDV() As DataView
+    Private Function GetDv() As DataView
 
         Dim dv As DataView
 
@@ -794,10 +751,10 @@ Partial Class RegionForm
         If Grid.EditIndex = NO_ITEM_SELECTED_INDEX Then Return False ' Product Code Conversion is not in edit mode
         Dim oRegion As BusinessObjectsNew.Region
         Try
-            oRegion = theRegion
+            oRegion = TheRegion
             BindBoPropertiesToGridHeaders(oRegion)
             With oRegion
-                PopulateBOFromForm(oRegion)
+                PopulateBoFromForm(oRegion)
                 bIsDirty = .IsDirty
                 .Save()
                 SetButtonsState(False)
@@ -820,7 +777,7 @@ Partial Class RegionForm
     Private Function DeleteSelectedRegion() As Boolean
         Dim bIsOk As Boolean = True
         Try
-            With theRegion()
+            With TheRegion()
                 .Delete()
                 .Save()
             End With
@@ -838,21 +795,21 @@ Partial Class RegionForm
         Return bIsOk
     End Function
     Protected Sub BindBoPropertiesToGridHeaders(oRegion As BusinessObjectsNew.Region)
-        BindBOPropertyToGridHeader(oRegion, "CountryId", Grid.Columns(COUNTRY_ID))
-        BindBOPropertyToGridHeader(oRegion, "Description", Grid.Columns(DESCRIPTION))
-        BindBOPropertyToGridHeader(oRegion, "ShortDesc", Grid.Columns(REGION_CODE))
-        BindBOPropertyToGridHeader(oRegion, "AccountingCode", Grid.Columns(ACCOUNTING_CODE))
-        BindBOPropertyToGridHeader(oRegion, "InvoiceTaxGLAcct", Grid.Columns(INVOICE_TAX))
+        BindBOPropertyToGridHeader(oRegion, "CountryId", Grid.Columns(CountryIdConstant))
+        BindBOPropertyToGridHeader(oRegion, "Description", Grid.Columns(DescriptionConstant))
+        BindBOPropertyToGridHeader(oRegion, "ShortDesc", Grid.Columns(RegionCodeConstant))
+        BindBOPropertyToGridHeader(oRegion, "AccountingCode", Grid.Columns(AccountingCodeConstant))
+        BindBOPropertyToGridHeader(oRegion, "InvoiceTaxGLAcct", Grid.Columns(InvoiceTaxConstant))
         ClearGridHeadersAndLabelsErrSign()
     End Sub
     Private Sub AddNew()
 
         State.searchDV = GetGridDataView()
 
-        State.MyBO = New BusinessObjectsNew.Region
-        State.Id = State.MyBO.Id
+        State.MyBo = New BusinessObjectsNew.Region
+        State.Id = State.MyBo.Id
 
-        State.searchDV = CType(State.MyBO.GetNewDataViewRow(State.searchDV, State.Id), BusinessObjectsNew.Region.RegionSearchDV)
+        State.searchDV = CType(State.MyBo.GetNewDataViewRow(State.searchDV, State.Id), BusinessObjectsNew.Region.RegionSearchDV)
         Grid.DataSource = State.searchDV
 
         SetPageAndSelectedIndexFromGuid(State.searchDV, State.Id, Grid, State.PageIndex, State.IsEditMode)
@@ -864,8 +821,8 @@ Partial Class RegionForm
         SetGridControls(Grid, False)
 
         'Set focus on the Description TextBox for the EditItemIndex row
-        SetFocusOnEditableFieldInGrid(Grid, DESCRIPTION, DESCRIPTION_IN_GRID_CONTROL_NAME, Grid.EditIndex)
-        PopulateFormFromBO()
+        SetFocusOnEditableFieldInGrid(Grid, DescriptionConstant, DescriptionInGridControlName, Grid.EditIndex)
+        PopulateFormFromBo()
 
         'Me.TranslateGridControls(Grid)
         SetButtonsState()
@@ -899,7 +856,7 @@ Partial Class RegionForm
     End Sub
     Private Sub ReturnFromEditing()
 
-        Grid.EditIndex = NO_ROW_SELECTED_INDEX
+        Grid.EditIndex = NoRowSelectedIndexConstant
 
         If Grid.PageCount = 0 Then
             'if returning to the "1st time in" screen
