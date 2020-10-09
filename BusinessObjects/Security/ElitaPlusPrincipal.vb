@@ -104,7 +104,8 @@ Public NotInheritable Class ElitaPlusPrincipal
     End Function
 
     Public Function IsInRole(role As String) As Boolean Implements System.Security.Principal.IPrincipal.IsInRole
-        Return CType(Identity, ElitaPlusIdentity).ActiveUser.isInRole(role)
+        Dim identity1 As ElitaPlusIdentity = CType(Identity, ElitaPlusIdentity)
+        Return identity1.isInRole(role)
     End Function
 
 #End Region
@@ -117,21 +118,23 @@ Public NotInheritable Class ElitaPlusPrincipal
 
     Public Shared ReadOnly Property Current As ElitaPlusPrincipal
         Get
-            If (TypeOf Thread.CurrentPrincipal Is ElitaPlusPrincipal) Then
-                Return CType(Thread.CurrentPrincipal, ElitaPlusPrincipal)
+            Dim threadPrincipal As IPrincipal = Thread.CurrentPrincipal
+
+            If (TypeOf threadPrincipal Is ElitaPlusPrincipal) Then
+                Return CType(threadPrincipal, ElitaPlusPrincipal)
             Else
                 If (TypeOf HttpContext.Current.User Is ElitaPlusPrincipal) Then
-                    Thread.CurrentPrincipal = HttpContext.Current.User
+                    threadPrincipal = HttpContext.Current.User
                     Authentication.SetCulture()
                 Else
                     If (TypeOf HttpContext.Current.Session("PRINCIPAL_SESSION_KEY") Is ElitaPlusPrincipal) Then
-                        Thread.CurrentPrincipal = DirectCast(HttpContext.Current.Session("PRINCIPAL_SESSION_KEY"), ElitaPlusPrincipal)
-                        HttpContext.Current.User = Thread.CurrentPrincipal
+                        threadPrincipal = DirectCast(HttpContext.Current.Session("PRINCIPAL_SESSION_KEY"), ElitaPlusPrincipal)
+                        HttpContext.Current.User = threadPrincipal
                         Authentication.SetCulture()
                     End If
                 End If
 
-                Return CType(Thread.CurrentPrincipal, ElitaPlusPrincipal)
+                Return CType(threadPrincipal, ElitaPlusPrincipal)
             End If
         End Get
     End Property

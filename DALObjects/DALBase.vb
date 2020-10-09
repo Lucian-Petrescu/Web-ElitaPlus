@@ -286,9 +286,7 @@ Public Class DALBase
                                       Optional ByVal changesFilter As DataRowState = DataRowState.Added Or DataRowState.Deleted Or DataRowState.Modified)
 
         ' When Filter is blank then do not do anything.
-        If (Not (changesFilter Or DataRowState.Added = DataRowState.Added OrElse
-                 changesFilter Or DataRowState.Modified = DataRowState.Modified OrElse
-                 changesFilter Or DataRowState.Deleted = DataRowState.Deleted)) Then
+        If Not (changesFilter.HasFlag(DataRowState.Added) orElse changesFilter.HasFlag(DataRowState.Modified) OrElse DataRowState.Deleted) Then
             Return
         End If
 

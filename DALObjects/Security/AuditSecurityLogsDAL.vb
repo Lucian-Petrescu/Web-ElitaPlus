@@ -108,7 +108,6 @@ Public Class AuditSecurityLogsDAL
         End If
 
         If Not whereClauseConditions.Equals(String.Empty) Then
-            whereClauseConditions = whereClauseConditions
             selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
             selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")

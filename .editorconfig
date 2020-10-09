@@ -1,0 +1,7 @@
+﻿[*.vb]
+
+# S1066: Collapsible "if" statements should be merged
+dotnet_diagnostic.S1066.severity = suggestion
+
+# BC42019: Operands of type Object used for operator
+dotnet_diagnostic.BC42019.severity = error

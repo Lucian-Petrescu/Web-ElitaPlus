@@ -572,7 +572,7 @@ Public Class CertificateDAL
             whereClauseConditions &= Environment.NewLine & "UPPER(dg.code " & dealerGroupCode.ToUpper & " AND "
         End If
 
-        If bIsLikeClause = True Then
+        If bIsLikeClause Then
             ' hextoraw
             whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("c." & COL_NAME_COMPANY_ID, compIds, True) & " AND "
             whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("d." & COL_NAME_COMPANY_ID, compIds, True)
@@ -726,7 +726,7 @@ Public Class CertificateDAL
                 End If
             End If
 
-            If bIsLikeClause = True Then
+            If bIsLikeClause Then
                 ' hextoraw
                 whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("ci." & COL_NAME_COMPANY_ID, compIds, True)
             Else
@@ -735,7 +735,7 @@ Public Class CertificateDAL
             End If
 
         Else
-            If bIsLikeClause = True Then
+            If bIsLikeClause Then
                 whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("d." & COL_NAME_COMPANY_ID, compIds, True)
             Else
                 whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("d." & COL_NAME_COMPANY_ID, compIds, True)
@@ -853,7 +853,7 @@ Public Class CertificateDAL
             whereClauseConditions &= Environment.NewLine & "upper(c.vehicle_license_tag)" & vehicleLicenseFlagMask.ToUpper & " AND"
         End If
 
-        If bIsLikeClause = True Then
+        If bIsLikeClause Then
             ' hextoraw
             whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("ci." & COL_NAME_COMPANY_ID, compIds, True)
         Else
@@ -1231,7 +1231,7 @@ Public Class CertificateDAL
         Dim bIsLikeClause As Boolean = False
         bIsLikeClause = IsThereALikeClause(certNumberMask)
 
-        If bIsLikeClause = True Then
+        If bIsLikeClause Then
             ' hextoraw
             whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("AND c." & COL_NAME_COMPANY_ID, compIds, True) & " AND "
             whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("d." & COL_NAME_COMPANY_ID, compIds, True)
@@ -1333,7 +1333,7 @@ Public Class CertificateDAL
         End If
 
 
-        If bIsLikeClause = True Then
+        If bIsLikeClause Then
             ' hextoraw
             whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("c." & COL_NAME_COMPANY_ID, compIds, True) & " AND "
             whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("d." & COL_NAME_COMPANY_ID, compIds, True)
@@ -1777,7 +1777,7 @@ Public Class CertificateDAL
             whereClauseConditions &= Environment.NewLine & "UPPER(C.HOME_PHONE) " & CustomerPhoneMask.ToUpper & " AND "
         End If
 
-        If bIsLikeClause = True Then
+        If bIsLikeClause Then
             ' hextoraw
             whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("c." & COL_NAME_COMPANY_ID, compIds, True)
 

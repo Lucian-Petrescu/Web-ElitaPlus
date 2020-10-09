@@ -238,8 +238,7 @@
                         Dim BankId(6) As Integer, strConstant As String = "7139713"
                         Dim Total As Integer = 0, checkDigit As Integer
                         For i = 0 To 6
-                            BankId(i) = CInt(Mid(obj.Bank_Id.ToString, i + 1, 1))
-                            BankId(i) = BankId(i) * CInt(Mid(strConstant, i + 1, 1))
+                            BankId(i) = CInt(Mid(obj.Bank_Id.ToString, i + 1, 1)) * CInt(Mid(strConstant, i + 1, 1))
                             Total = Total + BankId(i)
                         Next
                         checkDigit = 10 - CInt(Total.ToString.Substring(Total.ToString.Length - 1, 1))

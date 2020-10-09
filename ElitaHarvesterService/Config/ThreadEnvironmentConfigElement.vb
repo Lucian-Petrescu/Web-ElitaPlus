@@ -15,7 +15,7 @@ Public Class ThreadEnvironmentConfigElement
     Public Sub New(pName As String, pEnvironment As String, pHub As String, pMachineDomain As String)
         MyBase.New(pName, pEnvironment)
         Hub = pHub
-        MachineDomain = MachineDomain
+        MachineDomain = pMachineDomain
     End Sub
 
     <ConfigurationProperty(PROPERTY_NAME_HUB, IsRequired:=True, IsKey:=False)> _

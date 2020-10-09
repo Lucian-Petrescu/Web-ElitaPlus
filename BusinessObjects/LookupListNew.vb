@@ -621,19 +621,10 @@ Public NotInheritable Class LookupListNew
         End If
 
         Dim dv As DataView
-
-        If companyIds.Count > 1 Then
-            If (sDistinictColumnName = Nothing Or Trim(sDistinictColumnName) = "") Then
-                dv = FilteredView(sListName, sFilterCondition)
-            Else
-                dv = FilteredDistinctView(sListName, companyIds, sDistinictColumnName, "")
-            End If
+        If (sDistinictColumnName = Nothing Or Trim(sDistinictColumnName) = "") Then
+            dv = FilteredView(sListName, sFilterCondition)
         Else
-            If (sDistinictColumnName = Nothing Or Trim(sDistinictColumnName) = "") Then
-                dv = FilteredView(sListName, sFilterCondition)
-            Else
-                dv = FilteredDistinctView(sListName, companyIds, sDistinictColumnName, "")
-            End If
+            dv = FilteredDistinctView(sListName, companyIds, sDistinictColumnName, "")
         End If
 
         Return (dv)
@@ -825,20 +816,11 @@ Public NotInheritable Class LookupListNew
 
         Dim dv As DataView
 
-        If companyIds.Count > 1 Then
-            If (sDistinictColumnName = Nothing Or Trim(sDistinictColumnName) = "") Then
-                dv = FilteredView(sListName, sFilterCondition)
-            Else
-                dv = FilteredDistinctView(sListName, companyIds, sDistinictColumnName, dynamicOrderBYClause)
-            End If
+        If (sDistinictColumnName = Nothing Or Trim(sDistinictColumnName) = "") Then
+            dv = FilteredView(sListName, sFilterCondition)
         Else
-            If (sDistinictColumnName = Nothing Or Trim(sDistinictColumnName) = "") Then
-                dv = FilteredView(sListName, sFilterCondition)
-            Else
-                dv = FilteredDistinctView(sListName, companyIds, sDistinictColumnName, dynamicOrderBYClause)
-            End If
+            dv = FilteredDistinctView(sListName, companyIds, sDistinictColumnName, dynamicOrderBYClause)
         End If
-
 
 
         If ElitaPlusIdentity.Current.ActiveUser.IsDealerGroup Then
@@ -947,18 +929,10 @@ Public NotInheritable Class LookupListNew
 
         Dim dv As DataView
 
-        If companyIds.Count > 1 Then
-            If (sDistinictColumnName = Nothing Or Trim(sDistinictColumnName) = "") Then
-                dv = FilteredView(sListName, sFilterCondition)
-            Else
-                dv = FilteredDistinctView(sListName, companyIds, sDistinictColumnName, dynamicOrderBYClause)
-            End If
+        If (sDistinictColumnName = Nothing OrElse Trim(sDistinictColumnName) = "") Then
+            dv = FilteredView(sListName, sFilterCondition)
         Else
-            If (sDistinictColumnName = Nothing Or Trim(sDistinictColumnName) = "") Then
-                dv = FilteredView(sListName, sFilterCondition)
-            Else
-                dv = FilteredDistinctView(sListName, companyIds, sDistinictColumnName, dynamicOrderBYClause)
-            End If
+            dv = FilteredDistinctView(sListName, companyIds, sDistinictColumnName, dynamicOrderBYClause)
         End If
 
         Return (dv)
@@ -1922,18 +1896,10 @@ Public NotInheritable Class LookupListNew
 
         Dim dv As DataView
 
-        If countryIds.Count > 1 Then
-            If (sDistinictColumnName = Nothing Or Trim(sDistinictColumnName) = "") Then
-                dv = FilteredView(sListName, sFilterCondition)
-            Else
-                dv = FilteredDistinctView(sListName, countryIds, sDistinictColumnName, dynamicOrderBYClause)
-            End If
+        If (sDistinictColumnName = Nothing Or Trim(sDistinictColumnName) = "") Then
+            dv = FilteredView(sListName, sFilterCondition)
         Else
-            If (sDistinictColumnName = Nothing Or Trim(sDistinictColumnName) = "") Then
-                dv = FilteredView(sListName, sFilterCondition)
-            Else
-                dv = FilteredDistinctView(sListName, countryIds, sDistinictColumnName, dynamicOrderBYClause)
-            End If
+            dv = FilteredDistinctView(sListName, countryIds, sDistinictColumnName, dynamicOrderBYClause)
         End If
 
         Return (dv)

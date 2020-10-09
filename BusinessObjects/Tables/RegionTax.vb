@@ -397,7 +397,7 @@ Public Class RegionTax
             Description = .Description
             ProductTaxTypeId = .ProductTaxTypeId
             DealerId = .DealerId
-            CompanyTypeXCD = CompanyTypeXCD
+            CompanyTypeXCD = .CompanyTypeXCD
             _detailRecords.Clear()
             For Each oRTD In .RegionTaxDetailList
                 RegionTaxDetail(oRTD.TaxBucket) = oRTD

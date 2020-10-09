@@ -28,7 +28,7 @@ Imports System.IO
 Imports System.Text.RegularExpressions
 Imports Assurant.Common.Zip
 
-Public NotInheritable Class DBHelper
+Public NotInheritable Class DbHelper
 
     Private Const ORACLE_UNIQUE_CONSTRAINT_ERR As Integer = 1
     Private Const ORACLE_LENGHT_EXCEEDED_ERR As Integer = 1401
@@ -39,7 +39,7 @@ Public NotInheritable Class DBHelper
 #Region " Constructors "
 
 
-    Private Sub New()
+    Public Sub New()
         'can't create instance, only use the static methods
     End Sub
 

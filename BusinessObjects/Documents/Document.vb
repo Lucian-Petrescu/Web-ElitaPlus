@@ -247,10 +247,10 @@ Namespace Documents
                                     End If
 
                                     Dim cloudBlobClient As CloudBlobClient = storageAccount.CreateCloudBlobClient()
-                                    Dim cloudBlobContainer as CloudBlobContainer = cloudBlobClient.GetContainerReference(Repository.StoragePath)
-                                    dim cloudBlockBlob As CloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(Id.ToString() + ".file")
+                                    Dim cloudBlobContainer As CloudBlobContainer = cloudBlobClient.GetContainerReference(Repository.StoragePath)
+                                    Dim cloudBlockBlob As CloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(Id.ToString() + ".file")
                                     cloudBlockBlob.FetchAttributes()
-                                    dim buffer(cloudBlockBlob.Properties.Length - 1) as Byte
+                                    Dim buffer(cloudBlockBlob.Properties.Length - 1) As Byte
                                     cloudBlockBlob.DownloadToByteArray(buffer, 0)
                                     _data = buffer
                                 Case Else
@@ -261,7 +261,8 @@ Namespace Documents
                             Throw New DocumentDownloadFailedException(Repository.Code, Repository.StoragePath, AbsoluteFileName, ex)
                         End Try
 
-                        Dim computedHash As String = Convert.ToBase64String(New SHA256CryptoServiceProvider().ComputeHash(_data))
+                        Dim hashAlg = SHA256.Create()
+                        Dim computedHash As String = Convert.ToBase64String(hashAlg.ComputeHash(_data))
 
                         If (computedHash <> HashValue) Then
                             Throw New FileIntegrityFailedException(Repository.Code, Repository.StoragePath, AbsoluteFileName, HashValue, computedHash, Nothing)

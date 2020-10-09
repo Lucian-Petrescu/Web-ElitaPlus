@@ -81,7 +81,7 @@ Public MustInherit Class AntivirusProductTaskBase
         End If
 
         ' If Registration is not initialized then check if Certificate Number is supplied
-        If (_custRegistration Is Nothing OrElse _custRegistration Is Nothing) Then
+        If (_custRegistration Is Nothing) Then
             If (Not String.IsNullOrEmpty(MyBase.PublishedTask(PublishedTask.CERTIFICATE_ID))) Then
                 certificateId = GuidControl.ByteArrayToGuid(GuidControl.HexToByteArray(MyBase.PublishedTask(PublishedTask.CERTIFICATE_ID)))
                 Dim registrationDetails As CustItemDAL.RegistrationDetails

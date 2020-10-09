@@ -32,7 +32,7 @@ Public MustInherit Class ElitaMethodBase
 
         Sub New(Name As String, Value As String)
             Me.Name = Name
-            ObjectType = ObjectType
+            Me.ObjectType = ObjectType
             Me.Value = Value
         End Sub
     End Class
