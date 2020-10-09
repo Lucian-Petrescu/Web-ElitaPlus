@@ -1,25 +1,17 @@
 ﻿using Assurant.ElitaPlus.BusinessObjectsNew;
 using RestSharp;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using RestSharp.Extensions;
 
 namespace Assurant.ElitaPlus.External.Indix.Clients
 {
+    /// <summary>
+    /// IndixClient
+    /// </summary>
     public class IndixClient : RestClient
     {
-        private const string serviceUri = "https://qa-indixapi.assurantprotectionplans.com/api/v1/indix/summary/products";
-        private const string thumbPrint = "25 36 78 6d 8f 6e 7b 3e ac f5 45 a8 3c 03 e6 a9 fe 34 cb 4c";
-        private static object syncRoot = new Object();
-
-        private static string _webPasswdUrl;
-        private static string WebPasswdUrl
+        private static string webPasswdUrl
         {
             get
             {
@@ -27,11 +19,18 @@ namespace Assurant.ElitaPlus.External.Indix.Clients
                 return oWebPasswd.Url;
             }
         }
-        public IndixClient() : this(WebPasswdUrl)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public IndixClient() : this(webPasswdUrl)
         {
 
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="url"></param>
         public IndixClient(string url) : base(url)
         {
             X509Certificate2 cert = GetCertificateByThumbPrint(Properties.Settings.Default.INDIX_SERVICE_THUMBPRINT);
@@ -48,8 +47,7 @@ namespace Assurant.ElitaPlus.External.Indix.Clients
             certStore.Open(OpenFlags.ReadOnly);
             try
             {
-                string thumbprint = thumbPrint;
-                var certCollection = certStore.Certificates.Find(X509FindType.FindByThumbprint, Regex.Replace(thumbprint, @"\s+", "").ToUpper(), false);
+                var certCollection = certStore.Certificates.Find(X509FindType.FindByThumbprint, Regex.Replace(thumbPrint, @"\s+", "").ToUpper(), false);
                 if (certCollection.Count > 0)
                 {
                     serverCertificate = certCollection[0];
