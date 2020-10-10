@@ -572,15 +572,10 @@ Public Class CertificateDAL
             whereClauseConditions &= Environment.NewLine & "UPPER(dg.code " & dealerGroupCode.ToUpper & " AND "
         End If
 
-        If bIsLikeClause Then
-            ' hextoraw
-            whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("c." & COL_NAME_COMPANY_ID, compIds, True) & " AND "
-            whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("d." & COL_NAME_COMPANY_ID, compIds, True)
-        Else
-            ' not HextoRaw
-            whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("c." & COL_NAME_COMPANY_ID, compIds, True) & " AND "
-            whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("d." & COL_NAME_COMPANY_ID, compIds, True)
-        End If
+        
+        whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("c." & COL_NAME_COMPANY_ID, compIds, True) & " AND "
+        whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("d." & COL_NAME_COMPANY_ID, compIds, True)
+        
 
         If Not whereClauseConditions = "" Then
             selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
@@ -726,20 +721,10 @@ Public Class CertificateDAL
                 End If
             End If
 
-            If bIsLikeClause Then
-                ' hextoraw
-                whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("ci." & COL_NAME_COMPANY_ID, compIds, True)
-            Else
-                ' not HextoRaw
-                whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("ci." & COL_NAME_COMPANY_ID, compIds, False)
-            End If
+            whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("ci." & COL_NAME_COMPANY_ID, compIds, False)
 
         Else
-            If bIsLikeClause Then
-                whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("d." & COL_NAME_COMPANY_ID, compIds, True)
-            Else
-                whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("d." & COL_NAME_COMPANY_ID, compIds, True)
-            End If
+            whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("d." & COL_NAME_COMPANY_ID, compIds, True)
         End If
 
         If Not inforceDate.Equals(String.Empty) Then
@@ -853,14 +838,8 @@ Public Class CertificateDAL
             whereClauseConditions &= Environment.NewLine & "upper(c.vehicle_license_tag)" & vehicleLicenseFlagMask.ToUpper & " AND"
         End If
 
-        If bIsLikeClause Then
-            ' hextoraw
-            whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("ci." & COL_NAME_COMPANY_ID, compIds, True)
-        Else
-            ' not HextoRaw
-            whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("ci." & COL_NAME_COMPANY_ID, compIds, False)
-        End If
-
+        whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("ci." & COL_NAME_COMPANY_ID, compIds, True)
+        
         If Not whereClauseConditions = "" Then
             selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
@@ -1231,15 +1210,8 @@ Public Class CertificateDAL
         Dim bIsLikeClause As Boolean = False
         bIsLikeClause = IsThereALikeClause(certNumberMask)
 
-        If bIsLikeClause Then
-            ' hextoraw
-            whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("AND c." & COL_NAME_COMPANY_ID, compIds, True) & " AND "
-            whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("d." & COL_NAME_COMPANY_ID, compIds, True)
-        Else
-            ' not HextoRaw
-            whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("AND c." & COL_NAME_COMPANY_ID, compIds, False) & " AND "
-            whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("d." & COL_NAME_COMPANY_ID, compIds, False)
-        End If
+        whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("AND c." & COL_NAME_COMPANY_ID, compIds, True) & " AND "
+        whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("d." & COL_NAME_COMPANY_ID, compIds, True)
 
         'REQ-743
         If Not InvoiceNumberMask Is Nothing AndAlso Not InvoiceNumberMask.Equals(String.Empty) Then
@@ -1332,16 +1304,9 @@ Public Class CertificateDAL
             whereClauseConditions &= Environment.NewLine & " UPPER(C.VIN_LOCATOR) " & VINLocatorMask.ToUpper & " AND "
         End If
 
-
-        If bIsLikeClause Then
-            ' hextoraw
-            whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("c." & COL_NAME_COMPANY_ID, compIds, True) & " AND "
-            whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("d." & COL_NAME_COMPANY_ID, compIds, True)
-        Else
-            ' not HextoRaw
-            whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("c." & COL_NAME_COMPANY_ID, compIds, True) & " AND "
-            whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("d." & COL_NAME_COMPANY_ID, compIds, True)
-        End If
+        whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("c." & COL_NAME_COMPANY_ID, compIds, True) & " AND "
+        whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("d." & COL_NAME_COMPANY_ID, compIds, True)
+        
 
         If Not whereClauseConditions = "" Then
             selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
@@ -1777,15 +1742,7 @@ Public Class CertificateDAL
             whereClauseConditions &= Environment.NewLine & "UPPER(C.HOME_PHONE) " & CustomerPhoneMask.ToUpper & " AND "
         End If
 
-        If bIsLikeClause Then
-            ' hextoraw
-            whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("c." & COL_NAME_COMPANY_ID, compIds, True)
-
-        Else
-            ' not HextoRaw
-            whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("c." & COL_NAME_COMPANY_ID, compIds, True)
-
-        End If
+        whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("c." & COL_NAME_COMPANY_ID, compIds, True)
 
         If Not whereClauseConditions = "" Then
             selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)

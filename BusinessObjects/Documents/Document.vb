@@ -261,8 +261,8 @@ Namespace Documents
                             Throw New DocumentDownloadFailedException(Repository.Code, Repository.StoragePath, AbsoluteFileName, ex)
                         End Try
 
-                        Dim hashAlg = SHA256.Create()
-                        Dim computedHash As String = Convert.ToBase64String(hashAlg.ComputeHash(_data))
+                        Dim sha256 = New SHA256CryptoServiceProvider()
+                        Dim computedHash As String = Convert.ToBase64String(sha256.ComputeHash(_data))
 
                         If (computedHash <> HashValue) Then
                             Throw New FileIntegrityFailedException(Repository.Code, Repository.StoragePath, AbsoluteFileName, HashValue, computedHash, Nothing)
