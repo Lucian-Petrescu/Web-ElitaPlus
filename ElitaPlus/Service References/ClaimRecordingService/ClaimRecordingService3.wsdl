@@ -360,7 +360,6 @@
           <xs:element minOccurs="0" name="Applicable" nillable="true" type="xs:boolean" />
           <xs:element minOccurs="0" name="ReEvaulateOnChange" nillable="true" type="xs:boolean" />
           <xs:element minOccurs="0" name="ChannelDisabled" nillable="true" type="xs:boolean" />
-          <xs:element minOccurs="0" name="Validations" nillable="true" type="tns:ArrayOfBaseValidation" />
         </xs:sequence>
       </xs:complexType>
       <xs:element name="Question" nillable="true" type="tns:Question" />
@@ -381,108 +380,12 @@
         <xs:sequence />
       </xs:complexType>
       <xs:element name="BaseAnswer" nillable="true" type="tns:BaseAnswer" />
-      <xs:complexType name="DateAnswer">
-        <xs:complexContent mixed="false">
-          <xs:extension base="tns:BaseAnswer">
-            <xs:sequence>
-              <xs:element minOccurs="0" name="Answer" nillable="true" type="xs:dateTime" />
-            </xs:sequence>
-          </xs:extension>
-        </xs:complexContent>
-      </xs:complexType>
-      <xs:element name="DateAnswer" nillable="true" type="tns:DateAnswer" />
-      <xs:complexType name="ChoiceAnswer">
-        <xs:complexContent mixed="false">
-          <xs:extension base="tns:BaseAnswer">
-            <xs:sequence>
-              <xs:element minOccurs="0" name="Answers" nillable="true" type="tns:ArrayOfAnswerValue" />
-              <xs:element minOccurs="0" name="Answer" nillable="true" type="tns:AnswerValue" />
-            </xs:sequence>
-          </xs:extension>
-        </xs:complexContent>
-      </xs:complexType>
-      <xs:element name="ChoiceAnswer" nillable="true" type="tns:ChoiceAnswer" />
-      <xs:complexType name="ArrayOfAnswerValue">
+      <xs:complexType name="ArrayOfPreCondition">
         <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="AnswerValue" nillable="true" type="tns:AnswerValue" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="PreCondition" nillable="true" type="tns:PreCondition" />
         </xs:sequence>
       </xs:complexType>
-      <xs:element name="ArrayOfAnswerValue" nillable="true" type="tns:ArrayOfAnswerValue" />
-      <xs:complexType name="AnswerValue">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="Text" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="SequenceNumber" type="xs:int" />
-        </xs:sequence>
-      </xs:complexType>
-      <xs:element name="AnswerValue" nillable="true" type="tns:AnswerValue" />
-      <xs:complexType name="ContentAnswer">
-        <xs:complexContent mixed="false">
-          <xs:extension base="tns:BaseAnswer">
-            <xs:sequence />
-          </xs:extension>
-        </xs:complexContent>
-      </xs:complexType>
-      <xs:element name="ContentAnswer" nillable="true" type="tns:ContentAnswer" />
-      <xs:complexType name="LegalConsentAnswer">
-        <xs:complexContent mixed="false">
-          <xs:extension base="tns:BaseAnswer">
-            <xs:sequence>
-              <xs:element minOccurs="0" name="Answer" nillable="true" type="xs:boolean" />
-            </xs:sequence>
-          </xs:extension>
-        </xs:complexContent>
-      </xs:complexType>
-      <xs:element name="LegalConsentAnswer" nillable="true" type="tns:LegalConsentAnswer" />
-      <xs:complexType name="ListOfValuesAnswer">
-        <xs:complexContent mixed="false">
-          <xs:extension base="tns:BaseAnswer">
-            <xs:sequence>
-              <xs:element minOccurs="0" name="Answers" nillable="true" type="tns:ArrayOfAnswerValue" />
-              <xs:element minOccurs="0" name="Answer" nillable="true" type="tns:AnswerValue" />
-            </xs:sequence>
-          </xs:extension>
-        </xs:complexContent>
-      </xs:complexType>
-      <xs:element name="ListOfValuesAnswer" nillable="true" type="tns:ListOfValuesAnswer" />
-      <xs:complexType name="NumberAnswer">
-        <xs:complexContent mixed="false">
-          <xs:extension base="tns:BaseAnswer">
-            <xs:sequence>
-              <xs:element minOccurs="0" name="Answer" nillable="true" type="xs:decimal" />
-            </xs:sequence>
-          </xs:extension>
-        </xs:complexContent>
-      </xs:complexType>
-      <xs:element name="NumberAnswer" nillable="true" type="tns:NumberAnswer" />
-      <xs:complexType name="TextAnswer">
-        <xs:complexContent mixed="false">
-          <xs:extension base="tns:BaseAnswer">
-            <xs:sequence>
-              <xs:element minOccurs="0" name="Answer" nillable="true" type="xs:string" />
-            </xs:sequence>
-          </xs:extension>
-        </xs:complexContent>
-      </xs:complexType>
-      <xs:element name="TextAnswer" nillable="true" type="tns:TextAnswer" />
-      <xs:complexType name="BooleanAnswer">
-        <xs:complexContent mixed="false">
-          <xs:extension base="tns:BaseAnswer">
-            <xs:sequence>
-              <xs:element minOccurs="0" name="Answer" nillable="true" type="xs:boolean" />
-            </xs:sequence>
-          </xs:extension>
-        </xs:complexContent>
-      </xs:complexType>
-      <xs:element name="BooleanAnswer" nillable="true" type="tns:BooleanAnswer" />
-      <xs:simpleType name="PreConditionTypes">
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="Equal" />
-          <xs:enumeration value="NotEqual" />
-          <xs:enumeration value="PreviousQuestionsComplete" />
-        </xs:restriction>
-      </xs:simpleType>
-      <xs:element name="PreConditionTypes" nillable="true" type="tns:PreConditionTypes" />
+      <xs:element name="ArrayOfPreCondition" nillable="true" type="tns:ArrayOfPreCondition" />
       <xs:complexType name="PreCondition">
         <xs:sequence>
           <xs:element name="PreConditionType" type="tns:PreConditionTypes" />
@@ -493,76 +396,14 @@
         </xs:sequence>
       </xs:complexType>
       <xs:element name="PreCondition" nillable="true" type="tns:PreCondition" />
-      <xs:complexType name="RegularExpressionValidation">
-        <xs:complexContent mixed="false">
-          <xs:extension base="tns:BaseValidation">
-            <xs:sequence>
-              <xs:element minOccurs="0" name="RegularExpressionPattern" nillable="true" type="xs:string" />
-            </xs:sequence>
-          </xs:extension>
-        </xs:complexContent>
-      </xs:complexType>
-      <xs:element name="RegularExpressionValidation" nillable="true" type="tns:RegularExpressionValidation" />
-      <xs:complexType name="BaseValidation">
-        <xs:sequence />
-      </xs:complexType>
-      <xs:element name="BaseValidation" nillable="true" type="tns:BaseValidation" />
-      <xs:complexType name="ComparisonValidation">
-        <xs:complexContent mixed="false">
-          <xs:extension base="tns:BaseValidation">
-            <xs:sequence>
-              <xs:element minOccurs="0" name="Operator" type="tns:ComparisonValidationOperatorType" />
-              <xs:element minOccurs="0" name="ReferenceValue" nillable="true" type="tns:BaseReferenceValue" />
-            </xs:sequence>
-          </xs:extension>
-        </xs:complexContent>
-      </xs:complexType>
-      <xs:element name="ComparisonValidation" nillable="true" type="tns:ComparisonValidation" />
-      <xs:simpleType name="ComparisonValidationOperatorType">
+      <xs:simpleType name="PreConditionTypes">
         <xs:restriction base="xs:string">
-          <xs:enumeration value="GreaterThan" />
-          <xs:enumeration value="GreaterThanOrEqualTo" />
-          <xs:enumeration value="LessThan" />
-          <xs:enumeration value="LessThanOrEqualTo" />
+          <xs:enumeration value="Equal" />
+          <xs:enumeration value="NotEqual" />
+          <xs:enumeration value="PreviousQuestionsComplete" />
         </xs:restriction>
       </xs:simpleType>
-      <xs:element name="ComparisonValidationOperatorType" nillable="true" type="tns:ComparisonValidationOperatorType" />
-      <xs:complexType name="BaseReferenceValue">
-        <xs:sequence />
-      </xs:complexType>
-      <xs:element name="BaseReferenceValue" nillable="true" type="tns:BaseReferenceValue" />
-      <xs:complexType name="DateReferenceValue">
-        <xs:complexContent mixed="false">
-          <xs:extension base="tns:BaseReferenceValue">
-            <xs:sequence>
-              <xs:element minOccurs="0" name="ReferenceValue" type="xs:dateTime" />
-            </xs:sequence>
-          </xs:extension>
-        </xs:complexContent>
-      </xs:complexType>
-      <xs:element name="DateReferenceValue" nillable="true" type="tns:DateReferenceValue" />
-      <xs:complexType name="NumberReferenceValue">
-        <xs:complexContent mixed="false">
-          <xs:extension base="tns:BaseReferenceValue">
-            <xs:sequence>
-              <xs:element minOccurs="0" name="ReferenceValue" type="xs:decimal" />
-            </xs:sequence>
-          </xs:extension>
-        </xs:complexContent>
-      </xs:complexType>
-      <xs:element name="NumberReferenceValue" nillable="true" type="tns:NumberReferenceValue" />
-      <xs:complexType name="ArrayOfPreCondition">
-        <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="PreCondition" nillable="true" type="tns:PreCondition" />
-        </xs:sequence>
-      </xs:complexType>
-      <xs:element name="ArrayOfPreCondition" nillable="true" type="tns:ArrayOfPreCondition" />
-      <xs:complexType name="ArrayOfBaseValidation">
-        <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="BaseValidation" nillable="true" type="tns:BaseValidation" />
-        </xs:sequence>
-      </xs:complexType>
-      <xs:element name="ArrayOfBaseValidation" nillable="true" type="tns:ArrayOfBaseValidation" />
+      <xs:element name="PreConditionTypes" nillable="true" type="tns:PreConditionTypes" />
       <xs:complexType name="ArrayOfQuestionSetParameter">
         <xs:sequence>
           <xs:element minOccurs="0" maxOccurs="unbounded" name="QuestionSetParameter" nillable="true" type="tns:QuestionSetParameter" />
@@ -683,6 +524,100 @@
         </xs:restriction>
       </xs:simpleType>
       <xs:element name="ProcessResults" nillable="true" type="tns:ProcessResults" />
+      <xs:complexType name="DateAnswer">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseAnswer">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Answer" nillable="true" type="xs:dateTime" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="DateAnswer" nillable="true" type="tns:DateAnswer" />
+      <xs:complexType name="TextAnswer">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseAnswer">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Answer" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="TextAnswer" nillable="true" type="tns:TextAnswer" />
+      <xs:complexType name="NumberAnswer">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseAnswer">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Answer" nillable="true" type="xs:decimal" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="NumberAnswer" nillable="true" type="tns:NumberAnswer" />
+      <xs:complexType name="ListOfValuesAnswer">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseAnswer">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Answers" nillable="true" type="tns:ArrayOfAnswerValue" />
+              <xs:element minOccurs="0" name="Answer" nillable="true" type="tns:AnswerValue" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ListOfValuesAnswer" nillable="true" type="tns:ListOfValuesAnswer" />
+      <xs:complexType name="ArrayOfAnswerValue">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="AnswerValue" nillable="true" type="tns:AnswerValue" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfAnswerValue" nillable="true" type="tns:ArrayOfAnswerValue" />
+      <xs:complexType name="AnswerValue">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Text" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SequenceNumber" type="xs:int" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="AnswerValue" nillable="true" type="tns:AnswerValue" />
+      <xs:complexType name="ChoiceAnswer">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseAnswer">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Answers" nillable="true" type="tns:ArrayOfAnswerValue" />
+              <xs:element minOccurs="0" name="Answer" nillable="true" type="tns:AnswerValue" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ChoiceAnswer" nillable="true" type="tns:ChoiceAnswer" />
+      <xs:complexType name="BooleanAnswer">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseAnswer">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Answer" nillable="true" type="xs:boolean" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="BooleanAnswer" nillable="true" type="tns:BooleanAnswer" />
+      <xs:complexType name="ContentAnswer">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseAnswer">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ContentAnswer" nillable="true" type="tns:ContentAnswer" />
+      <xs:complexType name="LegalConsentAnswer">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseAnswer">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Answer" nillable="true" type="xs:boolean" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="LegalConsentAnswer" nillable="true" type="tns:LegalConsentAnswer" />
       <xs:complexType name="DeviceSelectionRequest">
         <xs:complexContent mixed="false">
           <xs:extension base="tns:BaseClaimRecordingRequest">
