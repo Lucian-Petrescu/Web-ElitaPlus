@@ -2614,6 +2614,12 @@ Public Class ClaimRecordingForm
     Private Const LogisticsOptionsServiceCenterNameTxtCtrl As String = "txtServiceCenterName"
     Private Const GridLoServiceCenterTr As String = "trServiceCenter"
     Private Const GridBankInfoLblCtrl As String = "moBankInfoLabel"
+    Private Const GridLoBankInfoTr As String = "trBankInfo"
+    Private Const LogisticsOptionsCheckInfoCtrl As String = "moCustomerAddressController"
+    Private Const GridLoCheckInfoTr As String = "trChequeInfo"
+    Private Const GridPayableToTxtCtrl As String = "moPayableToText"
+    Private Const GridPayableToLblCtrl As String = "moPayableToLabel"
+    Private Const GridCheckInfoLblCtrl As String = "moChequeInfoLabel"
     'KDDI
     Private Const ValidateAddressButton As String = "btnValidate_Address"
 
@@ -2799,7 +2805,7 @@ Public Class ClaimRecordingForm
                 End If
 
                 ' Logistics Options
-                If Not lOption Is Nothing _
+                If  lOption IsNot Nothing _
                    AndAlso (lOption.Type = LogisticOptionType.DealerBranchAddress OrElse lOption.Type = LogisticOptionType.CustomerAddress) Then
 
                     Dim addressSelected As ClaimRecordingService.Address = PopulateAddressFromAddressController(CType(gvr.Cells(GridLoColLoDetailIdx).FindControl("ucAddressControllerLogisticsOptions"), UserControlAddress_New))
@@ -2817,8 +2823,8 @@ Public Class ClaimRecordingForm
                             MasterPage.MessageController.AddError(Message.MSG_ERR_STORE_NUMBER_MANDATORY, True)
                             Return False
                         End If
-                        If Not lOption.LogisticOptionInfo Is Nothing _
-                       AndAlso Not CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address Is Nothing Then
+                        If  lOption.LogisticOptionInfo IsNot Nothing _
+                       AndAlso  CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address IsNot Nothing Then
                             postalCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address.PostalCode
                             countryCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address.Country
                         End If
@@ -2826,8 +2832,8 @@ Public Class ClaimRecordingForm
                         CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address = addressSelected
 
                     ElseIf lOption.Type = LogisticOptionType.CustomerAddress Then
-                        If Not lOption.LogisticOptionInfo Is Nothing _
-                       AndAlso Not CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address Is Nothing Then
+                        If  lOption.LogisticOptionInfo IsNot Nothing _
+                       AndAlso  CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address IsNot Nothing Then
                             postalCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address.PostalCode
                             countryCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address.Country
                         End If
@@ -2835,8 +2841,8 @@ Public Class ClaimRecordingForm
                         CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address = addressSelected
                     End If
 
-                    If Not lOption Is Nothing _
-                   AndAlso Not lOption.DeliveryOptions Is Nothing _
+                    If  lOption IsNot Nothing _
+                   AndAlso  lOption.DeliveryOptions IsNot Nothing _
                    AndAlso lOption.DeliveryOptions.DisplayEstimatedDeliveryDate Then
 
                         If (Not String.IsNullOrWhiteSpace(countryCodeOld) AndAlso addressSelected.Country <> countryCodeOld) _
@@ -2856,7 +2862,7 @@ Public Class ClaimRecordingForm
                             MasterPage.MessageController.AddError(Message.MSG_ERR_DELIVERY_DATE_MANDATORY, True)
                             Return False
                         Else
-                            If Not lOption.LogisticOptionInfo Is Nothing Then
+                            If  lOption.LogisticOptionInfo IsNot Nothing Then
                                 If State.LogisticsOption.Code.ToUpper().Equals("X") Then
 
                                     If Not State.IsExpeditedBtnClicked Then
@@ -2872,7 +2878,7 @@ Public Class ClaimRecordingForm
                 End If
 
                 ' Service Center
-                If Not lOption Is Nothing _
+                If  lOption IsNot Nothing _
                     AndAlso lOption.Type = LogisticOptionType.ServiceCenter Then
 
                     Dim uc As UserControlServiceCenterSelection
@@ -2890,16 +2896,12 @@ Public Class ClaimRecordingForm
                 End If
 
                 ' Bank transfer
-                If Not lOption Is Nothing _
+                If  lOption IsNot Nothing _
                     AndAlso lOption.Type = LogisticOptionType.BankTransfer Then
                     Dim moBankInfoController As UserControlBankInfo_New = CType(gvr.FindControl(LogisticsOptionsBankInfoCtrl), UserControlBankInfo_New)
                     Dim logisticOptionInfoBankTransfer As LogisticOptionInfoBankTransfer = CType(lOption.LogisticOptionInfo, LogisticOptionInfoBankTransfer)
                     If moBankInfoController IsNot Nothing Then
-
                         moBankInfoController.PopulateBOFromControl()
-
-                        Dim logisticStage As LogisticStage
-                        logisticStage = wsResponse.Stages(State.LogisticsStage)
                         logisticOptionInfoBankTransfer.BankInfo = New BankInfo With {
                             .ReferenceId = moBankInfoController.State.myBankInfoBo.Id.ToString
                         }
@@ -2909,9 +2911,28 @@ Public Class ClaimRecordingForm
                     End If
                 End If
 
+                'Customer Info for Check Payment
+                If  lOption IsNot Nothing _
+                   AndAlso lOption.Type = LogisticOptionType.CheckCustomerMail Then
+                    Dim moCustomerAddressController As UserControlAddress_New = CType(gvr.FindControl(LogisticsOptionsCheckInfoCtrl), UserControlAddress_New)
+                    Dim logisticOptionInfoCustomerInfoForCheck As LogisticOptionInfoCheckCustomerMail = CType(lOption.LogisticOptionInfo, LogisticOptionInfoCheckCustomerMail)
+
+                    If moCustomerAddressController IsNot Nothing Then
+                        Dim addressSelected As ClaimRecordingService.Address = PopulateAddressFromAddressController(moCustomerAddressController)
+                        If addressSelected.Address1 Is Nothing OrElse addressSelected.Address1.Trim() = String.Empty Then
+                            MasterPage.MessageController.AddError(Message.MSG_PROMPT_ADDRESS1_FIELD_IS_REQUIRED, True)
+                            Return False
+                        End If
+                        logisticOptionInfoCustomerInfoForCheck.Address= addressSelected
+                    Else
+                        MasterPage.MessageController.AddError(Message.MSG_PROMPT_ADDRESS_REQUIRED, True)
+                        Return False
+                    End If
+                End If
 
                 islogisticsOptionSelected = True
                 Exit For
+            
             End If
 
         Next
@@ -3173,9 +3194,12 @@ Public Class ClaimRecordingForm
             rdoLogisticsOptions.Checked = isEnableControl
 
             Dim addressDetail As New BusinessObjectsNew.Address()
+            Dim trBankInfo As HtmlTableRow = CType(e.Row.FindControl(GridLoBankInfoTr), HtmlTableRow)
+            Dim trCheckInfo As HtmlTableRow = CType(e.Row.FindControl(GridLoCheckInfoTr), HtmlTableRow)
+            Dim trServiceCenter As HtmlTableRow = CType(e.Row.FindControl(GridLoServiceCenterTr), HtmlTableRow)
 
             ' Logistics Options - Address
-            If Not logisticsOptionItem Is Nothing _
+            If  logisticsOptionItem IsNot Nothing _
                AndAlso (logisticsOptionItem.Type = LogisticOptionType.CustomerAddress OrElse logisticsOptionItem.Type = LogisticOptionType.DealerBranchAddress) Then
 
                 Dim lblLoShippingAddress As Label = CType(e.Row.FindControl(GridLoShippingAddressLblCtrl), Label)
@@ -3199,13 +3223,13 @@ Public Class ClaimRecordingForm
                     lblLoShippingAddress.Text = TranslationBase.TranslateLabelOrMessage("CUSTOMER_ADDRESS")
 
                     If logisticsOptionItem.LogisticOptionInfo Is Nothing Then
-                        If Not oCertificate.AddressChild Is Nothing Then
+                        If  oCertificate.AddressChild IsNot Nothing Then
                             addressDetail = oCertificate.AddressChild
                         End If
                     Else
                         Dim infoCustomerAddress As LogisticOptionInfoCustomerAddress
                         infoCustomerAddress = logisticsOptionItem.LogisticOptionInfo
-                        If Not infoCustomerAddress.Address Is Nothing Then
+                        If  infoCustomerAddress.Address IsNot Nothing Then
                             addressDetail = ConvertToAddressControllerField(infoCustomerAddress.Address)
                         End If
                     End If
@@ -3221,11 +3245,11 @@ Public Class ClaimRecordingForm
                     Dim txtStoreNumber As TextBox = CType(e.Row.FindControl(GridLoStoreNumberTxtCtrl), TextBox)
                     ControlMgr.SetEnableControl(Me, txtStoreNumber, isEnableControl)
 
-                    If Not logisticsOptionItem.LogisticOptionInfo Is Nothing Then
+                    If  logisticsOptionItem.LogisticOptionInfo IsNot Nothing Then
                         Dim infoStoreAddress As LogisticOptionInfoDealerBranchAddress
                         infoStoreAddress = logisticsOptionItem.LogisticOptionInfo
                         txtStoreNumber.Text = infoStoreAddress.BranchCode
-                        If Not infoStoreAddress.Address Is Nothing Then
+                        If  infoStoreAddress.Address IsNot Nothing Then
                             addressDetail = ConvertToAddressControllerField(infoStoreAddress.Address)
                         End If
                     End If
@@ -3248,13 +3272,12 @@ Public Class ClaimRecordingForm
 
             'Logistic Options - Service Center
 
-            If Not logisticsOptionItem Is Nothing _
+            If  logisticsOptionItem IsNot Nothing _
                    AndAlso (logisticsOptionItem.Type = LogisticOptionType.ServiceCenter) Then
 
-                Dim trServiceCenter As HtmlTableRow = CType(e.Row.FindControl(GridLoServiceCenterTr), HtmlTableRow)
-                Dim trBankInfo As HtmlTableRow = CType(e.Row.FindControl("trBankInfo"), HtmlTableRow)
                 ControlMgr.SetVisibleControl(Me, trServiceCenter, True)
                 ControlMgr.SetVisibleControl(Me, trBankInfo, False)
+                ControlMgr.SetVisibleControl(Me, trCheckInfo, False)
 
                 Dim oCertificate As Certificate = New Certificate(State.CertificateId)
                 Dim oCountry As Country = New Country(oCertificate.Company.CountryId)
@@ -3296,14 +3319,13 @@ Public Class ClaimRecordingForm
                 Dim txtStoreNumber As TextBox = CType(e.Row.FindControl(GridLoServiceCenterCodeTxtCtrl), TextBox)
                 ControlMgr.SetEnableControl(Me, txtStoreNumber, isEnableControl)
             Else
-                Dim trServiceCenter As HtmlTableRow = CType(e.Row.FindControl(GridLoServiceCenterTr), HtmlTableRow)
                 If trServiceCenter Is Nothing Then Throw New ArgumentNullException("TableRow for Service Center not found")
                 trServiceCenter.Attributes("style") = "display: none"
             End If
 
             ' Delivery Options
-            If Not logisticsOptionItem Is Nothing _
-               AndAlso Not logisticsOptionItem.DeliveryOptions Is Nothing _
+            If  logisticsOptionItem IsNot Nothing _
+               AndAlso  logisticsOptionItem.DeliveryOptions IsNot Nothing _
                AndAlso logisticsOptionItem.DeliveryOptions.DisplayEstimatedDeliveryDate Then
 
                 ' TODO: Assign the delivery code/description when it comes in the contract
@@ -3320,7 +3342,7 @@ Public Class ClaimRecordingForm
             End If
 
             ' Questions
-            If Not logisticsOptionItem Is Nothing Then
+            If  logisticsOptionItem IsNot Nothing Then
                 Dim logisticsOptionsQuestionsItemCtrl As UserControlQuestion = CType(e.Row.FindControl(LogisticsOptionsQuestionsCtrl), UserControlQuestion)
                 If logisticsOptionItem.Questions IsNot Nothing AndAlso logisticsOptionItem.Questions.Length > 0 Then
 
@@ -3343,17 +3365,15 @@ Public Class ClaimRecordingForm
                 End If
 
                 'Bank transfer 
-                If Not logisticsOptionItem Is Nothing AndAlso
+                If  logisticsOptionItem IsNot Nothing AndAlso
                                  (logisticsOptionItem.Type = LogisticOptionType.BankTransfer) Then
 
                     Dim lblBankInfo As Label = CType(e.Row.FindControl(GridBankInfoLblCtrl), Label)
                     lblBankInfo.Text = TranslationBase.TranslateLabelOrMessage("CUSTOMER_BANK_INFO")
 
-                    Dim trServiceCenter As HtmlTableRow = CType(e.Row.FindControl(GridLoServiceCenterTr), HtmlTableRow)
-                    Dim trBankInfo As HtmlTableRow = CType(e.Row.FindControl("trBankInfo"), HtmlTableRow)
-
                     ControlMgr.SetVisibleControl(Me, trServiceCenter, False)
                     ControlMgr.SetVisibleControl(Me, trBankInfo, True)
+                    ControlMgr.SetVisibleControl(Me, trCheckInfo, false)
 
                     Dim moBankInfoController As UserControlBankInfo_New = CType(e.Row.FindControl(LogisticsOptionsBankInfoCtrl), UserControlBankInfo_New)
                     moBankInfoController.Visible = True
@@ -3366,6 +3386,33 @@ Public Class ClaimRecordingForm
                     moBankInfoController.Bind(Me.State.BankInfoBO)
                     ddlCountry.Enabled = False
                     moBankInfoController.EnableControlsBasedOnCountry(Me.State.BankInfoBO.CountryID)
+                End If
+
+                'Customer Information for Check payment
+                If  logisticsOptionItem IsNot Nothing AndAlso
+                   (logisticsOptionItem.Type =  LogisticOptionType.CheckCustomerMail) Then
+                    Dim moCustomerAddressController As UserControlAddress_New = CType(e.Row.FindControl(LogisticsOptionsCheckInfoCtrl), UserControlAddress_New)
+                    Dim txtPayableToName As TextBox = CType(e.Row.FindControl(GridPayableToTxtCtrl), TextBox)
+                    Dim btnValidateAddress As Button = moCustomerAddressController.FindControl(ValidateAddressButton)
+                    Dim oCertificate As Certificate = New Certificate(State.CertificateId)
+                    Dim oCustomerAddress As  BusinessObjectsNew.Address = New BusinessObjectsNew.Address(ocertificate.AddressId)
+                    Dim lblPayableTo As Label = CType(e.Row.FindControl(GridPayableToLblCtrl), Label)
+                    Dim lblCheckInfo As Label = CType(e.Row.FindControl(GridCheckInfoLblCtrl), Label)
+
+                    lblPayableTo.Text= TranslationBase.TranslateLabelOrMessage(lblPayableTo.Text)
+                    lblCheckInfo.Text=TranslationBase.TranslateLabelOrMessage(lblCheckInfo.Text)
+
+                    ControlMgr.SetVisibleControl(Me, trServiceCenter, False)
+                    ControlMgr.SetVisibleControl(Me, trBankInfo, False)
+                    ControlMgr.SetVisibleControl(Me, trCheckInfo, True)
+                    ControlMgr.SetVisibleControl(Me, btnValidateAddress, False)
+
+                    EnableDisableAddressValidation(moCustomerAddressController)
+                    moCustomerAddressController.Visible = True
+                    moCustomerAddressController.TranslateAllLabelControl()
+                    txtPayableToName.Text = oCertificate.CustomerName
+                    moCustomerAddressController.Bind(oCustomerAddress)
+                    moCustomerAddressController.EnableControls(False, True)
                 End If
 
             End If
