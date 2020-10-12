@@ -93,6 +93,17 @@ Public Class AcctCompanyDAL
         Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
 
     End Function
+    Public Function GetCompUsingNewAccForAccCompany(ByVal acctCompanyId As Guid) As DataSet
+        Dim ds As New DataSet
+        Dim selectStmt As String = Me.Config("/SQL/GET_COMP_USING_NEW_ACC_FOR_ACC_COMP")
+        Try
+            Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("acct_company_id", acctCompanyId)}
+            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+            Return ds
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Function
 
 #End Region
 
