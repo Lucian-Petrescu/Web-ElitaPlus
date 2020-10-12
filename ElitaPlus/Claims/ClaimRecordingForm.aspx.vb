@@ -2805,7 +2805,7 @@ Public Class ClaimRecordingForm
                 End If
 
                 ' Logistics Options
-                If  lOption IsNot Nothing _
+                If Not lOption Is Nothing _
                    AndAlso (lOption.Type = LogisticOptionType.DealerBranchAddress OrElse lOption.Type = LogisticOptionType.CustomerAddress) Then
 
                     Dim addressSelected As ClaimRecordingService.Address = PopulateAddressFromAddressController(CType(gvr.Cells(GridLoColLoDetailIdx).FindControl("ucAddressControllerLogisticsOptions"), UserControlAddress_New))
@@ -2823,8 +2823,8 @@ Public Class ClaimRecordingForm
                             MasterPage.MessageController.AddError(Message.MSG_ERR_STORE_NUMBER_MANDATORY, True)
                             Return False
                         End If
-                        If  lOption.LogisticOptionInfo IsNot Nothing _
-                       AndAlso  CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address IsNot Nothing Then
+                        If Not lOption.LogisticOptionInfo Is Nothing _
+                       AndAlso Not CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address Is Nothing Then
                             postalCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address.PostalCode
                             countryCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address.Country
                         End If
@@ -2832,8 +2832,8 @@ Public Class ClaimRecordingForm
                         CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address = addressSelected
 
                     ElseIf lOption.Type = LogisticOptionType.CustomerAddress Then
-                        If  lOption.LogisticOptionInfo IsNot Nothing _
-                       AndAlso  CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address IsNot Nothing Then
+                        If Not lOption.LogisticOptionInfo Is Nothing _
+                       AndAlso Not CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address Is Nothing Then
                             postalCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address.PostalCode
                             countryCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address.Country
                         End If
@@ -2841,8 +2841,8 @@ Public Class ClaimRecordingForm
                         CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address = addressSelected
                     End If
 
-                    If  lOption IsNot Nothing _
-                   AndAlso  lOption.DeliveryOptions IsNot Nothing _
+                    If Not lOption Is Nothing _
+                   AndAlso Not lOption.DeliveryOptions Is Nothing _
                    AndAlso lOption.DeliveryOptions.DisplayEstimatedDeliveryDate Then
 
                         If (Not String.IsNullOrWhiteSpace(countryCodeOld) AndAlso addressSelected.Country <> countryCodeOld) _
@@ -2862,7 +2862,7 @@ Public Class ClaimRecordingForm
                             MasterPage.MessageController.AddError(Message.MSG_ERR_DELIVERY_DATE_MANDATORY, True)
                             Return False
                         Else
-                            If  lOption.LogisticOptionInfo IsNot Nothing Then
+                            If Not lOption.LogisticOptionInfo Is Nothing Then
                                 If State.LogisticsOption.Code.ToUpper().Equals("X") Then
 
                                     If Not State.IsExpeditedBtnClicked Then
@@ -2878,7 +2878,7 @@ Public Class ClaimRecordingForm
                 End If
 
                 ' Service Center
-                If  lOption IsNot Nothing _
+                If Not lOption Is Nothing _
                     AndAlso lOption.Type = LogisticOptionType.ServiceCenter Then
 
                     Dim uc As UserControlServiceCenterSelection
@@ -3199,7 +3199,7 @@ Public Class ClaimRecordingForm
             Dim trServiceCenter As HtmlTableRow = CType(e.Row.FindControl(GridLoServiceCenterTr), HtmlTableRow)
 
             ' Logistics Options - Address
-            If  logisticsOptionItem IsNot Nothing _
+            If Not logisticsOptionItem Is Nothing _
                AndAlso (logisticsOptionItem.Type = LogisticOptionType.CustomerAddress OrElse logisticsOptionItem.Type = LogisticOptionType.DealerBranchAddress) Then
 
                 Dim lblLoShippingAddress As Label = CType(e.Row.FindControl(GridLoShippingAddressLblCtrl), Label)
@@ -3223,13 +3223,13 @@ Public Class ClaimRecordingForm
                     lblLoShippingAddress.Text = TranslationBase.TranslateLabelOrMessage("CUSTOMER_ADDRESS")
 
                     If logisticsOptionItem.LogisticOptionInfo Is Nothing Then
-                        If  oCertificate.AddressChild IsNot Nothing Then
+                        If Not oCertificate.AddressChild Is Nothing Then
                             addressDetail = oCertificate.AddressChild
                         End If
                     Else
                         Dim infoCustomerAddress As LogisticOptionInfoCustomerAddress
                         infoCustomerAddress = logisticsOptionItem.LogisticOptionInfo
-                        If  infoCustomerAddress.Address IsNot Nothing Then
+                        If Not infoCustomerAddress.Address Is Nothing Then
                             addressDetail = ConvertToAddressControllerField(infoCustomerAddress.Address)
                         End If
                     End If
@@ -3245,11 +3245,11 @@ Public Class ClaimRecordingForm
                     Dim txtStoreNumber As TextBox = CType(e.Row.FindControl(GridLoStoreNumberTxtCtrl), TextBox)
                     ControlMgr.SetEnableControl(Me, txtStoreNumber, isEnableControl)
 
-                    If  logisticsOptionItem.LogisticOptionInfo IsNot Nothing Then
+                    If Not logisticsOptionItem.LogisticOptionInfo Is Nothing Then
                         Dim infoStoreAddress As LogisticOptionInfoDealerBranchAddress
                         infoStoreAddress = logisticsOptionItem.LogisticOptionInfo
                         txtStoreNumber.Text = infoStoreAddress.BranchCode
-                        If  infoStoreAddress.Address IsNot Nothing Then
+                        If Not infoStoreAddress.Address Is Nothing Then
                             addressDetail = ConvertToAddressControllerField(infoStoreAddress.Address)
                         End If
                     End If
@@ -3272,7 +3272,7 @@ Public Class ClaimRecordingForm
 
             'Logistic Options - Service Center
 
-            If  logisticsOptionItem IsNot Nothing _
+            If Not logisticsOptionItem Is Nothing _
                    AndAlso (logisticsOptionItem.Type = LogisticOptionType.ServiceCenter) Then
 
                 ControlMgr.SetVisibleControl(Me, trServiceCenter, True)
@@ -3324,8 +3324,8 @@ Public Class ClaimRecordingForm
             End If
 
             ' Delivery Options
-            If  logisticsOptionItem IsNot Nothing _
-               AndAlso  logisticsOptionItem.DeliveryOptions IsNot Nothing _
+            If Not logisticsOptionItem Is Nothing _
+               AndAlso Not logisticsOptionItem.DeliveryOptions Is Nothing _
                AndAlso logisticsOptionItem.DeliveryOptions.DisplayEstimatedDeliveryDate Then
 
                 ' TODO: Assign the delivery code/description when it comes in the contract
@@ -3342,7 +3342,7 @@ Public Class ClaimRecordingForm
             End If
 
             ' Questions
-            If  logisticsOptionItem IsNot Nothing Then
+            If Not logisticsOptionItem Is Nothing Then
                 Dim logisticsOptionsQuestionsItemCtrl As UserControlQuestion = CType(e.Row.FindControl(LogisticsOptionsQuestionsCtrl), UserControlQuestion)
                 If logisticsOptionItem.Questions IsNot Nothing AndAlso logisticsOptionItem.Questions.Length > 0 Then
 
