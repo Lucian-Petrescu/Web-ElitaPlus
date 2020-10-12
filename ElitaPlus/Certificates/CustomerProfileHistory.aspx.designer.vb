@@ -330,6 +330,15 @@ Namespace Certificates
         Protected WithEvents CorporateNameTD As Global.System.Web.UI.HtmlControls.HtmlTableCell
 
         '''<summary>
+        '''CustomerBankInformation control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents CustomerBankInformation As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
         '''NameOnAccountLabel control.
         '''</summary>
         '''<remarks>
