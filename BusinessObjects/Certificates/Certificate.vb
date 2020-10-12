@@ -244,10 +244,10 @@ Public Class Certificate
                 Return New Guid(CType(Row(CertificateDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(ByVal value As Guid)
             CheckDeleted()
             Me.Dealer = Nothing
-            Me.SetValue(CertificateDAL.COL_NAME_DEALER_ID, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_DEALER_ID, value)
         End Set
     End Property
 
@@ -277,9 +277,9 @@ Public Class Certificate
                 Return CType(Row(CertificateDAL.COL_NAME_SALES_CHANNEL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_SALES_CHANNEL, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_SALES_CHANNEL, value)
         End Set
     End Property
 
@@ -293,9 +293,9 @@ Public Class Certificate
                 Return New Guid(CType(Row(CertificateDAL.COL_NAME_PAYMENT_TYPE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(ByVal value As Guid)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_PAYMENT_TYPE_ID, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_PAYMENT_TYPE_ID, value)
         End Set
     End Property
 
@@ -310,9 +310,9 @@ Public Class Certificate
                 Return New Guid(CType(Row(CertificateDAL.COL_NAME_COMMISSION_BREAKDOWN_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(ByVal value As Guid)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_COMMISSION_BREAKDOWN_ID, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_COMMISSION_BREAKDOWN_ID, value)
         End Set
     End Property
 
@@ -327,9 +327,9 @@ Public Class Certificate
                 Return New Guid(CType(Row(CertificateDAL.COL_NAME_FINANCE_CURRENCY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(ByVal value As Guid)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_FINANCE_CURRENCY_ID, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_FINANCE_CURRENCY_ID, value)
         End Set
     End Property
 
@@ -344,9 +344,9 @@ Public Class Certificate
                 Return New Guid(CType(Row(CertificateDAL.COL_NAME_PURCHASE_CURRENCY_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(ByVal value As Guid)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_PURCHASE_CURRENCY_ID, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_PURCHASE_CURRENCY_ID, value)
         End Set
     End Property
     Public Property ProdLiabilityPolicyCd() As String
@@ -358,9 +358,9 @@ Public Class Certificate
                 Return CType(Row(CertificateDAL.COL_NAME_PROD_LIABILITY_POLICY_CD), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_PROD_LIABILITY_POLICY_CD, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_PROD_LIABILITY_POLICY_CD, value)
         End Set
     End Property
 
@@ -391,9 +391,9 @@ Public Class Certificate
                 Return New Guid(CType(Row(CertificateDAL.COL_NAME_METHOD_OF_REPAIR_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(ByVal value As Guid)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_METHOD_OF_REPAIR_ID, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_METHOD_OF_REPAIR_ID, value)
         End Set
     End Property
 
@@ -408,9 +408,9 @@ Public Class Certificate
                 Return New Guid(CType(Row(CertificateDAL.COL_NAME_TYPE_OF_EQUIPMENT_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(ByVal value As Guid)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_TYPE_OF_EQUIPMENT_ID, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_TYPE_OF_EQUIPMENT_ID, value)
         End Set
     End Property
 
@@ -423,9 +423,9 @@ Public Class Certificate
                 Return New Guid(CType(Row(CertificateDAL.COL_NAME_POST_PRE_PAID_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(ByVal value As Guid)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_POST_PRE_PAID_ID, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_POST_PRE_PAID_ID, value)
         End Set
     End Property
 
@@ -438,9 +438,9 @@ Public Class Certificate
                 Return New Guid(CType(Row(CertificateDAL.COL_NAME_ADDRESS_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(ByVal value As Guid)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_ADDRESS_ID, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_ADDRESS_ID, value)
         End Set
     End Property
 
@@ -455,9 +455,9 @@ Public Class Certificate
                 Return CType(Row(CertificateDAL.COL_NAME_PRODUCT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_PRODUCT_CODE, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_PRODUCT_CODE, value)
         End Set
     End Property
 
@@ -472,9 +472,9 @@ Public Class Certificate
                 Return CType(Row(CertificateDAL.COL_NAME_STATUS_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_STATUS_CODE, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_STATUS_CODE, value)
         End Set
     End Property
 
@@ -488,9 +488,9 @@ Public Class Certificate
                 Return New Guid(CType(Row(CertificateDAL.COL_NAME_SUBSCRIBER_STATUS), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(ByVal value As Guid)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_SUBSCRIBER_STATUS, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_SUBSCRIBER_STATUS, value)
         End Set
     End Property
 
@@ -504,9 +504,9 @@ Public Class Certificate
                 Return New DateType(DateHelper.GetDateValue(Row(CertificateDAL.COL_NAME_PRODUCT_SALES_DATE).ToString()))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set(ByVal value As DateType)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_PRODUCT_SALES_DATE, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_PRODUCT_SALES_DATE, value)
         End Set
     End Property
 
@@ -521,9 +521,9 @@ Public Class Certificate
                 Return New DateType(DateHelper.GetDateValue(Row(CertificateDAL.COL_NAME_WARRANTY_SALES_DATE).ToString()))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set(ByVal value As DateType)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_WARRANTY_SALES_DATE, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_WARRANTY_SALES_DATE, value)
         End Set
     End Property
 
@@ -536,9 +536,9 @@ Public Class Certificate
                 Return New DateType(DateHelper.GetDateValue(Row(CertificateDAL.COL_NAME_CUST_CANCEL_DATE).ToString()))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set(ByVal value As DateType)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_CUST_CANCEL_DATE, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_CUST_CANCEL_DATE, value)
         End Set
     End Property
 
@@ -551,9 +551,9 @@ Public Class Certificate
                 Return New DateType(DateHelper.GetDateValue(Row(CertificateDAL.COL_NAME_CUST_REQ_CANCEL_DATE).ToString()))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set(ByVal value As DateType)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_CUST_REQ_CANCEL_DATE, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_CUST_REQ_CANCEL_DATE, value)
         End Set
     End Property
     <ValidStringLength("", Max:=50)>
@@ -566,9 +566,9 @@ Public Class Certificate
                 Return CType(Row(CertificateDAL.COL_NAME_INVOICE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_INVOICE_NUMBER, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_INVOICE_NUMBER, value)
         End Set
     End Property
 
@@ -582,9 +582,9 @@ Public Class Certificate
                 Return CType(Row(CertificateDAL.COL_NAME_CUSTOMER_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_CUSTOMER_NAME, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_CUSTOMER_NAME, value)
         End Set
     End Property
 
@@ -598,9 +598,9 @@ Public Class Certificate
                 Return CType(Row(CertificateDAL.COL_NAME_CUSTOMER_FIRST_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_CUSTOMER_FIRST_NAME, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_CUSTOMER_FIRST_NAME, value)
         End Set
     End Property
     <ValidStringLength("", Max:=50)>
@@ -613,9 +613,9 @@ Public Class Certificate
                 Return CType(Row(CertificateDAL.COL_NAME_CUSTOMER_MIDDLE_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_CUSTOMER_MIDDLE_NAME, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_CUSTOMER_MIDDLE_NAME, value)
         End Set
     End Property
     <ValidStringLength("", Max:=50)>
@@ -628,9 +628,9 @@ Public Class Certificate
                 Return CType(Row(CertificateDAL.COL_NAME_CUSTOMER_LAST_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_CUSTOMER_LAST_NAME, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_CUSTOMER_LAST_NAME, value)
         End Set
     End Property
 
@@ -644,9 +644,9 @@ Public Class Certificate
                 Return CType(Row(CertificateDAL.COL_NAME_ALTERNATIVE_LAST_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_ALTERNATIVE_LAST_NAME, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_ALTERNATIVE_LAST_NAME, value)
         End Set
     End Property
 
@@ -660,9 +660,9 @@ Public Class Certificate
                 Return CType(Row(CertificateDAL.COL_NAME_ALTERNATIVE_FIRST_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_ALTERNATIVE_FIRST_NAME, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_ALTERNATIVE_FIRST_NAME, value)
         End Set
     End Property
 
@@ -676,9 +676,9 @@ Public Class Certificate
                 Return CType(Row(CertificateDAL.COL_NAME_CORPORATE_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_CORPORATE_NAME, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_CORPORATE_NAME, value)
         End Set
     End Property
     Public Property CustomerId() As Guid
@@ -690,9 +690,9 @@ Public Class Certificate
                 Return New Guid(CType(Row(CertificateDAL.COL_NAME_CUSTOMER_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(ByVal value As Guid)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_CUSTOMER_ID, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_CUSTOMER_ID, value)
         End Set
     End Property
     <ValidStringLength("", Max:=15)>
@@ -705,9 +705,9 @@ Public Class Certificate
                 Return CType(Row(CertificateDAL.COL_NAME_HOME_PHONE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_HOME_PHONE, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_HOME_PHONE, value)
         End Set
     End Property
 
@@ -722,9 +722,9 @@ Public Class Certificate
                 Return CType(Row(CertificateDAL.COL_NAME_WORK_PHONE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_WORK_PHONE, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_WORK_PHONE, value)
         End Set
     End Property
 
@@ -739,9 +739,9 @@ Public Class Certificate
                 Return CType(Row(CertificateDAL.COL_NAME_EMAIL), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_EMAIL, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_EMAIL, value)
         End Set
     End Property
 
@@ -756,9 +756,9 @@ Public Class Certificate
                 Return CType(Row(CertificateDAL.COL_NAME_DEALER_BRANCH_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_DEALER_BRANCH_CODE, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_DEALER_BRANCH_CODE, value)
         End Set
     End Property
 
@@ -773,9 +773,9 @@ Public Class Certificate
                 Return CType(Row(CertificateDAL.COL_NAME_SALES_REP_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_SALES_REP_NUMBER, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_SALES_REP_NUMBER, value)
         End Set
     End Property
 
@@ -789,9 +789,9 @@ Public Class Certificate
                 Return New Guid(CType(Row(CertificateDAL.COL_NAME_SALUTATION_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(ByVal value As Guid)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_SALUTATION_ID, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_SALUTATION_ID, value)
         End Set
     End Property
 
@@ -804,9 +804,9 @@ Public Class Certificate
                 Return New Guid(CType(Row(CertificateDAL.COL_NAME_LANGUAGE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(ByVal value As Guid)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_LANGUAGE_ID, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_LANGUAGE_ID, value)
         End Set
     End Property
 
@@ -819,9 +819,9 @@ Public Class Certificate
                 Return New DecimalType(CType(Row(CertificateDAL.COL_NAME_MONTHLY_PAYMENTS), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set(ByVal value As DecimalType)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_MONTHLY_PAYMENTS, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_MONTHLY_PAYMENTS, value)
         End Set
     End Property
     Public Property Financed_installment_Amount() As DecimalType
@@ -833,9 +833,9 @@ Public Class Certificate
                 Return New DecimalType(CType(Row(CertificateDAL.COL_NAME_FINANCE_INSTALLMENT_AMOUNT), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set(ByVal value As DecimalType)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_FINANCE_INSTALLMENT_AMOUNT, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_FINANCE_INSTALLMENT_AMOUNT, value)
         End Set
     End Property
     Public Property PenaltyFee() As String
@@ -847,9 +847,9 @@ Public Class Certificate
                 Return CType(Row(CertificateDAL.COL_NAME_PENALTY_FEE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_PENALTY_FEE, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_PENALTY_FEE, value)
         End Set
     End Property
     <ValidStringLength("", Max:=10)>
@@ -862,9 +862,9 @@ Public Class Certificate
                 Return CType(Row(CertificateDAL.COL_NAME_DEALER_ITEM), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_DEALER_ITEM, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_DEALER_ITEM, value)
         End Set
     End Property
 
@@ -878,9 +878,9 @@ Public Class Certificate
                 Return New DecimalType(CType(Row(CertificateDAL.COL_NAME_SALES_PRICE), Decimal))
             End If
         End Get
-        Set(ByVal Value As DecimalType)
+        Set(ByVal value As DecimalType)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_SALES_PRICE, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_SALES_PRICE, value)
         End Set
     End Property
 
@@ -912,9 +912,9 @@ Public Class Certificate
                 Return CType(Row(CertificateDAL.COL_NAME_CAMPAIGN_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_CAMPAIGN_NUMBER, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_CAMPAIGN_NUMBER, value)
         End Set
     End Property
 
@@ -929,9 +929,9 @@ Public Class Certificate
                 Return CType(Row(CertificateDAL.COL_NAME_SOURCE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_SOURCE, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_SOURCE, value)
         End Set
     End Property
 
@@ -946,9 +946,9 @@ Public Class Certificate
                 Return CType(Row(CertificateDAL.COL_NAME_DEALER_PRODUCT_CODE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_DEALER_PRODUCT_CODE, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_DEALER_PRODUCT_CODE, value)
         End Set
     End Property
 
@@ -961,9 +961,9 @@ Public Class Certificate
                 Return CType(Row(CertificateDAL.COL_NAME_VEHICLE_LICENSE_TAG), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_VEHICLE_LICENSE_TAG, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_VEHICLE_LICENSE_TAG, value)
         End Set
     End Property
 
@@ -976,9 +976,9 @@ Public Class Certificate
                 Return New DateType(DateHelper.GetDateValue(Row(CertificateDAL.COL_NAME_DATE_PAID_FOR).ToString()))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set(ByVal value As DateType)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_DATE_PAID_FOR, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_DATE_PAID_FOR, value)
         End Set
     End Property
 
@@ -993,9 +993,9 @@ Public Class Certificate
                 Return New DateType(DateHelper.GetDateValue(Row(CertificateDAL.COL_NAME_DATE_PAID).ToString()))
             End If
         End Get
-        Set(ByVal Value As DateType)
+        Set(ByVal value As DateType)
             CheckDeleted()
-            Me.SetValue(CertificateDAL.COL_NAME_DATE_PAID, Value)
+            Me.SetValue(CertificateDAL.COL_NAME_DATE_PAID, value)
         End Set
     End Property
 
