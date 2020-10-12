@@ -178,50 +178,78 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="CancelServiceOrder">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q24="http://elita.assurant.com/Elita/FulfillmentService" minOccurs="0" name="request" nillable="true" type="q24:UpdateServiceOrderRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CancelServiceOrderResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q25="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.Contracts.Fulfillment.Orders" minOccurs="0" name="CancelServiceOrderResult" nillable="true" type="q25:ProcessServiceOrderResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CancelServiceOrderAndUpdateAuthorization">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q26="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.Contracts.Fulfillment.Orders" minOccurs="0" name="request" nillable="true" type="q26:CancelServiceOrderRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CancelServiceOrderAndUpdateAuthorizationResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q27="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.Contracts.Fulfillment.Orders" minOccurs="0" name="CancelServiceOrderAndUpdateAuthorizationResult" nillable="true" type="q27:ProcessServiceOrderResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="GetAuthorizationDetails">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q24="http://elita.assurant.com/Elita/FulfillmentService" minOccurs="0" name="request" nillable="true" type="q24:GetAuthorizationDetailsRequest" />
+        <xs:element xmlns:q28="http://elita.assurant.com/Elita/FulfillmentService" minOccurs="0" name="request" nillable="true" type="q28:GetAuthorizationDetailsRequest" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:complexType name="GetAuthorizationDetailsRequest">
     <xs:complexContent mixed="false">
-      <xs:extension xmlns:q25="http://elita.assurant.com/Elita/FulfillmentService" base="q25:BaseFulfillmentRequest">
+      <xs:extension xmlns:q29="http://elita.assurant.com/Elita/FulfillmentService" base="q29:BaseFulfillmentRequest">
         <xs:sequence>
           <xs:element minOccurs="0" name="AuthorizationNumber" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="CultureCode" nillable="true" type="xs:string" />
-          <xs:element xmlns:q26="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements.Fulfillment" minOccurs="0" name="AuthDetails" nillable="true" type="q26:ArrayOfAuthDetailOptions" />
+          <xs:element xmlns:q30="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements.Fulfillment" minOccurs="0" name="AuthDetails" nillable="true" type="q30:ArrayOfAuthDetailOptions" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:element xmlns:q27="http://elita.assurant.com/Elita/FulfillmentService" name="GetAuthorizationDetailsRequest" nillable="true" type="q27:GetAuthorizationDetailsRequest" />
+  <xs:element xmlns:q31="http://elita.assurant.com/Elita/FulfillmentService" name="GetAuthorizationDetailsRequest" nillable="true" type="q31:GetAuthorizationDetailsRequest" />
   <xs:element name="GetAuthorizationDetailsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q28="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.Contracts.Fulfillment" minOccurs="0" name="GetAuthorizationDetailsResult" nillable="true" type="q28:GetAuthorizationDetailsResponse" />
+        <xs:element xmlns:q32="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.Contracts.Fulfillment" minOccurs="0" name="GetAuthorizationDetailsResult" nillable="true" type="q32:GetAuthorizationDetailsResponse" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="AddServiceWarranty">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q29="http://elita.assurant.com/Elita/FulfillmentService" minOccurs="0" name="request" nillable="true" type="q29:BaseFulfillmentRequest" />
+        <xs:element xmlns:q33="http://elita.assurant.com/Elita/FulfillmentService" minOccurs="0" name="request" nillable="true" type="q33:BaseFulfillmentRequest" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="AddServiceWarrantyResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q30="http://elita.assurant.com/Elita/FulfillmentService" minOccurs="0" name="AddServiceWarrantyResult" nillable="true" type="q30:BaseFulfillmentResponse" />
+        <xs:element xmlns:q34="http://elita.assurant.com/Elita/FulfillmentService" minOccurs="0" name="AddServiceWarrantyResult" nillable="true" type="q34:BaseFulfillmentResponse" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="ProcessIssueAnswer">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q31="http://elita.assurant.com/Elita/FulfillmentService" minOccurs="0" name="request" nillable="true" type="q31:IssueAnswerRequest" />
+        <xs:element xmlns:q35="http://elita.assurant.com/Elita/FulfillmentService" minOccurs="0" name="request" nillable="true" type="q35:IssueAnswerRequest" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -230,17 +258,17 @@
       <xs:element name="ClaimFulfillmentIssueResponseId" type="ser:guid" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element xmlns:q32="http://elita.assurant.com/Elita/FulfillmentService" name="IssueAnswerRequest" nillable="true" type="q32:IssueAnswerRequest" />
+  <xs:element xmlns:q36="http://elita.assurant.com/Elita/FulfillmentService" name="IssueAnswerRequest" nillable="true" type="q36:IssueAnswerRequest" />
   <xs:element name="ProcessIssueAnswerResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q33="http://elita.assurant.com/Elita/FulfillmentService" minOccurs="0" name="ProcessIssueAnswerResult" nillable="true" type="q33:IssueAnswerResponse" />
+        <xs:element xmlns:q37="http://elita.assurant.com/Elita/FulfillmentService" minOccurs="0" name="ProcessIssueAnswerResult" nillable="true" type="q37:IssueAnswerResponse" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:complexType name="IssueAnswerResponse">
     <xs:complexContent mixed="false">
-      <xs:extension xmlns:q34="http://elita.assurant.com/Elita/FulfillmentService" base="q34:BaseFulfillmentResponse">
+      <xs:extension xmlns:q38="http://elita.assurant.com/Elita/FulfillmentService" base="q38:BaseFulfillmentResponse">
         <xs:sequence>
           <xs:element minOccurs="0" name="IsIssueResolved" type="xs:boolean">
             <xs:annotation>
@@ -274,11 +302,11 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:element xmlns:q35="http://elita.assurant.com/Elita/FulfillmentService" name="IssueAnswerResponse" nillable="true" type="q35:IssueAnswerResponse" />
+  <xs:element xmlns:q39="http://elita.assurant.com/Elita/FulfillmentService" name="IssueAnswerResponse" nillable="true" type="q39:IssueAnswerResponse" />
   <xs:element name="ReSendFailedServiceOrder">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q36="http://elita.assurant.com/Elita/FulfillmentService" minOccurs="0" name="request" nillable="true" type="q36:ReSentServiceOrderRequest" />
+        <xs:element xmlns:q40="http://elita.assurant.com/Elita/FulfillmentService" minOccurs="0" name="request" nillable="true" type="q40:ReSentServiceOrderRequest" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -287,55 +315,55 @@
       <xs:element name="AuthorizationIssueId" type="ser:guid" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element xmlns:q37="http://elita.assurant.com/Elita/FulfillmentService" name="ReSentServiceOrderRequest" nillable="true" type="q37:ReSentServiceOrderRequest" />
+  <xs:element xmlns:q41="http://elita.assurant.com/Elita/FulfillmentService" name="ReSentServiceOrderRequest" nillable="true" type="q41:ReSentServiceOrderRequest" />
   <xs:element name="ReSendFailedServiceOrderResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q38="http://elita.assurant.com/Elita/FulfillmentService" minOccurs="0" name="ReSendFailedServiceOrderResult" nillable="true" type="q38:BaseFulfillmentResponse" />
+        <xs:element xmlns:q42="http://elita.assurant.com/Elita/FulfillmentService" minOccurs="0" name="ReSendFailedServiceOrderResult" nillable="true" type="q42:BaseFulfillmentResponse" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetClaimReimbursementAmount">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q39="http://elita.assurant.com/Elita/FulfillmentService" minOccurs="0" name="request" nillable="true" type="q39:BaseFulfillmentRequest" />
+        <xs:element xmlns:q43="http://elita.assurant.com/Elita/FulfillmentService" minOccurs="0" name="request" nillable="true" type="q43:BaseFulfillmentRequest" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetClaimReimbursementAmountResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q40="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.Contracts.Fulfillment" minOccurs="0" name="GetClaimReimbursementAmountResult" nillable="true" type="q40:GetClaimReimburseAmountResponse" />
+        <xs:element xmlns:q44="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.Contracts.Fulfillment" minOccurs="0" name="GetClaimReimbursementAmountResult" nillable="true" type="q44:GetClaimReimburseAmountResponse" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="SubmitFulfillmentIssueAnswer">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q41="http://elita.assurant.com/Elita/FulfillmentService" minOccurs="0" name="request" nillable="true" type="q41:SubmitIssueAnswerRequest" />
+        <xs:element xmlns:q45="http://elita.assurant.com/Elita/FulfillmentService" minOccurs="0" name="request" nillable="true" type="q45:SubmitIssueAnswerRequest" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:complexType name="SubmitIssueAnswerRequest">
     <xs:complexContent mixed="false">
-      <xs:extension xmlns:q42="http://elita.assurant.com/Elita/FulfillmentService" base="q42:BaseFulfillmentRequest">
+      <xs:extension xmlns:q46="http://elita.assurant.com/Elita/FulfillmentService" base="q46:BaseFulfillmentRequest">
         <xs:sequence>
           <xs:element name="AuthorizationNumber" nillable="true" type="xs:string" />
           <xs:element name="IssueCode" nillable="true" type="xs:string" />
           <xs:element name="AnswerCode" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="AnswerData" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="BankInfo" nillable="true" type="q42:BankInfo" />
-          <xs:element minOccurs="0" name="Device" nillable="true" type="q42:DeviceInfo" />
+          <xs:element minOccurs="0" name="BankInfo" nillable="true" type="q46:BankInfo" />
+          <xs:element minOccurs="0" name="Device" nillable="true" type="q46:DeviceInfo" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:element xmlns:q43="http://elita.assurant.com/Elita/FulfillmentService" name="SubmitIssueAnswerRequest" nillable="true" type="q43:SubmitIssueAnswerRequest" />
+  <xs:element xmlns:q47="http://elita.assurant.com/Elita/FulfillmentService" name="SubmitIssueAnswerRequest" nillable="true" type="q47:SubmitIssueAnswerRequest" />
   <xs:complexType name="BankInfo">
     <xs:sequence>
       <xs:element minOccurs="0" name="AccountNumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="AccountOwnerName" nillable="true" type="xs:string" />
-      <xs:element xmlns:q44="http://elita.assurant.com/Elita/FulfillmentService" minOccurs="0" name="AccountType" nillable="true" type="q44:AccountTypes" />
+      <xs:element xmlns:q48="http://elita.assurant.com/Elita/FulfillmentService" minOccurs="0" name="AccountType" nillable="true" type="q48:AccountTypes" />
       <xs:element minOccurs="0" name="BankLookupCode" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="BankName" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="BankSortCode" nillable="true" type="xs:string" />
@@ -346,7 +374,7 @@
       <xs:element minOccurs="0" name="SwiftCode" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element xmlns:q45="http://elita.assurant.com/Elita/FulfillmentService" name="BankInfo" nillable="true" type="q45:BankInfo" />
+  <xs:element xmlns:q49="http://elita.assurant.com/Elita/FulfillmentService" name="BankInfo" nillable="true" type="q49:BankInfo" />
   <xs:simpleType name="AccountTypes">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Checking">
@@ -365,7 +393,7 @@
       </xs:enumeration>
     </xs:restriction>
   </xs:simpleType>
-  <xs:element xmlns:q46="http://elita.assurant.com/Elita/FulfillmentService" name="AccountTypes" nillable="true" type="q46:AccountTypes" />
+  <xs:element xmlns:q50="http://elita.assurant.com/Elita/FulfillmentService" name="AccountTypes" nillable="true" type="q50:AccountTypes" />
   <xs:complexType name="DeviceInfo">
     <xs:sequence>
       <xs:element minOccurs="0" name="Color" nillable="true" type="xs:string" />
@@ -380,17 +408,17 @@
       <xs:element minOccurs="0" name="SkuNumber" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element xmlns:q47="http://elita.assurant.com/Elita/FulfillmentService" name="DeviceInfo" nillable="true" type="q47:DeviceInfo" />
+  <xs:element xmlns:q51="http://elita.assurant.com/Elita/FulfillmentService" name="DeviceInfo" nillable="true" type="q51:DeviceInfo" />
   <xs:element name="SubmitFulfillmentIssueAnswerResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q48="http://elita.assurant.com/Elita/FulfillmentService" minOccurs="0" name="SubmitFulfillmentIssueAnswerResult" nillable="true" type="q48:SubmitIssueAnswerResponse" />
+        <xs:element xmlns:q52="http://elita.assurant.com/Elita/FulfillmentService" minOccurs="0" name="SubmitFulfillmentIssueAnswerResult" nillable="true" type="q52:SubmitIssueAnswerResponse" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:complexType name="SubmitIssueAnswerResponse">
     <xs:complexContent mixed="false">
-      <xs:extension xmlns:q49="http://elita.assurant.com/Elita/FulfillmentService" base="q49:BaseFulfillmentResponse">
+      <xs:extension xmlns:q53="http://elita.assurant.com/Elita/FulfillmentService" base="q53:BaseFulfillmentResponse">
         <xs:sequence>
           <xs:element minOccurs="0" name="IsIssueResolved" type="xs:boolean">
             <xs:annotation>
@@ -425,11 +453,11 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:element xmlns:q50="http://elita.assurant.com/Elita/FulfillmentService" name="SubmitIssueAnswerResponse" nillable="true" type="q50:SubmitIssueAnswerResponse" />
+  <xs:element xmlns:q54="http://elita.assurant.com/Elita/FulfillmentService" name="SubmitIssueAnswerResponse" nillable="true" type="q54:SubmitIssueAnswerResponse" />
   <xs:element name="SearchVendorInventory">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q51="http://elita.assurant.com/Elita/FulfillmentService" minOccurs="0" name="request" nillable="true" type="q51:SearchVendorInventoryRequest" />
+        <xs:element xmlns:q55="http://elita.assurant.com/Elita/FulfillmentService" minOccurs="0" name="request" nillable="true" type="q55:SearchVendorInventoryRequest" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -445,18 +473,18 @@
       <xs:element minOccurs="0" name="VendorSkuNumber" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element xmlns:q52="http://elita.assurant.com/Elita/FulfillmentService" name="SearchVendorInventoryRequest" nillable="true" type="q52:SearchVendorInventoryRequest" />
+  <xs:element xmlns:q56="http://elita.assurant.com/Elita/FulfillmentService" name="SearchVendorInventoryRequest" nillable="true" type="q56:SearchVendorInventoryRequest" />
   <xs:element name="SearchVendorInventoryResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q53="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.Contracts.Fulfillment.Inventory" minOccurs="0" name="SearchVendorInventoryResult" nillable="true" type="q53:SearchVendorInventoryResponse" />
+        <xs:element xmlns:q57="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.Contracts.Fulfillment.Inventory" minOccurs="0" name="SearchVendorInventoryResult" nillable="true" type="q57:SearchVendorInventoryResponse" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="CheckVendorInventoryAndBestReplacement">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q54="http://elita.assurant.com/Elita/FulfillmentService" minOccurs="0" name="request" nillable="true" type="q54:CheckVendorInventoryAndBestReplacementRequest" />
+        <xs:element xmlns:q58="http://elita.assurant.com/Elita/FulfillmentService" minOccurs="0" name="request" nillable="true" type="q58:CheckVendorInventoryAndBestReplacementRequest" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -473,11 +501,11 @@
       <xs:element minOccurs="0" name="VendorSkuNumber" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element xmlns:q55="http://elita.assurant.com/Elita/FulfillmentService" name="CheckVendorInventoryAndBestReplacementRequest" nillable="true" type="q55:CheckVendorInventoryAndBestReplacementRequest" />
+  <xs:element xmlns:q59="http://elita.assurant.com/Elita/FulfillmentService" name="CheckVendorInventoryAndBestReplacementRequest" nillable="true" type="q59:CheckVendorInventoryAndBestReplacementRequest" />
   <xs:element name="CheckVendorInventoryAndBestReplacementResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q56="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.Contracts.Fulfillment.Inventory" minOccurs="0" name="CheckVendorInventoryAndBestReplacementResult" nillable="true" type="q56:CheckVendorInventoryAndBestReplacementResponse" />
+        <xs:element xmlns:q60="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.Contracts.Fulfillment.Inventory" minOccurs="0" name="CheckVendorInventoryAndBestReplacementResult" nillable="true" type="q60:CheckVendorInventoryAndBestReplacementResponse" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

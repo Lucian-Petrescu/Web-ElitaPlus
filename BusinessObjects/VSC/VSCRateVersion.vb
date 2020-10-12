@@ -246,7 +246,6 @@ Public Class VSCRateVersion
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-
 #End Region
 
 #Region "Custom validation"

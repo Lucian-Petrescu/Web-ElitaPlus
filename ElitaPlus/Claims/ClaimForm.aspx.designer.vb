@@ -1103,6 +1103,24 @@ Partial Public Class ClaimForm
     Protected WithEvents TextboxLoanerRequested As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
+    '''LabelDeductibleCollected control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents LabelDeductibleCollected As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''TextboxDeductibleCollected control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents TextboxDeductibleCollected As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
     '''LabelTotalPaid control.
     '''</summary>
     '''<remarks>
@@ -2165,6 +2183,33 @@ Partial Public Class ClaimForm
     Protected WithEvents phDynamicFulfillmentUI As Global.System.Web.UI.WebControls.PlaceHolder
 
     '''<summary>
+    '''btnContinue control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnContinue As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''btnLegacyContinue control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnLegacyContinue As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''hdnData control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents hdnData As Global.System.Web.UI.WebControls.HiddenField
+
+    '''<summary>
     '''ViewPanel_READ2 control.
     '''</summary>
     '''<remarks>
@@ -3045,6 +3090,15 @@ Partial Public Class ClaimForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnReplacementQuote As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''btnClaimDeductibleRefund control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnClaimDeductibleRefund As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
     '''HiddenSaveChangesPromptResponse control.

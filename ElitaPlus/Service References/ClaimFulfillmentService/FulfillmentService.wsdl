@@ -61,6 +61,18 @@
   <wsdl:message name="IFulfillmentService_UpdateServiceOrder_OutputMessage">
     <wsdl:part name="parameters" element="tns:UpdateServiceOrderResponse" />
   </wsdl:message>
+  <wsdl:message name="IFulfillmentService_CancelServiceOrder_InputMessage">
+    <wsdl:part name="parameters" element="tns:CancelServiceOrder" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_CancelServiceOrder_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CancelServiceOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_CancelServiceOrderAndUpdateAuthorization_InputMessage">
+    <wsdl:part name="parameters" element="tns:CancelServiceOrderAndUpdateAuthorization" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_CancelServiceOrderAndUpdateAuthorization_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CancelServiceOrderAndUpdateAuthorizationResponse" />
+  </wsdl:message>
   <wsdl:message name="IFulfillmentService_GetAuthorizationDetails_InputMessage">
     <wsdl:part name="parameters" element="tns:GetAuthorizationDetails" />
   </wsdl:message>
@@ -141,6 +153,14 @@
     <wsdl:operation name="UpdateServiceOrder">
       <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/UpdateServiceOrder" message="tns:IFulfillmentService_UpdateServiceOrder_InputMessage" />
       <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/UpdateServiceOrderResponse" message="tns:IFulfillmentService_UpdateServiceOrder_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CancelServiceOrder">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/CancelServiceOrder" message="tns:IFulfillmentService_CancelServiceOrder_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/CancelServiceOrderResponse" message="tns:IFulfillmentService_CancelServiceOrder_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CancelServiceOrderAndUpdateAuthorization">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/CancelServiceOrderAndUpdateAuthorization" message="tns:IFulfillmentService_CancelServiceOrderAndUpdateAuthorization_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/CancelServiceOrderAndUpdateAuthorizationResponse" message="tns:IFulfillmentService_CancelServiceOrderAndUpdateAuthorization_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetAuthorizationDetails">
       <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/GetAuthorizationDetails" message="tns:IFulfillmentService_GetAuthorizationDetails_InputMessage" />

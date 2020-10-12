@@ -171,6 +171,7 @@ Public Class VSCRateVersionDAL
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
+
 #End Region
 
 #Region "Overloaded Methods"

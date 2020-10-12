@@ -10,6 +10,7 @@
 <%@ Register TagPrefix="Elita" TagName="UserControlDeliverySlot" Src="../Common/UserControlDeliverySlot.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlDynamicFulfillment" Src="../Common/DynamicFulfillmentUI.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlServiceCenterSelection" Src="../Common/UserControlServiceCenterSelection.ascx" %>
+<%@ Register TagPrefix="Elita" TagName="UserControlBankInfo" Src="~/Common/UserControlBankInfo_New.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://*.core.windows.net/ 'unsafe-eval'; style-src 'self' https://*.core.windows.net/ 'unsafe-inline'; script-src 'self' https://*.core.windows.net/ 'unsafe-inline' 'unsafe-eval';  media-src *" />
@@ -190,7 +191,7 @@
                                     <Columns>
                                         <asp:TemplateField ShowHeader="false" ItemStyle-Width="2%" ItemStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Top">
                                             <ItemTemplate>
-                                                <asp:RadioButton ID="rdoItems" runat="server" Class="callers" Enabled="True" Visible="True" AutoPostBack="true" OnCheckedChanged="rdoItemSelectChanged"></asp:RadioButton>
+                                                <asp:RadioButton ID="rdoItems" runat="server" Class="callers" Enabled="True" Visible="True" AutoPostBack="true" OnCheckedChanged="DeviceItemSelectChanged"></asp:RadioButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Manufacturer" ItemStyle-Width="10%" ItemStyle-HorizontalAlign="Left" ItemStyle-VerticalAlign="Top">
@@ -661,7 +662,23 @@
                                                                 <Elita:UserControlServiceCenterSelection runat="server" ID="ucServiceCenterUserControl" />
                                                         </td>
                                                     </tr>
-                                                    <tr>
+                                                    <tr runat="server" id="trBankInfo">
+                                                        <td align="left">
+                                                            <table id="tblBankInfo" class="formGrid" cellpadding="0" cellspacing="0">
+                                                                <tr>
+                                                                    <td align="left">
+                                                                        <h2 class="dataGridHeader" runat="server">
+                                                                            <asp:Label runat="server" ID="moBankInfoLabel" Text="CUSTOMER_BANK_INFO" />
+                                                                        </h2>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="left">
+                                                                        <Elita:UserControlBankInfo ID="moBankInfoController" runat="server"></Elita:UserControlBankInfo>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
                                                     </tr>
                                                 </table>
 

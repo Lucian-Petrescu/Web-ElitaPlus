@@ -179,7 +179,7 @@ Public Class CaseDAL
                                         ByVal certificateStatus As String, ByVal email As String,
                                         ByVal taxId As String, ByVal serviceLineNumber As String, ByVal accountNumber As String,
                                         ByVal globalCustomerNumber As String, ByVal dateofBirth As String, ByVal networkId As String,
-                                        ByVal languageId As Guid) As DataSet
+                                        ByVal languageId As Guid,ByVal branchCode As String,ByVal branchName As String) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_AGENT_SEARCH_LIST")
         Dim ds As DataSet = New DataSet
         Dim outputParameter(PoCursorCase) As DBHelper.DBHelperParameter
@@ -251,6 +251,26 @@ Public Class CaseDAL
 
         param = New DBHelper.DBHelperParameter("pi_network_id", networkId)
         inParameters.Add(param)
+
+        param = New DBHelper.DBHelperParameter("pi_branch_code", branchCode)
+        inParameters.Add(param)
+       
+       
+
+        If (Not (branchName Is Nothing)) Then
+            
+            Dim strBranchName =  branchName.Replace(ASTERISK, WILDCARD_CHAR)
+            param = New DBHelper.DBHelperParameter("pi_branch_name", strBranchName.ToUpper)
+            inParameters.Add(param)
+            
+        Else
+            
+
+            param = New DBHelper.DBHelperParameter("pi_branch_name",branchName)
+            inParameters.Add(param)
+        End If
+       
+        
 
         outputParameter(PoCursorCase) = New DBHelper.DBHelperParameter("po_cursor", GetType(DataSet))
 
@@ -559,5 +579,3 @@ Public Class CaseDAL
 #End Region
 
 End Class
-
-

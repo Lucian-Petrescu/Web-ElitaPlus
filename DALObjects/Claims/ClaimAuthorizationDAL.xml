@@ -50,7 +50,8 @@
                  and    rownum = 1
                 ) as service_order_Type,
                 (select sum(cai.amount) from elp_claim_auth_item cai where cai.claim_authorization_id = ca.claim_authorization_id) as authorization_amount,
-                ca.locator				
+                ca.locator,
+                ca.refund_method_xcd
         FROM    elp_claim_authorization ca
 			  WHERE   ca.claim_authorization_id = hextoraw(:claim_authorization_id)
 		]]>
@@ -102,8 +103,11 @@
                  and    rownum = 1
                 ) as service_order_Type,
                 (select sum(cai.amount) from elp_claim_auth_item cai where cai.claim_authorization_id = ca.claim_authorization_id) as authorization_amount,
-                ca.locator				
+                ca.locator,
+                ca.refund_method_xcd,
+                u.user_name
         FROM    elp_claim_authorization ca 
+        LEFT JOIN elp_user u on ca.created_by = u.network_id
         WHERE		ca.claim_id = hextoraw(:claim_id)
         --dynamic_where_clause
 		]]>
@@ -150,7 +154,8 @@
                 and    rownum = 1
                ) as service_order_Type,
                (select sum(cai.amount) from elp_claim_auth_item cai where cai.claim_authorization_id = ca.claim_authorization_id) as authorization_amount,
-               ca.locator				
+               ca.locator,
+               ca.refund_method_xcd
          FROM  elp_claim_authorization ca
          WHERE ca.claim_authorization_id in (select ii.claim_authorization_id from elp_invoice_item ii where ii.invoice_id = hextoraw(:invoice_id))
 		]]>
@@ -189,7 +194,8 @@
         auth_type_xcd = :auth_type_xcd,
         party_type_xcd = :party_type_xcd,
         party_reference_id = :party_reference_id,
-        locator = :locator
+        locator = :locator,
+        refund_method_xcd = :refund_method_xcd
 			WHERE
 				claim_authorization_id = hextoraw(:claim_authorization_id)
 		]]>
@@ -226,7 +232,8 @@
     auth_type_xcd,
     party_type_xcd,
     party_reference_id,
-    locator
+    locator,
+    refund_method_xcd
     )
     VALUES
     (
@@ -259,7 +266,8 @@
     :auth_type_xcd,
     :party_type_xcd,
     :party_reference_id,
-    :locator
+    :locator,
+    :refund_method_xcd
     )
   </INSERT>
   <DELETE>

@@ -86,8 +86,9 @@
 			WHERE
 				vsc_rate_version_id = :vsc_rate_version_id
 	</DELETE>
+  
   <VALIDATE_VSC_PLAN_RATE>
-      elita.elp_vsc_RateVersion.validateVSCPlanRate
+    elita.elp_vsc_RateVersion.validateVSCPlanRate
   </VALIDATE_VSC_PLAN_RATE>
 </SQL> 
 
