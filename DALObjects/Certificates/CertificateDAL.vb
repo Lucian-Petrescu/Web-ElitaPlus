@@ -2836,9 +2836,7 @@ Public Class CertificateDAL
 
         Dim selectstmt As String = Me.Config("/SQL/GET_CUSTOMER_CURRENTBANKINFO")
 
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                        {New DBHelper.DBHelperParameter(COL_NAME_CERT_ID, CertId.ToByteArray)
-                        }
+        Dim parameters As DBHelper.DBHelperParameter() = {New DBHelper.DBHelperParameter(COL_NAME_CERT_ID, CertId.ToByteArray)}
         Try
             DBHelper.Fetch(ds, selectstmt, Me.BANKINFO_TABLE_NAME, parameters)
             Return ds

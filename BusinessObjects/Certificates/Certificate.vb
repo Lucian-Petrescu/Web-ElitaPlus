@@ -5180,9 +5180,9 @@ Public Class Certificate
         Dim dal As New CertificateDAL
         Return New OtherCustomerInfoDV(dal.GetOtherCustomerInfo(CertId, IdentificationNumberType).Tables("GetOtherCustomerInfo"))
     End Function
-    Public Shared Function GetCustomerCurrentBankInfo(ByVal CertId As Guid) As CustomerBankDetailDV
+    Public Shared Function GetCustomerCurrentBankInfo(ByVal certId As Guid) As CustomerBankDetailDV
         Dim dal As New CertificateDAL
-        Return New CustomerBankDetailDV(dal.GetCustomerCurrentBankInfo(CertId).Tables("elp_bank_info"))
+        Return New CustomerBankDetailDV(dal.GetCustomerCurrentBankInfo(certId).Tables("elp_bank_info"))
     End Function
     Public Shared Function GetOtherCustomerDetails(ByVal CustomerId As Guid, ByVal LangId As Guid, ByVal IdentificationNumberType As String) As OtherCustomerInfoDV
         Dim dal As New CertificateDAL
