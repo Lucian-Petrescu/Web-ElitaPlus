@@ -91,7 +91,7 @@
         </tr>
         <tr>
             <td colspan="8" style="text-align:left">
-                <table id="CustomerBankInfoHead" style="width:98%;border:0;">
+                <table id="CustomerBankInfoHead" style="width:98%;border:0;" summary="heading for bank info table">
                     <tr>
                         <td colspan="8">
                             <h2 class="searchGridSubHeader">
@@ -103,8 +103,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="8" align="right">
-                            <table id="CustomerBankInfo" style="width:98%;border:0;">
+                        <td colspan="8" style="text-align:right">
+                            <table id="CustomerBankInfo" style="width:98%;border:0;" summary="Bank info table details">
                                 <tr>
                                     <td style="text-align:left">
                                         <asp:Label ID="NameOnAccountLabel" runat="server">NAME_ON_ACCOUNT</asp:Label>:
