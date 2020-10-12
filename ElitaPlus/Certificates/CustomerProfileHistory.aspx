@@ -93,7 +93,7 @@
                 <table id="CustomerBankInfoHead" cellspacing="0" cellpadding="0" border="0" width="98%">
                     <tr>
                         <td colspan="8">
-                            <h2 class="searchGridHeader">
+                            <h2 class="searchGridSubHeader">
                                 <a id="CustomerBankInfoExpander" href="#">
                                     <img src="../App_Themes/Default/Images/sort_indicator_des.png" /></a>
 
@@ -108,47 +108,47 @@
                                     <td align="left">
                                         <asp:Label ID="NameOnAccountLabel" runat="server">NAME_ON_ACCOUNT</asp:Label>:
                                     </td>
-                                    <td align="left" class="bor" runat="server" id="NameOnAccountTD"></td>
+                                    <td align="left"  runat="server" id="NameOnAccountTD"></td>
                                     <td align="left">
                                         <asp:Label ID="BankNameLabel" runat="server">BANK_NAME</asp:Label>:
                                     </td>
-                                    <td align="left" class="bor" runat="server" id="BankNameTD"></td>
+                                    <td align="left"  runat="server" id="BankNameTD"></td>
                                     <td align="left">
                                         <asp:Label ID="BankIDLabel" runat="server">BANK_ID</asp:Label>:
                                     </td>
-                                    <td align="left" class="bor" runat="server" id="BankIDTD"></td>
+                                    <td align="left"  runat="server" id="BankIDTD"></td>
                                     <td align="left">
                                         <asp:Label ID="AccountTypeLable" runat="server">ACCOUNT_TYPE</asp:Label>:
                                     </td>
-                                    <td align="left" class="bor" runat="server" id="AccountTypeTD"></td>
+                                    <td align="left"  runat="server" id="AccountTypeTD"></td>
                                 </tr>
                                 <tr>
                                     <td align="left">
                                         <asp:Label ID="BankLookupCodeLabel" runat="server">BANK_LOOKUP_CODE</asp:Label>:
                                     </td>
-                                    <td align="left" class="bor" runat="server" id="BankLookupCodeTD"></td>
+                                    <td align="left"  runat="server" id="BankLookupCodeTD"></td>
                                     <td align="left">
                                         <asp:Label ID="BankSortCodeLabel" runat="server">BANK_SORT_CODE</asp:Label>:
                                     </td>
-                                    <td align="left" class="bor" runat="server" id="BankSortCodeTD"></td>
+                                    <td align="left"  runat="server" id="BankSortCodeTD"></td>
                                     <td align="left">
                                         <asp:Label ID="BranchNameLable" runat="server">BRANCH_NAME</asp:Label>:
                                     </td>
-                                    <td align="left" class="bor" runat="server" id="BranchNameTD"></td>
+                                    <td align="left"  runat="server" id="BranchNameTD"></td>
                                     <td align="left">
                                         <asp:Label ID="BankSubCodeLable" runat="server">BANK_SUB_CODE</asp:Label>:
                                     </td>
-                                    <td align="left" class="bor" runat="server" id="BankSubCodeTD"></td>
+                                    <td align="left"  runat="server" id="BankSubCodeTD"></td>
                                 </tr>
                                 <tr>
                                     <td align="left">
                                         <asp:Label ID="AccountNumberLable" runat="server">ACCOUNT_NUMBER</asp:Label>:
                                     </td>
-                                    <td align="left" class="bor" runat="server" id="AccountNumberTD"></td>
+                                    <td align="left"  runat="server" id="AccountNumberTD"></td>
                                     <td align="left">
                                         <asp:Label ID="IBANNumberLable" runat="server">IBAN_NUMBER</asp:Label>:
                                     </td>
-                                    <td align="left" class="bor" runat="server" id="IBANNumberTD"></td>
+                                    <td align="left"  runat="server" id="IBANNumberTD"></td>
                                     <td colspan="4"></td>
                                 </tr>
                             </table>
