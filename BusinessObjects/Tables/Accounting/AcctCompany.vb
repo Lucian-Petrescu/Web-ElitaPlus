@@ -349,8 +349,8 @@ Public Class AcctCompany
     End Function
     Public Function IsCompUsingNewAccounting(ByVal acctCompanyId As Guid) As Boolean
         Try
-            Dim objAcctDAL As New AcctCompanyDAL
-            Dim ds As DataSet = objAcctDAL.GetCompUsingNewAccForAccCompany(acctCompanyId)
+            Dim objAcctCompDAL As New AcctCompanyDAL
+            Dim ds As DataSet = objAcctCompDAL.GetCompUsingNewAccForAccCompany(acctCompanyId)
             If ds.Tables(0).Rows.Count > 0 Then
                 Return True
             Else

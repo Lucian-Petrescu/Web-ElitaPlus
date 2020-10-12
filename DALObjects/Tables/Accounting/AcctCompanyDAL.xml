@@ -124,6 +124,7 @@
 			--dynamic_where_clause
 		]]>
   </GET_COMPANIES>
+  
   <GET_COMP_USING_NEW_ACC_FOR_ACC_COMP>
     <![CDATA[	
 	    Select a.company_id

@@ -94,7 +94,6 @@ Public Class AcctCompanyDAL
 
     End Function
     Public Function GetCompUsingNewAccForAccCompany(ByVal acctCompanyId As Guid) As DataSet
-
         Dim ds As New DataSet
         Dim selectStmt As String = Me.Config("/SQL/GET_COMP_USING_NEW_ACC_FOR_ACC_COMP")
         Try

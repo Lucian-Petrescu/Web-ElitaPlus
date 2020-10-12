@@ -232,6 +232,7 @@ Partial Class AccountingEventDetailForm
 #Region "Controlling Logic"
 
     Private Sub PopulateAll()
+
         Me.State.AcctCompanyBo = New AcctCompany(Me.State.ParentBO.AcctCompanyId)
         Me.State.YESNOList = CommonConfigManager.Current.ListManager.GetList(listCode:="YESNO", languageCode:=ElitaPlusIdentity.Current.ActiveUser.LanguageCode)
         'Dim YESNOdv As DataView = LookupListNew.DropdownLookupList(YESNO, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True)
