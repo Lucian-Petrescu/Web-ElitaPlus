@@ -1105,7 +1105,7 @@ group  by c.cert_number
     bih.bank_sub_code,
     SUBSTR(bih.account_number,-4,4) as account_number,
     get_cert_ext_field_value(c.cert_id, 'PaymentReferenceNumber') as mandate_id,
-    SUBSTR(bih.iban_number,1,4)  ||'***' ||SUBSTR(bih.iban_number,-4,4)   as iban_number,
+     decode(bih.iban_number,null,'',(SUBSTR(bih.iban_number,1,4)  ||'***' ||SUBSTR(bih.iban_number,-4,4)))   as iban_number,
     bih.created_by,
     bih.hist_created_date created_date
     from elp_bank_info_hist bih
@@ -1119,13 +1119,14 @@ group  by c.cert_number
     bi.branch_name,
     bi.bank_name,
     bi.bank_sort_code,
-    bi.iban_number,
+    decode(bi.iban_number,null,'',(SUBSTR(bi.iban_number,1,4)  ||'***' ||SUBSTR(bi.iban_number,-4,4)))   as iban_number,
     bi.swift_code,
     elp_utl_lov.Description(bi.account_type_id) account_type,
     bi.bank_id,
     bi.account_number,
     bi.bank_lookup_code,
-    bi.branch_number
+    bi.branch_number,
+    bi.bank_sub_code
     from elp_bank_info bi
     join elp_cert_installment ci on ci.bank_info_id=bi.bank_info_id
     join elp_cert c on c.cert_id=ci.cert_id

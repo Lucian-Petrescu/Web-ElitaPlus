@@ -168,9 +168,9 @@ Namespace Certificates
                     If Not dv.Table.Rows(0)("branch_name") Is System.DBNull.Value Then
                         Me.BranchNameTD.InnerText = dv.Table.Rows(0)("branch_name")
                     End If
-                    'If Not dv.Table.Rows(0)("bank_sub_code") Is System.DBNull.Value Then
-                    '    Me.BankSubCodeTD.InnerText = dv.Table.Rows(0)("bank_sub_code")
-                    'End If
+                    If Not dv.Table.Rows(0)("bank_sub_code") Is System.DBNull.Value Then
+                        Me.BankSubCodeTD.InnerText = dv.Table.Rows(0)("bank_sub_code")
+                    End If
                     If Not dv.Table.Rows(0)("account_number") Is System.DBNull.Value Then
                         Me.AccountNumberTD.InnerText = dv.Table.Rows(0)("account_number")
                     End If
