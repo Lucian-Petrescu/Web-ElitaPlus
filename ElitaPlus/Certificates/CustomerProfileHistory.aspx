@@ -6,96 +6,97 @@
 <asp:Content ContentPlaceHolderID="MessagePlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
-    <table id="TableFixed" cellspacing="0" cellpadding="0" border="0" width="90%" class="summaryGrid">
+ 
+    <table id="TableFixed" style="width:98%;border:0;" class="summaryGrid">
         <tr>
-            <td align="left">
+            <td style="text-align:left">
                 <asp:Label ID="CustomerNameLabel" runat="server" SkinID="SummaryLabel">CUSTOMER_NAME</asp:Label>:
             </td>
-            <td align="left" class="bor" style="font-weight: bold" runat="server"
+            <td style="text-align:left;font-weight: bold" class="bor"  runat="server"
                 id="CustomerNameTD">
                 <strong></strong>
             </td>
-            <td align="left" runat="server" id="IdentificationNumberLabelTD">
+            <td style="text-align:left" runat="server" id="IdentificationNumberLabelTD">
                 <asp:Label ID="IdentificationNumberLabel" runat="server" SkinID="SummaryLabel">IDENTIFICATION_NUMBER</asp:Label>:
             </td>
-            <td align="left" class="bor" runat="server" id="IdentificationNumberTD"></td>
-            <td align="left" runat="server" id="GenderLabelTD">
+            <td style="text-align:left" class="bor" runat="server" id="IdentificationNumberTD"></td>
+            <td style="text-align:left" runat="server" id="GenderLabelTD">
                 <asp:Label ID="GenderLabel" runat="server" SkinID="SummaryLabel">GENDER</asp:Label>:
             </td>
-            <td align="left" class="bor" runat="server" id="GenderTD"></td>
-            <td align="left" runat="server" id="MaritalStatusLabelTD">
+            <td style="text-align:left" class="bor" runat="server" id="GenderTD"></td>
+            <td style="text-align:left" runat="server" id="MaritalStatusLabelTD">
                 <asp:Label ID="MaritalStatusLabel" runat="server" SkinID="SummaryLabel">MARITAL_STATUS</asp:Label>:
             </td>
-            <td align="left" class="bor" runat="server" id="MaritalStatusTD"></td>
+            <td style="text-align:left" class="bor" runat="server" id="MaritalStatusTD"></td>
         </tr>
         <tr>
-            <td align="left">
+            <td style="text-align:left">
                 <asp:Label ID="PlaceOfBirthLabel" runat="server" SkinID="SummaryLabel">PLACE_OF_BIRTH</asp:Label>:
             </td>
-            <td align="left" class="bor" runat="server" id="PlaceOfBirthTD"></td>
-            <td align="left">
+            <td style="text-align:left" class="bor" runat="server" id="PlaceOfBirthTD"></td>
+            <td style="text-align:left">
                 <asp:Label ID="DateOfBirthLabel" runat="server" SkinID="SummaryLabel">DATE_OF_BIRTH</asp:Label>:
             </td>
-            <td align="left" class="bor" runat="server" id="DateOfBirthTD"></td>
-            <td align="left">
+            <td style="text-align:left" class="bor" runat="server" id="DateOfBirthTD"></td>
+            <td style="text-align:left">
                 <asp:Label ID="NationalityLabel" runat="server" SkinID="SummaryLabel">NATIONALITY</asp:Label>:
             </td>
-            <td align="left" class="bor" runat="server" id="NationalityTD"></td>
-            <td align="left">
+            <td style="text-align:left" class="bor" runat="server" id="NationalityTD"></td>
+            <td style="text-align:left">
                 <asp:Label ID="EmailLabel" runat="server" SkinID="SummaryLabel">EMAIL</asp:Label>:
             </td>
-            <td align="left" class="bor" runat="server" id="EmailTD"></td>
+            <td style="text-align:left" class="bor" runat="server" id="EmailTD"></td>
 
         </tr>
         <tr>
-            <td align="left">
+            <td style="text-align:left">
                 <asp:Label ID="HomePhoneLabel" runat="server" SkinID="SummaryLabel">HOME_PHONE</asp:Label>:
             </td>
-            <td align="left" class="bor" runat="server" id="HomePhoneTD"></td>
-            <td align="left">
+            <td style="text-align:left" class="bor" runat="server" id="HomePhoneTD"></td>
+            <td style="text-align:left">
                 <asp:Label ID="WorkPhoneLabel" runat="server" SkinID="SummaryLabel">WORK_PHONE</asp:Label>:
             </td>
-            <td align="left" class="bor" runat="server" id="WorkPhoneTD"></td>
-            <td align="left">
+            <td style="text-align:left" class="bor" runat="server" id="WorkPhoneTD"></td>
+            <td style="text-align:left">
                 <asp:Label ID="AddressLabel" runat="server" SkinID="SummaryLabel">ADDRESS</asp:Label>:
             </td>
-            <td align="left" class="bor" runat="server" id="AddressTD" style="text-wrap: normal; word-wrap: break-word; word-break: break-all; white-space: pre-wrap; width: 30%;"></td>
-            <td align="left">
+            <td  class="bor" runat="server" id="AddressTD" style="text-align:left;text-wrap: normal; word-wrap: break-word; word-break: break-all; white-space: pre-wrap; width: 30%;"></td>
+            <td style="text-align:left">
                 <asp:Label ID="CityLabel" runat="server" SkinID="SummaryLabel">CITY</asp:Label>:
             </td>
-            <td align="left" class="bor" runat="server" id="CityTD"></td>
+            <td style="text-align:left" class="bor" runat="server" id="CityTD"></td>
         </tr>
         <tr>
 
-            <td align="left">
+            <td style="text-align:left">
                 <asp:Label ID="StateLabel" runat="server" SkinID="SummaryLabel">STATE</asp:Label>:
             </td>
-            <td align="left" class="bor" runat="server" id="StateTD"></td>
-            <td align="left">
+            <td style="text-align:left" class="bor" runat="server" id="StateTD"></td>
+            <td style="text-align:left">
                 <asp:Label ID="PostalCodeLabel" runat="server" SkinID="SummaryLabel">POSTAL_CODE</asp:Label>:
             </td>
-            <td align="left" class="bor" runat="server" id="PostalCodeTD"></td>
-            <td align="left">
+            <td style="text-align:left" class="bor" runat="server" id="PostalCodeTD"></td>
+            <td style="text-align:left">
                 <asp:Label ID="CountryCodeLabel" runat="server" SkinID="SummaryLabel">COUNTRY</asp:Label>:
             </td>
-            <td align="left" class="bor" runat="server" id="CountryCodeTD"></td>
+            <td style="text-align:left" class="bor" runat="server" id="CountryCodeTD"></td>
         </tr>
         <tr>
 
-            <td align="left">
+            <td style="text-align:left">
                 <asp:Label ID="CorporateNameLabel" runat="server" SkinID="SummaryLabel">CORPORATE_NAME</asp:Label>:
             </td>
-            <td align="left" class="bor" runat="server" id="CorporateNameTD"></td>
+            <td style="text-align:left" class="bor" runat="server" id="CorporateNameTD"></td>
             <td colspan="2"></td>
         </tr>
         <tr>
-            <td colspan="8" align="left">
-                <table id="CustomerBankInfoHead" cellspacing="0" cellpadding="0" border="0" width="98%">
+            <td colspan="8" style="text-align:left">
+                <table id="CustomerBankInfoHead" style="width:98%;border:0;">
                     <tr>
                         <td colspan="8">
                             <h2 class="searchGridSubHeader">
                                 <a id="CustomerBankInfoExpander" href="#">
-                                    <img src="../App_Themes/Default/Images/sort_indicator_des.png" /></a>
+                                    <img alt="sort indicator" src="../App_Themes/Default/Images/sort_indicator_des.png" /></a>
 
                                 <asp:Label ID="CustomerBankInformation" runat="server">CUSTOMER_BANK_INFORMATION</asp:Label>
                             </h2>
@@ -103,52 +104,52 @@
                     </tr>
                     <tr>
                         <td colspan="8" align="right">
-                            <table id="CustomerBankInfo" cellspacing="0" cellpadding="0" border="0" width="98%">
+                            <table id="CustomerBankInfo" style="width:98%;border:0;">
                                 <tr>
-                                    <td align="left">
+                                    <td style="text-align:left">
                                         <asp:Label ID="NameOnAccountLabel" runat="server">NAME_ON_ACCOUNT</asp:Label>:
                                     </td>
-                                    <td align="left"  runat="server" id="NameOnAccountTD"></td>
-                                    <td align="left">
+                                    <td style="text-align:left"  runat="server" id="NameOnAccountTD"></td>
+                                    <td style="text-align:left">
                                         <asp:Label ID="BankNameLabel" runat="server">BANK_NAME</asp:Label>:
                                     </td>
-                                    <td align="left"  runat="server" id="BankNameTD"></td>
-                                    <td align="left">
+                                    <td style="text-align:left"  runat="server" id="BankNameTD"></td>
+                                    <td style="text-align:left">
                                         <asp:Label ID="BankIDLabel" runat="server">BANK_ID</asp:Label>:
                                     </td>
-                                    <td align="left"  runat="server" id="BankIDTD"></td>
-                                    <td align="left">
+                                    <td style="text-align:left"  runat="server" id="BankIDTD"></td>
+                                    <td style="text-align:left">
                                         <asp:Label ID="AccountTypeLable" runat="server">ACCOUNT_TYPE</asp:Label>:
                                     </td>
-                                    <td align="left"  runat="server" id="AccountTypeTD"></td>
+                                    <td style="text-align:left"  runat="server" id="AccountTypeTD"></td>
                                 </tr>
                                 <tr>
-                                    <td align="left">
+                                    <td style="text-align:left">
                                         <asp:Label ID="BankLookupCodeLabel" runat="server">BANK_LOOKUP_CODE</asp:Label>:
                                     </td>
-                                    <td align="left"  runat="server" id="BankLookupCodeTD"></td>
-                                    <td align="left">
+                                    <td style="text-align:left"  runat="server" id="BankLookupCodeTD"></td>
+                                    <td style="text-align:left">
                                         <asp:Label ID="BankSortCodeLabel" runat="server">BANK_SORT_CODE</asp:Label>:
                                     </td>
-                                    <td align="left"  runat="server" id="BankSortCodeTD"></td>
-                                    <td align="left">
+                                    <td style="text-align:left"  runat="server" id="BankSortCodeTD"></td>
+                                    <td style="text-align:left">
                                         <asp:Label ID="BranchNameLable" runat="server">BRANCH_NAME</asp:Label>:
                                     </td>
-                                    <td align="left"  runat="server" id="BranchNameTD"></td>
-                                    <td align="left">
+                                    <td style="text-align:left"  runat="server" id="BranchNameTD"></td>
+                                    <td style="text-align:left">
                                         <asp:Label ID="BankSubCodeLable" runat="server">BANK_SUB_CODE</asp:Label>:
                                     </td>
-                                    <td align="left"  runat="server" id="BankSubCodeTD"></td>
+                                    <td style="text-align:left"  runat="server" id="BankSubCodeTD"></td>
                                 </tr>
                                 <tr>
-                                    <td align="left">
+                                    <td style="text-align:left">
                                         <asp:Label ID="AccountNumberLable" runat="server">ACCOUNT_NUMBER</asp:Label>:
                                     </td>
-                                    <td align="left"  runat="server" id="AccountNumberTD"></td>
-                                    <td align="left">
+                                    <td style="text-align:left"  runat="server" id="AccountNumberTD"></td>
+                                    <td style="text-align:left">
                                         <asp:Label ID="IBANNumberLable" runat="server">IBAN_NUMBER</asp:Label>:
                                     </td>
-                                    <td align="left"  runat="server" id="IBANNumberTD"></td>
+                                    <td style="text-align:left"  runat="server" id="IBANNumberTD"></td>
                                     <td colspan="4"></td>
                                 </tr>
                             </table>
@@ -164,10 +165,10 @@
     <br />
     <table>
         <tr id="PerInfoHistory" runat="server">
-            <td align="left">
+            <td style="text-align:left">
                 <h2 class="dataGridHeader">
                     <a id="PersonalHistExpander" href="#">
-                        <img src="../App_Themes/Default/Images/sort_indicator_des.png" /></a>
+                        <img alt="sort indicator" src="../App_Themes/Default/Images/sort_indicator_des.png" /></a>
                     <asp:Label ID="CustomerPersonelHistory" runat="server">PERSONAL_HISTORY</asp:Label>
 
                 </h2>
@@ -205,10 +206,10 @@
             </td>
         </tr>
         <tr id="AddrInfohistory" runat="server">
-            <td align="left">
+            <td style="text-align:left">
                 <h2 class="dataGridHeader">
                     <a id="AddressHistExpander" href="#">
-                        <img src="../App_Themes/Default/Images/sort_indicator_des.png" /></a>
+                        <img alt="sort indicator" src="../App_Themes/Default/Images/sort_indicator_des.png" /></a>
                     <asp:Label ID="CustomerAddressHistory" runat="server">ADDRESS_HISTORY</asp:Label>
 
                 </h2>
@@ -244,10 +245,10 @@
             </td>
         </tr>
         <tr id="ConatctInfohistory" runat="server">
-            <td align="left">
+            <td style="text-align:left">
                 <h2 class="dataGridHeader">
                     <a id="ContactHistExpander" href="#">
-                        <img src="../App_Themes/Default/Images/sort_indicator_des.png" /></a>
+                        <img alt="sort indicator" src="../App_Themes/Default/Images/sort_indicator_des.png" /></a>
                     <asp:Label ID="Label1" runat="server">CONTACT_HISTORY</asp:Label>
 
                 </h2>
@@ -277,10 +278,10 @@
             </td>
         </tr>
         <tr id="BankDetailHist" runat="server">
-            <td align="left">
+            <td style="text-align:left">
                 <h2 class="dataGridHeader">
                     <a id="BankDetailHistExpander" href="#">
-                        <img src="../App_Themes/Default/Images/sort_indicator_des.png" /></a>
+                        <img alt="sort indicator" src="../App_Themes/Default/Images/sort_indicator_des.png" /></a>
                     <asp:Label ID="BankDetailHistory" runat="server">BANK_DETAIL_HISTORY</asp:Label>
                 </h2>
             </td>
