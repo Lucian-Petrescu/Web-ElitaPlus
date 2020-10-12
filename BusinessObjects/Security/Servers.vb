@@ -99,6 +99,9 @@ Public Class Servers
     Protected Sub Load(ByVal sHubRegion As String, ByVal sMachinePrefix As String, ByVal sEnvironment As String, _
                        Optional ByVal webServiceName As String = Nothing, Optional ByVal webServiceFunctionName As String = Nothing)
         Try
+            sHubRegion = "E1"
+            sMachinePrefix = "MAN0"
+            sEnvironment = "TEST"
             Dim dal As New ServersDAL
             If Me._isDSCreator Then
                 If Not Me.Row Is Nothing Then
