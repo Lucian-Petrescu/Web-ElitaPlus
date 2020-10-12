@@ -1129,7 +1129,6 @@ select distinct
     from elp_bank_info bi
     left join elp_dealer_group dg on dg.bank_info_id = bi.bank_info_id
     join elp_ar_payments ap on ap.bank_info_id = bi.bank_info_id
-    join elp_cert c on c.cert_id = ap.reference_id
     where ap.reference_id = :cert_id
     and   ap.reference = 'ELP_CERT'
 order by created_date
