@@ -2620,6 +2620,8 @@ Public Class ClaimRecordingForm
     Private Const GridPayableToTxtCtrl As String = "moPayableToText"
     Private Const GridPayableToLblCtrl As String = "moPayableToLabel"
     Private Const GridCheckInfoLblCtrl As String = "moChequeInfoLabel"
+    Private Const GridLoShippingAddressTr As String = "trShippingAddress"
+    Private Const GridLoDeliveryOptionsTr As String = "trDeliveryOptions"
     'KDDI
     Private Const ValidateAddressButton As String = "btnValidate_Address"
 
@@ -3197,225 +3199,261 @@ Public Class ClaimRecordingForm
             Dim trBankInfo As HtmlTableRow = CType(e.Row.FindControl(GridLoBankInfoTr), HtmlTableRow)
             Dim trCheckInfo As HtmlTableRow = CType(e.Row.FindControl(GridLoCheckInfoTr), HtmlTableRow)
             Dim trServiceCenter As HtmlTableRow = CType(e.Row.FindControl(GridLoServiceCenterTr), HtmlTableRow)
+            Dim trShippingAddress As HtmlTableRow = CType(e.Row.FindControl(GridLoShippingAddressTr), HtmlTableRow)
+            Dim trDeliveryOptions As HtmlTableRow = CType(e.Row.FindControl(GridLoDeliveryOptionsTr), HtmlTableRow)
 
-            ' Logistics Options - Address
-            If Not logisticsOptionItem Is Nothing _
-               AndAlso (logisticsOptionItem.Type = LogisticOptionType.CustomerAddress OrElse logisticsOptionItem.Type = LogisticOptionType.DealerBranchAddress) Then
+            If  logisticsOptionItem IsNot Nothing then
 
-                Dim lblLoShippingAddress As Label = CType(e.Row.FindControl(GridLoShippingAddressLblCtrl), Label)
+                RowDataBoundQuestions(e, logisticsOptionItem)
 
-                Dim moAddressController As UserControlAddress_New
-                moAddressController = CType(e.Row.FindControl(GridLoAddressCtrl), UserControlAddress_New)
-                moAddressController.Visible = True
+                Select  Case logisticsOptionItem.Type
+                             'Logistics Options - Address
+                        Case LogisticOptionType.CustomerAddress OrElse logisticsOptionItem.Type = LogisticOptionType.DealerBranchAddress
+                             RowDataBoundAddress(e, logisticsOptionItem, rdoLogisticsOptions, isEnableControl, addressDetail, logisticsStage) 
 
-                If (rdoLogisticsOptions.Checked) Then
-                    EnableDisableAddressValidation(moAddressController)
-                Else
-                    Dim btnValidateAddress As Button = moAddressController.FindControl(ValidateAddressButton)
-                    ControlMgr.SetVisibleControl(Me, btnValidateAddress, False)
-                End If
+                            'Logistic Options - Service Center
+                        Case LogisticOptionType.ServiceCenter
+                                RowDataBoundServiceCenter(e, isEnableControl, trServiceCenter, trBankInfo, trCheckInfo)  
+
+                            'Delivery Options
+                        Case logisticsOptionItem.DeliveryOptions IsNot Nothing AndAlso logisticsOptionItem.DeliveryOptions.DisplayEstimatedDeliveryDate
+                                RowDataBoundDelivery(e, isEnableControl)
+
+                            'Bank transfer 
+                        Case LogisticOptionType.BankTransfer
+                             RowDataBoundBankTransfer(e, trShippingAddress, trServiceCenter, trDeliveryOptions, trBankInfo, trCheckInfo)
+
+                            'Customer Information for Check payment
+                        Case LogisticOptionType.CheckCustomerMail
+                             RowDataBoundCustomerCheckPayment(e, trShippingAddress, trServiceCenter, trDeliveryOptions,  trBankInfo, trCheckInfo)
+
+                        Case Else
+                            RowDataBoundDisableOptions(trServiceCenter, trShippingAddress, trDeliveryOptions, trBankInfo, trCheckInfo)
+                End Select
+
+                Else 
+                    RowDataBoundDisableOptions(trServiceCenter, trShippingAddress, trDeliveryOptions, trBankInfo, trCheckInfo)
+              End If
+        End If
+    End Sub
+
+    Private Sub RowDataBoundDisableOptions(trServiceCenter As HtmlTableRow, trShippingAddress As HtmlTableRow, trDeliveryOptions As HtmlTableRow, trBankInfo As HtmlTableRow, trCheckInfo As HtmlTableRow)
+
+        'Logistics Options - Address
+        If trShippingAddress Is Nothing Then Throw New ArgumentNullException("TableRow for Shipping Address not found")
+        trShippingAddress.Attributes("style") = "display: none"
+
+        'Logistic Options - Service Center
+        If trServiceCenter Is Nothing Then Throw New ArgumentNullException("TableRow for Service Center not found")
+        trServiceCenter.Attributes("style") = "display: none"
+
+        ' Delivery Options
+        If trDeliveryOptions Is Nothing Then Throw New ArgumentNullException("TableRow for Delivery Options not found")
+        trDeliveryOptions.Attributes("style") = "display: none"
+       
+        'Bank transfer 
+        trBankInfo.Attributes("style") = "display: none"
+     
+        'Customer Information for Check payment
+        trCheckInfo.Attributes("style") = "display: none"
+        
+    End Sub
+
+    Private Sub RowDataBoundQuestions(e As GridViewRowEventArgs, logisticsOptionItem As LogisticOption)
+
+' Questions
+        Dim logisticsOptionsQuestionsItemCtrl As UserControlQuestion = CType(e.Row.FindControl(LogisticsOptionsQuestionsCtrl), UserControlQuestion)
+        If logisticsOptionItem.Questions IsNot Nothing AndAlso logisticsOptionItem.Questions.Length > 0 Then
+
+            With logisticsOptionsQuestionsItemCtrl
+                .DateFormat = DATE_FORMAT
+                .UserNameSetting = UserName
+                .PasswordSetting = Password
+                .ServiceUrlSetting = ServiceUrl
+                .ServiceEndPointNameSetting = EndPointName
+                .HostMessageController = MasterPage.MessageController
+            End With
+            '
+            logisticsOptionsQuestionsItemCtrl.SetQuestionTitle(TranslationBase.TranslateLabelOrMessage("QUESTION_SET"))
+            '
+            logisticsOptionsQuestionsItemCtrl.QuestionDataSource = logisticsOptionItem.Questions
+            logisticsOptionsQuestionsItemCtrl.QuestionDataBind()
+            ControlMgr.SetVisibleControl(Me, logisticsOptionsQuestionsItemCtrl, True)
+        Else
+            ControlMgr.SetVisibleControl(Me, logisticsOptionsQuestionsItemCtrl, False)
+        End If
+    End Sub
+
+    Private Sub RowDataBoundCustomerCheckPayment(e As GridViewRowEventArgs, trShippingAddress as HtmlTableRow,  trServiceCenter As HtmlTableRow, trDeliveryOptions As HtmlTableRow, trBankInfo As HtmlTableRow, trCheckInfo As HtmlTableRow)
+
+        Dim moCustomerAddressController As UserControlAddress_New = CType(e.Row.FindControl(LogisticsOptionsCheckInfoCtrl), UserControlAddress_New)
+        Dim txtPayableToName As TextBox = CType(e.Row.FindControl(GridPayableToTxtCtrl), TextBox)
+        Dim btnValidateAddress As Button = moCustomerAddressController.FindControl(ValidateAddressButton)
+        Dim oCertificate As Certificate = New Certificate(State.CertificateId)
+        Dim oCustomerAddress As  BusinessObjectsNew.Address = New BusinessObjectsNew.Address(ocertificate.AddressId)
+        Dim lblPayableTo As Label = CType(e.Row.FindControl(GridPayableToLblCtrl), Label)
+        Dim lblCheckInfo As Label = CType(e.Row.FindControl(GridCheckInfoLblCtrl), Label)
+
+        lblPayableTo.Text= TranslationBase.TranslateLabelOrMessage(lblPayableTo.Text)
+        lblCheckInfo.Text=TranslationBase.TranslateLabelOrMessage(lblCheckInfo.Text)
+
+        ControlMgr.SetVisibleControl(Me, trShippingAddress, false)
+        ControlMgr.SetVisibleControl(Me, trServiceCenter, False)
+        ControlMgr.SetVisibleControl(Me, trDeliveryOptions, false)
+        ControlMgr.SetVisibleControl(Me, trBankInfo, False)
+        ControlMgr.SetVisibleControl(Me, trCheckInfo, True)
+        ControlMgr.SetVisibleControl(Me, btnValidateAddress, False)
+
+        EnableDisableAddressValidation(moCustomerAddressController)
+        moCustomerAddressController.Visible = True
+        moCustomerAddressController.TranslateAllLabelControl()
+        txtPayableToName.Text = oCertificate.CustomerName
+        moCustomerAddressController.Bind(oCustomerAddress)
+        moCustomerAddressController.EnableControls(False, True)
+    End Sub
+
+    Private Sub RowDataBoundBankTransfer(e As GridViewRowEventArgs, trShippingAddress as HtmlTableRow, trServiceCenter As HtmlTableRow, trDeliveryOptions As HtmlTableRow, trBankInfo As HtmlTableRow, trCheckInfo As HtmlTableRow)
+
+        Dim lblBankInfo As Label = CType(e.Row.FindControl(GridBankInfoLblCtrl), Label)
+        lblBankInfo.Text = TranslationBase.TranslateLabelOrMessage("CUSTOMER_BANK_INFO")
+
+        ControlMgr.SetVisibleControl(Me, trShippingAddress, False)
+        ControlMgr.SetVisibleControl(Me, trServiceCenter, False)
+        ControlMgr.SetVisibleControl(Me, trDeliveryOptions, False)
+        ControlMgr.SetVisibleControl(Me, trBankInfo, True)
+        ControlMgr.SetVisibleControl(Me, trCheckInfo, False)
+      
+        Dim moBankInfoController As UserControlBankInfo_New = CType(e.Row.FindControl(LogisticsOptionsBankInfoCtrl), UserControlBankInfo_New)
+        moBankInfoController.Visible = True
+        moBankInfoController.LabelTranslations()
+        Dim ddlCountry As DropDownList = CType(moBankInfoController.FindControl("moCountryDrop_WRITE"), DropDownList)
+        Me.State.BankInfoBO = New BusinessObjectsNew.BankInfo With {
+            .CountryID = Me.State.ClaimBo.Certificate.CountryPurchaseId
+            }
+        moBankInfoController.State.myBankInfoBo = Me.State.BankInfoBO
+        moBankInfoController.Bind(Me.State.BankInfoBO)
+        ddlCountry.Enabled = False
+        moBankInfoController.EnableControlsBasedOnCountry(Me.State.BankInfoBO.CountryID)
+    End Sub
+
+    Private Sub RowDataBoundDelivery(e As GridViewRowEventArgs, isEnableControl As Boolean)
+        Dim lblDeliveryDate As Label = CType(e.Row.FindControl(GridLoDeliveryDateLblCtrl), Label)
+        Dim btnEstimateDeliveryDate As Button = CType(e.Row.FindControl(GridLoEstimateDeliveryDateBtnCtrl), Button)
+        
+        lblDeliveryDate.Text = TranslationBase.TranslateLabelOrMessage("EXPECTED_DELIVERY_DATE")
+        ControlMgr.SetEnableControl(Me, btnEstimateDeliveryDate, isEnableControl)
+        btnEstimateDeliveryDate.Text = TranslationBase.TranslateLabelOrMessage("GET_DELIVERY_DATE")
+    End Sub
+
+    Private Sub RowDataBoundServiceCenter(e As GridViewRowEventArgs, isEnableControl As Boolean, trServiceCenter As HtmlTableRow, trBankInfo As HtmlTableRow, trCheckInfo As HtmlTableRow)
+
+        ControlMgr.SetVisibleControl(Me, trServiceCenter, True)
+        ControlMgr.SetVisibleControl(Me, trBankInfo, False)
+        ControlMgr.SetVisibleControl(Me, trCheckInfo, False)
+
+        Dim oCertificate As Certificate = New Certificate(State.CertificateId)
+        Dim oCountry As Country = New Country(oCertificate.Company.CountryId)
+
+        Dim moServiceCenterCtrl As UserControlServiceCenterSelection = CType(e.Row.FindControl(GridLoServiceCenterCtrl), UserControlServiceCenterSelection)
+        moServiceCenterCtrl.Visible = True
 
 
-                Dim oCertificate As Certificate = New Certificate(State.CertificateId)
+        ServiceCenterSelectionHandler(moServiceCenterCtrl)
 
-                If logisticsOptionItem.Type = LogisticOptionType.CustomerAddress Then
+        moServiceCenterCtrl.PageSize = 30
+        moServiceCenterCtrl.CountryId = oCertificate.Company.CountryId
+        moServiceCenterCtrl.CountryCode = oCountry.Code
+        moServiceCenterCtrl.CompanyCode = oCertificate.Company.Code
+        moServiceCenterCtrl.Dealer = oCertificate.Dealer.Dealer
 
-                    lblLoShippingAddress.Text = TranslationBase.TranslateLabelOrMessage("CUSTOMER_ADDRESS")
+        If State.ClaimedDevice IsNot Nothing Then
+            moServiceCenterCtrl.Make = State.ClaimedDevice.Manufacturer
+        ElseIf State.ClaimBo.ClaimedEquipment IsNot Nothing Then
+            moServiceCenterCtrl.Make = State.ClaimBo.ClaimedEquipment.Manufacturer
+        Else
+            moServiceCenterCtrl.Make = String.Empty
+        End If
 
-                    If logisticsOptionItem.LogisticOptionInfo Is Nothing Then
-                        If Not oCertificate.AddressChild Is Nothing Then
-                            addressDetail = oCertificate.AddressChild
-                        End If
-                    Else
-                        Dim infoCustomerAddress As LogisticOptionInfoCustomerAddress
-                        infoCustomerAddress = logisticsOptionItem.LogisticOptionInfo
-                        If Not infoCustomerAddress.Address Is Nothing Then
-                            addressDetail = ConvertToAddressControllerField(infoCustomerAddress.Address)
-                        End If
-                    End If
-                    Dim trStoreNumber As HtmlTableRow = CType(e.Row.FindControl("trStoreNumber"), HtmlTableRow)
-                    trStoreNumber.Attributes("style") = "display: none"
-                ElseIf logisticsOptionItem.Type = LogisticOptionType.DealerBranchAddress Then
+        moServiceCenterCtrl.RiskTypeEnglish = State.ClaimBo.RiskType
+        moServiceCenterCtrl.MethodOfRepairXcd = State.FulfillmentOption.StandardCode
+        moServiceCenterCtrl.HostMessageController = MasterPage.MessageController
+        moServiceCenterCtrl.InitializeComponent()
 
-                    lblLoShippingAddress.Text = TranslationBase.TranslateLabelOrMessage("DEALER_BRANCH_ADDRESS")
+        Dim lblServiceCenterSelected As Label = CType(e.Row.FindControl(GridLoServiceCenterSelectedLblCtrl), Label)
+        lblServiceCenterSelected.Text = TranslationBase.TranslateLabelOrMessage("SERVICE_CENTER_SELECTED")
 
-                    Dim lblStoreNumber As Label = CType(e.Row.FindControl(GridLoStoreNumberLblCtrl), Label)
-                    lblStoreNumber.Text = TranslationBase.TranslateLabelOrMessage("STORE_NUMBER")
+        Dim lblServiceCenterCode As Label = CType(e.Row.FindControl(GridLoServiceCenterCodeLblCtrl), Label)
+        lblServiceCenterCode.Text = TranslationBase.TranslateLabelOrMessage("SERVICE_CENTER_CODE")
 
-                    Dim txtStoreNumber As TextBox = CType(e.Row.FindControl(GridLoStoreNumberTxtCtrl), TextBox)
-                    ControlMgr.SetEnableControl(Me, txtStoreNumber, isEnableControl)
+        Dim lblServiceCenterName As Label = CType(e.Row.FindControl(GridLoServiceCenterNameLblCtrl), Label)
+        lblServiceCenterName.Text = TranslationBase.TranslateLabelOrMessage("SERVICE_CENTER_NAME")
 
-                    If Not logisticsOptionItem.LogisticOptionInfo Is Nothing Then
-                        Dim infoStoreAddress As LogisticOptionInfoDealerBranchAddress
-                        infoStoreAddress = logisticsOptionItem.LogisticOptionInfo
-                        txtStoreNumber.Text = infoStoreAddress.BranchCode
-                        If Not infoStoreAddress.Address Is Nothing Then
-                            addressDetail = ConvertToAddressControllerField(infoStoreAddress.Address)
-                        End If
-                    End If
-                End If
+        Dim txtStoreNumber As TextBox = CType(e.Row.FindControl(GridLoServiceCenterCodeTxtCtrl), TextBox)
+        ControlMgr.SetEnableControl(Me, txtStoreNumber, isEnableControl)
+    End Sub
 
-                moAddressController.TranslateAllLabelControl()
+    Private Sub RowDataBoundAddress(e As GridViewRowEventArgs, logisticsOptionItem As LogisticOption, rdoLogisticsOptions As RadioButton, isEnableControl As Boolean, addressDetail As BusinessObjectsNew.Address, logisticsStage As LogisticStage)
 
-                'KDDI
-                moAddressController.Bind(addressDetail, oCertificate.Product.ClaimProfile)
-                moAddressController.EnableControls(Not isEnableControl, True)
+        Dim lblLoShippingAddress As Label = CType(e.Row.FindControl(GridLoShippingAddressLblCtrl), Label)
 
-                If logisticsStage.Code = "RV" AndAlso (logisticsOptionItem.Code = "ST" OrElse logisticsOptionItem.Code = "E") AndAlso logisticsOptionItem.Type = LogisticOptionType.CustomerAddress Then
-                    moAddressController.EnableControls(True, True)
+        Dim addressController As UserControlAddress_New = CType(e.Row.FindControl(GridLoAddressCtrl), UserControlAddress_New)
+        addressController.Visible = True
+
+        If (rdoLogisticsOptions.Checked) Then
+            EnableDisableAddressValidation(addressController)
+        Else
+            Dim btnValidateAddress As Button = addressController.FindControl(ValidateAddressButton)
+            ControlMgr.SetVisibleControl(Me, btnValidateAddress, False)
+        End If
+
+
+        Dim oCertificate As Certificate = New Certificate(State.CertificateId)
+
+        If logisticsOptionItem.Type = LogisticOptionType.CustomerAddress Then
+
+            lblLoShippingAddress.Text = TranslationBase.TranslateLabelOrMessage("CUSTOMER_ADDRESS")
+
+            If logisticsOptionItem.LogisticOptionInfo Is Nothing Then
+                If  oCertificate.AddressChild IsNot Nothing Then
+                    addressDetail = oCertificate.AddressChild
                 End If
             Else
-                Dim trShippingAddress As HtmlTableRow = CType(e.Row.FindControl("trShippingAddress"), HtmlTableRow)
-                If trShippingAddress Is Nothing Then Throw New ArgumentNullException("TableRow for Shipping Address not found")
-                trShippingAddress.Attributes("style") = "display: none"
-            End If
-
-            'Logistic Options - Service Center
-
-            If Not logisticsOptionItem Is Nothing _
-                   AndAlso (logisticsOptionItem.Type = LogisticOptionType.ServiceCenter) Then
-
-                ControlMgr.SetVisibleControl(Me, trServiceCenter, True)
-                ControlMgr.SetVisibleControl(Me, trBankInfo, False)
-                ControlMgr.SetVisibleControl(Me, trCheckInfo, False)
-
-                Dim oCertificate As Certificate = New Certificate(State.CertificateId)
-                Dim oCountry As Country = New Country(oCertificate.Company.CountryId)
-
-                Dim moServiceCenterCtrl As UserControlServiceCenterSelection = CType(e.Row.FindControl(GridLoServiceCenterCtrl), UserControlServiceCenterSelection)
-                moServiceCenterCtrl.Visible = True
-
-
-                ServiceCenterSelectionHandler(moServiceCenterCtrl)
-
-                moServiceCenterCtrl.PageSize = 30
-                moServiceCenterCtrl.CountryId = oCertificate.Company.CountryId
-                moServiceCenterCtrl.CountryCode = oCountry.Code
-                moServiceCenterCtrl.CompanyCode = oCertificate.Company.Code
-                moServiceCenterCtrl.Dealer = oCertificate.Dealer.Dealer
-
-                If State.ClaimedDevice IsNot Nothing Then
-                    moServiceCenterCtrl.Make = State.ClaimedDevice.Manufacturer
-                ElseIf State.ClaimBo.ClaimedEquipment IsNot Nothing Then
-                    moServiceCenterCtrl.Make = State.ClaimBo.ClaimedEquipment.Manufacturer
-                Else
-                    moServiceCenterCtrl.Make = String.Empty
+                Dim infoCustomerAddress As LogisticOptionInfoCustomerAddress
+                infoCustomerAddress = logisticsOptionItem.LogisticOptionInfo
+                If  infoCustomerAddress.Address IsNot Nothing Then
+                    addressDetail = ConvertToAddressControllerField(infoCustomerAddress.Address)
                 End If
-
-                moServiceCenterCtrl.RiskTypeEnglish = State.ClaimBo.RiskType
-                moServiceCenterCtrl.MethodOfRepairXcd = State.FulfillmentOption.StandardCode
-                moServiceCenterCtrl.HostMessageController = MasterPage.MessageController
-                moServiceCenterCtrl.InitializeComponent()
-
-                Dim lblServiceCenterSelected As Label = CType(e.Row.FindControl(GridLoServiceCenterSelectedLblCtrl), Label)
-                lblServiceCenterSelected.Text = TranslationBase.TranslateLabelOrMessage("SERVICE_CENTER_SELECTED")
-
-                Dim lblServiceCenterCode As Label = CType(e.Row.FindControl(GridLoServiceCenterCodeLblCtrl), Label)
-                lblServiceCenterCode.Text = TranslationBase.TranslateLabelOrMessage("SERVICE_CENTER_CODE")
-
-                Dim lblServiceCenterName As Label = CType(e.Row.FindControl(GridLoServiceCenterNameLblCtrl), Label)
-                lblServiceCenterName.Text = TranslationBase.TranslateLabelOrMessage("SERVICE_CENTER_NAME")
-
-                Dim txtStoreNumber As TextBox = CType(e.Row.FindControl(GridLoServiceCenterCodeTxtCtrl), TextBox)
-                ControlMgr.SetEnableControl(Me, txtStoreNumber, isEnableControl)
-            Else
-                If trServiceCenter Is Nothing Then Throw New ArgumentNullException("TableRow for Service Center not found")
-                trServiceCenter.Attributes("style") = "display: none"
             End If
+            Dim trStoreNumber As HtmlTableRow = CType(e.Row.FindControl("trStoreNumber"), HtmlTableRow)
+            trStoreNumber.Attributes("style") = "display: none"
+        ElseIf logisticsOptionItem.Type = LogisticOptionType.DealerBranchAddress Then
 
-            ' Delivery Options
-            If Not logisticsOptionItem Is Nothing _
-               AndAlso Not logisticsOptionItem.DeliveryOptions Is Nothing _
-               AndAlso logisticsOptionItem.DeliveryOptions.DisplayEstimatedDeliveryDate Then
+            lblLoShippingAddress.Text = TranslationBase.TranslateLabelOrMessage("DEALER_BRANCH_ADDRESS")
 
-                ' TODO: Assign the delivery code/description when it comes in the contract
-                Dim lblDeliveryDate As Label = CType(e.Row.FindControl(GridLoDeliveryDateLblCtrl), Label)
-                lblDeliveryDate.Text = TranslationBase.TranslateLabelOrMessage("EXPECTED_DELIVERY_DATE")
+            Dim lblStoreNumber As Label = CType(e.Row.FindControl(GridLoStoreNumberLblCtrl), Label)
+            lblStoreNumber.Text = TranslationBase.TranslateLabelOrMessage("STORE_NUMBER")
 
-                Dim btnEstimateDeliveryDate As Button = CType(e.Row.FindControl(GridLoEstimateDeliveryDateBtnCtrl), Button)
-                ControlMgr.SetEnableControl(Me, btnEstimateDeliveryDate, isEnableControl)
-                btnEstimateDeliveryDate.Text = TranslationBase.TranslateLabelOrMessage("GET_DELIVERY_DATE")
-            Else
-                Dim trDeliveryOptions As HtmlTableRow = CType(e.Row.FindControl("trDeliveryOptions"), HtmlTableRow)
-                If trDeliveryOptions Is Nothing Then Throw New ArgumentNullException("TableRow for Delivery Options not found")
-                trDeliveryOptions.Attributes("style") = "display: none"
+            Dim txtStoreNumber As TextBox = CType(e.Row.FindControl(GridLoStoreNumberTxtCtrl), TextBox)
+            ControlMgr.SetEnableControl(Me, txtStoreNumber, isEnableControl)
+
+            If  logisticsOptionItem.LogisticOptionInfo IsNot Nothing Then
+                Dim infoStoreAddress As LogisticOptionInfoDealerBranchAddress
+                infoStoreAddress = logisticsOptionItem.LogisticOptionInfo
+                txtStoreNumber.Text = infoStoreAddress.BranchCode
+                If  infoStoreAddress.Address IsNot Nothing Then
+                    addressDetail = ConvertToAddressControllerField(infoStoreAddress.Address)
+                End If
             End If
+        End If
 
-            ' Questions
-            If Not logisticsOptionItem Is Nothing Then
-                Dim logisticsOptionsQuestionsItemCtrl As UserControlQuestion = CType(e.Row.FindControl(LogisticsOptionsQuestionsCtrl), UserControlQuestion)
-                If logisticsOptionItem.Questions IsNot Nothing AndAlso logisticsOptionItem.Questions.Length > 0 Then
+        addressController.TranslateAllLabelControl()
 
-                    With logisticsOptionsQuestionsItemCtrl
-                        .DateFormat = DATE_FORMAT
-                        .UserNameSetting = UserName
-                        .PasswordSetting = Password
-                        .ServiceUrlSetting = ServiceUrl
-                        .ServiceEndPointNameSetting = EndPointName
-                        .HostMessageController = MasterPage.MessageController
-                    End With
-                    '
-                    logisticsOptionsQuestionsItemCtrl.SetQuestionTitle(TranslationBase.TranslateLabelOrMessage("QUESTION_SET"))
-                    '
-                    logisticsOptionsQuestionsItemCtrl.QuestionDataSource = logisticsOptionItem.Questions
-                    logisticsOptionsQuestionsItemCtrl.QuestionDataBind()
-                    ControlMgr.SetVisibleControl(Me, logisticsOptionsQuestionsItemCtrl, True)
-                Else
-                    ControlMgr.SetVisibleControl(Me, logisticsOptionsQuestionsItemCtrl, False)
-                End If
+        'KDDI
+        addressController.Bind(addressDetail, oCertificate.Product.ClaimProfile)
+        addressController.EnableControls(Not isEnableControl, True)
 
-                'Bank transfer 
-                If  logisticsOptionItem IsNot Nothing AndAlso
-                                 (logisticsOptionItem.Type = LogisticOptionType.BankTransfer) Then
-
-                    Dim lblBankInfo As Label = CType(e.Row.FindControl(GridBankInfoLblCtrl), Label)
-                    lblBankInfo.Text = TranslationBase.TranslateLabelOrMessage("CUSTOMER_BANK_INFO")
-
-                    ControlMgr.SetVisibleControl(Me, trServiceCenter, False)
-                    ControlMgr.SetVisibleControl(Me, trBankInfo, True)
-                    ControlMgr.SetVisibleControl(Me, trCheckInfo, false)
-
-                    Dim moBankInfoController As UserControlBankInfo_New = CType(e.Row.FindControl(LogisticsOptionsBankInfoCtrl), UserControlBankInfo_New)
-                    moBankInfoController.Visible = True
-                    moBankInfoController.LabelTranslations()
-                    Dim ddlCountry As DropDownList = CType(moBankInfoController.FindControl("moCountryDrop_WRITE"), DropDownList)
-                    Me.State.BankInfoBO = New BusinessObjectsNew.BankInfo With {
-                        .CountryID = Me.State.ClaimBo.Certificate.CountryPurchaseId
-                    }
-                    moBankInfoController.State.myBankInfoBo = Me.State.BankInfoBO
-                    moBankInfoController.Bind(Me.State.BankInfoBO)
-                    ddlCountry.Enabled = False
-                    moBankInfoController.EnableControlsBasedOnCountry(Me.State.BankInfoBO.CountryID)
-                End If
-
-                'Customer Information for Check payment
-                If  logisticsOptionItem IsNot Nothing AndAlso
-                   (logisticsOptionItem.Type =  LogisticOptionType.CheckCustomerMail) Then
-                    Dim moCustomerAddressController As UserControlAddress_New = CType(e.Row.FindControl(LogisticsOptionsCheckInfoCtrl), UserControlAddress_New)
-                    Dim txtPayableToName As TextBox = CType(e.Row.FindControl(GridPayableToTxtCtrl), TextBox)
-                    Dim btnValidateAddress As Button = moCustomerAddressController.FindControl(ValidateAddressButton)
-                    Dim oCertificate As Certificate = New Certificate(State.CertificateId)
-                    Dim oCustomerAddress As  BusinessObjectsNew.Address = New BusinessObjectsNew.Address(ocertificate.AddressId)
-                    Dim lblPayableTo As Label = CType(e.Row.FindControl(GridPayableToLblCtrl), Label)
-                    Dim lblCheckInfo As Label = CType(e.Row.FindControl(GridCheckInfoLblCtrl), Label)
-
-                    lblPayableTo.Text= TranslationBase.TranslateLabelOrMessage(lblPayableTo.Text)
-                    lblCheckInfo.Text=TranslationBase.TranslateLabelOrMessage(lblCheckInfo.Text)
-
-                    ControlMgr.SetVisibleControl(Me, trServiceCenter, False)
-                    ControlMgr.SetVisibleControl(Me, trBankInfo, False)
-                    ControlMgr.SetVisibleControl(Me, trCheckInfo, True)
-                    ControlMgr.SetVisibleControl(Me, btnValidateAddress, False)
-
-                    EnableDisableAddressValidation(moCustomerAddressController)
-                    moCustomerAddressController.Visible = True
-                    moCustomerAddressController.TranslateAllLabelControl()
-                    txtPayableToName.Text = oCertificate.CustomerName
-                    moCustomerAddressController.Bind(oCustomerAddress)
-                    moCustomerAddressController.EnableControls(False, True)
-                End If
-
-            End If
+        If logisticsStage.Code = "RV" AndAlso (logisticsOptionItem.Code = "ST" OrElse logisticsOptionItem.Code = "E") AndAlso logisticsOptionItem.Type = LogisticOptionType.CustomerAddress Then
+            addressController.EnableControls(True, True)
         End If
     End Sub
 
