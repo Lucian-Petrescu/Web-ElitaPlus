@@ -124,6 +124,18 @@
 			--dynamic_where_clause
 		]]>
   </GET_COMPANIES>
+  <GET_COMP_USING_NEW_ACC_FOR_ACC_COMP>
+    <![CDATA[	
+	    Select a.company_id
+	    from   elp_company a
+	    join   elp_acct_company b on a.acct_company_id = b.acct_company_id
+	    join   elp_attribute_value av on av.reference_id = a.company_id
+	    join   elp_attribute att on av.attribute_id = att.attribute_id
+	    Where  att.ui_prog_code = 'ACCT_PREMIUM_LEVEL'
+	     and   av.attribute_value in ('CERTIFICATE','CERTIFICATE_WITH_UPR')
+			 and   a.acct_company_id = :acct_company_id
+		]]>
+  </GET_COMP_USING_NEW_ACC_FOR_ACC_COMP>
 </SQL>
 
 
