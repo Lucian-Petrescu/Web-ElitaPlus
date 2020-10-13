@@ -45,6 +45,6 @@
     elita.elp_utl_custom_upload.get_screen_help    
   </PROCESS_SCREEN_HELP>
   <ADDREMOVEITEMS>
-    elita.elp_utl_custom_upload.UploadTypeItems
+    elita.elp_tbl_lov.UploadType_Lov
   </ADDREMOVEITEMS>
 </SQL>
