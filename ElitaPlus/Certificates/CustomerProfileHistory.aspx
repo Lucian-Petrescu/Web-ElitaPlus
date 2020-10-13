@@ -12,81 +12,81 @@
             <td style="text-align:left">
                 <asp:Label ID="CustomerNameLabel" runat="server" SkinID="SummaryLabel">CUSTOMER_NAME</asp:Label>:
             </td>
-            <td style="text-align:left;font-weight: bold" class="bor"  runat="server"
+            <td style="text-align:left;font-weight: bold" runat="server"
                 id="CustomerNameTD">
                 <strong></strong>
             </td>
             <td style="text-align:left" runat="server" id="IdentificationNumberLabelTD">
                 <asp:Label ID="IdentificationNumberLabel" runat="server" SkinID="SummaryLabel">IDENTIFICATION_NUMBER</asp:Label>:
             </td>
-            <td style="text-align:left" class="bor" runat="server" id="IdentificationNumberTD"></td>
+            <td style="text-align:left"  runat="server" id="IdentificationNumberTD"></td>
             <td style="text-align:left" runat="server" id="GenderLabelTD">
                 <asp:Label ID="GenderLabel" runat="server" SkinID="SummaryLabel">GENDER</asp:Label>:
             </td>
-            <td style="text-align:left" class="bor" runat="server" id="GenderTD"></td>
+            <td style="text-align:left" runat="server" id="GenderTD"></td>
             <td style="text-align:left" runat="server" id="MaritalStatusLabelTD">
                 <asp:Label ID="MaritalStatusLabel" runat="server" SkinID="SummaryLabel">MARITAL_STATUS</asp:Label>:
             </td>
-            <td style="text-align:left" class="bor" runat="server" id="MaritalStatusTD"></td>
+            <td style="text-align:left" runat="server" id="MaritalStatusTD"></td>
         </tr>
         <tr>
             <td style="text-align:left">
                 <asp:Label ID="PlaceOfBirthLabel" runat="server" SkinID="SummaryLabel">PLACE_OF_BIRTH</asp:Label>:
             </td>
-            <td style="text-align:left" class="bor" runat="server" id="PlaceOfBirthTD"></td>
+            <td style="text-align:left" runat="server" id="PlaceOfBirthTD"></td>
             <td style="text-align:left">
                 <asp:Label ID="DateOfBirthLabel" runat="server" SkinID="SummaryLabel">DATE_OF_BIRTH</asp:Label>:
             </td>
-            <td style="text-align:left" class="bor" runat="server" id="DateOfBirthTD"></td>
+            <td style="text-align:left" runat="server" id="DateOfBirthTD"></td>
             <td style="text-align:left">
                 <asp:Label ID="NationalityLabel" runat="server" SkinID="SummaryLabel">NATIONALITY</asp:Label>:
             </td>
-            <td style="text-align:left" class="bor" runat="server" id="NationalityTD"></td>
+            <td style="text-align:left" runat="server" id="NationalityTD"></td>
             <td style="text-align:left">
                 <asp:Label ID="EmailLabel" runat="server" SkinID="SummaryLabel">EMAIL</asp:Label>:
             </td>
-            <td style="text-align:left" class="bor" runat="server" id="EmailTD"></td>
+            <td style="text-align:left"  runat="server" id="EmailTD"></td>
 
         </tr>
         <tr>
             <td style="text-align:left">
                 <asp:Label ID="HomePhoneLabel" runat="server" SkinID="SummaryLabel">HOME_PHONE</asp:Label>:
             </td>
-            <td style="text-align:left" class="bor" runat="server" id="HomePhoneTD"></td>
+            <td style="text-align:left"  runat="server" id="HomePhoneTD"></td>
             <td style="text-align:left">
                 <asp:Label ID="WorkPhoneLabel" runat="server" SkinID="SummaryLabel">WORK_PHONE</asp:Label>:
             </td>
-            <td style="text-align:left" class="bor" runat="server" id="WorkPhoneTD"></td>
+            <td style="text-align:left" runat="server" id="WorkPhoneTD"></td>
             <td style="text-align:left">
                 <asp:Label ID="AddressLabel" runat="server" SkinID="SummaryLabel">ADDRESS</asp:Label>:
             </td>
-            <td  class="bor" runat="server" id="AddressTD" style="text-align:left;text-wrap: normal; word-wrap: break-word; word-break: break-all; white-space: pre-wrap; width: 30%;"></td>
+            <td  runat="server" id="AddressTD" style="text-align:left;text-wrap: normal; word-wrap: break-word; word-break: break-all; white-space: pre-wrap; width: 30%;"></td>
             <td style="text-align:left">
                 <asp:Label ID="CityLabel" runat="server" SkinID="SummaryLabel">CITY</asp:Label>:
             </td>
-            <td style="text-align:left" class="bor" runat="server" id="CityTD"></td>
+            <td style="text-align:left" runat="server" id="CityTD"></td>
         </tr>
         <tr>
 
             <td style="text-align:left">
                 <asp:Label ID="StateLabel" runat="server" SkinID="SummaryLabel">STATE</asp:Label>:
             </td>
-            <td style="text-align:left" class="bor" runat="server" id="StateTD"></td>
+            <td style="text-align:left" runat="server" id="StateTD"></td>
             <td style="text-align:left">
                 <asp:Label ID="PostalCodeLabel" runat="server" SkinID="SummaryLabel">POSTAL_CODE</asp:Label>:
             </td>
-            <td style="text-align:left" class="bor" runat="server" id="PostalCodeTD"></td>
+            <td style="text-align:left" runat="server" id="PostalCodeTD"></td>
             <td style="text-align:left">
                 <asp:Label ID="CountryCodeLabel" runat="server" SkinID="SummaryLabel">COUNTRY</asp:Label>:
             </td>
-            <td style="text-align:left" class="bor" runat="server" id="CountryCodeTD"></td>
+            <td style="text-align:left" runat="server" id="CountryCodeTD"></td>
         </tr>
         <tr>
 
             <td style="text-align:left">
                 <asp:Label ID="CorporateNameLabel" runat="server" SkinID="SummaryLabel">CORPORATE_NAME</asp:Label>:
             </td>
-            <td style="text-align:left" class="bor" runat="server" id="CorporateNameTD"></td>
+            <td style="text-align:left" runat="server" id="CorporateNameTD"></td>
             <td colspan="2"></td>
         </tr>
         <tr>
