@@ -1,18 +1,20 @@
+Imports System.Diagnostics
+
 Partial Class MakeModel
-    Inherits System.Web.UI.UserControl
+    Inherits UserControl
 
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -115,7 +117,7 @@ Partial Class MakeModel
 
 #Region " Event Handlers"
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         If Not IsPostBack Then
             FillDropDowns("")
@@ -123,15 +125,15 @@ Partial Class MakeModel
 
     End Sub
 
-    Protected Sub MakeDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs)
+    Protected Sub MakeDrop_SelectedIndexChanged(sender As Object, e As EventArgs)
         FillDropDowns("Make")
     End Sub
 
-    Protected Sub ModelDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs)
+    Protected Sub ModelDrop_SelectedIndexChanged(sender As Object, e As EventArgs)
         FillDropDowns("Model")
     End Sub
 
-    Protected Sub TrimDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs)
+    Protected Sub TrimDrop_SelectedIndexChanged(sender As Object, e As EventArgs)
         FillDropDowns("Trim")
     End Sub
 #End Region

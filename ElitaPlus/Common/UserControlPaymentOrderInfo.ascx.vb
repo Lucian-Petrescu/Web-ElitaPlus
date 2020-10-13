@@ -1,12 +1,13 @@
 ﻿Imports Assurant.Elita.CommonConfiguration
+Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
 
 Public Class UserControlPaymentOrderInfo
-    Inherits System.Web.UI.UserControl
+    Inherits UserControl
 
 #Region "Page"
 
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         If Not IsPostBack Then
 
             If State.myPmtOrderInfoBo IsNot Nothing Then
@@ -67,7 +68,7 @@ Public Class UserControlPaymentOrderInfo
 
     Private Sub LoadCountryList(Optional ByVal nothingSelcted As Boolean = True)
 
-        Dim oCountryList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="Country")
+        Dim oCountryList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="Country")
         moCountryDrop_WRITE.Populate(oCountryList, New PopulateOptions() With
                                         {
                                         .AddBlankItem = nothingSelcted
@@ -165,7 +166,7 @@ Public Class UserControlPaymentOrderInfo
 
     End Sub
 
-    Public Sub GetBankIdForBankName(sender As Object, e As System.EventArgs) Handles moBankName.SelectedIndexChanged
+    Public Sub GetBankIdForBankName(sender As Object, e As EventArgs) Handles moBankName.SelectedIndexChanged
         If Not Page.GetSelectedItem(moBankName).Equals(Guid.Empty) Then
             Dim boBankName As BankName
             boBankName = New BankName(Page.GetSelectedItem(moBankName))

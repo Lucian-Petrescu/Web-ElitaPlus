@@ -62,7 +62,7 @@ Public Class ClaimIssueStatusDAL
             Return
         End If
 
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             For Each DataRow As DataRow In ds.Tables(TABLE_NAME).Rows
                 If CType(DataRow(COL_NAME_PROCESSED_BY), String) = "SYSTEM" Then
                     DataRow(DALBase.COL_NAME_CREATED_BY) = "SYSTEM"
@@ -70,7 +70,7 @@ Public Class ClaimIssueStatusDAL
             Next
         End If
 
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub

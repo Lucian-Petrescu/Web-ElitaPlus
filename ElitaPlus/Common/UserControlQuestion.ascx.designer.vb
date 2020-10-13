@@ -20,7 +20,7 @@ Partial Public Class UserControlQuestion
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents QuestionSet As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents QuestionSet As HtmlGenericControl
     
     '''<summary>
     '''lblQuestions control.
@@ -29,7 +29,7 @@ Partial Public Class UserControlQuestion
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblQuestions As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblQuestions As Label
     
     '''<summary>
     '''GridQuestions control.
@@ -38,7 +38,7 @@ Partial Public Class UserControlQuestion
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents GridQuestions As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents GridQuestions As GridView
     
     '''<summary>
     '''btnDate2 control.
@@ -47,7 +47,7 @@ Partial Public Class UserControlQuestion
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnDate2 As Global.System.Web.UI.WebControls.ImageButton
+    Protected WithEvents btnDate2 As ImageButton
     
     '''<summary>
     '''ImageButton1 control.
@@ -56,5 +56,5 @@ Partial Public Class UserControlQuestion
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ImageButton1 As Global.System.Web.UI.WebControls.ImageButton
+    Protected WithEvents ImageButton1 As ImageButton
 End Class

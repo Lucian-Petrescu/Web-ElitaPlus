@@ -20,7 +20,7 @@ Partial Public Class UserControlClaimCloseRules
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moClaimCloseRulesTabPanel_WRITE As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents moClaimCloseRulesTabPanel_WRITE As Panel
 
     '''<summary>
     '''trPageSize control.
@@ -29,7 +29,7 @@ Partial Public Class UserControlClaimCloseRules
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trPageSize As HtmlTableRow
 
     '''<summary>
     '''lblPageSize control.
@@ -38,7 +38,7 @@ Partial Public Class UserControlClaimCloseRules
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPageSize As Label
 
     '''<summary>
     '''colonSepertor control.
@@ -47,7 +47,7 @@ Partial Public Class UserControlClaimCloseRules
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents colonSepertor As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents colonSepertor As Label
 
     '''<summary>
     '''cboPageSize control.
@@ -56,7 +56,7 @@ Partial Public Class UserControlClaimCloseRules
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboPageSize As DropDownList
 
     '''<summary>
     '''lblRecordCount control.
@@ -65,7 +65,7 @@ Partial Public Class UserControlClaimCloseRules
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblRecordCount As Label
 
     '''<summary>
     '''CloseRulesGrid control.
@@ -74,7 +74,7 @@ Partial Public Class UserControlClaimCloseRules
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents CloseRulesGrid As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents CloseRulesGrid As GridView
 
     '''<summary>
     '''HiddenDeletePromptResponse control.
@@ -83,7 +83,7 @@ Partial Public Class UserControlClaimCloseRules
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents HiddenDeletePromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents HiddenDeletePromptResponse As HtmlInputHidden
 
     '''<summary>
     '''NewButton_WRITE control.
@@ -92,5 +92,5 @@ Partial Public Class UserControlClaimCloseRules
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents NewButton_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents NewButton_WRITE As Button
 End Class

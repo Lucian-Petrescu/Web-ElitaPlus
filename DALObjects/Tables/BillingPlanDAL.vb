@@ -64,7 +64,7 @@ Public Class BillingPlanDAL
             whereClauseConditions &= " AND d.dealer_id = '" & GuidToSQLString(DealerId) & "'"
         End If
 
-        If ((Not billingPlanMask Is Nothing) AndAlso (FormatSearchMask(billingPlanMask))) Then
+        If ((billingPlanMask IsNot Nothing) AndAlso (FormatSearchMask(billingPlanMask))) Then
             whereClauseConditions &= Environment.NewLine & "AND UPPER(bp.code)" & billingPlanMask.ToUpper
         End If
 

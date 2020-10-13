@@ -274,10 +274,10 @@ Public Class EquipmentList
             oCompanyGroupIds = New ArrayList
             oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
-            If (description.Contains(DALBase.WILDCARD_CHAR) Or description.Contains(DALBase.ASTERISK)) Then
+            If (description.Contains(DALBase.WILDCARD_CHAR) OrElse description.Contains(DALBase.ASTERISK)) Then
                 description = description & DALBase.ASTERISK
             End If
-            If (code.Contains(DALBase.WILDCARD_CHAR) Or code.Contains(DALBase.ASTERISK)) Then
+            If (code.Contains(DALBase.WILDCARD_CHAR) OrElse code.Contains(DALBase.ASTERISK)) Then
                 code = code & DALBase.ASTERISK
             End If
 
@@ -532,11 +532,11 @@ Public Class EquipmentList
         oCompanyGroupIds = New ArrayList
         oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
-        If Code IsNot String.Empty And Effective IsNot Nothing Then
+        If Code IsNot String.Empty AndAlso Effective IsNot Nothing Then
             Dim dv As EquipmentList.EquipmentSearchDV = New EquipmentList.EquipmentSearchDV(EquipDal.LoadList(Code, String.Empty, Effective, _
                    String.Empty, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
 
-            If Code IsNot Nothing And Effective IsNot Nothing Then
+            If Code IsNot Nothing AndAlso Effective IsNot Nothing Then
                 For Each dr As DataRow In dv.Table.Rows
                     If ((dr(EquipmentListDAL.COL_NAME_CODE).ToString.ToUpper = Code.ToUpper) And _
                         (dr(EquipmentListDAL.COL_NAME_EFFECTIVE) = DateHelper.GetDateValue(Effective).ToString("dd-MMM-yyyy")) And _
@@ -556,7 +556,7 @@ Public Class EquipmentList
         oCompanyGroupIds = New ArrayList
         oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
-        If Code IsNot String.Empty And Description IsNot String.Empty And Effective IsNot Nothing And Nothing And Expiration IsNot Nothing Then
+        If Code IsNot String.Empty AndAlso Description IsNot String.Empty AndAlso Effective IsNot Nothing And Nothing AndAlso Expiration IsNot Nothing Then
             Dim dv As EquipmentList.EquipmentSearchDV = New EquipmentList.EquipmentSearchDV(EquipDal.LoadList(Code, String.Empty, Effective, _
                    String.Empty, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
 
@@ -605,11 +605,11 @@ Public Class EquipmentList
         oCompanyGroupIds = New ArrayList
         oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
-        If vCode IsNot String.Empty And vEffective IsNot Nothing Then
+        If vCode IsNot String.Empty AndAlso vEffective IsNot Nothing Then
             Dim dv As EquipmentList.EquipmentSearchDV = New EquipmentList.EquipmentSearchDV(EquipDal.LoadList(vCode, String.Empty, vEffective, _
                    String.Empty, oCompanyGroupIds, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
 
-            If vCode IsNot Nothing And vEffective IsNot Nothing Then
+            If vCode IsNot Nothing AndAlso vEffective IsNot Nothing Then
                 For Each dr As DataRow In dv.Table.Rows
                     If ((dr(EquipmentListDAL.COL_NAME_CODE).ToString.ToUpper = vCode.ToUpper) And _
                         (dr(EquipmentListDAL.COL_NAME_EFFECTIVE) = vEffective) And _

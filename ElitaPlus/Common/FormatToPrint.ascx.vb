@@ -1,7 +1,9 @@
+Imports System.Diagnostics
+
 Namespace Generic
 
     Partial  Class FormatToPrint
-        Inherits System.Web.UI.UserControl
+        Inherits UserControl
 
 #Region "Constants"
 
@@ -30,11 +32,11 @@ Namespace Generic
 #Region " Web Form Designer Generated Code "
 
         'This call is required by the Web Form Designer.
-        <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+        <DebuggerStepThrough()> Private Sub InitializeComponent()
 
         End Sub
 
-        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -42,7 +44,7 @@ Namespace Generic
 
 #End Region
 
-        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
         End Sub
 

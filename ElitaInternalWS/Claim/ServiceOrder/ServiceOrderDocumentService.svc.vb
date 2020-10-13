@@ -69,7 +69,7 @@ Namespace ServiceOrderDocument
             Try
                 For i = 0 To objCompaniesAL.Count - 1
                     Dim objCompany As New Company(CType(objCompaniesAL.Item(i), Guid))
-                    If Not objCompany Is Nothing AndAlso objCompany.Code.Equals(request.CompanyCode.ToUpper) Then
+                    If objCompany IsNot Nothing AndAlso objCompany.Code.Equals(request.CompanyCode.ToUpper) Then
                         CompanyId = objCompany.Id
                     End If
                 Next
@@ -97,7 +97,7 @@ Namespace ServiceOrderDocument
                 oServiceOrder = New ServiceOrder(serviceOrderID)
                 ServiceOrderData = Encoding.UTF8.GetBytes(oServiceOrder.GetReportHtmlData())
 
-                If Not ServiceOrderData Is Nothing Then
+                If ServiceOrderData IsNot Nothing Then
                     response.ServiceOrderImageData = ServiceOrderData
                     Return response
                 Else

@@ -665,11 +665,11 @@ Public Class CancelCertificate
             'Call QuoteCancellation
 
             If oCancellationReason.RefundComputeMethodId.Equals(LookupListNew.GetIdFromCode(refundMDv, Codes.REFUND_COMPUTE_METHOD__22)) Then
-                If (Action <> "Q" And Action <> "C") Then
+                If (Action <> "Q" AndAlso Action <> "C") Then
                     Throw New BOValidationException("CancelCertificate Error: ", Common.ErrorCodes.ERR_MSG_INVALID_ACTION_REQUESTED)
                 End If
 
-                If (Action = "C" And IsDBNull(RefundAmount)) Then
+                If (Action = "C" AndAlso IsDBNull(RefundAmount)) Then
                     Throw New BOValidationException("CancelCertificate Error: ", Common.ErrorCodes.ERR_MSG_REFUND_AMT_REQUIRED)
                 End If
             End If

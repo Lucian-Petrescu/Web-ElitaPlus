@@ -234,7 +234,7 @@
     End Sub
 
     Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
@@ -253,7 +253,7 @@
         Try
             Dim obj As Object
             obj = DBHelper.ExecuteScalar(selectStmt, parameters)
-            If (Not obj Is Nothing) Then
+            If (obj IsNot Nothing) Then
                 Return New Guid(CType(obj, Byte()))
             End If
 
@@ -271,7 +271,7 @@
         Try
             Dim classId As Object
             classId = DBHelper.ExecuteScalar(selectStmt, parameters)
-            If (Not classId Is Nothing) Then
+            If (classId IsNot Nothing) Then
                 Return New Guid(CType(classId, Byte()))
             End If
 
@@ -342,7 +342,7 @@
         Try
             Dim obj As Object
             obj = DBHelper.ExecuteScalar(selectStmt, parameters)
-            If (Not obj Is Nothing) Then
+            If (obj IsNot Nothing) Then
                 Return New Guid(CType(obj, Byte()))
             End If
 

@@ -27,31 +27,31 @@ Namespace SpecializedServices.SFR
             Dim searchResult As Collections.Generic.IEnumerable(Of Certificate)                                   
             Dim ds As DataSet                              
 
-            If  (request.CompanyCode Is Nothing Or String.IsNullOrEmpty(request.CompanyCode))  Then
+            If  (request.CompanyCode Is Nothing OrElse String.IsNullOrEmpty(request.CompanyCode))  Then
                 Throw New FaultException(Of CompanyNotFoundFault)(New CompanyNotFoundFault(), "Company Code Is Empty")
             End If
             
-            If ( (String.IsNullOrEmpty(request.DealerCode) And String.IsNullOrEmpty(request.DealerGroup)) ) Then
+            If ( (String.IsNullOrEmpty(request.DealerCode) AndAlso String.IsNullOrEmpty(request.DealerGroup)) ) Then
                 Throw New FaultException(Of DealerNotFoundFault)(New DealerNotFoundFault(), "Dealer Code Or Dealer Group Is Empty")
             End If
 
-            If ( (String.IsNullOrEmpty(request.FirstName) And  Not String.IsNullOrEmpty(request.LastName) ) _ 
-                Or  (Not String.IsNullOrEmpty(request.FirstName) And  String.IsNullOrEmpty(request.LastName)) ) Then
+            If ( (String.IsNullOrEmpty(request.FirstName) AndAlso Not String.IsNullOrEmpty(request.LastName) ) _
+                OrElse (Not String.IsNullOrEmpty(request.FirstName) AndAlso String.IsNullOrEmpty(request.LastName)) ) Then
                 Throw New FaultException(Of CustomerNameNotFoundFault)(New CustomerNameNotFoundFault(), "Customer FirstName Or LastName Is Empty")
             End If
            
-            If ( (String.IsNullOrEmpty(request.PostalCode) And  Not String.IsNullOrEmpty(request.Email) ) _ 
-                  Or ( Not String.IsNullOrEmpty(request.PostalCode) And  String.IsNullOrEmpty(request.Email)) ) Then
+            If ( (String.IsNullOrEmpty(request.PostalCode) AndAlso Not String.IsNullOrEmpty(request.Email) ) _
+                  OrElse ( Not String.IsNullOrEmpty(request.PostalCode) AndAlso String.IsNullOrEmpty(request.Email)) ) Then
                 Throw New FaultException(Of EmailandPostalCodeNotFoundFault)(New EmailandPostalCodeNotFoundFault(), "Email Or Postal Code Is Empty")
             End If
 
             If (String.IsNullOrEmpty(request.FirstName) _
-                And  String.IsNullOrEmpty(request.LastName) _
-                And String.IsNullOrEmpty(request.LastName) _ 
-                And String.IsNullOrEmpty(request.PhoneNumber) _
-                And  String.IsNullOrEmpty(request.Email) _
-                And String.IsNullOrEmpty(request.PostalCode) _
-                And String.IsNullOrEmpty(request.IdentificationNumber)
+                AndAlso String.IsNullOrEmpty(request.LastName) _
+                AndAlso String.IsNullOrEmpty(request.LastName) _
+                AndAlso String.IsNullOrEmpty(request.PhoneNumber) _
+                AndAlso String.IsNullOrEmpty(request.Email) _
+                AndAlso String.IsNullOrEmpty(request.PostalCode) _
+                AndAlso String.IsNullOrEmpty(request.IdentificationNumber)
                 ) Then
                 Throw New FaultException(Of InvalidRequestFault)(New InvalidRequestFault(), "One Search Criteria is Required ")
             End If

@@ -269,9 +269,9 @@ Public NotInheritable Class MultiAuthClaim
     Public Function HasActiveAuthorizations() As Boolean
         Dim flag As Boolean = True
         For Each auth As ClaimAuthorization In NonVoidClaimAuthorizationList
-            If (auth.ClaimAuthStatus = ClaimAuthorizationStatus.Fulfilled Or auth.ClaimAuthStatus = ClaimAuthorizationStatus.Reconsiled _
-                Or auth.ClaimAuthStatus = ClaimAuthorizationStatus.ToBePaid Or auth.ClaimAuthStatus = ClaimAuthorizationStatus.Paid _
-                Or auth.ClaimAuthStatus = ClaimAuthorizationStatus.Void) Then
+            If (auth.ClaimAuthStatus = ClaimAuthorizationStatus.Fulfilled OrElse auth.ClaimAuthStatus = ClaimAuthorizationStatus.Reconsiled _
+                OrElse auth.ClaimAuthStatus = ClaimAuthorizationStatus.ToBePaid OrElse auth.ClaimAuthStatus = ClaimAuthorizationStatus.Paid _
+                OrElse auth.ClaimAuthStatus = ClaimAuthorizationStatus.Void) Then
                 flag = False
                 Exit For
             End If
@@ -283,8 +283,8 @@ Public NotInheritable Class MultiAuthClaim
         Dim flag As Boolean = True
         For Each auth As ClaimAuthorization In NonVoidClaimAuthorizationList
             If (auth.ClaimAuthStatus = ClaimAuthorizationStatus.Reconsiled _
-                Or auth.ClaimAuthStatus = ClaimAuthorizationStatus.ToBePaid Or auth.ClaimAuthStatus = ClaimAuthorizationStatus.Paid _
-                Or auth.ClaimAuthStatus = ClaimAuthorizationStatus.Void) Then
+                OrElse auth.ClaimAuthStatus = ClaimAuthorizationStatus.ToBePaid OrElse auth.ClaimAuthStatus = ClaimAuthorizationStatus.Paid _
+                OrElse auth.ClaimAuthStatus = ClaimAuthorizationStatus.Void) Then
                 flag = False
                 Exit For
             End If
@@ -312,7 +312,7 @@ Public NotInheritable Class MultiAuthClaim
 
             CheckForRules()
 
-            If (Not Me.Status = BasicClaimStatus.Pending Or Not Me.Status = BasicClaimStatus.Denied) Then
+            If (Not Me.Status = BasicClaimStatus.Pending OrElse Not Me.Status = BasicClaimStatus.Denied) Then
                 For Each auth As ClaimAuthorization In NonVoidClaimAuthorizationList
                     If (Not auth.IsNew) Then
                         auth.Void()
@@ -334,7 +334,7 @@ Public NotInheritable Class MultiAuthClaim
         Dim serviceCenterId As Guid = Nothing
 
         For Each auth As ClaimAuthorization In NonVoidClaimAuthorizationList
-            If (auth.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized Or auth.ClaimAuthStatus = ClaimAuthorizationStatus.Pending) Then
+            If (auth.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized OrElse auth.ClaimAuthStatus = ClaimAuthorizationStatus.Pending) Then
                 serviceCenterId = auth.ServiceCenterId
                 Exit For
             End If

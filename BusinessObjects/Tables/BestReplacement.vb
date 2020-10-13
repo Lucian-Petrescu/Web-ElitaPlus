@@ -340,7 +340,7 @@ Public Class BestReplacement
     Protected Function CheckForDuplicatePriorities() As Boolean
         Dim row As DataRow
         For Each row In Dataset.Tables(BestReplacementDAL.TABLE_NAME).Rows
-            If row.RowState <> DataRowState.Deleted And row.RowState <> DataRowState.Detached Then
+            If row.RowState <> DataRowState.Deleted AndAlso row.RowState <> DataRowState.Detached Then
                 Dim bo As New BestReplacement(row)
                 If Priority IsNot Nothing AndAlso bo.Priority IsNot Nothing Then 'DEF-2109
                     ' Check if combination of Equipment ID and Priority is Unique
@@ -356,7 +356,7 @@ Public Class BestReplacement
     Protected Function CheckForDuplicateEquipmentReplacementEquipmentCombination() As Boolean
         Dim row As DataRow
         For Each row In Dataset.Tables(BestReplacementDAL.TABLE_NAME).Rows
-            If row.RowState <> DataRowState.Deleted And row.RowState <> DataRowState.Detached Then
+            If row.RowState <> DataRowState.Deleted AndAlso row.RowState <> DataRowState.Detached Then
                 Dim bo As New BestReplacement(row)
                 ' Check if combination of Equipment ID and Replacement Equipment is Unique
                 If Not bo.Id.Equals(Id) AndAlso EquipmentId.Equals(bo.EquipmentId) AndAlso ReplacementEquipmentId.Equals(bo.ReplacementEquipmentId) Then

@@ -145,7 +145,7 @@ Public Class VendorloadInvReconWrkDal
         If (changesFilter Or (SupportChangesFilter)) <> (SupportChangesFilter) Then
             Throw New NotSupportedException()
         End If
-        If Not ds.Tables(TableNameDal) Is Nothing Then
+        If ds.Tables(TableNameDal) IsNot Nothing Then
             Update(ds.Tables(TableNameDal), transaction, changesFilter)
         End If
     End Sub

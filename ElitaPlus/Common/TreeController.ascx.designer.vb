@@ -11,6 +11,7 @@
 Option Strict On
 Option Explicit On
 
+Imports Microsoft.Web.UI.WebControls
 
 Namespace Generic
 
@@ -23,6 +24,6 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moTree As Global.Microsoft.Web.UI.WebControls.TreeView
+        Protected WithEvents moTree As TreeView
     End Class
 End Namespace

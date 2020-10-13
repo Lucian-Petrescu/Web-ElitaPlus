@@ -1,18 +1,20 @@
+Imports System.Diagnostics
+
 Partial Class UserControlBankInfo
-    Inherits System.Web.UI.UserControl
+    Inherits UserControl
 
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -62,7 +64,7 @@ Partial Class UserControlBankInfo
 
 #End Region
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         If State.myBankInfoBo IsNot Nothing Then
             BindBoPropertiesToLabels()
@@ -248,7 +250,7 @@ Partial Class UserControlBankInfo
                 Page.PopulateControlFromBOProperty(textboxIBAN_Number, .IbanNumber)
                 Page.PopulateControlFromBOProperty(textboxSwiftCode, .SwiftCode)
                 Page.SetSelectedItem(moCountryDrop_WRITE, .CountryID)
-                If .AccountTypeId.Equals(System.Guid.Empty) Then
+                If .AccountTypeId.Equals(Guid.Empty) Then
                     moAccountTypeDrop.SelectedIndex = 0
                 Else
                     Page.SetSelectedItem(moAccountTypeDrop, .AccountTypeId)
@@ -385,7 +387,7 @@ Partial Class UserControlBankInfo
         End If
     End Sub
 
-    Private Sub moCountryDrop_WRITE_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moCountryDrop_WRITE.SelectedIndexChanged
+    Private Sub moCountryDrop_WRITE_SelectedIndexChanged(sender As Object, e As EventArgs) Handles moCountryDrop_WRITE.SelectedIndexChanged
         If (Not (State.myBankInfoBo.SourceCountryID.Equals(Guid.Empty))) AndAlso (Not (Page.GetSelectedItem(moCountryDrop_WRITE).Equals(Guid.Empty))) Then
             If State.myBankInfoBo.SourceCountryID.Equals(Page.GetSelectedItem(moCountryDrop_WRITE)) Then
                 'Domestic transfer

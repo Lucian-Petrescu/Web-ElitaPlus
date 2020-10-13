@@ -41,14 +41,14 @@ Namespace AppServices.SA
                                                                                                           " : " & request.CompanyCode)
             End If
 
-            If (Not String.IsNullOrEmpty(request.DealerCode)) And (GetDealerId(companyId, request.DealerCode).Equals(Guid.Empty)) Then
+            If (Not String.IsNullOrEmpty(request.DealerCode)) AndAlso (GetDealerId(companyId, request.DealerCode).Equals(Guid.Empty)) Then
                 Throw New FaultException(Of DealerNotFoundFault)(New DealerNotFoundFault(), TranslationBase.TranslateLabelOrMessage(ERR_DEALER_NOT_FOUND) &
                                                                                                           " : " & request.DealerCode)
             Else
                 DealerId = GetDealerId(companyId, request.DealerCode)
             End If
 
-            If (String.IsNullOrEmpty(request.NewSKU)) AndAlso (String.IsNullOrEmpty(request.NewMake) Or String.IsNullOrEmpty(request.NewModel)) Then
+            If (String.IsNullOrEmpty(request.NewSKU)) AndAlso (String.IsNullOrEmpty(request.NewMake) OrElse String.IsNullOrEmpty(request.NewModel)) Then
                 Throw New FaultException(Of Faults.InvalidRequestFault)(New Faults.InvalidRequestFault("SKU_MAKE_MODEL_ERROR", TranslationBase.TranslateLabelOrMessage("SKU_MAKE_MODEL_ERROR")), "Invalid Request")
             End If
 
@@ -100,7 +100,7 @@ Namespace AppServices.SA
                 Dim endorseRequest As EndorsePolicyRequest = New EndorsePolicyRequest
                 Dim iteminfo As New UpdateItemInfo()
 
-                If Not (String.IsNullOrEmpty(request.NewSKU)) And (ValidateSku(DealerId, request.NewSKU)) = True Then
+                If Not (String.IsNullOrEmpty(request.NewSKU)) AndAlso (ValidateSku(DealerId, request.NewSKU)) = True Then
                     iteminfo.Manufacturer = _make
                 ElseIf Not String.IsNullOrEmpty(request.NewMake) Then
                     iteminfo.Manufacturer = request.NewMake
@@ -108,7 +108,7 @@ Namespace AppServices.SA
                     Throw New FaultException(Of Faults.InvalidRequestFault)(New Faults.InvalidRequestFault("SKU_MAKE_MODEL_ERROR", TranslationBase.TranslateLabelOrMessage("SKU_MAKE_MODEL_ERROR")), "Invalid Request")
                 End If
 
-                If Not (String.IsNullOrEmpty(request.NewSKU)) And (ValidateSku(DealerId, request.NewSKU)) = True Then
+                If Not (String.IsNullOrEmpty(request.NewSKU)) AndAlso (ValidateSku(DealerId, request.NewSKU)) = True Then
                     iteminfo.Model = _model
                 ElseIf Not String.IsNullOrEmpty(request.NewModel) Then
                     iteminfo.Model = request.NewModel
@@ -142,7 +142,7 @@ Namespace AppServices.SA
                                                                             End Function)
 
             Catch ex As FaultException
-                If Not DirectCast(ex, FaultException(Of EnrollFault)).Detail.FaultMessage Is Nothing Then
+                If DirectCast(ex, FaultException(Of EnrollFault)).Detail.FaultMessage IsNot Nothing Then
                     Dim fault As String
                     fault = DirectCast(ex, FaultException(Of EnrollFault)).Detail.FaultMessage
                     Throw New FaultException(Of InvalidUpdateFault)(New InvalidUpdateFault(), fault)
@@ -172,7 +172,7 @@ Namespace AppServices.SA
 
             For i = 0 To objCompaniesAl.Count - 1
                 Dim objCompany As New Company(CType(objCompaniesAl.Item(i), Guid))
-                If Not objCompany Is Nothing AndAlso objCompany.Code.Equals(companycode.ToUpper) Then
+                If objCompany IsNot Nothing AndAlso objCompany.Code.Equals(companycode.ToUpper) Then
                     companyId = objCompany.Id
                 End If
             Next
@@ -197,14 +197,14 @@ Namespace AppServices.SA
             If Not (dealerBo Is Nothing) Then
                 Dim dsMakeModel As DataSet = wmdal.GetMakeAndModelForDealerFromWM(skuNumber, id)
                 Dim dsMfgModel As DataSet
-                If Not dsMakeModel Is Nothing AndAlso dsMakeModel.Tables.Count > 0 AndAlso dsMakeModel.Tables(0).Rows.Count = 1 Then
+                If dsMakeModel IsNot Nothing AndAlso dsMakeModel.Tables.Count > 0 AndAlso dsMakeModel.Tables(0).Rows.Count = 1 Then
                     manufacturerId = New Guid(CType(dsMakeModel.Tables(0).Rows(0)("Internal_manufacturer_id"), Byte()))
                     _model = dsMakeModel.Tables(0).Rows(0)("Model_Number")
                     _make = dsMakeModel.Tables(0).Rows(0)("Manufacturer_Name")
                     Dim mfgModelDal As New MfgModelDAL
                     dsMfgModel = mfgModelDal.GetMakeAndModelForDealer(manufacturerId, _model, DealerId)
 
-                    If Not dsMfgModel Is Nothing AndAlso dsMfgModel.Tables.Count > 0 Then
+                    If dsMfgModel IsNot Nothing AndAlso dsMfgModel.Tables.Count > 0 Then
                         validSku = True
                     Else
                         validSku = False

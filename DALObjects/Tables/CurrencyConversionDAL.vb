@@ -123,7 +123,7 @@ Public Class CurrencyConversionDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
@@ -163,11 +163,11 @@ Public Class CurrencyConversionDAL
 
         inputParameters(PARAM_IN_DEALER_ID) = New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerID)
 
-        If Not fromdate Is Nothing Then
+        If fromdate IsNot Nothing Then
             inputParameters(PARAM_IN_FROM_DATE) = New DBHelper.DBHelperParameter(COL_NAME_EFFECTIVE_DATE, fromdate.Value)
         End If
 
-        If Not todate Is Nothing Then
+        If todate IsNot Nothing Then
             inputParameters(PARAM_IN_TO_DATE) = New DBHelper.DBHelperParameter(FILD_NAME_EXPIRATION_DATE, todate.Value)
         End If
 
@@ -197,11 +197,11 @@ Public Class CurrencyConversionDAL
 
         inputParameters(PARAM_IN_DEALER_ID) = New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, dealerID)
 
-        If Not fromdate Is Nothing Then
+        If fromdate IsNot Nothing Then
             inputParameters(PARAM_IN_FROM_DATE) = New DBHelper.DBHelperParameter(COL_NAME_EFFECTIVE_DATE, fromdate.Value)
         End If
 
-        If Not todate Is Nothing Then
+        If todate IsNot Nothing Then
             inputParameters(PARAM_IN_TO_DATE) = New DBHelper.DBHelperParameter(FILD_NAME_EXPIRATION_DATE, todate.Value)
         End If
 

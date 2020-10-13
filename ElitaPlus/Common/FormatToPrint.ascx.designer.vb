@@ -29,6 +29,6 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moPlaceHolder As Global.System.Web.UI.WebControls.PlaceHolder
+        Protected WithEvents moPlaceHolder As PlaceHolder
     End Class
 End Namespace

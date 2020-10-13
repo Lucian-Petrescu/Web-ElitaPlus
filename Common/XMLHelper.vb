@@ -208,7 +208,7 @@ Public Class XMLHelper
         Dim aNode As XmlNode
 
         aNode = GetNode(xmlParentNode, nodeName)
-        If Not aNode Is Nothing Then
+        If aNode IsNot Nothing Then
             Return aNode.InnerXml
         Else
             Return Nothing
@@ -438,7 +438,7 @@ Public Class XMLHelper
 
         If Not IsNothing(ds) AndAlso ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0 Then
 
-            If includeEmptyTag Or xmlCoded Then
+            If includeEmptyTag OrElse xmlCoded Then
                 Dim i As Integer
 
                 For Each dt As DataTable In ds.Tables
@@ -478,7 +478,7 @@ Public Class XMLHelper
                             End If
 
                             If xmlCoded Then
-                                If Not dr(i) Is DBNull.Value Then
+                                If dr(i) IsNot DBNull.Value Then
                                     If Not dt.Columns(i).DataType.Equals(System.Type.GetType("System.DateTime")) AndAlso _
                                         Not dt.Columns(i).DataType.Equals(System.Type.GetType("System.Byte[]")) AndAlso _
                                         Not dt.Columns(i).DataType.Equals(System.Type.GetType("System.Int32")) AndAlso _
@@ -494,8 +494,7 @@ Public Class XMLHelper
                                             Dim k As Integer
                                             For k = 0 To ds.Relations.Count - 1
                                                 If hasRelation = False Then
-                                                    hasRelation = ds.Relations(k).ParentColumns().Contains(dt.Columns(i)) Or _
-                                                                  ds.Relations(k).ChildColumns().Contains(dt.Columns(i))
+                                                    hasRelation = ds.Relations(k).ParentColumns().Contains(dt.Columns(i)) OrElse ds.Relations(k).ChildColumns().Contains(dt.Columns(i))
                                                 End If
                                             Next
                                         End If
@@ -513,7 +512,7 @@ Public Class XMLHelper
 
             xmlDoc = New XmlDataDocument(ds)
 
-            If Not excludeTags Is Nothing Then
+            If excludeTags IsNot Nothing Then
                 xmlDoc.DataSet.EnforceConstraints = False
 
                 For Each tag As String In excludeTags
@@ -522,8 +521,8 @@ Public Class XMLHelper
                     For Each node As XmlNode In nodeList
                         Dim docNode As XmlNode = xmlDoc.SelectSingleNode(tag)
 
-                        If (Not docNode Is Nothing) Then
-                            If (Not xmlDoc.SelectSingleNode(tag).ParentNode Is Nothing) Then
+                        If (docNode IsNot Nothing) Then
+                            If (xmlDoc.SelectSingleNode(tag).ParentNode IsNot Nothing) Then
                                 xmlDoc.SelectSingleNode(tag).ParentNode.RemoveChild(docNode)
                             End If
                         End If
@@ -533,7 +532,7 @@ Public Class XMLHelper
 
             retXml = xmlDoc.InnerXml
 
-            If Not removeDsRoot Is Nothing Then
+            If removeDsRoot IsNot Nothing Then
                 retXml = retXml.Replace("<" & removeDsRoot & ">", "").Replace("</" & removeDsRoot & ">", "")
             End If
 
@@ -711,7 +710,7 @@ Public Class XMLHelper
                     For k = 0 To ds.Tables(i).Columns.Count - 1
                         Dim dc As DataColumn = ds.Tables(i).Columns(k)
                         oItem = row.Item(k)
-                        If (dc.DataType Is GetType(System.DateTime)) AndAlso (Not oItem Is DBNull.Value) Then
+                        If (dc.DataType Is GetType(System.DateTime)) AndAlso (oItem IsNot DBNull.Value) Then
                             sItem = CType(oItem, Date).ToString("s") ' SortableDateTimePattern: yyyy'-'MM'-'dd'T'HH':'mm':'ss 2008-01-16T15:12:59 
                         Else
                             sItem = oItem.ToString
@@ -751,7 +750,7 @@ Public Class XMLHelper
                     For k = 0 To ds.Tables(i).Columns.Count - 1
                         Dim dc As DataColumn = ds.Tables(i).Columns(k)
                         oItem = row.Item(k)
-                        If (dc.DataType Is GetType(System.DateTime)) AndAlso (Not oItem Is DBNull.Value) Then
+                        If (dc.DataType Is GetType(System.DateTime)) AndAlso (oItem IsNot DBNull.Value) Then
                             sItem = CType(oItem, Date).ToString("s") ' SortableDateTimePattern: yyyy'-'MM'-'dd'T'HH':'mm':'ss 2008-01-16T15:12:59 
                         Else
                             sItem = oItem.ToString

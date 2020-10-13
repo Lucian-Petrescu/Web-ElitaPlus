@@ -40,7 +40,7 @@ Public Class ElitaWebService
         Dim token As String
         Dim usernameToken As UsernameToken
 
-        AppConfig.DebugMessage.Trace("ELITAINTERNALWS", "LOGIN", ToString + "_" + Now.ToString)
+        AppConfig.DebugMessage.Trace("ELITAINTERNALWS", "LOGIN", ToString & "_" & Now.ToString)
 
         '    Reject any requests which are not valid SOAP requests
         If RequestSoapContext.Current Is Nothing Then Throw New ApplicationException("Only SOAP requests are permitted.")
@@ -61,7 +61,7 @@ Public Class ElitaWebService
     Public Function LoginBody(networkID As String, password As String, group As String) As String
         Dim token As String
 
-        AppConfig.DebugMessage.Trace("ELITAINTERNALWS", "LOGINBODY", ToString + "_" + Now.ToString)
+        AppConfig.DebugMessage.Trace("ELITAINTERNALWS", "LOGINBODY", ToString & "_" & Now.ToString)
 
         '    Reject any requests which are not valid SOAP requests
         If RequestSoapContext.Current Is Nothing Then Throw New ApplicationException("Only SOAP requests are permitted.")
@@ -103,7 +103,7 @@ Public Class ElitaWebService
         Dim actualOptions As SignatureOptions = signature.SignatureOptions
         Dim expectedOptions As SignatureOptions = SignatureOptions.IncludeSoapBody
 
-        If Not context.Security Is Nothing AndAlso Not context.Security.Timestamp Is Nothing Then
+        If context.Security IsNot Nothing AndAlso context.Security.Timestamp IsNot Nothing Then
             expectedOptions = expectedOptions Or SignatureOptions.IncludeTimestamp
         End If
 
@@ -113,23 +113,23 @@ Public Class ElitaWebService
         expectedOptions = expectedOptions Or SignatureOptions.IncludeAction
         expectedOptions = expectedOptions Or SignatureOptions.IncludeTo
 
-        If Not context.Addressing.FaultTo Is Nothing AndAlso Not context.Addressing.FaultTo.TargetElement Is Nothing Then
+        If context.Addressing.FaultTo IsNot Nothing AndAlso context.Addressing.FaultTo.TargetElement IsNot Nothing Then
             expectedOptions = expectedOptions Or SignatureOptions.IncludeFaultTo
         End If
 
-        If Not context.Addressing.From Is Nothing AndAlso Not context.Addressing.From.TargetElement Is Nothing Then
+        If context.Addressing.From IsNot Nothing AndAlso context.Addressing.From.TargetElement IsNot Nothing Then
             expectedOptions = expectedOptions Or SignatureOptions.IncludeFrom
         End If
 
-        If Not context.Addressing.MessageID Is Nothing AndAlso Not context.Addressing.MessageID.TargetElement Is Nothing Then
+        If context.Addressing.MessageID IsNot Nothing AndAlso context.Addressing.MessageID.TargetElement IsNot Nothing Then
             expectedOptions = expectedOptions Or SignatureOptions.IncludeMessageId
         End If
 
-        If Not context.Addressing.RelatesTo Is Nothing AndAlso Not context.Addressing.RelatesTo.TargetElement Is Nothing Then
+        If context.Addressing.RelatesTo IsNot Nothing AndAlso context.Addressing.RelatesTo.TargetElement IsNot Nothing Then
             expectedOptions = expectedOptions Or SignatureOptions.IncludeRelatesTo
         End If
 
-        If Not context.Addressing.ReplyTo Is Nothing AndAlso Not context.Addressing.ReplyTo.TargetElement Is Nothing Then
+        If context.Addressing.ReplyTo IsNot Nothing AndAlso context.Addressing.ReplyTo.TargetElement IsNot Nothing Then
             expectedOptions = expectedOptions Or SignatureOptions.IncludeReplyTo
         End If
         '

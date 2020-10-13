@@ -117,7 +117,7 @@ Public Class ServiceOrderDAL
 
 #Region "Overloaded Methods"
     Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.UpdateWithParam(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
@@ -132,14 +132,14 @@ Public Class ServiceOrderDAL
         Try
             'First Pass updates Deletions
             'to be used by maintain invoice use case
-            If Not familyDataset.Tables(ClaimStatusDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(ClaimStatusDAL.TABLE_NAME).Rows.Count > 0 Then
+            If familyDataset.Tables(ClaimStatusDAL.TABLE_NAME) IsNot Nothing AndAlso familyDataset.Tables(ClaimStatusDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim oClaimStatusDAL As New ClaimStatusDAL
                 oClaimStatusDAL.Update(familyDataset.Tables(ClaimStatusDAL.TABLE_NAME), tr, DataRowState.Deleted)
             End If
             Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Deleted)
 
             'Second Pass updates additions and changes
-            If Not familyDataset.Tables(ClaimStatusDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(ClaimStatusDAL.TABLE_NAME).Rows.Count > 0 Then
+            If familyDataset.Tables(ClaimStatusDAL.TABLE_NAME) IsNot Nothing AndAlso familyDataset.Tables(ClaimStatusDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim oClaimStatusDAL As New ClaimStatusDAL
                 oClaimStatusDAL.Update(familyDataset.Tables(ClaimStatusDAL.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
             End If

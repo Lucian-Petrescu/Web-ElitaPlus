@@ -29,7 +29,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lb_DropDown As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lb_DropDown As Label
 
         '''<summary>
         '''lblCode control.
@@ -38,7 +38,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblCode As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblCode As Label
 
         '''<summary>
         '''lblDescription control.
@@ -47,6 +47,6 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblDescription As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblDescription As Label
     End Class
 End Namespace

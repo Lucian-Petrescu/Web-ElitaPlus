@@ -54,11 +54,11 @@ Public Class ServiceLevelDetailDAL
             whereClauseConditions &= " where sld.service_level_group_id = '" & GuidToSQLString(ServiceLevelGroupId) & "'"
         End If
 
-        If ((Not svcLevelCodeMask Is Nothing) AndAlso (FormatSearchMask(svcLevelCodeMask))) Then
+        If ((svcLevelCodeMask IsNot Nothing) AndAlso (FormatSearchMask(svcLevelCodeMask))) Then
             whereClauseConditions &= Environment.NewLine & "AND UPPER(sld.code)" & svcLevelCodeMask.ToUpper
         End If
 
-        If ((Not svcLevelDescMask Is Nothing) AndAlso (FormatSearchMask(svcLevelDescMask))) Then
+        If ((svcLevelDescMask IsNot Nothing) AndAlso (FormatSearchMask(svcLevelDescMask))) Then
             whereClauseConditions &= Environment.NewLine & "AND UPPER(sld.description)" & svcLevelDescMask.ToUpper
         End If
 
@@ -109,7 +109,7 @@ Public Class ServiceLevelDetailDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub

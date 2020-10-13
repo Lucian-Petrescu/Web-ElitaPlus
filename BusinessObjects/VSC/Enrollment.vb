@@ -178,7 +178,7 @@ Public Class Enrollment
             End If
 
             'Validate Bank Info 
-            If (.Collection_Method_Code.ToUpper.Equals(Codes.COLLECTION_METHOD__ASSURANT_COLLECTS) And .Payment_Instrument_Code.ToUpper.Equals(Codes.PAYMENT_INSTRUMENT__DEBIT_ACCOUNT)) Then
+            If (.Collection_Method_Code.ToUpper.Equals(Codes.COLLECTION_METHOD__ASSURANT_COLLECTS) AndAlso .Payment_Instrument_Code.ToUpper.Equals(Codes.PAYMENT_INSTRUMENT__DEBIT_ACCOUNT)) Then
                 If ds.Bank_Account_Info.Count > 0 Then
                     With ds.Bank_Account_Info(0)
                         If (.Name_On_Account Is Nothing OrElse .Name_On_Account.Trim.Length = 0) _
@@ -189,8 +189,7 @@ Public Class Enrollment
                     Throw New BOValidationException("VSC Enrollment Error: ", Common.ErrorCodes.WS_XML_INVALID)
                 End If
 
-            ElseIf (.Collection_Method_Code.ToUpper.Equals(Codes.COLLECTION_METHOD__ASSURANT_COLLECTS) And .Payment_Instrument_Code.ToUpper.Equals(Codes.PAYMENT_INSTRUMENT__CREDIT_CARD)) Or
-                   (.Collection_Method_Code.ToUpper.Equals(Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS) And .Payment_Instrument_Code.ToUpper.Equals(Codes.PAYMENT_INSTRUMENT__FINANCED_BY_CREDIT_CARD)) Then
+            ElseIf (.Collection_Method_Code.ToUpper.Equals(Codes.COLLECTION_METHOD__ASSURANT_COLLECTS) AndAlso .Payment_Instrument_Code.ToUpper.Equals(Codes.PAYMENT_INSTRUMENT__CREDIT_CARD)) OrElse (.Collection_Method_Code.ToUpper.Equals(Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS) AndAlso .Payment_Instrument_Code.ToUpper.Equals(Codes.PAYMENT_INSTRUMENT__FINANCED_BY_CREDIT_CARD)) Then
                 'Validate credit card - XML level
                 If ds.Credit_Card_Info.Count > 0 Then
                     With ds.Credit_Card_Info(0)
@@ -1282,7 +1281,7 @@ Public Class Enrollment
             If Not CollectionMethodCode.ToUpper.Equals(Codes.COLLECTION_METHOD__DEALER_COLLECTS) Then
 
                 'Validate Bank Info 
-                If CollectionMethodCode.ToUpper.Equals(Codes.COLLECTION_METHOD__ASSURANT_COLLECTS) And PaymentInstrumentCode.ToUpper.Equals(Codes.PAYMENT_INSTRUMENT__DEBIT_ACCOUNT) Then
+                If CollectionMethodCode.ToUpper.Equals(Codes.COLLECTION_METHOD__ASSURANT_COLLECTS) AndAlso PaymentInstrumentCode.ToUpper.Equals(Codes.PAYMENT_INSTRUMENT__DEBIT_ACCOUNT) Then
                     Dim objBankInfo As New BankInfo
                     objBankInfo.Account_Name = NameOnAccount
                     objBankInfo.Account_Number = AccountNumber
@@ -1290,7 +1289,7 @@ Public Class Enrollment
                     objBankInfo.CountryID = ElitaPlusIdentity.Current.ActiveUser.Country(ElitaPlusIdentity.Current.ActiveUser.CompanyId).Id
                     objBankInfo.Validate()
                 ElseIf (CollectionMethodCode.ToUpper.Equals(Codes.COLLECTION_METHOD__ASSURANT_COLLECTS) AndAlso PaymentInstrumentCode.ToUpper.Equals(Codes.PAYMENT_INSTRUMENT__CREDIT_CARD)) OrElse
-                       (CollectionMethodCode.ToUpper.Equals(Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS) AndAlso (PaymentInstrumentCode.ToUpper.Equals(Codes.PAYMENT_INSTRUMENT__FINANCED_BY_CREDIT_CARD) Or PaymentInstrumentCode.ToUpper.Equals(Codes.PAYMENT_INSTRUMENT__FINANCED_BY_THRID_PARTY))) OrElse
+                       (CollectionMethodCode.ToUpper.Equals(Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS) AndAlso (PaymentInstrumentCode.ToUpper.Equals(Codes.PAYMENT_INSTRUMENT__FINANCED_BY_CREDIT_CARD) OrElse PaymentInstrumentCode.ToUpper.Equals(Codes.PAYMENT_INSTRUMENT__FINANCED_BY_THRID_PARTY))) OrElse
                        (CollectionMethodCode.ToUpper.Equals(Codes.COLLECTION_METHOD__ASSURANT_COLLECTS_PRE_AUTH) AndAlso PaymentInstrumentCode.ToUpper.Equals(Codes.PAYMENT_INSTRUMENT__PRE_AUTH_CREDIT_CARD)) Then
                     'Validate credit card
                     'If Not CreditCardFormat.IsCreditCardValid(CreditCardTypeCode, CreditCardNumber) Then
@@ -1306,7 +1305,7 @@ Public Class Enrollment
                             Dim current_Month As Integer = Now.Month
                             Dim current_Year As Integer = Now.Year
 
-                            If (intMonth < 1 Or intMonth > 12) OrElse (intYear < current_Year) OrElse (intYear = current_Year AndAlso intMonth < current_Month) Then
+                            If (intMonth < 1 OrElse intMonth > 12) OrElse (intYear < current_Year) OrElse (intYear = current_Year AndAlso intMonth < current_Month) Then
                                 Throw New StoredProcedureGeneratedException("Credit Card Error", Common.ErrorCodes.WS_INVALID_EXPIRATION_DATE)
                             End If
 

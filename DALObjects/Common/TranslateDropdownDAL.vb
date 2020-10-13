@@ -19,7 +19,7 @@
         Try
             listCodeParam = New DBHelper.DBHelperParameter(COL_NAME_CODE, listCode)
             id = DBHelper.Fetch(ds, selectStmt, TABLE_LIST, New DBHelper.DBHelperParameter() {listCodeParam}).Tables(TABLE_LIST).Rows(0)(COL_NAME_LIST_ID)
-            If Not id Is Nothing Then
+            If id IsNot Nothing Then
                 Return New Guid(id)
             Else
                 Return Guid.Empty

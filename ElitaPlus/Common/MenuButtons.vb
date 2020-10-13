@@ -13,7 +13,7 @@ Public Class ButtonTitle
         ByButtonIndex
     End Enum
     Public CompareType As CompareTypes = CompareTypes.ByButtonText
-    Public Function Compare(x As Object, y As Object) As Integer Implements System.Collections.IComparer.Compare
+    Public Function Compare(x As Object, y As Object) As Integer Implements IComparer.Compare
         Dim empx As ButtonTitle = DirectCast(x, ButtonTitle)
         Dim empy As ButtonTitle = DirectCast(y, ButtonTitle)
 
@@ -38,7 +38,7 @@ Public Class MenuButtons
         MenuY.Text = "-330px"
 
     End Sub
-    Public Shared Sub MenuButtonsProc(oPage As ElitaPlusPage, ByRef objPanButtons As Panel, ByRef objPanButtonsHidden As Panel, ByRef objPanButtonsHeading As Panel, ByRef objMenuX As TextBox, ByRef objMenuY As TextBox, ByRef objPanelWiring As Panel, ByRef objcloseIcon As System.Web.UI.WebControls.Image, ByRef objbtnEdit_WRITE As Button, ByRef objbtnSave_WRITE As Button, ByRef objbtnUndo_Write As Button, ByRef objViewPanel_READ As Panel)
+    Public Shared Sub MenuButtonsProc(oPage As ElitaPlusPage, ByRef objPanButtons As Panel, ByRef objPanButtonsHidden As Panel, ByRef objPanButtonsHeading As Panel, ByRef objMenuX As TextBox, ByRef objMenuY As TextBox, ByRef objPanelWiring As Panel, ByRef objcloseIcon As WebControls.Image, ByRef objbtnEdit_WRITE As Button, ByRef objbtnSave_WRITE As Button, ByRef objbtnUndo_Write As Button, ByRef objViewPanel_READ As Panel)
 
 
         Dim childControl As Control
@@ -50,7 +50,7 @@ Public Class MenuButtons
 
         objPanButtons.BorderStyle = BorderStyle.Solid
         objPanButtons.BorderWidth = 1
-        objPanButtons.BorderColor = Drawing.Color.Gray
+        objPanButtons.BorderColor = Color.Gray
 
 
 

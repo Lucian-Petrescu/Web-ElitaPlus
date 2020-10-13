@@ -628,7 +628,7 @@ Public Class ClaimDAL
 
     'this generic method should be called by all BO's to set their properties
     Protected Sub SetValue(Row As DataRow, columnName As String, newValue As Object)
-        If Not newValue Is Nothing And Row(columnName) Is DBNull.Value Then
+        If newValue IsNot Nothing AndAlso Row(columnName) Is DBNull.Value Then
             'new value is something and old value is DBNULL
             If newValue.GetType Is GetType(BooleanType) Then
                 '- BooleanType, special case - convert to string Y or N
@@ -662,7 +662,7 @@ Public Class ClaimDAL
                 '- let the DataColumn convert the value to its internal data type
                 Row(columnName) = newValue
             End If
-        ElseIf Not newValue Is Nothing Then
+        ElseIf newValue IsNot Nothing Then
             'new value is something and old value is also something
             '- convert current value to a string
             Dim currentValue As Object = Row(columnName)
@@ -676,7 +676,7 @@ Public Class ClaimDAL
                 Dim types() As Type = {GetType(String)}
                 '- see if the 'newValue Type' has a 'Parse(String)' method taking a String parameter
                 Dim miMethodInfo As System.Reflection.MethodInfo = newValue.GetType.GetMethod("Parse", types)
-                If Not miMethodInfo Is Nothing Then
+                If miMethodInfo IsNot Nothing Then
                     '- it does have a Parse method, newValue must be a number type.
                     '- extract the current value as a string
                     Dim args() As Object = {Row(columnName).ToString}
@@ -714,7 +714,7 @@ Public Class ClaimDAL
                 End If
                 Row(columnName) = newValue
             End If
-        ElseIf newValue Is Nothing And Not Row(columnName) Is DBNull.Value Then
+        ElseIf newValue Is Nothing AndAlso Row(columnName) IsNot DBNull.Value Then
             Row(columnName) = DBNull.Value
         End If
     End Sub
@@ -1405,7 +1405,7 @@ Public Class ClaimDAL
             whereClauseConditions &= " AND " & Environment.NewLine & COL_NAME_MASTER_CLAIM_NUMBER & " " & masterClaimNumber
         End If
 
-        If (Not certIdStr Is Nothing) Then
+        If (certIdStr IsNot Nothing) Then
             whereClauseConditions &= " AND " & Environment.NewLine & "cert." & COL_NAME_CERTIFICATE_ID & " = " & certIdStr
         End If
 
@@ -1441,7 +1441,7 @@ Public Class ClaimDAL
             whereClauseConditions &= " AND " & Environment.NewLine & COL_NAME_MASTER_CLAIM_NUMBER & " " & masterClaimNumber
         End If
 
-        If (Not certIdStr Is Nothing) Then
+        If (certIdStr IsNot Nothing) Then
             whereClauseConditions &= " AND " & Environment.NewLine & "cert." & COL_NAME_CERTIFICATE_ID & " = " & certIdStr
         End If
 
@@ -2164,7 +2164,7 @@ Public Class ClaimDAL
         Dim whereClauseConditions As String = ""
 
         selectStmt = Config("/SQL/LOAD_CLAIM_DETAIL_FOR_WS")
-        If Not claimId Is Nothing AndAlso Not claimId.Equals(String.Empty) Then
+        If claimId IsNot Nothing AndAlso Not claimId.Equals(String.Empty) Then
             whereClauseConditions &= " AND c.claim_id = hextoraw('" & claimId & "')" '& Environment.NewLine & cert_number.ToUpper
         Else
             whereClauseConditions &= " AND c.claim_number = '" & claimNunber & "'"
@@ -2256,7 +2256,7 @@ Public Class ClaimDAL
         Try
             DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameters)
 
-            If Not outputParameters(0).Value Is Nothing Then
+            If outputParameters(0).Value IsNot Nothing Then
                 FirstLossDate = CType(outputParameters(0).Value, String)
             Else
                 FirstLossDate = String.Empty
@@ -2439,7 +2439,7 @@ Public Class ClaimDAL
         ' Call DBHelper Store Procedure
         DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameters)
 
-        If CType(outputParameters(0).Value, Integer) = 0 Or CType(outputParameters(0).Value, Integer) = 1 Then
+        If CType(outputParameters(0).Value, Integer) = 0 OrElse CType(outputParameters(0).Value, Integer) = 1 Then
             Return CType(outputParameters(0).Value, Integer)
         Else
             Dim e As New ApplicationException("Data base exception occurred")
@@ -2627,7 +2627,7 @@ Public Class ClaimDAL
 #Region "Overloaded Methods"
 
     Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
@@ -2682,12 +2682,12 @@ Public Class ClaimDAL
 
             '' Function call sequence:
             '' AddressDal.Update -> ContactInfoDal.Updat ->  Me.Update
-            If Not familyDataset.Tables(AddressDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(AddressDAL.TABLE_NAME).Rows.Count > 0 Then
+            If familyDataset.Tables(AddressDAL.TABLE_NAME) IsNot Nothing AndAlso familyDataset.Tables(AddressDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim AddressDal As New AddressDAL
                 AddressDal.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
             End If
 
-            If Not familyDataset.Tables(ContactInfoDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(ContactInfoDAL.TABLE_NAME).Rows.Count > 0 Then
+            If familyDataset.Tables(ContactInfoDAL.TABLE_NAME) IsNot Nothing AndAlso familyDataset.Tables(ContactInfoDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim ContactInfoDal As New ContactInfoDAL
                 ContactInfoDal.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
             End If
@@ -2697,12 +2697,12 @@ Public Class ClaimDAL
             ObtainAndAssignClaimNumber(familyDataset, galaxyClaimNumberList)
             Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
 
-            If Not familyDataset.Tables(ContactInfoDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(ContactInfoDAL.TABLE_NAME).Rows.Count > 0 Then
+            If familyDataset.Tables(ContactInfoDAL.TABLE_NAME) IsNot Nothing AndAlso familyDataset.Tables(ContactInfoDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim ContactInfoDal As New ContactInfoDAL
                 ContactInfoDal.Update(familyDataset, tr, DataRowState.Deleted)
             End If
 
-            If Not familyDataset.Tables(AddressDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(AddressDAL.TABLE_NAME).Rows.Count > 0 Then
+            If familyDataset.Tables(AddressDAL.TABLE_NAME) IsNot Nothing AndAlso familyDataset.Tables(AddressDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim AddressDal As New AddressDAL
                 AddressDal.Update(familyDataset, tr, DataRowState.Deleted)
             End If
@@ -2720,19 +2720,19 @@ Public Class ClaimDAL
                 clDAL.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
             End If
 
-            If Not familyDataset.Tables(ClaimAuthorizationDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(ClaimAuthorizationDAL.TABLE_NAME).Rows.Count > 0 Then
+            If familyDataset.Tables(ClaimAuthorizationDAL.TABLE_NAME) IsNot Nothing AndAlso familyDataset.Tables(ClaimAuthorizationDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim claimAuthorization As New ClaimAuthorizationDAL
                 Dim companyId As Guid = New Guid(CType(familyDataset.Tables(TABLE_NAME).Rows(0)(COL_NAME_COMPANY_ID), Byte()))
                 claimAuthorization.UpdateFamily(familyDataset, companyId, tr)
             End If
 
 
-            If Not familyDataset.Tables(PoliceReportDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(PoliceReportDAL.TABLE_NAME).Rows.Count > 0 Then
+            If familyDataset.Tables(PoliceReportDAL.TABLE_NAME) IsNot Nothing AndAlso familyDataset.Tables(PoliceReportDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim policeReportDAL As New PoliceReportDAL
                 policeReportDAL.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
             End If
 
-            If Not familyDataset.Tables(ShippingInfoDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(ShippingInfoDAL.TABLE_NAME).Rows.Count > 0 Then
+            If familyDataset.Tables(ShippingInfoDAL.TABLE_NAME) IsNot Nothing AndAlso familyDataset.Tables(ShippingInfoDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim shippingInfoDal As New ShippingInfoDAL
                 shippingInfoDal.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
             End If
@@ -2744,27 +2744,27 @@ Public Class ClaimDAL
                 oClaimAuthDetailDAL.Update(familyDataset.Tables(ClaimAuthDetailDAL.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
             End If
 
-            If Not familyDataset.Tables(ClaimStatusDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(ClaimStatusDAL.TABLE_NAME).Rows.Count > 0 Then
+            If familyDataset.Tables(ClaimStatusDAL.TABLE_NAME) IsNot Nothing AndAlso familyDataset.Tables(ClaimStatusDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim oClaimStatusDAL As New ClaimStatusDAL
                 oClaimStatusDAL.Update(familyDataset.Tables(ClaimStatusDAL.TABLE_NAME), tr, DataRowState.Deleted Or DataRowState.Added Or DataRowState.Modified)
             End If
 
-            If Not familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME).Rows.Count > 0 Then
+            If familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME) IsNot Nothing AndAlso familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim oTransactionLogHeaderDAL As New TransactionLogHeaderDAL
                 oTransactionLogHeaderDAL.Update(familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
             End If
 
-            If Not familyDataset.Tables(ClaimIssueDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(ClaimIssueDAL.TABLE_NAME).Rows.Count > 0 Then
+            If familyDataset.Tables(ClaimIssueDAL.TABLE_NAME) IsNot Nothing AndAlso familyDataset.Tables(ClaimIssueDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim ClaimIssueDAL As New ClaimIssueDAL
                 ClaimIssueDAL.UpdateFamily(familyDataset, publishEventData, tr)
             End If
 
-            If Not familyDataset.Tables(ClaimImageDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(ClaimImageDAL.TABLE_NAME).Rows.Count > 0 Then
+            If familyDataset.Tables(ClaimImageDAL.TABLE_NAME) IsNot Nothing AndAlso familyDataset.Tables(ClaimImageDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim ClaimImageDAL As New ClaimImageDAL
                 ClaimImageDAL.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
             End If
 
-            If Not familyDataset.Tables(ReplacementPartDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(ReplacementPartDAL.TABLE_NAME).Rows.Count > 0 Then
+            If familyDataset.Tables(ReplacementPartDAL.TABLE_NAME) IsNot Nothing AndAlso familyDataset.Tables(ReplacementPartDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim ReplacementPartDAL As New ReplacementPartDAL
                 ReplacementPartDAL.Update(familyDataset, tr, DataRowState.Deleted Or DataRowState.Added Or DataRowState.Modified)
             End If
@@ -2900,7 +2900,7 @@ Public Class ClaimDAL
         'Dim whereCMVClauseConditions_count As String = ""
 
         'Claim Status logic
-        If Not oServiceCenterClaimsSearchData.ClaimStatus Is Nothing AndAlso Not oServiceCenterClaimsSearchData.ClaimStatus.Length = 0 Then
+        If oServiceCenterClaimsSearchData.ClaimStatus IsNot Nothing AndAlso Not oServiceCenterClaimsSearchData.ClaimStatus.Length = 0 Then
             'Change the format from "A|C|D|P" to ('A','C','D','P')
             oServiceCenterClaimsSearchData.ClaimStatus = "('" & oServiceCenterClaimsSearchData.ClaimStatus & "')"
             oServiceCenterClaimsSearchData.ClaimStatus = oServiceCenterClaimsSearchData.ClaimStatus.Replace("|", "','")
@@ -2909,21 +2909,21 @@ Public Class ClaimDAL
         End If
 
         'Claim Type logic
-        If Not oServiceCenterClaimsSearchData.ClaimTypeIds Is Nothing AndAlso Not oServiceCenterClaimsSearchData.ClaimTypeIds.Count = 0 Then
+        If oServiceCenterClaimsSearchData.ClaimTypeIds IsNot Nothing AndAlso Not oServiceCenterClaimsSearchData.ClaimTypeIds.Count = 0 Then
             whereCMVClauseConditions &= Environment.NewLine & " and " & MiscUtil.BuildListForSql("cmv.Claim_Type_ID ", oServiceCenterClaimsSearchData.ClaimTypeIds, True)
             'whereCMVClauseConditions_count &= Environment.NewLine & " and " & MiscUtil.BuildListForSql("cmv.Claim_Type_ID ", oServiceCenterClaimsSearchData.ClaimTypeIds, True)
         End If
 
         'Optional Search parameters BEGIN ------------------------------
-        If Not oServiceCenterClaimsSearchData.AuthorizationNumber Is Nothing AndAlso Not oServiceCenterClaimsSearchData.AuthorizationNumber.Length = 0 Then
+        If oServiceCenterClaimsSearchData.AuthorizationNumber IsNot Nothing AndAlso Not oServiceCenterClaimsSearchData.AuthorizationNumber.Length = 0 Then
             whereClauseConditions &= Environment.NewLine & " and cmv.authorization_number = '" & oServiceCenterClaimsSearchData.AuthorizationNumber & "'"
             'whereClauseConditions_count &= Environment.NewLine & " and cmv.authorization_number = '" & oServiceCenterClaimsSearchData.AuthorizationNumber & "'"
         End If
-        If Not oServiceCenterClaimsSearchData.CertificateNumber Is Nothing AndAlso Not oServiceCenterClaimsSearchData.CertificateNumber.Length = 0 Then
+        If oServiceCenterClaimsSearchData.CertificateNumber IsNot Nothing AndAlso Not oServiceCenterClaimsSearchData.CertificateNumber.Length = 0 Then
             whereClauseConditions &= Environment.NewLine & " and cert.cert_number = '" & oServiceCenterClaimsSearchData.CertificateNumber & "'"
             'whereClauseConditions_count &= Environment.NewLine & " and cert.cert_number = '" & oServiceCenterClaimsSearchData.CertificateNumber & "'"
         End If
-        If Not oServiceCenterClaimsSearchData.ClaimNumber Is Nothing AndAlso Not oServiceCenterClaimsSearchData.ClaimNumber.Length = 0 Then
+        If oServiceCenterClaimsSearchData.ClaimNumber IsNot Nothing AndAlso Not oServiceCenterClaimsSearchData.ClaimNumber.Length = 0 Then
             whereClauseConditions &= Environment.NewLine & " and cmv.claim_number = '" & oServiceCenterClaimsSearchData.ClaimNumber & "'"
             'whereClauseConditions_count &= Environment.NewLine & " and cmv.claim_number = '" & oServiceCenterClaimsSearchData.ClaimNumber & "'"
         End If
@@ -2932,49 +2932,49 @@ Public Class ClaimDAL
 
             whereClauseConditions &= Environment.NewLine & " and upper(cert.customer_name) " & oServiceCenterClaimsSearchData.CustomerName.ToUpper & ""
             'whereClauseConditions_count &= Environment.NewLine & " and upper(cert.customer_name) " & oServiceCenterClaimsSearchData.CustomerName.ToUpper & ""
-        ElseIf Not oServiceCenterClaimsSearchData.CustomerName Is Nothing AndAlso Not oServiceCenterClaimsSearchData.CustomerName.Length = 0 Then
+        ElseIf oServiceCenterClaimsSearchData.CustomerName IsNot Nothing AndAlso Not oServiceCenterClaimsSearchData.CustomerName.Length = 0 Then
             whereClauseConditions &= Environment.NewLine & " and upper(cert.customer_name) = '" & oServiceCenterClaimsSearchData.CustomerName.ToUpper & "'"
             'whereClauseConditions_count &= Environment.NewLine & " and upper(cert.customer_name) = '" & oServiceCenterClaimsSearchData.CustomerName.ToUpper & "'"
         End If
         'End If
         ' FROM/TO Claim created date logic
-        If Not oServiceCenterClaimsSearchData.FromClaimCreatedDate Is Nothing AndAlso oServiceCenterClaimsSearchData.ToClaimCreatedDate Is Nothing Then
+        If oServiceCenterClaimsSearchData.FromClaimCreatedDate IsNot Nothing AndAlso oServiceCenterClaimsSearchData.ToClaimCreatedDate Is Nothing Then
             whereClauseConditions &= Environment.NewLine & " and trunc(cmv.created_date) = to_date('" & oServiceCenterClaimsSearchData.FromClaimCreatedDate.Value.ToString("MM/dd/yyyy") & "','MM/dd/yyyy')"
             'whereClauseConditions_count &= Environment.NewLine & " and trunc(cmv.created_date) = to_date('" & oServiceCenterClaimsSearchData.FromClaimCreatedDate.Value.ToString("MM/dd/yyyy") & "','MM/dd/yyyy')"
-        ElseIf Not oServiceCenterClaimsSearchData.ToClaimCreatedDate Is Nothing AndAlso oServiceCenterClaimsSearchData.FromClaimCreatedDate Is Nothing Then
+        ElseIf oServiceCenterClaimsSearchData.ToClaimCreatedDate IsNot Nothing AndAlso oServiceCenterClaimsSearchData.FromClaimCreatedDate Is Nothing Then
             whereClauseConditions &= Environment.NewLine & " and trunc(cmv.created_date) = to_date('" & oServiceCenterClaimsSearchData.ToClaimCreatedDate.Value.ToString("MM/dd/yyyy") & "','MM/dd/yyyy')"
             'whereClauseConditions_count &= Environment.NewLine & " and trunc(cmv.created_date) = to_date('" & oServiceCenterClaimsSearchData.ToClaimCreatedDate.Value.ToString("MM/dd/yyyy") & "','MM/dd/yyyy')"
-        ElseIf Not oServiceCenterClaimsSearchData.FromClaimCreatedDate Is Nothing AndAlso Not oServiceCenterClaimsSearchData.ToClaimCreatedDate Is Nothing Then
+        ElseIf oServiceCenterClaimsSearchData.FromClaimCreatedDate IsNot Nothing AndAlso oServiceCenterClaimsSearchData.ToClaimCreatedDate IsNot Nothing Then
             whereClauseConditions &= Environment.NewLine & " and to_date('" & oServiceCenterClaimsSearchData.FromClaimCreatedDate.Value.ToString("MM/dd/yyyy") & "','MM/dd/yyyy')" & " <= trunc(cmv.created_date) AND trunc(cmv.created_date) <= to_date('" & oServiceCenterClaimsSearchData.ToClaimCreatedDate.Value.ToString("MM/dd/yyyy") & "','MM/dd/yyyy')"
             'whereClauseConditions_count &= Environment.NewLine & " and to_date('" & oServiceCenterClaimsSearchData.FromClaimCreatedDate.Value.ToString("MM/dd/yyyy") & "','MM/dd/yyyy')" & " <= trunc(cmv.created_date) AND trunc(cmv.created_date) <= to_date('" & oServiceCenterClaimsSearchData.ToClaimCreatedDate.Value.ToString("MM/dd/yyyy") & "','MM/dd/yyyy')"
         End If
         ' FROM/TO Claim visit date logic
-        If Not oServiceCenterClaimsSearchData.FromVisitDate Is Nothing AndAlso oServiceCenterClaimsSearchData.ToVisitDate Is Nothing Then
+        If oServiceCenterClaimsSearchData.FromVisitDate IsNot Nothing AndAlso oServiceCenterClaimsSearchData.ToVisitDate Is Nothing Then
             whereClauseConditions &= Environment.NewLine & " and trunc(cmv.visit_date) = to_date('" & oServiceCenterClaimsSearchData.FromVisitDate.Value.ToString("MM/dd/yyyy") & "','MM/dd/yyyy')"
             'whereClauseConditions_count &= Environment.NewLine & " and trunc(cmv.visit_date) = to_date('" & oServiceCenterClaimsSearchData.FromVisitDate.Value.ToString("MM/dd/yyyy") & "','MM/dd/yyyy')"
-        ElseIf Not oServiceCenterClaimsSearchData.ToVisitDate Is Nothing AndAlso oServiceCenterClaimsSearchData.FromVisitDate Is Nothing Then
+        ElseIf oServiceCenterClaimsSearchData.ToVisitDate IsNot Nothing AndAlso oServiceCenterClaimsSearchData.FromVisitDate Is Nothing Then
             whereClauseConditions &= Environment.NewLine & " and trunc(cmv.visit_date) = to_date('" & oServiceCenterClaimsSearchData.ToVisitDate.Value.ToString("MM/dd/yyyy") & "','MM/dd/yyyy')"
             'whereClauseConditions_count &= Environment.NewLine & " and trunc(cmv.visit_date) = to_date('" & oServiceCenterClaimsSearchData.ToVisitDate.Value.ToString("MM/dd/yyyy") & "','MM/dd/yyyy')"
-        ElseIf Not oServiceCenterClaimsSearchData.FromVisitDate Is Nothing AndAlso Not oServiceCenterClaimsSearchData.ToVisitDate Is Nothing Then
+        ElseIf oServiceCenterClaimsSearchData.FromVisitDate IsNot Nothing AndAlso oServiceCenterClaimsSearchData.ToVisitDate IsNot Nothing Then
             whereClauseConditions &= Environment.NewLine & " and to_date('" & oServiceCenterClaimsSearchData.FromVisitDate.Value.ToString("MM/dd/yyyy") & "','MM/dd/yyyy')" & " <= trunc(cmv.visit_date) AND trunc(cmv.visit_date) <= to_date('" & oServiceCenterClaimsSearchData.ToVisitDate.Value.ToString("MM/dd/yyyy") & "','MM/dd/yyyy')"
             'whereClauseConditions_count &= Environment.NewLine & " and to_date('" & oServiceCenterClaimsSearchData.FromVisitDate.Value.ToString("MM/dd/yyyy") & "','MM/dd/yyyy')" & " <= trunc(cmv.visit_date) AND trunc(cmv.visit_date) <= to_date('" & oServiceCenterClaimsSearchData.ToVisitDate.Value.ToString("MM/dd/yyyy") & "','MM/dd/yyyy')"
         End If
         'Optional Search parameters END ------------------------------
 
         'Claim Extended Status logic
-        If Not oServiceCenterClaimsSearchData.ClaimExtendedStatusIds Is Nothing AndAlso oServiceCenterClaimsSearchData.ClaimExtendedStatusIds.Count > 0 Then
+        If oServiceCenterClaimsSearchData.ClaimExtendedStatusIds IsNot Nothing AndAlso oServiceCenterClaimsSearchData.ClaimExtendedStatusIds.Count > 0 Then
             whereClauseConditions &= Environment.NewLine & " and " & MiscUtil.BuildListForSql("getlatestextendedclaimstatusid(claim.claim_id) ", oServiceCenterClaimsSearchData.ClaimExtendedStatusIds, True)
             'whereClauseConditions_count &= Environment.NewLine & " and " & MiscUtil.BuildListForSql("getlatestextendedclaimstatusid(claim.claim_id) ", oServiceCenterClaimsSearchData.ClaimExtendedStatusIds, True)
         End If
 
         'Claim Extended Status Owner logic
-        If Not oServiceCenterClaimsSearchData.ClaimExtendedStatusOwnerCodeIds Is Nothing AndAlso oServiceCenterClaimsSearchData.ClaimExtendedStatusOwnerCodeIds.Count > 0 Then
+        If oServiceCenterClaimsSearchData.ClaimExtendedStatusOwnerCodeIds IsNot Nothing AndAlso oServiceCenterClaimsSearchData.ClaimExtendedStatusOwnerCodeIds.Count > 0 Then
             whereClauseConditions &= Environment.NewLine & " and " & MiscUtil.BuildListForSql("getlatestextendedclaimownerid(claim.claim_id) ", oServiceCenterClaimsSearchData.ClaimExtendedStatusOwnerCodeIds, True)
             'whereClauseConditions_count &= Environment.NewLine & " and " & MiscUtil.BuildListForSql("getlatestextendedclaimownerid(claim.claim_id) ", oServiceCenterClaimsSearchData.ClaimExtendedStatusOwnerCodeIds, True)
         End If
 
         'Method Of Repair logic
-        If Not oServiceCenterClaimsSearchData.MethodOfRepairIds Is Nothing AndAlso Not oServiceCenterClaimsSearchData.MethodOfRepairIds.Count = 0 Then
+        If oServiceCenterClaimsSearchData.MethodOfRepairIds IsNot Nothing AndAlso Not oServiceCenterClaimsSearchData.MethodOfRepairIds.Count = 0 Then
             whereCMVClauseConditions &= Environment.NewLine & " and " & MiscUtil.BuildListForSql("cmv.method_of_repair_id ", oServiceCenterClaimsSearchData.MethodOfRepairIds, True)
             'whereCMVClauseConditions_count &= Environment.NewLine & " and " & MiscUtil.BuildListForSql("cmv.method_of_repair_id ", oServiceCenterClaimsSearchData.MethodOfRepairIds, True)
         End If
@@ -2984,7 +2984,7 @@ Public Class ClaimDAL
         Dim dsTAT As DataSet
         dsTAT = dalTAT.GetMinMaxValFromTAT(companyGroupID, oServiceCenterClaimsSearchData.TurnAroundTimeRangeCode)
 
-        If Not oServiceCenterClaimsSearchData.TurnAroundTimeRangeCode Is Nothing AndAlso Not oServiceCenterClaimsSearchData.TurnAroundTimeRangeCode.Length = 0 Then
+        If oServiceCenterClaimsSearchData.TurnAroundTimeRangeCode IsNot Nothing AndAlso Not oServiceCenterClaimsSearchData.TurnAroundTimeRangeCode.Length = 0 Then
             If dsTAT.Tables(0).DefaultView.Count = 1 Then
                 whereClauseConditions &= Environment.NewLine & " and elita.elp_claims.getServiceCenterTAT(cmv.claim_id) between " & CType(dsTAT.Tables(0).DefaultView.Item(0)("min_days"), Integer) & " and " & CType(dsTAT.Tables(0).DefaultView.Item(0)("max_days"), Integer)
                 'whereClauseConditions_count &= Environment.NewLine & " and elita.elp_claims.getServiceCenterTAT(cmv.claim_id) between " & CType(dsTAT.Tables(0).DefaultView.Item(0)("min_days"), Integer) & " and " & CType(dsTAT.Tables(0).DefaultView.Item(0)("max_days"), Integer)
@@ -2996,25 +2996,25 @@ Public Class ClaimDAL
         End If
 
         'Batch Number logic
-        If Not oServiceCenterClaimsSearchData.BatchNumber Is Nothing AndAlso Not oServiceCenterClaimsSearchData.BatchNumber.Length = 0 Then
+        If oServiceCenterClaimsSearchData.BatchNumber IsNot Nothing AndAlso Not oServiceCenterClaimsSearchData.BatchNumber.Length = 0 Then
             whereClauseConditions &= Environment.NewLine & " and claim.batch_number = '" & oServiceCenterClaimsSearchData.BatchNumber & "'"
             'whereClauseConditions_count &= Environment.NewLine & " and claim.batch_number = '" & oServiceCenterClaimsSearchData.BatchNumber & "'"
         End If
 
         'Serial Number logic
-        If Not oServiceCenterClaimsSearchData.SerialNumber Is Nothing AndAlso Not oServiceCenterClaimsSearchData.SerialNumber.Length = 0 Then
+        If oServiceCenterClaimsSearchData.SerialNumber IsNot Nothing AndAlso Not oServiceCenterClaimsSearchData.SerialNumber.Length = 0 Then
             whereClauseConditions &= Environment.NewLine & " and ci.serial_number = '" & oServiceCenterClaimsSearchData.SerialNumber & "'"
             'whereClauseConditions_count &= Environment.NewLine & " and ci.serial_number = '" & oServiceCenterClaimsSearchData.SerialNumber & "'"
         End If
 
         'Work Phone logic
-        If Not oServiceCenterClaimsSearchData.WorkPhone Is Nothing AndAlso Not oServiceCenterClaimsSearchData.WorkPhone.Length = 0 Then
+        If oServiceCenterClaimsSearchData.WorkPhone IsNot Nothing AndAlso Not oServiceCenterClaimsSearchData.WorkPhone.Length = 0 Then
             whereClauseConditions &= Environment.NewLine & " and cert.work_phone = '" & oServiceCenterClaimsSearchData.WorkPhone & "'"
             'whereClauseConditions_count &= Environment.NewLine & " and cert.work_phone = '" & oServiceCenterClaimsSearchData.WorkPhone & "'"
         End If
 
         'Company Code logic
-        If Not oServiceCenterClaimsSearchData.CompanyCode Is Nothing AndAlso Not oServiceCenterClaimsSearchData.CompanyCode.Length = 0 Then
+        If oServiceCenterClaimsSearchData.CompanyCode IsNot Nothing AndAlso Not oServiceCenterClaimsSearchData.CompanyCode.Length = 0 Then
             whereClauseConditions &= Environment.NewLine & " and comp.code = '" & oServiceCenterClaimsSearchData.CompanyCode & "'"
             'whereClauseConditions_count &= Environment.NewLine & " and comp.code = '" & oServiceCenterClaimsSearchData.CompanyCode & "'"
         End If
@@ -3152,40 +3152,40 @@ Public Class ClaimDAL
         LimitResultSet_Low = (oServiceCenterClaimsSearchData.PageNumber - 1) * oServiceCenterClaimsSearchData.PageSize
         LimitResultSet_High = oServiceCenterClaimsSearchData.PageNumber * oServiceCenterClaimsSearchData.PageSize
 
-        If Not oServiceCenterClaimsSearchData.ClaimStatus Is Nothing AndAlso Not oServiceCenterClaimsSearchData.ClaimStatus.Length = 0 Then
+        If oServiceCenterClaimsSearchData.ClaimStatus IsNot Nothing AndAlso Not oServiceCenterClaimsSearchData.ClaimStatus.Length = 0 Then
             'Change the format from "A|C|D|P" to ('A','C','D','P')
             oServiceCenterClaimsSearchData.ClaimStatus = oServiceCenterClaimsSearchData.ClaimStatus.Replace("|", ",")
             ClaimStatusString = oServiceCenterClaimsSearchData.ClaimStatus
         End If
 
-        If Not oServiceCenterClaimsSearchData.ClaimTypeIds Is Nothing AndAlso Not oServiceCenterClaimsSearchData.ClaimTypeIds.Count = 0 Then
+        If oServiceCenterClaimsSearchData.ClaimTypeIds IsNot Nothing AndAlso Not oServiceCenterClaimsSearchData.ClaimTypeIds.Count = 0 Then
             ClaimTypeIdsString = MiscUtil.BuildListSVCSql(oServiceCenterClaimsSearchData.ClaimTypeIds)
         End If
 
-        If Not oServiceCenterClaimsSearchData.ClaimExtendedStatusIds Is Nothing AndAlso oServiceCenterClaimsSearchData.ClaimExtendedStatusIds.Count > 0 Then
+        If oServiceCenterClaimsSearchData.ClaimExtendedStatusIds IsNot Nothing AndAlso oServiceCenterClaimsSearchData.ClaimExtendedStatusIds.Count > 0 Then
             ClaimExtendedStatusIdsString = MiscUtil.BuildListSVCSql(oServiceCenterClaimsSearchData.ClaimExtendedStatusIds)
         End If
 
-        If Not oServiceCenterClaimsSearchData.ClaimExtendedStatusOwnerCodeIds Is Nothing AndAlso oServiceCenterClaimsSearchData.ClaimExtendedStatusOwnerCodeIds.Count > 0 Then
+        If oServiceCenterClaimsSearchData.ClaimExtendedStatusOwnerCodeIds IsNot Nothing AndAlso oServiceCenterClaimsSearchData.ClaimExtendedStatusOwnerCodeIds.Count > 0 Then
             ClaimExtendedStatusOwnerCodeIdsString = MiscUtil.BuildListSVCSql(oServiceCenterClaimsSearchData.ClaimExtendedStatusOwnerCodeIds)
         End If
 
-        If Not oServiceCenterClaimsSearchData.MethodOfRepairIds Is Nothing AndAlso Not oServiceCenterClaimsSearchData.MethodOfRepairIds.Count = 0 Then
+        If oServiceCenterClaimsSearchData.MethodOfRepairIds IsNot Nothing AndAlso Not oServiceCenterClaimsSearchData.MethodOfRepairIds.Count = 0 Then
             MethodOfRepairIdsString = MiscUtil.BuildListSVCSql(oServiceCenterClaimsSearchData.MethodOfRepairIds)
         End If
 
-        If Not oServiceCenterClaimsSearchData.FromClaimCreatedDate Is Nothing Then
+        If oServiceCenterClaimsSearchData.FromClaimCreatedDate IsNot Nothing Then
             FromClaimCreatedDate = oServiceCenterClaimsSearchData.FromClaimCreatedDate.Value.ToString("yyyyMMdd")
         End If
 
-        If Not oServiceCenterClaimsSearchData.ToClaimCreatedDate Is Nothing Then
+        If oServiceCenterClaimsSearchData.ToClaimCreatedDate IsNot Nothing Then
             ToClaimCreatedDate = oServiceCenterClaimsSearchData.ToClaimCreatedDate.Value.ToString("yyyyMMdd")
         End If
 
-        If Not oServiceCenterClaimsSearchData.FromVisitDate Is Nothing Then
+        If oServiceCenterClaimsSearchData.FromVisitDate IsNot Nothing Then
             FromVisitDate = oServiceCenterClaimsSearchData.FromVisitDate.Value.ToString("yyyyMMdd")
         End If
-        If Not oServiceCenterClaimsSearchData.ToVisitDate Is Nothing Then
+        If oServiceCenterClaimsSearchData.ToVisitDate IsNot Nothing Then
             ToVisitDate = oServiceCenterClaimsSearchData.ToVisitDate.Value.ToString("yyyyMMdd")
         End If
 
@@ -3252,40 +3252,40 @@ Public Class ClaimDAL
         LimitResultSet_Low = (oServiceCenterClaimsSearchData.PageNumber - 1) * oServiceCenterClaimsSearchData.PageSize
         LimitResultSet_High = oServiceCenterClaimsSearchData.PageNumber * oServiceCenterClaimsSearchData.PageSize
 
-        If Not oServiceCenterClaimsSearchData.ClaimStatus Is Nothing AndAlso Not oServiceCenterClaimsSearchData.ClaimStatus.Length = 0 Then
+        If oServiceCenterClaimsSearchData.ClaimStatus IsNot Nothing AndAlso Not oServiceCenterClaimsSearchData.ClaimStatus.Length = 0 Then
             'Change the format from "A|C|D|P" to 'A','C','D','P'
             oServiceCenterClaimsSearchData.ClaimStatus = oServiceCenterClaimsSearchData.ClaimStatus.Replace("|", "','")
             ClaimStatusString = "'" + oServiceCenterClaimsSearchData.ClaimStatus.Trim + "'"
         End If
 
-        If Not oServiceCenterClaimsSearchData.ClaimTypeIds Is Nothing AndAlso Not oServiceCenterClaimsSearchData.ClaimTypeIds.Count = 0 Then
+        If oServiceCenterClaimsSearchData.ClaimTypeIds IsNot Nothing AndAlso Not oServiceCenterClaimsSearchData.ClaimTypeIds.Count = 0 Then
             ClaimTypeIdsString = MiscUtil.BuildListSVCSql(oServiceCenterClaimsSearchData.ClaimTypeIds)
         End If
 
-        If Not oServiceCenterClaimsSearchData.ClaimExtendedStatusIds Is Nothing AndAlso oServiceCenterClaimsSearchData.ClaimExtendedStatusIds.Count > 0 Then
+        If oServiceCenterClaimsSearchData.ClaimExtendedStatusIds IsNot Nothing AndAlso oServiceCenterClaimsSearchData.ClaimExtendedStatusIds.Count > 0 Then
             ClaimExtendedStatusIdsString = MiscUtil.BuildListSVCSql(oServiceCenterClaimsSearchData.ClaimExtendedStatusIds)
         End If
 
-        If Not oServiceCenterClaimsSearchData.ClaimExtendedStatusOwnerCodeIds Is Nothing AndAlso oServiceCenterClaimsSearchData.ClaimExtendedStatusOwnerCodeIds.Count > 0 Then
+        If oServiceCenterClaimsSearchData.ClaimExtendedStatusOwnerCodeIds IsNot Nothing AndAlso oServiceCenterClaimsSearchData.ClaimExtendedStatusOwnerCodeIds.Count > 0 Then
             ClaimExtendedStatusOwnerCodeIdsString = MiscUtil.BuildListSVCSql(oServiceCenterClaimsSearchData.ClaimExtendedStatusOwnerCodeIds)
         End If
 
-        If Not oServiceCenterClaimsSearchData.MethodOfRepairIds Is Nothing AndAlso Not oServiceCenterClaimsSearchData.MethodOfRepairIds.Count = 0 Then
+        If oServiceCenterClaimsSearchData.MethodOfRepairIds IsNot Nothing AndAlso Not oServiceCenterClaimsSearchData.MethodOfRepairIds.Count = 0 Then
             MethodOfRepairIdsString = MiscUtil.BuildListSVCSql(oServiceCenterClaimsSearchData.MethodOfRepairIds)
         End If
 
-        If Not oServiceCenterClaimsSearchData.FromClaimCreatedDate Is Nothing Then
+        If oServiceCenterClaimsSearchData.FromClaimCreatedDate IsNot Nothing Then
             FromClaimCreatedDate = oServiceCenterClaimsSearchData.FromClaimCreatedDate.Value.ToString("yyyyMMdd")
         End If
 
-        If Not oServiceCenterClaimsSearchData.ToClaimCreatedDate Is Nothing Then
+        If oServiceCenterClaimsSearchData.ToClaimCreatedDate IsNot Nothing Then
             ToClaimCreatedDate = oServiceCenterClaimsSearchData.ToClaimCreatedDate.Value.ToString("yyyyMMdd")
         End If
 
-        If Not oServiceCenterClaimsSearchData.FromVisitDate Is Nothing Then
+        If oServiceCenterClaimsSearchData.FromVisitDate IsNot Nothing Then
             FromVisitDate = oServiceCenterClaimsSearchData.FromVisitDate.Value.ToString("yyyyMMdd")
         End If
-        If Not oServiceCenterClaimsSearchData.ToVisitDate Is Nothing Then
+        If oServiceCenterClaimsSearchData.ToVisitDate IsNot Nothing Then
             ToVisitDate = oServiceCenterClaimsSearchData.ToVisitDate.Value.ToString("yyyyMMdd")
         End If
 
@@ -3340,13 +3340,13 @@ Public Class ClaimDAL
         Dim whereCertClauseConditions As String = ""
 
         'Company Code logic
-        If Not oServiceCenterClaimsSearchData.CompanyCode Is Nothing AndAlso Not oServiceCenterClaimsSearchData.CompanyCode.Length = 0 Then
+        If oServiceCenterClaimsSearchData.CompanyCode IsNot Nothing AndAlso Not oServiceCenterClaimsSearchData.CompanyCode.Length = 0 Then
             whereCertClauseConditions &= Environment.NewLine & " and comp.code = '" & oServiceCenterClaimsSearchData.CompanyCode & "'"
         End If
 
         whereCertClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("comp.company_id", companies, True)
 
-        If Not oServiceCenterClaimsSearchData.CertificateNumber Is Nothing AndAlso Not oServiceCenterClaimsSearchData.CertificateNumber.Length = 0 Then
+        If oServiceCenterClaimsSearchData.CertificateNumber IsNot Nothing AndAlso Not oServiceCenterClaimsSearchData.CertificateNumber.Length = 0 Then
             whereCertClauseConditions &= Environment.NewLine & " and cert.cert_number = '" & oServiceCenterClaimsSearchData.CertificateNumber & "'"
         End If
 
@@ -3354,7 +3354,7 @@ Public Class ClaimDAL
         'Optional Search parameters BEGIN ------------------------------
 
         'Claim Status logic
-        If Not oServiceCenterClaimsSearchData.ClaimStatus Is Nothing AndAlso Not oServiceCenterClaimsSearchData.ClaimStatus.Length = 0 Then
+        If oServiceCenterClaimsSearchData.ClaimStatus IsNot Nothing AndAlso Not oServiceCenterClaimsSearchData.ClaimStatus.Length = 0 Then
             'Change the format from "A|C|D|P" to ('A','C','D','P')
             oServiceCenterClaimsSearchData.ClaimStatus = "('" & oServiceCenterClaimsSearchData.ClaimStatus & "')"
             oServiceCenterClaimsSearchData.ClaimStatus = oServiceCenterClaimsSearchData.ClaimStatus.Replace("|", "','")
@@ -3362,33 +3362,33 @@ Public Class ClaimDAL
         End If
 
         'Claim Type logic
-        If Not oServiceCenterClaimsSearchData.ClaimTypeIds Is Nothing AndAlso Not oServiceCenterClaimsSearchData.ClaimTypeIds.Count = 0 Then
+        If oServiceCenterClaimsSearchData.ClaimTypeIds IsNot Nothing AndAlso Not oServiceCenterClaimsSearchData.ClaimTypeIds.Count = 0 Then
             whereCMVClauseConditions &= Environment.NewLine & " and " & MiscUtil.BuildListForSql("cmv.Claim_Type_ID ", oServiceCenterClaimsSearchData.ClaimTypeIds, True)
         End If
 
-        If Not oServiceCenterClaimsSearchData.ClaimNumber Is Nothing AndAlso Not oServiceCenterClaimsSearchData.ClaimNumber.Length = 0 Then
+        If oServiceCenterClaimsSearchData.ClaimNumber IsNot Nothing AndAlso Not oServiceCenterClaimsSearchData.ClaimNumber.Length = 0 Then
             whereCMVClauseConditions &= Environment.NewLine & " and cmv.claim_number = '" & oServiceCenterClaimsSearchData.ClaimNumber & "'"
         End If
 
         If IsLikeClause(oServiceCenterClaimsSearchData.CustomerName) AndAlso FormatSearchMask(oServiceCenterClaimsSearchData.CustomerName) Then
             whereCertClauseConditions &= Environment.NewLine & " and upper(cert.customer_name) " & oServiceCenterClaimsSearchData.CustomerName.ToUpper & ""
-        ElseIf Not oServiceCenterClaimsSearchData.CustomerName Is Nothing AndAlso Not oServiceCenterClaimsSearchData.CustomerName.Length = 0 Then
+        ElseIf oServiceCenterClaimsSearchData.CustomerName IsNot Nothing AndAlso Not oServiceCenterClaimsSearchData.CustomerName.Length = 0 Then
             whereCertClauseConditions &= Environment.NewLine & " and upper(cert.customer_name) = '" & oServiceCenterClaimsSearchData.CustomerName.ToUpper & "'"
         End If
 
         'Claim Extended Status logic
-        If Not oServiceCenterClaimsSearchData.ClaimExtendedStatusIds Is Nothing AndAlso oServiceCenterClaimsSearchData.ClaimExtendedStatusIds.Count > 0 Then
+        If oServiceCenterClaimsSearchData.ClaimExtendedStatusIds IsNot Nothing AndAlso oServiceCenterClaimsSearchData.ClaimExtendedStatusIds.Count > 0 Then
             whereClauseConditions &= Environment.NewLine & " and " & MiscUtil.BuildListForSql("getlatestextendedclaimstatusid(claim.claim_id) ", oServiceCenterClaimsSearchData.ClaimExtendedStatusIds, True)
         End If
 
         'Method Of Repair logic
-        If Not oServiceCenterClaimsSearchData.MethodOfRepairIds Is Nothing AndAlso Not oServiceCenterClaimsSearchData.MethodOfRepairIds.Count = 0 Then
+        If oServiceCenterClaimsSearchData.MethodOfRepairIds IsNot Nothing AndAlso Not oServiceCenterClaimsSearchData.MethodOfRepairIds.Count = 0 Then
             whereCMVClauseConditions &= Environment.NewLine & " and " & MiscUtil.BuildListForSql("cmv.method_of_repair_id ", oServiceCenterClaimsSearchData.MethodOfRepairIds, True)
         End If
 
 
         'Work Phone logic
-        If Not oServiceCenterClaimsSearchData.WorkPhone Is Nothing AndAlso Not oServiceCenterClaimsSearchData.WorkPhone.Length = 0 Then
+        If oServiceCenterClaimsSearchData.WorkPhone IsNot Nothing AndAlso Not oServiceCenterClaimsSearchData.WorkPhone.Length = 0 Then
             whereCertClauseConditions &= Environment.NewLine & " and cert.work_phone = '" & oServiceCenterClaimsSearchData.WorkPhone & "'"
         End If
 
@@ -3604,7 +3604,7 @@ Public Class ClaimDAL
 
         Dim selectStmt As String = Config("/SQL/CLAIM_LOSSDATES_COMPARE_TO_NEW_LOSSDATE_SPL_SVC")
 
-        If Not CurrentLossDate Is Nothing Then
+        If CurrentLossDate IsNot Nothing Then
             whereClauseConditions &= Environment.NewLine & " AND abs(months_between( c.loss_date , to_date('" & CurrentLossDate & "','mm/dd/yyyy'))) <= 12"
         End If
 
@@ -4155,16 +4155,16 @@ Public Class ClaimDAL
             End If
         Else
 
-            If (Not outputParameter(0).Value Is Nothing) Then
+            If (outputParameter(0).Value IsNot Nothing) Then
                 returnValue.ClaimAuthTypeId = outputParameter(0).Value
             End If
-            If (Not outputParameter(1).Value Is Nothing) Then
+            If (outputParameter(1).Value IsNot Nothing) Then
                 returnValue.ClaimId = outputParameter(1).Value
             End If
-            If (Not outputParameter(2).Value Is Nothing) Then
+            If (outputParameter(2).Value IsNot Nothing) Then
                 returnValue.IsClaimLocked = outputParameter(2).Value
             End If
-            If (Not outputParameter(3).Value Is Nothing) Then
+            If (outputParameter(3).Value IsNot Nothing) Then
                 returnValue.ClaimLockedBy = outputParameter(3).Value
             End If
         End If

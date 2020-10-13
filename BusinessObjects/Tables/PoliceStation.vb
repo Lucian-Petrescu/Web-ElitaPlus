@@ -412,7 +412,7 @@ Public Class PoliceStation
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PoliceStation = CType(objectToValidate, PoliceStation)
-            If (String.IsNullOrEmpty(obj.PoliceStationDistrictCode) AndAlso Not String.IsNullOrEmpty(obj.PoliceStationDistrictName)) Or (Not String.IsNullOrEmpty(obj.PoliceStationDistrictCode) AndAlso String.IsNullOrEmpty(obj.PoliceStationDistrictName)) Then
+            If (String.IsNullOrEmpty(obj.PoliceStationDistrictCode) AndAlso Not String.IsNullOrEmpty(obj.PoliceStationDistrictName)) OrElse (Not String.IsNullOrEmpty(obj.PoliceStationDistrictCode) AndAlso String.IsNullOrEmpty(obj.PoliceStationDistrictName)) Then
                 If String.IsNullOrEmpty(obj.PoliceStationDistrictCode) Then
                     Message = "Please enter District Code."
                     Return False
@@ -433,7 +433,7 @@ Public Class PoliceStation
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PoliceStation = CType(objectToValidate, PoliceStation)
-            If (String.IsNullOrEmpty(obj.PoliceStationDistrictCode) AndAlso Not String.IsNullOrEmpty(obj.PoliceStationDistrictName)) Or (Not String.IsNullOrEmpty(obj.PoliceStationDistrictCode) AndAlso String.IsNullOrEmpty(obj.PoliceStationDistrictName)) Then
+            If (String.IsNullOrEmpty(obj.PoliceStationDistrictCode) AndAlso Not String.IsNullOrEmpty(obj.PoliceStationDistrictName)) OrElse (Not String.IsNullOrEmpty(obj.PoliceStationDistrictCode) AndAlso String.IsNullOrEmpty(obj.PoliceStationDistrictName)) Then
                 If String.IsNullOrEmpty(obj.PoliceStationDistrictName) Then
                     Message = "Please enter District Name."
                     Return False

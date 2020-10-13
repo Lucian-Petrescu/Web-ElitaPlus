@@ -71,7 +71,7 @@ Public Class OcTemplateGroupDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
@@ -94,7 +94,7 @@ Public Class OcTemplateGroupDAL
             Update(dataset.Tables(TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
             templateGroupDealerDAL.Update(dataset, tr, DataRowState.Added Or DataRowState.Modified)
 
-            If Not dataset.Tables(TransactionLogHeaderDAL.TABLE_NAME) Is Nothing AndAlso dataset.Tables(TransactionLogHeaderDAL.TABLE_NAME).Rows.Count > 0 Then
+            If dataset.Tables(TransactionLogHeaderDAL.TABLE_NAME) IsNot Nothing AndAlso dataset.Tables(TransactionLogHeaderDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim oTransactionLogHeaderDAL As New TransactionLogHeaderDAL
                 oTransactionLogHeaderDAL.Update(dataset, tr, DataRowState.Added Or DataRowState.Modified)
             End If

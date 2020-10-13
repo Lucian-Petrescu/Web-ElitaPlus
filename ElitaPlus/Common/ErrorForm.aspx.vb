@@ -1,30 +1,32 @@
+Imports System.Diagnostics
+
 Partial Class ErrorForm
-    Inherits System.Web.UI.Page
+    Inherits Page
     'Inherits ElitaPlusPage 'System.Web.UI.Page
-    Protected WithEvents TextBoxNewProgCode As System.Web.UI.WebControls.TextBox
-    Protected WithEvents bntAdd As System.Web.UI.WebControls.Button
-    Protected WithEvents Button1 As System.Web.UI.WebControls.Button
-    Protected WithEvents Button2 As System.Web.UI.WebControls.Button
-    Protected WithEvents btnSave As System.Web.UI.WebControls.Button
-    Protected WithEvents btnDelete As System.Web.UI.WebControls.Button
-    Protected WithEvents btnCancel As System.Web.UI.WebControls.Button
-    Protected WithEvents Label2 As System.Web.UI.WebControls.Label
-    Protected WithEvents DataGridDropdowns As System.Web.UI.WebControls.DataGrid
-    Protected WithEvents Label7 As System.Web.UI.WebControls.Label
-    Protected WithEvents Label4 As System.Web.UI.WebControls.Label
-    Protected WithEvents WorkingPanel As System.Web.UI.WebControls.Panel
-    Protected WithEvents Label5 As System.Web.UI.WebControls.Label
-    Protected WithEvents Label6 As System.Web.UI.WebControls.Label
+    Protected WithEvents TextBoxNewProgCode As TextBox
+    Protected WithEvents bntAdd As Button
+    Protected WithEvents Button1 As Button
+    Protected WithEvents Button2 As Button
+    Protected WithEvents btnSave As Button
+    Protected WithEvents btnDelete As Button
+    Protected WithEvents btnCancel As Button
+    Protected WithEvents Label2 As Label
+    Protected WithEvents DataGridDropdowns As DataGrid
+    Protected WithEvents Label7 As Label
+    Protected WithEvents Label4 As Label
+    Protected WithEvents WorkingPanel As Panel
+    Protected WithEvents Label5 As Label
+    Protected WithEvents Label6 As Label
     Protected WithEvents ErrorControl As ErrorController
 
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -55,7 +57,7 @@ Partial Class ErrorForm
 #Region "Page State"
 #End Region
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Dim sMessage As String
         If Not IsPostBack Then

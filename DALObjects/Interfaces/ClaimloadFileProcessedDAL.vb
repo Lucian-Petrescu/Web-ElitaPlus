@@ -85,7 +85,7 @@ Public Class ClaimloadFileProcessedDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
@@ -100,10 +100,10 @@ Public Class ClaimloadFileProcessedDAL
         End If
         Try
             'updates additions and changes
-            If Not familyDataset.Tables(ClaimDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(ClaimDAL.TABLE_NAME).Rows.Count > 0 Then
+            If familyDataset.Tables(ClaimDAL.TABLE_NAME) IsNot Nothing AndAlso familyDataset.Tables(ClaimDAL.TABLE_NAME).Rows.Count > 0 Then
                 oClaimDAL.UpdateFamily(familyDataset, True, Nothing, tr)
             End If
-            If Not familyDataset.Tables(InvoiceDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(InvoiceDAL.TABLE_NAME).Rows.Count > 0 Then
+            If familyDataset.Tables(InvoiceDAL.TABLE_NAME) IsNot Nothing AndAlso familyDataset.Tables(InvoiceDAL.TABLE_NAME).Rows.Count > 0 Then
                 oInvoiceDAL.UpdateFamily(familyDataset, tr)
             End If
             oInvoiceReconWrkDAL.Update(familyDataset, tr, DataRowState.Modified)

@@ -28,7 +28,7 @@ Partial Public Class ErrorController
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moTitle As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moTitle As Label
 
     '''<summary>
     '''btnShowHide control.
@@ -37,7 +37,7 @@ Partial Public Class ErrorController
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnShowHide As Global.System.Web.UI.WebControls.ImageButton
+    Protected WithEvents btnShowHide As ImageButton
 
     '''<summary>
     '''txtErrorMsg control.
@@ -46,7 +46,7 @@ Partial Public Class ErrorController
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtErrorMsg As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtErrorMsg As TextBox
 
     '''<summary>
     '''footer control.
@@ -55,5 +55,5 @@ Partial Public Class ErrorController
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents footer As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents footer As HtmlTableRow
 End Class

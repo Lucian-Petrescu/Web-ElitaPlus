@@ -1,11 +1,12 @@
 Imports System.Collections.Generic
+Imports System.Diagnostics
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
 Partial Class UserControlAddress
-    Inherits System.Web.UI.UserControl
+    Inherits UserControl
 
 
 #Region "Constants"
@@ -78,15 +79,15 @@ Partial Class UserControlAddress
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -94,7 +95,7 @@ Partial Class UserControlAddress
 
 #End Region
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load, Me.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load, Me.Load
         'Put user code to initialize the page here
         'If Not Me.MyGenBO Is Nothing Then
         '    BindBoPropertiesToLabels()
@@ -127,7 +128,7 @@ Partial Class UserControlAddress
 
     End Sub
 
-    Private Sub Page_PreRender(sender As Object, e As System.EventArgs) Handles Me.PreRender
+    Private Sub Page_PreRender(sender As Object, e As EventArgs) Handles Me.PreRender
         moPostalLabel.Visible = True
         moPostalText.Visible = True
         moRegionLabel.Visible = True
@@ -262,12 +263,12 @@ Partial Class UserControlAddress
         moCountryText.BorderColor = Color.FromArgb(198, 198, 198)
     End Sub
 
-    Private Sub moCountryDrop_WRITE_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles moCountryDrop_WRITE.SelectedIndexChanged
+    Private Sub moCountryDrop_WRITE_SelectedIndexChanged(sender As Object, e As EventArgs) Handles moCountryDrop_WRITE.SelectedIndexChanged
         oCountryID = New Guid(moCountryDrop_WRITE.SelectedItem.Value)
 
-        Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
+        Dim oListContext As New ListContext
         oListContext.CountryId = oCountryID
-        Dim oRegionList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RegionsByCountry", context:=oListContext)
+        Dim oRegionList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RegionsByCountry", context:=oListContext)
         moRegionDrop_WRITE.Populate(oRegionList, New PopulateOptions() With
                                            {
                                            .AddBlankItem = True
@@ -295,9 +296,9 @@ Partial Class UserControlAddress
 
     Private Sub LoadRegionList()
 
-        Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
+        Dim oListContext As New ListContext
         oListContext.CountryId = Page.GetGuidValueFromPropertyName(MyGenBO, "CountryId")
-        Dim oRegionList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RegionsByCountry", context:=oListContext)
+        Dim oRegionList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RegionsByCountry", context:=oListContext)
         moRegionDrop_WRITE.Populate(oRegionList, New PopulateOptions() With
                                            {
                                            .AddBlankItem = True
@@ -310,9 +311,9 @@ Partial Class UserControlAddress
         'Dim oCountryList As DataView = LookupListNew.GetCompanyGroupCountryLookupList(CompanyGroupId)
         'Page.BindListControlToDataView(moCountryDrop_WRITE, oCountryList, , , nothingSelcted)
 
-        Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
+        Dim oListContext As New ListContext
         oListContext.CompanyGroupId = CompanyGroupId
-        Dim countryList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="CountryByCompanyGroup", context:=oListContext)
+        Dim countryList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="CountryByCompanyGroup", context:=oListContext)
         moCountryDrop_WRITE.Populate(countryList, New PopulateOptions() With
                                            {
                                            .AddBlankItem = nothingSelcted
@@ -479,7 +480,7 @@ Partial Class UserControlAddress
         IsAddressRequired = True
     End Sub
 
-    Private Sub moPostalText_TextChanged(sender As Object, e As System.EventArgs) Handles moPostalText.TextChanged
+    Private Sub moPostalText_TextChanged(sender As Object, e As EventArgs) Handles moPostalText.TextChanged
         moPostalText.Text = moPostalText.Text.Trim
     End Sub
 

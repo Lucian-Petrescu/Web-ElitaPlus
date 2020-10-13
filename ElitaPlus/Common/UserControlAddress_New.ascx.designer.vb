@@ -20,7 +20,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moAddress1Label As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moAddress1Label As Label
     
     '''<summary>
     '''moAddress1Text control.
@@ -29,7 +29,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moAddress1Text As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moAddress1Text As TextBox
     
     '''<summary>
     '''moCountryLabel control.
@@ -38,7 +38,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moCountryLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moCountryLabel As Label
     
     '''<summary>
     '''moCountryText control.
@@ -47,7 +47,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moCountryText As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moCountryText As TextBox
     
     '''<summary>
     '''moCountryDrop_WRITE control.
@@ -56,7 +56,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moCountryDrop_WRITE As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents moCountryDrop_WRITE As DropDownList
     
     '''<summary>
     '''moAddress2Label control.
@@ -65,7 +65,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moAddress2Label As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moAddress2Label As Label
     
     '''<summary>
     '''moAddress2Text control.
@@ -74,7 +74,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moAddress2Text As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moAddress2Text As TextBox
     
     '''<summary>
     '''moRegionLabel control.
@@ -83,7 +83,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moRegionLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moRegionLabel As Label
     
     '''<summary>
     '''moRegionText control.
@@ -92,7 +92,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moRegionText As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moRegionText As TextBox
     
     '''<summary>
     '''moRegionDrop_WRITE control.
@@ -101,7 +101,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moRegionDrop_WRITE As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents moRegionDrop_WRITE As DropDownList
     
     '''<summary>
     '''moAddress3Label control.
@@ -110,7 +110,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moAddress3Label As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moAddress3Label As Label
     
     '''<summary>
     '''moAddress3Text control.
@@ -119,7 +119,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moAddress3Text As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moAddress3Text As TextBox
     
     '''<summary>
     '''moCityLabel control.
@@ -128,7 +128,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moCityLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moCityLabel As Label
     
     '''<summary>
     '''moCityText control.
@@ -137,7 +137,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moCityText As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moCityText As TextBox
     
     '''<summary>
     '''moPostalLabel control.
@@ -146,7 +146,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moPostalLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moPostalLabel As Label
     
     '''<summary>
     '''moPostalText control.
@@ -155,7 +155,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moPostalText As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moPostalText As TextBox
     
     '''<summary>
     '''btnValidate_Address control.
@@ -164,7 +164,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnValidate_Address As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnValidate_Address As Button
     
     '''<summary>
     '''ValidatedAddress control.
@@ -173,7 +173,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ValidatedAddress As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents ValidatedAddress As HtmlTableRow
     
     '''<summary>
     '''LabelPopupHeader control.
@@ -182,7 +182,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelPopupHeader As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelPopupHeader As Label
     
     '''<summary>
     '''LabelAddress1 control.
@@ -191,7 +191,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelAddress1 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelAddress1 As Label
     
     '''<summary>
     '''LabelAddress1Text control.
@@ -200,7 +200,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelAddress1Text As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelAddress1Text As Label
     
     '''<summary>
     '''LabelCity control.
@@ -209,7 +209,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelCity As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelCity As Label
     
     '''<summary>
     '''LabelCityText control.
@@ -218,7 +218,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelCityText As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelCityText As Label
     
     '''<summary>
     '''LabelAddress2 control.
@@ -227,7 +227,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelAddress2 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelAddress2 As Label
     
     '''<summary>
     '''LabelAddress2Text control.
@@ -236,7 +236,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelAddress2Text As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelAddress2Text As Label
     
     '''<summary>
     '''LabelState control.
@@ -245,7 +245,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelState As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelState As Label
     
     '''<summary>
     '''LabelStateText control.
@@ -254,7 +254,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelStateText As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelStateText As Label
     
     '''<summary>
     '''LabelAddress3 control.
@@ -263,7 +263,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelAddress3 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelAddress3 As Label
     
     '''<summary>
     '''LabelAddress3Text control.
@@ -272,7 +272,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelAddress3Text As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelAddress3Text As Label
     
     '''<summary>
     '''LabelZip control.
@@ -281,7 +281,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelZip As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelZip As Label
     
     '''<summary>
     '''LabelZipText control.
@@ -290,7 +290,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelZipText As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelZipText As Label
     
     '''<summary>
     '''Label1Country control.
@@ -299,7 +299,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label1Country As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label1Country As Label
     
     '''<summary>
     '''Label1CountryText control.
@@ -308,7 +308,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label1CountryText As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label1CountryText As Label
     
     '''<summary>
     '''validateAddressButton control.
@@ -317,7 +317,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents validateAddressButton As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents validateAddressButton As HtmlGenericControl
     
     '''<summary>
     '''btnAccept control.
@@ -326,7 +326,7 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnAccept As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnAccept As Button
     
     '''<summary>
     '''btnDecline control.
@@ -335,5 +335,5 @@ Partial Public Class UserControlAddress_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnDecline As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnDecline As Button
 End Class

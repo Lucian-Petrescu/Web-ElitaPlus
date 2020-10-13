@@ -1,7 +1,7 @@
 ﻿Imports System.ComponentModel
 Imports Assurant.ElitaPlus.DALObjects
 Partial Class UserControlRiskTypeTolerance
-    Inherits System.Web.UI.UserControl
+    Inherits UserControl
 
      Public Class RequestDataEventArgs
         Inherits EventArgs
@@ -129,7 +129,7 @@ Partial Class UserControlRiskTypeTolerance
 
 #End Region
     
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
        Try
            If Page.IsPostBack Then
                Dim confResponse As String = HiddenDIDeletePromptResponse.Value
@@ -239,7 +239,7 @@ Partial Class UserControlRiskTypeTolerance
 
     End Sub
 
-    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles RiskTypeToleranceGrid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles RiskTypeToleranceGrid.RowDataBound
         Try
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
@@ -281,7 +281,7 @@ Partial Class UserControlRiskTypeTolerance
 
     End Sub
 
-    Public Sub RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles RiskTypeToleranceGrid.RowCommand
+    Public Sub RowCommand(source As Object, e As GridViewCommandEventArgs) Handles RiskTypeToleranceGrid.RowCommand
 
         Try
             Dim index As Integer
@@ -347,7 +347,7 @@ Partial Class UserControlRiskTypeTolerance
             TheState.IsGridVisible = False
             lblRecordCount.Text = "0 " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             If blnShowErr Then
-                ThePage.MasterPage.MessageController.AddInformation(ElitaPlus.ElitaPlusWebApp.Message.MSG_NO_RECORDS_FOUND, True)
+                ThePage.MasterPage.MessageController.AddInformation(Message.MSG_NO_RECORDS_FOUND, True)
             End If
         Else
             TheState.bnoRow = False
@@ -376,7 +376,7 @@ Partial Class UserControlRiskTypeTolerance
 
     End Sub
 
-    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles RiskTypeToleranceGrid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(sender As Object, e As EventArgs) Handles RiskTypeToleranceGrid.PageIndexChanged
         Try
             If (Not (TheState.IsEditMode)) Then
                 TheState.PageIndex = RiskTypeToleranceGrid.PageIndex
@@ -388,7 +388,7 @@ Partial Class UserControlRiskTypeTolerance
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles RiskTypeToleranceGrid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles RiskTypeToleranceGrid.PageIndexChanging
         Try
             RiskTypeToleranceGrid.PageIndex = e.NewPageIndex
             TheState.PageIndex = RiskTypeToleranceGrid.PageIndex
@@ -397,7 +397,7 @@ Partial Class UserControlRiskTypeTolerance
         End Try
     End Sub
 
-    Public Sub RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles RiskTypeToleranceGrid.RowCreated
+    Public Sub RowCreated(sender As Object, e As GridViewRowEventArgs) Handles RiskTypeToleranceGrid.RowCreated
         Try
             ThePage.BaseItemCreated(sender, e)
         Catch ex As Exception

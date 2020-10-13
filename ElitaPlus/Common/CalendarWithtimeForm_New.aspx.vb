@@ -1,15 +1,18 @@
 ﻿
 Imports System
+Imports System.Diagnostics
 Imports System.Globalization
+Imports System.Reflection
+Imports System.Threading
 
 Public Class CalendarWithtimeForm_New
-    Inherits System.Web.UI.Page
+    Inherits Page
 #Region " Members "
 
 #Region " Controls "
     ' labels
-    Protected WithEvents Label3 As System.Web.UI.WebControls.Label
-    Protected WithEvents Label4 As System.Web.UI.WebControls.Label
+    Protected WithEvents Label3 As Label
+    Protected WithEvents Label4 As Label
 
     ' drop down lists
 
@@ -30,15 +33,15 @@ Public Class CalendarWithtimeForm_New
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -51,7 +54,7 @@ Public Class CalendarWithtimeForm_New
     ' *************************************************************************** '
     '   Sub Page_Load: User code to initialize the page
     ' *************************************************************************** '
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Dim dateParam As String
         Dim sOpenerButton As String
@@ -109,7 +112,7 @@ Public Class CalendarWithtimeForm_New
 
     Public Sub TranslateControl(Control As WebControl, LangId As Guid)
         Dim ControlType As Type = Control.GetType
-        Dim propInfo As System.Reflection.PropertyInfo = ControlType.GetProperty("Text", Reflection.BindingFlags.Instance Or Reflection.BindingFlags.Public)
+        Dim propInfo As PropertyInfo = ControlType.GetProperty("Text", BindingFlags.Instance Or BindingFlags.Public)
         If propInfo IsNot Nothing Then
             Dim originalValue As String = CType(propInfo.GetValue(Control, Nothing), String)
             If originalValue IsNot Nothing Then
@@ -123,7 +126,7 @@ Public Class CalendarWithtimeForm_New
     ' *************************************************************************** '
     '   Sub MyCalendar_SelectionChanged: Handles the selection change event of the calendar
     ' *************************************************************************** '
-    Private Sub MyCalendar_SelectionChanged(sender As System.Object, e As System.EventArgs) Handles MyCalendar.SelectionChanged
+    Private Sub MyCalendar_SelectionChanged(sender As Object, e As EventArgs) Handles MyCalendar.SelectionChanged
 
         Dim sJscript As String
         Dim fieldNameParam As String
@@ -233,7 +236,7 @@ Public Class CalendarWithtimeForm_New
     '   Sub MyCalendar_VisibleMonthChanged: Handles the visible month change event
     '                                       of the calendar and sets the dropdown lists
     ' *************************************************************************** '
-    Private Sub MyCalendar_VisibleMonthChanged(sender As System.Object, e As System.Web.UI.WebControls.MonthChangedEventArgs) Handles MyCalendar.VisibleMonthChanged
+    Private Sub MyCalendar_VisibleMonthChanged(sender As Object, e As MonthChangedEventArgs) Handles MyCalendar.VisibleMonthChanged
         SetMonthYear(MyCalendar.VisibleDate.ToString("MMM", LocalizationMgr.CurrentFormatProvider), MyCalendar.VisibleDate.Year.ToString(LocalizationMgr.CurrentFormatProvider))
     End Sub
 
@@ -313,7 +316,7 @@ Public Class CalendarWithtimeForm_New
     '   Sub MonthSelected: Handles the select change event of the month dropdown and
     '                      sets the visible month of the calendar
     ' *************************************************************************** '
-    Private Sub MonthSelected(sender As System.Object, e As System.EventArgs) Handles cboMonthList.SelectedIndexChanged
+    Private Sub MonthSelected(sender As Object, e As EventArgs) Handles cboMonthList.SelectedIndexChanged
         Dim strSelMonth As String = cboMonthList.SelectedItem.Text
         SetNewVisibleDate(strSelMonth, cboYearList.SelectedItem.Text)
     End Sub
@@ -322,7 +325,7 @@ Public Class CalendarWithtimeForm_New
     '   Sub YearSelected: Handles the select change event of the year dropdown and
     '                     sets the visible year of the calendar
     ' *************************************************************************** '
-    Private Sub YearSelected(sender As System.Object, e As System.EventArgs) Handles cboYearList.SelectedIndexChanged
+    Private Sub YearSelected(sender As Object, e As EventArgs) Handles cboYearList.SelectedIndexChanged
         Dim strSelYear As String = cboYearList.SelectedItem.Text
         SetNewVisibleDate(cboMonthList.SelectedItem.Text, strSelYear)
     End Sub
@@ -340,7 +343,7 @@ Public Class CalendarWithtimeForm_New
             strDateVal = month & "/" & year
             sNewDate = CType(strDateVal, Date)
         Catch ex As Exception
-            DateTime.TryParseExact(strDateVal, "MMM/YYYY", System.Threading.Thread.CurrentThread.CurrentCulture, Globalization.DateTimeStyles.None, sNewDate)
+            DateTime.TryParseExact(strDateVal, "MMM/YYYY", Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, sNewDate)
         End Try
         MyCalendar.VisibleDate = sNewDate
     End Sub

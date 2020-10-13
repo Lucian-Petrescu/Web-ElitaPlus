@@ -334,7 +334,7 @@ Namespace SpecializedServices.Abag
 
             Dim dvRiskGroups As DataView = LookupListNew.GetRiskGroupsLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 
-            If Not dvRiskGroups Is Nothing AndAlso dvRiskGroups.Count > 0 Then
+            If dvRiskGroups IsNot Nothing AndAlso dvRiskGroups.Count > 0 Then
                 _Risk_Group_id = LookupListNew.GetIdFromCode(dvRiskGroups, request.RiskGroupCode)
                 If _Risk_Group_id.Equals(Guid.Empty) Then
                     Throw New FaultException(Of PartInfoNotFoundFault)(New PartInfoNotFoundFault(), TranslationBase.TranslateLabelOrMessage(ERR_RISK_GROUP,
@@ -379,7 +379,7 @@ Namespace SpecializedServices.Abag
 
             Try
                 dsClaim = Claim.ClaimDetailForWS(request.ClaimNumber, CompanyId, request.ForServiceCenterUse, request.IncludePartDescriptions)
-                If dsClaim Is Nothing Or dsClaim.Tables.Count <= 0 Or dsClaim.Tables(0).Rows.Count = 0 Then
+                If dsClaim Is Nothing OrElse dsClaim.Tables.Count <= 0 OrElse dsClaim.Tables(0).Rows.Count = 0 Then
                     Throw New FaultException(Of ClaimNotFoundFault)(New ClaimNotFoundFault(), TranslationBase.TranslateLabelOrMessage(ERR_CLAIM_NOT_FOUND,
                                                                                                           ElitaPlusIdentity.Current.ActiveUser.LanguageId) & " : " & request.ClaimNumber)
                 Else
@@ -879,7 +879,7 @@ Namespace SpecializedServices.Abag
                 Dim oSearch As New PriceListSearch
 
                 If Not request.ClaimNumber = Nothing AndAlso Not request.CompanyCode = Nothing _
-                    AndAlso Not request.ServiceCenterCode = Nothing And (Not request.EquipmentClassCode = Nothing Or Not request.RiskTypeCode = Nothing) Then
+                    AndAlso Not request.ServiceCenterCode = Nothing AndAlso (Not request.EquipmentClassCode = Nothing OrElse Not request.RiskTypeCode = Nothing) Then
 
                     Throw New BOValidationException("GetPriceList Error: Search must be based on Claim or Service Center", WS_PRICELIST_INVALID_INPUT)
                 End If
@@ -903,7 +903,7 @@ Namespace SpecializedServices.Abag
                     dsPriceList = oSearch.GetPriceList(New PriceListSearchDC()) 'dummy empty PriceListSearchDC
 
                 ElseIf (Not request.ServiceCenterCode = Nothing AndAlso Not request.RiskTypeCode = Nothing) _
-                    Or (Not request.ServiceCenterCode = Nothing AndAlso Not request.EquipmentClassCode = Nothing) Then
+                    OrElse (Not request.ServiceCenterCode = Nothing AndAlso Not request.EquipmentClassCode = Nothing) Then
 
                     If request.CompanyCode = Nothing Then
                         Dim userCompany As Company = ElitaPlusIdentity.Current.ActiveUser.Company
@@ -980,7 +980,7 @@ Namespace SpecializedServices.Abag
             Try
 
 
-                If Not request.CompanyGroupCode Is Nothing AndAlso request.CompanyGroupCode <> "" Then
+                If request.CompanyGroupCode IsNot Nothing AndAlso request.CompanyGroupCode <> "" Then
 
                     Dim list As DataView = LookupListNew.GetCompanyGroupLookupList()
                     If list Is Nothing Then

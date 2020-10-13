@@ -1,23 +1,24 @@
-﻿Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
+﻿Imports System.Diagnostics
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
 
 
 Partial Class UserControlPoliceReport_New
-    Inherits System.Web.UI.UserControl
+    Inherits UserControl
 
     Protected WithEvents moPoliceMultipleColumnDropControl As MultipleColumnDDLabelControl_New
 
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -89,7 +90,7 @@ Partial Class UserControlPoliceReport_New
 
 #Region "Page Events"
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
 
         'If Not Me.IsPostBack AndAlso Not Me.State.myPoliceReport Is Nothing Then
@@ -170,7 +171,7 @@ Partial Class UserControlPoliceReport_New
 #Region "Public"
     Public Function isempty() As Boolean
         If (TextboxReportNumber.Text = String.Empty) OrElse _
-            (moPoliceMultipleColumnDropControl.SelectedGuid.Equals(System.Guid.Empty)) Then
+            (moPoliceMultipleColumnDropControl.SelectedGuid.Equals(Guid.Empty)) Then
             Return True
         Else
             Return False
@@ -190,8 +191,8 @@ Partial Class UserControlPoliceReport_New
             With State.myPoliceReport
                 Page.PopulateControlFromBOProperty(TextboxReportNumber, .ReportNumber)
                 Page.PopulateControlFromBOProperty(TextboxOfficerName, .OfficerName)
-                If .PoliceStationId.Equals(System.Guid.Empty) Then
-                    PoliceMultipleDrop.SelectedGuid = System.Guid.Empty
+                If .PoliceStationId.Equals(Guid.Empty) Then
+                    PoliceMultipleDrop.SelectedGuid = Guid.Empty
                     'Else
                     '   PoliceMultipleDrop.SelectedGuid = System.Guid.Empty
                     '  PoliceMultipleDrop.SelectedGuid = .PoliceStationId
@@ -213,7 +214,7 @@ Partial Class UserControlPoliceReport_New
             lblCaption = "&nbsp;&nbsp; &nbsp;" & TranslationBase.TranslateLabelOrMessage(LABEL_POLICE_STATION)
         End If
         PoliceMultipleDrop.SetControl(False, _
-                                          PoliceMultipleDrop.MODES.NEW_MODE, _
+                                          MultipleColumnDDLabelControl_New.MODES.NEW_MODE, _
                                           True, _
                                           dv, _
                                           lblCaption, _

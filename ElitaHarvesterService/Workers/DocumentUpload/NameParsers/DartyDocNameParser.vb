@@ -9,7 +9,9 @@ Namespace Workers.DocumentUpload.NameParsers
             CompanyCode = "AIF"
             DealerFileType = "Darty"
             GeneratesOutput = False
-            NameFormat = New Regex("^(?<date>(19|20)\d\d(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01]))[_](?<certificate>[a-zA-Z0-9]{18})[_](IMEI_)?(?<docType>\S+)[.]")
+            NameFormat = New Regex("^(?<date>(19|20)\d\d(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01]))[_](?<certificate>[a-zA-Z0-9]{18})[_](IMEI_)?(?<docType>\S+)[.]",
+                                   RegexOptions.None,
+                                   Timespan.FromMilliseconds(200))
             LayoutTuple = New Tuple(Of String, String)("NA", ";")
         End Sub
 

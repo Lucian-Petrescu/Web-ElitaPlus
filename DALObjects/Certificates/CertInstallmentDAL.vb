@@ -83,7 +83,7 @@ Public Class CertInstallmentDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
@@ -99,12 +99,12 @@ Public Class CertInstallmentDAL
             'First Pass updates Deletions
             MyBase.Update(familyDataset.Tables(TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
 
-            If Not familyDataset.Tables(CreditCardInfoDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(CreditCardInfoDAL.TABLE_NAME).Rows.Count > 0 Then
+            If familyDataset.Tables(CreditCardInfoDAL.TABLE_NAME) IsNot Nothing AndAlso familyDataset.Tables(CreditCardInfoDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim cciDal As New CreditCardInfoDAL
                 cciDal.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
             End If
 
-            If Not familyDataset.Tables(BankInfoDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(BankInfoDAL.TABLE_NAME).Rows.Count > 0 Then
+            If familyDataset.Tables(BankInfoDAL.TABLE_NAME) IsNot Nothing AndAlso familyDataset.Tables(BankInfoDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim biDal As New BankInfoDAL
                 biDal.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
             End If

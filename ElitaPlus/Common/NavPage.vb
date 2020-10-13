@@ -43,7 +43,7 @@ Public Class NavPage
         mobjState = State
     End Sub
 
-    Private Sub Page_Load(sender As Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If Me.Navigator.NavAction = WebNavigator.NAVIGATION_ACTION.NAV_FLOW Then
             Navigator.NavReset() 'To reset NavAction to Nothing after it is consumed
             Return

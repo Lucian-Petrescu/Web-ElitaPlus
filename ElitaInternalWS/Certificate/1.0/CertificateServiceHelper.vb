@@ -127,9 +127,9 @@ Friend Module CertificateServiceHelper
         Catch ex As StoredProcedureGeneratedException
             Throw New FaultException(Of CertificateNotFound)(New CertificateNotFound() With {.CertificateSearch = CertificateLookupRequest}, "Certificate Not Found")
         Catch ex As DataBaseAccessException
-            If (CertificateLookupRequest.GetType() Is GetType(CertificateDealerSerialLookUp)) And (certificateId Is Nothing) Then
+            If (CertificateLookupRequest.GetType() Is GetType(CertificateDealerSerialLookUp)) AndAlso (certificateId Is Nothing) Then
                 Throw New CertificateNotFoundException(CertificateLookupRequest)
-            ElseIf (CertificateLookupRequest.GetType() Is GetType(CertAfterUpgradeLookup)) And (certificateId Is Nothing) Then
+            ElseIf (CertificateLookupRequest.GetType() Is GetType(CertAfterUpgradeLookup)) AndAlso (certificateId Is Nothing) Then
                 If ex.InnerException.Message.Contains("Duplicate_Certificate_Error") Then
                     Throw New FaultException(Of DuplicateCertFound)(New DuplicateCertFound() With {.CertificateSearch = CertificateLookupRequest}, "Duplicate Certificate Found")
                 ElseIf ex.InnerException.Message.Contains("Coverage_Not_Found_Error") Then

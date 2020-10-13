@@ -127,7 +127,7 @@ Public Class CertCancelRequestDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
@@ -178,7 +178,7 @@ Public Class CertCancelRequestDAL
                 dblRefundAmount = outputParameter(P_REFUND_AMOUNT).Value
             ElseIf outputParameter(P_EXCEPTION_MSG).Value = "Future" Then
                 strMsg = outputParameter(P_EXCEPTION_MSG).Value
-            ElseIf Not outputParameter(P_EXCEPTION_MSG).Value is Nothing Then
+            ElseIf outputParameter(P_EXCEPTION_MSG).Value IsNot Nothing Then
                 strMsg = outputParameter(P_EXCEPTION_MSG).Value
             End If
         End If

@@ -20,7 +20,7 @@ Partial Public Class MessageController
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents MessageBox As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents MessageBox As HtmlGenericControl
 
     '''<summary>
     '''moIconImage control.
@@ -29,7 +29,7 @@ Partial Public Class MessageController
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moIconImage As Global.System.Web.UI.HtmlControls.HtmlImage
+    Protected WithEvents moIconImage As HtmlImage
 
     '''<summary>
     '''MessageLiteral control.
@@ -38,5 +38,5 @@ Partial Public Class MessageController
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents MessageLiteral As Global.System.Web.UI.WebControls.Literal
+    Protected WithEvents MessageLiteral As Literal
 End Class

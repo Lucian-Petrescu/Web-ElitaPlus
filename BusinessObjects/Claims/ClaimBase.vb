@@ -3,9 +3,6 @@ Imports System.Reflection
 Imports System.Collections.Generic
 Imports Assurant.ElitaPlus.Business
 Imports Assurant.ElitaPlus.DataEntities
-Imports Assurant.ElitaPlus.DataAccess
-Imports Assurant.ElitaPlus.DataAccessInterface
-Imports Assurant.Common
 
 ''' <summary>
 ''' Claim Base class acts as base class for Creating the Claim Objects. The class encapsulates common properties from SingleAuthorization Claim and 
@@ -2378,12 +2375,12 @@ Public MustInherit Class ClaimBase
             If objClaim.Status = BasicClaimStatus.Closed Then Return True
 
             'if modifying existing denied claim, then no need to do validation since this date is not editable on the screen
-            If Not objClaim.IsComingFromDenyClaim And objClaim.Status = BasicClaimStatus.Denied Then Return True
+            If Not objClaim.IsComingFromDenyClaim AndAlso objClaim.Status = BasicClaimStatus.Denied Then Return True
 
             'if backend claim then both dates will be not null...these dates must be >=date of loss
             If GetType(Claim).Equals(objClaim.GetType()) Then
                 Dim objC = CType(objClaim, Claim)
-                If objC.RepairDate IsNot Nothing And objC.PickUpDate IsNot Nothing Then
+                If objC.RepairDate IsNot Nothing AndAlso objC.PickUpDate IsNot Nothing Then
                     If (objClaim.LossDate.Value > objC.RepairDate.Value) OrElse (objClaim.LossDate.Value > objC.PickUpDate.Value) Then
                         Return False
                     End If
@@ -2401,8 +2398,7 @@ Public MustInherit Class ClaimBase
             Else
                 If ((objClaim.LossDate.Value > Date.Now) OrElse
                     (((objClaim.LossDate.Value < objClaim.CertificateItemCoverage.BeginDate.Value) OrElse
-                    (objClaim.LossDate.Value > objClaim.CertificateItemCoverage.EndDate.Value)) And
-                    Not LookupListNew.GetCodeFromId(LookupListCache.LK_DENIED_REASON, objClaim.DeniedReasonId) = Codes.REASON_DENIED__INCORRECT_DEVICE_SELECTED)) Then
+                    (objClaim.LossDate.Value > objClaim.CertificateItemCoverage.EndDate.Value)) AndAlso Not LookupListNew.GetCodeFromId(LookupListCache.LK_DENIED_REASON, objClaim.DeniedReasonId) = Codes.REASON_DENIED__INCORRECT_DEVICE_SELECTED)) Then
                     'User Story 193355 Added specific reason to allow denying expired items
                     Return False
                 End If
@@ -2558,7 +2554,7 @@ Public MustInherit Class ClaimBase
         Get
             If HasIssues Then
                 Dim issueStatus As String = EvaluateIssues()
-                If (issueStatus = Codes.CLAIMISSUE_STATUS__RESOLVED Or issueStatus = Codes.CLAIMISSUE_STATUS__WAIVED) Then
+                If (issueStatus = Codes.CLAIMISSUE_STATUS__RESOLVED OrElse issueStatus = Codes.CLAIMISSUE_STATUS__WAIVED) Then
                     Return True
                 End If
                 Return False
@@ -2576,7 +2572,7 @@ Public MustInherit Class ClaimBase
                 _IssueDeniedReason = Item.Issue.DeniedReason
                 Exit For
             End If
-            If (Item.StatusCode = Codes.CLAIMISSUE_STATUS__OPEN Or Item.StatusCode = Codes.CLAIMISSUE_STATUS__PENDING) Then
+            If (Item.StatusCode = Codes.CLAIMISSUE_STATUS__OPEN OrElse Item.StatusCode = Codes.CLAIMISSUE_STATUS__PENDING) Then
                 issuesStatus = Codes.CLAIMISSUE_STATUS__OPEN
             End If
         Next
@@ -3097,7 +3093,7 @@ Public MustInherit Class ClaimBase
         Dim caseID As Guid = Guid.Empty
         Dim ds As DataSet = dal.GetCaseIdByCaseNumberAndCompany(CaseNumber, CompanyCode)
 
-        If (ds.Tables.Count > 0 And ds.Tables(0).Rows.Count > 0) Then
+        If (ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0) Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)
             caseID = New Guid(CType(dr(dal.COL_NAME_CASE_ID), Byte()))
         End If
@@ -3250,13 +3246,10 @@ Public MustInherit Class ClaimBase
 
         oDeductible = CertItemCoverage.GetDeductible(CertItemCoverageId, MethodOfRepairId)
 
-        If (oDeductible.DeductibleBasedOn <> Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_AUTHORIZED_AMOUNT And
-            oDeductible.DeductibleBasedOn <> Codes.DEDUCTIBLE_BASED_ON__FIXED) Then
+        If (oDeductible.DeductibleBasedOn <> Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_AUTHORIZED_AMOUNT AndAlso oDeductible.DeductibleBasedOn <> Codes.DEDUCTIBLE_BASED_ON__FIXED) Then
             moCertItemCvg = New CertItemCoverage(CertItemCoverageId)
             moCertItem = New CertItem(moCertItemCvg.CertItemId)
-            If (oDeductible.DeductibleBasedOn = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_SALES_PRICE Or
-                oDeductible.DeductibleBasedOn = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE Or
-                oDeductible.DeductibleBasedOn = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE_WSD) Then
+            If (oDeductible.DeductibleBasedOn = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_SALES_PRICE OrElse oDeductible.DeductibleBasedOn = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE OrElse oDeductible.DeductibleBasedOn = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE_WSD) Then
                 moCert = New Certificate(moCertItemCvg.CertId)
             End If
         End If
@@ -3590,13 +3583,10 @@ Public MustInherit Class ClaimBase
 
         oDeductible = CertItemCoverage.GetDeductible(CertItemCoverageId, MethodOfRepairId)
 
-        If (oDeductible.DeductibleBasedOn <> Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_AUTHORIZED_AMOUNT And
-            oDeductible.DeductibleBasedOn <> Codes.DEDUCTIBLE_BASED_ON__FIXED) Then
+        If (oDeductible.DeductibleBasedOn <> Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_AUTHORIZED_AMOUNT AndAlso oDeductible.DeductibleBasedOn <> Codes.DEDUCTIBLE_BASED_ON__FIXED) Then
             moCertItemCvg = New CertItemCoverage(CertItemCoverageId)
             moCertItem = New CertItem(moCertItemCvg.CertItemId)
-            If (oDeductible.DeductibleBasedOn = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_SALES_PRICE Or
-                oDeductible.DeductibleBasedOn = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE Or
-                oDeductible.DeductibleBasedOn = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE_WSD) Then
+            If (oDeductible.DeductibleBasedOn = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_SALES_PRICE OrElse oDeductible.DeductibleBasedOn = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE OrElse oDeductible.DeductibleBasedOn = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE_WSD) Then
                 moCert = New Certificate(moCertItemCvg.CertId)
             End If
         End If
@@ -3694,9 +3684,9 @@ Public MustInherit Class ClaimBase
                 End If
             End If
             dal.GetPreviousYearReplacements(CertID, CurrentLossDate, strClaimNum, TotalClaimsAllowed, RepairsAllowed, ReplAllowed, TotalClaims, Replacements, Repairs)
-            Return ((Repairs >= RepairsAllowed And (MethodOfRepairCode = Codes.METHOD_OF_REPAIR__CARRY_IN Or MethodOfRepairCode = Codes.METHOD_OF_REPAIR__AT_HOME Or MethodOfRepairCode = Codes.METHOD_OF_REPAIR__PICK_UP Or MethodOfRepairCode = Codes.METHOD_OF_REPAIR__SEND_IN)) _
-                         Or (Replacements >= ReplAllowed And MethodOfRepairCode = Codes.METHOD_OF_REPAIR__REPLACEMENT) _
-                         Or (TotalClaims >= TotalClaimsAllowed))
+            Return ((Repairs >= RepairsAllowed AndAlso (MethodOfRepairCode = Codes.METHOD_OF_REPAIR__CARRY_IN OrElse MethodOfRepairCode = Codes.METHOD_OF_REPAIR__AT_HOME OrElse MethodOfRepairCode = Codes.METHOD_OF_REPAIR__PICK_UP OrElse MethodOfRepairCode = Codes.METHOD_OF_REPAIR__SEND_IN)) _
+                         OrElse (Replacements >= ReplAllowed AndAlso MethodOfRepairCode = Codes.METHOD_OF_REPAIR__REPLACEMENT) _
+                         OrElse (TotalClaims >= TotalClaimsAllowed))
         End If
     End Function
 
@@ -3706,7 +3696,7 @@ Public MustInherit Class ClaimBase
             Return dtStart
         Else
             Do Until (blnIn = True)
-                If dtCurrent >= dtStart And dtCurrent <= dtStart.AddMonths(12).AddDays(-1) Then
+                If dtCurrent >= dtStart AndAlso dtCurrent <= dtStart.AddMonths(12).AddDays(-1) Then
                     blnIn = True
                     Exit Do
                 Else
@@ -3738,19 +3728,19 @@ Public MustInherit Class ClaimBase
         If (comment Is Nothing) Then comment = AddNewComment
 
         If Not Certificate.IsSubscriberStatusValid Then
-            flag = flag And False
+            flag = flag AndAlso False
             comment.CommentTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_PENDING_SUBSCRIBER_STATUS_NOT_VALID)
         End If
 
         If Contract.PayOutstandingPremiumId.Equals(LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y")) AndAlso OutstandingPremiumAmount.Value > 0 Then
-            flag = flag And False
+            flag = flag AndAlso False
             comment.CommentTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__PENDING_PAYMENT_ON_OUTSTANDING_PREMIUM)
         End If
 
         ''''New Equipment Flow starts here
         If CertificateItem.IsEquipmentRequired Then
             If (Not ValidateAndMatchClaimedEnrolledEquipments(comment)) Then
-                flag = flag And False
+                flag = flag AndAlso False
             End If
         End If
         '''''
@@ -3759,7 +3749,7 @@ Public MustInherit Class ClaimBase
         If (DeductibleType.DeductibleBasedOn = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE) Then
             Dim lstPrice As DecimalType = GetListPrice()
             If (lstPrice Is Nothing) Then
-                flag = flag And False
+                flag = flag AndAlso False
                 comment.CommentTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_SET_TO_PENDING)
                 comment.Comments &= Environment.NewLine & TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.GUI_DEDUCTIBLE_CAN_NOT_BE_DETERMINED_ERR)
             End If
@@ -3767,14 +3757,14 @@ Public MustInherit Class ClaimBase
 
         If (Dealer.DeductibleCollectionId = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y")) Then
             If DedCollectionMethodID = LookupListNew.GetIdFromCode(LookupListCache.LK_DED_COLL_METHOD, Codes.DED_COLL_METHOD_DEFFERED_COLL) Then
-                flag = flag And False
+                flag = flag AndAlso False
                 comment.CommentTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_SET_TO_PENDING)
                 comment.Comments = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.GUI_DEDUCTIBLE_NOT_COLLECTED)
             End If
         End If
 
         If (HasIssues AndAlso Not AllIssuesResolvedOrWaived) Then
-            flag = flag And False
+            flag = flag AndAlso False
             comment.CommentTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_SET_TO_PENDING)
             comment.Comments &= Environment.NewLine & TranslationBase.TranslateLabelOrMessage("MSG_CLAIM_PENDING_ISSUE_OPEN")
         End If
@@ -3810,7 +3800,7 @@ Public MustInherit Class ClaimBase
                 End If
             End If
 
-            If blnClaimReportedWithinGracePeriod And blnCoverageTypeNotMissing Then
+            If blnClaimReportedWithinGracePeriod AndAlso blnCoverageTypeNotMissing Then
                 If IsNew Then
                     blnExceedMaxReplacements = IsMaxReplacementExceeded(CertificateId, LossDate.Value)
                 End If
@@ -3830,23 +3820,23 @@ Public MustInherit Class ClaimBase
 
 
             If Not blnCoverageTypeNotMissing Then
-                flag = flag And False
+                flag = flag AndAlso False
                 DeniedReasonId = LookupListNew.GetIdFromCode(LookupListCache.LK_DENIED_REASON, Codes.REASON_DENIED__COVERAGE_TYPE_MISSING)
                 comment.CommentTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_DENIED_COVERAGE_TYPE_MISSING)
 
             ElseIf Not blnClaimReportedWithinGracePeriod Then
-                flag = flag And False
+                flag = flag AndAlso False
                 DeniedReasonId = LookupListNew.GetIdFromCode(LookupListCache.LK_DENIED_REASON, Codes.REASON_DENIED__NOT_REPORTED_WITHIN_GRACE_PERIOD)
                 comment.CommentTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_DENIED_REPORT_TIME_NOT_WITHIN_GRACE_PERIOD)
 
 
             ElseIf blnExceedMaxReplacements Then
-                flag = flag And False
+                flag = flag AndAlso False
                 ReasonClosedId = LookupListNew.GetIdFromCode(LookupListCache.LK_REASONS_CLOSED, Codes.REASON_CLOSED__REPLACEMENT_EXCEED)
                 comment.CommentTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_DENIED_REPLACEMENT_EXCEED)
 
             ElseIf (EvaluateIssues = Codes.CLAIMISSUE_STATUS__REJECTED) Then
-                flag = flag And False
+                flag = flag AndAlso False
                 If IssueDeniedReason IsNot Nothing Then
                     DeniedReasonId = LookupListNew.GetIdFromExtCode(LookupListCache.LK_DENIED_REASON, IssueDeniedReason())
                 Else
@@ -3858,14 +3848,14 @@ Public MustInherit Class ClaimBase
 
             ElseIf (CType(CertificateItemCoverage.CoverageLiabilityLimit.ToString, Decimal) > 0) Then
                 If (CoverageRemainLiabilityAmount(CertItemCoverageId, LossDate) <= 0) Then
-                    flag = flag And False
+                    flag = flag AndAlso False
                     DeniedReasonId = LookupListNew.GetIdFromCode(LookupListCache.LK_DENIED_REASON, Codes.REASON_DENIED_MAX_COVERAGE_LIABILITY_LIMIT_REACHED)
                     comment.CommentTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_DENIED)
                 End If
 
             ElseIf (CType(Certificate.ProductLiabilityLimit.ToString, Decimal) > 0) Then
                 If (ProductRemainLiabilityAmount(CertificateId, LossDate) <= 0) Then
-                    flag = flag And False
+                    flag = flag AndAlso False
                     DeniedReasonId = LookupListNew.GetIdFromCode(LookupListCache.LK_DENIED_REASON, Codes.REASON_DENIED_MAX_PRODUCT_LIABILITY_LIMIT_REACHED)
                     comment.CommentTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_DENIED)
                 End If
@@ -3874,18 +3864,18 @@ Public MustInherit Class ClaimBase
         Else
 
             If blnExceedMaxReplacements Then
-                flag = flag And False
+                flag = flag AndAlso False
                 ReasonClosedId = LookupListNew.GetIdFromCode(LookupListCache.LK_REASONS_CLOSED, Codes.REASON_CLOSED__REPLACEMENT_EXCEED)
                 comment.CommentTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_DENIED_REPLACEMENT_EXCEED)
             End If
 
             If Not blnClaimReportedWithinPeriod Then
-                flag = flag And False
+                flag = flag AndAlso False
                 ReasonClosedId = LookupListNew.GetIdFromCode(LookupListCache.LK_REASONS_CLOSED, Codes.REASON_CLOSED__NOT_REPORTED_WITHIN_PERIOD)
                 comment.CommentTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_DENIED_REPORT_TIME_EXCEED)
             End If
             If (EvaluateIssues = Codes.CLAIMISSUE_STATUS__REJECTED) Then
-                flag = flag And False
+                flag = flag AndAlso False
                 If IssueDeniedReason IsNot Nothing Then
                     DeniedReasonId = LookupListNew.GetIdFromExtCode(LookupListCache.LK_DENIED_REASON, IssueDeniedReason())
                 Else
@@ -3900,14 +3890,14 @@ Public MustInherit Class ClaimBase
 
             If (CType(CertificateItemCoverage.CoverageLiabilityLimit.ToString, Decimal) > 0) Then
                 If (CoverageRemainLiabilityAmount(CertItemCoverageId, LossDate) <= 0) Then
-                    flag = flag And False
+                    flag = flag AndAlso False
                     DeniedReasonId = LookupListNew.GetIdFromCode(LookupListCache.LK_DENIED_REASON, Codes.REASON_DENIED_MAX_COVERAGE_LIABILITY_LIMIT_REACHED)
                     comment.CommentTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_DENIED)
                 End If
             End If
             If (CType(Certificate.ProductLiabilityLimit.ToString, Decimal) > 0) Then
                 If (ProductRemainLiabilityAmount(CertificateId, LossDate) <= 0) Then
-                    flag = flag And False
+                    flag = flag AndAlso False
                     DeniedReasonId = LookupListNew.GetIdFromCode(LookupListCache.LK_DENIED_REASON, Codes.REASON_DENIED_MAX_PRODUCT_LIABILITY_LIMIT_REACHED)
                     comment.CommentTypeId = LookupListNew.GetIdFromCode(LookupListCache.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_DENIED)
                 End If
@@ -3965,7 +3955,7 @@ Public MustInherit Class ClaimBase
             '' PBI 494630 - Enabled for PENDING status 
             triggerEvent = True
         Else
-            If IsClaimStatusChanged() AndAlso (StatusCode.Equals(Codes.CLAIM_STATUS__ACTIVE) Or StatusCode.Equals(Codes.CLAIM_STATUS__DENIED)) Then
+            If IsClaimStatusChanged() AndAlso (StatusCode.Equals(Codes.CLAIM_STATUS__ACTIVE) OrElse StatusCode.Equals(Codes.CLAIM_STATUS__DENIED)) Then
                 '' Existing Claim is being modifed and Claim Status Changed
                 triggerEvent = True
             Else
@@ -4198,7 +4188,7 @@ Public MustInherit Class ClaimBase
             (Row.Item(ClaimDAL.COL_NAME_STATUS_CODE, DataRowVersion.Original) = Codes.CLAIM_STATUS__CLOSED) AndAlso
             (Row.Item(ClaimDAL.COL_NAME_STATUS_CODE, DataRowVersion.Current) = Codes.CLAIM_STATUS__ACTIVE) Then
                 OriginalReasonClosed = LookupListNew.GetCodeFromId(LookupListCache.LK_REASONS_CLOSED, New Guid(CType(Row.Item(ClaimDAL.COL_NAME_REASON_CLOSED_ID, DataRowVersion.Original), Byte())))
-                If NumberOfDisbursements > 0 And OriginalReasonClosed <> Codes.REASON_CLOSED__NO_ACTIVITY Then
+                If NumberOfDisbursements > 0 AndAlso OriginalReasonClosed <> Codes.REASON_CLOSED__NO_ACTIVITY Then
                     Return (False)
                 Else
                     Return (True)
@@ -4351,7 +4341,7 @@ Public MustInherit Class ClaimBase
 
         Dim oCertItemCoverage As New CertItemCoverage(guidCertItemCoverageID)
         Dim dtCoverageEndDate As DateType = oCertItemCoverage.EndDate
-        If gracePeriodMonths > 0 Or gracePeriodDays > 0 Then
+        If gracePeriodMonths > 0 OrElse gracePeriodDays > 0 Then
             Dim dtGracePeriodEndDate As Date = dtCoverageEndDate.Value.AddMonths(gracePeriodMonths).AddDays(gracePeriodDays)
 
             If dtLossDate <= dtCoverageEndDate Then
@@ -4392,12 +4382,12 @@ Public MustInherit Class ClaimBase
         Dim oCertItemCoverage As New CertItemCoverage(guidCertItemCoverageID)
         Dim dtCoverageEndDate As DateType = oCertItemCoverage.EndDate
 
-        If gracePeriodMonths > 0 Or gracePeriodDays > 0 Then
+        If gracePeriodMonths > 0 OrElse gracePeriodDays > 0 Then
 
             Dim dtGracePeriodEndDate As Date = dtCoverageEndDate.Value.AddMonths(gracePeriodMonths).AddDays(gracePeriodDays)
 
             If dtLossDate > dtCoverageEndDate Then
-                If (dtDateReported <= dtGracePeriodEndDate Or dtDateReported >= dtGracePeriodEndDate) Then
+                If (dtDateReported <= dtGracePeriodEndDate OrElse dtDateReported >= dtGracePeriodEndDate) Then
                     blnResult = False
                 End If
             End If
@@ -4682,7 +4672,7 @@ _ClaimedEquipment IsNot Nothing AndAlso
             If ClaimedEquipment IsNot Nothing AndAlso Not ClaimedEquipment.EquipmentId.Equals(Guid.Empty) Then
                 Dim BROpt As List(Of BestReplacement.BestReplacementOptions) = BestReplacement.GetReplacementEquipments(Dealer.BestReplacementGroupId, ClaimedEquipment.EquipmentId, 4)
                 For Each obj As BestReplacement.BestReplacementOptions In BROpt
-                    If Not obj.Manufacturer_id.Equals(Guid.Empty) And Not String.IsNullOrEmpty(obj.Model) Then
+                    If Not obj.Manufacturer_id.Equals(Guid.Empty) AndAlso Not String.IsNullOrEmpty(obj.Model) Then
                         Dim clEquipObj As ClaimEquipment = ClaimEquipmentChildren.GetNewChild
                         clEquipObj.BeginEdit()
                         clEquipObj.EquipmentId = obj.Equipment_id

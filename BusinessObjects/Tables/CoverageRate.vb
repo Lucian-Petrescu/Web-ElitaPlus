@@ -751,22 +751,22 @@ Public Class CoverageRate
                             ' Updating only one record
                             bValid = True
                             Exit For
-                        ElseIf oRows.Count = oCount And prevHigh + THRESHOLD = oNewLow Then
+                        ElseIf oRows.Count = oCount AndAlso prevHigh + THRESHOLD = oNewLow Then
                             ' Updating the last record
                             bValid = True
                             Exit For
                         End If
                     Else
-                        If prevHigh < MIN_DOUBLE And oNewHigh + THRESHOLD = oLow Then
+                        If prevHigh < MIN_DOUBLE AndAlso oNewHigh + THRESHOLD = oLow Then
                             bValid = True
                             Exit For
-                        ElseIf oCount = oRows.Count And oHigh + THRESHOLD = oNewLow Then
+                        ElseIf oCount = oRows.Count AndAlso oHigh + THRESHOLD = oNewLow Then
                             bValid = True
                             Exit For
-                        ElseIf prevHigh + THRESHOLD = oNewLow And oNewHigh + THRESHOLD = oLow Then
+                        ElseIf prevHigh + THRESHOLD = oNewLow AndAlso oNewHigh + THRESHOLD = oLow Then
                             bValid = True
                             Exit For
-                        ElseIf (oLow = oNewLow And oHigh = oNewHigh) Then
+                        ElseIf (oLow = oNewLow AndAlso oHigh = oNewHigh) Then
                             bValid = True
                             Exit For
                         End If
@@ -794,9 +794,7 @@ Public Class CoverageRate
 
             'US 521697 check if dealer is configured for Account Bucket, if not then only validate for > 100% calculation
             If obj.HasDealerConfiguredForAcctBucket(obj.CoverageId) = False Then
-                If obj.CommissionsPercent IsNot Nothing And obj.MarketingPercent IsNot Nothing And
-obj.AdminExpense IsNot Nothing And obj.ProfitExpense IsNot Nothing And
-obj.LossCostPercent IsNot Nothing Then
+                If obj.CommissionsPercent IsNot Nothing AndAlso obj.MarketingPercent IsNot Nothing AndAlso obj.AdminExpense IsNot Nothing AndAlso obj.ProfitExpense IsNot Nothing AndAlso obj.LossCostPercent IsNot Nothing Then
                     'If (Convert.ToSingle(obj.CommissionsPercent.Value) + Convert.ToSingle(obj.MarketingPercent.Value) + _
                     '        Convert.ToSingle(obj.AdminExpense.Value) + Convert.ToSingle(obj.ProfitExpense.Value) + _
                     '        Convert.ToSingle(obj.LossCostPercent.Value) > Convert.ToSingle(100)) Then
@@ -898,7 +896,7 @@ obj.LossCostPercent IsNot Nothing Then
                     If (oLow = oNewLow AndAlso oHigh = oNewHigh AndAlso If(IsNothing(oCoverageRate.RegionId), Guid.Empty, oCoverageRate.RegionId).Equals(oTaxRegionId)) Then
                         If oCoverageRate.Id.Equals(oCoverageRateId) Then
 
-                            If (oNewRenewalNo > 0 And oRenewalNo = 0) Then
+                            If (oNewRenewalNo > 0 AndAlso oRenewalNo = 0) Then
                                 bValid = False
                                 Exit For
                             End If
@@ -911,7 +909,7 @@ obj.LossCostPercent IsNot Nothing Then
                     End If
                 Next
 
-                If bValid = True And oRows.Count = oCount Then
+                If bValid = True AndAlso oRows.Count = oCount Then
                     If oNewRenewalNo <> 0 Then
                         bValid = False
                     End If
@@ -960,7 +958,7 @@ obj.LossCostPercent IsNot Nothing Then
                     If (oLow = oNewLow AndAlso oHigh = oNewHigh AndAlso If(IsNothing(oCoverageRate.RegionId), Guid.Empty, oCoverageRate.RegionId).Equals(oTaxRegionId)) Then
                         If oCoverageRate.Id.Equals(oCoverageRateId) Then
                             'If (oNewRenewalNo > 0 And oRenewalNo = 0) Then
-                             If (oNewRenewalNo <> oRenewalNo+1 And oRenewalNo = 0) Then
+                             If (oNewRenewalNo <> oRenewalNo+1 AndAlso oRenewalNo = 0) Then
                                 bValid = False
                                 Exit For
                             End If
@@ -973,7 +971,7 @@ obj.LossCostPercent IsNot Nothing Then
                     End If
                 Next
 
-                If bValid = True And oRows.Count = oCount Then
+                If bValid = True AndAlso oRows.Count = oCount Then
                     If oNewRenewalNo <> 0 Then
                         bValid = False
                     End If

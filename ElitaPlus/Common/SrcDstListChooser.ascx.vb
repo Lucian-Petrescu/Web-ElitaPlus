@@ -1,6 +1,8 @@
+Imports System.Diagnostics
+
 Namespace Generic
     Partial  Class SrcDstListChooser
-        Inherits System.Web.UI.UserControl
+        Inherits UserControl
         
 #Region "Constants"
         Protected Const EXCEPTION_TEXT As String = "SrcDstListChooser can not access Data Source -- "
@@ -73,11 +75,11 @@ Namespace Generic
 #Region " Web Form Designer Generated Code "
 
         'This call is required by the Web Form Designer.
-        <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+        <DebuggerStepThrough()> Private Sub InitializeComponent()
 
         End Sub
 
-        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -85,41 +87,41 @@ Namespace Generic
 
 #End Region
 
-        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
 
         End Sub
 
-        Private Sub BtnAdd_Click(sender As System.Object, e As System.EventArgs) Handles BtnAdd.Click
+        Private Sub BtnAdd_Click(sender As Object, e As EventArgs) Handles BtnAdd.Click
             BtnAdd_Action()
             UpdateAddEnable()
             RemoveSelection(moSelectedList)
         End Sub
 
-        Private Sub BtnAddAll_Click(sender As System.Object, e As System.EventArgs) Handles BtnAddAll.Click
+        Private Sub BtnAddAll_Click(sender As Object, e As EventArgs) Handles BtnAddAll.Click
             BtnAddAll_Action()
             UpdateAddEnable()
             RemoveSelection(moSelectedList)
         End Sub
 
-        Private Sub BtnRemove_Click(sender As System.Object, e As System.EventArgs) Handles BtnRemove.Click
+        Private Sub BtnRemove_Click(sender As Object, e As EventArgs) Handles BtnRemove.Click
             BtnRemove_Action()
             UpdateRemoveEnable()
             RemoveSelection(moAvailableList)
         End Sub
 
-        Private Sub BtnRemoveAll_Click(sender As System.Object, e As System.EventArgs) Handles BtnRemoveAll.Click
+        Private Sub BtnRemoveAll_Click(sender As Object, e As EventArgs) Handles BtnRemoveAll.Click
             BtnRemoveAll_Action()
             UpdateRemoveEnable()
             RemoveSelection(moAvailableList)
         End Sub
 
-        Private Sub moAvailableList_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moAvailableList.SelectedIndexChanged
+        Private Sub moAvailableList_SelectedIndexChanged(sender As Object, e As EventArgs) Handles moAvailableList.SelectedIndexChanged
             BtnAdd.Enabled = True
             BtnRemove.Enabled = False
         End Sub
 
-        Private Sub moSelectedList_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moSelectedList.SelectedIndexChanged
+        Private Sub moSelectedList_SelectedIndexChanged(sender As Object, e As EventArgs) Handles moSelectedList.SelectedIndexChanged
             BtnRemove.Enabled = True
             BtnAdd.Enabled = False
         End Sub
@@ -254,10 +256,10 @@ Namespace Generic
 
 #Region "Sort"
         Private Class TheComparer
-            Implements System.Collections.IComparer
+            Implements IComparer
 
             Function Compare(x As Object, y As Object) As Integer _
-                  Implements System.Collections.IComparer.Compare
+                  Implements IComparer.Compare
                 Dim oXItem As ListItem = CType(x, ListItem)
                 Dim oYItem As ListItem = CType(y, ListItem)
 

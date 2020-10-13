@@ -1,4 +1,7 @@
+Imports System.Diagnostics
 Imports System.Globalization
+Imports System.Reflection
+Imports System.Threading
 
 Partial Class NonBusinessCalendarForm
     Inherits ElitaPlusPage
@@ -30,14 +33,14 @@ Partial Class NonBusinessCalendarForm
 
 #Region " Controls "
     ' labels
-    Protected WithEvents Label3 As System.Web.UI.WebControls.Label
-    Protected WithEvents Label4 As System.Web.UI.WebControls.Label
+    Protected WithEvents Label3 As Label
+    Protected WithEvents Label4 As Label
     Protected WithEvents ErrorCtrl As ErrorController
-    Protected WithEvents btnBack As System.Web.UI.WebControls.Button
-    Protected WithEvents btnUndo_WRITE As System.Web.UI.WebControls.Button
-    Protected WithEvents checkDates As System.Web.UI.HtmlControls.HtmlInputHidden
-    Protected WithEvents uncheckDates As System.Web.UI.HtmlControls.HtmlInputHidden
-    Protected WithEvents isBtnBackClicked As System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents btnBack As Button
+    Protected WithEvents btnUndo_WRITE As Button
+    Protected WithEvents checkDates As HtmlInputHidden
+    Protected WithEvents uncheckDates As HtmlInputHidden
+    Protected WithEvents isBtnBackClicked As HtmlInputHidden
 
     Protected checkDatesArray() As String
     Protected uncheckDatesArray() As String
@@ -54,15 +57,15 @@ Partial Class NonBusinessCalendarForm
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -89,7 +92,7 @@ Partial Class NonBusinessCalendarForm
     ' *************************************************************************** '
     '   Sub Page_Load: User code to initialize the page
     ' *************************************************************************** '
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         Dim dateParam As String
         Dim sOpenerButton As String
@@ -192,30 +195,30 @@ Partial Class NonBusinessCalendarForm
     Protected Sub CheckIfComingFromSaveConfirm()
         Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
         If confResponse IsNot Nothing AndAlso confResponse = CONFIRM_MESSAGE_OK Then
-            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
+            If State.ActionInProgress <> DetailPageCommand.BackOnErr Then
                 SaveNonBusinessCalendar()
             End If
             Select Case State.ActionInProgress
-                Case ElitaPlusPage.DetailPageCommand.Back
+                Case DetailPageCommand.Back
                     NavAction()
-                Case ElitaPlusPage.DetailPageCommand.New_
+                Case DetailPageCommand.New_
                     AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
                     SaveNonBusinessCalendar()
-                Case ElitaPlusPage.DetailPageCommand.BackOnErr
+                Case DetailPageCommand.BackOnErr
                     NavAction()
             End Select
         ElseIf confResponse IsNot Nothing AndAlso confResponse = CONFIRM_MESSAGE_CANCEL Then
             Select Case State.ActionInProgress
-                Case ElitaPlusPage.DetailPageCommand.Back
+                Case DetailPageCommand.Back
                     NavAction()
-                Case ElitaPlusPage.DetailPageCommand.New_
+                Case DetailPageCommand.New_
                     SaveNonBusinessCalendar()
-                Case ElitaPlusPage.DetailPageCommand.BackOnErr
+                Case DetailPageCommand.BackOnErr
                     ErrorCtrl.AddErrorAndShow(State.LastErrMsg)
             End Select
         End If
         'Clean after consuming the action
-        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        State.ActionInProgress = DetailPageCommand.Nothing_
         HiddenSaveChangesPromptResponse.Value = ""
     End Sub
 
@@ -263,15 +266,15 @@ Partial Class NonBusinessCalendarForm
         Try
             If IsPageDirty() Then
                 AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, HiddenSaveChangesPromptResponse)
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                State.ActionInProgress = DetailPageCommand.Back
             Else
                 NavAction()
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, ErrorCtrl)
             AddConfirmMsg(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, HiddenSaveChangesPromptResponse)
-            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+            State.ActionInProgress = DetailPageCommand.BackOnErr
             State.LastErrMsg = ErrorCtrl.Text
         End Try
     End Sub
@@ -288,7 +291,7 @@ Partial Class NonBusinessCalendarForm
 
 #Region "Button Click"
 
-    Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As Object, e As EventArgs) Handles btnSave_WRITE.Click
         Try
             If IsPageDirty Then
                 SaveNonBusinessCalendar()
@@ -302,12 +305,12 @@ Partial Class NonBusinessCalendarForm
         End Try
     End Sub
 
-    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         isBtnBackClicked.Value = "Y"
         ConfirmationCheck()
     End Sub
 
-    Private Sub btnUndo_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
+    Private Sub btnUndo_WRITE_Click(sender As Object, e As EventArgs) Handles btnUndo_WRITE.Click
         ResetDates()
     End Sub
 
@@ -336,7 +339,7 @@ Partial Class NonBusinessCalendarForm
 
     Private Sub TranslateControlByPropertyInfo(Control As WebControl, LangId As Guid)
         Dim ControlType As Type = Control.GetType
-        Dim propInfo As System.Reflection.PropertyInfo = ControlType.GetProperty("Text", Reflection.BindingFlags.Instance Or Reflection.BindingFlags.Public)
+        Dim propInfo As PropertyInfo = ControlType.GetProperty("Text", BindingFlags.Instance Or BindingFlags.Public)
         If propInfo IsNot Nothing Then
             Dim originalValue As String = CType(propInfo.GetValue(Control, Nothing), String)
             If originalValue IsNot Nothing Then
@@ -350,7 +353,7 @@ Partial Class NonBusinessCalendarForm
     ' *************************************************************************** '
     '   Sub MyCalendar_SelectionChanged: Handles the selection change event of the calendar
     ' *************************************************************************** '
-    Protected Sub MyCalendar_SelectionChanged(sender As System.Object, e As System.EventArgs) Handles MyCalendar.SelectionChanged
+    Protected Sub MyCalendar_SelectionChanged(sender As Object, e As EventArgs) Handles MyCalendar.SelectionChanged
 
         Dim sJscript As String
         Dim fieldNameParam As String
@@ -388,14 +391,14 @@ Partial Class NonBusinessCalendarForm
         ' sets the corresponding text field's value to the selected date from the calendar
         If fieldNameParam.IndexOf(":") < 0 Then
             sJscript &= "    window.opener.document." & HttpContext.Current.Request.QueryString("formname") & ".value = '" & _
-              ElitaPlusPage.GetDateFormattedString(MyCalendar.SelectedDate) & "';" & Environment.NewLine
+              GetDateFormattedString(MyCalendar.SelectedDate) & "';" & Environment.NewLine
             'sJscript &= "window.opener.document." & HttpContext.Current.Request.QueryString("formname") & ".fireEvent('onchange')" & Environment.NewLine
             sJscript &= " var element = window.opener.document.getElementById('" & HttpContext.Current.Request.QueryString("formname") & "'); if(element.onchange) { element.onchange();} " & Environment.NewLine
 
         Else
             fieldNameParam = fieldNameParam.Replace(":", "_")
             sJscript &= "    window.opener.document.getElementById('" & fieldNameParam & "').value = '" & _
-              ElitaPlusPage.GetDateFormattedString(MyCalendar.SelectedDate) & "';" & Environment.NewLine
+              GetDateFormattedString(MyCalendar.SelectedDate) & "';" & Environment.NewLine
         End If
 
         sJscript &= "    window.close();" & Environment.NewLine
@@ -427,7 +430,7 @@ Partial Class NonBusinessCalendarForm
             Dim sJavaScript As String
             Dim sMsg As String = TranslateLabelOrMessage(Message.MSG_INVALID_DATE, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
             sJavaScript = "<SCRIPT>" & Environment.NewLine
-            sJavaScript &= "showMessageWithSubmit('" & sMsg & "', '" & sMsg & "', '" & ElitaPlusPage.MSG_BTN_OK & "', '" & ElitaPlusPage.MSG_TYPE_ALERT & "');" & Environment.NewLine
+            sJavaScript &= "showMessageWithSubmit('" & sMsg & "', '" & sMsg & "', '" & MSG_BTN_OK & "', '" & MSG_TYPE_ALERT & "');" & Environment.NewLine
             sJavaScript &= "</SCRIPT>" & Environment.NewLine
             RegisterStartupScript("ShowConfirmation", sJavaScript)
             ' It will set today's year
@@ -439,7 +442,7 @@ Partial Class NonBusinessCalendarForm
     '   Sub MyCalendar_VisibleMonthChanged: Handles the visible month change event
     '                                       of the calendar and sets the dropdown lists
     ' *************************************************************************** '
-    Private Sub MyCalendar_VisibleMonthChanged(sender As System.Object, e As System.Web.UI.WebControls.MonthChangedEventArgs) Handles MyCalendar.VisibleMonthChanged
+    Private Sub MyCalendar_VisibleMonthChanged(sender As Object, e As MonthChangedEventArgs) Handles MyCalendar.VisibleMonthChanged
         ConfirmationCheck()
         SetMonthYear(MyCalendar.VisibleDate.ToString("MMM", LocalizationMgr.CurrentFormatProvider), MyCalendar.VisibleDate.Year.ToString(LocalizationMgr.CurrentFormatProvider))
     End Sub
@@ -498,7 +501,7 @@ Partial Class NonBusinessCalendarForm
     '   Sub MonthSelected: Handles the select change event of the month dropdown and
     '                      sets the visible month of the calendar
     ' *************************************************************************** '
-    Private Sub MonthSelected(sender As System.Object, e As System.EventArgs) Handles cboMonthList.SelectedIndexChanged
+    Private Sub MonthSelected(sender As Object, e As EventArgs) Handles cboMonthList.SelectedIndexChanged
         ConfirmationCheck()
         Dim strSelMonth As String = cboMonthList.SelectedItem.Text
         SetNewVisibleDate(strSelMonth, cboYearList.SelectedItem.Text)
@@ -508,7 +511,7 @@ Partial Class NonBusinessCalendarForm
     '   Sub YearSelected: Handles the select change event of the year dropdown and
     '                     sets the visible year of the calendar
     ' *************************************************************************** '
-    Private Sub YearSelected(sender As System.Object, e As System.EventArgs) Handles cboYearList.SelectedIndexChanged
+    Private Sub YearSelected(sender As Object, e As EventArgs) Handles cboYearList.SelectedIndexChanged
         ConfirmationCheck()
         Dim strSelYear As String = cboYearList.SelectedItem.Text
         SetNewVisibleDate(cboMonthList.SelectedItem.Text, strSelYear)
@@ -527,7 +530,7 @@ Partial Class NonBusinessCalendarForm
             strDateVal = month & "/" & year
             sNewDate = CType(strDateVal, Date)
         Catch ex As Exception
-            DateTime.TryParseExact(strDateVal, "MMM/YYYY", System.Threading.Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, sNewDate)
+            DateTime.TryParseExact(strDateVal, "MMM/YYYY", Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, sNewDate)
         End Try
         MyCalendar.VisibleDate = sNewDate
     End Sub

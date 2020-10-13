@@ -1294,7 +1294,7 @@ Public Class Company
             Dim result As Boolean
             Dim CompanyID As Guid = LookupListNew.GetIdFromCode(LookupListNew.GetCompanyLookupList(), Code)
 
-            If CompanyID = Guid.Empty Or Id = CompanyID Then
+            If CompanyID = Guid.Empty OrElse Id = CompanyID Then
                 Return False
             End If
             'result = dal.CheckIfCompanyCodeAlreadyExists(Code)
@@ -1320,7 +1320,7 @@ End Class
     Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
         Dim obj As Company = CType(objectToValidate, Company)
 
-        If valueToCheck Is Nothing Or valueToCheck Is String.Empty Then
+        If valueToCheck Is Nothing OrElse valueToCheck Is String.Empty Then
             Return True
         End If
 

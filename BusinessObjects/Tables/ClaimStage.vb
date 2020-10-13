@@ -570,7 +570,7 @@ Public Class ClaimStage
             If valueToCheck Is Nothing Then Return True
 
             If Not obj.CoverageTypeId = Guid.Empty Then
-                If obj.DealerId = Guid.Empty Or String.IsNullOrEmpty(obj.ProductCode) Then
+                If obj.DealerId = Guid.Empty OrElse String.IsNullOrEmpty(obj.ProductCode) Then
                     Return False
                 Else
                     Return True
@@ -613,7 +613,7 @@ Public Class ClaimStage
 
             If valueToCheck Is Nothing Then Return True
 
-            If (obj.ScreenId = Guid.Empty Or obj.ScreenId = Nothing) Then
+            If (obj.ScreenId = Guid.Empty OrElse obj.ScreenId = Nothing) Then
                 Return False
             Else
                 Return True
@@ -634,7 +634,7 @@ Public Class ClaimStage
 
             If valueToCheck Is Nothing Then Return True
 
-            If (obj.PortalId = Guid.Empty Or obj.PortalId = Nothing) Then
+            If (obj.PortalId = Guid.Empty OrElse obj.PortalId = Nothing) Then
                 Return False
             Else
                 Return True

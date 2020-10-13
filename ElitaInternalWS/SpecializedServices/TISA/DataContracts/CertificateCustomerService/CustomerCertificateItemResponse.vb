@@ -28,7 +28,7 @@ Public Class CustomerCertificateItemResponse
 
 
     Public Sub New(Item As DataTable)
-        If (Not Item Is Nothing) Then
+        If (Item IsNot Nothing) Then
             Manufacturer = Item.Rows(0)("make").ToString()
             Model = Item.Rows(0)("model").ToString()
             ProductCode = Item.Rows(0)("product_code").ToString()

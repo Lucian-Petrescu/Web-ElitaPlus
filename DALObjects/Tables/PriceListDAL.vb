@@ -135,7 +135,7 @@ Public Class PriceListDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
@@ -228,7 +228,7 @@ Public Class PriceListDAL
                 End Using
             End Using
             Dim par = parameters.FirstOrDefault(Function(p As OracleParameter) p.ParameterName.Equals(PAR_OUT_NAME_RETURN_CODE))
-            If (Not par Is Nothing AndAlso par.Value = 200) Then
+            If (par IsNot Nothing AndAlso par.Value = 200) Then
                 Throw New ElitaPlusException("PriceList - " + methodName, Common.ErrorCodes.DB_READ_ERROR)
             End If
         Catch ex As Exception

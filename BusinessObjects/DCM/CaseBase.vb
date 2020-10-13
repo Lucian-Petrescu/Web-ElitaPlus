@@ -586,7 +586,7 @@ Public Class CaseBase
                                            secFieldTableName As String, secField As String, isCallerAuthenticated As Boolean) As Boolean
 
         If exclSecFieldsDt IsNot Nothing AndAlso callerAuthenticationNeeded AndAlso Not isCallerAuthenticated Then
-            If secField Is String.Empty OrElse (exclSecFieldsDt.AsEnumerable().Where(Function(p) p.Field(Of String)("table_name") = secFieldTableName And p.Field(Of String)("column_name") = secField).Count > 0) Then
+            If secField Is String.Empty OrElse (exclSecFieldsDt.AsEnumerable().Where(Function(p) p.Field(Of String)("table_name") = secFieldTableName AndAlso p.Field(Of String)("column_name") = secField).Count > 0) Then
                 Return False
             End If
             '(ExclSecFieldsDt.AsEnumerable().Where(Function(p) p.Field(Of String)("table_name") = "ELP_CUSTOMER" and p.Field(Of String)("column_name") = secField).Count > 0 ) then                       

@@ -23,7 +23,7 @@ Namespace GeographicServices
                 For Each rowView As DataRowView In RegionsAndComunasDV
                     Dim row As DataRow = rowView.Row
                     If Not CurrentRegion.Equals(row.Item("region_code")) Then
-                        CopyRegionsAndComunasDV.RowFilter = "region_code='" + row.Item("region_code") + "'"
+                        CopyRegionsAndComunasDV.RowFilter = "region_code='" & row.Item("region_code") & "'"
                         Dim oRegionsAndComunasInfo As RegionsAndComunasInfo = New RegionsAndComunasInfo(CopyRegionsAndComunasDV)
                         RegionsAndComunas.Add(oRegionsAndComunasInfo)
                     End If

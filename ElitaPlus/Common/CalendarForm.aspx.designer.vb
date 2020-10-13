@@ -20,7 +20,7 @@ Partial Public Class CalendarForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Literal1 As Global.System.Web.UI.WebControls.Literal
+    Protected WithEvents Literal1 As Literal
     
     '''<summary>
     '''Form1 control.
@@ -29,7 +29,7 @@ Partial Public Class CalendarForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Form1 As Global.System.Web.UI.HtmlControls.HtmlForm
+    Protected WithEvents Form1 As HtmlForm
     
     '''<summary>
     '''LabelMonth control.
@@ -38,7 +38,7 @@ Partial Public Class CalendarForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelMonth As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelMonth As Label
     
     '''<summary>
     '''cboMonthList control.
@@ -47,7 +47,7 @@ Partial Public Class CalendarForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboMonthList As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboMonthList As DropDownList
     
     '''<summary>
     '''LabelYear control.
@@ -56,7 +56,7 @@ Partial Public Class CalendarForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelYear As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelYear As Label
     
     '''<summary>
     '''cboYearList control.
@@ -65,7 +65,7 @@ Partial Public Class CalendarForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboYearList As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboYearList As DropDownList
     
     '''<summary>
     '''MyCalendar control.
@@ -74,5 +74,5 @@ Partial Public Class CalendarForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents MyCalendar As Global.System.Web.UI.WebControls.Calendar
+    Protected WithEvents MyCalendar As Calendar
 End Class

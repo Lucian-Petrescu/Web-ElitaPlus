@@ -21,7 +21,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents ServiceClassLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents ServiceClassLabel As Label
 
         '''<summary>
         '''cboServiceClass control.
@@ -30,7 +30,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents cboServiceClass As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents cboServiceClass As DropDownList
 
         '''<summary>
         '''ServiceTypeLabel control.
@@ -39,7 +39,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents ServiceTypeLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents ServiceTypeLabel As Label
 
         '''<summary>
         '''cboServiceType control.
@@ -48,6 +48,6 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents cboServiceType As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents cboServiceType As DropDownList
     End Class
 End Namespace

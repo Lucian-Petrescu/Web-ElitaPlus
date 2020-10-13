@@ -23,9 +23,9 @@ Imports System.Runtime.Serialization
                 ElitaPlusPage.SetLabelError(lbl)
             End If
             If Err_Mess Is Nothing Then
-                Throw New GUIException(Assurant.ElitaPlus.ElitaPlusWebApp.Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_YEARMONTH_MUST_BE_SELECTED_ERR)
+                Throw New GUIException(ElitaPlusWebApp.Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_YEARMONTH_MUST_BE_SELECTED_ERR)
             Else
-                Throw New GUIException(Assurant.ElitaPlus.ElitaPlusWebApp.Message.MSG_BEGIN_END_DATE, Err_Mess)
+                Throw New GUIException(ElitaPlusWebApp.Message.MSG_BEGIN_END_DATE, Err_Mess)
             End If
         End If
     End Sub

@@ -20,19 +20,19 @@ Public Class CertCustInfo
     Public Property WarrantySalesDate As Date
 
     Public Sub New(pCertificate As Certificate)
-        If Not pCertificate.CustomerName Is Nothing Then
+        If pCertificate.CustomerName IsNot Nothing Then
             CustomerName = pCertificate.CustomerName
         End If
-        If Not pCertificate.IdentificationNumber Is Nothing Then
+        If pCertificate.IdentificationNumber IsNot Nothing Then
             CustomerTaxId = pCertificate.IdentificationNumber
         End If
-        If Not pCertificate.DealerProductCode Is Nothing Then
+        If pCertificate.DealerProductCode IsNot Nothing Then
             DealerProductCode = pCertificate.DealerProductCode
         End If
-        If Not pCertificate.ProductCode Is Nothing Then
+        If pCertificate.ProductCode IsNot Nothing Then
             ElitaProductCode = pCertificate.ProductCode
         End If
-        If Not pCertificate.WarrantySalesDate Is Nothing Then
+        If pCertificate.WarrantySalesDate IsNot Nothing Then
             WarrantySalesDate = pCertificate.WarrantySalesDate
         End If
     End Sub

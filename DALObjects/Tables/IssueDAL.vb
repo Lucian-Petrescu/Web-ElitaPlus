@@ -58,7 +58,7 @@ Public Class IssueDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
@@ -252,7 +252,7 @@ Public Class IssueDAL
             whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & COL_NAME_CODE & ")" & code.ToUpper
             bIsWhereClause = True
         End If
-        If (Not String.IsNullOrEmpty(effective) And Not String.IsNullOrEmpty(expiration)) Then
+        If (Not String.IsNullOrEmpty(effective) AndAlso Not String.IsNullOrEmpty(expiration)) Then
             whereClauseConditions &= " AND " & Environment.NewLine & "TO_DATE('" & DateHelper.GetDateValue(expiration).ToString("MM/dd/yyyy HH:mm:ss") & "', 'mm-dd-yyyy hh24:mi:ss') BETWEEN " & COL_NAME_EFFECTIVE & " AND " & COL_NAME_EXPIRATION
             bIsWhereClause = True
         End If
@@ -301,7 +301,7 @@ Public Class IssueDAL
                 whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & COL_NAME_CODE & ")" & code.ToUpper
                 bIsWhereClause = True
             End If
-            If (Not String.IsNullOrEmpty(effective) And Not String.IsNullOrEmpty(expiration)) Then
+            If (Not String.IsNullOrEmpty(effective) AndAlso Not String.IsNullOrEmpty(expiration)) Then
                 whereClauseConditions &= " AND " & Environment.NewLine & "TO_DATE('" & DateTime.Parse(expiration).ToString("MM/dd/yyyy HH:mm:ss") & "', 'mm-dd-yyyy hh24:mi:ss') BETWEEN " & COL_NAME_EFFECTIVE & " AND " & COL_NAME_EXPIRATION
                 bIsWhereClause = True
             End If

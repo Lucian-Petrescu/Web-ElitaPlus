@@ -95,7 +95,7 @@ Namespace Security
 
         Private Function ValidateCertificateExpirationDate(x509Certificate As X509Certificate2) As Boolean
             ''validate the certifiate 
-            If DateTime.Now < Convert.ToDateTime(x509Certificate.GetEffectiveDateString()) Or Convert.ToDateTime(x509Certificate.GetExpirationDateString()) < DateTime.Now Then
+            If DateTime.Now < Convert.ToDateTime(x509Certificate.GetEffectiveDateString()) OrElse Convert.ToDateTime(x509Certificate.GetExpirationDateString()) < DateTime.Now Then
                 Return False
             Else
                 Return True
@@ -185,7 +185,7 @@ Namespace Security
                     clientIp = ipAddresses.First()
 
                     X509Certificate = GetCertificateThumprint(sep, iwrc)
-                    If (Not X509Certificate Is Nothing AndAlso X509Certificate.RawData.Length > 0) Then
+                    If (X509Certificate IsNot Nothing AndAlso X509Certificate.RawData.Length > 0) Then
                         x509CertificateData = Convert.ToBase64String(X509Certificate.RawData)
                     End If
 

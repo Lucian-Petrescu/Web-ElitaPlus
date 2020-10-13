@@ -10,6 +10,7 @@
 Option Strict On
 Option Explicit On
 
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
 
 Partial Public Class UserControlPoliceReport_New
 
@@ -20,7 +21,7 @@ Partial Public Class UserControlPoliceReport_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents mPoliceMultipleColumnDropControl As Global.Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl_New
+    Protected WithEvents mPoliceMultipleColumnDropControl As MultipleColumnDDLabelControl_New
 
     '''<summary>
     '''LabelReportNumber control.
@@ -29,7 +30,7 @@ Partial Public Class UserControlPoliceReport_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelReportNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelReportNumber As Label
 
     '''<summary>
     '''TextboxReportNumber control.
@@ -38,7 +39,7 @@ Partial Public Class UserControlPoliceReport_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextboxReportNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextboxReportNumber As TextBox
 
     '''<summary>
     '''LabelOfficerName control.
@@ -47,7 +48,7 @@ Partial Public Class UserControlPoliceReport_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelOfficerName As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelOfficerName As Label
 
     '''<summary>
     '''TextboxOfficerName control.
@@ -56,5 +57,5 @@ Partial Public Class UserControlPoliceReport_New
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextboxOfficerName As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents TextboxOfficerName As TextBox
 End Class

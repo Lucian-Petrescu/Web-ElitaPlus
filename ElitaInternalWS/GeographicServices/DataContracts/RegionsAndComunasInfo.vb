@@ -29,7 +29,7 @@ Namespace GeographicServices
                 Dim Comunas As New List(Of ComunasInfo)
                 For Each rowView As DataRowView In RegionsAndComunasDV
                     Dim row As DataRow = rowView.Row
-                    If Not row.Item("comuna") Is DBNull.Value Then
+                    If row.Item("comuna") IsNot DBNull.Value Then
                         Dim oComunasInfo As ComunasInfo = New ComunasInfo(row.Item("comuna"))
                         Comunas.Add(oComunasInfo)
                     End If

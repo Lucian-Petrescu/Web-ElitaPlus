@@ -20,7 +20,7 @@ Partial Public Class UserControlCaseHeader
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelCustomerName As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelCustomerName As Label
     
     '''<summary>
     '''LabelCustomerNameValue control.
@@ -29,7 +29,7 @@ Partial Public Class UserControlCaseHeader
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelCustomerNameValue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelCustomerNameValue As Label
     
     '''<summary>
     '''LabelCallerName control.
@@ -38,7 +38,7 @@ Partial Public Class UserControlCaseHeader
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelCallerName As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelCallerName As Label
     
     '''<summary>
     '''LabelCallerNameValue control.
@@ -47,7 +47,7 @@ Partial Public Class UserControlCaseHeader
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelCallerNameValue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelCallerNameValue As Label
     
     '''<summary>
     '''LabelCompany control.
@@ -56,7 +56,7 @@ Partial Public Class UserControlCaseHeader
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelCompany As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelCompany As Label
     
     '''<summary>
     '''LabelCompanyValue control.
@@ -65,7 +65,7 @@ Partial Public Class UserControlCaseHeader
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelCompanyValue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelCompanyValue As Label
     
     '''<summary>
     '''LabelDealerName control.
@@ -74,7 +74,7 @@ Partial Public Class UserControlCaseHeader
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelDealerName As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelDealerName As Label
     
     '''<summary>
     '''LabelDealerNameValue control.
@@ -83,7 +83,7 @@ Partial Public Class UserControlCaseHeader
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelDealerNameValue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelDealerNameValue As Label
     
     '''<summary>
     '''LabelCaseNumber control.
@@ -92,7 +92,7 @@ Partial Public Class UserControlCaseHeader
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelCaseNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelCaseNumber As Label
     
     '''<summary>
     '''LabelCaseNumberValue control.
@@ -101,7 +101,7 @@ Partial Public Class UserControlCaseHeader
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelCaseNumberValue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelCaseNumberValue As Label
     
     '''<summary>
     '''LabelCaseOpenDate control.
@@ -110,7 +110,7 @@ Partial Public Class UserControlCaseHeader
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelCaseOpenDate As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelCaseOpenDate As Label
     
     '''<summary>
     '''LabelCaseOpenDateValue control.
@@ -119,7 +119,7 @@ Partial Public Class UserControlCaseHeader
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelCaseOpenDateValue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelCaseOpenDateValue As Label
     
     '''<summary>
     '''LabelCasePurpose control.
@@ -128,7 +128,7 @@ Partial Public Class UserControlCaseHeader
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelCasePurpose As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelCasePurpose As Label
     
     '''<summary>
     '''LabelCasePurposeValue control.
@@ -137,7 +137,7 @@ Partial Public Class UserControlCaseHeader
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelCasePurposeValue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelCasePurposeValue As Label
     
     '''<summary>
     '''LabelCaseStatus control.
@@ -146,7 +146,7 @@ Partial Public Class UserControlCaseHeader
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelCaseStatus As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelCaseStatus As Label
     
     '''<summary>
     '''CaseStatusTD control.
@@ -155,7 +155,7 @@ Partial Public Class UserControlCaseHeader
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents CaseStatusTD As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents CaseStatusTD As HtmlTableCell
     
     '''<summary>
     '''LabelCaseStatusValue control.
@@ -164,7 +164,7 @@ Partial Public Class UserControlCaseHeader
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelCaseStatusValue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelCaseStatusValue As Label
     
     '''<summary>
     '''caseCloseInfo control.
@@ -173,7 +173,7 @@ Partial Public Class UserControlCaseHeader
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents caseCloseInfo As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents caseCloseInfo As HtmlTableRow
     
     '''<summary>
     '''LabelCaseCloseDate control.
@@ -182,7 +182,7 @@ Partial Public Class UserControlCaseHeader
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelCaseCloseDate As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelCaseCloseDate As Label
     
     '''<summary>
     '''LabelCaseCloseDateValue control.
@@ -191,7 +191,7 @@ Partial Public Class UserControlCaseHeader
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelCaseCloseDateValue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelCaseCloseDateValue As Label
     
     '''<summary>
     '''LabelCaseClose control.
@@ -200,7 +200,7 @@ Partial Public Class UserControlCaseHeader
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelCaseClose As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelCaseClose As Label
     
     '''<summary>
     '''LabelCaseCloseValue control.
@@ -209,7 +209,7 @@ Partial Public Class UserControlCaseHeader
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelCaseCloseValue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelCaseCloseValue As Label
     
     '''<summary>
     '''LabelCertificateNumber control.
@@ -218,7 +218,7 @@ Partial Public Class UserControlCaseHeader
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelCertificateNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelCertificateNumber As Label
     
     '''<summary>
     '''LabelCertificateNumberValue control.
@@ -227,7 +227,7 @@ Partial Public Class UserControlCaseHeader
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelCertificateNumberValue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelCertificateNumberValue As Label
     
     '''<summary>
     '''LabelClaimNumber control.
@@ -236,7 +236,7 @@ Partial Public Class UserControlCaseHeader
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelClaimNumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelClaimNumber As Label
     
     '''<summary>
     '''LabelClaimNumberValue control.
@@ -245,5 +245,5 @@ Partial Public Class UserControlCaseHeader
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelClaimNumberValue As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelClaimNumberValue As Label
 End Class

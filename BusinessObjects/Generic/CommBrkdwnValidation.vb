@@ -197,7 +197,7 @@ Public Class CommBrkdwnValidation
                             commperiodExpirationDate = New DateType(CType(preValidatedDealerCommBrkdwnRow(CommissionPeriodDAL.COL_NAME_EXPIRATION_DATE), Date))
                         End If
 
-                        If commperiodEffectiveDate = Nothing Or commperiodExpirationDate = Nothing Then
+                        If commperiodEffectiveDate = Nothing OrElse commperiodExpirationDate = Nothing Then
                             Select Case objCommPeriod.ExpirationCount(objCommissionPeriodData)
                                 Case 0
                                     .EffectiveDate = New DateType(Date.Today.AddDays(-1))
@@ -362,7 +362,7 @@ Public Class CommBrkdwnValidation
                 .DealerId = objCommEntyBrkdwnUpload.DealerId
                 .ComputeMethodId = objCommEntyBrkdwnUpload.ComputeMethodId
                 'Effective & Expiration
-                If objCommEntyBrkdwnUpload.Effective = Nothing Or objCommEntyBrkdwnUpload.Expiration = Nothing Then
+                If objCommEntyBrkdwnUpload.Effective = Nothing OrElse objCommEntyBrkdwnUpload.Expiration = Nothing Then
                     Dim objCommissionPeriodData = New CommissionPeriodData()
                     Dim companyList As New ArrayList
                     companyList.Add(objCommEntyBrkdwnUpload.CompanyId)

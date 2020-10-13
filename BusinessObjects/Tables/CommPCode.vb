@@ -437,14 +437,14 @@ Public Class CommPCode
 
         GetEntityTotals(oTable, totalPComm, isPComm, totalPMarkup, isPMarkup)
         entity = New CommPCodeEntity
-        If ((isPComm = True) AndAlso ((Math.Round(totalPComm, 2) <> 0.0) And Math.Round(totalPComm, 2) <> 100.0)) Then
+        If ((isPComm = True) AndAlso ((Math.Round(totalPComm, 2) <> 0.0) AndAlso Math.Round(totalPComm, 2) <> 100.0)) Then
 
             err1 = New ValidationError(ErrorCodes.INVALID_COMM_BREAK_COMM_PCT_ERR, GetType(CommPCodeEntity), _
                                        GetType(CommPCodeEntity), "CommissionAmount", entity.CommissionAmount)
             errIndex += 1
         End If
 
-        If ((isPMarkup = True) AndAlso ((Math.Round(totalPMarkup, 2) <> 0.0) And Math.Round(totalPMarkup, 2) <> 100.0)) Then
+        If ((isPMarkup = True) AndAlso ((Math.Round(totalPMarkup, 2) <> 0.0) AndAlso Math.Round(totalPMarkup, 2) <> 100.0)) Then
             err2 = New ValidationError(ErrorCodes.INVALID_COMM_BREAK_MARKUP_ERR, GetType(CommPCodeEntity), GetType(CommPCodeEntity), "MarkupAmount", entity.MarkupAmount)
             errIndex += 1
         End If

@@ -1,11 +1,12 @@
 ﻿Imports System.Collections.Generic
+Imports System.Threading
 
 Namespace Certificates
     Public Class BillingPaymentHistoryListForm
         Inherits ElitaPlusSearchPage
 
 #Region "Constants"
-        Protected WithEvents moCertificateInfoController As Global.Assurant.ElitaPlus.ElitaPlusWebApp.Certificates.UserControlCertificateInfo_New
+        Protected WithEvents moCertificateInfoController As UserControlCertificateInfo_New
 
         Private Const EDIT_COMMAND As String = "SelectAction"
         Private Const PAID_COMMAND As String = "PaidAction"
@@ -136,19 +137,19 @@ Namespace Certificates
 
 #Region "Properties"
 
-        Public ReadOnly Property GridObject() As DataGrid
+        Public ReadOnly Property GridObject As DataGrid
             Get
-                Return Grid
+                Return Me.Grid
             End Get
         End Property
 
-        Public ReadOnly Property PayGridObject() As DataGrid
+        Public ReadOnly Property PayGridObject As DataGrid
             Get
-                Return CollectionGrid
+                Return Me.CollectionGrid
             End Get
         End Property
 
-        Public ReadOnly Property UserCertificateCtr() As UserControlCertificateInfo_New
+        Public ReadOnly Property UserCertificateCtr As UserControlCertificateInfo_New
             Get
                 If moCertificateInfoController Is Nothing Then
                     moCertificateInfoController = CType(FindControl("moCertificateInfoController"), UserControlCertificateInfo_New)
@@ -157,19 +158,19 @@ Namespace Certificates
             End Get
         End Property
 
-        Public ReadOnly Property GetCompanyCode() As String
+        Public ReadOnly Property GetCompanyCode As String
             Get
-                Dim companyBO As Company = New Company(State.oCert.CompanyId)
+                Dim companyBO As Company = New Company(Me.State.oCert.CompanyId)
 
                 Return companyBO.Code
             End Get
 
         End Property
 
-        Public ReadOnly Property GetInstallmentPaymentFlag() As Boolean
+        Public ReadOnly Property GetInstallmentPaymentFlag As Boolean
             Get
                 Dim contractBO As Contract
-                contractBO = Contract.GetContract(State.oCert.DealerId, CDate(State.oCert.WarrantySalesDate))
+                contractBO = Contract.GetContract(Me.State.oCert.DealerId, CDate(Me.State.oCert.WarrantySalesDate))
 
                 If contractBO IsNot Nothing Then
                     If contractBO.InstallmentPaymentId.Equals(Guid.Empty) Then Return False
@@ -195,45 +196,45 @@ Namespace Certificates
 
 #Region "Page Events"
 
-        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
             Try
-                MasterPage.MessageController.Clear()
+                Me.MasterPage.MessageController.Clear()
 
-                If Not IsPostBack Then
-                    SetFormTitle(PAGETITLE)
-                    SetFormTab(PAGETAB)
+                If Not Me.IsPostBack Then
+                    Me.SetFormTitle(PAGETITLE)
+                    Me.SetFormTab(PAGETAB)
 
-                    moCertificateInfoController = UserCertificateCtr
-                    moCertificateInfoController.InitController(State.oCert.Id, , GetCompanyCode)
+                    moCertificateInfoController = Me.UserCertificateCtr
+                    moCertificateInfoController.InitController(Me.State.oCert.Id, , GetCompanyCode)
 
-                    State.IsInstallmentPayment = GetInstallmentPaymentFlag
+                    Me.State.IsInstallmentPayment = Me.GetInstallmentPaymentFlag
 
                     'BillingPay Grid
-                    cboPageSize.SelectedValue = CType(State.BillPayGridPageSize, String)
-                    GridObject.PageSize = State.BillPayGridPageSize
-                    MyBase.SetGridItemStyleColor(GridObject)
+                    cboPageSize.SelectedValue = CType(Me.State.BillPayGridPageSize, String)
+                    GridObject.PageSize = Me.State.BillPayGridPageSize
+                    MyBase.SetGridItemStyleColor(Me.GridObject)
 
-                    If Not String.IsNullOrEmpty(State.oCert.Dealer.AcceptPaymentByCheck) AndAlso
-                    State.oCert.Dealer.AcceptPaymentByCheck = "YESNO-Y" Then
+                    If Not String.IsNullOrEmpty(Me.State.oCert.Dealer.AcceptPaymentByCheck) AndAlso
+                    Me.State.oCert.Dealer.AcceptPaymentByCheck = "YESNO-Y" Then
                         ControlMgr.SetVisibleControl(Me, btnAddCheckPayment, True)
                     Else
                         ControlMgr.SetVisibleControl(Me, btnAddCheckPayment, False)
                     End If
                     ControlMgr.SetVisibleControl(Me, btnAddRejectPayment, False)
-                    PopulateBillPayGrid()
-                    SetButtonState()
+                    Me.PopulateBillPayGrid()
+                    Me.SetButtonState()
 
                     'Collection Grid
-                    PopulateCollectPayGrid()
+                    Me.PopulateCollectPayGrid()
                 Else
                     GetDisabledTabs()
                 End If
                 CheckIfComingFromPayConfirm()
 
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
-            ShowMissingTranslations(MasterPage.MessageController)
+            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
         End Sub
 
         Private Sub GetDisabledTabs()
@@ -244,20 +245,20 @@ Namespace Certificates
             End If
         End Sub
 
-        Protected Shadows ReadOnly Property State() As MyState
+        Protected Shadows ReadOnly Property State As MyState
             Get
-                If NavController.State Is Nothing Then
-                    NavController.State = New MyState
+                If Me.NavController.State Is Nothing Then
+                    Me.NavController.State = New MyState
 
                     Me.State.IsBillPayGridVisible = True
                     Me.State.IsCollectionGridVisible = True
 
-                    Me.State.searchBillPayDV = BillingPayDetail.getLoadBillHistList(CType(NavController.ParametersPassed, Parameters).CertId, Me.State.BillPaySortExp)
+                    Me.State.searchBillPayDV = BillingPayDetail.getLoadBillHistList(CType(Me.NavController.ParametersPassed, Parameters).CertId, Me.State.BillPaySortExp)
                     'If Me.State.searchBillPayDV.Count > 0 Then
                     'Me.State.IsBillPayGridVisible = True
                     'End If
 
-                    Me.State.oCert = New Certificate(CType(NavController.ParametersPassed, Parameters).CertId)
+                    Me.State.oCert = New Certificate(CType(Me.NavController.ParametersPassed, Parameters).CertId)
                     'Me.State.oCertInstallment = New CertInstallment(CType(Me.NavController.ParametersPassed, Parameters).CertId, True)
 
                     Me.State.oDv = Me.State.MyBO_P.getBillPayTotals(Me.State.oCert.Id)
@@ -271,16 +272,16 @@ Namespace Certificates
                     End If
 
                 End If
-                Return CType(NavController.State, MyState)
+                Return CType(Me.NavController.State, MyState)
             End Get
         End Property
 
         Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Try
-                If CallingParameters IsNot Nothing Then
+                If Me.CallingParameters IsNot Nothing Then
                 End If
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController, False)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController, False)
             End Try
         End Sub
 
@@ -289,22 +290,22 @@ Namespace Certificates
 #Region "Controlling Logic"
 
         Protected Sub CheckIfComingFromPayConfirm()
-            Dim confResponse As String = HiddenPayResp.Value
-            HiddenPayResp.Value = ""
+            Dim confResponse As String = Me.HiddenPayResp.Value
+            Me.HiddenPayResp.Value = ""
             If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
                 Dim oBillPayDetail As BillingPayDetail
-                oBillPayDetail = New BillingPayDetail(State.SelectBillPayHistId)
+                oBillPayDetail = New BillingPayDetail(Me.State.SelectBillPayHistId)
 
                 Dim selectedBilllingStatusId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_BILLING_STATUS, BILLING_STATUS_ACTIVE)
                 Dim selectedRejectCodeId As Guid = Guid.Empty
                 Dim InstNum As Integer = CType(oBillPayDetail.InstallmentNumber, Integer)
                 Dim retVal As Integer
 
-                retVal = BillingPayDetail.CreateBillPayForRejOrAct(selectedBilllingStatusId, State.oCert.Id, InstNum, selectedRejectCodeId, State.SelectBillPayHistId)
+                retVal = BillingPayDetail.CreateBillPayForRejOrAct(selectedBilllingStatusId, Me.State.oCert.Id, InstNum, selectedRejectCodeId, Me.State.SelectBillPayHistId)
                 If retVal = 0 Then
-                    DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
-                    GridObject.SelectedIndex = NO_ITEM_SELECTED_INDEX
-                    State.searchBillPayDV = Nothing
+                    Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                    Me.GridObject.SelectedIndex = NO_ITEM_SELECTED_INDEX
+                    Me.State.searchBillPayDV = Nothing
                     ReturnFromEditing()
                 End If
             ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
@@ -315,25 +316,25 @@ Namespace Certificates
 
         Private Sub PopulateBillPayGrid(Optional ByVal oAction As String = ACTION_NONE)
 
-            If State.BillPaySortExp Is Nothing Then
-                State.BillPaySortExp = Grid.Columns(2).SortExpression & " DESC"
+            If Me.State.BillPaySortExp Is Nothing Then
+                Me.State.BillPaySortExp = Me.Grid.Columns(2).SortExpression & " DESC"
             End If
 
-            State.searchBillPayDV = BillingPayDetail.getLoadBillHistList(State.oCert.Id, State.BillPaySortExp)
-            State.oDv = State.MyBO_P.getBillPayTotals(State.oCert.Id)
+            Me.State.searchBillPayDV = BillingPayDetail.getLoadBillHistList(Me.State.oCert.Id, Me.State.BillPaySortExp)
+            Me.State.oDv = Me.State.MyBO_P.getBillPayTotals(Me.State.oCert.Id)
 
             If State.searchBillPayDV IsNot Nothing Then
-                SetPageAndSelectedIndexFromGuid(State.searchBillPayDV, State.SelectBillPayHistId, Grid, State.BillPayGridPageIndex)
-                If (State.IsEditMode) Then
-                    SetPageAndSelectedIndexFromGuid(State.searchBillPayDV, State.SelectBillPayHistId, Grid, State.BillPayGridPageIndex, State.IsEditMode)
+                Me.SetPageAndSelectedIndexFromGuid(Me.State.searchBillPayDV, Me.State.SelectBillPayHistId, Me.Grid, Me.State.BillPayGridPageIndex)
+                If (Me.State.IsEditMode) Then
+                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchBillPayDV, Me.State.SelectBillPayHistId, Me.Grid, Me.State.BillPayGridPageIndex, Me.State.IsEditMode)
                 Else
-                    SetPageAndSelectedIndexFromGuid(State.searchBillPayDV, Guid.Empty, Grid, State.BillPayGridPageIndex)
+                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchBillPayDV, Guid.Empty, Me.Grid, Me.State.BillPayGridPageIndex)
                 End If
             End If
 
-            State.oBillPayCount = CType(State.oDv.Table.Rows(0).Item(BillingPayDetail.BillPayTotals.COL_DETAIL_COUNT), Integer)
-            If State.oBillPayCount > 0 Then
-                State.oBillPayTotalAmount = CType(State.oDv.Table.Rows(0).Item(BillingPayDetail.BillPayTotals.COL_BILLPAY_AMOUNT_TOTAL), Decimal)
+            Me.State.oBillPayCount = CType(Me.State.oDv.Table.Rows(0).Item(BillingPayDetail.BillPayTotals.COL_DETAIL_COUNT), Integer)
+            If Me.State.oBillPayCount > 0 Then
+                Me.State.oBillPayTotalAmount = CType(Me.State.oDv.Table.Rows(0).Item(BillingPayDetail.BillPayTotals.COL_BILLPAY_AMOUNT_TOTAL), Decimal)
                 'Me.State.IsBillPayGridVisible = True
                 'Else
                 'Me.State.IsBillPayGridVisible = False
@@ -342,33 +343,33 @@ Namespace Certificates
             'Me.State.searchBillPayDV.Sort = COL_ORDER_BY
             'SetSelectedIndexFromGuid()
             'ControlMgr.SetEnableTabStrip(Me, tsHoriz.Items(1), Me.State.IsBillPayGridVisible)
-            GridObject.AutoGenerateColumns = False
-            SortAndBindBillPayGrid()
+            Me.GridObject.AutoGenerateColumns = False
+            Me.SortAndBindBillPayGrid()
 
         End Sub
 
         Private Sub PopulateCollectPayGrid(Optional ByVal oAction As String = ACTION_NONE)
 
-            If State.CollectedSortExp Is Nothing Then
-                State.CollectedSortExp = CollectionGrid.Columns(1).SortExpression & " DESC"
+            If Me.State.CollectedSortExp Is Nothing Then
+                Me.State.CollectedSortExp = Me.CollectionGrid.Columns(1).SortExpression & " DESC"
             End If
 
-            State.searchCollectedDV = CollectedPayDetail.getCollectPayHistList(State.oCert.Id, State.CollectedSortExp)
-            State.oDv = State.MyBO_C.getCollectPayTotals(State.oCert.Id)
+            Me.State.searchCollectedDV = CollectedPayDetail.getCollectPayHistList(Me.State.oCert.Id, Me.State.CollectedSortExp)
+            Me.State.oDv = Me.State.MyBO_C.getCollectPayTotals(Me.State.oCert.Id)
 
-            If State.searchCollectedDV.Count > 0 Then
-                State.oCollectedCount = State.searchCollectedDV.Count
-                State.oCollectedTotalAmount = CType(State.oDv.Table.Rows(0).Item(CollectedPayDetail.CollectPayTotals.COL_DETAIL_PAYMENT_AMOUNT_TOTAL), Decimal)
+            If Me.State.searchCollectedDV.Count > 0 Then
+                Me.State.oCollectedCount = Me.State.searchCollectedDV.Count
+                Me.State.oCollectedTotalAmount = CType(Me.State.oDv.Table.Rows(0).Item(CollectedPayDetail.CollectPayTotals.COL_DETAIL_PAYMENT_AMOUNT_TOTAL), Decimal)
 
                 'Me.State.IsCollectionGridVisible = True
 
-                cboPageSize2.SelectedValue = CType(State.CollectedGridPageSize, String)
-                CollectionGrid.PageSize = State.CollectedGridPageSize
-                MyBase.SetGridItemStyleColor(CollectionGrid)
+                cboPageSize2.SelectedValue = CType(Me.State.CollectedGridPageSize, String)
+                CollectionGrid.PageSize = Me.State.CollectedGridPageSize
+                MyBase.SetGridItemStyleColor(Me.CollectionGrid)
 
-                CollectionGrid.AutoGenerateColumns = False
+                Me.CollectionGrid.AutoGenerateColumns = False
 
-                SortAndBindCollectionGrid()
+                Me.SortAndBindCollectionGrid()
                 'Else
                 'Me.State.IsCollectionGridVisible = False
             End If
@@ -377,24 +378,24 @@ Namespace Certificates
             '    DisabledTabsList.Add(Tab_PaymentCollected)
             'End If
 
-            State.searchCollectedDV.Sort = COL_PAY_ORDER_BY
-            SortAndBindCollectionGrid()
+            Me.State.searchCollectedDV.Sort = COL_PAY_ORDER_BY
+            Me.SortAndBindCollectionGrid()
 
         End Sub
 
         Private Sub SetSelectedIndexFromGuid()
             Dim nSelectedRow As Integer
 
-            nSelectedRow = FindSelectedRowIndexFromGuid(State.searchBillPayDV, State.SelectBillPayHistId)
+            nSelectedRow = Me.FindSelectedRowIndexFromGuid(Me.State.searchBillPayDV, Me.State.SelectBillPayHistId)
             GridObject.SelectedIndex = NO_ITEM_SELECTED_INDEX
             GridObject.EditItemIndex = NO_ITEM_SELECTED_INDEX
             If (nSelectedRow > NO_ITEM_SELECTED_INDEX) Then
                 GridObject.SelectedIndex = nSelectedRow
-                If (State.IsEditMode) Then
+                If (Me.State.IsEditMode) Then
                     GridObject.EditItemIndex = GridObject.SelectedIndex
                 End If
             End If
-            If (State.IsEditMode) Then
+            If (Me.State.IsEditMode) Then
                 GridObject.AllowSorting = False
             Else
                 GridObject.AllowSorting = True
@@ -402,50 +403,50 @@ Namespace Certificates
         End Sub
 
         Private Sub SortAndBindBillPayGrid()
-            State.BillPayGridPageIndex = GridObject.CurrentPageIndex
+            Me.State.BillPayGridPageIndex = Me.GridObject.CurrentPageIndex
 
             'Me.Grid.AutoGenerateColumns = False
-            GridObject.DataSource = State.searchBillPayDV
+            Me.GridObject.DataSource = Me.State.searchBillPayDV
 
-            HighLightSortColumn(Grid, State.BillPaySortExp, IsNewUI)
+            HighLightSortColumn(Me.Grid, Me.State.BillPaySortExp, Me.IsNewUI)
 
-            GridObject.DataBind()
+            Me.GridObject.DataBind()
 
             'ControlMgr.SetVisibleControl(Me, Me.GridObject, Me.State.IsBillPayGridVisible)
-            PopulateControlFromBOProperty(moBillingTotalText, State.oBillPayTotalAmount)
-            Session("recCount") = State.searchBillPayDV.Count
+            Me.PopulateControlFromBOProperty(Me.moBillingTotalText, Me.State.oBillPayTotalAmount)
+            Session("recCount") = Me.State.searchBillPayDV.Count
 
-            If GridObject.Visible Then
-                lblRecordCount.Text = State.searchBillPayDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Me.GridObject.Visible Then
+                Me.lblRecordCount.Text = Me.State.searchBillPayDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         End Sub
 
         Private Sub SortAndBindCollectionGrid()
-            State.CollectedGridPageIndex = CollectionGrid.CurrentPageIndex
-            CollectionGrid.DataSource = State.searchCollectedDV
+            Me.State.CollectedGridPageIndex = Me.CollectionGrid.CurrentPageIndex
+            Me.CollectionGrid.DataSource = Me.State.searchCollectedDV
 
-            HighLightSortColumn(CollectionGrid, State.CollectedSortExp, IsNewUI)
+            HighLightSortColumn(Me.CollectionGrid, Me.State.CollectedSortExp, Me.IsNewUI)
 
-            CollectionGrid.DataBind()
+            Me.CollectionGrid.DataBind()
 
             'ControlMgr.SetVisibleControl(Me, Me.CollectionGrid, Me.State.IsCollectionGridVisible)
-            PopulateControlFromBOProperty(moCollectedTotalText, State.oCollectedTotalAmount)
-            Session("recCount2") = State.searchCollectedDV.Count
+            Me.PopulateControlFromBOProperty(Me.moCollectedTotalText, Me.State.oCollectedTotalAmount)
+            Session("recCount2") = Me.State.searchCollectedDV.Count
 
-            If CollectionGrid.Visible Then
-                lblRecordCount2.Text = State.searchCollectedDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Me.CollectionGrid.Visible Then
+                Me.lblRecordCount2.Text = Me.State.searchCollectedDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
         End Sub
 
         Private Sub SetButtonState()
-            If (State.IsEditMode) Then
+            If (Me.State.IsEditMode) Then
                 ControlMgr.SetVisibleControl(Me, btnSave_WRITE, True)
                 ControlMgr.SetVisibleControl(Me, btnUndo_WRITE, True)
-                MenuEnabled = False
+                Me.MenuEnabled = False
             Else
                 ControlMgr.SetVisibleControl(Me, btnSave_WRITE, False)
                 ControlMgr.SetVisibleControl(Me, btnUndo_WRITE, False)
-                MenuEnabled = True
+                Me.MenuEnabled = True
             End If
         End Sub
 
@@ -460,20 +461,20 @@ Namespace Certificates
 
 #Region "BillPay Datagrid "
 
-        Public Sub EnblDisblRjctCodeDD(sender As Object, e As System.EventArgs)
+        Public Sub EnblDisblRjctCodeDD(sender As Object, e As EventArgs)
             Dim oBSCode As String
             Dim ddl As DropDownList
             oBSCode = CType(sender, DropDownList).SelectedItem.Value
-            ddl = CType(GridObject.Items(GridObject.EditItemIndex).Cells(GRID_COL_REJECT_CODE).FindControl("RejectCodeDD"), DropDownList)
+            ddl = CType(Me.GridObject.Items(Me.GridObject.EditItemIndex).Cells(GRID_COL_REJECT_CODE).FindControl("RejectCodeDD"), DropDownList)
             If oBSCode = BILLING_STATUS_REJECT Then
                 ControlMgr.SetEnableControl(Me, ddl, True)
             Else
-                SetSelectedItem(ddl, "")
+                Me.SetSelectedItem(ddl, "")
                 ControlMgr.SetEnableControl(Me, ddl, False)
             End If
         End Sub
 
-        Public Sub Grid_ItemCreated(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemCreated
+        Public Sub Grid_ItemCreated(sender As Object, e As DataGridItemEventArgs) Handles Grid.ItemCreated
             Dim elemType As ListItemType = e.Item.ItemType
 
             If elemType = ListItemType.EditItem Then
@@ -490,27 +491,27 @@ Namespace Certificates
             End If
         End Sub
 
-        Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
+        Private Sub Grid_PageIndexChanged(source As Object, e As DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
             Try
-                GridObject.CurrentPageIndex = e.NewPageIndex
-                SortAndBindBillPayGrid()
+                Me.GridObject.CurrentPageIndex = e.NewPageIndex
+                Me.SortAndBindBillPayGrid()
                 'Me.PopulateBillPayGrid()
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 GridObject.CurrentPageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                State.BillPayGridPageSize = GridObject.PageSize
-                SortAndBindBillPayGrid()
+                Me.State.BillPayGridPageSize = GridObject.PageSize
+                Me.SortAndBindBillPayGrid()
                 'Me.PopulateBillPayGrid()
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
-        Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
+        Private Sub Grid_ItemDataBound(sender As Object, e As DataGridItemEventArgs) Handles Grid.ItemDataBound
 
             Try
                 Dim oBSCode As String
@@ -519,10 +520,10 @@ Namespace Certificates
                 Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
                 Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
                 'Dim oMaxActiveInstNoForCert As String = BillingPayDetail.GetMaxActiveInstNoForCert(CType(Me.CallingParameters, Guid)).ToString
-                Dim oGetAllRejInstNoForCert As DataView = BillingPayDetail.GetAllRejInstNoForCert(State.oCert.Id)
+                Dim oGetAllRejInstNoForCert As DataView = BillingPayDetail.GetAllRejInstNoForCert(Me.State.oCert.Id)
                 'Dim oGetLatestRejInstNoForCert As String = BillingPayDetail.GetLatestRejInstNoForCert(CType(Me.CallingParameters, Guid)).ToString
 
-                Dim oContractId As Guid = Contract.GetContractID(State.oCert.Id)
+                Dim oContractId As Guid = Contract.GetContractID(Me.State.oCert.Id)
                 Dim oContract As New Contract(oContractId)
                 Dim dsplyBtn As Boolean = True
                 If e.Item.DataItem IsNot Nothing Then
@@ -584,7 +585,7 @@ Namespace Certificates
 
                     oBSCode = LookupListNew.GetCodeFromDescription(LookupListNew.GetBillingStatusList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), dvRow(BillingPayDetail.BillPayHistorySearchDV.COL_NAME_BILLING_STATUS).ToString)
 
-                    PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_BILLED_AMOUNT), dvRow(BillingPayDetail.BillPayHistorySearchDV.COL_NAME_BILLED_AMOUNT))
+                    Me.PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_BILLED_AMOUNT), dvRow(BillingPayDetail.BillPayHistorySearchDV.COL_NAME_BILLED_AMOUNT))
 
                     If LookupListNew.GetCodeFromId(LookupListNew.LK_ALLOW_CC_REJECTIONS, oContract.AllowMultipleRejectionsId) = Codes.ALLOW_CC_REJECTIONS_NO Then
                         If (dvRow(BillingPayDetail.BillPayHistorySearchDV.COL_NAME_INSTALLMENT_NUMBER).ToString IsNot Nothing _
@@ -619,36 +620,36 @@ Namespace Certificates
                 End If
 
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
-        Protected Sub ItemCommand(source As Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs)
+        Protected Sub ItemCommand(source As Object, e As DataGridCommandEventArgs)
             Try
                 Dim index As Integer = e.Item.ItemIndex
 
                 If (e.CommandName = EDIT_COMMAND) Then
 
-                    State.IsEditMode = True
+                    Me.State.IsEditMode = True
                     'Me.State.SelectBillPayHistId = New Guid(Me.GridObject.Items(e.Item.ItemIndex).Cells(Me.GRID_COL_BILLING_DETAIL_ID).Text)
-                    PopulateBillPayGrid(ACTION_EDIT)
+                    Me.PopulateBillPayGrid(ACTION_EDIT)
 
                     'Me.State.BillPayGridPageIndex = Grid.CurrentPageIndex
 
-                    SetFocusOnEditFieldGrid(GridObject, GRID_COL_BILLING_STATUS, index)
-                    SetButtonState()
+                    Me.SetFocusOnEditFieldGrid(Me.GridObject, GRID_COL_BILLING_STATUS, index)
+                    Me.SetButtonState()
                 ElseIf (e.CommandName = PAID_COMMAND) Then
-                    State.SelectBillPayHistId = New Guid(GridObject.Items(e.Item.ItemIndex).Cells(GRID_COL_BILLING_DETAIL_ID).Text)
-                    DisplayMessage(Message.MSG_PROMPT_FOR_PAY, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenPayResp)
+                    Me.State.SelectBillPayHistId = New Guid(Me.GridObject.Items(e.Item.ItemIndex).Cells(GRID_COL_BILLING_DETAIL_ID).Text)
+                    Me.DisplayMessage(Message.MSG_PROMPT_FOR_PAY, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenPayResp)
                 End If
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
-        Private Sub Grid_SortCommand(source As Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles Grid.SortCommand
-            Dim SortExp As String = State.BillPaySortExp
+        Private Sub Grid_SortCommand(source As Object, e As DataGridSortCommandEventArgs) Handles Grid.SortCommand
+            Dim SortExp As String = Me.State.BillPaySortExp
             Try
-                If State.BillPaySortExp.StartsWith(e.SortExpression) Then
+                If Me.State.BillPaySortExp.StartsWith(e.SortExpression) Then
                     If SortExp.EndsWith(" DESC") Then
                         SortExp = e.SortExpression
                     Else
@@ -658,13 +659,13 @@ Namespace Certificates
                     SortExp = e.SortExpression
                 End If
 
-                State.BillPaySortExp = SortExp
-                Grid.CurrentPageIndex = 0
+                Me.State.BillPaySortExp = SortExp
+                Me.Grid.CurrentPageIndex = 0
 
-                PopulateBillPayGrid()
+                Me.PopulateBillPayGrid()
 
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 #End Region
@@ -676,35 +677,35 @@ Namespace Certificates
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub CollectionGrid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles CollectionGrid.PageIndexChanged
+        Private Sub CollectionGrid_PageIndexChanged(source As Object, e As DataGridPageChangedEventArgs) Handles CollectionGrid.PageIndexChanged
             Try
-                CollectionGrid.CurrentPageIndex = e.NewPageIndex
+                Me.CollectionGrid.CurrentPageIndex = e.NewPageIndex
                 SortAndBindCollectionGrid()
                 'Me.PopulateCollectionGrid()
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub CollectionGrid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize2.SelectedIndexChanged
+        Private Sub CollectionGrid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize2.SelectedIndexChanged
             Try
                 CollectionGrid.CurrentPageIndex = NewCurrentPageIndex(CollectionGrid, CType(Session("recCount2"), Int32), CType(cboPageSize2.SelectedValue, Int32))
-                State.CollectedGridPageSize = CollectionGrid.PageSize
+                Me.State.CollectedGridPageSize = CollectionGrid.PageSize
                 SortAndBindCollectionGrid()
                 'Me.PopulateCollectionGrid()
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub CollectionGrid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles CollectionGrid.ItemDataBound
+        Private Sub CollectionGrid_ItemDataBound(sender As Object, e As DataGridItemEventArgs) Handles CollectionGrid.ItemDataBound
             Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
             Try
                 Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
 
                 If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem Then
-                    PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_COLLECTED_AMOUNT), dvRow(CollectedPayDetail.CollectPayHistorySearchDV.COL_NAME_COLLECTED_AMOUNT))
+                    Me.PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_COLLECTED_AMOUNT), dvRow(CollectedPayDetail.CollectPayHistorySearchDV.COL_NAME_COLLECTED_AMOUNT))
                     e.Item.Cells(GRID_COL_PAYMENT_ID).Text = New Guid(CType(dvRow(CollectedPayDetail.CollectPayHistorySearchDV.COL_NAME_PAYMENT_ID), Byte())).ToString
                     e.Item.Cells(GRID_COL_COLLECTED_DATE).Text = dvRow(CollectedPayDetail.CollectPayHistorySearchDV.COL_NAME_COLLECTED_DATE).ToString
                     e.Item.Cells(GRID_COL_COVERAGE_SEQUENCE_PC).Text = dvRow(CollectedPayDetail.CollectPayHistorySearchDV.COL_NAME_COVERAGE_SEQ_PC).ToString
@@ -742,14 +743,14 @@ Namespace Certificates
                     End If
                 End If
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub CollectionGrid_SortCommand(source As Object, e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles CollectionGrid.SortCommand
-            Dim SortExp As String = State.CollectedSortExp
+        Private Sub CollectionGrid_SortCommand(source As Object, e As DataGridSortCommandEventArgs) Handles CollectionGrid.SortCommand
+            Dim SortExp As String = Me.State.CollectedSortExp
             Try
-                If State.CollectedSortExp.StartsWith(e.SortExpression) Then
+                If Me.State.CollectedSortExp.StartsWith(e.SortExpression) Then
                     If SortExp.EndsWith(" DESC") Then
                         SortExp = e.SortExpression
                     Else
@@ -759,13 +760,13 @@ Namespace Certificates
                     SortExp = e.SortExpression
                 End If
 
-                State.CollectedSortExp = SortExp
-                CollectionGrid.CurrentPageIndex = 0
+                Me.State.CollectedSortExp = SortExp
+                Me.CollectionGrid.CurrentPageIndex = 0
 
-                PopulateCollectPayGrid()
+                Me.PopulateCollectPayGrid()
 
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 #End Region
@@ -775,31 +776,31 @@ Namespace Certificates
 #Region "Button Handlers"
         Protected Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             Try
-                NavController.Navigate(Me, FlowEvents.EVENT_BACK)
-            Catch ex As Threading.ThreadAbortException
+                Me.NavController.Navigate(Me, FlowEvents.EVENT_BACK)
+            Catch ex As ThreadAbortException
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
+        Private Sub btnSave_WRITE_Click(sender As Object, e As EventArgs) Handles btnSave_WRITE.Click
             Try
                 Dim billingStsGrdClm As Integer
                 Dim rjctCodeGrdClm As Integer
 
-                Dim ddl As DropDownList = CType(GridObject.Items(GridObject.EditItemIndex).Cells(billingStsGrdClm).FindControl("BillingStatusDD"), DropDownList)
+                Dim ddl As DropDownList = CType(Me.GridObject.Items(Me.GridObject.EditItemIndex).Cells(billingStsGrdClm).FindControl("BillingStatusDD"), DropDownList)
                 Dim slctBillingCode As String = GetSelectedValue(ddl)
 
                 Dim slctRjctCode As String
-                ddl = CType(GridObject.Items(GridObject.EditItemIndex).Cells(rjctCodeGrdClm).FindControl("RejectCodeDD"), DropDownList)
+                ddl = CType(Me.GridObject.Items(Me.GridObject.EditItemIndex).Cells(rjctCodeGrdClm).FindControl("RejectCodeDD"), DropDownList)
                 slctRjctCode = GetSelectedValue(ddl)
 
                 If slctBillingCode <> BILLING_STATUS_REJECT Then
-                    ErrControllerMaster.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_SELECT_REJECT_CODE_ERR)
+                    Me.ErrControllerMaster.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.GUI_SELECT_REJECT_CODE_ERR)
                     Exit Sub
                 Else
                     If slctRjctCode = "" Then
-                        ErrControllerMaster.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_SELECT_REJECT_CODE_ERR)
+                        Me.ErrControllerMaster.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.GUI_SELECT_REJECT_CODE_ERR)
                         Exit Sub
                     End If
                 End If
@@ -807,23 +808,23 @@ Namespace Certificates
                 Dim slctBillingStsId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_BILLING_STATUS, slctBillingCode)
                 Dim SlctRjctCodeId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_REJECT_CODES, slctRjctCode)
                 Dim retVal As Integer
-                Dim txtInstNo As TextBox = CType(GridObject.Items(GridObject.EditItemIndex).Cells(GRID_COL_INSTALLMENT_NUMBER).FindControl("txtInstallNumb"), TextBox)
+                Dim txtInstNo As TextBox = CType(Me.GridObject.Items(Me.GridObject.EditItemIndex).Cells(GRID_COL_INSTALLMENT_NUMBER).FindControl("txtInstallNumb"), TextBox)
 
-                retVal = BillingPayDetail.CreateBillPayForRejOrAct(slctBillingStsId, State.oCert.Id, CType(txtInstNo.Text, Integer), SlctRjctCodeId, State.SelectBillPayHistId)
+                retVal = BillingPayDetail.CreateBillPayForRejOrAct(slctBillingStsId, Me.State.oCert.Id, CType(txtInstNo.Text, Integer), SlctRjctCodeId, Me.State.SelectBillPayHistId)
                 If retVal = 0 Then
-                    DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
-                    GridObject.SelectedIndex = NO_ITEM_SELECTED_INDEX
-                    State.searchBillPayDV = Nothing
+                    Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                    Me.GridObject.SelectedIndex = NO_ITEM_SELECTED_INDEX
+                    Me.State.searchBillPayDV = Nothing
                     ReturnFromEditing()
                 End If
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnUndo_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
-            GridObject.SelectedIndex = NO_ITEM_SELECTED_INDEX
-            State.searchBillPayDV = Nothing
+        Private Sub btnUndo_WRITE_Click(sender As Object, e As EventArgs) Handles btnUndo_WRITE.Click
+            Me.GridObject.SelectedIndex = NO_ITEM_SELECTED_INDEX
+            Me.State.searchBillPayDV = Nothing
             ReturnFromEditing()
         End Sub
 
@@ -831,14 +832,14 @@ Namespace Certificates
 
             GridObject.EditItemIndex = NO_ITEM_SELECTED_INDEX
 
-            If (GridObject.PageCount = 0) Then
+            If (Me.GridObject.PageCount = 0) Then
                 ControlMgr.SetVisibleControl(Me, GridObject, False)
             Else
                 ControlMgr.SetVisibleControl(Me, GridObject, True)
             End If
 
-            State.IsEditMode = False
-            PopulateBillPayGrid()
+            Me.State.IsEditMode = False
+            Me.PopulateBillPayGrid()
             SetButtonState()
         End Sub
 
@@ -846,23 +847,23 @@ Namespace Certificates
             hdnDisabledTab.Value = String.Join(",", DisabledTabsList)
         End Sub
 
-        Private Sub btnAddReject_Click(sender As System.Object, e As System.EventArgs) Handles btnAddRejectPayment.Click
+        Private Sub btnAddReject_Click(sender As Object, e As EventArgs) Handles btnAddRejectPayment.Click
             Try
-                NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = State.oCert
-                NavController.Navigate(Me, CREATE_NEW_REJECT_PAYMENT, New CheckRejectPaymentForm.Parameters(State.SelectPaymentId, State.oCert.Id, State.PayInstrumentNo, State.PaymentDate))
-            Catch ex As Threading.ThreadAbortException
+                Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = Me.State.oCert
+                Me.NavController.Navigate(Me, CREATE_NEW_REJECT_PAYMENT, New CheckRejectPaymentForm.Parameters(Me.State.SelectPaymentId, Me.State.oCert.Id, Me.State.PayInstrumentNo, Me.State.PaymentDate))
+            Catch ex As ThreadAbortException
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnAddCheckPayment_Click(sender As System.Object, e As System.EventArgs) Handles btnAddCheckPayment.Click
+        Private Sub btnAddCheckPayment_Click(sender As Object, e As EventArgs) Handles btnAddCheckPayment.Click
             Try
-                NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = State.oCert
-                NavController.Navigate(Me, CREATE_NEW_CHECK_PAYMENT, New CheckPaymentForm.Parameters(State.oCert.Id))
-            Catch ex As Threading.ThreadAbortException
+                Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = Me.State.oCert
+                Me.NavController.Navigate(Me, CREATE_NEW_CHECK_PAYMENT, New CheckPaymentForm.Parameters(Me.State.oCert.Id))
+            Catch ex As ThreadAbortException
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
@@ -870,12 +871,12 @@ Namespace Certificates
             Try
                 Dim index As Integer = e.Item.ItemIndex
                 If (e.CommandName = REJECT_COMMAND) Then
-                    State.SelectPaymentId = New Guid(PayGridObject.Items(e.Item.ItemIndex).Cells(GRID_COL_PAYMENT_ID).Text)
-                    State.PayInstrumentNo = PayGridObject.Items(e.Item.ItemIndex).Cells(GRID_COL_PAYMENT_INSTRUMENT_NUMBER).Text
-                    State.PaymentDate = PayGridObject.Items(e.Item.ItemIndex).Cells(GRID_COL_COLLECTED_DATE).Text
+                    Me.State.SelectPaymentId = New Guid(Me.PayGridObject.Items(e.Item.ItemIndex).Cells(GRID_COL_PAYMENT_ID).Text)
+                    Me.State.PayInstrumentNo = Me.PayGridObject.Items(e.Item.ItemIndex).Cells(GRID_COL_PAYMENT_INSTRUMENT_NUMBER).Text
+                    Me.State.PaymentDate = Me.PayGridObject.Items(e.Item.ItemIndex).Cells(GRID_COL_COLLECTED_DATE).Text
                     ControlMgr.SetVisibleControl(Me, btnAddCheckPayment, False)
                     ControlMgr.SetVisibleControl(Me, btnAddRejectPayment, True)
-                    If State.oBillPayTotalAmount < 0 OrElse CType(e.Item.Cells(0).FindControl("Payment_Type_XCD"), HiddenField).Value = "RFM-SEPA" Then
+                    If Me.State.oBillPayTotalAmount < 0 OrElse CType(e.Item.Cells(0).FindControl("Payment_Type_XCD"), HiddenField).Value = "RFM-SEPA" Then
 
                         ControlMgr.SetVisibleControl(Me, btnAddRejectPayment, False)
                     Else
@@ -883,7 +884,7 @@ Namespace Certificates
                     End If
                 End If
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 #End Region

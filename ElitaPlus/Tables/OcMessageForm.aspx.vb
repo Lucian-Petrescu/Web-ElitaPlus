@@ -295,7 +295,9 @@ Namespace Tables
 
                     ' Validate Email Address
                     'Dim emailExpression As New Regex("^[_a-z0-9-]+(.[a-z0-9-]+)@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$")
-                    Dim emailExpression As New Regex("^[_a-z0-9-]+(.[a-z0-9-]+)+(.[a-z0-9-]+)@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$")
+                    Dim emailExpression As New Regex("^[_a-z0-9-]+(.[a-z0-9-]+)+(.[a-z0-9-]+)@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$",
+                                                     RegexOptions.None,
+                                                     TimeSpan.FromMilliseconds(250))
 
                     If Not emailExpression.IsMatch(State.SelectedRecipientAddress) Then
                         moMessageController.Clear()

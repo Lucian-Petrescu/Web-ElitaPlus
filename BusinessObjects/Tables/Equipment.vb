@@ -470,13 +470,13 @@ Public Class Equipment
             oCompanyGroupIds = New ArrayList
             oCompanyGroupIds.Add(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
 
-            If (Not (description.Contains(DALBase.WILDCARD_CHAR) Or description.Contains(DALBase.ASTERISK)) And String.IsNullOrEmpty(description.Trim)) Then
+            If (Not (description.Contains(DALBase.WILDCARD_CHAR) OrElse description.Contains(DALBase.ASTERISK)) AndAlso String.IsNullOrEmpty(description.Trim)) Then
                 description = description & DALBase.ASTERISK
             End If
-            If (Not (model.Contains(DALBase.WILDCARD_CHAR) Or model.Contains(DALBase.ASTERISK)) And String.IsNullOrEmpty(model.Trim)) Then
+            If (Not (model.Contains(DALBase.WILDCARD_CHAR) OrElse model.Contains(DALBase.ASTERISK)) AndAlso String.IsNullOrEmpty(model.Trim)) Then
                 model = model & DALBase.ASTERISK
             End If
-            If (Not (sku.Contains(DALBase.WILDCARD_CHAR) Or sku.Contains(DALBase.ASTERISK)) And String.IsNullOrEmpty(sku.Trim)) Then
+            If (Not (sku.Contains(DALBase.WILDCARD_CHAR) OrElse sku.Contains(DALBase.ASTERISK)) AndAlso String.IsNullOrEmpty(sku.Trim)) Then
                 sku = sku & DALBase.ASTERISK
             End If
             Return New EquipmentSearchDV(dal.LoadList(description, model, manufacturerName, equipmentClassName, _

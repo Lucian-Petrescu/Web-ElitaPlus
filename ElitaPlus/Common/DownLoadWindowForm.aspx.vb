@@ -1,4 +1,7 @@
 
+Imports System.Diagnostics
+Imports System.Threading
+
 Namespace DownLoad
 
 Partial Class DownLoadWindowForm
@@ -17,15 +20,15 @@ Partial Class DownLoadWindowForm
 #Region " Web Form Designer Generated Code "
 
         'This call is required by the Web Form Designer.
-        <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+        <DebuggerStepThrough()> Private Sub InitializeComponent()
 
         End Sub
 
         'NOTE: The following placeholder declaration is required by the Web Form Designer.
         'Do not delete or move it.
-        Private designerPlaceholderDeclaration As System.Object
+        Private designerPlaceholderDeclaration As Object
 
-        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -35,23 +38,23 @@ Partial Class DownLoadWindowForm
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
 
                 If Not Page.IsPostBack Then
-                    Dim params As DownLoadBase.DownLoadParams
+                    Dim params As DownLoadParams
                     params = CType(Session(SESSION_PARAMETERS_DOWNLOAD_KEY), DownLoadParams)
 
                     Select Case params.downLoadCode
-                        Case DownLoadBase.DownLoadParams.DownLoadTypeCode.FILE
+                        Case DownLoadParams.DownLoadTypeCode.FILE
                             ProcessSendFile(params)
-                        Case DownLoadBase.DownLoadParams.DownLoadTypeCode.GRID
+                        Case DownLoadParams.DownLoadTypeCode.GRID
                             ProcessGrid(params)
                     End Select
                     Session.Remove(SESSION_PARAMETERS_DOWNLOAD_KEY)
                 End If
-            Catch exT As System.Threading.ThreadAbortException
+            Catch exT As ThreadAbortException
                 'Catch ex As Exception
 
             End Try
@@ -63,12 +66,12 @@ Partial Class DownLoadWindowForm
 
 #Region "Process Request"
 
-        Private Sub ProcessSendFile(params As DownLoadBase.DownLoadParams)
+        Private Sub ProcessSendFile(params As DownLoadParams)
             Dim sourceFileName As String = params.fileName
             SendFile(sourceFileName, params.DeleteFileAfterDownload)
         End Sub
 
-        Private Sub ProcessGrid(params As DownLoadBase.DownLoadParams)
+        Private Sub ProcessGrid(params As DownLoadParams)
             Dim oDataGrid As New DataGrid
             Dim sourceFileName As String = params.fileName
             Dim ds As DataSet = params.data

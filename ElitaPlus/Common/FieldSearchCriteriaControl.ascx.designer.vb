@@ -20,7 +20,7 @@ Partial Public Class FieldSearchCriteriaControl
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moSearchLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moSearchLabel As Label
 
     '''<summary>
     '''moSearchType control.
@@ -29,7 +29,7 @@ Partial Public Class FieldSearchCriteriaControl
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moSearchType As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents moSearchType As DropDownList
 
     '''<summary>
     '''moSearchCriteria1 control.
@@ -38,7 +38,7 @@ Partial Public Class FieldSearchCriteriaControl
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moSearchCriteria1 As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moSearchCriteria1 As TextBox
 
     '''<summary>
     '''imgCalender1 control.
@@ -47,7 +47,7 @@ Partial Public Class FieldSearchCriteriaControl
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents imgCalender1 As Global.System.Web.UI.WebControls.ImageButton
+    Protected WithEvents imgCalender1 As ImageButton
 
     '''<summary>
     '''moAndLabel control.
@@ -56,7 +56,7 @@ Partial Public Class FieldSearchCriteriaControl
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moAndLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moAndLabel As Label
 
     '''<summary>
     '''moSearchCriteria2 control.
@@ -65,7 +65,7 @@ Partial Public Class FieldSearchCriteriaControl
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moSearchCriteria2 As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moSearchCriteria2 As TextBox
 
     '''<summary>
     '''imgCalender2 control.
@@ -74,5 +74,5 @@ Partial Public Class FieldSearchCriteriaControl
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents imgCalender2 As Global.System.Web.UI.WebControls.ImageButton
+    Protected WithEvents imgCalender2 As ImageButton
 End Class

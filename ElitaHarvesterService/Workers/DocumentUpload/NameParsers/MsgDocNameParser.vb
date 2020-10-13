@@ -20,7 +20,9 @@ Namespace Workers.DocumentUpload.NameParsers
             CompanyCode = "AIF"
             DealerFileType = "MSG"
             GeneratesOutput = True
-            NameFormat = New Regex("^(?<certificate>MS\d{11})[_](?<docType>[A-Za-z]+)[_](?<custName>[\p{L}'-]*((\s)*[\p{L}'-]*)+)[_](?<checkNo>\d+)[_](?<amount>\d+(?:.\d{2})?)[_](?<date>(19|20)\d\d(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01]))[_](?<status>(ST|CST)\d{2})[.]")
+            NameFormat = New Regex("^(?<certificate>MS\d{11})[_](?<docType>[A-Za-z]+)[_](?<custName>[\p{L}'-]*((\s)*[\p{L}'-]*)+)[_](?<checkNo>\d+)[_](?<amount>\d+(?:.\d{2})?)[_](?<date>(19|20)\d\d(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01]))[_](?<status>(ST|CST)\d{2})[.]",
+                                   RegexOptions.None,
+                                   Timespan.FromMilliseconds(200))
             LayoutTuple = New Tuple(Of String, String)("NA", ";")
         End Sub
 

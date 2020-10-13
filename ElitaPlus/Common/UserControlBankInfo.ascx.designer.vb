@@ -20,7 +20,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents labelNameonAccount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents labelNameonAccount As Label
 
     '''<summary>
     '''textboxNameAccount control.
@@ -29,7 +29,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents textboxNameAccount As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents textboxNameAccount As TextBox
 
     '''<summary>
     '''labelCountryOfBank control.
@@ -38,7 +38,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents labelCountryOfBank As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents labelCountryOfBank As Label
 
     '''<summary>
     '''moCountryDrop_WRITE control.
@@ -47,7 +47,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moCountryDrop_WRITE As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents moCountryDrop_WRITE As DropDownList
 
     '''<summary>
     '''labelBankID control.
@@ -56,7 +56,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents labelBankID As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents labelBankID As Label
 
     '''<summary>
     '''LabelSpaceBankID control.
@@ -65,7 +65,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSpaceBankID As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSpaceBankID As Label
 
     '''<summary>
     '''textboxBankID control.
@@ -74,7 +74,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents textboxBankID As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents textboxBankID As TextBox
 
     '''<summary>
     '''labelBankAccountNo control.
@@ -83,7 +83,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents labelBankAccountNo As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents labelBankAccountNo As Label
 
     '''<summary>
     '''LabelSpaceAccNo control.
@@ -92,7 +92,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSpaceAccNo As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSpaceAccNo As Label
 
     '''<summary>
     '''textboxBankAccountNo control.
@@ -101,7 +101,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents textboxBankAccountNo As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents textboxBankAccountNo As TextBox
 
     '''<summary>
     '''lblBankName control.
@@ -110,7 +110,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblBankName As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblBankName As Label
 
     '''<summary>
     '''txtBankName control.
@@ -119,7 +119,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtBankName As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtBankName As TextBox
 
     '''<summary>
     '''label4 control.
@@ -128,7 +128,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents label4 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents label4 As Label
 
     '''<summary>
     '''txtBankBranchName control.
@@ -137,7 +137,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtBankBranchName As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtBankBranchName As TextBox
 
     '''<summary>
     '''labelSwiftCode control.
@@ -146,7 +146,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents labelSwiftCode As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents labelSwiftCode As Label
 
     '''<summary>
     '''LabelSpaceSwiftCode control.
@@ -155,7 +155,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSpaceSwiftCode As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSpaceSwiftCode As Label
 
     '''<summary>
     '''textboxSwiftCode control.
@@ -164,7 +164,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents textboxSwiftCode As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents textboxSwiftCode As TextBox
 
     '''<summary>
     '''labelIBAN_Number control.
@@ -173,7 +173,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents labelIBAN_Number As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents labelIBAN_Number As Label
 
     '''<summary>
     '''LabelSpaceIBAN control.
@@ -182,7 +182,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelSpaceIBAN As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelSpaceIBAN As Label
 
     '''<summary>
     '''textboxIBAN_Number control.
@@ -191,7 +191,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents textboxIBAN_Number As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents textboxIBAN_Number As TextBox
 
     '''<summary>
     '''labelAccountType control.
@@ -200,7 +200,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents labelAccountType As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents labelAccountType As Label
 
     '''<summary>
     '''moAccountTypeDrop control.
@@ -209,7 +209,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moAccountTypeDrop As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents moAccountTypeDrop As DropDownList
 
     '''<summary>
     '''labelTranslimit control.
@@ -218,7 +218,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents labelTranslimit As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents labelTranslimit As Label
 
     '''<summary>
     '''lblTransLimit control.
@@ -227,7 +227,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblTransLimit As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblTransLimit As Label
 
     '''<summary>
     '''txtTransLimit control.
@@ -236,7 +236,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtTransLimit As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtTransLimit As TextBox
 
     '''<summary>
     '''labelBanklookup control.
@@ -245,7 +245,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents labelBanklookup As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents labelBanklookup As Label
 
     '''<summary>
     '''lblBankLookupCode control.
@@ -254,7 +254,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblBankLookupCode As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblBankLookupCode As Label
 
     '''<summary>
     '''txtBankLookupCode control.
@@ -263,7 +263,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtBankLookupCode As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtBankLookupCode As TextBox
 
     '''<summary>
     '''labelbanksubcode control.
@@ -272,7 +272,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents labelbanksubcode As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents labelbanksubcode As Label
 
     '''<summary>
     '''lblBankSubcode control.
@@ -281,7 +281,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblBankSubcode As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblBankSubcode As Label
 
     '''<summary>
     '''txtBankSubcode control.
@@ -290,7 +290,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtBankSubcode As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtBankSubcode As TextBox
 
     '''<summary>
     '''labelBankSortCode control.
@@ -299,7 +299,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents labelBankSortCode As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents labelBankSortCode As Label
 
     '''<summary>
     '''lblBankSortCode control.
@@ -308,7 +308,7 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblBankSortCode As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblBankSortCode As Label
 
     '''<summary>
     '''txtBankSortCode control.
@@ -317,5 +317,5 @@ Partial Public Class UserControlBankInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtBankSortCode As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtBankSortCode As TextBox
 End Class

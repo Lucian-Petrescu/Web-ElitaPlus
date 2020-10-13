@@ -70,7 +70,7 @@ Public Class ElitaPlusSearchPage
 
 #Region "Handlers"
 
-    Public Overloads Sub BaseItemCreated(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs)
+    Public Overloads Sub BaseItemCreated(sender As Object, e As DataGridItemEventArgs)
         Dim newUi As Boolean = IsNewUI
         '-------------------------------------
         'Name:ReasorbTranslation
@@ -158,7 +158,7 @@ Public Class ElitaPlusSearchPage
                     End If
                 Else
                     bFound = True
-                    Dim l As System.Web.UI.WebControls.Label = CType(obj, System.Web.UI.WebControls.Label)
+                    Dim l As Label = CType(obj, Label)
                     If (Not newUi) Then
                         l.Text = TranslationBase.TranslateLabelOrMessage("Page") & l.Text
                     End If
@@ -176,7 +176,7 @@ Public Class ElitaPlusSearchPage
     End Sub
 
 
-    Public Overloads Sub BaseItemCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
+    Public Overloads Sub BaseItemCreated(sender As Object, e As GridViewRowEventArgs)
         Dim newUi As Boolean = IsNewUI
         '-------------------------------------
         'Name:ReasorbTranslation
@@ -219,7 +219,7 @@ Public Class ElitaPlusSearchPage
 
             Dim i As Int32 = 0
             Dim bFound As Boolean = False
-            Dim pagerTable As System.Web.UI.WebControls.Table = CType(pager.Controls(0), System.Web.UI.WebControls.Table)
+            Dim pagerTable As Table = CType(pager.Controls(0), Table)
 
             If CType(sender, GridView).PagerStyle.CssClass <> INTERFACE_PAGER_CLASS Then
                 pagerTable.Attributes.Add("align", "center")
@@ -266,7 +266,7 @@ Public Class ElitaPlusSearchPage
                     End If
                 Else
                     bFound = True
-                    Dim l As System.Web.UI.WebControls.Label = CType(obj, System.Web.UI.WebControls.Label)
+                    Dim l As Label = CType(obj, Label)
                     If (Not newUi) Then
                         l.Text = TranslationBase.TranslateLabelOrMessage("Page") & l.Text
                     End If
@@ -356,7 +356,7 @@ Public Class ElitaPlusSearchPage
         End If
     End Sub
 
-    Protected Overloads Sub BaseItemCreated(sender As Repeater, e As System.Web.UI.WebControls.RepeaterItemEventArgs, Optional ByVal pagerCellControlId As String = "moPagerCell")
+    Protected Overloads Sub BaseItemCreated(sender As Repeater, e As RepeaterItemEventArgs, Optional ByVal pagerCellControlId As String = "moPagerCell")
         Dim oPagedDataSource As PagedDataSource = DirectCast(sender.DataSource, PagedDataSource)
         Dim moPagerCell As HtmlTableCell = DirectCast(e.Item.FindControl(pagerCellControlId), HtmlTableCell)
         Dim cell As HtmlTableCell
@@ -1155,7 +1155,7 @@ Public Class ElitaPlusSearchPage
     Public Shared Sub HighLightGridViewSortColumn(grid As GridView, sortExp As String)
 
         If grid.HeaderRow IsNot Nothing Then
-            Dim img As New System.Web.UI.WebControls.Image()
+            Dim img As New WebControls.Image()
             img.CssClass = "SORTARROW"
             If sortExp.ToUpper.EndsWith("DESC") Then
                 img.ImageUrl = DOWN_ARROW_IMG_SOURCE

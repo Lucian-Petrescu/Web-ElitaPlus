@@ -1,4 +1,7 @@
 
+Imports System.Diagnostics
+Imports System.Threading
+
 Namespace Certificates
 
 
@@ -8,21 +11,21 @@ Partial Class EndorsementDetailForm
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough> Private Sub InitializeComponent()
 
         End Sub
         Protected WithEvents ErrorCtrl As ErrorController
         Protected WithEvents ErrorController1 As ErrorController
         Protected WithEvents moCertificateInfoController As UserControlCertificateInfo
-        Protected WithEvents cboPageSize As System.Web.UI.WebControls.DropDownList
-        Protected WithEvents tblManufacturer As System.Web.UI.WebControls.Table
-        Protected WithEvents tblWarranty As System.Web.UI.WebControls.Table
+        Protected WithEvents cboPageSize As DropDownList
+        Protected WithEvents tblManufacturer As Table
+        Protected WithEvents tblWarranty As Table
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -71,57 +74,57 @@ Partial Class EndorsementDetailForm
             MyBase.New(New MyState)
         End Sub
 
-        Protected Shadows ReadOnly Property State() As MyState
+        Protected Shadows ReadOnly Property State As MyState
             Get
-                If NavController.State Is Nothing Then
-                    NavController.State = New MyState
-                    moCertificate = (CType(NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE), Certificate))
-                    Me.State.MyBO = New CertEndorse(CType(NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_ENDORSE_ID), Guid))
+                If Me.NavController.State Is Nothing Then
+                    Me.NavController.State = New MyState
+                    moCertificate = (CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE), Certificate))
+                    Me.State.MyBO = New CertEndorse(CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_ENDORSE_ID), Guid))
                     Me.State.MyBO.CertId = moCertificate.Id
-                    Me.State.ManufaWarranty = CType(NavController.ParametersPassed, Parameters).manufaturerWarranty
+                    Me.State.ManufaWarranty = CType(Me.NavController.ParametersPassed, Parameters).manufaturerWarranty
                 End If
-                Return CType(NavController.State, MyState)
+                Return CType(Me.NavController.State, MyState)
             End Get
         End Property
 
         Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
             Try
-                If CallingParameters IsNot Nothing Then
+                If Me.CallingParameters IsNot Nothing Then
                     'Get the id from the parent
-                    State.MyBO = New CertEndorse(CType(CallingParameters, Guid))
-                    State.boChanged = False
+                    Me.State.MyBO = New CertEndorse(CType(Me.CallingParameters, Guid))
+                    Me.State.boChanged = False
                 End If
             Catch ex As Exception
-                HandleErrors(ex, ErrorCtrl)
+                Me.HandleErrors(ex, Me.ErrorCtrl)
             End Try
 
         End Sub
 
-        Public Property moCertEndorseCov() As CertEndorseCov
+        Public Property moCertEndorseCov As CertEndorseCov
             Get
-                Return State._moEndorseCov
+                Return Me.State._moEndorseCov
             End Get
-            Set(Value As CertEndorseCov)
-                State._moEndorseCov = Value
+            Set
+                Me.State._moEndorseCov = Value
             End Set
         End Property
 
-        Public Property moCertificate() As Certificate
+        Public Property moCertificate As Certificate
             Get
-                Return State._moCertificate
+                Return Me.State._moCertificate
             End Get
-            Set(Value As Certificate)
-                State._moCertificate = Value
+            Set
+                Me.State._moCertificate = Value
             End Set
         End Property
 
-        Public ReadOnly Property AddrPreCtr() As UserControlAddress
+        Public ReadOnly Property AddrPreCtr As UserControlAddress
             Get
                 Return moAddrPreController
             End Get
         End Property
 
-        Public ReadOnly Property AddrPostCtr() As UserControlAddress
+        Public ReadOnly Property AddrPostCtr As UserControlAddress
             Get
                 Return moAddrPostController
             End Get
@@ -131,30 +134,30 @@ Partial Class EndorsementDetailForm
 
 #Region "Page Events"
 
-        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
 
-            ErrorCtrl.Clear_Hide()
+            Me.ErrorCtrl.Clear_Hide()
             Try
-                If Not IsPostBack Then
-                    If State.MyBO Is Nothing Then
-                        State.MyBO = New CertEndorse
+                If Not Me.IsPostBack Then
+                    If Me.State.MyBO Is Nothing Then
+                        Me.State.MyBO = New CertEndorse
                     End If
-                    Trace(Me, "CertEndorse Id=" & GuidControl.GuidToHexString(State.MyBO.CertEndorseId))
-                    State.companyCode = GetCompanyCode
-                    PopulateFormFromBOs()
-                    EnableDisableFields()
+                    Trace(Me, "CertEndorse Id=" & GuidControl.GuidToHexString(Me.State.MyBO.CertEndorseId))
+                    Me.State.companyCode = GetCompanyCode
+                    Me.PopulateFormFromBOs()
+                    Me.EnableDisableFields()
 
                 End If
-                BindBoPropertiesToLabels()
-                PopulateEndorseCoveragesGrid()
-                CheckIfComingFromSaveConfirm()
-            Catch ex As Threading.ThreadAbortException
+                Me.BindBoPropertiesToLabels()
+                Me.PopulateEndorseCoveragesGrid()
+                Me.CheckIfComingFromSaveConfirm()
+            Catch ex As ThreadAbortException
             Catch ex As Exception
-                HandleErrors(ex, ErrorCtrl)
+                Me.HandleErrors(ex, Me.ErrorCtrl)
             End Try
 
-            ShowMissingTranslations(ErrorCtrl)
+            Me.ShowMissingTranslations(Me.ErrorCtrl)
 
         End Sub
 
@@ -165,33 +168,33 @@ Partial Class EndorsementDetailForm
         Protected Sub EnableDisableFields()
 
             Try
-                If State.ManufaWarranty Then
-                    ControlMgr.SetVisibleControl(Me, txtWarrantySalesDatePre, False)
-                    ControlMgr.SetVisibleControl(Me, txtWarrantySalesDatePost, False)
-                    ControlMgr.SetVisibleControl(Me, lblWarrantySalesDatePre, False)
-                    ControlMgr.SetVisibleControl(Me, lblWarrantySalesDatePos, False)
+                If Me.State.ManufaWarranty Then
+                    ControlMgr.SetVisibleControl(Me, Me.txtWarrantySalesDatePre, False)
+                    ControlMgr.SetVisibleControl(Me, Me.txtWarrantySalesDatePost, False)
+                    ControlMgr.SetVisibleControl(Me, Me.lblWarrantySalesDatePre, False)
+                    ControlMgr.SetVisibleControl(Me, Me.lblWarrantySalesDatePos, False)
                     'Me.ChangeEnabledProperty(Me.moProductSaleDatePrePanel, False)
-                    ChangeEnabledProperty(txtProductSalesDatepre, False)
-                    ChangeEnabledProperty(txtProductSalesDatePost, False)
-                    ChangeEnabledProperty(txtTermPre, False)
-                    ChangeEnabledProperty(txtTermPos, False)
+                    Me.ChangeEnabledProperty(Me.txtProductSalesDatepre, False)
+                    Me.ChangeEnabledProperty(Me.txtProductSalesDatePost, False)
+                    Me.ChangeEnabledProperty(Me.txtTermPre, False)
+                    Me.ChangeEnabledProperty(Me.txtTermPos, False)
                 Else
-                    ChangeEnabledProperty(txtWarrantySalesDatePre, False)
-                    ChangeEnabledProperty(txtWarrantySalesDatePost, False)
-                    ControlMgr.SetVisibleControl(Me, moProductSaleDatePrePanel, True)
-                    ControlMgr.SetVisibleControl(Me, moProductSaleDatePosPanel, True)
-                    ChangeEnabledProperty(txtProductSalesDatepre, False)
-                    ChangeEnabledProperty(txtProductSalesDatePost, False)
+                    Me.ChangeEnabledProperty(Me.txtWarrantySalesDatePre, False)
+                    Me.ChangeEnabledProperty(Me.txtWarrantySalesDatePost, False)
+                    ControlMgr.SetVisibleControl(Me, Me.moProductSaleDatePrePanel, True)
+                    ControlMgr.SetVisibleControl(Me, Me.moProductSaleDatePosPanel, True)
+                    Me.ChangeEnabledProperty(Me.txtProductSalesDatepre, False)
+                    Me.ChangeEnabledProperty(Me.txtProductSalesDatePost, False)
                     'ControlMgr.SetVisibleControl(Me, Me.txtProductSalesDatepre, False)
                     'ControlMgr.SetVisibleControl(Me, Me.txtProductSalesDatePost, False)
-                    ControlMgr.SetVisibleControl(Me, txtTermPre, False)
-                    ControlMgr.SetVisibleControl(Me, txtTermPos, False)
+                    ControlMgr.SetVisibleControl(Me, Me.txtTermPre, False)
+                    ControlMgr.SetVisibleControl(Me, Me.txtTermPos, False)
 
                     'ControlMgr.SetVisibleControl(Me, Me.lblProductSaleDatePre, False)
                     'ControlMgr.SetVisibleControl(Me, Me.lblProductSaleDatePos, False)
-                    ControlMgr.SetVisibleControl(Me, lblTermPre, False)
-                    ControlMgr.SetVisibleControl(Me, lblTermPos, False)
-                    ControlMgr.SetVisibleControl(Me, gridTerm, False)
+                    ControlMgr.SetVisibleControl(Me, Me.lblTermPre, False)
+                    ControlMgr.SetVisibleControl(Me, Me.lblTermPos, False)
+                    ControlMgr.SetVisibleControl(Me, Me.gridTerm, False)
                 End If
 
                 'Me.ChangeEnabledProperty(Me.txtProductSalesDatepre, False)
@@ -202,74 +205,74 @@ Partial Class EndorsementDetailForm
                 'Me.ChangeEnabledProperty(Me.txtTermPos, False)
                 'Me.ChangeEnabledProperty(Me.gridEndorseCov, False)
 
-                ChangeEnabledProperty(txtCustNamePre, False)
-                ChangeEnabledProperty(txtCustNamePos, False)
-                ChangeEnabledProperty(txtBoxSalesPricePre, False)
-                ChangeEnabledProperty(txtBoxSalesPricePost, False)
-                ChangeEnabledProperty(txtEmailAddrPre, False)
-                ChangeEnabledProperty(txtEmailAddrPost, False)
-                ChangeEnabledProperty(txtHomePhonePre, False)
-                ChangeEnabledProperty(txtHomePhonePost, False)
-                ChangeEnabledProperty(txtWorkPhonePre, False)
-                ChangeEnabledProperty(txtWorkPhonePost, False)
-                ChangeEnabledProperty(txtLangPrefPre, False)
-                ChangeEnabledProperty(txtLangPrefPost, False)
-                ChangeEnabledProperty(txtIDTypePre, False)
-                ChangeEnabledProperty(txtIDTypePost, False)
-                ChangeEnabledProperty(txtDocumentTypePre, False)
-                ChangeEnabledProperty(txtDocumentTypePost, False)
-                ChangeEnabledProperty(txtDocumentAgencyPre, False)
-                ChangeEnabledProperty(txtDocumentAgencyPost, False)
-                ChangeEnabledProperty(txtDocumentIssueDatePre, False)
-                ChangeEnabledProperty(txtDocumentIssueDatePost, False)
-                ChangeEnabledProperty(txtRGNumberPre, False)
-                ChangeEnabledProperty(txtRGNumberPost, False)
-                ChangeEnabledProperty(txtNewTaxIdPre, False)
-                ChangeEnabledProperty(txtNewTaxIdPost, False)
+                Me.ChangeEnabledProperty(Me.txtCustNamePre, False)
+                Me.ChangeEnabledProperty(Me.txtCustNamePos, False)
+                Me.ChangeEnabledProperty(Me.txtBoxSalesPricePre, False)
+                Me.ChangeEnabledProperty(Me.txtBoxSalesPricePost, False)
+                Me.ChangeEnabledProperty(Me.txtEmailAddrPre, False)
+                Me.ChangeEnabledProperty(Me.txtEmailAddrPost, False)
+                Me.ChangeEnabledProperty(Me.txtHomePhonePre, False)
+                Me.ChangeEnabledProperty(Me.txtHomePhonePost, False)
+                Me.ChangeEnabledProperty(Me.txtWorkPhonePre, False)
+                Me.ChangeEnabledProperty(Me.txtWorkPhonePost, False)
+                Me.ChangeEnabledProperty(Me.txtLangPrefPre, False)
+                Me.ChangeEnabledProperty(Me.txtLangPrefPost, False)
+                Me.ChangeEnabledProperty(Me.txtIDTypePre, False)
+                Me.ChangeEnabledProperty(Me.txtIDTypePost, False)
+                Me.ChangeEnabledProperty(Me.txtDocumentTypePre, False)
+                Me.ChangeEnabledProperty(Me.txtDocumentTypePost, False)
+                Me.ChangeEnabledProperty(Me.txtDocumentAgencyPre, False)
+                Me.ChangeEnabledProperty(Me.txtDocumentAgencyPost, False)
+                Me.ChangeEnabledProperty(Me.txtDocumentIssueDatePre, False)
+                Me.ChangeEnabledProperty(Me.txtDocumentIssueDatePost, False)
+                Me.ChangeEnabledProperty(Me.txtRGNumberPre, False)
+                Me.ChangeEnabledProperty(Me.txtRGNumberPost, False)
+                Me.ChangeEnabledProperty(Me.txtNewTaxIdPre, False)
+                Me.ChangeEnabledProperty(Me.txtNewTaxIdPost, False)
                 AddrPreCtr.EnableControls(True)
                 AddrPostCtr.EnableControls(True)
 
-                btnBack.Enabled = True
+                Me.btnBack.Enabled = True
             Catch ex As Exception
-                HandleErrors(ex, ErrorCtrl)
+                Me.HandleErrors(ex, Me.ErrorCtrl)
             End Try
         End Sub
 
         Protected Sub BindBoPropertiesToLabels()
 
             Try
-                BindBOPropertyToLabel(State.MyBO, "CustNamePre", lblCustomerNamePre)
-                BindBOPropertyToLabel(State.MyBO, "CustNamePost", lblCustomerNamePos)
-                BindBOPropertyToLabel(State.MyBO, "EmailPre", lblEmailAddrPre)
-                BindBOPropertyToLabel(State.MyBO, "EmailPost", lblEmailAddrPost)
-                BindBOPropertyToLabel(State.MyBO, "HomePhonePre", lblHomePhonePre)
-                BindBOPropertyToLabel(State.MyBO, "HomePhonePost", lblHomePhonePost)
-                BindBOPropertyToLabel(State.MyBO, "WorkPhonePre", lblWorkPhonePre)
-                BindBOPropertyToLabel(State.MyBO, "WorkPhonePost", lblWorkPhonePost)
-                BindBOPropertyToLabel(State.MyBO, "TermPre", lblTermPre)
-                BindBOPropertyToLabel(State.MyBO, "TermPos", lblTermPos)
-                BindBOPropertyToLabel(State.MyBO, "ProductSalesDatePre", lblProductSaleDatePre)
-                BindBOPropertyToLabel(State.MyBO, "ProductSalesDatePost", lblProductSaleDatePos)
-                BindBOPropertyToLabel(State.MyBO, "ProductSalesDatePre", lblWarrantySalesDatePre)
-                BindBOPropertyToLabel(State.MyBO, "ProductSalesDatePost", lblWarrantySalesDatePos)
-                BindBOPropertyToLabel(State.MyBO, "SalesPricePre", lblSalesPricePre)
-                BindBOPropertyToLabel(State.MyBO, "SalesPricePost", lblSalesPricePos)
-                BindBOPropertyToLabel(State.MyBO, "LangaugeIdPre", lblLangPrefPre)
-                BindBOPropertyToLabel(State.MyBO, "LangaugeIdPost", lblLangPrefPost)
-                BindBOPropertyToLabel(State.MyBO, "DocumentTypeIDPre", lblDocumentTypePre)
-                BindBOPropertyToLabel(State.MyBO, "DocumentTypeIDPost", lblDocumentTypePost)
-                BindBOPropertyToLabel(State.MyBO, "TaxIDNumbPre", lblNewTaxIdPre)
-                BindBOPropertyToLabel(State.MyBO, "TaxIDNumbPost", lblNewTaxIdPost)
-                BindBOPropertyToLabel(State.MyBO, "RgNumberPre", lblRGNumberPre)
-                BindBOPropertyToLabel(State.MyBO, "RgNumberPost", lblRGNumberPost)
-                BindBOPropertyToLabel(State.MyBO, "IdTypePre", lblIDTypePre)
-                BindBOPropertyToLabel(State.MyBO, "IdTypePre", lblIDTypePost)
-                BindBOPropertyToLabel(State.MyBO, "DocumentAgencyPre", lblDocumentAgencyPre)
-                BindBOPropertyToLabel(State.MyBO, "DocumentAgencyPost", lblDocumentAgencyPost)
-                BindBOPropertyToLabel(State.MyBO, "DocumentIssueDatePre", lblDocumentIssueDatePre)
-                BindBOPropertyToLabel(State.MyBO, "DocumentIssueDatePost", lblDocumentIssueDatePost)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "CustNamePre", lblCustomerNamePre)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "CustNamePost", lblCustomerNamePos)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "EmailPre", lblEmailAddrPre)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "EmailPost", lblEmailAddrPost)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "HomePhonePre", lblHomePhonePre)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "HomePhonePost", lblHomePhonePost)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "WorkPhonePre", lblWorkPhonePre)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "WorkPhonePost", lblWorkPhonePost)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "TermPre", lblTermPre)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "TermPos", lblTermPos)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "ProductSalesDatePre", Me.lblProductSaleDatePre)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "ProductSalesDatePost", Me.lblProductSaleDatePos)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "ProductSalesDatePre", Me.lblWarrantySalesDatePre)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "ProductSalesDatePost", Me.lblWarrantySalesDatePos)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "SalesPricePre", Me.lblSalesPricePre)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "SalesPricePost", Me.lblSalesPricePos)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "LangaugeIdPre", Me.lblLangPrefPre)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "LangaugeIdPost", Me.lblLangPrefPost)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "DocumentTypeIDPre", Me.lblDocumentTypePre)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "DocumentTypeIDPost", Me.lblDocumentTypePost)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "TaxIDNumbPre", Me.lblNewTaxIdPre)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "TaxIDNumbPost", Me.lblNewTaxIdPost)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "RgNumberPre", Me.lblRGNumberPre)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "RgNumberPost", Me.lblRGNumberPost)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "IdTypePre", Me.lblIDTypePre)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "IdTypePre", Me.lblIDTypePost)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "DocumentAgencyPre", Me.lblDocumentAgencyPre)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "DocumentAgencyPost", Me.lblDocumentAgencyPost)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "DocumentIssueDatePre", Me.lblDocumentIssueDatePre)
+                Me.BindBOPropertyToLabel(Me.State.MyBO, "DocumentIssueDatePost", Me.lblDocumentIssueDatePost)
             Catch ex As Exception
-                HandleErrors(ex, ErrorCtrl)
+                Me.HandleErrors(ex, Me.ErrorCtrl)
             End Try
         End Sub
 
@@ -277,89 +280,89 @@ Partial Class EndorsementDetailForm
         Protected Sub PopulateFormFromBOs()
 
             Try
-                moCertificateInfoController = UserCertificateCtr
-                moCertificateInfoController.InitController(State._moCertificate.Id, , State.companyCode)
+                moCertificateInfoController = Me.UserCertificateCtr
+                moCertificateInfoController.InitController(Me.State._moCertificate.Id, , Me.State.companyCode)
 
-                With State.MyBO
-                    .LoadTerms(State.MyBO)
-                    PopulateControlFromBOProperty(txtTermPre, State.MyBO.TermPre)
-                    PopulateControlFromBOProperty(txtTermPos, State.MyBO.TermPos)
-                    PopulateControlFromBOProperty(txtCustNamePre, .CustNamePre)
-                    PopulateControlFromBOProperty(txtCustNamePos, .CustNamePost)
-                    PopulateControlFromBOProperty(txtEmailAddrPre, .EmailPre)
-                    PopulateControlFromBOProperty(txtEmailAddrPost, .EmailPost)
-                    PopulateControlFromBOProperty(txtHomePhonePre, .HomePhonePre)
-                    PopulateControlFromBOProperty(txtHomePhonePost, .HomePhonePost)
-                    PopulateControlFromBOProperty(txtWorkPhonePre, .WorkPhonePre)
-                    PopulateControlFromBOProperty(txtWorkPhonePost, .WorkPhonePost)
-                    PopulateControlFromBOProperty(txtProductSalesDatepre, .ProductSalesDatePre)
-                    PopulateControlFromBOProperty(txtProductSalesDatePost, .ProductSalesDatePost)
-                    PopulateControlFromBOProperty(txtWarrantySalesDatePre, .WarrantySalesDatePre)
-                    PopulateControlFromBOProperty(txtWarrantySalesDatePost, .WarrantySalesDatePost)
-                    PopulateControlFromBOProperty(txtBoxSalesPricePre, .SalesPricePre)
-                    PopulateControlFromBOProperty(txtBoxSalesPricePost, .SalesPricePost)
-                    PopulateControlFromBOProperty(txtLangPrefPre, .getLanguagePrefPreDesc)
-                    PopulateControlFromBOProperty(txtLangPrefPost, .getLanguagePrefPostDesc)
-                    PopulateControlFromBOProperty(txtDocumentTypePre, .getDocTypePreCode)
-                    PopulateControlFromBOProperty(txtDocumentTypePost, .getDocTypeCode)
-                    PopulateControlFromBOProperty(txtNewTaxIdPre, .TaxIDNumbPre)
-                    PopulateControlFromBOProperty(txtNewTaxIdPost, .TaxIDNumbPost)
-                    PopulateControlFromBOProperty(txtIDTypePre, .IdTypePre)
-                    PopulateControlFromBOProperty(txtIDTypePost, .IdTypePost)
-                    PopulateControlFromBOProperty(txtRGNumberPre, .RgNumberPre)
-                    PopulateControlFromBOProperty(txtRGNumberPost, .RgNumberPost)
-                    PopulateControlFromBOProperty(txtDocumentAgencyPre, .DocumentAgencyPre)
-                    PopulateControlFromBOProperty(txtDocumentAgencyPost, .DocumentAgencyPost)
-                    PopulateControlFromBOProperty(txtDocumentIssueDatePre, .DocumentIssueDatePre)
-                    PopulateControlFromBOProperty(txtDocumentIssueDatePost, .DocumentIssueDatePost)
+                With Me.State.MyBO
+                    .LoadTerms(Me.State.MyBO)
+                    Me.PopulateControlFromBOProperty(Me.txtTermPre, Me.State.MyBO.TermPre)
+                    Me.PopulateControlFromBOProperty(Me.txtTermPos, Me.State.MyBO.TermPos)
+                    Me.PopulateControlFromBOProperty(Me.txtCustNamePre, .CustNamePre)
+                    Me.PopulateControlFromBOProperty(Me.txtCustNamePos, .CustNamePost)
+                    Me.PopulateControlFromBOProperty(Me.txtEmailAddrPre, .EmailPre)
+                    Me.PopulateControlFromBOProperty(Me.txtEmailAddrPost, .EmailPost)
+                    Me.PopulateControlFromBOProperty(Me.txtHomePhonePre, .HomePhonePre)
+                    Me.PopulateControlFromBOProperty(Me.txtHomePhonePost, .HomePhonePost)
+                    Me.PopulateControlFromBOProperty(Me.txtWorkPhonePre, .WorkPhonePre)
+                    Me.PopulateControlFromBOProperty(Me.txtWorkPhonePost, .WorkPhonePost)
+                    Me.PopulateControlFromBOProperty(Me.txtProductSalesDatepre, .ProductSalesDatePre)
+                    Me.PopulateControlFromBOProperty(Me.txtProductSalesDatePost, .ProductSalesDatePost)
+                    Me.PopulateControlFromBOProperty(Me.txtWarrantySalesDatePre, .WarrantySalesDatePre)
+                    Me.PopulateControlFromBOProperty(Me.txtWarrantySalesDatePost, .WarrantySalesDatePost)
+                    Me.PopulateControlFromBOProperty(Me.txtBoxSalesPricePre, .SalesPricePre)
+                    Me.PopulateControlFromBOProperty(Me.txtBoxSalesPricePost, .SalesPricePost)
+                    Me.PopulateControlFromBOProperty(Me.txtLangPrefPre, .getLanguagePrefPreDesc)
+                    Me.PopulateControlFromBOProperty(Me.txtLangPrefPost, .getLanguagePrefPostDesc)
+                    Me.PopulateControlFromBOProperty(Me.txtDocumentTypePre, .getDocTypePreCode)
+                    Me.PopulateControlFromBOProperty(Me.txtDocumentTypePost, .getDocTypeCode)
+                    Me.PopulateControlFromBOProperty(Me.txtNewTaxIdPre, .TaxIDNumbPre)
+                    Me.PopulateControlFromBOProperty(Me.txtNewTaxIdPost, .TaxIDNumbPost)
+                    Me.PopulateControlFromBOProperty(Me.txtIDTypePre, .IdTypePre)
+                    Me.PopulateControlFromBOProperty(Me.txtIDTypePost, .IdTypePost)
+                    Me.PopulateControlFromBOProperty(Me.txtRGNumberPre, .RgNumberPre)
+                    Me.PopulateControlFromBOProperty(Me.txtRGNumberPost, .RgNumberPost)
+                    Me.PopulateControlFromBOProperty(Me.txtDocumentAgencyPre, .DocumentAgencyPre)
+                    Me.PopulateControlFromBOProperty(Me.txtDocumentAgencyPost, .DocumentAgencyPost)
+                    Me.PopulateControlFromBOProperty(Me.txtDocumentIssueDatePre, .DocumentIssueDatePre)
+                    Me.PopulateControlFromBOProperty(Me.txtDocumentIssueDatePost, .DocumentIssueDatePost)
 
                     AddrPreCtr.Bind(.AddressPre)
                     AddrPostCtr.Bind(.AddressPost)
                 End With
             Catch ex As Exception
-                HandleErrors(ex, ErrorCtrl)
+                Me.HandleErrors(ex, Me.ErrorCtrl)
             End Try
         End Sub
 
         Protected Sub CheckIfComingFromSaveConfirm()
 
-            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
             Try
                 If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
-                    If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
-                        State.MyBO.Save()
+                    If Me.State.ActionInProgress <> DetailPageCommand.BackOnErr Then
+                        Me.State.MyBO.Save()
                     End If
-                    Select Case State.ActionInProgress
-                        Case ElitaPlusPage.DetailPageCommand.Back
-                            State.boChanged = True
-                            Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO.Cert, State.boChanged)
-                            NavController.Navigate(Me, "back", retObj) 'arf 12-20-04  
-                        Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                            State.boChanged = True
-                            Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO.Cert, State.boChanged)
-                            NavController.Navigate(Me, "back", retObj)
+                    Select Case Me.State.ActionInProgress
+                        Case DetailPageCommand.Back
+                            Me.State.boChanged = True
+                            Dim retObj As ReturnType = New ReturnType(DetailPageCommand.Back, Me.State.MyBO.Cert, Me.State.boChanged)
+                            Me.NavController.Navigate(Me, "back", retObj) 'arf 12-20-04  
+                        Case DetailPageCommand.BackOnErr
+                            Me.State.boChanged = True
+                            Dim retObj As ReturnType = New ReturnType(DetailPageCommand.Back, Me.State.MyBO.Cert, Me.State.boChanged)
+                            Me.NavController.Navigate(Me, "back", retObj)
                     End Select
                 ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
-                    Select Case State.ActionInProgress
-                        Case ElitaPlusPage.DetailPageCommand.Back
-                            Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO.Cert, State.boChanged)
-                            NavController.Navigate(Me, "back", retObj) 'arf 12-20-04  
-                        Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                            ErrorCtrl.AddErrorAndShow(State.LastErrMsg)
+                    Select Case Me.State.ActionInProgress
+                        Case DetailPageCommand.Back
+                            Dim retObj As ReturnType = New ReturnType(DetailPageCommand.Back, Me.State.MyBO.Cert, Me.State.boChanged)
+                            Me.NavController.Navigate(Me, "back", retObj) 'arf 12-20-04  
+                        Case DetailPageCommand.BackOnErr
+                            Me.ErrorCtrl.AddErrorAndShow(Me.State.LastErrMsg)
                     End Select
                 End If
                 'Clean after consuming the action
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-            HiddenSaveChangesPromptResponse.Value = ""
+                Me.State.ActionInProgress = DetailPageCommand.Nothing_
+            Me.HiddenSaveChangesPromptResponse.Value = ""
             Catch ex As Exception
-                HandleErrors(ex, ErrorCtrl)
+                Me.HandleErrors(ex, Me.ErrorCtrl)
             End Try
         End Sub
 #End Region
 
 #Region "Properties"
 
-        Public ReadOnly Property UserCertificateCtr() As UserControlCertificateInfo
+        Public ReadOnly Property UserCertificateCtr As UserControlCertificateInfo
             Get
                 If moCertificateInfoController Is Nothing Then
                     moCertificateInfoController = CType(FindControl("moCertificateInfoController"), UserControlCertificateInfo)
@@ -369,9 +372,9 @@ Partial Class EndorsementDetailForm
         End Property
 
 
-        Public ReadOnly Property GetCompanyCode() As String
+        Public ReadOnly Property GetCompanyCode As String
             Get
-                Dim companyBO As Company = New Company(State._moCertificate.CompanyId)
+                Dim companyBO As Company = New Company(Me.State._moCertificate.CompanyId)
 
                 Return companyBO.Code
             End Get
@@ -386,8 +389,8 @@ Partial Class EndorsementDetailForm
                 Public EditingBo As Certificate
                 Public HasDataChanged As Boolean
             Public Sub New(LastOp As DetailPageCommand, curEditingBo As Certificate, hasDataChanged As Boolean)
-            LastOperation = LastOp
-            EditingBo = curEditingBo
+            Me.LastOperation = LastOp
+            Me.EditingBo = curEditingBo
             Me.HasDataChanged = hasDataChanged
         End Sub
         End Class
@@ -398,29 +401,29 @@ Partial Class EndorsementDetailForm
         Public Sub PopulateEndorseCoveragesGrid()
 
             Try
-                Dim dv As CertEndorseCov.CertEndorsementCoverageSearchDV = CertEndorseCov.GetEndorsementCoverages(State.MyBO.CertEndorseId)
+                Dim dv As CertEndorseCov.CertEndorsementCoverageSearchDV = CertEndorseCov.GetEndorsementCoverages(Me.State.MyBO.CertEndorseId)
                 Dim todayDate As Date
 
-                If Not State.ManufaWarranty Then
-                    gridEndorseCov1.AutoGenerateColumns = False
-                    gridEndorseCov1.DataSource = dv
-                    gridEndorseCov1.DataBind()
+                If Not Me.State.ManufaWarranty Then
+                    Me.gridEndorseCov1.AutoGenerateColumns = False
+                    Me.gridEndorseCov1.DataSource = dv
+                    Me.gridEndorseCov1.DataBind()
                     ControlMgr.SetVisibleControl(Me, pnManufacturer, False)
                     ControlMgr.SetVisibleControl(Me, pnWarranty, True)
                 Else
-                    gridEndorseCov.AutoGenerateColumns = False
-                    gridEndorseCov.DataSource = dv
-                    gridEndorseCov.DataBind()
+                    Me.gridEndorseCov.AutoGenerateColumns = False
+                    Me.gridEndorseCov.DataSource = dv
+                    Me.gridEndorseCov.DataBind()
                     ControlMgr.SetVisibleControl(Me, pnManufacturer, True)
                     ControlMgr.SetVisibleControl(Me, pnWarranty, False)
                 End If
             Catch ex As Exception
-                HandleErrors(ex, ErrorCtrl)
+                Me.HandleErrors(ex, Me.ErrorCtrl)
             End Try
 
         End Sub
 
-        Private Sub gridEndorseCov_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles gridEndorseCov.ItemDataBound
+        Private Sub gridEndorseCov_ItemDataBound(sender As Object, e As DataGridItemEventArgs) Handles gridEndorseCov.ItemDataBound
 
             Try
                 Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
@@ -437,12 +440,12 @@ Partial Class EndorsementDetailForm
 
                 End If
             Catch ex As Exception
-                    HandleErrors(ex, ErrorCtrl)
+                    Me.HandleErrors(ex, Me.ErrorCtrl)
             End Try
 
         End Sub
 
-        Private Sub gridEndorseCov1_ItemDataBound(sender As System.Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles gridEndorseCov1.ItemDataBound
+        Private Sub gridEndorseCov1_ItemDataBound(sender As Object, e As DataGridItemEventArgs) Handles gridEndorseCov1.ItemDataBound
 
             Try
                 Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
@@ -456,7 +459,7 @@ Partial Class EndorsementDetailForm
                     e.Item.Cells(GRID_COL_COVERAGE_END_DATE_POST_IDX).Text = GetDateFormattedString(CType(dvRow(CertEndorseCov.CertEndorsementCoverageSearchDV.GRID_COL_COVERAGE_END_DATE_POST), Date))
                 End If
             Catch ex As Exception
-                    HandleErrors(ex, ErrorCtrl)
+                    Me.HandleErrors(ex, Me.ErrorCtrl)
             End Try
 
         End Sub
@@ -465,12 +468,12 @@ Partial Class EndorsementDetailForm
 
 #Region "Button Clicks"
 
-        Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             Try
-                Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO.Cert, State.boChanged)
-                NavController.Navigate(Me, "back", retObj)
+                Dim retObj As ReturnType = New ReturnType(DetailPageCommand.Back, Me.State.MyBO.Cert, Me.State.boChanged)
+                Me.NavController.Navigate(Me, "back", retObj)
             Catch ex As Exception
-                HandleErrors(ex, ErrorCtrl)
+                Me.HandleErrors(ex, Me.ErrorCtrl)
             End Try
         End Sub
 

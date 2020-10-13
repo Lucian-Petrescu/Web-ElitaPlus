@@ -20,7 +20,7 @@ Partial Public Class RegionTaxUserControl
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label2 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label2 As Label
 
     '''<summary>
     '''txtTaxDescription control.
@@ -29,7 +29,7 @@ Partial Public Class RegionTaxUserControl
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtTaxDescription As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtTaxDescription As TextBox
 
     '''<summary>
     '''lblPercent control.
@@ -38,7 +38,7 @@ Partial Public Class RegionTaxUserControl
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPercent As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPercent As Label
 
     '''<summary>
     '''txtTaxPercent control.
@@ -47,7 +47,7 @@ Partial Public Class RegionTaxUserControl
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtTaxPercent As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtTaxPercent As TextBox
 
     '''<summary>
     '''lblNontaxable control.
@@ -56,7 +56,7 @@ Partial Public Class RegionTaxUserControl
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblNontaxable As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblNontaxable As Label
 
     '''<summary>
     '''txtNonTaxable control.
@@ -65,7 +65,7 @@ Partial Public Class RegionTaxUserControl
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtNonTaxable As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtNonTaxable As TextBox
 
     '''<summary>
     '''lblMinTax control.
@@ -74,7 +74,7 @@ Partial Public Class RegionTaxUserControl
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblMinTax As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblMinTax As Label
 
     '''<summary>
     '''txtMinimumTax control.
@@ -83,7 +83,7 @@ Partial Public Class RegionTaxUserControl
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtMinimumTax As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtMinimumTax As TextBox
 
     '''<summary>
     '''Label4 control.
@@ -92,7 +92,7 @@ Partial Public Class RegionTaxUserControl
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label4 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label4 As Label
 
     '''<summary>
     '''txtGLAccount control.
@@ -101,5 +101,5 @@ Partial Public Class RegionTaxUserControl
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtGLAccount As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtGLAccount As TextBox
 End Class

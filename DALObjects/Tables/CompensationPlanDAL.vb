@@ -134,7 +134,7 @@ Public Class CompensationPlanDAL
 
 
     Public Overloads Sub update(ds As DataSet, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal changesfilter As DataRowState = Nothing)
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), transaction, changesfilter)
         End If
     End Sub

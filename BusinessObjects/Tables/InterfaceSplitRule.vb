@@ -279,13 +279,13 @@
         Try
             Dim dal As New InterfaceSplitRuleDAL
 
-            If (Not (sourceCode.Contains(DALBase.WILDCARD_CHAR) Or sourceCode.Contains(DALBase.ASTERISK)) AndAlso String.IsNullOrEmpty(sourceCode.Trim)) Then
+            If (Not (sourceCode.Contains(DALBase.WILDCARD_CHAR) OrElse sourceCode.Contains(DALBase.ASTERISK)) AndAlso String.IsNullOrEmpty(sourceCode.Trim)) Then
                 sourceCode = sourceCode & DALBase.ASTERISK
             End If
 
             If (source Is Nothing) Then source = String.Empty
 
-            If (Not (source.Contains(DALBase.WILDCARD_CHAR) Or source.Contains(DALBase.ASTERISK)) AndAlso String.IsNullOrEmpty(source.Trim)) Then
+            If (Not (source.Contains(DALBase.WILDCARD_CHAR) OrElse source.Contains(DALBase.ASTERISK)) AndAlso String.IsNullOrEmpty(source.Trim)) Then
                 source = sourceCode & DALBase.ASTERISK
             End If
             Return New InterfaceSplitRuleSearchDV(dal.LoadList(source, sourceCode).Tables(0))

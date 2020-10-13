@@ -25,7 +25,7 @@ Public Class StateControllerConfirmationPrompt
         End Get
     End Property
 #End Region
-    Public Sub Process(callingPage As System.Web.UI.Page, navCtrl As INavigationController) Implements IStateController.Process
+    Public Sub Process(callingPage As Page, navCtrl As INavigationController) Implements IStateController.Process
         NavController = navCtrl
         Me.CallingPage = CType(callingPage, ElitaPlusPage)
         Select Case State.Stage

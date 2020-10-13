@@ -80,7 +80,7 @@ Public Class CustItemDAL
 		If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
@@ -130,7 +130,7 @@ Public Class CustItemDAL
         Try
             Dim obj As Object
             obj = DBHelper.ExecuteScalar(selectStmt, parameters)
-            If (Not obj Is Nothing) Then
+            If (obj IsNot Nothing) Then
                 Return New Guid(CType(obj, Byte()))
             End If
 
@@ -152,7 +152,7 @@ Public Class CustItemDAL
 
             Dim obj As Object
             obj = DBHelper.ExecuteScalar(selectStmt, parameters)
-            If (Not obj Is Nothing) Then
+            If (obj IsNot Nothing) Then
                 Return CType(obj, Integer)
             End If
 
@@ -166,7 +166,7 @@ Public Class CustItemDAL
 
         Dim whereClauseConditions As String = ""
 
-        If Not cellNumber Is Nothing Then
+        If cellNumber IsNot Nothing Then
             If cellNumber.Trim <> String.Empty Then
                 whereClauseConditions &= " AND c.work_phone = '" & cellNumber.Trim & "'"
             End If
@@ -185,7 +185,7 @@ Public Class CustItemDAL
 
             Dim obj As Object
             obj = DBHelper.ExecuteScalar(selectStmt, parameters)
-            If (Not obj Is Nothing) Then
+            If (obj IsNot Nothing) Then
                 Return New Guid(CType(obj, Byte()))
             End If
 
@@ -221,10 +221,10 @@ Public Class CustItemDAL
         Try
             ' Call DBHelper Store Procedure
             DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameter)
-            If (Not outputParameter(0) Is Nothing) Then
+            If (outputParameter(0) IsNot Nothing) Then
                 returnValue.RegistrationId = outputParameter(0).Value
             End If
-            If (Not outputParameter(1) Is Nothing) Then
+            If (outputParameter(1) IsNot Nothing) Then
                 returnValue.RegistrationItemId = outputParameter(1).Value
             End If
             Return returnValue
@@ -247,7 +247,7 @@ Public Class CustItemDAL
         Try
             ' Call DBHelper Store Procedure
             DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameter)
-            If (Not outputParameter(0) Is Nothing) Then
+            If (outputParameter(0) IsNot Nothing) Then
                 iRet = outputParameter(0).Value
             End If
 

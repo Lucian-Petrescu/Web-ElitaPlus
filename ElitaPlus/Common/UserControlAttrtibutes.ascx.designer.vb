@@ -20,7 +20,7 @@ Partial Public Class UserControlAttrtibutes
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents AttributeValueGridView As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents AttributeValueGridView As GridView
 
     '''<summary>
     '''NewButton control.
@@ -29,5 +29,5 @@ Partial Public Class UserControlAttrtibutes
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents NewButton As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents NewButton As Button
 End Class

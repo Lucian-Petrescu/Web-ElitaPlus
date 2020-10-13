@@ -1,4 +1,6 @@
-﻿Namespace Certificates
+﻿Imports System.Threading
+
+Namespace Certificates
     Partial Public Class CertItemHistoryForm
         Inherits ElitaPlusSearchPage
 
@@ -38,18 +40,18 @@
         End Sub
 
 
-        Protected Shadows ReadOnly Property State() As MyState
+        Protected Shadows ReadOnly Property State As MyState
             Get
-                If NavController.State Is Nothing Then
-                    NavController.State = New MyState
-                    Me.State.CertItemBO = New CertItem(CType(NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_ITEM_ID), Guid))
+                If Me.NavController.State Is Nothing Then
+                    Me.NavController.State = New MyState
+                    Me.State.CertItemBO = New CertItem(CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_ITEM_ID), Guid))
                     Me.State.CertItemId = Me.State.CertItemBO.Id
 
                     moCertificate = Me.State.CertItemBO.GetCertificate(Me.State.CertItemBO.CertId)
                     Me.State.certificateId = moCertificate.Id
                     Me.State.certificateCompanyId = moCertificate.CompanyId
                 End If
-                Return CType(NavController.State, MyState)
+                Return CType(Me.NavController.State, MyState)
                 Return CType(MyBase.State, MyState)
             End Get
         End Property
@@ -61,8 +63,8 @@
             Public EditingBo As CertItemHistory
             Public HasDataChanged As Boolean
             Public Sub New(LastOp As DetailPageCommand, curEditingBo As CertItemHistory, hasDataChanged As Boolean)
-                LastOperation = LastOp
-                EditingBo = curEditingBo
+                Me.LastOperation = LastOp
+                Me.EditingBo = curEditingBo
                 Me.HasDataChanged = hasDataChanged
             End Sub
         End Class
@@ -70,7 +72,7 @@
 #Region "Properties"
 
 
-        Public ReadOnly Property UserCertificateCtr() As UserControlCertificateInfo_New
+        Public ReadOnly Property UserCertificateCtr As UserControlCertificateInfo_New
             Get
                 If moCertificateInfoController Is Nothing Then
                     moCertificateInfoController = CType(FindControl("moCertificateInfoController"), UserControlCertificateInfo_New)
@@ -79,94 +81,94 @@
             End Get
         End Property
 
-        Public ReadOnly Property GetCompanyCode() As String
+        Public ReadOnly Property GetCompanyCode As String
             Get
-                Dim companyBO As Company = New Company(State.oCert.CompanyId)
+                Dim companyBO As Company = New Company(Me.State.oCert.CompanyId)
 
                 Return companyBO.Code
             End Get
 
         End Property
 
-        Public Property moCertificate() As Certificate
+        Public Property moCertificate As Certificate
             Get
-                Return State.oCert
+                Return Me.State.oCert
             End Get
-            Set(Value As Certificate)
-                State.oCert = Value
+            Set
+                Me.State.oCert = Value
 
             End Set
         End Property
 #End Region
 
 #Region "Page Events"
-        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
-            MasterPage.MessageController.Clear_Hide()
+        Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
+            Me.MasterPage.MessageController.Clear_Hide()
             Try
-                MasterPage.UsePageTabTitleInBreadCrum = False
-                MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("Certificates")
-                If Not IsPostBack Then
+                Me.MasterPage.UsePageTabTitleInBreadCrum = False
+                Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("Certificates")
+                If Not Me.IsPostBack Then
                     UpdateBreadCrum()
-                    MenuEnabled = False
-                    TranslateGridHeader(Grid)
-                    TranslateGridControls(Grid)
-                    moCertificateInfoController = UserCertificateCtr
-                    moCertificateInfoController.InitController(State.oCert.Id, , GetCompanyCode)
+                    Me.MenuEnabled = False
+                    Me.TranslateGridHeader(Me.Grid)
+                    Me.TranslateGridControls(Me.Grid)
+                    moCertificateInfoController = Me.UserCertificateCtr
+                    moCertificateInfoController.InitController(Me.State.oCert.Id, , GetCompanyCode)
                     ControlMgr.SetVisibleControl(Me, trPageSize, False)
                     PopulateGrid()
                 End If
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
-            ShowMissingTranslations(MasterPage.MessageController)
+            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
         End Sub
 
         Private Sub UpdateBreadCrum()
-            MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
+            Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
                 TranslationBase.TranslateLabelOrMessage("Item") & ElitaBase.Sperator &
                 TranslationBase.TranslateLabelOrMessage("item_history")
-            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("item_history")
+            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("item_history")
         End Sub
 #End Region
 
 #Region "Controlling Logic"
 
         Private Sub PopulateGrid()
-            State.searchDV = CertItemHistory.getHistoryList(State.certificateId, State.CertItemId)
+            Me.State.searchDV = CertItemHistory.getHistoryList(Me.State.certificateId, Me.State.CertItemId)
 
-            Grid.AutoGenerateColumns = False
-            SetPageAndSelectedIndexFromGuid(State.searchDV, Guid.Empty, Grid, State.PageIndex)
-            SortAndBindGrid()
+            Me.Grid.AutoGenerateColumns = False
+            SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Guid.Empty, Me.Grid, Me.State.PageIndex)
+            Me.SortAndBindGrid()
 
         End Sub
 
         Private Sub SortAndBindGrid()
-            State.PageIndex = Grid.PageIndex
-            If (State.searchDV.Count = 0) Then
+            Me.State.PageIndex = Me.Grid.PageIndex
+            If (Me.State.searchDV.Count = 0) Then
 
-                State.bnoRow = True
+                Me.State.bnoRow = True
                 CreateHeaderForEmptyGrid(Grid, String.Empty)
             Else
-                State.bnoRow = False
-                Grid.Enabled = True
-                Grid.DataSource = State.searchDV
-                Grid.DataBind()
+                Me.State.bnoRow = False
+                Me.Grid.Enabled = True
+                Me.Grid.DataSource = Me.State.searchDV
+                Me.Grid.DataBind()
             End If
             If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
 
-            ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
 
-            Session("recCount") = State.searchDV.Count
+            Session("recCount") = Me.State.searchDV.Count
 
-            If State.searchDV.Count > 0 Then
-                State.bnoRow = False
-                If Grid.Visible Then
-                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If Me.State.searchDV.Count > 0 Then
+                Me.State.bnoRow = False
+                If Me.Grid.Visible Then
+                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             Else
-                State.bnoRow = True
-                If Grid.Visible Then
-                    lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                Me.State.bnoRow = True
+                If Me.Grid.Visible Then
+                    Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 End If
             End If
         End Sub
@@ -176,12 +178,12 @@
 #Region "GridView Related"
 
         'The Binding Logic is here
-        Private Sub Grid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
+        Private Sub Grid_ItemDataBound(sender As Object, e As GridViewRowEventArgs) Handles Grid.RowDataBound
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim sModified_Date As String
 
-            If dvRow IsNot Nothing AndAlso Not State.bnoRow Then
+            If dvRow IsNot Nothing AndAlso Not Me.State.bnoRow Then
                 If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
 
                     e.Row.Cells(GRID_COL_IMEI_NUMBER_IDX).Text = dvRow(CertItemHistory.CertItemHistSearchDV.COL_IMEI_NUMBER).ToString
@@ -204,25 +206,25 @@
             End If
         End Sub
 
-        Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
+        Public Sub ItemCreated(sender As Object, e As GridViewRowEventArgs)
             BaseItemCreated(sender, e)
         End Sub
 
-        Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 Grid.PageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                PopulateGrid()
+                Me.PopulateGrid()
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+        Private Sub Grid_PageIndexChanged(source As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
             Try
-                State.PageIndex = e.NewPageIndex
-                PopulateGrid()
+                Me.State.PageIndex = e.NewPageIndex
+                Me.PopulateGrid()
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
@@ -233,10 +235,10 @@
 #Region "Button Handlers"
         Protected Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             Try
-                NavController.Navigate(Me, "back")
-            Catch ex As Threading.ThreadAbortException
+                Me.NavController.Navigate(Me, "back")
+            Catch ex As ThreadAbortException
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 #End Region

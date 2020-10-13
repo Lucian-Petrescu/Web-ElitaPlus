@@ -26,7 +26,7 @@ Imports System.Runtime.Serialization
                 Case DatabaseAccessErrorType.ReadErr
                     Code = ErrorCodes.DB_READ_ERROR
                 Case DatabaseAccessErrorType.WriteErr
-                    If (Not innerException Is Nothing) Then
+                    If (innerException IsNot Nothing) Then
                         If (innerException.ToString.Contains("ORA-20999")) Then
                             Code = ErrorCodes.DB_ERROR_POSTAL_CODE_FORMAT_NOT_RIGHT   '"Postal Code format not correct"
                             'Throw New ElitaPlusException(Me.Code, Me.Code)
@@ -35,7 +35,7 @@ Imports System.Runtime.Serialization
                             Code = ErrorCodes.DB_ERROR_COMUNA_NOT_FOUND   '"Comuna Entered NOt Found. Please enter the correct Comuna"
                             'Throw New ElitaPlusException(Me.Code, Me.Code)
                             'Throw New Exception(ErrorCodes.DB_ERROR_COMUNA_NOT_FOUND)
-                        ElseIf (innerException.ToString.Contains("ORA-06512")) And (innerException.ToString.Contains("ELITA.GETPOSTALCODE")) Then
+                        ElseIf (innerException.ToString.Contains("ORA-06512")) AndAlso (innerException.ToString.Contains("ELITA.GETPOSTALCODE")) Then
                             Code = ErrorCodes.DB_ERROR_POSTAL_CODE_FORMAT_NOT_RIGHT
                         Else
                             Code = ErrorCodes.DB_WRITE_ERROR

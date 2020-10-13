@@ -1,20 +1,21 @@
+Imports System.Diagnostics
 Imports elp = Assurant.ElitaPlus
 
 Namespace Common
 
     Partial Class MultipleColumnDDLabelControl
-        Inherits System.Web.UI.UserControl
+        Inherits UserControl
 #Region " Web Form Designer Generated Code "
 
         'This call is required by the Web Form Designer.
-        <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+        <DebuggerStepThrough()> Private Sub InitializeComponent()
 
         End Sub
         'NOTE: The following placeholder declaration is required by the Web Form Designer.
         'Do not delete or move it.
-        Private designerPlaceholderDeclaration As System.Object
+        Private designerPlaceholderDeclaration As Object
 
-        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -236,7 +237,7 @@ Namespace Common
             Set(Value As Integer)
                 mMode = Value
                 Select Case Value
-                    Case Me.MODES.EDIT_MODE
+                    Case MODES.EDIT_MODE
                         moMultipleColumnDrop.Visible = False
                         moMultipleColumnDropDesc.Visible = False
                         moMultipleColumnTextBoxCode.Visible = True
@@ -244,7 +245,7 @@ Namespace Common
                         lb_DropDown.Enabled = False
                         lblCode.Enabled = False
                         lblDescription.Enabled = False
-                    Case Me.MODES.NEW_MODE
+                    Case MODES.NEW_MODE
                         moMultipleColumnDrop.Visible = True
                         moMultipleColumnDropDesc.Visible = True
                         moMultipleColumnTextBoxCode.Visible = False
@@ -331,7 +332,7 @@ Namespace Common
 
 #Region "Handlers-Init"
 
-        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             If Not Page.IsPostBack Then
                 If Not Caption.Equals(String.Empty) Then
                     lb_DropDown.Text = Caption.Replace(":", "") + ":"
@@ -351,13 +352,13 @@ Namespace Common
 
 #Region "Handlers-DropDown"
 
-        Private Sub moMultipleColumnDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moMultipleColumnDrop.SelectedIndexChanged
+        Private Sub moMultipleColumnDrop_SelectedIndexChanged(sender As Object, e As EventArgs) Handles moMultipleColumnDrop.SelectedIndexChanged
             moMultipleColumnDropDesc.SelectedIndex = -1
             moMultipleColumnDropDesc.Items.FindByValue(moMultipleColumnDrop.SelectedValue).Selected = True
             RaiseEvent SelectedDropChanged(Me)
         End Sub
 
-        Private Sub moMultipleColumnDropDesc_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moMultipleColumnDropDesc.SelectedIndexChanged
+        Private Sub moMultipleColumnDropDesc_SelectedIndexChanged(sender As Object, e As EventArgs) Handles moMultipleColumnDropDesc.SelectedIndexChanged
             moMultipleColumnDrop.SelectedIndex = -1
             moMultipleColumnDrop.Items.FindByValue(moMultipleColumnDropDesc.SelectedValue).Selected = True
             RaiseEvent SelectedDropChanged(Me)
@@ -467,11 +468,11 @@ Namespace Common
                 overRideSingularity = dv.Count > SINGLE_ITEM
             End If
 
-            If Mode = Me.MODES.NEW_MODE AndAlso overRideSingularity Then
-                Me.Mode = Me.MODES.NEW_MODE
+            If Mode = MODES.NEW_MODE AndAlso overRideSingularity Then
+                Me.Mode = MODES.NEW_MODE
             Else
                 Me.NothingSelected = False
-                Me.Mode = Me.MODES.EDIT_MODE
+                Me.Mode = MODES.EDIT_MODE
                 moMultipleColumnTextBoxCode.Text = LookupListNew.GetCodeFromId(dv, Page.GetSelectedItem(moMultipleColumnDrop)) 'CType(dv.Item(0).Item(0), String)
                 moMultipleColumnTextBoxDesc.Text = LookupListNew.GetDescriptionFromId(dv, Page.GetSelectedItem(moMultipleColumnDropDesc))
             End If

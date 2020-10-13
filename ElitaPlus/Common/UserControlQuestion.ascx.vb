@@ -4,6 +4,7 @@ Imports System.Diagnostics
 Imports System.Globalization
 Imports System.ServiceModel
 Imports System.Text
+Imports System.Text.RegularExpressions
 Imports System.Threading
 Imports Assurant.Elita.ClientIntegration
 Imports Assurant.Elita.ClientIntegration.Headers
@@ -12,7 +13,7 @@ Imports Assurant.Elita.Questions.Contracts
 
 
 Public Class UserControlQuestion
-    Inherits System.Web.UI.UserControl
+    Inherits UserControl
 
 #Region "Constants"
     Public Class ViewStateItems
@@ -35,7 +36,7 @@ Public Class UserControlQuestion
     End Class
 #End Region
 
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         Dim parentControl = Parent
 
         Debug.WriteLine($"Loading UserControlQuestion ID: {ID}")
@@ -511,7 +512,7 @@ Public Class UserControlQuestion
             Next
 
             If (Not String.IsNullOrEmpty(errorQuestionCodes.ToString())) Then
-                HostMessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_TO_QUESTION_INVALID_ERR, True)
+                HostMessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_ANSWER_TO_QUESTION_INVALID_ERR, True)
                 Exit Sub
             End If
 
@@ -619,7 +620,7 @@ Public Class UserControlQuestion
                         ElseIf (Not String.IsNullOrEmpty(answer)) Then
                             If answerType.Trim().ToUpper().Equals(AnswerTypes.NumberAnswer) Then
                                 Dim numberValue As NumberAnswer = New NumberAnswer()
-                                Dim numbRegExp As New RegularExpressions.Regex("^\d+$")
+                                Dim numbRegExp As New Regex("^\d+$")
                                 Dim isValidNumb As Boolean = numbRegExp.Match(answer).Success
                                 If (Not isValidNumb) Then
                                     ErrorQuestionCodes.AppendLine(questionObject.Text)
@@ -682,17 +683,17 @@ Public Class UserControlQuestion
                                 Dim comparisionValidation= DirectCast(validation,ComparisonValidation)
                                 select Case comparisionValidation.Operator
                                     Case ComparisonValidationOperatorType.LessThanOrEqualTo
-                                        ErrorQuestionValidation.AppendLine(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_LESS_THAN_OR_EQUAL_TO_REF_VALUE) & DirectCast(comparisionValidation.ReferenceValue, NumberReferenceValue).ReferenceValue)
+                                        ErrorQuestionValidation.AppendLine(TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_LESS_THAN_OR_EQUAL_TO_REF_VALUE) & DirectCast(comparisionValidation.ReferenceValue, NumberReferenceValue).ReferenceValue)
                                     Case ComparisonValidationOperatorType.LessThan
-                                         ErrorQuestionValidation.AppendLine(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_LESS_THAN_TO_REF_VALUE) & DirectCast(comparisionValidation.ReferenceValue, NumberReferenceValue).ReferenceValue)
+                                         ErrorQuestionValidation.AppendLine(TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_LESS_THAN_TO_REF_VALUE) & DirectCast(comparisionValidation.ReferenceValue, NumberReferenceValue).ReferenceValue)
                                     Case ComparisonValidationOperatorType.GreaterThanOrEqualTo
-                                        ErrorQuestionValidation.AppendLine(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_GREATER_THAN_OR_EQUAL_TO_REF_VALUE) & DirectCast(comparisionValidation.ReferenceValue, NumberReferenceValue).ReferenceValue)
+                                        ErrorQuestionValidation.AppendLine(TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_GREATER_THAN_OR_EQUAL_TO_REF_VALUE) & DirectCast(comparisionValidation.ReferenceValue, NumberReferenceValue).ReferenceValue)
                                     Case ComparisonValidationOperatorType.GreaterThan
-                                        ErrorQuestionValidation.AppendLine(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_GREATER_THAN_TO_REF_VALUE) & DirectCast(comparisionValidation.ReferenceValue, NumberReferenceValue).ReferenceValue)
+                                        ErrorQuestionValidation.AppendLine(TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.MSG_QUESTION_VALIDATION_ANSWER_GREATER_THAN_TO_REF_VALUE) & DirectCast(comparisionValidation.ReferenceValue, NumberReferenceValue).ReferenceValue)
                                 End Select
                                 
                             Else If validation.GetType() is GetType(RegularExpressionValidation)
-                                ErrorQuestionValidation.AppendLine(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_TO_QUESTION_INVALID_ERR) & DirectCast(validation,RegularExpressionValidation).RegularExpressionPattern)
+                                ErrorQuestionValidation.AppendLine(TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.GUI_ANSWER_TO_QUESTION_INVALID_ERR) & DirectCast(validation,RegularExpressionValidation).RegularExpressionPattern)
                             End If
                         End If
                     Next

@@ -2,7 +2,6 @@ Imports System.Threading
 Imports Assurant.ElitaPlus.DALObjects
 Imports Microsoft.VisualBasic
 Imports System.Web.Services
-Imports System.Xml.Linq
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.CommonConfiguration.DataElements
@@ -823,7 +822,7 @@ Namespace Certificates
             Dim strTemp As String = String.Empty
             If listDisabledTabs.Count > 0 Then
                 For Each i As Integer In listDisabledTabs
-                    strTemp = strTemp + "," + i.ToString
+                    strTemp = strTemp & "," & i.ToString
                 Next
                 strTemp = strTemp.Substring(1) 'remove the first comma
             End If
@@ -3967,7 +3966,7 @@ Namespace Certificates
                                                            {
                                                            .AddBlankItem = True,
                                                            .TextFunc = Function(x)
-                                                                           Return x.Code + " - " + x.Translation
+                                                                           Return x.Code & " - " & x.Translation
                                                                        End Function
                                                            })
             Catch ex As Exception
@@ -4006,7 +4005,7 @@ Namespace Certificates
                                                           {
                                                           .AddBlankItem = True,
                                                           .TextFunc = Function(x)
-                                                                          Return x.Code + " - " + x.Translation
+                                                                          Return x.Code & " - " & x.Translation
                                                                       End Function
                                                           })
             Catch ex As Exception
@@ -5285,7 +5284,7 @@ Namespace Certificates
 
 
             If dv.Count > 0 Then
-                CustomerCount.Text = "(" + dv.Table.Rows.Count.ToString() + ")"
+                CustomerCount.Text = "(" & dv.Table.Rows.Count.ToString() & ")"
 
                 objDataColCustInfoExclude.ColumnName = "CUST_INFO_EXCLUDE"
                 objDataColCustInfoExclude.DataType = GetType(String)

@@ -551,15 +551,15 @@ Public Class ClaimEquipment
     Public Function ValidateForClaimProcess(ByRef msgList As List(Of String)) As Boolean
         Dim flag As Boolean = True
         If ManufacturerId.Equals(Guid.Empty) Then
-            flag = flag And False
+            flag = flag AndAlso False
             msgList.Add("CLAIMED_DEVICE_MANUFACTURER_IS_EMPTY")
         End If
         If String.IsNullOrEmpty(Model) Then
-            flag = flag And False
+            flag = flag AndAlso False
             msgList.Add("CLAIMED_DEVICE_MODEL_IS_EMPTY")
         End If
         If String.IsNullOrEmpty(SerialNumber) Then
-            flag = flag And False
+            flag = flag AndAlso False
             msgList.Add("CLAIMED_DEVICE_SERIAL_NUMBER_IS_EMPTY")
         End If
         Return flag

@@ -52,7 +52,7 @@ Public Class ClaimIssueDAL
         Dim claimIssueResponseDAL As New ClaimIssueResponseDAL
         Dim claimIsssueStatusDAL As New ClaimIssueStatusDAL
 
-        If Not familyDataset.Tables(TABLE_NAME) Is Nothing Then
+        If familyDataset.Tables(TABLE_NAME) IsNot Nothing Then
             For Each DataRow As DataRow In familyDataset.Tables(TABLE_NAME).Rows
                 If (Not String.IsNullOrEmpty(DataRow(COL_NAME_CREATED_BY).ToString())) Then
                     If CType(DataRow(COL_NAME_CREATED_BY), String) = "SYSTEM" Then

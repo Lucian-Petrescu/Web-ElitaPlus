@@ -42,11 +42,11 @@ Namespace SpecializedServices.Timb
                 Dim oUser As New BusinessObjectsNew.User(BusinessObjectsNew.ElitaPlusIdentity.Current.ActiveUser.NetworkId)
                 Dim userAssignedCompaniesDv As DataView = oUser.GetSelectedAssignedCompanies(UserID)
 
-                Dim assignedCompany As DataRow = userAssignedCompaniesDv.Table.AsEnumerable().FirstOrDefault(Function(r) Not r("COMPANY_ID") Is Nothing _
-                                                                                                                 AndAlso Not r("COMPANY_ID") Is DBNull.Value _
+                Dim assignedCompany As DataRow = userAssignedCompaniesDv.Table.AsEnumerable().FirstOrDefault(Function(r) r("COMPANY_ID") IsNot Nothing _
+                                                                                                                 AndAlso r("COMPANY_ID") IsNot DBNull.Value _
                                                                                                                  AndAlso New Guid(CType(r("COMPANY_ID"), Byte())).Equals(CompanyId))
 
-                Return (Not assignedCompany Is Nothing)
+                Return (assignedCompany IsNot Nothing)
 
             Catch conf As CompanyNotFoundException
                 Return False
@@ -100,7 +100,7 @@ Namespace SpecializedServices.Timb
             Try
                 oCompany = CompanyManager.GetCompany(request.CompanyCode)
 
-                If (Not oCompany Is Nothing AndAlso Not ValidateCompany(oCompany.CompanyId)) Then
+                If (oCompany IsNot Nothing AndAlso Not ValidateCompany(oCompany.CompanyId)) Then
                     Throw New Exception("Company Not Found : " & request.CompanyCode)
                 End If
             Catch ex As Exception
@@ -176,7 +176,7 @@ Namespace SpecializedServices.Timb
         End Function
 
         Private Function GetStringValue(fieldValue As Object) As String
-            Return If(fieldValue Is Nothing Or fieldValue Is DBNull.Value, String.Empty, fieldValue.ToString)
+            Return If(fieldValue Is Nothing OrElse fieldValue Is DBNull.Value, String.Empty, fieldValue.ToString)
         End Function
 
     End Class

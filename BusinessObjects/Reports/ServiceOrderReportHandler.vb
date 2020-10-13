@@ -223,7 +223,7 @@ Public Class ServiceOrderReportHandler
                         compDesc = "Assurant Services Brasil Ltda"
                 End Select
             Case Codes.COMPANY__APR
-                If dealerCode = Codes.DEALER__TMOBIL Or dealerCode = Codes.DEALER__CLARO Then
+                If dealerCode = Codes.DEALER__TMOBIL OrElse dealerCode = Codes.DEALER__CLARO Then
                     soRow.DEDUCTIBLE_AMT_DISCLAIMER_ON = "Y"
                 End If
             Case Codes.COMPANY__PRC
@@ -296,7 +296,7 @@ Public Class ServiceOrderReportHandler
 
         End If
 
-        If ClaimBO.ReasonClosed = "TBRP" Or ClaimBO.ClaimActivityCode = "TBREP" Then
+        If ClaimBO.ReasonClosed = "TBRP" OrElse ClaimBO.ClaimActivityCode = "TBREP" Then
             Dim claimNumber As String = ClaimBO.ClaimNumber
             Dim replacementClaimNumber As String = ""
             If claimNumber.Length = 9 Then

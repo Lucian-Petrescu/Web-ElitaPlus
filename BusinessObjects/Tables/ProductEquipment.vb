@@ -453,7 +453,7 @@ obj.EffectiveDateProductEquip IsNot Nothing AndAlso
 
             Dim bValid As Boolean = True
 
-            If obj.ExpirationDateProductEquip IsNot Nothing And obj.EffectiveDateProductEquip IsNot Nothing Then
+            If obj.ExpirationDateProductEquip IsNot Nothing AndAlso obj.EffectiveDateProductEquip IsNot Nothing Then
                 If Convert.ToDateTime(obj.EffectiveDateProductEquip.Value) > Convert.ToDateTime(obj.ExpirationDateProductEquip.Value) Then
                     Message = PRODUCT_EQUIPMENT_FORM001
                     bValid = False
@@ -489,7 +489,7 @@ obj.EffectiveDateProductEquip IsNot Nothing AndAlso
                     If NewEffectiveDateProductEquip.Value = EffectiveDate Then
                         bChangeRec = True
                     Else
-                        If bChangeRec = True And NewExpirationDateProductEquip.Value >= EffectiveDate Then
+                        If bChangeRec = True AndAlso NewExpirationDateProductEquip.Value >= EffectiveDate Then
                             bValid = False
                             Exit For
                         End If

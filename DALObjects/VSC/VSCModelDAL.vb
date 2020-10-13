@@ -88,18 +88,18 @@ Public Class VSCModelDAL
 
         dynamic_where_clause &= Environment.NewLine & "AND MANF." & COL_NAME_COMPANY_GROUP_ID & " =  '" & GuidToSQLString(companyGroupId) & "'"
 
-        If Not make Is Nothing AndAlso Not make.Equals(String.Empty) Then
+        If make IsNot Nothing AndAlso Not make.Equals(String.Empty) Then
             dynamic_where_clause &= Environment.NewLine & "And M." & COL_NAME_MANUFACTURER_ID & " ='" & make & "'"
         End If
 
-        If Not model Is Nothing AndAlso Not model.Equals(String.Empty) Then
+        If model IsNot Nothing AndAlso Not model.Equals(String.Empty) Then
             dynamic_where_clause &= Environment.NewLine & "And M." & COL_NAME_MODEL & " ='" & model & "'"
         End If
 
-        If Not trim Is Nothing AndAlso Not trim.Equals(String.Empty) Then
+        If trim IsNot Nothing AndAlso Not trim.Equals(String.Empty) Then
             dynamic_where_clause &= Environment.NewLine & "And M." & COL_NAME_DESCRIPTION & " ='" & trim & "'"
         End If
-        If Not year Is Nothing AndAlso Not year.Equals(String.Empty) Then
+        If year IsNot Nothing AndAlso Not year.Equals(String.Empty) Then
             dynamic_where_clause &= Environment.NewLine & "And M." & COL_NAME_MODEL_YEAR & " =" & year
         End If
 
@@ -132,18 +132,18 @@ Public Class VSCModelDAL
 
         dynamic_where_clause &= Environment.NewLine & "AND MANF." & COL_NAME_COMPANY_GROUP_ID & " =  '" & GuidToSQLString(companyGroupId) & "'"
 
-        If Not make Is Nothing AndAlso Not make.Equals(String.Empty) Then
+        If make IsNot Nothing AndAlso Not make.Equals(String.Empty) Then
             dynamic_where_clause &= Environment.NewLine & "And M." & COL_NAME_MANUFACTURER_ID & " ='" & make & "'"
         End If
 
-        If Not model Is Nothing AndAlso Not model.Equals(String.Empty) Then
+        If model IsNot Nothing AndAlso Not model.Equals(String.Empty) Then
             dynamic_where_clause &= Environment.NewLine & "And M." & COL_NAME_MODEL & " ='" & model & "'"
         End If
 
-        If Not trim Is Nothing AndAlso Not trim.Equals(String.Empty) Then
+        If trim IsNot Nothing AndAlso Not trim.Equals(String.Empty) Then
             dynamic_where_clause &= Environment.NewLine & "And M." & COL_NAME_DESCRIPTION & " ='" & trim & "'"
         End If
-        If Not year Is Nothing AndAlso Not year.Equals(String.Empty) Then
+        If year IsNot Nothing AndAlso Not year.Equals(String.Empty) Then
             dynamic_where_clause &= Environment.NewLine & "And M." & COL_NAME_MODEL_YEAR & " =" & year
         End If
 
@@ -236,7 +236,7 @@ Public Class VSCModelDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub

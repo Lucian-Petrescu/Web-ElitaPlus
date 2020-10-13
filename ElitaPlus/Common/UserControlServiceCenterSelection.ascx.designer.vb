@@ -20,7 +20,7 @@ Partial Public Class UserControlServiceCenterSelection
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moSearchServiceCenterLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moSearchServiceCenterLabel As Label
 
     '''<summary>
     '''moSearchByLabel control.
@@ -29,7 +29,7 @@ Partial Public Class UserControlServiceCenterSelection
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moSearchByLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moSearchByLabel As Label
 
     '''<summary>
     '''moSearchByDrop control.
@@ -38,7 +38,7 @@ Partial Public Class UserControlServiceCenterSelection
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moSearchByDrop As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents moSearchByDrop As DropDownList
 
     '''<summary>
     '''tdCountryLabel control.
@@ -47,7 +47,7 @@ Partial Public Class UserControlServiceCenterSelection
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tdCountryLabel As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents tdCountryLabel As HtmlTableCell
 
     '''<summary>
     '''moCountryLabel control.
@@ -56,7 +56,7 @@ Partial Public Class UserControlServiceCenterSelection
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moCountryLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moCountryLabel As Label
 
     '''<summary>
     '''moCountryDrop control.
@@ -65,7 +65,7 @@ Partial Public Class UserControlServiceCenterSelection
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moCountryDrop As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents moCountryDrop As DropDownList
 
     '''<summary>
     '''tdCityLabel control.
@@ -74,7 +74,7 @@ Partial Public Class UserControlServiceCenterSelection
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tdCityLabel As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents tdCityLabel As HtmlTableCell
 
     '''<summary>
     '''moCityLabel control.
@@ -83,7 +83,7 @@ Partial Public Class UserControlServiceCenterSelection
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moCityLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moCityLabel As Label
 
     '''<summary>
     '''tdCityTextBox control.
@@ -92,7 +92,7 @@ Partial Public Class UserControlServiceCenterSelection
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tdCityTextBox As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents tdCityTextBox As HtmlTableCell
 
     '''<summary>
     '''moCityTextbox control.
@@ -101,7 +101,7 @@ Partial Public Class UserControlServiceCenterSelection
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moCityTextbox As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moCityTextbox As TextBox
 
     '''<summary>
     '''tdPostalCodeLabel control.
@@ -110,7 +110,7 @@ Partial Public Class UserControlServiceCenterSelection
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tdPostalCodeLabel As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents tdPostalCodeLabel As HtmlTableCell
 
     '''<summary>
     '''moPostalCodeLabel control.
@@ -119,7 +119,7 @@ Partial Public Class UserControlServiceCenterSelection
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moPostalCodeLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moPostalCodeLabel As Label
 
     '''<summary>
     '''tdPostalCodeText control.
@@ -128,7 +128,7 @@ Partial Public Class UserControlServiceCenterSelection
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tdPostalCodeText As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents tdPostalCodeText As HtmlTableCell
 
     '''<summary>
     '''moPostalCodeTextbox control.
@@ -137,7 +137,7 @@ Partial Public Class UserControlServiceCenterSelection
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moPostalCodeTextbox As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moPostalCodeTextbox As TextBox
 
     '''<summary>
     '''tdClearButton control.
@@ -146,7 +146,7 @@ Partial Public Class UserControlServiceCenterSelection
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tdClearButton As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents tdClearButton As HtmlTableCell
 
     '''<summary>
     '''btnClearSearch control.
@@ -155,7 +155,7 @@ Partial Public Class UserControlServiceCenterSelection
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnClearSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnClearSearch As Button
 
     '''<summary>
     '''tdSearchButton control.
@@ -164,7 +164,7 @@ Partial Public Class UserControlServiceCenterSelection
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tdSearchButton As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents tdSearchButton As HtmlTableCell
 
     '''<summary>
     '''btnSearch control.
@@ -173,7 +173,7 @@ Partial Public Class UserControlServiceCenterSelection
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnSearch As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSearch As Button
 
     '''<summary>
     '''trPageSize control.
@@ -182,7 +182,7 @@ Partial Public Class UserControlServiceCenterSelection
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trPageSize As HtmlTableRow
 
     '''<summary>
     '''lblPageSize control.
@@ -191,7 +191,7 @@ Partial Public Class UserControlServiceCenterSelection
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPageSize As Label
 
     '''<summary>
     '''colonSepertor control.
@@ -200,7 +200,7 @@ Partial Public Class UserControlServiceCenterSelection
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents colonSepertor As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents colonSepertor As Label
 
     '''<summary>
     '''cboPageSize control.
@@ -209,7 +209,7 @@ Partial Public Class UserControlServiceCenterSelection
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboPageSize As DropDownList
 
     '''<summary>
     '''lblRecordCount control.
@@ -218,7 +218,7 @@ Partial Public Class UserControlServiceCenterSelection
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblRecordCount As Label
 
     '''<summary>
     '''GridServiceCenter control.
@@ -227,5 +227,5 @@ Partial Public Class UserControlServiceCenterSelection
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents GridServiceCenter As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents GridServiceCenter As GridView
 End Class

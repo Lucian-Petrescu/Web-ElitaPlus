@@ -395,12 +395,12 @@ Public Class UserControlDeliverySlot
                     Case "DEVELIVERYESTIMATENOTFOUND" '"CONFIGURATIONNOTFOUND"
                         Page.MasterPage.MessageController.AddInformation(Message.MSG_ERR_ESTIMATED_DELIVERY_DATE_NOT_FOUND, True)
                     Case "SERVICECENTERNOTFOUND"
-                        Page.MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_WEB_APP_GATEWAY_SERVICE_ERR) & " - " & TranslationBase.TranslateLabelOrMessage("SERVICE_CENTER_NOT_FOUND_ERR"), False)
+                        Page.MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.GUI_WEB_APP_GATEWAY_SERVICE_ERR) & " - " & TranslationBase.TranslateLabelOrMessage("SERVICE_CENTER_NOT_FOUND_ERR"), False)
                     Case Else
-                        Page.MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_WEB_APP_GATEWAY_SERVICE_ERR) & " - " & fex.Message, False)
+                        Page.MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.GUI_WEB_APP_GATEWAY_SERVICE_ERR) & " - " & fex.Message, False)
                 End Select
             Else
-                Page.MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_WEB_APP_GATEWAY_SERVICE_ERR) & " - " & fex.Message, False)
+                Page.MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.GUI_WEB_APP_GATEWAY_SERVICE_ERR) & " - " & fex.Message, False)
             End If
         End If
     End Sub

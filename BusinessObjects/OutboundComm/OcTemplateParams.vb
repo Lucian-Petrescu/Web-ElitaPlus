@@ -375,7 +375,6 @@ Public Class OcTemplateParams
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As OcTemplateParams = CType(objectToValidate, OcTemplateParams)
-            Dim emailExpression As New System.Text.RegularExpressions.Regex("^[_a-z0-9-]+(.[a-z0-9-]+)@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$")
 
             If Not String.IsNullOrEmpty(obj.ParamDataTypeXcd) AndAlso Not String.IsNullOrEmpty(obj.ParamValue) Then
                 Select Case obj.ParamDataTypeXcd

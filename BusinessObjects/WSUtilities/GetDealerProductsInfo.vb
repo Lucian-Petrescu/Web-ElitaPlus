@@ -61,7 +61,7 @@ Public Class GetDealerProductsInfo
                                         "<PRODUCT_CODE_ID>[^>]+</PRODUCT_CODE_ID>|<ITEM_ID>[^>]+</ITEM_ID>|<COVERAGE_ID>[^>]+</COVERAGE_ID>|<COVERAGE_RATE_ID>[^>]+</COVERAGE_RATE_ID>", 
                                         String.Empty,
                                         RegexOptions.None, 
-                                        new TimeSpan(0,0,0,0, 100))
+                                        Timespan.FromSeconds(.5))
         Return xmlStringOutput
     End Function
 

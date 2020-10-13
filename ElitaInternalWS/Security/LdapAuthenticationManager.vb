@@ -71,7 +71,7 @@ Namespace Security
             Try
             '' Validate User Name against Cache
             Dim data As CacheData = _cacheStore.GetData(userName.ToUpperInvariant())
-            If (Not data Is Nothing) Then
+            If (data IsNot Nothing) Then
                 If (data.ValidatePassword(password)) Then Return True
                 _cacheStore.Remove(userName)
             End If

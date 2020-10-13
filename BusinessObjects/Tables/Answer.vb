@@ -408,7 +408,7 @@ Public Class Answer
                     If answerId <> obj.Id Then
                         Dim ansCode As String = CType(dtrow(AnswerDAL.COL_NAME_CODE), String)
                         Dim expDate As DateTime = CType(dtrow(AnswerDAL.COL_NAME_EXPIRATION), DateTime)
-                        If ansCode = obj.Code And expDate > DateTime.Now Then Return False
+                        If ansCode = obj.Code AndAlso expDate > DateTime.Now Then Return False
                     End If
                 End If
             Next
@@ -435,7 +435,7 @@ Public Class Answer
                     If answerId <> obj.Id Then
                         Dim ansOrder As Long = CType(dtrow(AnswerDAL.COL_NAME_ANSWER_ORDER), Long)
                         Dim expDate As DateTime = CType(dtrow(AnswerDAL.COL_NAME_EXPIRATION), DateTime)
-                        If ansOrder = obj.AnswerOrder And expDate > DateTime.Now Then Return False
+                        If ansOrder = obj.AnswerOrder AndAlso expDate > DateTime.Now Then Return False
                     End If
                 End If
             Next

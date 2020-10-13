@@ -57,7 +57,7 @@ Public Class Cache
     Public Function GetEntry(key As String) As Object
         Dim entry As CacheEntry = cacheTable.Item(key)
         Dim obj As Object = Nothing
-        If Not entry Is Nothing Then
+        If entry IsNot Nothing Then
             If entry.expireAt <= Date.Now Then
                 InvalidateEntry(key)
             Else

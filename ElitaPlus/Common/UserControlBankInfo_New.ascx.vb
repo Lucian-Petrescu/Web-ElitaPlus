@@ -1,23 +1,25 @@
+Imports System.Diagnostics
 Imports System.Threading
 Imports Assurant.Elita.CommonConfiguration
+Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
 Imports Assurant.ElitaPlus.Security
 
 Partial Class UserControlBankInfo_New
-    Inherits System.Web.UI.UserControl
+    Inherits UserControl
 
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -87,7 +89,7 @@ Partial Class UserControlBankInfo_New
 #Region "Properties"
 
 #End Region
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load, Me.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load, Me.Load
         'Put user code to initialize the page here
         'If Not IsPostBack Then
 
@@ -377,7 +379,7 @@ Partial Class UserControlBankInfo_New
 
                 Page.PopulateControlFromBOProperty(textboxSwiftCode, .SwiftCode)
                 Page.SetSelectedItem(moCountryDrop_WRITE, .CountryID)
-                If .AccountTypeId.Equals(System.Guid.Empty) Then
+                If .AccountTypeId.Equals(Guid.Empty) Then
                     moAccountTypeDrop.SelectedIndex = 0
                 Else
                     Page.SetSelectedItem(moAccountTypeDrop, .AccountTypeId)
@@ -458,7 +460,7 @@ Partial Class UserControlBankInfo_New
     End Sub
 
     Private Sub LoadCountryList(Optional ByVal nothingSelcted As Boolean = True)
-        Dim oCountryList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="Country")
+        Dim oCountryList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="Country")
         moCountryDrop_WRITE.Populate(oCountryList, New PopulateOptions() With
                                         {
                                         .AddBlankItem = nothingSelcted
@@ -470,7 +472,7 @@ Partial Class UserControlBankInfo_New
         If oCompany.AttributeValues.Contains(Codes.DEFAULT_CLAIM_BANK_SORT_CODE) Then
             If oCompany.AttributeValues.Value(Codes.DEFAULT_CLAIM_BANK_SORT_CODE) = Codes.YESNO_Y Then
                 DisplayCboBankSortCode()
-                Dim oBankSortCodeList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="BANK_SORT_CODE")
+                Dim oBankSortCodeList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="BANK_SORT_CODE")
                 cboBankSortCodes.Populate(oBankSortCodeList, New PopulateOptions() With
                                             {
                                             .AddBlankItem = True,
@@ -497,7 +499,7 @@ Partial Class UserControlBankInfo_New
         txtTaxId.Text = String.Empty
     End Sub
     Private Sub PopulateAccountTypeDropdown()
-        Dim AcctType As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("ACCTTYPE", Thread.CurrentPrincipal.GetLanguageCode())
+        Dim AcctType As ListItem() = CommonConfigManager.Current.ListManager.GetList("ACCTTYPE", Thread.CurrentPrincipal.GetLanguageCode())
         moAccountTypeDrop.Populate(AcctType, New PopulateOptions() With
                                            {
                                            .AddBlankItem = True
@@ -793,7 +795,7 @@ Partial Class UserControlBankInfo_New
         EnableDisableRequiredControls()
     End Sub
 
-    Private Sub moCountryDrop_WRITE_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moCountryDrop_WRITE.SelectedIndexChanged
+    Private Sub moCountryDrop_WRITE_SelectedIndexChanged(sender As Object, e As EventArgs) Handles moCountryDrop_WRITE.SelectedIndexChanged
         If (Not (State.myBankInfoBo.SourceCountryID.Equals(Guid.Empty))) AndAlso (Not (Page.GetSelectedItem(moCountryDrop_WRITE).Equals(Guid.Empty))) Then
             If State.myBankInfoBo.SourceCountryID.Equals(Page.GetSelectedItem(moCountryDrop_WRITE)) Then
                 'Domestic transfer
@@ -966,7 +968,7 @@ Partial Class UserControlBankInfo_New
         End If
     End Sub
 
-    Public Sub GetBankIdForBankName(sender As Object, e As System.EventArgs) Handles moBankName.SelectedIndexChanged
+    Public Sub GetBankIdForBankName(sender As Object, e As EventArgs) Handles moBankName.SelectedIndexChanged
         If Not Page.GetSelectedItem(moBankName).Equals(Guid.Empty) Then
             Dim boBankName As BankName
             boBankName = New BankName(Page.GetSelectedItem(moBankName))

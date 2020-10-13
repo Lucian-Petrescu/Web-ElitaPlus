@@ -1187,14 +1187,14 @@ Public Class ServiceCenter
             Dim bDirty As Boolean
 
             bDirty = MyBase.IsDirty OrElse IsChildrenDirty OrElse
-            (Not Address.IsNew And Address.IsDirty) OrElse
-            (Address.IsNew And Not Address.IsEmpty)
+            (Not Address.IsNew AndAlso Address.IsDirty) OrElse
+            (Address.IsNew AndAlso Not Address.IsEmpty)
 
             If bDirty = False Then
                 If LookupListNew.GetCodeFromId(LookupListCache.LK_PAYMENTMETHOD, PaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
                     bDirty = bDirty OrElse
-                (CurrentBankInfo IsNot Nothing AndAlso (Not CurrentBankInfo.IsNew And CurrentBankInfo.IsDirty)) OrElse
-                (CurrentBankInfo IsNot Nothing AndAlso (CurrentBankInfo.IsNew And Not CurrentBankInfo.IsEmpty))
+                (CurrentBankInfo IsNot Nothing AndAlso (Not CurrentBankInfo.IsNew AndAlso CurrentBankInfo.IsDirty)) OrElse
+                (CurrentBankInfo IsNot Nothing AndAlso (CurrentBankInfo.IsNew AndAlso Not CurrentBankInfo.IsEmpty))
                 End If
             End If
 
@@ -2084,7 +2084,7 @@ Public Class ServiceCenter
                         If dv.Count > DV_ROWS_LESS_THAT_MIN - 1 Then
                             Exit For
                         End If
-                        If dv.Count > DV_NO_ROWS_FOUND And dv.Count < DV_ROWS_LESS_THAT_MIN Then
+                        If dv.Count > DV_NO_ROWS_FOUND AndAlso dv.Count < DV_ROWS_LESS_THAT_MIN Then
                             If Not firstTime Then
                                 Exit For
                             End If
@@ -2146,9 +2146,7 @@ Public Class ServiceCenter
                                                Optional ByVal blnCheckAcctSetting As Boolean = False) As DataView
         Dim MethodOfRepairType As String = LookupListNew.GetCodeFromId(LookupListCache.LK_METHODS_OF_REPAIR, MethodOfRepairId)
         Dim blnMethodOfRepairRLG As Boolean = False
-        If MethodOfRepairType = Codes.METHOD_OF_REPAIR__RECOVERY Or
-               MethodOfRepairType = Codes.METHOD_OF_REPAIR__GENERAL Or
-               MethodOfRepairType = Codes.METHOD_OF_REPAIR__LEGAL Then
+        If MethodOfRepairType = Codes.METHOD_OF_REPAIR__RECOVERY OrElse MethodOfRepairType = Codes.METHOD_OF_REPAIR__GENERAL OrElse MethodOfRepairType = Codes.METHOD_OF_REPAIR__LEGAL Then
             blnMethodOfRepairRLG = True
         End If
         Dim dal As New ServiceCenterDAL
@@ -2439,7 +2437,7 @@ Public Class ServiceCenter
             Dim strPriceListCode As String = obj.PriceListCode
             Dim selectedPricelistID As Guid = LookupListNew.GetIdFromCode(LookupListCache.LK_PRICE_LIST, strPriceListCode)
             'check if the price list code is selected and is not in the active price list codes
-            If Not String.IsNullOrEmpty(strPriceListCode) And selectedPricelistID = Guid.Empty Then
+            If Not String.IsNullOrEmpty(strPriceListCode) AndAlso selectedPricelistID = Guid.Empty Then
                 Return False
             Else
                 Return True
@@ -3124,7 +3122,7 @@ Public Class ServiceCenter
         Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As ServiceCenter = CType(objectToValidate, ServiceCenter)
             If IsNumeric(obj.DiscountPct) Then
-                If CType(obj.DiscountPct, Integer) >= 0 And CType(obj.DiscountPct, Integer) <= 100 Then
+                If CType(obj.DiscountPct, Integer) >= 0 AndAlso CType(obj.DiscountPct, Integer) <= 100 Then
                     Return False
                 End If
             Else

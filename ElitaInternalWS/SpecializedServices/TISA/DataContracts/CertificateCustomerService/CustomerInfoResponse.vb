@@ -24,7 +24,7 @@ Namespace SpecializedServices.Tisa
 
         Public Sub New(CustomerData As DataTable)
 
-            If (Not CustomerData Is Nothing) Then
+            If (CustomerData IsNot Nothing) Then
 
                 CustomerName = CustomerData.Rows(0)("Customer_Name").ToString()
                 IdentificationNumber = CustomerData.Rows(0)("Identification_Number").ToString()

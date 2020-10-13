@@ -88,7 +88,7 @@ Public Class ElitaService
             Dim inputDS As Object = ObjectFromClassName(ElitaWebServiceConstants.SETTING_BO_PATH, className)
 
             ' Validate and load XML
-            If binding Is Nothing Or (Not binding Is Nothing AndAlso binding.Equals(ElitaWebServiceConstants.BINDING_XML)) Then
+            If binding Is Nothing OrElse (binding IsNot Nothing AndAlso binding.Equals(ElitaWebServiceConstants.BINDING_XML)) Then
                 ValidateXML(isWcf, _xml, inputDS, schemaName)
             End If
 
@@ -109,7 +109,7 @@ Public Class ElitaService
             '  TO DELETE END
             ' ******************************************
             ' TO KEEP BEGIN
-            If Not binding Is Nothing Then
+            If binding IsNot Nothing Then
                 Select Case binding
                     Case ElitaWebServiceConstants.BINDING_XML
                         ReDim params(ElitaWebServiceConstants.PARAM_COUNT_1)
@@ -139,7 +139,7 @@ Public Class ElitaService
                 Dim retMessage As String = String.Empty
                 Dim retCode As String = String.Empty
                 ElitaService.HandleErrors(ex, retCode, retMessage, xmlDataIn)
-                If Not retMessage Is String.Empty Then
+                If retMessage IsNot String.Empty Then
                     Dim userNetworkId As String = String.Empty
                     If Not retCode.Equals(ErrorCodes.WS_ERR_INVALID_TOKEN) Then
                         userNetworkId = ElitaPlusIdentity.Current.ActiveUser.NetworkId
@@ -172,7 +172,7 @@ Public Class ElitaService
 
         Try
 
-            If webServiceName Is Nothing Or webServiceFunctionName Is Nothing Or xmlStringDataIn Is Nothing Then
+            If webServiceName Is Nothing OrElse webServiceFunctionName Is Nothing OrElse xmlStringDataIn Is Nothing Then
 
                 Dim strIncomingString As String = OperationContext.Current.RequestContext.RequestMessage.ToString()
                 Dim doc As System.Xml.XmlDocument = New System.Xml.XmlDocument()
@@ -226,7 +226,7 @@ Public Class ElitaService
             If Authentication.VerifyWSToken(token, networkID, Token_Env, Token_Hub) = True Then
                 LoginElita(isWcf, networkID, webServiceName, webServiceFunctionName)
 
-                If Token_Env.ToUpper.Trim <> EnvironmentContext.Current.EnvironmentShortName.ToUpper.Trim Or Token_Hub.ToUpper.Trim <> AppConfig.ConnType.ToUpper.Trim Then
+                If Token_Env.ToUpper.Trim <> EnvironmentContext.Current.EnvironmentShortName.ToUpper.Trim OrElse Token_Hub.ToUpper.Trim <> AppConfig.ConnType.ToUpper.Trim Then
                     bDisplayError = True
                 End If
             Else
@@ -311,15 +311,15 @@ Public Class ElitaService
             Dim objElitaPlusPrincipal As ElitaPlusPrincipal = oAuthentication.CreatePrincipal(networkID, webServiceName, webServiceFunctionName)
             Authentication.SetCulture()
 
-            If Not webServiceName Is Nothing AndAlso Not webServiceName.Equals(String.Empty) Then
-                If (Not objElitaPlusPrincipal.WebServiceOffLineMessage Is Nothing) AndAlso _
+            If webServiceName IsNot Nothing AndAlso Not webServiceName.Equals(String.Empty) Then
+                If (objElitaPlusPrincipal.WebServiceOffLineMessage IsNot Nothing) AndAlso _
                     (Not objElitaPlusPrincipal.WebServiceOffLineMessage.Equals(String.Empty)) Then
                     Throw New ElitaWSException(objElitaPlusPrincipal.WebServiceOffLineMessage)
                 End If
             End If
 
-            If Not webServiceFunctionName Is Nothing AndAlso Not webServiceFunctionName.Equals(String.Empty) Then
-                If (Not objElitaPlusPrincipal.WebServiceFunctionOffLineMessage Is Nothing) AndAlso _
+            If webServiceFunctionName IsNot Nothing AndAlso Not webServiceFunctionName.Equals(String.Empty) Then
+                If (objElitaPlusPrincipal.WebServiceFunctionOffLineMessage IsNot Nothing) AndAlso _
                     (Not objElitaPlusPrincipal.WebServiceFunctionOffLineMessage.Equals(String.Empty)) Then
                     Throw New ElitaWSException(objElitaPlusPrincipal.WebServiceFunctionOffLineMessage)
                 End If
@@ -402,7 +402,7 @@ Public Class ElitaService
             End If
 
             If exc.GetType Is GetType(Threading.ThreadAbortException) OrElse _
-                (Not exc.InnerException Is Nothing AndAlso _
+                (exc.InnerException IsNot Nothing AndAlso _
                  exc.InnerException.GetType Is GetType(Threading.ThreadAbortException)) Then
                 retCode = ErrorCodes.UNEXPECTED_ERROR
                 retTranslatedMessage = IIf(Translate, TranslationBase.TranslateLabelOrMessage(retCode), retCode)
@@ -411,7 +411,7 @@ Public Class ElitaService
 
             'this is needed temporarily to prevent the typecast exception below -- ex = CType(exc, ElitaWSException)
             If exc.GetType Is GetType(System.NullReferenceException) OrElse _
-                (Not exc.InnerException Is Nothing AndAlso _
+                (exc.InnerException IsNot Nothing AndAlso _
                  exc.InnerException.GetType Is GetType(System.NullReferenceException)) Then
                 LogXML(xmlDataIn)
                 xmlDataIn = Nothing
@@ -428,7 +428,7 @@ Public Class ElitaService
             End If
 
             If exc.GetType Is GetType(TargetInvocationException) Then
-                If Not exc.InnerException Is Nothing Then exc = exc.InnerException
+                If exc.InnerException IsNot Nothing Then exc = exc.InnerException
             End If
 
             Dim errMsg As String
@@ -436,11 +436,11 @@ Public Class ElitaService
             Dim ex As ElitaWSException
 
             ' Not one of our exceptions - unhandled exception
-            If Not exc.GetType.IsSubclassOf(GetType(ElitaPlusException)) AndAlso Not exc.GetType Is GetType(ElitaPlusException) Then ex = New ElitaWSException(exc)
+            If Not exc.GetType.IsSubclassOf(GetType(ElitaPlusException)) AndAlso exc.GetType IsNot GetType(ElitaPlusException) Then ex = New ElitaWSException(exc)
 
             ' Elita+ Exception coming from the BO
-            If (Not exc.GetType Is GetType(ElitaWSException) AndAlso _
-            exc.GetType.IsSubclassOf(GetType(ElitaPlusException))) Or exc.GetType Is GetType(ElitaPlusException) Then
+            If (exc.GetType IsNot GetType(ElitaWSException) AndAlso _
+            exc.GetType.IsSubclassOf(GetType(ElitaPlusException))) OrElse exc.GetType Is GetType(ElitaPlusException) Then
                 ' exc.GetType.IsSubclassOf(GetType(ElitaPlusException)) Then ex = New ElitaWSException(CType(exc, ElitaPlusException))
                 ex = New ElitaWSException(CType(exc, ElitaPlusException))
                 errMsg = MiscUtil.CleanseSQLInjectChars(ex.Code)
@@ -450,7 +450,7 @@ Public Class ElitaService
             End If
 
             'exception is percolated from BO and wrapped in Reflection exception
-            If Not ex Is Nothing AndAlso (exc.GetType Is GetType(ElitaWSException) OrElse exc.GetType Is GetType(System.Reflection.TargetInvocationException)) Then
+            If ex IsNot Nothing AndAlso (exc.GetType Is GetType(ElitaWSException) OrElse exc.GetType Is GetType(System.Reflection.TargetInvocationException)) Then
                 If exc.GetType Is GetType(System.Reflection.TargetInvocationException) AndAlso
                 exc.InnerException.GetType Is GetType(BOValidationException) Then
                     ' Validation exception coming from the BO but wrapped in Reflection exception
@@ -509,7 +509,7 @@ Public Class ElitaService
         Dim userNetworkId As String = String.Empty
 
         Dim errList() As Object = ex.ValidationErrorList()
-        If Not errList Is Nothing AndAlso errList.Length > 0 Then
+        If errList IsNot Nothing AndAlso errList.Length > 0 Then
             retCode = errList(0).Message.ToString
             retPropertyName = errList(0).PropertyName.ToString & ": "
             retMessage = TranslationBase.TranslateLabelOrMessage(retCode)
@@ -551,7 +551,7 @@ Public Class ElitaService
 
             ElitaService.HandleErrors(ex, retCode, retMessage, "")
 
-            If Not retMessage Is String.Empty Then
+            If retMessage IsNot String.Empty Then
                 Dim userNetworkId As String = ElitaPlusIdentity.Current.ActiveUser.NetworkId
                 Return XMLHelper.FromErrorCodeToXML(retCode, retMessage, userNetworkId)
             End If
@@ -577,9 +577,9 @@ Public Class ElitaService
     End Function
     Private Shared Sub LogXML(xmlDataIn As String)
 
-        If Not xmlDataIn Is Nothing AndAlso xmlDataIn.Length > 4000 Then
+        If xmlDataIn IsNot Nothing AndAlso xmlDataIn.Length > 4000 Then
             AppConfig.Debug("<![CDATA[" & xmlDataIn.Substring(0, 4000) & "]]>")
-        ElseIf Not xmlDataIn Is Nothing Then
+        ElseIf xmlDataIn IsNot Nothing Then
             AppConfig.Debug("<![CDATA[" & xmlDataIn & "]]>")
         End If
 

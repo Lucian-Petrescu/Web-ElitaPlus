@@ -1,22 +1,24 @@
-﻿Imports System.Threading
+﻿Imports System.Diagnostics
+Imports System.Threading
 Imports Assurant.Elita.CommonConfiguration
+Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.Web.Forms
 Namespace Common
     Partial Class ServiceClassServiceTypeControl
-        Inherits System.Web.UI.UserControl
+        Inherits UserControl
 
 #Region " Web Form Designer Generated Code "
 
         'This call is required by the Web Form Designer.
-        <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+        <DebuggerStepThrough()> Private Sub InitializeComponent()
 
         End Sub
         'NOTE: The following placeholder declaration is required by the Web Form Designer.
         'Do not delete or move it.
-        Private designerPlaceholderDeclaration As System.Object
+        Private designerPlaceholderDeclaration As Object
 
-        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -263,7 +265,7 @@ Namespace Common
             Set(Value As Integer)
                 mMode = Value
                 Select Case Value
-                    Case Me.MODES.EDIT_MODE
+                    Case MODES.EDIT_MODE
                         cboServiceClass.Visible = False
                         cboServiceType.Visible = False
                         'Me.ServiceClassText.Visible = True
@@ -271,7 +273,7 @@ Namespace Common
                         'Me.lb_DropDown.Enabled = False
                         ServiceClassLabel.Enabled = False
                         ServiceTypeLabel.Enabled = False
-                    Case Me.MODES.NEW_MODE
+                    Case MODES.NEW_MODE
                         cboServiceClass.Visible = True
                         cboServiceType.Visible = True
                         'Me.ServiceClassText.Visible = False
@@ -354,7 +356,7 @@ Namespace Common
         End Property
 #End Region
 
-        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
             If Not Page.IsPostBack Then
                 'If Not Me.Caption.Equals(String.Empty) Then
                 '    Me.lb_DropDown.Text = Me.Caption.Replace(":", "") + ":"
@@ -378,7 +380,7 @@ Namespace Common
 
 #Region "Handlers-DropDown"
 
-        Private Sub moMultipleColumnDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboServiceClass.SelectedIndexChanged
+        Private Sub moMultipleColumnDrop_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboServiceClass.SelectedIndexChanged
             cboServiceType.SelectedIndex = -1
             'Me.cboServiceType.Items.FindByValue(cboServiceClass.SelectedValue).Selected = True
             LoadServiceTypes()
@@ -404,7 +406,7 @@ Namespace Common
                     'dv.Sort = ClassColumnName
                     'ElitaPlusPage.BindListControlToDataView(cboServiceType, dv, ClassColumnName, , mbAddNothingSelected)
 
-                    Dim ServiceTypes As DataElements.ListItem() =
+                    Dim ServiceTypes As ListItem() =
                         CommonConfigManager.Current.ListManager.GetList(listCode:="ServiceTypeByServiceClass",
                                                                 context:=New ListContext() With
                                                                 {
@@ -491,7 +493,7 @@ Namespace Common
                 'dv.Sort = ClassColumnName
                 'ElitaPlusPage.BindListControlToDataView(cboServiceClass, dv, ClassColumnName, , mbAddNothingSelected)
 
-                Dim ServiceClass As DataElements.ListItem() =
+                Dim ServiceClass As ListItem() =
                 CommonConfigManager.Current.ListManager.GetList(listCode:="SVCCLASS",
                                                                 languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
 
@@ -507,7 +509,7 @@ Namespace Common
                 'dv.Sort = ClassColumnName
                 'ElitaPlusPage.BindListControlToDataView(cboServiceType, dv, ClassColumnName, , mbAddNothingSelected)
 
-                Dim ServiceType As DataElements.ListItem() =
+                Dim ServiceType As ListItem() =
                CommonConfigManager.Current.ListManager.GetList(listCode:="SVCTYP",
                                                                languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
 
@@ -575,12 +577,12 @@ Namespace Common
                 overRideSingularity = dv.Count > SINGLE_ITEM
             End If
 
-            If Mode = Me.MODES.NEW_MODE AndAlso overRideSingularity Then
-                Me.Mode = Me.MODES.NEW_MODE
+            If Mode = MODES.NEW_MODE AndAlso overRideSingularity Then
+                Me.Mode = MODES.NEW_MODE
                 cboServiceType.Enabled = False
             Else
                 Me.NothingSelected = False
-                Me.Mode = Me.MODES.EDIT_MODE
+                Me.Mode = MODES.EDIT_MODE
                 'Me.ServiceClassText.Text = LookupListNew.GetCodeFromId(dv, Me.Page.GetSelectedItem(Me.cboServiceClass)) 'CType(dv.Item(0).Item(0), String)
                 'Me.ServiceTypeText.Text = LookupListNew.GetDescriptionFromId(dv, Me.Page.GetSelectedItem(Me.cboServiceType))
             End If

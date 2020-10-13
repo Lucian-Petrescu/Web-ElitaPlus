@@ -282,7 +282,7 @@ Public Class RiskTypeDAL
 
 #Region "OVERLOADED METHODS"
     Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables(RISK_TYPE_TABLE_NAME) Is Nothing Then
+        If ds.Tables(RISK_TYPE_TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(RISK_TYPE_TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub

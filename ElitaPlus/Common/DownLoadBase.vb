@@ -4,7 +4,7 @@ Imports System.IO
 Namespace DownLoad
 
 Public Class DownLoadBase
-        Inherits System.Web.UI.Page
+        Inherits Page
 
 #Region "Parameters"
 

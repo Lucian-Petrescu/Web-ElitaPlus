@@ -256,7 +256,7 @@ Public Class GetExpectedGWP
                 Throw New BOValidationException("GetExpectedGWP Error: ", Common.ErrorCodes.INVALID_PRODUCT_CODE)
             End If
 
-            If Len((CertificateDuration.ToString)) > 3 Or CertificateDuration = MIN_DURATION Or CertificateDuration > MAX_DURATION Then
+            If Len((CertificateDuration.ToString)) > 3 OrElse CertificateDuration = MIN_DURATION OrElse CertificateDuration > MAX_DURATION Then
                 Throw New BOValidationException("GetExpectedGWP Error: ", Common.ErrorCodes.INVALID_CERTIFICATE_DURATION)
             End If
 

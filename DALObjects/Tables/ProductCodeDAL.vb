@@ -167,7 +167,7 @@ Public Class ProductCodeDAL
         inClausecondition &= "And edealer." & MiscUtil.BuildListForSql(COL_NAME_COMPANY_ID, compIds, False)
 
         productCodeMask = productCodeMask.Trim()
-        If (Not productCodeMask.Equals(String.Empty) Or Not productCodeMask = "") AndAlso (FormatSearchMask(productCodeMask)) Then
+        If (Not productCodeMask.Equals(String.Empty) OrElse Not productCodeMask = "") AndAlso (FormatSearchMask(productCodeMask)) Then
             whereClauseConditions &= Environment.NewLine & "AND " & "Upper(pc.PRODUCT_CODE)" & productCodeMask.ToUpper
         End If
 
@@ -273,7 +273,7 @@ Public Class ProductCodeDAL
 
         Dim strWarrSalesDate As String = WarrSalesDate.ToString("MM/dd/yyyy")
 
-        If Not productClassCode Is Nothing Then
+        If productClassCode IsNot Nothing Then
             whereClauseConditions = "and SUBSTRC(pc.PRODUCT_CODE, 4, 1) = '" & productClassCode & "'"
         End If
         selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
@@ -323,7 +323,7 @@ Public Class ProductCodeDAL
         Dim OrderByClause As String = ""
 
         Dim strWarrSalesDate As String = WarrSalesDate.ToString("MM/dd/yyyy")
-        If Not productClassCode Is Nothing Then
+        If productClassCode IsNot Nothing Then
             whereClauseConditions = "and SUBSTRC(pc.PRODUCT_CODE, 4, 1) = '" & productClassCode & "'"
         End If
         selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
@@ -490,7 +490,7 @@ Public Class ProductCodeDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
@@ -539,7 +539,7 @@ Public Class ProductCodeDAL
             'End If
             ' oParentProduct.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
             'At the end delete the Address
-            If Not familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME).Rows.Count > 0 Then
+            If familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME) IsNot Nothing AndAlso familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME).Rows.Count > 0 Then
                 Dim oTransactionLogHeaderDAL As New TransactionLogHeaderDAL
                 oTransactionLogHeaderDAL.Update(familyDataset.Tables(TransactionLogHeaderDAL.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
             End If

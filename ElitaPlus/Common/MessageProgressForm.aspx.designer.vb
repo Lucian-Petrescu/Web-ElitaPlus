@@ -28,7 +28,7 @@ Partial Public Class MessageProgressForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Form2 As Global.System.Web.UI.HtmlControls.HtmlForm
+    Protected WithEvents Form2 As HtmlForm
 
     '''<summary>
     '''RCancel control.
@@ -37,7 +37,7 @@ Partial Public Class MessageProgressForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents RCancel As Global.System.Web.UI.WebControls.RadioButton
+    Protected WithEvents RCancel As RadioButton
 
     '''<summary>
     '''lblMessage control.
@@ -46,7 +46,7 @@ Partial Public Class MessageProgressForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblMessage As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblMessage As Label
 
     '''<summary>
     '''lblCounter control.
@@ -55,5 +55,5 @@ Partial Public Class MessageProgressForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblCounter As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblCounter As Label
 End Class

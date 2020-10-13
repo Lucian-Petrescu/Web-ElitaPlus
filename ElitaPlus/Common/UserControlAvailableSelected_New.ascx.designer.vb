@@ -21,7 +21,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moOutTable As Global.System.Web.UI.HtmlControls.HtmlTable
+        Protected WithEvents moOutTable As HtmlTable
 
         '''<summary>
         '''moAvailableTitle control.
@@ -30,7 +30,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moAvailableTitle As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moAvailableTitle As Label
 
         '''<summary>
         '''moSelectedTitle control.
@@ -39,7 +39,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moSelectedTitle As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moSelectedTitle As Label
 
         '''<summary>
         '''moAvailableList control.
@@ -48,7 +48,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moAvailableList As Global.System.Web.UI.WebControls.ListBox
+        Protected WithEvents moAvailableList As ListBox
 
         '''<summary>
         '''moButtonsTable control.
@@ -57,7 +57,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moButtonsTable As Global.System.Web.UI.HtmlControls.HtmlTable
+        Protected WithEvents moButtonsTable As HtmlTable
 
         '''<summary>
         '''moSelectedList control.
@@ -66,7 +66,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moSelectedList As Global.System.Web.UI.WebControls.ListBox
+        Protected WithEvents moSelectedList As ListBox
 
         '''<summary>
         '''btnMoveUp control.
@@ -75,7 +75,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnMoveUp As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents btnMoveUp As Button
 
         '''<summary>
         '''btnMoveDown control.
@@ -84,7 +84,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnMoveDown As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents btnMoveDown As Button
 
         '''<summary>
         '''moAvailableTexts control.
@@ -93,7 +93,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moAvailableTexts As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+        Protected WithEvents moAvailableTexts As HtmlInputHidden
 
         '''<summary>
         '''moAvailableValues control.
@@ -102,7 +102,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moAvailableValues As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+        Protected WithEvents moAvailableValues As HtmlInputHidden
 
         '''<summary>
         '''moSelectedTexts control.
@@ -111,7 +111,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moSelectedTexts As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+        Protected WithEvents moSelectedTexts As HtmlInputHidden
 
         '''<summary>
         '''moSelectedValues control.
@@ -120,6 +120,6 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moSelectedValues As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+        Protected WithEvents moSelectedValues As HtmlInputHidden
     End Class
 End Namespace

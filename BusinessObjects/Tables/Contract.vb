@@ -2284,7 +2284,7 @@ Public Class Contract
         For Each row As DataRow In dt.Rows
             Dim MinEffective As Date = CType(row(ContractSearchDV.COL_EFFECTIVE), Date)
             Dim MaxExpiration As Date = CType(row(ContractSearchDV.COL_EXPIRATION), Date)
-            If (contractDate.Date >= MinEffective) And (contractDate.Date <= MaxExpiration) Then
+            If (contractDate.Date >= MinEffective) AndAlso (contractDate.Date <= MaxExpiration) Then
                 contractID = New Guid(CType(row(ContractSearchDV.COL_CONTRACT_ID), Byte()))
                 Return New Contract(contractID)
             End If
@@ -2330,8 +2330,7 @@ Public Class Contract
         For Each row As DataRow In dt.Rows
             Dim contractEffective As Date = CType(row(ContractSearchDV.COL_EFFECTIVE), Date)
             Dim contractExpiration As Date = CType(row(ContractSearchDV.COL_EXPIRATION), Date)
-            If (effectiveDate >= contractEffective) And (effectiveDate <= contractExpiration) And
-                (expirationDate >= contractEffective) And (expirationDate <= contractExpiration) Then
+            If (effectiveDate >= contractEffective) AndAlso (effectiveDate <= contractExpiration) AndAlso (expirationDate >= contractEffective) AndAlso (expirationDate <= contractExpiration) Then
                 contractID = New Guid(CType(row(ContractSearchDV.COL_CONTRACT_ID), Byte()))
                 Return New Contract(contractID)
             End If
@@ -2582,7 +2581,7 @@ Public Class Contract
 
             'If obj.MonthlyBillingId.Equals(yesValueId) Then
             'REQ5804
-            If ((Not obj.RecurringPremiumId.Equals(emptyGuid)) And (Not obj.RecurringPremiumId.Equals(singlePremiumId))) Then
+            If ((Not obj.RecurringPremiumId.Equals(emptyGuid)) AndAlso (Not obj.RecurringPremiumId.Equals(singlePremiumId))) Then
                 'If ((Not obj.RecurringPremiumId.Equals(emptyGuid))) Then
                 Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
                 Return mandatAttr.IsValid(valueToCheck, objectToValidate)
@@ -2689,7 +2688,7 @@ Public Class Contract
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
-            If obj.NumOfClaims IsNot Nothing And obj.NumOfRepairClaims Is Nothing Then
+            If obj.NumOfClaims IsNot Nothing AndAlso obj.NumOfRepairClaims Is Nothing Then
                 Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
                 Return mandatAttr.IsValid(valueToCheck, objectToValidate)
             Else
@@ -2709,9 +2708,9 @@ Public Class Contract
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
 
-            If obj.NumOfClaims Is Nothing Or obj.NumOfRepairClaims Is Nothing Then
+            If obj.NumOfClaims Is Nothing OrElse obj.NumOfRepairClaims Is Nothing Then
                 Return True
-            ElseIf obj.NumOfClaims IsNot Nothing And obj.NumOfRepairClaims IsNot Nothing Then
+            ElseIf obj.NumOfClaims IsNot Nothing AndAlso obj.NumOfRepairClaims IsNot Nothing Then
                 If obj.NumOfRepairClaims.Value > obj.NumOfClaims.Value Then
                     Return False
                 Else
@@ -2730,7 +2729,7 @@ Public Class Contract
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
-            If obj.NumOfClaims IsNot Nothing And obj.NumOfReplacementClaims Is Nothing Then
+            If obj.NumOfClaims IsNot Nothing AndAlso obj.NumOfReplacementClaims Is Nothing Then
                 Dim mandatAttr As New ValueMandatoryAttribute(DisplayName)
                 Return mandatAttr.IsValid(valueToCheck, objectToValidate)
             Else
@@ -2749,9 +2748,9 @@ Public Class Contract
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Contract = CType(objectToValidate, Contract)
 
-            If obj.NumOfClaims Is Nothing Or obj.NumOfReplacementClaims Is Nothing Then
+            If obj.NumOfClaims Is Nothing OrElse obj.NumOfReplacementClaims Is Nothing Then
                 Return True
-            ElseIf obj.NumOfClaims IsNot Nothing And obj.NumOfReplacementClaims IsNot Nothing Then
+            ElseIf obj.NumOfClaims IsNot Nothing AndAlso obj.NumOfReplacementClaims IsNot Nothing Then
                 If obj.NumOfReplacementClaims.Value > obj.NumOfClaims.Value Then
                     Return False
                 Else
@@ -2862,8 +2861,8 @@ Public Class Contract
             If (obj IsNot Nothing) Then
                 Dim sVal As String = LookupListNew.GetCodeFromId(LookupListCache.LK_PERIOD_RENEW, obj.RecurringPremiumId)
 
-                If (obj.RecurringWarrantyPeriod IsNot Nothing) And (obj.RecurringWarrantyPeriod <> 0) Then
-                    If (sVal IsNot Nothing) And (CType(sVal, Long) <> 0) Then
+                If (obj.RecurringWarrantyPeriod IsNot Nothing) AndAlso (obj.RecurringWarrantyPeriod <> 0) Then
+                    If (sVal IsNot Nothing) AndAlso (CType(sVal, Long) <> 0) Then
                         If Not sVal = SinglePremiumRenewable Then
                             If CType(obj.RecurringWarrantyPeriod, Long) Mod CType(sVal, Long) = 0 Then
                                 Return True

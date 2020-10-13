@@ -21,7 +21,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblCode As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblCode As Label
 
         '''<summary>
         '''lblDescription control.
@@ -30,7 +30,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblDescription As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblDescription As Label
 
         '''<summary>
         '''lb_DropDown control.
@@ -39,7 +39,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lb_DropDown As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lb_DropDown As Label
 
         '''<summary>
         '''moMultipleColumnDrop control.
@@ -48,7 +48,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moMultipleColumnDrop As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents moMultipleColumnDrop As DropDownList
 
         '''<summary>
         '''moMultipleColumnTextBoxCode control.
@@ -57,7 +57,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moMultipleColumnTextBoxCode As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents moMultipleColumnTextBoxCode As TextBox
 
         '''<summary>
         '''moMultipleColumnDropDesc control.
@@ -66,7 +66,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moMultipleColumnDropDesc As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents moMultipleColumnDropDesc As DropDownList
 
         '''<summary>
         '''moMultipleColumnTextBoxDesc control.
@@ -75,6 +75,6 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moMultipleColumnTextBoxDesc As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents moMultipleColumnTextBoxDesc As TextBox
     End Class
 End Namespace

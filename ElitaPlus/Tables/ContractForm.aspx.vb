@@ -5,24 +5,27 @@ Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.Web.Forms
 Imports System.Collections.Generic
+Imports System.Diagnostics
+Imports Assurant.Elita.CommonConfiguration.DataElements
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.Tables
 
 Partial Class ContractForm
     Inherits ElitaPlusSearchPage
 
     Protected WithEvents ErrorCtrl As ErrorController
-    Protected WithEvents radioListStatus As System.Web.UI.WebControls.RadioButtonList
-    Protected WithEvents lblAssignedTo As System.Web.UI.WebControls.Label
-    Protected WithEvents lblWebsite As System.Web.UI.WebControls.Label
-    Protected WithEvents txtWebsite As System.Web.UI.WebControls.TextBox
-    Protected WithEvents lblIsActive As System.Web.UI.WebControls.Label
-    Protected WithEvents lblAddress As System.Web.UI.WebControls.Label
-    Protected WithEvents lblPhone As System.Web.UI.WebControls.Label
-    Protected WithEvents lnkViewAuditInfo As System.Web.UI.WebControls.LinkButton
-    Protected WithEvents Textbox5 As System.Web.UI.WebControls.TextBox
-    Protected WithEvents Label24 As System.Web.UI.WebControls.Label
-    Protected WithEvents Textbox15 As System.Web.UI.WebControls.TextBox
+    Protected WithEvents radioListStatus As RadioButtonList
+    Protected WithEvents lblAssignedTo As Label
+    Protected WithEvents lblWebsite As Label
+    Protected WithEvents txtWebsite As TextBox
+    Protected WithEvents lblIsActive As Label
+    Protected WithEvents lblAddress As Label
+    Protected WithEvents lblPhone As Label
+    Protected WithEvents lnkViewAuditInfo As LinkButton
+    Protected WithEvents Textbox5 As TextBox
+    Protected WithEvents Label24 As Label
+    Protected WithEvents Textbox15 As TextBox
     Protected WithEvents DataGrid1 As DataGrid
-    Protected WithEvents ID_VALIDATION As System.Web.UI.WebControls.Label
+    Protected WithEvents ID_VALIDATION As Label
 
     'Protected WithEvents btnTNC As System.Web.UI.WebControls.Button
 
@@ -31,11 +34,11 @@ Partial Class ContractForm
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough> Private Sub InitializeComponent()
 
     End Sub
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -67,7 +70,7 @@ Partial Class ContractForm
 
 #Region "Properties"
 
-    Public ReadOnly Property TheDealerControl() As MultipleColumnDDLabelControl
+    Public ReadOnly Property TheDealerControl As MultipleColumnDDLabelControl
         Get
             If multipleDropControl Is Nothing Then
                 multipleDropControl = CType(FindControl("multipleDropControl"), MultipleColumnDDLabelControl)
@@ -113,12 +116,12 @@ Partial Class ContractForm
 
         'Req-5372
         Public RepPolicyAction As Integer = RepPolicy_None
-        Public RepPolicyList As Collections.Generic.List(Of ReppolicyClaimCount)
+        Public RepPolicyList As List(Of ReppolicyClaimCount)
         Public RepPolicyWorkingItem As ReppolicyClaimCount
         Public RepPolicyWorkingOrig As ReppolicyClaimCount
 
         Public DepreciationScheduleAction As Integer = DepreciationScheduleNone
-        Public DepreciationScheduleList As Collections.Generic.List(Of DepreciationScdRelation)
+        Public DepreciationScheduleList As List(Of DepreciationScdRelation)
         Public DepreciationScheduleWorkingItem As DepreciationScdRelation
         Public DepreciationScheduleOrig As DepreciationScdRelation
 
@@ -132,17 +135,17 @@ Partial Class ContractForm
         MyBase.New(New MyState)
     End Sub
 
-    Protected Shadows ReadOnly Property State() As MyState
+    Protected Shadows ReadOnly Property State As MyState
         Get
             Return CType(MyBase.State, MyState)
         End Get
     End Property
 
-    Public Property DealerID() As Guid
+    Public Property DealerID As Guid
         Get
             Return DealerID
         End Get
-        Set(Value As Guid)
+        Set
             DealerID = Value
         End Set
     End Property
@@ -162,7 +165,7 @@ Partial Class ContractForm
 #End Region
 
 #Region "Page Events"
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         MasterPage.MessageController.Clear_Hide()
         ErrorControllerDS.Clear_Hide()
@@ -238,14 +241,14 @@ Partial Class ContractForm
 
             SetDecimalSeparatorSymbol()
 
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
         ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
-    Private Sub Page_LoadComplete(sender As Object, e As System.EventArgs) Handles Me.LoadComplete
+    Private Sub Page_LoadComplete(sender As Object, e As EventArgs) Handles Me.LoadComplete
         'If Not State.MyBO Is Nothing Then
         '    If State.MyBO.ReplacementPolicyId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_REPLACEMENT_POLICIES, Codes.REPLACEMENT_POLICY__CNCL)) OrElse _
         '        State.MyBO.ReplacementPolicyId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_REPLACEMENT_POLICIES, Codes.REPLACEMENT_POLICY__CNCLAF)) Then
@@ -288,7 +291,7 @@ Partial Class ContractForm
             SetSelectedItem(cboID_VALIDATION, LookupListNew.GetIdFromCode(LookupListNew.LK_VALIDATION_TYPES, IDVALIDATION_NONE))
             ControlMgr.SetVisibleControl(Me, LabelAcselProdCode, False)
             ControlMgr.SetVisibleControl(Me, cboAcselProdCode, False)
-            SetSelectedItem(cboAcselProdCode, System.Guid.Empty)
+            SetSelectedItem(cboAcselProdCode, Guid.Empty)
         Else
             cboID_VALIDATION.SelectedIndex = NOTHING_SELECTED
             ControlMgr.SetEnableControl(Me, cboID_VALIDATION, True)
@@ -732,7 +735,7 @@ Partial Class ContractForm
     Protected Sub populateDealer()
         Dim oDealerview As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
         TheDealerControl.SetControl(True,
-                                    TheDealerControl.MODES.NEW_MODE,
+                                    MultipleColumnDDLabelControl.MODES.NEW_MODE,
                                     True,
                                     oDealerview,
                                     "* " + TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_DEALERCODE),
@@ -760,7 +763,7 @@ Partial Class ContractForm
         Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
         Dim compId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyId
         'Dim yesNoLkL As DataView = LookupListNew.DropdownLookupList("YESNO", langId, True)
-        Dim oYesNoList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="YESNO", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
+        Dim oYesNoList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="YESNO", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
         Dim populateOptions As PopulateOptions = New PopulateOptions() With
             {
                 .AddBlankItem = True
@@ -855,7 +858,7 @@ Partial Class ContractForm
 
         If Not State.MyBO.IsNew Then
             'ElitaPlusPage.BindListControlToDataView(Me.cboCancellationReason, LookupListNew.GetCancellationReasonByDealerIdLookupList(Me.State.MyBO.DealerId), "DESCRIPTION", "ID", True)
-            Dim textFun As Func(Of DataElements.ListItem, String) = Function(li As DataElements.ListItem)
+            Dim textFun As Func(Of ListItem, String) = Function(li As ListItem)
                                                                         Return li.Code + " - " + li.Translation
                                                                     End Function
             Dim listcontext As ListContext = New ListContext()
@@ -988,11 +991,11 @@ Partial Class ContractForm
 
             Dim listcontext As ListContext = New ListContext()
             listcontext.CompanyId = State.DealerBO.CompanyId
-            Dim AcctCompanyList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="AccountingCompanyByCompany", context:=listcontext)
+            Dim AcctCompanyList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="AccountingCompanyByCompany", context:=listcontext)
 
             Dim listcontext1 As ListContext = New ListContext()
             listcontext1.AccountingCompanyId = AcctCompanyList.FirstOrDefault().ListItemId
-            Dim BusinessUnitList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="BusinessUnitByAcctCompany", context:=listcontext1)
+            Dim BusinessUnitList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="BusinessUnitByAcctCompany", context:=listcontext1)
 
             If BusinessUnitList.Count = 1 Then
                 cboAcctBusinessUnit.Populate(BusinessUnitList.ToArray(), New PopulateOptions() With
@@ -1022,12 +1025,12 @@ Partial Class ContractForm
             'End If
         Else
             'Me.BindListControlToDataView(Me.cboAcctBusinessUnit, AcctBusinessUnit.getList(Guid.NewGuid(), Nothing), AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_BUSINESS_UNIT, AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_ACCT_BUSINESS_UNIT_ID)
-            Dim AcctCompanyList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="AcctCompany")
-            Dim BusinessUnitList As New Collections.Generic.List(Of DataElements.ListItem)
+            Dim AcctCompanyList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="AcctCompany")
+            Dim BusinessUnitList As New List(Of ListItem)
             Dim oListContext As New ListContext
-            For Each _acctCompany As DataElements.ListItem In AcctCompanyList
+            For Each _acctCompany As ListItem In AcctCompanyList
                 oListContext.AccountingCompanyId = _acctCompany.ListItemId
-                Dim BusinessUnitListForAcctCompany As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="BusinessUnitByAcctCompany", context:=oListContext)
+                Dim BusinessUnitListForAcctCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="BusinessUnitByAcctCompany", context:=oListContext)
                 If BusinessUnitListForAcctCompany.Count > 0 Then
                     If BusinessUnitList IsNot Nothing Then
                         BusinessUnitList.AddRange(BusinessUnitListForAcctCompany)
@@ -1051,10 +1054,10 @@ Partial Class ContractForm
             dealerCompany.Add(State.DealerBO.CompanyId)
 
             Dim oProducerview As DataView = LookupListNew.GetProducerLookupList(dealerCompany)
-            ElitaPlusPage.BindListControlToDataView(ddlProducer, oProducerview)
+            BindListControlToDataView(ddlProducer, oProducerview)
         Else
             Dim oProducerview As DataView = LookupListNew.GetProducerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
-            ElitaPlusPage.BindListControlToDataView(ddlProducer, oProducerview)
+            BindListControlToDataView(ddlProducer, oProducerview)
         End If
 
     End Sub
@@ -1242,7 +1245,7 @@ Partial Class ContractForm
                 'Added condition to show the text selected as ALL in the Accounting Business Unit Drop down of Contract Screen.
                 If (cboAcctBusinessUnit.Items(0).Text = String.Empty) Then
                     cboAcctBusinessUnit.Items.RemoveAt(0)
-                    cboAcctBusinessUnit.Items.Insert(0, New ListItem("ALL", Guid.Empty.ToString))
+                    cboAcctBusinessUnit.Items.Insert(0, New WebControls.ListItem("ALL", Guid.Empty.ToString))
                 End If
                 If (.AcctBusinessUnitId <> Guid.Empty) Then
                     SetSelectedItem(cboAcctBusinessUnit, .AcctBusinessUnitId)
@@ -1799,30 +1802,30 @@ Partial Class ContractForm
         End If
 
         If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
-            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
+            If State.ActionInProgress <> DetailPageCommand.BackOnErr Then
                 State.MyBO.Save()
             End If
             Select Case State.ActionInProgress
-                Case ElitaPlusPage.DetailPageCommand.Back
-                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
-                Case ElitaPlusPage.DetailPageCommand.New_
+                Case DetailPageCommand.Back
+                    ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
+                Case DetailPageCommand.New_
                     DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                     CreateNew()
-                Case ElitaPlusPage.DetailPageCommand.NewAndCopy
+                Case DetailPageCommand.NewAndCopy
                     DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                     CreateNewWithCopy()
-                Case ElitaPlusPage.DetailPageCommand.BackOnErr
+                Case DetailPageCommand.BackOnErr
                     ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
             End Select
         ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
             Select Case State.ActionInProgress
-                Case ElitaPlusPage.DetailPageCommand.Back
-                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
-                Case ElitaPlusPage.DetailPageCommand.New_
+                Case DetailPageCommand.Back
+                    ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
+                Case DetailPageCommand.New_
                     CreateNew()
-                Case ElitaPlusPage.DetailPageCommand.NewAndCopy
+                Case DetailPageCommand.NewAndCopy
                     CreateNewWithCopy()
-                Case ElitaPlusPage.DetailPageCommand.BackOnErr
+                Case DetailPageCommand.BackOnErr
                     MasterPage.MessageController.AddErrorAndShow(State.LastErrMsg)
             End Select
         End If
@@ -1868,7 +1871,7 @@ Partial Class ContractForm
                 State.MyBO.CountryId = State.CountryBO.Id
             End If
 
-            Dim textFun1 As Func(Of DataElements.ListItem, String) = Function(li As DataElements.ListItem)
+            Dim textFun1 As Func(Of ListItem, String) = Function(li As ListItem)
                                                                          Return li.Code + " - " + li.Translation
                                                                      End Function
             Dim listcontextLoB As ListContext = New ListContext()
@@ -1876,7 +1879,7 @@ Partial Class ContractForm
             listcontextLoB.CountryId = State.MyBO.CountryId
             listcontextLoB.PolicyBusinessTypeId = PolicyType
 
-            Dim lobListItems As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("PolicyLineOfBusiness", Thread.CurrentPrincipal.GetLanguageCode(), context:=listcontextLoB)
+            Dim lobListItems As ListItem() = CommonConfigManager.Current.ListManager.GetList("PolicyLineOfBusiness", Thread.CurrentPrincipal.GetLanguageCode(), context:=listcontextLoB)
             ' Dim inUseLoBListItems As DataElements.ListItem()
 
             ' Filter to only In Use Line Of Business
@@ -1897,7 +1900,7 @@ Partial Class ContractForm
 
 #End Region
 
-    Private Sub OnFromDrop_Changed(fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+    Private Sub OnFromDrop_Changed(fromMultipleDrop As MultipleColumnDDLabelControl) _
            Handles multipleDropControl.SelectedDropChanged
         Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
         Try
@@ -1963,7 +1966,7 @@ Partial Class ContractForm
             'Me.BindListControlToDataView(Me.cboCancellationReason, LookupListNew.GetCancellationReasonByDealerIdLookupList(Me.State.MyBO.DealerId), "DESCRIPTION", "ID", True)
             Dim listcontext As ListContext = New ListContext()
             listcontext.DealerId = State.MyBO.DealerId
-            Dim CancellationReasonList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="CancellationReasonsByDealer", context:=listcontext)
+            Dim CancellationReasonList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="CancellationReasonsByDealer", context:=listcontext)
             cboCancellationReason.Populate(CancellationReasonList, New PopulateOptions() With
                 {
                     .AddBlankItem = True
@@ -1975,7 +1978,7 @@ Partial Class ContractForm
 
 #Region "Handlers-DropDown"
 
-    Protected Sub cboCovDeductible_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboCovDeductible.SelectedIndexChanged
+    Protected Sub cboCovDeductible_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboCovDeductible.SelectedIndexChanged
         Try
             Dim coverageDeductibleId As Guid = Guid.Empty
             Dim deductibleBasedOnId As Guid = Guid.Empty
@@ -1991,7 +1994,7 @@ Partial Class ContractForm
         End Try
     End Sub
 
-    Protected Sub cboDeductibleBasedOn_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboDeductibleBasedOn.SelectedIndexChanged
+    Protected Sub cboDeductibleBasedOn_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboDeductibleBasedOn.SelectedIndexChanged
         Try
             Dim coverageDeductibleId As Guid = Guid.Empty
             Dim deductibleBasedOnId As Guid = Guid.Empty
@@ -2007,7 +2010,7 @@ Partial Class ContractForm
         End Try
     End Sub
 
-    Private Sub cboCollectionCycleType_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboCollectionCycleType.SelectedIndexChanged
+    Private Sub cboCollectionCycleType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboCollectionCycleType.SelectedIndexChanged
 
         EnableDisableCycleDay()
 
@@ -2142,7 +2145,7 @@ Partial Class ContractForm
 
 #Region "Button Clicks"
 
-    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         Try
             PopulateBOsFormFrom()
             '# US 489857
@@ -2150,21 +2153,21 @@ Partial Class ContractForm
             If State.MyBO.IsDirty Then
                 DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                 'Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                State.ActionInProgress = DetailPageCommand.Back
             Else
-                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
+                ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
             DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
             'Me.AddConfirmMsg(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, Me.HiddenSaveChangesPromptResponse)
-            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+            State.ActionInProgress = DetailPageCommand.BackOnErr
             State.LastErrMsg = MasterPage.MessageController.Text
         End Try
     End Sub
 
-    Private Sub btnSave_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnSave_WRITE_Click(sender As Object, e As EventArgs) Handles btnSave_WRITE.Click
         Try
             ''REQ-796
             'Dim sIncomingPremium As String, sCoverageRate As String
@@ -2183,8 +2186,8 @@ Partial Class ContractForm
                     If IsNumeric(TextboxDeductible.Text) AndAlso IsNumeric(TextboxDeductiblePercent.Text) Then
                         If CType(TextboxDeductible.Text, Decimal) > 0 AndAlso CType(TextboxDeductiblePercent.Text, Decimal) > 0 Then
                             'display error
-                            ElitaPlusPage.SetLabelError(LabelDeductible)
-                            ElitaPlusPage.SetLabelError(LabelDeductiblePercent)
+                            SetLabelError(LabelDeductible)
+                            SetLabelError(LabelDeductiblePercent)
                             Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEDUCTIBLE_AMOUNT_ERR)
                         End If
                     End If
@@ -2196,8 +2199,8 @@ Partial Class ContractForm
                 sContractType = LookupListNew.GetCodeFromId(LookupListNew.LK_CONTRACT_TYPES, GetSelectedItem(cboContractType))
                 If sContractType = CONTRACT_TYPE_EXTENSION Then
                     If sVal = YES Then
-                        ElitaPlusPage.SetLabelError(LabelFixedEscDurationFlag)
-                        ElitaPlusPage.SetLabelError(LabelContractType)
+                        SetLabelError(LabelFixedEscDurationFlag)
+                        SetLabelError(LabelContractType)
                         Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.FIXED_ESC_FLAG_CONTRACT_TYPE_ERR)
                     End If
                 End If
@@ -2210,7 +2213,7 @@ Partial Class ContractForm
                 sCollCycleType = LookupListNew.GetCodeFromId(LookupListNew.LK_COLLECTION_CYCLE_TYPE, GetSelectedItem(cboCollectionCycleType))
                 If sCollCycleType = COLLECTION_CYCLE_TYPE_FIX Then
                     If Trim(TextboxCycleDay.Text) = String.Empty Then
-                        ElitaPlusPage.SetLabelError(LabelCycleDay)
+                        SetLabelError(LabelCycleDay)
                         Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.COLLECTION_CYCLE_DAY_ERR)
                     End If
                 End If
@@ -2222,21 +2225,21 @@ Partial Class ContractForm
             Dim yesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
             If State.MyBO.DealerMarkupId.Equals(yesId) Then
                 If State.MyBO.IgnoreCoverageAmtId.Equals(yesId) OrElse State.MyBO.IgnoreIncomingPremiumID.Equals(yesId) Then
-                    ElitaPlusPage.SetLabelError(LabelIgnoreCovAmt)
-                    ElitaPlusPage.SetLabelError(LabelIgnorePremium)
+                    SetLabelError(LabelIgnoreCovAmt)
+                    SetLabelError(LabelIgnorePremium)
                     Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.SET_IGNORE_FLAGS_TO_NO_FOR_DEALERMARKUP_ERR)
                 End If
             End If
 
             If State.MyBO.IgnoreCoverageAmtId.Equals(yesId) AndAlso State.MyBO.IgnoreCoverageAmtId.Equals(State.MyBO.IgnoreIncomingPremiumID) Then
-                ElitaPlusPage.SetLabelError(LabelIgnoreCovAmt)
-                ElitaPlusPage.SetLabelError(LabelIgnorePremium)
+                SetLabelError(LabelIgnoreCovAmt)
+                SetLabelError(LabelIgnorePremium)
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.BOTH_IGNORE_FLAGS_CANNOT_BE_YES_ERR)
             End If
 
             If cboEDIT_MFG_TERM.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
                 If (Not GetSelectedItem(cboEDIT_MFG_TERM).Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_EDTMFGTRM, Codes.EDIT_MFG_TERM__NONE))) AndAlso cboOverrideEditMfgTerm.SelectedIndex <= 0 Then
-                    ElitaPlusPage.SetLabelError(LabelOverrideEditMfgTerm)
+                    SetLabelError(LabelOverrideEditMfgTerm)
                     Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.OVERRIDE_EDIT_MFG_TERM_REQD_ERR)
                 End If
             End If
@@ -2302,7 +2305,7 @@ Partial Class ContractForm
         End Try
     End Sub
 
-    Private Sub btnUndo_Write_Click(sender As System.Object, e As System.EventArgs) Handles btnUndo_Write.Click
+    Private Sub btnUndo_Write_Click(sender As Object, e As EventArgs) Handles btnUndo_Write.Click
         Try
             If Not State.MyBO.IsNew Then
                 'Reload from the DB
@@ -2321,15 +2324,15 @@ Partial Class ContractForm
         End Try
     End Sub
 
-    Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
+    Private Sub btnDelete_WRITE_Click(sender As Object, e As EventArgs) Handles btnDelete_WRITE.Click
         Try
             DeleteReplacementPolicy() 'delete Child records first
             DeleteDepreciationSchedule()
             State.MyBO.Delete()
             State.MyBO.Save()
             State.HasDataChanged = True
-            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, State.MyBO, State.HasDataChanged))
-        Catch ex As Threading.ThreadAbortException
+            ReturnToCallingPage(New ReturnType(DetailPageCommand.Delete, State.MyBO, State.HasDataChanged))
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             'undo the delete
             State.MyBO.RejectChanges()
@@ -2337,7 +2340,7 @@ Partial Class ContractForm
         End Try
     End Sub
 
-    Private Sub btnNew_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnNew_WRITE.Click
+    Private Sub btnNew_WRITE_Click(sender As Object, e As EventArgs) Handles btnNew_WRITE.Click
         Try
             PopulateBOsFormFrom()
             '# US 489857
@@ -2345,7 +2348,7 @@ Partial Class ContractForm
             If State.MyBO.IsDirty Then
                 DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                 'Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                State.ActionInProgress = DetailPageCommand.New_
             Else
                 CreateNew()
             End If
@@ -2354,7 +2357,7 @@ Partial Class ContractForm
         End Try
     End Sub
 
-    Private Sub btnCopy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
+    Private Sub btnCopy_WRITE_Click(sender As Object, e As EventArgs) Handles btnCopy_WRITE.Click
         Try
             ' this should happen during post back before dialog message whether record is dirty or not.
             PopulateBOsFormFrom()
@@ -2382,7 +2385,7 @@ Partial Class ContractForm
 
                 DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                 'Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                State.ActionInProgress = DetailPageCommand.NewAndCopy
             End If
 
             ' recapture the Dealer BO after new cloned contract BO.
@@ -2395,9 +2398,9 @@ Partial Class ContractForm
         End Try
     End Sub
 
-    Private Sub btnTNC_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnTNC.Click
+    Private Sub btnTNC_WRITE_Click(sender As Object, e As EventArgs) Handles btnTNC.Click
         Try
-            callPage(Tables.TermAndConditionsForm.URL, State.MyBO.Id)
+            callPage(TermAndConditionsForm.URL, State.MyBO.Id)
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -2407,7 +2410,7 @@ Partial Class ContractForm
 
 #Region "Page Control Events"
 
-    Private Sub cboInstallmentPayment_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboInstallmentPayment.SelectedIndexChanged
+    Private Sub cboInstallmentPayment_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboInstallmentPayment.SelectedIndexChanged
         Try
             Dim noId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
             Dim YesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
@@ -2426,7 +2429,7 @@ Partial Class ContractForm
         End Try
     End Sub
 
-    Private Sub cboRecurringPremium_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboRecurringPremium.SelectedIndexChanged
+    Private Sub cboRecurringPremium_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboRecurringPremium.SelectedIndexChanged
         Try
             EnableDisableFields(True)
             'Req-1016 Start
@@ -2441,11 +2444,11 @@ Partial Class ContractForm
         End Try
     End Sub
 
-    Private Sub cboIncludeFirstPmt_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboIncludeFirstPmt.SelectedIndexChanged
+    Private Sub cboIncludeFirstPmt_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboIncludeFirstPmt.SelectedIndexChanged
         EnableFirstPaymentMonthsField()
     End Sub
 
-    Private Sub cboDealerMarkup_WRITE_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboDealerMarkup_WRITE.SelectedIndexChanged
+    Private Sub cboDealerMarkup_WRITE_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboDealerMarkup_WRITE.SelectedIndexChanged
         Try
             EnableDisableFields(True)
             Dim yesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "Y")
@@ -2459,7 +2462,7 @@ Partial Class ContractForm
     End Sub
 
 
-    Private Sub cboCURRENCY_CONVERSION_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboCURRENCY_CONVERSION.SelectedIndexChanged
+    Private Sub cboCURRENCY_CONVERSION_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboCURRENCY_CONVERSION.SelectedIndexChanged
         Try
             Dim yesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "Y")
             If GetSelectedItem(cboCURRENCY_CONVERSION).Equals(yesId) AndAlso GetSelectedItem(cboDealerMarkup_WRITE).Equals(yesId) Then
@@ -2498,7 +2501,7 @@ Partial Class ContractForm
     Public Const RepPolicy_Edit As Integer = 2
     Public Const RepPolicy_Delete As Integer = 3
 
-    Public Sub ItemCreated(sender As System.Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
+    Public Sub ItemCreated(sender As Object, e As GridViewRowEventArgs)
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
@@ -2506,7 +2509,7 @@ Partial Class ContractForm
         End Try
     End Sub
 
-    Protected Sub ItemCommand(source As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+    Protected Sub ItemCommand(source As Object, e As GridViewCommandEventArgs)
         Dim nIndex As Integer
         Dim guidTemp As Guid
         Try
@@ -2541,7 +2544,7 @@ Partial Class ContractForm
         End Try
     End Sub
 
-    Private Sub moGridView_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles moGridView.RowDataBound
+    Private Sub moGridView_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles moGridView.RowDataBound
         Try
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As ReppolicyClaimCount
@@ -2565,7 +2568,7 @@ Partial Class ContractForm
 
                         Dim plistcontext As ListContext = New ListContext()
                         plistcontext.DealerId = State.MyBO.DealerId
-                        Dim ProductCodeList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ProductCodeByDealer", context:=plistcontext)
+                        Dim ProductCodeList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ProductCodeByDealer", context:=plistcontext)
                         objDDL.Populate(ProductCodeList, New PopulateOptions() With
                             {
                                 .AddBlankItem = True,
@@ -2623,10 +2626,10 @@ Partial Class ContractForm
         End Try
     End Sub
 
-    Private Sub PopulateReplacementPolicyGrid(ds As Collections.Generic.List(Of ReppolicyClaimCount))
-        Dim blnEmptyList As Boolean = False, mySource As Collections.Generic.List(Of ReppolicyClaimCount)
+    Private Sub PopulateReplacementPolicyGrid(ds As List(Of ReppolicyClaimCount))
+        Dim blnEmptyList As Boolean = False, mySource As List(Of ReppolicyClaimCount)
         If ds Is Nothing OrElse ds.Count = 0 Then
-            mySource = New Collections.Generic.List(Of ReppolicyClaimCount)
+            mySource = New List(Of ReppolicyClaimCount)
             mySource.Add(New ReppolicyClaimCount())
             blnEmptyList = True
             moGridView.DataSource = mySource
@@ -2641,7 +2644,7 @@ Partial Class ContractForm
         End If
     End Sub
 
-    Private Sub BtnNewReplacementPolicy_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles BtnNewReplacementPolicy_WRITE.Click
+    Private Sub BtnNewReplacementPolicy_WRITE_Click(sender As Object, e As EventArgs) Handles BtnNewReplacementPolicy_WRITE.Click
         Try
             State.RepPolicyAction = RepPolicy_Add
             'Me.State.RepPolicyList = Nothing
@@ -2650,7 +2653,7 @@ Partial Class ContractForm
             State.RepPolicyWorkingItem = objNew
 
             If State.RepPolicyList Is Nothing Then
-                State.RepPolicyList = New Collections.Generic.List(Of ReppolicyClaimCount)
+                State.RepPolicyList = New List(Of ReppolicyClaimCount)
             End If
             State.RepPolicyList.Add(objNew)
 
@@ -2893,7 +2896,7 @@ Partial Class ContractForm
 
 #Region "Depreciation Schedule Grid Operation"
 
-    Public Sub GridViewDepreciationSchedule_RowCreated(sender As System.Object, e As GridViewRowEventArgs)
+    Public Sub GridViewDepreciationSchedule_RowCreated(sender As Object, e As GridViewRowEventArgs)
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
@@ -2949,8 +2952,8 @@ Partial Class ContractForm
 
                         Dim listcontext As ListContext = New ListContext()
                         listcontext.CompanyId = State.Company_ID
-                        Dim DepreciationScheduleList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DepreciationScheduleByCompany", context:=listcontext, languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
-                        Dim FilteredDepreciationScheduleList As DataElements.ListItem() = (From lst In DepreciationScheduleList
+                        Dim DepreciationScheduleList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DepreciationScheduleByCompany", context:=listcontext, languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
+                        Dim FilteredDepreciationScheduleList As ListItem() = (From lst In DepreciationScheduleList
                                                                                            Where lst.ExtendedCode = "YESNO-Y" OrElse lst.Code = dvRow.DepreciationScheduleCode
                                                                                            Select lst).ToArray()
 
@@ -3036,11 +3039,11 @@ Partial Class ContractForm
     End Sub
 #End Region
 #Region "Depreciation Schedule - Others"
-    Private Sub PopulateDepreciationScheduleGrid(ds As Collections.Generic.List(Of DepreciationScdRelation))
+    Private Sub PopulateDepreciationScheduleGrid(ds As List(Of DepreciationScdRelation))
 
-        Dim blnEmptyList As Boolean = False, mySource As Collections.Generic.List(Of DepreciationScdRelation)
+        Dim blnEmptyList As Boolean = False, mySource As List(Of DepreciationScdRelation)
         If ds Is Nothing OrElse ds.Count = 0 Then
-            mySource = New Collections.Generic.List(Of DepreciationScdRelation)
+            mySource = New List(Of DepreciationScdRelation)
             mySource.Add(New DepreciationScdRelation())
             blnEmptyList = True
             GridViewDepreciationSchedule.DataSource = mySource
@@ -3204,7 +3207,7 @@ Partial Class ContractForm
     End Sub
 #End Region
 #Region "Depreciation Schedule - Button Click"
-    Private Sub BtnNewDepreciationSchedule_Click(sender As System.Object, e As EventArgs) Handles BtnNewDepreciationSchedule.Click
+    Private Sub BtnNewDepreciationSchedule_Click(sender As Object, e As EventArgs) Handles BtnNewDepreciationSchedule.Click
         Try
             State.DepreciationScheduleAction = DepreciationScheduleAdd
             Dim objNew As New DepreciationScdRelation()
@@ -3213,7 +3216,7 @@ Partial Class ContractForm
             State.DepreciationScheduleWorkingItem = objNew
 
             If State.DepreciationScheduleList Is Nothing Then
-                State.DepreciationScheduleList = New Collections.Generic.List(Of DepreciationScdRelation)
+                State.DepreciationScheduleList = New List(Of DepreciationScdRelation)
             End If
             State.DepreciationScheduleList.Add(objNew)
 
@@ -3267,12 +3270,12 @@ Partial Class ContractForm
                             ValidateIncomingSourceXcd()
 
                             If State.IsBucketIncomingSelected Then
-                                ElitaPlusPage.SetLabelError(LabelIgnorePremium)
-                                ElitaPlusPage.SetLabelError(LabelLossCostPercent)
-                                ElitaPlusPage.SetLabelError(LabelProfitExpense)
-                                ElitaPlusPage.SetLabelError(LabelAdminExpense)
-                                ElitaPlusPage.SetLabelError(LabelMarketingExpense)
-                                ElitaPlusPage.SetLabelError(LabelCommPercent)
+                                SetLabelError(LabelIgnorePremium)
+                                SetLabelError(LabelLossCostPercent)
+                                SetLabelError(LabelProfitExpense)
+                                SetLabelError(LabelAdminExpense)
+                                SetLabelError(LabelMarketingExpense)
+                                SetLabelError(LabelCommPercent)
                                 Throw New GUIException(Message.MSG_INCOMING_OPTION_NOT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_INCOMING_OPTION_NOT_ALLOWED_WHEN_IGNORE_PREMIUM_IS_YES)
                             End If
                         End If
@@ -3281,18 +3284,18 @@ Partial Class ContractForm
                     ValidateDifferenceSourceXcd()
 
                     If State.IsDiffSelectedTwice Then
-                        ElitaPlusPage.SetLabelError(LabelLossCostPercent)
-                        ElitaPlusPage.SetLabelError(LabelProfitExpense)
-                        ElitaPlusPage.SetLabelError(LabelAdminExpense)
-                        ElitaPlusPage.SetLabelError(LabelMarketingExpense)
-                        ElitaPlusPage.SetLabelError(LabelCommPercent)
+                        SetLabelError(LabelLossCostPercent)
+                        SetLabelError(LabelProfitExpense)
+                        SetLabelError(LabelAdminExpense)
+                        SetLabelError(LabelMarketingExpense)
+                        SetLabelError(LabelCommPercent)
                         Throw New GUIException(Message.MSG_DIFFERENCE_OPTION_ALLOWED_ONLY_ONCE, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DIFFERENCE_SOURCE_ALLOWED_ONLY_FOR_ONE_BUCKET)
                     ElseIf State.IsDiffNotSelectedOnce Then
-                        ElitaPlusPage.SetLabelError(LabelLossCostPercent)
-                        ElitaPlusPage.SetLabelError(LabelProfitExpense)
-                        ElitaPlusPage.SetLabelError(LabelAdminExpense)
-                        ElitaPlusPage.SetLabelError(LabelMarketingExpense)
-                        ElitaPlusPage.SetLabelError(LabelCommPercent)
+                        SetLabelError(LabelLossCostPercent)
+                        SetLabelError(LabelProfitExpense)
+                        SetLabelError(LabelAdminExpense)
+                        SetLabelError(LabelMarketingExpense)
+                        SetLabelError(LabelCommPercent)
                         Throw New GUIException(Message.MSG_DIFFERENCE_OPTION_ATLEAST_ONE, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DIFFERENCE_OPTION_SHOULD_PRESENT_ATLEAST_FOR_ONE_BUCKET)
                     End If
                 End If
@@ -3439,7 +3442,7 @@ Partial Class ContractForm
 
                     DisplaySourceXcdDropdownFields()
 
-                    Dim oAcctBucketsSourceOption As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ACCTBUCKETSOURCE")
+                    Dim oAcctBucketsSourceOption As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ACCTBUCKETSOURCE")
 
                     cboLossCostPercentSourceXcd.Populate(oAcctBucketsSourceOption, New PopulateOptions() With
                                          {

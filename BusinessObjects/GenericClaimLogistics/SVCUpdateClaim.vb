@@ -638,7 +638,7 @@ Public Class SVCUpdateClaim
             End If
         End If
 
-        If Not IsShippingAmountNull Or Not IsLaborAmountNull Or Not IsServiceChargeAmountNull Or Not IsTripAmountNull Or Not IsOtherAmountNull Then
+        If Not IsShippingAmountNull OrElse Not IsLaborAmountNull OrElse Not IsServiceChargeAmountNull OrElse Not IsTripAmountNull OrElse Not IsOtherAmountNull Then
             Dim objClaimAuthDetail As ClaimAuthDetail
             'This claim may/may not have a claimAuthDetail record.
             Try

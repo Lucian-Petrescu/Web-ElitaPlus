@@ -610,8 +610,7 @@ Public Class BenefitProductCode
                 '        Exit For
                 '    End If
                 'End If
-                If (NewEffectiveDate.Value >= EffectiveDate AndAlso NewEffectiveDate.Value <= ExpirationDate) Or
-                        (NewExpirationDate.Value >= EffectiveDate AndAlso NewExpirationDate.Value <= ExpirationDate) Then
+                If (NewEffectiveDate.Value >= EffectiveDate AndAlso NewEffectiveDate.Value <= ExpirationDate) OrElse (NewExpirationDate.Value >= EffectiveDate AndAlso NewExpirationDate.Value <= ExpirationDate) Then
                     bValid = False
                     Exit For
                 End If
