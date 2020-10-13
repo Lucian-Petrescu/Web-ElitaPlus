@@ -64,24 +64,7 @@ Namespace Tables
 
         Private Const BILLING_CYCLE_FORM001 As String = "BILLING_CYCLE_FORM001" ' Billing Cycle List Exception
         Private Const BILLING_CYCLE_FORM002 As String = "BILLING_CYCLE_FORM002" ' Billing Cycle Code Field Exception
-        Private Const BILLING_CYCLE_FORM003 As String = "BILLING_CYCLE_FORM003" ' Billing Cycle Update Exception
-        Private Const CONFIRM_MSG As String = "MGS_CONFIRM_PROMPT" '"Are you sure you want to delete the selected records?"
-        Private Const MSG_RECORD_SAVED_OK As String = "MSG_RECORD_SAVED_OK" '"The record has been successfully saved"
-        Private Const MSG_UNIQUE_VIOLATION As String = "MSG_DUPLICATE_KEY_CONSTRAINT_VIOLATED" '"Unique value is in use"
-        Private Const UNIQUE_VIOLATION As String = "unique constraint"
-        Private Const MSG_RECORD_NOT_SAVED As String = "MSG_RECORD_NOT_SAVED"
-        Private Const NO_ROW_SELECTED_INDEX As Integer = -1
-        Private Const EDIT_COMMAND As String = "EditRecord"
-        Private Const CANCEL_COMMAND As String = "CancelRecord"
-        Private Const SAVE_COMMAND As String = "SaveRecord"
-        Private Const DELETE_COMMAND As String = "DeleteRecord"
-        Private Const SORT_COMMAND As String = "Sort"
-        Public Const LABEL_SELECT_BILLING_CYCLE As String = "BILLING_CYCLE"
-        Private Const FIRST_POS As Integer = 0
-        Private Const COL_NAME As String = "ID"
         Private Const LABEL_DEALER As String = "DEALER_NAME"
-        Private Const YES As String = "Y"
-        Private Const NO As String = "N"
         Public Const URL As String = "BillingCycleForm.aspx"
 
         Public Const BILLING_CYCLE_CODE_PROPERTY As String = "BillingCycleCode"
@@ -92,7 +75,7 @@ Namespace Tables
         Public Const DATE_OF_PAYMENT_OPTION_ID_PROPETRY As String = "DateOfPaymentOptionId"
         Public Const DATE_OF_PAYMENT_OFFSET_DAYS_PROPERTY As String = "DateOfPaymentOffsetDays"
         Public Const NUMBER_OF_DIGITS_ROUNDOFF_ID_PROPERTY As String = "NumberOfDigitsRoundOffId"
-
+        public Const BILLING_COOL_OFF_DAYS_PROPERTY as string = "BillingCoolOffDays"
 #End Region
 
 #Region "Page Return Type"
@@ -279,7 +262,6 @@ Namespace Tables
                 ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
                 ControlMgr.SetEnableControl(Me, btnNew_WRITE, False)
                 ControlMgr.SetEnableControl(Me, btnCopy_WRITE, False)
-                'ControlMgr.SetEnableControl(Me, btnAcctSettings, False)
             End If
 
         End Sub
@@ -301,7 +283,6 @@ Namespace Tables
 
             Me.PopulateBOsFromForm()
 
-            ' Dim newObjDummy As New BillingCycle
             Dim newObj As New BillingCycle
             newObj.Copy(TheBillingCycle)
 
@@ -374,6 +355,7 @@ Namespace Tables
             moPostPaidDateOfPaymentText.Text = Nothing
             moPostPaidFromDateText.Text = Nothing
             moPostPaidToDateText.Text = Nothing
+            moBillingCycleCodeText.Text = Nothing
         End Sub
 
         Private Sub ClearAll()
@@ -424,7 +406,6 @@ Namespace Tables
                     {
                     .AddBlankItem = True
                     })
-                ' BindListControlToDataView(moNumberOfDigitsRoundoffDrop, LookupListNew.GetNumberOfDigitsRoundOffList(oLanguageId), , , True)
                 Dim numberOfDigitsRoundoffLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("NUMBER_OF_DIGITS_ROUNDOFF", ElitaPlusIdentity.Current.ActiveUser.LanguageCode)
                 Me.moNumberOfDigitsRoundoffDrop.Populate(numberOfDigitsRoundoffLkl, New PopulateOptions() With
                     {
@@ -457,6 +438,7 @@ Namespace Tables
                         moPrePaidToDateText.Text = Nothing
                         moPostPaidFromDateText.Text = Nothing
                         moPostPaidToDateText.Text = Nothing
+                        moBillingCoolOffDaysText.Text = Nothing
                     Else
                         BindSelectItem(.DateOfPaymentOptionId.ToString, moDateOfPaymentOptionDrop)
                         BindSelectItem(.NumberOfDigitsRoundOffId.ToString, moNumberOfDigitsRoundoffDrop)
@@ -465,6 +447,7 @@ Namespace Tables
                         Me.PopulateControlFromBOProperty(Me.moEndDayText, .EndDay)
                         Me.PopulateControlFromBOProperty(Me.moBillingRunDateOffsetDaysText, .BillingRunDateOffsetDays)
                         Me.PopulateControlFromBOProperty(Me.moDateOfPaymentOffsetDaysText, .DateOfPaymentOffsetDays)
+                        PopulateControlFromBOProperty(moBillingCoolOffDaysText, .BillingCoolOffDays)
                     End If
 
                 End With
@@ -497,7 +480,7 @@ Namespace Tables
                 Me.PopulateBOProperty(TheBillingCycle, DATE_OF_PAYMENT_OPTION_ID_PROPETRY, Me.moDateOfPaymentOptionDrop)
                 Me.PopulateBOProperty(TheBillingCycle, DATE_OF_PAYMENT_OFFSET_DAYS_PROPERTY, Me.moDateOfPaymentOffsetDaysText)
                 Me.PopulateBOProperty(TheBillingCycle, NUMBER_OF_DIGITS_ROUNDOFF_ID_PROPERTY, Me.moNumberOfDigitsRoundoffDrop)
-
+                PopulateBOProperty(TheBillingCycle, BILLING_COOL_OFF_DAYS_PROPERTY, moBillingCoolOffDaysText)
             End With
             If Me.ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
@@ -731,6 +714,7 @@ Namespace Tables
             Me.BindBOPropertyToLabel(TheBillingCycle, DATE_OF_PAYMENT_OPTION_ID_PROPETRY, moDateOfPaymentOptionLabel)
             Me.BindBOPropertyToLabel(TheBillingCycle, DATE_OF_PAYMENT_OFFSET_DAYS_PROPERTY, moDateOfPaymentOffsetDaysLabel)
             Me.BindBOPropertyToLabel(TheBillingCycle, NUMBER_OF_DIGITS_ROUNDOFF_ID_PROPERTY, moNumberOfDigitsRoundoffLabel)
+            BindBOPropertyToLabel(TheBillingCycle, BILLING_COOL_OFF_DAYS_PROPERTY, moBillingCoolOffDaysLabel)
         End Sub
 
         Private Sub ClearLabelsErrSign()
@@ -747,6 +731,7 @@ Namespace Tables
             Me.ClearLabelErrSign(moPostPaidToDateLabel)
             Me.ClearLabelErrSign(moPrePaidDateOfPaymentLabel)
             Me.ClearLabelErrSign(moPostPaidDateOfPaymentLabel)
+            ClearLabelErrSign(moBillingCoolOffDaysLabel)
         End Sub
 
         Public Shared Sub SetLabelColor(ByVal lbl As Label)

@@ -232,7 +232,7 @@ Partial Class AccountingEventDetailForm
 #Region "Controlling Logic"
 
     Private Sub PopulateAll()
-
+        Me.State.AcctCompanyBo = New AcctCompany(Me.State.ParentBO.AcctCompanyId)
         Me.State.YESNOList = CommonConfigManager.Current.ListManager.GetList(listCode:="YESNO", languageCode:=ElitaPlusIdentity.Current.ActiveUser.LanguageCode)
         'Dim YESNOdv As DataView = LookupListNew.DropdownLookupList(YESNO, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True)
         'Me.State.YESNOdv = YESNOdv
@@ -278,12 +278,19 @@ Partial Class AccountingEventDetailForm
         Dim h As String = (From lst In AcctEventTypeList
                            Where lst.ListItemId = Me.State.ParentBO.AcctEventTypeId
                            Select lst.Code).FirstOrDefault()
-
-        If (h = "UPR" Or h = "IBNR" Or h = "INV" Or h = "VEND") Then
-            AcctTSrList = (From lst In AcctTSrList
-                           Where lst.Code <> "PRDCODE"
-                           Select lst).ToArray()
-            'AcctTSrcdv.RowFilter = String.Format("{0}code <> 'PRDCODE'", If(AcctTSrcdv.RowFilter.Length > 0, String.Format("{0} AND ", AcctTSrcdv.RowFilter), "").ToString)
+        If Me.State.AcctCompanyBo.IsCompUsingNewAccounting(Me.State.AcctCompanyBo.Id) Then
+            If (h = "IBNR" Or h = "INV" Or h = "VEND") Then
+                AcctTSrList = (From lst In AcctTSrList
+                               Where lst.Code <> "PRDCODE"
+                               Select lst).ToArray()
+            End If
+        Else
+            If (h = "UPR" Or h = "IBNR" Or h = "INV" Or h = "VEND") Then
+                AcctTSrList = (From lst In AcctTSrList
+                               Where lst.Code <> "PRDCODE"
+                               Select lst).ToArray()
+                'AcctTSrcdv.RowFilter = String.Format("{0}code <> 'PRDCODE'", If(AcctTSrcdv.RowFilter.Length > 0, String.Format("{0} AND ", AcctTSrcdv.RowFilter), "").ToString)
+            End If
         End If
         'REQ-5733 END
 

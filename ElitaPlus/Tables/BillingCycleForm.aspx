@@ -89,8 +89,14 @@
                                 <td align="right" nowrap="nowrap">
                                     <asp:Label ID="moNextRunDateLabel" runat="server">NEXT_RUN_DATE</asp:Label>
                                 </td>
-                                <td style="width: 23%;">&nbsp;
+                                <td align="left" nowrap="nowrap">
                                     <asp:TextBox ID="moNextRunDateText" TabIndex="3" runat="server" SkinID="MediumTextBox" Width="150px" ReadOnly="True"></asp:TextBox>
+                                </td>
+                                <td align="right" nowrap="nowrap">
+                                    <asp:Label ID="moBillingCoolOffDaysLabel" runat="server">BILLING_COOL_OFF_DAYS</asp:Label>
+                                </td>
+                                <td align="left" nowrap="nowrap">
+                                    <asp:TextBox ID="moBillingCoolOffDaysText" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                                 </td>
                             </tr>
                             <tr>
